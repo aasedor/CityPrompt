@@ -1,0 +1,898 @@
+From f9e39e71152feef03feba4069a3b40f445e8c7d6 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 13:01:25 -0600
+Subject: [PATCH 24/32] fix: restore planning inputs and polygon visibility
+
+---
+ backend/app/api/v1/geocoding.py               | 126 ++++++++++++++++++
+ backend/app/api/v1/router.py                  |   3 +-
+ backend/app/core/config.py                    |  18 +++
+ backend/tests/test_geocoding_api.py           | 101 ++++++++++++++
+ .../viewer/globe/GlobeSitePlannerMap.tsx      |   7 +-
+ .../viewer/globe/GlobeZoneLayer.tsx           |  71 +++++-----
+ .../globe/strictModeResourceDisposal.test.ts  |  33 +++++
+ .../globe/strictModeResourceDisposal.ts       |  26 ++++
+ .../features/projects/ProjectEditModal.tsx    |  74 +++++-----
+ .../src/features/projects/ProjectListPage.tsx |  66 +++++----
+ frontend/src/services/geocoding.ts            |  28 ++++
+ 11 files changed, 437 insertions(+), 116 deletions(-)
+ create mode 100644 backend/app/api/v1/geocoding.py
+ create mode 100644 backend/tests/test_geocoding_api.py
+ create mode 100644 frontend/src/components/viewer/globe/strictModeResourceDisposal.test.ts
+ create mode 100644 frontend/src/components/viewer/globe/strictModeResourceDisposal.ts
+ create mode 100644 frontend/src/services/geocoding.ts
+
+diff --git a/backend/app/api/v1/geocoding.py b/backend/app/api/v1/geocoding.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5ad1855c4b80dfd76c7f0d86c28d5ab06ec4b632
+--- /dev/null
++++ b/backend/app/api/v1/geocoding.py
+@@ -0,0 +1,126 @@
++"""Server-side address autocomplete and place resolution.
++
++The frontend previously called Mapbox directly and discarded provider errors.
++Keeping provider credentials and error handling here gives project creation a
++single stable API while allowing the active Maps provider to change safely.
++"""
++
++import httpx
++from fastapi import APIRouter, HTTPException, Query
++from pydantic import BaseModel
++
++from app.core.config import get_settings
++
++
++router = APIRouter()
++
++
++class GeocodeSuggestion(BaseModel):
++    id: str
++    place_name: str
++
++
++class GeocodeAutocompleteResponse(BaseModel):
++    suggestions: list[GeocodeSuggestion]
++
++
++class GeocodeResolveResponse(BaseModel):
++    latitude: float
++    longitude: float
++    address: str
++
++
++def _maps_api_key() -> str:
++    settings = get_settings()
++    return settings.google_maps_api_key or settings.gemini_api_key
++
++
++def _provider_error(data: dict, fallback: str) -> HTTPException:
++    message = str(data.get("error_message") or fallback).strip()
++    return HTTPException(status_code=502, detail=message)
++
++
++@router.get("/autocomplete", response_model=GeocodeAutocompleteResponse)
++async def autocomplete_address(
++    q: str = Query(..., min_length=3, max_length=200),
++    limit: int = Query(5, ge=1, le=5),
++):
++    """Return ranked address/place suggestions for a partial user query."""
++    api_key = _maps_api_key()
++    if not api_key:
++        raise HTTPException(status_code=503, detail="Address search is not configured.")
++
++    try:
++        async with httpx.AsyncClient(timeout=10.0) as client:
++            response = await client.get(
++                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
++                params={
++                    "input": q.strip(),
++                    "key": api_key,
++                    "types": "geocode",
++                },
++            )
++    except httpx.TimeoutException as exc:
++        raise HTTPException(status_code=504, detail="Address search timed out.") from exc
++
++    if response.status_code != 200:
++        raise HTTPException(status_code=502, detail="Address search provider is unavailable.")
++
++    data = response.json()
++    status = data.get("status")
++    if status == "ZERO_RESULTS":
++        return GeocodeAutocompleteResponse(suggestions=[])
++    if status != "OK":
++        raise _provider_error(data, "Address search provider rejected the request.")
++
++    predictions = data.get("predictions") or []
++    suggestions = [
++        GeocodeSuggestion(
++            id=str(prediction["place_id"]),
++            place_name=str(prediction["description"]),
++        )
++        for prediction in predictions[:limit]
++        if prediction.get("place_id") and prediction.get("description")
++    ]
++    return GeocodeAutocompleteResponse(suggestions=suggestions)
++
++
++@router.get("/resolve", response_model=GeocodeResolveResponse)
++async def resolve_place(
++    place_id: str = Query(..., min_length=1, max_length=300),
++):
++    """Resolve a selected autocomplete suggestion to map coordinates."""
++    api_key = _maps_api_key()
++    if not api_key:
++        raise HTTPException(status_code=503, detail="Address search is not configured.")
++
++    try:
++        async with httpx.AsyncClient(timeout=10.0) as client:
++            response = await client.get(
++                "https://maps.googleapis.com/maps/api/place/details/json",
++                params={
++                    "place_id": place_id,
++                    "fields": "formatted_address,geometry",
++                    "key": api_key,
++                },
++            )
++    except httpx.TimeoutException as exc:
++        raise HTTPException(status_code=504, detail="Address lookup timed out.") from exc
++
++    if response.status_code != 200:
++        raise HTTPException(status_code=502, detail="Address lookup provider is unavailable.")
++
++    data = response.json()
++    if data.get("status") != "OK":
++        raise _provider_error(data, "The selected address could not be resolved.")
++
++    result = data.get("result") or {}
++    location = (result.get("geometry") or {}).get("location") or {}
++    if not result.get("formatted_address") or "lat" not in location or "lng" not in location:
++        raise HTTPException(status_code=502, detail="Address lookup returned incomplete coordinates.")
++
++    return GeocodeResolveResponse(
++        latitude=float(location["lat"]),
++        longitude=float(location["lng"]),
++        address=str(result["formatted_address"]),
++    )
+diff --git a/backend/app/api/v1/router.py b/backend/app/api/v1/router.py
+index 3a2e842f0fe09134878d7bb78dd7df454407e903..d615734e10dbe3fafc7f90c3306fdd85aeb155b8 100644
+--- a/backend/app/api/v1/router.py
++++ b/backend/app/api/v1/router.py
+@@ -4,7 +4,7 @@ API v1 router - aggregates all endpoint routers.
+ 
+ from fastapi import APIRouter
+ 
+-from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin, analytics, settings, files, model_library, model_cache, master_plan_2d, render, feedback, elevation, shapefiles, custom_style, urban_dna, lego_assembly
++from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin, analytics, settings, files, model_library, model_cache, master_plan_2d, render, feedback, elevation, geocoding, shapefiles, custom_style, urban_dna, lego_assembly
+ 
+ api_router = APIRouter()
+ 
+@@ -31,6 +31,7 @@ api_router.include_router(master_plan_2d.router, prefix='/master-plan-2d', tags=
+ api_router.include_router(render.router, prefix='/render', tags=['AI Render'])
+ api_router.include_router(feedback.router, prefix='/feedback', tags=['Beta Feedback'])
+ api_router.include_router(elevation.router, prefix='/elevation', tags=['Elevation'])
++api_router.include_router(geocoding.router, prefix='/geocoding', tags=['Geocoding'])
+ api_router.include_router(shapefiles.router, prefix='/shapefiles', tags=['Shapefile Import'])
+ api_router.include_router(custom_style.router, prefix='/custom-style', tags=['Custom Style'])
+ api_router.include_router(urban_dna.router, prefix='/urban-dna', tags=['Urban Intelligence DNA'])
+diff --git a/backend/app/core/config.py b/backend/app/core/config.py
+index 572a21b951cb05905538af28cb42bee43b3e42a0..575a3ae7e282206820182ff57cc3de2137b8e182 100644
+--- a/backend/app/core/config.py
++++ b/backend/app/core/config.py
+@@ -171,6 +171,24 @@ class Settings(BaseSettings):
+             )
+         return self
+ 
++    @model_validator(mode="after")
++    def _normalize_google_maps_api_key(self) -> "Settings":
++        """Let the backend reuse the browser Maps key in local development.
++
++        The recovered workspace historically stored the working Maps key as
++        ``VITE_GOOGLE_MAPS_API_KEY`` because Google Tiles consumes it in the
++        frontend. Backend Maps proxies should prefer a dedicated
++        ``GOOGLE_MAPS_API_KEY`` when present, but must not silently behave as
++        unconfigured when only the established Vite name exists.
++        """
++        if not self.google_maps_api_key:
++            self.google_maps_api_key = (
++                os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
++                or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
++                or _root_dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
++            )
++        return self
++
+     # --- Vertex AI (Imagen 3) ---
+     vertex_ai_project: str = ""
+     vertex_ai_location: str = "northamerica-northeast1"
+diff --git a/backend/tests/test_geocoding_api.py b/backend/tests/test_geocoding_api.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c89ecb65264f7c2f2b577b97625f79d8da584643
+--- /dev/null
++++ b/backend/tests/test_geocoding_api.py
+@@ -0,0 +1,101 @@
++from types import SimpleNamespace
++from unittest.mock import MagicMock
++
++import pytest
++
++from app.api.v1 import geocoding
++
++
++def provider_response(payload: dict, status_code: int = 200) -> MagicMock:
++    response = MagicMock()
++    response.status_code = status_code
++    response.json.return_value = payload
++    return response
++
++
++def mock_provider(monkeypatch, payload: dict, status_code: int = 200):
++    response = provider_response(payload, status_code)
++
++    class MockAsyncClient:
++        def __init__(self, *args, **kwargs):
++            pass
++
++        async def __aenter__(self):
++            return self
++
++        async def __aexit__(self, exc_type, exc, traceback):
++            return False
++
++        async def get(self, *args, **kwargs):
++            return response
++
++    monkeypatch.setattr(geocoding.httpx, "AsyncClient", MockAsyncClient)
++
++
++@pytest.mark.asyncio
++async def test_autocomplete_returns_ranked_google_predictions(client, monkeypatch):
++    monkeypatch.setattr(
++        geocoding,
++        "get_settings",
++        lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
++    )
++    mock_provider(monkeypatch, {
++        "status": "OK",
++        "predictions": [
++            {"place_id": "place-1", "description": "2448 31 Ave SW, Calgary, AB, Canada"},
++            {"place_id": "place-2", "description": "2448 31 Ave NW, Edmonton, AB, Canada"},
++        ],
++    })
++
++    response = await client.get("/api/v1/geocoding/autocomplete", params={"q": "2448 31"})
++
++    assert response.status_code == 200
++    assert response.json() == {
++        "suggestions": [
++            {"id": "place-1", "place_name": "2448 31 Ave SW, Calgary, AB, Canada"},
++            {"id": "place-2", "place_name": "2448 31 Ave NW, Edmonton, AB, Canada"},
++        ]
++    }
++
++
++@pytest.mark.asyncio
++async def test_resolve_returns_coordinates_for_selected_place(client, monkeypatch):
++    monkeypatch.setattr(
++        geocoding,
++        "get_settings",
++        lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
++    )
++    mock_provider(monkeypatch, {
++        "status": "OK",
++        "result": {
++            "formatted_address": "2448 31 Ave SW, Calgary, AB T2T 1T8, Canada",
++            "geometry": {"location": {"lat": 51.0260594, "lng": -114.1169517}},
++        },
++    })
++
++    response = await client.get("/api/v1/geocoding/resolve", params={"place_id": "place-1"})
++
++    assert response.status_code == 200
++    assert response.json() == {
++        "latitude": 51.0260594,
++        "longitude": -114.1169517,
++        "address": "2448 31 Ave SW, Calgary, AB T2T 1T8, Canada",
++    }
++
++
++@pytest.mark.asyncio
++async def test_autocomplete_surfaces_provider_rejection(client, monkeypatch):
++    monkeypatch.setattr(
++        geocoding,
++        "get_settings",
++        lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
++    )
++    mock_provider(monkeypatch, {
++        "status": "REQUEST_DENIED",
++        "error_message": "Places API is not enabled.",
++    })
++
++    response = await client.get("/api/v1/geocoding/autocomplete", params={"q": "2448 31"})
++
++    assert response.status_code == 502
++    assert response.json()["detail"] == "Places API is not enabled."
+diff --git a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+index fb44546732a42ca67d041dc920eae305bc0725d7..173fe2828da7970b87480d670a6707c3c7035175 100644
+--- a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
++++ b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+@@ -1821,9 +1821,10 @@ export function GlobeSitePlannerMap({
+   }, [isTerrainReady]);
+ 
+   const markUserInteracted = useCallback(() => {
+-    if (hasVisibleInitialCameraRef.current) {
+-      hasUserInteractedRef.current = true;
+-    }
++    // A real pointer/wheel/keyboard gesture must immediately cancel every
++    // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
++    // flag is set lets a retry move the camera between polygon vertices.
++    hasUserInteractedRef.current = true;
+   }, []);
+ 
+   useEffect(() => {
+diff --git a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+index f9944e6e3f7eb61e9a2f5677772b8e6ee59a2033..faa93522d6730b2cfec81310a02640a0d1fdb255 100644
+--- a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+@@ -46,6 +46,7 @@ import {
+   shouldRenderReplacementFootprintGround,
+ } from './sitePreparationSurface';
+ import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
++import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+ 
+ const DEG_TO_RAD = Math.PI / 180;
+ const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+@@ -266,6 +267,32 @@ function createLocalGeometry(
+   return { fillGeo, fillCoords, outlineGeo, flatTopGeo: fillGeo, localPts };
+ }
+ 
++type LocalZoneGeometry = NonNullable<ReturnType<typeof createLocalGeometry>>;
++
++function disposeLocalZoneGeometry(resource: LocalZoneGeometry) {
++  resource.fillGeo.dispose();
++  if (resource.flatTopGeo && resource.flatTopGeo !== resource.fillGeo) {
++    resource.flatTopGeo.dispose();
++  }
++  resource.outlineGeo.dispose();
++}
++
++function useDeferredLocalGeometryDisposal(resource: LocalZoneGeometry | null) {
++  useEffect(() => (
++    resource
++      ? retainResourceForDeferredDisposal(resource, disposeLocalZoneGeometry)
++      : undefined
++  ), [resource]);
++}
++
++function useDeferredDisposable(resource: { dispose: () => void } | null | undefined) {
++  useEffect(() => (
++    resource
++      ? retainResourceForDeferredDisposal(resource, (value) => value.dispose())
++      : undefined
++  ), [resource]);
++}
++
+ /**
+  * Raycast from high altitude straight down onto the tile mesh at a given lat/lng.
+  * Returns the hit point in ECEF, or null if no hit.
+@@ -464,34 +491,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     ),
+     [centroid, isReplacementFootprintGround, zone.coordinates],
+   );
+-  useEffect(
+-    () => () => {
+-      if (!replacementGroundData) return;
+-      replacementGroundData.fillGeo.dispose();
+-      if (
+-        replacementGroundData.flatTopGeo
+-        && replacementGroundData.flatTopGeo !== replacementGroundData.fillGeo
+-      ) replacementGroundData.flatTopGeo.dispose();
+-      replacementGroundData.outlineGeo.dispose();
+-    },
+-    [replacementGroundData],
+-  );
++  useDeferredLocalGeometryDisposal(replacementGroundData);
+ 
+   // All geometry from createLocalGeometry is component-owned. Reuse it
+   // directly in JSX (instead of cloning on every state render) and dispose it
+   // when the polygon changes or unmounts. A long drape session otherwise
+   // leaked one fill/outline pair per terrain update.
+-  useEffect(
+-    () => () => {
+-      if (!geoData) return;
+-      geoData.fillGeo.dispose();
+-      if (geoData.flatTopGeo && geoData.flatTopGeo !== geoData.fillGeo) {
+-        geoData.flatTopGeo.dispose();
+-      }
+-      geoData.outlineGeo.dispose();
+-    },
+-    [geoData],
+-  );
++  useDeferredLocalGeometryDisposal(geoData);
+ 
+   const preparedSiteGeo = useMemo(
+     () => (
+@@ -501,12 +507,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     ),
+     [geoData, isPreparedBoundary, zone.id],
+   );
+-  useEffect(() => () => preparedSiteGeo?.dispose(), [preparedSiteGeo]);
++  useDeferredDisposable(preparedSiteGeo);
+   const preparedSiteTexture = useMemo(
+     () => (isPreparedBoundary ? createSitePreparationTexture(zone.id) : null),
+     [isPreparedBoundary, zone.id],
+   );
+-  useEffect(() => () => preparedSiteTexture?.dispose(), [preparedSiteTexture]);
++  useDeferredDisposable(preparedSiteTexture);
+   const replacementGroundGeo = useMemo(
+     () => (
+       replacementGroundData?.flatTopGeo
+@@ -517,7 +523,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     ),
+     [replacementGroundData, zone.id],
+   );
+-  useEffect(() => () => replacementGroundGeo?.dispose(), [replacementGroundGeo]);
++  useDeferredDisposable(replacementGroundGeo);
+   const replacementGroundTexture = useMemo(
+     () => (
+       isReplacementFootprintGround
+@@ -526,10 +532,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     ),
+     [isReplacementFootprintGround, zone.id],
+   );
+-  useEffect(
+-    () => () => replacementGroundTexture?.dispose(),
+-    [replacementGroundTexture],
+-  );
++  useDeferredDisposable(replacementGroundTexture);
+ 
+   // AI park ground texture on the green_space fill mesh (per-zone meta in
+   // zone.properties.park_ground_texture; see parkGroundTexture.ts).
+@@ -548,7 +551,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     applyParkGroundUVs(geo, geoData.fillCoords, groundMeta);
+     return geo;
+   }, [groundMeta, geoData]);
+-  useEffect(() => () => orthoGeo?.dispose(), [orthoGeo]);
++  useDeferredDisposable(orthoGeo);
+   const drapeActive = Boolean(orthoGeo && groundTexture);
+ 
+   // --- Terrain draping for flat zones ---
+@@ -891,7 +894,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     geo.computeBoundingSphere();
+     return geo;
+   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference]);
+-  useEffect(() => () => importedFillGeo?.dispose(), [importedFillGeo]);
++  useDeferredDisposable(importedFillGeo);
+ 
+   // A persisted park orthophoto must use the same bare-earth-conforming mesh
+   // as every other imported plan surface. Previously `orthoGeo` won the render
+@@ -904,7 +907,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     return geo;
+   }, [geoData, groundMeta, importedFillGeo]);
+ 
+-  useEffect(() => () => importedOrthoGeo?.dispose(), [importedOrthoGeo]);
++  useDeferredDisposable(importedOrthoGeo);
+ 
+   const importedOutlineGeo = useMemo(() => {
+     if (!hasBakedElevationRelief || !geoData?.outlineGeo || !bakedElevations || bakedReference == null) return null;
+@@ -921,7 +924,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     pos.needsUpdate = true;
+     return geo;
+   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference, renderCoordinates]);
+-  useEffect(() => () => importedOutlineGeo?.dispose(), [importedOutlineGeo]);
++  useDeferredDisposable(importedOutlineGeo);
+ 
+   if (!geoData) return null;
+ 
+diff --git a/frontend/src/components/viewer/globe/strictModeResourceDisposal.test.ts b/frontend/src/components/viewer/globe/strictModeResourceDisposal.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..aea43c41546d555226da986bbe8e60297f273dcd
+--- /dev/null
++++ b/frontend/src/components/viewer/globe/strictModeResourceDisposal.test.ts
+@@ -0,0 +1,33 @@
++import { describe, expect, it, vi } from 'vitest';
++
++import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
++
++
++describe('retainResourceForDeferredDisposal', () => {
++  it('does not dispose a resource retained again during the StrictMode effect cycle', async () => {
++    const resource = {};
++    const dispose = vi.fn();
++
++    const firstCleanup = retainResourceForDeferredDisposal(resource, dispose);
++    firstCleanup();
++    const liveCleanup = retainResourceForDeferredDisposal(resource, dispose);
++    await Promise.resolve();
++
++    expect(dispose).not.toHaveBeenCalled();
++
++    liveCleanup();
++    await Promise.resolve();
++    expect(dispose).toHaveBeenCalledOnce();
++  });
++
++  it('disposes a released resource after the microtask boundary', async () => {
++    const resource = {};
++    const dispose = vi.fn();
++
++    retainResourceForDeferredDisposal(resource, dispose)();
++    expect(dispose).not.toHaveBeenCalled();
++
++    await Promise.resolve();
++    expect(dispose).toHaveBeenCalledWith(resource);
++  });
++});
+diff --git a/frontend/src/components/viewer/globe/strictModeResourceDisposal.ts b/frontend/src/components/viewer/globe/strictModeResourceDisposal.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..dc2161d8666aacbe8c7d5b1d2f6f52535e831d95
+--- /dev/null
++++ b/frontend/src/components/viewer/globe/strictModeResourceDisposal.ts
+@@ -0,0 +1,26 @@
++const resourceGenerations = new WeakMap<object, number>();
++
++/**
++ * Delay Three.js resource disposal by one microtask and cancel it when React
++ * immediately retains the same memoized resource again.
++ *
++ * React 18 StrictMode intentionally runs effect cleanup and setup twice in
++ * development. Disposing a geometry in that simulated cleanup leaves the live
++ * second setup holding an already-disposed geometry, which makes planning
++ * polygons disappear while their HTML labels remain visible.
++ */
++export function retainResourceForDeferredDisposal<T extends object>(
++  resource: T,
++  dispose: (resource: T) => void,
++): () => void {
++  const generation = (resourceGenerations.get(resource) ?? 0) + 1;
++  resourceGenerations.set(resource, generation);
++
++  return () => {
++    queueMicrotask(() => {
++      if (resourceGenerations.get(resource) !== generation) return;
++      resourceGenerations.delete(resource);
++      dispose(resource);
++    });
++  };
++}
+diff --git a/frontend/src/features/projects/ProjectEditModal.tsx b/frontend/src/features/projects/ProjectEditModal.tsx
+index e043e37c72c6e8d0ea55e9bdfae220db8e0891e1..68b5ffd2d61e5a68dda20223de61423f397d29f4 100644
+--- a/frontend/src/features/projects/ProjectEditModal.tsx
++++ b/frontend/src/features/projects/ProjectEditModal.tsx
+@@ -1,13 +1,8 @@
+ import { useCallback, useEffect, useRef, useState, type FormEvent as ReactFormEvent } from 'react';
+ import { MapPin, X } from 'lucide-react';
+ import type { Location, Project, UpdateProjectRequest } from '@/types';
+-
+-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+-
+-interface GeocodeSuggestion {
+-  place_name: string;
+-  center: [number, number];
+-}
++import { getApiErrorMessage } from '@/services/api';
++import { geocodingApi, type GeocodeSuggestion } from '@/services/geocoding';
+ 
+ interface ProjectEditModalProps {
+   project: Project;
+@@ -23,6 +18,7 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
+   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+   const [suggestions, setSuggestions] = useState<GeocodeSuggestion[]>([]);
+   const [showSuggestions, setShowSuggestions] = useState(false);
++  const [isResolvingLocation, setIsResolvingLocation] = useState(false);
+   const [error, setError] = useState('');
+   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+ 
+@@ -43,60 +39,50 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
+ 
+   const geocodeAddress = useCallback((query: string) => {
+     if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
+-    if (!query.trim() || !MAPBOX_TOKEN) {
++    if (query.trim().length < 3) {
+       setSuggestions([]);
+       setShowSuggestions(false);
+       return;
+     }
+     geocodeTimerRef.current = setTimeout(async () => {
+       try {
+-        const res = await fetch(
+-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=5&types=address,place,locality,neighborhood`
+-        );
+-        const data = await res.json();
+-        const nextSuggestions = Array.isArray(data.features)
+-          ? data.features.map((feature: any) => ({
+-            place_name: feature.place_name,
+-            center: feature.center,
+-          }))
+-          : [];
++        const nextSuggestions = await geocodingApi.autocomplete(query.trim());
+         setSuggestions(nextSuggestions);
+         setShowSuggestions(nextSuggestions.length > 0);
+-      } catch {
++        setError('');
++      } catch (err) {
+         setSuggestions([]);
+         setShowSuggestions(false);
++        setError(getApiErrorMessage(err, 'Address search is temporarily unavailable.'));
+       }
+     }, 350);
+   }, []);
+ 
+   const geocodeFirstResult = useCallback(async (query: string): Promise<Location | null> => {
+-    if (!query.trim() || !MAPBOX_TOKEN) return null;
++    if (query.trim().length < 3) return null;
+     try {
+-      const res = await fetch(
+-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=1&types=address,place,locality,neighborhood`
+-      );
+-      const data = await res.json();
+-      const feature = Array.isArray(data.features) ? data.features[0] : null;
+-      if (!feature?.center) return null;
+-      return {
+-        latitude: feature.center[1],
+-        longitude: feature.center[0],
+-        address: feature.place_name || query.trim(),
+-      };
++      const [suggestion] = await geocodingApi.autocomplete(query.trim());
++      return suggestion ? await geocodingApi.resolve(suggestion.id) : null;
+     } catch {
+       return null;
+     }
+   }, []);
+ 
+-  const selectSuggestion = (suggestion: GeocodeSuggestion) => {
++  const selectSuggestion = async (suggestion: GeocodeSuggestion) => {
+     setAddressQuery(suggestion.place_name);
+-    setSelectedLocation({
+-      latitude: suggestion.center[1],
+-      longitude: suggestion.center[0],
+-      address: suggestion.place_name,
+-    });
+     setShowSuggestions(false);
+-    setError('');
++    setIsResolvingLocation(true);
++    try {
++      const resolved = await geocodingApi.resolve(suggestion.id);
++      setSelectedLocation(resolved);
++      setAddressQuery(resolved.address ?? suggestion.place_name);
++      setError('');
++    } catch (err) {
++      setSelectedLocation(null);
++      setError(getApiErrorMessage(err, 'The selected address could not be located.'));
++    } finally {
++      setIsResolvingLocation(false);
++    }
+   };
+ 
+   const handleSubmit = async (event: ReactFormEvent) => {
+@@ -113,7 +99,7 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
+     let location: Location | null | undefined;
+     if (selectedLocation) {
+       location = selectedLocation;
+-    } else if (trimmedAddress && MAPBOX_TOKEN) {
++    } else if (trimmedAddress) {
+       const geocodedLocation = await geocodeFirstResult(trimmedAddress);
+       if (!geocodedLocation) {
+         setError('Select an address suggestion so the map location can be saved.');
+@@ -198,16 +184,16 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
+                 }}
+                 onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                 className="input-base w-full pl-9"
+-                placeholder={MAPBOX_TOKEN ? 'Search for an address...' : 'Address label'}
++                placeholder="Search for an address..."
+               />
+             </div>
+             {showSuggestions && suggestions.length > 0 && (
+               <div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-primary-950/[0.08] bg-white shadow-elevated">
+                 {suggestions.map((suggestion) => (
+                   <button
+-                    key={`${suggestion.place_name}-${suggestion.center.join(',')}`}
++                    key={suggestion.id}
+                     type="button"
+-                    onClick={() => selectSuggestion(suggestion)}
++                    onClick={() => void selectSuggestion(suggestion)}
+                     className="w-full border-b border-primary-950/[0.04] px-3 py-2 text-left text-sm text-primary-950/70 last:border-0 hover:bg-primary-950/[0.04] hover:text-primary-400"
+                   >
+                     <MapPin size={12} className="mr-2 inline text-primary-950/30" />
+@@ -236,10 +222,10 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
+           </button>
+           <button
+             type="submit"
+-            disabled={isSaving}
++            disabled={isSaving || isResolvingLocation}
+             className="inline-flex items-center justify-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
+           >
+-            {isSaving ? 'Saving...' : 'Save Changes'}
++            {isSaving ? 'Saving...' : isResolvingLocation ? 'Locating...' : 'Save Changes'}
+           </button>
+         </div>
+       </form>
+diff --git a/frontend/src/features/projects/ProjectListPage.tsx b/frontend/src/features/projects/ProjectListPage.tsx
+index 01da0dac4c15086340013df4df0d8f4f096651a4..1f47ec8f7e14b60b0d38e797f0cee5e8bb8fabb5 100644
+--- a/frontend/src/features/projects/ProjectListPage.tsx
++++ b/frontend/src/features/projects/ProjectListPage.tsx
+@@ -5,19 +5,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import toast from 'react-hot-toast';
+ import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil, Wand2 } from 'lucide-react';
+ import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
++import { geocodingApi, type GeocodeSuggestion } from '@/services/geocoding';
+ import { useAuthStore } from '@/store';
+ import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
+ import { ProjectEditModal } from './ProjectEditModal';
+ import { RenderEditModal } from '@/components/viewer/RenderEditModal';
+ import { isTextEntryTarget } from '@/utils/domEvents';
+ 
+-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+-
+-interface GeocodeSuggestion {
+-  place_name: string;
+-  center: [number, number]; // [lng, lat]
+-}
+-
+ export function ProjectListPage() {
+   const { user: currentUser } = useAuthStore();
+   const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'cofounder';
+@@ -32,6 +26,7 @@ export function ProjectListPage() {
+   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+   const [showSuggestions, setShowSuggestions] = useState(false);
+   const [highlightedIndex, setHighlightedIndex] = useState(-1);
++  const [isResolvingLocation, setIsResolvingLocation] = useState(false);
+   const [error, setError] = useState('');
+   const [expandedRender, setExpandedRender] = useState<{ project: Project; render: SavedRender } | null>(null);
+   const [renderEditTarget, setRenderEditTarget] = useState<{ project: Project; render: SavedRender } | null>(null);
+@@ -42,38 +37,42 @@ export function ProjectListPage() {
+   // Debounced geocoding
+   const geocodeAddress = useCallback((query: string) => {
+     if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
+-    if (!query.trim() || !MAPBOX_TOKEN) {
++    if (query.trim().length < 3) {
+       setAddressSuggestions([]);
++      setShowSuggestions(false);
+       return;
+     }
+     geocodeTimerRef.current = setTimeout(async () => {
+       try {
+-        const res = await fetch(
+-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=5&types=address,place,locality,neighborhood`
+-        );
+-        const data = await res.json();
+-        if (data.features) {
+-          setAddressSuggestions(
+-            data.features.map((f: any) => ({ place_name: f.place_name, center: f.center }))
+-          );
+-          setShowSuggestions(true);
+-          setHighlightedIndex(-1);
+-        }
+-      } catch {
++        const nextSuggestions = await geocodingApi.autocomplete(query.trim());
++        setAddressSuggestions(nextSuggestions);
++        setShowSuggestions(nextSuggestions.length > 0);
++        setHighlightedIndex(-1);
++        setError('');
++      } catch (err) {
+         setAddressSuggestions([]);
++        setShowSuggestions(false);
++        setError(getApiErrorMessage(err, 'Address search is temporarily unavailable.'));
+       }
+     }, 350);
+   }, []);
+ 
+-  const selectSuggestion = (s: GeocodeSuggestion) => {
++  const selectSuggestion = async (s: GeocodeSuggestion) => {
+     setAddressQuery(s.place_name);
+-    setSelectedLocation({
+-      latitude: s.center[1],
+-      longitude: s.center[0],
+-      address: s.place_name,
+-    });
+     setShowSuggestions(false);
+     setHighlightedIndex(-1);
++    setIsResolvingLocation(true);
++    try {
++      const resolved = await geocodingApi.resolve(s.id);
++      setSelectedLocation(resolved);
++      setAddressQuery(resolved.address ?? s.place_name);
++      setError('');
++    } catch (err) {
++      setSelectedLocation(null);
++      setError(getApiErrorMessage(err, 'The selected address could not be located.'));
++    } finally {
++      setIsResolvingLocation(false);
++    }
+   };
+ 
+   const handleAddressKeyDown = (e: React.KeyboardEvent) => {
+@@ -92,7 +91,7 @@ export function ProjectListPage() {
+     } else if (e.key === 'Enter') {
+       e.preventDefault();
+       if (highlightedIndex >= 0) {
+-        selectSuggestion(addressSuggestions[highlightedIndex]);
++        void selectSuggestion(addressSuggestions[highlightedIndex]);
+       }
+     } else if (e.key === 'Escape') {
+       setShowSuggestions(false);
+@@ -309,9 +308,8 @@ export function ProjectListPage() {
+                 <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/30" />
+                 <input
+                   type="text"
+-                  placeholder={MAPBOX_TOKEN ? 'Search for an address...' : 'Set VITE_MAPBOX_TOKEN to enable'}
++                  placeholder="Search for an address..."
+                   value={addressQuery}
+-                  disabled={!MAPBOX_TOKEN}
+                   onChange={(e) => {
+                     setAddressQuery(e.target.value);
+                     setSelectedLocation(null);
+@@ -319,21 +317,21 @@ export function ProjectListPage() {
+                   }}
+                   onFocus={() => addressSuggestions.length > 0 && setShowSuggestions(true)}
+                   onKeyDown={handleAddressKeyDown}
+-                  className="input-base w-full pl-9 disabled:bg-primary-950/[0.02] disabled:text-primary-950/30"
++                  className="input-base w-full pl-9"
+                 />
+               </div>
+               {showSuggestions && addressSuggestions.length > 0 && (
+                 <div className="absolute z-10 mt-1 w-full rounded-lg border border-primary-950/[0.08] bg-white shadow-elevated max-h-48 overflow-y-auto animate-fade-in">
+                   {addressSuggestions.map((s, i) => (
+                     <button
+-                      key={i}
++                      key={s.id}
+                       type="button"
+                       className={`w-full text-left px-3 py-2 text-sm border-b border-primary-950/[0.04] last:border-0 ${
+                         i === highlightedIndex
+                           ? 'bg-primary-950/[0.06] text-primary-400'
+                           : 'text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-400'
+                       }`}
+-                      onClick={() => selectSuggestion(s)}
++                      onClick={() => void selectSuggestion(s)}
+                     >
+                       <MapPin size={12} className="inline mr-2 text-primary-950/30" />
+                       {s.place_name}
+@@ -351,10 +349,10 @@ export function ProjectListPage() {
+             <div className="flex gap-3">
+               <button
+                 onClick={handleCreate}
+-                disabled={createMutation.isPending}
++                disabled={createMutation.isPending || isResolvingLocation}
+                 className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
+               >
+-                {createMutation.isPending ? 'Creating...' : 'Create Project'}
++                {createMutation.isPending ? 'Creating...' : isResolvingLocation ? 'Locating...' : 'Create Project'}
+               </button>
+               <button
+                 onClick={handleCancel}
+diff --git a/frontend/src/services/geocoding.ts b/frontend/src/services/geocoding.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..afd528a8581ff4b8fc665d757b36b6d422fd4458
+--- /dev/null
++++ b/frontend/src/services/geocoding.ts
+@@ -0,0 +1,28 @@
++import type { Location } from '@/types';
++import { api } from './api';
++
++
++export interface GeocodeSuggestion {
++  id: string;
++  place_name: string;
++}
++
++interface AutocompleteResponse {
++  suggestions: GeocodeSuggestion[];
++}
++
++export const geocodingApi = {
++  async autocomplete(query: string): Promise<GeocodeSuggestion[]> {
++    const response = await api.get<AutocompleteResponse>('/api/v1/geocoding/autocomplete', {
++      params: { q: query },
++    });
++    return response.data.suggestions;
++  },
++
++  async resolve(placeId: string): Promise<Location> {
++    const response = await api.get<Location>('/api/v1/geocoding/resolve', {
++      params: { place_id: placeId },
++    });
++    return response.data;
++  },
++};
+-- 
+2.55.0.windows.2
+

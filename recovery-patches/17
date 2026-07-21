@@ -1,0 +1,193 @@
+From 34cddb95069abb257f763fa07bf2423d8bde9dff Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 08:38:34 -0600
+Subject: [PATCH 17/32] feat: render-lock Nordic mass timber midrise
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 20 ++++++++++-
+ .../architectural_signature_profiles.json     | 11 +++---
+ .../high_quality_building_memory.json         | 12 ++++++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 36 +++++++++++++++++++
+ 6 files changed, 75 insertions(+), 8 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 7f0aeb1d781fb1cdd78d89da81b8e9e6ff5c2a2c..e35c0776fcb401d89ae62b0a84c773be63b26eba 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-art-deco-setback-v83`.
++Current executable memory: `2026-07-20-nordic-mass-timber-v84`.
+ 
+ ## The quality target
+ 
+@@ -660,6 +660,24 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   levels and 74.5 metre landmark silhouette, but keeper promotion still needs
+   the complete module package and the corrected textured eight-view review.
+ 
++### Nordic mass-timber midrise + open-roof-pavilion lessons
++
++- A roof pavilion's void is construction evidence. The first valid pilot used
++  a full shadow core and curtain walls, turning the light reference canopy into
++  a sealed black box; it was rejected before canonical packaging.
++- Build an open pavilion from fixed timber posts, a thin canopy and only the
++  compact service wall proved by the references. Do not use opaque occupation
++  geometry to close the air between those elements.
++- An occupied green roof needs a visible edge contract as well as a sedum
++  material. Pair the planted deck with a slender perimeter guard and verify its
++  relationship to the pavilion from aerial and street-oblique cameras.
++- The rectified timber atlas can carry natural larch variation and fine joint
++  evidence, while fixed glulam frames, deep loggia shadows and balcony rails
++  carry the near-range structure. Neither layer substitutes for the other.
++- Assembled-only pilots are the right bounded checkpoint for roof silhouettes
++  and semantic-glass artifacts. Their expected missing-module validation is not
++  a keeper failure; promotion still requires the complete seven-role package.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 3512b70e6f403e8db562ad5eaf3959a5ce8a9091..3311e4682beb3f07c5e55685d8e554159d1f52cd 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1469,7 +1469,7 @@
+       "massing_graph": {
+         "schema": "massing-graph@1",
+         "profile": "gemini_skin_hero",
+-        "description": "A warm Nordic midrise using one coherent Gemini timber elevation over a real shadow core, slim floor datums, stone base, inhabited roof terrace and glazed pavilion.",
++        "description": "A warm Nordic midrise using one coherent Gemini timber elevation over a real shadow core, slim floor datums, stone base, inhabited planted roof terrace and an open timber pavilion canopy.",
+         "height_m": 26.6,
+         "reference_dimensions": {"width_m": 20.0, "depth_m": 16.0, "floors": 7, "floor_height_m": 3.2},
+         "nodes": [
+@@ -1477,7 +1477,11 @@
+           {"id": "timber_shadow_core", "kind": "box", "size": [18.8, 14.8, 22.8], "location": [0.0, 0.0, 11.4], "material": "primary", "bevel_m": 0.18},
+           {"id": "terrace_deck", "kind": "box", "size": [20.4, 16.4, 0.32], "location": [0.0, 0.0, 22.96], "material": "signature_metal", "bevel_m": 0.04},
+           {"id": "green_roof", "kind": "box", "size": [18.8, 14.8, 0.12], "location": [0.0, 0.2, 23.18], "material": "green_roof", "bevel_m": 0.02},
+-          {"id": "pavilion_shadow", "kind": "box", "size": [10.0, 7.0, 2.9], "location": [0.8, 1.7, 24.65], "material": "interior", "bevel_m": 0.12},
++          {"id": "pavilion_service_wall", "kind": "box", "size": [2.5, 4.2, 2.9], "location": [0.8, 2.65, 24.65], "material": "signature_warm", "bevel_m": 0.08},
++          {"id": "pavilion_front_left_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [-4.2, -1.65, 24.65], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "pavilion_front_right_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [5.8, -1.65, 24.65], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "pavilion_rear_left_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [-4.2, 5.05, 24.65], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "pavilion_rear_right_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [5.8, 5.05, 24.65], "material": "signature_warm", "bevel_m": 0.035},
+           {"id": "pavilion_roof", "kind": "box", "size": [12.0, 9.0, 0.25], "location": [0.8, 1.7, 26.375], "material": "signature_warm", "bevel_m": 0.055},
+           {"id": "pavilion_soffit", "kind": "box", "size": [11.65, 8.65, 0.08], "location": [0.8, 1.7, 26.205], "material": "signature_warm", "bevel_m": 0.025},
+           {"id": "entry_reveal_header", "kind": "box", "size": [5.2, 0.22, 0.18], "location": [3.8, -8.03, 3.55], "material": "signature_warm", "bevel_m": 0.03}
+@@ -1500,8 +1504,7 @@
+           {"id": "timber_left_glazing_overlay", "kind": "glazing_overlay", "axis": "left", "centre": [-9.825, 0.0, 11.4], "span_m": 15.5, "height_m": 22.7, "columns": 3, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "flip_u": true, "frame_mode": "mask_only"},
+           {"id": "timber_rear_glazing_overlay", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 7.825, 11.4], "span_m": 19.5, "height_m": 22.7, "columns": 4, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "flip_u": true, "frame_mode": "mask_only"},
+           {"id": "timber_right_glazing_overlay", "kind": "glazing_overlay", "axis": "right", "centre": [9.825, 0.0, 11.4], "span_m": 15.5, "height_m": 22.7, "columns": 3, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only"},
+-          {"id": "pavilion_front_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.8, -1.85, 24.65], "span_m": 9.5, "height_m": 2.55, "columns": 4, "rows": 1, "frame_m": 0.085, "depth_m": 0.1},
+-          {"id": "pavilion_left_glazing", "kind": "curtain_wall", "axis": "left", "centre": [-4.25, 1.7, 24.65], "span_m": 6.5, "height_m": 2.55, "columns": 3, "rows": 1, "frame_m": 0.085, "depth_m": 0.1},
++          {"id": "timber_roof_guard", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 24.0], "width_m": 18.5, "depth_m": 14.5, "height_m": 1.05, "spacing_m": 0.42, "material": "signature_metal", "rail_height_m": 0.06, "rail_depth_m": 0.07},
+           {"id": "timber_entry_steps", "kind": "steps", "centre": [3.8, -9.45, 0.0], "width_m": 5.5, "depth_m": 1.8, "count": 3, "rise_m": 0.15, "material": "signature_stone"}
+         ],
+         "target_views": ["archetype_match", "street", "aerial", "context"]
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 8b0d7e28f7e5b932f1b988200c0df4f6b4627f8e..564ee470c224317f8babe4b45375661ffb7c357f 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-art-deco-setback-v83",
++  "memory_version": "2026-07-20-nordic-mass-timber-v84",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -775,6 +775,16 @@
+       "symptom": "A landmark Art Deco crown reads as a generic black cylinder with a gold cap",
+       "cause": "The lantern silhouette was reduced to material colour without a faceted frame, vertical posts, terrace plinth and finial.",
+       "correction": "Build landmark crowns as fixed assemblies: dark faceted lantern core, separate gilded perimeter posts, stepped plinth, polygonal roof and bounded finial, then prove the complete hierarchy in aerial review."
++    },
++    {
++      "symptom": "A light roof pavilion from the references renders as a sealed dark glass box",
++      "cause": "A full opaque shadow core and perimeter curtain walls were used to imply occupation, closing the open canopy silhouette that defines the selected timber variant.",
++      "correction": "Model evidence-led open pavilions as fixed post, canopy and compact service-wall assemblies. Preserve open air between posts and compare the skyline from both street-oblique and aerial cameras before keeper promotion."
++    },
++    {
++      "symptom": "A planted roof reads as an inaccessible green slab without an inhabited terrace edge",
++      "cause": "The sedum surface was present but the safety boundary and pavilion relationship were treated as material detail rather than roof construction.",
++      "correction": "Pair occupied green roofs with a fixed, scale-correct perimeter guard and keep the canopy visibly subordinate to that terrace. Verify deck, planting, guard and pavilion together in the aerial acceptance view."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index d0b28b7663c37bcde1d4a19262d9ae2e49cbfdff..8c82c72f8d887119a09ce5a45e89a9991d427c1e 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -21,7 +21,7 @@
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "variant_id": "warehouse_loft_cast_iron", "family_id": "adaptive-reuse-cast-iron-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 26, "state": "keeper", "artifact": "adaptive-reuse-cast-iron-v1/03-canonical-v3", "group": "warehouse conversion"},
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "variant_id": "warehouse_arch_window_brick", "family_id": "romanesque-arch-window-brick-v1-renderlocked", "floors": 3, "width_m": 44, "depth_m": 36, "state": "keeper", "artifact": "romanesque-arch-window-brick-v1/03-canonical-v3", "group": "Romanesque industrial heritage"},
+     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "variant_id": "art_deco_cream_terracotta", "family_id": "art-deco-cream-terracotta-v1-renderlocked", "floors": 15, "width_m": 30, "depth_m": 28, "state": "keeper", "artifact": "art-deco-cream-terracotta-v1/05-canonical-v5", "group": "metropolitan setback icon"},
+-    {"sequence": 16, "archetype_id": "nordic_timber_midrise", "floors": 7, "width_m": 20, "depth_m": 16, "state": "pending", "group": "mass-timber residential"},
++    {"sequence": 16, "archetype_id": "nordic_timber_midrise", "variant_id": "nordic_timber_mass_timber", "family_id": "nordic-mass-timber-v1-renderlocked", "floors": 7, "width_m": 20, "depth_m": 16, "state": "keeper", "artifact": "nordic-mass-timber-v1/03-canonical-v3", "group": "mass-timber residential"},
+     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "floors": 7, "state": "pending", "group": "Scandinavian urban housing"},
+     {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "state": "pending", "group": "arcaded mixed-use"},
+     {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "floors": 3, "state": "pending", "group": "timber mixed-use"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index e7190877c486e54e739f39726f3445d0b61bf970..6b4735cda04af29a836aa559339696331bf6a23d 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 15
++    assert sum(entry["state"] == "keeper" for entry in entries) == 16
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 7a48e65b37428f1b15bf41937952f5f973a59dbb..5b31d85fd746bb695165e8c5d5baaf1dcd481f03 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -281,6 +281,42 @@ def test_cream_terracotta_art_deco_variant_injects_fixed_setback_lantern_graph()
+     assert "deco_front_podium_glazing" in graph["disabled_assembly_ids"]
+ 
+ 
++def test_nordic_mass_timber_variant_injects_open_pavilion_and_planted_roof_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "nordic_timber_midrise",
++            "variant_id": "nordic_timber_mass_timber",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++
++    assert graph["profile"] == "gemini_skin_hero"
++    assert graph["reference_dimensions"] == {
++        "width_m": 20.0,
++        "depth_m": 16.0,
++        "floors": 7,
++        "floor_height_m": 3.2,
++    }
++    nodes = {node["id"]: node for node in graph["nodes"]}
++    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
++    assert "pavilion_shadow" not in nodes
++    assert nodes["pavilion_service_wall"]["size"][0] < nodes["pavilion_roof"]["size"][0]
++    pavilion_posts = [
++        node_id
++        for node_id in nodes
++        if node_id.startswith("pavilion_") and node_id.endswith("_post")
++    ]
++    assert len(pavilion_posts) == 4
++    assert assemblies["timber_roof_guard"]["kind"] == "classical_balustrade_perimeter"
++    assert not any(
++        assembly_id.startswith("pavilion_") and assembly["kind"] == "curtain_wall"
++        for assembly_id, assembly in assemblies.items()
++    )
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+

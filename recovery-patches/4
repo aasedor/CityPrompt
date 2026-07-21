@@ -1,0 +1,252 @@
+From cf40910a227f8646e35286f9ed53d31bace35ed0 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 00:45:27 -0600
+Subject: [PATCH 04/32] feat: render-lock compact dark-frame office
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  6 +-
+ .../architectural_signature_profiles.json     | 89 ++++++++++---------
+ tools/archetype_compiler/blender_generate.py  |  6 +-
+ .../high_quality_building_memory.json         | 12 ++-
+ .../tests/test_facade_sheets.py               | 28 ++++++
+ 5 files changed, 93 insertions(+), 48 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 6e984ccc5b4d8b4dc347e48d08b5b6317eb451e8..557408138080a1d013c230e87de96d66c919dcc0 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-brownstone-sidewall-camera-v70`.
++Current executable memory: `2026-07-20-dark-frame-office-renderlock-v71`.
+ 
+ ## The quality target
+ 
+@@ -104,6 +104,10 @@ contact shadow and grazing-angle depth.
+ 
+ At city distance, the semantic glass mask and baked facade replace most of that geometry. Visible windows default to subtly occupied warm interiors; uniform dark-blue glass is avoided.
+ 
++For fixed render-locked curtain walls, the floor-band crop must retain the complete audited bay rhythm. A one-bay strip is appropriate only when the LEGO assembler explicitly tiles that module. Stretching one office bay across a full canonical elevation destroys the relationship between interior columns and the physical external frame. Derive a separate side crop when the side elevation has fewer bays than the front.
++
++Before reusing a glass-office massing graph, compare its width, depth, floor grid, structural bay count and roof termination to every variant reference. A structurally valid inherited tower profile is still wrong when the catalogue shows a compact infill mid-rise; reference proportions take precedence over prior showcase dimensions.
++
+ ### 6. Wrap construction around the building
+ 
+ Front-only quality fails as soon as the user orbits. Side and corner elevations must continue:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 72fca83f0fdae5db48ee3adbaaae7849d4070177..d583313957bff668efed7316d5d81cbae620e515 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -887,7 +887,7 @@
+       "identity": "Dark Frame & Clear Glass office with a bold external charcoal-bronze structural grid, ultra-clear glazing, visibly occupied warm floor plates, a recessed double-height lobby, a real projecting entrance canopy and a lightweight open rooftop terrace crown.",
+       "material_zones": "ultra-clear low-iron glazing; matte charcoal-bronze expressed steel; pale concrete floor edges; warm occupied office interiors; transparent double-height lobby",
+       "glass_profile": "office_clear_occupied",
+-      "dimension_overrides": {"width_m": 45.0, "depth_m": 35.0, "default_floors": 20, "crown_height_m": 3.2},
++      "dimension_overrides": {"width_m": 30.0, "depth_m": 20.0, "default_floors": 8, "crown_height_m": 3.0},
+       "material_overrides": {
+         "primary": {"base_color": "#24282a", "roughness": 0.42, "metallic": 0.18, "texture_key": "black_metal"},
+         "secondary": {"base_color": "#24201c", "roughness": 0.27, "metallic": 0.68, "texture_key": "black_metal"},
+@@ -902,57 +902,60 @@
+       "kits": ["double_height_lobby", "curtainwall_grid", "transparent_corners", "parapet_crown", "roof_pergola", "occupied_interior_cards"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "dark_frame_clear_glass_renderlock_v1",
+-        "description": "Render-locked 45 by 35 metre, 20-storey office: repeated warm floor atlas behind physical low-iron glass, a two-scale charcoal-bronze grid, fixed lobby and canopy, four complete elevations and an open rooftop crown.",
+-        "height_m": 63.2,
+-        "reference_dimensions": {"width_m": 45.0, "depth_m": 35.0, "floors": 20, "floor_height_m": 3.0},
++        "profile": "dark_frame_clear_glass_renderlock_v3",
++        "description": "Render-locked 30 by 20 metre compact office: a transparent double-height lobby and six warm upper office bands behind physical low-iron glass, a four-bay charcoal-bronze grid, quiet side elevations, fixed canopy and an open rooftop crown.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_2.png", "cues": ["four broad structural bays", "compact seven-to-eight-level infill massing", "transparent lobby", "open steel crown"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_2_angle_60.jpg", "cues": ["pale visible floor plates", "quiet party-wall condition", "set-back mechanical penthouse", "perimeter roof terrace"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_2_angle_90.jpg", "cues": ["flat pale roof membrane", "central mechanical penthouse", "rectangular open crown frame"]}
++        ],
++        "height_m": 31.8,
++        "reference_dimensions": {"width_m": 30.0, "depth_m": 20.0, "floors": 8, "floor_height_m": 3.6},
+         "nodes": [
+-          {"id": "dark_glass_plinth", "kind": "box", "size": [45.6, 35.6, 0.32], "location": [0.0, 0.0, 0.16], "material": "signature_stone", "bevel_m": 0.045},
+-          {"id": "dark_glass_shadow_core", "kind": "box", "size": [43.4, 33.4, 59.7], "location": [0.0, 0.0, 29.85], "material": "interior", "bevel_m": 0.16},
+-          {"id": "dark_glass_roof_deck", "kind": "box", "size": [44.6, 34.6, 0.38], "location": [0.0, 0.0, 60.19], "material": "signature_stone", "bevel_m": 0.045},
+-          {"id": "dark_glass_roof_penthouse", "kind": "box", "size": [14.0, 10.0, 2.15], "location": [0.0, 3.0, 61.28], "material": "secondary", "bevel_m": 0.11},
+-          {"id": "dark_glass_canopy_top", "kind": "box", "size": [13.8, 2.55, 0.24], "location": [0.0, -18.45, 5.55], "material": "signature_metal", "bevel_m": 0.055},
+-          {"id": "dark_glass_canopy_soffit", "kind": "box", "size": [13.45, 2.35, 0.08], "location": [0.0, -18.45, 5.38], "material": "signature_warm", "bevel_m": 0.025},
+-          {"id": "dark_glass_crown_front_beam", "kind": "box", "size": [45.0, 0.22, 0.22], "location": [0.0, -17.22, 63.05], "material": "signature_metal", "bevel_m": 0.035},
+-          {"id": "dark_glass_crown_rear_beam", "kind": "box", "size": [45.0, 0.22, 0.22], "location": [0.0, 17.22, 63.05], "material": "signature_metal", "bevel_m": 0.035},
+-          {"id": "dark_glass_crown_left_beam", "kind": "box", "size": [0.22, 35.0, 0.22], "location": [-22.22, 0.0, 63.05], "material": "signature_metal", "bevel_m": 0.035},
+-          {"id": "dark_glass_crown_right_beam", "kind": "box", "size": [0.22, 35.0, 0.22], "location": [22.22, 0.0, 63.05], "material": "signature_metal", "bevel_m": 0.035},
+-          {"id": "dark_glass_pergola_x_01", "kind": "box", "size": [38.0, 0.18, 0.18], "location": [0.0, -12.0, 62.96], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_x_02", "kind": "box", "size": [38.0, 0.18, 0.18], "location": [0.0, -4.0, 62.96], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_x_03", "kind": "box", "size": [38.0, 0.18, 0.18], "location": [0.0, 4.0, 62.96], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_x_04", "kind": "box", "size": [38.0, 0.18, 0.18], "location": [0.0, 12.0, 62.96], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_y_01", "kind": "box", "size": [0.18, 27.0, 0.18], "location": [-17.0, 0.0, 63.16], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_y_02", "kind": "box", "size": [0.18, 27.0, 0.18], "location": [-5.7, 0.0, 63.16], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_y_03", "kind": "box", "size": [0.18, 27.0, 0.18], "location": [5.7, 0.0, 63.16], "material": "signature_metal", "bevel_m": 0.025},
+-          {"id": "dark_glass_pergola_y_04", "kind": "box", "size": [0.18, 27.0, 0.18], "location": [17.0, 0.0, 63.16], "material": "signature_metal", "bevel_m": 0.025}
++          {"id": "dark_glass_plinth", "kind": "box", "size": [30.6, 20.6, 0.32], "location": [0.0, 0.0, 0.16], "material": "signature_stone", "bevel_m": 0.045},
++          {"id": "dark_glass_shadow_core", "kind": "box", "size": [28.4, 18.4, 28.6], "location": [0.0, 0.0, 14.30], "material": "interior", "bevel_m": 0.16},
++          {"id": "dark_glass_roof_deck", "kind": "box", "size": [29.6, 19.6, 0.38], "location": [0.0, 0.0, 28.99], "material": "signature_stone", "bevel_m": 0.045},
++          {"id": "dark_glass_roof_penthouse", "kind": "box", "size": [10.0, 7.0, 2.15], "location": [0.0, 1.5, 30.08], "material": "secondary", "bevel_m": 0.11},
++          {"id": "dark_glass_canopy_top", "kind": "box", "size": [9.8, 2.20, 0.24], "location": [0.0, -10.95, 5.55], "material": "signature_metal", "bevel_m": 0.055},
++          {"id": "dark_glass_canopy_soffit", "kind": "box", "size": [9.45, 2.00, 0.08], "location": [0.0, -10.95, 5.38], "material": "signature_warm", "bevel_m": 0.025},
++          {"id": "dark_glass_crown_front_beam", "kind": "box", "size": [30.0, 0.22, 0.22], "location": [0.0, -9.72, 31.65], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "dark_glass_crown_rear_beam", "kind": "box", "size": [30.0, 0.22, 0.22], "location": [0.0, 9.72, 31.65], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "dark_glass_crown_left_beam", "kind": "box", "size": [0.22, 20.0, 0.22], "location": [-14.72, 0.0, 31.65], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "dark_glass_crown_right_beam", "kind": "box", "size": [0.22, 20.0, 0.22], "location": [14.72, 0.0, 31.65], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "dark_glass_pergola_x_01", "kind": "box", "size": [25.0, 0.18, 0.18], "location": [0.0, -6.0, 31.56], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "dark_glass_pergola_x_02", "kind": "box", "size": [25.0, 0.18, 0.18], "location": [0.0, 0.0, 31.56], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "dark_glass_pergola_x_03", "kind": "box", "size": [25.0, 0.18, 0.18], "location": [0.0, 6.0, 31.56], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "dark_glass_pergola_y_01", "kind": "box", "size": [0.18, 15.0, 0.18], "location": [-9.0, 0.0, 31.76], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "dark_glass_pergola_y_02", "kind": "box", "size": [0.18, 15.0, 0.18], "location": [0.0, 0.0, 31.76], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "dark_glass_pergola_y_03", "kind": "box", "size": [0.18, 15.0, 0.18], "location": [9.0, 0.0, 31.76], "material": "signature_metal", "bevel_m": 0.025}
+         ],
+         "voids": [
+-          {"id": "dark_glass_lobby_recess", "size": [14.0, 1.4, 5.6], "location": [0.0, -17.4, 2.8], "purpose": "transparent double-height public lobby behind the projecting canopy"},
+-          {"id": "dark_glass_roof_terrace", "size": [27.0, 18.0, 2.5], "location": [0.0, -2.0, 61.5], "purpose": "open occupied roof terrace inside the expressed steel crown"}
++          {"id": "dark_glass_lobby_recess", "size": [10.0, 1.4, 5.6], "location": [0.0, -9.9, 2.8], "purpose": "transparent double-height public lobby behind the projecting canopy"},
++          {"id": "dark_glass_roof_terrace", "size": [19.0, 11.0, 2.5], "location": [0.0, -1.0, 30.3], "purpose": "open occupied roof terrace inside the expressed steel crown"}
+         ],
+         "assemblies": [
+-          {"id": "dark_glass_front_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -16.86, 0.0], "span_m": 44.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 6.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}]},
+-          {"id": "dark_glass_rear_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 16.86, 0.0], "span_m": 44.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 6.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}]},
+-          {"id": "dark_glass_left_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-21.86, 0.0, 0.0], "span_m": 34.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 6.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}]},
+-          {"id": "dark_glass_right_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [21.86, 0.0, 0.0], "span_m": 34.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 6.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}, {"band": "floor", "height_m": 3.0}, {"band": "floor_alt", "height_m": 3.0}]},
++          {"id": "dark_glass_front_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -9.46, 0.0], "span_m": 29.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 7.2}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "dark_glass_rear_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 9.46, 0.0], "span_m": 29.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 7.2}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "dark_glass_left_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-14.46, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 7.2}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "dark_glass_right_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [14.46, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 7.2}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
+ 
+-          {"id": "dark_glass_front_wall", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -17.02, 30.0], "span_m": 44.0, "height_m": 60.0, "columns": 12, "rows": 20, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
+-          {"id": "dark_glass_rear_wall", "kind": "curtain_wall", "axis": "rear", "centre": [0.0, 17.02, 30.0], "span_m": 44.0, "height_m": 60.0, "columns": 12, "rows": 20, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
+-          {"id": "dark_glass_left_wall", "kind": "curtain_wall", "axis": "left", "centre": [-22.02, 0.0, 30.0], "span_m": 34.0, "height_m": 60.0, "columns": 10, "rows": 20, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
+-          {"id": "dark_glass_right_wall", "kind": "curtain_wall", "axis": "right", "centre": [22.02, 0.0, 30.0], "span_m": 34.0, "height_m": 60.0, "columns": 10, "rows": 20, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
++          {"id": "dark_glass_front_wall", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -9.62, 14.4], "span_m": 29.0, "height_m": 28.8, "columns": 4, "rows": 8, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
++          {"id": "dark_glass_rear_wall", "kind": "curtain_wall", "axis": "rear", "centre": [0.0, 9.62, 14.4], "span_m": 29.0, "height_m": 28.8, "columns": 4, "rows": 8, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
++          {"id": "dark_glass_left_wall", "kind": "curtain_wall", "axis": "left", "centre": [-14.62, 0.0, 14.4], "span_m": 19.0, "height_m": 28.8, "columns": 3, "rows": 8, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
++          {"id": "dark_glass_right_wall", "kind": "curtain_wall", "axis": "right", "centre": [14.62, 0.0, 14.4], "span_m": 19.0, "height_m": 28.8, "columns": 3, "rows": 8, "frame_m": 0.075, "depth_m": 0.10, "glass_material": "glass", "frame_material": "signature_metal", "skip_glass": true, "skip_frame": true},
+ 
+-          {"id": "dark_glass_front_structure", "kind": "frame_grid", "axis": "front", "centre": [0.0, -17.24, 30.0], "span_m": 44.4, "height_m": 60.0, "columns": 6, "rows": 20, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
+-          {"id": "dark_glass_rear_structure", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 17.24, 30.0], "span_m": 44.4, "height_m": 60.0, "columns": 6, "rows": 20, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
+-          {"id": "dark_glass_left_structure", "kind": "frame_grid", "axis": "left", "centre": [-22.24, 0.0, 30.0], "span_m": 34.4, "height_m": 60.0, "columns": 5, "rows": 20, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
+-          {"id": "dark_glass_right_structure", "kind": "frame_grid", "axis": "right", "centre": [22.24, 0.0, 30.0], "span_m": 34.4, "height_m": 60.0, "columns": 5, "rows": 20, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
++          {"id": "dark_glass_front_structure", "kind": "frame_grid", "axis": "front", "centre": [0.0, -9.84, 14.4], "span_m": 29.4, "height_m": 28.8, "columns": 4, "rows": 8, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
++          {"id": "dark_glass_rear_structure", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 9.84, 14.4], "span_m": 29.4, "height_m": 28.8, "columns": 4, "rows": 8, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
++          {"id": "dark_glass_left_structure", "kind": "frame_grid", "axis": "left", "centre": [-14.84, 0.0, 14.4], "span_m": 19.4, "height_m": 28.8, "columns": 3, "rows": 8, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
++          {"id": "dark_glass_right_structure", "kind": "frame_grid", "axis": "right", "centre": [14.84, 0.0, 14.4], "span_m": 19.4, "height_m": 28.8, "columns": 3, "rows": 8, "vertical_profile_m": 0.34, "horizontal_profile_m": 0.19, "vertical_depth_m": 0.46, "horizontal_depth_m": 0.30, "edge_profile_multiplier": 1.42, "depth_m": 0.28, "material": "signature_metal"},
+ 
+-          {"id": "dark_glass_lobby_columns", "kind": "column_array", "start": [-5.7, -17.55, 0.25], "end": [5.7, -17.55, 0.25], "count": 4, "section": [0.32, 0.42], "height_m": 5.15, "material": "signature_metal", "bevel_m": 0.045},
+-          {"id": "dark_glass_lobby_steps", "kind": "steps", "centre": [0.0, -19.10, 0.0], "width_m": 15.0, "depth_m": 2.1, "count": 3, "rise_m": 0.12, "material": "signature_stone"},
++          {"id": "dark_glass_lobby_columns", "kind": "column_array", "start": [-4.2, -10.15, 0.25], "end": [4.2, -10.15, 0.25], "count": 4, "section": [0.32, 0.42], "height_m": 5.15, "material": "signature_metal", "bevel_m": 0.045},
++          {"id": "dark_glass_lobby_steps", "kind": "steps", "centre": [0.0, -11.60, 0.0], "width_m": 10.5, "depth_m": 1.8, "count": 3, "rise_m": 0.12, "material": "signature_stone"},
+ 
+-          {"id": "dark_glass_crown_front", "kind": "frame_grid", "axis": "front", "centre": [0.0, -17.22, 61.55], "span_m": 44.7, "height_m": 2.75, "columns": 6, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
+-          {"id": "dark_glass_crown_rear", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 17.22, 61.55], "span_m": 44.7, "height_m": 2.75, "columns": 6, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
+-          {"id": "dark_glass_crown_left", "kind": "frame_grid", "axis": "left", "centre": [-22.22, 0.0, 61.55], "span_m": 34.7, "height_m": 2.75, "columns": 5, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
+-          {"id": "dark_glass_crown_right", "kind": "frame_grid", "axis": "right", "centre": [22.22, 0.0, 61.55], "span_m": 34.7, "height_m": 2.75, "columns": 5, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"}
++          {"id": "dark_glass_crown_front", "kind": "frame_grid", "axis": "front", "centre": [0.0, -9.72, 30.15], "span_m": 29.7, "height_m": 2.75, "columns": 4, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
++          {"id": "dark_glass_crown_rear", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 9.72, 30.15], "span_m": 29.7, "height_m": 2.75, "columns": 4, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
++          {"id": "dark_glass_crown_left", "kind": "frame_grid", "axis": "left", "centre": [-14.72, 0.0, 30.15], "span_m": 19.7, "height_m": 2.75, "columns": 3, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"},
++          {"id": "dark_glass_crown_right", "kind": "frame_grid", "axis": "right", "centre": [14.72, 0.0, 30.15], "span_m": 19.7, "height_m": 2.75, "columns": 3, "rows": 1, "profile_m": 0.14, "vertical_profile_m": 0.16, "horizontal_profile_m": 0.14, "depth_m": 0.20, "edge_profile_multiplier": 1.25, "material": "signature_metal"}
+         ],
+         "target_views": ["archetype_match", "street", "aerial", "context"]
+       }
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index affe7b5b741a17ca70d73cb509495f6fe67b7f6e..94a75bff2cdc6ffd28fc457a5c9c9c5877771bbb 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -8273,13 +8273,13 @@ def render_presentation_views(
+             # Pull back enough to retain the roof silhouette and projecting
+             # eaves. Cropping those features made softened/gabled buildings
+             # read as boxes even when their authored geometry was present.
+-            ("archetype_match", (-width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.15)), focus_height * 0.50),
++            ("archetype_match", (-width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.75)), focus_height * 0.50),
+              (-1.0, -1.0, focus_height * 0.42), 50),
+         ) if landmark else ()),
+         ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+-        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 1.55)), focus_height * 0.58),
++        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 2.05)), focus_height * 0.58),
+          (0.0, -depth * 0.04, focus_height * 0.43), 50),
+-        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 1.55), focus_height * 0.62),
++        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 2.05), focus_height * 0.62),
+          (0.0, depth * 0.04, focus_height * 0.43), 50),
+         ("facade_close", (0.0, -(depth / 2 + max(27.0, width * 0.70)), focus_height * 0.43),
+          (0.0, -depth / 2, focus_height * 0.43), 57),
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 4868166a80c5a27c9565c5b26e5dc65f8ac09102..5f4538dc3801f56f164c6478d458f48e2b2b48b5 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-brownstone-sidewall-camera-v70",
++  "memory_version": "2026-07-20-dark-frame-office-renderlock-v71",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -570,6 +570,16 @@
+       "symptom": "A quiet rowhouse party wall repeats ornate front-window surrounds across its full depth",
+       "cause": "The principal elevation's decorated repeat bay was reused as the side material band and tiled across every side segment.",
+       "correction": "Author a plain brick secondary-elevation band and add only evidence-supported sparse side and rear openings as physical recessed assemblies."
++    },
++    {
++      "symptom": "A compact reference office compiles as a much taller and broader generic glass tower",
++      "cause": "A variant-level massing graph inherited dimensions from a previous tower study instead of auditing all three catalogue views and the current variant bounds.",
++      "correction": "Record the reference width, depth, floor grid, structural bay count and roof termination before assembly; bypass or replace any inherited graph whose proportions contradict the authoritative variant images."
++    },
++    {
++      "symptom": "One office interior bay is smeared across an otherwise correct four-bay curtain wall",
++      "cause": "The typical-floor PBR crop isolated a single bay but the fixed canonical facade stretched that crop over the complete elevation span.",
++      "correction": "For fixed render-locked elevations, crop the complete audited floor band so every interior bay remains registered to the physical frame; reserve single-bay crops for genuinely tiled LEGO modules and derive a separate side crop for different bay counts."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index fb577c4e75a19bc3714ab5b0db24efaff53248c8..7ea01d84be0515011699b2c1e694d9c7a9431bee 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -642,6 +642,32 @@ def test_red_sandstone_rowhouse_preserves_reference_five_bay_rhythm():
+         assert assemblies[f"rowhouse_rear_right_{level}"]["span_m"] == 0.92
+ 
+ 
++def test_dark_frame_office_preserves_compact_reference_proportions():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "modern_glass_office_institutional",
++            "variant_id": "glass_office_dark_frame",
++        },
++        "materials": {},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "dark_frame_clear_glass_renderlock_v3"
++    assert graph["reference_dimensions"] == {
++        "width_m": 30.0,
++        "depth_m": 20.0,
++        "floors": 8,
++        "floor_height_m": 3.6,
++    }
++    assert assemblies["dark_glass_front_structure"]["columns"] == 4
++    assert assemblies["dark_glass_front_structure"]["rows"] == 8
++    assert len(assemblies["dark_glass_front_skin"]["levels"]) == 7
++
++
+ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+ 
+@@ -656,6 +682,8 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     assert "near_tree_offset = max(width * 0.72, 12.0)" in source
+     assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
+     assert "disabled_assembly_ids" in source
++    assert "focus_height * 2.75" in source
++    assert "focus_height * 2.05" in source
+ 
+ 
+ def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():
+-- 
+2.55.0.windows.2
+

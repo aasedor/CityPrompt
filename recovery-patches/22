@@ -1,0 +1,326 @@
+From fe59fbe8866fcd70038c60b997e5d518bcc26ed7 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 11:25:42 -0600
+Subject: [PATCH 22/32] feat: register ten park render-lock keepers
+
+---
+ docs/PUBLIC_REALM_ARCHETYPE_READINESS.md    |  47 ++++++
+ frontend/src/data/renderlockV1Parks.test.ts |  78 +++++++++
+ frontend/src/data/renderlockV1Parks.ts      | 165 ++++++++++++++++++++
+ 3 files changed, 290 insertions(+)
+ create mode 100644 frontend/src/data/renderlockV1Parks.test.ts
+ create mode 100644 frontend/src/data/renderlockV1Parks.ts
+
+diff --git a/docs/PUBLIC_REALM_ARCHETYPE_READINESS.md b/docs/PUBLIC_REALM_ARCHETYPE_READINESS.md
+index a1202132a7d99e5b9a2db5a0cc0a9d7ac3489558..8ec9909fd5d65e28a96b1a32703ba4ae57855beb 100644
+--- a/docs/PUBLIC_REALM_ARCHETYPE_READINESS.md
++++ b/docs/PUBLIC_REALM_ARCHETYPE_READINESS.md
+@@ -147,3 +147,50 @@ The complete same-footprint screenshot audit is stored in [`artifacts/park-drape
+ ### Batch 04 cost
+ 
+ - Fifteen image calls were used: eight current-view render images and seven ground-drape generations/retries. The 100-call authorization was treated as a hard ceiling rather than a spending target.
++
++## Batch 05 - 2026-07-20 - ten-park render-lock cohort
++
++The first finite Public Realm LEGO park cohort is registered in
++`frontend/src/data/renderlockV1Parks.ts`. Each entry binds one archetype and
++selected variant to its exact ground-profile version, metric QA footprint and
++three catalog camera references (street, 60-degree oblique and 90-degree
++aerial). Image character controls material and planting appearance; the profile
++continues to control boundary, scale, topology, fixed-program count and safety
++clearances.
++
++| # | Archetype / selected variant | Locked program |
++| --- | --- | --- |
++| 1 | Neighborhood Park / Rustic Timber & Gravel | Connected circuit, four gateways, social lawn, meadow/rain garden, playground and pavilion pads |
++| 2 | Urban Pocket Park / Rustic Timber & Gravel | One clear lawn room and direct connected path |
++| 3 | Linear Greenway / Rail Trail | One continuous 3.5 m end-to-end trail |
++| 4 | Stormwater Pond / Naturalistic | Functional basin, wet shelf, inlet, outlet/weir and dry maintenance access; the reference dock is excluded |
++| 5 | Japanese Garden / Woodland Naturalistic | Stroll loop, koi pond, gravel court, stepping stones and exact bridge alignment |
++| 6 | Sports Complex / Professional Grade | One 100 x 64 m pitch and whole regulation tennis envelopes only |
++| 7 | Urban Forest / Rewilded Urban | Near-closed canopy, one continuous trail and two clearings |
++| 8 | Botanical Garden / Woodland Naturalistic | Interpretive loop, conservatory pad and three distinct collections |
++| 9 | Nature Play / Forest Adventure | Two linked safety clearings, accessible loop and contained rill |
++| 10 | Reservoir / Concrete-Edge Utility | Rectangular impoundment, complete shoreline trail and short-edge dam/spillway |
++
++### Live Google Tiles QA
++
++- Project: `http://localhost:5175/projects/c08fa377-7496-43ad-8f76-e92a15c25f64`
++- Community 3D compiled all ten park zones in one transaction with zero building
++  or street fallbacks.
++- The first downtown grid was rejected because terrain clamping correctly
++  placed the ground programs on photogrammetry rooftops. The same zones were
++  moved through supported APIs to flat open terrain south of Edmonton and
++  rebuilt before visual acceptance.
++- Close-range Tiles review verified the sports profile as one complete pitch
++  plus three complete tennis envelopes. The botanical profile retained one
++  conservatory pad, one interpretive loop and three separate collection rooms.
++- Two photoreal current-view sports renders were generated. Both retained the
++  one-plus-three program and parcel boundary. Render B is the preferred
++  appearance keeper because its goals, nets, fencing, lights and perimeter
++  planting read most clearly without entering a playing surface.
++- Cost checkpoint: two image calls. No optional AI ground drapes or external 3D
++  model-generation calls were used.
++
++### Verification
++
++- Focused registry/profile/scatter/compiler suite: 4 files / 97 tests passed.
++- Frontend TypeScript validation passed.
+diff --git a/frontend/src/data/renderlockV1Parks.test.ts b/frontend/src/data/renderlockV1Parks.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..63a1712d0d19e2a4fec6f9e349bddef139d79f0c
+--- /dev/null
++++ b/frontend/src/data/renderlockV1Parks.test.ts
+@@ -0,0 +1,78 @@
++import { describe, expect, it } from 'vitest';
++import type { SiteZone } from '@/types';
++import openSpaceCatalog from './openSpaceArchetypes.json';
++import { isDefaultParkRecipe, resolveParkRecipe } from './parkKitRecipes';
++import { RENDERLOCK_V1_PARKS } from './renderlockV1Parks';
++import {
++  resolveParkGroundProfile,
++  resolveParkSpecialtyStructureKind,
++  shouldMountParkProgramFrame,
++} from '../components/viewer/globe/parkGroundProfiles';
++
++function zone(archetypeId: string, variantId: string): SiteZone {
++  return {
++    id: `zone-${archetypeId}`,
++    project_id: 'renderlock-parks-v1',
++    zone_type: 'green_space',
++    name: archetypeId,
++    coordinates: [[-113.58, 53.37], [-113.57, 53.37], [-113.57, 53.38], [-113.58, 53.38]],
++    color: '#65a30d',
++    properties: {
++      green_space_archetype_id: archetypeId,
++      green_space_selected_variant_id: variantId,
++    },
++    sort_order: 0,
++    created_at: '2026-07-20T00:00:00Z',
++    updated_at: '2026-07-20T00:00:00Z',
++  };
++}
++
++describe('render-lock v1 park cohort', () => {
++  it('is finite, ordered and unique', () => {
++    expect(RENDERLOCK_V1_PARKS).toHaveLength(10);
++    expect(RENDERLOCK_V1_PARKS.map((entry) => entry.sequence)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
++    expect(new Set(RENDERLOCK_V1_PARKS.map((entry) => entry.archetypeId)).size).toBe(10);
++    expect(new Set(RENDERLOCK_V1_PARKS.map((entry) => entry.variantId)).size).toBe(10);
++    expect(RENDERLOCK_V1_PARKS.every((entry) => entry.reviewState === 'keeper')).toBe(true);
++  });
++
++  it('locks three catalog camera references for each selected variant', () => {
++    for (const entry of RENDERLOCK_V1_PARKS) {
++      expect(entry.referenceViews.street).toMatch(/\/variant_\d\.png$/);
++      expect(entry.referenceViews.angle_60).toMatch(/\/variant_\d_angle_60\.jpg$/);
++      expect(entry.referenceViews.angle_90).toMatch(/\/variant_\d_angle_90\.jpg$/);
++      const roots = Object.values(entry.referenceViews).map((path) => path.replace(/(?:_angle_(?:60|90))?\.(?:png|jpg)$/, ''));
++      expect(new Set(roots).size).toBe(1);
++    }
++  });
++
++  it('references real variants and exact non-default LEGO recipes', () => {
++    const catalog = (openSpaceCatalog as { archetypes: Array<{ id: string; variants: Array<{ id: string }> }> }).archetypes;
++    for (const entry of RENDERLOCK_V1_PARKS) {
++      const archetype = catalog.find((candidate) => candidate.id === entry.archetypeId);
++      expect(archetype, entry.archetypeId).toBeDefined();
++      expect(archetype?.variants.some((variant) => variant.id === entry.variantId), entry.variantId).toBe(true);
++
++      const candidate = zone(entry.archetypeId, entry.variantId);
++      const profile = resolveParkGroundProfile(candidate);
++      expect(profile.id).toBe(entry.profileId);
++      expect(profile.version).toBe(entry.profileVersion);
++      expect(profile.isPilot).toBe(true);
++      expect(profile.guides.length).toBeGreaterThan(0);
++      expect(isDefaultParkRecipe(resolveParkRecipe(entry.archetypeId))).toBe(false);
++    }
++  });
++
++  it('retains the required fixed-program 3D hosts', () => {
++    const required = new Map([
++      ['japanese_garden', 'japanese_garden_bridge'],
++      ['sports_field_complex', 'sports_field_furniture'],
++      ['botanical_garden', 'botanical_conservatory'],
++    ]);
++    for (const entry of RENDERLOCK_V1_PARKS.filter((candidate) => required.has(candidate.archetypeId))) {
++      const candidate = zone(entry.archetypeId, entry.variantId);
++      expect(resolveParkSpecialtyStructureKind(candidate)).toBe(required.get(entry.archetypeId));
++      expect(shouldMountParkProgramFrame(candidate, 0)).toBe(true);
++    }
++  });
++});
+diff --git a/frontend/src/data/renderlockV1Parks.ts b/frontend/src/data/renderlockV1Parks.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..ecda0ed3b3cf749f9b1b5e1a5385389b28009fed
+--- /dev/null
++++ b/frontend/src/data/renderlockV1Parks.ts
+@@ -0,0 +1,165 @@
++export type ParkReferenceAngle = 'street' | 'angle_60' | 'angle_90';
++
++export interface RenderlockV1Park {
++  sequence: number;
++  archetypeId: string;
++  variantId: string;
++  variantLabel: string;
++  profileId: string;
++  profileVersion: number;
++  widthM: number;
++  depthM: number;
++  referenceViews: Readonly<Record<ParkReferenceAngle, string>>;
++  programTruth: string;
++  reviewState: 'keeper';
++}
++
++function referenceViews(slug: string, variant: number): RenderlockV1Park['referenceViews'] {
++  const base = `/archetypes/openspaces/${slug}/variant_${variant}`;
++  return Object.freeze({
++    street: `${base}.png`,
++    angle_60: `${base}_angle_60.jpg`,
++    angle_90: `${base}_angle_90.jpg`,
++  });
++}
++
++/**
++ * Finite July 2026 park render-lock cohort.
++ *
++ * The three catalog views lock planting/material character. The exact park
++ * profile remains authoritative for boundary, metric dimensions, topology,
++ * safety envelopes and fixed-program count when an image invents an
++ * incompatible prop (for example the dock in the stormwater reference).
++ */
++export const RENDERLOCK_V1_PARKS: readonly RenderlockV1Park[] = Object.freeze([
++  {
++    sequence: 1,
++    archetypeId: 'neighborhood_park',
++    variantId: 'neighborhood_park_v0',
++    variantLabel: 'Rustic Timber & Gravel',
++    profileId: 'neighborhood-park-v4',
++    profileVersion: 4,
++    widthM: 100,
++    depthM: 80,
++    referenceViews: referenceViews('neighborhood-park', 0),
++    programTruth: 'Connected walking circuit, four gateways, clear social lawn, meadow/rain-garden rooms, playground and pavilion pads.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 2,
++    archetypeId: 'urban_pocket_park',
++    variantId: 'urban_pocket_park_v0',
++    variantLabel: 'Rustic Timber & Gravel',
++    profileId: 'urban-pocket-park-v1',
++    profileVersion: 1,
++    widthM: 30,
++    depthM: 30,
++    referenceViews: referenceViews('urban-pocket-park', 0),
++    programTruth: 'One clear lawn room with a direct gateway-connected path and layered perimeter planting.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 3,
++    archetypeId: 'linear_park_greenway',
++    variantId: 'linear_park_greenway_v0',
++    variantLabel: 'Rail Trail',
++    profileId: 'linear-park-greenway-v1',
++    profileVersion: 1,
++    widthM: 400,
++    depthM: 30,
++    referenceViews: referenceViews('linear-park-greenway', 0),
++    programTruth: 'One continuous 3.5 metre end-to-end multi-use trail with connected gateways and native corridor planting.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 4,
++    archetypeId: 'stormwater_retention_pond',
++    variantId: 'stormwater_retention_pond_v0',
++    variantLabel: 'Naturalistic Pond & Water Garden',
++    profileId: 'stormwater-retention-pond-v1',
++    profileVersion: 1,
++    widthM: 90,
++    depthM: 60,
++    referenceViews: referenceViews('stormwater-retention-pond', 0),
++    programTruth: 'One functional basin with wet shelf, inlet, outlet/weir and dry maintenance access; omit the reference dock.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 5,
++    archetypeId: 'japanese_garden',
++    variantId: 'japanese_garden_v1',
++    variantLabel: 'Woodland Naturalistic',
++    profileId: 'japanese-garden-v4',
++    profileVersion: 4,
++    widthM: 70,
++    depthM: 70,
++    referenceViews: referenceViews('japanese-garden', 1),
++    programTruth: 'Complete stroll loop, koi pond, raked-gravel court, stepping stones and one exact bridge alignment.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 6,
++    archetypeId: 'sports_field_complex',
++    variantId: 'sports_field_complex_v0',
++    variantLabel: 'Professional Grade',
++    profileId: 'sports-field-complex-v4',
++    profileVersion: 4,
++    widthM: 144,
++    depthM: 76.8,
++    referenceViews: referenceViews('sports-field-complex', 0),
++    programTruth: 'One complete 100 x 64 metre pitch plus the maximum compatible count of complete regulation tennis envelopes.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 7,
++    archetypeId: 'urban_forest',
++    variantId: 'urban_forest_v2',
++    variantLabel: 'Rewilded Urban',
++    profileId: 'urban-forest-v2',
++    profileVersion: 2,
++    widthM: 144,
++    depthM: 90,
++    referenceViews: referenceViews('urban-forest', 2),
++    programTruth: 'Near-closed native canopy, one continuous low-impact trail and exactly two daylight clearings.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 8,
++    archetypeId: 'botanical_garden',
++    variantId: 'botanical_garden_v1',
++    variantLabel: 'Woodland Naturalistic',
++    profileId: 'botanical-garden-v5',
++    profileVersion: 5,
++    widthM: 144,
++    depthM: 76.8,
++    referenceViews: referenceViews('botanical-garden', 1),
++    programTruth: 'Connected interpretive loop, compact conservatory pad and three separate collection-bed rooms.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 9,
++    archetypeId: 'nature_play_area',
++    variantId: 'nature_play_area_v0',
++    variantLabel: 'Forest Adventure',
++    profileId: 'nature-play-area-v3',
++    profileVersion: 3,
++    widthM: 60,
++    depthM: 45,
++    referenceViews: referenceViews('nature-play-area', 0),
++    programTruth: 'Two complete linked safety clearings, accessible loop and one contained shallow water-play rill pad.',
++    reviewState: 'keeper',
++  },
++  {
++    sequence: 10,
++    archetypeId: 'reservoir_watershed_park',
++    variantId: 'reservoir_watershed_park_v0',
++    variantLabel: 'Concrete-Edge Utility Reservoir',
++    profileId: 'reservoir-watershed-park-v3',
++    profileVersion: 3,
++    widthM: 140,
++    depthM: 100,
++    referenceViews: referenceViews('reservoir-watershed-park', 0),
++    programTruth: 'Exact rectangular impoundment, continuous perimeter trail and clear short-edge dam/spillway.',
++    reviewState: 'keeper',
++  },
++]);
+-- 
+2.55.0.windows.2
+

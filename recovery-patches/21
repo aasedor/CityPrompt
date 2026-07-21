@@ -1,0 +1,426 @@
+From e9c50573b43e4f070c411e1a4905beda9a4f789b Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 10:43:03 -0600
+Subject: [PATCH 21/32] feat: render-lock Scottish Baronial railway hotel
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 23 +++++
+ .../architectural_signature_profiles.json     | 96 +++++++++++++++----
+ tools/archetype_compiler/blender_generate.py  | 60 ++++++++++++
+ .../high_quality_building_memory.json         | 32 ++++++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  3 +-
+ .../tests/test_facade_sheets.py               | 48 ++++++++--
+ 7 files changed, 236 insertions(+), 28 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index fb560a26bd90d1d68177502966f0149bc6c95bd3..536922c3787ea2a01c14fa5038e905bdb5d06fad 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -748,6 +748,29 @@ The polychrome collegiate family added four rules for resizable hero facades:
+ - Lower eaves follow the same rule. Replace flat canopy boxes with shallow
+   sloped roof segments that wrap the public faces before canonical promotion.
+ 
++### Scottish Baronial railway hotel + open-court landmark lessons
++
++- Selected-variant evidence outranks a contradictory parent hero. All three
++  Scottish Baronial angles prove pink-grey granite, dark slate and conical
++  tourelles, so the inherited green-copper facade was rejected immediately.
++- Courtyard language is not construction. Build four occupied wings and four
++  corresponding roof fields around a real uninterrupted void, then prove that
++  void from aerial and rear-corner cameras.
++- A clean elevation with the wrong row count is a band library, not a complete
++  atlas. Audit the valid masonry bands and sequence them into the exact six
++  occupied levels without vertically stretching their windows.
++- Landmark entrance towers need a separate envelope and explicit depth order:
++  core, tower skin, portal opening, then physical arch and jamb geometry. A
++  principal facade stack cannot safely stand in for that hierarchy.
++- Do not stretch generic frame grids over round turrets. Place bounded real sash
++  assemblies on tangent planes so each outer turret and gate tourelle reads as
++  occupied rather than blank or cut by tall black slots.
++- Crow-stepped gables carry silhouette identity. Keep their fixed stepped
++  profiles ahead of the sloped roof field and review every step against the sky.
++- A full canonical rebuild remains necessary after an assembled-only graph
++  pilot passes. The pilot can reuse stale generic modules; the promoted family
++  must regenerate every LEGO role with the reviewed PBR source and materials.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index f48aa9d2b2e0ecc231e65016c644ebbf773e7fb2..24d9db8c7a257b3fd65d2ae3a46bfb25a801c22e 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1966,33 +1966,54 @@
+       }
+     },
+     "chateauesque_grand_railway_hotel": {
+-      "identity": "Grand railway hotel with a powerful central pavilion, corner turrets, steep copper-and-slate roofscape, dense dormers, chimneys and porte-cochere arrival.",
+-      "material_zones": "warm sandstone; greened copper and slate; dark iron; glowing grand windows",
+-      "material_overrides": {"roof": {"base_color": "#6f9a8b", "roughness": 0.56, "metallic": 0.56, "texture_key": "verdigris_copper"}, "accent": {"base_color": "#52716c", "roughness": 0.46, "metallic": 0.42}},
+-      "signature_material_overrides": {"signature_stone": {"base_color": "#d8cbb1", "roughness": 0.78, "texture_key": "sandstone"}},
++      "identity": "Scottish Baronial grand railway hotel with a central crenellated gate tower, round conical tourelles, crow-stepped gables, a steep dark-slate courtyard roof and six occupied pink-grey granite wall levels.",
++      "material_zones": "pink-grey rusticated granite ashlar; smooth dressed granite courses; charcoal natural slate; black iron; softly occupied sash glazing",
++      "material_overrides": {"primary": {"base_color": "#a88e84", "roughness": 0.86, "metallic": 0.0, "texture_key": null}, "secondary": {"base_color": "#b9a39a", "roughness": 0.82, "metallic": 0.0, "texture_key": null}, "roof": {"base_color": "#343c47", "roughness": 0.72, "metallic": 0.03, "texture_key": "welsh_slate"}, "accent": {"base_color": "#25292d", "roughness": 0.52, "metallic": 0.38, "texture_key": "black_metal"}},
++      "signature_material_overrides": {"signature_stone": {"base_color": "#b29a91", "roughness": 0.86, "metallic": 0.0, "texture_key": null}, "signature_roof": {"base_color": "#343c47", "roughness": 0.72, "metallic": 0.03, "texture_key": "welsh_slate"}, "signature_metal": {"base_color": "#25292d", "roughness": 0.52, "metallic": 0.38, "texture_key": "black_metal"}},
+       "glass_profile": "low_iron_clear",
+-      "kits": ["porte_cochere", "rusticated_base", "heritage_stone_depth", "centre_pavilion", "deep_cornice", "corner_turret", "mansard_dormers", "chimney_skyline"],
++      "footprint_compatibility_override": {"preferredProfiles": ["rectangle", "u_shape", "courtyard"], "recommendedWidth_m": [55, 90], "recommendedDepth_m": [36, 60], "recommendedFloors": [5, 7], "wingDepth_m": [8, 13], "preferredBayMultiple_m": 4.8, "notes": ["The render-locked native tier is the 55 by 36 metre, six-level full courtyard block.", "Derived large and U-shaped kits must retain the complete gate tower, round tourelles, crow-stepped gables and independent perimeter roof fields."]},
++      "kits": ["deep_round_portal", "rusticated_base", "heritage_stone_depth", "crenellated_gate_tower", "crowstep_gables", "corner_turret", "slate_dormers", "chimney_skyline"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "chateauesque_landmark_v21",
+-        "description": "Railway-hotel composition with a subordinate guest-room bar, fixed square gate tower, conical corner turrets, projecting centre pavilion, steep slate roof, stepped gables and a supported porte-cochere.",
++        "profile": "scottish_baronial_granite_courtyard_v1",
++        "description": "A fixed six-level pink-grey granite railway hotel whose four occupied wings preserve an open court below separate steep slate roof fields, with a central crenellated gate tower, deep round portal, conical tourelles, crow-stepped gables, dormers and chimneys.",
+         "height_m": 38.4,
++        "final_bevel_m": 0.0,
+         "reference_dimensions": {"width_m": 55.0, "depth_m": 36.0, "floors": 6, "floor_height_m": 4.0},
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png", "cues": ["six occupied granite wall levels", "crenellated square entrance tower", "round conical tourelles", "crow-stepped gables"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg", "cues": ["full perimeter block", "deep slate roof fields", "regular sash rhythm", "corner towers and chimneys"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg", "cues": ["continuous open courtyard", "four independent roof wings", "no solid court lid", "entrance tower on principal face"]}
++        ],
++        "disabled_node_ids": ["hotel_shadow_core", "hotel_main_roof", "hotel_centre_gable", "hotel_left_square_tower", "hotel_port_cochere", "hotel_port_cochere_soffit", "hotel_turret_finial"],
++        "disabled_assembly_ids": ["hotel_front_elevation", "hotel_left_elevation", "hotel_rear_elevation", "hotel_right_elevation", "hotel_centre_elevation", "hotel_left_tower_elevation", "hotel_left_pavilion_elevation", "hotel_right_pavilion_elevation", "hotel_centre_left_return", "hotel_centre_right_return", "hotel_left_pavilion_outer_return", "hotel_left_pavilion_inner_return", "hotel_right_pavilion_inner_return", "hotel_right_pavilion_outer_return", "hotel_left_tower_outer_return", "hotel_left_tower_inner_return", "hotel_front_glazing", "hotel_left_glazing", "hotel_rear_glazing", "hotel_right_glazing", "hotel_centre_glazing", "hotel_left_tower_glazing", "hotel_left_pavilion_glazing", "hotel_right_pavilion_glazing", "hotel_port_cochere_columns", "hotel_left_tower_battlements", "hotel_left_tower_side_battlements", "hotel_court_front_inner", "hotel_court_rear_inner", "hotel_court_left_inner", "hotel_court_right_inner", "hotel_outer_left_turret_windows", "hotel_outer_right_turret_windows", "hotel_gate_left_tourelle_windows", "hotel_gate_right_tourelle_windows"],
+         "nodes": [
+           {"id": "hotel_plinth", "kind": "box", "size": [55.8, 36.8, 0.42], "location": [0.0, 0.0, 0.21], "material": "signature_stone", "bevel_m": 0.06},
+           {"id": "hotel_shadow_core", "kind": "box", "size": [53.5, 34.5, 24.0], "location": [0.0, 0.0, 12.0], "material": "primary", "bevel_m": 0.18},
+           {"id": "hotel_main_roof", "kind": "gable_roof", "size": [55.2, 35.4, 6.2], "location": [0.0, 0.0, 24.0], "material": "roof", "bevel_m": 0.11, "ridge_axis": "x"},
+-          {"id": "hotel_centre_pavilion", "kind": "box", "size": [13.0, 5.0, 31.0], "location": [0.0, -17.2, 15.5], "material": "primary", "bevel_m": 0.15},
++          {"id": "hotel_front_wing", "kind": "box", "size": [53.5, 9.0, 24.0], "location": [0.0, -12.75, 12.0], "material": "primary", "bevel_m": 0.14},
++          {"id": "hotel_rear_wing", "kind": "box", "size": [53.5, 9.0, 24.0], "location": [0.0, 12.75, 12.0], "material": "primary", "bevel_m": 0.14},
++          {"id": "hotel_left_wing", "kind": "box", "size": [9.0, 16.5, 24.0], "location": [-22.25, 0.0, 12.0], "material": "primary", "bevel_m": 0.14},
++          {"id": "hotel_right_wing", "kind": "box", "size": [9.0, 16.5, 24.0], "location": [22.25, 0.0, 12.0], "material": "primary", "bevel_m": 0.14},
++          {"id": "hotel_front_roof", "kind": "gable_roof", "size": [55.2, 10.2, 6.2], "location": [0.0, -12.7, 24.0], "material": "roof", "bevel_m": 0.10, "ridge_axis": "x"},
++          {"id": "hotel_rear_roof", "kind": "gable_roof", "size": [55.2, 10.2, 6.2], "location": [0.0, 12.7, 24.0], "material": "roof", "bevel_m": 0.10, "ridge_axis": "x"},
++          {"id": "hotel_left_roof", "kind": "gable_roof", "size": [10.2, 16.6, 6.2], "location": [-22.2, 0.0, 24.0], "material": "roof", "bevel_m": 0.10, "ridge_axis": "y"},
++          {"id": "hotel_right_roof", "kind": "gable_roof", "size": [10.2, 16.6, 6.2], "location": [22.2, 0.0, 24.0], "material": "roof", "bevel_m": 0.10, "ridge_axis": "y"},
++          {"id": "hotel_centre_pavilion", "kind": "box", "size": [12.6, 6.5, 31.0], "location": [0.0, -17.1, 15.5], "material": "signature_stone", "bevel_m": 0.15},
+           {"id": "hotel_centre_gable", "kind": "gable_roof", "size": [13.6, 6.0, 6.4], "location": [0.0, -17.2, 31.0], "material": "roof", "bevel_m": 0.10, "ridge_axis": "y"},
+           {"id": "hotel_left_square_tower", "kind": "box", "size": [9.2, 9.2, 31.5], "location": [-22.0, -14.5, 15.75], "material": "signature_stone", "bevel_m": 0.16},
+-          {"id": "hotel_right_turret", "kind": "cylinder", "radius_m": 4.1, "height_m": 30.5, "location": [22.2, -15.0, 15.25], "material": "sheet_elevation", "vertices": 32},
+-          {"id": "hotel_right_turret_roof", "kind": "cone", "radius_m": 4.55, "height_m": 7.8, "location": [22.2, -15.0, 34.4], "material": "roof", "vertices": 32},
+-          {"id": "hotel_rear_turret", "kind": "cylinder", "radius_m": 3.3, "height_m": 27.5, "location": [23.0, 14.8, 13.75], "material": "sheet_elevation", "vertices": 28},
+-          {"id": "hotel_rear_turret_roof", "kind": "cone", "radius_m": 3.7, "height_m": 6.8, "location": [23.0, 14.8, 30.9], "material": "roof", "vertices": 28},
+-          {"id": "hotel_left_pavilion", "kind": "box", "size": [9.0, 4.8, 27.0], "location": [-12.8, -17.0, 13.5], "material": "primary", "bevel_m": 0.12},
+-          {"id": "hotel_left_pavilion_gable", "kind": "gable_roof", "size": [9.6, 5.8, 5.2], "location": [-12.8, -17.0, 27.0], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
+-          {"id": "hotel_right_pavilion", "kind": "box", "size": [9.0, 4.8, 27.0], "location": [12.4, -17.0, 13.5], "material": "primary", "bevel_m": 0.12},
+-          {"id": "hotel_right_pavilion_gable", "kind": "gable_roof", "size": [9.6, 5.8, 5.2], "location": [12.4, -17.0, 27.0], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
++          {"id": "hotel_right_turret", "kind": "cylinder", "radius_m": 3.3, "height_m": 28.0, "location": [24.3, -15.1, 14.0], "material": "signature_stone", "vertices": 32},
++          {"id": "hotel_right_turret_roof", "kind": "cone", "radius_m": 3.65, "height_m": 7.4, "location": [24.3, -15.1, 31.7], "material": "roof", "vertices": 32},
++          {"id": "hotel_rear_turret", "kind": "cylinder", "radius_m": 3.3, "height_m": 28.0, "location": [-24.3, -15.1, 14.0], "material": "signature_stone", "vertices": 32},
++          {"id": "hotel_rear_turret_roof", "kind": "cone", "radius_m": 3.65, "height_m": 7.4, "location": [-24.3, -15.1, 31.7], "material": "roof", "vertices": 32},
++          {"id": "hotel_gate_left_tourelle", "kind": "cylinder", "radius_m": 1.7, "height_m": 31.5, "location": [-5.8, -18.25, 15.75], "material": "signature_stone", "vertices": 24},
++          {"id": "hotel_gate_left_tourelle_roof", "kind": "cone", "radius_m": 2.0, "height_m": 6.4, "location": [-5.8, -18.25, 34.7], "material": "roof", "vertices": 24},
++          {"id": "hotel_gate_right_tourelle", "kind": "cylinder", "radius_m": 1.7, "height_m": 31.5, "location": [5.8, -18.25, 15.75], "material": "signature_stone", "vertices": 24},
++          {"id": "hotel_gate_right_tourelle_roof", "kind": "cone", "radius_m": 2.0, "height_m": 6.4, "location": [5.8, -18.25, 34.7], "material": "roof", "vertices": 24},
++          {"id": "hotel_left_pavilion", "kind": "box", "size": [9.0, 4.8, 24.0], "location": [-12.8, -17.0, 12.0], "material": "primary", "bevel_m": 0.12},
++          {"id": "hotel_left_pavilion_gable", "kind": "gable_roof", "size": [9.6, 5.8, 5.2], "location": [-12.8, -17.0, 24.0], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
++          {"id": "hotel_right_pavilion", "kind": "box", "size": [9.0, 4.8, 24.0], "location": [12.4, -17.0, 12.0], "material": "primary", "bevel_m": 0.12},
++          {"id": "hotel_right_pavilion_gable", "kind": "gable_roof", "size": [9.6, 5.8, 5.2], "location": [12.4, -17.0, 24.0], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
+           {"id": "hotel_cornice_front", "kind": "box", "size": [55.5, 0.7, 0.45], "location": [0.0, -17.55, 24.1], "material": "signature_stone", "bevel_m": 0.06},
+           {"id": "hotel_cornice_rear", "kind": "box", "size": [55.5, 0.7, 0.45], "location": [0.0, 17.55, 24.1], "material": "signature_stone", "bevel_m": 0.06},
+           {"id": "hotel_port_cochere", "kind": "box", "size": [14.5, 2.0, 0.48], "location": [0.0, -19.0, 5.15], "material": "accent", "bevel_m": 0.08},
+@@ -2001,7 +2022,7 @@
+         ],
+         "voids": [
+           {"id": "hotel_portal_recess", "size": [6.8, 1.4, 7.2], "location": [0.0, -21.2, 3.6], "purpose": "deep ceremonial arrival behind the supported porte-cochere"},
+-          {"id": "hotel_guest_court", "size": [28.0, 13.0, 22.0], "location": [0.0, 7.0, 11.0], "purpose": "optional courtyard void used by the U and courtyard LEGO footprints"}
++          {"id": "hotel_guest_court", "size": [35.5, 16.5, 31.0], "location": [0.0, 0.0, 15.5], "purpose": "continuous open-to-sky guest court between the four occupied wings"}
+         ],
+         "assemblies": [
+           {"id": "hotel_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -17.275, 12.0], "span_m": 44.0, "height_m": 23.8, "depth_m": 0.05, "band": "elevation"},
+@@ -2028,12 +2049,51 @@
+           {"id": "hotel_left_tower_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [-22.0, -19.125, 15.65], "span_m": 8.8, "height_m": 30.8, "columns": 2, "rows": 7, "profile_m": 0.08, "band": "elevation", "glass_profile": "low_iron_clear", "frame_mode": "mask_only"},
+           {"id": "hotel_left_pavilion_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [-12.8, -19.425, 13.45], "span_m": 8.6, "height_m": 26.5, "columns": 2, "rows": 6, "profile_m": 0.08, "band": "elevation", "glass_profile": "low_iron_clear", "frame_mode": "mask_only"},
+           {"id": "hotel_right_pavilion_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [12.4, -19.425, 13.45], "span_m": 8.6, "height_m": 26.5, "columns": 2, "rows": 6, "profile_m": 0.08, "band": "elevation", "glass_profile": "low_iron_clear", "frame_mode": "mask_only"},
++          {"id": "hotel_court_front_inner", "kind": "facade_skin", "axis": "rear", "centre": [0.0, -8.20, 12.0], "span_m": 35.2, "height_m": 23.8, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "hotel_court_rear_inner", "kind": "facade_skin", "axis": "front", "centre": [0.0, 8.20, 12.0], "span_m": 35.2, "height_m": 23.8, "depth_m": 0.05, "band": "elevation"},
++          {"id": "hotel_court_left_inner", "kind": "facade_skin", "axis": "right", "centre": [-17.70, 0.0, 12.0], "span_m": 16.2, "height_m": 23.8, "depth_m": 0.05, "band": "elevation"},
++          {"id": "hotel_court_right_inner", "kind": "facade_skin", "axis": "left", "centre": [17.70, 0.0, 12.0], "span_m": 16.2, "height_m": 23.8, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "hotel_front_stack_v2", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -17.30, 0.0], "span_m": 44.0, "depth_m": 0.05, "repeat_count": 2, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_left_stack_v2", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-26.80, 0.0, 0.0], "span_m": 28.0, "depth_m": 0.05, "repeat_count": 2, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_rear_stack_v2", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 17.30, 0.0], "span_m": 48.0, "depth_m": 0.05, "repeat_count": 3, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_right_stack_v2", "kind": "facade_skin_stack", "axis": "right", "base_centre": [26.80, 0.0, 0.0], "span_m": 28.0, "depth_m": 0.05, "repeat_count": 2, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_court_front_stack_v2", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, -8.20, 0.0], "span_m": 35.2, "depth_m": 0.05, "repeat_count": 2, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_court_rear_stack_v2", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, 8.20, 0.0], "span_m": 35.2, "depth_m": 0.05, "repeat_count": 2, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_court_left_stack_v2", "kind": "facade_skin_stack", "axis": "right", "base_centre": [-17.70, 0.0, 0.0], "span_m": 16.2, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_court_right_stack_v2", "kind": "facade_skin_stack", "axis": "left", "base_centre": [17.70, 0.0, 0.0], "span_m": 16.2, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_gate_stack_v2", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -20.65, 0.0], "span_m": 11.4, "depth_m": 0.05, "uv_u_min": 0.25, "uv_u_max": 0.75, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_gate_left_return_stack_v2", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-6.33, -17.1, 0.0], "span_m": 6.1, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_gate_right_return_stack_v2", "kind": "facade_skin_stack", "axis": "right", "base_centre": [6.33, -17.1, 0.0], "span_m": 6.1, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_left_pavilion_stack_v2", "kind": "facade_skin_stack", "axis": "front", "base_centre": [-12.8, -19.43, 0.0], "span_m": 8.6, "depth_m": 0.05, "uv_u_min": 0.125, "uv_u_max": 0.875, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_right_pavilion_stack_v2", "kind": "facade_skin_stack", "axis": "front", "base_centre": [12.4, -19.43, 0.0], "span_m": 8.6, "depth_m": 0.05, "uv_u_min": 0.125, "uv_u_max": 0.875, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "floor_alt", "height_m": 3.9}, {"band": "floor", "height_m": 3.9}, {"band": "crown", "height_m": 3.9}]},
++          {"id": "hotel_outer_left_turret_windows", "kind": "frame_grid", "axis": "front", "centre": [-24.3, -18.42, 13.4], "span_m": 1.9, "height_m": 20.0, "columns": 1, "rows": 5, "vertical_profile_m": 0.09, "horizontal_profile_m": 0.09, "depth_m": 0.12, "material": "signature_metal"},
++          {"id": "hotel_outer_right_turret_windows", "kind": "frame_grid", "axis": "front", "centre": [24.3, -18.42, 13.4], "span_m": 1.9, "height_m": 20.0, "columns": 1, "rows": 5, "vertical_profile_m": 0.09, "horizontal_profile_m": 0.09, "depth_m": 0.12, "material": "signature_metal"},
++          {"id": "hotel_gate_left_tourelle_windows", "kind": "frame_grid", "axis": "front", "centre": [-5.8, -20.02, 15.0], "span_m": 1.25, "height_m": 18.0, "columns": 1, "rows": 5, "vertical_profile_m": 0.07, "horizontal_profile_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "hotel_gate_right_tourelle_windows", "kind": "frame_grid", "axis": "front", "centre": [5.8, -20.02, 15.0], "span_m": 1.25, "height_m": 18.0, "columns": 1, "rows": 5, "vertical_profile_m": 0.07, "horizontal_profile_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "hotel_outer_turret_sash_level_1", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.48, 6.2], "positions_m": [-24.3, 24.3], "opening_width_m": 1.45, "opening_height_m": 2.2, "profile_m": 0.12, "depth_m": 0.18, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_outer_turret_sash_level_2", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.48, 10.1], "positions_m": [-24.3, 24.3], "opening_width_m": 1.45, "opening_height_m": 2.2, "profile_m": 0.12, "depth_m": 0.18, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_outer_turret_sash_level_3", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.48, 14.0], "positions_m": [-24.3, 24.3], "opening_width_m": 1.45, "opening_height_m": 2.2, "profile_m": 0.12, "depth_m": 0.18, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_outer_turret_sash_level_4", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.48, 17.9], "positions_m": [-24.3, 24.3], "opening_width_m": 1.45, "opening_height_m": 2.2, "profile_m": 0.12, "depth_m": 0.18, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_outer_turret_sash_level_5", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.48, 21.8], "positions_m": [-24.3, 24.3], "opening_width_m": 1.45, "opening_height_m": 2.2, "profile_m": 0.12, "depth_m": 0.18, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gate_tourelle_sash_level_1", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -20.08, 9.0], "positions_m": [-5.8, 5.8], "opening_width_m": 1.05, "opening_height_m": 1.9, "profile_m": 0.10, "depth_m": 0.16, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gate_tourelle_sash_level_2", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -20.08, 12.9], "positions_m": [-5.8, 5.8], "opening_width_m": 1.05, "opening_height_m": 1.9, "profile_m": 0.10, "depth_m": 0.16, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gate_tourelle_sash_level_3", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -20.08, 16.8], "positions_m": [-5.8, 5.8], "opening_width_m": 1.05, "opening_height_m": 1.9, "profile_m": 0.10, "depth_m": 0.16, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gate_tourelle_sash_level_4", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -20.08, 20.7], "positions_m": [-5.8, 5.8], "opening_width_m": 1.05, "opening_height_m": 1.9, "profile_m": 0.10, "depth_m": 0.16, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gable_sash", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -20.68, 26.5], "positions_m": [-13.0, 13.0], "opening_width_m": 1.2, "opening_height_m": 1.7, "profile_m": 0.11, "depth_m": 0.16, "mullions": 1, "transoms": 1, "material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "hotel_gate_corbel_courses", "kind": "corbel_array", "axis": "front", "centre": [0.0, -20.40, 0.0], "span_m": 11.8, "count": 12, "levels_z": [8.2, 16.0, 23.8, 30.5], "depth_m": 0.48, "height_m": 0.24, "width_ratio": 0.42, "max_width_m": 0.34, "material": "signature_stone"},
++          {"id": "hotel_gate_portal", "kind": "arcade_array", "axis": "front", "centre": [0.0, -20.85, 0.0], "span_m": 7.2, "count": 1, "base_z": 0.25, "spring_z": 5.3, "inner_radius_m": 3.0, "profile_m": 0.48, "depth_m": 1.1, "pier_width_m": 0.65, "pier_depth_m": 1.25, "material": "signature_stone", "back_material": "interior"},
++          {"id": "hotel_crowstep_front", "kind": "crowstep_gable_array", "axis": "front", "base_centre": [0.0, -20.0, 24.0], "positions_m": [-13.0, 13.0], "width_m": 8.2, "height_m": 5.8, "depth_m": 0.62, "steps": 5, "material": "signature_stone", "infill_material": "signature_stone"},
++          {"id": "hotel_gate_front_battlements", "kind": "crenellation_array", "axis": "front", "base_centre": [0.0, -20.45, 31.0], "span_m": 12.0, "count": 7, "depth_m": 0.78, "course_height_m": 0.42, "merlon_height_m": 1.05, "material": "signature_stone"},
++          {"id": "hotel_gate_rear_battlements", "kind": "crenellation_array", "axis": "rear", "base_centre": [0.0, -13.75, 31.0], "span_m": 12.0, "count": 7, "depth_m": 0.78, "course_height_m": 0.42, "merlon_height_m": 1.05, "material": "signature_stone"},
++          {"id": "hotel_gate_left_battlements", "kind": "crenellation_array", "axis": "left", "base_centre": [-6.30, -17.1, 31.0], "span_m": 6.1, "count": 4, "depth_m": 0.78, "course_height_m": 0.42, "merlon_height_m": 1.05, "material": "signature_stone"},
++          {"id": "hotel_gate_right_battlements", "kind": "crenellation_array", "axis": "right", "base_centre": [6.30, -17.1, 31.0], "span_m": 6.1, "count": 4, "depth_m": 0.78, "course_height_m": 0.42, "merlon_height_m": 1.05, "material": "signature_stone"},
++          {"id": "hotel_roof_chimneys", "kind": "chimney_cluster_array", "centres": [[-18.0, -10.0, 28.0], [18.0, -10.0, 28.0], [-18.0, 10.0, 28.0], [18.0, 10.0, 28.0]], "stacks_per_cluster": 2, "height_m": 3.3, "stack_size_m": [0.72, 0.72], "spacing_m": 0.88, "material": "signature_stone"},
+           {"id": "hotel_port_cochere_columns", "kind": "column_array", "start": [-5.2, -19.65, 0.3], "end": [5.2, -19.65, 0.3], "count": 4, "section": [0.62, 0.62], "height_m": 4.65, "material": "signature_stone", "bevel_m": 0.06},
+           {"id": "hotel_left_tower_battlements", "kind": "crenellation_array", "axis": "front", "base_centre": [-22.0, -19.25, 31.2], "span_m": 8.8, "count": 5, "depth_m": 0.72, "course_height_m": 0.40, "merlon_height_m": 0.90, "material": "signature_stone"},
+           {"id": "hotel_left_tower_side_battlements", "kind": "crenellation_array", "axis": "left", "base_centre": [-26.75, -14.5, 31.2], "span_m": 8.8, "count": 5, "depth_m": 0.72, "course_height_m": 0.40, "merlon_height_m": 0.90, "material": "signature_stone"},
+           {"id": "hotel_entry_steps", "kind": "steps", "centre": [0.0, -19.55, 0.0], "width_m": 13.5, "depth_m": 1.0, "count": 4, "rise_m": 0.14, "material": "signature_stone"}
+         ],
+-        "target_views": ["archetype_match", "street", "aerial", "context"]
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+       }
+     },
+     "eixample_apartment_block": {
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 7fa3c3cc0a04eb92a1cd7cae4b71b2ab92595e6d..ce48bd7d5fdc0d129deb67e7511abf71dadc4c82 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -6704,6 +6704,60 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
+         ))
+ 
+ 
++def _graph_crowstep_gable_array(parts: list, spec: dict, mats: dict) -> None:
++    """Extruded Scottish crow-step gables with a recessed masonry infill.
++
++    The stepped silhouette is a fixed roof termination, not a texture detail.
++    It remains axis-aware so the same construction can terminate principal,
++    rear or return roof fields without becoming a flat triangular decal.
++    """
++    axis = str(spec.get("axis", "front"))
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"crowstep gable array axis {axis!r} is unsupported")
++    centre = Vector(tuple(float(value) for value in spec["base_centre"]))
++    outward, along = _glazing_axis_vectors(axis)
++    positions = [float(value) for value in (spec.get("positions_m") or [0.0])]
++    width = float(spec.get("width_m", 8.0))
++    height = float(spec.get("height_m", 6.0))
++    depth = float(spec.get("depth_m", 0.62))
++    steps = max(3, int(spec.get("steps", 5)))
++    stone = _graph_material(mats, spec.get("material", "signature_stone"))
++    infill = _graph_material(mats, spec.get("infill_material", "primary"))
++    prefix = str(spec.get("id", "GraphCrowstepGable"))
++
++    half_profile: list[tuple[float, float]] = [(-0.5, 0.0)]
++    for index in range(steps):
++        outer_x = -0.5 + 0.5 * index / steps
++        inner_x = -0.5 + 0.5 * (index + 1) / steps
++        z = (index + 1) / steps
++        half_profile.extend([(outer_x, z), (inner_x, z)])
++    outline = half_profile + [(0.0, 1.0)] + [(-x, z) for x, z in reversed(half_profile[:-1])]
++    outline.extend([(0.5, 0.0), (-0.5, 0.0)])
++
++    def extrude(name: str, datum: Vector, profile: list[tuple[float, float]],
++                profile_width: float, profile_height: float, profile_depth: float,
++                outward_offset: float, material) -> bpy.types.Object:
++        base = datum + outward * outward_offset
++        back = [base + along * (x * profile_width) + Vector((0.0, 0.0, z * profile_height)) for x, z in profile]
++        front = [point + outward * profile_depth for point in back]
++        count = len(back)
++        verts = [tuple(point) for point in back] + [tuple(point) for point in front]
++        faces: list[tuple[int, ...]] = [tuple(reversed(range(count))), tuple(range(count, count * 2))]
++        for item in range(count):
++            nxt = (item + 1) % count
++            faces.append((item, nxt, count + nxt, count + item))
++        return add_prism(name, verts, faces, material)
++
++    for index, offset in enumerate(positions):
++        datum = centre + along * offset
++        parts.append(extrude(f"{prefix}_{index:02d}_Stone", datum, outline, width, height, depth, 0.0, stone))
++        triangular = [(-0.42, 0.08), (0.0, 0.82), (0.42, 0.08)]
++        parts.append(extrude(
++            f"{prefix}_{index:02d}_Infill", datum + Vector((0.0, 0.0, height * 0.02)),
++            triangular, width, height, depth * 0.14, depth + 0.02, infill,
++        ))
++
++
+ def _graph_chimney_cluster_array(parts: list, spec: dict, mats: dict) -> None:
+     """Grouped masonry flues with banded caps for heritage roof silhouettes."""
+     centres = [tuple(float(value) for value in centre) for centre in spec.get("centres", [])]
+@@ -7177,6 +7231,10 @@ def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
+                 "depth_m": depth,
+                 "band": level.get("band", "floor"),
+                 "flip_u": spec.get("flip_u", False),
++                "uv_u_min": spec.get("uv_u_min", 0.0),
++                "uv_u_max": spec.get("uv_u_max", 1.0),
++                "uv_v_min": spec.get("uv_v_min", 0.0),
++                "uv_v_max": spec.get("uv_v_max", 1.0),
+             }
+             _graph_facade_skin(
+                 parts,
+@@ -9100,6 +9158,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_classical_portico(parts, assembly, mats)
+         elif kind == "shaped_gable_array":
+             _graph_shaped_gable_array(parts, assembly, mats)
++        elif kind == "crowstep_gable_array":
++            _graph_crowstep_gable_array(parts, assembly, mats)
+         elif kind == "chimney_cluster_array":
+             _graph_chimney_cluster_array(parts, assembly, mats)
+         elif kind == "striped_turret_array":
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index db0cd4e13eb6ab1ef2c656b83e44d8935f4a8fc9..d02ddafe827f22ad84bb24cffdd13293eb1bbd69 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-traditional-machiya-v87",
++  "memory_version": "2026-07-20-scottish-baronial-railway-hotel-v88",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -815,6 +815,36 @@
+       "symptom": "A machiya roof reads as a smooth dark membrane and its lower shop canopy as a gritty flat slab",
+       "cause": "Material colour carried the roof identity while the repeated kawara ribs, ridge and eave terminations were absent; the street canopy inherited a generic horizontal box.",
+       "correction": "Use an axis-aware tile-rib array with physical downslope ribs, ridge and eave caps, and assemble the lower canopy from shallow sloped roof segments. Verify both principal and return roof planes in oblique and aerial review."
++    },
++    {
++      "symptom": "A selected Scottish Baronial railway hotel compiles with green copper cladding from the parent hero image",
++      "cause": "The generic archetype hero was treated as the material authority even though all three selected-variant views proved pink-grey granite and dark slate.",
++      "correction": "Audit every compatible selected-variant angle before source generation. When parent and variant references conflict, the selected variant owns material identity, roof finish and landmark composition."
++    },
++    {
++      "symptom": "A courtyard hotel validates as one solid slab despite catalogue text promising an open court",
++      "cause": "Courtyard metadata was recorded as planning language but never converted into occupied wings and separate roof fields.",
++      "correction": "Construct open courts explicitly from four occupied wings and matching roof fields. Prove the uninterrupted void from aerial and rear-corner cameras before keeper promotion."
++    },
++    {
++      "symptom": "A clean railway-hotel elevation has fewer window rows than the audited six occupied levels",
++      "cause": "The image model preserved the selected material and style but treated the exact vertical count as approximate.",
++      "correction": "Recover the valid elevation as audited single-storey bands and sequence those bands into the exact level count. Do not stretch a short full-height atlas to conceal missing storeys."
++    },
++    {
++      "symptom": "A prominent gate tower stays blank or disappears behind the main wall while its portal competes with ordinary windows",
++      "cause": "The tower skin and portal were coplanar with or behind the tower core and inherited the principal facade depth order.",
++      "correction": "Give landmark entrance towers their own exposed envelope and layer order: core, tower skin, deep portal, then jamb and arch geometry. Verify the full tower from street and oblique cameras."
++    },
++    {
++      "symptom": "Baronial turrets read as blank cylinders or implausible tall black slots",
++      "cause": "Generic frame-grid placeholders were stretched over curved landmark volumes without a real occupied-window schedule.",
++      "correction": "Use bounded real sash assemblies on tangent facade planes and reserve curved volumes for silhouette. Review outer turrets and gate tourelles separately across front, corner and aerial views."
++    },
++    {
++      "symptom": "Crow-stepped gables are present in the graph but disappear behind the roof",
++      "cause": "The stepped profile was placed inside the sloped roof envelope and treated like applied facade ornament.",
++      "correction": "Author crowsteps as fixed silhouette geometry on the exposed gable plane, ahead of the roof field, and prove every step against the sky in the principal acceptance view."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 97df9e061d5d5f6e9dcb27d6dc83b7e3cb2a4c45..ea6c0e7721124629097b31376a224f3f778b8491 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -25,6 +25,6 @@
+     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "variant_id": "scandi_urban_white_plaster", "family_id": "scandi-white-plaster-v1-renderlocked", "floors": 6, "width_m": 38, "depth_m": 22, "allow_outside_bounds": true, "state": "keeper", "artifact": "scandi-white-plaster-v1/05-canonical-v5", "group": "Scandinavian urban housing"},
+     {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "variant_id": "med_arcade_italian_portici", "family_id": "italian-portici-v1-renderlocked", "floors": 3, "width_m": 30, "depth_m": 24, "allow_outside_bounds": true, "state": "keeper", "artifact": "italian-portici-v1/03-canonical-v3", "group": "arcaded mixed-use"},
+     {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "variant_id": "machiya_traditional_restored", "family_id": "traditional-machiya-v1-renderlocked", "floors": 3, "width_m": 14, "depth_m": 20, "allow_outside_bounds": true, "state": "keeper", "artifact": "traditional-machiya-v1/05-canonical-v5", "group": "timber mixed-use"},
+-    {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "floors": 6, "width_m": 55, "depth_m": 36, "state": "pending", "group": "historic railway hotel"}
++    {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "variant_id": "scottish_baronial_granite_tower", "family_id": "scottish-baronial-railway-hotel-v1-renderlocked", "floors": 6, "width_m": 55, "depth_m": 36, "allow_outside_bounds": true, "state": "keeper", "artifact": "chateauesque-railway-hotel-v1/04-canonical-v4", "group": "historic railway hotel"}
+   ]
+ }
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 58af572a0807afe3cc6f9fd7e5125b67487a5d3f..3b7fb4b9ff9b38e87031198da4175e90df81ca42 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,8 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 19
++    assert sum(entry["state"] == "keeper" for entry in entries) == 20
++    assert all(entry.get("family_id") and entry.get("artifact") for entry in entries)
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index ce13531f5fdb1827e99520e2b805dac4dd8e3417..f51960b7c1f03add00b6ad9a0599591ceceb1851 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -58,8 +58,8 @@ def test_signature_injection_is_renderer_agnostic_dict_extension():
+     chateau = {"source": {"archetype_id": "chateauesque_grand_railway_hotel"},
+                "materials": {"roof": {"base_color": "#c9c2b4"}, "accent": {}}}
+     inject_signature(chateau)
+-    assert chateau["materials"]["roof"]["base_color"] == "#6f9a8b"
+-    assert chateau["materials"]["roof"]["texture_key"] == "verdigris_copper"
++    assert chateau["materials"]["roof"]["base_color"] == "#343c47"
++    assert chateau["materials"]["roof"]["texture_key"] == "welsh_slate"
+ 
+ 
+ def test_signature_injection_prefers_an_explicit_variant_profile():
+@@ -589,15 +589,15 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
+     assert {item["rotation_z_deg"] for item in corner_skins} == {-45.0, 45.0}
+ 
+     chateau = graph_for("chateauesque_grand_railway_hotel")
+-    assert chateau["profile"] == "chateauesque_landmark_v21"
++    assert chateau["profile"] == "scottish_baronial_granite_courtyard_v1"
+     node_kinds = {node["kind"] for node in chateau["nodes"]}
+     assert {"cylinder", "cone", "gable_roof"} <= node_kinds
+     assembly_ids = {item["id"] for item in chateau["assemblies"]}
+     assert {
+-        "hotel_centre_elevation",
+-        "hotel_left_tower_elevation",
+-        "hotel_left_pavilion_elevation",
+-        "hotel_right_pavilion_elevation",
++        "hotel_gate_stack_v2",
++        "hotel_gate_portal",
++        "hotel_crowstep_front",
++        "hotel_gate_front_battlements",
+     } <= assembly_ids
+ 
+ 
+@@ -1346,6 +1346,40 @@ def test_restored_machiya_variant_locks_two_wall_levels_and_kawara_gable_tier():
+     ]
+ 
+ 
++def test_scottish_baronial_hotel_locks_open_court_gate_tower_and_crowsteps():
++    profiles = json.loads(
++        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
++            encoding="utf-8"
++        )
++    )["profiles"]
++    profile = profiles["chateauesque_grand_railway_hotel"]
++    graph = profile["massing_graph"]
++    nodes = {item["id"]: item for item in graph["nodes"]}
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["reference_dimensions"] == {
++        "width_m": 55.0,
++        "depth_m": 36.0,
++        "floors": 6,
++        "floor_height_m": 4.0,
++    }
++    assert {"hotel_shadow_core", "hotel_main_roof"} <= set(graph["disabled_node_ids"])
++    assert {f"hotel_{side}_wing" for side in ("front", "rear", "left", "right")} <= nodes.keys()
++    assert {f"hotel_{side}_roof" for side in ("front", "rear", "left", "right")} <= nodes.keys()
++    assert graph["voids"][1]["size"] == [35.5, 16.5, 31.0]
++    assert nodes["hotel_centre_pavilion"]["material"] == "signature_stone"
++    assert assemblies["hotel_gate_portal"]["kind"] == "arcade_array"
++    assert assemblies["hotel_gate_portal"]["count"] == 1
++    assert assemblies["hotel_crowstep_front"]["kind"] == "crowstep_gable_array"
++    assert assemblies["hotel_crowstep_front"]["positions_m"] == [-13.0, 13.0]
++    assert all(
++        f"hotel_gate_{side}_battlements" in assemblies
++        for side in ("front", "rear", "left", "right")
++    )
++    assert profile["material_overrides"]["roof"]["texture_key"] == "welsh_slate"
++    assert profile["footprint_compatibility_override"]["recommendedFloors"] == [5, 7]
++
++
+ def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():
+     np = pytest.importorskip("numpy")
+     pytest.importorskip("PIL")
+-- 
+2.55.0.windows.2
+

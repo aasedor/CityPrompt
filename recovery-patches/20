@@ -1,0 +1,421 @@
+From ebd219a289f719fc73ca781bce3a7b216e1b566a Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 10:00:46 -0600
+Subject: [PATCH 20/32] feat: render-lock traditional restored machiya
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  21 +++
+ .../architectural_signature_profiles.json     |  97 ++++++++++++
+ tools/archetype_compiler/blender_generate.py  | 148 ++++++++++++++++++
+ .../high_quality_building_memory.json         |  12 +-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  31 ++++
+ 7 files changed, 310 insertions(+), 3 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 7d9dcf5395979935181f9adedd607b919346448f..fb560a26bd90d1d68177502966f0149bc6c95bd3 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -727,6 +727,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   that hierarchy explicitly rather than mirroring the ceremonial arcade onto
+   every face without evidence.
+ 
++### Restored machiya + roof, gable and lattice lessons
++
++- A legacy elevation with too many wall rows can still be useful as audited
++  construction bands. Crop the podium, ordinary wall and crown evidence, then
++  sequence only the bands required by the selected two-wall-level machiya; do
++  not reproduce the source's complete four-row stack.
++- Fine `koshi` lattice needs a restrained physical overlay. Let the atlas carry
++  the dense wood grid while a bounded set of shadow-casting bars establishes
++  depth; duplicating every photographed slat as geometry creates a black cage.
++- The shop threshold is an intentional void, not a bright facade card. Preserve
++  the recessed dark opening, divide the indigo `noren` into separate hanging
++  panels, and leave the narrow garden entry visibly open beside it.
++- Gable framing must read as a complete triangular construction. A lone king
++  post and collar looked like an accidental cross; the accepted assembly adds
++  the base beam and both sloped rafters around the white clay infill.
++- Kawara identity requires silhouette evidence even when the material library
++  has only a neutral dark roof membrane. Use physical downslope ribs, ridge and
++  eave caps on both roof planes, and prove the ridge direction from aerial view.
++- Lower eaves follow the same rule. Replace flat canopy boxes with shallow
++  sloped roof segments that wrap the public faces before canonical promotion.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 6dc35509b7578c0a8698d7b9af87218aa7b9d3cd..f48aa9d2b2e0ecc231e65016c644ebbf773e7fb2 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1700,6 +1700,103 @@
+       "material_overrides": {"roof": {"base_color": "#242526", "roughness": 0.72}, "accent": {"base_color": "#493326", "roughness": 0.66}},
+       "kits": ["machiya_shopfront", "timber_lattice", "deep_eaves", "layered_threshold"]
+     },
++    "machiya_traditional_restored": {
++      "identity": "Restored Kyoto machiya corner with two full timber-and-clay wall levels, an inhabited gable tier, fine koshi screens, an indigo noren, a mossy tsuboniwa threshold and a deeply overhanging charcoal kawara roof.",
++      "material_zones": "weathered dark timber; white shikkui clay plaster; indigo cloth; charcoal ceramic kawara tile; warm shop interior; moss and cut stone",
++      "glass_profile": "heritage_leaded_occupied",
++      "material_overrides": {
++        "primary": {"base_color": "#3b2a21", "roughness": 0.72, "metallic": 0.0, "texture_key": "charred_timber"},
++        "secondary": {"base_color": "#e2ddd0", "roughness": 0.88, "metallic": 0.0, "texture_key": "white_plaster"},
++        "accent": {"base_color": "#1f3157", "roughness": 0.78, "metallic": 0.0, "texture_key": null},
++        "roof": {"base_color": "#343638", "roughness": 0.88, "metallic": 0.0, "texture_key": "roof_membrane"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#8f8a80", "roughness": 0.86, "metallic": 0.0, "texture_key": "granite"},
++        "signature_warm": {"base_color": "#4a3124", "roughness": 0.72, "metallic": 0.0, "texture_key": "charred_timber"},
++        "signature_roof": {"base_color": "#343638", "roughness": 0.88, "metallic": 0.0, "texture_key": "roof_membrane"},
++        "signature_metal": {"base_color": "#27292a", "roughness": 0.68, "metallic": 0.18, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [5, 14],
++        "recommendedDepth_m": [16, 24],
++        "recommendedFloors": [2, 3],
++        "wingDepth_m": [6, 10],
++        "preferredBayMultiple_m": 3.5,
++        "notes": [
++          "Use the render-locked restored corner graph only at the native 14 by 20 metre, three-tier rectangle with two wall levels and one inhabited gable tier.",
++          "Derived narrow and courtyard kits must retain complete shop threshold, tsuboniwa, noren, koshi lattice, lower tile canopy and kawara gable-roof assemblies."
++        ]
++      },
++      "kits": ["machiya_shopfront", "timber_koshi_lattice", "indigo_noren", "layered_stone_threshold", "tsuboniwa_glimpse", "kawara_gable_roof"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "restored_machiya_koshi_gable_v1",
++        "description": "A fixed restored Kyoto corner machiya with one shop level, one continuous lattice residential level, a timbered white-plaster gable tier and deeply overhanging kawara roof construction.",
++        "height_m": 10.2,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 14.0, "depth_m": 20.0, "floors": 3, "floor_height_m": 3.3},
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/japanese_machiya_mixed_use/variant_0.png", "cues": ["two full timber-and-clay wall levels", "fine koshi lattice", "indigo noren", "white gable infill"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/japanese_machiya_mixed_use/variant_0_angle_60.jpg", "cues": ["deep corner return", "lower tiled shop canopy", "continuous dark timber frame", "broad grey kawara roof"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/japanese_machiya_mixed_use/variant_0_angle_90.jpg", "cues": ["narrow deep parcel", "ridge along the deep axis", "small internal garden voids", "no flat roof or tower"]}
++        ],
++        "nodes": [
++          {"id": "machiya_plinth", "kind": "box", "size": [14.7, 20.7, 0.30], "location": [0.0, 0.0, 0.15], "material": "signature_stone", "bevel_m": 0.035},
++          {"id": "machiya_shadow_core", "kind": "box", "size": [13.5, 19.5, 6.6], "location": [0.0, 0.0, 3.3], "material": "secondary", "bevel_m": 0.10},
++          {"id": "machiya_main_kawara_roof", "kind": "gable_roof", "size": [15.4, 21.4, 3.40], "location": [0.0, 0.0, 6.6], "material": "roof", "bevel_m": 0.055, "ridge_axis": "y"},
++          {"id": "machiya_front_white_gable", "kind": "gable_roof", "size": [13.45, 0.16, 3.16], "location": [0.0, -10.76, 6.62], "material": "secondary", "bevel_m": 0.018, "ridge_axis": "y"},
++          {"id": "machiya_rear_white_gable", "kind": "gable_roof", "size": [13.45, 0.16, 3.16], "location": [0.0, 10.76, 6.62], "material": "secondary", "bevel_m": 0.018, "ridge_axis": "y"},
++          {"id": "machiya_front_shop_canopy", "kind": "gable_roof", "size": [15.2, 1.35, 0.48], "location": [0.0, -10.10, 3.30], "material": "roof", "bevel_m": 0.028, "ridge_axis": "x"},
++          {"id": "machiya_rear_shop_canopy", "kind": "gable_roof", "size": [15.2, 1.35, 0.48], "location": [0.0, 10.10, 3.30], "material": "roof", "bevel_m": 0.028, "ridge_axis": "x"},
++          {"id": "machiya_left_shop_canopy", "kind": "gable_roof", "size": [1.35, 19.2, 0.48], "location": [-7.10, 0.0, 3.30], "material": "roof", "bevel_m": 0.028, "ridge_axis": "y"},
++          {"id": "machiya_right_shop_canopy", "kind": "gable_roof", "size": [1.35, 19.2, 0.48], "location": [7.10, 0.0, 3.30], "material": "roof", "bevel_m": 0.028, "ridge_axis": "y"},
++          {"id": "machiya_front_eave_beam", "kind": "box", "size": [15.0, 0.42, 0.34], "location": [0.0, -10.28, 6.50], "material": "signature_warm", "bevel_m": 0.03},
++          {"id": "machiya_rear_eave_beam", "kind": "box", "size": [15.0, 0.42, 0.34], "location": [0.0, 10.28, 6.50], "material": "signature_warm", "bevel_m": 0.03},
++          {"id": "machiya_entry_shadow", "kind": "box", "size": [3.75, 0.42, 3.0], "location": [-0.7, -9.66, 1.72], "material": "interior", "bevel_m": 0.03},
++          {"id": "machiya_entry_left_post", "kind": "box", "size": [0.26, 0.72, 3.2], "location": [-2.68, -10.06, 1.75], "material": "signature_warm", "bevel_m": 0.025},
++          {"id": "machiya_entry_right_post", "kind": "box", "size": [0.26, 0.72, 3.2], "location": [1.28, -10.06, 1.75], "material": "signature_warm", "bevel_m": 0.025},
++          {"id": "machiya_entry_header", "kind": "box", "size": [4.22, 0.72, 0.28], "location": [-0.7, -10.06, 3.22], "material": "signature_warm", "bevel_m": 0.025},
++          {"id": "machiya_threshold", "kind": "box", "size": [4.1, 1.25, 0.18], "location": [-0.7, -10.38, 0.28], "material": "signature_stone", "bevel_m": 0.035},
++          {"id": "machiya_noren_1", "kind": "box", "size": [0.78, 0.045, 1.02], "location": [-0.70, -10.45, 2.32], "material": "accent", "bevel_m": 0.008},
++          {"id": "machiya_noren_2", "kind": "box", "size": [0.78, 0.045, 1.02], "location": [0.12, -10.45, 2.32], "material": "accent", "bevel_m": 0.008},
++          {"id": "machiya_noren_3", "kind": "box", "size": [0.78, 0.045, 1.02], "location": [0.94, -10.45, 2.32], "material": "accent", "bevel_m": 0.008},
++          {"id": "machiya_garden_moss", "kind": "box", "size": [1.25, 0.75, 0.16], "location": [-1.75, -10.00, 0.40], "material": "plant", "bevel_m": 0.06},
++          {"id": "machiya_garden_bamboo_1", "kind": "cylinder", "radius_m": 0.07, "height_m": 1.75, "location": [-2.08, -9.92, 1.25], "material": "plant", "vertices": 12},
++          {"id": "machiya_garden_bamboo_2", "kind": "cylinder", "radius_m": 0.06, "height_m": 1.55, "location": [-1.78, -9.88, 1.12], "material": "plant_alt", "vertices": 12},
++          {"id": "machiya_lantern_stem", "kind": "cylinder", "radius_m": 0.12, "height_m": 0.72, "location": [-1.38, -10.02, 0.85], "material": "signature_stone", "vertices": 12},
++          {"id": "machiya_lantern_cap", "kind": "box", "size": [0.52, 0.44, 0.16], "location": [-1.38, -10.02, 1.27], "material": "signature_stone", "bevel_m": 0.035}
++        ],
++        "voids": [
++          {"id": "machiya_layered_shop_threshold", "size": [3.8, 1.8, 3.0], "location": [-0.7, -9.8, 1.7], "purpose": "open mise-no-ma and tsuboniwa glimpse behind the indigo noren"},
++          {"id": "machiya_inhabited_gable_tier", "size": [11.5, 17.5, 3.8], "location": [0.0, 0.0, 8.2], "purpose": "bounded inhabited roof volume below the deep kawara gable"}
++        ],
++        "assemblies": [
++          {"id": "machiya_front_podium_left", "kind": "facade_skin", "axis": "front", "centre": [-4.70, -9.78, 1.65], "span_m": 4.2, "height_m": 3.3, "depth_m": 0.05, "band": "podium", "uv_u_min": 0.0, "uv_u_max": 0.31},
++          {"id": "machiya_front_podium_right", "kind": "facade_skin", "axis": "front", "centre": [4.05, -9.78, 1.65], "span_m": 5.5, "height_m": 3.3, "depth_m": 0.05, "band": "podium", "uv_u_min": 0.55, "uv_u_max": 1.0},
++          {"id": "machiya_front_upper_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -9.78, 4.95], "span_m": 13.5, "height_m": 3.3, "depth_m": 0.05, "band": "floor"},
++          {"id": "machiya_left_podium_skin", "kind": "facade_skin", "axis": "left", "centre": [-6.78, 0.0, 1.65], "span_m": 19.5, "height_m": 3.3, "depth_m": 0.05, "band": "podium", "flip_u": true},
++          {"id": "machiya_left_upper_skin", "kind": "facade_skin", "axis": "left", "centre": [-6.78, 0.0, 4.95], "span_m": 19.5, "height_m": 3.3, "depth_m": 0.05, "band": "floor", "flip_u": true},
++          {"id": "machiya_right_podium_skin", "kind": "facade_skin", "axis": "right", "centre": [6.78, 0.0, 1.65], "span_m": 19.5, "height_m": 3.3, "depth_m": 0.05, "band": "podium"},
++          {"id": "machiya_right_upper_skin", "kind": "facade_skin", "axis": "right", "centre": [6.78, 0.0, 4.95], "span_m": 19.5, "height_m": 3.3, "depth_m": 0.05, "band": "floor"},
++          {"id": "machiya_rear_podium_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 9.78, 1.65], "span_m": 13.5, "height_m": 3.3, "depth_m": 0.05, "band": "podium", "flip_u": true},
++          {"id": "machiya_rear_upper_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 9.78, 4.95], "span_m": 13.5, "height_m": 3.3, "depth_m": 0.05, "band": "floor", "flip_u": true},
++          {"id": "machiya_front_upper_koshi", "kind": "frame_grid", "axis": "front", "centre": [0.0, -10.02, 4.95], "span_m": 13.35, "height_m": 2.72, "columns": 18, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.055, "horizontal_profile_m": 0.10, "depth_m": 0.10, "vertical_depth_m": 0.12, "horizontal_depth_m": 0.14, "material": "signature_warm"},
++          {"id": "machiya_front_ground_koshi_left", "kind": "frame_grid", "axis": "front", "centre": [-4.70, -10.02, 1.70], "span_m": 4.05, "height_m": 2.72, "columns": 6, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.055, "horizontal_profile_m": 0.10, "depth_m": 0.10, "vertical_depth_m": 0.12, "horizontal_depth_m": 0.14, "material": "signature_warm"},
++          {"id": "machiya_front_ground_koshi_right", "kind": "frame_grid", "axis": "front", "centre": [4.05, -10.02, 1.70], "span_m": 5.35, "height_m": 2.72, "columns": 8, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.055, "horizontal_profile_m": 0.10, "depth_m": 0.10, "vertical_depth_m": 0.12, "horizontal_depth_m": 0.14, "material": "signature_warm"},
++          {"id": "machiya_entry_koshi", "kind": "frame_grid", "axis": "front", "centre": [0.25, -10.24, 1.70], "span_m": 2.0, "height_m": 2.45, "columns": 6, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.05, "horizontal_profile_m": 0.08, "depth_m": 0.08, "vertical_depth_m": 0.10, "horizontal_depth_m": 0.12, "material": "signature_warm"},
++          {"id": "machiya_left_upper_koshi", "kind": "frame_grid", "axis": "left", "centre": [-7.02, 0.0, 4.95], "span_m": 19.35, "height_m": 2.72, "columns": 26, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.055, "horizontal_profile_m": 0.10, "depth_m": 0.10, "vertical_depth_m": 0.12, "horizontal_depth_m": 0.14, "material": "signature_warm"},
++          {"id": "machiya_right_upper_koshi", "kind": "frame_grid", "axis": "right", "centre": [7.02, 0.0, 4.95], "span_m": 19.35, "height_m": 2.72, "columns": 26, "rows": 2, "active_horizontal_indices": [0, 1, 2], "vertical_profile_m": 0.055, "horizontal_profile_m": 0.10, "depth_m": 0.10, "vertical_depth_m": 0.12, "horizontal_depth_m": 0.14, "material": "signature_warm"},
++          {"id": "machiya_kawara_ribs", "kind": "gable_roof_tile_array", "centre": [0.0, 0.0, 6.6], "width_m": 15.4, "depth_m": 21.4, "rise_m": 3.40, "ridge_axis": "y", "spacing_m": 0.43, "profile_m": 0.06, "rib_height_m": 0.075, "cap_width_m": 0.28, "material": "roof"},
++          {"id": "machiya_front_timber_gable", "kind": "timber_gable_frame", "axis": "front", "centre": [0.0, -10.88, 6.64], "width_m": 13.45, "rise_m": 3.08, "depth_m": 0.30, "profile_m": 0.28, "collar_height_ratio": 0.54, "collar_span_ratio": 0.55, "material": "signature_warm"},
++          {"id": "machiya_rear_timber_gable", "kind": "timber_gable_frame", "axis": "rear", "centre": [0.0, 10.88, 6.64], "width_m": 13.45, "rise_m": 3.08, "depth_m": 0.30, "profile_m": 0.28, "collar_height_ratio": 0.54, "collar_span_ratio": 0.55, "material": "signature_warm"},
++          {"id": "machiya_front_eave_brackets", "kind": "corbel_array", "axis": "front", "centre": [0.0, -10.34, 0.0], "span_m": 14.8, "count": 18, "levels_z": [6.28], "depth_m": 0.58, "height_m": 0.34, "width_ratio": 0.40, "max_width_m": 0.28, "material": "signature_warm"},
++          {"id": "machiya_left_eave_brackets", "kind": "corbel_array", "axis": "left", "centre": [-7.34, 0.0, 0.0], "span_m": 20.6, "count": 24, "levels_z": [6.28], "depth_m": 0.58, "height_m": 0.34, "width_ratio": 0.40, "max_width_m": 0.28, "material": "signature_warm"},
++          {"id": "machiya_right_eave_brackets", "kind": "corbel_array", "axis": "right", "centre": [7.34, 0.0, 0.0], "span_m": 20.6, "count": 24, "levels_z": [6.28], "depth_m": 0.58, "height_m": 0.34, "width_ratio": 0.40, "max_width_m": 0.28, "material": "signature_warm"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
++    },
+     "modernist_civic_block": {
+       "identity": "Monumental modernist civic block with a floating upper volume, pilotis, deep brise-soleil, ceremonial cantilever canopy and exposed concrete frame.",
+       "material_zones": "board-marked concrete; dark bronze frames; clear glass; warm soffit",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index c4a2674e8e344573b261a21f01851abc86f67cf8..7fa3c3cc0a04eb92a1cd7cae4b71b2ab92595e6d 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -8514,6 +8514,150 @@ def _graph_hip_roof_seam_array(parts: list, spec: dict, mats: dict) -> None:
+         )
+ 
+ 
++def _graph_gable_roof_tile_array(parts: list, spec: dict, mats: dict) -> None:
++    """Low-poly ceramic tile ribs registered to both planes of a gable roof.
++
++    The roof material supplies colour and fine normal detail; these sparse
++    downslope ribs carry the grazing-angle silhouette of kawara, pantile and
++    other deeply profiled tile systems.  The assembly supports either ridge
++    axis and includes bounded ridge/eave caps so it remains a reusable roof
++    kit rather than a facade-specific decoration.
++    """
++    cx, cy, eave_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    depth = float(spec["depth_m"])
++    rise = float(spec["rise_m"])
++    ridge_axis = str(spec.get("ridge_axis", "y"))
++    spacing = max(0.22, float(spec.get("spacing_m", 0.42)))
++    profile = float(spec.get("profile_m", 0.055))
++    rib_height = float(spec.get("rib_height_m", 0.065))
++    cap_width = float(spec.get("cap_width_m", 0.24))
++    roof = _graph_material(mats, spec.get("material", "roof"))
++    prefix = str(spec.get("id", "GraphGableRoofTiles"))
++
++    if ridge_axis == "y":
++        half_run = width / 2
++        slope_length = math.sqrt(half_run * half_run + rise * rise)
++        slope_angle = math.atan2(rise, half_run)
++        count = max(2, int(depth / spacing))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            for index in range(count + 1):
++                y = cy - depth / 2 + depth * index / count
++                rib = add_beveled_box(
++                    f"{prefix}_Plane{side_index}_Rib{index:03d}",
++                    (slope_length, profile, rib_height),
++                    (cx + side * width / 4, y, eave_z + rise / 2 + rib_height * 0.82),
++                    roof, min(0.012, profile * 0.18),
++                )
++                rib.rotation_euler.y = side * slope_angle
++                parts.append(rib)
++        parts.append(add_beveled_box(
++            f"{prefix}_RidgeCap", (cap_width, depth + 0.42, cap_width * 0.72),
++            (cx, cy, eave_z + rise + cap_width * 0.18), roof, min(0.025, cap_width * 0.10),
++        ))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            parts.append(add_beveled_box(
++                f"{prefix}_EaveCap{side_index}", (cap_width * 0.78, depth + 0.32, cap_width * 0.58),
++                (cx + side * width / 2, cy, eave_z + cap_width * 0.04),
++                roof, min(0.02, cap_width * 0.08),
++            ))
++    elif ridge_axis == "x":
++        half_run = depth / 2
++        slope_length = math.sqrt(half_run * half_run + rise * rise)
++        slope_angle = math.atan2(rise, half_run)
++        count = max(2, int(width / spacing))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            for index in range(count + 1):
++                x = cx - width / 2 + width * index / count
++                rib = add_beveled_box(
++                    f"{prefix}_Plane{side_index}_Rib{index:03d}",
++                    (profile, slope_length, rib_height),
++                    (x, cy + side * depth / 4, eave_z + rise / 2 + rib_height * 0.82),
++                    roof, min(0.012, profile * 0.18),
++                )
++                rib.rotation_euler.x = -side * slope_angle
++                parts.append(rib)
++        parts.append(add_beveled_box(
++            f"{prefix}_RidgeCap", (width + 0.42, cap_width, cap_width * 0.72),
++            (cx, cy, eave_z + rise + cap_width * 0.18), roof, min(0.025, cap_width * 0.10),
++        ))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            parts.append(add_beveled_box(
++                f"{prefix}_EaveCap{side_index}", (width + 0.32, cap_width * 0.78, cap_width * 0.58),
++                (cx, cy + side * depth / 2, eave_z + cap_width * 0.04),
++                roof, min(0.02, cap_width * 0.08),
++            ))
++    else:
++        raise ValueError(f"gable roof tile array ridge axis {ridge_axis!r} is unsupported")
++
++
++def _graph_timber_gable_frame(parts: list, spec: dict, mats: dict) -> None:
++    """Triangular timber frame applied to a plaster gable end.
++
++    The sloped rafters are essential: a center post plus collar alone reads as
++    a graphic cross rather than carpentry.  This bounded assembly keeps the
++    base beam, rafters, king post and collar registered to the roof pitch on
++    any cardinal facade axis.
++    """
++    axis = str(spec.get("axis", "front"))
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"timber gable frame axis {axis!r} is unsupported")
++    cx, cy, eave_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    rise = float(spec["rise_m"])
++    depth = float(spec.get("depth_m", 0.26))
++    profile = float(spec.get("profile_m", 0.26))
++    collar_ratio = float(spec.get("collar_height_ratio", 0.54))
++    collar_span_ratio = float(spec.get("collar_span_ratio", 0.56))
++    timber = _graph_material(mats, spec.get("material", "signature_warm"))
++    prefix = str(spec.get("id", "GraphTimberGable"))
++    angle = math.atan2(rise, width / 2)
++    rafter_length = math.sqrt((width / 2) ** 2 + rise ** 2)
++
++    if axis in {"front", "rear"}:
++        parts.append(add_beveled_box(
++            f"{prefix}_BaseBeam", (width, depth, profile),
++            (cx, cy, eave_z + profile / 2), timber, min(0.025, profile * 0.10),
++        ))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            rafter = add_beveled_box(
++                f"{prefix}_Rafter{side_index}", (rafter_length, depth, profile),
++                (cx + side * width / 4, cy, eave_z + rise / 2),
++                timber, min(0.025, profile * 0.10),
++            )
++            rafter.rotation_euler.y = side * angle
++            parts.append(rafter)
++        parts.append(add_beveled_box(
++            f"{prefix}_KingPost", (profile, depth, rise),
++            (cx, cy, eave_z + rise / 2), timber, min(0.025, profile * 0.10),
++        ))
++        parts.append(add_beveled_box(
++            f"{prefix}_Collar", (width * collar_span_ratio, depth, profile * 0.84),
++            (cx, cy, eave_z + rise * collar_ratio), timber, min(0.025, profile * 0.10),
++        ))
++    else:
++        parts.append(add_beveled_box(
++            f"{prefix}_BaseBeam", (depth, width, profile),
++            (cx, cy, eave_z + profile / 2), timber, min(0.025, profile * 0.10),
++        ))
++        for side_index, side in enumerate((-1.0, 1.0)):
++            rafter = add_beveled_box(
++                f"{prefix}_Rafter{side_index}", (depth, rafter_length, profile),
++                (cx, cy + side * width / 4, eave_z + rise / 2),
++                timber, min(0.025, profile * 0.10),
++            )
++            rafter.rotation_euler.x = -side * angle
++            parts.append(rafter)
++        parts.append(add_beveled_box(
++            f"{prefix}_KingPost", (depth, profile, rise),
++            (cx, cy, eave_z + rise / 2), timber, min(0.025, profile * 0.10),
++        ))
++        parts.append(add_beveled_box(
++            f"{prefix}_Collar", (depth, width * collar_span_ratio, profile * 0.84),
++            (cx, cy, eave_z + rise * collar_ratio), timber, min(0.025, profile * 0.10),
++        ))
++
++
+ def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
+     """Stone rail and low-cost turned balusters around a civic roof edge."""
+     cx, cy, base_z = (float(value) for value in spec["centre"])
+@@ -9008,6 +9152,10 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_courtyard_hip_roof(parts, assembly, mats)
+         elif kind == "hip_roof_seam_array":
+             _graph_hip_roof_seam_array(parts, assembly, mats)
++        elif kind == "gable_roof_tile_array":
++            _graph_gable_roof_tile_array(parts, assembly, mats)
++        elif kind == "timber_gable_frame":
++            _graph_timber_gable_frame(parts, assembly, mats)
+         elif kind == "classical_balustrade_perimeter":
+             _graph_classical_balustrade_perimeter(parts, assembly, mats)
+         elif kind == "classical_window_array":
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 1169684132a02d723c008e64dc64f2f22dcfafdf..db0cd4e13eb6ab1ef2c656b83e44d8935f4a8fc9 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-italian-portici-v86",
++  "memory_version": "2026-07-20-traditional-machiya-v87",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -805,6 +805,16 @@
+       "symptom": "A corner portico keeps its curved arches on the principal face but collapses into flat rectangular openings on the return",
+       "cause": "The earlier round-arch helper was hard-wired to the front elevation and treated a deep arcade like a row of punched facade windows.",
+       "correction": "Use an axis-aware fixed arcade assembly with an explicit bay count, shared masonry piers, curved arch rings, recessed occupied shopfront cards and a continuous threshold. Prove both the principal and return rhythms in the front-corner and aerial views."
++    },
++    {
++      "symptom": "A restored machiya gable reads as an accidental cross instead of a complete timber frame",
++      "cause": "A center post and one collar beam were used as shorthand while the triangular rafters and base beam visible in the reference were omitted.",
++      "correction": "Build the gable frame as one axis-aware assembly with a base beam, paired sloped rafters, king post and bounded collar. Review the complete triangular silhouette from the principal street camera before promotion."
++    },
++    {
++      "symptom": "A machiya roof reads as a smooth dark membrane and its lower shop canopy as a gritty flat slab",
++      "cause": "Material colour carried the roof identity while the repeated kawara ribs, ridge and eave terminations were absent; the street canopy inherited a generic horizontal box.",
++      "correction": "Use an axis-aware tile-rib array with physical downslope ribs, ridge and eave caps, and assemble the lower canopy from shallow sloped roof segments. Verify both principal and return roof planes in oblique and aerial review."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 9fd80bc90b607388b0b56342ae19a884cb27990c..97df9e061d5d5f6e9dcb27d6dc83b7e3cb2a4c45 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -24,7 +24,7 @@
+     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "variant_id": "nordic_timber_mass_timber", "family_id": "nordic-mass-timber-v1-renderlocked", "floors": 7, "width_m": 20, "depth_m": 16, "state": "keeper", "artifact": "nordic-mass-timber-v1/03-canonical-v3", "group": "mass-timber residential"},
+     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "variant_id": "scandi_urban_white_plaster", "family_id": "scandi-white-plaster-v1-renderlocked", "floors": 6, "width_m": 38, "depth_m": 22, "allow_outside_bounds": true, "state": "keeper", "artifact": "scandi-white-plaster-v1/05-canonical-v5", "group": "Scandinavian urban housing"},
+     {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "variant_id": "med_arcade_italian_portici", "family_id": "italian-portici-v1-renderlocked", "floors": 3, "width_m": 30, "depth_m": 24, "allow_outside_bounds": true, "state": "keeper", "artifact": "italian-portici-v1/03-canonical-v3", "group": "arcaded mixed-use"},
+-    {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "floors": 3, "state": "pending", "group": "timber mixed-use"},
++    {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "variant_id": "machiya_traditional_restored", "family_id": "traditional-machiya-v1-renderlocked", "floors": 3, "width_m": 14, "depth_m": 20, "allow_outside_bounds": true, "state": "keeper", "artifact": "traditional-machiya-v1/05-canonical-v5", "group": "timber mixed-use"},
+     {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "floors": 6, "width_m": 55, "depth_m": 36, "state": "pending", "group": "historic railway hotel"}
+   ]
+ }
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 81ced8fe4972dcc03e4355c4348e16dd84be8223..58af572a0807afe3cc6f9fd7e5125b67487a5d3f 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 18
++    assert sum(entry["state"] == "keeper" for entry in entries) == 19
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 32b125e808386fe2eaf47982ff59dcda13c70ebb..ce13531f5fdb1827e99520e2b805dac4dd8e3417 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -1315,6 +1315,37 @@ def test_italian_portici_variant_locks_six_arch_corner_arcade_and_hip_roof():
+     assert profile["footprint_compatibility_override"]["recommendedFloors"] == [3, 3]
+ 
+ 
++def test_restored_machiya_variant_locks_two_wall_levels_and_kawara_gable_tier():
++    profiles = json.loads(
++        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
++            encoding="utf-8"
++        )
++    )["profiles"]
++    profile = profiles["machiya_traditional_restored"]
++    graph = profile["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++    nodes = {item["id"]: item for item in graph["nodes"]}
++
++    assert graph["reference_dimensions"] == {
++        "width_m": 14.0,
++        "depth_m": 20.0,
++        "floors": 3,
++        "floor_height_m": 3.3,
++    }
++    assert nodes["machiya_main_kawara_roof"]["kind"] == "gable_roof"
++    assert nodes["machiya_main_kawara_roof"]["ridge_axis"] == "y"
++    assert assemblies["machiya_kawara_ribs"]["kind"] == "gable_roof_tile_array"
++    assert assemblies["machiya_kawara_ribs"]["spacing_m"] < 0.5
++    assert assemblies["machiya_front_timber_gable"]["kind"] == "timber_gable_frame"
++    assert assemblies["machiya_front_upper_koshi"]["columns"] == 18
++    assert {"machiya_noren_1", "machiya_noren_2", "machiya_noren_3"} <= nodes.keys()
++    assert profile["footprint_compatibility_override"]["preferredProfiles"] == [
++        "rectangle",
++        "l_shape",
++        "u_shape",
++    ]
++
++
+ def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():
+     np = pytest.importorskip("numpy")
+     pytest.importorskip("PIL")
+-- 
+2.55.0.windows.2
+

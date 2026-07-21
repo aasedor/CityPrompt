@@ -1,0 +1,378 @@
+From 63f0e9e9a5294a6b653e86f5d3ee0791582bf105 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Sun, 19 Jul 2026 23:47:38 -0600
+Subject: [PATCH 02/32] feat: refine render-locked Ruskinian family
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 23 +++++++-
+ .../architectural_signature_profiles.json     | 46 ++++++++--------
+ tools/archetype_compiler/blender_generate.py  | 48 ++++++++++------
+ .../high_quality_building_memory.json         | 24 +++++++-
+ .../tests/test_facade_sheets.py               | 55 ++++++++++++++++++-
+ .../tests/test_quality_memory.py              |  2 +-
+ 6 files changed, 153 insertions(+), 45 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 46c1463aab839451697fa4e450f14bc44c1fb3d9..9973c486a3f2ccabf2c92d1045516b713715772a 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-18-nine-family-v21`.
++Current executable memory: `2026-07-20-ruskinian-gable-layering-v67`.
+ 
+ ## The quality target
+ 
+@@ -394,6 +394,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   subordinate. Use the same warm stone PBR family, shallow projections and
+   narrow profiles; validate in Google Tiles because bright runtime exposure can
+   turn a restrained offline course into detached white trim.
++- Derive an integer repeat count from the measured PBR band span before Blender
++  assembly. The physical segment (`wall span / repeat count`) should stay within
++  ten percent of the manifest span on every elevation; otherwise the facade,
++  semantic glass and occupied interiors remain phase-aligned but are still
++  visibly stretched together.
++- Preserving a `side` band in the facade manifest is insufficient: the Blender
++  material loader must materialize that role before the massing graph can apply
++  it. Inspect left, right and rear faces in both near and far review LODs.
++- Treat the quality memory as the camera-set authority. The renderer's `all`
++  preset must emit front-corner, rear-corner and facade-close views as well as
++  preview, street, aerial and context views; a missing role is a producer bug,
++  not a manifest exception.
++- A gable-roof primitive cannot assign its roof finish to a visible masonry
++  end wall. Add fixed, axis-aware gable-end construction with its own verge,
++  horizontal bands and pointed openings on every exposed cross-gable face.
++- Layered gables need an explicit outward construction order. Offset the brick
++  infill to the exposed face of the deeper stone verge; co-locating both prisms
++  hides the infill and turns the whole gable into a pale stone triangle.
++- Multi-role near/far PBR families legitimately carry more materials than a
++  flat legacy atlas. Review above 32 assembled materials while continuing to
++  consolidate shader-equivalent clones and package runtime textures with KTX2.
+ 
+ ## Updating this memory
+ 
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 2a6140cb2607c0b2ba3c11be5ff32c6c2de06adc..f402a40709c71d291d45ea7c64c82978f569c868 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -353,18 +353,19 @@
+       "kits": ["polychrome_wall_bands", "striped_corner_turrets", "pointed_lancet_groups", "carved_floor_friezes", "fixed_central_portal", "steep_cross_gables", "ridge_cresting"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "ruskinian_polychrome_hall_v63",
++        "profile": "ruskinian_polychrome_hall_v68",
+         "description": "A compact four-storey polychrome hall with audited repeat-span elevations, fixed cylindrical corner turrets, tangent-closed wall junctions, wrapped secondary facades, restrained course relief and recessed occupied glazing on every exposed face.",
+         "reference_views": [
+           {"role": "street_identity", "path": "/archetypes/buildings/collegiate_gothic_education/variant_3.png", "cues": ["alternating masonry stripes", "cylindrical corner turrets", "grouped pointed arches", "central carved portal"]},
+           {"role": "oblique_massing", "path": "/archetypes/buildings/collegiate_gothic_education/variant_3_angle_60.jpg", "cues": ["four corner turrets", "square hall massing", "cross gables", "side elevation hierarchy"]},
+           {"role": "roof_plan", "path": "/archetypes/buildings/collegiate_gothic_education/variant_3_angle_90.jpg", "cues": ["cross-gable roof plan", "polychrome roof pattern", "four conical turret roofs", "fixed central front gable"]}
+         ],
+-        "height_m": 25.3,
++        "height_m": 23.0,
+         "reference_dimensions": {"width_m": 40.0, "depth_m": 35.0, "floors": 4, "floor_height_m": 4.2},
+         "nodes": [
+           {"id": "ruskinian_plinth", "kind": "box", "size": [33.2, 28.2, 0.24], "location": [0.0, 0.0, 0.12], "material": "signature_stone", "bevel_m": 0.04},
+           {"id": "ruskinian_service_cavity_core", "kind": "box", "size": [33.3, 28.3, 16.8], "location": [0.0, 0.0, 8.90], "material": "primary", "bevel_m": 0.20},
++          {"id": "ruskinian_roof_infill_deck", "kind": "box", "size": [34.0, 29.0, 0.12], "location": [0.0, 0.0, 17.34], "material": "roof", "bevel_m": 0.03},
+           {"id": "ruskinian_cross_roof_east_west", "kind": "gable_roof", "size": [34.8, 15.0, 5.2], "location": [0.0, 0.0, 17.30], "material": "roof", "bevel_m": 0.10, "ridge_axis": "x"},
+           {"id": "ruskinian_cross_roof_north_south", "kind": "gable_roof", "size": [13.0, 30.0, 5.5], "location": [0.0, 0.0, 17.30], "material": "roof", "bevel_m": 0.10, "ridge_axis": "y"},
+           {"id": "ruskinian_front_eave", "kind": "box", "size": [34.7, 0.45, 0.22], "location": [0.0, -14.42, 17.18], "material": "secondary", "bevel_m": 0.035},
+@@ -377,27 +378,26 @@
+           {"id": "ruskinian_facade_service_cavity", "size": [34.2, 29.2, 16.3], "location": [0.0, 0.0, 8.9], "purpose": "clearance for physical panes and occupied room cards on every elevation"}
+         ],
+         "assemblies": [
+-          {"id": "ruskinian_front_elevation", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -14.52, 0.50], "span_m": 30.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.2, "repeat_count": 1}, {"band": "floor", "height_m": 4.2, "repeat_count": 3}, {"band": "floor_alt", "height_m": 4.2, "repeat_count": 3}, {"band": "crown", "height_m": 4.2, "repeat_count": 3}]},
+-          {"id": "ruskinian_left_elevation", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-16.92, 0.0, 0.50], "span_m": 25.0, "depth_m": 0.05, "flip_u": true, "repeat_count": 3, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
+-          {"id": "ruskinian_right_elevation", "kind": "facade_skin_stack", "axis": "right", "base_centre": [16.92, 0.0, 0.50], "span_m": 25.0, "depth_m": 0.05, "repeat_count": 3, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
+-          {"id": "ruskinian_rear_elevation", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 14.52, 0.50], "span_m": 30.0, "depth_m": 0.05, "flip_u": true, "repeat_count": 3, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
++          {"id": "ruskinian_front_elevation", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -14.52, 0.50], "span_m": 30.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.2, "repeat_count": 1}, {"band": "floor", "height_m": 4.2, "repeat_count": 7}, {"band": "floor_alt", "height_m": 4.2, "repeat_count": 7}, {"band": "crown", "height_m": 4.2, "repeat_count": 7}]},
++          {"id": "ruskinian_left_elevation", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-16.92, 0.0, 0.50], "span_m": 25.0, "depth_m": 0.05, "flip_u": true, "repeat_count": 6, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
++          {"id": "ruskinian_right_elevation", "kind": "facade_skin_stack", "axis": "right", "base_centre": [16.92, 0.0, 0.50], "span_m": 25.0, "depth_m": 0.05, "repeat_count": 6, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
++          {"id": "ruskinian_rear_elevation", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 14.52, 0.50], "span_m": 30.0, "depth_m": 0.05, "flip_u": true, "repeat_count": 7, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
+ 
+-          {"id": "ruskinian_front_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -14.58, 0.50], "span_m": 30.0, "columns": 3, "rows": 1, "repeat_span_m": 10.0, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.26, "frame_depth_m": 0.12, "profile_m": 0.05, "window_region_filter": true, "max_regions": 30, "levels": [{"band": "podium", "height_m": 4.2, "repeat_span_m": 30.0}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
+-          {"id": "ruskinian_left_glazing", "kind": "glazing_overlay", "axis": "left", "base_centre": [-16.98, 0.0, 0.50], "span_m": 25.0, "columns": 3, "rows": 1, "flip_u": true, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 8.333, "window_region_filter": true, "max_regions": 18, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
+-          {"id": "ruskinian_right_glazing", "kind": "glazing_overlay", "axis": "right", "base_centre": [16.98, 0.0, 0.50], "span_m": 25.0, "columns": 3, "rows": 1, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 8.333, "window_region_filter": true, "max_regions": 18, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
+-          {"id": "ruskinian_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [0.0, 14.58, 0.50], "span_m": 30.0, "columns": 3, "rows": 1, "flip_u": true, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 10.0, "window_region_filter": true, "max_regions": 24, "levels": [{"band": "podium", "height_m": 4.2}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
++          {"id": "ruskinian_front_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -14.58, 0.50], "span_m": 30.0, "columns": 7, "rows": 1, "repeat_span_m": 4.286, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.26, "frame_depth_m": 0.12, "profile_m": 0.05, "window_region_filter": true, "max_regions": 64, "levels": [{"band": "podium", "height_m": 4.2, "repeat_span_m": 30.0}, {"band": "floor", "height_m": 4.2}, {"band": "floor_alt", "height_m": 4.2}, {"band": "crown", "height_m": 4.2}]},
++          {"id": "ruskinian_left_glazing", "kind": "glazing_overlay", "axis": "left", "base_centre": [-16.98, 0.0, 0.50], "span_m": 25.0, "columns": 6, "rows": 1, "flip_u": true, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 4.167, "window_region_filter": true, "max_regions": 48, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
++          {"id": "ruskinian_right_glazing", "kind": "glazing_overlay", "axis": "right", "base_centre": [16.98, 0.0, 0.50], "span_m": 25.0, "columns": 6, "rows": 1, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 4.167, "window_region_filter": true, "max_regions": 48, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
++          {"id": "ruskinian_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [0.0, 14.58, 0.50], "span_m": 30.0, "columns": 7, "rows": 1, "flip_u": true, "frame_mode": "none", "depth_mullions": false, "stone_returns": false, "opening_returns": false, "projecting_sills": false, "pane_recess_m": 0.24, "frame_depth_m": 0.12, "profile_m": 0.05, "repeat_span_m": 4.286, "window_region_filter": true, "max_regions": 56, "levels": [{"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}, {"band": "side", "height_m": 4.2}]},
+ 
+-          {"id": "ruskinian_corner_turrets", "kind": "striped_turret_array", "centres": [[-17.2, -14.8], [17.2, -14.8], [-17.2, 14.8], [17.2, 14.8]], "base_z": 0.45, "body_height_m": 17.2, "radius_m": 2.22, "vertices": 48, "stripe_levels_m": [1.4, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0, 12.6, 14.2, 15.8], "stripe_height_m": 0.30, "dark_levels_m": [0.45, 16.8], "dark_height_m": 0.38, "belt_levels_m": [4.9, 9.1, 13.3, 17.0], "belt_height_m": 0.22, "body_material": "primary", "stripe_material": "secondary", "dark_material": "accent", "belt_material": "secondary", "roof_material": "roof", "roof_height_m": 4.6, "roof_radius_m": 2.45, "finial_radius_m": 0.14, "window_levels_m": [3.75, 7.95, 12.15], "window_style": "pointed", "window_span_m": 1.00, "window_height_m": 2.10, "window_frame_m": 0.038, "window_depth_m": 0.055, "window_recess_m": 0.16, "window_face_clearance_m": 0.025, "window_reveal_m": 0.04, "window_surround_m": 0.072, "window_surround_depth_m": 0.18, "window_spring_ratio": 0.72, "window_mullions": 0, "window_transoms": 1, "window_sill_projection_m": 0.035, "window_material": "secondary", "window_glass_material": "glass", "window_interior_material": "interior_warm"},
+-          {"id": "ruskinian_front_buttresses", "kind": "buttress_array", "axis": "front", "base_centre": [0.0, -14.58, 0.45], "span_m": 27.0, "positions_m": [-13.5, -4.5, 4.5, 13.5], "style": "engaged", "course_levels_m": [4.7, 8.9, 13.1, 16.7], "height_m": 16.7, "width_m": 0.22, "projection_m": 0.22, "material": "secondary"},
+-          {"id": "ruskinian_rear_buttresses", "kind": "buttress_array", "axis": "rear", "base_centre": [0.0, 14.58, 0.45], "span_m": 27.0, "positions_m": [-13.5, -4.5, 4.5, 13.5], "style": "engaged", "course_levels_m": [4.7, 8.9, 13.1, 16.7], "height_m": 16.7, "width_m": 0.22, "projection_m": 0.20, "material": "secondary"},
+-          {"id": "ruskinian_left_buttresses", "kind": "buttress_array", "axis": "left", "base_centre": [-16.98, 0.0, 0.45], "span_m": 27.0, "positions_m": [-13.5, -4.5, 4.5, 13.5], "style": "engaged", "course_levels_m": [4.7, 8.9, 13.1, 16.7], "height_m": 16.7, "width_m": 0.22, "projection_m": 0.20, "material": "secondary"},
+-          {"id": "ruskinian_right_buttresses", "kind": "buttress_array", "axis": "right", "base_centre": [16.98, 0.0, 0.45], "span_m": 27.0, "positions_m": [-13.5, -4.5, 4.5, 13.5], "style": "engaged", "course_levels_m": [4.7, 8.9, 13.1, 16.7], "height_m": 16.7, "width_m": 0.22, "projection_m": 0.20, "material": "secondary"},
+-          {"id": "ruskinian_main_front_gable", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [0.0, -14.45, 16.55], "positions_m": [0.0], "width_m": 6.4, "height_m": 5.8, "depth_m": 0.40, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.065, "finial_radius_m": 0.14},
+-          {"id": "ruskinian_minor_front_gables", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [0.0, -14.42, 16.50], "positions_m": [-10.3, 10.3], "width_m": 3.8, "height_m": 4.2, "depth_m": 0.36, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.06, "finial_radius_m": 0.11},
+-          {"id": "ruskinian_main_gable_lancet", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -15.00, 19.70], "span_m": 1.05, "height_m": 2.20, "columns": 1, "rows": 2, "frame_m": 0.075, "depth_m": 0.07, "glass_material": "glass", "interior_material": "glazing_interior_0", "interior_recess_m": 0.07, "frame_material": "signature_stone", "surround_m": 0.10, "surround_depth_m": 0.18, "sill_projection_m": 0.08, "bevel_m": 0.02},
+-          {"id": "ruskinian_main_gable_band_1", "kind": "shadow_line", "axis": "front", "centre": [0.0, -14.91, 18.2], "span_m": 5.4, "height_m": 0.20, "depth_m": 0.12, "material": "secondary"},
+-          {"id": "ruskinian_main_gable_band_2", "kind": "shadow_line", "axis": "front", "centre": [0.0, -14.91, 19.3], "span_m": 4.2, "height_m": 0.20, "depth_m": 0.12, "material": "secondary"},
+-          {"id": "ruskinian_main_gable_band_3", "kind": "shadow_line", "axis": "front", "centre": [0.0, -14.91, 20.4], "span_m": 2.9, "height_m": 0.20, "depth_m": 0.12, "material": "secondary"},
++          {"id": "ruskinian_corner_turrets", "kind": "striped_turret_array", "centres": [[-17.2, -14.8], [17.2, -14.8], [-17.2, 14.8], [17.2, 14.8]], "base_z": 0.45, "body_height_m": 17.2, "radius_m": 2.22, "vertices": 48, "stripe_levels_m": [1.4, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0, 12.6, 14.2, 15.8], "stripe_height_m": 0.30, "dark_levels_m": [0.45, 16.8], "dark_height_m": 0.38, "belt_levels_m": [4.9, 9.1, 13.3, 17.0], "belt_height_m": 0.22, "body_material": "primary", "stripe_material": "secondary", "dark_material": "accent", "belt_material": "secondary", "roof_material": "roof", "roof_height_m": 4.6, "roof_radius_m": 2.45, "finial_radius_m": 0.14, "window_levels_m": [3.75, 7.95, 12.15], "window_style": "rectangular", "window_span_m": 0.58, "window_height_m": 1.45, "window_frame_m": 0.020, "window_depth_m": 0.045, "window_recess_m": 0.12, "window_face_clearance_m": 0.015, "window_reveal_m": 0.024, "window_surround_m": 0.020, "window_surround_depth_m": 0.08, "window_mullions": 0, "window_transoms": 0, "window_sill_projection_m": 0.02, "window_material": "secondary", "window_glass_material": "glass", "window_interior_material": "interior_warm"},
++          {"id": "ruskinian_main_front_gable", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [0.0, -15.02, 17.28], "positions_m": [0.0], "width_m": 13.0, "height_m": 5.5, "depth_m": 0.34, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.055, "finial_radius_m": 0.12},
++          {"id": "ruskinian_main_rear_gable", "kind": "shaped_gable_array", "axis": "rear", "profile_style": "steep_triangle", "base_centre": [0.0, 15.02, 17.28], "positions_m": [0.0], "width_m": 13.0, "height_m": 5.5, "depth_m": 0.34, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.055, "finial_radius_m": 0.12},
++          {"id": "ruskinian_main_left_gable", "kind": "shaped_gable_array", "axis": "left", "profile_style": "steep_triangle", "base_centre": [-17.42, 0.0, 17.28], "positions_m": [0.0], "width_m": 15.0, "height_m": 5.2, "depth_m": 0.34, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.055, "finial_radius_m": 0.12},
++          {"id": "ruskinian_main_right_gable", "kind": "shaped_gable_array", "axis": "right", "profile_style": "steep_triangle", "base_centre": [17.42, 0.0, 17.28], "positions_m": [0.0], "width_m": 15.0, "height_m": 5.2, "depth_m": 0.34, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.055, "finial_radius_m": 0.12},
++          {"id": "ruskinian_minor_front_gables", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [0.0, -14.84, 17.05], "positions_m": [-10.3, 10.3], "width_m": 3.2, "height_m": 3.6, "depth_m": 0.30, "material": "signature_stone", "infill_material": "primary", "bevel_m": 0.05, "finial_radius_m": 0.09},
++          {"id": "ruskinian_main_gable_lancet", "kind": "pointed_window_array", "axis": "front", "centre": [0.0, -15.43, 19.65], "span_m": 1.12, "height_m": 2.15, "count": 1, "gap_m": 0.10, "depth_m": 0.10, "profile_m": 0.075, "spring_ratio": 0.73, "mullions": 0, "transoms": 1, "recess_m": 0.10, "sill_projection_m": 0.05, "material": "signature_stone", "glass_material": "glass", "interior_material": "glazing_interior_0"},
++          {"id": "ruskinian_main_gable_band_1", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.39, 18.35], "span_m": 10.4, "height_m": 0.16, "depth_m": 0.08, "material": "secondary"},
++          {"id": "ruskinian_main_gable_band_2", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.39, 19.45], "span_m": 7.8, "height_m": 0.15, "depth_m": 0.08, "material": "secondary"},
++          {"id": "ruskinian_main_gable_band_3", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.39, 20.55], "span_m": 5.2, "height_m": 0.14, "depth_m": 0.08, "material": "secondary"},
+           {"id": "ruskinian_entry_steps", "kind": "steps", "centre": [0.0, -16.05, 0.0], "width_m": 6.4, "depth_m": 1.45, "count": 5, "rise_m": 0.11, "material": "signature_stone"},
+           {"id": "ruskinian_front_frieze_1", "kind": "shadow_line", "axis": "front", "centre": [0.0, -14.70, 4.70], "span_m": 34.1, "height_m": 0.14, "depth_m": 0.10, "material": "secondary"},
+           {"id": "ruskinian_front_frieze_2", "kind": "shadow_line", "axis": "front", "centre": [0.0, -14.70, 9.00], "span_m": 34.1, "height_m": 0.14, "depth_m": 0.10, "material": "secondary"},
+@@ -405,9 +405,9 @@
+           {"id": "ruskinian_left_frieze", "kind": "shadow_line", "axis": "left", "centre": [-17.10, 0.0, 9.00], "span_m": 29.0, "height_m": 0.14, "depth_m": 0.10, "material": "secondary"},
+           {"id": "ruskinian_right_frieze", "kind": "shadow_line", "axis": "right", "centre": [17.10, 0.0, 9.00], "span_m": 29.0, "height_m": 0.14, "depth_m": 0.10, "material": "secondary"},
+           {"id": "ruskinian_rear_frieze", "kind": "shadow_line", "axis": "rear", "centre": [0.0, 14.70, 9.00], "span_m": 34.1, "height_m": 0.14, "depth_m": 0.10, "material": "secondary"},
+-          {"id": "ruskinian_ridge_cresting", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, 0.0, 24.72], "span_m": 33.0, "count": 19, "shaft_height_m": 0.28, "cap_height_m": 0.38, "radius_m": 0.075, "material": "signature_metal"}
++          {"id": "ruskinian_ridge_cresting", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, 0.0, 22.48], "span_m": 31.0, "count": 17, "shaft_height_m": 0.22, "cap_height_m": 0.30, "radius_m": 0.06, "material": "signature_metal"}
+         ],
+-        "target_views": ["archetype_match", "street", "aerial", "context"]
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+       }
+     },
+     "collegiate_gothic_education": {
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 4ccc1f6921509a3327b1cf63829f0df862e80308..8f24a6368ad13e8858139ededa250cce219ab78f 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -794,7 +794,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
+                     full_near.get("albedo", full_elevation),
+                 )
+         for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():
+-            if role not in ("floor", "floor_alt", "floor_c", "crown", "podium", "entrance"):
++            if role not in ("floor", "floor_alt", "floor_c", "side", "crown", "podium", "entrance"):
+                 continue
+             far_pbr = facade_lod_paths(role, "far")
+             near_pbr = facade_lod_paths(role, "near")
+@@ -6432,9 +6432,10 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
+     of a photograph pasted onto a triangular roof.
+     """
+     axis = str(spec.get("axis", "front"))
+-    if axis != "front":
+-        raise ValueError("shaped gable array currently supports the front facade only")
+-    cx, facade_y, base_z = (float(value) for value in spec["base_centre"])
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"shaped gable array axis {axis!r} is unsupported")
++    cx, cy, base_z = (float(value) for value in spec["base_centre"])
++    outward, along = _glazing_axis_vectors(axis)
+     positions = [float(value) for value in (spec.get("positions_m") or [0.0])]
+     width = float(spec.get("width_m", 7.6))
+     height = float(spec.get("height_m", 6.0))
+@@ -6467,15 +6468,22 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
+             (0.455, 0.23), (0.50, 0.23), (0.50, 0.00),
+         ]
+ 
+-    def extruded_profile(name: str, centre_x: float, profile_width: float,
++    def extruded_profile(name: str, centre_along: float, profile_width: float,
+                          profile_height: float, profile_depth: float,
+-                         profile_base_z: float, profile_y: float, material,
++                         profile_base_z: float, profile_outward_offset: float, material,
+                          bevel_m: float) -> bpy.types.Object:
+-        profile = [(centre_x + x * profile_width, profile_base_z + z * profile_height) for x, z in outline]
++        centre = (
++            Vector((cx, cy, profile_base_z))
++            + along * centre_along
++            + outward * profile_outward_offset
++        )
++        profile = [
++            centre + along * (x * profile_width) + Vector((0.0, 0.0, z * profile_height))
++            for x, z in outline
++        ]
+         count = len(profile)
+-        back_y = profile_y
+-        front_y = profile_y - profile_depth
+-        verts = [(x, back_y, z) for x, z in profile] + [(x, front_y, z) for x, z in profile]
++        front = [point + outward * profile_depth for point in profile]
++        verts = [tuple(point) for point in profile] + [tuple(point) for point in front]
+         faces: list[tuple[int, ...]] = [
+             tuple(reversed(range(count))),
+             tuple(range(count, count * 2)),
+@@ -6501,24 +6509,24 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
+         return obj
+ 
+     for index, offset in enumerate(positions):
+-        x = cx + offset
+         tag = f"{prefix}_{index:02d}"
+         parts.append(extruded_profile(
+-            f"{tag}_StoneScroll", x, width, height, depth,
+-            base_z, facade_y, stone, float(spec.get("bevel_m", 0.075)),
++            f"{tag}_StoneScroll", offset, width, height, depth,
++            base_z, 0.0, stone, float(spec.get("bevel_m", 0.075)),
+         ))
+         parts.append(extruded_profile(
+-            f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
+-            base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
++            f"{tag}_BrickInfill", offset, width * 0.82, height * 0.78, depth * 0.16,
++            base_z + height * 0.10, depth + 0.018, brick, 0.025,
+         ))
+         finial_radius = float(spec.get("finial_radius_m", 0.19))
+         finial_z = base_z + height + finial_radius * 1.15
++        finial_plan = Vector((cx, cy, 0.0)) + along * offset + outward * (depth * 0.58)
+         parts.append(add_cylinder(
+             f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
+-            (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
++            (finial_plan.x, finial_plan.y, finial_z - finial_radius * 0.58), stone, 12,
+         ))
+         parts.append(add_ellipsoid(
+-            f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
++            f"{tag}_FinialBall", (finial_plan.x, finial_plan.y, finial_z),
+             (finial_radius, finial_radius, finial_radius), stone,
+         ))
+ 
+@@ -8262,6 +8270,12 @@ def render_presentation_views(
+              (-1.0, -1.0, focus_height * 0.42), 50),
+         ) if landmark else ()),
+         ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
++        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 1.55)), focus_height * 0.58),
++         (0.0, -depth * 0.04, focus_height * 0.43), 50),
++        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 1.55), focus_height * 0.62),
++         (0.0, depth * 0.04, focus_height * 0.43), 50),
++        ("facade_close", (0.0, -(depth / 2 + max(27.0, width * 0.70)), focus_height * 0.43),
++         (0.0, -depth / 2, focus_height * 0.43), 57),
+         ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
+         ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
+          (0.0, 10.0, focus_height * 0.22), 52),
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 9819c240c45d3b1478cc6abbff84ceee7a59fe96..d1dd5c3ef4c35990d1780c79f56757ae43a91419 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-19-ruskinian-registration-v63",
++  "memory_version": "2026-07-20-ruskinian-gable-layering-v67",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -273,7 +273,7 @@
+       "context"
+     ],
+     "preferred_footprint_profile_count": 3,
+-    "material_count_review_threshold": 20,
++    "material_count_review_threshold": 32,
+     "triangle_budget": {
+       "city_min": 12000,
+       "city_max": 180000,
+@@ -540,6 +540,26 @@
+       "symptom": "Stone courses, turret bands and eaves look like bright applied graphics in Google Tiles",
+       "cause": "Relief geometry duplicated atlas bands with excessive projection, thickness or albedo contrast, so it separated visually from the wall material language.",
+       "correction": "Let the atlas own fine coursing. Use shallow construction-scale relief only for shadow-bearing datums, inherit the same warm stone PBR family, reduce exposed profile, and calibrate in live photogrammetry rather than compensating with brighter materials."
++    },
++    {
++      "symptom": "A dedicated side-elevation atlas exists but secondary walls render as bare core material",
++      "cause": "The facade package preserved the side band while the Blender material loader filtered that semantic role out before massing-graph assembly.",
++      "correction": "Materialize every declared elevation role, including side, before graph construction and verify the role appears on left, right and rear faces in both near and far review LODs."
++    },
++    {
++      "symptom": "A family validates structurally but fails quality assessment because review cameras are missing",
++      "cause": "The presentation renderer's all-view preset drifted behind the executable required-render contract.",
++      "correction": "Keep the renderer's all-view preset synchronized with the quality gate and emit front-corner, rear-corner and facade-close views for every assembled family."
++    },
++    {
++      "symptom": "A masonry cross-gable end displays the roof-slope texture instead of striped wall construction",
++      "cause": "The generic gable-roof prism assigned one roof material to both slopes and vertical end faces.",
++      "correction": "Place fixed masonry gable-end assemblies outside the roof prism on every exposed axis, then register their verge, horizontal bands and pointed openings independently from the roof slopes."
++    },
++    {
++      "symptom": "A layered masonry gable renders as one solid pale stone triangle",
++      "cause": "The smaller brick infill prism was extruded from the same base plane as the deeper stone verge and remained completely occluded inside it.",
++      "correction": "Offset the infill to the exposed face of the outer verge before extrusion, preserving a visible brick field while the deeper stone prism reads only as a shaped edge and return."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 8af3b895d6aae408f423e672ed389edb224c345d..6ec26dc41c3ce05cf9b93f3fcdf480f9fe5b4631 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -566,8 +566,10 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
+ 
+     assert turret["kind"] == "striped_turret_array"
+     assert turret["window_levels_m"] == [3.75, 7.95, 12.15]
++    assert turret["window_style"] == "rectangular"
+     assert turret["window_recess_m"] >= 0.1
+-    assert turret["window_surround_depth_m"] >= 0.18
++    assert 0.08 <= turret["window_surround_depth_m"] <= 0.12
++    assert turret["window_surround_m"] <= 0.05
+     assert len(turret["centres"]) * 2 * len(turret["window_levels_m"]) == 24
+     assert not any(
+         item["id"].startswith((
+@@ -578,6 +580,57 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
+     )
+ 
+ 
++def test_ruskinian_facade_period_matches_registered_source_span():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "collegiate_gothic_education",
++            "variant_id": "collegiate_gothic_ruskinian",
++        },
++        "materials": {},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++    front_skin = assemblies["ruskinian_front_elevation"]
++    left_skin = assemblies["ruskinian_left_elevation"]
++    rear_skin = assemblies["ruskinian_rear_elevation"]
++    front_glass = assemblies["ruskinian_front_glazing"]
++    left_glass = assemblies["ruskinian_left_glazing"]
++
++    assert graph["profile"] == "ruskinian_polychrome_hall_v68"
++    assert {level["repeat_count"] for level in front_skin["levels"][1:]} == {7}
++    assert left_skin["repeat_count"] == 6
++    assert rear_skin["repeat_count"] == 7
++    assert {level["band"] for level in left_skin["levels"]} == {"side"}
++    assert {level["band"] for level in rear_skin["levels"]} == {"side"}
++    assert front_glass["columns"] == 7
++    assert left_glass["columns"] == 6
++    assert front_glass["repeat_span_m"] == pytest.approx(30.0 / 7, abs=0.001)
++    assert left_glass["repeat_span_m"] == pytest.approx(25.0 / 6, abs=0.001)
++    assert abs(front_glass["repeat_span_m"] - 4.4) / 4.4 < 0.10
++    assert abs(left_glass["repeat_span_m"] - 3.91) / 3.91 < 0.10
++
++    gable_axes = {
++        item["axis"] for item in graph["assemblies"]
++        if item["id"].startswith("ruskinian_main_") and item["id"].endswith("_gable")
++    }
++    assert gable_axes == {"front", "rear", "left", "right"}
++
++
++def test_blender_facade_loader_and_all_view_set_match_quality_contract():
++    source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
++
++    role_filter = source.split(
++        'for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():', 1
++    )[1].split("continue", 1)[0]
++    assert '"side"' in role_filter
++    for role in ("front_corner_oblique", "rear_corner_oblique", "facade_close"):
++        assert f'("{role}"' in source
++    assert "+ outward * profile_outward_offset" in source
++    assert "base_z + height * 0.10, depth + 0.018, brick" in source
++
++
+ def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():
+     np = pytest.importorskip("numpy")
+     pytest.importorskip("PIL")
+diff --git a/tools/archetype_compiler/tests/test_quality_memory.py b/tools/archetype_compiler/tests/test_quality_memory.py
+index f9b46f7cf1ed1a12a51c6f131c53fce4903f69d5..4d1c99fa8c865e26d8e9d9f6535b716f2d2e7b19 100644
+--- a/tools/archetype_compiler/tests/test_quality_memory.py
++++ b/tools/archetype_compiler/tests/test_quality_memory.py
+@@ -112,7 +112,7 @@ def test_excess_materials_route_to_review_without_structural_failure():
+     report = {
+         "status": "pass",
+         "warnings": ["quality-pilot.glb: many materials"],
+-        "modules": [{"role": "assembled", "materials": [f"MAT_{i}" for i in range(24)]}],
++        "modules": [{"role": "assembled", "materials": [f"MAT_{i}" for i in range(36)]}],
+     }
+     assessment = assess_family_quality(production_manifest(), report)
+ 
+-- 
+2.55.0.windows.2
+

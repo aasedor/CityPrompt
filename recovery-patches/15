@@ -1,0 +1,280 @@
+From 9549136abf715d13bab0c622d8c39d1f23e8a8bc Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 07:29:25 -0600
+Subject: [PATCH 15/32] feat: render-lock Romanesque warehouse
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 24 ++++-
+ .../architectural_signature_profiles.json     | 99 +++++++++++++++++++
+ .../high_quality_building_memory.json         | 17 +++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 40 ++++++++
+ 6 files changed, 180 insertions(+), 4 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index e14b136626cc81b93bf39627f45c6e98f5d69385..ac0f6cd924c3c2579d6ae2a0b2d4dfd279763681 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-soho-cast-iron-warehouse-v81`.
++Current executable memory: `2026-07-20-richardsonian-warehouse-v82`.
+ 
+ ## The quality target
+ 
+@@ -616,6 +616,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   but its missing reusable-module validation is expected and it is never a
+   keeper. Promotion still requires the complete seven-module package.
+ 
++### Richardsonian warehouse + secondary-elevation crop lessons
++
++- Storey and bay counts remain hard gates even when the generated source is
++  stylistically convincing. The first orthographic pass produced eight bays;
++  it was rejected before scheduling, and one bounded correction produced the
++  accepted ten-bay, three-level elevation.
++- Compare the measured physical atlas span with the provisional massing tier.
++  A 42.73 metre registered elevation would have been visibly stretched across
++  the original 55 metre placeholder, so the evidence-led native frontage was
++  corrected to 44 metres before keeper generation.
++- A short elevation is not the long elevation compressed. When the oblique
++  reference proves five side bays, partition that face into five deliberate UV
++  crops and apply identical crops to semantic glazing so every bay aligns with
++  one physical pier interval.
++- Render validation is iterative: the first textured candidate was structurally
++  valid but failed visual review because it squeezed ten bays onto the return.
++  Rejecting that candidate and rerendering the crop pilot was required before
++  rebuilding the complete module family.
++- Roof-plan evidence owns the flat service roof. Preserve the continuous
++  parapet, one low access enclosure, one modest HVAC unit and one hatch; do not
++  introduce a tower, gable, court or full penthouse absent from the references.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 6e8c48430e3e7b21483df8f7e722a48440decab1..4fc122d99a96d9129d375a5508cd3d17576a6c7b 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1229,6 +1229,105 @@
+       "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",
+       "kits": ["industrial_steel_bays", "steel_bracing", "roof_monitor", "reuse_terraces"]
+     },
++    "warehouse_arch_window_brick": {
++      "identity": "Monumental three-level Richardsonian warehouse with ten heavy red-brick bays, five rock-faced arched loading portals, paired round-arched windows, pale giant archivolts, carved colonettes, string courses and a dense blind-arcade parapet.",
++      "material_zones": "deep red-brown load-bearing brick; rough brownstone plinth and loading voussoirs; warm pale sandstone archivolts, sills and colonettes; black divided-light occupied glazing; weathered built-up roof",
++      "glass_profile": "industrial_sash",
++      "dimension_overrides": {"roof_height_m": 1.5},
++      "material_overrides": {
++        "primary": {"base_color": "#684037", "roughness": 0.91, "metallic": 0.0, "texture_key": "red_brick"},
++        "secondary": {"base_color": "#7a5544", "roughness": 0.93, "metallic": 0.0, "texture_key": "sandstone"},
++        "accent": {"base_color": "#cbb792", "roughness": 0.78, "metallic": 0.0, "texture_key": "natural_stone"},
++        "roof": {"base_color": "#494541", "roughness": 0.92, "metallic": 0.0, "texture_key": "roof_membrane"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#cbb792", "roughness": 0.78, "metallic": 0.0, "texture_key": "natural_stone"},
++        "signature_warm": {"base_color": "#7a5544", "roughness": 0.93, "metallic": 0.0, "texture_key": "sandstone"},
++        "signature_metal": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.58, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [44, 55],
++        "recommendedDepth_m": [32, 45],
++        "recommendedFloors": [3, 3],
++        "wingDepth_m": [16, 22],
++        "preferredBayMultiple_m": 5.5,
++        "notes": [
++          "Use the fixed Arch-Window Brick graph only at the native 44 by 36 metre, three-level rectangular tier.",
++          "Keep the five loading portals, ten-bay paired-arch rhythm, rock-faced base, string courses and blind-arcade parapet fixed; repeat only complete paired-arch bays in derived parcel kits."
++        ]
++      },
++      "kits": ["romanesque_arcade", "heavy_masonry_piers", "paired_arch_windows", "loading_portals", "corbelled_cornice", "blind_arcade_parapet"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "richardsonian_ten_bay_warehouse_v1",
++        "description": "A render-locked three-level Richardsonian warehouse whose ten-bay registered elevation is backed by a heavy masonry core, physical loading arches, stone string courses, blind-arcade parapet and a bounded flat service roof.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0.png", "cues": ["three total levels", "ten long-facade bay groups", "alternating loading portals", "paired Romanesque arches", "blind-arcade parapet"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_60.jpg", "cues": ["massive rectangular block", "five-bay short end", "flat concealed roof", "rock-faced base wrapping both streets"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_90.jpg", "cues": ["uninterrupted built-up roof", "continuous masonry parapet", "one low access enclosure", "one modest HVAC box", "no court or penthouse"]}
++        ],
++        "height_m": 20.8,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 44.0, "depth_m": 36.0, "floors": 3, "floor_height_m": 5.4},
++        "nodes": [
++          {"id": "romanesque_plinth", "kind": "box", "size": [44.8, 36.8, 0.38], "location": [0.0, 0.0, 0.19], "material": "signature_warm", "bevel_m": 0.05},
++          {"id": "romanesque_shadow_core", "kind": "box", "size": [43.0, 35.0, 18.0], "location": [0.0, 0.0, 9.0], "material": "primary", "bevel_m": 0.15},
++          {"id": "romanesque_roof_deck", "kind": "box", "size": [44.0, 36.0, 0.34], "location": [0.0, 0.0, 18.17], "material": "roof", "bevel_m": 0.04},
++          {"id": "romanesque_parapet_body", "kind": "box", "size": [44.45, 36.45, 1.38], "location": [0.0, 0.0, 18.70], "material": "primary", "bevel_m": 0.04},
++          {"id": "romanesque_parapet_cap", "kind": "box", "size": [44.75, 36.75, 0.22], "location": [0.0, 0.0, 19.50], "material": "signature_stone", "bevel_m": 0.035},
++          {"id": "romanesque_roof_access", "kind": "box", "size": [6.0, 4.5, 2.35], "location": [8.5, 4.0, 19.35], "material": "primary", "bevel_m": 0.09},
++          {"id": "romanesque_access_cap", "kind": "box", "size": [6.35, 4.85, 0.22], "location": [8.5, 4.0, 20.64], "material": "roof", "bevel_m": 0.04},
++          {"id": "romanesque_hvac", "kind": "box", "size": [2.0, 1.8, 1.25], "location": [-7.0, -3.0, 18.96], "material": "concrete", "bevel_m": 0.07},
++          {"id": "romanesque_roof_hatch", "kind": "box", "size": [2.4, 1.5, 0.65], "location": [-13.5, 5.0, 18.66], "material": "signature_metal", "bevel_m": 0.05}
++        ],
++        "voids": [
++          {"id": "loading_hall_depth", "size": [41.5, 1.4, 5.2], "location": [0.0, -17.5, 2.8], "purpose": "deep loading thresholds behind five fixed Romanesque portals"},
++          {"id": "flat_service_roof", "size": [41.5, 33.5, 2.3], "location": [0.0, 0.0, 19.0], "purpose": "unoccupied built-up roof inside the continuous masonry parapet"}
++        ],
++        "assemblies": [
++          {"id": "romanesque_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "depth_m": 0.05, "band": "elevation"},
++          {"id": "romanesque_left_elevation_1", "kind": "facade_skin", "axis": "left", "centre": [-21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "flip_u": true},
++          {"id": "romanesque_left_elevation_2", "kind": "facade_skin", "axis": "left", "centre": [-21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "flip_u": true},
++          {"id": "romanesque_left_elevation_3", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "flip_u": true},
++          {"id": "romanesque_left_elevation_4", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "flip_u": true},
++          {"id": "romanesque_left_elevation_5", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "flip_u": true},
++          {"id": "romanesque_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "romanesque_right_elevation_1", "kind": "facade_skin", "axis": "right", "centre": [21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2},
++          {"id": "romanesque_right_elevation_2", "kind": "facade_skin", "axis": "right", "centre": [21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3},
++          {"id": "romanesque_right_elevation_3", "kind": "facade_skin", "axis": "right", "centre": [21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4},
++          {"id": "romanesque_right_elevation_4", "kind": "facade_skin", "axis": "right", "centre": [21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5},
++          {"id": "romanesque_right_elevation_5", "kind": "facade_skin", "axis": "right", "centre": [21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6},
++          {"id": "romanesque_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "columns": 10, "rows": 3, "profile_m": 0.08, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_left_glazing_1", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_left_glazing_2", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_left_glazing_3", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_left_glazing_4", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_left_glazing_5", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "columns": 10, "rows": 3, "profile_m": 0.08, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "romanesque_right_glazing_1", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_right_glazing_2", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_right_glazing_3", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_right_glazing_4", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_right_glazing_5", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "romanesque_front_piers", "kind": "frame_grid", "axis": "front", "centre": [0.0, -18.02, 9.0], "span_m": 43.65, "height_m": 17.85, "columns": 10, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
++          {"id": "romanesque_left_piers", "kind": "frame_grid", "axis": "left", "centre": [-22.02, 0.0, 9.0], "span_m": 35.65, "height_m": 17.85, "columns": 5, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
++          {"id": "romanesque_rear_piers", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 18.02, 9.0], "span_m": 43.65, "height_m": 17.85, "columns": 10, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
++          {"id": "romanesque_right_piers", "kind": "frame_grid", "axis": "right", "centre": [22.02, 0.0, 9.0], "span_m": 35.65, "height_m": 17.85, "columns": 5, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
++          {"id": "romanesque_front_loading_portals", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.12, 3.05], "positions_m": [-17.6, -8.8, 0.0, 8.8, 17.6], "opening_width_m": 3.65, "opening_height_m": 5.2, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.24, "occupied_as_pane": false, "material": "signature_warm", "glass_material": "signature_metal", "frame_material": "signature_warm", "interior_material": "signature_metal", "door_material": "signature_metal"},
++          {"id": "romanesque_left_loading_portals", "kind": "classical_window_array", "axis": "left", "centre": [-22.12, 0.0, 3.05], "positions_m": [-7.2, 7.2], "opening_width_m": 3.65, "opening_height_m": 5.2, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.24, "occupied_as_pane": false, "material": "signature_warm", "glass_material": "signature_metal", "frame_material": "signature_warm", "interior_material": "signature_metal", "door_material": "signature_metal"},
++          {"id": "romanesque_front_string_lower", "kind": "shadow_line", "axis": "front", "centre": [0.0, -18.16, 5.65], "span_m": 44.1, "height_m": 0.28, "depth_m": 0.32, "material": "signature_stone"},
++          {"id": "romanesque_front_string_upper", "kind": "shadow_line", "axis": "front", "centre": [0.0, -18.14, 10.95], "span_m": 44.0, "height_m": 0.24, "depth_m": 0.28, "material": "signature_stone"},
++          {"id": "romanesque_left_string_lower", "kind": "shadow_line", "axis": "left", "centre": [-22.16, 0.0, 5.65], "span_m": 36.1, "height_m": 0.28, "depth_m": 0.32, "material": "signature_stone"},
++          {"id": "romanesque_left_string_upper", "kind": "shadow_line", "axis": "left", "centre": [-22.14, 0.0, 10.95], "span_m": 36.0, "height_m": 0.24, "depth_m": 0.28, "material": "signature_stone"},
++          {"id": "romanesque_front_blind_arcade", "kind": "corbel_array", "axis": "front", "centre": [0.0, -18.18, 0.0], "span_m": 43.9, "count": 36, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
++          {"id": "romanesque_left_blind_arcade", "kind": "corbel_array", "axis": "left", "centre": [-22.18, 0.0, 0.0], "span_m": 35.9, "count": 30, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
++          {"id": "romanesque_rear_blind_arcade", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 18.18, 0.0], "span_m": 43.9, "count": 36, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
++          {"id": "romanesque_right_blind_arcade", "kind": "corbel_array", "axis": "right", "centre": [22.18, 0.0, 0.0], "span_m": 35.9, "count": 30, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"}
++        ],
++        "target_views": ["archetype_match", "street", "aerial", "context"]
++      }
++    },
+     "romanesque_revival_warehouse": {
+       "identity": "Richardsonian warehouse with a massive round-arched base, grouped arched openings, deep voussoirs, heavy masonry piers and corbelled cornice.",
+       "material_zones": "dark rock-faced stone and red brick; deep window shadows; copper accents",
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index fb789a4bf88e89d1de30e899407c09b1747655b1..0718cd3c1d4d990e73a816d294b096cfa108cd03 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-soho-cast-iron-warehouse-v81",
++  "memory_version": "2026-07-20-richardsonian-warehouse-v82",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -740,6 +740,21 @@
+       "symptom": "A charcoal-painted cast-iron facade becomes a harsh black cage",
+       "cause": "Full-height structural pilasters inherited the same black-metal texture and high metallic response intended for fire escapes and roof railings.",
+       "correction": "Separate painted architectural iron from black exposed steel. Use a softer charcoal primary material for the fixed facade order and reserve black metal for stairs, guards and fine hardware."
++    },
++    {
++      "symptom": "A Romanesque warehouse source elevation resolves eight bays when the selected variant proves ten",
++      "cause": "The image generator preserved the architectural style but treated the required structural count as descriptive rather than fixed construction evidence.",
++      "correction": "Reject the source before scheduling openings. Run one bounded correction pass with the exact long-face bay count and do not build PBR maps until the orthographic grid passes."
++    },
++    {
++      "symptom": "A registered warehouse elevation is visibly stretched across a much wider provisional massing graph",
++      "cause": "The planning dimensions were retained after the accepted source measured a substantially smaller physical atlas span.",
++      "correction": "Compare measured atlas span with native graph frontage before canonical generation. Prefer an evidence-led native dimension tier when full-width mapping would otherwise distort bay proportions."
++    },
++    {
++      "symptom": "A five-bay short warehouse elevation displays ten compressed Romanesque bays behind five physical piers",
++      "cause": "The complete long-face atlas was wrapped onto a shorter side even though the oblique reference proved an independent five-bay structural rhythm.",
++      "correction": "Partition the secondary elevation into evidence-led per-bay UV crops and crop the semantic glazing regions with the same bounds. Verify that each cropped bay aligns to one physical side pier interval."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 2006800b4eabd78db1737310caaa009f1f1e83fd..d70671bc9f824678abac90d525821731a8f3cfaa 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -19,7 +19,7 @@
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "variant_id": "historical_brick_victorian", "family_id": "historical-brick-victorian-v1-renderlocked", "floors": 2, "width_m": 15, "depth_m": 22, "state": "keeper", "artifact": "historical-brick-main-street-v1/03-canonical-v3", "group": "historic mixed-use main street"},
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "variant_id": "industrial_brick_original_mill", "family_id": "industrial-brick-original-mill-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 20, "state": "keeper", "artifact": "industrial-brick-original-mill-v1/03-canonical-v3", "group": "industrial reuse"},
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "variant_id": "warehouse_loft_cast_iron", "family_id": "adaptive-reuse-cast-iron-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 26, "state": "keeper", "artifact": "adaptive-reuse-cast-iron-v1/03-canonical-v3", "group": "warehouse conversion"},
+-    {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "floors": 5, "state": "pending", "group": "Romanesque industrial heritage"},
++    {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "variant_id": "warehouse_arch_window_brick", "family_id": "romanesque-arch-window-brick-v1-renderlocked", "floors": 3, "width_m": 44, "depth_m": 36, "state": "keeper", "artifact": "romanesque-arch-window-brick-v1/03-canonical-v3", "group": "Romanesque industrial heritage"},
+     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "floors": 14, "state": "pending", "group": "metropolitan setback icon"},
+     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "floors": 7, "width_m": 20, "depth_m": 16, "state": "pending", "group": "mass-timber residential"},
+     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "floors": 7, "state": "pending", "group": "Scandinavian urban housing"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 91ec841ae6f0961072c27434058ef79fe2fe8e3a..3dd7b7baa003761fb0703fbb502c004ef0bb9fae 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 13
++    assert sum(entry["state"] == "keeper" for entry in entries) == 14
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 167c731cd3b46506333fe0154b7d0aaa488aa472..d85b2f30e5cba68c0d891cd6a104ba5c4176d0b5 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -209,6 +209,46 @@ def test_cast_iron_warehouse_variant_injects_fixed_corner_graph():
+     assert "massing_graph" not in injected["architectural_signature"]
+ 
+ 
++def test_arch_window_warehouse_variant_injects_ten_bay_romanesque_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "romanesque_revival_warehouse",
++            "variant_id": "warehouse_arch_window_brick",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++
++    assert graph["profile"] == "richardsonian_ten_bay_warehouse_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 44.0,
++        "depth_m": 36.0,
++        "floors": 3,
++        "floor_height_m": 5.4,
++    }
++    front_piers = next(
++        assembly for assembly in graph["assemblies"]
++        if assembly["id"] == "romanesque_front_piers"
++    )
++    assert front_piers["columns"] == 10
++    assert len(front_piers["active_vertical_indices"]) == 11
++    loading = next(
++        assembly for assembly in graph["assemblies"]
++        if assembly["id"] == "romanesque_front_loading_portals"
++    )
++    assert len(loading["positions_m"]) == 5
++    side_skins = [
++        assembly for assembly in graph["assemblies"]
++        if assembly["id"].startswith("romanesque_left_elevation_")
++    ]
++    assert len(side_skins) == 5
++    assert [skin["uv_u_min"] for skin in side_skins] == [0.1, 0.2, 0.3, 0.4, 0.5]
++    assert all(skin["span_m"] == 7.1 for skin in side_skins)
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+

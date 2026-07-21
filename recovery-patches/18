@@ -1,0 +1,271 @@
+From 89c3201bf51b005a43122e3a230a62fdfc7ee650 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 09:13:04 -0600
+Subject: [PATCH 18/32] feat: render-lock Scandinavian white plaster housing
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 24 ++++-
+ .../architectural_signature_profiles.json     | 88 +++++++++++++++++++
+ .../high_quality_building_memory.json         | 17 +++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 42 +++++++++
+ 6 files changed, 171 insertions(+), 4 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index e35c0776fcb401d89ae62b0a84c773be63b26eba..a77fca74291a049170259ebeb2c8aceefc5e9bf9 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-nordic-mass-timber-v84`.
++Current executable memory: `2026-07-20-scandi-white-plaster-v85`.
+ 
+ ## The quality target
+ 
+@@ -678,6 +678,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   and semantic-glass artifacts. Their expected missing-module validation is not
+   a keeper failure; promotion still requires the complete seven-role package.
+ 
++### Scandinavian white-plaster housing + audited-band lessons
++
++- Exact storey counts remain a hard gate even for a clean orthographic source.
++  When repeated image corrections still returned four rows for a five-wall-level
++  building, the source was rejected as a full-height atlas rather than stretched.
++- Valid source evidence can still be recovered modularly. Audit the ground,
++  ordinary and crown bands, then sequence or cycle them into the required wall
++  stack while preserving every window's native proportions.
++- Keep silhouette elements out of those bands. Balcony slabs, rails, dormers,
++  Juliet guards, gable roof and passage surround are fixed geometry; the atlas
++  carries plaster, openings and the planted passage view.
++- Portal layers need a deliberate depth order. The shadow cavity is deepest,
++  the main wall skin sits ahead of it, the fixed entrance atlas sits ahead of
++  the wall, and timber jambs/header remain outermost. A coplanar entrance can
++  disappear even when its source texture is correct.
++- Material keys must resolve to the actual texture library. Selecting the
++  registered `standing_seam` key changed the roof from a smooth dark plane to
++  the seam field proved by the aerial reference.
++- Older catalogue entries may have no parcel-profile metadata. Add an explicit
++  compatibility override before canonical generation, identify the one native
++  fixed tier, and bound which complete assemblies derived L/U kits must retain.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 3311e4682beb3f07c5e55685d8e554159d1f52cd..ede43cb839ade05635a8eee3efbc6cd9183a8b6c 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1515,6 +1515,94 @@
+       "material_zones": "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
+       "kits": ["timber_picture_frames", "recessed_balcony_columns", "asymmetric_bays", "slim_eaves"]
+     },
++    "scandi_urban_white_plaster": {
++      "identity": "Long white-plaster Scandinavian perimeter block with asymmetric warm-timber balconies, a planted garden passage and five box dormers in a dark standing-seam gable roof.",
++      "material_zones": "warm-white mineral plaster; charcoal windows and rails; oiled-larch balcony decks and passage lining; dark grey standing-seam metal roof",
++      "glass_profile": "residential_low_e",
++      "material_overrides": {
++        "primary": {"base_color": "#eeeae2", "roughness": 0.82, "metallic": 0.0, "texture_key": null},
++        "secondary": {"base_color": "#c7a16f", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_timber"},
++        "accent": {"base_color": "#272b2d", "roughness": 0.38, "metallic": 0.56, "texture_key": "black_metal"},
++        "roof": {"base_color": "#4d5357", "roughness": 0.48, "metallic": 0.58, "texture_key": "standing_seam"}
++      },
++      "signature_material_overrides": {
++        "signature_warm": {"base_color": "#a8753f", "roughness": 0.68, "metallic": 0.0, "texture_key": "natural_timber"},
++        "signature_metal": {"base_color": "#23272a", "roughness": 0.36, "metallic": 0.62, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [28, 50],
++        "recommendedDepth_m": [18, 30],
++        "recommendedFloors": [4, 7],
++        "wingDepth_m": [10, 16],
++        "preferredBayMultiple_m": 4.2,
++        "notes": [
++          "Use the fixed white-plaster graph only at the native 38 by 22 metre, six-level rectangular tier.",
++          "For derived L- and U-shaped parcel kits, retain the planted passage, balcony stack logic, five-dormer roof order and gable terminations while repeating only audited ordinary wall bays."
++        ]
++      },
++      "kits": ["white_plaster_elevation", "timber_balcony_stacks", "garden_passage", "five_box_dormers", "standing_seam_gable"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "white_plaster_five_dormer_perimeter_v1",
++        "description": "A fixed six-level Scandinavian infill block with five smooth-plaster wall levels, one inhabited dormered attic, asymmetric timber balconies and a planted through-passage.",
++        "height_m": 22.0,
++        "reference_dimensions": {"width_m": 38.0, "depth_m": 22.0, "floors": 6, "floor_height_m": 3.2},
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0.png", "cues": ["white mineral plaster", "asymmetric timber balconies", "garden passage", "five roof dormers"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_60.jpg", "cues": ["long rectangular infill block", "plain gable return", "dark standing-seam roof", "six occupied levels"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_90.jpg", "cues": ["ridge parallel to street", "five aligned front dormers", "simple uninterrupted gable roof"]}
++        ],
++        "nodes": [
++          {"id": "scandi_plinth", "kind": "box", "size": [38.6, 22.6, 0.34], "location": [0.0, 0.0, 0.17], "material": "signature_stone", "bevel_m": 0.04},
++          {"id": "scandi_shadow_core", "kind": "box", "size": [37.2, 21.2, 16.2], "location": [0.0, 0.0, 8.1], "material": "primary", "bevel_m": 0.14},
++          {"id": "scandi_main_gable_roof", "kind": "gable_roof", "size": [38.4, 22.4, 5.8], "location": [0.0, 0.0, 16.2], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x"},
++          {"id": "scandi_left_white_gable", "kind": "gable_roof", "size": [0.12, 21.9, 5.68], "location": [-19.24, 0.0, 16.22], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
++          {"id": "scandi_right_white_gable", "kind": "gable_roof", "size": [0.12, 21.9, 5.68], "location": [19.24, 0.0, 16.22], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
++          {"id": "scandi_front_eave", "kind": "box", "size": [38.7, 0.38, 0.18], "location": [0.0, -11.18, 16.22], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "scandi_rear_eave", "kind": "box", "size": [38.7, 0.38, 0.18], "location": [0.0, 11.18, 16.22], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "scandi_passage_shadow", "kind": "box", "size": [7.2, 0.5, 3.2], "location": [-5.0, -10.2, 1.7], "material": "interior", "bevel_m": 0.05},
++          {"id": "scandi_passage_left_jamb", "kind": "box", "size": [0.36, 1.15, 3.35], "location": [-8.78, -11.05, 1.72], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "scandi_passage_right_jamb", "kind": "box", "size": [0.36, 1.15, 3.35], "location": [-1.22, -11.05, 1.72], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "scandi_passage_header", "kind": "box", "size": [7.92, 1.15, 0.36], "location": [-5.0, -11.05, 3.38], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "scandi_front_dormer_1", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [-15.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
++          {"id": "scandi_front_dormer_2", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [-7.5, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
++          {"id": "scandi_front_dormer_3", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [0.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
++          {"id": "scandi_front_dormer_4", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [7.5, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
++          {"id": "scandi_front_dormer_5", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [15.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
++          {"id": "scandi_front_dormer_cap_1", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [-15.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
++          {"id": "scandi_front_dormer_cap_2", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [-7.5, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
++          {"id": "scandi_front_dormer_cap_3", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [0.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
++          {"id": "scandi_front_dormer_cap_4", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [7.5, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
++          {"id": "scandi_front_dormer_cap_5", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [15.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035}
++        ],
++        "voids": [
++          {"id": "scandi_planted_passage", "size": [7.2, 2.0, 3.2], "location": [-5.0, -11.0, 1.7], "purpose": "fixed timber-lined garden passage through the ground level"}
++        ],
++        "assemblies": [
++          {"id": "scandi_front_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -10.625, 0.0], "span_m": 37.5, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
++          {"id": "scandi_passage_atlas", "kind": "facade_skin", "axis": "front", "centre": [-5.0, -11.3, 1.7], "span_m": 7.5, "height_m": 3.4, "depth_m": 0.035, "band": "entrance"},
++          {"id": "scandi_rear_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 10.625, 0.0], "span_m": 37.5, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "floor", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
++          {"id": "scandi_left_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-18.625, 0.0, 0.0], "span_m": 21.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
++          {"id": "scandi_right_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [18.625, 0.0, 0.0], "span_m": 21.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "floor", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
++          {"id": "scandi_front_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -10.68, 0.0], "span_m": 37.5, "columns": 9, "rows": 1, "repeat_span_m": 37.5, "profile_m": 0.065, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "max_regions": 18, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
++          {"id": "scandi_left_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [-14.0, -10.75, 0.0], "span_m": 4.0, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.35, "rail_profile_m": 0.03, "pickets_per_segment": 10, "slab_material": "signature_warm", "rail_material": "signature_metal"},
++          {"id": "scandi_centre_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [3.2, -10.75, 0.0], "span_m": 4.4, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.45, "rail_profile_m": 0.03, "pickets_per_segment": 11, "slab_material": "signature_warm", "rail_material": "signature_metal"},
++          {"id": "scandi_right_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [14.1, -10.75, 0.0], "span_m": 4.0, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.35, "rail_profile_m": 0.03, "pickets_per_segment": 10, "slab_material": "signature_warm", "rail_material": "signature_metal"},
++          {"id": "scandi_dormer_1_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-15.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "scandi_dormer_2_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-7.5, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "scandi_dormer_3_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "scandi_dormer_4_glazing", "kind": "curtain_wall", "axis": "front", "centre": [7.5, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "scandi_dormer_5_glazing", "kind": "curtain_wall", "axis": "front", "centre": [15.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "scandi_dormer_1_guard", "kind": "balcony_array", "axis": "front", "centre": [-15.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
++          {"id": "scandi_dormer_2_guard", "kind": "balcony_array", "axis": "front", "centre": [-7.5, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
++          {"id": "scandi_dormer_3_guard", "kind": "balcony_array", "axis": "front", "centre": [0.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
++          {"id": "scandi_dormer_4_guard", "kind": "balcony_array", "axis": "front", "centre": [7.5, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
++          {"id": "scandi_dormer_5_guard", "kind": "balcony_array", "axis": "front", "centre": [15.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
++    },
+     "mediterranean_arcade_mixed_use": {
+       "identity": "Mediterranean mixed-use palazzo with a deep ground arcade, shaded upper loggias, stucco wall field, stone trim and generous terracotta eaves.",
+       "material_zones": "sun-washed stucco; warm stone arches; dark timber shutters; terracotta roof",
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 564ee470c224317f8babe4b45375661ffb7c357f..bdd6ee61c449857a2091b511a73748171910462f 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-nordic-mass-timber-v84",
++  "memory_version": "2026-07-20-scandi-white-plaster-v85",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -785,6 +785,21 @@
+       "symptom": "A planted roof reads as an inaccessible green slab without an inhabited terrace edge",
+       "cause": "The sedum surface was present but the safety boundary and pavilion relationship were treated as material detail rather than roof construction.",
+       "correction": "Pair occupied green roofs with a fixed, scale-correct perimeter guard and keep the canopy visibly subordinate to that terrace. Verify deck, planting, guard and pavilion together in the aerial acceptance view."
++    },
++    {
++      "symptom": "A clean rectified elevation contains fewer storey rows than the selected reference building",
++      "cause": "The image model preserved the material and bay brief but treated the exact vertical count as optional across repeated correction prompts.",
++      "correction": "Reject the image as a full-height atlas, audit each valid construction band, and sequence those bands into the required storey count. Never stretch a short elevation vertically to hide a count mismatch."
++    },
++    {
++      "symptom": "A reviewed fixed entrance texture disappears and ordinary facade windows show inside its physical surround",
++      "cause": "The entrance card was coplanar with or behind the principal facade skin, so the broad elevation surface won the depth test.",
++      "correction": "Give fixed portal layers an explicit depth order: shadow cavity deepest, principal wall skin next, entrance identity atlas forward of the wall, and physical jambs and header outermost. Prove the ordering from the street camera."
++    },
++    {
++      "symptom": "A valid complete family fails the executable quality gate because it declares no preferred parcel profiles",
++      "cause": "An older catalogue archetype predated the footprint-compatibility contract, and fixed native geometry did not supply planning guidance by itself.",
++      "correction": "Author an explicit compatibility override before canonical generation. Name at least three bounded planning profiles, document the one native fixed tier, and state which complete assemblies derived profiles must preserve."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 8c82c72f8d887119a09ce5a45e89a9991d427c1e..72a9dbc2b59aa494334bd4b2a45e737d2727ac4f 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -22,7 +22,7 @@
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "variant_id": "warehouse_arch_window_brick", "family_id": "romanesque-arch-window-brick-v1-renderlocked", "floors": 3, "width_m": 44, "depth_m": 36, "state": "keeper", "artifact": "romanesque-arch-window-brick-v1/03-canonical-v3", "group": "Romanesque industrial heritage"},
+     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "variant_id": "art_deco_cream_terracotta", "family_id": "art-deco-cream-terracotta-v1-renderlocked", "floors": 15, "width_m": 30, "depth_m": 28, "state": "keeper", "artifact": "art-deco-cream-terracotta-v1/05-canonical-v5", "group": "metropolitan setback icon"},
+     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "variant_id": "nordic_timber_mass_timber", "family_id": "nordic-mass-timber-v1-renderlocked", "floors": 7, "width_m": 20, "depth_m": 16, "state": "keeper", "artifact": "nordic-mass-timber-v1/03-canonical-v3", "group": "mass-timber residential"},
+-    {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "floors": 7, "state": "pending", "group": "Scandinavian urban housing"},
++    {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "variant_id": "scandi_urban_white_plaster", "family_id": "scandi-white-plaster-v1-renderlocked", "floors": 6, "width_m": 38, "depth_m": 22, "allow_outside_bounds": true, "state": "keeper", "artifact": "scandi-white-plaster-v1/05-canonical-v5", "group": "Scandinavian urban housing"},
+     {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "state": "pending", "group": "arcaded mixed-use"},
+     {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "floors": 3, "state": "pending", "group": "timber mixed-use"},
+     {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "floors": 6, "width_m": 55, "depth_m": 36, "state": "pending", "group": "historic railway hotel"}
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 6b4735cda04af29a836aa559339696331bf6a23d..a6181d43e53888a01abe14c693ccb0b7f7bdeb0d 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 16
++    assert sum(entry["state"] == "keeper" for entry in entries) == 17
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 5b31d85fd746bb695165e8c5d5baaf1dcd481f03..e8cf1ca51fe24abf7062473d8edc06865ef31568 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -317,6 +317,48 @@ def test_nordic_mass_timber_variant_injects_open_pavilion_and_planted_roof_graph
+     )
+ 
+ 
++def test_scandi_white_plaster_variant_injects_fixed_dormer_passage_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "scandinavian_urban_residential",
++            "variant_id": "scandi_urban_white_plaster",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++
++    assert graph["profile"] == "white_plaster_five_dormer_perimeter_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 38.0,
++        "depth_m": 22.0,
++        "floors": 6,
++        "floor_height_m": 3.2,
++    }
++    nodes = {node["id"]: node for node in graph["nodes"]}
++    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
++    dormer_bodies = [
++        node_id
++        for node_id in nodes
++        if node_id.startswith("scandi_front_dormer_")
++        and "cap" not in node_id
++    ]
++    assert len(dormer_bodies) == 5
++    assert len([key for key in assemblies if key.endswith("_guard")]) == 5
++    assert assemblies["scandi_passage_atlas"]["band"] == "entrance"
++    passage_y = assemblies["scandi_passage_atlas"]["centre"][1]
++    wall_y = assemblies["scandi_front_skin"]["base_centre"][1]
++    assert passage_y < wall_y
++    assert injected["materials"]["roof"]["texture_key"] == "standing_seam"
++    assert injected["footprint_compatibility"]["preferredProfiles"] == [
++        "rectangle",
++        "l_shape",
++        "u_shape",
++    ]
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+

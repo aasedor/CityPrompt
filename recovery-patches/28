@@ -1,0 +1,622 @@
+From 1763f320f46a4e6548fdd81887b0ed94e545d364 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 16:30:35 -0600
+Subject: [PATCH 28/32] feat: align park and street tiles with renders
+
+---
+ .../viewer/globe/GlobeParkKitLayer.tsx        |  13 +-
+ .../viewer/globe/GlobeSitePlannerMap.tsx      |  10 +-
+ .../viewer/globe/GlobeStreetDetailLayer.tsx   |  42 ++++--
+ .../viewer/globe/GlobeZoneLayer.tsx           |  26 +++-
+ .../viewer/globe/parkGroundProfiles.test.ts   |  14 +-
+ .../viewer/globe/parkGroundTexture.ts         |  13 +-
+ .../viewer/globe/parkScatter.test.ts          |  19 +++
+ .../components/viewer/globe/parkScatter.ts    | 126 +++++++++++-------
+ .../globe/sitePreparationSurface.test.ts      |  26 ++++
+ .../viewer/globe/sitePreparationSurface.ts    |  61 ++++++++-
+ frontend/src/data/parkKitRecipes.ts           |   6 +-
+ 11 files changed, 275 insertions(+), 81 deletions(-)
+
+diff --git a/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx b/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
+index e774f88b6bcbe1e9c2464392c245d76707028d1e..d75cac94f39951e5c86b3c4a9b75b88e2c34087c 100644
+--- a/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
+@@ -1,8 +1,8 @@
+ /**
+  * GlobeParkKitLayer — mounts only fixed, programmed park structures in the
+- * editable Google Tiles scene. Trees and benches are deliberately deferred
+- * to the architectural render, and missing playground/pavilion GLBs never
+- * fall back to cartoon procedural placeholders.
++ * editable Google Tiles scene, including deterministic live canopy and
++ * seating. Missing playground/pavilion GLBs never fall back to cartoon
++ * procedural placeholders.
+  *
+  * Placement is seeded by zone.id — orbiting, re-selecting, or reloading
+  * never reshuffles a park. renderOrder 145: under placed GLBs (150), above
+@@ -746,10 +746,9 @@ function ParkKitInstance({
+   // Landscape pattern stamped by the backend plan generator (green zones and
+   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
+   const plantingStructure = resolveParkPlantingStructure(zone);
+-  // A generated green-space drape is the spatial source of truth. Procedural
+-  // grounds share this kit's deterministic recipe and can therefore show real
+-  // manifest trees and benches live; AI-resolved grounds still defer those
+-  // finishing props because their detailed layout is not deterministic.
++  // A generated green-space drape is the spatial source of truth. Both
++  // procedural and AI-upgraded grounds keep the same deterministic placement
++  // recipe, so their live canopy and seating remain stable across reloads.
+   const hasCurrentParkGround = hasCurrentParkGroundSurface(zone);
+   const specialtyStructureKind = useMemo(
+     () => resolveParkSpecialtyStructureKind(zone),
+diff --git a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+index 16665465aa967afbec24f3a43126a13f39ba325d..643d9dc47524529fff211b188198d651509be037 100644
+--- a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
++++ b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+@@ -52,7 +52,10 @@ import {
+ } from './projectFrameHeight';
+ import { TileStencilPatcher } from './TileStencilPatcher';
+ import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
+-import { getPreparedSiteBoundaryIds } from './sitePreparationSurface';
++import {
++  getPreparedSiteBoundaryIds,
++  shouldMaskReplacementBuildingTiles,
++} from './sitePreparationSurface';
+ import { shouldMaskCommunityGroundTiles } from '@/features/community3d/community3d';
+ import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
+ import {
+@@ -1446,7 +1449,10 @@ export function GlobeSitePlannerMap({
+         return siteZones.filter((zone) => preparedSiteBoundaryIds.has(zone.id));
+       }
+       return siteZones.filter((zone) => (
+-        Boolean(zone.building_id && suppressedBuildingIds.has(zone.building_id))
++        shouldMaskReplacementBuildingTiles(
++          zone,
++          Boolean(zone.building_id && suppressedBuildingIds.has(zone.building_id)),
++        )
+         || shouldMaskCommunityGroundTiles(zone)
+       ));
+     },
+diff --git a/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx b/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
+index fd20aa33e8643d9f356efc6a1b7d7f495d828faa..49558801814d36dd5b747024d30c59757b2dafe3 100644
+--- a/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
+@@ -304,7 +304,7 @@ function StreetRibbonDetail({
+     }> = [];
+     // Alternate traffic-calming planters along the flush shared surface. Keep
+     // the first and last stations clear so the connection reads as an entry.
+-    for (let index = 2; index < points.length - 2; index += 4) {
++    for (let index = 2; index < points.length - 2; index += 3) {
+       const previous = points[index - 1];
+       const next = points[index + 1];
+       const dx = next.x - previous.x;
+@@ -411,28 +411,54 @@ function StreetRibbonDetail({
+             <meshStandardMaterial color="#d2bea0" roughness={0.90} />
+           </mesh>
+           <group
+-            position={[placement.x, placement.y, placement.z + 0.3]}
++            position={[placement.x, placement.y, placement.z + 0.35]}
+             rotation={[0, 0, placement.rotation]}
+             renderOrder={RENDER_ORDER_FURNITURE}
+           >
+             <mesh renderOrder={RENDER_ORDER_FURNITURE}>
+-              <boxGeometry args={[1.8, 0.9, 0.6]} />
++              <boxGeometry args={[2.4, 1.2, 0.7]} />
+               <meshStandardMaterial color="#7d5844" roughness={0.86} />
+             </mesh>
+-            <mesh position={[-0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
+-              <dodecahedronGeometry args={[0.44, 1]} />
++            <mesh position={[-0.62, 0, 0.58]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[0.52, 1]} />
+               <meshStandardMaterial color="#526f43" roughness={0.92} />
+             </mesh>
+-            <mesh position={[0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
+-              <dodecahedronGeometry args={[0.44, 1]} />
++            <mesh position={[0.62, 0, 0.58]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[0.52, 1]} />
+               <meshStandardMaterial color="#617b4c" roughness={0.92} />
+             </mesh>
+-            {[-1.15, 1.15].map((bollardX) => (
++            {[-1.45, 1.45].map((bollardX) => (
+               <mesh key={bollardX} position={[bollardX, 0, 0.42]} renderOrder={RENDER_ORDER_FURNITURE}>
+                 <cylinderGeometry args={[0.09, 0.11, 0.84, 10]} />
+                 <meshStandardMaterial color="#343b3b" metalness={0.48} roughness={0.5} />
+               </mesh>
+             ))}
++            <mesh position={[0, 0, 3.1]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <cylinderGeometry args={[0.18, 0.27, 5.8, 10]} />
++              <meshStandardMaterial color="#66513d" roughness={0.96} />
++            </mesh>
++            <mesh position={[-0.28, 0, 6.55]} scale={[1.05, 0.88, 1.05]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[1.85, 1]} />
++              <meshStandardMaterial color="#48663d" roughness={0.95} />
++            </mesh>
++            <mesh position={[0.82, 0.30, 6.05]} scale={[0.92, 0.84, 0.92]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[1.25, 1]} />
++              <meshStandardMaterial color="#5d784b" roughness={0.95} />
++            </mesh>
++            {index % 2 === 1 && (
++              <group position={[0, -1.5, 0.36]} renderOrder={RENDER_ORDER_FURNITURE}>
++                <mesh renderOrder={RENDER_ORDER_FURNITURE}>
++                  <boxGeometry args={[1.65, 0.42, 0.12]} />
++                  <meshStandardMaterial color="#866044" roughness={0.88} />
++                </mesh>
++                {[-0.58, 0.58].map((legX) => (
++                  <mesh key={legX} position={[legX, 0, -0.25]} renderOrder={RENDER_ORDER_FURNITURE}>
++                    <boxGeometry args={[0.09, 0.34, 0.5]} />
++                    <meshStandardMaterial color="#3e4444" metalness={0.4} roughness={0.58} />
++                  </mesh>
++                ))}
++              </group>
++            )}
+           </group>
+         </group>
+       ))}
+diff --git a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+index d7307aad5cef80c11af0b15e12eeb43e772656d5..cc34e117d455cbec1363df743475adbf8ba3b090 100644
+--- a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+@@ -41,6 +41,7 @@ import {
+ import {
+   createSitePreparationGeometry,
+   createSitePreparationTexture,
++  createWoonerfPaverTexture,
+   hasCompiledCommunity,
+   overlapPreparedGroundEdges,
+   shouldRenderReplacementFootprintGround,
+@@ -479,6 +480,21 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     );
+   }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
+ 
++  const woonerfGroundGeo = useMemo(
++    () => (
++      isWoonerfGround && geoData?.flatTopGeo
++        ? createSitePreparationGeometry(geoData.flatTopGeo, `${zone.id}-woonerf`)
++        : null
++    ),
++    [geoData, isWoonerfGround, zone.id],
++  );
++  useDeferredDisposable(woonerfGroundGeo);
++  const woonerfGroundTexture = useMemo(
++    () => (isWoonerfGround ? createWoonerfPaverTexture(zone.id) : null),
++    [isWoonerfGround, zone.id],
++  );
++  useDeferredDisposable(woonerfGroundTexture);
++
+   const replacementGroundData = useMemo(
+     () => (
+       isReplacementFootprintGround
+@@ -947,7 +963,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+       {!isBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
+         <mesh
+           ref={flatMeshRef}
+-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? geoData.flatTopGeo}
++          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? geoData.flatTopGeo}
+           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
+           frustumCulled={false}
+           onPointerDown={handleZonePointerDown}
+@@ -969,9 +985,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+             />
+           ) : (
+             <meshBasicMaterial
+-              key={drapeActive ? groundMeta?.document_id ?? 'drape' : 'plain'}
+-              color={drapeActive ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
+-              map={drapeActive ? groundTexture : undefined}
++              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : 'plain'}
++              color={drapeActive || isWoonerfGround ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
++              map={drapeActive ? groundTexture : woonerfGroundTexture ?? undefined}
+               transparent
+               opacity={isSiteBoundary ? 0.15 : 1.0}
+               side={THREE.DoubleSide}
+@@ -996,7 +1012,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+         >
+           <meshBasicMaterial
+             key="replacement-footprint-ground"
+-            color="#ffffff"
++            color="#9b9488"
+             map={replacementGroundTexture ?? undefined}
+             side={THREE.DoubleSide}
+             depthTest
+diff --git a/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts b/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
+index 25b631b2852517ef5bc3aad92ebf23fe953b60b4..61116bf848613658577a5a8365478e702481887b 100644
+--- a/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
++++ b/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
+@@ -477,13 +477,20 @@ describe('park ground pilot profiles', () => {
+     expect(pixels[1]).toBeLessThan(200);
+   });
+ 
+-  it('defers trees and benches to the final render for every park surface', () => {
++  it('shows finishing props only after a park surface is compiled', () => {
+     const candidate = zone('urban_pocket_park');
+     const profile = resolveParkGroundProfile(candidate);
+     const generated = {
+       ...candidate,
+       properties: {
+         ...candidate.properties,
++        community_3d: {
++          schema_version: 1,
++          state: 'compiled',
++          kind: 'park',
++          generator: 'park_kit',
++          compiled_at: '2026-07-17T00:00:00Z',
++        },
+         park_ground_texture: {
+           url: '/park.png',
+           document_id: 'doc-1',
+@@ -499,11 +506,12 @@ describe('park ground pilot profiles', () => {
+         },
+       },
+     } satisfies SiteZone;
+-    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(true);
+-    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(true);
++    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(false);
++    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(false);
+     expect(shouldDeferParkFinishingProp(generated, 'playground')).toBe(false);
+     expect(shouldDeferParkFinishingProp(candidate, 'tree')).toBe(true);
+     expect(shouldRenderLiveParkProp(candidate, 'tree', true)).toBe(false);
++    expect(shouldRenderLiveParkProp(generated, 'tree', true)).toBe(true);
+     expect(shouldRenderLiveParkProp(candidate, 'bench', true)).toBe(false);
+     expect(shouldRenderLiveParkProp(candidate, 'playground', false)).toBe(false);
+     expect(shouldRenderLiveParkProp(candidate, 'playground', true)).toBe(true);
+diff --git a/frontend/src/components/viewer/globe/parkGroundTexture.ts b/frontend/src/components/viewer/globe/parkGroundTexture.ts
+index 207140d935879ac000044479c66e3f3c61a0f603..76b8bacc1872a28bd00e3ae2eac110d4f74ee2d0 100644
+--- a/frontend/src/components/viewer/globe/parkGroundTexture.ts
++++ b/frontend/src/components/viewer/globe/parkGroundTexture.ts
+@@ -179,22 +179,21 @@ export function hasCurrentParkGroundSurface(zone: SiteZone): boolean {
+   return resolveParkGroundSurfaceSource(zone) !== 'none';
+ }
+ 
+-/** AI-resolved park grounds defer finishing props because their exact paths,
+- * water and planting beds are not deterministic. Procedurally compiled park
+- * grounds share the same placement recipe as the 3D kit, so their real tree
+- * and bench assets can safely appear in the interactive Google Tiles scene. */
++/** Uncompiled park candidates defer finishing props. Once a park is compiled,
++ * both procedural and AI-upgraded grounds retain the same locked topology and
++ * may show their deterministic 3D canopy and seating in Google Tiles. */
+ export function shouldDeferParkFinishingProp(
+   zone: SiteZone,
+   propId: PropPlacement['propId'],
+ ): boolean {
+   return isParkGroundZone(zone)
+-    && (!isCommunity3DCompiled(zone) || Boolean(getParkGroundMeta(zone)))
++    && !isCommunity3DCompiled(zone)
+     && (propId === 'tree' || propId === 'bench');
+ }
+ 
+ /** The interactive scene never substitutes low-detail placeholders for a
+- * missing park asset. Current procedural grounds may use the real manifest
+- * assets; AI ground imagery still defers its finishing layer to final render. */
++ * missing park asset. Every compiled ground may use the real manifest assets
++ * or the deterministic live fallback supplied by GlobeParkKitLayer. */
+ export function shouldRenderLiveParkProp(
+   zone: SiteZone,
+   propId: PropPlacement['propId'],
+diff --git a/frontend/src/components/viewer/globe/parkScatter.test.ts b/frontend/src/components/viewer/globe/parkScatter.test.ts
+index 769c533e917c3807b8faf3bf18670b84287ed556..2f6cdb94dc5a4e9dcc7df79526f879484566d151 100644
+--- a/frontend/src/components/viewer/globe/parkScatter.test.ts
++++ b/frontend/src/components/viewer/globe/parkScatter.test.ts
+@@ -103,6 +103,25 @@ describe('computeParkPlacements', () => {
+     }
+   });
+ 
++  it('frames an urban pocket park with canopy in every quadrant', () => {
++    const trees = treesOf(computeParkPlacements(
++      { id: 'pocket-frame', coordinates: squareRing(36) },
++      URBAN_POCKET_PARK,
++      'garden_courtyard',
++    ));
++    const quadrants = new Set(trees.map((tree) => {
++      const [x, y] = toMeters(tree);
++      return `${x < 18 ? 'west' : 'east'}-${y < 18 ? 'south' : 'north'}`;
++    }));
++    expect(trees.length).toBeGreaterThanOrEqual(12);
++    expect(quadrants).toEqual(new Set([
++      'west-south',
++      'west-north',
++      'east-south',
++      'east-north',
++    ]));
++  });
++
+   it('gates the playground on area', () => {
+     const small = computeParkPlacements({ id: 'z-small', coordinates: squareRing(45) }, NEIGHBORHOOD); // ~2000 m²
+     const big = computeParkPlacements({ id: 'z-big', coordinates: squareRing(70) }, NEIGHBORHOOD); // ~4900 m²
+diff --git a/frontend/src/components/viewer/globe/parkScatter.ts b/frontend/src/components/viewer/globe/parkScatter.ts
+index 4b274a667204cc4bf4b4eb01deb00cf189fca4f0..4ca63666bb6126b812f75c6cd74000930ea77f7b 100644
+--- a/frontend/src/components/viewer/globe/parkScatter.ts
++++ b/frontend/src/components/viewer/globe/parkScatter.ts
+@@ -319,6 +319,36 @@ function placeLegacyScatter(ctx: TreeCtx): void {
+   }
+ }
+ 
++/** Urban pocket parks need to read as complete outdoor rooms from every
++ * approach. Distribute an irregular but balanced mature canopy around the
++ * full perimeter instead of allowing seeded rejection sampling to cluster on
++ * one or two edges. The center remains open for the authored lawn and paths. */
++function placePocketParkFrame(ctx: TreeCtx): void {
++  const { rng, tr, target } = ctx;
++  const candidateCount = Math.max(24, target * 4);
++  const stations = perimeterStations(ctx.local, candidateCount);
++  if (!stations.length) return;
++  const rotation = Math.floor(rng() * stations.length);
++  for (let slot = 0; slot < target; slot += 1) {
++    const base = Math.floor(((slot + 0.2 + rng() * 0.6) * stations.length) / target);
++    for (let probe = 0; probe < 4; probe += 1) {
++      const st = stations[(rotation + base + probe) % stations.length];
++      const inset = 2.2 + rng() * Math.max(0.5, tr.bandDepth_m - 2.2);
++      const tangentJitter = (rng() - 0.5) * 1.4;
++      const x = st.x + st.nx * inset - st.ny * tangentJitter;
++      const y = st.y + st.ny * inset + st.nx * tangentJitter;
++      if (!ctx.canPlace(x, y)) continue;
++      ctx.push(
++        x,
++        y,
++        rng() * Math.PI * 2,
++        tr.scaleJitter[0] + rng() * (tr.scaleJitter[1] - tr.scaleJitter[0]),
++      );
++      break;
++    }
++  }
++}
++
+ /** formal_allee — Parisian jardin: double rows at uniform spacing/scale along
+  *  the two longest edges, a single row on the remaining edges when they have
+  *  room, and an open centre (no interior scatter). */
+@@ -866,52 +896,56 @@ export function computeParkPlacements(
+     count: () => placedTrees.length,
+   };
+ 
+-  switch (structure) {
+-    case 'formal_allee':
+-      placeFormalAllee(ctx);
+-      break;
+-    case 'naturalistic_grove':
+-      placeNaturalisticGrove(ctx);
+-      break;
+-    case 'open_meadow':
+-      placeOpenMeadow(ctx);
+-      break;
+-    case 'active_recreation':
+-      // shade anchors: equipment clearance rings + the benches placed above
+-      placeActiveRecreation(ctx, [
+-        ...clearances.map((c) => ({ x: c.x, y: c.y, standoff: c.r })),
+-        ...placements.filter((p) => p.propId === 'bench').map((b) => ({ x: b.x, y: b.y, standoff: 1.5 })),
+-      ]);
+-      break;
+-    case 'formal_quad':
+-      placeFormalQuad(ctx);
+-      break;
+-    case 'garden_courtyard':
+-      placeGardenCourtyard(ctx);
+-      break;
+-    case 'japanese_stroll_garden':
+-      placeGardenCourtyard(ctx, false);
+-      break;
+-    case 'sports_perimeter':
+-      placeSportsPerimeter(ctx);
+-      break;
+-    case 'reservoir_perimeter':
+-      placeReservoirPerimeter(ctx);
+-      break;
+-    case 'botanical_collection':
+-      placeNaturalisticGrove(ctx);
+-      break;
+-    case 'nature_play_grove':
+-      placeOpenMeadow(ctx);
+-      break;
+-    case 'paved_plaza':
+-      placePavedPlaza(ctx);
+-      break;
+-    case 'buffer_edge':
+-      placeBufferEdge(ctx);
+-      break;
+-    default:
+-      placeLegacyScatter(ctx);
++  if (recipe === URBAN_POCKET_PARK) {
++    placePocketParkFrame(ctx);
++  } else {
++    switch (structure) {
++      case 'formal_allee':
++        placeFormalAllee(ctx);
++        break;
++      case 'naturalistic_grove':
++        placeNaturalisticGrove(ctx);
++        break;
++      case 'open_meadow':
++        placeOpenMeadow(ctx);
++        break;
++      case 'active_recreation':
++        // shade anchors: equipment clearance rings + the benches placed above
++        placeActiveRecreation(ctx, [
++          ...clearances.map((c) => ({ x: c.x, y: c.y, standoff: c.r })),
++          ...placements.filter((p) => p.propId === 'bench').map((b) => ({ x: b.x, y: b.y, standoff: 1.5 })),
++        ]);
++        break;
++      case 'formal_quad':
++        placeFormalQuad(ctx);
++        break;
++      case 'garden_courtyard':
++        placeGardenCourtyard(ctx);
++        break;
++      case 'japanese_stroll_garden':
++        placeGardenCourtyard(ctx, false);
++        break;
++      case 'sports_perimeter':
++        placeSportsPerimeter(ctx);
++        break;
++      case 'reservoir_perimeter':
++        placeReservoirPerimeter(ctx);
++        break;
++      case 'botanical_collection':
++        placeNaturalisticGrove(ctx);
++        break;
++      case 'nature_play_grove':
++        placeOpenMeadow(ctx);
++        break;
++      case 'paved_plaza':
++        placePavedPlaza(ctx);
++        break;
++      case 'buffer_edge':
++        placeBufferEdge(ctx);
++        break;
++      default:
++        placeLegacyScatter(ctx);
++    }
+   }
+ 
+   return placements.map(({ x: _x, y: _y, ...p }) => p);
+diff --git a/frontend/src/components/viewer/globe/sitePreparationSurface.test.ts b/frontend/src/components/viewer/globe/sitePreparationSurface.test.ts
+index 7ebfe85b915252337690ade33962ad136ba777ee..9283595af8c432cdc068342ff34c77c22bbe9eac 100644
+--- a/frontend/src/components/viewer/globe/sitePreparationSurface.test.ts
++++ b/frontend/src/components/viewer/globe/sitePreparationSurface.test.ts
+@@ -4,9 +4,11 @@ import type { SiteZone } from '@/types';
+ import {
+   createSitePreparationGeometry,
+   createSitePreparationTexture,
++  createWoonerfPaverTexture,
+   getPreparedSiteBoundaryIds,
+   hasCompiledCommunity,
+   overlapPreparedGroundEdges,
++  shouldMaskReplacementBuildingTiles,
+   shouldRenderReplacementFootprintGround,
+ } from './sitePreparationSurface';
+ 
+@@ -43,6 +45,11 @@ describe('compiled site preparation', () => {
+     expect(
+       shouldRenderReplacementFootprintGround(zone('park', 'green_space'), true, false),
+     ).toBe(false);
++    const clearedLotBuilding = zone('cleared', 'building', {
++      community_3d_mask_existing_tiles: false,
++    });
++    expect(shouldMaskReplacementBuildingTiles(clearedLotBuilding, true)).toBe(false);
++    expect(shouldRenderReplacementFootprintGround(clearedLotBuilding, true, false)).toBe(false);
+   });
+ 
+   it('activates only when a compilable community zone has been built', () => {
+@@ -99,6 +106,25 @@ describe('compiled site preparation', () => {
+     textureB.dispose();
+   });
+ 
++  it('creates a deterministic warm unit-paver texture for woonerfs', () => {
++    const textureA = createWoonerfPaverTexture('street-1', 64);
++    const textureB = createWoonerfPaverTexture('street-1', 64);
++    const dataA = textureA.image.data as Uint8Array;
++    const dataB = textureB.image.data as Uint8Array;
++    expect(Array.from(dataA)).toEqual(Array.from(dataB));
++    expect(textureA.wrapS).toBe(THREE.RepeatWrapping);
++    expect(textureA.wrapT).toBe(THREE.RepeatWrapping);
++    const channelMeans = [0, 1, 2].map((channel) => {
++      let total = 0;
++      for (let index = channel; index < dataA.length; index += 4) total += dataA[index];
++      return total / (dataA.length / 4);
++    });
++    expect(channelMeans[0]).toBeGreaterThan(channelMeans[1] + 35);
++    expect(channelMeans[1]).toBeGreaterThan(channelMeans[2] + 15);
++    textureA.dispose();
++    textureB.dispose();
++  });
++
+   it('adds a hidden edge overlap to cover spatial-mask raster seams', () => {
+     const source = new THREE.PlaneGeometry(20, 10, 1, 1);
+     source.computeBoundingBox();
+diff --git a/frontend/src/components/viewer/globe/sitePreparationSurface.ts b/frontend/src/components/viewer/globe/sitePreparationSurface.ts
+index 68c1cdd84e9a5cfd44a18b81a328e9ab8e97baf9..22c0192097b0e27ea70db00612f7820cde1aa3aa 100644
+--- a/frontend/src/components/viewer/globe/sitePreparationSurface.ts
++++ b/frontend/src/components/viewer/globe/sitePreparationSurface.ts
+@@ -28,12 +28,25 @@ export function shouldRenderReplacementFootprintGround(
+   suppressed: boolean,
+   sitePrepared: boolean,
+ ): boolean {
+-  return suppressed
++  return shouldMaskReplacementBuildingTiles(zone, suppressed)
+     && !sitePrepared
+-    && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type)
+     && zone.coordinates.length >= 3;
+ }
+ 
++/** Empty or already-cleared parcels can opt out of cutting the Google mesh.
++ * Respect that explicit project decision for both the tile mask and its
++ * replacement apron; otherwise an unnecessary mask reveals the sky-clear
++ * colour around a model that sits on valid existing terrain. */
++export function shouldMaskReplacementBuildingTiles(
++  zone: SiteZone,
++  suppressed: boolean,
++): boolean {
++  const props = zone.properties as Record<string, unknown> | undefined;
++  return suppressed
++    && props?.community_3d_mask_existing_tiles !== false
++    && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type);
++}
++
+ function hashSeed(value: string): number {
+   let hash = 2166136261;
+   for (let index = 0; index < value.length; index += 1) {
+@@ -112,6 +125,50 @@ export function createSitePreparationTexture(seed: string, size = 256): THREE.Da
+   return texture;
+ }
+ 
++/** Warm unit-paver texture for compiled woonerfs. The live tile scene needs
++ * enough small-scale construction evidence to read as a shared street rather
++ * than a flat planning polygon, while staying deterministic and credit-free. */
++export function createWoonerfPaverTexture(seed: string, size = 256): THREE.DataTexture {
++  const dimension = Math.max(32, Math.round(size));
++  const data = new Uint8Array(dimension * dimension * 4);
++  const phase = Math.floor(hashSeed(seed) * 97);
++  const brickWidth = 24;
++  const brickHeight = 10;
++  const mortar = [183, 160, 139];
++  const brickA = [156, 92, 65];
++  const brickB = [177, 109, 75];
++
++  for (let y = 0; y < dimension; y += 1) {
++    const row = Math.floor(y / brickHeight);
++    const offsetX = row % 2 === 0 ? 0 : brickWidth / 2;
++    for (let x = 0; x < dimension; x += 1) {
++      const localX = (x + offsetX + phase) % brickWidth;
++      const localY = (y + phase) % brickHeight;
++      const isJoint = localX < 1.6 || localY < 1.4;
++      const variation = (
++        Math.sin((x + phase) * 0.31) + Math.cos((y - phase) * 0.43)
++      ) * 4;
++      const base = isJoint ? mortar : ((row + Math.floor((x + offsetX) / brickWidth)) % 3 === 0 ? brickB : brickA);
++      const pixel = (y * dimension + x) * 4;
++      data[pixel] = Math.max(0, Math.min(255, Math.round(base[0] + variation)));
++      data[pixel + 1] = Math.max(0, Math.min(255, Math.round(base[1] + variation)));
++      data[pixel + 2] = Math.max(0, Math.min(255, Math.round(base[2] + variation)));
++      data[pixel + 3] = 255;
++    }
++  }
++
++  const texture = new THREE.DataTexture(data, dimension, dimension, THREE.RGBAFormat);
++  texture.name = `woonerf-pavers-${seed}`;
++  texture.colorSpace = THREE.SRGBColorSpace;
++  texture.wrapS = THREE.RepeatWrapping;
++  texture.wrapT = THREE.RepeatWrapping;
++  texture.minFilter = THREE.LinearMipmapLinearFilter;
++  texture.magFilter = THREE.LinearFilter;
++  texture.generateMipmaps = true;
++  texture.needsUpdate = true;
++  return texture;
++}
++
+ /** Clone a terrain grid and give it low-frequency earth/vegetation variation.
+  * The residual site surface reads as prepared landscape instead of a flat
+  * planning polygon, while roads, parks and buildings render above it. */
+diff --git a/frontend/src/data/parkKitRecipes.ts b/frontend/src/data/parkKitRecipes.ts
+index 87a6758659d286726faf1b9d6b6fd27d576b8e2c..c46e0b5e4e699e88b8801e3821d035cceaa09fce 100644
+--- a/frontend/src/data/parkKitRecipes.ts
++++ b/frontend/src/data/parkKitRecipes.ts
+@@ -48,7 +48,11 @@ export const NEIGHBORHOOD_PARK: ParkKitRecipe = {
+ };
+ 
+ export const URBAN_POCKET_PARK: ParkKitRecipe = {
+-  trees: { perHectare: 60, edgeBias: 0.8, bandDepth_m: 6, minSpacing_m: 5, scaleJitter: [0.8, 1.15] },
++  // A compact downtown park needs a continuous mature canopy frame to read
++  // against surrounding mid-rise massing. 125/ha yields roughly 16 trees on
++  // a 0.13 ha court and 25-30 on a larger 0.2-0.25 ha pocket park, while the
++  // edge bias and spacing keep the central lawn usable and visible.
++  trees: { perHectare: 125, edgeBias: 0.88, bandDepth_m: 7, minSpacing_m: 4.2, scaleJitter: [0.95, 1.35] },
+   benches: { areaPerBench_m2: 800, min: 2, max: 4, edgeInset_m: 1.5 },
+ };
+ 
+-- 
+2.55.0.windows.2
+

@@ -1,0 +1,315 @@
+From 09790506ef8245bc827a5f14c96a6a2449ab5a68 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 05:55:25 -0600
+Subject: [PATCH 12/32] feat: render-lock victorian main street
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 19 ++++
+ .../architectural_signature_profiles.json     | 93 ++++++++++++++++++-
+ tools/archetype_compiler/blender_generate.py  | 32 +++++++
+ .../high_quality_building_memory.json         | 22 ++++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 37 ++++++++
+ 7 files changed, 201 insertions(+), 6 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 46efef6caca868017e06017fd8bc5152c3c162d8..9e00ade275385b909c53bca4dc160a8560e3ad15 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -561,6 +561,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   Record that inference in human QA rather than inventing a second principal
+   facade.
+ 
++### Victorian polychrome main-street + simulated-opening lessons
++
++- Cohort placeholders do not outrank selected-variant evidence. The Victorian
++  Polychrome references prove a native two-storey shop block, so the registry's
++  provisional four floors had to be corrected before keeper promotion.
++- Continuous masonry courses cannot pass through layered panes and room cards
++  as if those layers were boolean wall voids. Segment decorative bands around
++  the audited opening schedule and place geometry only on solid pier spans.
++- Painted cast iron is not generic black metal. Preserve the evidence-led
++  forest-green albedo and moderate metallic response instead of allowing a
++  black-metal texture key to erase the painted finish.
++- Roof-plan review controls ridge direction even when the street camera hides
++  most of the roof. Register seams to the corrected hip, lift skylights onto
++  explicit curbs above the local plane, and prove the service roof, chimney and
++  parapet together in the aerial acceptance view.
++- Fixed storefront identity includes entrance count as well as display rhythm.
++  Keep both recessed entries, the cast-iron pilasters, spandrel/frieze hierarchy
++  and six upper arches fixed; only ordinary display or sash bays may repeat.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 4d070ab1713545c899fcc8ed1199150507b1086f..378d57be133b80144453188d919b726e5413a506 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -917,9 +917,96 @@
+       }
+     },
+     "historical_brick_main_street": {
+-      "identity": "Narrow historic main-street building with a transparent cast-iron storefront, brick pilasters, sign frieze, punched sash windows and pressed-metal cornice.",
+-      "material_zones": "variegated red brick; painted cast iron; glazed shopfront; dark metal cornice",
+-      "kits": ["cast_iron_storefront", "brick_pilasters", "sign_frieze", "pressed_metal_cornice"]
++      "identity": "Two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, cream-and-red brick striping, a deep forest-green cast-iron double storefront, carved frieze and a tall panelled parapet concealing a low service roof.",
++      "material_zones": "rich red pressed brick; repeated cream-brick bands and carved limestone; forest-green painted cast iron and timber; dark membrane and corrugated roof; warm occupied glazing",
++      "glass_profile": "heritage_leaded_occupied",
++      "material_overrides": {
++        "primary": {"base_color": "#8f4636", "roughness": 0.86, "metallic": 0.0, "texture_key": "red_brick"},
++        "secondary": {"base_color": "#d2bc92", "roughness": 0.80, "metallic": 0.0, "texture_key": "limestone"},
++        "accent": {"base_color": "#315a3f", "roughness": 0.48, "metallic": 0.24, "texture_key": null},
++        "roof": {"base_color": "#777773", "roughness": 0.66, "metallic": 0.30, "texture_key": "standing_seam_metal"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#d8c69d", "roughness": 0.79, "metallic": 0.0, "texture_key": "limestone"},
++        "signature_warm": {"base_color": "#53382c", "roughness": 0.61, "metallic": 0.0, "texture_key": "dark_oak"},
++        "signature_metal": {"base_color": "#315a3f", "roughness": 0.47, "metallic": 0.24, "texture_key": null}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [8, 15],
++        "recommendedDepth_m": [16, 22],
++        "recommendedFloors": [2, 4],
++        "wingDepth_m": [7, 10],
++        "preferredBayMultiple_m": 2.4,
++        "notes": [
++          "Use the fixed Victorian polychrome graph only at the native 15 by 22 metre, two-floor rectangular tier.",
++          "On other parcels, keep the paired storefront entrances, end piers, parapet and cornice fixed and repeat only ordinary upper sash and display-window bays."
++        ]
++      },
++      "kits": ["cast_iron_storefront", "round_arch_sashes", "polychrome_brick_bands", "carved_sign_frieze", "panelled_parapet", "concealed_service_roof"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "victorian_polychrome_main_street_v1",
++        "description": "A fixed two-storey polychrome brick shop block with six upper arches, two recessed entries in a deep green cast-iron storefront, striped exposed side walls, carved cream frieze, panelled parapet and a concealed low roof with one chimney.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/historical_brick_main_street/variant_0.png", "cues": ["six round arches", "polychrome cream bands", "forest-green double storefront", "carved cornice and parapet"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/historical_brick_main_street/variant_0_angle_60.jpg", "cues": ["two-storey native height", "striped exposed side", "deep narrow lot", "one tall chimney"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/historical_brick_main_street/variant_0_angle_90.jpg", "cues": ["parapet-concealed mixed roof", "central service deck", "bounded skylights and vents", "no cupola"]}
++        ],
++        "height_m": 10.35,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 15.0, "depth_m": 22.0, "floors": 2, "floor_height_m": 3.6},
++        "nodes": [
++          {"id": "victorian_body", "kind": "box", "size": [15.0, 22.0, 7.55], "location": [0.0, 0.0, 3.775], "material": "primary", "bevel_m": 0.07},
++          {"id": "victorian_base_plinth", "kind": "box", "size": [15.25, 22.25, 0.42], "location": [0.0, 0.0, 0.21], "material": "signature_metal", "bevel_m": 0.04},
++          {"id": "victorian_front_storefront_back", "kind": "box", "size": [14.6, 0.16, 3.75], "location": [0.0, -11.06, 2.05], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "victorian_storefront_door_left", "kind": "box", "size": [1.25, 0.10, 2.65], "location": [-3.25, -11.20, 1.75], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "victorian_storefront_door_right", "kind": "box", "size": [1.25, 0.10, 2.65], "location": [3.25, -11.20, 1.75], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "victorian_front_parapet", "kind": "box", "size": [15.25, 0.52, 1.30], "location": [0.0, -10.78, 8.20], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_rear_parapet", "kind": "box", "size": [15.15, 0.42, 1.05], "location": [0.0, 10.78, 8.05], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_left_parapet", "kind": "box", "size": [0.42, 21.2, 1.05], "location": [-7.29, 0.0, 8.05], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_right_parapet", "kind": "box", "size": [0.42, 21.2, 1.05], "location": [7.29, 0.0, 8.05], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_low_hip_roof", "kind": "hipped_roof", "size": [14.1, 21.1, 1.15], "location": [0.0, 0.0, 8.0], "material": "roof", "bevel_m": 0.045, "ridge_axis": "x", "ridge_inset_m": 3.5},
++          {"id": "victorian_service_deck", "kind": "box", "size": [6.2, 9.2, 0.20], "location": [2.5, 2.4, 8.10], "material": "roof", "bevel_m": 0.03},
++          {"id": "victorian_skylight_front_curb", "kind": "box", "size": [1.45, 2.20, 0.24], "location": [-2.1, -3.8, 8.92], "material": "roof", "bevel_m": 0.035},
++          {"id": "victorian_skylight_front", "kind": "box", "size": [1.25, 2.0, 0.16], "location": [-2.1, -3.8, 9.08], "material": "glass", "bevel_m": 0.035},
++          {"id": "victorian_skylight_rear_curb", "kind": "box", "size": [1.25, 1.85, 0.24], "location": [2.7, 3.2, 8.90], "material": "roof", "bevel_m": 0.035},
++          {"id": "victorian_skylight_rear", "kind": "box", "size": [1.05, 1.65, 0.16], "location": [2.7, 3.2, 9.06], "material": "glass", "bevel_m": 0.035},
++          {"id": "victorian_chimney", "kind": "box", "size": [1.05, 1.05, 1.80], "location": [-5.45, 4.9, 8.95], "material": "primary", "bevel_m": 0.035},
++          {"id": "victorian_chimney_cap", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [-5.45, 4.9, 9.94], "material": "signature_stone", "bevel_m": 0.025},
++          {"id": "victorian_vent", "kind": "cylinder", "radius_m": 0.28, "height_m": 0.80, "location": [3.8, 4.6, 8.78], "material": "roof", "vertices": 18},
++          {"id": "victorian_front_pier_left", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [-7.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_front_pier_centre", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [0.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_front_pier_right", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [7.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
++          {"id": "victorian_pier_cap_left", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [-7.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03},
++          {"id": "victorian_pier_cap_centre", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [0.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03},
++          {"id": "victorian_pier_cap_right", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [7.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03}
++        ],
++        "voids": [
++          {"id": "victorian_storefront_cavity", "size": [14.2, 1.2, 3.45], "location": [0.0, -10.7, 2.0], "purpose": "deep occupied display glazing and two recessed shop entrances"},
++          {"id": "victorian_upper_openings", "size": [13.8, 0.9, 3.15], "location": [0.0, -10.8, 5.85], "purpose": "six fixed round-arched upper sash openings"}
++        ],
++        "assemblies": [
++          {"id": "victorian_storefront_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -11.20, 2.05], "span_m": 13.8, "height_m": 3.25, "columns": 6, "rows": 2, "frame_m": 0.12, "depth_m": 0.10, "reveal_m": 0.10, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.30},
++          {"id": "victorian_storefront_entries", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -11.28, 1.82], "positions_m": [-3.25, 3.25], "opening_width_m": 1.30, "opening_height_m": 2.60, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.08, "occupied_as_pane": false, "material": "signature_metal", "glass_material": "signature_metal", "frame_material": "signature_metal", "interior_material": "signature_metal", "door_material": "signature_metal"},
++          {"id": "victorian_storefront_pilasters", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.18, 0.0], "span_m": 14.5, "count": 5, "levels_z": [2.10], "depth_m": 0.28, "height_m": 3.75, "width_ratio": 0.38, "max_width_m": 0.42, "material": "signature_metal"},
++          {"id": "victorian_storefront_frieze", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.24, 3.88], "span_m": 15.15, "height_m": 0.48, "depth_m": 0.34, "material": "signature_metal"},
++          {"id": "victorian_storefront_brackets", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.10, 0.0], "span_m": 14.6, "count": 16, "levels_z": [4.10], "depth_m": 0.32, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_metal"},
++          {"id": "victorian_upper_arches", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -11.12, 5.93], "positions_m": [-5.85, -3.75, -1.65, 1.65, 3.75, 5.85], "opening_width_m": 1.45, "opening_height_m": 2.45, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.17, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_2"},
++          {"id": "victorian_front_polychrome_bands", "kind": "band_segments", "axis": "front", "centre": [0.0, -11.08, 0.0], "levels_z": [4.65, 5.35, 6.05, 6.75], "segments_m": [[-7.125, 0.75], [-4.80, 0.30], [-2.70, 0.30], [0.0, 1.50], [2.70, 0.30], [4.80, 0.30], [7.125, 0.75]], "height_m": 0.28, "depth_m": 0.12, "material": "signature_stone"},
++          {"id": "victorian_left_bands", "kind": "corbel_array", "axis": "left", "centre": [-7.52, 0.0, 0.0], "span_m": 22.0, "count": 28, "levels_z": [4.65, 5.35, 6.05, 6.75], "depth_m": 0.12, "height_m": 0.28, "width_ratio": 1.0, "max_width_m": 0.82, "material": "signature_stone"},
++          {"id": "victorian_right_bands", "kind": "corbel_array", "axis": "right", "centre": [7.52, 0.0, 0.0], "span_m": 22.0, "count": 28, "levels_z": [4.65, 5.35, 6.05, 6.75], "depth_m": 0.12, "height_m": 0.28, "width_ratio": 1.0, "max_width_m": 0.82, "material": "signature_stone"},
++          {"id": "victorian_roof_seams", "kind": "hip_roof_seam_array", "centre": [0.0, 0.0, 8.0], "width_m": 14.1, "depth_m": 21.1, "rise_m": 1.15, "ridge_inset_m": 3.5, "spacing_m": 1.05, "line_width_m": 0.045, "line_height_m": 0.035, "material": "roof"},
++          {"id": "victorian_left_side_windows", "kind": "classical_window_array", "axis": "left", "centre": [-7.56, 0.0, 5.65], "positions_m": [-6.5, -1.0, 4.5], "opening_width_m": 1.25, "opening_height_m": 2.20, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.13, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_1"},
++          {"id": "victorian_rear_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 11.06, 5.65], "positions_m": [-4.6, -1.55, 1.55, 4.6], "opening_width_m": 1.25, "opening_height_m": 2.20, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.13, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_3"},
++          {"id": "victorian_carved_frieze", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.18, 7.32], "span_m": 15.2, "height_m": 0.46, "depth_m": 0.24, "material": "signature_stone"},
++          {"id": "victorian_frieze_dentils", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.14, 0.0], "span_m": 14.8, "count": 24, "levels_z": [7.55], "depth_m": 0.26, "height_m": 0.22, "width_ratio": 0.48, "material": "signature_stone"},
++          {"id": "victorian_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.22, 7.72], "span_m": 15.35, "height_m": 0.20, "depth_m": 0.34, "material": "signature_stone"},
++          {"id": "victorian_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.26, 8.08], "span_m": 15.55, "height_m": 0.22, "depth_m": 0.42, "material": "signature_stone"},
++          {"id": "victorian_parapet_panels", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.10, 0.0], "span_m": 13.2, "count": 8, "levels_z": [8.48], "depth_m": 0.18, "height_m": 0.36, "width_ratio": 0.72, "max_width_m": 1.25, "material": "secondary"},
++          {"id": "victorian_parapet_cap", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.20, 8.90], "span_m": 15.45, "height_m": 0.20, "depth_m": 0.36, "material": "signature_stone"}
++        ]
++      }
+     },
+     "industrial_brick_original_mill": {
+       "identity": "Converted Victorian textile mill with tall segmental-arched multi-pane iron sash, deep brick reveals, arched loading-bay shopfronts, corbelled eaves, a restored chimney and a restrained contemporary glass roof monitor.",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 50ffad5b419861e548e7900bc0a4e31db34db6f9..401b2edce45a84bbc2ba55b95813fb7f82f523c7 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -7054,6 +7054,36 @@ def _graph_shadow_line(parts: list, spec: dict, mats: dict) -> None:
+     parts.append(add_box(str(spec.get("id", "GraphShadowLine")), size, (cx, cy, cz), mat))
+ 
+ 
++def _graph_band_segments(parts: list, spec: dict, mats: dict) -> None:
++    """Repeat masonry courses only across audited solid pier segments."""
++    axis = str(spec.get("axis", "front"))
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"massing graph band segments axis {axis!r} is unsupported")
++    cx, cy, _ = (float(value) for value in spec["centre"])
++    levels = [float(value) for value in spec.get("levels_z", [])]
++    segments = [tuple(float(value) for value in item) for item in spec.get("segments_m", [])]
++    if not levels or not segments:
++        raise ValueError(f"band segments {spec.get('id')!r} require levels_z and segments_m")
++    height = float(spec.get("height_m", 0.12))
++    depth = float(spec.get("depth_m", 0.08))
++    mat = _graph_material(mats, spec.get("material", "secondary"))
++    prefix = str(spec.get("id", "GraphBandSegments"))
++    for level_index, z in enumerate(levels):
++        for segment_index, (offset, span) in enumerate(segments):
++            if span <= 0:
++                raise ValueError(f"band segments {prefix!r} contains a non-positive span")
++            if axis in {"front", "rear"}:
++                size = (span, depth, height)
++                location = (cx + offset, cy, z)
++            else:
++                size = (depth, span, height)
++                location = (cx, cy + offset, z)
++            parts.append(add_box(
++                f"{prefix}_{level_index:02d}_{segment_index:02d}",
++                size, location, mat,
++            ))
++
++
+ def _graph_skin_material(mats: dict, spec: dict, *, suffix: str = ""):
+     role = str(spec.get("band", "elevation"))
+     base = mats.get(f"sheet_{role}")
+@@ -8738,6 +8768,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_tie_grid(parts, assembly, mats)
+         elif kind == "shadow_line":
+             _graph_shadow_line(parts, assembly, mats)
++        elif kind == "band_segments":
++            _graph_band_segments(parts, assembly, mats)
+         elif kind == "facade_skin":
+             _graph_facade_skin(parts, assembly, mats)
+         elif kind == "facade_skin_stack":
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 0e821fb0b59f9c15b4f139106aa14ed9a8ecf9d6..23fcc9eadbc73f94e321e04bc8e81e91f021e179 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-paired-brownstone-streetwall-v78",
++  "memory_version": "2026-07-20-victorian-polychrome-main-street-v79",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -680,6 +680,26 @@
+       "symptom": "A flat paired rowhouse roof loses its identity and reads as one generic slab",
+       "cause": "The central party-wall seam, stepped cornice/parapet break, chimney caps, pots and skylight rhythm were omitted because none changed the gross height envelope.",
+       "correction": "Treat paired roof seams and rooftop service silhouettes as fixed construction evidence. Preserve the two roof halves, stepped front termination and bounded chimney/skylight set, then prove them from the aerial camera."
++    },
++    {
++      "symptom": "A two-storey historic shop compiles as the cohort's generic four-storey main-street block",
++      "cause": "A planning placeholder and parent floor range overrode the selected Victorian variant's three authoritative images.",
++      "correction": "Resolve the native tier from the selected variant before graph authoring. Synchronize the cohort floors and dimensions only after the street, oblique and roof-plan views agree."
++    },
++    {
++      "symptom": "Cream polychrome brick courses draw horizontal bars across upper window glass",
++      "cause": "Continuous shadow-line geometry was layered over simulated openings that used panes and room cards rather than boolean wall voids.",
++      "correction": "Segment decorative masonry bands around the audited opening schedule, placing course geometry only across solid pier spans and proving clear glazing in the front acceptance view."
++    },
++    {
++      "symptom": "A forest-green painted cast-iron storefront renders nearly black",
++      "cause": "A black-metal texture override dominated the intended painted-iron base colour and roughness.",
++      "correction": "Treat painted cast iron as its own material finish. Preserve the evidence-led green albedo and moderate metallic response instead of inheriting a generic black-metal texture key."
++    },
++    {
++      "symptom": "A concealed historic roof has the wrong ridge direction and its skylights disappear into the slope",
++      "cause": "The front hero view was accepted before the roof-plan reference was used to orient the hip, and thin glass boxes were placed below the local roof plane.",
++      "correction": "Use the aerial reference to set ridge axis and seam fan direction, seat skylights on explicit curbs above the local plane, and require the aerial review to prove ridge, seams, chimney and service openings together."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index b7210fa5c403592c50c9c70495253f09a63b3ec3..f306dfa9a037e673dc4789868315d2b6605a9443 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -16,7 +16,7 @@
+     {"sequence": 8, "archetype_id": "civic_classical_building", "variant_id": "civic_classical_limestone_ionic", "family_id": "civic-classical-limestone-ionic-v1-renderlocked", "floors": 2, "width_m": 42, "depth_m": 34, "state": "keeper", "artifact": "civic-classical-limestone-v1/06-canonical-v6", "group": "classical civic monument"},
+     {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "variant_id": "courthouse_neoclassical_temple", "family_id": "courthouse-neoclassical-temple-v1-renderlocked", "floors": 4, "width_m": 60, "depth_m": 45, "state": "keeper", "artifact": "monumental-courthouse-axis-v1/03-canonical-v3", "group": "ceremonial civic axis"},
+     {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "variant_id": "classic_brownstone_traditional", "family_id": "classic-brownstone-streetwall-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 22, "state": "keeper", "artifact": "classic-brownstone-streetwall-v1/03-canonical-v3", "group": "historic urban streetwall"},
+-    {"sequence": 11, "archetype_id": "historical_brick_main_street", "floors": 4, "state": "pending", "group": "historic mixed-use main street"},
++    {"sequence": 11, "archetype_id": "historical_brick_main_street", "variant_id": "historical_brick_victorian", "family_id": "historical-brick-victorian-v1-renderlocked", "floors": 2, "width_m": 15, "depth_m": 22, "state": "keeper", "artifact": "historical-brick-main-street-v1/03-canonical-v3", "group": "historic mixed-use main street"},
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "floors": 4, "width_m": 30, "depth_m": 20, "state": "pending", "group": "industrial reuse"},
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "state": "pending", "group": "warehouse conversion"},
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "floors": 5, "state": "pending", "group": "Romanesque industrial heritage"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 3df16b0852c9a9489b8865f116d3577954e60a20..cd09743db942c19e7b8b6e9d02f819da3ae818f5 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 10
++    assert sum(entry["state"] == "keeper" for entry in entries) == 11
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 2f10d98ebfa98ca15f211ef075582dfbd64b3c88..51775bad2fea703398584ca6637a22cc146e2ba3 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -301,6 +301,43 @@ def test_classic_brownstone_injects_paired_streetwall_stoops_and_panelled_entrie
+     ]
+ 
+ 
++def test_victorian_main_street_injects_six_arches_segmented_bands_and_seamed_roof():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "historical_brick_main_street",
++            "variant_id": "historical_brick_victorian",
++        },
++        "materials": {},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++    nodes = {item["id"]: item for item in graph["nodes"]}
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "victorian_polychrome_main_street_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 15.0,
++        "depth_m": 22.0,
++        "floors": 2,
++        "floor_height_m": 3.6,
++    }
++    assert len(assemblies["victorian_upper_arches"]["positions_m"]) == 6
++    assert assemblies["victorian_storefront_entries"]["positions_m"] == [-3.25, 3.25]
++    bands = assemblies["victorian_front_polychrome_bands"]
++    assert bands["kind"] == "band_segments"
++    assert len(bands["levels_z"]) == 4
++    assert len(bands["segments_m"]) == 7
++    assert nodes["victorian_low_hip_roof"]["ridge_axis"] == "x"
++    assert assemblies["victorian_roof_seams"]["kind"] == "hip_roof_seam_array"
++    assert "victorian_skylight_front_curb" in nodes
++    assert "victorian_skylight_rear_curb" in nodes
++    assert injected["footprint_compatibility"]["preferredProfiles"] == [
++        "rectangle", "l_shape", "u_shape",
++    ]
++
++
+ def test_v21_expansion_graphs_preserve_family_specific_construction():
+     """The methodology batch must not regress to one generic textured box."""
+     from signature_profiles import inject_signature
+-- 
+2.55.0.windows.2
+

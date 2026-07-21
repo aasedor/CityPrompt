@@ -1,0 +1,118 @@
+From 22347c724db4202061c3b47588857bca4e1f2818 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 17:58:19 -0600
+Subject: [PATCH 31/32] fix: recover building models after WebGL loss
+
+---
+ .../viewer/globe/GlobeSitePlannerMap.tsx      | 40 ++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 2 deletions(-)
+
+diff --git a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+index 643d9dc47524529fff211b188198d651509be037..1367e08258ac0ae949b4d259fd52a1185f6e7f08 100644
+--- a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
++++ b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+@@ -1411,6 +1411,7 @@ export function GlobeSitePlannerMap({
+   const [buildingModelsVisible, setBuildingModelsVisible] = useState(true);
+   const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
+   const [legoBuildingIds, setLegoBuildingIds] = useState<Set<string>>(() => new Set());
++  const [buildingLayerRecoveryGeneration, setBuildingLayerRecoveryGeneration] = useState(0);
+   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
+   // Coexistence: a building with a renderable LEGO recipe renders as a module
+   // stack — it is excluded from the Meshy model layer (the stack wins).
+@@ -1463,6 +1464,18 @@ export function GlobeSitePlannerMap({
+   }, [suppressedBuildingIds, onModeledBuildingsChange]);
+   const handleModeledIdsChange = useCallback((ids: Set<string>) => setModeledBuildingIds(ids), []);
+   const handleLegoIdsChange = useCallback((ids: Set<string>) => setLegoBuildingIds(ids), []);
++  const handleBuildingModelsVisibilityToggle = useCallback(() => {
++    if (buildingModelsVisible) {
++      // Clear prism suppression in the same event as the model-layer unmount.
++      // Child cleanup also reports an empty set, but waiting for that effect can
++      // produce a frame where neither the detailed models nor fallback massing
++      // is visible (and Fast Refresh can preserve that confusing state).
++      setModeledBuildingIds(new Set());
++      setLegoBuildingIds(new Set());
++      setSelectedBuildingId(null);
++    }
++    setBuildingModelsVisible((visible) => !visible);
++  }, [buildingModelsVisible]);
+ 
+   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
+   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+@@ -2918,12 +2931,30 @@ export function GlobeSitePlannerMap({
+             e.stopImmediatePropagation();
+           };
+ 
++          const handleWebGlContextLost = () => {
++            // Never suppress the editable massing while the GPU context is
++            // unavailable. A second photoreal globe tab can exhaust the
++            // browser's WebGL budget and otherwise leave only labels/outlines.
++            setModeledBuildingIds(new Set());
++            setLegoBuildingIds(new Set());
++            setSelectedBuildingId(null);
++          };
++
++          const handleWebGlContextRestored = () => {
++            // Force fresh scene clones so cached LEGO/GLB resources are
++            // uploaded into the restored context rather than retaining a
++            // logically mounted but visually blank layer.
++            setBuildingLayerRecoveryGeneration((generation) => generation + 1);
++          };
++
+           cvs.addEventListener('wheel', handleTrackpadWheel, { capture: true, passive: false });
+           cvs.addEventListener('pointerdown', handlePointerDown);
+           cvs.addEventListener('pointermove', handlePointerMove);
+           cvs.addEventListener('pointerup', handlePointerUp);
+           cvs.addEventListener('click', handleClick);
+           cvs.addEventListener('dblclick', handleDblClick);
++          cvs.addEventListener('webglcontextlost', handleWebGlContextLost);
++          cvs.addEventListener('webglcontextrestored', handleWebGlContextRestored);
+ 
+           cleanupCanvasListenersRef.current = () => {
+             cvs.removeEventListener('wheel', handleTrackpadWheel, { capture: true });
+@@ -2932,6 +2963,8 @@ export function GlobeSitePlannerMap({
+             cvs.removeEventListener('pointerup', handlePointerUp);
+             cvs.removeEventListener('click', handleClick);
+             cvs.removeEventListener('dblclick', handleDblClick);
++            cvs.removeEventListener('webglcontextlost', handleWebGlContextLost);
++            cvs.removeEventListener('webglcontextrestored', handleWebGlContextRestored);
+           };
+         }}
+       >
+@@ -3006,6 +3039,7 @@ export function GlobeSitePlannerMap({
+               unmounts the models and the prisms return automatically. */}
+           {buildingModelsVisible && meshyBuildings.length > 0 && (
+             <GlobeBuildingModelsLayer
++              key={`meshy-models-${buildingLayerRecoveryGeneration}`}
+               buildings={meshyBuildings}
+               zones={siteZones}
+               terrainHeight={terrainElevation}
+@@ -3020,6 +3054,7 @@ export function GlobeSitePlannerMap({
+               LEGO recipes retain priority when a fallback is upgraded. */}
+           {buildingModelsVisible && legoLayerBuildings.length > 0 && (
+             <GlobeLegoAssemblyLayer
++              key={`lego-models-${buildingLayerRecoveryGeneration}`}
+               buildings={legoLayerBuildings}
+               zones={siteZones}
+               terrainHeight={terrainElevation}
+@@ -3297,7 +3332,8 @@ export function GlobeSitePlannerMap({
+         {hasPlaceableModels && (
+           <button
+             type="button"
+-            onClick={() => setBuildingModelsVisible((v) => !v)}
++            onClick={handleBuildingModelsVisibilityToggle}
++            aria-pressed={buildingModelsVisible}
+             className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+               buildingModelsVisible
+                 ? 'bg-[#c9ff3d] text-[#151515]'
+@@ -3305,7 +3341,7 @@ export function GlobeSitePlannerMap({
+             }`}
+             title={buildingModelsVisible ? 'Hide generated 3D models' : 'Show generated 3D models'}
+           >
+-            3D Models
++            {buildingModelsVisible ? '3D Models On' : 'Show 3D Models'}
+           </button>
+         )}
+         {siteZones.some((zone) => zone.zone_type !== 'site_boundary') && (
+-- 
+2.55.0.windows.2
+

@@ -1,0 +1,389 @@
+From a100e97130eb98b02543a2a014d7b47d6d0ba5c0 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 06:50:43 -0600
+Subject: [PATCH 14/32] feat: render-lock cast iron warehouse
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  21 +++-
+ .../architectural_signature_profiles.json     |  80 ++++++++++++
+ tools/archetype_compiler/blender_generate.py  | 116 ++++++++++++++++++
+ .../high_quality_building_memory.json         |  22 +++-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  31 +++++
+ 7 files changed, 270 insertions(+), 4 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 5d9ec0afa61eb715c1fd370caea06348a4982de3..e14b136626cc81b93bf39627f45c6e98f5d69385 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-industrial-original-mill-v80`.
++Current executable memory: `2026-07-20-soho-cast-iron-warehouse-v81`.
+ 
+ ## The quality target
+ 
+@@ -597,6 +597,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   rear-corner and aerial views, use different crops where supported, and record
+   remaining repetition in human QA.
+ 
++### SoHo cast-iron warehouse + fire-escape lessons
++
++- Storey and bay counts are hard source-image gates. The first rectified image
++  resolved seven unequal bays despite a five-bay brief; it was rejected before
++  any opening schedules or PBR maps were built, and one bounded correction pass
++  produced the accepted five-by-four grid.
++- Do not bake a silhouette assembly into the atlas and model it again. Crop the
++  photographed roof guard out of the architectural elevation when a fixed 3D
++  perimeter rail owns that role, then review both the cornice and roof plan.
++- Fire escapes need physical load paths. Build grated landings, three-sided
++  guards, alternating flights, treads and wall braces as an axis-aware graph
++  assembly so the same kit works on principal and return elevations.
++- Painted cast iron and exposed black steel are different finishes. Use softer
++  charcoal iron for full-height pilasters and the fixed building order; reserve
++  black metal for fire escapes, roof guards and small hardware.
++- A geometry-only assembled pilot can prove axes and silhouettes before PBR,
++  but its missing reusable-module validation is expected and it is never a
++  keeper. Promotion still requires the complete seven-module package.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index cd87a0ce9c44d2fc1a3a5222bb99433a3b756dcf..6e8c48430e3e7b21483df8f7e722a48440decab1 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1144,6 +1144,86 @@
+         "target_views": ["archetype_match", "street", "aerial", "context"]
+       }
+     },
++    "warehouse_loft_cast_iron": {
++      "identity": "Four-level SoHo cast-iron corner warehouse with a tall gallery base, five equal loft bays, fluted full-height iron pilasters, pale window architraves, paired exterior fire escapes, a deep panelled cornice and a continuous ornamental roof rail.",
++      "material_zones": "charcoal-grey painted cast iron; warm cream architraves and sills; black fire-escape steel; clear divided-light occupied glazing; pale weathered membrane roof",
++      "glass_profile": "industrial_sash",
++      "dimension_overrides": {"roof_height_m": 1.0},
++      "material_overrides": {
++        "primary": {"base_color": "#3f4141", "roughness": 0.62, "metallic": 0.32, "texture_key": null},
++        "secondary": {"base_color": "#d8ccb5", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_stone"},
++        "accent": {"base_color": "#171a1c", "roughness": 0.34, "metallic": 0.68, "texture_key": "black_metal"},
++        "roof": {"base_color": "#b7b4aa", "roughness": 0.86, "metallic": 0.0, "texture_key": "roof_membrane"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#d8ccb5", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_stone"},
++        "signature_metal": {"base_color": "#272a2b", "roughness": 0.42, "metallic": 0.68, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [25, 45],
++        "recommendedDepth_m": [20, 36],
++        "recommendedFloors": [4, 4],
++        "wingDepth_m": [10, 15],
++        "preferredBayMultiple_m": 6.0,
++        "notes": [
++          "Use the fixed Cast Iron District graph only at the native 30 by 26 metre, four-level rectangular tier.",
++          "Keep the tall gallery base, five-bay cast-iron order, fire escapes, cornice and roof rail fixed; repeat only complete ordinary loft bays in derived parcel kits."
++        ]
++      },
++      "kits": ["cast_iron_storefront", "fluted_iron_pilasters", "industrial_steel_bays", "external_fire_escape", "pressed_metal_cornice", "roof_guard"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "soho_cast_iron_corner_v1",
++        "description": "A render-locked four-level SoHo warehouse whose five-bay rectified elevation is backed by an iron-framed shadow core, paired exterior fire escapes, a deep panelled cornice and a continuous ornamental roof guard.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1.png", "cues": ["four total levels", "fluted cast-iron order", "cream window architraves", "paired fire escapes", "ornate roof rail"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1_angle_60.jpg", "cues": ["compact corner block", "flat service roof", "deep cornice", "fire escapes on both street elevations"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1_angle_90.jpg", "cues": ["flat pale membrane", "continuous perimeter iron railing", "one roof hatch", "one modest HVAC unit", "no penthouse"]}
++        ],
++        "height_m": 18.9,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 30.0, "depth_m": 26.0, "floors": 4, "floor_height_m": 4.2},
++        "nodes": [
++          {"id": "cast_iron_plinth", "kind": "box", "size": [30.7, 26.7, 0.30], "location": [0.0, 0.0, 0.15], "material": "signature_metal", "bevel_m": 0.035},
++          {"id": "cast_iron_shadow_core", "kind": "box", "size": [29.0, 25.0, 16.6], "location": [0.0, 0.0, 8.30], "material": "primary", "bevel_m": 0.12},
++          {"id": "cast_iron_roof_deck", "kind": "box", "size": [30.0, 26.0, 0.32], "location": [0.0, 0.0, 16.66], "material": "roof", "bevel_m": 0.035},
++          {"id": "cast_iron_cornice_base", "kind": "box", "size": [30.55, 26.55, 0.34], "location": [0.0, 0.0, 16.38], "material": "signature_metal", "bevel_m": 0.045},
++          {"id": "cast_iron_cornice_frieze", "kind": "box", "size": [30.85, 26.85, 0.62], "location": [0.0, 0.0, 16.84], "material": "signature_metal", "bevel_m": 0.055},
++          {"id": "cast_iron_cornice_cap", "kind": "box", "size": [31.10, 27.10, 0.24], "location": [0.0, 0.0, 17.27], "material": "signature_metal", "bevel_m": 0.045},
++          {"id": "cast_iron_roof_curb", "kind": "box", "size": [30.45, 26.45, 0.18], "location": [0.0, 0.0, 17.48], "material": "signature_metal", "bevel_m": 0.025},
++          {"id": "cast_iron_roof_hatch", "kind": "box", "size": [2.4, 1.5, 0.55], "location": [-5.4, 1.7, 17.84], "material": "signature_metal", "bevel_m": 0.045},
++          {"id": "cast_iron_hvac", "kind": "box", "size": [1.5, 1.4, 0.95], "location": [4.2, 2.2, 18.02], "material": "concrete", "bevel_m": 0.06},
++          {"id": "cast_iron_entry_threshold", "kind": "box", "size": [6.4, 1.0, 0.14], "location": [5.7, -13.25, 0.07], "material": "signature_stone", "bevel_m": 0.025}
++        ],
++        "voids": [
++          {"id": "gallery_depth", "size": [28.4, 1.1, 4.3], "location": [0.0, -12.5, 2.25], "purpose": "deep occupied gallery threshold behind the cast-iron storefront"},
++          {"id": "flat_service_roof", "size": [28.5, 24.5, 1.2], "location": [0.0, 0.0, 18.2], "purpose": "unoccupied membrane roof inside the evidence-led perimeter railing"}
++        ],
++        "assemblies": [
++          {"id": "cast_iron_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation"},
++          {"id": "cast_iron_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "cast_iron_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "cast_iron_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation"},
++          {"id": "cast_iron_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "cast_iron_left_glazing", "kind": "glazing_overlay", "axis": "left", "centre": [-14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "cast_iron_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "cast_iron_right_glazing", "kind": "glazing_overlay", "axis": "right", "centre": [14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "cast_iron_front_frame", "kind": "frame_grid", "axis": "front", "centre": [0.0, -13.02, 8.25], "span_m": 29.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
++          {"id": "cast_iron_left_frame", "kind": "frame_grid", "axis": "left", "centre": [-15.02, 0.0, 8.25], "span_m": 25.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
++          {"id": "cast_iron_rear_frame", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 13.02, 8.25], "span_m": 29.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
++          {"id": "cast_iron_right_frame", "kind": "frame_grid", "axis": "right", "centre": [15.02, 0.0, 8.25], "span_m": 25.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
++          {"id": "cast_iron_front_dentils", "kind": "corbel_array", "axis": "front", "centre": [0.0, -13.12, 0.0], "span_m": 29.7, "count": 30, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
++          {"id": "cast_iron_left_dentils", "kind": "corbel_array", "axis": "left", "centre": [-15.12, 0.0, 0.0], "span_m": 25.7, "count": 26, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
++          {"id": "cast_iron_rear_dentils", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 13.12, 0.0], "span_m": 29.7, "count": 30, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
++          {"id": "cast_iron_right_dentils", "kind": "corbel_array", "axis": "right", "centre": [15.12, 0.0, 0.0], "span_m": 25.7, "count": 26, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
++          {"id": "cast_iron_front_escape", "kind": "fire_escape_stack", "axis": "front", "centre": [-5.9, -13.12, 0.0], "levels_z": [8.25, 12.45, 16.05], "storey_height_m": 4.2, "width_m": 4.7, "depth_m": 1.18, "rail_height_m": 0.96, "pickets": 10, "treads": 11, "material": "signature_metal"},
++          {"id": "cast_iron_right_escape", "kind": "fire_escape_stack", "axis": "right", "centre": [15.12, 3.7, 0.0], "levels_z": [8.25, 12.45, 16.05], "storey_height_m": 4.2, "width_m": 4.7, "depth_m": 1.18, "rail_height_m": 0.96, "pickets": 10, "treads": 11, "material": "signature_metal"},
++          {"id": "cast_iron_roof_guard", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 17.58], "width_m": 30.5, "depth_m": 26.5, "height_m": 1.02, "spacing_m": 0.46, "material": "signature_metal", "rail_height_m": 0.07, "rail_depth_m": 0.09}
++        ],
++        "target_views": ["archetype_match", "street", "aerial", "context"]
++      }
++    },
+     "adaptive_reuse_warehouse_lofts": {
+       "identity": "Converted warehouse retaining heavy masonry piers while inserting large steel-and-glass bays, roof monitor, terraces and selective industrial bracing.",
+       "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 401b2edce45a84bbc2ba55b95813fb7f82f523c7..9edacdc30689a70918e058634d62854e5d592df4 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -7793,6 +7793,120 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
+                 ))
+ 
+ 
++def _graph_fire_escape_stack(parts: list, spec: dict, mats: dict) -> None:
++    """Fixed cast-iron landings and alternating stair flights on one facade.
++
++    Historic warehouse fire escapes are silhouette-bearing construction, not
++    a dark motif that can be baked into a facade atlas.  The graph contract is
++    deliberately small: each audited level owns a grated landing, three-sided
++    guard, alternating flight, treads and paired wall braces.  ``axis`` keeps
++    the same assembly reusable on principal and return elevations.
++    """
++    axis = str(spec.get("axis", "front"))
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"fire escape axis {axis!r} is unsupported")
++    centre = Vector(tuple(float(value) for value in spec["centre"]))
++    levels = [float(value) for value in spec.get("levels_z", [])]
++    if not levels:
++        raise ValueError(f"fire escape {spec.get('id')!r} has no levels_z")
++    width = float(spec.get("width_m", 4.6))
++    depth = float(spec.get("depth_m", 1.18))
++    rail_h = float(spec.get("rail_height_m", 1.0))
++    storey_h = float(spec.get("storey_height_m", 4.2))
++    pickets = max(4, int(spec.get("pickets", 10)))
++    tread_count = max(6, int(spec.get("treads", 11)))
++    metal = _graph_material(mats, spec.get("material", "signature_metal"))
++    prefix = str(spec.get("id", "GraphFireEscape"))
++    outward, along = _glazing_axis_vectors(axis)
++    profile = max(0.025, float(spec.get("profile_m", 0.045)))
++
++    def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
++        return (
++            (along_size, outward_size, z_size)
++            if axis in {"front", "rear"}
++            else (outward_size, along_size, z_size)
++        )
++
++    def beam(name: str, start: Vector, end: Vector, thickness: float = profile) -> None:
++        direction = end - start
++        item = add_box(
++            f"{prefix}_{name}", (thickness, direction.length, thickness),
++            tuple((start + end) * 0.5), metal,
++        )
++        item.rotation_euler = direction.to_track_quat("Y", "Z").to_euler()
++        parts.append(item)
++
++    for level_index, level_z in enumerate(levels):
++        datum = centre + outward * (depth / 2)
++        datum.z = level_z
++        # Closely spaced slats read as an open iron grate in oblique views.
++        slat_count = max(5, int(width / 0.34))
++        for slat_index in range(slat_count + 1):
++            offset = -width / 2 + width * slat_index / slat_count
++            slat = datum + along * offset
++            parts.append(add_box(
++                f"{prefix}_Landing{level_index:02d}_Slat{slat_index:02d}",
++                member_size(profile, depth, 0.055), tuple(slat), metal,
++            ))
++        for outward_ratio, suffix in ((0.05, "Wall"), (0.98, "Front")):
++            rail = centre + outward * (depth * outward_ratio)
++            rail.z = level_z + rail_h
++            parts.append(add_box(
++                f"{prefix}_Landing{level_index:02d}_{suffix}TopRail",
++                member_size(width, profile, profile), tuple(rail), metal,
++            ))
++        for picket_index in range(pickets + 1):
++            offset = -width / 2 + width * picket_index / pickets
++            picket = centre + along * offset + outward * (depth * 0.98)
++            picket.z = level_z + rail_h / 2
++            parts.append(add_box(
++                f"{prefix}_Landing{level_index:02d}_Picket{picket_index:02d}",
++                member_size(profile * 0.72, profile, rail_h), tuple(picket), metal,
++            ))
++        for side_index, side_offset in enumerate((-width / 2, width / 2)):
++            side_top = centre + along * side_offset + outward * (depth / 2)
++            side_top.z = level_z + rail_h
++            parts.append(add_box(
++                f"{prefix}_Landing{level_index:02d}_SideTop{side_index}",
++                member_size(profile, depth, profile), tuple(side_top), metal,
++            ))
++            for outward_ratio in (0.08, 0.5, 0.96):
++                post = centre + along * side_offset + outward * (depth * outward_ratio)
++                post.z = level_z + rail_h / 2
++                parts.append(add_box(
++                    f"{prefix}_Landing{level_index:02d}_SidePost{side_index}_{outward_ratio}",
++                    member_size(profile, profile, rail_h), tuple(post), metal,
++                ))
++
++        lower_z = levels[level_index - 1] if level_index else max(0.65, level_z - storey_h)
++        direction_sign = 1.0 if level_index % 2 == 0 else -1.0
++        lower = centre - along * (direction_sign * width * 0.34) + outward * (depth * 0.68)
++        upper = centre + along * (direction_sign * width * 0.34) + outward * (depth * 0.68)
++        lower.z = lower_z + 0.12
++        upper.z = level_z + 0.08
++        for rail_offset, suffix in ((-depth * 0.23, "Inner"), (depth * 0.23, "Outer")):
++            beam(
++                f"Flight{level_index:02d}_{suffix}Stringer",
++                lower + outward * rail_offset,
++                upper + outward * rail_offset,
++                profile * 1.15,
++            )
++        for tread_index in range(tread_count + 1):
++            ratio = tread_index / tread_count
++            point = lower.lerp(upper, ratio)
++            parts.append(add_box(
++                f"{prefix}_Flight{level_index:02d}_Tread{tread_index:02d}",
++                member_size(0.34, depth * 0.58, 0.045), tuple(point), metal,
++            ))
++        # Two diagonal braces make each landing visibly load-bearing.
++        for brace_index, side_offset in enumerate((-width * 0.38, width * 0.38)):
++            wall = centre + along * side_offset + outward * 0.04
++            outer = centre + along * side_offset + outward * (depth * 0.92)
++            wall.z = max(0.15, level_z - 1.35)
++            outer.z = level_z - 0.04
++            beam(f"Landing{level_index:02d}_Brace{brace_index}", wall, outer, profile * 1.25)
++
++
+ def _graph_rounded_corner_pavilion(parts: list, spec: dict, mats: dict) -> None:
+     """Fixed curved Haussmann corner with tangent bays and an onion turret."""
+     cx, cy, base_z = (float(value) for value in spec["centre"])
+@@ -8796,6 +8910,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_mansard_perimeter(parts, assembly, mats)
+         elif kind == "balcony_array":
+             _graph_balcony_array(parts, assembly, mats)
++        elif kind == "fire_escape_stack":
++            _graph_fire_escape_stack(parts, assembly, mats)
+         elif kind == "rounded_corner_pavilion":
+             _graph_rounded_corner_pavilion(parts, assembly, mats)
+         elif kind == "courtyard_hip_roof":
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index f7f592998482adefc9990727d9841e987f108e3e..fb789a4bf88e89d1de30e899407c09b1747655b1 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-industrial-original-mill-v80",
++  "memory_version": "2026-07-20-soho-cast-iron-warehouse-v81",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -720,6 +720,26 @@
+       "symptom": "A wrapped industrial elevation repeats the principal facade rhythm on less-documented side and rear walls",
+       "cause": "Only one rectified orthographic source was available, so one registered atlas supplied all four exposed elevations.",
+       "correction": "Use evidence-led UV crops or dedicated secondary schedules when side references support them. When evidence is incomplete, keep the wrap conservative, review both rear-corner and aerial views, and record the limitation in human QA."
++    },
++    {
++      "symptom": "A generated rectified warehouse elevation contains seven unequal bays when the audited construction grid requires five",
++      "cause": "The image generator preserved the material language but ignored the explicit structural count on its first pass.",
++      "correction": "Treat bay and storey counts as hard acceptance gates for source elevations. Run one bounded correction pass before schedules or PBR work, then register every opening to the accepted count."
++    },
++    {
++      "symptom": "A cast-iron warehouse shows two roof railings, including a false glazed-looking band below the real guard",
++      "cause": "The source elevation retained its photographed roof railing inside the architectural UV crop while a fixed 3D perimeter rail was also assembled above the cornice.",
++      "correction": "Crop silhouette assemblies such as roof guards out of the facade atlas when they are promoted to fixed geometry. Reprocess the registered elevation and verify the crown from both street and aerial cameras."
++    },
++    {
++      "symptom": "Exterior fire escapes disappear into a facade texture or read as unsupported black diagonals",
++      "cause": "The defining warehouse circulation was either baked into the atlas or represented without landings, guards, treads and wall braces.",
++      "correction": "Author fire escapes as an axis-aware fixed graph assembly with grated landings, three-sided guards, alternating flights, physical treads and paired braces. Keep them independent of the reusable facade skin."
++    },
++    {
++      "symptom": "A charcoal-painted cast-iron facade becomes a harsh black cage",
++      "cause": "Full-height structural pilasters inherited the same black-metal texture and high metallic response intended for fire escapes and roof railings.",
++      "correction": "Separate painted architectural iron from black exposed steel. Use a softer charcoal primary material for the fixed facade order and reserve black metal for stairs, guards and fine hardware."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 3f942d8dbc2a4778394941634a1f38431a7c3c3f..2006800b4eabd78db1737310caaa009f1f1e83fd 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -18,7 +18,7 @@
+     {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "variant_id": "classic_brownstone_traditional", "family_id": "classic-brownstone-streetwall-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 22, "state": "keeper", "artifact": "classic-brownstone-streetwall-v1/03-canonical-v3", "group": "historic urban streetwall"},
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "variant_id": "historical_brick_victorian", "family_id": "historical-brick-victorian-v1-renderlocked", "floors": 2, "width_m": 15, "depth_m": 22, "state": "keeper", "artifact": "historical-brick-main-street-v1/03-canonical-v3", "group": "historic mixed-use main street"},
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "variant_id": "industrial_brick_original_mill", "family_id": "industrial-brick-original-mill-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 20, "state": "keeper", "artifact": "industrial-brick-original-mill-v1/03-canonical-v3", "group": "industrial reuse"},
+-    {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "state": "pending", "group": "warehouse conversion"},
++    {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "variant_id": "warehouse_loft_cast_iron", "family_id": "adaptive-reuse-cast-iron-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 26, "state": "keeper", "artifact": "adaptive-reuse-cast-iron-v1/03-canonical-v3", "group": "warehouse conversion"},
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "floors": 5, "state": "pending", "group": "Romanesque industrial heritage"},
+     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "floors": 14, "state": "pending", "group": "metropolitan setback icon"},
+     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "floors": 7, "width_m": 20, "depth_m": 16, "state": "pending", "group": "mass-timber residential"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 4066b2f116ab46a7796b24e641a477c34c02f3dc..91ec841ae6f0961072c27434058ef79fe2fe8e3a 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 12
++    assert sum(entry["state"] == "keeper" for entry in entries) == 13
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index e77d8f1f780083091bcfc833c880af1a6795e9ed..167c731cd3b46506333fe0154b7d0aaa488aa472 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -178,6 +178,37 @@ def test_original_mill_graph_is_not_implicitly_shared_with_sibling_variants():
+     assert "brewery warehouse" in injected["architectural_signature"]["identity"]
+ 
+ 
++def test_cast_iron_warehouse_variant_injects_fixed_corner_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "adaptive_reuse_warehouse_lofts",
++            "variant_id": "warehouse_loft_cast_iron",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++
++    assert graph["profile"] == "soho_cast_iron_corner_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 30.0,
++        "depth_m": 26.0,
++        "floors": 4,
++        "floor_height_m": 4.2,
++    }
++    assert sum(
++        assembly["kind"] == "fire_escape_stack"
++        for assembly in graph["assemblies"]
++    ) == 2
++    assert any(
++        assembly["kind"] == "classical_balustrade_perimeter"
++        for assembly in graph["assemblies"]
++    )
++    assert "massing_graph" not in injected["architectural_signature"]
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+

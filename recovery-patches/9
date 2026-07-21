@@ -1,0 +1,521 @@
+From 0c7a3895e212de83cf3c095aa873160f5cdb7422 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 04:34:50 -0600
+Subject: [PATCH 09/32] feat: render-lock civic classical courtyard
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  19 ++
+ .../architectural_signature_profiles.json     |  65 +++--
+ tools/archetype_compiler/blender_generate.py  | 239 +++++++++++++++++-
+ .../high_quality_building_memory.json         |  17 +-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  22 +-
+ 7 files changed, 326 insertions(+), 40 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 266b1bc96acb44c9da5b7d5dd42077c8423574f7..2ce2d6d75bf4073b6e140bb03a0cda41e8da90eb 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -505,6 +505,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   elevations. The aerial view is the fastest gate for blank square-corner ends
+   that a front hero camera can miss.
+ 
++### Civic courtyard + ceremonial-envelope lessons
++
++- Roof-plan evidence can overturn the apparent solid-block reading of a front
++  hero image. Build civic courts as four perimeter wings and construct the
++  hipped roof from explicit outer, ridge and inner contours so the void remains
++  open to sky; the aerial render is the acceptance proof.
++- A portico and broad ceremonial stair legitimately project beyond the civic
++  body. Treat them as fixed landmark assemblies, fit their depth deliberately,
++  and validate the assembled footprint rather than assuming the body dimensions
++  describe every architectural projection.
++- Window cards on an opaque massing core must sit just outside the exposed wall
++  plane. Layer occupied glazing behind shallow ashlar surrounds, and verify the
++  front, side and rear arrays from oblique cameras rather than trusting graph
++  coordinates alone.
++- Material identity matters at roof scale. The catalogue evidence supports pale
++  green patinated copper, so a raw-brown copper albedo was rejected even though
++  its channel set was technically valid. Preserve the patina colour and add
++  seam relief only when it improves the near LOD without closing the roof ring.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index b91968211169204f079862d315f84d3b1baa494b..a35cb4da14c3a5938b55874a5f805bbde6833078 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -340,44 +340,59 @@
+       }
+     },
+     "civic_classical_building": {
+-      "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",
+-      "material_zones": "monolithic pale limestone; shadowed entrance portal; bronze doors; lead-grey roof",
++      "identity": "Low two-storey civic perimeter hall with a dominant four-column Ionic portico, broad ceremonial stair, open central court and patinated copper hipped roof ring.",
++      "material_zones": "warm ashlar limestone; bronze entrance doors; dark recessed glazing; pale green patinated standing-seam copper",
+       "glass_profile": "residential_low_e",
+-      "material_overrides": {"roof": {"base_color": "#718177", "roughness": 0.52, "metallic": 0.46}, "accent": {"base_color": "#3d352c", "roughness": 0.42, "metallic": 0.58}},
++      "material_overrides": {"roof": {"base_color": "#a4bcae", "roughness": 0.46, "metallic": 0.64, "texture_key": null}, "accent": {"base_color": "#3d352c", "roughness": 0.42, "metallic": 0.58}},
++      "signature_material_overrides": {"signature_stone": {"base_color": "#d7cdb7", "roughness": 0.74, "texture_key": "limestone"}, "signature_warm": {"base_color": "#49372a", "roughness": 0.42, "metallic": 0.52}},
+       "kits": ["ceremonial_steps", "giant_portico", "pediment", "civic_cornice"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "classical_civic_portico_hero",
+-        "description": "A low monumental limestone civic hall with fixed giant-order portico, deep ceremonial stair, symmetrical two-storey wings, wrapping cornice and shallow metal roof.",
++        "profile": "classical_civic_courtyard_v2",
++        "description": "A low monumental two-storey limestone perimeter hall with a fixed four-column Ionic portico, three bronze doors, deep ceremonial stair, real open central court and continuous patinated-copper hipped roof ring.",
+         "reference_views": [
+           {"role": "street_identity", "path": "/archetypes/buildings/civic_classical_building/variant_0.png", "cues": ["four-column giant portico", "central pediment", "broad stair", "arched lower windows"]},
+-          {"role": "oblique_massing", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_60.jpg", "cues": ["shallow side wings", "deep portico", "wrapping cornice", "low metal roof"]},
+-          {"role": "roof_plan", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_90.jpg", "cues": ["axial rectangular plan", "central roof ridge", "symmetrical terminal bays"]}
++          {"role": "oblique_massing", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_60.jpg", "cues": ["deep side wings", "open central court", "wrapping cornice", "copper roof ring"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_90.jpg", "cues": ["square perimeter plan", "open central court", "hipped roof ring", "axial portico projection"]}
+         ],
+-        "height_m": 14.8,
+-        "reference_dimensions": {"width_m": 42.0, "depth_m": 26.0, "floors": 2, "floor_height_m": 5.6},
++        "height_m": 14.7,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 42.0, "depth_m": 34.0, "floors": 2, "floor_height_m": 5.6},
+         "nodes": [
+-          {"id": "civic_plinth", "kind": "box", "size": [43.0, 27.0, 0.45], "location": [0.0, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
+-          {"id": "civic_shadow_core", "kind": "box", "size": [40.0, 23.0, 11.4], "location": [0.0, 0.0, 6.15], "material": "primary", "bevel_m": 0.16},
+-          {"id": "civic_rusticated_base", "kind": "box", "size": [40.7, 23.7, 1.15], "location": [0.0, 0.0, 1.025], "material": "signature_stone", "bevel_m": 0.07},
+-          {"id": "civic_cornice_lower", "kind": "box", "size": [41.0, 24.0, 0.34], "location": [0.0, 0.0, 10.9], "material": "signature_stone", "bevel_m": 0.055},
+-          {"id": "civic_cornice_upper", "kind": "box", "size": [41.5, 24.5, 0.27], "location": [0.0, 0.0, 11.28], "material": "signature_stone", "bevel_m": 0.055},
+-          {"id": "civic_metal_roof", "kind": "gable_roof", "size": [40.5, 23.5, 3.15], "location": [0.0, 0.0, 11.42], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x"}
++          {"id": "civic_front_wing", "kind": "box", "size": [42.0, 9.5, 11.4], "location": [0.0, -12.25, 5.7], "material": "signature_stone", "bevel_m": 0.12},
++          {"id": "civic_rear_wing", "kind": "box", "size": [42.0, 9.5, 11.4], "location": [0.0, 12.25, 5.7], "material": "signature_stone", "bevel_m": 0.12},
++          {"id": "civic_left_wing", "kind": "box", "size": [9.5, 15.0, 11.4], "location": [-16.25, 0.0, 5.7], "material": "signature_stone", "bevel_m": 0.12},
++          {"id": "civic_right_wing", "kind": "box", "size": [9.5, 15.0, 11.4], "location": [16.25, 0.0, 5.7], "material": "signature_stone", "bevel_m": 0.12},
++          {"id": "civic_front_plinth", "kind": "box", "size": [43.0, 10.1, 0.45], "location": [0.0, -12.25, 0.225], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_rear_plinth", "kind": "box", "size": [43.0, 10.1, 0.45], "location": [0.0, 12.25, 0.225], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_left_plinth", "kind": "box", "size": [10.1, 15.0, 0.45], "location": [-16.25, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_right_plinth", "kind": "box", "size": [10.1, 15.0, 0.45], "location": [16.25, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_front_cornice", "kind": "box", "size": [42.8, 10.1, 0.46], "location": [0.0, -12.25, 11.15], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_rear_cornice", "kind": "box", "size": [42.8, 10.1, 0.46], "location": [0.0, 12.25, 11.15], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_left_cornice", "kind": "box", "size": [10.1, 15.0, 0.46], "location": [-16.25, 0.0, 11.15], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "civic_right_cornice", "kind": "box", "size": [10.1, 15.0, 0.46], "location": [16.25, 0.0, 11.15], "material": "signature_stone", "bevel_m": 0.055}
+         ],
+         "voids": [
+-          {"id": "ceremonial_entry", "size": [5.0, 3.0, 5.0], "location": [0.0, -12.0, 3.0], "purpose": "deep bronze entry behind the giant-order portico"}
++          {"id": "civic_open_court", "size": [23.0, 15.0, 14.7], "location": [0.0, 0.0, 7.35], "purpose": "real open civic courtyard visible in the oblique and roof-plan references"},
++          {"id": "ceremonial_entry", "size": [8.2, 3.0, 5.0], "location": [0.0, -17.0, 3.0], "purpose": "three deep bronze doors behind the fixed Ionic portico"}
+         ],
+         "assemblies": [
+-          {"id": "civic_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -11.535, 6.15], "span_m": 39.8, "height_m": 11.3, "depth_m": 0.05, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
+-          {"id": "civic_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-20.035, 0.0, 6.15], "span_m": 22.8, "height_m": 11.3, "depth_m": 0.05, "flip_u": true, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
+-          {"id": "civic_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 11.535, 6.15], "span_m": 39.8, "height_m": 11.3, "depth_m": 0.05, "flip_u": true, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
+-          {"id": "civic_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [20.035, 0.0, 6.15], "span_m": 22.8, "height_m": 11.3, "depth_m": 0.05, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
+-          {"id": "civic_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -11.55, 0.72], "width_m": 18.0, "depth_m": 4.0, "column_height_m": 8.25, "column_radius_m": 0.52, "count": 4, "pediment_rise_m": 2.4, "door_width_m": 4.1, "door_height_m": 4.2, "material": "signature_stone", "door_material": "signature_warm"},
+-          {"id": "civic_ceremonial_steps", "kind": "steps", "centre": [0.0, -13.50, 0.0], "width_m": 22.0, "depth_m": 2.8, "count": 9, "rise_m": 0.08, "material": "signature_stone"},
+-          {"id": "civic_ground_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.78, 1.72], "span_m": 40.4, "height_m": 0.18, "depth_m": 0.18, "material": "signature_stone"},
+-          {"id": "civic_floor_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.76, 6.2], "span_m": 40.2, "height_m": 0.16, "depth_m": 0.15, "material": "signature_stone"}
++          {"id": "civic_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -17.05, 0.92], "width_m": 20.0, "depth_m": 3.4, "column_height_m": 8.25, "column_radius_m": 0.52, "count": 4, "pediment_rise_m": 2.4, "tympanum_relief": true, "door_count": 3, "door_width_m": 2.15, "door_spacing_m": 3.0, "door_height_m": 4.2, "material": "signature_stone", "door_material": "signature_warm"},
++          {"id": "civic_ceremonial_steps", "kind": "steps", "centre": [0.0, -18.80, 0.0], "width_m": 23.0, "depth_m": 3.4, "count": 10, "rise_m": 0.10, "material": "signature_stone"},
++          {"id": "civic_front_lower_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -17.08, 3.75], "positions_m": [-14.0, 14.0], "opening_width_m": 2.8, "opening_height_m": 4.5, "arched": true, "mullions": 2, "transoms": 3, "interior_material": "glazing_interior_1"},
++          {"id": "civic_front_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -17.09, 8.75], "positions_m": [-14.0, 14.0], "opening_width_m": 2.6, "opening_height_m": 1.9, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_2"},
++          {"id": "civic_left_lower_windows", "kind": "classical_window_array", "axis": "left", "centre": [-21.08, 0.0, 3.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_3"},
++          {"id": "civic_left_upper_windows", "kind": "classical_window_array", "axis": "left", "centre": [-21.08, 0.0, 8.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_4"},
++          {"id": "civic_right_lower_windows", "kind": "classical_window_array", "axis": "right", "centre": [21.08, 0.0, 3.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_2"},
++          {"id": "civic_right_upper_windows", "kind": "classical_window_array", "axis": "right", "centre": [21.08, 0.0, 8.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_5"},
++          {"id": "civic_rear_lower_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 17.08, 3.75], "positions_m": [-15.0, -9.0, -3.0, 3.0, 9.0, 15.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_1"},
++          {"id": "civic_rear_upper_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 17.08, 8.75], "positions_m": [-15.0, -9.0, -3.0, 3.0, 9.0, 15.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_3"},
++          {"id": "civic_copper_roof_ring", "kind": "courtyard_hip_roof", "centre": [0.0, 0.0, 11.42], "width_m": 42.8, "depth_m": 34.8, "court_width_m": 23.0, "court_depth_m": 15.0, "rise_m": 3.2, "ridge_inset_m": 4.2, "material": "roof", "fascia_material": "signature_stone"},
++          {"id": "civic_roof_balustrade", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 11.55], "width_m": 42.6, "depth_m": 34.6, "height_m": 0.92, "spacing_m": 0.72, "front_centre_gap_m": 21.0, "material": "signature_stone"},
++          {"id": "civic_ground_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -17.12, 1.72], "span_m": 41.0, "height_m": 0.18, "depth_m": 0.18, "material": "signature_stone"},
++          {"id": "civic_floor_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -17.10, 6.2], "span_m": 40.8, "height_m": 0.16, "depth_m": 0.15, "material": "signature_stone"}
+         ],
+-        "target_views": ["archetype_match", "street", "aerial", "context"]
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+       }
+     },
+     "monumental_courthouse_axis": {
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 19f9a599b3790b7afaed6a383fff7472fffe6c98..fe08c7c5e755e5076a600492073cfe495528495f 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -6498,18 +6498,36 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
+         (cx, facade_y - depth * 0.80, pediment_eave_z),
+         stone, 0.065, "y",
+     ))
++    if bool(spec.get("tympanum_relief", False)):
++        relief_y = facade_y - depth * 1.025
++        relief_z = pediment_eave_z + pediment_rise * 0.36
++        parts.append(add_ellipsoid(
++            f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
++            (0.72, 0.12, 0.38), stone,
++        ))
++        for relief_index, sign in enumerate((-1, 1)):
++            for item_index, ratio in enumerate((0.18, 0.34)):
++                parts.append(add_ellipsoid(
++                    f"{prefix}_TympanumFigure{relief_index}_{item_index}",
++                    (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
++                    (0.48, 0.10, 0.24), stone,
++                ))
+     # A dark recessed door and transom keep the centre legible behind the
+     # colonnade even when the facade atlas is viewed at a grazing angle.
+     door_width = float(spec.get("door_width_m", width * 0.22))
+     door_height = float(spec.get("door_height_m", 4.1))
+-    parts.append(add_beveled_box(
+-        f"{prefix}_DoorReveal", (door_width + 0.65, 0.16, door_height + 0.55),
+-        (cx, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
+-    ))
+-    parts.append(add_box(
+-        f"{prefix}_BronzeDoor", (door_width, 0.05, door_height),
+-        (cx, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
+-    ))
++    door_count = max(1, int(spec.get("door_count", 1)))
++    door_spacing = float(spec.get("door_spacing_m", door_width * 1.28))
++    for door_index in range(door_count):
++        door_x = cx + (door_index - (door_count - 1) / 2.0) * door_spacing
++        parts.append(add_beveled_box(
++            f"{prefix}_DoorReveal{door_index:02d}", (door_width + 0.52, 0.16, door_height + 0.55),
++            (door_x, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
++        ))
++        parts.append(add_box(
++            f"{prefix}_BronzeDoor{door_index:02d}", (door_width, 0.05, door_height),
++            (door_x, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
++        ))
+ 
+ 
+ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
+@@ -8181,6 +8199,205 @@ def _graph_mansard_perimeter(parts: list, spec: dict, mats: dict) -> None:
+         ))
+ 
+ 
++def _graph_courtyard_hip_roof(parts: list, spec: dict, mats: dict) -> None:
++    """Build a continuous shallow hipped roof ring around an open court."""
++    cx, cy, eave_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    depth = float(spec["depth_m"])
++    court_width = float(spec["court_width_m"])
++    court_depth = float(spec["court_depth_m"])
++    rise = float(spec.get("rise_m", 3.0))
++    inset = float(spec.get("ridge_inset_m", min(4.0, min(width, depth) * 0.16)))
++    court_eave_z = float(spec.get("court_eave_z", eave_z + 0.18))
++    roof = _graph_material(mats, spec.get("material", "roof"))
++    stone = _graph_material(mats, spec.get("fascia_material", "signature_stone"))
++    prefix = str(spec.get("id", "GraphCourtyardHipRoof"))
++    if court_width >= width - inset * 2 or court_depth >= depth - inset * 2:
++        raise ValueError("courtyard hip roof needs a positive ridge band around the court")
++
++    def contour(contour_width: float, contour_depth: float, z: float) -> list[tuple[float, float, float]]:
++        return [
++            (cx - contour_width / 2, cy - contour_depth / 2, z),
++            (cx + contour_width / 2, cy - contour_depth / 2, z),
++            (cx + contour_width / 2, cy + contour_depth / 2, z),
++            (cx - contour_width / 2, cy + contour_depth / 2, z),
++        ]
++
++    outer = contour(width, depth, eave_z)
++    ridge = contour(width - inset * 2, depth - inset * 2, eave_z + rise)
++    inner = contour(court_width, court_depth, court_eave_z)
++    verts = outer + ridge + inner
++    faces: list[tuple[int, ...]] = []
++    for index in range(4):
++        nxt = (index + 1) % 4
++        faces.append((index, nxt, 4 + nxt, 4 + index))
++        faces.append((4 + index, 4 + nxt, 8 + nxt, 8 + index))
++    roof_obj = add_prism(f"{prefix}_CopperRing", verts, faces, roof)
++    for polygon in roof_obj.data.polygons:
++        polygon.use_smooth = False
++    parts.append(roof_obj)
++
++    fascia_h = float(spec.get("fascia_height_m", 0.34))
++    fascia_depth = float(spec.get("fascia_depth_m", 0.42))
++    fascia_z = eave_z - fascia_h / 2 + 0.04
++    parts.extend([
++        add_beveled_box(f"{prefix}_FrontFascia", (width + fascia_depth, fascia_depth, fascia_h),
++                         (cx, cy - depth / 2, fascia_z), stone, 0.045),
++        add_beveled_box(f"{prefix}_RearFascia", (width + fascia_depth, fascia_depth, fascia_h),
++                         (cx, cy + depth / 2, fascia_z), stone, 0.045),
++        add_beveled_box(f"{prefix}_LeftFascia", (fascia_depth, depth, fascia_h),
++                         (cx - width / 2, cy, fascia_z), stone, 0.045),
++        add_beveled_box(f"{prefix}_RightFascia", (fascia_depth, depth, fascia_h),
++                         (cx + width / 2, cy, fascia_z), stone, 0.045),
++    ])
++    coping_h = float(spec.get("court_coping_height_m", 0.22))
++    coping_w = float(spec.get("court_coping_width_m", 0.34))
++    coping_z = court_eave_z + coping_h / 2
++    parts.extend([
++        add_beveled_box(f"{prefix}_CourtFrontCoping", (court_width + coping_w, coping_w, coping_h),
++                         (cx, cy - court_depth / 2, coping_z), stone, 0.035),
++        add_beveled_box(f"{prefix}_CourtRearCoping", (court_width + coping_w, coping_w, coping_h),
++                         (cx, cy + court_depth / 2, coping_z), stone, 0.035),
++        add_beveled_box(f"{prefix}_CourtLeftCoping", (coping_w, court_depth, coping_h),
++                         (cx - court_width / 2, cy, coping_z), stone, 0.035),
++        add_beveled_box(f"{prefix}_CourtRightCoping", (coping_w, court_depth, coping_h),
++                         (cx + court_width / 2, cy, coping_z), stone, 0.035),
++    ])
++
++
++def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
++    """Stone rail and low-cost turned balusters around a civic roof edge."""
++    cx, cy, base_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    depth = float(spec["depth_m"])
++    height = float(spec.get("height_m", 0.92))
++    spacing = float(spec.get("spacing_m", 0.72))
++    front_gap = float(spec.get("front_centre_gap_m", 0.0))
++    stone = _graph_material(mats, spec.get("material", "signature_stone"))
++    prefix = str(spec.get("id", "GraphClassicalBalustrade"))
++    rail_h = float(spec.get("rail_height_m", 0.16))
++    rail_d = float(spec.get("rail_depth_m", 0.26))
++
++    def rail_segment(name: str, axis: str, centre: tuple[float, float], span: float) -> None:
++        size = (span, rail_d, rail_h) if axis in {"front", "rear"} else (rail_d, span, rail_h)
++        x, y = centre
++        parts.append(add_beveled_box(f"{prefix}_{name}_BaseRail", size,
++                                     (x, y, base_z + rail_h / 2), stone, 0.032))
++        parts.append(add_beveled_box(f"{prefix}_{name}_TopRail", size,
++                                     (x, y, base_z + height - rail_h / 2), stone, 0.032))
++
++    front_y, rear_y = cy - depth / 2, cy + depth / 2
++    left_x, right_x = cx - width / 2, cx + width / 2
++    if front_gap > 0:
++        side_span = (width - front_gap) / 2
++        rail_segment("FrontLeft", "front", (cx - (front_gap + side_span) / 2, front_y), side_span)
++        rail_segment("FrontRight", "front", (cx + (front_gap + side_span) / 2, front_y), side_span)
++    else:
++        rail_segment("Front", "front", (cx, front_y), width)
++    rail_segment("Rear", "rear", (cx, rear_y), width)
++    rail_segment("Left", "left", (left_x, cy), depth)
++    rail_segment("Right", "right", (right_x, cy), depth)
++
++    baluster_h = height - rail_h * 2
++    positions: list[tuple[float, float, str]] = []
++    front_count = max(2, int(width / spacing))
++    for index in range(front_count + 1):
++        x = cx - width / 2 + width * index / front_count
++        if front_gap <= 0 or abs(x - cx) >= front_gap / 2:
++            positions.append((x, front_y, f"Front{index:02d}"))
++        positions.append((x, rear_y, f"Rear{index:02d}"))
++    side_count = max(2, int(depth / spacing))
++    for index in range(1, side_count):
++        y = cy - depth / 2 + depth * index / side_count
++        positions.extend([(left_x, y, f"Left{index:02d}"), (right_x, y, f"Right{index:02d}")])
++    for x, y, tag in positions:
++        parts.append(add_cylinder(
++            f"{prefix}_{tag}_Baluster", 0.095, baluster_h,
++            (x, y, base_z + rail_h + baluster_h / 2), stone, 10,
++        ))
++
++
++def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
++    """Sparse recessed civic windows with stone returns and occupied cards."""
++    axis = str(spec.get("axis", "front"))
++    if axis not in {"front", "rear", "left", "right"}:
++        raise ValueError(f"classical window array axis {axis!r} is unsupported")
++    cx, cy, cz = (float(value) for value in spec["centre"])
++    positions = [float(value) for value in spec.get("positions_m", [0.0])]
++    opening_width = float(spec.get("opening_width_m", 2.4))
++    opening_height = float(spec.get("opening_height_m", 3.8))
++    depth = float(spec.get("depth_m", 0.22))
++    profile = float(spec.get("profile_m", 0.18))
++    arched = bool(spec.get("arched", False))
++    mullions = max(1, int(spec.get("mullions", 2)))
++    transoms = max(0, int(spec.get("transoms", 2)))
++    recess = float(spec.get("recess_m", 0.16))
++    stone = _graph_material(mats, spec.get("material", "signature_stone"))
++    frame = _graph_material(mats, spec.get("frame_material", "signature_warm"))
++    glass = _graph_material(mats, spec.get("glass_material", "glass"))
++    interior = _graph_material(mats, spec.get("interior_material", "glazing_interior_1"))
++    pane = interior if bool(spec.get("occupied_as_pane", True)) else glass
++    prefix = str(spec.get("id", "GraphClassicalWindows"))
++    outward, along = _glazing_axis_vectors(axis)
++
++    def oriented_box(name: str, along_value: float, normal_value: float,
++                     along_size: float, normal_size: float, z_size: float,
++                     z_value: float, material) -> bpy.types.Object:
++        location = Vector((cx, cy, z_value)) + along * along_value + outward * normal_value
++        size = (
++            (along_size, normal_size, z_size)
++            if axis in {"front", "rear"} else
++            (normal_size, along_size, z_size)
++        )
++        return add_beveled_box(name, size, tuple(location), material, min(0.028, profile * 0.14))
++
++    for index, along_value in enumerate(positions):
++        tag = f"{prefix}_{index:02d}"
++        parts.append(oriented_box(
++            f"{tag}_Interior", along_value, 0.015,
++            opening_width * 0.88, 0.025, opening_height * 0.88, cz, interior,
++        ))
++        parts.append(oriented_box(
++            f"{tag}_Glass", along_value, 0.050,
++            opening_width, 0.045, opening_height, cz, pane,
++        ))
++        for side_index, offset in enumerate((-opening_width / 2 - profile / 2, opening_width / 2 + profile / 2)):
++            parts.append(oriented_box(
++                f"{tag}_Jamb{side_index}", along_value + offset, 0.0,
++                profile, depth, opening_height + profile * 2, cz, stone,
++            ))
++        parts.append(oriented_box(
++            f"{tag}_Sill", along_value, 0.03,
++            opening_width + profile * 2.8, depth + 0.10, profile,
++            cz - opening_height / 2 - profile * 0.55, stone,
++        ))
++        spring_z = cz + opening_height / 2
++        if arched and axis == "front":
++            parts.append(add_arch_ring(
++                f"{tag}_RoundArch", cx + along_value, cy - depth * 0.10,
++                spring_z - opening_width / 2, opening_width / 2,
++                profile, depth, stone, 20,
++            ))
++        else:
++            parts.append(oriented_box(
++                f"{tag}_Lintel", along_value, 0.03,
++                opening_width + profile * 2.6, depth + 0.08, profile * 1.15,
++                cz + opening_height / 2 + profile * 0.55, stone,
++            ))
++        for mullion_index in range(1, mullions + 1):
++            offset = -opening_width / 2 + opening_width * mullion_index / (mullions + 1)
++            parts.append(oriented_box(
++                f"{tag}_Mullion{mullion_index}", along_value + offset, 0.065,
++                0.055, 0.07, opening_height * 0.96, cz, frame,
++            ))
++        for transom_index in range(1, transoms + 1):
++            z = cz - opening_height / 2 + opening_height * transom_index / (transoms + 1)
++            parts.append(oriented_box(
++                f"{tag}_Transom{transom_index}", along_value, 0.065,
++                opening_width, 0.07, 0.055, z, frame,
++            ))
++
++
+ def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
+     """Small masonry blocks repeated along one or more true construction courses."""
+     axis = str(spec.get("axis", "front"))
+@@ -8403,6 +8620,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_balcony_array(parts, assembly, mats)
+         elif kind == "rounded_corner_pavilion":
+             _graph_rounded_corner_pavilion(parts, assembly, mats)
++        elif kind == "courtyard_hip_roof":
++            _graph_courtyard_hip_roof(parts, assembly, mats)
++        elif kind == "classical_balustrade_perimeter":
++            _graph_classical_balustrade_perimeter(parts, assembly, mats)
++        elif kind == "classical_window_array":
++            _graph_classical_window_array(parts, assembly, mats)
+         elif kind == "corbel_array":
+             _graph_corbel_array(parts, assembly, mats)
+         else:
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 3870893192d4f028273ad0745430347f060a5f27..a4cdf25993bcc0e87f686b89e11a8c27a05a20dc 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-rounded-corner-turret-renderlock-v75",
++  "memory_version": "2026-07-20-civic-courtyard-roof-ring-v76",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -630,6 +630,21 @@
+       "symptom": "A boulevard-corner turret appears as a tiny roof bump or a floating onion behind the mansard",
+       "cause": "The crown was centered on the inner tangent origin of the rounded plan, while the continuous mansard skirt passed in front of it and hid the lower bulb; a decorative base ring then floated outside the roof without a masonry drum.",
+       "correction": "Treat the corner pavilion, curved balcony arcs and turret as one fixed landmark assembly. Place the turret centre outward on the street-corner bisector, round the outer mansard contour to the same tangent radius, seat the zinc profile on a stone drum, and prove alignment from both corner-oblique and aerial views."
++    },
++    {
++      "symptom": "A civic hall declares an open court but renders as a shallow solid block under one continuous roof",
++      "cause": "The front hero view dominated the graph while the oblique and roof-plan references were treated as presentation images instead of authoritative construction evidence.",
++      "correction": "Audit all compatible views before massing. Build four explicit perimeter wings and a hipped roof ring whose outer, ridge and inner contours preserve the court to open sky, then require aerial proof before keeper acceptance."
++    },
++    {
++      "symptom": "A classical portico and ceremonial stair fail an otherwise correct footprint-envelope gate",
++      "cause": "Reference dimensions described the main civic body while the portico and stair projected beyond its street wall.",
++      "correction": "Treat ceremonial projections as audited landmark assemblies, fit their depth to the allowed envelope, and validate the complete assembled extents rather than only the body nodes."
++    },
++    {
++      "symptom": "Civic windows disappear into a solid limestone massing core",
++      "cause": "Glazing and surround cards were placed coplanar with or behind opaque core faces instead of being registered to the exposed elevation plane.",
++      "correction": "Place evidence-led window assemblies just outside the core face, layer occupied glazing behind shallow stone surrounds, and inspect all four elevations in oblique review views."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index b124753b405ec3bfa34a9df470ec9deb70e9f0fd..b35f756865646715bfbba19e922391da685c0179 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -13,7 +13,7 @@
+     {"sequence": 5, "archetype_id": "london_heritage_mansion_block", "variant_id": "london-heritage-mansion-portland-stone", "family_id": "london-heritage-mansion-portland-stone-v1-renderlocked", "floors": 5, "width_m": 24, "depth_m": 18, "state": "keeper", "artifact": "london-heritage-mansion-v1/04-canonical-v4", "group": "European heritage stonework"},
+     {"sequence": 6, "archetype_id": "parisian_midrise_block", "variant_id": "parisian_haussmann_classic", "family_id": "parisian-haussmann-classic-v1-renderlocked", "floors": 6, "width_m": 42, "depth_m": 38, "allow_outside_bounds": true, "state": "keeper", "artifact": "parisian-haussmann-classic-v1/05-canonical-v4", "group": "European heritage boulevard"},
+     {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "variant_id": "parisian_corner_haussmann_turret", "family_id": "parisian-boulevard-corner-v1-renderlocked", "floors": 7, "width_m": 42, "depth_m": 40, "state": "keeper", "artifact": "parisian-boulevard-corner-v1/05-canonical-v4", "group": "European heritage corner"},
+-    {"sequence": 8, "archetype_id": "civic_classical_building", "floors": 2, "width_m": 42, "depth_m": 26, "state": "pending", "group": "classical civic monument"},
++    {"sequence": 8, "archetype_id": "civic_classical_building", "variant_id": "civic_classical_limestone_ionic", "family_id": "civic-classical-limestone-ionic-v1-renderlocked", "floors": 2, "width_m": 42, "depth_m": 34, "state": "keeper", "artifact": "civic-classical-limestone-v1/06-canonical-v6", "group": "classical civic monument"},
+     {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "floors": 5, "state": "pending", "group": "ceremonial civic axis"},
+     {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "floors": 4, "state": "pending", "group": "historic urban streetwall"},
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "floors": 4, "state": "pending", "group": "historic mixed-use main street"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index e33768133ead525ba284731e4423e40c46275634..802fc7a5414e7be4b63ee7a3b1caeb5ba2f117db 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 7
++    assert sum(entry["state"] == "keeper" for entry in entries) == 8
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 7768a66fc8ecd71e5ce1a3addbe6628159363a68..0ab65dc4b4841b84fadf27f9a7703ab0b33cf391 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -194,7 +194,7 @@ def test_collegiate_gothic_injects_variable_silhouette_geometry():
+     assert assemblies["gothic_tower_buttresses"]["positions_m"] == [-6.55, 6.55]
+ 
+ 
+-def test_classical_civic_injects_fixed_four_column_portico():
++def test_classical_civic_injects_courtyard_roof_ring_and_four_column_portico():
+     from signature_profiles import inject_signature
+ 
+     grammar = {"source": {"archetype_id": "civic_classical_building"}, "materials": {}}
+@@ -202,10 +202,10 @@ def test_classical_civic_injects_fixed_four_column_portico():
+     graph = injected["massing_graph"]
+     assemblies = {item["id"]: item for item in graph["assemblies"]}
+ 
+-    assert graph["profile"] == "classical_civic_portico_hero"
++    assert graph["profile"] == "classical_civic_courtyard_v2"
+     assert graph["reference_dimensions"] == {
+         "width_m": 42.0,
+-        "depth_m": 26.0,
++        "depth_m": 34.0,
+         "floors": 2,
+         "floor_height_m": 5.6,
+     }
+@@ -215,7 +215,18 @@ def test_classical_civic_injects_fixed_four_column_portico():
+     portico = assemblies["civic_giant_portico"]
+     assert portico["kind"] == "classical_portico"
+     assert portico["count"] == 4
+-    assert portico["depth_m"] == 4.0
++    assert portico["door_count"] == 3
++    assert portico["depth_m"] == 3.4
++    assert any(
++        void["id"] == "civic_open_court" and void["size"][:2] == [23.0, 15.0]
++        for void in graph["voids"]
++    )
++    assert assemblies["civic_copper_roof_ring"]["kind"] == "courtyard_hip_roof"
++    assert assemblies["civic_roof_balustrade"]["kind"] == "classical_balustrade_perimeter"
++    front_windows = assemblies["civic_front_lower_windows"]
++    assert front_windows["kind"] == "classical_window_array"
++    assert front_windows["arched"] is True
++    assert graph["final_bevel_m"] == 0.0
+ 
+ 
+ def test_v21_expansion_graphs_preserve_family_specific_construction():
+@@ -797,6 +808,9 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     assert 'kind == "canonical_roof"' in source
+     assert 'kind == "mansard_perimeter"' in source
+     assert 'kind == "rounded_corner_pavilion"' in source
++    assert 'kind == "courtyard_hip_roof"' in source
++    assert 'kind == "classical_balustrade_perimeter"' in source
++    assert 'kind == "classical_window_array"' in source
+     assert "focus_height * 2.75" in source
+     assert "focus_height * 2.05" in source
+ 
+-- 
+2.55.0.windows.2
+

@@ -1,0 +1,415 @@
+From 15a40bcf9658643a926876720f3f03a7d3fcccbd Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 15:28:40 -0600
+Subject: [PATCH 27/32] feat: render authored park and woonerf detail
+
+---
+ .../viewer/globe/GlobeParkKitLayer.tsx        | 108 ++++++++++++++++--
+ .../viewer/globe/GlobeStreetDetailLayer.tsx   |  74 +++++++++++-
+ .../viewer/globe/GlobeZoneLayer.tsx           |   4 +-
+ .../viewer/globe/parkGroundProfiles.test.ts   |   4 +-
+ .../viewer/globe/parkGroundTexture.ts         |  15 +--
+ .../globe/streetSectionProfiles.test.ts       |   6 +-
+ .../viewer/globe/streetSectionProfiles.ts     |  19 ++-
+ frontend/src/data/archetypeShadeMap.ts        |   2 +-
+ 8 files changed, 206 insertions(+), 26 deletions(-)
+
+diff --git a/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx b/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
+index 42d4665bc3bec673e79c0efbb121896a8fa56e64..e774f88b6bcbe1e9c2464392c245d76707028d1e 100644
+--- a/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx
+@@ -191,6 +191,82 @@ function GLBInstancedProp({
+   );
+ }
+ 
++function ProceduralParkFinishingProps({
++  propId,
++  placements,
++  centroid,
++  instanceZ,
++}: {
++  propId: 'tree' | 'bench';
++  placements: PropPlacement[];
++  centroid: { lng: number; lat: number };
++  instanceZ: number[] | null;
++}) {
++  const mPerLon = metersPerDegLon(centroid.lat);
++  return (
++    <>
++      {placements.map((placement, index) => {
++        const x = (placement.lng - centroid.lng) * mPerLon;
++        const y = (placement.lat - centroid.lat) * METERS_PER_DEG_LAT;
++        const z = instanceZ?.[index] ?? 0;
++        if (propId === 'tree') {
++          const scale = Math.max(0.72, placement.scale);
++          return (
++            <group
++              key={`tree-${index}`}
++              position={[x, y, z]}
++              rotation={[0, 0, placement.yawRad]}
++              scale={[scale, scale, scale]}
++              renderOrder={RENDER_ORDER_PROPS}
++            >
++              <mesh position={[0, 0, 2.7]} renderOrder={RENDER_ORDER_PROPS}>
++                <cylinderGeometry args={[0.22, 0.34, 5.4, 10]} />
++                <meshStandardMaterial color="#65503d" roughness={0.96} />
++              </mesh>
++              <mesh position={[-0.35, 0, 6.2]} scale={[1, 0.82, 1.05]} renderOrder={RENDER_ORDER_PROPS}>
++                <dodecahedronGeometry args={[2.15, 1]} />
++                <meshStandardMaterial color="#48663d" roughness={0.94} />
++              </mesh>
++              <mesh position={[1.05, 0.3, 5.85]} scale={[1.05, 0.9, 0.95]} renderOrder={RENDER_ORDER_PROPS}>
++                <dodecahedronGeometry args={[1.55, 1]} />
++                <meshStandardMaterial color="#587649" roughness={0.94} />
++              </mesh>
++              <mesh position={[-0.75, -0.9, 5.6]} scale={[0.9, 1.05, 0.9]} renderOrder={RENDER_ORDER_PROPS}>
++                <dodecahedronGeometry args={[1.45, 1]} />
++                <meshStandardMaterial color="#3f5d36" roughness={0.94} />
++              </mesh>
++            </group>
++          );
++        }
++        return (
++          <group
++            key={`bench-${index}`}
++            position={[x, y, z + 0.42]}
++            rotation={[0, 0, placement.yawRad]}
++            scale={[placement.scale, placement.scale, placement.scale]}
++            renderOrder={RENDER_ORDER_PROPS}
++          >
++            <mesh renderOrder={RENDER_ORDER_PROPS}>
++              <boxGeometry args={[1.8, 0.48, 0.14]} />
++              <meshStandardMaterial color="#80583d" roughness={0.86} />
++            </mesh>
++            <mesh position={[0, 0.2, 0.48]} rotation={[Math.PI / 12, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
++              <boxGeometry args={[1.8, 0.12, 0.85]} />
++              <meshStandardMaterial color="#745038" roughness={0.86} />
++            </mesh>
++            {[-0.67, 0.67].map((legX) => (
++              <mesh key={legX} position={[legX, 0, -0.25]} renderOrder={RENDER_ORDER_PROPS}>
++                <boxGeometry args={[0.1, 0.38, 0.5]} />
++                <meshStandardMaterial color="#44494a" metalness={0.38} roughness={0.58} />
++              </mesh>
++            ))}
++          </group>
++        );
++      })}
++    </>
++  );
++}
++
+ /** Small deterministic structures that are part of an archetype's spatial
+  * program but do not yet warrant a fetched GLB kit asset. */
+ function ParkSpecialtyStructures({
+@@ -632,7 +708,9 @@ function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
+     plantingStructure,
+   ).filter((placement) => {
+     const asset = PARK_KIT_MANIFEST[placement.propId];
+-    return shouldRenderLiveParkProp(zone, placement.propId, Boolean(asset));
++    const hasProceduralFallback = placement.propId === 'tree' || placement.propId === 'bench';
++    return !shouldDeferParkFinishingProp(zone, placement.propId)
++      && (Boolean(asset) || hasProceduralFallback);
+   }).length;
+   return shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
+ }
+@@ -668,12 +746,10 @@ function ParkKitInstance({
+   // Landscape pattern stamped by the backend plan generator (green zones and
+   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
+   const plantingStructure = resolveParkPlantingStructure(zone);
+-  // A generated green-space drape is the spatial source of truth in the
+-  // interactive Google scene. Trees and benches are render-finishing props:
+-  // keeping them out of the live tile view avoids conflicts with AI-resolved
+-  // paths/water and prevents lightweight procedural assets from lowering the
+-  // visual quality of the surrounding photogrammetry. Programmed structures
+-  // (playgrounds, pavilions, bridges, etc.) remain eligible for live 3D.
++  // A generated green-space drape is the spatial source of truth. Procedural
++  // grounds share this kit's deterministic recipe and can therefore show real
++  // manifest trees and benches live; AI-resolved grounds still defer those
++  // finishing props because their detailed layout is not deterministic.
+   const hasCurrentParkGround = hasCurrentParkGroundSurface(zone);
+   const specialtyStructureKind = useMemo(
+     () => resolveParkSpecialtyStructureKind(zone),
+@@ -852,6 +928,18 @@ function ParkKitInstance({
+           ? group.map((g) => instanceZ[placements.indexOf(g)] ?? 0)
+           : null;
+         const asset = PARK_KIT_MANIFEST[propId];
++        if (shouldDeferParkFinishingProp(zone, propId)) return null;
++        if (!asset && (propId === 'tree' || propId === 'bench')) {
++          return (
++            <ProceduralParkFinishingProps
++              key={propId}
++              propId={propId}
++              placements={group}
++              centroid={centroid}
++              instanceZ={groupZ}
++            />
++          );
++        }
+         if (!shouldRenderLiveParkProp(zone, propId, Boolean(asset)) || !asset) return null;
+         return (
+           <SilentKitBoundary key={propId} fallback={null}>
+@@ -884,9 +972,9 @@ export function GlobeParkKitLayer({
+       && z.coordinates.length >= 3
+       && shouldRenderCommunityProps(z)
+       // Generate 3D always creates a current deterministic ground design;
+-      // optional AI orthophotos upgrade its material fidelity. Programmed
+-      // structures can stand on either source, while trees and benches remain
+-      // deferred to the final architectural render.
++      // optional AI orthophotos upgrade its material fidelity. Deterministic
++      // surfaces can mount the full authored kit, while AI surfaces retain
++      // only design-critical programmed structures.
+       && hasCurrentParkGroundSurface(z)
+       && hasLiveProgrammedParkGeometry(z)),
+     [zones],
+diff --git a/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx b/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
+index f2678c502b2d508bfcba8485e1d4ae983d2aa255..fd20aa33e8643d9f356efc6a1b7d7f495d828faa 100644
+--- a/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx
+@@ -66,6 +66,7 @@ const ISLAND_COLOR = '#96b08a';
+ const RENDER_ORDER_DASHES = 122;
+ const RENDER_ORDER_FLATWORK = 123;
+ const RENDER_ORDER_RAISED = 130;
++const RENDER_ORDER_FURNITURE = 135;
+ function isRoundaboutZone(zone: SiteZone): boolean {
+   const id = String((zone.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '');
+   return id.toLowerCase().replace(/-/g, '_').includes('roundabout');
+@@ -290,6 +291,41 @@ function StreetRibbonDetail({
+     };
+   }, [centerLngLat, halfWidth, sectionProfile, sectionScale, stationZ]);
+ 
++  const woonerfPlanters = useMemo(() => {
++    if (!centerLngLat || !sectionProfile?.archetypeId.includes('woonerf')) return [];
++    const points = centerLngLat.local;
++    const placements: Array<{
++      x: number;
++      y: number;
++      centerX: number;
++      centerY: number;
++      z: number;
++      rotation: number;
++    }> = [];
++    // Alternate traffic-calming planters along the flush shared surface. Keep
++    // the first and last stations clear so the connection reads as an entry.
++    for (let index = 2; index < points.length - 2; index += 4) {
++      const previous = points[index - 1];
++      const next = points[index + 1];
++      const dx = next.x - previous.x;
++      const dy = next.y - previous.y;
++      const length = Math.hypot(dx, dy) || 1;
++      const normalX = -dy / length;
++      const normalY = dx / length;
++      const side = placements.length % 2 === 0 ? -1 : 1;
++      const offset = Math.max(0.8, halfWidth * 0.72) * side;
++      placements.push({
++        x: points[index].x + normalX * offset,
++        y: points[index].y + normalY * offset,
++        centerX: points[index].x,
++        centerY: points[index].y,
++        z: stationZ?.[index] ?? 0,
++        rotation: Math.atan2(dy, dx),
++      });
++    }
++    return placements;
++  }, [centerLngLat, halfWidth, sectionProfile, stationZ]);
++
+   // r3f does not dispose geometry props — without this every drape freeze,
+   // edit commit, and zone delete leaks the previous buffers.
+   useEffect(
+@@ -319,7 +355,7 @@ function StreetRibbonDetail({
+         >
+           <meshBasicMaterial
+             color={band.color}
+-            depthTest
++            depthTest={false}
+             depthWrite={false}
+             polygonOffset
+             polygonOffsetFactor={-3}
+@@ -364,6 +400,42 @@ function StreetRibbonDetail({
+           />
+         </mesh>
+       )}
++      {woonerfPlanters.map((placement, index) => (
++        <group key={`woonerf-planter-${index}`}>
++          <mesh
++            position={[placement.centerX, placement.centerY, placement.z + 0.17]}
++            rotation={[0, 0, placement.rotation]}
++            renderOrder={RENDER_ORDER_FURNITURE}
++          >
++            <boxGeometry args={[0.55, halfWidth * 1.55, 0.06]} />
++            <meshStandardMaterial color="#d2bea0" roughness={0.90} />
++          </mesh>
++          <group
++            position={[placement.x, placement.y, placement.z + 0.3]}
++            rotation={[0, 0, placement.rotation]}
++            renderOrder={RENDER_ORDER_FURNITURE}
++          >
++            <mesh renderOrder={RENDER_ORDER_FURNITURE}>
++              <boxGeometry args={[1.8, 0.9, 0.6]} />
++              <meshStandardMaterial color="#7d5844" roughness={0.86} />
++            </mesh>
++            <mesh position={[-0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[0.44, 1]} />
++              <meshStandardMaterial color="#526f43" roughness={0.92} />
++            </mesh>
++            <mesh position={[0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
++              <dodecahedronGeometry args={[0.44, 1]} />
++              <meshStandardMaterial color="#617b4c" roughness={0.92} />
++            </mesh>
++            {[-1.15, 1.15].map((bollardX) => (
++              <mesh key={bollardX} position={[bollardX, 0, 0.42]} renderOrder={RENDER_ORDER_FURNITURE}>
++                <cylinderGeometry args={[0.09, 0.11, 0.84, 10]} />
++                <meshStandardMaterial color="#343b3b" metalness={0.48} roughness={0.5} />
++              </mesh>
++            ))}
++          </group>
++        </group>
++      ))}
+     </EastNorthUpFrame>
+   );
+ }
+diff --git a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+index faa93522d6730b2cfec81310a02640a0d1fdb255..d7307aad5cef80c11af0b15e12eeb43e772656d5 100644
+--- a/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
++++ b/frontend/src/components/viewer/globe/GlobeZoneLayer.tsx
+@@ -435,9 +435,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
+     || typeof zoneProps?.plaza_archetype_id === 'string'
+     || typeof zoneProps?.plaza_aesthetic === 'string'
+   );
++  const isWoonerfGround = communityKind === 'street'
++    && String(zoneProps?.road_archetype_id ?? '').toLowerCase().replace(/-/g, '_').includes('woonerf');
+   const compiledSurfaceColor = communityKind === 'park'
+     ? (isPlazaGround ? '#b5b1a7' : '#66874f')
+-    : '#656765';
++    : (isWoonerfGround ? '#9b674f' : '#656765');
+   // A prepared site boundary (or an explicit per-zone mask) already removes
+   // source photogrammetry. In that case public-realm surfaces must participate
+   // in the normal depth buffer so they cannot paint roads and lawns across the
+diff --git a/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts b/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
+index bb2c52a52613de3fc029d922e3560e716f8e2dc4..25b631b2852517ef5bc3aad92ebf23fe953b60b4 100644
+--- a/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
++++ b/frontend/src/components/viewer/globe/parkGroundProfiles.test.ts
+@@ -593,8 +593,8 @@ describe('park ground pilot profiles', () => {
+       expect(resolveParkGroundProfile(compiled).isPilot, archetypeId).toBe(true);
+       expect(resolveParkGroundSurfaceSource(compiled), archetypeId).toBe('procedural');
+       expect(hasCurrentParkGroundSurface(compiled), archetypeId).toBe(true);
+-      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(true);
+-      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(true);
++      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(false);
++      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(false);
+     }
+   });
+ 
+diff --git a/frontend/src/components/viewer/globe/parkGroundTexture.ts b/frontend/src/components/viewer/globe/parkGroundTexture.ts
+index 3cd1d03f5b20f3bc40f34759e32eefc020e87ea6..207140d935879ac000044479c66e3f3c61a0f603 100644
+--- a/frontend/src/components/viewer/globe/parkGroundTexture.ts
++++ b/frontend/src/components/viewer/globe/parkGroundTexture.ts
+@@ -179,21 +179,22 @@ export function hasCurrentParkGroundSurface(zone: SiteZone): boolean {
+   return resolveParkGroundSurfaceSource(zone) !== 'none';
+ }
+ 
+-/** Mature planting and seating are completed by the final architectural
+- * render once a current ground drape exists. Programmed structures remain
+- * eligible for live 3D because their pads and geometry are design-critical. */
++/** AI-resolved park grounds defer finishing props because their exact paths,
++ * water and planting beds are not deterministic. Procedurally compiled park
++ * grounds share the same placement recipe as the 3D kit, so their real tree
++ * and bench assets can safely appear in the interactive Google Tiles scene. */
+ export function shouldDeferParkFinishingProp(
+   zone: SiteZone,
+   propId: PropPlacement['propId'],
+ ): boolean {
+   return isParkGroundZone(zone)
++    && (!isCommunity3DCompiled(zone) || Boolean(getParkGroundMeta(zone)))
+     && (propId === 'tree' || propId === 'bench');
+ }
+ 
+-/** The interactive scene never substitutes low-detail cone/box placeholders
+- * for a missing park asset. Trees and benches remain render-only even after a
+- * real asset exists; design-critical structures can appear once their actual
+- * GLB is present. */
++/** The interactive scene never substitutes low-detail placeholders for a
++ * missing park asset. Current procedural grounds may use the real manifest
++ * assets; AI ground imagery still defers its finishing layer to final render. */
+ export function shouldRenderLiveParkProp(
+   zone: SiteZone,
+   propId: PropPlacement['propId'],
+diff --git a/frontend/src/components/viewer/globe/streetSectionProfiles.test.ts b/frontend/src/components/viewer/globe/streetSectionProfiles.test.ts
+index 4624c80d4a59ab428e5e20b6829ad949bfd8bcfd..53c8ee48147e2f230775b6c2caad6d47b462c618 100644
+--- a/frontend/src/components/viewer/globe/streetSectionProfiles.test.ts
++++ b/frontend/src/components/viewer/globe/streetSectionProfiles.test.ts
+@@ -113,7 +113,11 @@ describe('street section pilot profiles', () => {
+     const profile = resolvePilotStreetSectionProfile('woonerf_shared_street');
+     expect(profile).not.toBeNull();
+     expect(profile?.renderCurbs).toBe(false);
+-    expect(profile?.bands.map((band) => band.kind)).toEqual(['shoulder', 'motor', 'shoulder']);
++    expect(profile?.bands.map((band) => band.kind)).toEqual([
++      'shoulder', 'planting', 'motor', 'planting', 'shoulder',
++    ]);
++    expect(profile?.bands.find((band) => band.kind === 'motor')?.color).toBe('#a76547');
++    expect(profile?.treeOffsetsM).toHaveLength(2);
+     expect(profile?.markings).toHaveLength(0);
+   });
+ 
+diff --git a/frontend/src/components/viewer/globe/streetSectionProfiles.ts b/frontend/src/components/viewer/globe/streetSectionProfiles.ts
+index ee517330263ebf1038761c8054ce3cd99c2e4820..83026c2d72c1cb7b3e0226a006f4190b75f242c3 100644
+--- a/frontend/src/components/viewer/globe/streetSectionProfiles.ts
++++ b/frontend/src/components/viewer/globe/streetSectionProfiles.ts
+@@ -125,6 +125,17 @@ interface SyntheticSection {
+ }
+ 
+ const SYNTHETIC_SECTIONS: Record<string, SyntheticSection> = {
++  woonerf_shared_street: {
++    rowM: 10,
++    renderCurbs: false,
++    zones: [
++      { type: 'shoulder', width_m: 0.4, label: 'Flush stone edge', surface: 'stone paving' },
++      { type: 'boulevard', width_m: 1.25, label: 'Alternating planter edge', surface: 'permeable paving' },
++      { type: 'shared_lane', width_m: 6.7, label: 'Warm brick shared surface', surface: 'brick paving' },
++      { type: 'boulevard', width_m: 1.25, label: 'Alternating planter edge', surface: 'permeable paving' },
++      { type: 'shoulder', width_m: 0.4, label: 'Flush stone edge', surface: 'stone paving' },
++    ],
++  },
+   yield_street: {
+     rowM: 6,
+     renderCurbs: false,
+@@ -305,7 +316,7 @@ function bandStyle(kind: StreetBandKind, surface: string): Pick<StreetSectionBan
+   switch (kind) {
+     case 'motor':
+       if (lower.includes('brick') || lower.includes('cobble') || lower.includes('unit paving')) {
+-        return { color: '#87695d', liftM: 0.085 };
++        return { color: '#a76547', liftM: 0.14 };
+       }
+       return { color: '#565a5d', liftM: 0.075 };
+     case 'cycle':
+@@ -314,11 +325,13 @@ function bandStyle(kind: StreetBandKind, surface: string): Pick<StreetSectionBan
+       return { color: '#656f72', liftM: 0.085 };
+     case 'parking': return { color: '#62666a', liftM: 0.08 };
+     case 'sidewalk': return { color: '#b8b5ac', liftM: 0.14 };
+-    case 'planting': return { color: '#687d55', liftM: 0.11 };
++    case 'planting': return { color: '#587545', liftM: 0.16 };
+     case 'median': return { color: '#71875b', liftM: 0.18 };
+     case 'buffer': return { color: '#8d987a', liftM: 0.13 };
+     case 'path': return { color: '#a8a69e', liftM: 0.1 };
+-    case 'shoulder': return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: 0.06 };
++    case 'shoulder':
++      if (lower.includes('stone')) return { color: '#c4b69e', liftM: 0.15 };
++      return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: 0.06 };
+     default: return { color: '#89877f', liftM: 0.08 };
+   }
+ }
+diff --git a/frontend/src/data/archetypeShadeMap.ts b/frontend/src/data/archetypeShadeMap.ts
+index 48474277e646aa32b8bd2fb464c69fb56dbfc6ab..cceb61fe65f7e638cb19a54f157f504d2c933631 100644
+--- a/frontend/src/data/archetypeShadeMap.ts
++++ b/frontend/src/data/archetypeShadeMap.ts
+@@ -83,7 +83,7 @@ export const SHADE_MAP: Record<string, string> = {
+   separated_bike_lane:                '#959595',
+   multi_use_trail:                    '#4f4a4a',
+   pedestrian_promenade:               '#585353',
+-  woonerf_shared_street:              '#615c5c',
++  woonerf_shared_street:              '#9b674f',
+   brt_corridor:                       '#6a6565',
+   light_rail_avenue:                  '#736e6e',
+   main_street_complete:               '#7c7777',
+-- 
+2.55.0.windows.2
+

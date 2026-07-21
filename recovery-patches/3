@@ -1,0 +1,256 @@
+From 89a95521196f4be0ab848a51a001040e403ac972 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 00:21:09 -0600
+Subject: [PATCH 03/32] feat: refine render-locked brownstone family
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 14 ++++++++-
+ frontend/src/data/buildingArchetypes.json     | 12 ++++++++
+ .../architectural_signature_profiles.json     | 30 ++++++++++++++-----
+ tools/archetype_compiler/blender_generate.py  | 11 +++++--
+ .../high_quality_building_memory.json         | 12 +++++++-
+ .../tests/test_facade_sheets.py               | 27 +++++++++++++++++
+ 6 files changed, 95 insertions(+), 11 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 9973c486a3f2ccabf2c92d1045516b713715772a..6e984ccc5b4d8b4dc347e48d08b5b6317eb451e8 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-ruskinian-gable-layering-v67`.
++Current executable memory: `2026-07-20-brownstone-sidewall-camera-v70`.
+ 
+ ## The quality target
+ 
+@@ -416,6 +416,18 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   flat legacy atlas. Review above 32 assembled materials while continuing to
+   consolidate shader-equivalent clones and package runtime textures with KTX2.
+ 
++### Narrow rowhouse camera + secondary-elevation lessons
++
++- A required camera is invalid when contextual planting blocks the asset. Near
++  trees must have a camera-safe minimum lateral offset for narrow lots; width-
++  relative placement alone can put a crown directly on the view corridor.
++- A decorated principal bay is not a universal side-wall module. Use a quiet
++  brick secondary band for party walls, then add only the sparse recessed side
++  and rear openings supported by the oblique and roof references.
++- Keep the exact front-bay count evidence-led. The Red Brick & Sandstone pilot
++  is five bays wide—two sash bays, one fixed centre entrance bay, and two sash
++  bays—not a generic four-bay rowhouse.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/frontend/src/data/buildingArchetypes.json b/frontend/src/data/buildingArchetypes.json
+index 8f8e4f740ccaa50aefc189e608220e29787f6bd8..7a3da991ab47cd486e8d5e94d3e6d3802ae0b5b2 100644
+--- a/frontend/src/data/buildingArchetypes.json
++++ b/frontend/src/data/buildingArchetypes.json
+@@ -366,6 +366,18 @@
+     },
+     {
+       "id": "brownstone_rowhouse_frontage",
++      "footprintCompatibility": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [5, 30],
++        "recommendedDepth_m": [12, 24],
++        "recommendedFloors": [2, 4],
++        "wingDepth_m": [5, 8],
++        "profiles": {
++          "rectangle": {"recommendedWidth_m": [5, 8], "recommendedDepth_m": [12, 18], "recommendedFloors": [2, 4]},
++          "l_shape": {"recommendedWidth_m": [12, 24], "recommendedDepth_m": [12, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]},
++          "u_shape": {"recommendedWidth_m": [18, 30], "recommendedDepth_m": [15, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]}
++        }
++      },
+     "suggestedWidth_m": 6,
+     "suggestedDepth_m": 15,
+     "suggestedFloorHeight": 3.2,
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index f402a40709c71d291d45ea7c64c82978f569c868..72fca83f0fdae5db48ee3adbaaae7849d4070177 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -508,7 +508,7 @@
+       "kits": ["rowhouse_stoops", "oriel_bays", "rowhouse_divisions", "bracketed_cornice"]
+     },
+     "brownstone_rowhouse_red_sandstone": {
+-      "identity": "A single four-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance between the two central bays and a deep bracketed pressed-metal cornice.",
++      "identity": "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
+       "material_zones": "warm variegated red-brown brick; carved buff sandstone base, lintels, sills and stoop; black wrought iron; dark stained timber door; softly occupied clear sash; grey membrane roof",
+       "glass_profile": "residential_low_e",
+       "dimension_overrides": {"width_m": 8.0, "depth_m": 15.0, "default_floors": 3, "roof_height_m": 1.2},
+@@ -526,15 +526,23 @@
+       "kits": ["rowhouse_stoop", "garden_level", "carved_window_returns", "fixed_timber_entrance", "bracketed_cornice", "quiet_party_wall"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "red_brick_sandstone_rowhouse_v58",
+-        "description": "A render-locked single rowhouse with a fixed elevated entrance, four front sash bays, quieter exposed side and rear elevations, a low parapet roof and physical stone-and-iron depth. Only ordinary middle window bays are repeatable; the entrance, stoop, end conditions, cornice and roof remain fixed.",
++        "profile": "red_brick_sandstone_rowhouse_v61",
++        "description": "A render-locked single rowhouse with a fixed elevated entrance, five front sash bays, quieter exposed side and rear elevations, a low parapet roof and physical stone-and-iron depth. Only ordinary middle window bays are repeatable; the entrance, stoop, end conditions, cornice and roof remain fixed.",
+         "reference_views": [
+-          {"role": "street_identity", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png", "cues": ["four tall sash bays", "central elevated stoop", "red brick and carved sandstone", "deep bracketed cornice"]},
++          {"role": "street_identity", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png", "cues": ["five tall upper sash bays", "central elevated stoop", "red brick and carved sandstone", "deep bracketed cornice"]},
+           {"role": "oblique_massing", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_60.jpg", "cues": ["quiet exposed side", "garden level", "flat parapet roof", "chimneys and skylight"]},
+           {"role": "roof_plan", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_90.jpg", "cues": ["single narrow lot", "rear yard orientation", "low party-wall parapets", "central roof light"]}
+         ],
+         "height_m": 12.2,
+         "reference_dimensions": {"width_m": 8.0, "depth_m": 15.0, "floors": 3, "floor_height_m": 3.2},
++        "disabled_assembly_ids": [
++          "rowhouse_left_front_side_skin", "rowhouse_left_middle_side_skin", "rowhouse_left_rear_side_skin",
++          "rowhouse_right_front_side_skin", "rowhouse_right_middle_side_skin", "rowhouse_right_rear_side_skin",
++          "rowhouse_left_front_side_glazing", "rowhouse_left_middle_side_glazing", "rowhouse_left_rear_side_glazing",
++          "rowhouse_right_front_side_glazing", "rowhouse_right_middle_side_glazing", "rowhouse_right_rear_side_glazing",
++          "rowhouse_rear_left_skin", "rowhouse_rear_right_skin",
++          "rowhouse_rear_left_glazing", "rowhouse_rear_right_glazing"
++        ],
+         "nodes": [
+           {"id": "rowhouse_plinth", "kind": "box", "size": [8.18, 15.18, 0.20], "location": [0.0, 0.0, 0.10], "material": "signature_stone", "bevel_m": 0.025},
+           {"id": "rowhouse_service_core", "kind": "box", "size": [6.60, 13.70, 10.60], "location": [0.0, 0.0, 5.50], "material": "primary", "bevel_m": 0.11},
+@@ -547,7 +555,6 @@
+           {"id": "rowhouse_door_left_jamb", "kind": "box", "size": [0.19, 0.38, 2.84], "location": [-0.75, -7.39, 2.71], "material": "signature_stone", "bevel_m": 0.028},
+           {"id": "rowhouse_door_right_jamb", "kind": "box", "size": [0.19, 0.38, 2.84], "location": [0.75, -7.39, 2.71], "material": "signature_stone", "bevel_m": 0.028},
+           {"id": "rowhouse_door_lintel", "kind": "box", "size": [1.70, 0.42, 0.26], "location": [0.0, -7.41, 4.16], "material": "signature_stone", "bevel_m": 0.035},
+-          {"id": "rowhouse_door_pediment", "kind": "gable_roof", "size": [1.98, 0.52, 0.58], "location": [0.0, -7.44, 4.43], "material": "signature_stone", "bevel_m": 0.025, "ridge_axis": "y"},
+           {"id": "rowhouse_left_garden_curb", "kind": "box", "size": [2.18, 1.12, 0.34], "location": [-2.48, -7.88, 0.27], "material": "signature_stone", "bevel_m": 0.035},
+           {"id": "rowhouse_right_garden_curb", "kind": "box", "size": [2.18, 1.12, 0.34], "location": [2.48, -7.88, 0.27], "material": "signature_stone", "bevel_m": 0.035},
+           {"id": "rowhouse_skylight_curb", "kind": "box", "size": [1.55, 2.10, 0.22], "location": [0.35, 1.75, 11.14], "material": "signature_stone", "bevel_m": 0.035},
+@@ -561,7 +568,7 @@
+         ],
+         "assemblies": [
+           {"id": "rowhouse_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -7.46, 5.55], "span_m": 7.82, "height_m": 10.70, "depth_m": 0.05, "band": "elevation"},
+-          {"id": "rowhouse_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -7.50, 5.55], "span_m": 7.82, "height_m": 10.70, "columns": 4, "rows": 1, "band": "elevation", "frame_mode": "sash_relief", "cap_material_key": "signature_stone", "return_material_key": "signature_stone", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "stone_returns": true, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.34, "cavity_depth_m": 0.56, "room_card_recess_m": 0.18, "profile_m": 0.08, "max_regions": 18},
++          {"id": "rowhouse_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -7.50, 5.55], "span_m": 7.82, "height_m": 10.70, "columns": 5, "rows": 1, "band": "elevation", "frame_mode": "sash_relief", "cap_material_key": "signature_stone", "return_material_key": "signature_stone", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "stone_returns": true, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.34, "cavity_depth_m": 0.56, "room_card_recess_m": 0.18, "profile_m": 0.08, "max_regions": 20},
+           {"id": "rowhouse_stoop", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [0.0, -7.47, 0.0], "width_m": 2.35, "run_m": 2.75, "rise_m": 1.30, "landing_depth_m": 0.92, "count": 8, "rail_height_m": 0.92, "stone_material": "signature_stone", "rail_material": "signature_metal"},
+           {"id": "rowhouse_fanlight", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -7.52, 3.91], "span_m": 1.20, "height_m": 0.42, "columns": 3, "rows": 1, "frame_m": 0.045, "depth_m": 0.045, "reveal_m": 0.05, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.16},
+           {"id": "rowhouse_base_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -7.52, 1.55], "span_m": 7.94, "height_m": 0.20, "depth_m": 0.18, "material": "signature_stone"},
+@@ -583,7 +590,16 @@
+           {"id": "rowhouse_rear_left_skin", "kind": "facade_skin", "axis": "rear", "centre": [-2.05, 7.36, 5.55], "span_m": 3.60, "height_m": 10.70, "depth_m": 0.05, "band": "side", "flip_u": true},
+           {"id": "rowhouse_rear_right_skin", "kind": "facade_skin", "axis": "rear", "centre": [2.05, 7.36, 5.55], "span_m": 3.60, "height_m": 10.70, "depth_m": 0.05, "band": "side"},
+           {"id": "rowhouse_rear_left_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [-2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]},
+-          {"id": "rowhouse_rear_right_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]}
++          {"id": "rowhouse_rear_right_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]},
++          {"id": "rowhouse_left_side_window_low", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_left_side_window_mid", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_left_side_window_high", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_left_low", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_right_low", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_left_mid", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_right_mid", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_left_high", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
++          {"id": "rowhouse_rear_right_high", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18}
+         ]
+       }
+     },
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 8f24a6368ad13e8858139ededa250cce219ab78f..affe7b5b741a17ca70d73cb509495f6fe67b7f6e 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -7740,7 +7740,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+         else:
+             raise ValueError(f"massing graph node {node.get('id')!r} has unsupported kind {kind!r}")
+ 
++    disabled_assembly_ids = {
++        str(item) for item in graph.get("disabled_assembly_ids", [])
++    }
+     for assembly in graph.get("assemblies", []):
++        if str(assembly.get("id")) in disabled_assembly_ids:
++            continue
+         kind = assembly.get("kind")
+         if kind == "column_array":
+             _graph_column_array(parts, assembly, mats)
+@@ -8171,13 +8176,15 @@ def render_presentation_views(
+         add_context_building(rig, context_index, *spec, facade_cycle[context_index % len(facade_cycle)], context_mats)
+         context_only.extend(rig[context_start:])
+ 
++    near_tree_offset = max(width * 0.72, 12.0)
++    foreground_tree_x = -max(width * 1.10, 18.0)
+     tree_positions = (
+-        (-width * 0.72, -depth / 2 - 3.1, 0.9), (width * 0.74, -depth / 2 - 3.5, 1.0),
++        (-near_tree_offset, -depth / 2 - 3.1, 0.9), (near_tree_offset, -depth / 2 - 3.5, 1.0),
+         (-19.0, 17.0, 1.15), (18.0, 18.0, 0.95), (-36.0, 24.0, 1.2), (39.0, 28.0, 1.1),
+         (-67.0, 25.0, 1.05), (72.0, 24.0, 1.2), (-42.0, -21.0, 0.95), (43.0, -22.0, 1.0),
+         (-77.0, 61.0, 1.3), (-60.0, 68.0, 1.05), (-30.0, 68.0, 1.15),
+         (10.0, 72.0, 1.2), (45.0, 70.0, 1.0), (78.0, 62.0, 1.25),
+-        (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (-8.0, -64.0, 1.2),
++        (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (foreground_tree_x, -64.0, 1.2),
+     )
+     for tree_index, (x, y, scale) in enumerate(tree_positions):
+         add_preview_tree(rig, tree_index, x, y, scale, bark_mat, leaf_mat if tree_index % 3 else leaf_alt_mat)
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index d1dd5c3ef4c35990d1780c79f56757ae43a91419..4868166a80c5a27c9565c5b26e5dc65f8ac09102 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-ruskinian-gable-layering-v67",
++  "memory_version": "2026-07-20-brownstone-sidewall-camera-v70",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -560,6 +560,16 @@
+       "symptom": "A layered masonry gable renders as one solid pale stone triangle",
+       "cause": "The smaller brick infill prism was extruded from the same base plane as the deeper stone verge and remained completely occluded inside it.",
+       "correction": "Offset the infill to the exposed face of the outer verge before extrusion, preserving a visible brick field while the deeper stone prism reads only as a shaped edge and return."
++    },
++    {
++      "symptom": "The locked archetype review camera is completely blocked by a foreground tree on a narrow building",
++      "cause": "Near-context tree offsets scaled only from building width, placing the left tree directly on the camera-to-target corridor for narrow lots.",
++      "correction": "Clamp near-tree offsets to a camera-safe minimum while retaining width-relative spacing for larger buildings, then verify every required review view before accepting a family."
++    },
++    {
++      "symptom": "A quiet rowhouse party wall repeats ornate front-window surrounds across its full depth",
++      "cause": "The principal elevation's decorated repeat bay was reused as the side material band and tiled across every side segment.",
++      "correction": "Author a plain brick secondary-elevation band and add only evidence-supported sparse side and rear openings as physical recessed assemblies."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 6ec26dc41c3ce05cf9b93f3fcdf480f9fe5b4631..fb577c4e75a19bc3714ab5b0db24efaff53248c8 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -618,6 +618,30 @@ def test_ruskinian_facade_period_matches_registered_source_span():
+     assert gable_axes == {"front", "rear", "left", "right"}
+ 
+ 
++def test_red_sandstone_rowhouse_preserves_reference_five_bay_rhythm():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "brownstone_rowhouse_frontage",
++            "variant_id": "brownstone_rowhouse_red_sandstone",
++        },
++        "materials": {},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "red_brick_sandstone_rowhouse_v61"
++    assert assemblies["rowhouse_front_glazing"]["columns"] == 5
++    assert assemblies["rowhouse_stoop"]["base_centre"][0] == 0.0
++    assert "rowhouse_door_pediment" not in assemblies
++    assert "rowhouse_left_front_side_skin" in graph["disabled_assembly_ids"]
++    assert "rowhouse_rear_left_glazing" in graph["disabled_assembly_ids"]
++    for level in ("low", "mid", "high"):
++        assert assemblies[f"rowhouse_rear_left_{level}"]["span_m"] == 0.92
++        assert assemblies[f"rowhouse_rear_right_{level}"]["span_m"] == 0.92
++
++
+ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+ 
+@@ -629,6 +653,9 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+         assert f'("{role}"' in source
+     assert "+ outward * profile_outward_offset" in source
+     assert "base_z + height * 0.10, depth + 0.018, brick" in source
++    assert "near_tree_offset = max(width * 0.72, 12.0)" in source
++    assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
++    assert "disabled_assembly_ids" in source
+ 
+ 
+ def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():
+-- 
+2.55.0.windows.2
+

@@ -1,0 +1,437 @@
+From 5b7f9d926ae7ab3ce008edf94b1f973e6ad2ff3c Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 04:58:58 -0600
+Subject: [PATCH 10/32] feat: render-lock neoclassical courthouse temple
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  16 ++
+ .../architectural_signature_profiles.json     |  65 +++++++-
+ tools/archetype_compiler/blender_generate.py  | 139 ++++++++++++++++--
+ .../high_quality_building_memory.json         |  17 ++-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/signature_profiles.py  |   3 +
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  32 ++++
+ 8 files changed, 254 insertions(+), 22 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 2ce2d6d75bf4073b6e140bb03a0cda41e8da90eb..a83a1ec56001533a560ccb7f829af91472bf4920 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -524,6 +524,22 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   its channel set was technically valid. Preserve the patina colour and add
+   seam relief only when it improves the near LOD without closing the roof ring.
+ 
++### Neoclassical courthouse + roof-plane lessons
++
++- Selected-variant evidence outranks generic parent-archetype prose. The
++  Neoclassical Temple references prove a deep solid body and cross-hip roof,
++  so the parent courthouse prompt's dome and rotunda were explicitly rejected.
++- A colossal order needs construction rhythm, not smooth cylinders. Use a
++  fluted shaft profile, capital-style-specific geometry, one fixed column count
++  and an audited door/window schedule; never scale the temple centre as a
++  repeatable ordinary bay.
++- Standing seams on a dominant hip are silhouette-adjacent roof construction.
++  Register each seam to its actual slope, fan the outer runs toward the ridge
++  endpoints, and inspect the entire pattern from the aerial acceptance view.
++- Monumental stairs and cheek walls are part of the native frontage envelope.
++  Validate the assembled landmark—not only its body core—and let the full-width
++  ceremonial terrace establish the reference width when the images support it.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index a35cb4da14c3a5938b55874a5f805bbde6833078..3e69b0671de18d2db645c1795ad2d4a5b2bf03c6 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -396,9 +396,68 @@
+       }
+     },
+     "monumental_courthouse_axis": {
+-      "identity": "Axial courthouse with a projecting temple front, tall fluted colonnade, deep entablature, judicial stair and severe symmetrical wings.",
+-      "material_zones": "light granite and limestone; bronze entrance doors; dark recessed glazing",
+-      "kits": ["ceremonial_steps", "giant_portico", "pediment", "giant_pilasters", "civic_cornice"]
++      "identity": "Deep axial neoclassical courthouse with an eight-column Corinthian temple front, full-width judicial stair, sculpted pediment and cross-hipped patinated copper roof.",
++      "material_zones": "white granite and cream limestone ashlar; bronze entrance doors; dark recessed glazing; pale green patinated copper",
++      "glass_profile": "residential_low_e",
++      "material_overrides": {"roof": {"base_color": "#9fb8aa", "roughness": 0.44, "metallic": 0.62, "texture_key": null}, "accent": {"base_color": "#44352b", "roughness": 0.40, "metallic": 0.58}},
++      "signature_material_overrides": {"signature_stone": {"base_color": "#ded5c4", "roughness": 0.72, "texture_key": "limestone"}, "signature_warm": {"base_color": "#4c3526", "roughness": 0.40, "metallic": 0.55}, "signature_metal": {"base_color": "#61776d", "roughness": 0.38, "metallic": 0.70}},
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "u_shape", "courtyard"],
++        "recommendedWidth_m": [40, 80],
++        "recommendedDepth_m": [25, 50],
++        "recommendedFloors": [3, 6],
++        "wingDepth_m": [12, 18],
++        "preferredBayMultiple_m": 5.0,
++        "minimumCourtyard_m": 16,
++        "notes": [
++          "Use the fixed eight-column temple graph only at the native 60 by 45 metre, four-floor rectangular tier.",
++          "For other planning profiles, keep the entrance, corners, crown and roof fixed within each module segment and repeat only audited middle bays."
++        ]
++      },
++      "kits": ["ceremonial_steps", "giant_corinthian_portico", "sculpted_pediment", "ashlar_civic_body", "cross_hip_copper_roof"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "neoclassical_courthouse_temple_v1",
++        "description": "A deep solid judicial volume with one fixed eight-column Corinthian temple front, three bronze doors, high full-width stair terrace, sparse occupied windows and a patinated-copper main hip plus lower portico gable.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0.png", "cues": ["eight colossal Corinthian columns", "broad stair terrace", "allegorical pediment", "deep entablature"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_60.jpg", "cues": ["deep solid body", "sparse side windows", "projecting temple front", "raised copper main roof"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_90.jpg", "cues": ["solid rectangular plan", "cross-hip roof intersection", "lower portico gable", "no dome or courtyard"]}
++        ],
++        "height_m": 23.8,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 60.0, "depth_m": 45.0, "floors": 4, "floor_height_m": 5.0},
++        "nodes": [
++          {"id": "courthouse_body", "kind": "box", "size": [52.0, 35.0, 18.8], "location": [0.0, 2.0, 9.4], "material": "signature_stone", "bevel_m": 0.14},
++          {"id": "courthouse_granite_plinth", "kind": "box", "size": [53.0, 36.0, 1.55], "location": [0.0, 2.0, 0.775], "material": "secondary", "bevel_m": 0.08},
++          {"id": "courthouse_front_cornice", "kind": "box", "size": [53.0, 1.0, 0.52], "location": [0.0, -15.5, 18.25], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "courthouse_rear_cornice", "kind": "box", "size": [53.0, 1.0, 0.52], "location": [0.0, 19.5, 18.25], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "courthouse_left_cornice", "kind": "box", "size": [1.0, 35.0, 0.52], "location": [-26.0, 2.0, 18.25], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "courthouse_right_cornice", "kind": "box", "size": [1.0, 35.0, 0.52], "location": [26.0, 2.0, 18.25], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "courthouse_main_copper_hip", "kind": "hipped_roof", "size": [53.0, 36.0, 5.2], "location": [0.0, 2.0, 18.6], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x", "ridge_inset_m": 16.5},
++          {"id": "courthouse_portico_copper_gable", "kind": "gable_roof", "size": [50.8, 9.0, 3.7], "location": [0.0, -16.8, 19.3], "material": "roof", "bevel_m": 0.07, "ridge_axis": "y"}
++        ],
++        "voids": [
++          {"id": "courthouse_entry_recess", "size": [13.0, 2.8, 6.4], "location": [0.0, -16.1, 5.0], "purpose": "three recessed bronze judicial doors behind the giant-order colonnade"}
++        ],
++        "assemblies": [
++          {"id": "courthouse_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -15.6, 1.5], "width_m": 49.0, "depth_m": 7.2, "column_height_m": 15.2, "column_radius_m": 0.78, "count": 8, "flutes": 20, "capital_style": "corinthian", "capital_leaf_count": 8, "pediment_rise_m": 3.65, "tympanum_relief": true, "tympanum_relief_style": "allegorical", "door_count": 3, "door_width_m": 2.45, "door_spacing_m": 4.0, "door_height_m": 5.1, "material": "signature_stone", "door_material": "signature_warm"},
++          {"id": "courthouse_judicial_steps", "kind": "steps", "centre": [0.0, -21.2, 0.0], "width_m": 60.0, "depth_m": 7.0, "count": 14, "rise_m": 0.105, "material": "signature_stone"},
++          {"id": "courthouse_left_stair_cheek", "kind": "shadow_line", "axis": "front", "centre": [-28.4, -21.2, 0.78], "span_m": 3.2, "height_m": 1.56, "depth_m": 7.0, "material": "signature_stone"},
++          {"id": "courthouse_right_stair_cheek", "kind": "shadow_line", "axis": "front", "centre": [28.4, -21.2, 0.78], "span_m": 3.2, "height_m": 1.56, "depth_m": 7.0, "material": "signature_stone"},
++          {"id": "courthouse_main_roof_seams", "kind": "hip_roof_seam_array", "centre": [0.0, 2.0, 18.6], "width_m": 53.0, "depth_m": 36.0, "rise_m": 5.2, "ridge_inset_m": 16.5, "spacing_m": 2.2, "line_width_m": 0.065, "line_height_m": 0.05, "material": "signature_metal"},
++          {"id": "courthouse_front_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -15.58, 11.3], "positions_m": [-11.0, 0.0, 11.0], "opening_width_m": 1.75, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_1"},
++          {"id": "courthouse_left_lower_windows", "kind": "classical_window_array", "axis": "left", "centre": [-26.08, 2.0, 5.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_2"},
++          {"id": "courthouse_left_upper_windows", "kind": "classical_window_array", "axis": "left", "centre": [-26.08, 2.0, 12.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_3"},
++          {"id": "courthouse_right_lower_windows", "kind": "classical_window_array", "axis": "right", "centre": [26.08, 2.0, 5.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_2"},
++          {"id": "courthouse_right_upper_windows", "kind": "classical_window_array", "axis": "right", "centre": [26.08, 2.0, 12.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_4"},
++          {"id": "courthouse_rear_lower_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 19.58, 5.0], "positions_m": [-20.0, -12.0, -4.0, 4.0, 12.0, 20.0], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_1"},
++          {"id": "courthouse_rear_upper_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 19.58, 12.0], "positions_m": [-20.0, -12.0, -4.0, 4.0, 12.0, 20.0], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_3"},
++          {"id": "courthouse_front_base_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.92, 1.7], "span_m": 52.5, "height_m": 0.22, "depth_m": 0.20, "material": "signature_stone"},
++          {"id": "courthouse_front_upper_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.90, 15.6], "span_m": 52.3, "height_m": 0.20, "depth_m": 0.18, "material": "signature_stone"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
+     },
+     "collegiate_gothic_jacobethan": {
+       "identity": "Symmetrical Jacobethan collegiate manor with red Flemish-bond brick, pale stone quoins and strapwork, five fixed shaped gables, a projecting centre bay, classical entrance porch, steep slate quadrangle roofs and dense grouped chimney stacks.",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index fe08c7c5e755e5076a600492073cfe495528495f..850c906993a41c3094a33b43a037bacd4335b749 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -6426,6 +6426,8 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
+     column_height = float(spec.get("column_height_m", 8.4))
+     count = max(4, int(spec.get("count", 6)))
+     radius = float(spec.get("column_radius_m", 0.46))
++    flutes = max(0, int(spec.get("flutes", 0)))
++    capital_style = str(spec.get("capital_style", "ionic")).lower()
+     pediment_rise = float(spec.get("pediment_rise_m", 2.35))
+     stone = _graph_material(mats, spec.get("material", "signature_stone"))
+     bronze = _graph_material(mats, spec.get("door_material", "signature_warm"))
+@@ -6446,19 +6448,60 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
+             f"{prefix}_BaseMoulding{index:02d}", radius * 1.16, 0.18,
+             (x, column_y, base_z + 0.29), stone, 24,
+         ))
+-        parts.append(add_cylinder(
+-            f"{prefix}_Shaft{index:02d}", radius, column_height,
+-            (x, column_y, shaft_base + column_height / 2), stone, 28,
+-        ))
++        if flutes >= 8:
++            segments = flutes * 2
++            shaft_bottom = shaft_base
++            shaft_top = shaft_base + column_height
++            shaft_verts: list[tuple[float, float, float]] = []
++            for z_value in (shaft_bottom, shaft_top):
++                for segment in range(segments):
++                    angle = math.tau * segment / segments
++                    segment_radius = radius if segment % 2 == 0 else radius * 0.925
++                    shaft_verts.append((
++                        x + math.cos(angle) * segment_radius,
++                        column_y + math.sin(angle) * segment_radius,
++                        z_value,
++                    ))
++            shaft_faces: list[tuple[int, ...]] = [
++                tuple(range(segments - 1, -1, -1)),
++                tuple(range(segments, segments * 2)),
++            ]
++            for segment in range(segments):
++                nxt = (segment + 1) % segments
++                shaft_faces.append((segment, nxt, segments + nxt, segments + segment))
++            parts.append(add_prism(
++                f"{prefix}_FlutedShaft{index:02d}", shaft_verts, shaft_faces, stone,
++            ))
++        else:
++            parts.append(add_cylinder(
++                f"{prefix}_Shaft{index:02d}", radius, column_height,
++                (x, column_y, shaft_base + column_height / 2), stone, 28,
++            ))
+         capital_z = shaft_base + column_height
+         parts.append(add_cylinder(
+             f"{prefix}_CapitalNeck{index:02d}", radius * 1.13, 0.20,
+             (x, column_y, capital_z + 0.10), stone, 24,
+         ))
++        if capital_style == "corinthian":
++            parts.append(add_cylinder(
++                f"{prefix}_CapitalBell{index:02d}", radius * 1.38, 0.34,
++                (x, column_y, capital_z + 0.26), stone, 24,
++            ))
++            leaf_count = max(8, int(spec.get("capital_leaf_count", 8)))
++            for leaf_index in range(leaf_count):
++                angle = math.tau * leaf_index / leaf_count
++                leaf_radius = radius * 1.12
++                parts.append(add_ellipsoid(
++                    f"{prefix}_CapitalLeaf{index:02d}_{leaf_index:02d}",
++                    (x + math.cos(angle) * leaf_radius, column_y + math.sin(angle) * leaf_radius,
++                     capital_z + 0.30),
++                    (radius * 0.30, radius * 0.18, 0.26), stone,
++                ))
+         parts.append(add_beveled_box(
+             f"{prefix}_CapitalAbacus{index:02d}",
+             (radius * 2.75, radius * 2.3, 0.24),
+-            (x, column_y, capital_z + 0.30), stone, 0.055,
++            (x, column_y, capital_z + (0.52 if capital_style == "corinthian" else 0.30)),
++            stone, 0.055,
+         ))
+ 
+     entablature_z = shaft_base + column_height + 0.58
+@@ -6501,17 +6544,39 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
+     if bool(spec.get("tympanum_relief", False)):
+         relief_y = facade_y - depth * 1.025
+         relief_z = pediment_eave_z + pediment_rise * 0.36
+-        parts.append(add_ellipsoid(
+-            f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
+-            (0.72, 0.12, 0.38), stone,
+-        ))
+-        for relief_index, sign in enumerate((-1, 1)):
+-            for item_index, ratio in enumerate((0.18, 0.34)):
+-                parts.append(add_ellipsoid(
+-                    f"{prefix}_TympanumFigure{relief_index}_{item_index}",
+-                    (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
+-                    (0.48, 0.10, 0.24), stone,
+-                ))
++        if str(spec.get("tympanum_relief_style", "medallion")) == "allegorical":
++            parts.append(add_ellipsoid(
++                f"{prefix}_TympanumJustice", (cx, relief_y, relief_z + 0.10),
++                (0.42, 0.12, 0.82), stone,
++            ))
++            for side_index, sign in enumerate((-1, 1)):
++                for item_index, ratio in enumerate((0.15, 0.28, 0.39)):
++                    body = add_ellipsoid(
++                        f"{prefix}_TympanumFigure{side_index}_{item_index}",
++                        (cx + sign * width * ratio, relief_y,
++                         relief_z - 0.08 - item_index * 0.11),
++                        (0.72 - item_index * 0.10, 0.10, 0.27 - item_index * 0.025), stone,
++                    )
++                    body.rotation_euler.y = sign * (0.12 + item_index * 0.07)
++                    parts.append(body)
++                    parts.append(add_ellipsoid(
++                        f"{prefix}_TympanumHead{side_index}_{item_index}",
++                        (cx + sign * (width * ratio - 0.18), relief_y - 0.015,
++                         relief_z + 0.24 - item_index * 0.08),
++                        (0.15, 0.09, 0.15), stone,
++                    ))
++        else:
++            parts.append(add_ellipsoid(
++                f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
++                (0.72, 0.12, 0.38), stone,
++            ))
++            for relief_index, sign in enumerate((-1, 1)):
++                for item_index, ratio in enumerate((0.18, 0.34)):
++                    parts.append(add_ellipsoid(
++                        f"{prefix}_TympanumFigure{relief_index}_{item_index}",
++                        (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
++                        (0.48, 0.10, 0.24), stone,
++                    ))
+     # A dark recessed door and transom keep the centre legible behind the
+     # colonnade even when the facade atlas is viewed at a grazing angle.
+     door_width = float(spec.get("door_width_m", width * 0.22))
+@@ -8265,6 +8330,46 @@ def _graph_courtyard_hip_roof(parts: list, spec: dict, mats: dict) -> None:
+     ])
+ 
+ 
++def _graph_hip_roof_seam_array(parts: list, spec: dict, mats: dict) -> None:
++    """Standing seams registered to all four planes of a hipped roof."""
++    cx, cy, eave_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    depth = float(spec["depth_m"])
++    rise = float(spec["rise_m"])
++    inset = float(spec.get("ridge_inset_m", min(width, depth) * 0.25))
++    spacing = max(0.5, float(spec.get("spacing_m", 2.2)))
++    line_width = float(spec.get("line_width_m", 0.055))
++    line_height = float(spec.get("line_height_m", 0.045))
++    metal = _graph_material(mats, spec.get("material", "signature_metal"))
++    prefix = str(spec.get("id", "GraphHipRoofSeams"))
++    ridge_half = max(0.01, width / 2 - inset)
++    count = max(2, int(width / spacing))
++
++    def seam(name: str, start: Vector, end: Vector) -> None:
++        direction = end - start
++        length = direction.length
++        item = add_box(
++            f"{prefix}_{name}", (line_width, length, line_height),
++            tuple((start + end) * 0.5), metal,
++        )
++        item.rotation_euler = direction.to_track_quat("Y", "Z").to_euler()
++        parts.append(item)
++
++    for index in range(1, count):
++        eave_x = cx - width / 2 + width * index / count
++        ridge_x = cx + max(-ridge_half, min(ridge_half, eave_x - cx))
++        seam(
++            f"Front{index:02d}",
++            Vector((eave_x, cy - depth / 2, eave_z + line_height)),
++            Vector((ridge_x, cy, eave_z + rise + line_height)),
++        )
++        seam(
++            f"Rear{index:02d}",
++            Vector((eave_x, cy + depth / 2, eave_z + line_height)),
++            Vector((ridge_x, cy, eave_z + rise + line_height)),
++        )
++
++
+ def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
+     """Stone rail and low-cost turned balusters around a civic roof edge."""
+     cx, cy, base_z = (float(value) for value in spec["centre"])
+@@ -8622,6 +8727,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_rounded_corner_pavilion(parts, assembly, mats)
+         elif kind == "courtyard_hip_roof":
+             _graph_courtyard_hip_roof(parts, assembly, mats)
++        elif kind == "hip_roof_seam_array":
++            _graph_hip_roof_seam_array(parts, assembly, mats)
+         elif kind == "classical_balustrade_perimeter":
+             _graph_classical_balustrade_perimeter(parts, assembly, mats)
+         elif kind == "classical_window_array":
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index a4cdf25993bcc0e87f686b89e11a8c27a05a20dc..5568088942a3409ef98e1212fea9a7b86329a59b 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-civic-courtyard-roof-ring-v76",
++  "memory_version": "2026-07-20-neoclassical-courthouse-temple-v77",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -645,6 +645,21 @@
+       "symptom": "Civic windows disappear into a solid limestone massing core",
+       "cause": "Glazing and surround cards were placed coplanar with or behind opaque core faces instead of being registered to the exposed elevation plane.",
+       "correction": "Place evidence-led window assemblies just outside the core face, layer occupied glazing behind shallow stone surrounds, and inspect all four elevations in oblique review views."
++    },
++    {
++      "symptom": "A selected neoclassical temple courthouse grows a dome or courtyard that is absent from every variant image",
++      "cause": "Parent-archetype render prose overrode the selected variant's facade, oblique and roof-plan evidence.",
++      "correction": "Resolve conflicts in favor of the selected variant. Lock the native variant dimensions and audit all compatible views before choosing solid body, court, dome or roof topology; encode explicit negative evidence such as no dome and no courtyard in the massing graph."
++    },
++    {
++      "symptom": "A dominant patinated copper hip reads as a smooth plastic tent in aerial review",
++      "cause": "Material color carried the roof identity while the standing-seam construction visible in the roof-plan reference was omitted.",
++      "correction": "Register shallow seam geometry to the actual hipped planes, fan outer seams toward ridge endpoints, keep seam spacing evidence-scaled, and verify the ridge and hip intersections from the aerial acceptance camera."
++    },
++    {
++      "symptom": "A monumental courthouse passes its body dimensions but underfills the authored native frontage",
++      "cause": "The grammar width described the full ceremonial composition while the body and first stair terrace were authored narrower.",
++      "correction": "Treat the stair, cheek walls and temple front as one fixed frontage landmark. Validate the complete assembled extent and let the full-width stair establish the native frontage when supported by the reference."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index b35f756865646715bfbba19e922391da685c0179..957effbf49eba3221c6675bdb5e5dc3767bf66ad 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -14,7 +14,7 @@
+     {"sequence": 6, "archetype_id": "parisian_midrise_block", "variant_id": "parisian_haussmann_classic", "family_id": "parisian-haussmann-classic-v1-renderlocked", "floors": 6, "width_m": 42, "depth_m": 38, "allow_outside_bounds": true, "state": "keeper", "artifact": "parisian-haussmann-classic-v1/05-canonical-v4", "group": "European heritage boulevard"},
+     {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "variant_id": "parisian_corner_haussmann_turret", "family_id": "parisian-boulevard-corner-v1-renderlocked", "floors": 7, "width_m": 42, "depth_m": 40, "state": "keeper", "artifact": "parisian-boulevard-corner-v1/05-canonical-v4", "group": "European heritage corner"},
+     {"sequence": 8, "archetype_id": "civic_classical_building", "variant_id": "civic_classical_limestone_ionic", "family_id": "civic-classical-limestone-ionic-v1-renderlocked", "floors": 2, "width_m": 42, "depth_m": 34, "state": "keeper", "artifact": "civic-classical-limestone-v1/06-canonical-v6", "group": "classical civic monument"},
+-    {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "floors": 5, "state": "pending", "group": "ceremonial civic axis"},
++    {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "variant_id": "courthouse_neoclassical_temple", "family_id": "courthouse-neoclassical-temple-v1-renderlocked", "floors": 4, "width_m": 60, "depth_m": 45, "state": "keeper", "artifact": "monumental-courthouse-axis-v1/03-canonical-v3", "group": "ceremonial civic axis"},
+     {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "floors": 4, "state": "pending", "group": "historic urban streetwall"},
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "floors": 4, "state": "pending", "group": "historic mixed-use main street"},
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "floors": 4, "width_m": 30, "depth_m": 20, "state": "pending", "group": "industrial reuse"},
+diff --git a/tools/archetype_compiler/signature_profiles.py b/tools/archetype_compiler/signature_profiles.py
+index b94f4dbd3850f40f2488b069a8f3913c70314fad..45dff17937def5dc093a8b9f723582b9c3c0783b 100644
+--- a/tools/archetype_compiler/signature_profiles.py
++++ b/tools/archetype_compiler/signature_profiles.py
+@@ -42,11 +42,14 @@ def inject_signature(
+         # opt in without sending a large geometry recipe to image generators.
+         massing_graph = profile.pop("massing_graph", None)
+         dimension_overrides = profile.pop("dimension_overrides", None)
++        footprint_compatibility_override = profile.pop("footprint_compatibility_override", None)
+         grammar["architectural_signature"] = profile
+         if massing_graph:
+             grammar["massing_graph"] = massing_graph
+         if dimension_overrides:
+             grammar.setdefault("dimensions", {}).update(deepcopy(dimension_overrides))
++        if footprint_compatibility_override:
++            grammar["footprint_compatibility"] = deepcopy(footprint_compatibility_override)
+         materials = grammar.get("materials") or {}
+         for slot, override in (profile.get("material_overrides") or {}).items():
+             if slot in materials:
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 802fc7a5414e7be4b63ee7a3b1caeb5ba2f117db..8b132e1f8b78e69e798ef0fd1cf4c4acf573479a 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 8
++    assert sum(entry["state"] == "keeper" for entry in entries) == 9
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 0ab65dc4b4841b84fadf27f9a7703ab0b33cf391..5156ecf658f4d53254de0b4749245fe3481857e8 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -229,6 +229,37 @@ def test_classical_civic_injects_courtyard_roof_ring_and_four_column_portico():
+     assert graph["final_bevel_m"] == 0.0
+ 
+ 
++def test_neoclassical_courthouse_injects_eight_column_temple_and_seamed_hip():
++    from signature_profiles import inject_signature
++
++    grammar = {"source": {"archetype_id": "monumental_courthouse_axis"}, "materials": {}}
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++    nodes = {item["id"]: item for item in graph["nodes"]}
++
++    assert graph["profile"] == "neoclassical_courthouse_temple_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 60.0,
++        "depth_m": 45.0,
++        "floors": 4,
++        "floor_height_m": 5.0,
++    }
++    portico = assemblies["courthouse_giant_portico"]
++    assert portico["count"] == 8
++    assert portico["flutes"] == 20
++    assert portico["capital_style"] == "corinthian"
++    assert portico["door_count"] == 3
++    assert assemblies["courthouse_judicial_steps"]["width_m"] == 60.0
++    assert assemblies["courthouse_main_roof_seams"]["kind"] == "hip_roof_seam_array"
++    assert nodes["courthouse_main_copper_hip"]["kind"] == "hipped_roof"
++    assert all("dome" not in node["id"] for node in graph["nodes"])
++    assert graph["final_bevel_m"] == 0.0
++    assert injected["footprint_compatibility"]["preferredProfiles"] == [
++        "rectangle", "u_shape", "courtyard",
++    ]
++
++
+ def test_v21_expansion_graphs_preserve_family_specific_construction():
+     """The methodology batch must not regress to one generic textured box."""
+     from signature_profiles import inject_signature
+@@ -809,6 +840,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     assert 'kind == "mansard_perimeter"' in source
+     assert 'kind == "rounded_corner_pavilion"' in source
+     assert 'kind == "courtyard_hip_roof"' in source
++    assert 'kind == "hip_roof_seam_array"' in source
+     assert 'kind == "classical_balustrade_perimeter"' in source
+     assert 'kind == "classical_window_array"' in source
+     assert "focus_height * 2.75" in source
+-- 
+2.55.0.windows.2
+

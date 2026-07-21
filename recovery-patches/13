@@ -1,0 +1,339 @@
+From bfa6c3faaae86e59e49af6c0aaf72f7d75d58745 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 06:17:39 -0600
+Subject: [PATCH 13/32] feat: render-lock original textile mill
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 19 +++-
+ .../architectural_signature_profiles.json     | 91 +++++++++++++------
+ .../high_quality_building_memory.json         | 22 ++++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/signature_profiles.py  | 18 ++++
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 44 ++++++++-
+ 7 files changed, 164 insertions(+), 34 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 9e00ade275385b909c53bca4dc160a8560e3ad15..5d9ec0afa61eb715c1fd370caea06348a4982de3 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-dark-frame-office-renderlock-v71`.
++Current executable memory: `2026-07-20-industrial-original-mill-v80`.
+ 
+ ## The quality target
+ 
+@@ -580,6 +580,23 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   Keep both recessed entries, the cast-iron pilasters, spandrel/frieze hierarchy
+   and six upper arches fixed; only ordinary display or sash bays may repeat.
+ 
++### Original textile mill + variant-graph inheritance lessons
++
++- A selected variant profile normally replaces its parent profile. When one
++  variant intentionally reuses a fixed parent massing graph, declare that with
++  an explicit `massing_graph_from` contract; never implicitly share the graph
++  with sibling brewery, power-station or modern-loft variants.
++- Selected-variant dimensions control the fixed graph. The original mill is a
++  30 by 20 metre, four-level building on an audited four-metre structural grid;
++  provisional parent heights must not stretch it into a generic tall block.
++- Automated validation cannot detect a plausible but contradictory fallback.
++  Reject a valid generic stack when the photoreal and catalogue references
++  prove a gable, roof monitor, chimney, four principal bays and no terraces.
++- A single rectified principal elevation can provide a conservative wrapped
++  envelope, but it is not independent secondary-elevation evidence. Inspect
++  rear-corner and aerial views, use different crops where supported, and record
++  remaining repetition in human QA.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 378d57be133b80144453188d919b726e5413a506..cd87a0ce9c44d2fc1a3a5222bb99433a3b756dcf 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1012,7 +1012,12 @@
+       "identity": "Converted Victorian textile mill with tall segmental-arched multi-pane iron sash, deep brick reveals, arched loading-bay shopfronts, corbelled eaves, a restored chimney and a restrained contemporary glass roof monitor.",
+       "material_zones": "aged red load-bearing brick and lime mortar; blackened cast-iron sash; dark slate and folded metal; clear softly occupied glass",
+       "glass_profile": "industrial_sash",
++      "massing_graph_from": "industrial_brick_mixed_use",
+       "dimension_overrides": {"roof_height_m": 1.3},
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#a89b88", "roughness": 0.80, "metallic": 0.0, "texture_key": "natural_stone"},
++        "signature_metal": {"base_color": "#252a2d", "roughness": 0.33, "metallic": 0.64, "texture_key": "black_metal"}
++      },
+       "material_overrides": {
+         "primary": {"base_color": "#71473a", "roughness": 0.9, "metallic": 0.0, "texture_key": "red_brick"},
+         "secondary": {"base_color": "#5a4136", "roughness": 0.82, "metallic": 0.0, "texture_key": "red_brick"},
+@@ -1065,47 +1070,75 @@
+     },
+     "industrial_brick_mixed_use": {
+       "identity": "Converted Victorian textile mill with tall segmental-arched multi-pane steel windows, arched ground-floor shopfronts, deeply recessed brick openings, projecting brick piers, corbelled eaves, a shallow gabled roof, restored chimney and contemporary glass roof monitor.",
+-      "material_zones": "deep red brick; blackened steel; board-formed concrete; weathered metal",
++      "material_zones": "aged load-bearing red brick and lime mortar; blackened cast-iron sash; pale concrete sills; dark slate; clear contemporary monitor glass",
+       "glass_profile": "industrial_sash",
++      "material_overrides": {
++        "primary": {"base_color": "#774838", "roughness": 0.89, "metallic": 0.0, "texture_key": "red_brick"},
++        "secondary": {"base_color": "#9d8d7b", "roughness": 0.79, "metallic": 0.0, "texture_key": "natural_stone"},
++        "accent": {"base_color": "#23282a", "roughness": 0.34, "metallic": 0.60, "texture_key": "black_metal"},
++        "roof": {"base_color": "#3f4548", "roughness": 0.57, "metallic": 0.32, "texture_key": "standing_seam_metal"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#a89b88", "roughness": 0.80, "metallic": 0.0, "texture_key": "natural_stone"},
++        "signature_metal": {"base_color": "#252a2d", "roughness": 0.33, "metallic": 0.64, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [24, 50],
++        "recommendedDepth_m": [16, 32],
++        "recommendedFloors": [3, 6],
++        "wingDepth_m": [10, 16],
++        "preferredBayMultiple_m": 5.0,
++        "notes": [
++          "Use the fixed original-mill graph only at the native 30 by 20 metre, four-floor rectangular tier.",
++          "Keep gable ends, chimney, roof monitor, loading entrance and corbelled crown fixed; repeat only complete brick pier-and-window bays."
++        ]
++      },
+       "kits": ["segmental_arch_windows", "brick_pilasters", "industrial_steel_bays", "corbelled_cornice", "gable_roof", "roof_monitor"],
+       "massing_graph": {
+         "schema": "massing-graph@1",
+-        "profile": "gemini_skin_hero",
+-        "description": "A Victorian textile mill whose archetype-matched Gemini elevation is backed by a recessed masonry core, segmental-arched openings, softened gabled roof, chimney and glazed roof monitor.",
+-        "height_m": 29.2,
+-        "reference_dimensions": {"width_m": 30.0, "depth_m": 20.0, "floors": 4, "floor_height_m": 6.0},
++        "profile": "victorian_textile_mill_monitor_v1",
++        "description": "A render-locked four-level Victorian textile mill whose registered elevation is backed by a recessed masonry core, four segmental-arched structural bays, side gable, restored chimney and a long contemporary glazed roof monitor.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/industrial_brick_mixed_use/variant_0.png", "cues": ["four principal structural bays", "three upper rows of segmental sash", "arched loading-shopfront base", "glass roof monitor"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg", "cues": ["four-level native body", "adjacent gabled side elevation", "long roof monitor", "rear-corner chimney"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg", "cues": ["transverse slate roof planes", "long glazed monitor", "bounded skylights", "single restored chimney"]}
++        ],
++        "height_m": 22.35,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 30.0, "depth_m": 20.0, "floors": 4, "floor_height_m": 4.0},
+         "nodes": [
+           {"id": "loft_plinth", "kind": "box", "size": [30.8, 20.8, 0.35], "location": [0.0, 0.0, 0.175], "material": "concrete", "bevel_m": 0.035},
+-          {"id": "loft_shadow_core", "kind": "box", "size": [28.8, 18.8, 24.5], "location": [0.0, 0.0, 12.25], "material": "primary", "bevel_m": 0.16},
+-          {"id": "loft_gabled_roof", "kind": "gable_roof", "size": [30.4, 20.4, 2.3], "location": [0.0, 0.0, 24.5], "material": "roof", "bevel_m": 0.09, "ridge_axis": "x"},
+-          {"id": "loft_left_gable", "kind": "gable_roof", "size": [0.12, 20.0, 2.24], "location": [-15.24, 0.0, 24.52], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
+-          {"id": "loft_right_gable", "kind": "gable_roof", "size": [0.12, 20.0, 2.24], "location": [15.24, 0.0, 24.52], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
+-          {"id": "loft_eave_course", "kind": "box", "size": [30.9, 20.9, 0.22], "location": [0.0, 0.0, 24.52], "material": "signature_stone", "bevel_m": 0.045},
+-          {"id": "monitor_shadow", "kind": "box", "size": [17.0, 8.0, 3.0], "location": [-2.5, 2.0, 26.25], "material": "interior", "bevel_m": 0.11},
+-          {"id": "monitor_roof", "kind": "box", "size": [18.0, 9.0, 0.35], "location": [-2.5, 2.0, 27.925], "material": "signature_metal", "bevel_m": 0.055},
+-          {"id": "brick_chimney", "kind": "box", "size": [1.55, 1.55, 4.4], "location": [11.0, 4.8, 27.0], "material": "primary", "bevel_m": 0.06},
+-          {"id": "chimney_cap", "kind": "box", "size": [1.9, 1.9, 0.22], "location": [11.0, 4.8, 29.09], "material": "signature_stone", "bevel_m": 0.035},
++          {"id": "loft_shadow_core", "kind": "box", "size": [28.8, 18.8, 17.0], "location": [0.0, 0.0, 8.5], "material": "primary", "bevel_m": 0.16},
++          {"id": "loft_gabled_roof", "kind": "gable_roof", "size": [30.4, 20.4, 2.3], "location": [0.0, 0.0, 17.0], "material": "roof", "bevel_m": 0.09, "ridge_axis": "x"},
++          {"id": "loft_left_gable", "kind": "gable_roof", "size": [0.12, 20.0, 2.24], "location": [-15.24, 0.0, 17.02], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
++          {"id": "loft_right_gable", "kind": "gable_roof", "size": [0.12, 20.0, 2.24], "location": [15.24, 0.0, 17.02], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
++          {"id": "loft_eave_course", "kind": "box", "size": [30.9, 20.9, 0.22], "location": [0.0, 0.0, 17.02], "material": "signature_stone", "bevel_m": 0.045},
++          {"id": "monitor_shadow", "kind": "box", "size": [17.0, 8.0, 2.7], "location": [-2.5, 2.0, 19.55], "material": "interior", "bevel_m": 0.11},
++          {"id": "monitor_roof", "kind": "box", "size": [18.0, 9.0, 0.35], "location": [-2.5, 2.0, 21.075], "material": "signature_metal", "bevel_m": 0.055},
++          {"id": "brick_chimney", "kind": "box", "size": [1.55, 1.55, 5.0], "location": [11.0, 4.8, 19.65], "material": "primary", "bevel_m": 0.06},
++          {"id": "chimney_cap", "kind": "box", "size": [1.9, 1.9, 0.22], "location": [11.0, 4.8, 22.26], "material": "signature_stone", "bevel_m": 0.035},
+           {"id": "entry_threshold", "kind": "box", "size": [6.5, 1.1, 0.16], "location": [3.8, -10.45, 0.08], "material": "concrete", "bevel_m": 0.025}
+         ],
+         "voids": [
+           {"id": "loading_bay_recess", "size": [10.5, 1.1, 4.2], "location": [6.8, -10.0, 2.1], "purpose": "deep loading and retail threshold below the steel canopy"},
+-          {"id": "roof_monitor_interior", "size": [15.5, 6.8, 2.5], "location": [-2.5, 2.0, 26.2], "purpose": "daylit industrial roof monitor"}
++          {"id": "roof_monitor_interior", "size": [15.5, 6.8, 2.5], "location": [-2.5, 2.0, 19.55], "purpose": "daylit industrial roof monitor"}
+         ],
+         "assemblies": [
+-          {"id": "brick_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -9.825, 12.25], "span_m": 29.5, "height_m": 24.4, "depth_m": 0.05, "band": "elevation"},
+-          {"id": "brick_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-14.825, 0.0, 12.25], "span_m": 19.5, "height_m": 24.4, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+-          {"id": "brick_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 9.825, 12.25], "span_m": 29.5, "height_m": 24.4, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+-          {"id": "brick_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [14.825, 0.0, 12.25], "span_m": 19.5, "height_m": 24.4, "depth_m": 0.05, "band": "elevation"},
+-          {"id": "brick_front_glazing_overlay", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -9.825, 12.25], "span_m": 29.5, "height_m": 24.4, "columns": 4, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+-          {"id": "brick_left_glazing_overlay", "kind": "glazing_overlay", "axis": "left", "centre": [-14.825, 0.0, 12.25], "span_m": 19.5, "height_m": 24.4, "columns": 3, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+-          {"id": "brick_rear_glazing_overlay", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 9.825, 12.25], "span_m": 29.5, "height_m": 24.4, "columns": 4, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+-          {"id": "brick_right_glazing_overlay", "kind": "glazing_overlay", "axis": "right", "centre": [14.825, 0.0, 12.25], "span_m": 19.5, "height_m": 24.4, "columns": 3, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+-          {"id": "brick_front_corbel_courses", "kind": "corbel_array", "axis": "front", "centre": [0.0, -10.02, 0.0], "span_m": 29.2, "count": 28, "levels_z": [5.15, 24.38], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
+-          {"id": "brick_left_corbel_courses", "kind": "corbel_array", "axis": "left", "centre": [-15.02, 0.0, 0.0], "span_m": 19.2, "count": 18, "levels_z": [5.15, 24.38], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
+-          {"id": "brick_rear_corbel_courses", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 10.02, 0.0], "span_m": 29.2, "count": 28, "levels_z": [5.15, 24.38], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
+-          {"id": "brick_right_corbel_courses", "kind": "corbel_array", "axis": "right", "centre": [15.02, 0.0, 0.0], "span_m": 19.2, "count": 18, "levels_z": [5.15, 24.38], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
+-          {"id": "monitor_front_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-2.5, -2.05, 26.25], "span_m": 16.2, "height_m": 2.55, "columns": 7, "rows": 1, "frame_m": 0.1, "depth_m": 0.12},
+-          {"id": "monitor_left_glazing", "kind": "curtain_wall", "axis": "left", "centre": [-11.05, 2.0, 26.25], "span_m": 7.4, "height_m": 2.55, "columns": 3, "rows": 1, "frame_m": 0.1, "depth_m": 0.12},
++          {"id": "brick_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -9.825, 8.5], "span_m": 29.5, "height_m": 16.9, "depth_m": 0.05, "band": "elevation"},
++          {"id": "brick_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-14.825, 0.0, 8.5], "span_m": 19.5, "height_m": 16.9, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "brick_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 9.825, 8.5], "span_m": 29.5, "height_m": 16.9, "depth_m": 0.05, "band": "elevation", "flip_u": true},
++          {"id": "brick_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [14.825, 0.0, 8.5], "span_m": 19.5, "height_m": 16.9, "depth_m": 0.05, "band": "elevation"},
++          {"id": "brick_front_glazing_overlay", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -9.825, 8.5], "span_m": 29.5, "height_m": 16.9, "columns": 4, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "brick_left_glazing_overlay", "kind": "glazing_overlay", "axis": "left", "centre": [-14.825, 0.0, 8.5], "span_m": 19.5, "height_m": 16.9, "columns": 3, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "brick_rear_glazing_overlay", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 9.825, 8.5], "span_m": 29.5, "height_m": 16.9, "columns": 4, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
++          {"id": "brick_right_glazing_overlay", "kind": "glazing_overlay", "axis": "right", "centre": [14.825, 0.0, 8.5], "span_m": 19.5, "height_m": 16.9, "columns": 3, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
++          {"id": "brick_front_corbel_courses", "kind": "corbel_array", "axis": "front", "centre": [0.0, -10.02, 0.0], "span_m": 29.2, "count": 28, "levels_z": [4.55, 16.88], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
++          {"id": "brick_left_corbel_courses", "kind": "corbel_array", "axis": "left", "centre": [-15.02, 0.0, 0.0], "span_m": 19.2, "count": 18, "levels_z": [4.55, 16.88], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
++          {"id": "brick_rear_corbel_courses", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 10.02, 0.0], "span_m": 29.2, "count": 28, "levels_z": [4.55, 16.88], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
++          {"id": "brick_right_corbel_courses", "kind": "corbel_array", "axis": "right", "centre": [15.02, 0.0, 0.0], "span_m": 19.2, "count": 18, "levels_z": [4.55, 16.88], "depth_m": 0.38, "height_m": 0.22, "width_ratio": 0.44, "material": "primary"},
++          {"id": "monitor_front_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-2.5, -2.05, 19.55], "span_m": 16.2, "height_m": 2.35, "columns": 7, "rows": 1, "frame_m": 0.1, "depth_m": 0.12},
++          {"id": "monitor_left_glazing", "kind": "curtain_wall", "axis": "left", "centre": [-11.05, 2.0, 19.55], "span_m": 7.4, "height_m": 2.35, "columns": 3, "rows": 1, "frame_m": 0.1, "depth_m": 0.12},
+           {"id": "entry_step", "kind": "steps", "centre": [3.8, -10.75, 0.0], "width_m": 6.2, "depth_m": 0.9, "count": 2, "rise_m": 0.08, "material": "concrete"}
+         ],
+         "target_views": ["archetype_match", "street", "aerial", "context"]
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 23fcc9eadbc73f94e321e04bc8e81e91f021e179..f7f592998482adefc9990727d9841e987f108e3e 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-victorian-polychrome-main-street-v79",
++  "memory_version": "2026-07-20-industrial-original-mill-v80",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -700,6 +700,26 @@
+       "symptom": "A concealed historic roof has the wrong ridge direction and its skylights disappear into the slope",
+       "cause": "The front hero view was accepted before the roof-plan reference was used to orient the hip, and thin glass boxes were placed below the local roof plane.",
+       "correction": "Use the aerial reference to set ridge axis and seam fan direction, seat skylights on explicit curbs above the local plane, and require the aerial review to prove ridge, seams, chimney and service openings together."
++    },
++    {
++      "symptom": "A selected original mill silently compiles as a generic stepped mixed-use block with a flat terrace",
++      "cause": "The selected variant's material profile correctly took precedence over the parent profile but therefore masked the parent's fixed original-mill massing graph.",
++      "correction": "Use an explicit opt-in massing_graph_from contract when one selected variant intentionally reuses a parent graph. Test that the target variant inherits it and that sibling variants remain isolated."
++    },
++    {
++      "symptom": "A four-level Victorian mill becomes implausibly tall and loses its catalogue proportions",
++      "cause": "A provisional parent floor height of six metres overrode the selected variant's four-metre structural grid.",
++      "correction": "Lock fixed graph height to the selected variant's audited floor count and floor height. Keep its reference dimensions synchronized with the cohort entry and canonical generation command."
++    },
++    {
++      "symptom": "A structurally valid generated building contains roof terraces and pavilion forms absent from every industrial reference",
++      "cause": "The fixed graph selector fell back to the generic LEGO stack, whose valid mixed-use defaults were mistaken for evidence-led mill construction.",
++      "correction": "Treat validation as necessary but not sufficient. Compare silhouette, roof topology, bay count and landmark service elements against the photoreal goalpost and reject any visually contradictory fallback."
++    },
++    {
++      "symptom": "A wrapped industrial elevation repeats the principal facade rhythm on less-documented side and rear walls",
++      "cause": "Only one rectified orthographic source was available, so one registered atlas supplied all four exposed elevations.",
++      "correction": "Use evidence-led UV crops or dedicated secondary schedules when side references support them. When evidence is incomplete, keep the wrap conservative, review both rear-corner and aerial views, and record the limitation in human QA."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index f306dfa9a037e673dc4789868315d2b6605a9443..3f942d8dbc2a4778394941634a1f38431a7c3c3f 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -17,7 +17,7 @@
+     {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "variant_id": "courthouse_neoclassical_temple", "family_id": "courthouse-neoclassical-temple-v1-renderlocked", "floors": 4, "width_m": 60, "depth_m": 45, "state": "keeper", "artifact": "monumental-courthouse-axis-v1/03-canonical-v3", "group": "ceremonial civic axis"},
+     {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "variant_id": "classic_brownstone_traditional", "family_id": "classic-brownstone-streetwall-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 22, "state": "keeper", "artifact": "classic-brownstone-streetwall-v1/03-canonical-v3", "group": "historic urban streetwall"},
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "variant_id": "historical_brick_victorian", "family_id": "historical-brick-victorian-v1-renderlocked", "floors": 2, "width_m": 15, "depth_m": 22, "state": "keeper", "artifact": "historical-brick-main-street-v1/03-canonical-v3", "group": "historic mixed-use main street"},
+-    {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "floors": 4, "width_m": 30, "depth_m": 20, "state": "pending", "group": "industrial reuse"},
++    {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "variant_id": "industrial_brick_original_mill", "family_id": "industrial-brick-original-mill-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 20, "state": "keeper", "artifact": "industrial-brick-original-mill-v1/03-canonical-v3", "group": "industrial reuse"},
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "state": "pending", "group": "warehouse conversion"},
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "floors": 5, "state": "pending", "group": "Romanesque industrial heritage"},
+     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "floors": 14, "state": "pending", "group": "metropolitan setback icon"},
+diff --git a/tools/archetype_compiler/signature_profiles.py b/tools/archetype_compiler/signature_profiles.py
+index 45dff17937def5dc093a8b9f723582b9c3c0783b..92189c57d05f5bbd3034b78cf3900d7dff763d14 100644
+--- a/tools/archetype_compiler/signature_profiles.py
++++ b/tools/archetype_compiler/signature_profiles.py
+@@ -37,12 +37,30 @@ def inject_signature(
+     key = preferred_variant if preferred_variant in profiles else parent_key
+     if key in profiles:
+         profile = deepcopy(profiles[key])
++        massing_graph_from = profile.pop("massing_graph_from", None)
+         # Massing graphs are a renderer-level building contract rather than a
+         # facade-signature hint. Keep them at the grammar root so renderers can
+         # opt in without sending a large geometry recipe to image generators.
+         massing_graph = profile.pop("massing_graph", None)
+         dimension_overrides = profile.pop("dimension_overrides", None)
+         footprint_compatibility_override = profile.pop("footprint_compatibility_override", None)
++        if massing_graph_from:
++            try:
++                graph_source = profiles[str(massing_graph_from)]
++            except KeyError as exc:
++                raise KeyError(
++                    f"profile {key!r} inherits a missing massing graph from {massing_graph_from!r}"
++                ) from exc
++            if massing_graph is None:
++                massing_graph = deepcopy(graph_source.get("massing_graph"))
++            if footprint_compatibility_override is None:
++                footprint_compatibility_override = deepcopy(
++                    graph_source.get("footprint_compatibility_override")
++                )
++            if massing_graph is None:
++                raise ValueError(
++                    f"profile {key!r} inherits from {massing_graph_from!r}, which has no massing_graph"
++                )
+         grammar["architectural_signature"] = profile
+         if massing_graph:
+             grammar["massing_graph"] = massing_graph
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index cd09743db942c19e7b8b6e9d02f819da3ae818f5..4066b2f116ab46a7796b24e641a477c34c02f3dc 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 11
++    assert sum(entry["state"] == "keeper" for entry in entries) == 12
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 51775bad2fea703398584ca6637a22cc146e2ba3..e77d8f1f780083091bcfc833c880af1a6795e9ed 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -113,7 +113,6 @@ def test_modernist_civic_signature_injects_semantic_massing_graph():
+     ("archetype_id", "required_skin_kind", "glass_profile_name"),
+     [
+         ("nordic_timber_midrise", "facade_skin", "residential_low_e"),
+-        ("industrial_brick_mixed_use", "facade_skin", "industrial_sash"),
+         ("modern_glass_office_institutional", "facade_skin", "reflective_curtain_wall"),
+     ],
+ )
+@@ -136,6 +135,49 @@ def test_gemini_skin_pilots_inject_depth_backed_elevations(
+     assert "massing_graph" not in grammar["architectural_signature"]
+ 
+ 
++def test_original_mill_variant_explicitly_inherits_parent_massing_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "industrial_brick_mixed_use",
++            "variant_id": "industrial_brick_original_mill",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++
++    assert graph["profile"] == "victorian_textile_mill_monitor_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 30.0,
++        "depth_m": 20.0,
++        "floors": 4,
++        "floor_height_m": 4.0,
++    }
++    assert injected["footprint_compatibility"]["preferredProfiles"] == [
++        "rectangle", "l_shape", "u_shape",
++    ]
++    assert "massing_graph_from" not in injected["architectural_signature"]
++    assert "massing_graph" not in injected["architectural_signature"]
++
++
++def test_original_mill_graph_is_not_implicitly_shared_with_sibling_variants():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "industrial_brick_mixed_use",
++            "variant_id": "industrial_brick_brewery",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    injected = inject_signature(grammar)
++
++    assert "massing_graph" not in injected
++    assert "brewery warehouse" in injected["architectural_signature"]["identity"]
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+

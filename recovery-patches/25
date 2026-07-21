@@ -1,0 +1,121 @@
+From 1fb7a1b04826fea9d82aefde16f4664166b6a34f Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 14:09:06 -0600
+Subject: [PATCH 25/32] fix: preserve narrow four-corner planning polygons
+
+---
+ .../components/viewer/globe/GlobeDrawingTool.tsx   |  4 ++--
+ .../viewer/globe/GlobeSitePlannerMap.tsx           |  7 +++----
+ .../viewer/globe/drawingGeometry.test.ts           | 14 +++++++++++++-
+ .../src/components/viewer/globe/drawingGeometry.ts |  8 ++++++++
+ 4 files changed, 26 insertions(+), 7 deletions(-)
+
+diff --git a/frontend/src/components/viewer/globe/GlobeDrawingTool.tsx b/frontend/src/components/viewer/globe/GlobeDrawingTool.tsx
+index a16b4d5ca38adef3a961dc82a45fafca934fe4da..7635a44ead362d6f66020558047ef152524e459f 100644
+--- a/frontend/src/components/viewer/globe/GlobeDrawingTool.tsx
++++ b/frontend/src/components/viewer/globe/GlobeDrawingTool.tsx
+@@ -22,10 +22,10 @@ import {
+   METERS_PER_DEG_LAT,
+   metersPerDegLon,
+ } from '../mapEngine/geoUtils';
++import { isWithinPolygonCloseRadius } from './drawingGeometry';
+ 
+ const RAD_TO_DEG = 180 / Math.PI;
+ const DEG_TO_RAD = Math.PI / 180;
+-const CONNECT_VERTEX_RADIUS_METERS = 30;
+ const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
+ 
+ function distanceMeters(a: number[], b: number[]): number {
+@@ -98,7 +98,7 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
+       return;
+     }
+ 
+-    setCenterNearStartVertex(distanceMeters(center, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
++    setCenterNearStartVertex(isWithinPolygonCloseRadius(distanceMeters(center, pts[0])));
+   }, [activeSitePlannerTool, getCanvasCenterLatLng, linear]);
+ 
+   const addDrawingPoint = useCallback((lngLat: [number, number]) => {
+diff --git a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+index 173fe2828da7970b87480d670a6707c3c7035175..16665465aa967afbec24f3a43126a13f39ba325d 100644
+--- a/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
++++ b/frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx
+@@ -75,7 +75,7 @@ import {
+   METERS_PER_DEG_LAT,
+   metersPerDegLon,
+ } from '../mapEngine/geoUtils';
+-import { normalizePolygonDrawing } from './drawingGeometry';
++import { isWithinPolygonCloseRadius, normalizePolygonDrawing } from './drawingGeometry';
+ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+ import { polygon as turfPolygon, point as turfPoint } from '@turf/helpers';
+ 
+@@ -116,7 +116,6 @@ const DRAWING_OUTLINE_LIFT_METERS = 0.6;
+ const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
+ const DRAWING_VERTEX_LIFT_METERS = 1;
+ const DRAWING_VERTEX_RADIUS_METERS = 2.25;
+-const CONNECT_VERTEX_RADIUS_METERS = 30;
+ const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+ const MEASURE_LINE_LIFT_METERS = 2;
+ const MEASURE_POINT_RADIUS_METERS = 1.8;
+@@ -2578,7 +2577,7 @@ export function GlobeSitePlannerMap({
+       return;
+     }
+ 
+-    setCenterNearStartVertex(haversineDistance(centerSurface.lngLat, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
++    setCenterNearStartVertex(isWithinPolygonCloseRadius(haversineDistance(centerSurface.lngLat, pts[0])));
+   }, [activeSitePlannerTool, hasDrawingTool, linear, raycastSurfacePoint]);
+ 
+   const addDrawingPointFromSurface = useCallback((surface: { lngLat: [number, number]; height: number }) => {
+@@ -2749,7 +2748,7 @@ export function GlobeSitePlannerMap({
+     if (
+       !linear
+       && drawingPointsRef.current.length >= minPointsForTool(activeSitePlannerTool)
+-      && haversineDistance(clickLngLat, drawingPointsRef.current[0]) <= CONNECT_VERTEX_RADIUS_METERS
++      && isWithinPolygonCloseRadius(haversineDistance(clickLngLat, drawingPointsRef.current[0]))
+     ) {
+       finishDrawingRef.current?.();
+       return;
+diff --git a/frontend/src/components/viewer/globe/drawingGeometry.test.ts b/frontend/src/components/viewer/globe/drawingGeometry.test.ts
+index 20b1c9f2a9a887c8a24c2650105aea942db640a2..11ec709964fef908851bfcf54e3b2b90c0c44d29 100644
+--- a/frontend/src/components/viewer/globe/drawingGeometry.test.ts
++++ b/frontend/src/components/viewer/globe/drawingGeometry.test.ts
+@@ -1,6 +1,18 @@
+ import { describe, expect, it } from 'vitest';
+ 
+-import { normalizePolygonDrawing } from './drawingGeometry';
++import {
++  isWithinPolygonCloseRadius,
++  normalizePolygonDrawing,
++  POLYGON_CLOSE_RADIUS_METERS,
++} from './drawingGeometry';
++
++describe('polygon close gesture', () => {
++  it('only closes within the visible start-marker radius', () => {
++    expect(isWithinPolygonCloseRadius(POLYGON_CLOSE_RADIUS_METERS)).toBe(true);
++    expect(isWithinPolygonCloseRadius(POLYGON_CLOSE_RADIUS_METERS + 0.01)).toBe(false);
++    expect(isWithinPolygonCloseRadius(18)).toBe(false);
++  });
++});
+ 
+ describe('normalizePolygonDrawing', () => {
+   it('drops a final click that is effectively the first polygon vertex', () => {
+diff --git a/frontend/src/components/viewer/globe/drawingGeometry.ts b/frontend/src/components/viewer/globe/drawingGeometry.ts
+index bb2b17812cec7639bd6197aa69b8ba8cabd05207..95103d3580dfd5f8547a7b24ec0799808341fcdf 100644
+--- a/frontend/src/components/viewer/globe/drawingGeometry.ts
++++ b/frontend/src/components/viewer/globe/drawingGeometry.ts
+@@ -1,5 +1,13 @@
+ import { haversineDistance } from '../mapEngine/geoUtils';
+ 
++// Keep the close gesture local to the visible start marker. A former 30 m
++// radius consumed legitimate fourth vertices on ordinary narrow footprints.
++export const POLYGON_CLOSE_RADIUS_METERS = 3;
++
++export function isWithinPolygonCloseRadius(distanceMeters: number): boolean {
++  return distanceMeters <= POLYGON_CLOSE_RADIUS_METERS;
++}
++
+ /**
+  * Remove the near-duplicate vertex produced when a user clicks the first
+  * polygon vertex to close a drawing. The API closes polygon rings itself, so
+-- 
+2.55.0.windows.2
+

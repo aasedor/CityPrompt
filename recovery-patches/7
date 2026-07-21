@@ -1,0 +1,601 @@
+From 6525c2b8fadd81368c071ed8e874ad8428ca8cf8 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 03:14:04 -0600
+Subject: [PATCH 07/32] feat: render-lock Classic Haussmann family
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  22 ++
+ .../architectural_signature_profiles.json     |  63 ++++
+ tools/archetype_compiler/blender_generate.py  | 302 ++++++++++++++++--
+ .../high_quality_building_memory.json         |  22 +-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  31 ++
+ 7 files changed, 423 insertions(+), 21 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 8ab0ae77704856af727049edad194226ebb269a9..330b0c1a2d1ed0c953bc4537ae9518cffab85021 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -466,6 +466,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   should preserve the audited mansard, dormers and chimneys while the body,
+   cornices and raised pavilions remain explicitly authored.
+ 
++### Haussmann twin-court + delivery-budget lessons
++
++- A court must remain open through every construction layer. Building the wall
++  body as perimeter wings is insufficient if a full cornice slab or roof deck
++  caps the void; use explicit roof-ring strips and prove every court from the
++  aerial acceptance camera.
++- Separate the principal entrance from a repeatable podium source before
++  scaling. Stitch ordinary shopfront slices into the repeat band and retain one
++  fixed entrance role so a long boulevard frontage cannot duplicate its grand
++  door.
++- Dense fixed graphs may disable the final joined-mesh bevel when their
++  silhouette-bearing solids already own individual construction radii. Review
++  facade-close and aerial views after optimization; the Classic Haussmann graph
++  fell from 215,572 to 69,780 assembled triangles without losing identity.
++- Native source evidence sets the useful near-atlas ceiling. Upscaling a 1141
++  px rectified elevation to 4K added payload but no detail, while a 2K near / 1K
++  far package retained the accepted render and reduced the assembled GLB from
++  33.1 MB to 13.9 MB before KTX2.
++- Reuse the selected occupied-glass cell as both pane and shallow room card in
++  roof sashes. A helper that silently allocates its own legacy room palette can
++  push an otherwise identical graph over the material-review threshold.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index eb0236aacf96cf8ad55cf0115ef4cf8ede70b023..672f2b2312219f1c3d20ff30880cabf88344647e 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -230,6 +230,69 @@
+       "material_overrides": {"roof": {"base_color": "#87939b", "roughness": 0.48, "metallic": 0.72, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "metallic": 0.42}},
+       "kits": ["shopfront_canopies", "haussmann_balconies", "deep_cornice", "mansard_dormers"]
+     },
++    "parisian_haussmann_classic": {
++      "identity": "Classic Haussmann perimeter block with a fixed arched entrance, ordered French-window bays, two continuous iron balcony datums, chamfered street corners, twin light courts and an inhabited zinc mansard.",
++      "material_zones": "warm Lutetian limestone; black iron balconies; grey standing-seam zinc; dark timber-and-metal shopfronts",
++      "glass_profile": "residential_low_e",
++      "material_overrides": {"roof": {"base_color": "#77838c", "roughness": 0.46, "metallic": 0.68, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.48}},
++      "signature_material_overrides": {"signature_stone": {"base_color": "#d8cfbd", "roughness": 0.76, "texture_key": "limestone"}},
++      "kits": ["haussmann_balconies", "deep_cornice", "mansard_dormers"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "haussmann_twin_court_v1",
++        "description": "A fixed six-level Classic Haussmann block with five limestone storeys, one inhabited zinc mansard, chamfered street corners, two real open light courts and one non-repeating principal entrance.",
++        "height_m": 24.3,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 42.0, "depth_m": 38.0, "floors": 6, "floor_height_m": 3.4},
++        "nodes": [
++          {"id": "haussmann_front_wing", "kind": "box", "size": [36.0, 9.5, 18.1], "location": [0.0, -14.25, 9.05], "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_rear_wing", "kind": "box", "size": [36.0, 9.5, 18.1], "location": [0.0, 14.25, 9.05], "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_left_wing", "kind": "box", "size": [9.5, 32.0, 18.1], "location": [-16.25, 0.0, 9.05], "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_right_wing", "kind": "box", "size": [9.5, 32.0, 18.1], "location": [16.25, 0.0, 9.05], "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_centre_cross_wing", "kind": "box", "size": [7.0, 19.0, 18.1], "location": [0.0, 0.0, 9.05], "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_front_left_corner", "kind": "box", "size": [4.25, 4.25, 18.1], "location": [-18.0, -16.0, 9.05], "rotation_z_deg": 45.0, "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_front_right_corner", "kind": "box", "size": [4.25, 4.25, 18.1], "location": [18.0, -16.0, 9.05], "rotation_z_deg": 45.0, "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_rear_left_corner", "kind": "box", "size": [4.25, 4.25, 18.1], "location": [-18.0, 16.0, 9.05], "rotation_z_deg": 45.0, "material": "signature_stone", "bevel_m": 0.10},
++          {"id": "haussmann_rear_right_corner", "kind": "box", "size": [4.25, 4.25, 18.1], "location": [18.0, 16.0, 9.05], "rotation_z_deg": 45.0, "material": "signature_stone", "bevel_m": 0.10}
++        ],
++        "voids": [
++          {"id": "haussmann_left_light_court", "size": [8.0, 19.0, 24.3], "location": [-7.5, 0.0, 12.15], "purpose": "real open light court"},
++          {"id": "haussmann_right_light_court", "size": [8.0, 19.0, 24.3], "location": [7.5, 0.0, 12.15], "purpose": "real open light court"}
++        ],
++        "assemblies": [
++          {"id": "haussmann_front_podium_left", "kind": "facade_skin_stack", "axis": "front", "base_centre": [-10.0, -19.025, 0.0], "span_m": 16.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}]},
++          {"id": "haussmann_front_entrance", "kind": "facade_skin", "axis": "front", "centre": [0.0, -19.03, 2.25], "span_m": 4.0, "height_m": 4.5, "depth_m": 0.055, "band": "entrance"},
++          {"id": "haussmann_front_podium_right", "kind": "facade_skin_stack", "axis": "front", "base_centre": [10.0, -19.025, 0.0], "span_m": 16.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}]},
++          {"id": "haussmann_front_upper", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -19.025, 4.5], "span_m": 36.0, "depth_m": 0.05, "levels": [{"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
++          {"id": "haussmann_rear_elevation", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 19.025, 0.0], "span_m": 36.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
++          {"id": "haussmann_left_elevation", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-21.025, 0.0, 0.0], "span_m": 32.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
++          {"id": "haussmann_right_elevation", "kind": "facade_skin_stack", "axis": "right", "base_centre": [21.025, 0.0, 0.0], "span_m": 32.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
++          {"id": "haussmann_front_left_chamfer", "kind": "facade_skin", "axis": "angle", "centre": [-19.5, -17.5, 9.05], "span_m": 4.25, "height_m": 18.1, "depth_m": 0.05, "rotation_z_deg": -45.0, "band": "elevation", "uv_v_min": 0.0, "uv_v_max": 0.8, "flip_u": true},
++          {"id": "haussmann_front_right_chamfer", "kind": "facade_skin", "axis": "angle", "centre": [19.5, -17.5, 9.05], "span_m": 4.25, "height_m": 18.1, "depth_m": 0.05, "rotation_z_deg": 45.0, "band": "elevation", "uv_v_min": 0.0, "uv_v_max": 0.8},
++          {"id": "haussmann_rear_left_chamfer", "kind": "facade_skin", "axis": "angle", "centre": [-19.5, 17.5, 9.05], "span_m": 4.25, "height_m": 18.1, "depth_m": 0.05, "rotation_z_deg": 45.0, "band": "elevation", "uv_v_min": 0.0, "uv_v_max": 0.8, "flip_u": true},
++          {"id": "haussmann_rear_right_chamfer", "kind": "facade_skin", "axis": "angle", "centre": [19.5, 17.5, 9.05], "span_m": 4.25, "height_m": 18.1, "depth_m": 0.05, "rotation_z_deg": -45.0, "band": "elevation", "uv_v_min": 0.0, "uv_v_max": 0.8},
++          {"id": "haussmann_front_podium_left_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [-10.0, -19.03, 2.25], "span_m": 16.0, "height_m": 4.5, "columns": 4, "rows": 1, "repeat_span_m": 8.0, "band": "podium", "glass_profile": "residential_low_e", "frame_mode": "mask_only"},
++          {"id": "haussmann_front_entry_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -19.035, 2.25], "span_m": 4.0, "height_m": 4.5, "columns": 1, "rows": 1, "band": "entrance", "glass_profile": "residential_low_e", "frame_mode": "mask_only"},
++          {"id": "haussmann_front_podium_right_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [10.0, -19.03, 2.25], "span_m": 16.0, "height_m": 4.5, "columns": 4, "rows": 1, "repeat_span_m": 8.0, "band": "podium", "glass_profile": "residential_low_e", "frame_mode": "mask_only"},
++          {"id": "haussmann_front_upper_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -19.03, 4.5], "span_m": 36.0, "repeat_span_m": 12.0, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "levels": [{"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
++          {"id": "haussmann_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [0.0, 19.03, 0.0], "span_m": 36.0, "repeat_span_m": 12.0, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
++          {"id": "haussmann_left_glazing", "kind": "glazing_overlay", "axis": "left", "base_centre": [-21.03, 0.0, 0.0], "span_m": 32.0, "repeat_span_m": 10.6667, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
++          {"id": "haussmann_right_glazing", "kind": "glazing_overlay", "axis": "right", "base_centre": [21.03, 0.0, 0.0], "span_m": 32.0, "repeat_span_m": 10.6667, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
++          {"id": "haussmann_front_balconies", "kind": "balcony_array", "axis": "front", "centre": [0.0, -19.03, 0.0], "span_m": 35.6, "levels_z": [4.65, 14.85], "segments": 6, "segment_gap_m": 0.08, "depth_m": 0.66, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "haussmann_rear_balconies", "kind": "balcony_array", "axis": "rear", "centre": [0.0, 19.03, 0.0], "span_m": 35.6, "levels_z": [4.65, 14.85], "segments": 6, "segment_gap_m": 0.08, "depth_m": 0.66, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "haussmann_left_balconies", "kind": "balcony_array", "axis": "left", "centre": [-21.03, 0.0, 0.0], "span_m": 31.6, "levels_z": [4.65, 14.85], "segments": 5, "segment_gap_m": 0.08, "depth_m": 0.66, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "haussmann_right_balconies", "kind": "balcony_array", "axis": "right", "centre": [21.03, 0.0, 0.0], "span_m": 31.6, "levels_z": [4.65, 14.85], "segments": 5, "segment_gap_m": 0.08, "depth_m": 0.66, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "haussmann_left_court_outer_wall", "kind": "facade_skin_stack", "axis": "right", "base_centre": [-11.49, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.04, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}, {"band": "floor", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 2}, {"band": "crown", "height_m": 3.4, "repeat_count": 2}]},
++          {"id": "haussmann_left_court_centre_wall", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-3.51, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.04, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}, {"band": "floor", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 2}, {"band": "crown", "height_m": 3.4, "repeat_count": 2}]},
++          {"id": "haussmann_right_court_centre_wall", "kind": "facade_skin_stack", "axis": "right", "base_centre": [3.51, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.04, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}, {"band": "floor", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 2}, {"band": "crown", "height_m": 3.4, "repeat_count": 2}]},
++          {"id": "haussmann_right_court_outer_wall", "kind": "facade_skin_stack", "axis": "left", "base_centre": [11.49, 0.0, 0.0], "span_m": 19.0, "depth_m": 0.04, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 2}, {"band": "floor", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 2}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 2}, {"band": "crown", "height_m": 3.4, "repeat_count": 2}]},
++          {"id": "haussmann_twin_court_mansard", "kind": "mansard_perimeter", "centre": [0.0, 0.0, 18.1], "width_m": 42.0, "depth_m": 38.0, "height_m": 6.2, "court_count": 2, "well_width_m": 23.0, "well_depth_m": 19.0, "court_gap_m": 7.0, "front_dormer_count": 10, "side_dormer_count": 6, "roof_material": "roof", "lead_material": "roof_lead", "stone_material": "signature_stone", "frame_material": "signature_metal"},
++          {"id": "haussmann_chimney_clusters", "kind": "chimney_cluster_array", "centres": [[-14.0, -5.0, 22.5], [14.0, -5.0, 22.5], [-14.0, 5.0, 22.5], [14.0, 5.0, 22.5]], "count_per_cluster": 3, "spacing_m": 0.55, "section_m": 0.42, "height_m": 1.45, "material": "signature_stone", "cap_material": "signature_stone"},
++          {"id": "haussmann_entry_steps", "kind": "steps", "centre": [0.0, -19.45, 0.0], "width_m": 4.6, "depth_m": 1.0, "count": 3, "rise_m": 0.09, "material": "signature_stone"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
++    },
+     "parisian_boulevard_corner": {
+       "identity": "Parisian corner landmark with a rounded corner pavilion, wraparound balconies, strong horizontal stone courses and a turreted mansard crown.",
+       "material_zones": "cream limestone; zinc-grey roof; black iron; darker rusticated base",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 3ea1e8c16130e74c80bad1a20e9424640c3a6194..fea963c6bcc881222c02f2178a32c9d9b6e838ad 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -1396,7 +1396,12 @@ def add_frame_bars(
+                 parts.append(add_box(f"{prefix}_Mullion{index}", (depth * 1.05, profile * 0.62, opening_h), (x, y + offset, z), mat))
+ 
+ 
+-def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
++def join_as(
++    name: str,
++    objects: list[bpy.types.Object],
++    *,
++    final_bevel_m: float = 0.025,
++) -> bpy.types.Object:
+     """Join module parts into a single mesh so the GLB gets one node per module."""
+     bpy.ops.object.select_all(action="DESELECT")
+     for obj in objects:
+@@ -1409,20 +1414,24 @@ def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
+     joined.data.name = name
+     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+     # Small real-world edge radii create highlight lines and eliminate the
+-    # unmistakable razor-edged procedural-box look.
+-    bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
+-    bevel.width = 0.025
+-    bevel.segments = 1
+-    bevel.limit_method = "ANGLE"
+-    try:
+-        bevel.harden_normals = True
+-    except AttributeError:
+-        pass
+-    bpy.context.view_layer.objects.active = joined
+-    try:
+-        bpy.ops.object.modifier_apply(modifier=bevel.name)
+-    except RuntimeError:
+-        joined.modifiers.remove(bevel)
++    # unmistakable razor-edged procedural-box look. Dense landmark graphs may
++    # opt out because their identity solids were already bevelled individually;
++    # beveling every sash, picket and atlas skin again is invisible at runtime
++    # but can more than double the delivery triangles.
++    if final_bevel_m > 0.0:
++        bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
++        bevel.width = final_bevel_m
++        bevel.segments = 1
++        bevel.limit_method = "ANGLE"
++        try:
++            bevel.harden_normals = True
++        except AttributeError:
++            pass
++        bpy.context.view_layer.objects.active = joined
++        try:
++            bpy.ops.object.modifier_apply(modifier=bevel.name)
++        except RuntimeError:
++            joined.modifiers.remove(bevel)
+     apply_box_uv(joined)
+     return joined
+ 
+@@ -1827,6 +1836,7 @@ def add_heritage_sash_front(
+     surround_material=None,
+     frame_material=None,
+     glass_material=None,
++    room_material=None,
+     trim_scale: float = 1.0,
+     sash_mullions: str = "double",
+     fine_glazing_rails: bool = True,
+@@ -1838,7 +1848,10 @@ def add_heritage_sash_front(
+     convincing without requiring sculpted ornament on every stone.
+     """
+     atlas_cells = mats.get("interior_cells") or []
+-    room_mat = atlas_cells[interior_seed % len(atlas_cells)] if atlas_cells else mats["interior_warm"]
++    room_mat = (
++        room_material
++        or (atlas_cells[interior_seed % len(atlas_cells)] if atlas_cells else mats["interior_warm"])
++    )
+     surround_mat = surround_material or mats["secondary"]
+     frame_mat = frame_material or mats["accent"]
+     glass_mat = glass_material or mats["glass"]
+@@ -7524,7 +7537,10 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
+     outward, along = _glazing_axis_vectors(axis)
+     cell = span / segment_count
+     segment_span = max(0.8, cell - gap)
+-    rail_profile = min(0.055, segment_span * 0.03)
++    rail_profile = max(
++        0.018,
++        min(0.055, float(spec.get("rail_profile_m", segment_span * 0.03))),
++    )
+ 
+     def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
+         return (
+@@ -7587,6 +7603,250 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
+                 ))
+ 
+ 
++def _graph_mansard_perimeter(parts: list, spec: dict, mats: dict) -> None:
++    """Build an inhabited Haussmann mansard around one or two real light courts.
++
++    The ordinary roof module is appropriate for a compact rectangle, but a
++    render-locked boulevard block cannot put a full cornice slab over its
++    courts.  This assembly keeps the outer zinc skirt and dormer rhythm fixed,
++    forms the top deck from explicit perimeter strips, and optionally adds a
++    central roof bridge so a long block retains two open courts.
++    """
++    cx, cy, base_z = (float(value) for value in spec["centre"])
++    width = float(spec["width_m"])
++    depth = float(spec["depth_m"])
++    height = float(spec.get("height_m", 6.2))
++    court_count = max(1, min(2, int(spec.get("court_count", 1))))
++    court_gap = float(spec.get("court_gap_m", 7.0 if court_count == 2 else 0.0))
++    well_width = float(spec.get("well_width_m", max(8.0, width - 19.0)))
++    well_depth = float(spec.get("well_depth_m", max(8.0, depth - 19.0)))
++    if court_count == 2:
++        individual_well_width = (well_width - court_gap) / 2.0
++        if individual_well_width < 4.0:
++            raise ValueError("two-court mansard requires at least 4 m per light court")
++    else:
++        individual_well_width = well_width
++    skirt_height = float(spec.get("skirt_height_m", max(3.4, height * 0.72)))
++    inset = float(spec.get("inset_m", min(2.25, min(width, depth) * 0.18)))
++    overhang = float(spec.get("overhang_m", 0.28))
++    roof_mat = _graph_material(mats, spec.get("roof_material", "roof"))
++    lead_mat = _graph_material(mats, spec.get("lead_material", "roof_lead"))
++    stone_mat = _graph_material(mats, spec.get("stone_material", "signature_stone"))
++    frame_mat = _graph_material(mats, spec.get("frame_material", "signature_metal"))
++    prefix = str(spec.get("id", "GraphMansardPerimeter"))
++
++    # The cornice is a true ring.  A full slab here would make the court look
++    # open in metadata while remaining visibly capped in the aerial render.
++    cornice_width = float(spec.get("cornice_width_m", 0.72))
++    slab_height = float(spec.get("slab_height_m", 0.18))
++    cornice_z = base_z + slab_height / 2.0
++    parts.extend([
++        add_beveled_box(
++            f"{prefix}_CorniceFront", (width + cornice_width, cornice_width, slab_height),
++            (cx, cy - depth / 2.0, cornice_z), stone_mat, 0.045,
++        ),
++        add_beveled_box(
++            f"{prefix}_CorniceRear", (width + cornice_width, cornice_width, slab_height),
++            (cx, cy + depth / 2.0, cornice_z), stone_mat, 0.045,
++        ),
++        add_beveled_box(
++            f"{prefix}_CorniceLeft", (cornice_width, depth - cornice_width, slab_height),
++            (cx - width / 2.0, cy, cornice_z), stone_mat, 0.045,
++        ),
++        add_beveled_box(
++            f"{prefix}_CorniceRight", (cornice_width, depth - cornice_width, slab_height),
++            (cx + width / 2.0, cy, cornice_z), stone_mat, 0.045,
++        ),
++    ])
++
++    bottom = [
++        (cx - width / 2 - overhang, cy - depth / 2 - overhang, base_z + slab_height),
++        (cx + width / 2 + overhang, cy - depth / 2 - overhang, base_z + slab_height),
++        (cx + width / 2 + overhang, cy + depth / 2 + overhang, base_z + slab_height),
++        (cx - width / 2 - overhang, cy + depth / 2 + overhang, base_z + slab_height),
++    ]
++    top_z = base_z + skirt_height
++    top = [
++        (cx - width / 2 + inset, cy - depth / 2 + inset, top_z),
++        (cx + width / 2 - inset, cy - depth / 2 + inset, top_z),
++        (cx + width / 2 - inset, cy + depth / 2 - inset, top_z),
++        (cx - width / 2 + inset, cy + depth / 2 - inset, top_z),
++    ]
++    parts.append(add_prism(
++        f"{prefix}_OuterZincSkirt", bottom + top,
++        [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)],
++        roof_mat,
++    ))
++
++    top_width = width - inset * 2 + 0.18
++    top_depth = depth - inset * 2 + 0.18
++    outer_strip_x = (top_width - well_width) / 2.0
++    outer_strip_y = (top_depth - well_depth) / 2.0
++    if outer_strip_x <= 0.25 or outer_strip_y <= 0.25:
++        raise ValueError("mansard light courts exceed the available top deck")
++    deck_z = top_z + 0.08
++    parts.extend([
++        add_beveled_box(
++            f"{prefix}_LeadDeckFront", (top_width, outer_strip_y, 0.16),
++            (cx, cy - (well_depth + outer_strip_y) / 2.0, deck_z), lead_mat, 0.025,
++        ),
++        add_beveled_box(
++            f"{prefix}_LeadDeckRear", (top_width, outer_strip_y, 0.16),
++            (cx, cy + (well_depth + outer_strip_y) / 2.0, deck_z), lead_mat, 0.025,
++        ),
++        add_beveled_box(
++            f"{prefix}_LeadDeckLeft", (outer_strip_x, well_depth, 0.16),
++            (cx - (well_width + outer_strip_x) / 2.0, cy, deck_z), lead_mat, 0.025,
++        ),
++        add_beveled_box(
++            f"{prefix}_LeadDeckRight", (outer_strip_x, well_depth, 0.16),
++            (cx + (well_width + outer_strip_x) / 2.0, cy, deck_z), lead_mat, 0.025,
++        ),
++    ])
++    if court_count == 2:
++        parts.append(add_beveled_box(
++            f"{prefix}_LeadDeckCentreBridge", (court_gap, well_depth, 0.16),
++            (cx, cy, deck_z), lead_mat, 0.025,
++        ))
++
++    wall_thickness = float(spec.get("court_wall_thickness_m", 0.20))
++    court_wall_height = skirt_height - slab_height
++    court_wall_z = base_z + slab_height + court_wall_height / 2.0
++    court_centres = (
++        [cx]
++        if court_count == 1 else
++        [cx - (court_gap + individual_well_width) / 2.0,
++         cx + (court_gap + individual_well_width) / 2.0]
++    )
++    for court_index, court_x in enumerate(court_centres):
++        parts.extend([
++            add_beveled_box(
++                f"{prefix}_Court{court_index}_FrontWall",
++                (individual_well_width, wall_thickness, court_wall_height),
++                (court_x, cy - well_depth / 2.0, court_wall_z), stone_mat, 0.030,
++            ),
++            add_beveled_box(
++                f"{prefix}_Court{court_index}_RearWall",
++                (individual_well_width, wall_thickness, court_wall_height),
++                (court_x, cy + well_depth / 2.0, court_wall_z), stone_mat, 0.030,
++            ),
++            add_beveled_box(
++                f"{prefix}_Court{court_index}_LeftWall",
++                (wall_thickness, well_depth, court_wall_height),
++                (court_x - individual_well_width / 2.0, cy, court_wall_z), stone_mat, 0.030,
++            ),
++            add_beveled_box(
++                f"{prefix}_Court{court_index}_RightWall",
++                (wall_thickness, well_depth, court_wall_height),
++                (court_x + individual_well_width / 2.0, cy, court_wall_z), stone_mat, 0.030,
++            ),
++        ])
++        coping_z = top_z + 0.10
++        for edge, size, location in (
++            ("Front", (individual_well_width + 0.24, 0.30, 0.14), (court_x, cy - well_depth / 2.0, coping_z)),
++            ("Rear", (individual_well_width + 0.24, 0.30, 0.14), (court_x, cy + well_depth / 2.0, coping_z)),
++            ("Left", (0.30, well_depth, 0.14), (court_x - individual_well_width / 2.0, cy, coping_z)),
++            ("Right", (0.30, well_depth, 0.14), (court_x + individual_well_width / 2.0, cy, coping_z)),
++        ):
++            parts.append(add_beveled_box(
++                f"{prefix}_Court{court_index}_{edge}Coping", size, location, stone_mat, 0.025,
++            ))
++
++    dormer_width = float(spec.get("dormer_width_m", 1.18))
++    dormer_height = float(spec.get("dormer_height_m", 1.52))
++    dormer_z = base_z + slab_height + skirt_height * 0.50
++    body_depth = float(spec.get("dormer_body_depth_m", 0.72))
++    front_count = max(4, int(spec.get("front_dormer_count", round(width / 4.0))))
++    side_count = max(2, int(spec.get("side_dormer_count", round(depth / 6.0))))
++
++    def add_dormer(tag: str, axis: str, along_value: float) -> None:
++        if axis == "front":
++            body_centre = (cx + along_value, cy - depth / 2.0 + 0.30, dormer_z)
++            window_centre = (cx + along_value, cy - depth / 2.0 - 0.085, dormer_z)
++            body_size = (dormer_width + 0.24, body_depth, dormer_height + 0.24)
++        elif axis == "rear":
++            body_centre = (cx - along_value, cy + depth / 2.0 - 0.30, dormer_z)
++            window_centre = (cx - along_value, cy + depth / 2.0 + 0.085, dormer_z)
++            body_size = (dormer_width + 0.24, body_depth, dormer_height + 0.24)
++        elif axis == "left":
++            body_centre = (cx - width / 2.0 + 0.30, cy + along_value, dormer_z)
++            window_centre = (cx - width / 2.0 - 0.085, cy + along_value, dormer_z)
++            body_size = (body_depth, dormer_width + 0.24, dormer_height + 0.24)
++        else:
++            body_centre = (cx + width / 2.0 - 0.30, cy - along_value, dormer_z)
++            window_centre = (cx + width / 2.0 + 0.085, cy - along_value, dormer_z)
++            body_size = (body_depth, dormer_width + 0.24, dormer_height + 0.24)
++        parts.append(add_beveled_box(
++            f"{prefix}_{tag}_ZincBody", body_size, body_centre, lead_mat, 0.075,
++        ))
++        if axis == "front":
++            seed = sum(ord(character) for character in tag)
++            add_heritage_sash_front(
++                parts, f"{prefix}_{tag}_Sash",
++                window_centre[0], window_centre[1], window_centre[2],
++                dormer_width, dormer_height, mats,
++                pediment="segmental", interior_seed=seed, overlay=True,
++                surround_material=lead_mat, frame_material=frame_mat,
++                glass_material=mats["glazing_interior_cells"][
++                    seed % len(mats["glazing_interior_cells"])
++                ],
++                room_material=mats["glazing_interior_cells"][
++                    seed % len(mats["glazing_interior_cells"])
++                ],
++                trim_scale=0.56, sash_mullions="single", fine_glazing_rails=False,
++            )
++        else:
++            _graph_curtain_wall(parts, {
++                "id": f"{prefix}_{tag}_Sash",
++                "axis": axis,
++                "centre": window_centre,
++                "span_m": dormer_width,
++                "height_m": dormer_height,
++                "columns": 2,
++                "rows": 2,
++                "frame_m": 0.055,
++                "depth_m": 0.055,
++                "glass_material": "glass",
++                "frame_material": spec.get("frame_material", "signature_metal"),
++            }, mats)
++            # A shallow zinc hood prevents the secondary dormers from reading
++            # as plain boxes while the street-facing row keeps curved heads.
++            hood_z = dormer_z + dormer_height / 2.0 + 0.20
++            hood_size = (
++                (dormer_width + 0.36, body_depth + 0.16, 0.14)
++                if axis in {"front", "rear"} else
++                (body_depth + 0.16, dormer_width + 0.36, 0.14)
++            )
++            parts.append(add_beveled_box(
++                f"{prefix}_{tag}_Hood", hood_size,
++                (body_centre[0], body_centre[1], hood_z), roof_mat, 0.035,
++            ))
++
++    for index in range(front_count):
++        offset = -width / 2.0 + width * (index + 0.5) / front_count
++        add_dormer(f"FrontDormer{index:02d}", "front", offset)
++        add_dormer(f"RearDormer{index:02d}", "rear", offset)
++    for index in range(side_count):
++        offset = -depth / 2.0 + depth * (index + 0.5) / side_count
++        add_dormer(f"LeftDormer{index:02d}", "left", offset)
++        add_dormer(f"RightDormer{index:02d}", "right", offset)
++
++    # A narrow standing-seam ridge on the five top-deck strips gives the roof
++    # a legible construction datum without closing either court.
++    seam_z = deck_z + 0.11
++    seam_profile = 0.055
++    for seam_index, seam_x in enumerate((
++        cx - top_width * 0.32, cx - top_width * 0.16,
++        cx, cx + top_width * 0.16, cx + top_width * 0.32,
++    )):
++        parts.append(add_beveled_box(
++            f"{prefix}_StandingSeam{seam_index:02d}",
++            (seam_profile, outer_strip_y, seam_profile),
++            (seam_x, cy - (well_depth + outer_strip_y) / 2.0, seam_z),
++            frame_mat, 0.012,
++        ))
++
++
+ def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
+     """Small masonry blocks repeated along one or more true construction courses."""
+     axis = str(spec.get("axis", "front"))
+@@ -7803,6 +8063,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+             _graph_oriel_array(parts, assembly, mats)
+         elif kind == "glazing_overlay":
+             _graph_glazing_overlay(parts, assembly, mats)
++        elif kind == "mansard_perimeter":
++            _graph_mansard_perimeter(parts, assembly, mats)
+         elif kind == "balcony_array":
+             _graph_balcony_array(parts, assembly, mats)
+         elif kind == "corbel_array":
+@@ -7812,7 +8074,11 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+ 
+     if not parts:
+         raise ValueError("massing graph contains no renderable nodes or assemblies")
+-    model = join_as("ASM_MassingGraph", parts)
++    model = join_as(
++        "ASM_MassingGraph",
++        parts,
++        final_bevel_m=float(graph.get("final_bevel_m", 0.025)),
++    )
+     _apply_massing_skin_uv(model)
+     _consolidate_massing_skin_materials(model)
+     # Bevelled plinths and stair nosings can produce a tiny negative export
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index a0ac4c8164d7af3adfa504f145161853a298e8ba..435c25c92503bfd042c58afd174f07ee5294b0d8 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-london-one-view-renderlock-v73",
++  "memory_version": "2026-07-20-haussmann-twin-court-renderlock-v74",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -601,6 +601,26 @@
+       "cause": "White presentation margins were left inside the architectural UV range and then stretched across the complete canonical elevation.",
+       "correction": "Crop the source or UV bounds to the architectural extents before PBR generation, then compare the rendered frontage against the full bay rhythm rather than accepting a technically valid texture package."
+     },
++    {
++      "symptom": "A perimeter block has open courts in its wall massing but the aerial render still shows a continuous roof or cornice lid",
++      "cause": "The body was assembled as wings while the roof retained a full-footprint base slab or top deck, so the declared void stopped at the top storey.",
++      "correction": "Build the cornice and mansard top as explicit perimeter strips, carry every court through the roof, and add only evidence-led cross-wing bridges. Require the aerial acceptance view to prove every court remains open to sky."
++    },
++    {
++      "symptom": "Scaling a boulevard facade creates several grand entrances at regular intervals",
++      "cause": "The source podium combined repeatable shopfronts with the principal entrance and the whole band was tiled across the frontage.",
++      "correction": "Extract the entrance into a fixed facade role, stitch the ordinary outer shopfront slices into a repeatable podium band, and test that the assembled principal elevation contains exactly one entrance landmark."
++    },
++    {
++      "symptom": "A dense fixed graph spends minutes beveling and exports far above the triangle budget without a visible quality gain",
++      "cause": "Identity solids were bevelled individually and the final joined graph applied a second bevel to every sash, rail picket, atlas skin and room card.",
++      "correction": "Allow an audited fixed graph to disable the final global bevel when its silhouette-bearing solids already own construction radii. Verify the optimized render at facade-close and aerial cameras before accepting the triangle reduction."
++    },
++    {
++      "symptom": "A high-detail atlas increases GLB size but the facade looks no sharper than the accepted source",
++      "cause": "A lower-resolution rectified source was upscaled to a 4K near atlas, multiplying texture payload without adding architectural evidence.",
++      "correction": "Set the near-LOD ceiling from native source evidence, never from a blanket hero preset. Keep 2048 px as the quality floor, retain the 1024 px city LOD, and reserve 4K for sources that contain genuine additional detail."
++    },
+     {
+       "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",
+       "cause": "The assembled model request no longer exactly matched the massing graph's authored reference width, depth and floor count, so the safety selector correctly bypassed fixed geometry.",
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index f19b1ad64481900c16a59815a7824f73549bcc3b..ed20391194ef61c2a20573bed4c7279d54fd06b2 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -11,7 +11,7 @@
+     {"sequence": 3, "archetype_id": "modern_glass_office_institutional", "variant_id": "glass_office_dark_frame", "family_id": "glass-office-dark-frame-v1-renderlocked", "state": "keeper", "artifact": "glass-office-dark-frame-pilot-a/02-canonical-v3"},
+     {"sequence": 4, "archetype_id": "eixample_apartment_block", "variant_id": "eixample-apartment-block-classic", "family_id": "eixample-classic-v1-renderlocked", "floors": 4, "width_m": 23, "depth_m": 23, "allow_outside_bounds": true, "state": "keeper", "artifact": "eixample-classic-v1/03-canonical-v24", "group": "chamfered urban perimeter block"},
+     {"sequence": 5, "archetype_id": "london_heritage_mansion_block", "variant_id": "london-heritage-mansion-portland-stone", "family_id": "london-heritage-mansion-portland-stone-v1-renderlocked", "floors": 5, "width_m": 24, "depth_m": 18, "state": "keeper", "artifact": "london-heritage-mansion-v1/04-canonical-v4", "group": "European heritage stonework"},
+-    {"sequence": 6, "archetype_id": "parisian_midrise_block", "floors": 7, "state": "pending", "group": "European heritage boulevard"},
++    {"sequence": 6, "archetype_id": "parisian_midrise_block", "variant_id": "parisian_haussmann_classic", "family_id": "parisian-haussmann-classic-v1-renderlocked", "floors": 6, "width_m": 42, "depth_m": 38, "allow_outside_bounds": true, "state": "keeper", "artifact": "parisian-haussmann-classic-v1/05-canonical-v4", "group": "European heritage boulevard"},
+     {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "floors": 7, "state": "pending", "group": "European heritage corner"},
+     {"sequence": 8, "archetype_id": "civic_classical_building", "floors": 2, "width_m": 42, "depth_m": 26, "state": "pending", "group": "classical civic monument"},
+     {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "floors": 5, "state": "pending", "group": "ceremonial civic axis"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 8b26941714e230de7c626bb37021596b0713dc75..30760aa26b72be2c51cf25b154ac03fb95b76ef7 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 5
++    assert sum(entry["state"] == "keeper" for entry in entries) == 6
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index f43af11cc30870a26e78992b1f51bbb7fdb2caa5..05f418a2c6ac8adbf9ae7b58fcffc064ed196ed3 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -719,6 +719,36 @@ def test_london_mansion_uses_registered_wall_and_canonical_mansard_kit():
+     assert not any(item["kind"] == "balcony_array" for item in graph["assemblies"])
+ 
+ 
++def test_classic_haussmann_preserves_twin_courts_and_fixed_entrance():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "parisian_midrise_block",
++            "variant_id": "parisian_haussmann_classic",
++        },
++        "materials": {},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "haussmann_twin_court_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 42.0,
++        "depth_m": 38.0,
++        "floors": 6,
++        "floor_height_m": 3.4,
++    }
++    assert len(graph["voids"]) == 2
++    assert assemblies["haussmann_twin_court_mansard"]["kind"] == "mansard_perimeter"
++    assert assemblies["haussmann_twin_court_mansard"]["court_count"] == 2
++    assert assemblies["haussmann_front_entrance"]["band"] == "entrance"
++    assert assemblies["haussmann_front_podium_left"]["levels"][0]["repeat_count"] == 2
++    assert assemblies["haussmann_front_balconies"]["levels_z"] == [4.65, 14.85]
++    assert assemblies["haussmann_front_balconies"]["rail_profile_m"] == 0.028
++    assert graph["final_bevel_m"] == 0.0
++
++
+ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+ 
+@@ -735,6 +765,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     assert "disabled_assembly_ids" in source
+     assert "disabled_node_ids" in source
+     assert 'kind == "canonical_roof"' in source
++    assert 'kind == "mansard_perimeter"' in source
+     assert "focus_height * 2.75" in source
+     assert "focus_height * 2.05" in source
+ 
+-- 
+2.55.0.windows.2
+

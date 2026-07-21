@@ -1,0 +1,59 @@
+From 6f208da0ef1bbdd7857cf6896c1ac0b7613e7e85 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 14:23:01 -0600
+Subject: [PATCH 26/32] feat: certify mid-century pavilion footprints
+
+---
+ frontend/src/data/buildingArchetypes.json | 36 ++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/frontend/src/data/buildingArchetypes.json b/frontend/src/data/buildingArchetypes.json
+index 4d0a11a4959a71fe7ae4407394449db30249c017..9e661a5abc680d289d922a3736e285f0dbe0d04d 100644
+--- a/frontend/src/data/buildingArchetypes.json
++++ b/frontend/src/data/buildingArchetypes.json
+@@ -2358,7 +2358,41 @@
+       "minFloors": 1,
+       "maxFloors": 4,
+       "suggestedAreaSqm": 2000,
+-      "developmentType": "mixed_use"
++      "developmentType": "mixed_use",
++      "footprintCompatibility": {
++        "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
++        "recommendedWidth_m": [30, 70],
++        "recommendedDepth_m": [18, 35],
++        "recommendedFloors": [1, 4],
++        "wingDepth_m": [8, 14],
++        "profiles": {
++          "rectangle": {
++            "recommendedWidth_m": [30, 70],
++            "recommendedDepth_m": [18, 35],
++            "recommendedFloors": [1, 4]
++          },
++          "l_shape": {
++            "recommendedWidth_m": [38, 70],
++            "recommendedDepth_m": [24, 35],
++            "recommendedFloors": [1, 4],
++            "wingDepth_m": [8, 14]
++          },
++          "courtyard": {
++            "recommendedWidth_m": [50, 70],
++            "recommendedDepth_m": [30, 35],
++            "recommendedFloors": [2, 4],
++            "wingDepth_m": [9, 13],
++            "minimumCourtyard_m": 10
++          }
++        },
++        "preferredBayMultiple_m": 3.6,
++        "minimumCourtyard_m": 10,
++        "notes": [
++          "Preserve the horizontal steel-frame rhythm, transparent corners and floating roof edge.",
++          "Repeat only neutral middle bays; keep the glazed entrance and carport as fixed semantic modules.",
++          "Distribute mullions and Roman-brick piers by bay count rather than stretching the facade texture."
++        ]
++      }
+     },
+     {
+       "id": "civic_classical_building",
+-- 
+2.55.0.windows.2
+

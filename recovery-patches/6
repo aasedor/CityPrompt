@@ -1,0 +1,217 @@
+From 693ecccce51579b51908838a5b926ad02033e027 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 02:16:52 -0600
+Subject: [PATCH 06/32] feat: render-lock London heritage mansion
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       | 18 +++++++++
+ .../architectural_signature_profiles.json     | 37 ++++++++++++++++++-
+ tools/archetype_compiler/blender_generate.py  |  9 +++++
+ .../high_quality_building_memory.json         | 17 ++++++++-
+ .../renderlock_v1_20_buildings.json           |  2 +-
+ .../archetype_compiler/tests/test_compiler.py |  2 +-
+ .../tests/test_facade_sheets.py               | 24 ++++++++++++
+ 7 files changed, 105 insertions(+), 4 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index 8a048eb2c607725a9c2eeb9e05d1a453c3839d35..8ab0ae77704856af727049edad194226ebb269a9 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -448,6 +448,24 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   variant owns a four-storey bound even when the parent archetype permits a
+   broader range.
+ 
++### London one-view heritage + fixed-facade lessons
++
++- One authoritative catalogue view is lower-confidence evidence, not a reason
++  to skip the unseen construction. Infer a conservative wrapped envelope and
++  require rear-corner, aerial and context review; record the side/rear inference
++  in the keeper's human QA.
++- When an atlas already owns the complete sash, surround and masonry rhythm,
++  do not stack a generic repeated-floor kit over it. Use a fixed massing graph,
++  promote only audited shadow-bearing detail, and keep glazing mask-only unless
++  a registered opening schedule proves a physical return is needed.
++- White presentation margins in a rectified elevation become blank facade
++  wings when mapped across a canonical skin. Crop the source or UV bounds to
++  the architectural extents before PBR generation and verify the complete bay
++  rhythm in the rendered frontage.
++- A fixed graph can still reuse the canonical roof kit. A dedicated graph node
++  should preserve the audited mansard, dormers and chimneys while the body,
++  cornices and raised pavilions remain explicitly authored.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index c5a154429674d507ae43863a3092dd07944537f9..eb0236aacf96cf8ad55cf0115ef4cf8ede70b023 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -186,7 +186,42 @@
+       "identity": "Portland-stone mansion block with a composed centre pavilion, giant bay windows, wrought-iron balcony datum and inhabited mansard skyline.",
+       "material_zones": "rusticated pale-stone base; dressed-stone middle; dark slate mansard; bronze-black metalwork",
+       "material_overrides": {"roof": {"base_color": "#343b46", "roughness": 0.58}, "accent": {"base_color": "#24282d", "metallic": 0.35}},
+-      "kits": ["rusticated_base", "centre_pavilion", "continuous_balcony", "mansard_dormers", "chimney_skyline"]
++      "glass_profile": "residential_low_e",
++      "kits": ["rusticated_base", "centre_pavilion", "mansard_dormers", "chimney_skyline"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "portland_stone_mansion_v3",
++        "description": "A fixed five-storey Portland-stone mansion block with one registered eight-bay principal elevation, quiet wrapped secondary walls and an inhabited slate mansard assembled from the canonical heritage roof kit plus its fixed raised centre pavilion.",
++        "height_m": 26.5,
++        "reference_dimensions": {"width_m": 24.0, "depth_m": 18.0, "floors": 5, "floor_height_m": 3.8},
++        "nodes": [
++          {"id": "london_plinth", "kind": "box", "size": [24.5, 18.5, 0.38], "location": [0.0, 0.0, 0.19], "material": "signature_stone", "bevel_m": 0.05},
++          {"id": "london_shadow_core", "kind": "box", "size": [23.55, 17.55, 18.8], "location": [0.0, 0.0, 9.65], "material": "primary", "bevel_m": 0.12},
++          {"id": "london_front_cornice", "kind": "box", "size": [24.35, 0.62, 0.58], "location": [0.0, -9.16, 19.03], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "london_rear_cornice", "kind": "box", "size": [24.35, 0.62, 0.58], "location": [0.0, 9.16, 19.03], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "london_left_cornice", "kind": "box", "size": [0.62, 18.35, 0.58], "location": [-12.16, 0.0, 19.03], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "london_right_cornice", "kind": "box", "size": [0.62, 18.35, 0.58], "location": [12.16, 0.0, 19.03], "material": "signature_stone", "bevel_m": 0.055},
++          {"id": "london_mansard_kit", "kind": "canonical_roof", "location": [0.0, 0.0, 19.1]},
++          {"id": "london_centre_roof_pavilion", "kind": "box", "size": [3.6, 2.4, 2.6], "location": [0.0, -7.35, 24.0], "material": "signature_stone", "bevel_m": 0.08},
++          {"id": "london_centre_roof_cap", "kind": "hipped_roof", "size": [4.1, 3.0, 1.15], "location": [0.0, -7.35, 25.3], "material": "roof", "bevel_m": 0.06, "ridge_axis": "x", "ridge_inset_m": 1.0}
++        ],
++        "voids": [
++          {"id": "london_central_portal", "size": [4.8, 1.2, 4.1], "location": [0.0, -9.0, 2.25], "purpose": "fixed opaque bronze-black entrance retained by the audited podium atlas"}
++        ],
++        "assemblies": [
++          {"id": "london_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -8.805, 9.55], "span_m": 23.5, "height_m": 18.7, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.095, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77},
++          {"id": "london_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-11.805, 0.0, 9.55], "span_m": 17.5, "height_m": 18.7, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.095, "uv_u_max": 0.720, "uv_v_min": 0.0, "uv_v_max": 0.77, "flip_u": true},
++          {"id": "london_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 8.805, 9.55], "span_m": 23.5, "height_m": 18.7, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.095, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77, "flip_u": true},
++          {"id": "london_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [11.805, 0.0, 9.55], "span_m": 17.5, "height_m": 18.7, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.300, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77},
++          {"id": "london_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -8.805, 9.55], "span_m": 23.5, "height_m": 18.7, "columns": 8, "rows": 5, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "uv_u_min": 0.095, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77},
++          {"id": "london_left_glazing", "kind": "glazing_overlay", "axis": "left", "centre": [-11.805, 0.0, 9.55], "span_m": 17.5, "height_m": 18.7, "columns": 6, "rows": 5, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "uv_u_min": 0.095, "uv_u_max": 0.720, "uv_v_min": 0.0, "uv_v_max": 0.77, "flip_u": true},
++          {"id": "london_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 8.805, 9.55], "span_m": 23.5, "height_m": 18.7, "columns": 8, "rows": 5, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "uv_u_min": 0.095, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77, "flip_u": true},
++          {"id": "london_right_glazing", "kind": "glazing_overlay", "axis": "right", "centre": [11.805, 0.0, 9.55], "span_m": 17.5, "height_m": 18.7, "columns": 6, "rows": 5, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "uv_u_min": 0.300, "uv_u_max": 0.925, "uv_v_min": 0.0, "uv_v_max": 0.77},
++          {"id": "london_centre_pavilion_sash", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -8.58, 24.0], "span_m": 1.55, "height_m": 1.75, "columns": 2, "rows": 2, "frame_m": 0.07, "depth_m": 0.06, "reveal_m": 0.12, "surround_m": 0.10, "surround_depth_m": 0.16, "glass_material": "glass", "frame_material": "signature_metal"},
++          {"id": "london_entry_steps", "kind": "steps", "centre": [0.0, -9.45, 0.0], "width_m": 6.2, "depth_m": 1.4, "count": 4, "rise_m": 0.10, "material": "signature_stone"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
+     },
+     "parisian_midrise_block": {
+       "identity": "Haussmann boulevard block with a tall shopfront base, ordered French windows, two continuous iron balconies, deep cornice and slate mansard dormers.",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index ce14a9ba2678babe09819537cd570c2d2c48f817..3ea1e8c16130e74c80bad1a20e9424640c3a6194 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -7724,6 +7724,15 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
+                 str(node.get("ridge_axis", "x")),
+                 float(node["ridge_inset_m"]) if node.get("ridge_inset_m") is not None else None,
+             ))
++        elif kind == "canonical_roof":
++            # Reuse the compiler's complete roof kit (mansard skirt, dormers,
++            # pavilion caps, chimneys and service top) inside a fixed landmark
++            # graph. This keeps the roof as a swappable LEGO assembly without
++            # reintroducing the generic floor/crown stack below it.
++            part = build_roof(grammar, mats)
++            part.name = str(node["id"])
++            part.location = location
++            parts.append(part)
+         elif kind == "cylinder":
+             part = add_cylinder(
+                 str(node["id"]), float(node["radius_m"]), float(node["height_m"]), location,
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 5111bdaf53722e373cc417323ad0512dfba4031f..a0ac4c8164d7af3adfa504f145161853a298e8ba 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-eixample-courtyard-renderlock-v72",
++  "memory_version": "2026-07-20-london-one-view-renderlock-v73",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -586,6 +586,21 @@
+       "cause": "The family inherited a solid showcase core and roof deck while courtyard intent existed only in metadata or footprint compatibility declarations.",
+       "correction": "Disable the inherited solid core and deck at the graph level, assemble explicit cardinal and diagonal perimeter wings with matching roof pieces, and require an aerial view that proves a continuous open light court."
+     },
++    {
++      "symptom": "A one-view heritage reference passes its front camera but exposes blank, broken or contradictory construction in reverse views",
++      "cause": "The catalogue supplied no independent side or rear evidence, and the family treated the missing evidence as permission to skip those elevations.",
++      "correction": "Mark one-reference families as lower confidence, infer a conservative wrapped envelope, and require rear-corner, aerial and context review before keeper acceptance. Record the inference explicitly in human QA."
++    },
++    {
++      "symptom": "A fixed heritage facade is covered by duplicate sash cages, invented balconies or generic stacked-floor rails",
++      "cause": "A generic repeatable floor kit was layered over an atlas that already owned the complete window and masonry rhythm.",
++      "correction": "Use a fixed massing graph for the evidence-led facade, promote only audited shadow-bearing geometry, and keep semantic glazing mask-only when the atlas already supplies the sash and surround construction."
++    },
++    {
++      "symptom": "A rectified facade source produces broad blank wings on an otherwise correctly proportioned building",
++      "cause": "White presentation margins were left inside the architectural UV range and then stretched across the complete canonical elevation.",
++      "correction": "Crop the source or UV bounds to the architectural extents before PBR generation, then compare the rendered frontage against the full bay rhythm rather than accepting a technically valid texture package."
++    },
+     {
+       "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",
+       "cause": "The assembled model request no longer exactly matched the massing graph's authored reference width, depth and floor count, so the safety selector correctly bypassed fixed geometry.",
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 6ca3a9747d2ccc0202673fc58e9d5bb67f7acebd..f19b1ad64481900c16a59815a7824f73549bcc3b 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -10,7 +10,7 @@
+     {"sequence": 2, "archetype_id": "brownstone_rowhouse_frontage", "variant_id": "brownstone_rowhouse_red_sandstone", "family_id": "brownstone-rowhouse-red-sandstone-v1-renderlocked", "state": "keeper", "artifact": "brownstone-red-sandstone-pilot-a/03-canonical-v61"},
+     {"sequence": 3, "archetype_id": "modern_glass_office_institutional", "variant_id": "glass_office_dark_frame", "family_id": "glass-office-dark-frame-v1-renderlocked", "state": "keeper", "artifact": "glass-office-dark-frame-pilot-a/02-canonical-v3"},
+     {"sequence": 4, "archetype_id": "eixample_apartment_block", "variant_id": "eixample-apartment-block-classic", "family_id": "eixample-classic-v1-renderlocked", "floors": 4, "width_m": 23, "depth_m": 23, "allow_outside_bounds": true, "state": "keeper", "artifact": "eixample-classic-v1/03-canonical-v24", "group": "chamfered urban perimeter block"},
+-    {"sequence": 5, "archetype_id": "london_heritage_mansion_block", "floors": 6, "state": "pending", "group": "European heritage stonework"},
++    {"sequence": 5, "archetype_id": "london_heritage_mansion_block", "variant_id": "london-heritage-mansion-portland-stone", "family_id": "london-heritage-mansion-portland-stone-v1-renderlocked", "floors": 5, "width_m": 24, "depth_m": 18, "state": "keeper", "artifact": "london-heritage-mansion-v1/04-canonical-v4", "group": "European heritage stonework"},
+     {"sequence": 6, "archetype_id": "parisian_midrise_block", "floors": 7, "state": "pending", "group": "European heritage boulevard"},
+     {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "floors": 7, "state": "pending", "group": "European heritage corner"},
+     {"sequence": 8, "archetype_id": "civic_classical_building", "floors": 2, "width_m": 42, "depth_m": 26, "state": "pending", "group": "classical civic monument"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 9e5c9a3850da111f6e449a1ad724a64c9524a40c..8b26941714e230de7c626bb37021596b0713dc75 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 4
++    assert sum(entry["state"] == "keeper" for entry in entries) == 5
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 830b314aa3d488b283c25a9140778c129f29aed2..f43af11cc30870a26e78992b1f51bbb7fdb2caa5 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -696,6 +696,29 @@ def test_classic_eixample_preserves_four_storeys_and_real_light_court():
+     assert assemblies["eixample_front_balconies"]["levels_z"] == [6.1, 10.0, 13.7]
+ 
+ 
++def test_london_mansion_uses_registered_wall_and_canonical_mansard_kit():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "london_heritage_mansion_block",
++            "variant_id": "london-heritage-mansion-portland-stone",
++        },
++        "materials": {},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++    nodes = {item["id"]: item for item in graph["nodes"]}
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "portland_stone_mansion_v3"
++    assert graph["reference_dimensions"]["floors"] == 5
++    assert nodes["london_mansard_kit"]["kind"] == "canonical_roof"
++    assert nodes["london_centre_roof_cap"]["kind"] == "hipped_roof"
++    assert assemblies["london_centre_pavilion_sash"]["kind"] == "curtain_wall"
++    assert assemblies["london_front_glazing"]["frame_mode"] == "mask_only"
++    assert not any(item["kind"] == "balcony_array" for item in graph["assemblies"])
++
++
+ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+ 
+@@ -711,6 +734,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+     assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
+     assert "disabled_assembly_ids" in source
+     assert "disabled_node_ids" in source
++    assert 'kind == "canonical_roof"' in source
+     assert "focus_height * 2.75" in source
+     assert "focus_height * 2.05" in source
+ 
+-- 
+2.55.0.windows.2
+

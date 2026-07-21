@@ -1,0 +1,351 @@
+From e9d4afe318ef8bfe18fe4f6ec724c620e4a0bd07 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 05:31:11 -0600
+Subject: [PATCH 11/32] feat: render-lock classic brownstone streetwall
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  21 ++++
+ .../architectural_signature_profiles.json     | 107 +++++++++++++++++-
+ tools/archetype_compiler/blender_generate.py  |  41 +++++++
+ .../high_quality_building_memory.json         |  22 +++-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  41 +++++++
+ 7 files changed, 230 insertions(+), 6 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index a83a1ec56001533a560ccb7f829af91472bf4920..46efef6caca868017e06017fd8bc5152c3c162d8 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -540,6 +540,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   Validate the assembled landmark—not only its body core—and let the full-width
+   ceremonial terrace establish the reference width when the images support it.
+ 
++### Paired brownstone streetwall + stoop/fence lessons
++
++- Selected-variant evidence can describe a larger joined composition than the
++  parent catalogue default. The traditional brownstone images prove a 30 metre
++  paired streetwall with three fixed entrances, so compiling one 18 metre
++  generic rowhouse would discard the defining construction rhythm.
++- An arched entrance is not finished when its bounding silhouette is correct.
++  Keep the timber backing visible and add paired leaves, panel relief and a
++  transom so the portal reads as a door rather than pale glazing or a blank
++  dark slab in the street view.
++- Garden-level ironwork must be segmented around every fixed stoop and landing.
++  Terminate fence rails at stair cheek walls and use the front-corner view to
++  prove all three entrance paths remain clear.
++- A flat roof still carries family identity. Preserve the paired roof seam,
++  stepped cornice/parapet termination, bounded skylights, chimney caps and
++  terracotta pots, then use the aerial review as the acceptance gate.
++- Where the references do not prove a rear addition or exposed party-wall
++  ornament, prefer a conservative solid rear envelope and quiet party wall.
++  Record that inference in human QA rather than inventing a second principal
++  facade.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 3e69b0671de18d2db645c1795ad2d4a5b2bf03c6..4d070ab1713545c899fcc8ed1199150507b1086f 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -715,9 +715,110 @@
+       }
+     },
+     "classic_brownstone_streetwall": {
+-      "identity": "New York brownstone row with individual stoops, high parlor floors, projecting oriels, carved lintels and a heavy bracketed cornice.",
+-      "material_zones": "warm brownstone; black iron stoops; dark timber doors; shadowed basement",
+-      "kits": ["rowhouse_stoops", "oriel_bays", "rowhouse_divisions", "bracketed_cornice"]
++      "identity": "Paired four-storey New York brownstone streetwall with three fixed high stoops, arched timber entrances, dense pedimented sash rhythm, iron-grilled basement and two continuous bracketed cornice sections.",
++      "material_zones": "warm reddish brownstone ashlar; cream carved window and cornice stone; black iron; dark green and oak doors; pale membrane roofs",
++      "glass_profile": "residential_low_e",
++      "material_overrides": {
++        "primary": {"base_color": "#955c43", "roughness": 0.80, "metallic": 0.0, "texture_key": "brownstone"},
++        "secondary": {"base_color": "#d7c7aa", "roughness": 0.76, "metallic": 0.0, "texture_key": "limestone"},
++        "accent": {"base_color": "#252827", "roughness": 0.38, "metallic": 0.58, "texture_key": "black_metal"},
++        "roof": {"base_color": "#aaa9a3", "roughness": 0.86, "metallic": 0.0, "texture_key": null}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#ddcfb2", "roughness": 0.76, "metallic": 0.0, "texture_key": "limestone"},
++        "signature_warm": {"base_color": "#284238", "roughness": 0.48, "metallic": 0.05, "texture_key": "dark_oak"},
++        "signature_metal": {"base_color": "#202322", "roughness": 0.34, "metallic": 0.72, "texture_key": "black_metal"}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [12, 30],
++        "recommendedDepth_m": [14, 22],
++        "recommendedFloors": [3, 5],
++        "wingDepth_m": [8, 12],
++        "preferredBayMultiple_m": 3.0,
++        "notes": [
++          "Use the fixed paired-streetwall graph only at the native 30 by 22 metre, four-floor rectangular tier.",
++          "On other parcels, keep stoops, entrances, end conditions, cornices and roofs fixed and repeat only ordinary sash bays."
++        ]
++      },
++      "kits": ["three_fixed_stoops", "arched_entrances", "pedimented_sash_bays", "basement_ironwork", "paired_bracketed_cornices", "flat_roof_chimneys"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "paired_brownstone_streetwall_v1",
++        "description": "Two joined four-storey brownstone sections with three fixed elevated entrances, three complete pedimented sash rows, a shadowed garden level, separate bracketed cornices and flat membrane roofs with skylights and chimneys.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0.png", "cues": ["three elevated arched entrances", "pedimented sash rhythm", "warm brownstone ashlar", "paired bracketed cornices"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_60.jpg", "cues": ["two joined roof sections", "three stoops", "flat membrane roofs", "chimneys and skylights"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_90.jpg", "cues": ["paired rectangular lots", "central party-wall seam", "rear-yard orientation", "no bay windows"]}
++        ],
++        "height_m": 15.30,
++        "final_bevel_m": 0.0,
++        "reference_dimensions": {"width_m": 30.0, "depth_m": 22.0, "floors": 4, "floor_height_m": 3.2},
++        "nodes": [
++          {"id": "brownstone_left_body", "kind": "box", "size": [15.0, 21.0, 12.9], "location": [-7.5, 0.0, 6.45], "material": "primary", "bevel_m": 0.10},
++          {"id": "brownstone_right_body", "kind": "box", "size": [15.0, 21.0, 12.7], "location": [7.5, 0.0, 6.35], "material": "primary", "bevel_m": 0.10},
++          {"id": "brownstone_basement_plinth", "kind": "box", "size": [30.4, 21.4, 1.45], "location": [0.0, 0.0, 0.725], "material": "primary", "bevel_m": 0.06},
++          {"id": "brownstone_left_roof", "kind": "box", "size": [15.0, 20.8, 0.22], "location": [-7.5, 0.0, 13.08], "material": "roof", "bevel_m": 0.03},
++          {"id": "brownstone_right_roof", "kind": "box", "size": [15.0, 20.8, 0.22], "location": [7.5, 0.0, 12.88], "material": "roof", "bevel_m": 0.03},
++          {"id": "brownstone_front_parapet_left", "kind": "box", "size": [15.2, 0.34, 0.55], "location": [-7.5, -10.42, 13.42], "material": "primary", "bevel_m": 0.035},
++          {"id": "brownstone_front_parapet_right", "kind": "box", "size": [15.2, 0.34, 0.55], "location": [7.5, -10.42, 13.22], "material": "primary", "bevel_m": 0.035},
++          {"id": "brownstone_rear_parapet", "kind": "box", "size": [30.2, 0.34, 0.68], "location": [0.0, 10.42, 13.42], "material": "primary", "bevel_m": 0.035},
++          {"id": "brownstone_left_parapet", "kind": "box", "size": [0.34, 20.5, 0.68], "location": [-14.82, 0.0, 13.42], "material": "primary", "bevel_m": 0.035},
++          {"id": "brownstone_right_parapet", "kind": "box", "size": [0.34, 20.5, 0.68], "location": [14.82, 0.0, 13.32], "material": "primary", "bevel_m": 0.035},
++          {"id": "brownstone_door_left", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [-11.0, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "brownstone_door_centre", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [0.5, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "brownstone_door_right", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [11.0, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
++          {"id": "brownstone_skylight_left", "kind": "box", "size": [2.2, 2.8, 0.28], "location": [-6.5, 1.0, 13.30], "material": "glass", "bevel_m": 0.04},
++          {"id": "brownstone_skylight_right", "kind": "box", "size": [2.2, 2.8, 0.28], "location": [7.0, 0.5, 13.10], "material": "glass", "bevel_m": 0.04},
++          {"id": "brownstone_chimney_left", "kind": "box", "size": [1.10, 1.10, 1.55], "location": [-10.0, 6.5, 13.75], "material": "primary", "bevel_m": 0.04},
++          {"id": "brownstone_chimney_centre", "kind": "box", "size": [1.10, 1.10, 1.65], "location": [0.0, 6.5, 13.78], "material": "primary", "bevel_m": 0.04},
++          {"id": "brownstone_chimney_right", "kind": "box", "size": [1.10, 1.10, 1.55], "location": [10.0, 6.5, 13.65], "material": "primary", "bevel_m": 0.04},
++          {"id": "brownstone_chimney_cap_left", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [-10.0, 6.5, 14.58], "material": "signature_stone", "bevel_m": 0.025},
++          {"id": "brownstone_chimney_cap_centre", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [0.0, 6.5, 14.65], "material": "signature_stone", "bevel_m": 0.025},
++          {"id": "brownstone_chimney_cap_right", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [10.0, 6.5, 14.48], "material": "signature_stone", "bevel_m": 0.025},
++          {"id": "brownstone_pot_left_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-10.22, 6.5, 14.94], "material": "primary", "vertices": 16},
++          {"id": "brownstone_pot_left_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-9.78, 6.5, 14.94], "material": "primary", "vertices": 16},
++          {"id": "brownstone_pot_centre_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-0.22, 6.5, 15.01], "material": "primary", "vertices": 16},
++          {"id": "brownstone_pot_centre_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [0.22, 6.5, 15.01], "material": "primary", "vertices": 16},
++          {"id": "brownstone_pot_right_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [9.78, 6.5, 14.84], "material": "primary", "vertices": 16},
++          {"id": "brownstone_pot_right_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [10.22, 6.5, 14.84], "material": "primary", "vertices": 16}
++        ],
++        "voids": [
++          {"id": "brownstone_garden_level", "size": [29.0, 1.1, 1.7], "location": [0.0, -10.5, 0.9], "purpose": "shadowed iron-grilled basement edge below the three stoops"},
++          {"id": "brownstone_three_entries", "size": [24.0, 3.5, 3.7], "location": [0.0, -11.5, 2.6], "purpose": "three fixed high-stoop entrances distributed across the paired streetwall"}
++        ],
++        "assemblies": [
++          {"id": "brownstone_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 10.65], "positions_m": [-13.2, -10.3, -7.4, -4.5, -1.6, 1.6, 4.5, 7.4, 10.3, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.25, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_1"},
++          {"id": "brownstone_middle_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 7.35], "positions_m": [-13.2, -10.3, -7.4, -4.5, -1.6, 1.6, 4.5, 7.4, 10.3, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.35, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_2"},
++          {"id": "brownstone_parlor_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 4.10], "positions_m": [-13.2, -8.1, -5.2, -2.4, 3.4, 6.3, 8.6, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.35, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_3"},
++          {"id": "brownstone_arched_entries", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.60, 3.48], "positions_m": [-11.0, 0.5, 11.0], "opening_width_m": 2.35, "opening_height_m": 3.10, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.20, "occupied_as_pane": false, "glass_material": "signature_warm", "frame_material": "signature_warm", "interior_material": "signature_warm", "door_material": "signature_warm"},
++          {"id": "brownstone_stoop_left", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [-11.0, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "brownstone_stoop_centre", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [0.5, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "brownstone_stoop_right", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [11.0, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
++          {"id": "brownstone_basement_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 0.72], "positions_m": [-13.2, -8.1, -5.2, -2.4, 3.4, 6.3, 8.6, 13.2], "opening_width_m": 1.35, "opening_height_m": 1.15, "mullions": 2, "transoms": 1, "profile_m": 0.12, "frame_material": "signature_metal", "interior_material": "massing_joint"},
++          {"id": "brownstone_fence_left_outer", "kind": "corbel_array", "axis": "front", "centre": [-13.8, -12.24, 0.0], "span_m": 2.0, "count": 7, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.18, "material": "signature_metal"},
++          {"id": "brownstone_fence_left_middle", "kind": "corbel_array", "axis": "front", "centre": [-5.25, -12.24, 0.0], "span_m": 7.3, "count": 22, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.16, "material": "signature_metal"},
++          {"id": "brownstone_fence_right_middle", "kind": "corbel_array", "axis": "front", "centre": [5.75, -12.24, 0.0], "span_m": 7.3, "count": 22, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.16, "material": "signature_metal"},
++          {"id": "brownstone_fence_right_outer", "kind": "corbel_array", "axis": "front", "centre": [13.8, -12.24, 0.0], "span_m": 2.0, "count": 7, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.18, "material": "signature_metal"},
++          {"id": "brownstone_fence_left_outer_rail", "kind": "shadow_line", "axis": "front", "centre": [-13.8, -12.24, 1.47], "span_m": 2.0, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "brownstone_fence_left_middle_rail", "kind": "shadow_line", "axis": "front", "centre": [-5.25, -12.24, 1.47], "span_m": 7.3, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "brownstone_fence_right_middle_rail", "kind": "shadow_line", "axis": "front", "centre": [5.75, -12.24, 1.47], "span_m": 7.3, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "brownstone_fence_right_outer_rail", "kind": "shadow_line", "axis": "front", "centre": [13.8, -12.24, 1.47], "span_m": 2.0, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
++          {"id": "brownstone_left_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [-7.5, -10.68, 12.52], "span_m": 15.0, "height_m": 0.22, "depth_m": 0.28, "material": "signature_stone"},
++          {"id": "brownstone_left_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [-7.5, -10.72, 12.90], "span_m": 15.25, "height_m": 0.24, "depth_m": 0.34, "material": "signature_stone"},
++          {"id": "brownstone_left_cornice_brackets", "kind": "corbel_array", "axis": "front", "centre": [-7.5, -10.58, 0.0], "span_m": 14.7, "count": 14, "levels_z": [12.67], "depth_m": 0.34, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_stone"},
++          {"id": "brownstone_right_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [7.5, -10.68, 12.32], "span_m": 15.0, "height_m": 0.22, "depth_m": 0.28, "material": "signature_stone"},
++          {"id": "brownstone_right_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [7.5, -10.72, 12.70], "span_m": 15.25, "height_m": 0.24, "depth_m": 0.34, "material": "signature_stone"},
++          {"id": "brownstone_right_cornice_brackets", "kind": "corbel_array", "axis": "front", "centre": [7.5, -10.58, 0.0], "span_m": 14.7, "count": 14, "levels_z": [12.47], "depth_m": 0.34, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_stone"},
++          {"id": "brownstone_left_side_low", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 4.10], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_2"},
++          {"id": "brownstone_left_side_mid", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 7.35], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_3"},
++          {"id": "brownstone_left_side_high", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 10.60], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_4"},
++          {"id": "brownstone_rear_windows_low", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 4.10], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_1"},
++          {"id": "brownstone_rear_windows_mid", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 7.35], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_2"},
++          {"id": "brownstone_rear_windows_high", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 10.60], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_3"}
++        ],
++        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
++      }
+     },
+     "brownstone_rowhouse_red_sandstone": {
+       "identity": "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
+diff --git a/tools/archetype_compiler/blender_generate.py b/tools/archetype_compiler/blender_generate.py
+index 850c906993a41c3094a33b43a037bacd4335b749..50ffad5b419861e548e7900bc0a4e31db34db6f9 100644
+--- a/tools/archetype_compiler/blender_generate.py
++++ b/tools/archetype_compiler/blender_generate.py
+@@ -8434,6 +8434,8 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
+     depth = float(spec.get("depth_m", 0.22))
+     profile = float(spec.get("profile_m", 0.18))
+     arched = bool(spec.get("arched", False))
++    pedimented = bool(spec.get("pedimented", False))
++    panelled_door = bool(spec.get("panelled_door", False))
+     mullions = max(1, int(spec.get("mullions", 2)))
+     transoms = max(0, int(spec.get("transoms", 2)))
+     recess = float(spec.get("recess_m", 0.16))
+@@ -8489,6 +8491,21 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
+                 opening_width + profile * 2.6, depth + 0.08, profile * 1.15,
+                 cz + opening_height / 2 + profile * 0.55, stone,
+             ))
++            if pedimented and axis == "front":
++                parts.append(add_gable_roof(
++                    f"{tag}_Pediment",
++                    (opening_width + profile * 4.2, depth + 0.12, profile * 2.6),
++                    (cx + along_value, cy - depth * 0.48,
++                     cz + opening_height / 2 + profile * 1.15),
++                    stone, min(0.035, profile * 0.18), "y",
++                ))
++                for bracket_index, bracket_offset in enumerate((-opening_width * 0.42, opening_width * 0.42)):
++                    parts.append(oriented_box(
++                        f"{tag}_PedimentBracket{bracket_index}",
++                        along_value + bracket_offset, 0.05,
++                        profile * 0.55, depth + 0.10, profile * 0.90,
++                        cz + opening_height / 2 + profile * 0.38, stone,
++                    ))
+         for mullion_index in range(1, mullions + 1):
+             offset = -opening_width / 2 + opening_width * mullion_index / (mullions + 1)
+             parts.append(oriented_box(
+@@ -8501,6 +8518,30 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
+                 f"{tag}_Transom{transom_index}", along_value, 0.065,
+                 opening_width, 0.07, 0.055, z, frame,
+             ))
++        if panelled_door:
++            door = _graph_material(mats, spec.get("door_material", "signature_warm"))
++            leaf_width = opening_width * 0.38
++            leaf_height = opening_height * 0.58
++            leaf_z = cz - opening_height * 0.16
++            for leaf_index, leaf_offset in enumerate((-opening_width * 0.205, opening_width * 0.205)):
++                parts.append(oriented_box(
++                    f"{tag}_DoorLeaf{leaf_index}", along_value + leaf_offset, 0.10,
++                    leaf_width, 0.085, leaf_height, leaf_z, door,
++                ))
++                for panel_index, panel_z in enumerate((
++                    leaf_z - leaf_height * 0.23,
++                    leaf_z + leaf_height * 0.23,
++                )):
++                    parts.append(oriented_box(
++                        f"{tag}_DoorLeaf{leaf_index}_Panel{panel_index}",
++                        along_value + leaf_offset, 0.155,
++                        leaf_width * 0.72, 0.045, leaf_height * 0.34, panel_z, door,
++                    ))
++            parts.append(oriented_box(
++                f"{tag}_DoorTransom", along_value, 0.145,
++                opening_width * 0.82, 0.055, 0.10,
++                cz + opening_height * 0.17, door,
++            ))
+ 
+ 
+ def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 5568088942a3409ef98e1212fea9a7b86329a59b..0e821fb0b59f9c15b4f139106aa14ed9a8ecf9d6 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-neoclassical-courthouse-temple-v77",
++  "memory_version": "2026-07-20-paired-brownstone-streetwall-v78",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -660,6 +660,26 @@
+       "symptom": "A monumental courthouse passes its body dimensions but underfills the authored native frontage",
+       "cause": "The grammar width described the full ceremonial composition while the body and first stair terrace were authored narrower.",
+       "correction": "Treat the stair, cheek walls and temple front as one fixed frontage landmark. Validate the complete assembled extent and let the full-width stair establish the native frontage when supported by the reference."
++    },
++    {
++      "symptom": "A paired brownstone streetwall collapses into one narrow generic rowhouse",
++      "cause": "The parent catalogue defaults described an individual 18 metre lot while the selected variant images proved two joined sections, three entrances and a 30 metre frontage.",
++      "correction": "Audit all selected-variant views before accepting catalogue defaults. Lock multi-building streetwall compositions to the evidence-led native tier and keep the joined roof, entrance and cornice count fixed."
++    },
++    {
++      "symptom": "A fixed timber entry becomes a pale glass arch or an unreadable blank slab",
++      "cause": "The generic arched-opening pane rendered in front of the authored door, or the pane and frame used one undifferentiated material without leaf construction.",
++      "correction": "Assign the arched opening's semantic layers deliberately, keep the timber backing visible, and add shadow-bearing paired leaves, panel relief and a transom before accepting the street view."
++    },
++    {
++      "symptom": "Basement ironwork cuts across a brownstone's stoops and entrance landings",
++      "cause": "A continuous frontage fence was generated without reserving the three fixed stair and landing clearances.",
++      "correction": "Segment garden-level fences between fixed entrances, terminate rails at stoop cheek walls and verify every stair remains unobstructed in the front-corner acceptance view."
++    },
++    {
++      "symptom": "A flat paired rowhouse roof loses its identity and reads as one generic slab",
++      "cause": "The central party-wall seam, stepped cornice/parapet break, chimney caps, pots and skylight rhythm were omitted because none changed the gross height envelope.",
++      "correction": "Treat paired roof seams and rooftop service silhouettes as fixed construction evidence. Preserve the two roof halves, stepped front termination and bounded chimney/skylight set, then prove them from the aerial camera."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index 957effbf49eba3221c6675bdb5e5dc3767bf66ad..b7210fa5c403592c50c9c70495253f09a63b3ec3 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -15,7 +15,7 @@
+     {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "variant_id": "parisian_corner_haussmann_turret", "family_id": "parisian-boulevard-corner-v1-renderlocked", "floors": 7, "width_m": 42, "depth_m": 40, "state": "keeper", "artifact": "parisian-boulevard-corner-v1/05-canonical-v4", "group": "European heritage corner"},
+     {"sequence": 8, "archetype_id": "civic_classical_building", "variant_id": "civic_classical_limestone_ionic", "family_id": "civic-classical-limestone-ionic-v1-renderlocked", "floors": 2, "width_m": 42, "depth_m": 34, "state": "keeper", "artifact": "civic-classical-limestone-v1/06-canonical-v6", "group": "classical civic monument"},
+     {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "variant_id": "courthouse_neoclassical_temple", "family_id": "courthouse-neoclassical-temple-v1-renderlocked", "floors": 4, "width_m": 60, "depth_m": 45, "state": "keeper", "artifact": "monumental-courthouse-axis-v1/03-canonical-v3", "group": "ceremonial civic axis"},
+-    {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "floors": 4, "state": "pending", "group": "historic urban streetwall"},
++    {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "variant_id": "classic_brownstone_traditional", "family_id": "classic-brownstone-streetwall-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 22, "state": "keeper", "artifact": "classic-brownstone-streetwall-v1/03-canonical-v3", "group": "historic urban streetwall"},
+     {"sequence": 11, "archetype_id": "historical_brick_main_street", "floors": 4, "state": "pending", "group": "historic mixed-use main street"},
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "floors": 4, "width_m": 30, "depth_m": 20, "state": "pending", "group": "industrial reuse"},
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "state": "pending", "group": "warehouse conversion"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 8b132e1f8b78e69e798ef0fd1cf4c4acf573479a..3df16b0852c9a9489b8865f116d3577954e60a20 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 9
++    assert sum(entry["state"] == "keeper" for entry in entries) == 10
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index 5156ecf658f4d53254de0b4749245fe3481857e8..2f10d98ebfa98ca15f211ef075582dfbd64b3c88 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -260,6 +260,47 @@ def test_neoclassical_courthouse_injects_eight_column_temple_and_seamed_hip():
+     ]
+ 
+ 
++def test_classic_brownstone_injects_paired_streetwall_stoops_and_panelled_entries():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "classic_brownstone_streetwall",
++            "variant_id": "classic_brownstone_traditional",
++        },
++        "materials": {},
++    }
++    injected = inject_signature(grammar)
++    graph = injected["massing_graph"]
++    assemblies = {item["id"]: item for item in graph["assemblies"]}
++
++    assert graph["profile"] == "paired_brownstone_streetwall_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 30.0,
++        "depth_m": 22.0,
++        "floors": 4,
++        "floor_height_m": 3.2,
++    }
++    assert {
++        "brownstone_stoop_left",
++        "brownstone_stoop_centre",
++        "brownstone_stoop_right",
++    } <= assemblies.keys()
++    entries = assemblies["brownstone_arched_entries"]
++    assert entries["positions_m"] == [-11.0, 0.5, 11.0]
++    assert entries["arched"] is True
++    assert entries["panelled_door"] is True
++    assert assemblies["brownstone_upper_windows"]["pedimented"] is True
++    assert len(assemblies["brownstone_upper_windows"]["positions_m"]) == 10
++    assert {
++        "brownstone_left_cornice_brackets",
++        "brownstone_right_cornice_brackets",
++    } <= assemblies.keys()
++    assert injected["footprint_compatibility"]["preferredProfiles"] == [
++        "rectangle", "l_shape", "u_shape",
++    ]
++
++
+ def test_v21_expansion_graphs_preserve_family_specific_construction():
+     """The methodology batch must not regress to one generic textured box."""
+     from signature_profiles import inject_signature
+-- 
+2.55.0.windows.2
+

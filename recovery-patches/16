@@ -1,0 +1,298 @@
+From a9820532096a5af72d371cae76fba707cba8095c Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Mon, 20 Jul 2026 08:21:02 -0600
+Subject: [PATCH 16/32] feat: render-lock Art Deco setback tower
+
+---
+ docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md       |  24 +++-
+ .../architectural_signature_profiles.json     | 120 ++++++++++++++++++
+ .../high_quality_building_memory.json         |  22 +++-
+ .../renderlock_v1_20_buildings.json           |   2 +-
+ .../archetype_compiler/tests/test_compiler.py |   2 +-
+ .../tests/test_facade_sheets.py               |  32 +++++
+ 6 files changed, 198 insertions(+), 4 deletions(-)
+
+diff --git a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+index ac0f6cd924c3c2579d6ae2a0b2d4dfd279763681..7f0aeb1d781fb1cdd78d89da81b8e9e6ff5c2a2c 100644
+--- a/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
++++ b/docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md
+@@ -9,7 +9,7 @@ The memory has two forms:
+ 
+ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
+ 
+-Current executable memory: `2026-07-20-richardsonian-warehouse-v82`.
++Current executable memory: `2026-07-20-art-deco-setback-v83`.
+ 
+ ## The quality target
+ 
+@@ -638,6 +638,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
+   parapet, one low access enclosure, one modest HVAC unit and one hatch; do not
+   introduce a tower, gable, court or full penthouse absent from the references.
+ 
++### Cream terra-cotta Art Deco tower + tier-envelope lessons
++
++- Every setback stage owns a distinct exposed envelope. A combined shaft stack
++  buried the podium atlas inside the larger granite base, so podium, shaft,
++  occupied setbacks and crown had to be separated and placed on their true
++  footprint faces.
++- Coordinates are axis-dependent at every tier: front and rear skins use the
++  stage's half-depth, while left and right skins use its half-width. A valid
++  front render cannot excuse blank return walls; aerial review must prove all
++  four faces through the complete setback hierarchy.
++- Do not turn an unreviewed legacy automatic glass mask into hero geometry.
++  Reflective mullions and relief panels produced torn silver cutouts; the clean
++  correction retained the deterministic PBR elevation and fixed physical piers
++  while disabling the noisy semantic overlay until a registered schedule exists.
++- Landmark crowns cannot be generic roof props. Preserve the stepped plinth,
++  dark octagonal lantern, eight separate gilded posts, faceted roof and finial
++  as fixed construction, and compare their silhouette to both oblique and
++  roof-plan references.
++- A geometry-only pilot may validate the 30 by 28 metre footprint, 15 occupied
++  levels and 74.5 metre landmark silhouette, but keeper promotion still needs
++  the complete module package and the corrected textured eight-view review.
++
+ ## Updating this memory
+ 
+ When a pilot reveals a reusable lesson:
+diff --git a/tools/archetype_compiler/architectural_signature_profiles.json b/tools/archetype_compiler/architectural_signature_profiles.json
+index 4fc122d99a96d9129d375a5508cd3d17576a6c7b..3512b70e6f403e8db562ad5eaf3959a5ce8a9091 100644
+--- a/tools/archetype_compiler/architectural_signature_profiles.json
++++ b/tools/archetype_compiler/architectural_signature_profiles.json
+@@ -1333,6 +1333,126 @@
+       "material_zones": "dark rock-faced stone and red brick; deep window shadows; copper accents",
+       "kits": ["romanesque_arcade", "heavy_masonry_piers", "corbelled_cornice", "gabled_pavilions"]
+     },
++    "art_deco_cream_terracotta": {
++      "identity": "Cream glazed terra-cotta Art Deco corner tower with a dark granite commercial base, uninterrupted vertical piers, four stepped massing stages and a faceted gilded lantern crown.",
++      "material_zones": "cream glazed architectural terra cotta; polished black granite podium; dark bronze windows and spandrels; restrained gold leaf sunbursts and crown metal",
++      "glass_profile": "office_clear_occupied",
++      "material_overrides": {
++        "primary": {"base_color": "#d8c5a3", "roughness": 0.48, "texture_key": null},
++        "secondary": {"base_color": "#171a1d", "roughness": 0.32, "metallic": 0.18, "texture_key": null},
++        "accent": {"base_color": "#b88a2c", "roughness": 0.28, "metallic": 0.72, "texture_key": null},
++        "roof": {"base_color": "#36383a", "roughness": 0.74, "texture_key": "roof_membrane"}
++      },
++      "signature_material_overrides": {
++        "signature_stone": {"base_color": "#efe1c7", "roughness": 0.46, "texture_key": null},
++        "signature_metal": {"base_color": "#171311", "roughness": 0.30, "metallic": 0.62, "texture_key": null},
++        "signature_warm": {"base_color": "#c59a3a", "roughness": 0.27, "metallic": 0.68, "texture_key": null}
++      },
++      "footprint_compatibility_override": {
++        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
++        "recommendedWidth_m": [26, 36],
++        "recommendedDepth_m": [24, 34],
++        "recommendedFloors": [15, 15],
++        "wingDepth_m": [12, 16],
++        "preferredBayMultiple_m": 3.75,
++        "notes": [
++          "Use the fixed Cream Terra Cotta graph only at the native 30 by 28 metre, fifteen-level rectangular landmark tier.",
++          "Keep the dark podium, eight-bay shaft, concentric setbacks, terrace-edge gold accents and octagonal lantern fixed; derived parcel kits may adapt only complete ordinary shaft bays."
++        ]
++      },
++      "kits": ["deco_granite_portal", "terra_cotta_vertical_piers", "stepped_terraces", "octagonal_gilded_lantern"],
++      "massing_graph": {
++        "schema": "massing-graph@1",
++        "profile": "cream_terracotta_four_stage_lantern_v1",
++        "description": "A render-locked fifteen-level cream terra-cotta tower with an eight-bay square shaft, two occupied setback tiers, a smaller crown stage and a physical gilded octagonal lantern.",
++        "reference_views": [
++          {"role": "street_identity", "path": "/archetypes/buildings/art_deco_setback_tower/variant_0.png", "cues": ["dark commercial base", "cream vertical shaft", "gold sunbursts", "symmetrical stepped crown"]},
++          {"role": "oblique_massing", "path": "/archetypes/buildings/art_deco_setback_tower/variant_0_angle_60.jpg", "cues": ["square corner tower", "four major massing stages", "terraced flat setbacks", "faceted lantern"]},
++          {"role": "roof_plan", "path": "/archetypes/buildings/art_deco_setback_tower/variant_0_angle_90.jpg", "cues": ["concentric rectilinear setbacks", "octagonal gilded cap", "no dome or full roof penthouse"]}
++        ],
++        "height_m": 74.5,
++        "final_bevel_m": 0.0,
++        "disabled_assembly_ids": ["deco_front_podium_glazing", "deco_left_podium_glazing", "deco_rear_podium_glazing", "deco_right_podium_glazing", "deco_front_main_glazing", "deco_left_main_glazing", "deco_rear_main_glazing", "deco_right_main_glazing"],
++        "reference_dimensions": {"width_m": 30.0, "depth_m": 28.0, "floors": 15, "floor_height_m": 3.6},
++        "nodes": [
++          {"id": "deco_granite_plinth", "kind": "box", "size": [30.8, 28.8, 0.42], "location": [0.0, 0.0, 0.21], "material": "secondary", "bevel_m": 0.05},
++          {"id": "deco_podium_core", "kind": "box", "size": [30.0, 28.0, 4.5], "location": [0.0, 0.0, 2.25], "material": "secondary", "bevel_m": 0.10},
++          {"id": "deco_main_shaft", "kind": "box", "size": [29.0, 27.0, 32.4], "location": [0.0, 0.0, 20.7], "material": "primary", "bevel_m": 0.10},
++          {"id": "deco_terrace_one", "kind": "box", "size": [25.4, 23.4, 0.34], "location": [0.0, 0.0, 37.07], "material": "roof", "bevel_m": 0.04},
++          {"id": "deco_stage_one", "kind": "box", "size": [24.0, 22.0, 10.8], "location": [0.0, 0.0, 42.3], "material": "primary", "bevel_m": 0.09},
++          {"id": "deco_terrace_two", "kind": "box", "size": [19.4, 17.4, 0.34], "location": [0.0, 0.0, 47.87], "material": "roof", "bevel_m": 0.04},
++          {"id": "deco_stage_two", "kind": "box", "size": [18.0, 16.0, 7.2], "location": [0.0, 0.0, 51.3], "material": "primary", "bevel_m": 0.08},
++          {"id": "deco_terrace_three", "kind": "box", "size": [14.4, 13.4, 0.34], "location": [0.0, 0.0, 55.07], "material": "roof", "bevel_m": 0.04},
++          {"id": "deco_crown_stage", "kind": "chamfered_box", "size": [13.0, 12.0, 4.5], "location": [0.0, 0.0, 57.15], "material": "primary", "chamfer_m": 0.75, "bevel_m": 0.07},
++          {"id": "deco_lantern_plinth", "kind": "chamfered_box", "size": [11.6, 10.8, 1.0], "location": [0.0, 0.0, 59.9], "material": "signature_warm", "chamfer_m": 0.65, "bevel_m": 0.05},
++          {"id": "deco_lantern_shadow", "kind": "cylinder", "radius_m": 4.65, "height_m": 7.0, "location": [0.0, 0.0, 63.9], "vertices": 8, "rotation_z_deg": 22.5, "material": "signature_metal"},
++          {"id": "deco_lantern_post_n", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [0.0, 4.55, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_ne", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [3.22, 3.22, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_e", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [4.55, 0.0, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_se", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [3.22, -3.22, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_s", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [0.0, -4.55, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_sw", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [-3.22, -3.22, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_w", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [-4.55, 0.0, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_post_nw", "kind": "box", "size": [0.38, 0.38, 7.3], "location": [-3.22, 3.22, 63.9], "material": "signature_warm", "bevel_m": 0.04},
++          {"id": "deco_lantern_roof", "kind": "cone", "radius_m": 5.25, "height_m": 4.2, "location": [0.0, 0.0, 69.55], "vertices": 8, "rotation_z_deg": 22.5, "material": "signature_warm"},
++          {"id": "deco_finial", "kind": "cylinder", "radius_m": 0.28, "height_m": 3.0, "location": [0.0, 0.0, 73.0], "vertices": 12, "material": "signature_warm"}
++        ],
++        "voids": [
++          {"id": "deco_setback_terraces", "size": [28.0, 26.0, 22.0], "location": [0.0, 0.0, 48.0], "purpose": "three concentric occupied setbacks surrounding progressively smaller fixed tower stages"},
++          {"id": "deco_lantern_glazing", "size": [8.0, 8.0, 6.0], "location": [0.0, 0.0, 64.0], "purpose": "illuminated octagonal crown glazing behind a physical gilded frame"}
++        ],
++        "assemblies": [
++          {"id": "deco_front_podium_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -14.025, 2.25], "span_m": 29.5, "height_m": 4.4, "depth_m": 0.05, "band": "podium"},
++          {"id": "deco_left_podium_skin", "kind": "facade_skin", "axis": "left", "centre": [-15.025, 0.0, 2.25], "span_m": 27.5, "height_m": 4.4, "depth_m": 0.05, "band": "podium", "flip_u": true},
++          {"id": "deco_rear_podium_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 14.025, 2.25], "span_m": 29.5, "height_m": 4.4, "depth_m": 0.05, "band": "podium", "flip_u": true},
++          {"id": "deco_right_podium_skin", "kind": "facade_skin", "axis": "right", "centre": [15.025, 0.0, 2.25], "span_m": 27.5, "height_m": 4.4, "depth_m": 0.05, "band": "podium"},
++          {"id": "deco_front_podium_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -14.025, 2.25], "span_m": 29.5, "height_m": 4.4, "columns": 8, "rows": 1, "profile_m": 0.08, "band": "podium", "repeat_span_m": 14.75, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only"},
++          {"id": "deco_left_podium_glazing", "kind": "glazing_overlay", "axis": "left", "centre": [-15.025, 0.0, 2.25], "span_m": 27.5, "height_m": 4.4, "columns": 8, "rows": 1, "profile_m": 0.08, "band": "podium", "repeat_span_m": 13.75, "glass_profile": "office_clear_occupied", "flip_u": true, "surface_only": true, "frame_mode": "mask_only"},
++          {"id": "deco_rear_podium_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 14.025, 2.25], "span_m": 29.5, "height_m": 4.4, "columns": 8, "rows": 1, "profile_m": 0.08, "band": "podium", "repeat_span_m": 14.75, "glass_profile": "office_clear_occupied", "flip_u": true, "surface_only": true, "frame_mode": "mask_only"},
++          {"id": "deco_right_podium_glazing", "kind": "glazing_overlay", "axis": "right", "centre": [15.025, 0.0, 2.25], "span_m": 27.5, "height_m": 4.4, "columns": 8, "rows": 1, "profile_m": 0.08, "band": "podium", "repeat_span_m": 13.75, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only"},
++          {"id": "deco_front_main_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -13.525, 4.5], "span_m": 29.0, "depth_m": 0.05, "repeat_count": 2, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "deco_left_main_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-14.525, 0.0, 4.5], "span_m": 27.0, "depth_m": 0.05, "repeat_count": 2, "flip_u": true, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "deco_rear_main_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 13.525, 4.5], "span_m": 29.0, "depth_m": 0.05, "repeat_count": 2, "flip_u": true, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "deco_right_main_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [14.525, 0.0, 4.5], "span_m": 27.0, "depth_m": 0.05, "repeat_count": 2, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}]},
++          {"id": "deco_front_stage_one", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -11.025, 36.9], "span_m": 23.0, "depth_m": 0.05, "levels": [{"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_left_stage_one", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-12.025, 0.0, 36.9], "span_m": 21.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_rear_stage_one", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 11.025, 36.9], "span_m": 23.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_right_stage_one", "kind": "facade_skin_stack", "axis": "right", "base_centre": [12.025, 0.0, 36.9], "span_m": 21.0, "depth_m": 0.05, "levels": [{"band": "floor_alt", "height_m": 3.6}, {"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_front_stage_two", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -8.025, 47.7], "span_m": 17.0, "depth_m": 0.05, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_left_stage_two", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-9.025, 0.0, 47.7], "span_m": 15.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_rear_stage_two", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 8.025, 47.7], "span_m": 17.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_right_stage_two", "kind": "facade_skin_stack", "axis": "right", "base_centre": [9.025, 0.0, 47.7], "span_m": 15.0, "depth_m": 0.05, "levels": [{"band": "floor", "height_m": 3.6}, {"band": "floor_alt", "height_m": 3.6}]},
++          {"id": "deco_front_crown_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -6.025, 57.15], "span_m": 12.0, "height_m": 4.4, "depth_m": 0.05, "band": "crown"},
++          {"id": "deco_left_crown_skin", "kind": "facade_skin", "axis": "left", "centre": [-6.525, 0.0, 57.15], "span_m": 11.0, "height_m": 4.4, "depth_m": 0.05, "band": "crown", "flip_u": true},
++          {"id": "deco_rear_crown_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 6.025, 57.15], "span_m": 12.0, "height_m": 4.4, "depth_m": 0.05, "band": "crown", "flip_u": true},
++          {"id": "deco_right_crown_skin", "kind": "facade_skin", "axis": "right", "centre": [6.525, 0.0, 57.15], "span_m": 11.0, "height_m": 4.4, "depth_m": 0.05, "band": "crown"},
++          {"id": "deco_front_main_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -13.525, 4.5], "span_m": 29.0, "columns": 8, "rows": 10, "profile_m": 0.07, "band": "floor", "repeat_span_m": 14.5, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}]},
++          {"id": "deco_left_main_glazing", "kind": "glazing_overlay", "axis": "left", "base_centre": [-14.525, 0.0, 4.5], "span_m": 27.0, "columns": 8, "rows": 10, "profile_m": 0.07, "band": "floor", "repeat_span_m": 13.5, "flip_u": true, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}]},
++          {"id": "deco_rear_main_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [0.0, 13.525, 4.5], "span_m": 29.0, "columns": 8, "rows": 10, "profile_m": 0.07, "band": "floor", "repeat_span_m": 14.5, "flip_u": true, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}]},
++          {"id": "deco_right_main_glazing", "kind": "glazing_overlay", "axis": "right", "base_centre": [14.525, 0.0, 4.5], "span_m": 27.0, "columns": 8, "rows": 10, "profile_m": 0.07, "band": "floor", "repeat_span_m": 13.5, "glass_profile": "office_clear_occupied", "surface_only": true, "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}, {"band": "floor_alt", "height_m": 3.6, "columns": 8}, {"band": "floor", "height_m": 3.6, "columns": 8}]},
++          {"id": "deco_main_vertical_piers", "kind": "frame_grid", "axis": "front", "centre": [0.0, -13.72, 20.7], "span_m": 29.2, "height_m": 32.3, "columns": 8, "rows": 9, "active_vertical_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8], "active_horizontal_indices": [0, 9], "vertical_profile_m": 0.24, "horizontal_profile_m": 0.15, "depth_m": 0.24, "edge_profile_multiplier": 1.35, "material": "primary"},
++          {"id": "deco_gold_crown_fins", "kind": "frame_grid", "axis": "front", "centre": [0.0, -6.75, 57.15], "span_m": 12.2, "height_m": 4.3, "columns": 4, "rows": 1, "active_vertical_indices": [0, 2, 4], "active_horizontal_indices": [0, 1], "vertical_profile_m": 0.28, "horizontal_profile_m": 0.14, "depth_m": 0.24, "material": "signature_warm"},
++          {"id": "deco_terrace_one_front_accents", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, -11.75, 37.22], "span_m": 23.5, "count": 10, "shaft_height_m": 0.34, "cap_height_m": 0.22, "radius_m": 0.075, "material": "signature_warm"},
++          {"id": "deco_terrace_one_rear_accents", "kind": "pinnacle_array", "axis": "rear", "base_centre": [0.0, 11.75, 37.22], "span_m": 23.5, "count": 10, "shaft_height_m": 0.34, "cap_height_m": 0.22, "radius_m": 0.075, "material": "signature_warm"},
++          {"id": "deco_terrace_one_left_accents", "kind": "pinnacle_array", "axis": "left", "base_centre": [-12.75, 0.0, 37.22], "span_m": 21.5, "count": 9, "shaft_height_m": 0.34, "cap_height_m": 0.22, "radius_m": 0.075, "material": "signature_warm"},
++          {"id": "deco_terrace_one_right_accents", "kind": "pinnacle_array", "axis": "right", "base_centre": [12.75, 0.0, 37.22], "span_m": 21.5, "count": 9, "shaft_height_m": 0.34, "cap_height_m": 0.22, "radius_m": 0.075, "material": "signature_warm"},
++          {"id": "deco_terrace_two_front_accents", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, -8.75, 48.02], "span_m": 17.5, "count": 8, "shaft_height_m": 0.38, "cap_height_m": 0.24, "radius_m": 0.085, "material": "signature_warm"},
++          {"id": "deco_terrace_two_rear_accents", "kind": "pinnacle_array", "axis": "rear", "base_centre": [0.0, 8.75, 48.02], "span_m": 17.5, "count": 8, "shaft_height_m": 0.38, "cap_height_m": 0.24, "radius_m": 0.085, "material": "signature_warm"},
++          {"id": "deco_terrace_two_left_accents", "kind": "pinnacle_array", "axis": "left", "base_centre": [-9.75, 0.0, 48.02], "span_m": 15.5, "count": 7, "shaft_height_m": 0.38, "cap_height_m": 0.24, "radius_m": 0.085, "material": "signature_warm"},
++          {"id": "deco_terrace_two_right_accents", "kind": "pinnacle_array", "axis": "right", "base_centre": [9.75, 0.0, 48.02], "span_m": 15.5, "count": 7, "shaft_height_m": 0.38, "cap_height_m": 0.24, "radius_m": 0.085, "material": "signature_warm"},
++          {"id": "deco_terrace_three_front_accents", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, -6.55, 55.22], "span_m": 12.6, "count": 6, "shaft_height_m": 0.44, "cap_height_m": 0.28, "radius_m": 0.095, "material": "signature_warm"},
++          {"id": "deco_terrace_three_rear_accents", "kind": "pinnacle_array", "axis": "rear", "base_centre": [0.0, 6.55, 55.22], "span_m": 12.6, "count": 6, "shaft_height_m": 0.44, "cap_height_m": 0.28, "radius_m": 0.095, "material": "signature_warm"},
++          {"id": "deco_terrace_three_left_accents", "kind": "pinnacle_array", "axis": "left", "base_centre": [-7.05, 0.0, 55.22], "span_m": 11.6, "count": 6, "shaft_height_m": 0.44, "cap_height_m": 0.28, "radius_m": 0.095, "material": "signature_warm"},
++          {"id": "deco_terrace_three_right_accents", "kind": "pinnacle_array", "axis": "right", "base_centre": [7.05, 0.0, 55.22], "span_m": 11.6, "count": 6, "shaft_height_m": 0.44, "cap_height_m": 0.28, "radius_m": 0.095, "material": "signature_warm"},
++          {"id": "deco_lantern_front_spires", "kind": "pinnacle_array", "axis": "front", "base_centre": [0.0, -5.65, 60.4], "span_m": 10.8, "count": 5, "shaft_height_m": 0.80, "cap_height_m": 0.42, "radius_m": 0.12, "material": "signature_warm"},
++          {"id": "deco_lantern_rear_spires", "kind": "pinnacle_array", "axis": "rear", "base_centre": [0.0, 5.65, 60.4], "span_m": 10.8, "count": 5, "shaft_height_m": 0.80, "cap_height_m": 0.42, "radius_m": 0.12, "material": "signature_warm"},
++          {"id": "deco_lantern_left_spires", "kind": "pinnacle_array", "axis": "left", "base_centre": [-6.05, 0.0, 60.4], "span_m": 10.0, "count": 5, "shaft_height_m": 0.80, "cap_height_m": 0.42, "radius_m": 0.12, "material": "signature_warm"},
++          {"id": "deco_lantern_right_spires", "kind": "pinnacle_array", "axis": "right", "base_centre": [6.05, 0.0, 60.4], "span_m": 10.0, "count": 5, "shaft_height_m": 0.80, "cap_height_m": 0.42, "radius_m": 0.12, "material": "signature_warm"},
++          {"id": "deco_granite_entry_steps", "kind": "steps", "centre": [0.0, -15.1, 0.0], "width_m": 6.0, "depth_m": 1.6, "count": 3, "rise_m": 0.14, "material": "secondary"}
++        ],
++        "target_views": ["archetype_match", "street", "aerial", "context"]
++      }
++    },
+     "art_deco_setback_tower": {
+       "identity": "Vertical Art Deco tower with a richly modelled entrance, uninterrupted piers, stepped setbacks, fluted spandrels and an illuminated geometric crown.",
+       "material_zones": "warm buff masonry; dark bronze; emerald and gold crown accents; shadowed spandrels",
+diff --git a/tools/archetype_compiler/high_quality_building_memory.json b/tools/archetype_compiler/high_quality_building_memory.json
+index 0718cd3c1d4d990e73a816d294b096cfa108cd03..8b0d7e28f7e5b932f1b988200c0df4f6b4627f8e 100644
+--- a/tools/archetype_compiler/high_quality_building_memory.json
++++ b/tools/archetype_compiler/high_quality_building_memory.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "high-quality-building-memory@1",
+-  "memory_version": "2026-07-20-richardsonian-warehouse-v82",
++  "memory_version": "2026-07-20-art-deco-setback-v83",
+   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+   "non_negotiable_principles": [
+@@ -755,6 +755,26 @@
+       "symptom": "A five-bay short warehouse elevation displays ten compressed Romanesque bays behind five physical piers",
+       "cause": "The complete long-face atlas was wrapped onto a shorter side even though the oblique reference proved an independent five-bay structural rhythm.",
+       "correction": "Partition the secondary elevation into evidence-led per-bay UV crops and crop the semantic glazing regions with the same bounds. Verify that each cropped bay aligns to one physical side pier interval."
++    },
++    {
++      "symptom": "An Art Deco tower's black commercial podium renders as a blank block while the shaft facade begins above it",
++      "cause": "One facade stack placed the podium atlas on the inset shaft plane even though the granite base has a larger footprint, so the podium skin was buried inside the solid core.",
++      "correction": "Treat each setback footprint as its own exposed envelope. Separate podium, shaft and crown skins and place every surface at the true face of its corresponding tier."
++    },
++    {
++      "symptom": "Upper setback returns remain blank even though the front elevation is fully textured",
++      "cause": "Side skins used the tier depth coordinate instead of the tier width coordinate and landed inside the setback cores.",
++      "correction": "Resolve facade-plane coordinates by axis for every stage: front and rear use half-depth, left and right use half-width. Audit all four return faces from the aerial camera."
++    },
++    {
++      "symptom": "Legacy automatic glass masks tear silver fragments across an otherwise clean historic facade",
++      "cause": "Unregistered semantic cutouts interpreted reflective mullions, relief panels and weathering as irregular glass regions.",
++      "correction": "Do not promote noisy automatic cutouts to physical geometry. Prefer a clean deterministic PBR skin and fixed shadow-bearing piers, or create a reviewed registered opening schedule before enabling recessed semantic glazing."
++    },
++    {
++      "symptom": "A landmark Art Deco crown reads as a generic black cylinder with a gold cap",
++      "cause": "The lantern silhouette was reduced to material colour without a faceted frame, vertical posts, terrace plinth and finial.",
++      "correction": "Build landmark crowns as fixed assemblies: dark faceted lantern core, separate gilded perimeter posts, stepped plinth, polygonal roof and bounded finial, then prove the complete hierarchy in aerial review."
+     }
+   ]
+ }
+diff --git a/tools/archetype_compiler/renderlock_v1_20_buildings.json b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+index d70671bc9f824678abac90d525821731a8f3cfaa..d0b28b7663c37bcde1d4a19262d9ae2e49cbfdff 100644
+--- a/tools/archetype_compiler/renderlock_v1_20_buildings.json
++++ b/tools/archetype_compiler/renderlock_v1_20_buildings.json
+@@ -20,7 +20,7 @@
+     {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "variant_id": "industrial_brick_original_mill", "family_id": "industrial-brick-original-mill-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 20, "state": "keeper", "artifact": "industrial-brick-original-mill-v1/03-canonical-v3", "group": "industrial reuse"},
+     {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "variant_id": "warehouse_loft_cast_iron", "family_id": "adaptive-reuse-cast-iron-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 26, "state": "keeper", "artifact": "adaptive-reuse-cast-iron-v1/03-canonical-v3", "group": "warehouse conversion"},
+     {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "variant_id": "warehouse_arch_window_brick", "family_id": "romanesque-arch-window-brick-v1-renderlocked", "floors": 3, "width_m": 44, "depth_m": 36, "state": "keeper", "artifact": "romanesque-arch-window-brick-v1/03-canonical-v3", "group": "Romanesque industrial heritage"},
+-    {"sequence": 15, "archetype_id": "art_deco_setback_tower", "floors": 14, "state": "pending", "group": "metropolitan setback icon"},
++    {"sequence": 15, "archetype_id": "art_deco_setback_tower", "variant_id": "art_deco_cream_terracotta", "family_id": "art-deco-cream-terracotta-v1-renderlocked", "floors": 15, "width_m": 30, "depth_m": 28, "state": "keeper", "artifact": "art-deco-cream-terracotta-v1/05-canonical-v5", "group": "metropolitan setback icon"},
+     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "floors": 7, "width_m": 20, "depth_m": 16, "state": "pending", "group": "mass-timber residential"},
+     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "floors": 7, "state": "pending", "group": "Scandinavian urban housing"},
+     {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "state": "pending", "group": "arcaded mixed-use"},
+diff --git a/tools/archetype_compiler/tests/test_compiler.py b/tools/archetype_compiler/tests/test_compiler.py
+index 3dd7b7baa003761fb0703fbb502c004ef0bb9fae..e7190877c486e54e739f39726f3445d0b61bf970 100644
+--- a/tools/archetype_compiler/tests/test_compiler.py
++++ b/tools/archetype_compiler/tests/test_compiler.py
+@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
+         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+     }
+     assert len(identities) == 20
+-    assert sum(entry["state"] == "keeper" for entry in entries) == 14
++    assert sum(entry["state"] == "keeper" for entry in entries) == 15
+ 
+ 
+ def test_selected_flat_roof_overrides_parent_mansard_alternative():
+diff --git a/tools/archetype_compiler/tests/test_facade_sheets.py b/tools/archetype_compiler/tests/test_facade_sheets.py
+index d85b2f30e5cba68c0d891cd6a104ba5c4176d0b5..7a48e65b37428f1b15bf41937952f5f973a59dbb 100644
+--- a/tools/archetype_compiler/tests/test_facade_sheets.py
++++ b/tools/archetype_compiler/tests/test_facade_sheets.py
+@@ -249,6 +249,38 @@ def test_arch_window_warehouse_variant_injects_ten_bay_romanesque_graph():
+     assert all(skin["span_m"] == 7.1 for skin in side_skins)
+ 
+ 
++def test_cream_terracotta_art_deco_variant_injects_fixed_setback_lantern_graph():
++    from signature_profiles import inject_signature
++
++    grammar = {
++        "source": {
++            "archetype_id": "art_deco_setback_tower",
++            "variant_id": "art_deco_cream_terracotta",
++        },
++        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
++    }
++    graph = inject_signature(grammar)["massing_graph"]
++
++    assert graph["profile"] == "cream_terracotta_four_stage_lantern_v1"
++    assert graph["reference_dimensions"] == {
++        "width_m": 30.0,
++        "depth_m": 28.0,
++        "floors": 15,
++        "floor_height_m": 3.6,
++    }
++    node_ids = {node["id"] for node in graph["nodes"]}
++    assert {"deco_main_shaft", "deco_stage_one", "deco_stage_two", "deco_crown_stage"} <= node_ids
++    assert len([node_id for node_id in node_ids if node_id.startswith("deco_lantern_post_")]) == 8
++    front_stack = next(
++        assembly for assembly in graph["assemblies"]
++        if assembly["id"] == "deco_front_main_skin"
++    )
++    assert front_stack["repeat_count"] == 2
++    assert len(front_stack["levels"]) == 9
++    assert "deco_front_main_glazing" in graph["disabled_assembly_ids"]
++    assert "deco_front_podium_glazing" in graph["disabled_assembly_ids"]
++
++
+ def test_parametric_relief_pilots_keep_landmark_reference_contracts():
+     profiles = json.loads(
+         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+-- 
+2.55.0.windows.2
+
