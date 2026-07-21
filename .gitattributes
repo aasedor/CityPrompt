@@ -1,0 +1,2 @@
+# Recovery mbox patches must retain exact bytes; embedded diff lines are data.
+recovery-patches/[0-9]* binary
