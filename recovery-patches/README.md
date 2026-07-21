@@ -5,10 +5,11 @@ recovered workspace base through the completed parcel-landscape and Direct 3D
 render work.
 
 - Local branch: `codex/empty-lot-community`
-- Verified local tip: `ffe96838305470d96671a0a7601e1c49d07cd662`
+- Verified local tip: `767d12351a2ec517ac2bd9ee2f2c4ff8bd0c1c2d`
 - Recovered shallow base: `3cbfcdaa90a02fea7220d185b1230b09923f2168`
-- Patch files: `1` through `32`, in application order
+- Patch files: `1` through `33`, in application order
 - Final feature patch: `32`
+- Follow-up LEGO archetype handoff fix: `33`
 
 The recovered base commit and several of its promised objects are no longer
 retained by the GitHub remote. A normal branch push therefore attempted to
@@ -50,3 +51,12 @@ git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
 
 The paid pilot is saved as project render 8 in project
 `1c46efd3-03df-4a70-b977-35631c755e46`.
+
+## Patch 33 verification
+
+- Industrial Brick Mixed Use at 30 x 20 m and 6 floors selected the
+  `industrial-brick-original-mill-v1-renderlocked` family in live browser QA.
+- Frontend focused suite: 43 passed
+- Backend LEGO suite: 46 passed
+- TypeScript type check and production build: passed
+- Ruff and Git diff checks: passed

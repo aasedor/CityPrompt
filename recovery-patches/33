@@ -1,0 +1,1388 @@
+From 767d12351a2ec517ac2bd9ee2f2c4ff8bd0c1c2d Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Tue, 21 Jul 2026 04:47:47 -0600
+Subject: [PATCH 33/33] fix: preserve LEGO archetype handoff
+
+---
+ backend/app/api/v1/lego_assembly.py           |  10 +-
+ backend/app/services/lego_assembly.py         |  95 ++++++++-
+ backend/tests/test_lego_assembly.py           | 193 ++++++++++++++++-
+ .../viewer/ZonePropertiesPanel.test.tsx       | 184 ++++++++++++++++
+ .../components/viewer/ZonePropertiesPanel.tsx | 197 +++++++++++-------
+ .../legoAssembly/LegoAssemblyPreview.test.tsx |  42 +++-
+ .../legoAssembly/LegoAssemblyPreview.tsx      |  47 ++++-
+ .../legoAssembly/LegoBuilderPanel.test.tsx    |  32 ++-
+ .../legoAssembly/LegoBuilderPanel.tsx         |   7 +-
+ .../legoAssembly/communityCompiler.test.ts    |   7 +-
+ .../legoAssembly/communityCompiler.ts         |  24 +--
+ .../legoAssembly/legoAssemblyApi.test.ts      |  60 ++++++
+ .../features/legoAssembly/legoAssemblyApi.ts  |  78 +++++++
+ .../src/features/projects/ProjectViewPage.tsx |   4 +-
+ 14 files changed, 870 insertions(+), 110 deletions(-)
+ create mode 100644 frontend/src/components/viewer/ZonePropertiesPanel.test.tsx
+
+diff --git a/backend/app/api/v1/lego_assembly.py b/backend/app/api/v1/lego_assembly.py
+index ca4969834d78f5c61965de78662e34e9e4dacc51..08f7145d92b3c929208e56afa4bf7450f3fd628a 100644
+--- a/backend/app/api/v1/lego_assembly.py
++++ b/backend/app/api/v1/lego_assembly.py
+@@ -304,7 +304,15 @@ async def create_lego_assembly_plan(
+             ),
+         )
+     except AssemblyPlanningError as exc:
+-        raise HTTPException(status_code=422, detail=str(exc)) from exc
++        detail: dict[str, Any] = {
++            "code": exc.code,
++            "message": str(exc),
++        }
++        if exc.requested is not None:
++            detail["requested"] = exc.requested
++        if exc.supported_families is not None:
++            detail["supported_families"] = exc.supported_families
++        raise HTTPException(status_code=422, detail=detail) from exc
+ 
+ 
+ # ---------------------------------------------------------------------------
+diff --git a/backend/app/services/lego_assembly.py b/backend/app/services/lego_assembly.py
+index dcee63fade405208196bbb44f5a8b4a0fcb12f85..6014ac11132f9284ff50a197800e60679fae399c 100644
+--- a/backend/app/services/lego_assembly.py
++++ b/backend/app/services/lego_assembly.py
+@@ -30,7 +30,7 @@ from __future__ import annotations
+ 
+ import re
+ from dataclasses import dataclass
+-from typing import Any, Iterable
++from typing import Any, Iterable, Literal
+ 
+ 
+ VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
+@@ -96,8 +96,29 @@ class AssemblyRequest:
+     wing_depth_m: float | None = None
+ 
+ 
++AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
++
++
+ class AssemblyPlanningError(ValueError):
+-    """Raised when no valid modular assembly can be produced."""
++    """Raised when no valid modular assembly can be produced.
++
++    ``code`` is a stable API-facing classification. The optional metadata is
++    deliberately renderer-neutral so callers can explain an incompatible
++    target without parsing the human-readable message.
++    """
++
++    def __init__(
++        self,
++        message: str,
++        *,
++        code: AssemblyPlanningErrorCode = "family_incompatible",
++        requested: dict[str, Any] | None = None,
++        supported_families: list[dict[str, Any]] | None = None,
++    ) -> None:
++        super().__init__(message)
++        self.code = code
++        self.requested = requested
++        self.supported_families = supported_families
+ 
+ 
+ def _as_float(value: Any, default: float = 0.0) -> float:
+@@ -214,6 +235,55 @@ def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> Modu
+     return max(candidates, key=lambda module: _module_score(module, request))
+ 
+ 
++def _requested_target_metadata(request: AssemblyRequest) -> dict[str, Any]:
++    return {
++        "width_m": float(request.target_width_m),
++        "depth_m": float(request.target_depth_m),
++        "floors": int(request.target_floors),
++        "footprint_profile": request.footprint_profile,
++    }
++
++
++def _supported_family_metadata(
++    descriptors: list[ModuleDescriptor],
++    families: Iterable[str],
++) -> list[dict[str, Any]]:
++    """Summarize the matching library families for actionable fit guidance."""
++
++    summaries: list[dict[str, Any]] = []
++    for family in families:
++        modules = [module for module in descriptors if module.family == family]
++        if not modules:
++            continue
++        minimum_floors = [
++            int(module.min_floors)
++            for module in modules
++            if module.min_floors is not None
++        ]
++        maximum_floors = [
++            int(module.max_floors)
++            for module in modules
++            if module.max_floors is not None
++        ]
++        native_floors = [
++            int(module.native_floors)
++            for module in modules
++            if module.native_floors is not None
++        ]
++        summaries.append({
++            "family": family,
++            "widths_m": sorted({round(float(module.width_m), 4) for module in modules}),
++            "depths_m": sorted({round(float(module.depth_m), 4) for module in modules}),
++            "min_floors": min(minimum_floors + native_floors)
++            if (minimum_floors or native_floors)
++            else None,
++            "max_floors": max(maximum_floors + native_floors)
++            if (maximum_floors or native_floors)
++            else None,
++        })
++    return summaries
++
++
+ def footprint_segments(
+     profile: str,
+     width_m: float,
+@@ -302,6 +372,12 @@ def plan_vertical_assembly(
+     families = list(dict.fromkeys(module.family for module in descriptors))
+     if request.preferred_family:
+         families = [f for f in families if f == request.preferred_family]
++        if not families:
++            raise AssemblyPlanningError(
++                f"No module family named '{request.preferred_family}' is available.",
++                code="family_not_found",
++                requested=_requested_target_metadata(request),
++            )
+     if request.archetype_id:
+         families = [
+             family
+@@ -315,8 +391,16 @@ def plan_vertical_assembly(
+         if not families:
+             raise AssemblyPlanningError(
+                 f"No module family explicitly matches archetype '{request.archetype_id}'. "
+-                "Import that archetype/variant instead of substituting an unrelated family."
++                "Import that archetype/variant instead of substituting an unrelated family.",
++                code="family_not_found",
++                requested=_requested_target_metadata(request),
+             )
++    if not families:
++        raise AssemblyPlanningError(
++            "No module families are available.",
++            code="family_not_found",
++            requested=_requested_target_metadata(request),
++        )
+ 
+     best_plan: dict[str, Any] | None = None
+     best_score = float("-inf")
+@@ -533,7 +617,10 @@ def plan_vertical_assembly(
+     if best_plan is None:
+         raise AssemblyPlanningError(
+             "No compatible module family found. Add podium, repeatable floor, and roof modules "
+-            "whose native footprint is within 20% of the target."
++            "whose native footprint is within 20% of the target.",
++            code="family_incompatible",
++            requested=_requested_target_metadata(request),
++            supported_families=_supported_family_metadata(descriptors, families),
+         )
+     return best_plan
+ 
+diff --git a/backend/tests/test_lego_assembly.py b/backend/tests/test_lego_assembly.py
+index 5f7bd156ebae3969c40504601814452fbecf9ec2..3bd1f541f7b00d7f5e7d13d8e0bc16b15223e1df 100644
+--- a/backend/tests/test_lego_assembly.py
++++ b/backend/tests/test_lego_assembly.py
+@@ -397,7 +397,7 @@ def test_requested_archetype_never_substitutes_unrelated_family():
+         descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+         descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+     ]
+-    with pytest.raises(AssemblyPlanningError, match="explicitly matches archetype"):
++    with pytest.raises(AssemblyPlanningError, match="explicitly matches archetype") as error:
+         plan_vertical_assembly(
+             [module for module in modules if module],
+             AssemblyRequest(
+@@ -407,6 +407,113 @@ def test_requested_archetype_never_substitutes_unrelated_family():
+                 archetype_id="contemporary_midrise",
+             ),
+         )
++    assert error.value.code == "family_not_found"
++    assert error.value.requested == {
++        "width_m": 24.0,
++        "depth_m": 18.0,
++        "floors": 5,
++        "footprint_profile": "rectangle",
++    }
++    assert error.value.supported_families is None
++
++
++def test_matching_family_reports_incompatible_target_and_supported_ranges():
++    modules = [
++        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
++        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
++        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
++    ]
++
++    with pytest.raises(AssemblyPlanningError, match="No compatible module family") as error:
++        plan_vertical_assembly(
++            [module for module in modules if module],
++            AssemblyRequest(
++                target_width_m=60,
++                target_depth_m=40,
++                target_floors=6,
++                archetype_id="nordic-midrise",
++            ),
++        )
++
++    assert error.value.code == "family_incompatible"
++    assert error.value.requested == {
++        "width_m": 60.0,
++        "depth_m": 40.0,
++        "floors": 6,
++        "footprint_profile": "rectangle",
++    }
++    assert error.value.supported_families == [{
++        "family": "nordic-midrise",
++        "widths_m": [24.0],
++        "depths_m": [18.0],
++        "min_floors": 3,
++        "max_floors": 12,
++    }]
++
++
++def test_industrial_brick_parent_selects_original_mill_for_30x20_six_floors():
++    def industrial_module(
++        asset_id: str,
++        family: str,
++        role: str,
++        *,
++        width: float,
++        depth: float,
++        min_floors: int,
++        max_floors: int,
++    ):
++        raw = entry(asset_id, asset_id, role, height=1.0 if role == "roof" else 3.5,
++                    width=width, depth=depth)
++        raw.metadata_["lego"].update({
++            "family": family,
++            "archetype_ids": ["industrial_brick_mixed_use"],
++            "min_floors": min_floors,
++            "max_floors": max_floors,
++        })
++        return descriptor_from_library_entry(raw)
++
++    modules = [
++        industrial_module(
++            f"original-{role}",
++            "industrial-brick-original-mill-v1-renderlocked",
++            role,
++            width=30,
++            depth=20,
++            min_floors=4,
++            max_floors=8,
++        )
++        for role in ("podium", "floor", "roof")
++    ] + [
++        industrial_module(
++            f"brewery-{role}",
++            "industrial-brick-brewery-v1-renderlocked",
++            role,
++            width=40,
++            depth=26,
++            min_floors=2,
++            max_floors=5,
++        )
++        for role in ("podium", "floor", "roof")
++    ]
++
++    plan = plan_vertical_assembly(
++        [module for module in modules if module],
++        AssemblyRequest(
++            target_width_m=30,
++            target_depth_m=20,
++            target_floors=6,
++            archetype_id="industrial_brick_mixed_use",
++        ),
++    )
++
++    assert plan["family"] == "industrial-brick-original-mill-v1-renderlocked"
++    assert plan["target"] == {
++        "width_m": 30,
++        "depth_m": 20,
++        "floors": 6,
++        "footprint_profile": "rectangle",
++        "wing_depth_m": 20.0,
++    }
+ 
+ 
+ def test_l_shape_plan_places_two_rotated_streetwall_segments():
+@@ -475,6 +582,90 @@ def _scalars_result(values):
+     return result
+ 
+ 
++@pytest.mark.anyio
++async def test_plan_api_returns_structured_family_not_found_error(
++    client, mock_db, test_user, auth_headers
++):
++    mock_db.execute = AsyncMock(side_effect=[
++        _scalar_result(test_user),
++        _scalars_result([]),
++    ])
++
++    response = await client.post(
++        "/api/v1/lego-assembly/plan",
++        headers=auth_headers,
++        json={
++            "target_width_m": 24,
++            "target_depth_m": 18,
++            "target_floors": 5,
++            "archetype_id": "missing_family",
++        },
++    )
++
++    assert response.status_code == 422
++    assert response.json()["detail"] == {
++        "code": "family_not_found",
++        "message": (
++            "No module family explicitly matches archetype 'missing_family'. "
++            "Import that archetype/variant instead of substituting an unrelated family."
++        ),
++        "requested": {
++            "width_m": 24.0,
++            "depth_m": 18.0,
++            "floors": 5,
++            "footprint_profile": "rectangle",
++        },
++    }
++
++
++@pytest.mark.anyio
++async def test_plan_api_returns_structured_family_incompatible_error(
++    client, mock_db, test_user, auth_headers
++):
++    library_entries = [
++        entry("podium", "Podium", "podium", height=4.5),
++        entry("floor", "Floor", "floor", height=3.2),
++        entry("roof", "Roof", "roof", height=1.0),
++    ]
++    mock_db.execute = AsyncMock(side_effect=[
++        _scalar_result(test_user),
++        _scalars_result(library_entries),
++    ])
++
++    response = await client.post(
++        "/api/v1/lego-assembly/plan",
++        headers=auth_headers,
++        json={
++            "target_width_m": 60,
++            "target_depth_m": 40,
++            "target_floors": 6,
++            "archetype_id": "nordic-midrise",
++        },
++    )
++
++    assert response.status_code == 422
++    assert response.json()["detail"] == {
++        "code": "family_incompatible",
++        "message": (
++            "No compatible module family found. Add podium, repeatable floor, and roof modules "
++            "whose native footprint is within 20% of the target."
++        ),
++        "requested": {
++            "width_m": 60.0,
++            "depth_m": 40.0,
++            "floors": 6,
++            "footprint_profile": "rectangle",
++        },
++        "supported_families": [{
++            "family": "nordic-midrise",
++            "widths_m": [24.0],
++            "depths_m": [18.0],
++            "min_floors": 3,
++            "max_floors": 12,
++        }],
++    }
++
++
+ def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):
+     parts = [
+         ("manifest", ("manifest.json", json.dumps(manifest_dict).encode(), "application/json"))
+diff --git a/frontend/src/components/viewer/ZonePropertiesPanel.test.tsx b/frontend/src/components/viewer/ZonePropertiesPanel.test.tsx
+new file mode 100644
+index 0000000000000000000000000000000000000000..3550f59099d8ed8a2ac986bb6af89ddc0b6f43fc
+--- /dev/null
++++ b/frontend/src/components/viewer/ZonePropertiesPanel.test.tsx
+@@ -0,0 +1,184 @@
++import '@testing-library/jest-dom/vitest';
++import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
++import { fireEvent, render, screen, waitFor } from '@testing-library/react';
++import type { ReactElement } from 'react';
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++
++vi.mock('./aestheticCatalog', async (importOriginal) => {
++  const actual = await importOriginal<typeof import('./aestheticCatalog')>();
++  const industrialBrick = {
++    id: 'industrial_brick_mixed_use',
++    categoryId: 'industrial_brick',
++    label: 'Industrial Brick Mixed Use',
++    description: 'Adapted industrial building with brick piers and large windows.',
++    photoUrl: '/industrial/hero.png',
++    suggestedWidth_m: 30,
++    suggestedDepth_m: 20,
++    minFloors: 4,
++    maxFloors: 8,
++    archetypeImages: [{
++      id: 'industrial_brick_mixed_use_variant_0',
++      label: 'Industrial Brick Mixed Use — Front Day',
++      imageUrl: '/industrial/front-day.png',
++      imagePath: '/industrial/front-day.png',
++      prompt: 'Industrial brick mixed use',
++    }],
++    generationStyleInput: {
++      developmentType: 'mixed_use',
++      buildingSubcategory: 'industrial_brick_mixed_use',
++    },
++    variants: [
++      {
++        id: 'industrial_brick_original_mill',
++        label: 'Original Mill',
++        thumbnailUrl: '/industrial/original-mill.png',
++        minFloors: 4,
++        maxFloors: 8,
++      },
++      {
++        id: 'industrial_brick_brewery',
++        label: 'Brewery',
++        thumbnailUrl: '/industrial/brewery.png',
++        minFloors: 2,
++        maxFloors: 5,
++        suggestedWidth_m: 40,
++        suggestedDepth_m: 26,
++        shadeId: 'industrial_brick_brewery',
++        facadeDetail: { primaryMaterial: 'Red brick' },
++        roofDetail: { form: 'Sawtooth roof' },
++        palette: { primary: '#8f3c2f' },
++      },
++    ],
++  };
++  return {
++    ...actual,
++    BUILDING_AESTHETIC_CATEGORIES_V2: [{
++      id: 'industrial_brick',
++      label: 'Industrial Brick',
++      description: 'Industrial masonry buildings',
++    }],
++    BUILDING_AESTHETIC_OPTIONS_V2: [industrialBrick],
++    filterOptionsByDevelopmentType: (options: unknown[]) => options,
++  };
++});
++
++vi.mock('@/services/api', async (importOriginal) => {
++  const actual = await importOriginal<typeof import('@/services/api')>();
++  return {
++    ...actual,
++    modelLibraryApi: {
++      ...actual.modelLibraryApi,
++      archetypePreviews: vi.fn().mockResolvedValue({}),
++    },
++  };
++});
++
++import { ZonePropertiesPanel } from './ZonePropertiesPanel';
++import type { SiteZone } from '@/types';
++
++function renderPanel(ui: ReactElement) {
++  return render(
++    <QueryClientProvider client={new QueryClient({
++      defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
++    })}>
++      {ui}
++    </QueryClientProvider>,
++  );
++}
++
++function industrialZone(): SiteZone {
++  return {
++    id: '11111111-1111-4111-8111-111111111111',
++    project_id: '22222222-2222-4222-8222-222222222222',
++    name: 'Industrial Block',
++    zone_type: 'building',
++    coordinates: [
++      [-113.5, 53.5],
++      [-113.49955, 53.5],
++      [-113.49955, 53.50018],
++      [-113.5, 53.50018],
++    ],
++    color: '#8f3c2f',
++    properties: {
++      development_type: 'mixed_use',
++      development_aesthetic: 'industrial_brick_mixed_use',
++      development_aesthetic_category: 'industrial_brick',
++      development_subcategory: 'industrial_brick_mixed_use',
++      development_archetype_id: 'industrial_brick_mixed_use_variant_0',
++      development_archetype_label: 'Industrial Brick Mixed Use — Front Day',
++      development_selected_variant_id: 'industrial_brick_brewery',
++      development_variant_shade_id: 'industrial_brick_brewery',
++      development_facade_detail: { primaryMaterial: 'Red brick' },
++      development_roof_detail: { form: 'Sawtooth roof' },
++      development_palette: { primary: '#8f3c2f' },
++      generation_style_input: {
++        archetypeId: 'industrial_brick_mixed_use_variant_0',
++        buildingSubcategory: 'industrial_brick_mixed_use',
++      },
++      floors: 6,
++      floor_height: 3.5,
++      height: 21,
++    },
++    sort_order: 0,
++    created_at: '2026-07-20T00:00:00Z',
++    updated_at: '2026-07-20T00:00:00Z',
++  };
++}
++
++describe('ZonePropertiesPanel LEGO selection handoff', () => {
++  beforeEach(() => {
++    vi.clearAllMocks();
++    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
++      configurable: true,
++      value: vi.fn(),
++    });
++  });
++
++  it('persists Brewery -> Automatic and opens LEGO from the current draft without a refetch', async () => {
++    const onUpdate = vi.fn();
++    const onOpenBlockEditor = vi.fn();
++    const { container } = renderPanel(
++      <ZonePropertiesPanel
++        zone={industrialZone()}
++        onUpdate={onUpdate}
++        onDelete={vi.fn()}
++        onClose={vi.fn()}
++        onOpenBlockEditor={onOpenBlockEditor}
++      />,
++    );
++
++    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
++
++    expect(screen.getByText('Current selection: Brewery')).toBeInTheDocument();
++    const card = container.querySelector('[data-aesthetic-option-id="industrial_brick_mixed_use"]');
++    expect(card).not.toBeNull();
++    expect(card?.querySelector('button button')).toBeNull();
++
++    fireEvent.click(screen.getByRole('button', { name: /^Automatic \/ best-fitting family/i }));
++
++    await waitFor(() => {
++      expect(onUpdate).toHaveBeenCalledWith(
++        industrialZone().id,
++        expect.objectContaining({
++          properties: expect.objectContaining({
++            development_aesthetic: 'industrial_brick_mixed_use',
++            development_subcategory: 'industrial_brick_mixed_use',
++            development_selected_variant_id: undefined,
++          }),
++        }),
++      );
++    });
++    expect(screen.getByText('Current selection: Automatic / best-fitting family')).toBeInTheDocument();
++
++    // ProjectView has not supplied an updated query-backed zone. The LEGO
++    // callback must still receive this panel's current local selection.
++    fireEvent.click(screen.getByRole('button', { name: /build with lego modules/i }));
++
++    expect(onOpenBlockEditor).toHaveBeenCalledTimes(1);
++    const draft = onOpenBlockEditor.mock.calls[0][0] as SiteZone;
++    expect(draft.id).toBe(industrialZone().id);
++    expect(draft.properties?.development_subcategory).toBe('industrial_brick_mixed_use');
++    expect(draft.properties?.development_selected_variant_id).toBeUndefined();
++    expect(draft.properties?.floors).toBe(6);
++  });
++});
+diff --git a/frontend/src/components/viewer/ZonePropertiesPanel.tsx b/frontend/src/components/viewer/ZonePropertiesPanel.tsx
+index fbc5bf3a27de286842dd1a179e323ae54d528ada..9b2fb09585b4254689ca8daa68480ff46caffccd 100644
+--- a/frontend/src/components/viewer/ZonePropertiesPanel.tsx
++++ b/frontend/src/components/viewer/ZonePropertiesPanel.tsx
+@@ -49,7 +49,7 @@ interface ZonePropertiesPanelProps {
+   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
+   buildings?: Building[];
+   allZones?: SiteZone[];
+-  onOpenBlockEditor?: () => void;
++  onOpenBlockEditor?: (draftZone: SiteZone) => void;
+ }
+ 
+ type DevelopmentAestheticCategory = {
+@@ -68,6 +68,22 @@ const customStyleKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
+   p.custom_style_attachments,
+ ]);
+ 
++/** Snapshot of the catalogue identity that must be persisted as one choice. */
++const aestheticSelectionKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
++  p.development_subcategory,
++  p.development_archetype_id,
++  p.development_selected_variant_id,
++  p.road_subcategory,
++  p.road_archetype_id,
++  p.road_selected_variant_id,
++  p.green_space_subcategory,
++  p.green_space_archetype_id,
++  p.green_space_selected_variant_id,
++  p.plaza_subcategory,
++  p.plaza_archetype_id,
++  p.plaza_selected_variant_id,
++]);
++
+ type TransportModeKey = CatalogTransportModeKey;
+ 
+ type DevelopmentAestheticOption = {
+@@ -408,6 +424,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
+   const customStyleSaveTimerRef = useRef<number | null>(null);
+   const customStyleSavePendingRef = useRef(false);
+   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
++  const prevAestheticSelectionKeyRef = useRef<string | undefined>(undefined);
+   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
+   const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
+ 
+@@ -443,6 +460,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
+     // treat the restore as a user edit (it would re-commit the undone state
+     // and wipe the redo stack).
+     prevCustomStyleKeyRef.current = customStyleKeyOf(zone.properties || {});
++    prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(zone.properties || {});
+   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
+ 
+   const handleSave = (closeAfterSave = false) => {
+@@ -524,24 +542,29 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
+   // Keep the ref pointing at the latest handleSave (fresh props/name closure)
+   handleSaveRef.current = handleSave;
+ 
+-  // Auto-save when the user picks a new archetype card (any zone type)
+-  const prevArchetypeRef = useRef<string | undefined>(undefined);
+-  useEffect(() => {
+-    const currentArchetype = (props.development_subcategory as string)
+-      || (props.road_subcategory as string)
+-      || (props.green_space_subcategory as string)
+-      || (props.plaza_subcategory as string)
+-      || (props.development_archetype_id as string)
+-      || (props.road_archetype_id as string)
+-      || (props.green_space_archetype_id as string)
+-      || (props.plaza_archetype_id as string);
++  const handleOpenBlockEditor = () => {
++    onOpenBlockEditor?.({
++      ...zone,
++      name,
++      properties: { ...props },
++    });
++  };
+ 
+-    // Skip initial mount and zone resets — only fire when archetype actually changes
+-    if (prevArchetypeRef.current !== undefined && currentArchetype && currentArchetype !== prevArchetypeRef.current) {
+-      handleSave();
++  // Auto-save the complete catalogue identity (parent, reference and design
++  // variant). In particular, variant -> Automatic must save even when the
++  // parent archetype itself did not change.
++  const aestheticSelectionKey = aestheticSelectionKeyOf(props);
++  useEffect(() => {
++    // Skip initial mount and zone resets. The latest-save ref is updated during
++    // render, so this effect always persists the fully computed next props.
++    if (prevAestheticSelectionKeyRef.current === undefined) {
++      prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
++      return;
+     }
+-    prevArchetypeRef.current = currentArchetype;
+-  }, [props.development_subcategory, props.road_subcategory, props.green_space_subcategory, props.plaza_subcategory, props.development_archetype_id, props.road_archetype_id, props.green_space_archetype_id, props.plaza_archetype_id]); // eslint-disable-line react-hooks/exhaustive-deps
++    if (aestheticSelectionKey === prevAestheticSelectionKeyRef.current) return;
++    prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
++    handleSaveRef.current();
++  }, [aestheticSelectionKey]);
+ 
+   // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
+   useEffect(() => {
+@@ -1262,7 +1285,11 @@ const resolveOptionCategory = (
+         {zone.zone_type === 'site_boundary' && (
+           <>
+             <SiteIntelligencePanel zone={zone} />
+-            <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
++            <SiteBoundarySection
++              zone={zone}
++              allZones={allZones}
++              onOpenBlockEditor={onOpenBlockEditor ? handleOpenBlockEditor : undefined}
++            />
+           </>
+         )}
+ 
+@@ -1993,7 +2020,7 @@ const resolveOptionCategory = (
+           && ((['building', 'residential', 'development_area', 'development'] as string[]).includes(zone.zone_type)
+             || !!props.development_archetype_id) && (
+           <button
+-            onClick={onOpenBlockEditor}
++            onClick={handleOpenBlockEditor}
+             className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#d9ff70]"
+           >
+             <Box size={12} />
+@@ -2956,66 +2983,95 @@ function AestheticOptionCard({
+   };
+ 
+   return (
+-    <button
++    <div
+       key={option.id}
+-      type="button"
+-      onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
++      data-aesthetic-option-id={option.id}
+       className={`overflow-hidden rounded-lg border text-left transition-all ${
+         value === option.id
+           ? 'border-primary-500 ring-2 ring-primary-500/25'
+           : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+       }`}
+     >
+-      <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
+-        <AestheticImage
+-          sources={heroSources}
+-          alt={option.label}
+-          className="h-full w-full object-cover"
+-          onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
+-        />
+-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+-        {showSiteFit && (
+-          <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
+-            areaFit
+-              ? areaFit.isGoodFit
+-                ? 'bg-green-100 text-green-700'
+-                : 'bg-orange-100 text-orange-700'
+-              : 'bg-white/85 text-[#151515]/55'
+-          }`}>
+-            {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
++      <button
++        type="button"
++        onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
++        className="block w-full text-left"
++        aria-label={`Select ${option.label} with Automatic / best-fitting family`}
++      >
++        <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
++          <AestheticImage
++            sources={heroSources}
++            alt={option.label}
++            className="h-full w-full object-cover"
++            onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
++          />
++          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
++          {showSiteFit && (
++            <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
++              areaFit
++                ? areaFit.isGoodFit
++                  ? 'bg-green-100 text-green-700'
++                  : 'bg-orange-100 text-orange-700'
++                : 'bg-white/85 text-[#151515]/55'
++            }`}>
++              {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
++            </div>
++          )}
++          <div className="absolute inset-x-0 bottom-0 p-2">
++            <p className="text-[10px] font-semibold text-white">{option.label}</p>
+           </div>
+-        )}
+-        <div className="absolute inset-x-0 bottom-0 p-2">
+-          <p className="text-[10px] font-semibold text-white">{option.label}</p>
+         </div>
+-      </div>
+-      <div className="px-2 py-1.5">
+-        <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+-        {showSiteFit && (
+-          <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
+-            areaFit
+-              ? areaFit.isGoodFit
+-                ? 'border-green-600/25 bg-green-50 text-green-700'
+-                : 'border-orange-500/25 bg-orange-50 text-orange-600'
+-              : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
+-          }`}>
+-            <div className="flex items-center justify-between gap-1">
+-              <span className="text-[9px] font-black uppercase">Site fit</span>
+-              <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
+-            </div>
+-            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
+-              Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
+-              {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
+-              {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
+-            </div>
+-            {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
+-              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
+-                {areaFit.floorLabel || ''}
+-                {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
+-                {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
++        <div className="px-2 py-1.5">
++          <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
++          {showSiteFit && (
++            <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
++              areaFit
++                ? areaFit.isGoodFit
++                  ? 'border-green-600/25 bg-green-50 text-green-700'
++                  : 'border-orange-500/25 bg-orange-50 text-orange-600'
++                : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
++            }`}>
++              <div className="flex items-center justify-between gap-1">
++                <span className="text-[9px] font-black uppercase">Site fit</span>
++                <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
+               </div>
+-            )}
+-          </div>
++              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
++                Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
++                {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
++                {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
++              </div>
++              {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
++                <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
++                  {areaFit.floorLabel || ''}
++                  {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
++                  {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
++                </div>
++              )}
++            </div>
++          )}
++          {hasDesignVariants && isSelected && (
++            <p className="mt-1.5 text-[9px] font-black text-primary-950/65" aria-live="polite">
++              Current selection: {activeVariant?.label || 'Automatic / best-fitting family'}
++            </p>
++          )}
++        </div>
++      </button>
++
++      <div className="px-2 pb-1.5">
++        {hasDesignVariants && (
++          <button
++            type="button"
++            onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
++            aria-pressed={isSelected && !selectedVariantId}
++            className={`mb-1.5 flex w-full items-center justify-between rounded border px-1.5 py-1 text-left text-[9px] font-bold ${
++              isSelected && !selectedVariantId
++                ? 'border-primary-500 bg-primary-500/10 text-primary-950'
++                : 'border-primary-950/[0.1] bg-white text-primary-950/60 hover:border-primary-950/[0.25]'
++            }`}
++          >
++            <span>Automatic / best-fitting family</span>
++            <span>{isSelected && !selectedVariantId ? 'Selected' : 'Use parent'}</span>
++          </button>
+         )}
+         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
+@@ -3053,6 +3109,7 @@ function AestheticOptionCard({
+               <button
+                 key={`${option.id}-variant-${variant.id}`}
+                 type="button"
++                aria-pressed={isActive}
+                 onClick={(event) => {
+                   event.stopPropagation();
+                   onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id, variant.id);
+@@ -3121,7 +3178,7 @@ function AestheticOptionCard({
+           })}
+         </div>
+       </div>
+-    </button>
++    </div>
+   );
+ }
+ function DevelopmentAestheticPicker({
+diff --git a/frontend/src/features/legoAssembly/LegoAssemblyPreview.test.tsx b/frontend/src/features/legoAssembly/LegoAssemblyPreview.test.tsx
+index cfa0a62a8d8a668b0be81adc3f9f55086d75ca05..06760d5b7358c144a60ee969181f4dd64ac64c10 100644
+--- a/frontend/src/features/legoAssembly/LegoAssemblyPreview.test.tsx
++++ b/frontend/src/features/legoAssembly/LegoAssemblyPreview.test.tsx
+@@ -181,12 +181,17 @@ describe('LegoAssemblyPreview', () => {
+     expect(screen.getByRole('button', { name: 'More floors' })).toBeEnabled();
+   });
+ 
+-  it('shows the backend message and the generate-family command hint on a 422 plan failure', async () => {
++  it('shows generation guidance only for a missing-family planning failure', async () => {
+     apiPost.mockRejectedValueOnce(
+       Object.assign(new Error('Unprocessable'), {
+         response: {
+           status: 422,
+-          data: { detail: 'No module family covers archetype nordic_timber_midrise.' },
++          data: {
++            detail: {
++              code: 'family_not_found',
++              message: 'No module family covers archetype nordic_timber_midrise.',
++            },
++          },
+         },
+       }),
+     );
+@@ -209,6 +214,39 @@ describe('LegoAssemblyPreview', () => {
+     expect(screen.getByText(/Choose Auto Assemble/)).toBeInTheDocument();
+   });
+ 
++  it('shows installed-family fit guidance without generation commands when the target is incompatible', async () => {
++    apiPost.mockRejectedValueOnce(
++      Object.assign(new Error('Unprocessable'), {
++        response: {
++          status: 422,
++          data: {
++            detail: {
++              code: 'family_incompatible',
++              message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
++              supported_families: [{
++                family: 'industrial-brick-brewery-v1-renderlocked',
++                widths_m: [40],
++                depths_m: [26],
++                min_floors: 2,
++                max_floors: 5,
++              }],
++            },
++          },
++        },
++      }),
++    );
++
++    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
++    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
++
++    expect(await screen.findByText(/Industrial Brick Brewery supports/)).toBeInTheDocument();
++    expect(screen.getByText(/matching family is installed/i)).toBeInTheDocument();
++    expect(screen.getByText(/industrial-brick-brewery-v1-renderlocked: 40 × 26 m; 2–5 floors/i)).toBeInTheDocument();
++    expect(screen.queryByText(/No module family covers this archetype yet/i)).not.toBeInTheDocument();
++    expect(screen.queryByText(/generate_family\.py/i)).not.toBeInTheDocument();
++    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
++  });
++
+   it('shows family, fit score, module count and a scale warning after a successful plan', async () => {
+     apiPost.mockResolvedValueOnce({ data: planFixture });
+ 
+diff --git a/frontend/src/features/legoAssembly/LegoAssemblyPreview.tsx b/frontend/src/features/legoAssembly/LegoAssemblyPreview.tsx
+index 8f15890c1fed7ddf351a7415c0f3ab0da5091fd0..f6181b4e847680b6435d0b6c917f62be5da3f8d7 100644
+--- a/frontend/src/features/legoAssembly/LegoAssemblyPreview.tsx
++++ b/frontend/src/features/legoAssembly/LegoAssemblyPreview.tsx
+@@ -9,8 +9,11 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
+ import {
+   legoArchetypeContextFromZone,
+   legoAssemblyApi,
++  getLegoPlanningFailure,
+   type LegoAssemblyPlan,
+   type LegoAssemblyRecipe,
++  type LegoPlanningFailure,
++  type LegoSupportedFamily,
+ } from './legoAssemblyApi';
+ import {
+   MAX_DIMENSION_M,
+@@ -48,6 +51,21 @@ function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
+   );
+ }
+ 
++function supportedFamilyLabel(supported: LegoSupportedFamily): string {
++  const widths = supported.widths_m.length > 0 ? supported.widths_m.join('/') : '?';
++  const depths = supported.depths_m.length > 0 ? supported.depths_m.join('/') : '?';
++  const floorRange = supported.min_floors != null && supported.max_floors != null
++    ? supported.min_floors === supported.max_floors
++      ? `${supported.min_floors} floors`
++      : `${supported.min_floors}–${supported.max_floors} floors`
++    : supported.min_floors != null
++      ? `${supported.min_floors}+ floors`
++      : supported.max_floors != null
++        ? `up to ${supported.max_floors} floors`
++        : 'floor range not specified';
++  return `${supported.family}: ${widths} × ${depths} m; ${floorRange}`;
++}
++
+ export function LegoAssemblyPreview({
+   widthM,
+   depthM,
+@@ -93,7 +111,7 @@ export function LegoAssemblyPreview({
+   const [plan, setPlan] = useState<LegoAssemblyPlan | null>(null);
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState<string | null>(null);
+-  const [familyMissing, setFamilyMissing] = useState(false);
++  const [planningFailure, setPlanningFailure] = useState<LegoPlanningFailure | null>(null);
+   const [savedRecipe, setSavedRecipe] = useState<LegoAssemblyRecipe | null>(null);
+   const [saving, setSaving] = useState(false);
+   const [placing, setPlacing] = useState(false);
+@@ -130,7 +148,7 @@ export function LegoAssemblyPreview({
+     setTargetFloors(floorCount);
+     setLoading(true);
+     setError(null);
+-    setFamilyMissing(false);
++    setPlanningFailure(null);
+     try {
+       const result = await legoAssemblyApi.plan({
+         target_width_m: width,
+@@ -141,9 +159,9 @@ export function LegoAssemblyPreview({
+       });
+       setPlan(result);
+     } catch (cause) {
+-      const status = (cause as { response?: { status?: number } })?.response?.status;
+-      setError(getApiErrorMessage(cause, 'Could not assemble this building.'));
+-      if (status === 422) setFamilyMissing(true);
++      const failure = getLegoPlanningFailure(cause);
++      setPlanningFailure(failure);
++      setError(failure?.message || getApiErrorMessage(cause, 'Could not assemble this building.'));
+     } finally {
+       setLoading(false);
+     }
+@@ -450,7 +468,7 @@ export function LegoAssemblyPreview({
+ 
+           {error && <p className="mt-3 rounded border border-red-300 bg-red-50 p-2 text-xs text-red-800">{error}</p>}
+ 
+-          {familyMissing && (
++          {planningFailure?.code === 'family_not_found' && (
+             <div className="mt-2 rounded border border-red-300 bg-red-50 p-2 text-[11px] text-red-900">
+               <p className="font-bold">No module family covers this archetype yet.</p>
+               <p className="mt-1">Generate one, then import its manifest:</p>
+@@ -466,6 +484,23 @@ export function LegoAssemblyPreview({
+             </div>
+           )}
+ 
++          {planningFailure?.code === 'family_incompatible' && (
++            <div className="mt-2 rounded border border-amber-400 bg-amber-50 p-2 text-[11px] text-amber-900">
++              <p className="font-bold">A matching family is installed, but it does not fit this target.</p>
++              <p className="mt-1">Adjust the width, depth, floors or footprint profile and assemble again.</p>
++              {planningFailure.supported_families && planningFailure.supported_families.length > 0 && (
++                <div className="mt-1.5">
++                  <p className="font-bold">Supported family sizes</p>
++                  <ul className="mt-0.5 list-disc space-y-0.5 pl-4">
++                    {planningFailure.supported_families.map((supported) => (
++                      <li key={supported.family}>{supportedFamilyLabel(supported)}</li>
++                    ))}
++                  </ul>
++                </div>
++              )}
++            </div>
++          )}
++
+           <p className="mt-4 text-[11px] leading-relaxed text-black/55">
+             Uses the selected Urban Intelligence archetype ID and reuse keys to choose a compatible podium, repeating floor, setback and roof family.
+           </p>
+diff --git a/frontend/src/features/legoAssembly/LegoBuilderPanel.test.tsx b/frontend/src/features/legoAssembly/LegoBuilderPanel.test.tsx
+index ddb14ac97b86fff086a8d04ef23f864db3c397fa..215d95d341406b5e133d1030080cb626ec5296d0 100644
+--- a/frontend/src/features/legoAssembly/LegoBuilderPanel.test.tsx
++++ b/frontend/src/features/legoAssembly/LegoBuilderPanel.test.tsx
+@@ -114,7 +114,7 @@ const planFixture: LegoAssemblyPlan = {
+   fit: { scale_x: 1, scale_y: 1, score: 0.87 },
+ };
+ 
+-function make422(detail: string) {
++function make422(detail: unknown) {
+   return Object.assign(new Error('Unprocessable'), {
+     response: { status: 422, data: { detail } },
+   });
+@@ -285,6 +285,36 @@ describe('LegoBuilderPanel', () => {
+     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+   });
+ 
++  it('does not offer family-generation commands for an installed but incompatible family', async () => {
++    apiPost.mockRejectedValue(make422({
++      code: 'family_incompatible',
++      message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
++      supported_families: [{
++        family: 'industrial-brick-brewery-v1-renderlocked',
++        widths_m: [40],
++        depths_m: [26],
++        min_floors: 2,
++        max_floors: 5,
++      }],
++    }));
++
++    render(<LegoBuilderPanel zones={[
++      makeZone({
++        id: 'z-incompatible',
++        properties: {
++          development_archetype_id: 'industrial_brick_brewery',
++          floors: 6,
++        },
++      }),
++    ]} onClose={vi.fn()} />);
++
++    expect(await screen.findByText(/Industrial Brick Brewery supports 40 × 26 m and 2–5 floors/)).toBeInTheDocument();
++    expect(screen.getByText(/No family 0/)).toBeInTheDocument();
++    expect(screen.getByText(/Failed 1/)).toBeInTheDocument();
++    expect(document.querySelector('pre')).toBeNull();
++    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
++  });
++
+   it('builds a grounded exact-footprint mass for a building whose detailed family is pending', async () => {
+     apiPost.mockImplementation((url: string, body: { archetype_id?: string }) => {
+       if (url === '/api/v1/lego-assembly/place-community') {
+diff --git a/frontend/src/features/legoAssembly/LegoBuilderPanel.tsx b/frontend/src/features/legoAssembly/LegoBuilderPanel.tsx
+index 3e93c4455b3074e9f5287166329deaae38d6ed7b..e13190ac56303e0a79bb937320da5f5b65d3ce49 100644
+--- a/frontend/src/features/legoAssembly/LegoBuilderPanel.tsx
++++ b/frontend/src/features/legoAssembly/LegoBuilderPanel.tsx
+@@ -10,6 +10,7 @@ import { allSettledWithConcurrency } from './allSettledWithConcurrency';
+ import {
+   legoArchetypeContextFromZone,
+   legoAssemblyApi,
++  getLegoPlanningFailure,
+   type LegoAssemblyPlan,
+ } from './legoAssemblyApi';
+ import {
+@@ -220,11 +221,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
+     const plannedItems = base.map((item, index) => {
+       const result = results[index];
+       if (result.status === 'fulfilled') return { ...item, plan: result.value };
+-      const status = (result.reason as { response?: { status?: number } })?.response?.status;
++      const planningFailure = getLegoPlanningFailure(result.reason);
+       return {
+         ...item,
+-        error: getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
+-        familyMissing: status === 422,
++        error: planningFailure?.message || getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
++        familyMissing: planningFailure?.code === 'family_not_found',
+       };
+     });
+     setItems(plannedItems);
+diff --git a/frontend/src/features/legoAssembly/communityCompiler.test.ts b/frontend/src/features/legoAssembly/communityCompiler.test.ts
+index 1928b4b7e00e4c8ea8465bf778f59b21462b261f..127e9e9e351456253b44fae506425b8ed1b383b4 100644
+--- a/frontend/src/features/legoAssembly/communityCompiler.test.ts
++++ b/frontend/src/features/legoAssembly/communityCompiler.test.ts
+@@ -123,7 +123,12 @@ describe('mixed community compiler', () => {
+ 
+     vi.spyOn(legoAssemblyApi, 'plan').mockImplementation(async (request) => {
+       if (request.archetype_id === 'missing_building') {
+-        throw { response: { status: 422 }, message: 'family unavailable' };
++        throw {
++          response: {
++            status: 422,
++            data: { detail: { code: 'family_not_found', message: 'family unavailable' } },
++          },
++        };
+       }
+       return detailedPlan;
+     });
+diff --git a/frontend/src/features/legoAssembly/communityCompiler.ts b/frontend/src/features/legoAssembly/communityCompiler.ts
+index ec0ea7e7a472d41ab509feba9c03e7733c043b35..8632164de64b1a0ef5c08088981bdcda44e45e2d 100644
+--- a/frontend/src/features/legoAssembly/communityCompiler.ts
++++ b/frontend/src/features/legoAssembly/communityCompiler.ts
+@@ -11,6 +11,7 @@ import { analyzeLegoFootprint } from './footprintProfiles';
+ import {
+   legoArchetypeContextFromZone,
+   legoAssemblyApi,
++  getLegoPlanningFailure,
+   type Community3DCompileResponse,
+   type LegoAssemblyPlan,
+   type LegoAssemblyRecipe,
+@@ -191,23 +192,8 @@ export interface MixedCommunityCompileSummary {
+   streets: number;
+ }
+ 
+-function responseStatus(error: unknown): number | undefined {
+-  return (error as { response?: { status?: number } } | undefined)?.response?.status;
+-}
+-
+ function isExplicitlyMissingFamily(error: unknown, archetypeId: string | undefined): boolean {
+-  if (!archetypeId || responseStatus(error) !== 422) return false;
+-  const response = (error as {
+-    response?: {
+-      data?: { detail?: unknown };
+-      headers?: Record<string, unknown>;
+-    };
+-  } | undefined)?.response;
+-  const errorCode = response?.headers?.['x-city-prompt-error-code'];
+-  if (errorCode === 'MODULE_FAMILY_MISSING') return true;
+-  const detail = response?.data?.detail;
+-  return typeof detail === 'string'
+-    && detail.includes(`No module family explicitly matches archetype '${archetypeId}'`);
++  return Boolean(archetypeId && getLegoPlanningFailure(error)?.code === 'family_not_found');
+ }
+ 
+ function planRequestForItem(item: ZoneBuildItem) {
+@@ -313,9 +299,9 @@ export async function compileMixedCommunity3D(
+     planResults[itemIndex] = remainingResults[resultIndex];
+   });
+ 
+-  const unexpectedFailure = planResults.find(
+-    (result) => result.status === 'rejected' && responseStatus(result.reason) !== 422,
+-  );
++  const unexpectedFailure = planResults.find((result) => (
++    result.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
++  ));
+   if (unexpectedFailure?.status === 'rejected') {
+     throw new Error(getApiErrorMessage(
+       unexpectedFailure.reason,
+diff --git a/frontend/src/features/legoAssembly/legoAssemblyApi.test.ts b/frontend/src/features/legoAssembly/legoAssemblyApi.test.ts
+index 6d6ea838598685ca367f9a30aede027b7b6b5686..b9079cf6c5225a7c2fe282ab2f25098a8ddc8ae1 100644
+--- a/frontend/src/features/legoAssembly/legoAssemblyApi.test.ts
++++ b/frontend/src/features/legoAssembly/legoAssemblyApi.test.ts
+@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
+ import {
+   legoArchetypeContextFromZone,
+   legoAssemblyApi,
++  getLegoPlanningFailure,
+   type LegoAssemblyRecipe,
+ } from './legoAssemblyApi';
+ 
+@@ -102,6 +103,51 @@ describe('legoAssemblyApi', () => {
+   });
+ });
+ 
++describe('getLegoPlanningFailure', () => {
++  it('parses structured missing and incompatible family failures', () => {
++    expect(getLegoPlanningFailure({
++      response: {
++        status: 422,
++        data: { detail: { code: 'family_not_found', message: 'No family is installed.' } },
++      },
++    })).toEqual({ code: 'family_not_found', message: 'No family is installed.' });
++
++    expect(getLegoPlanningFailure({
++      response: {
++        status: 422,
++        data: {
++          detail: {
++            code: 'family_incompatible',
++            message: 'The installed family does not fit.',
++            supported_families: [{
++              family: 'industrial-brick-brewery',
++              widths_m: [40],
++              depths_m: [26],
++              min_floors: 2,
++              max_floors: 5,
++            }],
++          },
++        },
++      },
++    })).toEqual(expect.objectContaining({
++      code: 'family_incompatible',
++      supported_families: [expect.objectContaining({ family: 'industrial-brick-brewery' })],
++    }));
++  });
++
++  it('recognizes only narrow legacy planner failures and ignores unrelated 422s', () => {
++    expect(getLegoPlanningFailure({
++      response: { status: 422, data: { detail: 'No module family covers archetype industrial_brick_mixed_use.' } },
++    })?.code).toBe('family_not_found');
++    expect(getLegoPlanningFailure({
++      response: { status: 422, data: { detail: 'No compatible module family found for this target.' } },
++    })?.code).toBe('family_incompatible');
++    expect(getLegoPlanningFailure({
++      response: { status: 422, data: { detail: [{ loc: ['body'], msg: 'Invalid request' }] } },
++    })).toBeNull();
++  });
++});
++
+ describe('legoArchetypeContextFromZone', () => {
+   it('returns an empty context without properties', () => {
+     expect(legoArchetypeContextFromZone(undefined)).toEqual({});
+@@ -134,6 +180,20 @@ describe('legoArchetypeContextFromZone', () => {
+     expect(context.archetype_id).toBe('toronto_junction_contemporary_addition');
+   });
+ 
++  it('uses the parent generation reference after an explicit variant is cleared', () => {
++    const context = legoArchetypeContextFromZone({
++      development_subcategory: 'industrial_brick_mixed_use',
++      development_archetype_id: 'industrial_brick_mixed_use_variant_0',
++      development_selected_variant_id: undefined,
++      generation_style_input: {
++        archetypeId: 'industrial_brick_mixed_use_variant_0',
++      },
++    });
++
++    expect(context.archetype_id).toBe('industrial_brick_mixed_use_variant_0');
++    expect(context.archetype_id).not.toBe('industrial_brick_brewery');
++  });
++
+   it('falls back to development_* fields when no generation style input exists', () => {
+     const context = legoArchetypeContextFromZone({
+       development_archetype_id: 'nordic_timber_midrise',
+diff --git a/frontend/src/features/legoAssembly/legoAssemblyApi.ts b/frontend/src/features/legoAssembly/legoAssemblyApi.ts
+index 0ec18c46d8c9812d2f24f75dd12a285272edd3ac..baf4368d08a2d938a91096d922f37777877797e9 100644
+--- a/frontend/src/features/legoAssembly/legoAssemblyApi.ts
++++ b/frontend/src/features/legoAssembly/legoAssemblyApi.ts
+@@ -83,6 +83,84 @@ export interface LegoPlanRequest {
+   wing_depth_m?: number;
+ }
+ 
++export type LegoPlanningFailureCode = 'family_not_found' | 'family_incompatible';
++
++export interface LegoSupportedFamily {
++  family: string;
++  widths_m: number[];
++  depths_m: number[];
++  min_floors?: number | null;
++  max_floors?: number | null;
++}
++
++export interface LegoPlanningFailure {
++  code: LegoPlanningFailureCode;
++  message: string;
++  requested?: {
++    width_m: number;
++    depth_m: number;
++    floors: number;
++    footprint_profile?: LegoFootprintProfile;
++  };
++  supported_families?: LegoSupportedFamily[];
++}
++
++const LEGO_PLANNING_FAILURE_CODES = new Set<LegoPlanningFailureCode>([
++  'family_not_found',
++  'family_incompatible',
++]);
++
++/**
++ * Decode the planner's semantic 422 payload. Legacy text/header recognition is
++ * deliberately narrow so validation failures are never mislabeled as a
++ * missing family during a rolling frontend/backend deployment.
++ */
++export function getLegoPlanningFailure(error: unknown): LegoPlanningFailure | null {
++  const response = (error as {
++    response?: {
++      status?: number;
++      data?: { detail?: unknown };
++      headers?: Record<string, unknown>;
++    };
++  })?.response;
++  if (response?.status !== 422) return null;
++
++  const detail = response.data?.detail;
++  if (detail && typeof detail === 'object' && !Array.isArray(detail)) {
++    const record = detail as Record<string, unknown>;
++    const code = record.code;
++    const message = record.message;
++    if (
++      typeof code === 'string'
++      && LEGO_PLANNING_FAILURE_CODES.has(code as LegoPlanningFailureCode)
++      && typeof message === 'string'
++      && message.trim()
++    ) {
++      return {
++        ...(record as unknown as LegoPlanningFailure),
++        code: code as LegoPlanningFailureCode,
++        message: message.trim(),
++      };
++    }
++  }
++
++  const legacyHeader = response.headers?.['x-city-prompt-error-code'];
++  const legacyMessage = typeof detail === 'string' ? detail.trim() : '';
++  if (
++    legacyHeader === 'MODULE_FAMILY_MISSING'
++    || /^No module family (?:explicitly matches|covers) archetype\b/i.test(legacyMessage)
++  ) {
++    return {
++      code: 'family_not_found',
++      message: legacyMessage || 'No module family covers this archetype.',
++    };
++  }
++  if (/^No compatible module family\b/i.test(legacyMessage)) {
++    return { code: 'family_incompatible', message: legacyMessage };
++  }
++  return null;
++}
++
+ /**
+  * Persisted assembly recipe attached to a generated building. Mirrors the
+  * backend contract for /api/v1/lego-assembly/recipes/{building_id}.
+diff --git a/frontend/src/features/projects/ProjectViewPage.tsx b/frontend/src/features/projects/ProjectViewPage.tsx
+index 1fab9f25fc10e09964084ab8d7e188847f4b3eef..8cc3e4a2abbc32cf4b538b2bcc97b4e4e931ce0b 100644
+--- a/frontend/src/features/projects/ProjectViewPage.tsx
++++ b/frontend/src/features/projects/ProjectViewPage.tsx
+@@ -722,7 +722,7 @@ export function ProjectViewPage() {
+               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+               onClose={() => selectZone(null)}
+               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+-              onOpenBlockEditor={() => setLegoZone(selectedZone)}
++              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+               buildings={project.buildings}
+               allZones={siteZones}
+             />
+@@ -997,7 +997,7 @@ export function ProjectViewPage() {
+               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+               onClose={() => selectZone(null)}
+               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+-              onOpenBlockEditor={() => setLegoZone(selectedZone)}
++              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+               buildings={project.buildings}
+               allZones={siteZones}
+             />
+-- 
+2.55.0.windows.2
+
