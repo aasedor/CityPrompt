@@ -83,6 +83,84 @@ export interface LegoPlanRequest {
   wing_depth_m?: number;
 }
 
+export type LegoPlanningFailureCode = 'family_not_found' | 'family_incompatible';
+
+export interface LegoSupportedFamily {
+  family: string;
+  widths_m: number[];
+  depths_m: number[];
+  min_floors?: number | null;
+  max_floors?: number | null;
+}
+
+export interface LegoPlanningFailure {
+  code: LegoPlanningFailureCode;
+  message: string;
+  requested?: {
+    width_m: number;
+    depth_m: number;
+    floors: number;
+    footprint_profile?: LegoFootprintProfile;
+  };
+  supported_families?: LegoSupportedFamily[];
+}
+
+const LEGO_PLANNING_FAILURE_CODES = new Set<LegoPlanningFailureCode>([
+  'family_not_found',
+  'family_incompatible',
+]);
+
+/**
+ * Decode the planner's semantic 422 payload. Legacy text/header recognition is
+ * deliberately narrow so validation failures are never mislabeled as a
+ * missing family during a rolling frontend/backend deployment.
+ */
+export function getLegoPlanningFailure(error: unknown): LegoPlanningFailure | null {
+  const response = (error as {
+    response?: {
+      status?: number;
+      data?: { detail?: unknown };
+      headers?: Record<string, unknown>;
+    };
+  })?.response;
+  if (response?.status !== 422) return null;
+
+  const detail = response.data?.detail;
+  if (detail && typeof detail === 'object' && !Array.isArray(detail)) {
+    const record = detail as Record<string, unknown>;
+    const code = record.code;
+    const message = record.message;
+    if (
+      typeof code === 'string'
+      && LEGO_PLANNING_FAILURE_CODES.has(code as LegoPlanningFailureCode)
+      && typeof message === 'string'
+      && message.trim()
+    ) {
+      return {
+        ...(record as unknown as LegoPlanningFailure),
+        code: code as LegoPlanningFailureCode,
+        message: message.trim(),
+      };
+    }
+  }
+
+  const legacyHeader = response.headers?.['x-city-prompt-error-code'];
+  const legacyMessage = typeof detail === 'string' ? detail.trim() : '';
+  if (
+    legacyHeader === 'MODULE_FAMILY_MISSING'
+    || /^No module family (?:explicitly matches|covers) archetype\b/i.test(legacyMessage)
+  ) {
+    return {
+      code: 'family_not_found',
+      message: legacyMessage || 'No module family covers this archetype.',
+    };
+  }
+  if (/^No compatible module family\b/i.test(legacyMessage)) {
+    return { code: 'family_incompatible', message: legacyMessage };
+  }
+  return null;
+}
+
 /**
  * Persisted assembly recipe attached to a generated building. Mirrors the
  * backend contract for /api/v1/lego-assembly/recipes/{building_id}.

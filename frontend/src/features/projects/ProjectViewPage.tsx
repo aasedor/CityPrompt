@@ -722,7 +722,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-              onOpenBlockEditor={() => setLegoZone(selectedZone)}
+              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />
@@ -997,7 +997,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-              onOpenBlockEditor={() => setLegoZone(selectedZone)}
+              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />

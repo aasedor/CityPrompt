@@ -11,6 +11,7 @@ import { analyzeLegoFootprint } from './footprintProfiles';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
+  getLegoPlanningFailure,
   type Community3DCompileResponse,
   type LegoAssemblyPlan,
   type LegoAssemblyRecipe,
@@ -191,23 +192,8 @@ export interface MixedCommunityCompileSummary {
   streets: number;
 }
 
-function responseStatus(error: unknown): number | undefined {
-  return (error as { response?: { status?: number } } | undefined)?.response?.status;
-}
-
 function isExplicitlyMissingFamily(error: unknown, archetypeId: string | undefined): boolean {
-  if (!archetypeId || responseStatus(error) !== 422) return false;
-  const response = (error as {
-    response?: {
-      data?: { detail?: unknown };
-      headers?: Record<string, unknown>;
-    };
-  } | undefined)?.response;
-  const errorCode = response?.headers?.['x-city-prompt-error-code'];
-  if (errorCode === 'MODULE_FAMILY_MISSING') return true;
-  const detail = response?.data?.detail;
-  return typeof detail === 'string'
-    && detail.includes(`No module family explicitly matches archetype '${archetypeId}'`);
+  return Boolean(archetypeId && getLegoPlanningFailure(error)?.code === 'family_not_found');
 }
 
 function planRequestForItem(item: ZoneBuildItem) {
@@ -313,9 +299,9 @@ export async function compileMixedCommunity3D(
     planResults[itemIndex] = remainingResults[resultIndex];
   });
 
-  const unexpectedFailure = planResults.find(
-    (result) => result.status === 'rejected' && responseStatus(result.reason) !== 422,
-  );
+  const unexpectedFailure = planResults.find((result) => (
+    result.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
+  ));
   if (unexpectedFailure?.status === 'rejected') {
     throw new Error(getApiErrorMessage(
       unexpectedFailure.reason,

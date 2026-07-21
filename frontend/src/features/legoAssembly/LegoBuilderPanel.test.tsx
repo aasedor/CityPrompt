@@ -114,7 +114,7 @@ const planFixture: LegoAssemblyPlan = {
   fit: { scale_x: 1, scale_y: 1, score: 0.87 },
 };
 
-function make422(detail: string) {
+function make422(detail: unknown) {
   return Object.assign(new Error('Unprocessable'), {
     response: { status: 422, data: { detail } },
   });
@@ -283,6 +283,36 @@ describe('LegoBuilderPanel', () => {
     expect(pre?.textContent).toContain('import_manifest.py build/archetypes/parkside_terraces');
     expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(2);
     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+  });
+
+  it('does not offer family-generation commands for an installed but incompatible family', async () => {
+    apiPost.mockRejectedValue(make422({
+      code: 'family_incompatible',
+      message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
+      supported_families: [{
+        family: 'industrial-brick-brewery-v1-renderlocked',
+        widths_m: [40],
+        depths_m: [26],
+        min_floors: 2,
+        max_floors: 5,
+      }],
+    }));
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({
+        id: 'z-incompatible',
+        properties: {
+          development_archetype_id: 'industrial_brick_brewery',
+          floors: 6,
+        },
+      }),
+    ]} onClose={vi.fn()} />);
+
+    expect(await screen.findByText(/Industrial Brick Brewery supports 40 × 26 m and 2–5 floors/)).toBeInTheDocument();
+    expect(screen.getByText(/No family 0/)).toBeInTheDocument();
+    expect(screen.getByText(/Failed 1/)).toBeInTheDocument();
+    expect(document.querySelector('pre')).toBeNull();
+    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
   });
 
   it('builds a grounded exact-footprint mass for a building whose detailed family is pending', async () => {

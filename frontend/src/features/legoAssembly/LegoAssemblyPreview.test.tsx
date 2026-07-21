@@ -181,12 +181,17 @@ describe('LegoAssemblyPreview', () => {
     expect(screen.getByRole('button', { name: 'More floors' })).toBeEnabled();
   });
 
-  it('shows the backend message and the generate-family command hint on a 422 plan failure', async () => {
+  it('shows generation guidance only for a missing-family planning failure', async () => {
     apiPost.mockRejectedValueOnce(
       Object.assign(new Error('Unprocessable'), {
         response: {
           status: 422,
-          data: { detail: 'No module family covers archetype nordic_timber_midrise.' },
+          data: {
+            detail: {
+              code: 'family_not_found',
+              message: 'No module family covers archetype nordic_timber_midrise.',
+            },
+          },
         },
       }),
     );
@@ -207,6 +212,39 @@ describe('LegoAssemblyPreview', () => {
     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
     // No plan — the canvas placeholder stays up.
     expect(screen.getByText(/Choose Auto Assemble/)).toBeInTheDocument();
+  });
+
+  it('shows installed-family fit guidance without generation commands when the target is incompatible', async () => {
+    apiPost.mockRejectedValueOnce(
+      Object.assign(new Error('Unprocessable'), {
+        response: {
+          status: 422,
+          data: {
+            detail: {
+              code: 'family_incompatible',
+              message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
+              supported_families: [{
+                family: 'industrial-brick-brewery-v1-renderlocked',
+                widths_m: [40],
+                depths_m: [26],
+                min_floors: 2,
+                max_floors: 5,
+              }],
+            },
+          },
+        },
+      }),
+    );
+
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+
+    expect(await screen.findByText(/Industrial Brick Brewery supports/)).toBeInTheDocument();
+    expect(screen.getByText(/matching family is installed/i)).toBeInTheDocument();
+    expect(screen.getByText(/industrial-brick-brewery-v1-renderlocked: 40 × 26 m; 2–5 floors/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No module family covers this archetype yet/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/generate_family\.py/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
   });
 
   it('shows family, fit score, module count and a scale warning after a successful plan', async () => {

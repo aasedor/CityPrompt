@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any, Iterable, Literal
 
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
@@ -96,8 +96,29 @@ class AssemblyRequest:
     wing_depth_m: float | None = None
 
 
+AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
+
+
 class AssemblyPlanningError(ValueError):
-    """Raised when no valid modular assembly can be produced."""
+    """Raised when no valid modular assembly can be produced.
+
+    ``code`` is a stable API-facing classification. The optional metadata is
+    deliberately renderer-neutral so callers can explain an incompatible
+    target without parsing the human-readable message.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        code: AssemblyPlanningErrorCode = "family_incompatible",
+        requested: dict[str, Any] | None = None,
+        supported_families: list[dict[str, Any]] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.code = code
+        self.requested = requested
+        self.supported_families = supported_families
 
 
 def _as_float(value: Any, default: float = 0.0) -> float:
@@ -214,6 +235,55 @@ def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> Modu
     return max(candidates, key=lambda module: _module_score(module, request))
 
 
+def _requested_target_metadata(request: AssemblyRequest) -> dict[str, Any]:
+    return {
+        "width_m": float(request.target_width_m),
+        "depth_m": float(request.target_depth_m),
+        "floors": int(request.target_floors),
+        "footprint_profile": request.footprint_profile,
+    }
+
+
+def _supported_family_metadata(
+    descriptors: list[ModuleDescriptor],
+    families: Iterable[str],
+) -> list[dict[str, Any]]:
+    """Summarize the matching library families for actionable fit guidance."""
+
+    summaries: list[dict[str, Any]] = []
+    for family in families:
+        modules = [module for module in descriptors if module.family == family]
+        if not modules:
+            continue
+        minimum_floors = [
+            int(module.min_floors)
+            for module in modules
+            if module.min_floors is not None
+        ]
+        maximum_floors = [
+            int(module.max_floors)
+            for module in modules
+            if module.max_floors is not None
+        ]
+        native_floors = [
+            int(module.native_floors)
+            for module in modules
+            if module.native_floors is not None
+        ]
+        summaries.append({
+            "family": family,
+            "widths_m": sorted({round(float(module.width_m), 4) for module in modules}),
+            "depths_m": sorted({round(float(module.depth_m), 4) for module in modules}),
+            "min_floors": min(minimum_floors + native_floors)
+            if (minimum_floors or native_floors)
+            else None,
+            "max_floors": max(maximum_floors + native_floors)
+            if (maximum_floors or native_floors)
+            else None,
+        })
+    return summaries
+
+
 def footprint_segments(
     profile: str,
     width_m: float,
@@ -302,6 +372,12 @@ def plan_vertical_assembly(
     families = list(dict.fromkeys(module.family for module in descriptors))
     if request.preferred_family:
         families = [f for f in families if f == request.preferred_family]
+        if not families:
+            raise AssemblyPlanningError(
+                f"No module family named '{request.preferred_family}' is available.",
+                code="family_not_found",
+                requested=_requested_target_metadata(request),
+            )
     if request.archetype_id:
         families = [
             family
@@ -315,8 +391,16 @@ def plan_vertical_assembly(
         if not families:
             raise AssemblyPlanningError(
                 f"No module family explicitly matches archetype '{request.archetype_id}'. "
-                "Import that archetype/variant instead of substituting an unrelated family."
+                "Import that archetype/variant instead of substituting an unrelated family.",
+                code="family_not_found",
+                requested=_requested_target_metadata(request),
             )
+    if not families:
+        raise AssemblyPlanningError(
+            "No module families are available.",
+            code="family_not_found",
+            requested=_requested_target_metadata(request),
+        )
 
     best_plan: dict[str, Any] | None = None
     best_score = float("-inf")
@@ -533,7 +617,10 @@ def plan_vertical_assembly(
     if best_plan is None:
         raise AssemblyPlanningError(
             "No compatible module family found. Add podium, repeatable floor, and roof modules "
-            "whose native footprint is within 20% of the target."
+            "whose native footprint is within 20% of the target.",
+            code="family_incompatible",
+            requested=_requested_target_metadata(request),
+            supported_families=_supported_family_metadata(descriptors, families),
         )
     return best_plan
 

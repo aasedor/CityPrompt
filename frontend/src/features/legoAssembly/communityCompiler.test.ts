@@ -123,7 +123,12 @@ describe('mixed community compiler', () => {
 
     vi.spyOn(legoAssemblyApi, 'plan').mockImplementation(async (request) => {
       if (request.archetype_id === 'missing_building') {
-        throw { response: { status: 422 }, message: 'family unavailable' };
+        throw {
+          response: {
+            status: 422,
+            data: { detail: { code: 'family_not_found', message: 'family unavailable' } },
+          },
+        };
       }
       return detailedPlan;
     });

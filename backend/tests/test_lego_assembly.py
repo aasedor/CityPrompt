@@ -397,7 +397,7 @@ def test_requested_archetype_never_substitutes_unrelated_family():
         descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
         descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
     ]
-    with pytest.raises(AssemblyPlanningError, match="explicitly matches archetype"):
+    with pytest.raises(AssemblyPlanningError, match="explicitly matches archetype") as error:
         plan_vertical_assembly(
             [module for module in modules if module],
             AssemblyRequest(
@@ -407,6 +407,113 @@ def test_requested_archetype_never_substitutes_unrelated_family():
                 archetype_id="contemporary_midrise",
             ),
         )
+    assert error.value.code == "family_not_found"
+    assert error.value.requested == {
+        "width_m": 24.0,
+        "depth_m": 18.0,
+        "floors": 5,
+        "footprint_profile": "rectangle",
+    }
+    assert error.value.supported_families is None
+
+
+def test_matching_family_reports_incompatible_target_and_supported_ranges():
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+    ]
+
+    with pytest.raises(AssemblyPlanningError, match="No compatible module family") as error:
+        plan_vertical_assembly(
+            [module for module in modules if module],
+            AssemblyRequest(
+                target_width_m=60,
+                target_depth_m=40,
+                target_floors=6,
+                archetype_id="nordic-midrise",
+            ),
+        )
+
+    assert error.value.code == "family_incompatible"
+    assert error.value.requested == {
+        "width_m": 60.0,
+        "depth_m": 40.0,
+        "floors": 6,
+        "footprint_profile": "rectangle",
+    }
+    assert error.value.supported_families == [{
+        "family": "nordic-midrise",
+        "widths_m": [24.0],
+        "depths_m": [18.0],
+        "min_floors": 3,
+        "max_floors": 12,
+    }]
+
+
+def test_industrial_brick_parent_selects_original_mill_for_30x20_six_floors():
+    def industrial_module(
+        asset_id: str,
+        family: str,
+        role: str,
+        *,
+        width: float,
+        depth: float,
+        min_floors: int,
+        max_floors: int,
+    ):
+        raw = entry(asset_id, asset_id, role, height=1.0 if role == "roof" else 3.5,
+                    width=width, depth=depth)
+        raw.metadata_["lego"].update({
+            "family": family,
+            "archetype_ids": ["industrial_brick_mixed_use"],
+            "min_floors": min_floors,
+            "max_floors": max_floors,
+        })
+        return descriptor_from_library_entry(raw)
+
+    modules = [
+        industrial_module(
+            f"original-{role}",
+            "industrial-brick-original-mill-v1-renderlocked",
+            role,
+            width=30,
+            depth=20,
+            min_floors=4,
+            max_floors=8,
+        )
+        for role in ("podium", "floor", "roof")
+    ] + [
+        industrial_module(
+            f"brewery-{role}",
+            "industrial-brick-brewery-v1-renderlocked",
+            role,
+            width=40,
+            depth=26,
+            min_floors=2,
+            max_floors=5,
+        )
+        for role in ("podium", "floor", "roof")
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=30,
+            target_depth_m=20,
+            target_floors=6,
+            archetype_id="industrial_brick_mixed_use",
+        ),
+    )
+
+    assert plan["family"] == "industrial-brick-original-mill-v1-renderlocked"
+    assert plan["target"] == {
+        "width_m": 30,
+        "depth_m": 20,
+        "floors": 6,
+        "footprint_profile": "rectangle",
+        "wing_depth_m": 20.0,
+    }
 
 
 def test_l_shape_plan_places_two_rotated_streetwall_segments():
@@ -473,6 +580,90 @@ def _scalars_result(values):
     scalars.all.return_value = values
     result.scalars.return_value = scalars
     return result
+
+
+@pytest.mark.anyio
+async def test_plan_api_returns_structured_family_not_found_error(
+    client, mock_db, test_user, auth_headers
+):
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 24,
+            "target_depth_m": 18,
+            "target_floors": 5,
+            "archetype_id": "missing_family",
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == {
+        "code": "family_not_found",
+        "message": (
+            "No module family explicitly matches archetype 'missing_family'. "
+            "Import that archetype/variant instead of substituting an unrelated family."
+        ),
+        "requested": {
+            "width_m": 24.0,
+            "depth_m": 18.0,
+            "floors": 5,
+            "footprint_profile": "rectangle",
+        },
+    }
+
+
+@pytest.mark.anyio
+async def test_plan_api_returns_structured_family_incompatible_error(
+    client, mock_db, test_user, auth_headers
+):
+    library_entries = [
+        entry("podium", "Podium", "podium", height=4.5),
+        entry("floor", "Floor", "floor", height=3.2),
+        entry("roof", "Roof", "roof", height=1.0),
+    ]
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 60,
+            "target_depth_m": 40,
+            "target_floors": 6,
+            "archetype_id": "nordic-midrise",
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == {
+        "code": "family_incompatible",
+        "message": (
+            "No compatible module family found. Add podium, repeatable floor, and roof modules "
+            "whose native footprint is within 20% of the target."
+        ),
+        "requested": {
+            "width_m": 60.0,
+            "depth_m": 40.0,
+            "floors": 6,
+            "footprint_profile": "rectangle",
+        },
+        "supported_families": [{
+            "family": "nordic-midrise",
+            "widths_m": [24.0],
+            "depths_m": [18.0],
+            "min_floors": 3,
+            "max_floors": 12,
+        }],
+    }
 
 
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):

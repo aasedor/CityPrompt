@@ -304,7 +304,15 @@ async def create_lego_assembly_plan(
             ),
         )
     except AssemblyPlanningError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+        detail: dict[str, Any] = {
+            "code": exc.code,
+            "message": str(exc),
+        }
+        if exc.requested is not None:
+            detail["requested"] = exc.requested
+        if exc.supported_families is not None:
+            detail["supported_families"] = exc.supported_families
+        raise HTTPException(status_code=422, detail=detail) from exc
 
 
 # ---------------------------------------------------------------------------

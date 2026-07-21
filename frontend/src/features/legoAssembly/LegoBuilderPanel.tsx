@@ -10,6 +10,7 @@ import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
+  getLegoPlanningFailure,
   type LegoAssemblyPlan,
 } from './legoAssemblyApi';
 import {
@@ -220,11 +221,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
     const plannedItems = base.map((item, index) => {
       const result = results[index];
       if (result.status === 'fulfilled') return { ...item, plan: result.value };
-      const status = (result.reason as { response?: { status?: number } })?.response?.status;
+      const planningFailure = getLegoPlanningFailure(result.reason);
       return {
         ...item,
-        error: getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
-        familyMissing: status === 422,
+        error: planningFailure?.message || getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
+        familyMissing: planningFailure?.code === 'family_not_found',
       };
     });
     setItems(plannedItems);

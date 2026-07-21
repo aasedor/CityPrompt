@@ -49,7 +49,7 @@ interface ZonePropertiesPanelProps {
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
   buildings?: Building[];
   allZones?: SiteZone[];
-  onOpenBlockEditor?: () => void;
+  onOpenBlockEditor?: (draftZone: SiteZone) => void;
 }
 
 type DevelopmentAestheticCategory = {
@@ -66,6 +66,22 @@ const customStyleKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
   p.custom_style_expanded_edited,
   p.custom_style_expansion_hash,
   p.custom_style_attachments,
+]);
+
+/** Snapshot of the catalogue identity that must be persisted as one choice. */
+const aestheticSelectionKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
+  p.development_subcategory,
+  p.development_archetype_id,
+  p.development_selected_variant_id,
+  p.road_subcategory,
+  p.road_archetype_id,
+  p.road_selected_variant_id,
+  p.green_space_subcategory,
+  p.green_space_archetype_id,
+  p.green_space_selected_variant_id,
+  p.plaza_subcategory,
+  p.plaza_archetype_id,
+  p.plaza_selected_variant_id,
 ]);
 
 type TransportModeKey = CatalogTransportModeKey;
@@ -408,6 +424,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const customStyleSaveTimerRef = useRef<number | null>(null);
   const customStyleSavePendingRef = useRef(false);
   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
+  const prevAestheticSelectionKeyRef = useRef<string | undefined>(undefined);
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
   const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
 
@@ -443,6 +460,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     // treat the restore as a user edit (it would re-commit the undone state
     // and wipe the redo stack).
     prevCustomStyleKeyRef.current = customStyleKeyOf(zone.properties || {});
+    prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(zone.properties || {});
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
@@ -524,24 +542,29 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   // Keep the ref pointing at the latest handleSave (fresh props/name closure)
   handleSaveRef.current = handleSave;
 
-  // Auto-save when the user picks a new archetype card (any zone type)
-  const prevArchetypeRef = useRef<string | undefined>(undefined);
-  useEffect(() => {
-    const currentArchetype = (props.development_subcategory as string)
-      || (props.road_subcategory as string)
-      || (props.green_space_subcategory as string)
-      || (props.plaza_subcategory as string)
-      || (props.development_archetype_id as string)
-      || (props.road_archetype_id as string)
-      || (props.green_space_archetype_id as string)
-      || (props.plaza_archetype_id as string);
+  const handleOpenBlockEditor = () => {
+    onOpenBlockEditor?.({
+      ...zone,
+      name,
+      properties: { ...props },
+    });
+  };
 
-    // Skip initial mount and zone resets — only fire when archetype actually changes
-    if (prevArchetypeRef.current !== undefined && currentArchetype && currentArchetype !== prevArchetypeRef.current) {
-      handleSave();
+  // Auto-save the complete catalogue identity (parent, reference and design
+  // variant). In particular, variant -> Automatic must save even when the
+  // parent archetype itself did not change.
+  const aestheticSelectionKey = aestheticSelectionKeyOf(props);
+  useEffect(() => {
+    // Skip initial mount and zone resets. The latest-save ref is updated during
+    // render, so this effect always persists the fully computed next props.
+    if (prevAestheticSelectionKeyRef.current === undefined) {
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
+      return;
     }
-    prevArchetypeRef.current = currentArchetype;
-  }, [props.development_subcategory, props.road_subcategory, props.green_space_subcategory, props.plaza_subcategory, props.development_archetype_id, props.road_archetype_id, props.green_space_archetype_id, props.plaza_archetype_id]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (aestheticSelectionKey === prevAestheticSelectionKeyRef.current) return;
+    prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
+    handleSaveRef.current();
+  }, [aestheticSelectionKey]);
 
   // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
   useEffect(() => {
@@ -1262,7 +1285,11 @@ const resolveOptionCategory = (
         {zone.zone_type === 'site_boundary' && (
           <>
             <SiteIntelligencePanel zone={zone} />
-            <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
+            <SiteBoundarySection
+              zone={zone}
+              allZones={allZones}
+              onOpenBlockEditor={onOpenBlockEditor ? handleOpenBlockEditor : undefined}
+            />
           </>
         )}
 
@@ -1993,7 +2020,7 @@ const resolveOptionCategory = (
           && ((['building', 'residential', 'development_area', 'development'] as string[]).includes(zone.zone_type)
             || !!props.development_archetype_id) && (
           <button
-            onClick={onOpenBlockEditor}
+            onClick={handleOpenBlockEditor}
             className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#d9ff70]"
           >
             <Box size={12} />
@@ -2956,66 +2983,95 @@ function AestheticOptionCard({
   };
 
   return (
-    <button
+    <div
       key={option.id}
-      type="button"
-      onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+      data-aesthetic-option-id={option.id}
       className={`overflow-hidden rounded-lg border text-left transition-all ${
         value === option.id
           ? 'border-primary-500 ring-2 ring-primary-500/25'
           : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
       }`}
     >
-      <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
-        <AestheticImage
-          sources={heroSources}
-          alt={option.label}
-          className="h-full w-full object-cover"
-          onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-        {showSiteFit && (
-          <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
-            areaFit
-              ? areaFit.isGoodFit
-                ? 'bg-green-100 text-green-700'
-                : 'bg-orange-100 text-orange-700'
-              : 'bg-white/85 text-[#151515]/55'
-          }`}>
-            {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+      <button
+        type="button"
+        onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+        className="block w-full text-left"
+        aria-label={`Select ${option.label} with Automatic / best-fitting family`}
+      >
+        <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
+          <AestheticImage
+            sources={heroSources}
+            alt={option.label}
+            className="h-full w-full object-cover"
+            onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+          {showSiteFit && (
+            <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
+              areaFit
+                ? areaFit.isGoodFit
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-orange-100 text-orange-700'
+                : 'bg-white/85 text-[#151515]/55'
+            }`}>
+              {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+            </div>
+          )}
+          <div className="absolute inset-x-0 bottom-0 p-2">
+            <p className="text-[10px] font-semibold text-white">{option.label}</p>
           </div>
-        )}
-        <div className="absolute inset-x-0 bottom-0 p-2">
-          <p className="text-[10px] font-semibold text-white">{option.label}</p>
         </div>
-      </div>
-      <div className="px-2 py-1.5">
-        <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-        {showSiteFit && (
-          <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
-            areaFit
-              ? areaFit.isGoodFit
-                ? 'border-green-600/25 bg-green-50 text-green-700'
-                : 'border-orange-500/25 bg-orange-50 text-orange-600'
-              : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
-          }`}>
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[9px] font-black uppercase">Site fit</span>
-              <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
-            </div>
-            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
-              Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
-              {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
-              {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
-            </div>
-            {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
-              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
-                {areaFit.floorLabel || ''}
-                {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
-                {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+        <div className="px-2 py-1.5">
+          <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+          {showSiteFit && (
+            <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
+              areaFit
+                ? areaFit.isGoodFit
+                  ? 'border-green-600/25 bg-green-50 text-green-700'
+                  : 'border-orange-500/25 bg-orange-50 text-orange-600'
+                : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
+            }`}>
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[9px] font-black uppercase">Site fit</span>
+                <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
               </div>
-            )}
-          </div>
+              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
+                Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
+                {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
+                {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
+              </div>
+              {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
+                <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
+                  {areaFit.floorLabel || ''}
+                  {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
+                  {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+                </div>
+              )}
+            </div>
+          )}
+          {hasDesignVariants && isSelected && (
+            <p className="mt-1.5 text-[9px] font-black text-primary-950/65" aria-live="polite">
+              Current selection: {activeVariant?.label || 'Automatic / best-fitting family'}
+            </p>
+          )}
+        </div>
+      </button>
+
+      <div className="px-2 pb-1.5">
+        {hasDesignVariants && (
+          <button
+            type="button"
+            onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+            aria-pressed={isSelected && !selectedVariantId}
+            className={`mb-1.5 flex w-full items-center justify-between rounded border px-1.5 py-1 text-left text-[9px] font-bold ${
+              isSelected && !selectedVariantId
+                ? 'border-primary-500 bg-primary-500/10 text-primary-950'
+                : 'border-primary-950/[0.1] bg-white text-primary-950/60 hover:border-primary-950/[0.25]'
+            }`}
+          >
+            <span>Automatic / best-fitting family</span>
+            <span>{isSelected && !selectedVariantId ? 'Selected' : 'Use parent'}</span>
+          </button>
         )}
         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
@@ -3053,6 +3109,7 @@ function AestheticOptionCard({
               <button
                 key={`${option.id}-variant-${variant.id}`}
                 type="button"
+                aria-pressed={isActive}
                 onClick={(event) => {
                   event.stopPropagation();
                   onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id, variant.id);
@@ -3121,7 +3178,7 @@ function AestheticOptionCard({
           })}
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 function DevelopmentAestheticPicker({

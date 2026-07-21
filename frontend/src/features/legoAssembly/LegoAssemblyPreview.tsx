@@ -9,8 +9,11 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
+  getLegoPlanningFailure,
   type LegoAssemblyPlan,
   type LegoAssemblyRecipe,
+  type LegoPlanningFailure,
+  type LegoSupportedFamily,
 } from './legoAssemblyApi';
 import {
   MAX_DIMENSION_M,
@@ -46,6 +49,21 @@ function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
       <OrbitControls makeDefault enablePan />
     </>
   );
+}
+
+function supportedFamilyLabel(supported: LegoSupportedFamily): string {
+  const widths = supported.widths_m.length > 0 ? supported.widths_m.join('/') : '?';
+  const depths = supported.depths_m.length > 0 ? supported.depths_m.join('/') : '?';
+  const floorRange = supported.min_floors != null && supported.max_floors != null
+    ? supported.min_floors === supported.max_floors
+      ? `${supported.min_floors} floors`
+      : `${supported.min_floors}–${supported.max_floors} floors`
+    : supported.min_floors != null
+      ? `${supported.min_floors}+ floors`
+      : supported.max_floors != null
+        ? `up to ${supported.max_floors} floors`
+        : 'floor range not specified';
+  return `${supported.family}: ${widths} × ${depths} m; ${floorRange}`;
 }
 
 export function LegoAssemblyPreview({
@@ -93,7 +111,7 @@ export function LegoAssemblyPreview({
   const [plan, setPlan] = useState<LegoAssemblyPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [familyMissing, setFamilyMissing] = useState(false);
+  const [planningFailure, setPlanningFailure] = useState<LegoPlanningFailure | null>(null);
   const [savedRecipe, setSavedRecipe] = useState<LegoAssemblyRecipe | null>(null);
   const [saving, setSaving] = useState(false);
   const [placing, setPlacing] = useState(false);
@@ -130,7 +148,7 @@ export function LegoAssemblyPreview({
     setTargetFloors(floorCount);
     setLoading(true);
     setError(null);
-    setFamilyMissing(false);
+    setPlanningFailure(null);
     try {
       const result = await legoAssemblyApi.plan({
         target_width_m: width,
@@ -141,9 +159,9 @@ export function LegoAssemblyPreview({
       });
       setPlan(result);
     } catch (cause) {
-      const status = (cause as { response?: { status?: number } })?.response?.status;
-      setError(getApiErrorMessage(cause, 'Could not assemble this building.'));
-      if (status === 422) setFamilyMissing(true);
+      const failure = getLegoPlanningFailure(cause);
+      setPlanningFailure(failure);
+      setError(failure?.message || getApiErrorMessage(cause, 'Could not assemble this building.'));
     } finally {
       setLoading(false);
     }
@@ -450,7 +468,7 @@ export function LegoAssemblyPreview({
 
           {error && <p className="mt-3 rounded border border-red-300 bg-red-50 p-2 text-xs text-red-800">{error}</p>}
 
-          {familyMissing && (
+          {planningFailure?.code === 'family_not_found' && (
             <div className="mt-2 rounded border border-red-300 bg-red-50 p-2 text-[11px] text-red-900">
               <p className="font-bold">No module family covers this archetype yet.</p>
               <p className="mt-1">Generate one, then import its manifest:</p>
@@ -463,6 +481,23 @@ export function LegoAssemblyPreview({
                 {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 {copied ? 'Copied' : 'Copy commands'}
               </button>
+            </div>
+          )}
+
+          {planningFailure?.code === 'family_incompatible' && (
+            <div className="mt-2 rounded border border-amber-400 bg-amber-50 p-2 text-[11px] text-amber-900">
+              <p className="font-bold">A matching family is installed, but it does not fit this target.</p>
+              <p className="mt-1">Adjust the width, depth, floors or footprint profile and assemble again.</p>
+              {planningFailure.supported_families && planningFailure.supported_families.length > 0 && (
+                <div className="mt-1.5">
+                  <p className="font-bold">Supported family sizes</p>
+                  <ul className="mt-0.5 list-disc space-y-0.5 pl-4">
+                    {planningFailure.supported_families.map((supported) => (
+                      <li key={supported.family}>{supportedFamilyLabel(supported)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
