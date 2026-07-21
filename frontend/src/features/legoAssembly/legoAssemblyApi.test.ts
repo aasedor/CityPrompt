@@ -69,18 +69,19 @@ describe('legoAssemblyApi', () => {
       items: [],
     };
     apiPost.mockResolvedValue({ data: response });
+    const sourceUpdatedAt = '2026-07-17T00:00:00Z';
 
     await expect(legoAssemblyApi.compileCommunity([
-      { zone_id: 'building-1', recipe: recipeFixture },
-      { zone_id: 'park-1' },
-      { zone_id: 'street-1' },
+      { zone_id: 'building-1', source_updated_at: sourceUpdatedAt, recipe: recipeFixture },
+      { zone_id: 'park-1', source_updated_at: sourceUpdatedAt },
+      { zone_id: 'street-1', source_updated_at: sourceUpdatedAt },
     ])).resolves.toEqual(response);
 
     expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
       items: [
-        { zone_id: 'building-1', recipe: recipeFixture },
-        { zone_id: 'park-1' },
-        { zone_id: 'street-1' },
+        { zone_id: 'building-1', source_updated_at: sourceUpdatedAt, recipe: recipeFixture },
+        { zone_id: 'park-1', source_updated_at: sourceUpdatedAt },
+        { zone_id: 'street-1', source_updated_at: sourceUpdatedAt },
       ],
     });
   });

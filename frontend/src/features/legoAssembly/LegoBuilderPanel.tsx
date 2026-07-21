@@ -138,10 +138,17 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
       const result = await legoAssemblyApi.compileCommunity([
         ...placeable.map((item) => ({
           zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
           recipe: recipeFromPlan(item),
         })),
-        ...massingOnly.map((item) => ({ zone_id: item.zone.id })),
-        ...groundToCompile.map((item) => ({ zone_id: item.zone.id })),
+        ...massingOnly.map((item) => ({
+          zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
+        })),
+        ...groundToCompile.map((item) => ({
+          zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
+        })),
       ]);
       setItems((prev) => prev.map((item) => {
         if (placeableIds.has(item.zone.id)) {
@@ -158,10 +165,16 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           : item
       )));
       const groundCount = result.counts.park + result.counts.street;
+      const residual = result.residual_landscape;
+      const residualSummary = residual && residual.boundary_count > 0
+        ? `; landscaped ${Math.round(residual.area_sqm).toLocaleString()} m² of residual site`
+          + ` with ${residual.placement_count} tree${residual.placement_count === 1 ? '' : 's'}`
+        : '';
       setSaveResult(
         `Built ${placeable.length} detailed building${placeable.length === 1 ? '' : 's'}, `
         + `${massingOnly.length} family-pending mass${massingOnly.length === 1 ? '' : 'es'}, and `
-        + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`,
+        + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`
+        + residualSummary,
       );
       await refetchPlacedData();
     } catch (error) {

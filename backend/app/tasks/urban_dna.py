@@ -23,6 +23,7 @@ from app.services.city_connector.base import DatasetFetchResult, DatasetSpec
 from app.services.urban_dna.builder import build_dna
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
 from app.tasks.worker import celery_app
+from app.services.residual_landscape import lock_residual_landscape_project_sync
 
 
 def _get_sync_session():
@@ -463,8 +464,10 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
     from shapely.ops import unary_union
 
     from app.models.models import SiteZone, UrbanDnaScenario
+    from app.services.residual_landscape import mark_residual_landscape_stale
     from app.services.city_connector import get_connector_for_site
     from app.services.urban_dna.builder import _fetch_with_cache
+    from sqlalchemy.orm.attributes import flag_modified
 
     locks = locks or []
     session = _get_sync_session()
@@ -749,6 +752,15 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         )
         # The planner's own notes (composition + repairs) lead the plan notes.
         result.notes[:0] = master_notes
+
+        lock_residual_landscape_project_sync(session, snapshot.project_id)
+        session.refresh(zone)
+        if mark_residual_landscape_stale(
+            zone,
+            changed_zone_id=str(zone.id),
+            reason="Master plan regenerated; rebuild Community 3D landscaping.",
+        ):
+            flag_modified(zone, "properties")
 
         # Replace previous plan zones (keep locked streets).
         for old in existing:

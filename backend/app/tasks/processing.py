@@ -18,6 +18,10 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import get_settings
 from app.core.usage_logger import log_api_usage_sync
 from app.generation.engine import MESHY_MAX_RUNTIME_S, get_engine
+from app.services.residual_landscape import (
+    lock_residual_landscape_project_sync,
+    mark_linked_community_3d_stale_sync,
+)
 from app.tasks.worker import celery_app
 
 logger = logging.getLogger(__name__)
@@ -27,6 +31,9 @@ _sync_engine = None
 _sync_session_factory = None
 _sync_pool_size = 5 if settings.app_env == "production" else 20
 _sync_max_overflow = 3 if settings.app_env == "production" else 10
+_COMMUNITY_MODEL_CHANGED_REASON = (
+    "Linked generated building model changed; rebuild Community 3D before Direct rendering."
+)
 
 
 def _get_sync_engine():
@@ -58,6 +65,22 @@ def _merge_building_specifications(building, updates: dict) -> None:
     specs = dict(building.specifications or {})
     specs.update(updates)
     building.specifications = specs
+
+
+def _begin_building_representation_mutation(session: Session, building) -> None:
+    """Serialize a worker's visible model write with paid Direct preflight."""
+
+    lock_residual_landscape_project_sync(session, building.project_id)
+    session.refresh(building)
+
+
+def _mark_building_representation_stale(session: Session, building) -> None:
+    mark_linked_community_3d_stale_sync(
+        session,
+        project_id=building.project_id,
+        building_id=building.id,
+        reason=_COMMUNITY_MODEL_CHANGED_REASON,
+    )
 
 
 def _queue_procedural_generation_jobs(session: Session, document, jobs: list[tuple[object, dict]]) -> list[dict]:
@@ -531,18 +554,25 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
             continue
 
         # Found the zone - propagate to siblings
+        lock_residual_landscape_project_sync(session, zone.project_id)
+        session.refresh(zone)
+        bid_list = zone.building_ids or []
+        if str(building_id) not in [str(b) for b in bid_list]:
+            continue
         sibling_count = 0
         for bid_str in bid_list:
             if str(bid_str) == str(building_id):
                 continue  # Skip the source building
             sibling = session.query(Building).filter_by(id=uuid.UUID(str(bid_str))).first()
             if sibling:
+                session.refresh(sibling)
                 sibling.model_url = model_url
                 sibling.lod_urls = lod_urls
                 sibling.generation_status = "completed"
                 if preview_url:
                     sibling.preview_url = preview_url
                     sibling.preview_status = "completed"
+                _mark_building_representation_stale(session, sibling)
                 sibling_count += 1
 
         if sibling_count > 0:
@@ -588,6 +618,7 @@ def _apply_cached_model(session: Session, building_id: str, building, entry, eng
     lod_urls = {str(k): _file_proxy_url(v) for k, v in (entry.lod_keys or {}).items()}
     lod_urls.setdefault("0", model_url)
 
+    _begin_building_representation_mutation(session, building)
     building.model_url = model_url
     building.lod_urls = lod_urls
     building.generation_status = "completed"
@@ -595,6 +626,7 @@ def _apply_cached_model(session: Session, building_id: str, building, entry, eng
     if entry.thumbnail_key:
         building.preview_url = _file_proxy_url(entry.thumbnail_key)
         building.preview_status = "completed"
+    _mark_building_representation_stale(session, building)
     session.commit()
 
     bump_use_count(session, entry.id)
@@ -711,6 +743,7 @@ def _apply_library_model(session: Session, building_id: str, building, entry, ar
     lod_urls.setdefault("0", model_url)
 
     try:
+        _begin_building_representation_mutation(session, building)
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
@@ -719,6 +752,7 @@ def _apply_library_model(session: Session, building_id: str, building, entry, ar
         if entry.thumbnail_url:
             building.preview_url = entry.thumbnail_url
             building.preview_status = "completed"
+        _mark_building_representation_stale(session, building)
         session.commit()
     except Exception as db_err:
         session.rollback()
@@ -807,11 +841,18 @@ def generate_3d_model_ai(
         if not provider.is_available():
             raise RuntimeError(f"AI generation engine '{engine}' is not configured")
 
+        style_changed = bool(
+            style_id and building.architectural_style != style_id
+        )
+        if style_changed:
+            _begin_building_representation_mutation(session, building)
         building.generation_status = "generating"
         building.generation_prompt = prompt
         building.generation_engine = provider.engine_id
         if style_id:
             building.architectural_style = style_id
+        if style_changed:
+            _mark_building_representation_stale(session, building)
         session.commit()
 
         architectural_negative_prompt = negative_prompt or (
@@ -830,8 +871,10 @@ def generate_3d_model_ai(
             preview_key = f"projects/{building.project_id}/models/{building_id}_preview.glb"
             _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
             preview_url = _file_proxy_url(preview_key)
+            _begin_building_representation_mutation(session, building)
             building.model_url = preview_url
             building.lod_urls = {"0": preview_url}
+            _mark_building_representation_stale(session, building)
             session.commit()
             logger.info(f"Preview model saved for building {building_id}: {preview_url}")
             _progress_callback(0.5, "preview_ready")
@@ -961,10 +1004,12 @@ def generate_3d_model_ai(
 
         _progress_callback(0.95, "updating")
 
+        _begin_building_representation_mutation(session, building)
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
         building.meshy_task_id = result.task_id
+        _mark_building_representation_stale(session, building)
         # Commit the paid result IMMEDIATELY. Everything below is optional
         # polish; a crash or soft-kill during it must not lose a model that
         # Meshy already charged for and that is already uploaded to storage.
@@ -1475,9 +1520,11 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         self.update_state(state="GENERATING", meta={"progress": 0.9, "step": "updating"})
 
         # Step 5: Update building record with model URL + LOD URLs
+        _begin_building_representation_mutation(session, building)
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
+        _mark_building_representation_stale(session, building)
         session.commit()
 
         logger.info(

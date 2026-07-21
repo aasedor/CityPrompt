@@ -146,10 +146,14 @@ describe('mixed community compiler', () => {
 
     expect(compile).toHaveBeenCalledTimes(1);
     expect(compile.mock.calls[0][0]).toEqual([
-      expect.objectContaining({ zone_id: 'supported', recipe: expect.objectContaining({ module_family: 'supported-family' }) }),
-      { zone_id: 'missing' },
-      { zone_id: 'park' },
-      { zone_id: 'street' },
+      expect.objectContaining({
+        zone_id: 'supported',
+        source_updated_at: '2026-01-01T00:00:00Z',
+        recipe: expect.objectContaining({ module_family: 'supported-family' }),
+      }),
+      { zone_id: 'missing', source_updated_at: '2026-01-01T00:00:00Z' },
+      { zone_id: 'park', source_updated_at: '2026-01-01T00:00:00Z' },
+      { zone_id: 'street', source_updated_at: '2026-01-01T00:00:00Z' },
     ]);
     expect(result).toMatchObject({
       detailedBuildings: 1,
@@ -173,6 +177,37 @@ describe('mixed community compiler', () => {
 
     await expect(compileMixedCommunity3D(zones)).rejects.toThrow('planner unavailable');
     expect(compile).not.toHaveBeenCalled();
+  });
+
+  it('classifies an existing Meshy representation as a detailed building', async () => {
+    const generated = zone('generated', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'generated_family',
+      floors: 6,
+    });
+    vi.spyOn(legoAssemblyApi, 'plan').mockRejectedValue({
+      response: {
+        status: 422,
+        headers: { 'x-city-prompt-error-code': 'MODULE_FAMILY_MISSING' },
+      },
+    });
+    vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-18T00:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [{
+        zone_id: 'generated',
+        kind: 'building',
+        building_id: 'b-generated',
+        building_created: false,
+        generator: 'meshy',
+      }],
+    });
+
+    const result = await compileMixedCommunity3D([generated]);
+
+    expect(result.detailedBuildings).toBe(1);
+    expect(result.plannedMasses).toBe(0);
   });
 
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {
@@ -256,7 +291,10 @@ describe('mixed community compiler', () => {
     const result = await compileMixedCommunity3D(zones);
 
     expect(plan).toHaveBeenCalledTimes(2);
-    expect(compile.mock.calls[0][0][0]).toEqual({ zone_id: 'fit-0' });
+    expect(compile.mock.calls[0][0][0]).toEqual({
+      zone_id: 'fit-0',
+      source_updated_at: '2026-01-01T00:00:00Z',
+    });
     expect(compile.mock.calls[0][0][1]).toEqual(
       expect.objectContaining({ zone_id: 'fit-1', recipe: expect.any(Object) }),
     );

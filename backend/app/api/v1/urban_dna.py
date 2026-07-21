@@ -20,6 +20,7 @@ from geoalchemy2.shape import to_shape
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import check_project_permission, require_auth
@@ -31,6 +32,10 @@ from app.services.planning_agents.scenarios import (
     SCENARIO_PRESETS,
 )
 from app.services.planning_agents.schemas import PARAMETER_VOCABULARY
+from app.services.residual_landscape import (
+    lock_residual_landscape_project,
+    mark_residual_landscape_stale,
+)
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
 
 logger = logging.getLogger(__name__)
@@ -502,7 +507,7 @@ async def delete_scenario(
         raise HTTPException(status_code=404, detail="Scenario not found")
 
     try:
-        await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+        zone = await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
     except HTTPException as exc:
         if exc.status_code in (403, 404):
             # Existence-oracle hygiene — same 404 as a nonexistent scenario id.
@@ -531,6 +536,8 @@ async def delete_scenario(
                 detail="This scenario's plan is being drawn — wait for it to finish before deleting",
             )
 
+    await lock_residual_landscape_project(db, snapshot.project_id)
+    await db.refresh(zone)
     zones_result = await db.execute(
         select(SiteZone).where(
             SiteZone.project_id == snapshot.project_id,
@@ -538,6 +545,12 @@ async def delete_scenario(
         )
     )
     plan_zones = zones_result.scalars().all()
+    if plan_zones and mark_residual_landscape_stale(
+        zone,
+        changed_zone_id=str(plan_zones[0].id),
+        reason="Scenario plan zones deleted; rebuild Community 3D landscaping.",
+    ):
+        flag_modified(zone, "properties")
     for plan_zone in plan_zones:
         await db.delete(plan_zone)
     await db.delete(row)

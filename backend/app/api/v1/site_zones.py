@@ -53,6 +53,12 @@ from app.api.v1.buildings import _building_to_response
 from app.services.generation_queue import queue_ai_generation_task
 from app.services.layout_planner import LayoutPlanner
 from app.services.osm_context import OSMContextFetcher
+from app.services.residual_landscape import (
+    community_3d_source_hash,
+    lock_residual_landscape_project,
+    mark_community_3d_stale,
+    mark_residual_landscape_stale,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -175,6 +181,64 @@ async def _invalidate_boundary_dependents(
         for scenario in scenarios_result.scalars().all():
             scenario.status = "failed"
             scenario.error = stale_message
+
+
+async def _invalidate_residual_landscape(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    *,
+    changed_zone_id: uuid.UUID,
+    reason: str,
+    boundary: SiteZone | None = None,
+) -> None:
+    """Fail closed when authored geometry changes after a 3D compile.
+
+    Residual landscaping is derived from the complete set of physical zones,
+    not an independently editable polygon. Keeping an old recipe visible after
+    any contributing zone changes would make the scene look plausible while no
+    longer matching the plan. Preserve the recipe for diagnostics, but mark it
+    stale so clients ignore it until Community 3D is rebuilt.
+    """
+
+    await lock_residual_landscape_project(db, project_id)
+
+    if boundary is not None:
+        boundaries = [boundary] if boundary.zone_type == "site_boundary" else []
+    else:
+        boundaries_result = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == project_id,
+                SiteZone.zone_type == "site_boundary",
+            ).execution_options(populate_existing=True)
+        )
+        boundaries = list(boundaries_result.scalars().all())
+
+    for site_boundary in boundaries:
+        if mark_residual_landscape_stale(
+            site_boundary,
+            changed_zone_id=str(changed_zone_id),
+            reason=reason,
+        ):
+            flag_modified(site_boundary, "properties")
+
+
+def _residual_source_identity(
+    zone_type: str | None,
+    properties: dict | None,
+) -> tuple[str, str | None, bool]:
+    """Return only fields that can change residual occupancy/classification.
+
+    Material, render and generated-texture metadata are deliberately excluded:
+    they do not move a polygon or change whether it is a building, park,
+    street, framework overlay or unclassified physical zone.
+    """
+
+    props = properties or {}
+    return (
+        str(zone_type or ""),
+        str(props.get("_plan_role")) if props.get("_plan_role") is not None else None,
+        bool(props.get("development_archetype_id")),
+    )
 
 
 def _safe_int(value, default: int) -> int:
@@ -422,6 +486,7 @@ async def _restore_zone_snapshot(
     expected_zone_id: uuid.UUID | None = None,
 ) -> SiteZone:
     """Apply a zone snapshot without recording history."""
+    await lock_residual_landscape_project(db, project_id)
     try:
         zone_id = uuid.UUID(str(snapshot["id"]))
     except (KeyError, TypeError, ValueError):
@@ -469,6 +534,19 @@ async def _restore_zone_snapshot(
         )
         db.add(zone)
 
+    if mark_community_3d_stale(
+        zone,
+        reason="Zone history restored; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
+
+    await _invalidate_residual_landscape(
+        db,
+        project_id,
+        changed_zone_id=zone_id,
+        reason="Zone history restored; rebuild Community 3D landscaping.",
+        boundary=zone if zone.zone_type == "site_boundary" else None,
+    )
     await db.flush()
     await db.refresh(zone)
     return zone
@@ -577,6 +655,8 @@ async def create_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to add zones to this project")
 
+    await lock_residual_landscape_project(db, project_id)
+
     # Convert coordinates to a valid WKT POLYGON. Invalid rings used to be
     # accepted by PostGIS and fail much later in the master planner.
     try:
@@ -618,6 +698,16 @@ async def create_zone(
             )
         except Exception as e:
             logger.warning("Failed to auto-fetch OSM context for zone %s: %s", zone.id, e)
+    await _invalidate_residual_landscape(
+        db,
+        project_id,
+        changed_zone_id=zone.id,
+        reason=(
+            "Site boundary created; resolve the authoritative boundary and rebuild Community 3D landscaping."
+            if zone_in.zone_type == "site_boundary"
+            else "Authored zone created; rebuild Community 3D landscaping."
+        ),
+    )
 
     # Record history (skip during undo/redo)
     if not request.headers.get("x-skip-history"):
@@ -721,11 +811,16 @@ async def update_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to edit zones in this project")
 
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # Capture state BEFORE the update for diff / revert
     before_snapshot = _snapshot_from_zone(zone)
 
     update_data = zone_in.model_dump(exclude_unset=True)
+    zone_geometry_changed = False
     boundary_geometry_changed = False
+    updated_coordinates: list[list[float]] | None = None
 
     # Handle coordinates to geometry conversion
     if "coordinates" in update_data:
@@ -735,18 +830,67 @@ async def update_zone(
                 coords = _validated_polygon_coordinates(raw_coords)
             except ValueError as exc:
                 raise HTTPException(status_code=400, detail=str(exc)) from exc
-            boundary_geometry_changed = (
-                zone.zone_type == "site_boundary"
-                and _coordinates_materially_changed(before_snapshot.get("coordinates"), coords)
+            zone_geometry_changed = _coordinates_materially_changed(
+                before_snapshot.get("coordinates"), coords
             )
+            updated_coordinates = coords
+            boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
 
     for field, value in update_data.items():
         setattr(zone, field, value)
 
+    before_coordinates = _open_ring(before_snapshot.get("coordinates"))
+    after_coordinates = _open_ring(updated_coordinates or before_coordinates)
+    try:
+        before_source_hash = community_3d_source_hash(
+            before_snapshot.get("zone_type"),
+            Polygon(before_coordinates),
+            before_snapshot.get("properties"),
+        )
+        after_source_hash = community_3d_source_hash(
+            zone.zone_type,
+            Polygon(after_coordinates),
+            zone.properties,
+        )
+        compiled_source_changed = before_source_hash != after_source_hash
+    except (TypeError, ValueError):
+        # Invalid historical snapshots still fail closed for the coarse inputs
+        # we can compare; current API coordinate validation prevents new ones.
+        compiled_source_changed = bool(
+            zone_geometry_changed
+            or before_snapshot.get("zone_type") != zone.zone_type
+        )
+    if compiled_source_changed and mark_community_3d_stale(
+        zone,
+        reason="Authored zone changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
+
     if boundary_geometry_changed:
         await _invalidate_boundary_dependents(db, zone)
+
+    source_identity_changed = _residual_source_identity(
+        before_snapshot.get("zone_type"),
+        before_snapshot.get("properties"),
+    ) != _residual_source_identity(zone.zone_type, zone.properties)
+    residual_source_changed = bool(
+        zone_geometry_changed or source_identity_changed
+    )
+    if residual_source_changed:
+        await _invalidate_residual_landscape(
+            db,
+            zone.project_id,
+            changed_zone_id=zone.id,
+            reason="Authored zone changed; rebuild Community 3D landscaping.",
+            boundary=(
+                zone
+                if before_snapshot.get("zone_type") == "site_boundary"
+                and zone.zone_type == "site_boundary"
+                else None
+            ),
+        )
 
     await db.flush()
 
@@ -810,9 +954,20 @@ async def delete_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to delete zones in this project")
 
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # Record history before deletion (skip during undo/redo)
     if not request.headers.get("x-skip-history"):
         await _record_zone_history(db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}")
+
+    if zone.zone_type != "site_boundary":
+        await _invalidate_residual_landscape(
+            db,
+            zone.project_id,
+            changed_zone_id=zone.id,
+            reason="Authored zone deleted; rebuild Community 3D landscaping.",
+        )
 
     await db.delete(zone)
 
@@ -1416,6 +1571,9 @@ async def apply_layout(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # If zone already has linked buildings, delete them first (re-applying layout)
     if zone.building_ids:
         for old_bid in _normalize_building_ids(zone.building_ids):
@@ -1473,6 +1631,7 @@ async def apply_layout(
 
     # Store layout metadata in zone properties
     updated_props = dict(props)
+    updated_props["_saved_layout"] = layout.model_dump()
     updated_props["_layout_strategy"] = layout.layout_strategy
     updated_props["_layout_reasoning"] = layout.reasoning
     updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
@@ -1480,6 +1639,11 @@ async def apply_layout(
     if layout.density_achieved:
         updated_props["_layout_density"] = layout.density_achieved
     zone.properties = updated_props
+    if mark_community_3d_stale(
+        zone,
+        reason="Building layout changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
 
     # Link zone to all buildings
     zone.building_id = first_building.id
@@ -2475,11 +2639,20 @@ async def save_layout(
     if not zone:
         raise HTTPException(status_code=404, detail="Zone not found")
 
+    await _ensure_project_access(db, zone.project_id, current_user, write=True)
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # 1. Save layout to zone properties
     props = zone.properties or {}
     props["_saved_layout"] = body.layout.model_dump()
     zone.properties = props
     flag_modified(zone, "properties")
+    if mark_community_3d_stale(
+        zone,
+        reason="Saved building layout changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
 
     # 2. Sync building records with layout blocks
     shape = to_shape(zone.geometry)
@@ -2681,6 +2854,7 @@ async def restore_working_snapshot(
 ):
     """Silently restore or delete a zone working snapshot for client-side undo/redo."""
     await _ensure_project_access(db, project_id, user, write=True)
+    await lock_residual_landscape_project(db, project_id)
 
     if body.snapshot is None:
         zone_result = await db.execute(select(SiteZone).where(SiteZone.id == body.zone_id))
@@ -2688,6 +2862,13 @@ async def restore_working_snapshot(
         if zone:
             if zone.project_id != project_id:
                 raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
+            if zone.zone_type != "site_boundary":
+                await _invalidate_residual_landscape(
+                    db,
+                    project_id,
+                    changed_zone_id=zone.id,
+                    reason="Zone removed by undo/redo; rebuild Community 3D landscaping.",
+                )
             await db.delete(zone)
             await db.flush()
         return {
@@ -2773,6 +2954,7 @@ async def revert_to_version(
     if not entry:
         raise HTTPException(status_code=404, detail="History entry not found")
     await _ensure_project_access(db, entry.project_id, user, write=True)
+    await lock_residual_landscape_project(db, entry.project_id)
 
     if entry.action == "create":
         zone_result = await db.execute(select(SiteZone).where(SiteZone.id == entry.zone_id))
@@ -2781,6 +2963,13 @@ async def revert_to_version(
             raise HTTPException(status_code=404, detail="Zone no longer exists")
 
         response = _zone_to_response(zone)
+        if zone.zone_type != "site_boundary":
+            await _invalidate_residual_landscape(
+                db,
+                entry.project_id,
+                changed_zone_id=zone.id,
+                reason="Zone removed by history revert; rebuild Community 3D landscaping.",
+            )
         await db.delete(zone)
         return response
 

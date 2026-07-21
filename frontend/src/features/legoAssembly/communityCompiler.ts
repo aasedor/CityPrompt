@@ -326,11 +326,18 @@ export async function compileMixedCommunity3D(
   const compileItems = buildingItems.map((item, index) => {
     const result = planResults[index];
     return result?.status === 'fulfilled'
-      ? { zone_id: item.zone.id, recipe: recipeFromPlan({ ...item, plan: result.value }) }
-      : { zone_id: item.zone.id };
+      ? {
+          zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
+          recipe: recipeFromPlan({ ...item, plan: result.value }),
+        }
+      : { zone_id: item.zone.id, source_updated_at: item.zone.updated_at };
   });
   const groundItems = deriveGroundItems(zones);
-  compileItems.push(...groundItems.map((item) => ({ zone_id: item.zone.id })));
+  compileItems.push(...groundItems.map((item) => ({
+    zone_id: item.zone.id,
+    source_updated_at: item.zone.updated_at,
+  })));
   if (compileItems.length === 0) {
     throw new Error('This plan has no building, park, or street zones to generate.');
   }
@@ -338,7 +345,9 @@ export async function compileMixedCommunity3D(
   const response = await legoAssemblyApi.compileCommunity(compileItems);
   return {
     response,
-    detailedBuildings: response.items.filter((item) => item.generator === 'lego_assembly').length,
+    detailedBuildings: response.items.filter((item) => (
+      item.generator === 'lego_assembly' || item.generator === 'meshy'
+    )).length,
     plannedMasses: response.items.filter((item) => item.generator === 'planned_massing').length,
     parks: response.counts.park,
     streets: response.counts.street,

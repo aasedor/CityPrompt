@@ -184,6 +184,12 @@ describe('LegoBuilderPanel', () => {
               status: 'compiled',
               compiled_at: '2026-07-17T01:00:00Z',
               counts: { building: 1, park: 2, street: 1 },
+              residual_landscape: {
+                boundary_count: 1,
+                derived_boundary_count: 0,
+                area_sqm: 1234,
+                placement_count: 3,
+              },
               items: [],
             },
           })
@@ -223,17 +229,21 @@ describe('LegoBuilderPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
     await waitFor(() => expect(screen.getByText(
-      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers',
+      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers; landscaped 1,234 m² of residual site with 3 trees',
     )).toBeInTheDocument());
 
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
         items: expect.arrayContaining([
-          expect.objectContaining({ zone_id: 'z-building', recipe: expect.any(Object) }),
-          { zone_id: 'z-park' },
-          { zone_id: 'z-street' },
-          { zone_id: 'z-plaza' },
+          expect.objectContaining({
+            zone_id: 'z-building',
+            source_updated_at: '2026-07-13T00:00:00Z',
+            recipe: expect.any(Object),
+          }),
+          { zone_id: 'z-park', source_updated_at: '2026-07-13T00:00:00Z' },
+          { zone_id: 'z-street', source_updated_at: '2026-07-13T00:00:00Z' },
+          { zone_id: 'z-plaza', source_updated_at: '2026-07-13T00:00:00Z' },
         ]),
       },
     );
@@ -320,8 +330,8 @@ describe('LegoBuilderPanel', () => {
     const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
     expect(compileCall?.[1]).toEqual({
       items: expect.arrayContaining([
-        { zone_id: 'z-missing' },
-        { zone_id: 'z-park' },
+        { zone_id: 'z-missing', source_updated_at: '2026-07-13T00:00:00Z' },
+        { zone_id: 'z-park', source_updated_at: '2026-07-13T00:00:00Z' },
       ]),
     });
   });

@@ -9,6 +9,9 @@ import pytest
 from app.api.v1.site_zones import (
     _coordinates_materially_changed,
     _invalidate_boundary_dependents,
+    _invalidate_residual_landscape,
+    _residual_source_identity,
+    _restore_zone_snapshot,
     _normalize_building_ids,
     _resolve_unit_count,
     _safe_int,
@@ -79,6 +82,113 @@ async def test_boundary_change_marks_plans_dna_and_scenarios_stale(monkeypatch) 
     assert snapshot.status == "failed"
     assert scenario.status == "failed"
     assert "regenerate Site DNA" in snapshot.error
+
+
+@pytest.mark.asyncio
+async def test_authored_zone_change_marks_compiled_residual_landscape_stale(monkeypatch) -> None:
+    changed_zone_id = uuid.uuid4()
+    boundary = SimpleNamespace(
+        id=uuid.uuid4(),
+        zone_type="site_boundary",
+        properties={
+            "community_3d_landscape": {
+                "schema_version": 1,
+                "state": "compiled",
+                "source_hash": "old-plan",
+            },
+        },
+    )
+
+    result = MagicMock()
+    result.scalars.return_value.all.return_value = [boundary]
+    db = SimpleNamespace(execute=AsyncMock(return_value=result))
+    monkeypatch.setattr("app.api.v1.site_zones.flag_modified", lambda *_args: None)
+
+    await _invalidate_residual_landscape(
+        db,
+        uuid.uuid4(),
+        changed_zone_id=changed_zone_id,
+        reason="Zone changed",
+    )
+
+    recipe = boundary.properties["community_3d_landscape"]
+    assert recipe["state"] == "stale"
+    assert recipe["source_hash"] == "old-plan"
+    assert recipe["changed_zone_id"] == str(changed_zone_id)
+    assert recipe["stale_reason"] == "Zone changed"
+    assert "stale_at" in recipe
+
+
+def test_residual_source_identity_ignores_appearance_but_tracks_classification() -> None:
+    original = {
+        "_plan_role": "open_space",
+        "green_space_archetype_id": "pocket-park",
+        "park_ground_texture": {"image_url": "first.png"},
+    }
+    appearance_only = {
+        **original,
+        "park_ground_texture": {"image_url": "regenerated.png"},
+        "community_3d": {"state": "compiled"},
+    }
+
+    assert _residual_source_identity("green_space", original) == _residual_source_identity(
+        "green_space", appearance_only
+    )
+    assert _residual_source_identity("green_space", original) != _residual_source_identity(
+        "green_space", {**appearance_only, "_plan_role": "framework_height"}
+    )
+    assert _residual_source_identity("green_space", {}) != _residual_source_identity(
+        "green_space", {"development_archetype_id": "mixed-use"}
+    )
+
+
+@pytest.mark.asyncio
+async def test_snapshot_restore_marks_residual_recipe_stale(monkeypatch) -> None:
+    project_id = uuid.uuid4()
+    zone_id = uuid.uuid4()
+    zone = SimpleNamespace(id=zone_id, project_id=project_id, zone_type="building")
+    boundary = SimpleNamespace(
+        id=uuid.uuid4(),
+        zone_type="site_boundary",
+        properties={"community_3d_landscape": {"state": "compiled", "source_hash": "old"}},
+    )
+
+    existing_result = MagicMock()
+    existing_result.scalar_one_or_none.return_value = zone
+    boundaries_result = MagicMock()
+    boundaries_result.scalars.return_value.all.return_value = [boundary]
+    first_lock_result = MagicMock()
+    invalidation_lock_result = MagicMock()
+    db = SimpleNamespace(
+        execute=AsyncMock(side_effect=[
+            first_lock_result,
+            existing_result,
+            invalidation_lock_result,
+            boundaries_result,
+        ]),
+        flush=AsyncMock(),
+        refresh=AsyncMock(),
+        add=MagicMock(),
+    )
+    monkeypatch.setattr("app.api.v1.site_zones.flag_modified", lambda *_args: None)
+
+    restored = await _restore_zone_snapshot(
+        db,
+        {
+            "id": str(zone_id),
+            "project_id": str(project_id),
+            "zone_type": "building",
+            "coordinates": [[-114.08, 51.04], [-114.079, 51.04], [-114.079, 51.041]],
+            "properties": {"_plan_role": "building"},
+        },
+        project_id=project_id,
+        expected_zone_id=zone_id,
+    )
+
+    assert restored is zone
+    assert boundary.properties["community_3d_landscape"]["state"] == "stale"
+    assert boundary.properties["community_3d_landscape"]["changed_zone_id"] == str(zone_id)
+    db.refresh.assert_awaited_once_with(zone)
 
 
 def test_safe_int_handles_blank_and_invalid_values() -> None:

@@ -50,6 +50,15 @@ import {
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { resolvePublicRealmGroundDepthPolicy } from './publicRealmDepthPolicy';
+import {
+  applyResidualLandscapeUVs,
+  createResidualLandscapeTexture,
+  getResidualLandscapeRecipe,
+} from './residualLandscape';
+import {
+  direct3DGroundRoleForCommunityKind,
+  direct3DProposalUserData,
+} from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -328,7 +337,7 @@ export function raycastTerrainHeightAtLatLng(
   return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
 }
 
-function raycastObjectFilteredTerrainHeightAtLatLng(
+export function raycastObjectFilteredTerrainHeightAtLatLng(
   lng: number,
   lat: number,
   tilesGroup: THREE.Object3D,
@@ -417,6 +426,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
+  const residualLandscapeRecipe = useMemo(
+    () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
+    [isPreparedBoundary, zone],
+  );
   const isReplacementFootprintGround = shouldRenderReplacementFootprintGround(
     zone,
     suppressed,
@@ -511,17 +524,25 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   useDeferredLocalGeometryDisposal(geoData);
 
   const preparedSiteGeo = useMemo(
-    () => (
-      isPreparedBoundary && geoData?.flatTopGeo
-        ? createSitePreparationGeometry(geoData.flatTopGeo, zone.id)
-        : null
-    ),
-    [geoData, isPreparedBoundary, zone.id],
+    () => {
+      if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
+      const geometry = createSitePreparationGeometry(geoData.flatTopGeo, zone.id);
+      if (residualLandscapeRecipe) {
+        applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
+      }
+      return geometry;
+    },
+    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id],
   );
   useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useMemo(
-    () => (isPreparedBoundary ? createSitePreparationTexture(zone.id) : null),
-    [isPreparedBoundary, zone.id],
+    () => {
+      if (!isPreparedBoundary) return null;
+      return residualLandscapeRecipe
+        ? createResidualLandscapeTexture(zone, residualLandscapeRecipe)
+        : createSitePreparationTexture(zone.id);
+    },
+    [isPreparedBoundary, residualLandscapeRecipe, zone],
   );
   useDeferredDisposable(preparedSiteTexture);
   const replacementGroundGeo = useMemo(
@@ -1122,19 +1143,26 @@ export function GlobeZoneLayer({
   return (
     <>
       {zones.map(zone => (
-        <ZoneMesh
+        <group
           key={zone.id}
-          zone={zone}
-          isSelected={zone.id === selectedZoneId}
-          terrainHeight={terrainHeight}
-          onZoneClick={onZoneClick}
-          selectionEnabled={selectionEnabled}
-          lightweight={lightweight}
-          suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
-          keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
-          planningOverlaysVisible={showPlanningOverlays}
-          sitePrepared={sitePrepared}
-        />
+          name={`siteforge-direct3d-zone-${zone.id}`}
+          userData={direct3DProposalUserData(
+            direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone)),
+          )}
+        >
+          <ZoneMesh
+            zone={zone}
+            isSelected={zone.id === selectedZoneId}
+            terrainHeight={terrainHeight}
+            onZoneClick={onZoneClick}
+            selectionEnabled={selectionEnabled}
+            lightweight={lightweight}
+            suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
+            keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
+            planningOverlaysVisible={showPlanningOverlays}
+            sitePrepared={sitePrepared}
+          />
+        </group>
       ))}
     </>
   );

@@ -1319,6 +1319,116 @@ export const rendersApi = {
     return data;
   },
 
+  /** Isolated current-camera refinement for an already compiled 3D scene.
+   * This endpoint never routes through the Classic colored-zone renderer. */
+  generateDirect3D: async (request: {
+    beauty_image_base64: string;
+    proposal_mask_base64: string;
+    prompt: string;
+    object_id_image_base64?: string;
+    object_id_manifest?: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
+    capture: {
+      width: number;
+      height: number;
+      proposal_coverage: number;
+    };
+    project_id: string;
+    community_3d_claims: Array<{
+      zone_id: string;
+      source_hash: string;
+      representation_hash: string;
+      building_id?: string;
+    }>;
+    residual_landscape_claim?: {
+      boundary_id: string;
+      source_hash: string;
+    };
+  }): Promise<{
+    image_base64: string;
+    model: 'gpt-image-2';
+    capture_fingerprint: string;
+    output_fingerprint: string;
+    diagnostics: {
+      source_width: number;
+      source_height: number;
+      normalized_width: number;
+      normalized_height: number;
+      proposal_coverage: number;
+      context_coverage: number;
+      object_id_attached: boolean;
+      object_id_coverage?: number | null;
+      structural_edge_guide_attached: true;
+      finish_fusion?: {
+        method: 'source-geometry-multiscale-source-phase-detail-v2';
+        sigma_px: number;
+        rgb_delta_clip: number;
+        default_strength: number;
+        role_strengths: Record<'ground' | 'landscape' | 'street' | 'park' | 'building', number>;
+        detail_fine_sigma_px: number;
+        detail_medium_sigma_px: number;
+        detail_correction_clip: number;
+        detail_role_gain_caps: Record<string, { fine: number; medium: number }>;
+        microtexture_sigma_px: number;
+        microtexture_correction_clip: number;
+        microtexture_role_gain_caps: Record<string, number>;
+        provider_high_frequency_phase_transferred: false;
+        safe_microtexture_coverage: number;
+        source_detail_correlation?: number | null;
+        source_texture_p75?: number | null;
+        fused_texture_p75?: number | null;
+        texture_gain?: number | null;
+        role_metrics: Record<string, {
+          detail_fine_gain: number;
+          detail_medium_gain: number;
+          microtexture_gain: number;
+          safe_microtexture_pixels: number;
+          safe_microtexture_coverage: number;
+          source_texture_p75?: number | null;
+          fused_texture_p75?: number | null;
+          texture_gain?: number | null;
+          source_detail_correlation?: number | null;
+        }>;
+      } | null;
+      provider_raw_structural_edge_fidelity?: {
+        passed: boolean;
+        beauty_edge_recall: number;
+        coarse_edge_recall: number;
+        semantic_edge_recall?: number | null;
+        semantic_component_min_recall?: number | null;
+        building_internal_edge_recall?: number | null;
+      } | null;
+      structural_edge_fidelity?: {
+        passed: true;
+        tolerance_px: number;
+        reference_edge_pixels: number;
+        candidate_edge_pixels: number;
+        beauty_edge_recall: number;
+        coarse_edge_pixels: number;
+        coarse_edge_recall: number;
+        semantic_edge_pixels: number;
+        semantic_edge_recall?: number | null;
+        semantic_component_min_recall?: number | null;
+        building_internal_edge_pixels: number;
+        building_internal_edge_recall?: number | null;
+        reference_edge_p90_distance_px: number;
+      } | null;
+      registration: {
+        method: 'identity' | 'ecc-euclidean';
+        score: number;
+        translation_x_px: number;
+        translation_y_px: number;
+        rotation_degrees: number;
+      };
+      exterior_pixel_count: number;
+      exterior_max_channel_delta: number;
+      inward_feather_px: number;
+      mask_retry_used: false;
+    };
+  }> => {
+    const { data } = await api.post('/api/v1/render/generate-direct-3d', request, { timeout: 300000 });
+    return data;
+  },
+
   save: async (projectId: string, render: {
     image_base64: string;
     prompt: string;

@@ -109,12 +109,22 @@ export interface Community3DCompileResponse {
   status: 'compiled';
   compiled_at: string;
   counts: { building: number; park: number; street: number };
+  /**
+   * Additive compiler diagnostics for the generated site-boundary remainder.
+   * Optional keeps older saved responses and test fixtures source-compatible.
+   */
+  residual_landscape?: {
+    boundary_count: number;
+    derived_boundary_count: number;
+    area_sqm: number;
+    placement_count: number;
+  };
   items: Array<{
     zone_id: string;
     kind: 'building' | 'park' | 'street';
     building_id: string | null;
     building_created: boolean;
-    generator: 'lego_assembly' | 'planned_massing' | 'park_kit' | 'street_section';
+    generator: 'lego_assembly' | 'planned_massing' | 'meshy' | 'park_kit' | 'street_section';
   }>;
 }
 
@@ -213,6 +223,8 @@ export const legoAssemblyApi = {
   /** Persist a mixed building/park/street build as one backend transaction. */
   async compileCommunity(items: Array<{
     zone_id: string;
+    /** Revision of the zone snapshot used to plan this exact item. */
+    source_updated_at: string;
     recipe?: LegoAssemblyRecipe & { building_name?: string | null };
   }>): Promise<Community3DCompileResponse> {
     const response = await api.post<Community3DCompileResponse>(

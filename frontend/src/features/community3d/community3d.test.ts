@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
 import {
+  getCommunity3DCaptureClaims,
   getCommunity3DMeta,
+  hasCommunity3DSourceFingerprint,
   resolveCommunity3DAction,
   resolveCommunity3DKind,
   selectCommunity3DCompileZones,
@@ -124,5 +126,84 @@ describe('community 3D plan contract', () => {
       .toEqual(['building', 'road']);
     expect(selectCommunity3DCompileZones(zones, 'rebuild').map((item) => item.zone_type))
       .toEqual(['building', 'green_space', 'road']);
+  });
+
+  it('builds exact per-zone capture claims and rejects legacy or partial fingerprints', () => {
+    const building = zone('building', {
+      _plan_role: 'building',
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'building',
+        generator: 'lego_assembly',
+        compiled_at: '2026-07-20T01:00:00Z',
+        source_hash: '1'.repeat(64),
+        representation_hash: '2'.repeat(64),
+      },
+    });
+    building.building_id = 'building-1';
+    const buildingModel: Building = {
+      id: 'building-1',
+      project_id: 'project-1',
+      footprint_coordinates: building.coordinates,
+      specifications: {
+        legoAssembly: { schema_version: 1, instances: [{ model_url: '/module.glb' }] },
+        community3DRepresentation: {
+          schema_version: 1,
+          zone_id: building.id,
+          generator: 'lego_assembly',
+          representation_hash: '2'.repeat(64),
+          compiled_at: '2026-07-20T01:00:00Z',
+        },
+      },
+      created_at: '2026-07-20T00:00:00Z',
+    };
+    const park = zone('green_space', {
+      _plan_role: 'open_space',
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'park',
+        generator: 'park_kit',
+        compiled_at: '2026-07-20T01:00:00Z',
+        source_hash: '3'.repeat(64),
+        representation_hash: '4'.repeat(64),
+      },
+    });
+
+    expect(hasCommunity3DSourceFingerprint(building)).toBe(true);
+    expect(getCommunity3DCaptureClaims([building, park], [buildingModel])).toEqual([
+      {
+        zone_id: building.id,
+        source_hash: '1'.repeat(64),
+        representation_hash: '2'.repeat(64),
+        building_id: 'building-1',
+      },
+      {
+        zone_id: park.id,
+        source_hash: '3'.repeat(64),
+        representation_hash: '4'.repeat(64),
+      },
+    ]);
+    expect(getCommunity3DCaptureClaims([{
+      ...building,
+      properties: {
+        ...building.properties,
+        community_3d: {
+          ...(building.properties?.community_3d as Record<string, unknown>),
+          representation_hash: undefined,
+        },
+      },
+    }], [buildingModel])).toBeNull();
+    expect(getCommunity3DCaptureClaims([building], [{
+      ...buildingModel,
+      specifications: {
+        ...buildingModel.specifications,
+        community3DRepresentation: {
+          ...(buildingModel.specifications?.community3DRepresentation as Record<string, unknown>),
+          representation_hash: '9'.repeat(64),
+        },
+      },
+    }])).toBeNull();
   });
 });

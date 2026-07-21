@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from geoalchemy2.shape import from_shape, to_shape
 from pydantic import BaseModel, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,16 @@ from app.services.lego_assembly import (
     manifest_validation_errors,
     plan_vertical_assembly,
 )
+from app.services.residual_landscape import (
+    ResidualSourceZone,
+    build_residual_landscape_recipe,
+    community_3d_kind_for_source,
+    community_3d_representation_hash,
+    community_3d_source_hash,
+    derive_site_boundary_from_authored_zones,
+    lock_residual_landscape_project,
+    mark_linked_community_3d_stale,
+)
 
 router = APIRouter()
 
@@ -33,6 +44,7 @@ router = APIRouter()
 # existing model_url workflow fields without a schema migration.
 RECIPE_SPEC_KEY = "legoAssembly"
 PLANNED_MASSING_SPEC_KEY = "plannedMassing"
+COMMUNITY_REPRESENTATION_SPEC_KEY = "community3DRepresentation"
 
 _LEGO_CATEGORY = "lego_module"
 _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
@@ -86,6 +98,11 @@ class Community3DCompileItem(BaseModel):
     """One planner zone participating in an atomic Community 3D build."""
 
     zone_id: uuid.UUID
+    # Optimistic concurrency token from the exact zone snapshot used by the
+    # browser to derive footprint dimensions, floors and archetype selection.
+    # It is rechecked only after the project row lock is held, so a same-kind
+    # edit in another tab cannot receive a recipe planned from stale geometry.
+    source_updated_at: datetime
     # Supported buildings carry an assembly recipe. An unsupported building
     # intentionally omits it and becomes persisted exact-footprint massing.
     # Deterministic ground systems also derive from the zone and omit it.
@@ -97,6 +114,25 @@ class Community3DCompileRequest(BaseModel):
     # public-realm zones. Keep the atomic all-or-nothing contract for a full
     # master plan instead of forcing large communities into partial batches.
     items: list[Community3DCompileItem] = Field(min_length=1, max_length=2000)
+
+
+def _same_source_revision(client_revision: datetime, server_revision: datetime | None) -> bool:
+    """Compare API and database timestamps without relying on ISO spelling.
+
+    PostgreSQL returns timezone-aware values while a few historical SQLite
+    fixtures return naive UTC datetimes. Pydantic also accepts either ``Z`` or
+    ``+00:00`` from the browser, so normalize all three representations before
+    the optimistic-concurrency comparison.
+    """
+    if server_revision is None:
+        return False
+
+    def utc(value: datetime) -> datetime:
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        return value.astimezone(timezone.utc)
+
+    return utc(client_revision) == utc(server_revision)
 
 
 class LegoModuleMetadataRequest(BaseModel):
@@ -582,37 +618,17 @@ async def _get_zone_with_access(
     return zone
 
 
-_COMMUNITY_BUILDING_TYPES = {"building", "residential", "development_area", "development"}
-_COMMUNITY_PARK_TYPES = {"green_space", "park", "plaza", "parking"}
-_COMMUNITY_STREET_TYPES = {"road", "street", "path"}
-
-
 def _community_3d_kind(zone: SiteZone) -> Literal["building", "park", "street"] | None:
     """Backend twin of the frontend Community 3D classification contract."""
-    if zone.zone_type == "site_boundary":
-        return None
-    props = zone.properties or {}
-    role = props.get("_plan_role")
-    if role == "framework_height":
-        return None
-    if role == "street" or zone.zone_type in _COMMUNITY_STREET_TYPES:
-        return "street"
-    if role in {"open_space", "courtyard"} or zone.zone_type in _COMMUNITY_PARK_TYPES:
-        return "park"
-    if (
-        role == "building"
-        or zone.zone_type in _COMMUNITY_BUILDING_TYPES
-        or bool(props.get("development_archetype_id"))
-    ):
-        return "building"
-    return None
+    return community_3d_kind_for_source(zone.zone_type, zone.properties)
 
 
 def _stamp_community_3d(
     zone: SiteZone,
     kind: Literal["building", "park", "street"],
     compiled_at: str,
-    building_generator: Literal["lego_assembly", "planned_massing"] = "lego_assembly",
+    building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly",
+    building: Building | None = None,
 ) -> None:
     generator = {
         "building": building_generator,
@@ -620,14 +636,65 @@ def _stamp_community_3d(
         "street": "street_section",
     }[kind]
     properties = dict(zone.properties or {})
+    try:
+        source_geometry = to_shape(zone.geometry)
+    except (AssertionError, TypeError, ValueError, AttributeError):
+        # A few legacy unit fixtures use EWKT strings instead of GeoAlchemy
+        # elements. Production rows always take the first path.
+        from shapely import wkt
+
+        raw_geometry = str(zone.geometry)
+        if ";" in raw_geometry and raw_geometry.upper().startswith("SRID="):
+            raw_geometry = raw_geometry.split(";", 1)[1]
+        try:
+            source_geometry = wkt.loads(raw_geometry)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Zone {zone.id} has unusable Community 3D source geometry",
+            ) from exc
+    source_hash = community_3d_source_hash(
+        zone.zone_type,
+        source_geometry,
+        properties,
+    )
+    representation_hash = community_3d_representation_hash(
+        kind=kind,
+        generator=generator,
+        source_hash=source_hash,
+        building=building,
+    )
+    if representation_hash is None:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Zone {zone.id} does not have a complete {generator} representation",
+        )
     properties["community_3d"] = {
         "schema_version": 1,
         "state": "compiled",
         "kind": kind,
         "generator": generator,
         "compiled_at": compiled_at,
+        "source_hash": source_hash,
+        "representation_hash": representation_hash,
     }
     zone.properties = properties
+    if building is not None:
+        # Mirror the per-zone revision onto the exact Building snapshot sent
+        # to the globe. The browser requires this marker to match the zone
+        # metadata before it can claim that the mounted model was captured;
+        # this closes mixed-refetch windows where zones and models come from
+        # different project revisions.
+        specifications = dict(building.specifications or {})
+        specifications[COMMUNITY_REPRESENTATION_SPEC_KEY] = {
+            "schema_version": 1,
+            "zone_id": str(zone.id),
+            "generator": generator,
+            "representation_hash": representation_hash,
+            "compiled_at": compiled_at,
+        }
+        building.specifications = specifications
+        flag_modified(building, "specifications")
 
 
 def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
@@ -755,6 +822,12 @@ async def _place_planned_massing_on_zone(
             building.height_meters = height
 
     specifications = dict(building.specifications or {})
+    # This compiler branch explicitly represents a family-pending building,
+    # so an older LEGO recipe must not keep winning the globe coexistence
+    # filter. A generated model, when present, still takes visual priority and
+    # is stamped as Meshy below by the caller.
+    specifications.pop(RECIPE_SPEC_KEY, None)
+    specifications.pop("lego_placed", None)
     specifications[PLANNED_MASSING_SPEC_KEY] = {
         "schema_version": 1,
         "source": "community_3d",
@@ -787,6 +860,8 @@ async def place_lego_assembly(
     primary ``building_id`` — one stack per zone is the v1 contract.
     """
     zone = await _get_zone_with_access(db, zone_id, user, require_editor=True)
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
 
     building: Building | None = None
     if zone.building_id is not None:
@@ -823,7 +898,12 @@ async def place_lego_assembly(
     specifications["lego_placed"] = True
     building.specifications = specifications
     flag_modified(building, "specifications")
-    _stamp_community_3d(zone, "building", datetime.now(timezone.utc).isoformat())
+    _stamp_community_3d(
+        zone,
+        "building",
+        datetime.now(timezone.utc).isoformat(),
+        building=building,
+    )
     await db.flush()
 
     return {
@@ -851,12 +931,22 @@ async def place_community_3d(
     if len(set(zone_ids)) != len(zone_ids):
         raise HTTPException(status_code=422, detail="Each zone may appear only once")
 
-    compiled_at = datetime.now(timezone.utc).isoformat()
-    results: list[dict[str, Any]] = []
-    counts = {"building": 0, "park": 0, "street": 0}
-
+    # Resolve and validate the whole request before mutating any linked
+    # building. This also closes a subtle hole in the previous endpoint, which
+    # allowed one atomic request to span several accessible projects.
+    resolved_items: list[
+        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
+    ] = []
+    project_id: uuid.UUID | None = None
     for item in body.items:
         zone = await _get_zone_with_access(db, item.zone_id, user, require_editor=True)
+        if project_id is None:
+            project_id = zone.project_id
+        elif zone.project_id != project_id:
+            raise HTTPException(
+                status_code=422,
+                detail="A Community 3D compile must contain zones from one project",
+            )
         kind = _community_3d_kind(zone)
         if kind is None:
             raise HTTPException(
@@ -868,19 +958,171 @@ async def place_community_3d(
                 status_code=422,
                 detail=f"{kind.title()} zone {zone.id} cannot carry a building recipe",
             )
+        resolved_items.append((item, zone, kind))
+
+    # Residual land is a project-level derived result. Incremental `Complete`
+    # requests omit already-compiled zones, but those polygons still occupy
+    # land, so derive from every persisted zone in the project rather than the
+    # request subset.
+    await lock_residual_landscape_project(db, project_id)
+    project_zones_result = await db.execute(
+        select(SiteZone)
+        .where(SiteZone.project_id == project_id)
+        .order_by(SiteZone.sort_order, SiteZone.created_at, SiteZone.id)
+        .execution_options(populate_existing=True)
+    )
+    project_zones = list(project_zones_result.scalars().all())
+    zones_by_id = {zone.id: zone for zone in project_zones}
+    refreshed_items: list[
+        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
+    ] = []
+    for item, previous_zone, previous_kind in resolved_items:
+        zone = zones_by_id.get(previous_zone.id)
+        if zone is None:
+            raise HTTPException(
+                status_code=409,
+                detail="A Community 3D source zone changed before compilation; refresh and retry.",
+            )
+        kind = _community_3d_kind(zone)
+        if kind != previous_kind:
+            raise HTTPException(
+                status_code=409,
+                detail="A Community 3D source zone changed before compilation; refresh and retry.",
+            )
+        if not _same_source_revision(item.source_updated_at, zone.updated_at):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "A Community 3D source zone changed while its 3D recipe was being prepared; "
+                    "refresh and retry."
+                ),
+            )
+        refreshed_items.append((item, zone, kind))
+    resolved_items = refreshed_items
+    boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
+    if len(boundaries) > 1:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Community 3D requires one authoritative site boundary; "
+                f"this project has {len(boundaries)}. Merge or remove duplicate boundaries first."
+            ),
+        )
+    derived_boundary_count = 0
+    if not boundaries:
+        authored_shapes = []
+        for zone in project_zones:
+            if (zone.properties or {}).get("_plan_role") == "framework_height":
+                continue
+            try:
+                authored_shapes.append(to_shape(zone.geometry))
+            except (AssertionError, TypeError, ValueError):
+                # Legacy unit fixtures and corrupt historical rows can lack a
+                # GeoAlchemy value. They simply cannot participate in hull
+                # inference; the normal no-boundary behavior remains safe.
+                continue
+        if len(authored_shapes) >= 2:
+            try:
+                inferred_boundary = derive_site_boundary_from_authored_zones(authored_shapes)
+            except ValueError:
+                inferred_boundary = None
+            if inferred_boundary is not None and not inferred_boundary.is_empty:
+                boundary = SiteZone(
+                    id=uuid.uuid4(),
+                    project_id=project_id,
+                    name="Site Boundary",
+                    zone_type="site_boundary",
+                    geometry=from_shape(inferred_boundary, srid=4326),
+                    color="#7dd3fc",
+                    properties={
+                        "_derived_site_boundary": True,
+                        "_derived_site_boundary_method": "authored_plan_metric_convex_hull",
+                    },
+                    sort_order=-1000,
+                )
+                db.add(boundary)
+                project_zones.append(boundary)
+                boundaries = [boundary]
+                derived_boundary_count = 1
+
+    compiled_at = datetime.now(timezone.utc).isoformat()
+    boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
+    try:
+        for boundary in boundaries:
+            if (
+                (boundary.properties or {}).get("_derived_site_boundary") is True
+                and boundary.name == "Generated Site Boundary"
+            ):
+                # Normalize the early pilot label without exposing an
+                # implementation detail in the planning overlay.
+                boundary.name = "Site Boundary"
+            source_zones: list[ResidualSourceZone] = []
+            for zone in project_zones:
+                if zone.id == boundary.id or zone.zone_type == "site_boundary":
+                    continue
+                properties = zone.properties or {}
+                role = properties.get("_plan_role")
+                if role == "framework_height":
+                    continue
+                source_zones.append(
+                    ResidualSourceZone(
+                        zone_id=str(zone.id),
+                        kind=_community_3d_kind(zone) or str(zone.zone_type),
+                        role=str(role) if role is not None else None,
+                        geometry=to_shape(zone.geometry),
+                    )
+                )
+            boundary_recipes.append((
+                boundary,
+                build_residual_landscape_recipe(
+                    to_shape(boundary.geometry),
+                    source_zones,
+                    boundary_id=str(boundary.id),
+                    compiled_at=compiled_at,
+                ),
+            ))
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Residual landscape could not be derived: {exc}",
+        ) from exc
+
+    results: list[dict[str, Any]] = []
+    counts = {"building": 0, "park": 0, "street": 0}
+
+    for item, zone, kind in resolved_items:
 
         building_id: str | None = None
+        building: Building | None = None
         building_created = False
-        building_generator: Literal["lego_assembly", "planned_massing"] = "lego_assembly"
+        building_generator: Literal[
+            "lego_assembly", "planned_massing", "meshy"
+        ] = "lego_assembly"
         if kind == "building":
             if item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 building, building_created = await _place_planned_massing_on_zone(db, zone)
-                building_generator = "planned_massing"
+                building_generator = (
+                    "meshy"
+                    if (
+                        building.model_url
+                        or (
+                            isinstance(building.lod_urls, dict)
+                            and building.lod_urls.get("0")
+                        )
+                    )
+                    else "planned_massing"
+                )
             building_id = str(building.id)
 
-        _stamp_community_3d(zone, kind, compiled_at, building_generator)
+        _stamp_community_3d(
+            zone,
+            kind,
+            compiled_at,
+            building_generator,
+            building=building,
+        )
         counts[kind] += 1
         results.append({
             "zone_id": str(zone.id),
@@ -894,12 +1136,26 @@ async def place_community_3d(
             ),
         })
 
+    for boundary, recipe in boundary_recipes:
+        properties = dict(boundary.properties or {})
+        properties["community_3d_landscape"] = recipe
+        boundary.properties = properties
+        flag_modified(boundary, "properties")
+
     await db.flush()
+    residual_area = round(sum(recipe["area_sqm"] for _, recipe in boundary_recipes), 2)
+    residual_placements = sum(len(recipe["placements"]) for _, recipe in boundary_recipes)
     return {
         "status": "compiled",
         "compiled_at": compiled_at,
         "counts": counts,
         "items": results,
+        "residual_landscape": {
+            "boundary_count": len(boundary_recipes),
+            "derived_boundary_count": derived_boundary_count,
+            "area_sqm": residual_area,
+            "placement_count": residual_placements,
+        },
     }
 
 
@@ -913,11 +1169,19 @@ async def save_lego_recipe(
     """Persist an assembly recipe on the building, namespaced so the existing
     model_url workflow fields in ``specifications`` stay untouched."""
     building = await _get_building_with_access(db, building_id, user, require_editor=True)
+    await lock_residual_landscape_project(db, building.project_id)
+    await db.refresh(building)
 
     specifications = dict(building.specifications or {})
     specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
     building.specifications = specifications
     flag_modified(building, "specifications")
+    await mark_linked_community_3d_stale(
+        db,
+        project_id=building.project_id,
+        building_id=building.id,
+        reason="LEGO assembly recipe changed; rebuild Community 3D before Direct rendering.",
+    )
     await db.flush()
 
     return {
@@ -947,12 +1211,20 @@ async def delete_lego_recipe(
 ) -> dict[str, Any]:
     """Remove only the recipe key; the rest of specifications stays intact."""
     building = await _get_building_with_access(db, building_id, user, require_editor=True)
+    await lock_residual_landscape_project(db, building.project_id)
+    await db.refresh(building)
 
     specifications = dict(building.specifications or {})
     removed = specifications.pop(RECIPE_SPEC_KEY, None) is not None
     specifications.pop("lego_placed", None)  # stamp follows the recipe's lifecycle
     building.specifications = specifications
     flag_modified(building, "specifications")
+    await mark_linked_community_3d_stale(
+        db,
+        project_id=building.project_id,
+        building_id=building.id,
+        reason="LEGO assembly recipe removed; rebuild Community 3D before Direct rendering.",
+    )
     await db.flush()
 
     return {"status": "removed" if removed else "absent", "building_id": str(building.id)}
