@@ -5,6 +5,7 @@ import {
   getCommunity3DMeta,
   getCurrentCommunity3DBuildingIds,
   hasCommunity3DSourceFingerprint,
+  hasExecutablePublicRealmRecipe,
   isCurrentCommunity3DBuildingRepresentation,
   resolveCommunity3DAction,
   resolveCommunity3DKind,
@@ -26,6 +27,61 @@ function zone(zoneType: SiteZone['zone_type'], properties: Record<string, unknow
     sort_order: 0,
     created_at: '2026-07-17T00:00:00Z',
     updated_at: '2026-07-17T00:00:00Z',
+  };
+}
+
+const SHA_A = 'a'.repeat(64);
+const SHA_B = 'b'.repeat(64);
+const SHA_C = 'c'.repeat(64);
+
+function pocketParkRecipe(): Record<string, unknown> {
+  return {
+    schema_version: 1,
+    family_id: 'park_pocket_courtyard',
+    family_version: 1,
+    kind: 'park',
+    generator: 'park_kit',
+    archetype_id: 'urban_pocket_park',
+    variant_id: 'urban_pocket_park_v0',
+    profile_id: 'urban-pocket-park-v1',
+    profile_version: 1,
+    appearance_kit_id: 'rustic_timber_gravel_v1',
+    planting_structure: 'garden_courtyard',
+    component_set_ids: [
+      'park_ground_program_v1',
+      'landscape_instances_v1',
+      'public_realm_furnishings_v1',
+    ],
+    terrain_policy: 'terrain_drape_and_metric_assemblies',
+    target: { target_type: 'park_polygon', width_m: 30, depth_m: 30, area_m2: 900 },
+    catalog_fingerprint: SHA_A,
+    capability_fingerprint: SHA_B,
+    recipe_hash: SHA_C,
+  };
+}
+
+function localStreetRecipe(): Record<string, unknown> {
+  return {
+    schema_version: 1,
+    family_id: 'street_local_public_realm',
+    family_version: 1,
+    kind: 'street',
+    generator: 'street_section',
+    archetype_id: 'narrow_residential_street',
+    variant_id: 'narrow_residential_street_v0',
+    profile_id: 'narrow-residential-street-v1',
+    profile_version: 1,
+    appearance_kit_id: 'calgary_contemporary_native',
+    component_set_ids: [
+      'street_metric_bands_v1',
+      'street_edges_markings_v1',
+      'public_realm_furnishings_v1',
+    ],
+    terrain_policy: 'terrain_drape_and_metric_assemblies',
+    target: { target_type: 'street_segment', row_width_m: 14, length_m: 120 },
+    catalog_fingerprint: SHA_A,
+    capability_fingerprint: SHA_B,
+    recipe_hash: SHA_C,
   };
 }
 
@@ -128,6 +184,55 @@ describe('community 3D plan contract', () => {
       .toEqual(['building', 'road']);
     expect(selectCommunity3DCompileZones(zones, 'rebuild').map((item) => item.zone_type))
       .toEqual(['building', 'green_space', 'road']);
+  });
+
+  it('attests only browser-executable nested recipes for AI public realm', () => {
+    const aiPark = zone('green_space', {
+      _plan_role: 'open_space',
+      _plan_scenario: 'economic',
+      green_space_archetype_id: 'urban_pocket_park',
+      green_space_selected_variant_id: 'urban_pocket_park_v0',
+    });
+    expect(hasExecutablePublicRealmRecipe(aiPark)).toBe(false);
+
+    const compiledPark = {
+      ...aiPark,
+      properties: {
+        ...aiPark.properties,
+        public_realm_lego: pocketParkRecipe(),
+      },
+    };
+    expect(hasExecutablePublicRealmRecipe(compiledPark)).toBe(true);
+    expect(hasExecutablePublicRealmRecipe({
+      ...compiledPark,
+      properties: {
+        ...compiledPark.properties,
+        public_realm_lego: {
+          ...pocketParkRecipe(),
+          family_id: 'future_park_family',
+        },
+      },
+    })).toBe(false);
+
+    const compiledStreet = zone('road', {
+      _plan_role: 'street',
+      _plan_scenario: 'economic',
+      road_archetype_id: 'narrow_residential_street',
+      road_selected_variant_id: 'narrow_residential_street_v0',
+      public_realm_lego: localStreetRecipe(),
+    });
+    expect(hasExecutablePublicRealmRecipe(compiledStreet)).toBe(true);
+    expect(hasExecutablePublicRealmRecipe({
+      ...compiledStreet,
+      properties: {
+        ...compiledStreet.properties,
+        public_realm_lego: { ...localStreetRecipe(), recipe_hash: 'not-a-hash' },
+      },
+    })).toBe(false);
+
+    // Manual public realm without a nested V1 claim keeps the established
+    // procedural Direct compatibility path.
+    expect(hasExecutablePublicRealmRecipe(zone('green_space'))).toBe(true);
   });
 
   it('builds exact per-zone capture claims and rejects legacy or partial fingerprints', () => {

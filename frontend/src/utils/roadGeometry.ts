@@ -68,8 +68,30 @@ export function bufferLineToPolygon(points: number[][], widthMeters: number): nu
  * Compute the effective road width from properties (width + lane minimum).
  */
 export function effectiveRoadWidth(props: SiteZoneProperties | undefined): number {
-  const width = (props?.width as number) || 10;
-  const lanes = (props?.lane_count as number) || 2;
+  const width = Number(props?.width) > 0 ? Number(props?.width) : 10;
+  const lanes = Number.isFinite(Number(props?.lane_count))
+    ? Math.max(0, Number(props?.lane_count))
+    : 2;
+  const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
+    ? props.public_realm_lego as Record<string, unknown>
+    : undefined;
+  const semantic = [
+    props?.street_role,
+    props?.road_archetype_id,
+    lego?.archetype_id,
+  ].map((value) => String(value ?? '').toLowerCase().replace(/-/g, '_')).join(' ');
+  // Trails, paths and laneways are authored by their total clear width. They
+  // must never inherit the generic two motor-lane minimum: that turned an AI
+  // planner's explicit 4 m multi-use trail into a 7 m road ribbon.
+  const hasMetricNonMotorWidth = lanes === 0 || [
+    'trail',
+    'path',
+    'cycleway',
+    'multi_use',
+    'laneway',
+    'alley',
+  ].some((token) => semantic.includes(token));
+  if (hasMetricNonMotorWidth) return width;
   return Math.max(width, lanes * 3.5);
 }
 

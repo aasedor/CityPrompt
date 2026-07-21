@@ -49,7 +49,10 @@ import {
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
-import { resolvePublicRealmGroundDepthPolicy } from './publicRealmDepthPolicy';
+import {
+  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+  resolvePublicRealmGroundDepthPolicy,
+} from './publicRealmDepthPolicy';
 import {
   applyResidualLandscapeUVs,
   createResidualLandscapeTexture,
@@ -66,7 +69,6 @@ const REPLACEMENT_GROUND_SAMPLE_RADII_METERS = [8, 20, 36] as const;
 // With the live tile surface as the authoritative anchor, only a decal-scale
 // clearance is needed. Normal depth testing prevents the ground from painting
 // across buildings while polygon offset avoids coplanar terrain flicker.
-const FLAT_ZONE_SURFACE_LIFT_METERS = 0.08;
 const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.11;
 const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 12;
 const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
@@ -234,7 +236,7 @@ function createLocalGeometry(
   // Flat zone
   if (!useTerrainGridFlat) {
     const flatVerts: number[] = [];
-    for (const p of localPts) flatVerts.push(p.x, p.y, FLAT_ZONE_SURFACE_LIFT_METERS);
+    for (const p of localPts) flatVerts.push(p.x, p.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
 
     const fillGeo = new THREE.BufferGeometry();
     fillGeo.setAttribute('position', new THREE.Float32BufferAttribute(flatVerts, 3));
@@ -257,7 +259,7 @@ function createLocalGeometry(
   const flatVerts: number[] = [];
   const fillCoords: number[][] = [];
   for (const point of terrainGrid.vertices) {
-    flatVerts.push(point.x, point.y, FLAT_ZONE_SURFACE_LIFT_METERS);
+    flatVerts.push(point.x, point.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
     fillCoords.push([
       centroidLng + point.x / mPerDegLon,
       centroidLat + point.y / METERS_PER_DEG_LAT,
@@ -793,7 +795,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : rawHitElev;
       if (hitElev !== null && isPlausibleTerrainAnchor(hitElev, zoneTerrainHeight)) {
         // Z offset in ENU = hitElev - zoneTerrainHeight (the ENU frame origin elevation)
-        const zOffset = hitElev - zoneTerrainHeight + FLAT_ZONE_SURFACE_LIFT_METERS;
+        const zOffset = hitElev - zoneTerrainHeight + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS;
         posAttr.setZ(i, zOffset);
         if (isBoundaryPoint) {
           trustedBoundaryGround.push({ coord, elevation: hitElev });
@@ -933,7 +935,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const n = Math.min(geoData.fillCoords.length, pos.count, bakedElevations.length);
     for (let i = 0; i < n; i += 1) {
       const e = bakedElevations[i];
-      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + FLAT_ZONE_SURFACE_LIFT_METERS);
+      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
     }
     pos.needsUpdate = true;
     geo.computeBoundingSphere();

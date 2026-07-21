@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bufferLineToPolygon, extractCenterline } from './roadGeometry';
+import { bufferLineToPolygon, effectiveRoadWidth, extractCenterline } from './roadGeometry';
 
 describe('road centerline extraction', () => {
   it('recovers a centerline from the open polygon emitted by the buffer helper', () => {
@@ -30,5 +30,27 @@ describe('road centerline extraction', () => {
       (open[1][0] + open[2][0]) / 2,
       (open[1][1] + open[2][1]) / 2,
     ]);
+  });
+});
+
+describe('effectiveRoadWidth', () => {
+  it('preserves an explicit 4 m multi-use trail instead of applying a two-lane minimum', () => {
+    expect(effectiveRoadWidth({
+      width: 4,
+      street_role: 'path',
+      road_archetype_id: 'multi_use_trail',
+    })).toBe(4);
+    expect(effectiveRoadWidth({
+      width: 4,
+      public_realm_lego: {
+        family_id: 'street_local_public_realm',
+        archetype_id: 'multi_use_trail',
+      },
+    })).toBe(4);
+  });
+
+  it('preserves native laneway width but retains lane minimums for motor streets', () => {
+    expect(effectiveRoadWidth({ width: 5, road_archetype_id: 'toronto_laneway' })).toBe(5);
+    expect(effectiveRoadWidth({ width: 5, lane_count: 2, road_archetype_id: 'calgary_local' })).toBe(7);
   });
 });

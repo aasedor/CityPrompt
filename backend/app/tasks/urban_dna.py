@@ -20,6 +20,12 @@ from shapely.geometry import Polygon
 
 from app.services.city_connector import get_connector_for_site
 from app.services.city_connector.base import DatasetFetchResult, DatasetSpec
+from app.services.plan_boundary_identity import (
+    PLAN_BOUNDARY_FINGERPRINT_VERSION,
+    PLAN_BOUNDARY_RESTORE_STATE_KEY,
+    plan_boundary_fingerprint,
+    stamp_plan_boundary_identity,
+)
 from app.services.urban_dna.builder import build_dna
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
 from app.tasks.worker import celery_app
@@ -562,6 +568,18 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             return {"status": "failed"}
         site_shape = to_shape(zone.geometry)
         site_polygon = site_shape if isinstance(site_shape, ShapelyPolygon) else site_shape.convex_hull
+        boundary_fingerprint = plan_boundary_fingerprint(site_polygon)
+        snapshot_boundary_fingerprint = plan_boundary_fingerprint(
+            (snapshot.dna or {}).get("site_boundary")
+        )
+        if boundary_fingerprint is None or snapshot_boundary_fingerprint != boundary_fingerprint:
+            _set_plan_state(
+                session,
+                row,
+                status="failed",
+                error="Site boundary does not match the scenario's Urban DNA snapshot.",
+            )
+            return {"status": "failed", "error": "boundary_identity_mismatch"}
 
         _set_plan_state(session, row, status="drawing", locks=locks)
 
@@ -1036,6 +1054,8 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
 
         lock_residual_landscape_project_sync(session, snapshot.project_id)
         session.refresh(zone)
+        if plan_boundary_fingerprint(to_shape(zone.geometry)) != boundary_fingerprint:
+            raise RuntimeError("Site boundary changed while the master plan was drawing")
         if mark_residual_landscape_stale(
             zone,
             changed_zone_id=str(zone.id),
@@ -1051,6 +1071,13 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         for old in existing:
             role = (old.properties or {}).get("_plan_role")
             if "streets" in locks and role == "street":
+                old.properties = stamp_plan_boundary_identity(
+                    old.properties,
+                    fingerprint=boundary_fingerprint,
+                    boundary_zone_id=zone.id,
+                    snapshot_id=snapshot.id,
+                )
+                flag_modified(old, "properties")
                 continue
             zones_to_replace.append(old)
         stale_buildings_removed = _delete_community_3d_buildings_for_replaced_zones(
@@ -1069,6 +1096,12 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             ring = zone_dict["coordinates"]
             if len(ring) < 3:
                 continue
+            properties = stamp_plan_boundary_identity(
+                zone_dict["properties"],
+                fingerprint=boundary_fingerprint,
+                boundary_zone_id=zone.id,
+                snapshot_id=snapshot.id,
+            )
             session.add(SiteZone(
                 id=uuid.uuid4(),
                 project_id=snapshot.project_id,
@@ -1076,7 +1109,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 zone_type=zone_dict["zone_type"],
                 geometry=from_shape(ShapelyPolygon(ring), srid=4326),
                 color=zone_dict["color"],
-                properties=zone_dict["properties"],
+                properties=properties,
                 sort_order=zone_dict.get("sort_order", 500),
             ))
             inserted += 1
@@ -1093,6 +1126,12 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         payload["plan"] = {
             "status": "complete",
             "generated_at": datetime.now(tz.utc).isoformat(),
+            "boundary_identity": {
+                "schema_version": PLAN_BOUNDARY_FINGERPRINT_VERSION,
+                "fingerprint": boundary_fingerprint,
+                "zone_id": str(zone.id),
+                "snapshot_id": str(snapshot.id),
+            },
             "locks": locks,
             "zone_count": inserted,
             "block_count": result.block_count,
@@ -1116,6 +1155,10 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             "final_score": iterations[-1]["overall_score"] if iterations else None,
         }
         row.payload = payload
+        boundary_props = dict(zone.properties or {})
+        if boundary_props.pop(PLAN_BOUNDARY_RESTORE_STATE_KEY, None) is not None:
+            zone.properties = boundary_props
+            flag_modified(zone, "properties")
         session.commit()
         logger.info(
             "Plan drawn for %s: %d zones, %d blocks, %d parcels",

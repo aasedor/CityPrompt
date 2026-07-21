@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildCurbBandGeometry,
+  buildAccessibleFourWayIntersectionGeometry,
   buildOffsetCurbGeometry,
   buildDashGeometry,
   buildRibbonBandGeometry,
@@ -97,6 +98,15 @@ describe('buildOffsetCurbGeometry', () => {
     expect(Math.max(...ys)).toBeCloseTo(4 + STREET_DETAIL_3D.curbWidth_m / 2, 5);
     geometry!.dispose();
   });
+
+  it('leaves graph-owned curb-ramp gaps at skipped intersection stations', () => {
+    const full = buildOffsetCurbGeometry(line100, [-3, 3])!;
+    const withGap = buildOffsetCurbGeometry(line100, [-3, 3], undefined, undefined, [true, false])!;
+    expect(withGap.getIndex()?.count).toBeLessThan(full.getIndex()?.count ?? 0);
+    expect(withGap.getIndex()?.count).toBe(0);
+    full.dispose();
+    withGap.dispose();
+  });
 });
 
 describe('buildRibbonBandGeometry', () => {
@@ -115,6 +125,25 @@ describe('buildRibbonBandGeometry', () => {
     expect(maxY).toBeCloseTo(3);
     expect(pos.getZ(0)).toBeCloseTo(1.2);
     expect(pos.getZ(2)).toBeCloseTo(2.2);
+  });
+});
+
+describe('buildAccessibleFourWayIntersectionGeometry', () => {
+  it('builds four zebra crossings and eight directional curb-ramp/tactile pairs', () => {
+    const geometry = buildAccessibleFourWayIntersectionGeometry(0, Math.PI / 2, 11, 7)!;
+    expect(geometry).not.toBeNull();
+    expect(geometry.crosswalks.getAttribute('position').count).toBe(2 * 2 * 7 * 4);
+    expect(geometry.curbRamps.getAttribute('position').count).toBe(8 * 8);
+    expect(geometry.tactilePads.getAttribute('position').count).toBe(8 * 4);
+    expect(zRange(geometry.curbRamps)[1]).toBeCloseTo(STREET_DETAIL_3D.curbHeight_m + 0.025, 5);
+    geometry.crosswalks.dispose();
+    geometry.curbRamps.dispose();
+    geometry.tactilePads.dispose();
+  });
+
+  it('rejects implausibly narrow or invalid graph nodes', () => {
+    expect(buildAccessibleFourWayIntersectionGeometry(0, Math.PI / 2, 1, 7)).toBeNull();
+    expect(buildAccessibleFourWayIntersectionGeometry(Number.NaN, Math.PI / 2, 7, 7)).toBeNull();
   });
 });
 

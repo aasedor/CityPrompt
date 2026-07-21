@@ -1189,6 +1189,24 @@ def _community_item(zone, *, recipe=None):
     return item
 
 
+def _calgary_rectangle_ewkt(width_m: float, depth_m: float) -> str:
+    """Small WGS84 rectangle suitable for metric Public Realm LEGO tests."""
+
+    origin_lon = -114.08
+    origin_lat = 51.04
+    longitude_span = width_m / 70_000.0
+    latitude_span = depth_m / 111_000.0
+    return (
+        "SRID=4326;POLYGON(("
+        f"{origin_lon} {origin_lat},"
+        f"{origin_lon + longitude_span} {origin_lat},"
+        f"{origin_lon + longitude_span} {origin_lat + latitude_span},"
+        f"{origin_lon} {origin_lat + latitude_span},"
+        f"{origin_lon} {origin_lat}"
+        "))"
+    )
+
+
 def _recipe_from_plan(plan, catalog_fingerprint: str):
     return {
         "schema_version": 1,
@@ -1397,6 +1415,92 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
     assert park_zone.properties["community_3d"]["generator"] == "park_kit"
     assert street_zone.properties["community_3d"]["generator"] == "street_section"
     mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        geometry=_calgary_rectangle_ewkt(200, 22),
+        properties={
+            "_plan_scenario": "community_wellbeing",
+            "_plan_role": "street",
+            "street_role": "spine",
+            "road_archetype_id": "main_street_complete",
+            "road_selected_variant_id": "main_street_complete_v2",
+            "width": 22,
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(street_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([street_zone]),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(street_zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    recipe = street_zone.properties["public_realm_lego"]
+    assert recipe["family_id"] == "street_complete_main_22m"
+    assert recipe["family_version"] == 1
+    assert recipe["variant_id"] == "main_street_complete_v2"
+    assert recipe["appearance_kit_id"] == "timber_biophilic"
+    assert recipe["target"]["row_width_m"] == 22
+    assert len(recipe["catalog_fingerprint"]) == 64
+    assert len(recipe["capability_fingerprint"]) == 64
+    assert len(recipe["recipe_hash"]) == 64
+    assert street_zone.properties["community_3d"]["representation_hash"]
+    assert response.json()["items"][0]["generator"] == "street_section"
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    park_zone = _make_zone(
+        project,
+        zone_type="green_space",
+        geometry=_calgary_rectangle_ewkt(30, 30),
+        properties={
+            "_plan_scenario": "community_wellbeing",
+            "_plan_role": "open_space",
+            "green_space_archetype_id": "invented_magic_park",
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(park_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([park_zone]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(park_zone)]},
+    )
+
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "family_not_found"
+    assert detail["kind"] == "park"
+    assert detail["zone_id"] == str(park_zone.id)
+    assert detail["requested"]["archetype_id"] == "invented_magic_park"
+    assert detail["supported_families"]
+    assert "public_realm_lego" not in park_zone.properties
+    assert "community_3d" not in park_zone.properties
+    mock_db.add.assert_not_called()
 
 
 @pytest.mark.anyio

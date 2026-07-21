@@ -162,6 +162,7 @@ export function buildOffsetCurbGeometry(
   offsetsM: number[],
   params: StreetDetail3DParams = STREET_DETAIL_3D,
   stationZ?: number[],
+  skipStation?: boolean[],
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2 || offsetsM.length === 0) return null;
   const normals = stationNormals(centerline);
@@ -188,6 +189,9 @@ export function buildOffsetCurbGeometry(
       );
     }
     for (let index = 0; index < centerline.length - 1; index += 1) {
+      // Graph-owned intersection assemblies replace this span with a
+      // directional curb ramp; do not leave a curb wall through the ramp.
+      if (skipStation?.[index] || skipStation?.[index + 1]) continue;
       const a = base + index * 4;
       const b = base + (index + 1) * 4;
       for (const [start, end] of [[0, 1], [1, 2], [2, 3]] as const) {
@@ -256,6 +260,166 @@ export function buildDashGeometry(
     pos += params.dashLength_m + params.dashGap_m;
   }
   return toGeometry(positions, indices);
+}
+
+export interface AccessibleFourWayIntersectionGeometry {
+  /** High-contrast zebra bars for all four approaches. */
+  crosswalks: THREE.BufferGeometry;
+  /** Eight directional wedges bridging road level to sidewalk level. */
+  curbRamps: THREE.BufferGeometry;
+  /** Detectable-warning pads at the sidewalk end of each ramp. */
+  tactilePads: THREE.BufferGeometry;
+}
+
+function appendQuad(
+  positions: number[],
+  indices: number[],
+  centerX: number,
+  centerY: number,
+  axisX: LocalPt,
+  axisY: LocalPt,
+  halfX: number,
+  halfY: number,
+  z: number,
+): void {
+  const base = positions.length / 3;
+  positions.push(
+    centerX - axisX.x * halfX - axisY.x * halfY,
+    centerY - axisX.y * halfX - axisY.y * halfY,
+    z,
+    centerX + axisX.x * halfX - axisY.x * halfY,
+    centerY + axisX.y * halfX - axisY.y * halfY,
+    z,
+    centerX + axisX.x * halfX + axisY.x * halfY,
+    centerY + axisX.y * halfX + axisY.y * halfY,
+    z,
+    centerX - axisX.x * halfX + axisY.x * halfY,
+    centerY - axisX.y * halfX + axisY.y * halfY,
+    z,
+  );
+  indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+}
+
+function appendRampWedge(
+  positions: number[],
+  indices: number[],
+  centerX: number,
+  centerY: number,
+  along: LocalPt,
+  outward: LocalPt,
+  halfWidth: number,
+  depth: number,
+): void {
+  const base = positions.length / 3;
+  const innerX = centerX - outward.x * depth / 2;
+  const innerY = centerY - outward.y * depth / 2;
+  const outerX = centerX + outward.x * depth / 2;
+  const outerY = centerY + outward.y * depth / 2;
+  const lowZ = 0.035;
+  const highZ = STREET_DETAIL_3D.curbHeight_m + 0.025;
+  positions.push(
+    innerX - along.x * halfWidth, innerY - along.y * halfWidth, lowZ,
+    innerX + along.x * halfWidth, innerY + along.y * halfWidth, lowZ,
+    outerX + along.x * halfWidth, outerY + along.y * halfWidth, highZ,
+    outerX - along.x * halfWidth, outerY - along.y * halfWidth, highZ,
+    innerX - along.x * halfWidth, innerY - along.y * halfWidth, 0,
+    innerX + along.x * halfWidth, innerY + along.y * halfWidth, 0,
+    outerX + along.x * halfWidth, outerY + along.y * halfWidth, 0,
+    outerX - along.x * halfWidth, outerY - along.y * halfWidth, 0,
+  );
+  indices.push(
+    base, base + 1, base + 2, base, base + 2, base + 3,
+    base + 4, base + 5, base + 1, base + 4, base + 1, base,
+    base + 5, base + 6, base + 2, base + 5, base + 2, base + 1,
+    base + 6, base + 7, base + 3, base + 6, base + 3, base + 2,
+    base + 7, base + 4, base, base + 7, base, base + 3,
+  );
+}
+
+/**
+ * Metric, graph-node-owned accessible crossing assembly. Axis A and B are
+ * the two undirected street bearings in local ENU radians. Geometry is kept
+ * independent from street ribbons so crossing markings are emitted once per
+ * graph node rather than once per overlapping zone.
+ */
+export function buildAccessibleFourWayIntersectionGeometry(
+  axisABearingRad: number,
+  axisBBearingRad: number,
+  axisAHalfWidthM: number,
+  axisBHalfWidthM: number,
+): AccessibleFourWayIntersectionGeometry | null {
+  if (
+    axisAHalfWidthM < 1.5
+    || axisBHalfWidthM < 1.5
+    || !Number.isFinite(axisABearingRad)
+    || !Number.isFinite(axisBBearingRad)
+  ) return null;
+  const crosswalkPositions: number[] = [];
+  const crosswalkIndices: number[] = [];
+  const rampPositions: number[] = [];
+  const rampIndices: number[] = [];
+  const tactilePositions: number[] = [];
+  const tactileIndices: number[] = [];
+  const axes = [
+    { bearing: axisABearingRad, roadHalfWidth: axisAHalfWidthM, crossingHalfWidth: axisBHalfWidthM },
+    { bearing: axisBBearingRad, roadHalfWidth: axisBHalfWidthM, crossingHalfWidth: axisAHalfWidthM },
+  ];
+  for (const axis of axes) {
+    const along = { x: Math.cos(axis.bearing), y: Math.sin(axis.bearing) };
+    const across = { x: -along.y, y: along.x };
+    for (const approachSide of [-1, 1]) {
+      const crosswalkCenterDistance = axis.crossingHalfWidth + 1.8;
+      const crosswalkCenterX = along.x * approachSide * crosswalkCenterDistance;
+      const crosswalkCenterY = along.y * approachSide * crosswalkCenterDistance;
+      // Seven 300 mm zebra bars over a 3 m walking corridor.
+      for (let stripe = -3; stripe <= 3; stripe += 1) {
+        const stripeOffset = stripe * 0.43;
+        appendQuad(
+          crosswalkPositions,
+          crosswalkIndices,
+          crosswalkCenterX + along.x * stripeOffset,
+          crosswalkCenterY + along.y * stripeOffset,
+          along,
+          across,
+          0.15,
+          axis.roadHalfWidth,
+          0.205,
+        );
+      }
+      for (const curbSide of [-1, 1]) {
+        const outward = { x: across.x * curbSide, y: across.y * curbSide };
+        const rampCenterDistance = axis.roadHalfWidth + 0.55;
+        const rampCenterX = crosswalkCenterX + outward.x * rampCenterDistance;
+        const rampCenterY = crosswalkCenterY + outward.y * rampCenterDistance;
+        appendRampWedge(
+          rampPositions,
+          rampIndices,
+          rampCenterX,
+          rampCenterY,
+          along,
+          outward,
+          0.9,
+          1.1,
+        );
+        appendQuad(
+          tactilePositions,
+          tactileIndices,
+          rampCenterX + outward.x * 0.22,
+          rampCenterY + outward.y * 0.22,
+          along,
+          outward,
+          0.62,
+          0.27,
+          STREET_DETAIL_3D.curbHeight_m + 0.045,
+        );
+      }
+    }
+  }
+  return {
+    crosswalks: toGeometry(crosswalkPositions, crosswalkIndices),
+    curbRamps: toGeometry(rampPositions, rampIndices),
+    tactilePads: toGeometry(tactilePositions, tactileIndices),
+  };
 }
 
 export interface RoundaboutGeometry {

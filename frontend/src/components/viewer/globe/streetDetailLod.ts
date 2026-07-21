@@ -16,6 +16,16 @@ function normalizedProperty(zone: SiteZone, key: string): string {
   return String(props?.[key] ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
 
+function normalizedStreetIdentity(zone: SiteZone): string {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
+    ? props.public_realm_lego as Record<string, unknown>
+    : undefined;
+  return [props?.road_archetype_id, lego?.archetype_id, lego?.family_id]
+    .map((value) => String(value ?? '').toLowerCase().trim().replace(/-/g, '_'))
+    .join(' ');
+}
+
 /** Small deterministic hash used for stable LOD ranking and frame staggering. */
 export function stableStreetHash(value: string): number {
   let hash = 2166136261;
@@ -31,7 +41,7 @@ export function streetTerrainSampleOffset(zoneId: string, interval: number): num
 }
 
 function detailPriority(zone: SiteZone): number {
-  const archetype = normalizedProperty(zone, 'road_archetype_id');
+  const archetype = normalizedStreetIdentity(zone);
   const role = normalizedProperty(zone, 'street_role');
   if (archetype.includes('roundabout')) return 1000;
   if (role === 'spine' || role === 'primary' || archetype.includes('main_street')) return 900;
@@ -68,8 +78,9 @@ export function selectTreeStreetIds(
   limit = MAX_TREE_STREET_ZONES,
 ): Set<string> {
   const candidates = ranked(zones).filter((zone) => (
-    !normalizedProperty(zone, 'road_archetype_id').includes('roundabout')
-    && !normalizedProperty(zone, 'road_archetype_id').includes('laneway')
+    !normalizedStreetIdentity(zone).includes('roundabout')
+    && !normalizedStreetIdentity(zone).includes('laneway')
+    && !normalizedStreetIdentity(zone).includes('trail')
     && normalizedProperty(zone, 'street_role') !== 'lane'
   ));
   return new Set(candidates.slice(0, Math.max(0, limit)).map((zone) => zone.id));

@@ -36,6 +36,11 @@ from app.services.direct_3d_render import (
     estimate_direct_3d_token_cost,
     prepare_direct_3d_capture,
 )
+from app.services.public_realm_lego import (
+    PUBLIC_REALM_RECIPE_PROPERTY,
+    PublicRealmPlanningError,
+    plan_public_realm_zone_recipe,
+)
 from app.services.render_audit_images import put_image_with_thumbnail
 from app.services.residual_landscape import (
     ResidualSourceZone,
@@ -60,6 +65,23 @@ def _direct_state_conflict(message: str) -> HTTPException:
             "message": message,
         },
     )
+
+
+def _direct_source_geometry(zone: SiteZone):
+    """Read production GeoAlchemy geometry and legacy EWKT test fixtures."""
+
+    try:
+        return to_shape(zone.geometry)
+    except (AssertionError, TypeError, ValueError, AttributeError):
+        from shapely import wkt
+
+        raw_geometry = str(zone.geometry)
+        if ";" in raw_geometry and raw_geometry.upper().startswith("SRID="):
+            raw_geometry = raw_geometry.split(";", 1)[1]
+        try:
+            return wkt.loads(raw_geometry)
+        except Exception as exc:
+            raise ValueError("Unusable Direct 3D source geometry") from exc
 
 
 def _validate_direct_3d_project_zones(
@@ -115,12 +137,13 @@ def _validate_direct_3d_project_zones(
             continue
         stored_source_hash = stored_meta.get("source_hash")
         try:
+            source_geometry = _direct_source_geometry(zone)
             current_source_hash = community_3d_source_hash(
                 zone.zone_type,
-                to_shape(zone.geometry),
+                source_geometry,
                 zone.properties,
             )
-        except (TypeError, ValueError, AttributeError):
+        except (AssertionError, TypeError, ValueError, AttributeError):
             stale_or_uncompiled.append(zone)
             continue
         if (
@@ -168,6 +191,49 @@ def _validate_direct_3d_project_zones(
             stale_or_uncompiled.append(zone)
             continue
 
+        public_realm_recipe = (zone.properties or {}).get(
+            PUBLIC_REALM_RECIPE_PROPERTY
+        )
+        plan_scenario = (zone.properties or {}).get("_plan_scenario")
+        if (
+            kind in {"park", "street"}
+            and isinstance(plan_scenario, str)
+            and bool(plan_scenario.strip())
+            and not isinstance(public_realm_recipe, dict)
+        ):
+            # Pre-contract AI plans must be rebuilt once so a paid Direct
+            # capture cannot claim LEGO fidelity from the legacy generator-only
+            # fingerprint. Manual public-realm zones retain that compatibility.
+            stale_or_uncompiled.append(zone)
+            continue
+
+        if kind in {"park", "street"} and isinstance(public_realm_recipe, dict):
+            try:
+                canonical_recipe = plan_public_realm_zone_recipe(
+                    zone.zone_type,
+                    source_geometry,
+                    zone.properties,
+                    strict=True,
+                )
+            except (
+                PublicRealmPlanningError,
+                AssertionError,
+                TypeError,
+                ValueError,
+                AttributeError,
+            ):
+                stale_or_uncompiled.append(zone)
+                continue
+            if (
+                canonical_recipe is None
+                or canonical_recipe.model_dump(mode="json") != public_realm_recipe
+            ):
+                # The stored recipe may be internally valid while describing a
+                # different metric target. Direct must bind the claimed kit to
+                # the exact locked source geometry, not merely to its own hash.
+                stale_or_uncompiled.append(zone)
+                continue
+
         generator = stored_meta.get("generator")
         stored_representation_hash = stored_meta.get("representation_hash")
         current_representation_hash = community_3d_representation_hash(
@@ -175,6 +241,7 @@ def _validate_direct_3d_project_zones(
             generator=str(generator or ""),
             source_hash=current_source_hash,
             building=building,
+            public_realm_recipe=public_realm_recipe,
         )
         if (
             current_representation_hash is None

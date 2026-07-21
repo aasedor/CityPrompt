@@ -220,6 +220,11 @@ class Palette:
     # planting_structure per green kind (park/pocket/courtyard/greenway/plaza),
     # mirrored by the globe's parkScatter — see master_planner.spec vocabulary.
     landscape: dict[str, str] = field(default_factory=dict)
+    # Executable Public Realm LEGO appearance identities selected by the
+    # Master Planner. Geometry stays owned by the park/street compilers; these
+    # keys choose only a compatible, visible material/planting/furnishing
+    # variant for each generated role.
+    public_realm_variants: dict[str, str] = field(default_factory=dict)
     # Direct green_space_archetype_id for the signature central green.
     central_archetype_id: str | None = None
     # Massing for the degenerate one-block site; None keeps the historic

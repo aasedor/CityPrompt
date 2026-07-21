@@ -98,6 +98,13 @@ All generated public-realm zones now persist explicit archetype identities:
 This makes the public realm deterministic at the backend boundary rather than
 depending on a later frontend inference.
 
+The follow-on Public Realm LEGO V1 initiative turns those identities into a
+strict executable recipe shared by planning, Community 3D, the globe and
+Direct Render. It adds metric compatibility gates, five explicit park-family
+contracts, four street/node contracts, frontend family parity, geometry-bound
+freshness checks and compact/district generator probes. See
+[`PUBLIC_REALM_LEGO_V1_2026-07-21.md`](PUBLIC_REALM_LEGO_V1_2026-07-21.md).
+
 ## Atomic Site Boundary compile
 
 The shared `compileBoundaryCommunity3D` entry point reloads authoritative zones,
@@ -167,7 +174,12 @@ are mirrored onto the mounted Building snapshot so a mixed refetch cannot be
 accepted. Turning detailed models off immediately reveals colored massing and
 disables Direct 3D, while re-enabling or reloading remounts the LEGO layers.
 
-## Live runtime pilots
+## Building-only live baseline before Public Realm LEGO V1
+
+The following checks were recorded while the building-only strict compiler was
+the initiative under test. They remain useful as a baseline, but their park and
+street representations predate the final Public Realm LEGO V1 geometry and
+fingerprint contract.
 
 Two fresh projects were converted in the local 5175 runtime with one Google
 Tiles tab:
@@ -193,6 +205,46 @@ classified 11.1% proposal pixels (ground 1.6%, landscape 0.1%, street 3.6%,
 park 2.3%, building 3.5%). A close photoreal Direct result retained 92.3%
 registration, 99.8% building edges, 98.6% semantic edges, 0 exterior delta,
 0.4/0.8 px translation, and -0.04° rotation.
+
+## Public Realm LEGO V1 live continuation
+
+The follow-on initiative repeated the pilot-before-scale sequence with strict
+park and street recipes:
+
+- **Clean common-site pilot:** 5 buildings, 2 parks and 7 streets. All 5
+  buildings assembled without fallback, all 9 public-realm systems compiled,
+  and the site-boundary residual landscaped 6,227 m2 with 5 deterministic
+  trees. A free 1280 x 720 Direct capture classified 10.9% proposal coverage
+  (2.0% ground, 0.1% landscape, 2.8% street, 2.4% park and 3.6% building).
+- **Mixed compact compatibility pilot:** 7 buildings, 3 parks and 12 streets.
+  It was reviewed at 30-degree oblique, 73-degree steep and 90-degree overhead,
+  including model off/on recovery. Its overlapping manual and AI park surfaces
+  are retained as mixed-content evidence, not used as the clean visual-quality
+  reference.
+- **Stress pilot:** the legacy-revision soak retained 46 buildings, 6 parks and
+  13 streets through 30-degree oblique, 74-degree steep, 90-degree overhead and
+  model off/on. A final-contract redraw then produced 50 physical plan zones:
+  30 buildings, 5 parks and 15 streets/paths. The atomic rebuild placed all 30
+  detailed buildings with no family-pending masses, compiled all 20
+  public-realm systems and landscaped 7,432 m2 of residual site. Its free
+  1280 x 720 Direct capture classified 3.8% proposal coverage and Direct was
+  enabled without spending another image credit.
+
+The first paid `gpt-image-2` attempt on the clean pilot was not accepted. It
+produced an attractive image but materially redesigned the public realm; raw
+context registration scored 0.556 and the backend rejected it before
+promotion. The context-lock hardening adds bidirectional, style-invariant
+structural-edge registration while retaining drift, interior-geometry,
+source-fusion and exact exterior-composite safeguards. A paid retry then passed
+at 78.8% registration, 3.4/2.4 px translation, -0.10-degree rotation, 98.1%
+building-edge fidelity, 99.0% semantic-edge fidelity and zero exterior delta.
+The accepted result was saved as project render
+`632fe7bc-639c-4207-8964-bf13fd90f854`; provider geometry was discarded before
+its finish was transferred to the compiled scene.
+
+The executable family list, QA interpretation, Meshy/LEGO decision table and
+next park/street priorities are maintained in
+[`PUBLIC_REALM_LEGO_V1_2026-07-21.md`](PUBLIC_REALM_LEGO_V1_2026-07-21.md).
 
 ## Verification contract
 

@@ -49,6 +49,18 @@ function zone(archetypeId: string): SiteZone {
   };
 }
 
+function trustedParkRecipe(selection: Record<string, unknown>): Record<string, unknown> {
+  return {
+    schema_version: 1,
+    kind: 'park',
+    generator: 'park_kit',
+    catalog_fingerprint: 'a'.repeat(64),
+    capability_fingerprint: 'b'.repeat(64),
+    recipe_hash: 'c'.repeat(64),
+    ...selection,
+  };
+}
+
 describe('park ground pilot profiles', () => {
   it.each([
     ['neighborhood_park', 'active_recreation'],
@@ -134,10 +146,33 @@ describe('park ground pilot profiles', () => {
     const moved = { ...base, coordinates: base.coordinates.map(([x, y], i) => [x + (i === 0 ? 0.0001 : 0), y]) };
     const variant = { ...base, properties: { ...base.properties, green_space_selected_variant_id: 'neighborhood_park_v2' } };
     const access = { ...base, properties: { ...base.properties, park_access_points: [[-114.07, 51.041]] } };
+    // Compatibility lock for existing paid orthophotos: the legacy V6 object
+    // shape, property order and FNV-1a hash may not drift during LEGO rollout.
+    expect(signature).toBe('pg6-ae6dfa95');
     expect(parkGroundSourceSignature(moved)).not.toBe(signature);
     expect(parkGroundSourceSignature(variant)).not.toBe(signature);
     expect(parkGroundSourceSignature(access)).not.toBe(signature);
     expect(parkGroundSourceSignature(zone('japanese_garden'))).not.toBe(signature);
+  });
+
+  it('keeps an untrusted nested recipe on the exact legacy V6 cache identity', () => {
+    const legacy = zone('neighborhood_park');
+    const untrusted = {
+      ...legacy,
+      properties: {
+        ...legacy.properties,
+        public_realm_lego: {
+          family_id: 'park_neighborhood_community',
+          family_version: 1,
+          archetype_id: 'neighborhood_park',
+          variant_id: 'neighborhood_park_v0',
+          appearance_kit_id: 'rustic_timber_gravel_v1',
+          planting_structure: 'active_recreation',
+        },
+      },
+    } satisfies SiteZone;
+    expect(parkGroundSourceSignature(untrusted)).toBe(parkGroundSourceSignature(legacy));
+    expect(parkGroundSourceSignature(untrusted)).toMatch(/^pg6-/);
   });
 
   it('treats open and explicitly closed polygon rings as the same ground source', () => {
@@ -155,6 +190,91 @@ describe('park ground pilot profiles', () => {
     expect(profile.guides.length).toBeGreaterThan(0);
     expect(profile.plantingStructure).toBe('water_ecology');
     expect(profile.programDescription.toLowerCase()).toContain('wetland');
+  });
+
+  it('never mistakes courtyards or forecourts for sports courts', () => {
+    for (const id of [
+      'courtyard_plaza',
+      'academic_courtyard',
+      'cathedral_religious_forecourt',
+      'cultural_institution_forecourt',
+    ]) {
+      const profile = resolveParkGroundProfile(zone(id));
+      expect(profile.plantingStructure, id).not.toBe('sports_recreation');
+      expect(profile.guides.some((guide) => guide.kind === 'tennis_court'), id).toBe(false);
+      expect(profile.guides.some((guide) => guide.kind === 'soccer_field'), id).toBe(false);
+    }
+    expect(resolveParkGroundProfile(zone('pickleball_courts')).plantingStructure)
+      .toBe('sports_recreation');
+  });
+
+  it('prefers the nested Public Realm LEGO selection and records its family contract', () => {
+    const candidate = zone('neighborhood_park');
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_neighborhood_community',
+        family_version: 1,
+        archetype_id: 'community_park',
+        variant_id: 'community_park_v2',
+        planting_structure: 'naturalistic_grove',
+        appearance_kit_id: 'mediterranean_xeriscape_v1',
+      }),
+    };
+    const profile = resolveParkGroundProfile(candidate);
+    expect(profile.archetypeId).toBe('community_park');
+    expect(profile.title).toContain('Mediterranean Xeriscape');
+    expect(profile.legoFamilyId).toBe('park_neighborhood_community');
+    expect(profile.legoFamilyVersion).toBe(1);
+    expect(profile.variantId).toBe('community_park_v2');
+    expect(resolveParkPlantingStructure(candidate)).toBe('naturalistic_grove');
+    expect(profile.guides).toHaveLength(9);
+    const changedRecipe = {
+      ...candidate,
+      properties: {
+        ...candidate.properties,
+        public_realm_lego: {
+          ...(candidate.properties?.public_realm_lego as Record<string, unknown>),
+          recipe_hash: 'd'.repeat(64),
+        },
+      },
+    } satisfies SiteZone;
+    expect(parkGroundSourceSignature(changedRecipe))
+      .not.toBe(parkGroundSourceSignature(candidate));
+    expect(parkGroundSourceSignature(candidate)).toMatch(/^pg7-/);
+  });
+
+  it('binds the exact civic family to its fountain while water ecology stays ground-led', () => {
+    const civic = zone('formal_civic_plaza');
+    civic.properties = {
+      ...civic.properties,
+      planting_structure: 'active_recreation',
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_civic_plaza',
+        family_version: 1,
+        archetype_id: 'formal_civic_plaza',
+        variant_id: 'formal_civic_plaza_v0',
+        appearance_kit_id: 'neoclassical_stone_v1',
+        planting_structure: 'paved_plaza',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(civic)).toBe('civic_fountain_assembly');
+    expect(resolveParkPlantingStructure(civic)).toBe('paved_plaza');
+
+    const water = zone('stormwater_retention_pond');
+    water.properties = {
+      ...water.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_water_ecology',
+        family_version: 1,
+        archetype_id: 'stormwater_retention_pond',
+        variant_id: 'stormwater_retention_pond_v0',
+        appearance_kit_id: 'naturalistic_pond_v1',
+        planting_structure: 'reservoir_perimeter',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(water)).toBeNull();
+    expect(resolveParkGroundProfile(water).archetypeId).toBe('stormwater_retention_pond');
   });
 
   it('compiles every open-space catalog entry and variant to an explicit 3D ground contract', () => {

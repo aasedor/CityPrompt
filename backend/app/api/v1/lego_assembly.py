@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Literal
@@ -32,6 +33,11 @@ from app.services.lego_assembly import (
     plan_vertical_assembly,
 )
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
+from app.services.public_realm_lego import (
+    PUBLIC_REALM_RECIPE_PROPERTY,
+    PublicRealmPlanningError,
+    plan_public_realm_zone_recipe,
+)
 from app.services.residual_landscape import (
     ResidualSourceZone,
     build_residual_landscape_recipe,
@@ -44,6 +50,7 @@ from app.services.residual_landscape import (
 )
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 # Namespaced key inside Building.specifications so recipes coexist with the
 # existing model_url workflow fields without a schema migration.
@@ -832,12 +839,81 @@ def _community_3d_kind(zone: SiteZone) -> Literal["building", "park", "street"] 
     return community_3d_kind_for_source(zone.zone_type, zone.properties)
 
 
+def _community_source_geometry(zone: SiteZone):
+    """Read production GeoAlchemy geometry and legacy EWKT test fixtures."""
+
+    try:
+        return to_shape(zone.geometry)
+    except (AssertionError, TypeError, ValueError, AttributeError):
+        from shapely import wkt
+
+        raw_geometry = str(zone.geometry)
+        if ";" in raw_geometry and raw_geometry.upper().startswith("SRID="):
+            raw_geometry = raw_geometry.split(";", 1)[1]
+        try:
+            return wkt.loads(raw_geometry)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Zone {zone.id} has unusable Community 3D source geometry",
+            ) from exc
+
+
+def _public_realm_recipe_for_zone(
+    zone: SiteZone,
+    kind: Literal["park", "street"],
+) -> dict[str, Any] | None:
+    """Compile a canonical V1 recipe, strict only for AI Master Plan zones."""
+
+    properties = zone.properties or {}
+    strict = bool(
+        isinstance(properties.get("_plan_scenario"), str)
+        and properties.get("_plan_scenario", "").strip()
+    )
+    try:
+        recipe = plan_public_realm_zone_recipe(
+            zone.zone_type,
+            _community_source_geometry(zone),
+            properties,
+            strict=strict,
+        )
+    except PublicRealmPlanningError as exc:
+        detail = exc.as_detail()
+        detail["zone_id"] = str(zone.id)
+        detail["kind"] = kind
+        logger.warning(
+            "Community 3D public-realm preflight rejected zone %s (%s): %s",
+            zone.id,
+            kind,
+            detail.get("message", detail),
+        )
+        raise HTTPException(status_code=422, detail=detail) from exc
+    except ValueError as exc:
+        logger.warning(
+            "Community 3D public-realm geometry rejected zone %s (%s): %s",
+            zone.id,
+            kind,
+            exc,
+        )
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "code": "family_incompatible",
+                "message": str(exc),
+                "zone_id": str(zone.id),
+                "kind": kind,
+            },
+        ) from exc
+    return recipe.model_dump(mode="json") if recipe is not None else None
+
+
 def _stamp_community_3d(
     zone: SiteZone,
     kind: Literal["building", "park", "street"],
     compiled_at: str,
     building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly",
     building: Building | None = None,
+    public_realm_recipe: dict[str, Any] | None = None,
 ) -> None:
     generator = {
         "building": building_generator,
@@ -845,23 +921,15 @@ def _stamp_community_3d(
         "street": "street_section",
     }[kind]
     properties = dict(zone.properties or {})
-    try:
-        source_geometry = to_shape(zone.geometry)
-    except (AssertionError, TypeError, ValueError, AttributeError):
-        # A few legacy unit fixtures use EWKT strings instead of GeoAlchemy
-        # elements. Production rows always take the first path.
-        from shapely import wkt
-
-        raw_geometry = str(zone.geometry)
-        if ";" in raw_geometry and raw_geometry.upper().startswith("SRID="):
-            raw_geometry = raw_geometry.split(";", 1)[1]
-        try:
-            source_geometry = wkt.loads(raw_geometry)
-        except Exception as exc:
-            raise HTTPException(
-                status_code=422,
-                detail=f"Zone {zone.id} has unusable Community 3D source geometry",
-            ) from exc
+    if kind in {"park", "street"}:
+        if public_realm_recipe is None:
+            # A manual legacy archetype may retain the historical procedural
+            # representation, but an older V1 recipe must never survive an
+            # explicit recompile to a different unsupported selection.
+            properties.pop(PUBLIC_REALM_RECIPE_PROPERTY, None)
+        else:
+            properties[PUBLIC_REALM_RECIPE_PROPERTY] = public_realm_recipe
+    source_geometry = _community_source_geometry(zone)
     source_hash = community_3d_source_hash(
         zone.zone_type,
         source_geometry,
@@ -872,6 +940,7 @@ def _stamp_community_3d(
         generator=generator,
         source_hash=source_hash,
         building=building,
+        public_realm_recipe=public_realm_recipe,
     )
     if representation_hash is None:
         raise HTTPException(
@@ -1203,6 +1272,18 @@ async def place_community_3d(
         resolved_items,
     )
 
+    # Resolve every public-realm recipe under the same project/source lock and
+    # before boundary or linked-building mutation. Unsupported AI content
+    # therefore aborts the whole transaction; manual legacy content keeps its
+    # existing procedural renderer without claiming V1 capability coverage.
+    public_realm_recipes: dict[uuid.UUID, dict[str, Any]] = {}
+    for _, zone, kind in resolved_items:
+        if kind not in {"park", "street"}:
+            continue
+        recipe = _public_realm_recipe_for_zone(zone, kind)
+        if recipe is not None:
+            public_realm_recipes[zone.id] = recipe
+
     boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
     if len(boundaries) > 1:
         raise HTTPException(
@@ -1361,6 +1442,7 @@ async def place_community_3d(
             compiled_at,
             building_generator,
             building=building,
+            public_realm_recipe=public_realm_recipes.get(zone.id),
         )
         counts[kind] += 1
         results.append({

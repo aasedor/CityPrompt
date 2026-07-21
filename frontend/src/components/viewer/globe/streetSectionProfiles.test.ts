@@ -7,6 +7,41 @@ import {
   resolvePilotStreetSectionProfile,
 } from './streetSectionProfiles';
 
+function compiledStreetRecipe({
+  familyId,
+  archetypeId,
+  variantId,
+  appearanceKitId,
+  rowM,
+  node = false,
+}: {
+  familyId: string;
+  archetypeId: string;
+  variantId: string;
+  appearanceKitId: string;
+  rowM: number;
+  node?: boolean;
+}) {
+  return {
+    schema_version: 1,
+    family_id: familyId,
+    family_version: 1,
+    kind: 'street',
+    generator: 'street_section',
+    archetype_id: archetypeId,
+    variant_id: variantId,
+    profile_id: `${archetypeId.replace(/_/g, '-')}-v1`,
+    profile_version: 1,
+    appearance_kit_id: appearanceKitId,
+    target: node
+      ? { target_type: 'street_node', approach_row_width_m: rowM, arm_count: 4 }
+      : { target_type: 'street_segment', row_width_m: rowM, length_m: 80 },
+    catalog_fingerprint: 'a'.repeat(64),
+    capability_fingerprint: 'b'.repeat(64),
+    recipe_hash: 'c'.repeat(64),
+  };
+}
+
 describe('street section pilot profiles', () => {
   it.each([
     ['yield_street', 6],
@@ -119,6 +154,152 @@ describe('street section pilot profiles', () => {
     expect(profile?.bands.find((band) => band.kind === 'motor')?.color).toBe('#a76547');
     expect(profile?.treeOffsetsM).toHaveLength(2);
     expect(profile?.markings).toHaveLength(0);
+  });
+
+  it('preserves the source-native local section and records the recipe target width', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        public_realm_lego: {
+          ...compiledStreetRecipe({
+            familyId: 'street_local_public_realm',
+            archetypeId: 'calgary_local',
+            variantId: 'calgary_local_v1',
+            appearanceKitId: 'heritage_brick_stone',
+            rowM: 14,
+          }),
+          recipe_hash: 'd'.repeat(64),
+          capability_fingerprint: 'e'.repeat(64),
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile).toMatchObject({
+      familyId: 'street_local_public_realm',
+      familyVersion: 1,
+      appearanceKitId: 'heritage_brick_stone',
+      archetypeId: 'calgary_local',
+      rowM: 16,
+      targetRowM: 14,
+      metricWidthLocked: true,
+      recipeHash: 'd'.repeat(64),
+      sourceCapabilityFingerprint: 'e'.repeat(64),
+    });
+    expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0)).toBe(16);
+    expect(profile?.treeOffsetsM).toHaveLength(2);
+    expect(profile?.bands.find((band) => band.kind === 'sidewalk')?.color).toBe('#c8bca8');
+    expect(profile?.rendererFingerprint).toMatch(/^street-v1-[0-9a-f]{16}$/);
+  });
+
+  it('compiles a native 22 m complete main street with protected cycling', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        public_realm_lego: {
+          ...compiledStreetRecipe({
+            familyId: 'street_complete_main_22m',
+            archetypeId: 'main_street_complete',
+            variantId: 'main_street_complete_v2',
+            appearanceKitId: 'timber_biophilic',
+            rowM: 22,
+          }),
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile?.rowM).toBe(22);
+    expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(22, 6);
+    expect(profile?.bands.filter((band) => band.kind === 'cycle')).toHaveLength(2);
+    expect(profile?.bands.filter((band) => band.kind === 'parking')).toHaveLength(2);
+    expect(profile?.appearanceKitId).toBe('timber_biophilic');
+  });
+
+  it('keeps local-family trails and laneways at their source-program metric widths', () => {
+    const profile = (archetypeId: string, appearanceKitId = 'calgary_contemporary_native') => resolvePilotStreetSectionProfile({
+      properties: {
+        width: archetypeId === 'multi_use_trail' ? 4 : 5,
+        public_realm_lego: {
+          ...compiledStreetRecipe({
+            familyId: 'street_local_public_realm',
+            archetypeId,
+            variantId: archetypeId === 'multi_use_trail'
+              ? 'multi_use_trail_v1'
+              : `${archetypeId}_v0`,
+            appearanceKitId,
+            rowM: archetypeId === 'multi_use_trail' ? 4 : 5,
+          }),
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile('multi_use_trail', 'green_corridor_v1')).toMatchObject({
+      rowM: 4,
+      renderCurbs: false,
+      appearanceKitId: 'green_corridor_v1',
+    });
+    expect(profile('toronto_laneway')?.rowM).toBe(5);
+    expect(profile('toronto_laneway')?.renderCurbs).toBe(false);
+  });
+
+  it.each([
+    ['yield_street', 6],
+    ['narrow_residential_street', 10],
+    ['woonerf_shared_street', 10],
+    ['green_alley', 5],
+    ['toronto_laneway', 5],
+    ['calgary_local', 16],
+    ['multi_use_trail', 4],
+  ])('executes strict-AI local source alias %s at %sm', (archetypeId, rowM) => {
+    const isTrail = archetypeId === 'multi_use_trail';
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        public_realm_lego: {
+          ...compiledStreetRecipe({
+            familyId: 'street_local_public_realm',
+            archetypeId,
+            variantId: isTrail ? 'multi_use_trail_v1' : `${archetypeId}_v0`,
+            appearanceKitId: isTrail ? 'green_corridor_v1' : 'calgary_contemporary_native',
+            rowM,
+          }),
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile, archetypeId).not.toBeNull();
+    expect(profile?.familyId).toBe('street_local_public_realm');
+    expect(profile?.rowM).toBeCloseTo(rowM, 6);
+  });
+
+  it('exposes the existing parametric roundabout through the versioned family contract', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        public_realm_lego: {
+          ...compiledStreetRecipe({
+            familyId: 'street_compact_roundabout',
+            archetypeId: 'roundabout',
+            variantId: 'roundabout_v0',
+            appearanceKitId: 'classic_tree_lined_v1',
+            rowM: 12,
+            node: true,
+          }),
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile?.familyId).toBe('street_compact_roundabout');
+    expect(profile?.appearanceKitId).toBe('classic_tree_lined_v1');
+  });
+
+  it('keeps malformed V1 metadata on the Classic profile path', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        road_archetype_id: 'calgary_local',
+        public_realm_lego: {
+          family_id: 'street_local_public_realm',
+          family_version: 1,
+          archetype_id: 'calgary_local',
+          variant_id: 'calgary_local_v0',
+          appearance_kit_id: 'calgary_contemporary_native',
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile?.archetypeId).toBe('calgary_local');
+    expect(profile?.familyId).toBeUndefined();
+    expect(profile?.appearanceKitId).toBeUndefined();
+    expect(profile?.metricWidthLocked).toBeUndefined();
   });
 
   it('compiles every street/path catalog entry to a measured non-empty section', () => {

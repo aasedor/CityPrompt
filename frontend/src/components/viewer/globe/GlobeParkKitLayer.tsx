@@ -1,8 +1,9 @@
 /**
  * GlobeParkKitLayer — mounts only fixed, programmed park structures in the
  * editable Google Tiles scene, including deterministic live canopy and
- * seating. Missing playground/pavilion GLBs never fall back to cartoon
- * procedural placeholders.
+ * seating. Public Realm LEGO families use fixed-dimension procedural
+ * playground, pavilion and shade assemblies, so a missing GLB or disabled
+ * asset endpoint can never leave an authored activity pad empty.
  *
  * Placement is seeded by zone.id — orbiting, re-selecting, or reloading
  * never reshuffles a park. renderOrder 145: under placed GLBs (150), above
@@ -41,6 +42,7 @@ import {
 import { PARK_KIT_MANIFEST } from '@/data/parkKitManifest';
 import {
   computeParkPlacements,
+  resolveContainedParkProgramAnchor,
   resolveParkRecipeForZone,
   type ParkPropId,
   type PropPlacement,
@@ -60,10 +62,24 @@ import {
   GlobeLandscapeTreeStand,
 } from './GlobeLandscapeKit';
 import {
+  CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
+  PARK_PROGRAM_MODULE_SPEC,
+  isExecutableParkLegoFamily,
+  resolveParkLegoAppearance,
+  resolveParkProgramAnchorLayout,
+  type ParkLegoAppearance,
+  type ParkLegoPalette,
+} from './parkLegoFamilies';
+import {
   hasCurrentParkGroundSurface,
   shouldDeferParkFinishingProp,
   shouldRenderLiveParkProp,
 } from './parkGroundTexture';
+import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import {
+  parkTerrainSampleOffset,
+  selectBudgetedLiveParkZones,
+} from './parkDetailLod';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -201,11 +217,350 @@ function ProceduralParkFinishingProps({
   placements,
   centroid,
   instanceZ,
+  appearance,
 }: {
   propId: 'tree' | 'bench';
   placements: PropPlacement[];
   centroid: { lng: number; lat: number };
   instanceZ: number[] | null;
+  appearance: ParkLegoAppearance | null;
+}) {
+  const mPerLon = metersPerDegLon(centroid.lat);
+  const resolved = placements.map((placement, index) => ({
+    x: (placement.lng - centroid.lng) * mPerLon,
+    y: (placement.lat - centroid.lat) * METERS_PER_DEG_LAT,
+    z: (instanceZ?.[index] ?? 0)
+      + (propId === 'bench' ? PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS : 0),
+    yawRad: placement.yawRad,
+    scale: propId === 'tree' ? Math.max(0.72, placement.scale) : placement.scale,
+  }));
+  if (propId === 'tree') {
+    return <GlobeLandscapeTreeStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
+  }
+  if (!appearance) {
+    return <GlobeLandscapeBenchStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
+  }
+  return (
+    <>
+      {resolved.map((placement, index) => (
+        <ParkFamilyBench
+          key={`${Math.round(placement.x * 10)}-${Math.round(placement.y * 10)}-${index}`}
+          placement={placement}
+          palette={appearance.palette}
+        />
+      ))}
+    </>
+  );
+}
+
+function ParkFamilyBench({
+  placement,
+  palette,
+}: {
+  placement: { x: number; y: number; z: number; yawRad: number; scale: number };
+  palette: ParkLegoPalette;
+}) {
+  return (
+    <group
+      position={[placement.x, placement.y, placement.z]}
+      rotation={[0, 0, placement.yawRad]}
+      scale={[placement.scale, placement.scale, placement.scale]}
+      renderOrder={RENDER_ORDER_PROPS}
+    >
+      {[-0.20, -0.10, 0, 0.10, 0.20].map((slatY) => (
+        <mesh key={`seat-${slatY}`} position={[0, slatY, 0.48]} renderOrder={RENDER_ORDER_PROPS}>
+          <boxGeometry args={[1.86, 0.074, 0.055]} />
+          <meshStandardMaterial color={palette.benchSeat} roughness={0.82} />
+        </mesh>
+      ))}
+      {[0.68, 0.81, 0.94].map((slatZ) => (
+        <mesh key={`back-${slatZ}`} position={[0, 0.255, slatZ]} rotation={[Math.PI / 18, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
+          <boxGeometry args={[1.86, 0.055, 0.075]} />
+          <meshStandardMaterial color={palette.timberDark} roughness={0.84} />
+        </mesh>
+      ))}
+      {[-0.68, 0.68].map((legX) => (
+        <group key={`frame-${legX}`}>
+          <mesh position={[legX, 0, 0.25]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[0.075, 0.42, 0.5]} />
+            <meshStandardMaterial color={palette.benchFrame} metalness={0.54} roughness={0.48} />
+          </mesh>
+          <mesh position={[legX, -0.28, 0.72]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[0.075, 0.075, 0.56]} />
+            <meshStandardMaterial color={palette.benchFrame} metalness={0.54} roughness={0.48} />
+          </mesh>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+function ShadeCanopy({
+  palette,
+  style,
+}: {
+  palette: ParkLegoPalette;
+  style: ParkLegoAppearance['shadeStyle'];
+}) {
+  const spec = PARK_PROGRAM_MODULE_SPEC.shade;
+  const radius = spec.spanM / 2;
+  const canopyGeometry = useMemo(() => {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute([
+      -radius, -radius * 0.62, spec.lowEdgeHeightM,
+      radius, -radius * 0.52, spec.highEdgeHeightM,
+      0, radius, spec.lowEdgeHeightM + 0.22,
+    ], 3));
+    geometry.setIndex([0, 1, 2]);
+    geometry.computeVertexNormals();
+    return geometry;
+  }, [radius, spec.highEdgeHeightM, spec.lowEdgeHeightM]);
+  useEffect(() => () => canopyGeometry.dispose(), [canopyGeometry]);
+
+  if (style === 'timber_pergola') {
+    return (
+      <group>
+        {[-radius * 0.72, radius * 0.72].flatMap((x) => (
+          [-radius * 0.48, radius * 0.48].map((y) => (
+            <mesh key={`${x}-${y}`} position={[x, y, spec.lowEdgeHeightM / 2]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[0.16, 0.16, spec.lowEdgeHeightM]} />
+              <meshStandardMaterial color={palette.timberDark} roughness={0.86} />
+            </mesh>
+          ))
+        ))}
+        {Array.from({ length: 9 }, (_, index) => (
+          <mesh
+            key={index}
+            position={[(index - 4) * 0.72, 0, spec.lowEdgeHeightM + 0.08]}
+            renderOrder={RENDER_ORDER_PROPS}
+          >
+            <boxGeometry args={[0.12, radius * 1.35, 0.16]} />
+            <meshStandardMaterial color={palette.timber} roughness={0.84} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  const polePoints = [
+    [-radius, -radius * 0.62, spec.lowEdgeHeightM],
+    [radius, -radius * 0.52, spec.highEdgeHeightM],
+    [0, radius, spec.lowEdgeHeightM + 0.22],
+  ] as const;
+  return (
+    <group>
+      <mesh geometry={canopyGeometry} renderOrder={RENDER_ORDER_PROPS}>
+        <meshStandardMaterial
+          color={palette.shade}
+          side={THREE.DoubleSide}
+          roughness={style === 'thatched' ? 0.96 : 0.72}
+          metalness={style === 'steel_canopy' ? 0.22 : 0}
+        />
+      </mesh>
+      {polePoints.map(([x, y, height], index) => (
+        <mesh key={index} position={[x, y, height / 2]} rotation={[Math.PI / 2, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
+          <cylinderGeometry args={[0.075, 0.11, height, 10]} />
+          <meshStandardMaterial color={palette.metal} metalness={0.48} roughness={0.52} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function PlaygroundModule({
+  placement,
+  index,
+  appearance,
+}: {
+  placement: { x: number; y: number; z: number; yawRad: number; scale: number };
+  index: number;
+  appearance: ParkLegoAppearance;
+}) {
+  const { palette } = appearance;
+  const spec = PARK_PROGRAM_MODULE_SPEC.playground;
+  const moduleKind = index % 3;
+  const metalPlay = appearance.playgroundStyle === 'steel'
+    || appearance.playgroundStyle === 'contemporary';
+  return (
+    <group
+      position={[placement.x, placement.y, placement.z + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+      rotation={[0, 0, placement.yawRad]}
+      renderOrder={RENDER_ORDER_PROPS}
+    >
+      {moduleKind === 0 && (
+        <>
+          {[-0.82, 0.82].flatMap((x) => [-0.82, 0.82].map((y) => (
+            <mesh key={`${x}-${y}`} position={[x, y, spec.towerHeightM / 2]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[0.14, 0.14, spec.towerHeightM]} />
+              <meshStandardMaterial
+                color={metalPlay ? palette.metal : palette.timberDark}
+                metalness={metalPlay ? 0.38 : 0}
+                roughness={metalPlay ? 0.52 : 0.82}
+              />
+            </mesh>
+          )))}
+          <mesh position={[0, 0, 1.45]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[...spec.towerDeckM]} />
+            <meshStandardMaterial color={palette.timber} roughness={0.80} />
+          </mesh>
+          <mesh position={[1.45, 0, 0.82]} rotation={[0, -0.45, 0]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[spec.slideLengthM, 0.78, 0.16]} />
+            <meshStandardMaterial color={palette.accent} metalness={0.12} roughness={0.42} />
+          </mesh>
+          {metalPlay ? (
+            <mesh position={[0, 0, 2.76]} rotation={[0, 0, Math.PI / 12]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[2.75, 2.45, 0.16]} />
+              <meshStandardMaterial color={palette.accentSecondary} metalness={0.18} roughness={0.54} />
+            </mesh>
+          ) : (
+            <mesh position={[0, 0, 2.65]} rotation={[Math.PI / 2, 0, Math.PI / 4]} renderOrder={RENDER_ORDER_PROPS}>
+              <coneGeometry args={[1.55, 1.05, 4]} />
+              <meshStandardMaterial color={palette.accentSecondary} roughness={0.70} />
+            </mesh>
+          )}
+        </>
+      )}
+      {moduleKind === 1 && (
+        <>
+          {[-1.65, 1.65].flatMap((x) => [-0.72, 0.72].map((y) => (
+            <mesh key={`${x}-${y}`} position={[x, y, 1.22]} rotation={[0, x < 0 ? -0.15 : 0.15, 0]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[0.12, 0.12, 2.55]} />
+              <meshStandardMaterial color={palette.metal} metalness={0.44} roughness={0.52} />
+            </mesh>
+          )))}
+          <mesh position={[0, 0, 2.45]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[spec.swingBayM[0], 0.14, 0.16]} />
+            <meshStandardMaterial color={palette.metal} metalness={0.44} roughness={0.52} />
+          </mesh>
+          {[-0.72, 0.72].map((seatX) => (
+            <group key={seatX}>
+              {[-0.28, 0.28].map((chainY) => (
+                <mesh key={chainY} position={[seatX, chainY, 1.53]} renderOrder={RENDER_ORDER_PROPS}>
+                  <boxGeometry args={[0.025, 0.025, 1.70]} />
+                  <meshStandardMaterial color={palette.metal} metalness={0.62} roughness={0.42} />
+                </mesh>
+              ))}
+              <mesh position={[seatX, 0, 0.68]} renderOrder={RENDER_ORDER_PROPS}>
+                <boxGeometry args={[0.52, 0.62, 0.09]} />
+                <meshStandardMaterial color={palette.accent} roughness={0.64} />
+              </mesh>
+            </group>
+          ))}
+        </>
+      )}
+      {moduleKind === 2 && (
+        <>
+          <mesh position={[0, 0, 1.20]} renderOrder={RENDER_ORDER_PROPS}>
+            <icosahedronGeometry args={[1.55, 1]} />
+            <meshStandardMaterial color={palette.accentSecondary} wireframe metalness={0.25} roughness={0.58} />
+          </mesh>
+          {[-2.0, -1.1, 1.1, 2.0].map((x, step) => (
+            <mesh key={x} position={[x, 1.65, 0.18 + (step % 2) * 0.08]} rotation={[Math.PI / 2, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
+              <cylinderGeometry args={[0.34, 0.42, 0.34 + (step % 2) * 0.16, 10]} />
+              <meshStandardMaterial color={palette.timber} roughness={0.94} />
+            </mesh>
+          ))}
+        </>
+      )}
+    </group>
+  );
+}
+
+function ProceduralPlayground({
+  placements,
+  appearance,
+}: {
+  placements: Array<{ x: number; y: number; z: number; yawRad: number; scale: number }>;
+  appearance: ParkLegoAppearance;
+}) {
+  if (placements.length === 0) return null;
+  const center = placements.reduce(
+    (sum, placement) => ({ x: sum.x + placement.x, y: sum.y + placement.y, z: sum.z + placement.z }),
+    { x: 0, y: 0, z: 0 },
+  );
+  center.x /= placements.length;
+  center.y /= placements.length;
+  center.z /= placements.length;
+  return (
+    <group renderOrder={RENDER_ORDER_PROPS}>
+      {placements.map((placement, index) => (
+        <PlaygroundModule key={index} placement={placement} index={index} appearance={appearance} />
+      ))}
+      <group position={[center.x, center.y, center.z + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}>
+        <ShadeCanopy palette={appearance.palette} style={appearance.shadeStyle} />
+      </group>
+    </group>
+  );
+}
+
+function ProceduralPavilion({
+  placements,
+  appearance,
+}: {
+  placements: Array<{ x: number; y: number; z: number; yawRad: number; scale: number }>;
+  appearance: ParkLegoAppearance;
+}) {
+  const spec = PARK_PROGRAM_MODULE_SPEC.pavilion;
+  const { palette } = appearance;
+  return (
+    <>
+      {placements.map((placement, index) => (
+        <group
+          key={index}
+          position={[placement.x, placement.y, placement.z + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          rotation={[0, 0, placement.yawRad]}
+          renderOrder={RENDER_ORDER_PROPS}
+        >
+          {[-1, 1].flatMap((sx) => [-1, 1].map((sy) => (
+            <mesh
+              key={`${sx}-${sy}`}
+              position={[sx * (spec.widthM / 2 - 0.38), sy * (spec.depthM / 2 - 0.38), spec.clearHeightM / 2]}
+              renderOrder={RENDER_ORDER_PROPS}
+            >
+              <boxGeometry args={[0.20, 0.20, spec.clearHeightM]} />
+              <meshStandardMaterial
+                color={appearance.shadeStyle === 'steel_canopy' ? palette.metal : palette.timberDark}
+                metalness={appearance.shadeStyle === 'steel_canopy' ? 0.42 : 0}
+                roughness={0.68}
+              />
+            </mesh>
+          )))}
+          <mesh position={[0, 0, spec.clearHeightM + spec.roofHeightM * 0.42]} rotation={[Math.PI / 2, 0, Math.PI / 4]} renderOrder={RENDER_ORDER_PROPS}>
+            <coneGeometry args={[4.25, spec.roofHeightM, 4]} />
+            <meshStandardMaterial
+              color={palette.pavilionRoof}
+              roughness={appearance.shadeStyle === 'thatched' ? 0.98 : 0.76}
+              metalness={appearance.shadeStyle === 'steel_canopy' ? 0.24 : 0}
+            />
+          </mesh>
+          <mesh position={[0, 0, 0.74]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[2.5, 0.85, 0.12]} />
+            <meshStandardMaterial color={palette.timber} roughness={0.84} />
+          </mesh>
+          {[-0.86, 0.86].map((seatY) => (
+            <mesh key={seatY} position={[0, seatY, 0.48]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[2.6, 0.38, 0.12]} />
+              <meshStandardMaterial color={palette.benchSeat} roughness={0.86} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+    </>
+  );
+}
+
+function ProceduralParkProgramProps({
+  propId,
+  placements,
+  centroid,
+  instanceZ,
+  appearance,
+}: {
+  propId: 'playground' | 'pavilion';
+  placements: PropPlacement[];
+  centroid: { lng: number; lat: number };
+  instanceZ: number[] | null;
+  appearance: ParkLegoAppearance;
 }) {
   const mPerLon = metersPerDegLon(centroid.lat);
   const resolved = placements.map((placement, index) => ({
@@ -213,11 +568,11 @@ function ProceduralParkFinishingProps({
     y: (placement.lat - centroid.lat) * METERS_PER_DEG_LAT,
     z: instanceZ?.[index] ?? 0,
     yawRad: placement.yawRad,
-    scale: propId === 'tree' ? Math.max(0.72, placement.scale) : placement.scale,
+    scale: placement.scale,
   }));
-  return propId === 'tree'
-    ? <GlobeLandscapeTreeStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />
-    : <GlobeLandscapeBenchStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
+  return propId === 'playground'
+    ? <ProceduralPlayground placements={resolved} appearance={appearance} />
+    : <ProceduralPavilion placements={resolved} appearance={appearance} />;
 }
 
 /** Small deterministic structures that are part of an archetype's spatial
@@ -248,7 +603,7 @@ function ParkSpecialtyStructures({
       width > 0 ? (point.x - minX) / width : 0.5,
       height > 0 ? (maxY - point.y) / height : 0.5,
     ] as [number, number]));
-    return { minX, maxX, minY, maxY, width, height, normalizedRing };
+    return { minX, maxX, minY, maxY, width, height, normalizedRing, points };
   }, [centroid.lat, centroid.lng, coordinates]);
 
   const fittedProgramGuides = useMemo(() => fitParkGroundGuides(
@@ -256,6 +611,82 @@ function ParkSpecialtyStructures({
     { width: programFrame.width, height: programFrame.height },
     programFrame.normalizedRing,
   ).guides, [programFrame, zone]);
+
+  if (structureKind === 'civic_fountain_assembly') {
+    const spec = CIVIC_FOUNTAIN_ASSEMBLY_SPEC;
+    const anchor = resolveContainedParkProgramAnchor(
+      programFrame.points.map(({ x, y }) => [x, y]),
+      [0.5, 0.5],
+      spec.wholeElementClearanceM,
+    );
+    if (!anchor) return null;
+    return (
+      <group
+        position={[anchor.x, anchor.y, PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+        renderOrder={RENDER_ORDER_PROPS}
+      >
+        <mesh
+          position={[0, 0, spec.rimHeightM / 2]}
+          rotation={[Math.PI / 2, 0, 0]}
+          renderOrder={RENDER_ORDER_PROPS}
+        >
+          <cylinderGeometry args={[
+            spec.outerRadiusM,
+            spec.outerRadiusM,
+            spec.rimHeightM,
+            48,
+          ]} />
+          <meshStandardMaterial color="#aaa399" roughness={0.88} metalness={0.02} />
+        </mesh>
+        <mesh position={[0, 0, spec.waterHeightM + 0.015]} renderOrder={RENDER_ORDER_PROPS + 1}>
+          <circleGeometry args={[spec.waterRadiusM, 48]} />
+          <meshPhysicalMaterial
+            color="#4f8890"
+            transparent
+            opacity={0.82}
+            roughness={0.18}
+            metalness={0.02}
+            depthWrite
+          />
+        </mesh>
+        <mesh
+          position={[0, 0, spec.rimHeightM + 0.012]}
+          renderOrder={RENDER_ORDER_PROPS + 2}
+        >
+          <ringGeometry args={[spec.waterRadiusM, spec.outerRadiusM, 48]} />
+          <meshStandardMaterial color="#c3bdb2" roughness={0.82} metalness={0.02} />
+        </mesh>
+        <mesh
+          position={[0, 0, spec.centerPlinthHeightM / 2]}
+          rotation={[Math.PI / 2, 0, 0]}
+          renderOrder={RENDER_ORDER_PROPS + 2}
+        >
+          <cylinderGeometry args={[
+            spec.centerPlinthRadiusM,
+            spec.centerPlinthRadiusM * 1.08,
+            spec.centerPlinthHeightM,
+            24,
+          ]} />
+          <meshStandardMaterial color="#9e978d" roughness={0.84} />
+        </mesh>
+        {[0, Math.PI / 2, Math.PI, Math.PI * 1.5].map((angle) => (
+          <mesh
+            key={angle}
+            position={[
+              Math.cos(angle) * 2.15,
+              Math.sin(angle) * 2.15,
+              spec.waterHeightM + 0.42,
+            ]}
+            rotation={[Math.PI / 2, 0, 0]}
+            renderOrder={RENDER_ORDER_PROPS + 3}
+          >
+            <cylinderGeometry args={[0.035, 0.055, 0.82, 8]} />
+            <meshPhysicalMaterial color="#c5e5e7" transparent opacity={0.68} roughness={0.08} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
 
   const bridge = structureKind === 'japanese_garden_bridge'
     ? {
@@ -648,24 +1079,38 @@ function ParkSpecialtyStructures({
  * planting/furniture. Unlike the former count threshold, this never drops an
  * authored bridge or a real fixed-structure asset merely because a district
  * contains many parks. */
-function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
+function liveProgrammedParkPlacements(zone: SiteZone): PropPlacement[] {
   const recipe = resolveParkRecipeForZone({
     properties: zone.properties,
     coordinates: zone.coordinates,
     zone_type: zone.zone_type,
   });
   const plantingStructure = resolveParkPlantingStructure(zone);
-  const liveAssetPlacementCount = computeParkPlacements(
+  return computeParkPlacements(
     { id: zone.id, coordinates: zone.coordinates },
     recipe,
     plantingStructure,
+    resolveParkProgramAnchorLayout(zone),
   ).filter((placement) => {
     const asset = PARK_KIT_MANIFEST[placement.propId];
-    const hasProceduralFallback = placement.propId === 'tree' || placement.propId === 'bench';
+    const hasProceduralFallback = placement.propId === 'tree'
+      || placement.propId === 'bench'
+      || (isExecutableParkLegoFamily(zone)
+        && (placement.propId === 'playground' || placement.propId === 'pavilion'));
     return !shouldDeferParkFinishingProp(zone, placement.propId)
       && (Boolean(asset) || hasProceduralFallback);
-  }).length;
-  return shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
+  });
+}
+
+function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
+  return shouldMountParkProgramFrame(zone, liveProgrammedParkPlacements(zone).length);
+}
+
+function hasCoreFixedParkProgram(zone: SiteZone): boolean {
+  return resolveParkSpecialtyStructureKind(zone) !== null
+    || liveProgrammedParkPlacements(zone).some((placement) => (
+      placement.propId === 'playground' || placement.propId === 'pavilion'
+    ));
 }
 
 function ParkKitInstance({
@@ -677,7 +1122,9 @@ function ParkKitInstance({
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
-  const frameCountRef = useRef(0);
+  const frameCountRef = useRef(
+    parkTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL),
+  );
   const attemptsRef = useRef(0);
   const nextInstanceRef = useRef(0);
   const instanceZRef = useRef<number[] | null>(null);
@@ -699,6 +1146,14 @@ function ParkKitInstance({
   // Landscape pattern stamped by the backend plan generator (green zones and
   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
   const plantingStructure = resolveParkPlantingStructure(zone);
+  const legoAppearance = useMemo(
+    () => resolveParkLegoAppearance(zone),
+    [zone.properties, zone.zone_type],
+  );
+  const programAnchors = useMemo(
+    () => resolveParkProgramAnchorLayout(zone),
+    [zone.properties, zone.zone_type],
+  );
   // A generated green-space drape is the spatial source of truth. Both
   // procedural and AI-upgraded grounds keep the same deterministic placement
   // recipe, so their live canopy and seating remain stable across reloads.
@@ -713,6 +1168,7 @@ function ParkKitInstance({
       { id: zone.id, coordinates: zone.coordinates },
       recipe,
       plantingStructure,
+      programAnchors,
     ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId));
     let lng = 0;
     let lat = 0;
@@ -732,6 +1188,7 @@ function ParkKitInstance({
     zone.updated_at,
     recipe,
     plantingStructure,
+    programAnchors,
     hasCurrentParkGround,
   ]);
 
@@ -894,6 +1351,22 @@ function ParkKitInstance({
               placements={group}
               centroid={centroid}
               instanceZ={groupZ}
+              appearance={legoAppearance}
+            />
+          );
+        }
+        if (
+          legoAppearance
+          && (propId === 'playground' || propId === 'pavilion')
+        ) {
+          return (
+            <ProceduralParkProgramProps
+              key={propId}
+              propId={propId}
+              placements={group}
+              centroid={centroid}
+              instanceZ={groupZ}
+              appearance={legoAppearance}
             />
           );
         }
@@ -924,16 +1397,19 @@ export function GlobeParkKitLayer({
   terrainHeight: number;
 }) {
   const parkZones = useMemo(
-    () => zones.filter((z) =>
-      resolveCommunity3DKind(z) === 'park'
-      && z.coordinates.length >= 3
-      && shouldRenderCommunityProps(z)
-      // Generate 3D always creates a current deterministic ground design;
-      // optional AI orthophotos upgrade its material fidelity. Deterministic
-      // surfaces can mount the full authored kit, while AI surfaces retain
-      // only design-critical programmed structures.
-      && hasCurrentParkGroundSurface(z)
-      && hasLiveProgrammedParkGeometry(z)),
+    () => selectBudgetedLiveParkZones(
+      zones.filter((z) =>
+        resolveCommunity3DKind(z) === 'park'
+        && z.coordinates.length >= 3
+        && shouldRenderCommunityProps(z)
+        // Generate 3D always creates a current deterministic ground design;
+        // optional AI orthophotos upgrade its material fidelity. Deterministic
+        // surfaces can mount the full authored kit, while AI surfaces retain
+        // only design-critical programmed structures.
+        && hasCurrentParkGroundSurface(z)
+        && hasLiveProgrammedParkGeometry(z)),
+      hasCoreFixedParkProgram,
+    ),
     [zones],
   );
 

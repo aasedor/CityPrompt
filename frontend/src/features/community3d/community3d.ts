@@ -1,4 +1,6 @@
 import type { Building, SiteZone, SiteZoneProperties } from '@/types';
+import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
+import { validateStreetRecipeProperties } from '@/components/viewer/globe/streetLegoContract';
 
 /** The three pieces of a master plan that can be compiled into the globe. */
 export type Community3DKind = 'building' | 'park' | 'street';
@@ -168,6 +170,27 @@ export function hasCommunity3DSourceFingerprint(zone: SiteZone): boolean {
   );
 }
 
+/**
+ * AI-authored public realm may claim a paid Direct capture only when the
+ * browser understands the exact nested family contract it is about to mount.
+ * Manual/legacy public realm retains its historical compiled compatibility,
+ * but a malformed nested recipe never falls back silently.
+ */
+export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
+  const kind = resolveCommunity3DKind(zone);
+  if (kind !== 'park' && kind !== 'street') return true;
+  const props = propertiesOf(zone);
+  const nested = props.public_realm_lego;
+  const isAiPlan = typeof props._plan_scenario === 'string'
+    && props._plan_scenario.trim().length > 0;
+  if (!nested) return !isAiPlan;
+  if (kind === 'park') {
+    const contract = resolveParkLegoContract(zone);
+    return contract?.source === 'public_realm_lego' && contract.supported;
+  }
+  return validateStreetRecipeProperties(props).valid;
+}
+
 /** Bind a Direct capture to the exact compiled zone/model snapshot visible in
  * this browser render. The server recomputes both hashes under the project lock
  * before reserving credits, so a stale tab fails without spend. */
@@ -182,6 +205,7 @@ export function getCommunity3DCaptureClaims(
     const kind = resolveCommunity3DKind(zone);
     const meta = getCommunity3DMeta(zone);
     if (!kind || !hasCommunity3DSourceFingerprint(zone) || !meta) return null;
+    if (!hasExecutablePublicRealmRecipe(zone)) return null;
     if (kind === 'building') {
       if (!zone.building_id) return null;
       const building = buildingsById.get(zone.building_id);

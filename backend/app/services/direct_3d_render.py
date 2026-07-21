@@ -48,6 +48,8 @@ _MIN_PROPOSAL_COVERAGE = 0.0025
 _MAX_PROPOSAL_COVERAGE = 0.85
 _MIN_REGISTRATION_SCORE = 0.65
 _IDENTITY_SCORE = 0.985
+_MIN_STRUCTURAL_CONTEXT_SCORE = 0.62
+_MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS = 256
 _MAX_REGISTRATION_ROTATION_DEGREES = 2.0
 _INWARD_FEATHER_PX = 2.0
 _MIN_STRUCTURAL_EDGE_PIXELS = 64
@@ -146,6 +148,9 @@ class RegistrationResult:
     image: Image.Image
     method: str
     score: float
+    score_metric: str
+    photometric_score: float
+    structural_context_score: float | None
     translation_x_px: float
     translation_y_px: float
     rotation_degrees: float
@@ -1739,6 +1744,62 @@ def _masked_correlation(
     return float(np.dot(left, right) / denominator)
 
 
+def _structural_context_agreement(
+    source: Image.Image,
+    candidate: Image.Image,
+    proposal_mask: Image.Image,
+) -> float:
+    """Measure bidirectional geometry agreement in immutable context.
+
+    Provider edits commonly relight or rematerialize the surrounding city even
+    when the camera and projected geometry are unchanged. Luminance
+    correlation is deliberately retained as the primary registration gate,
+    while this fallback compares only long, high-confidence edges. Requiring
+    agreement in both directions prevents a texture-heavy provider image from
+    passing merely because it places some edge near every source contour.
+    """
+
+    if source.size != candidate.size or source.size != proposal_mask.size:
+        raise Direct3DValidationError(
+            "Structural context images and mask must have identical dimensions"
+        )
+
+    import cv2
+
+    immutable_context = _registration_context_mask(proposal_mask)
+    context_image = Image.fromarray(immutable_context, mode="L")
+    active = immutable_context > 0
+    source_edges = _beauty_structural_edges(source, context_image) & active
+    candidate_edges = _beauty_structural_edges(candidate, context_image) & active
+    source_count = int(np.count_nonzero(source_edges))
+    candidate_count = int(np.count_nonzero(candidate_edges))
+    if (
+        source_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS
+        or candidate_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS
+    ):
+        return 0.0
+
+    diagonal = math.hypot(source.width, source.height)
+    tolerance_px = max(2, min(4, round(diagonal * 0.002)))
+    distance_to_candidate = cv2.distanceTransform(
+        (~candidate_edges).astype(np.uint8),
+        cv2.DIST_L2,
+        3,
+    )
+    distance_to_source = cv2.distanceTransform(
+        (~source_edges).astype(np.uint8),
+        cv2.DIST_L2,
+        3,
+    )
+    source_recall = float(
+        np.mean(distance_to_candidate[source_edges] <= tolerance_px)
+    )
+    candidate_recall = float(
+        np.mean(distance_to_source[candidate_edges] <= tolerance_px)
+    )
+    return min(source_recall, candidate_recall)
+
+
 def register_generated_image(
     source: Image.Image,
     generated: Image.Image,
@@ -1766,6 +1827,9 @@ def register_generated_image(
             image=generated.convert("RGB"),
             method="identity",
             score=identity_score,
+            score_metric="luminance-correlation",
+            photometric_score=identity_score,
+            structural_context_score=None,
             translation_x_px=0.0,
             translation_y_px=0.0,
             rotation_degrees=0.0,
@@ -1808,16 +1872,32 @@ def register_generated_image(
     )
     registered_gray = cv2.cvtColor(registered_rgb, cv2.COLOR_RGB2GRAY).astype(np.float32) / 255.0
     registered_score = _masked_correlation(source_gray, registered_gray, context_mask)
+    structural_context_score: float | None = None
+    score = registered_score
+    score_metric = "luminance-correlation"
     if registered_score < _MIN_REGISTRATION_SCORE:
-        raise Direct3DValidationError(
-            "Generated image does not retain enough registered context "
-            f"(score {registered_score:.3f})"
+        structural_context_score = _structural_context_agreement(
+            source,
+            Image.fromarray(registered_rgb, mode="RGB"),
+            proposal_mask,
         )
+        if structural_context_score >= _MIN_STRUCTURAL_CONTEXT_SCORE:
+            score = structural_context_score
+            score_metric = "bidirectional-structural-edge-recall"
+        else:
+            raise Direct3DValidationError(
+                "Generated image does not retain enough registered context "
+                f"(luminance score {registered_score:.3f}, structural score "
+                f"{structural_context_score:.3f})"
+            )
 
     return RegistrationResult(
         image=Image.fromarray(registered_rgb, mode="RGB"),
         method="ecc-euclidean",
-        score=registered_score,
+        score=score,
+        score_metric=score_metric,
+        photometric_score=registered_score,
+        structural_context_score=structural_context_score,
         translation_x_px=translation_x,
         translation_y_px=translation_y,
         rotation_degrees=rotation_degrees,
@@ -2182,6 +2262,11 @@ class Direct3DRenderService:
                     "registration": {
                         "method": registration.method,
                         "score": registration.score,
+                        "score_metric": registration.score_metric,
+                        "photometric_score": registration.photometric_score,
+                        "structural_context_score": (
+                            registration.structural_context_score
+                        ),
                         "translation_x_px": registration.translation_x_px,
                         "translation_y_px": registration.translation_y_px,
                         "rotation_degrees": registration.rotation_degrees,

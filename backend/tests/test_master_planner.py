@@ -6,7 +6,7 @@ import math
 from dataclasses import replace
 
 import pytest
-from shapely.geometry import Point, Polygon
+from shapely.geometry import LineString, Point, Polygon, box, mapping
 from shapely.ops import unary_union
 
 from app.services.master_planner import agent as master_planner_agent
@@ -21,11 +21,15 @@ from app.services.master_planner.spec import (
     LandscapePlan,
     MasterPlanSpec,
     OpenSpaceProgram,
+    PublicRealmPlan,
     lego_fallback_spec,
     palette_from_spec,
     validate_spec,
 )
-from app.services.plan_geometry.generator import generate_plan_geometry
+from app.services.plan_geometry.generator import (
+    _lego_park_identity_for_metric_polygon,
+    generate_plan_geometry,
+)
 from app.services.plan_geometry.placement import (
     PALETTES,
     BandSpec,
@@ -36,6 +40,7 @@ from app.services.plan_geometry.placement import (
 )
 from app.services.plan_geometry.community_rules import resolve_rules
 from app.services.planning_agents.schemas import PhilosophyWeights, ScenarioDefinition
+from app.services.public_realm_lego import plan_public_realm_zone_recipe
 
 LAT, LON = 51.0405, -114.0850
 M_LAT = 111_320.0
@@ -280,6 +285,107 @@ def test_lego_tool_schema_requires_only_runtime_parent_ids():
         alternate = schema["properties"]["alternates"]["items"]
         assert "archetype_id" in alternate["required"]
         assert alternate["properties"]["archetype_id"]["enum"] == list(catalog.parent_ids)
+
+
+def test_lego_tool_schema_exposes_only_executable_public_realm_choices():
+    tool = master_planner_agent._master_plan_tool(_lego_catalog())
+    schema = tool["input_schema"]
+    properties = schema["properties"]
+
+    assert "public_realm" in schema["required"]
+    assert properties["spine_archetype_id"]["enum"] == ["main_street_complete"]
+    assert set(properties["local_archetype_id"]["enum"]) == {
+        "calgary_local",
+        "narrow_residential_street",
+        "woonerf_shared_street",
+        "yield_street",
+    }
+    assert properties["open_space"]["properties"]["water_archetype_id"]["enum"] == [
+        "stormwater_retention_pond"
+    ]
+    public_realm = properties["public_realm"]
+    assert set(public_realm["required"]) == {
+        "spine_street_variant_id",
+        "local_street_variant_id",
+        "central_park_variant_id",
+        "pocket_park_variant_id",
+        "courtyard_variant_id",
+        "greenway_variant_id",
+    }
+    assert "main_street_complete_v3" in (
+        public_realm["properties"]["spine_street_variant_id"]["enum"]
+    )
+
+    legacy = master_planner_agent._master_plan_tool()
+    assert "public_realm" not in legacy["input_schema"]["properties"]
+    assert "public_realm" not in legacy["input_schema"]["required"]
+
+
+def test_lego_validation_repairs_public_realm_to_compatible_families():
+    raw = _spec(
+        spine_archetype_id="haussmann_boulevard",
+        local_archetype_id="london_terrace_street",
+        open_space=OpenSpaceProgram(
+            water_feature=True,
+            water_archetype_id="pond_lake",
+            plaza=True,
+            central_park_archetype_id="urban_forest",
+        ),
+        public_realm=PublicRealmPlan(
+            spine_street_variant_id="yield_street_v3",
+            local_street_variant_id="main_street_complete_v2",
+            central_park_variant_id="community_park_v2",
+            pocket_park_variant_id="not_a_variant",
+            courtyard_variant_id="urban_pocket_park_v3",
+            greenway_variant_id="linear_park_greenway_v0",
+        ),
+    )
+
+    validated, notes = validate_spec(
+        raw,
+        "city_policy",
+        lego_catalog=_lego_catalog(),
+    )
+
+    assert validated.spine_archetype_id == "main_street_complete"
+    assert validated.local_archetype_id == "narrow_residential_street"
+    assert validated.open_space.central_park_archetype_id == "neighborhood_park"
+    assert validated.open_space.water_archetype_id == "stormwater_retention_pond"
+    assert validated.public_realm == PublicRealmPlan(
+        spine_street_variant_id="main_street_complete_v0",
+        local_street_variant_id="narrow_residential_street_v0",
+        central_park_variant_id="neighborhood_park_v0",
+        pocket_park_variant_id="urban_pocket_park_v0",
+        courtyard_variant_id="urban_pocket_park_v3",
+        greenway_variant_id="linear_park_greenway_v0",
+    )
+    assert any(
+        note["code"] == "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED"
+        for note in notes
+    )
+    assert any(
+        note["code"] == "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED"
+        for note in notes
+    )
+
+    palette = palette_from_spec(
+        validated,
+        "city_policy",
+        lego_catalog=_lego_catalog(),
+    )
+    assert palette.public_realm_variants == {
+        "spine": "main_street_complete_v0",
+        "local": "narrow_residential_street_v0",
+        "central": "neighborhood_park_v0",
+        "pocket": "urban_pocket_park_v0",
+        "courtyard": "urban_pocket_park_v3",
+        "greenway": "linear_park_greenway_v0",
+        "plaza": "formal_civic_plaza_v0",
+        "pond": "stormwater_retention_pond_v0",
+        "path": "multi_use_trail_v1",
+        "lane": "toronto_laneway_v0",
+        "roundabout": "roundabout_v0",
+    }
 
 
 def test_lego_validation_fills_every_band_selects_exact_variant_and_snaps_floors():
@@ -665,6 +771,304 @@ def test_generated_plan_carries_variety_and_landscape():
     courtyards = [z for z in result.zones if z["properties"].get("_plan_role") == "courtyard"]
     for z in courtyards:
         assert z["properties"]["planting_structure"] == "formal_quad"
+
+
+def test_generated_lego_plan_stamps_public_realm_variant_identity_by_role():
+    variants = {
+        "spine": "main_street_complete_v2",
+        "local": "narrow_residential_street_v3",
+        "central": "neighborhood_park_v1",
+        "pocket": "urban_pocket_park_v2",
+        "courtyard": "urban_pocket_park_v3",
+        "greenway": "linear_park_greenway_v0",
+        "plaza": "formal_civic_plaza_v0",
+        "pond": "stormwater_retention_pond_v0",
+        "path": "multi_use_trail_v1",
+        "lane": "toronto_laneway_v0",
+        "roundabout": "roundabout_v0",
+    }
+    palette = replace(
+        palette_for("environmental"),
+        spine_archetype_id="main_street_complete",
+        local_archetype_id="narrow_residential_street",
+        central_archetype_id="neighborhood_park",
+        water_archetype_id="stormwater_retention_pond",
+        public_realm_variants=variants,
+    )
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(),
+        scenario_id="environmental",
+        scenario_label="Public Realm LEGO",
+        parameters={**PARAMS, "streets.row_width_m": {"value": 28.0}},
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+
+    assert result.rules["spine_row_width_m"] == 22.0
+    assert result.rules["local_row_width_m"] == 14.0
+    assert any(
+        note["code"] == "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS"
+        for note in result.notes
+    )
+
+    expected_road_variants = {
+        "spine": variants["spine"],
+        "local": variants["local"],
+        "path": variants["path"],
+        "lane": variants["lane"],
+        "roundabout": variants["roundabout"],
+    }
+    roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
+    assert roads
+    for zone in roads:
+        role = zone["properties"].get("street_role")
+        if role in expected_road_variants:
+            assert zone["properties"].get("road_selected_variant_id") == (
+                expected_road_variants[role]
+            )
+        if role == "spine":
+            assert zone["properties"]["width"] == 22.0
+        if role == "local":
+            assert zone["properties"]["width"] == 14.0
+
+    expected_green_variants = {
+        "central": variants["central"],
+        "pocket": variants["pocket"],
+        "greenway": variants["greenway"],
+        "plaza": variants["plaza"],
+        "pond": variants["pond"],
+    }
+    greens = [
+        zone for zone in result.zones
+        if zone["properties"].get("_plan_role") == "open_space"
+    ]
+    assert greens
+    for zone in greens:
+        kind = zone["properties"]["green_kind"]
+        assert zone["properties"].get("green_space_selected_variant_id") == (
+            expected_green_variants[kind]
+        )
+
+    courtyards = [
+        zone for zone in result.zones
+        if zone["properties"].get("_plan_role") == "courtyard"
+    ]
+    assert all(
+        zone["properties"].get("green_space_selected_variant_id")
+        == variants["courtyard"]
+        for zone in courtyards
+    )
+
+
+@pytest.mark.parametrize(
+    ("scenario_id", "width_m", "depth_m"),
+    [
+        ("economic", 700.0, 520.0),
+        ("city_policy", 700.0, 520.0),
+        ("environmental", 700.0, 520.0),
+        ("economic", 146.0, 72.0),
+        ("city_policy", 146.0, 72.0),
+        ("environmental", 146.0, 72.0),
+        ("city_policy", 400.0, 100.0),
+        ("economic", 1_600.0, 1_000.0),
+    ],
+)
+def test_every_generated_lego_public_realm_zone_compiles_strictly(
+    scenario_id,
+    width_m,
+    depth_m,
+):
+    """The AI vocabulary and geometry emitter form one executable contract."""
+
+    lego_catalog = _lego_catalog()
+    spec = lego_fallback_spec(scenario_id, lego_catalog)
+    palette = palette_from_spec(
+        spec,
+        scenario_id,
+        lego_catalog=lego_catalog,
+    )
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(width_m, depth_m),
+        scenario_id=scenario_id,
+        scenario_label=f"LEGO contract {scenario_id}",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+    public_realm = [
+        zone
+        for zone in result.zones
+        if zone["zone_type"] in {"green_space", "road"}
+    ]
+    assert public_realm
+
+    failures: list[str] = []
+    for zone in public_realm:
+        try:
+            recipe = plan_public_realm_zone_recipe(
+                zone["zone_type"],
+                Polygon(zone["coordinates"]),
+                zone["properties"],
+                strict=True,
+            )
+            assert recipe is not None
+        except (AssertionError, TypeError, ValueError) as exc:
+            failures.append(f"{zone['name']}: {exc}")
+    assert failures == []
+
+
+def test_lego_context_connectors_keep_their_executable_metric_sections():
+    """Frontage links must enter the site, not become half-width edge bands."""
+
+    lego_catalog = _lego_catalog()
+    spec = lego_fallback_spec("economic", lego_catalog)
+    palette = palette_from_spec(
+        spec,
+        "economic",
+        lego_catalog=lego_catalog,
+    )
+    frontage_road = {
+        "geometry": mapping(LineString([_offset(-20, -15), _offset(520, -15)])),
+        "properties": {"road_type": "residential", "name": "Context Street"},
+    }
+    frontage_path = {
+        "geometry": mapping(LineString([_offset(65, -12), _offset(95, -12)])),
+        "properties": {"asset_type": "multi use pathway"},
+    }
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(500.0, 340.0),
+        scenario_id="economic",
+        scenario_label="LEGO frontage contract",
+        parameters=PARAMS,
+        road_features=[frontage_road],
+        path_features=[frontage_path],
+        district_features=[],
+        palette_override=palette,
+    )
+    context_zones = [
+        zone
+        for zone in result.zones
+        if zone["properties"].get("context_connection") is True
+    ]
+
+    assert {zone["properties"].get("street_role") for zone in context_zones} == {
+        "local",
+        "path",
+    }
+    for zone in context_zones:
+        recipe = plan_public_realm_zone_recipe(
+            zone["zone_type"],
+            Polygon(zone["coordinates"]),
+            zone["properties"],
+            strict=True,
+        )
+        assert recipe is not None
+        assert recipe.target.row_width_m == zone["properties"]["width"]
+
+
+def test_locked_lego_street_area_keeps_exact_calgary_local_contract():
+    lego_catalog = _lego_catalog()
+    base = lego_fallback_spec("city_policy", lego_catalog)
+    spec = base.model_copy(update={
+        "local_archetype_id": "calgary_local",
+        "public_realm": base.public_realm.model_copy(update={
+            "local_street_variant_id": "calgary_local_v0",
+        }),
+    })
+    palette = palette_from_spec(
+        spec,
+        "city_policy",
+        lego_catalog=lego_catalog,
+    )
+    locked_street = Polygon([
+        _offset(0, 28),
+        _offset(146, 28),
+        _offset(146, 44),
+        _offset(0, 44),
+    ])
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(146, 72),
+        scenario_id="city_policy",
+        scenario_label="Locked LEGO",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        locked_street_area_wgs84=locked_street,
+        palette_override=palette,
+    )
+
+    assert result.rules["local_row_width_m"] == 16.0
+    roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
+    assert roads
+    for zone in roads:
+        assert zone["properties"]["width"] == 16.0
+        assert zone["properties"]["road_archetype_id"] == "calgary_local"
+        assert zone["properties"]["road_selected_variant_id"] == "calgary_local_v0"
+        assert plan_public_realm_zone_recipe(
+            zone["zone_type"],
+            Polygon(zone["coordinates"]),
+            zone["properties"],
+            strict=True,
+        ) is not None
+
+
+def test_locked_lego_street_reclassifies_geometry_that_disproves_local_width():
+    lego_catalog = _lego_catalog()
+    base = lego_fallback_spec("city_policy", lego_catalog)
+    spec = base.model_copy(update={
+        "local_archetype_id": "calgary_local",
+        "public_realm": base.public_realm.model_copy(update={
+            "local_street_variant_id": "calgary_local_v0",
+        }),
+    })
+    palette = palette_from_spec(
+        spec,
+        "city_policy",
+        lego_catalog=lego_catalog,
+    )
+    locked_street = Polygon([
+        _offset(0, 25),
+        _offset(146, 25),
+        _offset(146, 47),
+        _offset(0, 47),
+    ])
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(146, 72),
+        scenario_id="city_policy",
+        scenario_label="Locked LEGO mismatch",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        locked_street_area_wgs84=locked_street,
+        palette_override=palette,
+    )
+
+    roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
+    assert roads
+    for zone in roads:
+        assert zone["properties"]["width"] == 22.0
+        assert zone["properties"]["street_role"] == "spine"
+        assert zone["properties"]["road_archetype_id"] == "main_street_complete"
+        assert zone["properties"]["road_selected_variant_id"] == (
+            "main_street_complete_v0"
+        )
+        assert plan_public_realm_zone_recipe(
+            zone["zone_type"],
+            Polygon(zone["coordinates"]),
+            zone["properties"],
+            strict=True,
+        ) is not None
+
+
+def test_oversized_greenway_has_no_false_executable_identity():
+    assert _lego_park_identity_for_metric_polygon(
+        kind="greenway",
+        archetype_id="linear_park_greenway",
+        geometry_m=box(0, 0, 1_200, 80),
+    ) is None
 
 
 def test_preset_scenarios_stamp_landscape_structures():

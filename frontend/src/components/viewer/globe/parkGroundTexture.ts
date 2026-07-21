@@ -29,6 +29,12 @@ import {
   resolveParkPlantingStructure,
   type ParkGroundGuide,
 } from './parkGroundProfiles';
+import {
+  resolveParkLegoAppearance,
+  resolveParkLegoContract,
+  resolveParkProgramAnchorLayout,
+  type ParkLegoAppearance,
+} from './parkLegoFamilies';
 
 const CANVAS = 1024;
 const PROCEDURAL_CANVAS = 512;
@@ -191,9 +197,9 @@ export function shouldDeferParkFinishingProp(
     && (propId === 'tree' || propId === 'bench');
 }
 
-/** The interactive scene never substitutes low-detail placeholders for a
- * missing park asset. Every compiled ground may use the real manifest assets
- * or the deterministic live fallback supplied by GlobeParkKitLayer. */
+/** Manifest gate for catalog props. Executable Public Realm LEGO program
+ * modules are resolved procedurally by GlobeParkKitLayer before this check;
+ * other catalog props render only when their reviewed asset exists. */
 export function shouldRenderLiveParkProp(
   zone: SiteZone,
   propId: PropPlacement['propId'],
@@ -839,10 +845,55 @@ function paintProceduralGroundMaterial(
   isPavedPlaza: boolean,
   seed: string,
   archetypeId: string,
+  legoAppearance: ParkLegoAppearance | null,
 ): void {
   ctx.save();
   traceRing(ctx, ringPx);
   ctx.clip();
+
+  if (legoAppearance) {
+    const { materialPattern, palette } = legoAppearance;
+    ctx.fillStyle = palette.ground;
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+    if (materialPattern === 'modern_turf' || materialPattern === 'modern_minimal') {
+      const bandPx = Math.max(12, Math.min(32, 4.8 * pxPerM));
+      for (let x = 0, band = 0; x < canvasSize; x += bandPx, band += 1) {
+        ctx.globalAlpha = band % 2 === 0 ? 0.16 : 0.07;
+        ctx.fillStyle = band % 2 === 0 ? palette.lawn : palette.meadow;
+        ctx.fillRect(x, 0, bandPx, canvasSize);
+      }
+    } else if (materialPattern === 'urban_pavers') {
+      ctx.globalAlpha = 0.12;
+      ctx.strokeStyle = palette.pathEdge;
+      ctx.lineWidth = Math.max(0.6, 0.15 * pxPerM);
+      const modulePx = Math.max(7, Math.min(20, 2.4 * pxPerM));
+      for (let x = -canvasSize; x < canvasSize * 2; x += modulePx) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + canvasSize * 0.12, canvasSize);
+        ctx.stroke();
+      }
+    } else {
+      const patchCount = Math.round(canvasSize * (
+        materialPattern === 'tropical_lush' ? 1.05 : 0.68
+      ));
+      for (let index = 0; index < patchCount; index += 1) {
+        const x = seededUnit(seed, 130_000 + index * 4) * canvasSize;
+        const y = seededUnit(seed, 130_001 + index * 4) * canvasSize;
+        const rx = (0.65 + seededUnit(seed, 130_002 + index * 4) * 3.5) * pxPerM;
+        const ry = rx * (0.45 + seededUnit(seed, 130_003 + index * 4) * 0.8);
+        ctx.beginPath();
+        ctx.ellipse(x, y, rx, ry, seededUnit(seed, 140_000 + index) * Math.PI, 0, Math.PI * 2);
+        ctx.globalAlpha = materialPattern === 'mediterranean_xeriscape' ? 0.24 : 0.18;
+        ctx.fillStyle = index % 4 === 0 ? palette.accentSecondary : palette.meadow;
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+    return;
+  }
 
   if (archetypeId.startsWith('urban_forest')) {
     ctx.fillStyle = '#43513a';
@@ -997,6 +1048,7 @@ function drawProceduralPathNetwork(
   seed: string,
   isPavedPlaza: boolean,
   plantingStructure: string | undefined,
+  legoAppearance: ParkLegoAppearance | null,
 ): void {
   if (isPavedPlaza || accessPointsPx.length === 0) return;
   ctx.save();
@@ -1005,7 +1057,7 @@ function drawProceduralPathNetwork(
   // Muted compacted aggregate reads as a real path against Google imagery;
   // near-white diagram lines dominate small parks and look like star symbols
   // at district scale.
-  ctx.strokeStyle = '#a99f86';
+  ctx.strokeStyle = legoAppearance?.palette.path ?? '#a99f86';
   ctx.lineWidth = Math.max(1.5, 2.15 * pxPerM);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -1100,6 +1152,30 @@ function drawProceduralPathNetwork(
   ctx.restore();
 }
 
+function styleExecutableParkGuides(
+  guides: ParkGroundGuide[],
+  appearance: ParkLegoAppearance | null,
+): ParkGroundGuide[] {
+  if (!appearance) return guides;
+  const palette = appearance.palette;
+  if (appearance.familyId === 'park_pocket_courtyard') {
+    return guides.map((guide, index) => index === 0
+      ? { ...guide, color: palette.lawn, strokeColor: palette.pathEdge }
+      : guide);
+  }
+  return guides.map((guide, index) => {
+    if (index === 0) return { ...guide, color: palette.lawn, strokeColor: palette.pathEdge };
+    if (index >= 1 && index <= 4) {
+      return { ...guide, color: palette.path, strokeColor: palette.pathEdge };
+    }
+    if (index === 5) return { ...guide, color: palette.meadow, strokeColor: palette.pathEdge };
+    if (index === 6) return { ...guide, color: palette.ground, strokeColor: palette.pathEdge };
+    if (index === 7) return { ...guide, color: palette.playSurface, strokeColor: palette.pathEdge };
+    if (index === 8) return { ...guide, color: palette.pavilionPad, strokeColor: palette.pathEdge };
+    return guide;
+  });
+}
+
 /** Draw the zone polygon to scale, letterboxed in a square canvas. */
 export function buildParkDiagram(
   zone: SiteZone,
@@ -1133,17 +1209,18 @@ export function buildParkDiagram(
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
   const profile = resolveParkGroundProfile(zone);
+  const legoAppearance = resolveParkLegoAppearance(zone);
   const guideFit = resolveParkGroundGuideFit(zone, { width: widthM, height: heightM });
   const fitInstruction = describeParkGroundGuideFit(guideFit);
   const plantingStructure = resolveParkPlantingStructure(zone);
   const isPavedPlaza = plantingStructure === 'paved_plaza';
-  const parcelBaseColor = isPavedPlaza
+  const parcelBaseColor = legoAppearance?.palette.ground ?? (isPavedPlaza
     ? '#aaa69d'
     : plantingStructure === 'reservoir_perimeter'
       ? '#66775b'
       : plantingStructure === 'water_ecology'
         ? '#6f7857'
-      : '#71865f';
+      : '#71865f');
   // The source diagram is also an image-generation conditioning input. A
   // white letterbox taught Gemini to preserve blank illustration paper, which
   // then appeared as bright seams in the live terrain drape. Continue the
@@ -1182,6 +1259,7 @@ export function buildParkDiagram(
     { id: zone.id, coordinates: ring },
     recipe,
     plantingStructure,
+    resolveParkProgramAnchorLayout(zone),
   );
   const fixedProgramPlacements = placements.filter(
     placement => !shouldDeferParkFinishingProp(zone, placement.propId),
@@ -1206,6 +1284,7 @@ export function buildParkDiagram(
       isPavedPlaza,
       parkGroundSourceSignature(zone),
       profile.archetypeId,
+      legoAppearance,
     );
     drawProceduralPathNetwork(
       ctx,
@@ -1216,11 +1295,14 @@ export function buildParkDiagram(
       parkGroundSourceSignature(zone),
       isPavedPlaza,
       plantingStructure,
+      legoAppearance,
     );
   }
   drawParkGuides(
     ctx,
-    guideFit.guides,
+    mode === 'procedural'
+      ? styleExecutableParkGuides(guideFit.guides, legoAppearance)
+      : guideFit.guides,
     ringPx,
     x0,
     y0,
@@ -1281,7 +1363,9 @@ export function buildParkDiagram(
     const padR = Math.max(6 * pxPerM, spreadPx + 4 * pxPerM);
     ctx.beginPath();
     ctx.arc(cx, cy, padR, 0, Math.PI * 2);
-    ctx.fillStyle = MARKER_COLORS.playground;
+    ctx.fillStyle = mode === 'procedural'
+      ? legoAppearance?.palette.playSurface ?? MARKER_COLORS.playground
+      : MARKER_COLORS.playground;
     ctx.fill();
     markers.playground = playgrounds.length;
   }
@@ -1290,7 +1374,9 @@ export function buildParkDiagram(
   for (const p of pavilions) {
     const [x, y] = toPx(p.lng, p.lat);
     const half = 2.5 * pxPerM;
-    ctx.fillStyle = MARKER_COLORS.pavilion;
+    ctx.fillStyle = mode === 'procedural'
+      ? legoAppearance?.palette.pavilionPad ?? MARKER_COLORS.pavilion
+      : MARKER_COLORS.pavilion;
     ctx.fillRect(x - half, y - half, half * 2, half * 2);
     markers.pavilion += 1;
   }
@@ -1624,6 +1710,7 @@ export async function generateParkGroundTexture(zone: SiteZone): Promise<ParkGro
   if (!diagram) throw new Error('Zone has no usable polygon');
   const profile = resolveParkGroundProfile(zone);
   const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const legoContract = resolveParkLegoContract(zone);
   const appearanceReference = await latestParkRenderAppearanceReference(zone);
 
   const { image_base64 } = await rendersApi.generateEdit({
@@ -1673,9 +1760,13 @@ export async function generateParkGroundTexture(zone: SiteZone): Promise<ParkGro
     source_signature: parkGroundSourceSignature(zone),
     profile_id: profile.id,
     profile_version: profile.version,
-    archetype_id: String(props.green_space_archetype_id ?? profile.archetypeId),
-    ...(typeof props.green_space_selected_variant_id === 'string'
-      ? { variant_id: props.green_space_selected_variant_id }
+    archetype_id: legoContract?.supported
+      ? legoContract.archetypeId
+      : String(props.green_space_archetype_id ?? profile.archetypeId),
+    ...(legoContract?.supported
+      ? { variant_id: legoContract.variantId }
+      : typeof props.green_space_selected_variant_id === 'string'
+        ? { variant_id: props.green_space_selected_variant_id }
       : {}),
     ...(appearanceReference
       ? { appearance_reference_render_id: appearanceReference.id }
@@ -1703,6 +1794,7 @@ function createProceduralParkGroundSurface(zone: SiteZone): ProceduralParkGround
   if (!diagram) return null;
   const profile = resolveParkGroundProfile(zone);
   const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const legoContract = resolveParkLegoContract(zone);
   const sourceSignature = parkGroundSourceSignature(zone);
   const key = `procedural-park:${sourceSignature}`;
   const texture = new THREE.CanvasTexture(diagram.canvas);
@@ -1713,8 +1805,12 @@ function createProceduralParkGroundSurface(zone: SiteZone): ProceduralParkGround
   texture.magFilter = THREE.LinearFilter;
   texture.needsUpdate = true;
 
-  const selectedVariant = props.green_space_selected_variant_id
-    ?? props.plaza_selected_variant_id;
+  const selectedVariant = legoContract?.supported
+    ? legoContract.variantId
+    : props.green_space_selected_variant_id ?? props.plaza_selected_variant_id;
+  const selectedArchetype = legoContract?.supported
+    ? legoContract.archetypeId
+    : props.green_space_archetype_id ?? props.plaza_archetype_id ?? profile.archetypeId;
   return {
     texture,
     meta: {
@@ -1731,11 +1827,7 @@ function createProceduralParkGroundSurface(zone: SiteZone): ProceduralParkGround
       source_signature: sourceSignature,
       profile_id: profile.id,
       profile_version: profile.version,
-      archetype_id: String(
-        props.green_space_archetype_id
-        ?? props.plaza_archetype_id
-        ?? profile.archetypeId,
-      ),
+      archetype_id: String(selectedArchetype),
       ...(typeof selectedVariant === 'string' ? { variant_id: selectedVariant } : {}),
       source: 'procedural',
     },

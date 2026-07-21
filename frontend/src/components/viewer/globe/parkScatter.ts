@@ -28,6 +28,10 @@ import {
   resolveParkRecipe,
   type ParkKitRecipe,
 } from '@/data/parkKitRecipes';
+import {
+  resolveParkLegoContract,
+  type ParkProgramAnchorLayout,
+} from './parkLegoFamilies';
 
 export type ParkPropId = 'tree' | 'bench' | 'playground' | 'pavilion';
 
@@ -267,6 +271,143 @@ function distanceToBoundary(pts: number[][], x: number, y: number): number {
   return best;
 }
 
+interface ParkProgramExclusion {
+  x: number;
+  y: number;
+  r: number;
+}
+
+export interface ContainedParkProgramAnchor {
+  x: number;
+  y: number;
+  /** Oriented parcel long-axis bearing in local ENU radians. */
+  yawRad: number;
+}
+
+interface OrientedProgramFrame {
+  ux: number;
+  uy: number;
+  vx: number;
+  vy: number;
+  minU: number;
+  maxU: number;
+  minV: number;
+  maxV: number;
+  yawRad: number;
+}
+
+function orientedProgramFrame(ring: number[][]): OrientedProgramFrame | null {
+  let best: (OrientedProgramFrame & { area: number; angleKey: number }) | null = null;
+  for (let index = 0; index < ring.length; index += 1) {
+    const start = ring[index];
+    const end = ring[(index + 1) % ring.length];
+    const dx = end[0] - start[0];
+    const dy = end[1] - start[1];
+    if (Math.hypot(dx, dy) < 1e-6) continue;
+    let angle = Math.atan2(dy, dx);
+    // Rectangle axes are undirected. Keep the long axis as U and choose the
+    // eastward representative so V consistently points toward local north.
+    angle = ((angle % Math.PI) + Math.PI) % Math.PI;
+    const measure = (candidateAngle: number) => {
+      const ux = Math.cos(candidateAngle);
+      const uy = Math.sin(candidateAngle);
+      const vx = -uy;
+      const vy = ux;
+      const projectionsU = ring.map(([x, y]) => x * ux + y * uy);
+      const projectionsV = ring.map(([x, y]) => x * vx + y * vy);
+      return {
+        ux,
+        uy,
+        vx,
+        vy,
+        minU: Math.min(...projectionsU),
+        maxU: Math.max(...projectionsU),
+        minV: Math.min(...projectionsV),
+        maxV: Math.max(...projectionsV),
+      };
+    };
+    let candidate = measure(angle);
+    const candidateWidth = candidate.maxU - candidate.minU;
+    const candidateHeight = candidate.maxV - candidate.minV;
+    const squareTolerance = Math.max(candidateWidth, candidateHeight) * 0.001;
+    if (candidateWidth + squareTolerance < candidateHeight) {
+      angle = (angle + Math.PI / 2) % Math.PI;
+      candidate = measure(angle);
+    }
+    // cos(angle) may be negative after the 90-degree long-axis swap. Flip
+    // both axes without changing bounds semantics so U remains eastward.
+    if (candidate.ux < -1e-9 || (Math.abs(candidate.ux) <= 1e-9 && candidate.uy < 0)) {
+      angle = (angle + Math.PI) % (Math.PI * 2);
+      candidate = measure(angle);
+    }
+    const width = candidate.maxU - candidate.minU;
+    const height = candidate.maxV - candidate.minV;
+    const area = width * height;
+    const angleKey = ((angle % Math.PI) + Math.PI) % Math.PI;
+    if (
+      !best
+      || area < best.area - 1e-5
+      || (Math.abs(area - best.area) <= 1e-5 && angleKey < best.angleKey)
+    ) {
+      best = { ...candidate, area, angleKey, yawRad: angle };
+    }
+  }
+  return best;
+}
+
+/**
+ * Resolve a normalized authored anchor inside the polygon's minimum-area
+ * oriented frame, then deterministically find the nearest whole-disc fit when
+ * a concavity or exclusion blocks that exact point.
+ */
+export function resolveContainedParkProgramAnchor(
+  ring: number[][],
+  normalizedAnchor: readonly [number, number],
+  clearanceM: number,
+  exclusions: readonly ParkProgramExclusion[] = [],
+): ContainedParkProgramAnchor | null {
+  const frame = orientedProgramFrame(ring);
+  if (!frame || clearanceM < 0) return null;
+  const width = frame.maxU - frame.minU;
+  const height = frame.maxV - frame.minV;
+  const toPoint = (normalizedX: number, normalizedY: number) => {
+    const u = frame.minU + width * normalizedX;
+    // Program coordinates are image-like: y=0 is the oriented north edge.
+    const v = frame.maxV - height * normalizedY;
+    return {
+      x: frame.ux * u + frame.vx * v,
+      y: frame.uy * u + frame.vy * v,
+      yawRad: frame.yawRad,
+    };
+  };
+  const desired = toPoint(normalizedAnchor[0], normalizedAnchor[1]);
+  const fits = (candidate: ContainedParkProgramAnchor) => (
+    pointInPolygon(candidate.x, candidate.y, ring)
+    && distanceToBoundary(ring, candidate.x, candidate.y) >= clearanceM - 1e-6
+    && exclusions.every((exclusion) => (
+      Math.hypot(candidate.x - exclusion.x, candidate.y - exclusion.y)
+        >= clearanceM + exclusion.r - 1e-6
+    ))
+  );
+  if (fits(desired)) return desired;
+
+  const candidates: ContainedParkProgramAnchor[] = [toPoint(0.5, 0.5)];
+  const gridSteps = 20;
+  for (let yIndex = 0; yIndex <= gridSteps; yIndex += 1) {
+    for (let xIndex = 0; xIndex <= gridSteps; xIndex += 1) {
+      candidates.push(toPoint(xIndex / gridSteps, yIndex / gridSteps));
+    }
+  }
+  return candidates
+    .filter(fits)
+    .sort((left, right) => (
+      Math.hypot(left.x - desired.x, left.y - desired.y)
+        - Math.hypot(right.x - desired.x, right.y - desired.y)
+      || left.x - right.x
+      || left.y - right.y
+    ))[0] ?? null;
+}
+
 // ---- planting structures ---------------------------------------------------
 // Each function places TREES only; furniture (benches/playground/pavilion) is
 // gated per structure in computeParkPlacements. Every candidate goes through
@@ -346,6 +487,25 @@ function placePocketParkFrame(ctx: TreeCtx): void {
       );
       break;
     }
+  }
+}
+
+/** Modern pocket/courtyard variant: the same restrained specimen count is
+ * organized as an exact, evenly spaced perimeter frame. It preserves the
+ * clear lawn room while making the formal planting selection visible; unlike
+ * the general formal-quad routine it never fills the compact park centre. */
+function placePocketParkFormalFrame(ctx: TreeCtx): void {
+  const target = Math.max(1, ctx.target);
+  const stations = perimeterStations(ctx.local, target);
+  if (!stations.length) return;
+  const rotation = Math.floor(ctx.rng() * stations.length);
+  for (let slot = 0; slot < stations.length; slot += 1) {
+    const station = stations[(slot + rotation) % stations.length];
+    const inset = Math.min(4.2, Math.max(2.4, ctx.tr.bandDepth_m * 0.48));
+    const x = station.x + station.nx * inset;
+    const y = station.y + station.ny * inset;
+    if (!ctx.canPlace(x, y)) continue;
+    ctx.push(x, y, Math.atan2(station.ny, station.nx) + Math.PI / 2, 1);
   }
 }
 
@@ -746,7 +906,10 @@ export function resolveParkRecipeForZone(zone: {
   zone_type?: string;
 }): ParkKitRecipe {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
-  const id = props.green_space_archetype_id ?? props.plaza_archetype_id;
+  const legoContract = resolveParkLegoContract(zone);
+  const id = legoContract?.supported
+    ? legoContract.archetypeId
+    : props.green_space_archetype_id ?? props.plaza_archetype_id;
   const byId = resolveParkRecipe(typeof id === 'string' ? id : undefined);
   if (!isDefaultParkRecipe(byId)) return byId;
   const role = props._plan_role;
@@ -768,6 +931,7 @@ export function computeParkPlacements(
   zone: ScatterZone,
   recipe: ParkKitRecipe,
   plantingStructure?: string,
+  programAnchors?: Readonly<ParkProgramAnchorLayout>,
 ): PropPlacement[] {
   const ring = zone.coordinates;
   if (!ring || ring.length < 3) return [];
@@ -791,7 +955,14 @@ export function computeParkPlacements(
   const clearances: Array<{ x: number; y: number; r: number }> = [];
 
   const structure = resolvePlantingStructure(plantingStructure);
-  const furniture = structure ? STRUCTURE_FURNITURE[structure] : LEGACY_FURNITURE;
+  // An executable family anchor layout owns its fixed program independently
+  // from planting character. For example an English-pastoral open meadow
+  // still retains the family's playground and pavilion modules.
+  const furniture = programAnchors
+    ? LEGACY_FURNITURE
+    : structure
+      ? STRUCTURE_FURNITURE[structure]
+      : LEGACY_FURNITURE;
 
   const toLngLat = (x: number, y: number) => ({
     lng: lng0 + x / mPerLon,
@@ -811,7 +982,6 @@ export function computeParkPlacements(
     maxX = Math.max(maxX, x);
     maxY = Math.max(maxY, y);
   }
-
   // ---- clusters first (they claim clearance discs) ------------------------
   // The local origin is the VERTEX-MEAN centroid, which can fall outside a
   // concave (L-shaped) polygon — every cluster instance must be containment-
@@ -819,29 +989,68 @@ export function computeParkPlacements(
   if (
     furniture.playground &&
     recipe.playground &&
-    area >= recipe.playground.minArea_m2 &&
-    pointInPolygon(0, 0, local)
+    area >= recipe.playground.minArea_m2
   ) {
     const rule = recipe.playground;
-    clearances.push({ x: 0, y: 0, r: rule.clearance_m });
-    for (let i = 0; i < rule.instances; i++) {
-      const ang = rng() * Math.PI * 2;
-      const rad = rule.clusterRadius_m * Math.sqrt(rng());
-      const x = Math.cos(ang) * rad;
-      const y = Math.sin(ang) * rad;
-      if (!pointInPolygon(x, y, local)) continue;
-      placements.push({ propId: 'playground', ...toLngLat(x, y), x, y, yawRad: rng() * Math.PI * 2, scale: 1 });
+    const center = programAnchors?.playground
+      ? resolveContainedParkProgramAnchor(
+          local,
+          programAnchors.playground,
+          rule.clearance_m,
+        )
+      : { x: 0, y: 0, yawRad: 0 };
+    // Whole-element rule: claim the clearance/safety disc only when it fits
+    // completely. Never scatter a partial playground across a concavity.
+    if (center && (
+      pointInPolygon(center.x, center.y, local)
+      && distanceToBoundary(local, center.x, center.y) >= rule.clearance_m
+    )) {
+      clearances.push({ x: center.x, y: center.y, r: rule.clearance_m });
+      const startAngle = rng() * Math.PI * 2;
+      const moduleRadius = rule.instances > 1 ? rule.clusterRadius_m * 0.62 : 0;
+      for (let i = 0; i < rule.instances; i++) {
+        // Equal angular stations keep the complete equipment set centered on
+        // the exact safety-pad anchor instead of allowing random centroid
+        // drift between the ground guide and standing modules.
+        const angle = startAngle + (i / rule.instances) * Math.PI * 2;
+        const x = center.x + Math.cos(angle) * moduleRadius;
+        const y = center.y + Math.sin(angle) * moduleRadius;
+        placements.push({ propId: 'playground', ...toLngLat(x, y), x, y, yawRad: rng() * Math.PI * 2, scale: 1 });
+      }
+      // Preserve the legacy seeded stream position for downstream benches and
+      // trees. The former scatter consumed angle/radius/yaw per module; the
+      // executable ring uses fewer values but unrelated planting must not
+      // reshuffle when a project is reopened after this upgrade.
+      for (let draw = 0; draw < rule.instances * 2 - 1; draw += 1) rng();
     }
   }
 
   if (furniture.pavilion && recipe.pavilion && area >= recipe.pavilion.minArea_m2) {
     const rule = recipe.pavilion;
-    // offset away from the playground toward the widest half
-    const x = (maxX + minX) / 2 + (maxX - minX) * 0.2;
-    const y = (maxY + minY) / 2 + (maxY - minY) * 0.2;
-    if (pointInPolygon(x, y, local) && !blocked(x, y)) {
+    // Executable families use the oriented whole-disc solver; legacy parks
+    // retain the historical axis-aligned offset.
+    const authored = programAnchors?.pavilion
+      ? resolveContainedParkProgramAnchor(
+          local,
+          programAnchors.pavilion,
+          rule.clearance_m,
+          clearances,
+        )
+      : {
+          x: (maxX + minX) / 2 + (maxX - minX) * 0.2,
+          y: (maxY + minY) / 2 + (maxY - minY) * 0.2,
+          yawRad: 0,
+        };
+    const x = authored?.x ?? 0;
+    const y = authored?.y ?? 0;
+    if (
+      authored
+      && pointInPolygon(x, y, local)
+      && distanceToBoundary(local, x, y) >= rule.clearance_m
+      && !blocked(x, y)
+    ) {
       clearances.push({ x, y, r: rule.clearance_m });
-      placements.push({ propId: 'pavilion', ...toLngLat(x, y), x, y, yawRad: 0, scale: 1 });
+      placements.push({ propId: 'pavilion', ...toLngLat(x, y), x, y, yawRad: authored.yawRad, scale: 1 });
     }
   }
 
@@ -897,7 +1106,8 @@ export function computeParkPlacements(
   };
 
   if (recipe === URBAN_POCKET_PARK) {
-    placePocketParkFrame(ctx);
+    if (structure === 'formal_quad') placePocketParkFormalFrame(ctx);
+    else placePocketParkFrame(ctx);
   } else {
     switch (structure) {
       case 'formal_allee':

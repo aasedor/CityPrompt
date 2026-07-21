@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_Intersects
 from geoalchemy2.shape import to_shape
+from pydantic import BaseModel
 from shapely.geometry import Polygon
 from shapely.validation import explain_validity
 from sqlalchemy import desc, func as sa_func, select
@@ -53,6 +54,10 @@ from app.api.v1.buildings import _building_to_response
 from app.services.generation_queue import queue_ai_generation_task
 from app.services.layout_planner import LayoutPlanner
 from app.services.osm_context import OSMContextFetcher
+from app.services.plan_boundary_identity import (
+    PLAN_BOUNDARY_RESTORE_STATE_KEY,
+    plan_boundary_fingerprint,
+)
 from app.services.residual_landscape import (
     community_3d_source_hash,
     lock_residual_landscape_project,
@@ -63,6 +68,11 @@ from app.services.residual_landscape import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+_PLAN_BOUNDARY_STALE_MESSAGE = (
+    "Site boundary changed; regenerate Site DNA and master-plan scenarios."
+)
+_PLAN_BOUNDARY_RESTORE_SCHEMA_VERSION = 1
 
 
 def _open_ring(coordinates: list[list[float]] | None) -> list[list[float]]:
@@ -143,8 +153,18 @@ def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
 async def _invalidate_boundary_dependents(
     db: AsyncSession,
     boundary: SiteZone,
+    *,
+    previous_geometry=None,
+    current_geometry=None,
 ) -> None:
-    """Preserve but mark derived plans/DNA stale after boundary geometry moves."""
+    """Invalidate a derived plan, or restore it after an exact boundary undo.
+
+    The previous one-way invalidation left an otherwise valid generated plan
+    permanently stale after the user undid an accidental boundary drag.  A
+    canonical source fingerprint now distinguishes that exact undo from a
+    genuinely changed (including expanded) site.  Statuses are restored from
+    the boundary's captured pre-edit state rather than guessed.
+    """
     changed_at = datetime.now(timezone.utc).isoformat()
     zones_result = await db.execute(
         select(SiteZone).where(
@@ -152,10 +172,144 @@ async def _invalidate_boundary_dependents(
             SiteZone.id != boundary.id,
         )
     )
-    for dependent in zones_result.scalars().all():
+    dependents = list(zones_result.scalars().all())
+
+    snapshots_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id)
+    )
+    snapshots = list(snapshots_result.scalars().all())
+    snapshot_ids = [snapshot.id for snapshot in snapshots]
+    scenarios: list[UrbanDnaScenario] = []
+    if snapshot_ids:
+        scenarios_result = await db.execute(
+            select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id.in_(snapshot_ids))
+        )
+        scenarios = list(scenarios_result.scalars().all())
+
+    previous_fingerprint = plan_boundary_fingerprint(previous_geometry)
+    current_fingerprint = plan_boundary_fingerprint(current_geometry)
+    boundary_props = dict(getattr(boundary, "properties", None) or {})
+    restore_state = boundary_props.get(PLAN_BOUNDARY_RESTORE_STATE_KEY)
+    if not isinstance(restore_state, dict):
+        restore_state = None
+    source_fingerprint = (
+        restore_state.get("source_fingerprint") if restore_state is not None else None
+    )
+
+    # A reordered/reversed ring has the same canonical identity.  It must not
+    # refresh timestamps or destroy an active restore checkpoint.
+    if (
+        previous_fingerprint is not None
+        and previous_fingerprint == current_fingerprint
+        and current_fingerprint != source_fingerprint
+    ):
+        return
+
+    if current_fingerprint is not None and current_fingerprint == source_fingerprint:
+        snapshot_state = {
+            item.get("id"): item
+            for item in (restore_state.get("snapshots") or [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        scenario_state = {
+            item.get("id"): item
+            for item in (restore_state.get("scenarios") or [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        matching_snapshot_ids: set[str] = set()
+        for snapshot in snapshots:
+            dna = snapshot.dna if isinstance(snapshot.dna, dict) else {}
+            snapshot_fingerprint = plan_boundary_fingerprint(dna.get("site_boundary"))
+            saved = snapshot_state.get(str(snapshot.id))
+            if snapshot_fingerprint == current_fingerprint and saved is not None:
+                snapshot.status = saved.get("status", snapshot.status)
+                snapshot.error = saved.get("error")
+                matching_snapshot_ids.add(str(snapshot.id))
+            elif snapshot_fingerprint is not None:
+                snapshot.status = "failed"
+                snapshot.error = _PLAN_BOUNDARY_STALE_MESSAGE
+
+        for scenario in scenarios:
+            saved = scenario_state.get(str(scenario.id))
+            if str(scenario.snapshot_id) in matching_snapshot_ids and saved is not None:
+                scenario.status = saved.get("status", scenario.status)
+                scenario.error = saved.get("error")
+            else:
+                scenario.status = "failed"
+                scenario.error = _PLAN_BOUNDARY_STALE_MESSAGE
+
+        for dependent in dependents:
+            props = dict(dependent.properties or {})
+            if not isinstance(props.get("_plan_scenario"), str):
+                continue
+            if props.get("_plan_boundary_fingerprint") == current_fingerprint:
+                props.pop("_plan_boundary_stale", None)
+                props.pop("_plan_boundary_changed_at", None)
+            else:
+                props.update({
+                    "_plan_boundary_stale": True,
+                    "_plan_boundary_zone_id": str(boundary.id),
+                    "_plan_boundary_changed_at": changed_at,
+                })
+            dependent.properties = props
+            flag_modified(dependent, "properties")
+
+        boundary_props.pop(PLAN_BOUNDARY_RESTORE_STATE_KEY, None)
+        boundary.properties = boundary_props
+        flag_modified(boundary, "properties")
+        return
+
+    # Capture one checkpoint for the full edit/undo sequence.  Subsequent
+    # drags retain the original source identity and exact prior statuses.
+    if restore_state is None:
+        restore_state = {
+            "schema_version": _PLAN_BOUNDARY_RESTORE_SCHEMA_VERSION,
+            "source_fingerprint": previous_fingerprint,
+            "source_zone_id": str(boundary.id),
+            "captured_at": changed_at,
+            "snapshots": [
+                {
+                    "id": str(snapshot.id),
+                    "status": snapshot.status,
+                    "error": snapshot.error,
+                }
+                for snapshot in snapshots
+            ],
+            "scenarios": [
+                {
+                    "id": str(scenario.id),
+                    "status": scenario.status,
+                    "error": scenario.error,
+                }
+                for scenario in scenarios
+            ],
+        }
+        boundary_props[PLAN_BOUNDARY_RESTORE_STATE_KEY] = restore_state
+        boundary.properties = boundary_props
+        flag_modified(boundary, "properties")
+
+    snapshot_fingerprints = {
+        str(snapshot.id): plan_boundary_fingerprint(
+            snapshot.dna.get("site_boundary")
+            if isinstance(snapshot.dna, dict)
+            else None
+        )
+        for snapshot in snapshots
+    }
+    matching_snapshot_ids = [
+        snapshot_id
+        for snapshot_id, fingerprint in snapshot_fingerprints.items()
+        if fingerprint == previous_fingerprint
+    ]
+    legacy_snapshot_id = matching_snapshot_ids[0] if len(matching_snapshot_ids) == 1 else None
+    for dependent in dependents:
         props = dict(dependent.properties or {})
         if not isinstance(props.get("_plan_scenario"), str):
             continue
+        if previous_fingerprint is not None:
+            props.setdefault("_plan_boundary_fingerprint", previous_fingerprint)
+        if legacy_snapshot_id is not None:
+            props.setdefault("_plan_snapshot_id", legacy_snapshot_id)
         props.update({
             "_plan_boundary_stale": True,
             "_plan_boundary_zone_id": str(boundary.id),
@@ -164,23 +318,12 @@ async def _invalidate_boundary_dependents(
         dependent.properties = props
         flag_modified(dependent, "properties")
 
-    snapshots_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id)
-    )
-    snapshots = list(snapshots_result.scalars().all())
-    stale_message = "Site boundary changed; regenerate Site DNA and master-plan scenarios."
     for snapshot in snapshots:
         snapshot.status = "failed"
-        snapshot.error = stale_message
-
-    snapshot_ids = [snapshot.id for snapshot in snapshots]
-    if snapshot_ids:
-        scenarios_result = await db.execute(
-            select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id.in_(snapshot_ids))
-        )
-        for scenario in scenarios_result.scalars().all():
-            scenario.status = "failed"
-            scenario.error = stale_message
+        snapshot.error = _PLAN_BOUNDARY_STALE_MESSAGE
+    for scenario in scenarios:
+        scenario.status = "failed"
+        scenario.error = _PLAN_BOUNDARY_STALE_MESSAGE
 
 
 async def _invalidate_residual_landscape(
@@ -869,7 +1012,12 @@ async def update_zone(
         flag_modified(zone, "properties")
 
     if boundary_geometry_changed:
-        await _invalidate_boundary_dependents(db, zone)
+        await _invalidate_boundary_dependents(
+            db,
+            zone,
+            previous_geometry=Polygon(before_coordinates),
+            current_geometry=Polygon(after_coordinates),
+        )
 
     source_identity_changed = _residual_source_identity(
         before_snapshot.get("zone_type"),
@@ -1148,8 +1296,6 @@ async def _generate_layout_for_zone(
 
     Falls back to algorithmic layout if AI is unavailable.
     """
-    from app.schemas.schemas import SiteLayoutResponse
-
     shape = to_shape(zone.geometry)
     if not isinstance(shape, Polygon):
         # If geometry is not a polygon, convert bounds to polygon
@@ -2028,7 +2174,6 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
     # 6. Neighbor context
     if all_zones:
         try:
-            buffered = zone.geometry.ST_Buffer(0.0002)  # ~20m buffer at equator
             neighbor_types: set[str] = set()
             for other in all_zones:
                 if other.id == zone.id:
@@ -2619,9 +2764,7 @@ async def generate_all(
 # =============================================================================
 
 
-from pydantic import BaseModel as _BaseModel
-
-class SaveLayoutRequest(_BaseModel):
+class SaveLayoutRequest(BaseModel):
     """Request to save an edited layout to zone properties."""
     layout: SiteLayoutResponse
 

@@ -21,13 +21,22 @@ from pydantic import ValidationError
 from app.services.master_planner.lego_catalog import LegoPlanningCatalog
 from app.services.master_planner.spec import (
     BAND_KEYS,
+    CENTRAL_PARK_VARIANT_IDS,
     CENTRAL_PARK_IDS,
     COURTYARD_STRUCTURES,
+    GREENWAY_VARIANT_IDS,
     LAYOUT_STRATEGIES,
+    LEGO_CENTRAL_PARK_IDS,
+    LEGO_LOCAL_STREET_IDS,
+    LEGO_SPINE_STREET_IDS,
+    LEGO_WATER_ARCHETYPE_IDS,
     LINEAR_STRUCTURES,
+    LOCAL_PUBLIC_REALM_VARIANT_IDS,
     LOCAL_STREET_IDS,
     PARK_STRUCTURES,
+    POCKET_PARK_VARIANT_IDS,
     POCKET_STRUCTURES,
+    SPINE_PUBLIC_REALM_VARIANT_IDS,
     SPINE_STREET_IDS,
     TYPOLOGIES,
     WATER_ARCHETYPE_IDS,
@@ -38,6 +47,7 @@ from app.services.master_planner.spec import (
 from app.services.plan_geometry.archetypes import load_dims_table
 from app.services.planning_agents.runner import dna_prompt_block
 from app.services.planning_agents.schemas import ScenarioDefinition
+from app.services.public_realm_lego import build_public_realm_capability_catalog
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +78,9 @@ SYSTEM = (
     "Choose planting structures the way a landscape architect would, and say why.\n"
     "- Streets have character: pick a spine and local street identity that carries the plan's "
     "idea (a Haussmann boulevard says something different from a woonerf).\n\n"
+    "- For executable LEGO plans, choose a Public Realm LEGO variant for every requested "
+    "park and street role. You choose design intent; the deterministic family compiler owns "
+    "dimensions, clearances, accessibility, topology, and object placement.\n\n"
     "Hard rules:\n"
     "- development_type values MUST come from the catalog list you are given; aesthetics should "
     "come from the per-type lists (fuzzy matching tolerates close variants).\n"
@@ -98,10 +111,12 @@ def _legacy_catalog_vocabulary() -> str:
 
 
 def _catalog_vocabulary(lego_catalog: LegoPlanningCatalog | None = None) -> str:
+    if lego_catalog is None:
+        return _legacy_catalog_vocabulary()
     return (
         lego_catalog.prompt_vocabulary
-        if lego_catalog is not None
-        else _legacy_catalog_vocabulary()
+        + "\n\n"
+        + build_public_realm_capability_catalog().prompt_vocabulary
     )
 
 
@@ -155,7 +170,16 @@ def _band_schema(
 def _master_plan_tool(
     lego_catalog: LegoPlanningCatalog | None = None,
 ) -> dict[str, Any]:
-    return {
+    # The legacy colored-polygon planner keeps its full visual vocabulary.
+    # When the LEGO catalog is supplied, the tool itself exposes only public-
+    # realm identities that have an executable family/recipe contract.
+    spine_ids = LEGO_SPINE_STREET_IDS if lego_catalog is not None else SPINE_STREET_IDS
+    local_ids = LEGO_LOCAL_STREET_IDS if lego_catalog is not None else LOCAL_STREET_IDS
+    central_park_ids = (
+        LEGO_CENTRAL_PARK_IDS if lego_catalog is not None else CENTRAL_PARK_IDS
+    )
+    water_ids = LEGO_WATER_ARCHETYPE_IDS if lego_catalog is not None else WATER_ARCHETYPE_IDS
+    tool = {
         "name": "record_master_plan",
         "description": "Record the composed master plan for the site.",
         "input_schema": {
@@ -174,11 +198,13 @@ def _master_plan_tool(
                 "laneways": {"type": "boolean", "description": "Rear lanes behind rowhouse bars."},
                 "spine_archetype_id": {
                     "type": "string",
-                    "description": f"Main-street character, one of: {', '.join(sorted(SPINE_STREET_IDS))}. Omit for width-band default.",
+                    "enum": sorted(spine_ids),
+                    "description": f"Main-street character, one of: {', '.join(sorted(spine_ids))}. Omit for width-band default.",
                 },
                 "local_archetype_id": {
                     "type": "string",
-                    "description": f"Local-street character, one of: {', '.join(sorted(LOCAL_STREET_IDS))}. Omit for width-band default.",
+                    "enum": sorted(local_ids),
+                    "description": f"Local-street character, one of: {', '.join(sorted(local_ids))}. Omit for width-band default.",
                 },
                 "crescent_archetype_id": {
                     "type": "string",
@@ -203,11 +229,16 @@ def _master_plan_tool(
                     "properties": {
                         "water_feature": {"type": "boolean"},
                         "formal_water": {"type": "boolean", "description": "true = formal reflecting basin, false = naturalized pond edge."},
-                        "water_archetype_id": {"type": "string", "description": f"One of: {', '.join(sorted(WATER_ARCHETYPE_IDS))}."},
+                        "water_archetype_id": {
+                            "type": "string",
+                            "enum": sorted(water_ids),
+                            "description": f"One of: {', '.join(sorted(water_ids))}.",
+                        },
                         "plaza": {"type": "boolean", "description": "Carve a civic plaza off the anchor block."},
                         "central_park_archetype_id": {
                             "type": "string",
-                            "description": f"Direct character for the signature green, one of: {', '.join(sorted(CENTRAL_PARK_IDS))}. Omit to resolve by area.",
+                            "enum": sorted(central_park_ids),
+                            "description": f"Direct character for the signature green, one of: {', '.join(sorted(central_park_ids))}. Omit to resolve by area.",
                         },
                     },
                     "required": ["water_feature", "plaza"],
@@ -223,10 +254,68 @@ def _master_plan_tool(
                     },
                     "required": ["park_structure", "courtyard_structure"],
                 },
+                "public_realm": {
+                    "type": "object",
+                    "description": (
+                        "Visible variants from executable Public Realm LEGO families. "
+                        "Select identities only; the compiler owns metric geometry and safety."
+                    ),
+                    "properties": {
+                        "spine_street_variant_id": {
+                            "type": "string",
+                            "enum": list(SPINE_PUBLIC_REALM_VARIANT_IDS),
+                        },
+                        "local_street_variant_id": {
+                            "type": "string",
+                            "enum": list(LOCAL_PUBLIC_REALM_VARIANT_IDS),
+                        },
+                        "central_park_variant_id": {
+                            "type": "string",
+                            "enum": list(CENTRAL_PARK_VARIANT_IDS),
+                        },
+                        "pocket_park_variant_id": {
+                            "type": "string",
+                            "enum": list(POCKET_PARK_VARIANT_IDS),
+                        },
+                        "courtyard_variant_id": {
+                            "type": "string",
+                            "enum": list(POCKET_PARK_VARIANT_IDS),
+                        },
+                        "greenway_variant_id": {
+                            "type": "string",
+                            "enum": list(GREENWAY_VARIANT_IDS),
+                        },
+                        "rationale": {
+                            "type": "string",
+                            "description": "One sentence explaining how the variants reinforce the plan.",
+                        },
+                    },
+                    "required": [
+                        "spine_street_variant_id",
+                        "local_street_variant_id",
+                        "central_park_variant_id",
+                        "pocket_park_variant_id",
+                        "courtyard_variant_id",
+                        "greenway_variant_id",
+                    ],
+                },
             },
-            "required": ["design_narrative", "layout_strategy", "bands", "open_space", "landscape"],
+            "required": [
+                "design_narrative",
+                "layout_strategy",
+                "bands",
+                "open_space",
+                "landscape",
+                "public_realm",
+            ],
         },
     }
+    if lego_catalog is None:
+        # Keep the established colored-polygon Master Planner schema intact.
+        # Public Realm LEGO selection is an executable-3D concern only.
+        tool["input_schema"]["properties"].pop("public_realm", None)
+        tool["input_schema"]["required"].remove("public_realm")
+    return tool
 
 
 def _note(code: str, severity: str, message: str) -> dict[str, Any]:

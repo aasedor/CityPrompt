@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
+import cv2
 import numpy as np
 import pytest
 import httpx
@@ -35,6 +36,12 @@ from app.services.direct_3d_render import (
     hard_composite_direct_3d,
     prepare_direct_3d_capture,
     register_generated_image,
+)
+from app.services.public_realm_lego import (
+    PublicRealmPlanRequest,
+    StreetSegmentTarget,
+    plan_public_realm_recipe,
+    plan_public_realm_zone_recipe,
 )
 from app.services.residual_landscape import (
     ResidualSourceZone,
@@ -101,6 +108,52 @@ def _structured_scene() -> tuple[Image.Image, Image.Image, Image.Image]:
     for polygon in buildings:
         id_draw.polygon(polygon, fill=(255, 0, 0))
     return beauty, mask, object_id
+
+
+def _registration_context_scene() -> tuple[Image.Image, Image.Image]:
+    """Geometry-rich context whose colors can change without moving edges."""
+
+    size = (512, 512)
+    beauty = Image.new("RGB", size, (35, 60, 90))
+    draw = ImageDraw.Draw(beauty)
+    for x in range(0, size[0], 48):
+        draw.line(
+            (x, 0, x, size[1]),
+            fill=((x * 3) % 256, (x * 5 + 60) % 256, (x * 7 + 100) % 256),
+            width=5,
+        )
+    for y in range(0, size[1], 44):
+        draw.line(
+            (0, y, size[0], y),
+            fill=((y * 7 + 20) % 256, (y * 2 + 100) % 256, (y * 5) % 256),
+            width=4,
+        )
+    for index in range(12):
+        x = (index * 83) % 450
+        y = (index * 131) % 450
+        draw.rectangle(
+            (
+                x,
+                y,
+                x + 35 + (index % 3) * 15,
+                y + 25 + (index % 4) * 10,
+            ),
+            fill=((index * 43) % 256, (200 - index * 17) % 256, (index * 79) % 256),
+            outline="white",
+            width=3,
+        )
+    mask = Image.new("L", size, 0)
+    ImageDraw.Draw(mask).rectangle((145, 145, 366, 366), fill=255)
+    return beauty, mask
+
+
+def _style_shift_without_geometry_change(image: Image.Image) -> Image.Image:
+    pixels = np.asarray(image.convert("RGB"), dtype=np.uint8)
+    shifted = np.stack(
+        (255 - pixels[..., 0], pixels[..., 1], 255 - pixels[..., 2]),
+        axis=2,
+    )
+    return Image.fromarray(shifted, mode="RGB")
 
 
 def _request(
@@ -237,6 +290,24 @@ def _zone(
         properties=properties or {},
         geometry=from_shape(box(-114.08, 51.04, -114.079, 51.041), srid=4326),
         building_id=building_id,
+    )
+
+
+def _calgary_rectangle_ewkt(length_m: float, width_m: float) -> str:
+    """Small WGS84 rectangle suitable for metric public-realm preflight tests."""
+
+    origin_lon = -114.08
+    origin_lat = 51.04
+    longitude_span = length_m / 70_000.0
+    latitude_span = width_m / 111_000.0
+    return (
+        "SRID=4326;POLYGON(("
+        f"{origin_lon} {origin_lat},"
+        f"{origin_lon + longitude_span} {origin_lat},"
+        f"{origin_lon + longitude_span} {origin_lat + latitude_span},"
+        f"{origin_lon} {origin_lat + latitude_span},"
+        f"{origin_lon} {origin_lat}"
+        "))"
     )
 
 
@@ -512,6 +583,138 @@ def test_paid_project_preflight_rejects_stale_representation_claim_after_recipe_
             _project_request(project_id, community_claims=stale_claims),
             [zone],
             {str(building_id): building},
+        )
+    assert exc_info.value.detail["billed"] is False
+
+
+def test_paid_project_preflight_binds_public_realm_recipe_and_live_capability():
+    project_id = uuid.uuid4()
+    zone = _zone(
+        uuid.uuid4(),
+        "green_space",
+        properties={
+            "_plan_role": "open_space",
+            "_plan_scenario": "community_wellbeing",
+            "green_space_archetype_id": "urban_pocket_park",
+        },
+    )
+    zone.geometry = _calgary_rectangle_ewkt(30, 30)
+    source_geometry = direct_api._direct_source_geometry(zone)
+    planned_recipe = plan_public_realm_zone_recipe(
+        zone.zone_type,
+        source_geometry,
+        zone.properties,
+        strict=True,
+    )
+    assert planned_recipe is not None
+    recipe = planned_recipe.model_dump(mode="json")
+    zone.properties["public_realm_lego"] = recipe
+    source_hash = community_3d_source_hash(
+        zone.zone_type,
+        source_geometry,
+        zone.properties,
+    )
+    representation_hash = community_3d_representation_hash(
+        kind="park",
+        generator="park_kit",
+        source_hash=source_hash,
+        public_realm_recipe=recipe,
+    )
+    assert representation_hash is not None
+    zone.properties["community_3d"] = {
+        "schema_version": 1,
+        "state": "compiled",
+        "kind": "park",
+        "generator": "park_kit",
+        "compiled_at": "2026-07-21T12:00:00Z",
+        "source_hash": source_hash,
+        "representation_hash": representation_hash,
+    }
+    request = _project_request(project_id, community_claims=_claims_for([zone]))
+
+    direct_api._validate_direct_3d_project_zones(request, [zone], {})
+
+    # Operational recipe metadata is excluded from source_hash, so this edit
+    # proves Direct preflight independently binds and validates the recipe.
+    zone.properties["public_realm_lego"]["appearance_kit_id"] = "tampered"
+    with pytest.raises(HTTPException, match="stale or missing") as exc_info:
+        direct_api._validate_direct_3d_project_zones(request, [zone], {})
+    assert exc_info.value.detail["billed"] is False
+
+
+def test_paid_project_preflight_rejects_canonical_recipe_for_different_metric_target():
+    project_id = uuid.uuid4()
+    zone = _zone(
+        uuid.uuid4(),
+        "road",
+        properties={
+            "_plan_role": "street",
+            "_plan_scenario": "community_wellbeing",
+            "road_archetype_id": "narrow_residential_street",
+            "width": 22,
+        },
+    )
+    # The locked source is a 200 m x 22 m street, but the stored recipe is a
+    # completely valid, self-consistent recipe for a different 10 m target.
+    # Its source, recipe, representation and browser-claim hashes are all
+    # recomputed to prove target-to-geometry binding is the rejecting check.
+    zone.geometry = _calgary_rectangle_ewkt(200, 22)
+    source_geometry = direct_api._direct_source_geometry(zone)
+    wrong_recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id="narrow_residential_street",
+        target=StreetSegmentTarget(row_width_m=10, length_m=200),
+    )).model_dump(mode="json")
+    zone.properties["public_realm_lego"] = wrong_recipe
+    source_hash = community_3d_source_hash(
+        zone.zone_type,
+        source_geometry,
+        zone.properties,
+    )
+    representation_hash = community_3d_representation_hash(
+        kind="street",
+        generator="street_section",
+        source_hash=source_hash,
+        public_realm_recipe=wrong_recipe,
+    )
+    assert representation_hash is not None
+    zone.properties["community_3d"] = {
+        "schema_version": 1,
+        "state": "compiled",
+        "kind": "street",
+        "generator": "street_section",
+        "compiled_at": "2026-07-21T12:00:00Z",
+        "source_hash": source_hash,
+        "representation_hash": representation_hash,
+    }
+
+    with pytest.raises(HTTPException, match="stale or missing") as exc_info:
+        direct_api._validate_direct_3d_project_zones(
+            _project_request(project_id, community_claims=_claims_for([zone])),
+            [zone],
+            {},
+        )
+    assert exc_info.value.detail["billed"] is False
+
+
+def test_paid_project_preflight_requires_v1_recipe_for_ai_public_realm():
+    project_id = uuid.uuid4()
+    legacy_ai_park = _compiled_zone(
+        "green_space",
+        properties={
+            "_plan_role": "open_space",
+            "_plan_scenario": "community_wellbeing",
+            "green_space_archetype_id": "urban_pocket_park",
+        },
+    )
+
+    with pytest.raises(HTTPException, match="stale or missing") as exc_info:
+        direct_api._validate_direct_3d_project_zones(
+            _project_request(
+                project_id,
+                community_claims=_claims_for([legacy_ai_park]),
+            ),
+            [legacy_ai_park],
+            {},
         )
     assert exc_info.value.detail["billed"] is False
 
@@ -932,6 +1135,53 @@ def test_identity_registration_uses_immutable_context():
     assert registration.translation_x_px == 0
 
 
+def test_registration_accepts_style_shift_when_context_geometry_is_unchanged():
+    beauty, mask = _registration_context_scene()
+    generated = _style_shift_without_geometry_change(beauty)
+
+    registration = register_generated_image(beauty, generated, mask)
+
+    assert registration.method == "ecc-euclidean"
+    assert registration.score_metric == "bidirectional-structural-edge-recall"
+    assert registration.photometric_score < 0.65
+    assert registration.structural_context_score is not None
+    assert registration.structural_context_score >= 0.62
+    assert abs(registration.translation_x_px) < 3
+    assert abs(registration.translation_y_px) < 1
+    assert abs(registration.rotation_degrees) < 0.1
+
+
+def test_registration_structural_fallback_does_not_weaken_translation_limit():
+    beauty, mask = _registration_context_scene()
+    translated = cv2.warpAffine(
+        np.asarray(beauty),
+        np.asarray(((1, 0, 20), (0, 1, 0)), dtype=np.float32),
+        beauty.size,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+
+    with pytest.raises(Direct3DValidationError, match="translation limit"):
+        register_generated_image(beauty, Image.fromarray(translated), mask)
+
+
+def test_registration_structural_fallback_does_not_weaken_rotation_limit():
+    beauty, mask = _registration_context_scene()
+    rotation = cv2.getRotationMatrix2D(
+        (beauty.width / 2, beauty.height / 2),
+        2.0,
+        1.0,
+    )
+    rotated = cv2.warpAffine(
+        np.asarray(beauty),
+        rotation,
+        beauty.size,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+
+    with pytest.raises(Direct3DValidationError, match="rotation exceeds"):
+        register_generated_image(beauty, Image.fromarray(rotated), mask)
+
+
 def test_hard_composite_keeps_every_mask_zero_pixel_byte_identical():
     beauty, mask = _capture_images()
     generated = Image.new("RGB", beauty.size, (255, 0, 255))
@@ -949,6 +1199,56 @@ def test_hard_composite_keeps_every_mask_zero_pixel_byte_identical():
     assert exterior_max_delta == 0
     assert np.array_equal(output_pixels[exterior], source_pixels[exterior])
     assert tuple(output_pixels[256, 256]) == (255, 0, 255)
+
+
+def test_hard_composite_uses_white_as_proposal_and_preserves_soft_alpha():
+    source = Image.new("RGB", (3, 1), (0, 0, 0))
+    generated = Image.new("RGB", source.size, (200, 100, 50))
+    mask = Image.fromarray(np.asarray(((0, 128, 255),), dtype=np.uint8), mode="L")
+
+    composited, exterior_count, exterior_max_delta = hard_composite_direct_3d(
+        source,
+        generated,
+        mask,
+        inward_feather_px=0,
+    )
+
+    assert list(composited.getdata()) == [
+        (0, 0, 0),
+        (100, 50, 25),
+        (200, 100, 50),
+    ]
+    assert exterior_count == 1
+    assert exterior_max_delta == 0
+
+
+def test_hard_composite_feathers_only_inward_from_the_exact_context_seam():
+    source = Image.new("RGB", (9, 9), (0, 0, 0))
+    generated = Image.new("RGB", source.size, (255, 255, 255))
+    mask = Image.new("L", source.size, 0)
+    ImageDraw.Draw(mask).rectangle((2, 2, 6, 6), fill=255)
+
+    composited, _exterior_count, exterior_max_delta = hard_composite_direct_3d(
+        source,
+        generated,
+        mask,
+    )
+    pixels = np.asarray(composited)
+    exterior = np.asarray(mask) == 0
+
+    assert exterior_max_delta == 0
+    assert np.array_equal(pixels[exterior], np.zeros((int(exterior.sum()), 3), dtype=np.uint8))
+    assert 0 < int(pixels[2, 4, 0]) < 255
+    assert int(pixels[4, 4, 0]) > int(pixels[2, 4, 0])
+
+
+def test_hard_composite_rejects_alpha_or_image_dimension_mismatch():
+    source = Image.new("RGB", (8, 8), "black")
+    generated = Image.new("RGB", (8, 8), "white")
+    wrong_mask = Image.new("L", (7, 8), 255)
+
+    with pytest.raises(Direct3DValidationError, match="identical dimensions"):
+        hard_composite_direct_3d(source, generated, wrong_mask)
 
 
 class _FakeResponse:
@@ -1182,6 +1482,34 @@ async def test_service_returns_byte_exact_exterior_and_diagnostics(monkeypatch):
     assert result.diagnostics["structural_edge_guide_attached"] is True
     assert result.diagnostics["structural_edge_fidelity"]["passed"] is True
     assert len(result.output_fingerprint) == 64
+
+
+@pytest.mark.asyncio
+async def test_service_context_locks_style_shifted_provider_exterior(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(beauty=beauty, mask=mask)
+    capture = prepare_direct_3d_capture(request)
+    generated = _style_shift_without_geometry_change(capture.normalized_beauty)
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    output = Image.open(io.BytesIO(base64.b64decode(result.image_base64))).convert("RGB")
+    source_pixels = np.asarray(capture.source_beauty)
+    output_pixels = np.asarray(output)
+    exterior = np.asarray(capture.source_proposal_mask) == 0
+    assert output.size == capture.source_beauty.size
+    assert np.array_equal(output_pixels[exterior], source_pixels[exterior])
+    assert result.diagnostics["exterior_max_channel_delta"] == 0
+    assert result.diagnostics["registration"]["score_metric"] == (
+        "bidirectional-structural-edge-recall"
+    )
+    assert result.diagnostics["registration"]["photometric_score"] < 0.65
+    assert result.diagnostics["structural_edge_fidelity"]["passed"] is True
 
 
 @pytest.mark.asyncio

@@ -34,6 +34,7 @@ import {
 import { computeFootprintFrame } from './buildingPlacement';
 import {
   buildCurbBandGeometry,
+  buildAccessibleFourWayIntersectionGeometry,
   buildDashGeometry,
   buildOffsetCurbGeometry,
   buildRibbonBandGeometry,
@@ -47,6 +48,7 @@ import {
 } from './streetSectionProfiles';
 import {
   selectDetailedStreetZones,
+  selectTreeStreetIds,
   streetTerrainSampleOffset,
 } from './streetDetailLod';
 import {
@@ -57,6 +59,14 @@ import {
   GlobeLandscapeBenchStand,
   GlobeLandscapeTreeStand,
 } from './GlobeLandscapeKit';
+import {
+  detectFourWayStreetIntersections,
+  type FourWayStreetIntersection,
+} from './streetGraphIntersections';
+import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
+import { validateStreetRecipeProperties } from './streetLegoContract';
+import { buildStreetFamilyFixturePlacements } from './streetFamilyFurniture';
+import { GlobeStreetLightInstances } from './GlobeStreetLightInstances';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -77,8 +87,11 @@ const RENDER_ORDER_FLATWORK = 123;
 const RENDER_ORDER_RAISED = 130;
 const RENDER_ORDER_FURNITURE = 135;
 function isRoundaboutZone(zone: SiteZone): boolean {
-  const id = String((zone.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '');
-  return id.toLowerCase().replace(/-/g, '_').includes('roundabout');
+  const props = zone.properties as Record<string, unknown> | undefined;
+  const validation = validateStreetRecipeProperties(props);
+  if (validation.valid) return validation.recipe.familyId === 'street_compact_roundabout';
+  return [props?.road_archetype_id, props?.street_role]
+    .some((value) => String(value ?? '').toLowerCase().replace(/-/g, '_').includes('roundabout'));
 }
 
 function zoneStoredTerrain(zone: SiteZone): number | null {
@@ -91,9 +104,13 @@ function zoneStoredTerrain(zone: SiteZone): number | null {
 function StreetRibbonDetail({
   zone,
   fallbackTerrainHeight,
+  intersectionNodes,
+  renderFamilyFurniture,
 }: {
   zone: SiteZone;
   fallbackTerrainHeight: number;
+  intersectionNodes: FourWayStreetIntersection[];
+  renderFamilyFurniture: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -134,12 +151,16 @@ function StreetRibbonDetail({
       lng + p.x / mPerLon,
       lat + p.y / METERS_PER_DEG_LAT,
     ]);
-    const resolvedHalfWidth = effectiveRoadWidth(zone.properties) / 2;
+    const resolvedHalfWidth = sectionProfile?.metricWidthLocked
+      ? (sectionProfile.targetRowM ?? sectionProfile.rowM) / 2
+      : effectiveRoadWidth(zone.properties) / 2;
     return {
       centerLngLat: { local: densified, lngLat: back },
       centroid: { lng, lat },
       halfWidth: resolvedHalfWidth,
-      sectionScale: sectionProfile ? (resolvedHalfWidth * 2) / sectionProfile.rowM : 1,
+      sectionScale: sectionProfile?.metricWidthLocked
+        ? (sectionProfile.targetRowM ?? sectionProfile.rowM) / sectionProfile.rowM
+        : (sectionProfile ? (resolvedHalfWidth * 2) / sectionProfile.rowM : 1),
     };
     // zone.updated_at covers property edits that re-buffer the polygon
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -246,6 +267,16 @@ function StreetRibbonDetail({
   const geometries = useMemo(() => {
     if (!centerLngLat) return null;
     const zs = stationZ ?? undefined;
+    const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
+    const connectedIntersectionNodes = intersectionNodes.filter((node) => node.zoneIds.includes(zone.id));
+    const curbRampClearanceMask = centerLngLat.local.map((point) => (
+      Boolean(centroid) && connectedIntersectionNodes.some((node) => {
+        const localX = (node.longitude - centroid!.lng) * mPerLon;
+        const localY = (node.latitude - centroid!.lat) * METERS_PER_DEG_LAT;
+        const clearanceM = Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4;
+        return Math.hypot(point.x - localX, point.y - localY) <= clearanceM;
+      })
+    ));
     const bands = sectionProfile
       ? sectionProfile.bands
         .filter((band) => band.sourceType !== 'setback')
@@ -296,6 +327,7 @@ function StreetRibbonDetail({
             sectionProfile.curbOffsetsM.map((offset) => offset * sectionScale),
             STREET_DETAIL_3D,
             zs,
+            curbRampClearanceMask,
           )
           : null)
         : buildCurbBandGeometry(centerLngLat.local, halfWidth, STREET_DETAIL_3D, zs),
@@ -303,7 +335,7 @@ function StreetRibbonDetail({
       bands,
       markings,
     };
-  }, [centerLngLat, halfWidth, sectionProfile, sectionScale, stationZ]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationZ, zone.id]);
 
   const woonerfPlanters = useMemo(() => {
     if (!centerLngLat || !sectionProfile?.archetypeId.includes('woonerf')) return [];
@@ -367,6 +399,34 @@ function StreetRibbonDetail({
     [woonerfPlanters],
   );
 
+  const familyFixtures = useMemo(() => {
+    const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
+    return buildStreetFamilyFixturePlacements({
+      points: centerLngLat?.local ?? [],
+      stationZ,
+      profile: sectionProfile,
+      sectionScale,
+      enabled: renderFamilyFurniture,
+      clearancePoints: centroid
+        ? intersectionNodes
+          .filter((node) => node.zoneIds.includes(zone.id))
+          .map((node) => ({
+            x: (node.longitude - centroid.lng) * mPerLon,
+            y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
+          }))
+        : [],
+    });
+  }, [
+    centerLngLat,
+    centroid,
+    intersectionNodes,
+    renderFamilyFurniture,
+    sectionProfile,
+    sectionScale,
+    stationZ,
+    zone.id,
+  ]);
+
   // r3f does not dispose geometry props — without this every drape freeze,
   // edit commit, and zone delete leaks the previous buffers.
   useEffect(
@@ -394,15 +454,29 @@ function StreetRibbonDetail({
           renderOrder={RENDER_ORDER_FLATWORK}
           frustumCulled={false}
         >
-          <meshBasicMaterial
-            color={band.color}
-            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
-            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
-            polygonOffset
-            polygonOffsetFactor={-3}
-            polygonOffsetUnits={-6}
-            side={THREE.DoubleSide}
-          />
+          {sectionProfile?.familyId ? (
+            <meshStandardMaterial
+              color={band.color}
+              roughness={band.roughness ?? 0.9}
+              metalness={band.metalness ?? 0.02}
+              depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
+              depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
+              polygonOffset
+              polygonOffsetFactor={-3}
+              polygonOffsetUnits={-6}
+              side={THREE.DoubleSide}
+            />
+          ) : (
+            <meshBasicMaterial
+              color={band.color}
+              depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
+              depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
+              polygonOffset
+              polygonOffsetFactor={-3}
+              polygonOffsetUnits={-6}
+              side={THREE.DoubleSide}
+            />
+          )}
         </mesh>
       ))}
       {geometries.markings.map(({ marking, geometry }, index) => (
@@ -425,7 +499,14 @@ function StreetRibbonDetail({
       ))}
       {geometries.curbs && (
         <mesh geometry={geometries.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <meshLambertMaterial color={CURB_COLOR} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-4} />
+          <meshStandardMaterial
+            color={sectionProfile?.appearance?.palette.curb ?? CURB_COLOR}
+            roughness={0.94}
+            metalness={0}
+            polygonOffset
+            polygonOffsetFactor={-2}
+            polygonOffsetUnits={-4}
+          />
         </mesh>
       )}
       {geometries.dashes && (
@@ -443,6 +524,13 @@ function StreetRibbonDetail({
       )}
       <GlobeLandscapeTreeStand placements={woonerfTrees} renderOrder={RENDER_ORDER_FURNITURE} />
       <GlobeLandscapeBenchStand placements={woonerfBenches} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeLandscapeTreeStand placements={familyFixtures.trees} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeLandscapeBenchStand placements={familyFixtures.benches} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeStreetLightInstances
+        placements={familyFixtures.lights}
+        metalColor={sectionProfile?.appearance?.palette.fixtureMetal ?? '#30383a'}
+        renderOrder={RENDER_ORDER_FURNITURE}
+      />
       {woonerfPlanters.map((placement, index) => (
         <group key={`woonerf-planter-${index}`}>
           <mesh
@@ -507,6 +595,12 @@ function RoundaboutDetail({
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
+  const sectionProfile = useMemo(
+    () => resolvePilotStreetSectionProfile(zone),
+    [zone.properties],
+  );
+  const appearance = sectionProfile?.appearance
+    ?? STREET_APPEARANCE_KITS.classic_tree_lined_v1;
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
   const geometry = useMemo(() => {
@@ -582,28 +676,146 @@ function RoundaboutDetail({
     >
       <group position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}>
         <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshBasicMaterial
-            color={ASPHALT_COLOR}
+          <meshStandardMaterial
+            color={appearance.palette.motor ?? ASPHALT_COLOR}
+            roughness={appearance.palette.roughness}
+            metalness={appearance.palette.metalness}
             depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
             depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
             side={THREE.DoubleSide}
           />
         </mesh>
         <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshBasicMaterial
-            color={CONCRETE_COLOR}
+          <meshStandardMaterial
+            color={appearance.palette.sidewalk ?? CONCRETE_COLOR}
+            roughness={0.94}
+            metalness={0}
             depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
             depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
             side={THREE.DoubleSide}
           />
         </mesh>
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <meshLambertMaterial color={ISLAND_COLOR} />
+          <meshStandardMaterial color={appearance.palette.planting ?? ISLAND_COLOR} roughness={0.98} metalness={0} />
         </mesh>
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <meshLambertMaterial color={ISLAND_COLOR} />
+          <meshStandardMaterial color={appearance.palette.planting ?? ISLAND_COLOR} roughness={0.98} metalness={0} />
         </mesh>
+        <GlobeLandscapeTreeStand
+          placements={[
+            { x: 0, y: 0, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.62 * geometry.scale },
+            { x: 1.8 * geometry.scale, y: -1.1 * geometry.scale, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 1.81, scale: 0.52 * geometry.scale },
+            { x: -1.5 * geometry.scale, y: 1.25 * geometry.scale, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 3.29, scale: 0.55 * geometry.scale },
+          ]}
+          renderOrder={RENDER_ORDER_FURNITURE}
+        />
       </group>
+    </EastNorthUpFrame>
+  );
+}
+
+function AccessibleFourWayIntersectionDetail({
+  node,
+  zones,
+  fallbackTerrainHeight,
+}: {
+  node: FourWayStreetIntersection;
+  zones: SiteZone[];
+  fallbackTerrainHeight: number;
+}) {
+  const tiles = useContext(TilesRendererContext);
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const frameCountRef = useRef(streetTerrainSampleOffset(node.id, TERRAIN_SAMPLE_FRAME_INTERVAL));
+  const attemptsRef = useRef(0);
+  const frozenRef = useRef(false);
+  const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
+  const connectedZones = useMemo(
+    () => zones.filter((zone) => node.zoneIds.includes(zone.id)),
+    [node.zoneIds, zones],
+  );
+  const storedTerrain = useMemo(() => {
+    const values = connectedZones.map(zoneStoredTerrain).filter((value): value is number => value !== null);
+    return values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+  }, [connectedZones]);
+  const appearance = STREET_APPEARANCE_KITS[node.appearanceKitId];
+  const geometry = useMemo(() => buildAccessibleFourWayIntersectionGeometry(
+    node.axisABearingRad,
+    node.axisBBearingRad,
+    node.axisAHalfWidthM,
+    node.axisBHalfWidthM,
+  ), [node]);
+
+  useEffect(() => {
+    frozenRef.current = false;
+    attemptsRef.current = 0;
+    setSampledTerrain(null);
+  }, [node.id, node.latitude, node.longitude]);
+
+  useFrame(() => {
+    if (frozenRef.current) return;
+    frameCountRef.current += 1;
+    if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
+    if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
+      frozenRef.current = true;
+      return;
+    }
+    attemptsRef.current += 1;
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup || tilesGroup.children.length === 0) return;
+    const sampled = raycastTerrainHeightAtLatLng(
+      node.longitude,
+      node.latitude,
+      tilesGroup,
+      raycasterRef.current,
+    );
+    const groundCandidate = resolvePublicRealmGroundAnchor(
+      sampled,
+      storedTerrain,
+      fallbackTerrainHeight,
+      4,
+    );
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
+    ) {
+      setSampledTerrain(groundCandidate);
+      frozenRef.current = true;
+    }
+  });
+
+  useEffect(() => () => {
+    geometry?.crosswalks.dispose();
+    geometry?.curbRamps.dispose();
+    geometry?.tactilePads.dispose();
+  }, [geometry]);
+
+  if (!geometry) return null;
+  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  return (
+    <EastNorthUpFrame
+      lat={node.latitude * DEG_TO_RAD}
+      lon={node.longitude * DEG_TO_RAD}
+      height={terrain}
+    >
+      <mesh geometry={geometry.crosswalks} renderOrder={RENDER_ORDER_DASHES + 2} frustumCulled={false}>
+        <meshStandardMaterial
+          color={appearance.palette.marking}
+          roughness={0.78}
+          metalness={0}
+          depthTest={PUBLIC_REALM_DECAL_DEPTH.depthTest}
+          depthWrite={PUBLIC_REALM_DECAL_DEPTH.depthWrite}
+          polygonOffset
+          polygonOffsetFactor={-5}
+          polygonOffsetUnits={-10}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh geometry={geometry.curbRamps} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
+        <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} />
+      </mesh>
+      <mesh geometry={geometry.tactilePads} renderOrder={RENDER_ORDER_RAISED + 2} frustumCulled={false}>
+        <meshStandardMaterial color={appearance.palette.tactile} roughness={0.82} metalness={0} />
+      </mesh>
     </EastNorthUpFrame>
   );
 }
@@ -626,6 +838,14 @@ export function GlobeStreetDetailLayer({
     () => selectDetailedStreetZones(roadZones),
     [roadZones],
   );
+  const intersectionNodes = useMemo(
+    () => detectFourWayStreetIntersections(detailedRoadZones),
+    [detailedRoadZones],
+  );
+  const furnitureStreetIds = useMemo(
+    () => selectTreeStreetIds(detailedRoadZones),
+    [detailedRoadZones],
+  );
   return (
     <>
       {detailedRoadZones.map((zone) =>
@@ -636,9 +856,19 @@ export function GlobeStreetDetailLayer({
             key={zone.id}
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
+            intersectionNodes={intersectionNodes}
+            renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
           />
         ),
       )}
+      {intersectionNodes.map((node) => (
+        <AccessibleFourWayIntersectionDetail
+          key={node.id}
+          node={node}
+          zones={detailedRoadZones}
+          fallbackTerrainHeight={terrainHeight}
+        />
+      ))}
     </>
   );
 }

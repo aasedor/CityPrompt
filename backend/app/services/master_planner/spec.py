@@ -29,6 +29,7 @@ from app.services.master_planner.lego_catalog import (
     LegoPlanningCatalog,
     select_lego_archetype,
 )
+from app.services.public_realm_lego import build_public_realm_capability_catalog
 from app.services.plan_geometry.placement import BandSpec, Palette, palette_for
 
 BAND_KEYS = ("core", "frontage", "mid", "edge", "anchor")
@@ -53,7 +54,7 @@ LOCAL_STREET_IDS = frozenset({
     "narrow_residential_street", "yield_street", "woonerf_shared_street",
     "toronto_victorian_residential_street", "montreal_plateau_residential_rue",
     "new_york_brownstone_side_street", "vancouver_cherry_blossom_street",
-    "london_terrace_street", "green_alley",
+    "london_terrace_street", "green_alley", "toronto_laneway", "calgary_local",
 })
 CRESCENT_STREET_IDS = frozenset({"london_crescent_road"})
 
@@ -68,6 +69,38 @@ CENTRAL_PARK_IDS = frozenset({
     "japanese_garden", "london_garden_square", "parisian_jardin",
     "amsterdam_vondelpark", "market_square", "amphitheater_lawn",
 })
+
+# Public Realm LEGO V1 is deliberately smaller than the visual-card catalog.
+# AI plans may select only executable families; manual projects retain the
+# broader catalog through their existing compatibility path.
+LEGO_SPINE_STREET_IDS = frozenset({"main_street_complete"})
+LEGO_LOCAL_STREET_IDS = frozenset({
+    "narrow_residential_street", "yield_street", "woonerf_shared_street",
+    "calgary_local",
+})
+LEGO_CENTRAL_PARK_IDS = frozenset({"neighborhood_park", "community_park"})
+LEGO_WATER_ARCHETYPE_IDS = frozenset({"stormwater_retention_pond"})
+
+# One authoritative server catalog supplies both validation and recipe
+# compilation. A family addition cannot become selectable in the planner
+# without simultaneously existing in the strict compiler.
+PUBLIC_REALM_VARIANTS_BY_ARCHETYPE: dict[str, tuple[str, ...]] = dict(
+    build_public_realm_capability_catalog().variants_by_archetype
+)
+
+SPINE_PUBLIC_REALM_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["main_street_complete"]
+LOCAL_PUBLIC_REALM_VARIANT_IDS = tuple(
+    variant
+    for archetype_id in sorted(LEGO_LOCAL_STREET_IDS)
+    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+)
+CENTRAL_PARK_VARIANT_IDS = tuple(
+    variant
+    for archetype_id in sorted(LEGO_CENTRAL_PARK_IDS)
+    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+)
+POCKET_PARK_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["urban_pocket_park"]
+GREENWAY_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["linear_park_greenway"]
 
 # Planting-structure vocabulary — mirrored by the globe's parkScatter
 # (frontend/src/components/viewer/globe/parkScatter.ts). Keep in sync.
@@ -115,6 +148,23 @@ class LandscapePlan(BaseModel):
     rationale: str = ""
 
 
+class PublicRealmPlan(BaseModel):
+    """Visible variants for the first executable park/street family cohort.
+
+    Archetype IDs continue to carry planning intent. These identities select a
+    bounded appearance/configuration within the compatible family and are
+    validated again when the server compiles the metric public-realm recipe.
+    """
+
+    spine_street_variant_id: str | None = None
+    local_street_variant_id: str | None = None
+    central_park_variant_id: str | None = None
+    pocket_park_variant_id: str | None = None
+    courtyard_variant_id: str | None = None
+    greenway_variant_id: str | None = None
+    rationale: str = ""
+
+
 class MasterPlanSpec(BaseModel):
     design_narrative: str = ""
     # Declared palette family (archetype_families.json). All band characters
@@ -137,6 +187,7 @@ class MasterPlanSpec(BaseModel):
     bands: dict[str, BandPlan] = Field(default_factory=dict)
     open_space: OpenSpaceProgram = Field(default_factory=OpenSpaceProgram)
     landscape: LandscapePlan = Field(default_factory=LandscapePlan)
+    public_realm: PublicRealmPlan = Field(default_factory=PublicRealmPlan)
 
 
 @lru_cache(maxsize=1)
@@ -147,6 +198,89 @@ def known_development_types() -> frozenset[str]:
 def _note(code: str, message: str) -> dict[str, Any]:
     return {"code": code, "severity": "info", "message": message,
             "source_phase": "master_planner"}
+
+
+def _public_realm_variant(
+    value: str | None,
+    *,
+    archetype_id: str,
+    field_name: str,
+    notes: list[dict[str, Any]],
+) -> str:
+    allowed = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+    if value in allowed:
+        return value
+    if value is not None:
+        notes.append(_note(
+            "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED",
+            f"public_realm.{field_name} '{value}' is not compatible with "
+            f"'{archetype_id}' - {allowed[0]} used.",
+        ))
+    return allowed[0]
+
+
+def _validated_public_realm_plan(
+    requested: PublicRealmPlan,
+    *,
+    spine_archetype_id: str | None,
+    local_archetype_id: str | None,
+    central_park_archetype_id: str | None,
+    notes: list[dict[str, Any]],
+) -> PublicRealmPlan:
+    spine_id = (
+        spine_archetype_id
+        if spine_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
+        else "main_street_complete"
+    )
+    local_id = (
+        local_archetype_id
+        if local_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
+        else "narrow_residential_street"
+    )
+    central_id = (
+        central_park_archetype_id
+        if central_park_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
+        else "neighborhood_park"
+    )
+    return PublicRealmPlan(
+        spine_street_variant_id=_public_realm_variant(
+            requested.spine_street_variant_id,
+            archetype_id=spine_id,
+            field_name="spine_street_variant_id",
+            notes=notes,
+        ),
+        local_street_variant_id=_public_realm_variant(
+            requested.local_street_variant_id,
+            archetype_id=local_id,
+            field_name="local_street_variant_id",
+            notes=notes,
+        ),
+        central_park_variant_id=_public_realm_variant(
+            requested.central_park_variant_id,
+            archetype_id=central_id,
+            field_name="central_park_variant_id",
+            notes=notes,
+        ),
+        pocket_park_variant_id=_public_realm_variant(
+            requested.pocket_park_variant_id,
+            archetype_id="urban_pocket_park",
+            field_name="pocket_park_variant_id",
+            notes=notes,
+        ),
+        courtyard_variant_id=_public_realm_variant(
+            requested.courtyard_variant_id,
+            archetype_id="urban_pocket_park",
+            field_name="courtyard_variant_id",
+            notes=notes,
+        ),
+        greenway_variant_id=_public_realm_variant(
+            requested.greenway_variant_id,
+            archetype_id="linear_park_greenway",
+            field_name="greenway_variant_id",
+            notes=notes,
+        ),
+        rationale=str(requested.rationale or "")[:1000],
+    )
 
 
 def validate_spec(
@@ -338,6 +472,22 @@ def validate_spec(
                                f"block_target_m {block_target:g} clamped to {clamped:g} m."))
         block_target = clamped
 
+    spine_archetype_id = _gate(
+        spec.spine_archetype_id, SPINE_STREET_IDS, "spine_archetype_id",
+    )
+    local_archetype_id = _gate(
+        spec.local_archetype_id, LOCAL_STREET_IDS, "local_archetype_id",
+    )
+    crescent_archetype_id = _gate(
+        spec.crescent_archetype_id, CRESCENT_STREET_IDS, "crescent_archetype_id",
+    )
+    # The broad/Classic contract carries no executable family promise. Keep
+    # the optional block inert here; LEGO validation below owns defaults and
+    # cross-family compatibility repairs.
+    public_realm = spec.public_realm.model_copy(
+        update={"rationale": str(spec.public_realm.rationale or "")[:1000]},
+    )
+
     validated = MasterPlanSpec(
         design_narrative=str(spec.design_narrative or "")[:2000],
         style_family=family,
@@ -345,13 +495,14 @@ def validate_spec(
         block_target_m=block_target,
         curvilinear=bool(spec.curvilinear),
         laneways=bool(spec.laneways),
-        spine_archetype_id=_gate(spec.spine_archetype_id, SPINE_STREET_IDS, "spine_archetype_id"),
-        local_archetype_id=_gate(spec.local_archetype_id, LOCAL_STREET_IDS, "local_archetype_id"),
-        crescent_archetype_id=_gate(spec.crescent_archetype_id, CRESCENT_STREET_IDS, "crescent_archetype_id"),
+        spine_archetype_id=spine_archetype_id,
+        local_archetype_id=local_archetype_id,
+        crescent_archetype_id=crescent_archetype_id,
         single_block_typology=single_block,
         bands=bands,
         open_space=open_space,
         landscape=landscape,
+        public_realm=public_realm,
     )
     return validated, notes
 
@@ -457,6 +608,54 @@ def _validate_spec_with_lego(
     # into an installed LEGO family instead of disappearing.
     common, notes = validate_spec(spec, scenario_id, palette_hint)
     preset = palette_for(scenario_id, palette_hint)
+    spine_archetype_id = common.spine_archetype_id
+    if spine_archetype_id not in LEGO_SPINE_STREET_IDS:
+        if spine_archetype_id is not None:
+            notes.append(_note(
+                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                f"AI Public Realm LEGO cannot execute spine '{spine_archetype_id}' - "
+                "main_street_complete used.",
+            ))
+        spine_archetype_id = "main_street_complete"
+
+    local_archetype_id = common.local_archetype_id
+    if local_archetype_id not in LEGO_LOCAL_STREET_IDS:
+        if local_archetype_id is not None:
+            notes.append(_note(
+                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                f"AI Public Realm LEGO cannot execute local street '{local_archetype_id}' - "
+                "narrow_residential_street used.",
+            ))
+        local_archetype_id = (
+            preset.local_archetype_id
+            if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS
+            else "narrow_residential_street"
+        )
+
+    open_space = common.open_space.model_copy(deep=True)
+    if open_space.water_archetype_id not in LEGO_WATER_ARCHETYPE_IDS:
+        notes.append(_note(
+            "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+            f"AI Public Realm LEGO cannot execute water feature "
+            f"'{open_space.water_archetype_id}' - stormwater_retention_pond used.",
+        ))
+        open_space.water_archetype_id = "stormwater_retention_pond"
+    if open_space.central_park_archetype_id not in LEGO_CENTRAL_PARK_IDS:
+        if open_space.central_park_archetype_id is not None:
+            notes.append(_note(
+                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                f"AI Public Realm LEGO cannot execute central park "
+                f"'{open_space.central_park_archetype_id}' - neighborhood_park used.",
+            ))
+        open_space.central_park_archetype_id = "neighborhood_park"
+
+    public_realm = _validated_public_realm_plan(
+        spec.public_realm,
+        spine_archetype_id=spine_archetype_id,
+        local_archetype_id=local_archetype_id,
+        central_park_archetype_id=open_space.central_park_archetype_id,
+        notes=notes,
+    )
     dimensions = dims_by_id()
     repaired_bands: dict[str, BandPlan] = {}
 
@@ -542,6 +741,13 @@ def _validate_spec_with_lego(
     validated = common.model_copy(update={
         "bands": repaired_bands,
         "style_family": style_family,
+        "spine_archetype_id": spine_archetype_id,
+        "local_archetype_id": local_archetype_id,
+        # The initial network-node kit supports ordinary graph intersections
+        # and compact roundabouts, not a culturally styled crescent street.
+        "crescent_archetype_id": None,
+        "open_space": open_space,
+        "public_realm": public_realm,
     })
     return validated, notes
 
@@ -695,6 +901,27 @@ def palette_from_spec(
             "greenway": spec.landscape.greenway_structure,
             "plaza": "formal_allee",
         },
+        public_realm_variants=(
+            {
+                key: value
+                for key, value in {
+                    "spine": spec.public_realm.spine_street_variant_id,
+                    "local": spec.public_realm.local_street_variant_id,
+                    "central": spec.public_realm.central_park_variant_id,
+                    "pocket": spec.public_realm.pocket_park_variant_id,
+                    "courtyard": spec.public_realm.courtyard_variant_id,
+                    "greenway": spec.public_realm.greenway_variant_id,
+                    "plaza": "formal_civic_plaza_v0",
+                    "pond": "stormwater_retention_pond_v0",
+                    "path": "multi_use_trail_v1",
+                    "lane": "toronto_laneway_v0",
+                    "roundabout": "roundabout_v0",
+                }.items()
+                if value
+            }
+            if lego_catalog is not None
+            else {}
+        ),
         central_archetype_id=spec.open_space.central_park_archetype_id,
         single_block_typology=spec.single_block_typology,
         allowed_archetype_ids=allowed_archetype_ids,

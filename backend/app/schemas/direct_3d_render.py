@@ -117,6 +117,12 @@ class Direct3DRenderRequest(BaseModel):
 class Direct3DRegistrationDiagnostics(BaseModel):
     method: Literal["identity", "ecc-euclidean"]
     score: float
+    score_metric: Literal[
+        "luminance-correlation",
+        "bidirectional-structural-edge-recall",
+    ] = "luminance-correlation"
+    photometric_score: float | None = None
+    structural_context_score: float | None = None
     translation_x_px: float
     translation_y_px: float
     rotation_degrees: float

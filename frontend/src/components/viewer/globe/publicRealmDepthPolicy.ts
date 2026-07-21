@@ -21,6 +21,18 @@ export interface PublicRealmDepthPolicy {
   transparent: boolean;
 }
 
+/**
+ * Shared physical lift for authored park/street ground above Google Tiles.
+ * Fixed public-realm modules must derive their base elevation from this value
+ * so the visible surface and the standing geometry cannot drift apart.
+ */
+export const PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS = 0.08;
+
+/** Small reveal above the authored surface avoids coplanar footings without
+ * making posts, playgrounds or fountain basins appear to float. */
+export const PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS =
+  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.02;
+
 export function resolvePublicRealmGroundDepthPolicy({
   isCompiledGround,
   hasAuthoredGroundTexture,

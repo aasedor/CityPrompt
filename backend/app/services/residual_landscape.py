@@ -28,6 +28,7 @@ from app.services.site_engine import (
     local_metric_crs_for_polygon,
     project_geometry,
 )
+from app.services.public_realm_lego import public_realm_recipe_identity
 
 
 @dataclass(frozen=True)
@@ -610,6 +611,7 @@ def community_3d_representation_hash(
     generator: str,
     source_hash: str,
     building: Any | None = None,
+    public_realm_recipe: dict[str, Any] | None = None,
 ) -> str | None:
     """Fingerprint the exact persisted representation mounted by the globe.
 
@@ -677,6 +679,21 @@ def community_3d_representation_hash(
             ),
             "representation": _canonical_semantic_value(representation),
         }
+    elif public_realm_recipe is not None:
+        # V1 Public Realm LEGO is a stronger contract than the legacy
+        # deterministic park/street marker. Bind the exact canonical recipe,
+        # its self-hash and the live executable capability revision. A stale
+        # catalog or edited payload fails closed in Direct preflight.
+        identity = public_realm_recipe_identity(public_realm_recipe)
+        if identity is None:
+            return None
+        canonical_recipe = identity["recipe"]
+        if (
+            canonical_recipe.get("kind") != kind
+            or canonical_recipe.get("generator") != generator
+        ):
+            return None
+        payload["public_realm_lego"] = identity
 
     return hashlib.sha256(
         json.dumps(
