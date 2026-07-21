@@ -66,6 +66,7 @@ import {
   partitionLegoStacksByDistance,
 } from './legoStackBudget';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
+import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_EMBED_METERS = 0.3;
@@ -81,6 +82,8 @@ const legoTerrainSampleCache = new Map<string, number>();
 interface GlobeLegoAssemblyLayerProps {
   buildings: Building[];
   zones: SiteZone[];
+  /** Exact server-claimed buildings editable by Direct 3D. */
+  direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
@@ -139,6 +142,7 @@ function LegoMassingStack({
   onLoaded,
   onUnloaded,
   selected,
+  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -151,6 +155,7 @@ function LegoMassingStack({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
+  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   const height = Math.max(
@@ -249,6 +254,7 @@ function LegoMassingStack({
         geometry={geometry}
         position={[0, 0, -GROUND_EMBED_METERS]}
         renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? {} : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -276,6 +282,7 @@ function LegoStackInstance({
   onLoaded,
   onUnloaded,
   selected,
+  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -287,6 +294,7 @@ function LegoStackInstance({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
+  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   // One suspension point for the whole stack: all distinct module GLBs load
@@ -418,6 +426,7 @@ function LegoStackInstance({
         ref={stackRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, yawRad]}
+        userData={proposalForDirect3D ? {} : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -448,6 +457,7 @@ function LegoStackInstance({
 export function GlobeLegoAssemblyLayer({
   buildings,
   zones,
+  direct3DProposalBuildingIds,
   terrainHeight,
   onLoadedIdsChange,
   selectedBuildingId = null,
@@ -593,6 +603,7 @@ export function GlobeLegoAssemblyLayer({
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
+              proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
             />
           );
@@ -610,6 +621,7 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
+            proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />
         );
@@ -626,6 +638,7 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
+            proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />;
         }
@@ -642,6 +655,7 @@ export function GlobeLegoAssemblyLayer({
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 selected={selectedBuildingId === building.id}
+                proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
               />
             </Suspense>

@@ -9,23 +9,33 @@ import pytest
 from shapely.geometry import Point, Polygon
 from shapely.ops import unary_union
 
+from app.services.master_planner import agent as master_planner_agent
+from app.services.master_planner.agent import compose_master_plan
+from app.services.master_planner.lego_catalog import (
+    LegoArchetypeCapability,
+    LegoPlanningCatalog,
+)
 from app.services.master_planner.spec import (
     BandAlternate,
     BandPlan,
     LandscapePlan,
     MasterPlanSpec,
     OpenSpaceProgram,
+    lego_fallback_spec,
     palette_from_spec,
     validate_spec,
 )
 from app.services.plan_geometry.generator import generate_plan_geometry
 from app.services.plan_geometry.placement import (
     PALETTES,
+    BandSpec,
     BlockContext,
+    Palette,
     palette_for,
     plan_blocks,
 )
 from app.services.plan_geometry.community_rules import resolve_rules
+from app.services.planning_agents.schemas import PhilosophyWeights, ScenarioDefinition
 
 LAT, LON = 51.0405, -114.0850
 M_LAT = 111_320.0
@@ -45,6 +55,132 @@ PARAMS = {
     "buildings.floors": {"value": 6},
     "landscape.tree_density": {"value": 0.6},
 }
+
+
+def test_plan_redraw_deletes_only_derived_buildings_owned_by_replaced_zones():
+    import uuid
+    from unittest.mock import MagicMock
+
+    from app.models.models import Building
+    from app.tasks.urban_dna import _delete_community_3d_buildings_for_replaced_zones
+
+    project_id = uuid.uuid4()
+    replaced_zone_id = uuid.uuid4()
+    retained_zone_id = uuid.uuid4()
+
+    def _building(name, marker=None):
+        specifications = {"legoAssembly": {"module_family": "fixture"}}
+        if marker is not None:
+            specifications["community3DRepresentation"] = marker
+        return Building(
+            id=uuid.uuid4(),
+            project_id=project_id,
+            name=name,
+            specifications=specifications,
+        )
+
+    obsolete = _building("obsolete", {
+        "schema_version": 1,
+        "zone_id": str(replaced_zone_id),
+        "generator": "lego_assembly",
+        "representation_hash": "a" * 64,
+        "compiled_at": "2026-07-21T12:00:00+00:00",
+    })
+    retained = _building("retained", {
+        "schema_version": 1,
+        "zone_id": str(retained_zone_id),
+        "generator": "lego_assembly",
+        "representation_hash": "b" * 64,
+        "compiled_at": "2026-07-21T12:00:00+00:00",
+    })
+    unmarked = _building("user-authored")
+    session = MagicMock()
+    session.query.return_value.filter.return_value.all.return_value = [
+        obsolete,
+        retained,
+        unmarked,
+    ]
+
+    removed = _delete_community_3d_buildings_for_replaced_zones(
+        session,
+        project_id,
+        {replaced_zone_id},
+    )
+
+    assert removed == 1
+    session.delete.assert_called_once_with(obsolete)
+
+
+def _lego_catalog() -> LegoPlanningCatalog:
+    capabilities = (
+        LegoArchetypeCapability(
+            parent_id="industrial_brick_mixed_use",
+            title="Industrial Brick Mixed Use",
+            development_type="mixed_use",
+            aesthetic_category="industrial_brick",
+            target_width_m=30,
+            target_depth_m=20,
+            selectable_ids=("industrial_brick_original_mill",),
+            variant_ids=("industrial_brick_original_mill",),
+            supported_floors=(4,),
+            supported_floors_by_selectable_id={
+                "industrial_brick_original_mill": (4,),
+            },
+            target_dimensions_by_selectable_id={
+                "industrial_brick_original_mill": (30, 20),
+            },
+            families=("industrial-mill-fixed",),
+        ),
+        LegoArchetypeCapability(
+            parent_id="parisian_boulevard_corner",
+            title="Parisian Boulevard Corner",
+            development_type="mixed_use",
+            aesthetic_category="parisian",
+            target_width_m=18,
+            target_depth_m=18,
+            selectable_ids=("parisian_boulevard_corner",),
+            variant_ids=(),
+            supported_floors=(5, 6),
+            supported_floors_by_selectable_id={
+                "parisian_boulevard_corner": (5, 6),
+            },
+            target_dimensions_by_selectable_id={
+                "parisian_boulevard_corner": (18, 18),
+            },
+            families=("parisian-corner",),
+        ),
+    )
+    return LegoPlanningCatalog(
+        capabilities=capabilities,
+        parent_ids=tuple(capability.parent_id for capability in capabilities),
+        variants_by_parent={
+            capability.parent_id: capability.variant_ids
+            for capability in capabilities
+        },
+        supported_floors_by_parent={
+            capability.parent_id: capability.supported_floors
+            for capability in capabilities
+        },
+        supported_floors_by_selectable_id={
+            selectable_id: floors
+            for capability in capabilities
+            for selectable_id, floors in capability.supported_floors_by_selectable_id.items()
+        },
+        target_dimensions_by_selectable_id={
+            selectable_id: dimensions
+            for capability in capabilities
+            for selectable_id, dimensions in (
+                capability.target_dimensions_by_selectable_id.items()
+            )
+        },
+        parent_by_selectable_id={
+            selectable_id: capability.parent_id
+            for capability in capabilities
+            for selectable_id in capability.selectable_ids
+        },
+        prompt_vocabulary="Imported LEGO test vocabulary",
+        fingerprint="test-catalog",
+    )
 
 
 def _spec(**overrides) -> MasterPlanSpec:
@@ -132,6 +268,195 @@ def test_validate_drops_catalog_less_alternates():
     assert any(n["code"] == "MASTER_PLAN_ALTERNATE_DROPPED" for n in notes)
 
 
+def test_lego_tool_schema_requires_only_runtime_parent_ids():
+    catalog = _lego_catalog()
+    tool = master_planner_agent._master_plan_tool(catalog)
+    band_schemas = tool["input_schema"]["properties"]["bands"]["properties"]
+
+    for key in ("core", "frontage", "mid", "edge", "anchor"):
+        schema = band_schemas[key]
+        assert "archetype_id" in schema["required"]
+        assert schema["properties"]["archetype_id"]["enum"] == list(catalog.parent_ids)
+        alternate = schema["properties"]["alternates"]["items"]
+        assert "archetype_id" in alternate["required"]
+        assert alternate["properties"]["archetype_id"]["enum"] == list(catalog.parent_ids)
+
+
+def test_lego_validation_fills_every_band_selects_exact_variant_and_snaps_floors():
+    raw = MasterPlanSpec(
+        design_narrative="A partial response that must be made executable.",
+        bands={
+            "mid": BandPlan(
+                development_type="mixed_use",
+                aesthetic="industrial_brick",
+                floors=11,
+                typology="row_bars",
+                archetype_id="industrial_brick_mixed_use",
+                alternates=[
+                    BandAlternate(
+                        development_type="invented_type",
+                        aesthetic="invented_style",
+                        archetype_id="invented_archetype",
+                    )
+                ],
+            )
+        },
+    )
+
+    validated, notes = validate_spec(
+        raw,
+        "city_policy",
+        lego_catalog=_lego_catalog(),
+    )
+
+    assert set(validated.bands) == {"core", "frontage", "mid", "edge", "anchor"}
+    allowed = set(_lego_catalog().parent_ids)
+    assert all(band.archetype_id in allowed for band in validated.bands.values())
+    mid = validated.bands["mid"]
+    assert mid.archetype_id == "industrial_brick_mixed_use"
+    assert mid.variant_id == "industrial_brick_original_mill"
+    assert mid.floors == 4
+    assert mid.alternates
+    assert mid.alternates[0].archetype_id in allowed
+    assert any(note["code"] == "MASTER_PLAN_LEGO_BAND_FILLED" for note in notes)
+    assert any(note["code"] == "MASTER_PLAN_LEGO_FLOORS_SNAPPED" for note in notes)
+
+
+def test_lego_palette_carries_variants_four_field_alternates_and_runtime_limits():
+    catalog = _lego_catalog()
+    raw = MasterPlanSpec(
+        bands={
+            key: BandPlan(
+                development_type="mixed_use",
+                aesthetic="industrial_brick",
+                floors=4,
+                typology="row_bars",
+                archetype_id="industrial_brick_mixed_use",
+                alternates=[
+                    BandAlternate(
+                        development_type="mixed_use",
+                        aesthetic="parisian",
+                        archetype_id="parisian_boulevard_corner",
+                    )
+                ],
+            )
+            for key in ("core", "frontage", "mid", "edge", "anchor")
+        }
+    )
+
+    palette = palette_from_spec(raw, "city_policy", lego_catalog=catalog)
+
+    assert palette.bands["mid"].variant_id == "industrial_brick_original_mill"
+    assert palette.alternates["mid"] == (
+        ("mixed_use", "parisian", "parisian_boulevard_corner", None),
+    )
+    assert palette.allowed_archetype_ids == frozenset(catalog.parent_ids)
+    assert palette.allowed_variant_ids_by_archetype == catalog.variants_by_parent
+    assert palette.supported_floors_by_selectable_id == {
+        "industrial_brick_original_mill": (4,),
+        "parisian_boulevard_corner": (5, 6),
+    }
+    assert (
+        palette.target_dimensions_by_selectable_id
+        == catalog.target_dimensions_by_selectable_id
+    )
+
+
+def test_lego_fallback_spec_is_complete_and_deterministic():
+    catalog = _lego_catalog()
+
+    first = lego_fallback_spec("city_policy", catalog)
+    second = lego_fallback_spec("city_policy", catalog)
+
+    assert first == second
+    assert set(first.bands) == {"core", "frontage", "mid", "edge", "anchor"}
+    assert all(band.archetype_id in catalog.parent_ids for band in first.bands.values())
+    assert all(
+        int(band.floors) in catalog.supported_floors_by_selectable_id[
+            band.variant_id or band.archetype_id
+        ]
+        for band in first.bands.values()
+    )
+
+
+def test_plan_blocks_cannot_escape_or_mispair_the_validated_lego_identity():
+    catalog = _lego_catalog()
+    raw = MasterPlanSpec(bands={
+        key: BandPlan(
+            development_type="mixed_use",
+            aesthetic="industrial_brick",
+            floors=19,
+            typology="row_bars",
+            archetype_id="industrial_brick_mixed_use",
+        )
+        for key in ("core", "frontage", "mid", "edge", "anchor")
+    })
+    palette = palette_from_spec(raw, "city_policy", lego_catalog=catalog)
+    context = BlockContext(
+        index=0,
+        area_m2=4_000,
+        dist_to_centroid_m=0,
+        dist_to_edge_m=0,
+        transect=0,
+        fronts_spine=False,
+        touches_boundary=True,
+        dist_to_green_m=math.inf,
+        abuts_low_rise=False,
+        ceiling_floors=None,
+    )
+
+    plan = plan_blocks(
+        contexts=[context],
+        palette=palette,
+        rules=resolve_rules("city_policy", PARAMS),
+        base_type=None,
+        base_aesthetic=None,
+    )[0]
+
+    assert plan.archetype_id == "industrial_brick_mixed_use"
+    assert plan.variant_id == "industrial_brick_original_mill"
+    assert plan.floors_target == 4
+    assert plan.variant_id in catalog.supported_floors_by_selectable_id
+
+
+@pytest.mark.asyncio
+async def test_compose_failure_returns_lego_constrained_fallback(monkeypatch):
+    class FailingMessages:
+        async def create(self, **_kwargs):
+            raise RuntimeError("provider unavailable")
+
+    class FailingClient:
+        messages = FailingMessages()
+
+        async def close(self):
+            return None
+
+    monkeypatch.setattr(
+        master_planner_agent.anthropic,
+        "AsyncAnthropic",
+        lambda **_kwargs: FailingClient(),
+    )
+    definition = ScenarioDefinition(
+        scenario_id="city_policy",
+        label="City Policy",
+        philosophy=PhilosophyWeights(primary="balanced"),
+    )
+
+    spec, usage, notes = await compose_master_plan(
+        dna_json={},
+        definition=definition,
+        site_summary={"area_m2": 12_000, "est_blocks": 3},
+        api_key="test",
+        model="test-model",
+        lego_catalog=_lego_catalog(),
+    )
+
+    assert spec is not None
+    assert set(spec.bands) == {"core", "frontage", "mid", "edge", "anchor"}
+    assert usage["status"] == "error"
+    assert any(note["code"] == "MASTER_PLANNER_LEGO_FALLBACK" for note in notes)
+
+
 # --- palette conversion -----------------------------------------------------------
 
 
@@ -206,6 +531,99 @@ def test_plan_blocks_resolves_width_compatible_bar_options():
     # Cross-archetype alternates that survived the width filter are resolved.
     alt_opts = [o for o in plan.bar_options if o.archetype_id != plan.archetype_id]
     assert all(o.archetype_id for o in alt_opts)
+
+
+def test_runtime_bar_options_require_exact_rotatable_fit_and_floor_support():
+    rules, _ = resolve_rules("economic", PARAMS)
+    primary_parent = "rndsqr_terraced_mixed_use_midrise"
+    primary_variant = "rndsqr_midrise_courtyard"
+    rotated_variant = "rndsqr_midrise_terraced_garden"
+    boundary_variant = "rndsqr_midrise_heritage_integrated"
+    wrong_floor_variant = "rndsqr_midrise_inverted_rooftop_townhomes"
+    compatible_parent = "minimalist_courtyard_block"
+    incompatible_parent = "contemporary_townhouse_courtyard"
+    primary_band = BandSpec(
+        development_type="mixed_use",
+        aesthetic="contemporary_urban",
+        floors_delta=None,
+        floors_abs=4.0,
+        typology="perimeter_block",
+        archetype_id=primary_parent,
+        variant_id=primary_variant,
+    )
+    palette = Palette(
+        bands={
+            key: primary_band
+            for key in ("core", "frontage", "mid", "edge", "anchor")
+        },
+        alternates={
+            "mid": (
+                (
+                    "residential_multifamily",
+                    "minimalist",
+                    compatible_parent,
+                    None,
+                ),
+                (
+                    "residential_duplex",
+                    "contemporary_urban",
+                    incompatible_parent,
+                    None,
+                ),
+            ),
+        },
+        allowed_archetype_ids=frozenset({
+            primary_parent,
+            compatible_parent,
+            incompatible_parent,
+        }),
+        allowed_variant_ids_by_archetype={
+            primary_parent: (
+                primary_variant,
+                rotated_variant,
+                boundary_variant,
+                wrong_floor_variant,
+            ),
+            compatible_parent: (),
+            incompatible_parent: (),
+        },
+        supported_floors_by_selectable_id={
+            primary_variant: (4,),
+            rotated_variant: (4,),
+            boundary_variant: (4,),
+            wrong_floor_variant: (5,),
+            compatible_parent: (4,),
+            incompatible_parent: (4,),
+        },
+        target_dimensions_by_selectable_id={
+            primary_variant: (25.0, 18.0),
+            # Exact quarter-turn of the primary cell: valid.
+            rotated_variant: (18.0, 25.0),
+            # 0.833 x 0.818: inside the planner's raw 0.80 floor, but outside
+            # the runtime safety margin that absorbs WGS remeasurement drift.
+            boundary_variant: (30.0, 22.0),
+            wrong_floor_variant: (25.0, 18.0),
+            compatible_parent: (24.0, 18.0),
+            incompatible_parent: (15.0, 8.0),
+        },
+    )
+
+    plan = plan_blocks(
+        contexts=[_mid_context(0)],
+        palette=palette,
+        rules=rules,
+        base_type=None,
+        base_aesthetic=None,
+    )[0]
+    identities = {
+        (option.archetype_id, option.variant_id)
+        for option in plan.bar_options
+    }
+
+    assert identities == {
+        (primary_parent, rotated_variant),
+        (compatible_parent, None),
+    }
 
 
 def test_presets_rotate_variants_not_archetypes():

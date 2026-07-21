@@ -10,6 +10,7 @@ data reasons — a degenerate site yields a single-block plan with notes.
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -21,7 +22,6 @@ from shapely.validation import make_valid
 
 from app.services.plan_geometry.archetypes import (
     resolve_building_archetype,
-    target_footprint,
 )
 from app.services.plan_geometry.community_rules import (
     FLOOR_HEIGHT_M,
@@ -44,6 +44,8 @@ from app.services.plan_geometry.placement import (
     effective_palette,
     plan_blocks,
     resolve_layout_strategy,
+    runtime_lego_rectangle_fit,
+    selected_target_footprint,
     select_open_space,
     site_hash,
 )
@@ -78,6 +80,53 @@ def _height_band(floors: float) -> tuple[int, str]:
         if floors <= ceiling:
             return ceiling, color
     return 999, HEIGHT_BANDS[-1][1]
+
+
+def _runtime_lego_identities_for_cell(
+    identities: list[tuple[str, str, str | None, str | None]],
+    *,
+    cell: Polygon,
+    floors: float,
+    palette: Palette,
+) -> list[tuple[str, str, str | None, str | None]]:
+    """Filter a runtime character cycle against the actual emitted cell."""
+
+    rectangle = cell.minimum_rotated_rectangle
+    coordinates = list(rectangle.exterior.coords)
+    if len(coordinates) < 4:
+        return []
+    edges = [
+        math.hypot(
+            coordinates[index + 1][0] - coordinates[index][0],
+            coordinates[index + 1][1] - coordinates[index][1],
+        )
+        for index in range(2)
+    ]
+    cell_width_m = max(edges)
+    cell_depth_m = min(edges)
+    floors_int = max(1, int(round(float(floors))))
+    compatible: list[tuple[str, str, str | None, str | None]] = []
+    for identity in identities:
+        _, _, archetype_id, variant_id = identity
+        selectable_id = variant_id or archetype_id
+        if selectable_id is None:
+            continue
+        if floors_int not in palette.supported_floors_by_selectable_id.get(
+            selectable_id,
+            (),
+        ):
+            continue
+        dimensions = palette.target_dimensions_by_selectable_id.get(selectable_id)
+        if dimensions is None:
+            continue
+        if runtime_lego_rectangle_fit(
+            cell_width_m,
+            cell_depth_m,
+            dimensions[0],
+            dimensions[1],
+        ):
+            compatible.append(identity)
+    return compatible
 
 
 @dataclass
@@ -559,7 +608,7 @@ def generate_plan_geometry(
     # Parks without a palette/LLM archetype get a catalog fallback so the
     # globe park kit resolves a real furniture recipe (playgrounds/pavilions
     # gate on planting_structure + area downstream, not here). Ponds keep
-    # their water ids; courtyards stay unstamped by design.
+    # their water ids; enclosed courtyards are stamped when emitted below.
     _PARK_ARCHETYPE_FALLBACK = {
         "central": "neighborhood_park",
         "pocket": "urban_pocket_park",
@@ -645,18 +694,83 @@ def generate_plan_geometry(
         # emitted storeys (and the target scales with the real height).
         plan_archetype_id = plan.archetype_id
         plan_variant_id = plan.variant_id
+        plan_development_type = plan.development_type
+        plan_aesthetic = plan.aesthetic
         target = plan.target
         if clamp and round(floors, 1) != plan.floors_target:
+            ceiling_floors = max(1, int(float(floors)))
+            supported_by_parent = None
+            if palette.allowed_archetype_ids is not None:
+                supported_by_parent = {
+                    parent_id: tuple(sorted({
+                        supported_floor
+                        for selectable_id in (
+                            parent_id,
+                            *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+                        )
+                        for supported_floor in palette.supported_floors_by_selectable_id.get(
+                            selectable_id, ()
+                        )
+                        if supported_floor <= ceiling_floors
+                    }))
+                    for parent_id in palette.allowed_archetype_ids
+                }
+                supported_by_parent = {
+                    parent_id: values
+                    for parent_id, values in supported_by_parent.items()
+                    if values
+                }
             entry = resolve_building_archetype(
-                plan.development_type, plan.aesthetic, max(1, int(round(floors)))
+                plan.development_type,
+                plan.aesthetic,
+                ceiling_floors,
+                prefer_family=palette.style_family,
+                allowed_archetype_ids=(
+                    supported_by_parent.keys()
+                    if supported_by_parent is not None
+                    else None
+                ),
+                supported_floors_by_archetype=supported_by_parent,
             )
             plan_archetype_id = entry["id"] if entry else None
             measured_entry = (measured_model_dims or {}).get(plan_archetype_id) if entry else None
             plan_variant_id = measured_entry.variant_id if measured_entry else None
-            target = (
-                target_footprint(entry, max(1, int(round(floors))), measured_model_dims)
-                if entry
-                else None
+            if entry and palette.allowed_archetype_ids is not None:
+                preferred_selectable_id = (
+                    plan.variant_id
+                    if entry["id"] == plan.archetype_id and plan.variant_id
+                    else entry["id"]
+                )
+                candidates = [
+                    (
+                        ceiling_floors - supported_floor,
+                        0 if selectable_id == preferred_selectable_id else 1,
+                        selectable_id,
+                        supported_floor,
+                    )
+                    for selectable_id in (
+                        entry["id"],
+                        *palette.allowed_variant_ids_by_archetype.get(entry["id"], ()),
+                    )
+                    for supported_floor in palette.supported_floors_by_selectable_id.get(
+                        selectable_id, ()
+                    )
+                    if supported_floor <= ceiling_floors
+                ]
+                if candidates:
+                    _, _, selectable_id, selected_floors = min(candidates)
+                    floors = float(selected_floors)
+                    plan_variant_id = (
+                        selectable_id if selectable_id != entry["id"] else None
+                    )
+                    plan_development_type = entry["development_type"]
+                    plan_aesthetic = entry["aesthetic_category"]
+            target = selected_target_footprint(
+                entry,
+                max(1, int(round(floors))),
+                measured_model_dims,
+                palette,
+                plan_variant_id or plan_archetype_id,
             )
 
         # Height framework: the block's storey envelope as a MAPPED sub-area
@@ -723,7 +837,7 @@ def generate_plan_geometry(
         # times — suppressed when a district clamp moved the floors (the
         # options were resolved at the unclamped height).
         bar_identities: list[tuple[str, str, str | None, str | None]] = [
-            (plan.development_type, plan.aesthetic, plan_archetype_id, plan_variant_id)
+            (plan_development_type, plan_aesthetic, plan_archetype_id, plan_variant_id)
         ]
         if not clamp:
             bar_identities.extend(
@@ -744,9 +858,25 @@ def generate_plan_geometry(
                 # unique names, or every label on the globe reads "Block 1".
                 bar_index += 1
                 suffix = f" · Building {_letter(bar_index)}" if len(mass_polys) > 1 else ""
-                dev_out, aes_out, arch_out, variant_out = (
-                    bar_identities[(bar_index - 1) % len(bar_identities)]
-                )
+                compatible_identities = bar_identities
+                if (
+                    palette.allowed_archetype_ids is not None
+                    and target is not None
+                    and target.source == "runtime_lego"
+                ):
+                    compatible_identities = _runtime_lego_identities_for_cell(
+                        bar_identities,
+                        cell=poly,
+                        floors=floors,
+                        palette=palette,
+                    )
+                    # The mass itself was carved for the primary runtime target
+                    # with the same guarded envelope, so this is defensive only.
+                    if not compatible_identities:
+                        compatible_identities = [bar_identities[0]]
+                dev_out, aes_out, arch_out, variant_out = compatible_identities[
+                    (bar_index - 1) % len(compatible_identities)
+                ]
                 archetype_props: dict[str, Any] = {}
                 if arch_out:
                     archetype_props["development_archetype_id"] = arch_out
@@ -811,6 +941,7 @@ def generate_plan_geometry(
                         "properties": {
                             "_plan_scenario": scenario_id, "_imported_from": layer_name,
                             "_plan_role": "courtyard", "tree_density": tree_density,
+                            "green_space_archetype_id": "urban_pocket_park",
                             **({"planting_structure": palette.landscape["courtyard"]}
                                if palette.landscape.get("courtyard") else {}),
                         },
@@ -867,6 +998,24 @@ def generate_plan_geometry(
     return result
 
 
+def _default_road_archetype_id(role: str, width: float) -> str:
+    """Persist the same measured street identity the frontend would infer."""
+
+    if role == "path":
+        return "multi_use_trail"
+    if role == "lane":
+        return "toronto_laneway"
+    if role == "roundabout":
+        return "roundabout"
+    if width < 10:
+        return "yield_street"
+    if width < 15:
+        return "narrow_residential_street"
+    if width < 22:
+        return "collector_road"
+    return "main_street_complete"
+
+
 def _street_zone(
     poly_m, *, name: str, width: float, role: str, rules: RuleProfile,
     scenario_id: str, layer_name: str, to_wgs84,
@@ -874,6 +1023,7 @@ def _street_zone(
     context_connection: bool = False,
 ) -> list[dict[str, Any]]:
     zones = []
+    resolved_archetype_id = archetype_id or _default_road_archetype_id(role, width)
     for wpoly in iter_polygons(project_geometry(poly_m, to_wgs84)):
         zones.append({
             "zone_type": "road",
@@ -887,7 +1037,7 @@ def _street_zone(
                 "clear_width_m": width if role == "path" else rules.clear_width_m,
                 "street_role": role,
                 **({"context_connection": True} if context_connection else {}),
-                **({"road_archetype_id": archetype_id} if archetype_id else {}),
+                "road_archetype_id": resolved_archetype_id,
             },
         })
     return zones

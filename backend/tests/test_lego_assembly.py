@@ -7,6 +7,10 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from app.models.models import Building, ModelLibraryEntry
+from app.services.community_3d_artifacts import (
+    community_3d_buildings_for_zones,
+    stale_community_3d_buildings,
+)
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
@@ -16,6 +20,7 @@ from app.services.lego_assembly import (
     manifest_validation_errors,
     plan_vertical_assembly,
 )
+from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 from tests.conftest import FakeProject
 
 
@@ -417,6 +422,46 @@ def test_requested_archetype_never_substitutes_unrelated_family():
     assert error.value.supported_families is None
 
 
+def test_rectangle_plan_quarter_turns_an_exact_narrow_module():
+    modules = [
+        descriptor_from_library_entry(
+            entry("narrow-podium", "Narrow podium", "podium", height=4.5, width=8, depth=15)
+        ),
+        descriptor_from_library_entry(
+            entry("narrow-floor", "Narrow floor", "floor", height=3.2, width=8, depth=15)
+        ),
+        descriptor_from_library_entry(
+            entry("narrow-roof", "Narrow roof", "roof", height=1.0, width=8, depth=15)
+        ),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=15,
+            target_depth_m=8,
+            target_floors=5,
+            archetype_id="nordic-midrise",
+        ),
+    )
+
+    assert plan["family"] == "nordic-midrise"
+    assert plan["fit"]["scale_x"] == 1.0
+    assert plan["fit"]["scale_y"] == 1.0
+    assert {instance["rotation_degrees"] for instance in plan["instances"]} == {90.0}
+    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {
+        (1.0, 1.0, 1.0)
+    }
+    assert plan["footprint_segments"] == [{
+        "id": "main",
+        "centre_x_m": 0.0,
+        "centre_y_m": 0.0,
+        "length_m": 8,
+        "thickness_m": 15,
+        "rotation_degrees": 90.0,
+    }]
+
+
 def test_matching_family_reports_incompatible_target_and_supported_ranges():
     modules = [
         descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
@@ -664,6 +709,49 @@ async def test_plan_api_returns_structured_family_incompatible_error(
             "max_floors": 12,
         }],
     }
+
+
+@pytest.mark.anyio
+async def test_plan_api_uses_only_project_owner_modules_for_an_authorized_editor(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=uuid.uuid4())
+    share = SimpleNamespace(permission="editor")
+    library_entries = [
+        entry("podium", "Podium", "podium", height=4.5),
+        entry("floor", "Floor", "floor", height=3.2),
+        entry("roof", "Roof", "roof", height=1.0),
+    ]
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(project),
+        _scalar_result(share),
+        _scalars_result(library_entries),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "project_id": str(project.id),
+            "target_width_m": 24,
+            "target_depth_m": 18,
+            "target_floors": 5,
+            "archetype_id": "nordic-midrise",
+        },
+    )
+
+    assert response.status_code == 200
+    library_query = mock_db.execute.await_args_list[-1].args[0]
+    owner_values = [
+        value
+        for value in library_query.compile().params.values()
+        if isinstance(value, (list, set, tuple))
+    ]
+    assert any(
+        project.owner_id in values and test_user.id not in values
+        for values in owner_values
+    )
 
 
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):
@@ -1101,6 +1189,21 @@ def _community_item(zone, *, recipe=None):
     return item
 
 
+def _recipe_from_plan(plan, catalog_fingerprint: str):
+    return {
+        "schema_version": 1,
+        "module_family": plan["family"],
+        "archetype_id": plan["archetype_id"],
+        "reuse_keys": plan["reuse_keys"],
+        "target": plan["target"],
+        "instances": plan["instances"],
+        "assembled_height_m": plan["assembled_height_m"],
+        "fit": plan["fit"],
+        "assembled_preview_url": None,
+        "catalog_fingerprint": catalog_fingerprint,
+    }
+
+
 @pytest.mark.anyio
 async def test_place_creates_and_links_building_when_zone_has_none(
     client, mock_db, test_user, auth_headers
@@ -1136,6 +1239,7 @@ async def test_place_creates_and_links_building_when_zone_has_none(
     # footprint comes from the zone polygon so the globe stack has a ring
     assert building.footprint == zone.geometry
     assert building.floor_count == body["target"]["floors"]
+    assert building.rotation_degrees == 0.0
     assert zone.building_id == building.id
     assert zone.building_ids == [str(building.id)]
 
@@ -1191,6 +1295,53 @@ async def test_place_reuses_existing_building_and_preserves_specifications(
     assert zone.properties["community_3d"]["state"] == "compiled"
 
 
+def test_community_artifact_selection_requires_complete_ownership_marker():
+    project_id = uuid.uuid4()
+    current_zone_id = uuid.uuid4()
+    replaced_zone_id = uuid.uuid4()
+
+    def _building(specifications):
+        return Building(
+            id=uuid.uuid4(),
+            project_id=project_id,
+            name="selection fixture",
+            specifications=specifications,
+        )
+
+    current = _building({
+        "community3DRepresentation": {
+            "schema_version": 1,
+            "zone_id": str(current_zone_id),
+            "generator": "lego_assembly",
+            "representation_hash": "a" * 64,
+            "compiled_at": "2026-07-21T12:00:00+00:00",
+        },
+    })
+    replaced = _building({
+        "community3DRepresentation": {
+            "schema_version": 1,
+            "zone_id": str(replaced_zone_id),
+            "generator": "planned_massing",
+            "representation_hash": "b" * 64,
+            "compiled_at": "2026-07-21T12:00:00+00:00",
+        },
+    })
+    unmarked = _building({"legoAssembly": {"module_family": "preserve-me"}})
+    malformed = _building({
+        "community3DRepresentation": {
+            "schema_version": 1,
+            "zone_id": str(replaced_zone_id),
+            "generator": "unknown_generator",
+            "representation_hash": "c" * 64,
+            "compiled_at": "2026-07-21T12:00:00+00:00",
+        },
+    })
+
+    buildings = [current, replaced, unmarked, malformed]
+    assert community_3d_buildings_for_zones(buildings, {replaced_zone_id}) == [replaced]
+    assert stale_community_3d_buildings(buildings, {current_zone_id}) == [replaced]
+
+
 @pytest.mark.anyio
 async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
     client, mock_db, test_user, auth_headers
@@ -1216,6 +1367,7 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
         _scalar_result(street_zone), _scalar_result(project),
         _scalar_result(project.id),  # serialize project-wide compilation
         _scalars_result([building_zone, park_zone, street_zone]),
+        _scalars_result([]),  # project buildings: no stale derived artifacts
     ])
 
     response = await client.post(
@@ -1245,6 +1397,140 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
     assert park_zone.properties["community_3d"]["generator"] == "park_kit"
     assert street_zone.properties["community_3d"]["generator"] == "street_section"
     mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_removes_only_stale_marked_buildings(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    current_zone = _make_zone(project, properties={"_plan_role": "building"})
+    deleted_zone_id = uuid.uuid4()
+    stale_building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="old generated building",
+        specifications={
+            "community3DRepresentation": {
+                "schema_version": 1,
+                "zone_id": str(deleted_zone_id),
+                "generator": "lego_assembly",
+                "representation_hash": "d" * 64,
+                "compiled_at": "2026-07-21T12:00:00+00:00",
+            },
+        },
+    )
+    user_building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="unmarked user building",
+        specifications={"legoAssembly": {"module_family": "preserve-me"}},
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(current_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([current_zone]),
+        _scalars_result([stale_building, user_building]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(current_zone, recipe=_recipe_body())]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["stale_buildings_removed"] == 1
+    mock_db.delete.assert_awaited_once_with(stale_building)
+    assert mock_db.delete.await_args.args[0] is not user_building
+
+
+@pytest.mark.parametrize(
+    ("zone_type", "properties", "expected_kind", "expected_generator"),
+    [
+        (
+            "green_space",
+            {
+                "_plan_role": "open_space",
+                "green_space_archetype_id": "neighborhood_park",
+            },
+            "park",
+            "park_kit",
+        ),
+        (
+            "road",
+            {
+                "_plan_role": "street",
+                "road_archetype_id": "main_street_complete",
+            },
+            "street",
+            "street_section",
+        ),
+    ],
+)
+@pytest.mark.anyio
+async def test_place_community_removes_owned_building_when_source_becomes_public_realm(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    zone_type,
+    properties,
+    expected_kind,
+    expected_generator,
+):
+    project = FakeProject(owner_id=test_user.id)
+    derived_building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="formerly compiled building",
+        specifications={},
+    )
+    user_building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="linked user building",
+        specifications={"legoAssembly": {"module_family": "preserve-me"}},
+    )
+    public_realm_zone = _make_zone(
+        project,
+        building_id=derived_building.id,
+        building_ids=[str(derived_building.id), str(user_building.id)],
+        zone_type=zone_type,
+        properties=properties,
+    )
+    derived_building.specifications = {
+        "community3DRepresentation": {
+            "schema_version": 1,
+            "zone_id": str(public_realm_zone.id),
+            "generator": "lego_assembly",
+            "representation_hash": "e" * 64,
+            "compiled_at": "2026-07-21T12:00:00+00:00",
+        },
+    }
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(public_realm_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([public_realm_zone]),
+        _scalars_result([derived_building, user_building]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(public_realm_zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["stale_buildings_removed"] == 1
+    assert payload["items"][0]["kind"] == expected_kind
+    assert payload["items"][0]["generator"] == expected_generator
+    mock_db.delete.assert_awaited_once_with(derived_building)
+    assert public_realm_zone.building_id is None
+    assert public_realm_zone.building_ids == [str(user_building.id)]
 
 
 @pytest.mark.anyio
@@ -1281,6 +1567,236 @@ async def test_place_community_rejects_recipe_planned_from_stale_same_kind_revis
     mock_db.add.assert_not_called()
 
 
+def _ai_recipe_inventory():
+    return [
+        entry("ai-podium", "AI podium", "podium", height=4.5),
+        entry("ai-floor", "AI floor", "floor", height=3.2),
+        entry("ai-setback", "AI setback", "setback", height=3.2),
+        entry("ai-roof", "AI roof", "roof", height=1.0),
+    ]
+
+
+def _plan_for_ai_recipe(entries):
+    descriptors = [
+        descriptor
+        for item in entries
+        if (descriptor := descriptor_from_library_entry(item)) is not None
+    ]
+    return plan_vertical_assembly(
+        descriptors,
+        AssemblyRequest(
+            target_width_m=24,
+            target_depth_m=18,
+            target_floors=6,
+            archetype_id="nordic-midrise",
+            allow_setback=False,
+        ),
+    )
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_stale_ai_catalog_under_locked_inventory(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    stale_fingerprint = "a" * 64
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": stale_fingerprint,
+        },
+    )
+    recipe = _recipe_body()
+    recipe["catalog_fingerprint"] = stale_fingerprint
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([zone]),
+        _scalar_result(project),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "catalogue changed" in response.json()["detail"]
+    library_query = mock_db.execute.await_args_list[-1].args[0]
+    assert library_query._for_update_arg is not None
+    assert zone.properties.get("community_3d") is None
+    mock_db.add.assert_not_called()
+    mock_db.delete.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_changed_ai_module_even_when_catalog_shape_matches(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    planned_entries = _ai_recipe_inventory()
+    current_entries = _ai_recipe_inventory()
+    current_entries[1].model_url = "https://example.test/ai-floor.glb?v=reimported"
+    planned_catalog = build_lego_planning_catalog(planned_entries)
+    current_catalog = build_lego_planning_catalog(current_entries)
+    # Catalogue capabilities are intentionally unchanged; exact module
+    # validation must still catch the re-imported renderer asset.
+    assert planned_catalog.fingerprint == current_catalog.fingerprint
+
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": current_catalog.fingerprint,
+        },
+    )
+    recipe = _recipe_from_plan(
+        _plan_for_ai_recipe(planned_entries),
+        planned_catalog.fingerprint,
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([zone]),
+        _scalar_result(project),
+        _scalars_result(current_entries),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "modules used" in response.json()["detail"]
+    assert zone.properties.get("community_3d") is None
+    mock_db.add.assert_not_called()
+    mock_db.delete.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_accepts_current_ai_recipe_before_persisting(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": catalog.fingerprint,
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([zone]),
+        _scalar_result(project),
+        _scalars_result(entries),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "lego_assembly"
+    assert zone.properties["community_3d"]["state"] == "compiled"
+    assert mock_db.add.call_count == 1
+
+
+@pytest.mark.anyio
+async def test_place_one_rejects_stale_ai_catalog_before_mutation(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    stale_fingerprint = "a" * 64
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": stale_fingerprint,
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), stale_fingerprint)
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone),
+        _scalar_result(project),
+        _scalar_result(project.id),
+        _scalar_result(project),
+        _scalars_result(entries),
+    ])
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}",
+        headers=auth_headers,
+        json=recipe,
+    )
+
+    assert response.status_code == 409
+    assert "catalogue changed" in response.json()["detail"]
+    assert zone.building_id is None
+    assert zone.properties.get("community_3d") is None
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_one_accepts_current_ai_recipe_with_setbacks_disabled(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": catalog.fingerprint,
+        },
+    )
+    planned = _plan_for_ai_recipe(entries)
+    assert all(instance["role"] != "setback" for instance in planned["instances"])
+    recipe = _recipe_from_plan(planned, catalog.fingerprint)
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone),
+        _scalar_result(project),
+        _scalar_result(project.id),
+        _scalar_result(project),
+        _scalars_result(entries),
+    ])
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}",
+        headers=auth_headers,
+        json=recipe,
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["building_created"] is True
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
+    assert mock_db.add.call_count == 1
+
+
 @pytest.mark.anyio
 async def test_place_community_preserves_all_six_public_realm_archetype_contracts(
     client, mock_db, test_user, auth_headers
@@ -1307,6 +1823,7 @@ async def test_place_community_preserves_all_six_public_realm_archetype_contract
         db_results.extend([_scalar_result(zone), _scalar_result(project)])
     db_results.append(_scalar_result(project.id))
     db_results.append(_scalars_result(zones))
+    db_results.append(_scalars_result([]))
     mock_db.execute = AsyncMock(side_effect=db_results)
 
     response = await client.post(
@@ -1352,6 +1869,7 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
         _scalar_result(zone), _scalar_result(project),
         _scalar_result(project.id),
         _scalars_result([zone]),
+        _scalars_result([]),
     ])
 
     response = await client.post(
@@ -1414,6 +1932,7 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
         _scalar_result(zone), _scalar_result(project),
         _scalar_result(project.id),
         _scalars_result([zone]),
+        _scalars_result([]),
         _scalar_result(building),
     ])
 
@@ -1482,6 +2001,7 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
         _scalar_result(park_zone), _scalar_result(project),
         _scalar_result(project.id),
         _scalars_result([building_zone, park_zone]),
+        _scalars_result([building]),
         _scalar_result(building),
     ])
 
@@ -1590,6 +2110,7 @@ async def test_place_community_derives_residual_from_all_project_zones(
         _scalar_result(building_zone), _scalar_result(project),
         _scalar_result(project.id),
         _scalars_result([boundary, building_zone, park_zone]),
+        _scalars_result([]),
     ])
 
     response = await client.post(
@@ -1645,6 +2166,7 @@ async def test_place_community_infers_and_persists_boundary_for_legacy_plan(
         _scalar_result(street_zone), _scalar_result(project),
         _scalar_result(project.id),
         _scalars_result([park_zone, street_zone]),
+        _scalars_result([]),
     ])
 
     response = await client.post(

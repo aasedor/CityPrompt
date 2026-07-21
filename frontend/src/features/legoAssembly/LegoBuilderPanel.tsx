@@ -214,6 +214,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           target_floors: item.targets.floors,
           footprint_profile: item.targets.footprint_profile,
           wing_depth_m: item.targets.wing_depth_m,
+          project_id: item.zone.project_id,
           ...legoArchetypeContextFromZone(item.zone.properties),
         }),
       8,

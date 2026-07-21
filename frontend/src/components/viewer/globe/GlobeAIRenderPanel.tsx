@@ -32,6 +32,7 @@ import {
 } from '@/features/community3d/community3d';
 import { analyzePlanBoundaryAlignment } from '@/features/community3d/planBoundaryAlignment';
 import {
+  communityCompileOptionsForZones,
   compileMixedCommunity3D,
   deriveItems as deriveCommunityBuildingItems,
 } from '@/features/legoAssembly/communityCompiler';
@@ -113,7 +114,10 @@ function getLightboxMetaParts(render: LightboxRender): string[] {
 interface GlobeAIRenderPanelProps {
   canvas: HTMLCanvasElement | null;
   camera: THREE.Camera | null;
+  /** Render/prompt zones, including transient model-only zones for Classic. */
   siteZones: SiteZone[];
+  /** Persisted source zones for Community 3D compilation and Direct claims. */
+  communitySourceZones?: SiteZone[];
   /** Exact Building snapshot mounted by the globe alongside siteZones. */
   buildings: Building[];
   terrainHeight: number;
@@ -193,6 +197,7 @@ export function GlobeAIRenderPanel({
   canvas,
   camera,
   siteZones,
+  communitySourceZones,
   buildings,
   terrainHeight,
   projectId,
@@ -245,6 +250,7 @@ export function GlobeAIRenderPanel({
   const panelRef = useRef<HTMLDivElement | null>(null);
   const savedImageKeysRef = useRef<Set<string>>(new Set());
   const pipelineChoiceTouchedRef = useRef(false);
+  const authoritativeZones = communitySourceZones ?? siteZones;
 
   // ── 3D building models ──
   // When ON (default) placed models stay in the capture and their zones get
@@ -261,23 +267,23 @@ export function GlobeAIRenderPanel({
         highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
       );
 
-  const boundaryZone3D = siteZones.find(
+  const boundaryZone3D = authoritativeZones.find(
     (z) => z.zone_type === 'site_boundary' && z.coordinates.length >= 3,
   );
   const buildableZones = useMemo(
-    () => deriveCommunityBuildingItems(siteZones)
+    () => deriveCommunityBuildingItems(authoritativeZones)
       .map((item) => item.zone)
       .filter((zone) => (
         (zone.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height'
       )),
-    [siteZones],
+    [authoritativeZones],
   );
   const communityGroundZones = useMemo(
-    () => siteZones.filter((z) => {
+    () => authoritativeZones.filter((z) => {
       const kind = resolveCommunity3DKind(z);
       return (kind === 'park' || kind === 'street') && z.coordinates.length >= 3;
     }),
-    [siteZones],
+    [authoritativeZones],
   );
   const communityZones = useMemo(
     () => [...buildableZones, ...communityGroundZones],
@@ -286,8 +292,8 @@ export function GlobeAIRenderPanel({
   const community3DAction = resolveCommunity3DAction(communityZones);
   const hasCompiledCommunity = communityZones.length > 0 && community3DAction === 'rebuild';
   const community3DCaptureClaims = useMemo(
-    () => getCommunity3DCaptureClaims(siteZones, buildings),
-    [buildings, siteZones],
+    () => getCommunity3DCaptureClaims(authoritativeZones, buildings),
+    [authoritativeZones, buildings],
   );
   const hasAllCompiledSourceFingerprints = Boolean(
     community3DCaptureClaims
@@ -295,22 +301,22 @@ export function GlobeAIRenderPanel({
     && communityZones.every(hasCommunity3DSourceFingerprint),
   );
   const hasCurrentResidualLandscape = useMemo(
-    () => hasCurrentResidualLandscapeRecipe(siteZones),
-    [siteZones],
+    () => hasCurrentResidualLandscapeRecipe(authoritativeZones),
+    [authoritativeZones],
   );
   const residualLandscapeClaim = useMemo(
-    () => getCurrentResidualLandscapeClaim(siteZones),
-    [siteZones],
+    () => getCurrentResidualLandscapeClaim(authoritativeZones),
+    [authoritativeZones],
   );
   const unsupportedDirect3DZones = useMemo(
-    () => siteZones.filter((zone) => {
+    () => authoritativeZones.filter((zone) => {
       const role = (zone.properties as Record<string, unknown> | undefined)?._plan_role;
       return zone.zone_type !== 'site_boundary'
         && role !== 'framework_height'
         && zone.coordinates.length >= 3
         && resolveCommunity3DKind(zone) === null;
     }),
-    [siteZones],
+    [authoritativeZones],
   );
   const compiledBuildingZones = communityZones.filter(
     (zone) => resolveCommunity3DKind(zone) === 'building',
@@ -368,8 +374,8 @@ export function GlobeAIRenderPanel({
   const unsavedCommunityCount = communityZones
     .filter((z) => !isPersistedZoneId(z.id)).length;
   const planBoundaryAlignment = useMemo(
-    () => analyzePlanBoundaryAlignment(siteZones),
-    [siteZones],
+    () => analyzePlanBoundaryAlignment(authoritativeZones),
+    [authoritativeZones],
   );
   const planGeometryStale = !planBoundaryAlignment.isAligned;
   const stalePlanMessage = planGeometryStale
@@ -390,7 +396,7 @@ export function GlobeAIRenderPanel({
   // ── Park ground textures (AI ortho drape; one Gemini render per park) ──
   const [isGeneratingParks, setIsGeneratingParks] = useState(false);
   const [parkGroundStatus, setParkGroundStatus] = useState<string | null>(null);
-  const parkZones = siteZones.filter(
+  const parkZones = authoritativeZones.filter(
     (z) => resolveCommunity3DKind(z) === 'park'
       && z.coordinates.length >= 3
       && isPersistedZoneId(z.id),
@@ -493,7 +499,7 @@ export function GlobeAIRenderPanel({
     if (!import.meta.env.DEV) return undefined;
     const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {}) as Record<string, unknown>;
     dbg.generateParkGround = async (zoneId: string) => {
-      const zone = siteZones.find((z) => z.id === zoneId);
+      const zone = authoritativeZones.find((z) => z.id === zoneId);
       if (!zone) throw new Error(`zone ${zoneId} not loaded`);
       const diagram = buildParkDiagram(zone);
       const meta = await generateParkGroundTexture(zone);
@@ -503,7 +509,7 @@ export function GlobeAIRenderPanel({
     return () => {
       delete dbg.generateParkGround;
     };
-  }, [siteZones, queryClient, projectId]);
+  }, [authoritativeZones, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (planGeometryStale || !projectId || !communityBoundaryReady || isQueuing3D) return;
@@ -520,6 +526,7 @@ export function GlobeAIRenderPanel({
               : 'Compiling parks and streets…',
           );
         },
+        communityCompileOptionsForZones(communityCompileZones),
       );
       const residualLandscape = summary.response.residual_landscape;
       const residualStatus = residualLandscape && residualLandscape.boundary_count > 0

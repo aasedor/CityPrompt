@@ -57,7 +57,10 @@ import {
   getPreparedSiteBoundaryIds,
   shouldMaskReplacementBuildingTiles,
 } from './sitePreparationSurface';
-import { shouldMaskCommunityGroundTiles } from '@/features/community3d/community3d';
+import {
+  getCurrentCommunity3DBuildingIds,
+  shouldMaskCommunityGroundTiles,
+} from '@/features/community3d/community3d';
 import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
 import {
   getObjectFilteredTerrainHeight,
@@ -1442,6 +1445,10 @@ export function GlobeSitePlannerMap({
       || (hasPlannedMassing(building) && !(building.lod_urls?.['0'] ?? building.model_url))
     )),
     [buildings],
+  );
+  const direct3DProposalBuildingIds = useMemo(
+    () => getCurrentCommunity3DBuildingIds(siteZones, buildings ?? []),
+    [buildings, siteZones],
   );
   const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url))
     || legoLayerBuildings.length > 0;
@@ -3163,6 +3170,7 @@ export function GlobeSitePlannerMap({
                 key={`meshy-models-${buildingLayerRecoveryGeneration}`}
                 buildings={meshyBuildings}
                 zones={siteZones}
+                direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleModeledIdsChange}
                 selectedBuildingId={selectedBuildingId}
@@ -3178,6 +3186,7 @@ export function GlobeSitePlannerMap({
                 key={`lego-models-${buildingLayerRecoveryGeneration}`}
                 buildings={legoLayerBuildings}
                 zones={siteZones}
+                direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleLegoIdsChange}
                 selectedBuildingId={selectedBuildingId}

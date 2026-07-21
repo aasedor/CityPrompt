@@ -393,6 +393,10 @@ def test_single_block_plan_draws_courtyard_and_unique_bar_names():
 
     courtyards = [z for z in result.zones if z["properties"].get("_plan_role") == "courtyard"]
     assert courtyards and all(z["zone_type"] == "green_space" for z in courtyards)
+    assert all(
+        z["properties"].get("green_space_archetype_id") == "urban_pocket_park"
+        for z in courtyards
+    )
     # Visual zone only: the frozen metrics/evaluator loop must not see it.
     assert result.geometry_inputs["open_space_area_m2"] == 0.0
 

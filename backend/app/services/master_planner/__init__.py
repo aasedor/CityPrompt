@@ -9,15 +9,33 @@ scenario row so redraws stay reproducible.
 """
 
 from app.services.master_planner.agent import compose_master_plan
+from app.services.master_planner.lego_catalog import (
+    LegoArchetypeCapability,
+    LegoPlanningCatalog,
+    build_lego_planning_catalog,
+)
+from app.services.master_planner.lego_geometry import (
+    LegoGeometryBindingReport,
+    LegoGeometryCompatibilityError,
+    bind_building_zones_to_lego,
+)
 from app.services.master_planner.spec import (
     MasterPlanSpec,
+    lego_fallback_spec,
     palette_from_spec,
     validate_spec,
 )
 
 __all__ = [
+    "LegoArchetypeCapability",
+    "LegoGeometryBindingReport",
+    "LegoGeometryCompatibilityError",
+    "LegoPlanningCatalog",
     "MasterPlanSpec",
+    "build_lego_planning_catalog",
+    "bind_building_zones_to_lego",
     "compose_master_plan",
+    "lego_fallback_spec",
     "palette_from_spec",
     "validate_spec",
 ]

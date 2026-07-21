@@ -98,6 +98,9 @@ class BandSpec:
     # Exact catalog archetype (Master Planner-named). None = resolve by
     # (development_type, aesthetic, floors) as always.
     archetype_id: str | None = None
+    # Exact executable LEGO variant when the parent alias cannot assemble on
+    # its own (notably fixed, assembled-only landmark families).
+    variant_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -118,11 +121,67 @@ class BarOption:
 # a band silently collapses the ring back to a monoculture.
 BAR_WIDTH_COMPAT_LO = 0.35
 BAR_WIDTH_COMPAT_HI = 2.4
+# Runtime LEGO recipes have a stricter 0.80-1.20 production envelope than
+# legacy contain-fit models. Keep two percentage points of headroom because
+# the browser remeasures WGS84 coordinates after a different local projection;
+# a nominal 0.800 fit can otherwise arrive as 0.793 and be rebound.
+RUNTIME_BAR_SCALE_MIN = 0.82
+RUNTIME_BAR_SCALE_MAX = 1.18
+# Uniformly resizing a complete authored building is visually safe; stretching
+# one facade axis relative to the other distorts windows, bays, and texture
+# atlases. Keep alternate-axis distortion below 6% while retaining useful
+# near-native size variety.
+RUNTIME_BAR_MAX_AXIS_RATIO = 1.06
 # Variant rotation: how many of the primary archetype's OWN variants join the
 # bar cycle (same scale/family by construction), and the total option cap —
 # bounds the distinct render refs and 3D cache keys one plan can demand.
 MAX_VARIANT_BARS = 3
 MAX_BAR_OPTIONS = 5
+
+
+def _character_tuple(
+    value: tuple[str, str, str | None] | tuple[str, str, str | None, str | None],
+) -> tuple[str, str, str | None, str | None]:
+    """Normalize legacy three-field alternates to the LEGO-aware contract."""
+
+    if len(value) == 3:
+        development_type, aesthetic, archetype_id = value
+        return development_type, aesthetic, archetype_id, None
+    return value
+
+
+def runtime_lego_rectangle_fit(
+    cell_width_m: float,
+    cell_depth_m: float,
+    candidate_width_m: float,
+    candidate_depth_m: float,
+) -> bool:
+    """Whether an authored rectangle fits a cell directly or quarter-turned."""
+
+    if min(
+        cell_width_m,
+        cell_depth_m,
+        candidate_width_m,
+        candidate_depth_m,
+    ) <= 0:
+        return False
+    orientations = (
+        (
+            cell_width_m / candidate_width_m,
+            cell_depth_m / candidate_depth_m,
+        ),
+        (
+            cell_depth_m / candidate_width_m,
+            cell_width_m / candidate_depth_m,
+        ),
+    )
+    return any(
+        RUNTIME_BAR_SCALE_MIN <= scale_x <= RUNTIME_BAR_SCALE_MAX
+        and RUNTIME_BAR_SCALE_MIN <= scale_y <= RUNTIME_BAR_SCALE_MAX
+        and max(scale_x, scale_y) / min(scale_x, scale_y)
+        <= RUNTIME_BAR_MAX_AXIS_RATIO
+        for scale_x, scale_y in orientations
+    )
 
 
 @dataclass(frozen=True)
@@ -153,10 +212,11 @@ class Palette:
     # Declared style family (archetype_families.json): family-aware resolution
     # keeps every pick coherent. None = legacy resolution.
     style_family: str | None = None
-    # Per-band character rotation: (development_type, aesthetic, archetype_id)
-    # triples cycled across same-band blocks and across the bars within a
-    # block (archetype_id None = resolve). Empty = preset single-character.
-    alternates: dict[str, tuple[tuple[str, str, str | None], ...]] = field(default_factory=dict)
+    # Per-band character rotation: (development_type, aesthetic,
+    # archetype_id, variant_id) tuples cycled across same-band blocks and bars.
+    alternates: dict[
+        str, tuple[tuple[str, str, str | None, str | None], ...]
+    ] = field(default_factory=dict)
     # planting_structure per green kind (park/pocket/courtyard/greenway/plaza),
     # mirrored by the globe's parkScatter — see master_planner.spec vocabulary.
     landscape: dict[str, str] = field(default_factory=dict)
@@ -165,6 +225,44 @@ class Palette:
     # Massing for the degenerate one-block site; None keeps the historic
     # perimeter courtyard.
     single_block_typology: str | None = None
+    # Runtime-proven LEGO inventory. ``None`` preserves legacy/manual palette
+    # behavior; a populated map makes every selection and floor snap stay
+    # inside imported, executable families.
+    allowed_archetype_ids: frozenset[str] | None = None
+    allowed_variant_ids_by_archetype: dict[str, tuple[str, ...]] = field(default_factory=dict)
+    supported_floors_by_selectable_id: dict[str, tuple[int, ...]] = field(default_factory=dict)
+    target_dimensions_by_selectable_id: dict[
+        str, tuple[float, float]
+    ] = field(default_factory=dict)
+
+
+def selected_target_footprint(
+    entry: dict | None,
+    floors: int,
+    measured_dims: dict | None,
+    palette: Palette,
+    selectable_id: str | None,
+) -> TargetFootprint | None:
+    """Return the exact runtime LEGO target after parent/variant selection."""
+
+    if entry is None:
+        return None
+    dimensions = (
+        palette.target_dimensions_by_selectable_id.get(selectable_id or "")
+        if palette.allowed_archetype_ids is not None
+        else None
+    )
+    if dimensions:
+        width_m, depth_m = dimensions
+        width_m = max(1.0, float(width_m))
+        depth_m = max(1.0, float(depth_m))
+        return TargetFootprint(
+            round(width_m, 2),
+            round(depth_m, 2),
+            round(width_m / depth_m, 3),
+            "runtime_lego",
+        )
+    return target_footprint(entry, floors, measured_dims)
 
 
 @dataclass(frozen=True)
@@ -433,6 +531,23 @@ def plan_blocks(
 
     context_avg_h = _dna_value(dna, "built_form", "context_avg_height_m")
     band_turns: dict[str, int] = {}
+    supported_floors_by_parent = (
+        {
+            parent_id: tuple(sorted({
+                floor
+                for selectable_id in (
+                    parent_id,
+                    *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+                )
+                for floor in palette.supported_floors_by_selectable_id.get(
+                    selectable_id, ()
+                )
+            }))
+            for parent_id in palette.allowed_archetype_ids
+        }
+        if palette.allowed_archetype_ids is not None
+        else None
+    )
 
     for ctx in contexts:
         # anchor > frontage > edge > core > mid. Main-street character wins
@@ -457,20 +572,25 @@ def plan_blocks(
         development_type = spec.development_type
         aesthetic = spec.aesthetic
         arch_hint = spec.archetype_id
+        variant_hint = spec.variant_id
         if band == "mid" and (base_type or base_aesthetic):
             # Expert override changes the character — a pinned id no longer applies.
             arch_hint = None
+            variant_hint = None
             if base_type:
                 development_type = base_type
             if base_aesthetic:
                 aesthetic = base_aesthetic
 
-        # Character rotation across same-band blocks. Options are
-        # (development_type, aesthetic, archetype_id|None) triples.
-        options: list[tuple[str, str, str | None]] = [(development_type, aesthetic, arch_hint)]
-        for triple in palette.alternates.get(band, ()):
-            if triple not in options:
-                options.append(triple)
+        # Character rotation across same-band blocks. Options carry the
+        # catalog parent plus an exact executable variant when required.
+        options: list[tuple[str, str, str | None, str | None]] = [
+            (development_type, aesthetic, arch_hint, variant_hint)
+        ]
+        for raw_character in palette.alternates.get(band, ()):
+            character = _character_tuple(raw_character)
+            if character not in options:
+                options.append(character)
         # A LONE block is a microcosm of the transect: its ring bars should
         # rotate through the frontage/mid/edge characters (and their
         # alternates) so a single-block infill reads as several distinct
@@ -482,15 +602,21 @@ def plan_blocks(
                 other = palette.bands.get(bk)
                 if other is None:
                     continue
-                triple = (other.development_type, other.aesthetic, other.archetype_id)
-                if triple not in options:
-                    options.append(triple)
-                for alt in palette.alternates.get(bk, ()):
+                character = (
+                    other.development_type,
+                    other.aesthetic,
+                    other.archetype_id,
+                    other.variant_id,
+                )
+                if character not in options:
+                    options.append(character)
+                for raw_alt in palette.alternates.get(bk, ()):
+                    alt = _character_tuple(raw_alt)
                     if alt not in options:
                         options.append(alt)
         turn = band_turns.get(band, 0)
         band_turns[band] = turn + 1
-        development_type, aesthetic, arch_hint = options[turn % len(options)]
+        development_type, aesthetic, arch_hint, variant_hint = options[turn % len(options)]
 
         if spec.floors_abs is not None:
             floors = spec.floors_abs
@@ -522,16 +648,57 @@ def plan_blocks(
         floors_int = max(1, int(round(float(floors))))
 
         def _resolve_entry(dev: str, aes: str, aid: str | None) -> dict | None:
-            if aid:
+            if aid and (
+                palette.allowed_archetype_ids is None
+                or aid in palette.allowed_archetype_ids
+            ):
                 pinned = dims_by_id().get(aid)
                 if pinned is not None and pinned.get("usable"):
                     return pinned
             return resolve_building_archetype(
-                dev, aes, floors_int, prefer_family=palette.style_family,
+                dev,
+                aes,
+                floors_int,
+                prefer_family=palette.style_family,
+                allowed_archetype_ids=palette.allowed_archetype_ids,
+                supported_floors_by_archetype=supported_floors_by_parent,
             )
 
         entry = _resolve_entry(development_type, aesthetic, arch_hint)
-        target = target_footprint(entry, floors_int, measured_dims) if entry else None
+        selected_variant_id: str | None = None
+        if entry is not None and palette.allowed_archetype_ids is not None:
+            selection_ids = (
+                entry["id"],
+                *palette.allowed_variant_ids_by_archetype.get(entry["id"], ()),
+            )
+            preferred = variant_hint or entry["id"]
+            candidates = [
+                (
+                    abs(supported_floor - floors_int),
+                    0 if selectable_id == preferred else 1,
+                    selectable_id,
+                    supported_floor,
+                )
+                for selectable_id in selection_ids
+                for supported_floor in palette.supported_floors_by_selectable_id.get(
+                    selectable_id, ()
+                )
+            ]
+            if not candidates:
+                entry = None
+            else:
+                _, _, selectable_id, floors_int = min(candidates)
+                floors = float(floors_int)
+                selected_variant_id = (
+                    selectable_id if selectable_id != entry["id"] else None
+                )
+        target = selected_target_footprint(
+            entry,
+            floors_int,
+            measured_dims,
+            palette,
+            selected_variant_id or (entry["id"] if entry else None),
+        )
         measured_entry = (measured_dims or {}).get(entry["id"]) if entry else None
 
         # Per-bar options: the primary archetype's OWN VARIANTS come first
@@ -539,10 +706,37 @@ def plan_blocks(
         # band's other characters when their frontage fits the carved grid.
         bar_options: list[BarOption] = []
         if entry is not None:
-            primary_variant = measured_entry.variant_id if measured_entry else None
-            for vid in variants_of(entry["id"]):
+            primary_variant = selected_variant_id or (
+                measured_entry.variant_id if measured_entry else None
+            )
+            available_variants = (
+                palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
+                if palette.allowed_archetype_ids is not None
+                else variants_of(entry["id"])
+            )
+            for vid in available_variants:
                 if vid == primary_variant:
                     continue
+                if (
+                    palette.allowed_archetype_ids is not None
+                    and floors_int not in palette.supported_floors_by_selectable_id.get(vid, ())
+                ):
+                    continue
+                if palette.allowed_archetype_ids is not None:
+                    variant_dimensions = (
+                        palette.target_dimensions_by_selectable_id.get(vid)
+                    )
+                    if (
+                        target is None
+                        or variant_dimensions is None
+                        or not runtime_lego_rectangle_fit(
+                            target.width_m,
+                            target.depth_m,
+                            variant_dimensions[0],
+                            variant_dimensions[1],
+                        )
+                    ):
+                        continue
                 bar_options.append(BarOption(
                     development_type=development_type,
                     aesthetic=aesthetic,
@@ -553,13 +747,59 @@ def plan_blocks(
                     break
         if entry is not None and len(options) > 1:
             seen_ids = {entry["id"]}
-            for dev, aes, aid in options:
-                if (dev, aes, aid) == (development_type, aesthetic, arch_hint):
+            for dev, aes, aid, option_variant_id in options:
+                if (dev, aes, aid, option_variant_id) == (
+                    development_type,
+                    aesthetic,
+                    arch_hint,
+                    variant_hint,
+                ):
                     continue
                 alt = _resolve_entry(dev, aes, aid)
                 if alt is None or alt["id"] in seen_ids:
                     continue
-                alt_target = target_footprint(alt, floors_int, measured_dims)
+                alt_variant_id = option_variant_id
+                if palette.allowed_archetype_ids is not None:
+                    selection_ids = tuple(dict.fromkeys((
+                        alt_variant_id,
+                        alt["id"],
+                        *palette.allowed_variant_ids_by_archetype.get(alt["id"], ()),
+                    )))
+                    alt_selectable_id = next(
+                        (
+                            selectable_id
+                            for selectable_id in selection_ids
+                            if selectable_id
+                            and floors_int in palette.supported_floors_by_selectable_id.get(
+                                selectable_id, ()
+                            )
+                            and (
+                                dimensions := palette.target_dimensions_by_selectable_id.get(
+                                    selectable_id
+                                )
+                            ) is not None
+                            and target is not None
+                            and runtime_lego_rectangle_fit(
+                                target.width_m,
+                                target.depth_m,
+                                dimensions[0],
+                                dimensions[1],
+                            )
+                        ),
+                        None,
+                    )
+                    if alt_selectable_id is None:
+                        continue
+                    alt_variant_id = (
+                        alt_selectable_id if alt_selectable_id != alt["id"] else None
+                    )
+                alt_target = selected_target_footprint(
+                    alt,
+                    floors_int,
+                    measured_dims,
+                    palette,
+                    alt_variant_id or alt["id"],
+                )
                 if target is not None and alt_target is not None:
                     ratio = alt_target.width_m / max(target.width_m, 0.1)
                     if not (BAR_WIDTH_COMPAT_LO <= ratio <= BAR_WIDTH_COMPAT_HI):
@@ -570,7 +810,9 @@ def plan_blocks(
                     development_type=dev,
                     aesthetic=aes,
                     archetype_id=alt["id"],
-                    variant_id=alt_measured.variant_id if alt_measured else None,
+                    variant_id=alt_variant_id or (
+                        alt_measured.variant_id if alt_measured else None
+                    ),
                 ))
                 if len(bar_options) >= MAX_BAR_OPTIONS:
                     break
@@ -582,7 +824,9 @@ def plan_blocks(
             typology=typology,
             band=band,
             archetype_id=entry["id"] if entry else None,
-            variant_id=measured_entry.variant_id if measured_entry else None,
+            variant_id=selected_variant_id or (
+                measured_entry.variant_id if measured_entry else None
+            ),
             target=target,
             bar_options=tuple(bar_options),
         )

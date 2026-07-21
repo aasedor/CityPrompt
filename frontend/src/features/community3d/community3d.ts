@@ -29,12 +29,59 @@ export interface Community3DCaptureClaim {
   building_id?: string;
 }
 
-interface Community3DBuildingRepresentation {
+export interface Community3DBuildingRepresentation {
   schema_version: 1;
   zone_id: string;
   generator: Community3DGenerator;
   representation_hash: string;
   compiled_at: string;
+}
+
+/**
+ * True only when a mounted Building is the exact representation owned by the
+ * current persisted source zone. Older model-only records remain useful
+ * project context, but must not inherit a paid Direct 3D proposal role.
+ */
+export function isCurrentCommunity3DBuildingRepresentation(
+  zone: SiteZone,
+  building: Building,
+): boolean {
+  if (
+    resolveCommunity3DKind(zone) !== 'building'
+    || zone.building_id !== building.id
+    || !hasCommunity3DSourceFingerprint(zone)
+  ) return false;
+
+  const meta = getCommunity3DMeta(zone);
+  const marker = building.specifications?.community3DRepresentation as
+    | Community3DBuildingRepresentation
+    | undefined;
+  return Boolean(
+    meta
+    && marker
+    && marker.schema_version === 1
+    && marker.zone_id === zone.id
+    && marker.generator === meta.generator
+    && marker.representation_hash === meta.representation_hash
+    && marker.compiled_at === meta.compiled_at,
+  );
+}
+
+/** Building IDs safe to classify as editable Direct 3D proposal content. */
+export function getCurrentCommunity3DBuildingIds(
+  zones: SiteZone[],
+  buildings: Building[],
+): Set<string> {
+  const buildingsById = new Map(buildings.map((building) => [building.id, building]));
+  const ids = new Set<string>();
+  for (const zone of zones) {
+    if (!zone.building_id) continue;
+    const building = buildingsById.get(zone.building_id);
+    if (building && isCurrentCommunity3DBuildingRepresentation(zone, building)) {
+      ids.add(building.id);
+    }
+  }
+  return ids;
 }
 
 const BUILDING_ZONE_TYPES = new Set([
@@ -140,17 +187,7 @@ export function getCommunity3DCaptureClaims(
       const building = buildingsById.get(zone.building_id);
       if (!building || !Array.isArray(building.footprint_coordinates)
         || building.footprint_coordinates.length < 3) return null;
-      const marker = building.specifications?.community3DRepresentation as
-        | Community3DBuildingRepresentation
-        | undefined;
-      if (
-        !marker
-        || marker.schema_version !== 1
-        || marker.zone_id !== zone.id
-        || marker.generator !== meta.generator
-        || marker.representation_hash !== meta.representation_hash
-        || marker.compiled_at !== meta.compiled_at
-      ) return null;
+      if (!isCurrentCommunity3DBuildingRepresentation(zone, building)) return null;
 
       const hasGeneratedModel = Boolean(building.lod_urls?.['0'] ?? building.model_url);
       const specifications = building.specifications ?? {};

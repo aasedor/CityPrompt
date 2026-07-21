@@ -81,6 +81,7 @@ export interface LegoPlanRequest {
   allow_setback?: boolean;
   footprint_profile?: LegoFootprintProfile;
   wing_depth_m?: number;
+  project_id?: string;
 }
 
 export type LegoPlanningFailureCode = 'family_not_found' | 'family_incompatible';
@@ -168,6 +169,9 @@ export function getLegoPlanningFailure(error: unknown): LegoPlanningFailure | nu
 export interface LegoAssemblyRecipe {
   schema_version: 1;
   module_family: string;
+  /** Executable catalogue revision stamped by the AI Master Planner. Manual
+   * LEGO recipes intentionally omit it for backwards compatibility. */
+  catalog_fingerprint?: string | null;
   archetype_id?: string | null;
   reuse_keys: string[];
   target: {

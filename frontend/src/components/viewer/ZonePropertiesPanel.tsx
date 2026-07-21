@@ -15,6 +15,7 @@ import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
+import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -2194,6 +2195,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
   const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
   const [failedSiteRenderIndices, setFailedSiteRenderIndices] = useState<Set<number>>(new Set());
   const autoRenderTriggered = useRef(false);
+  const generationInFlight = useRef(false);
   const mapScreenshotsRef = useRef<{ satellite: string; withZones: string } | null>(null);
   const selectZone = useViewerStore((s) => s.selectZone);
   const mapInstance = useViewerStore((s) => s.mapInstance);
@@ -2343,49 +2345,90 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
     }
   };
 
-  const handleGenerate = async () => {
+  const handleGenerateCommunity3D = async (
+    selectedLayouts?: Record<string, LayoutOption>,
+    optionIndex = 0,
+  ) => {
     // Belt-and-braces: the button is disabled for unsaved zones, but guard the
-    // handler too — generateForBoundary UUID-validates and 422s on temp- ids.
+    // shared lightbox/history paths too because every compiler input must have
+    // a persisted UUID and a current source fingerprint.
     if (!isPersistedZoneId(zone.id)) {
       toast.error('Save the boundary first (Save Changes above) — then generate.');
       return;
     }
+    if (generationInFlight.current) return;
+    generationInFlight.current = true;
     setGenerating(true);
     try {
-      // Auto-apply any active site preview selections before generating
-      if (isSitePreviewActive) {
-        let appliedCount = 0;
-        const applyResults = await Promise.all(
-          Object.entries(siteOptions).map(async ([zoneId, options]) => {
-            if (!options[siteActiveIndex]) return null;
-            try {
-              await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
-              return zoneId;
-            } catch (e) {
-              console.warn(`Failed to apply layout for zone ${zoneId}:`, e);
-              return null;
-            }
-          })
+      const layoutEntries = Object.entries(selectedLayouts ?? {});
+      if (layoutEntries.length > 0) {
+        const invalidLayouts = layoutEntries.filter(([, layout]) => layout.buildings.length !== 1);
+        if (invalidLayouts.length > 0) {
+          const sampleZoneIds = invalidLayouts.slice(0, 3).map(([zoneId]) => zoneId).join(', ');
+          throw new Error(
+            `${invalidLayouts.length} selected preview layout${invalidLayouts.length === 1 ? '' : 's'} `
+            + 'must contain exactly one building before Community 3D can be generated. '
+            + `No preview layouts were applied.${sampleZoneIds ? ` Check zones: ${sampleZoneIds}.` : ''}`,
+          );
+        }
+        const applyResults = await Promise.allSettled(
+          layoutEntries.map(([zoneId, layout]) => (
+            siteZonesApi.applyLayout(zoneId, optionIndex, layout)
+          )),
         );
-        appliedCount = applyResults.filter(Boolean).length;
+        const failedCount = applyResults.filter((result) => result.status === 'rejected').length;
+        if (failedCount > 0) {
+          throw new Error(
+            `${failedCount} selected layout${failedCount === 1 ? '' : 's'} could not be applied. `
+            + 'Community 3D was not compiled; retry after the zones finish saving.',
+          );
+        }
         clearSitePreview();
         clearLockedLayers();
-        if (appliedCount > 0) {
-          toast.success(`Applied ${appliedCount} previewed layout${appliedCount > 1 ? 's' : ''}`);
-        }
+        toast.success(
+          `Applied ${layoutEntries.length} previewed layout${layoutEntries.length === 1 ? '' : 's'}`,
+        );
       }
 
-      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
+      const summary = await compileBoundaryCommunity3D(zone.project_id, zone.id);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+      ]);
+      const residualArea = summary.response.residual_landscape?.area_sqm ?? 0;
       toast.success(
-        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+        `Built ${summary.detailedBuildings} archetyped LEGO building${summary.detailedBuildings === 1 ? '' : 's'}, `
+        + `${summary.parks} park${summary.parks === 1 ? '' : 's'}, and `
+        + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}`
+        + (residualArea > 0
+          ? `; landscaped ${Math.round(residualArea).toLocaleString()} m² of remaining site.`
+          : '.'),
       );
-    } catch {
-      toast.error('Generation failed');
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'Community 3D generation failed'), { duration: 8000 });
+      // ImageLightbox closes only after a fulfilled onApply callback. Preserve
+      // the preview on strict/preflight failures so the user can inspect it,
+      // adjust the plan, and retry without losing context.
+      throw error;
     } finally {
+      generationInFlight.current = false;
       setGenerating(false);
     }
+  };
+
+  const selectedPreviewLayouts = (index: number): Record<string, LayoutOption> => (
+    Object.fromEntries(
+      Object.entries(siteOptions).flatMap(([zoneId, options]) => (
+        options[index] ? [[zoneId, options[index]]] : []
+      )),
+    )
+  );
+
+  const handleGenerate = () => {
+    void handleGenerateCommunity3D(
+      isSitePreviewActive ? selectedPreviewLayouts(siteActiveIndex) : undefined,
+      siteActiveIndex,
+    ).catch(() => undefined);
   };
 
   if (loading) {
@@ -2596,30 +2639,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                             link.click();
                           },
                           onApply: async () => {
-                            // Auto-apply layouts then generate 3D
-                            const applyResults = await Promise.all(
-                              Object.entries(siteOptions).map(async ([zoneId, options]) => {
-                                if (!options[idx]) return null;
-                                try {
-                                  await siteZonesApi.applyLayout(zoneId, idx, options[idx]);
-                                  return zoneId;
-                                } catch (err) {
-                                  console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                                  return null;
-                                }
-                              })
-                            );
-                            const appliedCount = applyResults.filter(Boolean).length;
-                            if (appliedCount > 0) {
-                              clearSitePreview();
-                              clearLockedLayers();
-                            }
-                            const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-                            queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-                            queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-                            toast.success(
-                              `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
-                            );
+                            await handleGenerateCommunity3D(selectedPreviewLayouts(idx), idx);
                           },
                           applyLabel: 'Generate Community',
                         });
@@ -2697,28 +2717,9 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                       link.click();
                     },
                     onApply: async () => {
-                      const applyResults = await Promise.all(
-                        Object.entries(siteOptions).map(async ([zoneId, options]) => {
-                          if (!options[siteActiveIndex]) return null;
-                          try {
-                            await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
-                            return zoneId;
-                          } catch (err) {
-                            console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                            return null;
-                          }
-                        })
-                      );
-                      const appliedCount = applyResults.filter(Boolean).length;
-                      if (appliedCount > 0) {
-                        clearSitePreview();
-                        clearLockedLayers();
-                      }
-                      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-                      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-                      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-                      toast.success(
-                        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+                      await handleGenerateCommunity3D(
+                        selectedPreviewLayouts(siteActiveIndex),
+                        siteActiveIndex,
                       );
                     },
                     applyLabel: 'Generate Community',
@@ -2780,7 +2781,10 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       )}
 
       {/* Preview History ? site boundary */}
-      <PreviewHistorySection zone={zone} />
+      <PreviewHistorySection
+        zone={zone}
+        onGenerateCommunity3D={handleGenerateCommunity3D}
+      />
     </div>
   );
 }
@@ -3589,8 +3593,16 @@ function ReferenceImagesSection({
 // Preview History section
 // =============================================================================
 
-function PreviewHistorySection({ zone }: { zone: SiteZone }) {
-  const queryClient = useQueryClient();
+function PreviewHistorySection({
+  zone,
+  onGenerateCommunity3D,
+}: {
+  zone: SiteZone;
+  onGenerateCommunity3D?: (
+    selectedLayouts?: Record<string, LayoutOption>,
+    optionIndex?: number,
+  ) => Promise<void>;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [applyingIdx, setApplyingIdx] = useState<number | null>(null);
   const { setLightboxImage } = useViewerStore();
@@ -3641,36 +3653,19 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
         await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
         toast.success('Layout applied ? buildings created');
       };
-    } else if (entry.preview_type === 'site' && zone.zone_type === 'site_boundary') {
+    } else if (
+      entry.preview_type === 'site'
+      && zone.zone_type === 'site_boundary'
+      && onGenerateCommunity3D
+    ) {
       applyLabel = 'Generate Community';
       apply = async () => {
-        // If this history entry has stored zone layouts, apply them first
+        // If this history entry has stored zone layouts, the shared boundary
+        // action applies them before its fresh, LEGO-only Community 3D compile.
         const zoneLayouts = entry.layout_data && 'zone_layouts' in entry.layout_data
           ? (entry.layout_data as { zone_layouts: Record<string, LayoutOption> }).zone_layouts
-          : null;
-        if (zoneLayouts) {
-          const applyResults = await Promise.all(
-            Object.entries(zoneLayouts).map(async ([zoneId, layout]) => {
-              try {
-                await siteZonesApi.applyLayout(zoneId, entry.option_index, layout);
-                return zoneId;
-              } catch (err) {
-                console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                return null;
-              }
-            })
-          );
-          const appliedCount = applyResults.filter(Boolean).length;
-          if (appliedCount > 0) {
-            toast.success(`Applied layouts for ${appliedCount} zone${appliedCount > 1 ? 's' : ''}`);
-          }
-        }
-        const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-        toast.success(
-          `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
-        );
+          : undefined;
+        await onGenerateCommunity3D(zoneLayouts, entry.option_index);
       };
     }
 

@@ -130,6 +130,8 @@ const savedRecipeFixture: LegoAssemblyRecipe = {
   assembled_preview_url: null,
 };
 
+const aiCatalogFingerprint = 'a'.repeat(64);
+
 function statRow(label: string): HTMLElement {
   const row = screen.getByText(label).closest('div');
   if (!row) throw new Error(`No stat row for label "${label}"`);
@@ -271,9 +273,24 @@ describe('LegoAssemblyPreview', () => {
         target_width_m: 32,
         target_depth_m: 20,
         target_floors: 6,
+        project_id: 'proj-1',
         allow_setback: false,
         archetype_id: 'nordic_timber_midrise',
       }),
+    );
+  });
+
+  it('scopes planning to the zone project module inventory', async () => {
+    apiPost.mockResolvedValueOnce({ data: planFixture });
+
+    render(<LegoAssemblyPreview zone={makeZone({ project_id: 'project-private-modules' })} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+
+    await waitFor(() =>
+      expect(apiPost).toHaveBeenCalledWith(
+        '/api/v1/lego-assembly/plan',
+        expect.objectContaining({ project_id: 'project-private-modules' }),
+      ),
     );
   });
 
@@ -321,6 +338,8 @@ describe('LegoAssemblyPreview', () => {
         }),
       ),
     );
+    const saveCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/recipes/bldg-1');
+    expect(saveCall?.[1]).not.toHaveProperty('catalog_fingerprint');
 
     // The saved-recipe badge appears once the save resolves.
     expect(await screen.findByText('Saved recipe')).toBeInTheDocument();
@@ -358,11 +377,66 @@ describe('LegoAssemblyPreview', () => {
     );
     expect(await screen.findByRole('button', { name: /placed — place again/i })).toBeInTheDocument();
 
+    const placeCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place/zone-1');
+    expect(placeCall?.[1]).not.toHaveProperty('catalog_fingerprint');
+
     // Clear targets the building the endpoint just created/linked.
     fireEvent.click(screen.getByRole('button', { name: /clear saved recipe/i }));
     await waitFor(() =>
       expect(apiDelete).toHaveBeenCalledWith('/api/v1/lego-assembly/recipes/bldg-new'),
     );
+  });
+
+  it('carries an AI zone catalog fingerprint through both save and place recipes', async () => {
+    const aiRecipe = { ...savedRecipeFixture, catalog_fingerprint: aiCatalogFingerprint };
+    apiGet.mockResolvedValue({ data: { legoAssembly: null } });
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') return Promise.resolve({ data: planFixture });
+      if (url === '/api/v1/lego-assembly/recipes/bldg-ai') {
+        return Promise.resolve({
+          data: { status: 'saved', building_id: 'bldg-ai', legoAssembly: aiRecipe },
+        });
+      }
+      if (url === '/api/v1/lego-assembly/place/zone-1') {
+        return Promise.resolve({
+          data: { status: 'placed', zone_id: 'zone-1', building_id: 'bldg-ai', building_created: false },
+        });
+      }
+      throw new Error(`Unexpected POST ${url}`);
+    });
+
+    render(
+      <LegoAssemblyPreview
+        zone={makeZone({
+          building_id: 'bldg-ai',
+          properties: {
+            development_archetype_id: 'nordic_timber_midrise',
+            _lego_catalog_fingerprint: aiCatalogFingerprint,
+          },
+        })}
+        buildingId="bldg-ai"
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /save assembly recipe/i })).toBeEnabled());
+
+    fireEvent.click(screen.getByRole('button', { name: /save assembly recipe/i }));
+    await waitFor(() => {
+      const saveCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/recipes/bldg-ai');
+      expect(saveCall?.[1]).toEqual(expect.objectContaining({
+        catalog_fingerprint: aiCatalogFingerprint,
+      }));
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /place on map/i }));
+    await waitFor(() => {
+      const placeCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place/zone-1');
+      expect(placeCall?.[1]).toEqual(expect.objectContaining({
+        catalog_fingerprint: aiCatalogFingerprint,
+      }));
+    });
   });
 
   it('shows an existing saved recipe on open and Load re-plans with its targets', async () => {

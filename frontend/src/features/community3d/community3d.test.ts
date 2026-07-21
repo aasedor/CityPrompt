@@ -3,7 +3,9 @@ import type { Building, SiteZone } from '@/types';
 import {
   getCommunity3DCaptureClaims,
   getCommunity3DMeta,
+  getCurrentCommunity3DBuildingIds,
   hasCommunity3DSourceFingerprint,
+  isCurrentCommunity3DBuildingRepresentation,
   resolveCommunity3DAction,
   resolveCommunity3DKind,
   selectCommunity3DCompileZones,
@@ -172,6 +174,9 @@ describe('community 3D plan contract', () => {
     });
 
     expect(hasCommunity3DSourceFingerprint(building)).toBe(true);
+    expect(isCurrentCommunity3DBuildingRepresentation(building, buildingModel)).toBe(true);
+    expect([...getCurrentCommunity3DBuildingIds([building, park], [buildingModel])])
+      .toEqual(['building-1']);
     expect(getCommunity3DCaptureClaims([building, park], [buildingModel])).toEqual([
       {
         zone_id: building.id,
@@ -205,5 +210,14 @@ describe('community 3D plan contract', () => {
         },
       },
     }])).toBeNull();
+    const legacyModel = {
+      ...buildingModel,
+      id: 'legacy-building',
+      specifications: {
+        legoAssembly: buildingModel.specifications?.legoAssembly,
+      },
+    } satisfies Building;
+    expect(getCurrentCommunity3DBuildingIds([building], [buildingModel, legacyModel]).has('legacy-building'))
+      .toBe(false);
   });
 });

@@ -753,6 +753,7 @@ export function ProjectViewPage() {
                 canvas={globeRefs?.canvas ?? null}
                 camera={globeRefs?.camera ?? null}
                 siteZones={globeRenderZones}
+                communitySourceZones={visibleZones}
                 buildings={project?.buildings ?? []}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}

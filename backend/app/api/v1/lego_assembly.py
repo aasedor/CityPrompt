@@ -18,6 +18,10 @@ from sqlalchemy.orm.attributes import flag_modified
 from app.core.database import get_db
 from app.core.security import require_auth
 from app.models.models import Building, ModelLibraryEntry, Project, ProjectShare, SiteZone, User
+from app.services.community_3d_artifacts import (
+    COMMUNITY_REPRESENTATION_SPEC_KEY,
+    stale_community_3d_buildings,
+)
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
@@ -27,6 +31,7 @@ from app.services.lego_assembly import (
     manifest_validation_errors,
     plan_vertical_assembly,
 )
+from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 from app.services.residual_landscape import (
     ResidualSourceZone,
     build_residual_landscape_recipe,
@@ -44,7 +49,6 @@ router = APIRouter()
 # existing model_url workflow fields without a schema migration.
 RECIPE_SPEC_KEY = "legoAssembly"
 PLANNED_MASSING_SPEC_KEY = "plannedMassing"
-COMMUNITY_REPRESENTATION_SPEC_KEY = "community3DRepresentation"
 
 _LEGO_CATEGORY = "lego_module"
 _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
@@ -63,6 +67,9 @@ class LegoAssemblyPlanRequest(BaseModel):
     allow_setback: bool = True
     footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
     wing_depth_m: float | None = Field(default=None, gt=0)
+    # When planning for a shared project, use the same owner-visible private
+    # module inventory that the AI Master Planner used for that project.
+    project_id: uuid.UUID | None = None
 
 
 class LegoRecipeTarget(BaseModel):
@@ -85,6 +92,13 @@ class LegoRecipeRequest(BaseModel):
     assembled_height_m: float | None = None
     fit: dict[str, Any] | None = None
     assembled_preview_url: str | None = None
+    # AI Master Planner zones carry the exact executable catalogue revision
+    # used to bind their archetype and geometry.  Manual recipes omit this
+    # optional token and retain the historical save/place contract.
+    catalog_fingerprint: str | None = Field(
+        default=None,
+        pattern=r"^[a-fA-F0-9]{64}$",
+    )
 
 
 class LegoPlaceRequest(LegoRecipeRequest):
@@ -135,6 +149,154 @@ def _same_source_revision(client_revision: datetime, server_revision: datetime |
     return utc(client_revision) == utc(server_revision)
 
 
+def _zone_lego_catalog_fingerprint(zone: SiteZone) -> str | None:
+    """Return the AI binder's catalogue token, rejecting corrupt stamps.
+
+    The field is deliberately opt-in: hand-authored zones and legacy manual
+    LEGO recipes have no stamp and continue through their existing workflow.
+    """
+    value = (zone.properties or {}).get("_lego_catalog_fingerprint")
+    if value is None:
+        return None
+    if not isinstance(value, str) or len(value) != 64:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This AI Master Plan has an invalid LEGO catalogue revision; "
+                "regenerate the plan before compiling Community 3D."
+            ),
+        )
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This AI Master Plan has an invalid LEGO catalogue revision; "
+                "regenerate the plan before compiling Community 3D."
+            ),
+        ) from exc
+    return value.lower()
+
+
+async def _assert_ai_lego_recipes_are_current(
+    db: AsyncSession,
+    user: User,
+    project_id: uuid.UUID,
+    resolved_items: list[
+        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
+    ],
+) -> None:
+    """Fail closed when an AI recipe no longer matches its locked inventory.
+
+    Catalogue binding and browser-side assembly planning are separate requests.
+    This check runs only after the project mutation lock is held and before any
+    derived Building is changed.  It protects both gaps: the catalogue token
+    proves that the advertised family/floor vocabulary is unchanged, while a
+    fresh server-side plan proves that the exact module IDs, URLs, dimensions,
+    and stack geometry in the submitted recipe still match current rows.
+    """
+    protected: list[tuple[Community3DCompileItem, SiteZone, str]] = []
+    for item, zone, kind in resolved_items:
+        if kind != "building":
+            continue
+        expected_fingerprint = _zone_lego_catalog_fingerprint(zone)
+        if expected_fingerprint is None:
+            continue
+        if item.recipe is None or item.recipe.catalog_fingerprint is None:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "An AI Master Plan building is missing its LEGO catalogue revision; "
+                    "refresh the project and prepare Community 3D again."
+                ),
+            )
+        if item.recipe.catalog_fingerprint.lower() != expected_fingerprint:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "An AI Master Plan building recipe came from a different LEGO catalogue; "
+                    "refresh the project and prepare Community 3D again."
+                ),
+            )
+        protected.append((item, zone, expected_fingerprint))
+
+    if not protected:
+        return
+
+    entries = await _accessible_entries(
+        db,
+        user,
+        project_id,
+        lock_for_update=True,
+    )
+    current_catalog = build_lego_planning_catalog(entries)
+    stale_catalog = next(
+        (
+            (zone, expected)
+            for _, zone, expected in protected
+            if expected != current_catalog.fingerprint
+        ),
+        None,
+    )
+    if stale_catalog is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "The executable LEGO catalogue changed after this AI Master Plan was created; "
+                "regenerate the plan before compiling Community 3D."
+            ),
+        )
+
+    descriptors = [
+        descriptor
+        for entry in entries
+        if (descriptor := descriptor_from_library_entry(entry)) is not None
+    ]
+    for item, _, _ in protected:
+        recipe = item.recipe
+        assert recipe is not None  # established above; keeps type narrowing explicit
+        try:
+            current_plan = plan_vertical_assembly(
+                descriptors,
+                AssemblyRequest(
+                    target_width_m=recipe.target.width_m,
+                    target_depth_m=recipe.target.depth_m,
+                    target_floors=recipe.target.floors,
+                    archetype_id=recipe.archetype_id,
+                    reuse_keys=tuple(recipe.reuse_keys),
+                    footprint_profile=recipe.target.footprint_profile,
+                    wing_depth_m=recipe.target.wing_depth_m,
+                    # The AI binder and browser compiler deliberately disable
+                    # optional setback modules. The locked re-plan must use
+                    # that same deterministic policy.
+                    allow_setback=False,
+                ),
+            )
+        except AssemblyPlanningError as exc:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "A LEGO family used by this AI Master Plan is no longer executable; "
+                    "regenerate the plan before compiling Community 3D."
+                ),
+            ) from exc
+
+        if (
+            current_plan["family"] != recipe.module_family
+            or current_plan["instances"] != recipe.instances
+            or current_plan["assembled_height_m"] != recipe.assembled_height_m
+            or current_plan["fit"] != recipe.fit
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "The LEGO modules used by this AI Master Plan changed while its 3D "
+                    "recipes were being prepared; refresh and retry."
+                ),
+            )
+
+
 class LegoModuleMetadataRequest(BaseModel):
     role: str = Field(pattern="^(podium|floor|setback|crown|roof|attachment|assembled)$")
     family: str = Field(min_length=1, max_length=100)
@@ -152,17 +314,56 @@ class LegoModuleMetadataRequest(BaseModel):
     allowed_levels: list[int] = Field(default_factory=list)
 
 
-async def _accessible_entries(db: AsyncSession, user: User) -> list[ModelLibraryEntry]:
-    result = await db.execute(
+async def _accessible_entries(
+    db: AsyncSession,
+    user: User,
+    project_id: uuid.UUID | None = None,
+    *,
+    lock_for_update: bool = False,
+) -> list[ModelLibraryEntry]:
+    # Without project context the caller's private library is the expected
+    # workspace.  A project-scoped plan must instead use exactly the inventory
+    # that the background Master Planner sees: project-owner private modules
+    # plus public modules.  Including an editor's unrelated private library
+    # would let the browser select a different family from the one preflighted
+    # and persisted by the AI plan task.
+    owner_ids = {user.id}
+    if project_id is not None:
+        project_result = await db.execute(
+            select(Project).where(Project.id == project_id)
+        )
+        project = project_result.scalar_one_or_none()
+        if project is None:
+            raise HTTPException(status_code=404, detail="Project not found")
+        if project.owner_id != user.id:
+            share_result = await db.execute(
+                select(ProjectShare).where(
+                    ProjectShare.project_id == project_id,
+                    (ProjectShare.user_id == user.id)
+                    | (ProjectShare.email == user.email),
+                )
+            )
+            if share_result.scalar_one_or_none() is None:
+                raise HTTPException(status_code=403, detail="Not authorized")
+        owner_ids = {project.owner_id}
+
+    query = (
         select(ModelLibraryEntry)
         .where(
             or_(
-                ModelLibraryEntry.owner_id == user.id,
+                ModelLibraryEntry.owner_id.in_(owner_ids),
                 ModelLibraryEntry.is_public.is_(True),
             )
         )
-        .order_by(ModelLibraryEntry.created_at.desc())
+        .order_by(ModelLibraryEntry.created_at.desc(), ModelLibraryEntry.id.desc())
     )
+    if lock_for_update:
+        # Community compilation persists URLs and dimensions from these rows.
+        # Hold the selected inventory stable until the request transaction
+        # commits, so a concurrent re-import/configuration cannot land between
+        # freshness validation and Building persistence.
+        query = query.with_for_update()
+    result = await db.execute(query)
     return list(result.scalars().all())
 
 
@@ -284,7 +485,7 @@ async def create_lego_assembly_plan(
     """
     descriptors = [
         descriptor
-        for entry in await _accessible_entries(db, user)
+        for entry in await _accessible_entries(db, user, body.project_id)
         if (descriptor := descriptor_from_library_entry(entry)) is not None
     ]
 
@@ -738,6 +939,11 @@ async def _place_recipe_on_zone(
             footprint=zone.geometry,
             floor_count=body.target.floors,
             height_meters=body.assembled_height_m,
+            # SQLAlchemy's insert default is not visible until flush, but the
+            # representation fingerprint is stamped before the final atomic
+            # flush. Make the renderer's neutral rotation explicit so the
+            # stored proof remains identical after the row round-trips.
+            rotation_degrees=0.0,
             specifications={},
         )
         db.add(building)
@@ -815,6 +1021,7 @@ async def _place_planned_massing_on_zone(
             footprint=zone.geometry,
             floor_count=floors,
             height_meters=height,
+            rotation_degrees=0.0,
             specifications={},
         )
         db.add(building)
@@ -871,41 +1078,19 @@ async def place_lego_assembly(
     await lock_residual_landscape_project(db, zone.project_id)
     await db.refresh(zone)
 
-    building: Building | None = None
-    if zone.building_id is not None:
-        result = await db.execute(select(Building).where(Building.id == zone.building_id))
-        building = result.scalar_one_or_none()
+    freshness_item = Community3DCompileItem(
+        zone_id=zone.id,
+        source_updated_at=zone.updated_at or datetime.now(timezone.utc),
+        recipe=body,
+    )
+    await _assert_ai_lego_recipes_are_current(
+        db,
+        user,
+        zone.project_id,
+        [(freshness_item, zone, "building")],
+    )
 
-    created = False
-    if building is None:
-        building = Building(
-            id=uuid.uuid4(),  # assigned here, not at flush: the response needs it
-            project_id=zone.project_id,
-            name=(body.building_name or zone.name or body.archetype_id or "LEGO Building")[:255],
-            footprint=zone.geometry,
-            floor_count=body.target.floors,
-            height_meters=body.assembled_height_m,
-            specifications={},
-        )
-        db.add(building)
-        zone.building_id = building.id
-        zone.building_ids = [str(building.id)]
-        created = True
-    else:
-        # The globe stack cannot mount without a footprint ring; a building
-        # made by older flows may not have one — the zone polygon is the
-        # honest footprint in that case.
-        if building.footprint is None:
-            building.footprint = zone.geometry
-        if building.floor_count is None:
-            building.floor_count = body.target.floors
-
-    specifications = dict(building.specifications or {})
-    specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
-    specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
-    specifications["lego_placed"] = True
-    building.specifications = specifications
-    flag_modified(building, "specifications")
+    building, created = await _place_recipe_on_zone(db, zone, body)
     _stamp_community_3d(
         zone,
         "building",
@@ -919,7 +1104,7 @@ async def place_lego_assembly(
         "zone_id": str(zone.id),
         "building_id": str(building.id),
         "building_created": created,
-        RECIPE_SPEC_KEY: specifications[RECIPE_SPEC_KEY],
+        RECIPE_SPEC_KEY: building.specifications[RECIPE_SPEC_KEY],
     }
 
 
@@ -1007,6 +1192,17 @@ async def place_community_3d(
             )
         refreshed_items.append((item, zone, kind))
     resolved_items = refreshed_items
+
+    # AI-bound recipes must still match both the catalogue revision stamped on
+    # their source zones and the exact project-visible modules.  This runs
+    # under the project lock and before boundary/building persistence begins.
+    await _assert_ai_lego_recipes_are_current(
+        db,
+        user,
+        project_id,
+        resolved_items,
+    )
+
     boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
     if len(boundaries) > 1:
         raise HTTPException(
@@ -1052,6 +1248,41 @@ async def place_community_3d(
                 project_zones.append(boundary)
                 boundaries = [boundary]
                 derived_boundary_count = 1
+
+    # A master-plan redraw can replace source zones or reuse a source UUID for
+    # a park/street. Older Community 3D buildings can therefore outlive the
+    # building polygon that explicitly owns them and appear as ghosts beside
+    # the newly compiled plan. Remove only rows with our complete
+    # derived-artifact marker; unmarked/user-authored buildings are
+    # intentionally preserved. This remains inside the request transaction,
+    # so any later compile failure rolls the cleanup back too.
+    project_buildings_result = await db.execute(
+        select(Building).where(Building.project_id == project_id)
+    )
+    project_buildings = list(project_buildings_result.scalars().all())
+    stale_buildings = stale_community_3d_buildings(
+        project_buildings,
+        (
+            zone.id
+            for zone in project_zones
+            if _community_3d_kind(zone) == "building"
+        ),
+    )
+    stale_building_ids = {building.id for building in stale_buildings}
+    stale_building_id_strings = {str(building_id) for building_id in stale_building_ids}
+    for project_zone in project_zones:
+        if project_zone.building_id in stale_building_ids:
+            project_zone.building_id = None
+        if isinstance(project_zone.building_ids, list):
+            retained_building_ids = [
+                building_id
+                for building_id in project_zone.building_ids
+                if str(building_id) not in stale_building_id_strings
+            ]
+            if retained_building_ids != project_zone.building_ids:
+                project_zone.building_ids = retained_building_ids
+    for stale_building in stale_buildings:
+        await db.delete(stale_building)
 
     compiled_at = datetime.now(timezone.utc).isoformat()
     boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
@@ -1164,6 +1395,7 @@ async def place_community_3d(
             "area_sqm": residual_area,
             "placement_count": residual_placements,
         },
+        "stale_buildings_removed": len(stale_buildings),
     }
 
 

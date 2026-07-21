@@ -4,6 +4,7 @@ import {
   analyzeDirect3DClassPixels,
   computeDirect3DCaptureSize,
   createDirect3DSemanticMaterial,
+  DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
   DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA,
   DIRECT_3D_CLASS_COLORS,
   DIRECT_3D_CLASS_ID_MANIFEST,
@@ -50,6 +51,22 @@ describe('Direct 3D capture helpers', () => {
 
     nested.userData = { ...DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA };
     expect(isExcludedFromDirect3DCapture(mesh)).toBe(true);
+  });
+
+  it('keeps legacy model subtrees visible context without inheriting a proposal role', () => {
+    const proposalRoot = new THREE.Group();
+    proposalRoot.userData = direct3DProposalUserData('building');
+    const legacyModel = new THREE.Group();
+    legacyModel.userData = { ...DIRECT_3D_CAPTURE_CONTEXT_USER_DATA };
+    const legacyMesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial());
+    proposalRoot.add(legacyModel);
+    legacyModel.add(legacyMesh);
+
+    expect(getDirect3DProposalRole(legacyMesh)).toBeNull();
+    expect(isExcludedFromDirect3DCapture(legacyMesh)).toBe(false);
+
+    legacyMesh.geometry.dispose();
+    (legacyMesh.material as THREE.Material).dispose();
   });
 
   it('assigns compiled public-realm bases to their exact semantic owner', () => {

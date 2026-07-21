@@ -3,6 +3,7 @@ import * as THREE from 'three';
 export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v1' as const;
 export const DIRECT_3D_PROPOSAL_ROLE_KEY = 'siteforgeDirect3DProposalRole';
 export const DIRECT_3D_CAPTURE_EXCLUDE_KEY = 'siteforgeExcludeFromDirect3DCapture';
+export const DIRECT_3D_CAPTURE_CONTEXT_KEY = 'siteforgeDirect3DContextOnly';
 
 export const DIRECT_3D_PROPOSAL_ROLES = [
   'ground',
@@ -188,6 +189,12 @@ export const DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA: Readonly<Record<string, boolea
   [DIRECT_3D_CAPTURE_EXCLUDE_KEY]: true,
 });
 
+/** Keep an object in the beauty/context pass while stopping proposal-role
+ * inheritance from an ancestor. Unlike exclusion, context still renders. */
+export const DIRECT_3D_CAPTURE_CONTEXT_USER_DATA: Readonly<Record<string, boolean>> = Object.freeze({
+  [DIRECT_3D_CAPTURE_CONTEXT_KEY]: true,
+});
+
 export function computeDirect3DCaptureSize(
   sourceWidth: number,
   sourceHeight: number,
@@ -214,6 +221,7 @@ export function computeDirect3DCaptureSize(
 export function getDirect3DProposalRole(object: THREE.Object3D): Direct3DProposalRole | null {
   let current: THREE.Object3D | null = object;
   while (current) {
+    if (current.userData?.[DIRECT_3D_CAPTURE_CONTEXT_KEY] === true) return null;
     const candidate = current.userData?.[DIRECT_3D_PROPOSAL_ROLE_KEY];
     if (
       typeof candidate === 'string'

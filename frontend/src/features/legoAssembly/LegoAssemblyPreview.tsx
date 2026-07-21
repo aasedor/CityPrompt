@@ -87,6 +87,10 @@ export function LegoAssemblyPreview({
 }) {
   const zoneProperties = zone?.properties ?? properties;
   const archetypeContext = useMemo(() => legoArchetypeContextFromZone(zoneProperties), [zoneProperties]);
+  const catalogFingerprint = typeof zoneProperties?._lego_catalog_fingerprint === 'string'
+    && zoneProperties._lego_catalog_fingerprint
+    ? zoneProperties._lego_catalog_fingerprint
+    : null;
 
   const catalogOption = useMemo(
     () => findZoneCatalogOption(archetypeContext.archetype_id, zoneProperties),
@@ -154,6 +158,7 @@ export function LegoAssemblyPreview({
         target_width_m: width,
         target_depth_m: depth,
         target_floors: floorCount,
+        ...(zone?.project_id ? { project_id: zone.project_id } : {}),
         ...archetypeContext,
         allow_setback: allowSetback,
       });
@@ -184,6 +189,7 @@ export function LegoAssemblyPreview({
       const saved = await legoAssemblyApi.saveRecipe(buildingId, {
         schema_version: 1,
         module_family: plan.family,
+        ...(catalogFingerprint ? { catalog_fingerprint: catalogFingerprint } : {}),
         archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
         reuse_keys: plan.reuse_keys,
         target: plan.target,
@@ -205,6 +211,7 @@ export function LegoAssemblyPreview({
     return {
       schema_version: 1,
       module_family: plan.family,
+      ...(catalogFingerprint ? { catalog_fingerprint: catalogFingerprint } : {}),
       archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
       reuse_keys: plan.reuse_keys,
       target: plan.target,

@@ -24,6 +24,11 @@ from app.services.plan_geometry.archetypes import (
     load_families,
     resolve_building_archetype,
 )
+from app.services.master_planner.lego_catalog import (
+    LegoArchetypeCapability,
+    LegoPlanningCatalog,
+    select_lego_archetype,
+)
 from app.services.plan_geometry.placement import BandSpec, Palette, palette_for
 
 BAND_KEYS = ("core", "frontage", "mid", "edge", "anchor")
@@ -76,6 +81,8 @@ class BandAlternate(BaseModel):
     aesthetic: str = ""
     # Exact catalog archetype (optional). Validated against the dims table.
     archetype_id: str | None = None
+    # Exact executable child identity for fixed/variant-only LEGO families.
+    variant_id: str | None = None
 
 
 class BandPlan(BaseModel):
@@ -87,6 +94,8 @@ class BandPlan(BaseModel):
     typology: str = "perimeter_block"
     # Exact catalog archetype (optional) — the planner may name the building.
     archetype_id: str | None = None
+    # Exact executable child identity when the parent alias itself cannot plan.
+    variant_id: str | None = None
     alternates: list[BandAlternate] = Field(default_factory=list)
 
 
@@ -141,11 +150,17 @@ def _note(code: str, message: str) -> dict[str, Any]:
 
 
 def validate_spec(
-    spec: MasterPlanSpec, scenario_id: str, palette_hint: str | None = None
+    spec: MasterPlanSpec,
+    scenario_id: str,
+    palette_hint: str | None = None,
+    lego_catalog: LegoPlanningCatalog | None = None,
 ) -> tuple[MasterPlanSpec, list[dict[str, Any]]]:
     """Repair a spec in place of rejecting it — a drawable plan with notes
     beats a failed scenario. Invalid band entries fall back to the scenario's
     preset palette band; invalid direct ids fall back to band resolution."""
+    if lego_catalog is not None:
+        return _validate_spec_with_lego(spec, scenario_id, palette_hint, lego_catalog)
+
     notes: list[dict[str, Any]] = []
     dev_types = known_development_types()
     catalog = dims_by_id()
@@ -341,10 +356,248 @@ def validate_spec(
     return validated, notes
 
 
+def _preset_band_plan(preset: Palette, key: str) -> BandPlan:
+    band = preset.bands[key]
+    floors = (
+        float(band.floors_abs)
+        if band.floors_abs is not None
+        else max(1.0, 4.0 + float(band.floors_delta or 0.0))
+    )
+    return BandPlan(
+        development_type=band.development_type,
+        aesthetic=band.aesthetic,
+        floors=floors,
+        typology=band.typology,
+        archetype_id=band.archetype_id,
+        variant_id=band.variant_id,
+    )
+
+
+def _lego_capability_maps(
+    lego_catalog: LegoPlanningCatalog,
+) -> dict[str, LegoArchetypeCapability]:
+    by_parent = {
+        capability.parent_id: capability
+        for capability in lego_catalog.capabilities
+    }
+    return by_parent
+
+
+def _select_lego_character(
+    *,
+    development_type: str,
+    aesthetic: str,
+    floors: float,
+    archetype_id: str | None,
+    variant_id: str | None,
+    lego_catalog: LegoPlanningCatalog,
+) -> tuple[LegoArchetypeCapability, str | None, int]:
+    """Resolve one requested character to an executable parent/variant/floor."""
+
+    by_parent = _lego_capability_maps(lego_catalog)
+    if not by_parent:
+        raise ValueError(
+            "No executable LEGO building families are available for Master Planner."
+        )
+
+    requested_selectable = variant_id
+    parent_id = archetype_id if archetype_id in by_parent else None
+    if parent_id is None and archetype_id in lego_catalog.parent_by_selectable_id:
+        parent_id = lego_catalog.parent_by_selectable_id[archetype_id]
+        requested_selectable = archetype_id
+    if parent_id is None and variant_id in lego_catalog.parent_by_selectable_id:
+        parent_id = lego_catalog.parent_by_selectable_id[variant_id]
+
+    if parent_id is None:
+        resolved = resolve_building_archetype(
+            development_type,
+            aesthetic,
+            floors,
+            allowed_archetype_ids=lego_catalog.parent_ids,
+            supported_floors_by_archetype=lego_catalog.supported_floors_by_parent,
+        )
+        parent_id = str(resolved["id"]) if resolved is not None else lego_catalog.parent_ids[0]
+
+    capability = by_parent[parent_id]
+    if requested_selectable not in capability.selectable_ids:
+        requested_selectable = (
+            archetype_id
+            if archetype_id in capability.selectable_ids
+            else None
+        )
+    selection = select_lego_archetype(
+        lego_catalog,
+        parent_id,
+        floors,
+        preferred_selectable_id=requested_selectable,
+    )
+    if selection is None:
+        raise ValueError(
+            f"LEGO archetype '{parent_id}' has no executable identity and floor pair."
+        )
+    return capability, selection.variant_id, selection.floors
+
+
+def _validate_spec_with_lego(
+    spec: MasterPlanSpec,
+    scenario_id: str,
+    palette_hint: str | None,
+    lego_catalog: LegoPlanningCatalog,
+) -> tuple[MasterPlanSpec, list[dict[str, Any]]]:
+    """Validate common plan fields, then hard-bind every band to LEGO."""
+
+    if not lego_catalog.capabilities:
+        raise ValueError(
+            "No executable LEGO building families are available for Master Planner."
+        )
+
+    # Preserve the established validation contract for streets, landscape,
+    # open space, strategy and grain. Building bands are rebuilt below from
+    # the original request so a rejected full-catalog character can be repaired
+    # into an installed LEGO family instead of disappearing.
+    common, notes = validate_spec(spec, scenario_id, palette_hint)
+    preset = palette_for(scenario_id, palette_hint)
+    dimensions = dims_by_id()
+    repaired_bands: dict[str, BandPlan] = {}
+
+    for key in BAND_KEYS:
+        requested = spec.bands.get(key)
+        if requested is None:
+            requested = _preset_band_plan(preset, key)
+            notes.append(_note(
+                "MASTER_PLAN_LEGO_BAND_FILLED",
+                f"Band '{key}' was missing — an imported LEGO family was selected deterministically.",
+            ))
+
+        capability, selected_variant, selected_floor = _select_lego_character(
+            development_type=requested.development_type,
+            aesthetic=requested.aesthetic,
+            floors=requested.floors,
+            archetype_id=requested.archetype_id,
+            variant_id=requested.variant_id,
+            lego_catalog=lego_catalog,
+        )
+        entry = dimensions[capability.parent_id]
+        typology = (
+            requested.typology
+            if requested.typology in TYPOLOGIES
+            else preset.bands[key].typology
+        )
+        if (
+            requested.archetype_id != capability.parent_id
+            or requested.variant_id != selected_variant
+        ):
+            notes.append(_note(
+                "MASTER_PLAN_LEGO_ARCHETYPE_REPAIRED",
+                f"Band '{key}' now uses imported LEGO archetype "
+                f"'{selected_variant or capability.parent_id}'.",
+            ))
+        if float(requested.floors) != float(selected_floor):
+            notes.append(_note(
+                "MASTER_PLAN_LEGO_FLOORS_SNAPPED",
+                f"Band '{key}' floors {requested.floors:g} snapped to the proven "
+                f"LEGO height {selected_floor}.",
+            ))
+
+        alternates: list[BandAlternate] = []
+        for alternate in requested.alternates[:MAX_ALTERNATES]:
+            alt_capability, alt_variant, _ = _select_lego_character(
+                development_type=alternate.development_type,
+                aesthetic=alternate.aesthetic,
+                floors=selected_floor,
+                archetype_id=alternate.archetype_id,
+                variant_id=alternate.variant_id,
+                lego_catalog=lego_catalog,
+            )
+            alt_entry = dimensions[alt_capability.parent_id]
+            candidate = BandAlternate(
+                development_type=_norm(alt_entry["development_type"]),
+                aesthetic=_norm(alt_entry["aesthetic_category"]),
+                archetype_id=alt_capability.parent_id,
+                variant_id=alt_variant,
+            )
+            if candidate not in alternates:
+                alternates.append(candidate)
+
+        repaired_bands[key] = BandPlan(
+            development_type=_norm(entry["development_type"]),
+            aesthetic=_norm(entry["aesthetic_category"]),
+            floors=float(selected_floor),
+            typology=typology,
+            archetype_id=capability.parent_id,
+            variant_id=selected_variant,
+            alternates=alternates,
+        )
+
+    family_votes = [
+        family_of(band.archetype_id)
+        for band in repaired_bands.values()
+        if family_of(band.archetype_id)
+    ]
+    style_family = (
+        sorted(set(family_votes), key=lambda family: (-family_votes.count(family), family))[0]
+        if family_votes
+        else None
+    )
+    validated = common.model_copy(update={
+        "bands": repaired_bands,
+        "style_family": style_family,
+    })
+    return validated, notes
+
+
+def lego_fallback_spec(
+    scenario_id: str,
+    lego_catalog: LegoPlanningCatalog,
+    palette_hint: str | None = None,
+    *,
+    narrative: str = "The imported LEGO building library sets the district character.",
+) -> MasterPlanSpec:
+    """Create a complete zero-LLM plan constrained to executable families."""
+
+    if not lego_catalog.capabilities:
+        raise ValueError(
+            "No executable LEGO building families are available for Master Planner."
+        )
+    preset = palette_for(scenario_id, palette_hint)
+    raw = MasterPlanSpec(
+        design_narrative=narrative,
+        style_family=preset.style_family,
+        curvilinear=preset.curvilinear,
+        laneways=preset.laneways,
+        spine_archetype_id=preset.spine_archetype_id,
+        local_archetype_id=preset.local_archetype_id,
+        crescent_archetype_id=preset.crescent_archetype_id,
+        single_block_typology=preset.single_block_typology,
+        bands={key: _preset_band_plan(preset, key) for key in BAND_KEYS},
+        open_space=OpenSpaceProgram(
+            water_feature=preset.water_feature,
+            formal_water=preset.formal_water,
+            water_archetype_id=preset.water_archetype_id,
+            plaza=preset.plaza,
+            central_park_archetype_id=preset.central_archetype_id,
+        ),
+        landscape=LandscapePlan(
+            park_structure=preset.landscape.get("park", "naturalistic_grove"),
+            pocket_structure=preset.landscape.get("pocket", "garden_courtyard"),
+            courtyard_structure=preset.landscape.get("courtyard", "garden_courtyard"),
+            greenway_structure=preset.landscape.get("greenway", "formal_allee"),
+        ),
+    )
+    validated, _ = validate_spec(
+        raw,
+        scenario_id,
+        palette_hint,
+        lego_catalog=lego_catalog,
+    )
+    return validated
+
+
 def palette_from_spec(
     spec: MasterPlanSpec,
     scenario_id: str,
     palette_hint: str | None = None,
+    lego_catalog: LegoPlanningCatalog | None = None,
 ) -> Palette:
     """MasterPlanSpec -> the Palette the placement policy executes.
 
@@ -355,9 +608,23 @@ def palette_from_spec(
     FINAL floor count (context caps can move it), the one place archetype
     resolution already lives.
     """
+    if lego_catalog is not None:
+        spec, _ = validate_spec(
+            spec,
+            scenario_id,
+            palette_hint,
+            lego_catalog=lego_catalog,
+        )
     preset = palette_for(scenario_id, palette_hint)
     bands: dict[str, BandSpec] = {}
-    alternates: dict[str, tuple[tuple[str, str, str | None], ...]] = {}
+    alternates: dict[
+        str,
+        tuple[
+            tuple[str, str, str | None]
+            | tuple[str, str, str | None, str | None],
+            ...,
+        ],
+    ] = {}
     for key in BAND_KEYS:
         band = spec.bands.get(key)
         if band is None:
@@ -370,13 +637,42 @@ def palette_from_spec(
             floors_abs=float(band.floors),
             typology=band.typology,
             archetype_id=band.archetype_id,
+            variant_id=band.variant_id,
         )
-        triples = tuple(dict.fromkeys(
-            (alt.development_type, alt.aesthetic, alt.archetype_id)
+        characters = tuple(dict.fromkeys(
+            (
+                alt.development_type,
+                alt.aesthetic,
+                alt.archetype_id,
+                alt.variant_id,
+            )
+            if lego_catalog is not None
+            else (alt.development_type, alt.aesthetic, alt.archetype_id)
             for alt in band.alternates
         ))
-        if triples:
-            alternates[key] = triples
+        if characters:
+            alternates[key] = characters
+
+    allowed_archetype_ids = (
+        frozenset(lego_catalog.parent_ids)
+        if lego_catalog is not None
+        else None
+    )
+    allowed_variant_ids_by_archetype = (
+        dict(lego_catalog.variants_by_parent)
+        if lego_catalog is not None
+        else {}
+    )
+    supported_floors_by_selectable_id = (
+        dict(lego_catalog.supported_floors_by_selectable_id)
+        if lego_catalog is not None
+        else {}
+    )
+    target_dimensions_by_selectable_id = (
+        dict(lego_catalog.target_dimensions_by_selectable_id)
+        if lego_catalog is not None
+        else {}
+    )
 
     return Palette(
         bands=bands,
@@ -401,4 +697,8 @@ def palette_from_spec(
         },
         central_archetype_id=spec.open_space.central_park_archetype_id,
         single_block_typology=spec.single_block_typology,
+        allowed_archetype_ids=allowed_archetype_ids,
+        allowed_variant_ids_by_archetype=allowed_variant_ids_by_archetype,
+        supported_floors_by_selectable_id=supported_floors_by_selectable_id,
+        target_dimensions_by_selectable_id=target_dimensions_by_selectable_id,
     )

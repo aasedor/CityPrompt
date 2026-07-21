@@ -18,6 +18,7 @@ import anthropic
 from celery.exceptions import SoftTimeLimitExceeded
 from pydantic import ValidationError
 
+from app.services.master_planner.lego_catalog import LegoPlanningCatalog
 from app.services.master_planner.spec import (
     BAND_KEYS,
     CENTRAL_PARK_IDS,
@@ -31,6 +32,7 @@ from app.services.master_planner.spec import (
     TYPOLOGIES,
     WATER_ARCHETYPE_IDS,
     MasterPlanSpec,
+    lego_fallback_spec,
     validate_spec,
 )
 from app.services.plan_geometry.archetypes import load_dims_table
@@ -79,7 +81,7 @@ SYSTEM = (
 
 
 @lru_cache(maxsize=1)
-def _catalog_vocabulary() -> str:
+def _legacy_catalog_vocabulary() -> str:
     """development_type -> aesthetic families, generated from the live dims
     table so the prompt can never drift from the catalog."""
     by_type: dict[str, set[str]] = {}
@@ -95,33 +97,64 @@ def _catalog_vocabulary() -> str:
     return "\n".join(lines)
 
 
-def _band_schema() -> dict[str, Any]:
-    return {
-        "type": "object",
-        "properties": {
-            "development_type": {"type": "string", "description": "One of the catalog development_type values."},
-            "aesthetic": {"type": "string", "description": "Aesthetic family for this band, from the catalog list for the chosen type."},
-            "floors": {"type": "number", "minimum": 1, "maximum": 40},
-            "typology": {"type": "string", "enum": list(TYPOLOGIES)},
-            "alternates": {
-                "type": "array",
-                "maxItems": 3,
-                "description": "1-3 DIFFERENT characters rotated across this band's blocks and bars.",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "development_type": {"type": "string"},
-                        "aesthetic": {"type": "string"},
-                    },
-                    "required": ["development_type"],
+def _catalog_vocabulary(lego_catalog: LegoPlanningCatalog | None = None) -> str:
+    return (
+        lego_catalog.prompt_vocabulary
+        if lego_catalog is not None
+        else _legacy_catalog_vocabulary()
+    )
+
+
+def _band_schema(
+    lego_catalog: LegoPlanningCatalog | None = None,
+) -> dict[str, Any]:
+    properties: dict[str, Any] = {
+        "development_type": {"type": "string", "description": "One of the catalog development_type values."},
+        "aesthetic": {"type": "string", "description": "Aesthetic family for this band, from the catalog list for the chosen type."},
+        "floors": {"type": "number", "minimum": 1, "maximum": 40},
+        "typology": {"type": "string", "enum": list(TYPOLOGIES)},
+        "alternates": {
+            "type": "array",
+            "maxItems": 3,
+            "description": "1-3 DIFFERENT characters rotated across this band's blocks and bars.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "development_type": {"type": "string"},
+                    "aesthetic": {"type": "string"},
                 },
+                "required": ["development_type"],
             },
         },
-        "required": ["development_type", "aesthetic", "floors", "typology"],
+    }
+    required = ["development_type", "aesthetic", "floors", "typology"]
+    if lego_catalog is not None:
+        exact_parent = {
+            "type": "string",
+            "enum": list(lego_catalog.parent_ids),
+            "description": (
+                "Exact imported LEGO parent archetype. Choose only from this enum; "
+                "the validator selects an executable child variant when required."
+            ),
+        }
+        properties["archetype_id"] = exact_parent
+        properties["alternates"]["items"]["properties"]["archetype_id"] = exact_parent
+        properties["alternates"]["items"]["required"] = [
+            "development_type",
+            "archetype_id",
+        ]
+        required.append("archetype_id")
+
+    return {
+        "type": "object",
+        "properties": properties,
+        "required": required,
     }
 
 
-def _master_plan_tool() -> dict[str, Any]:
+def _master_plan_tool(
+    lego_catalog: LegoPlanningCatalog | None = None,
+) -> dict[str, Any]:
     return {
         "name": "record_master_plan",
         "description": "Record the composed master plan for the site.",
@@ -159,7 +192,10 @@ def _master_plan_tool() -> dict[str, Any]:
                 "bands": {
                     "type": "object",
                     "description": "anchor = landmark block by the central green; frontage = blocks on the main spine; core = deep interior; edge = boundary step-down; mid = general fabric.",
-                    "properties": {key: _band_schema() for key in BAND_KEYS},
+                    "properties": {
+                        key: _band_schema(lego_catalog)
+                        for key in BAND_KEYS
+                    },
                     "required": list(BAND_KEYS),
                 },
                 "open_space": {
@@ -236,12 +272,22 @@ async def compose_master_plan(
     api_key: str,
     model: str,
     palette_hint: str | None = None,
+    lego_catalog: LegoPlanningCatalog | None = None,
 ) -> tuple[MasterPlanSpec | None, dict[str, Any], list[dict[str, Any]]]:
     """Compose and validate a master plan. Never raises (soft time limit
     excepted — Celery must see it); returns (spec|None, usage, notes)."""
     usage: dict[str, Any] = {"agent_id": "master_planner", "model": model,
                              "input_tokens": 0, "output_tokens": 0, "status": "success"}
     notes: list[dict[str, Any]] = []
+
+    if lego_catalog is not None and not lego_catalog.capabilities:
+        usage["status"] = "error"
+        notes.append(_note(
+            "MASTER_PLANNER_NO_LEGO_CATALOG",
+            "warning",
+            "No executable LEGO building families are available; the Master Planner cannot draw buildings.",
+        ))
+        return None, usage, notes
 
     user_content = [
         {
@@ -253,7 +299,7 @@ async def compose_master_plan(
             "type": "text",
             "text": (
                 _site_brief(site_summary, definition, parameters or {}, brief)
-                + "\n\n" + _catalog_vocabulary()
+                + "\n\n" + _catalog_vocabulary(lego_catalog)
                 + "\n\nCompose the master plan now. Be site-specific and philosophy-true; "
                   "make the variety deliberate (distinct alternates per band, mixed typologies) "
                   "and the landscape intentional."
@@ -270,7 +316,7 @@ async def compose_master_plan(
                 max_tokens=MASTER_PLANNER_MAX_TOKENS,
                 system=SYSTEM,
                 messages=[{"role": "user", "content": user_content}],
-                tools=[_master_plan_tool()],
+                tools=[_master_plan_tool(lego_catalog)],
                 tool_choice={"type": "tool", "name": "record_master_plan"},
             )
             usage["input_tokens"] += message.usage.input_tokens
@@ -297,7 +343,12 @@ async def compose_master_plan(
         except (ValidationError, TypeError) as exc:
             raise ValueError(f"spec failed validation: {exc}") from exc
 
-        spec, repair_notes = validate_spec(raw_spec, definition.scenario_id, palette_hint)
+        spec, repair_notes = validate_spec(
+            raw_spec,
+            definition.scenario_id,
+            palette_hint,
+            lego_catalog=lego_catalog,
+        )
         notes.extend(repair_notes)
         if not spec.bands:
             # Nothing usable survived — the preset palette will draw better.
@@ -314,10 +365,31 @@ async def compose_master_plan(
     except Exception as exc:  # noqa: BLE001 — the draw must survive the planner
         logger.warning("Master planner failed: %s", exc)
         usage["status"] = "error"
+        fallback_description = (
+            "the imported LEGO catalog supplied a deterministic fallback plan"
+            if lego_catalog is not None
+            else "the scenario's preset palette drew this plan"
+        )
         notes.append(_note(
             "MASTER_PLANNER_UNAVAILABLE", "warning",
-            f"Master Planner unavailable ({exc}) — the scenario's preset palette drew this plan.",
+            f"Master Planner unavailable ({exc}) — {fallback_description}.",
         ))
+        if lego_catalog is not None:
+            fallback = lego_fallback_spec(
+                definition.scenario_id,
+                lego_catalog,
+                palette_hint,
+                narrative=(
+                    "A deterministic plan composed from the imported LEGO "
+                    "building, park, and street kits."
+                ),
+            )
+            notes.append(_note(
+                "MASTER_PLANNER_LEGO_FALLBACK",
+                "info",
+                "The imported LEGO catalog supplied a complete deterministic fallback plan.",
+            ))
+            return fallback, usage, notes
         return None, usage, notes
     finally:
         try:

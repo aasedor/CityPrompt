@@ -34,6 +34,24 @@ describe('analyzeLegoFootprint', () => {
     expect(result?.wing_depth_m).toBe(10);
   });
 
+  it('does not relabel real topology when a catalogue prefers rectangles', () => {
+    const result = analyzeLegoFootprint(geographic([
+      [-18, -14], [18, -14], [18, -4], [-8, -4], [-8, 14], [-18, 14],
+    ]), {
+      ...compatibility,
+      preferredProfiles: ['rectangle'],
+    });
+    expect(result?.profile).toBe('l_shape');
+  });
+
+  it('treats a clipped high-fill plan bar as a rectangle', () => {
+    const result = analyzeLegoFootprint(geographic([
+      [-15, -10], [15, -10], [15, 10], [1, 10], [0, 9], [-1, 10], [-15, 10],
+    ]), compatibility);
+    expect(result?.concave_vertices).toBeGreaterThan(0);
+    expect(result?.profile).toBe('rectangle');
+  });
+
   it('recognizes a U-shaped parcel from its two re-entrant corners', () => {
     const result = analyzeLegoFootprint(geographic([
       [-20, -15], [20, -15], [20, 15], [10, 15], [10, -4],

@@ -1,10 +1,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
+import { buildingsApi, siteZonesApi } from '@/services/api';
 import { legoAssemblyApi, type LegoAssemblyPlan } from './legoAssemblyApi';
+import { analyzeLegoFootprint } from './footprintProfiles';
 import {
+  communityCompileOptionsForZones,
+  compileBoundaryCommunity3D,
   compileMixedCommunity3D,
   deriveGroundItems,
   deriveItems,
+  recipeFromPlan,
 } from './communityCompiler';
 
 function zone(
@@ -58,6 +63,49 @@ afterEach(() => {
 });
 
 describe('mixed community compiler', () => {
+  it('carries the AI catalogue revision into the persisted LEGO recipe only when stamped', () => {
+    const fingerprint = 'a'.repeat(64);
+    const aiBuilding = zone('ai-building', 'building', {
+      _plan_role: 'building',
+      _plan_scenario: 'community_wellbeing',
+      _lego_catalog_fingerprint: fingerprint,
+      development_archetype_id: 'supported_building',
+    });
+    const manualBuilding = zone('manual-building', 'building', {
+      development_archetype_id: 'supported_building',
+    });
+
+    const aiRecipe = recipeFromPlan({ ...deriveItems([aiBuilding])[0], plan: detailedPlan });
+    const manualRecipe = recipeFromPlan({
+      ...deriveItems([manualBuilding])[0],
+      plan: detailedPlan,
+    });
+
+    expect(aiRecipe.catalog_fingerprint).toBe(fingerprint);
+    expect(manualRecipe).not.toHaveProperty('catalog_fingerprint');
+  });
+
+  it('requires detailed LEGO buildings for AI Master Plan scopes only', () => {
+    const aiBuilding = zone('ai-building', 'building', {
+      _plan_role: 'building',
+      _plan_scenario: 'community_wellbeing',
+      development_archetype_id: 'supported_building',
+    });
+    const manualBuilding = zone('manual-building', 'building', {
+      development_archetype_id: 'supported_building',
+    });
+
+    expect(communityCompileOptionsForZones([aiBuilding])).toEqual({
+      requireDetailedBuildings: true,
+    });
+    expect(communityCompileOptionsForZones([manualBuilding])).toEqual({
+      requireDetailedBuildings: false,
+    });
+    expect(communityCompileOptionsForZones([manualBuilding, aiBuilding])).toEqual({
+      requireDetailedBuildings: true,
+    });
+  });
+
   it('uses the drawn parcel dimensions even when catalogue footprint guidance is absent', () => {
     const parcel = zone('actual-parcel', 'building', {
       _plan_role: 'building',
@@ -319,5 +367,258 @@ describe('mixed community compiler', () => {
     await expect(compileMixedCommunity3D([invalid])).rejects.toThrow('no usable map footprint');
     expect(plan).not.toHaveBeenCalled();
     expect(compile).not.toHaveBeenCalled();
+  });
+
+  it('routes a Site Boundary through fresh scoped LEGO Community 3D data, never legacy bulk Meshy', async () => {
+    const boundaryId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+    const supported = zone('supported', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      floors: 5,
+    });
+    const park = zone('park', 'green_space', {
+      _plan_role: 'open_space',
+      green_space_archetype_id: 'neighborhood_park',
+    });
+    const unrelated = zone('outside-boundary', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'outside_building',
+    });
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([supported, park, unrelated]);
+    vi.spyOn(siteZonesApi, 'getBoundaryAnalysis').mockResolvedValue({
+      boundary_zone_id: boundaryId,
+      contained_zones: [supported, park].map((item) => ({
+        id: item.id,
+        name: item.name,
+        zone_type: item.zone_type,
+        color: item.color,
+        properties: item.properties ?? {},
+        area_m2: 100,
+      })),
+      zone_summary: { building: 1, green_space: 1 },
+      total_contained: 2,
+      osm_context: {},
+    });
+    const legacyBulkMeshy = vi.spyOn(siteZonesApi, 'generateForBoundary');
+    const listBuildings = vi.spyOn(buildingsApi, 'list').mockResolvedValue([]);
+    vi.spyOn(legoAssemblyApi, 'plan').mockResolvedValue(detailedPlan);
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 1, park: 1, street: 0 },
+      items: [
+        { zone_id: supported.id, kind: 'building', building_id: 'b-1', building_created: true, generator: 'lego_assembly' },
+        { zone_id: park.id, kind: 'park', building_id: null, building_created: false, generator: 'park_kit' },
+      ],
+    });
+
+    const result = await compileBoundaryCommunity3D('project-1', boundaryId);
+
+    expect(siteZonesApi.list).toHaveBeenCalledWith('project-1');
+    expect(siteZonesApi.getBoundaryAnalysis).toHaveBeenCalledWith(boundaryId);
+    expect(listBuildings).not.toHaveBeenCalled();
+    expect(legacyBulkMeshy).not.toHaveBeenCalled();
+    expect(compile).toHaveBeenCalledWith([
+      expect.objectContaining({
+        zone_id: supported.id,
+        recipe: expect.objectContaining({ module_family: 'supported-family' }),
+      }),
+      { zone_id: park.id, source_updated_at: park.updated_at },
+    ]);
+    expect(compile.mock.calls[0][0]).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ zone_id: unrelated.id })]),
+    );
+    expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0, parks: 1 });
+  });
+
+  it('plans a saved one-building preview from its linked Building footprint', async () => {
+    const boundaryId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+    const previewBuildingId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+    const previewZone = zone('preview-parcel', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      floors: 5,
+      _saved_layout: {
+        buildings: [{ width_m: 40, depth_m: 30, rotation_deg: 18 }],
+        roads: [],
+        green_spaces: [],
+        layout_strategy: 'previewed_single_building',
+      },
+    });
+    previewZone.building_id = previewBuildingId;
+    previewZone.building_ids = [previewBuildingId];
+    const originalParcel = previewZone.coordinates.map((point) => [...point]);
+    const footprint = [
+      [-114.07072, 51.04124],
+      [-114.07012, 51.04144],
+      [-114.07028, 51.04176],
+      [-114.07088, 51.04156],
+    ];
+    const expected = analyzeLegoFootprint(footprint);
+    expect(expected).not.toBeNull();
+
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([previewZone]);
+    vi.spyOn(siteZonesApi, 'getBoundaryAnalysis').mockResolvedValue({
+      boundary_zone_id: boundaryId,
+      contained_zones: [{
+        id: previewZone.id,
+        name: previewZone.name,
+        zone_type: previewZone.zone_type,
+        color: previewZone.color,
+        properties: previewZone.properties ?? {},
+        area_m2: 1_000,
+      }],
+      zone_summary: { building: 1 },
+      total_contained: 1,
+      osm_context: {},
+    });
+    const linkedBuilding = {
+      id: previewBuildingId,
+      project_id: previewZone.project_id,
+      footprint_coordinates: footprint,
+      rotation_degrees: 18,
+      created_at: '2026-07-21T00:00:00Z',
+    } satisfies Building;
+    const listBuildings = vi.spyOn(buildingsApi, 'list').mockResolvedValue([linkedBuilding]);
+    const plan = vi.spyOn(legoAssemblyApi, 'plan').mockImplementation(async (request) => ({
+      ...detailedPlan,
+      target: {
+        width_m: request.target_width_m,
+        depth_m: request.target_depth_m,
+        floors: request.target_floors,
+        footprint_profile: request.footprint_profile,
+      },
+    }));
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [{
+        zone_id: previewZone.id,
+        kind: 'building',
+        building_id: previewBuildingId,
+        building_created: false,
+        generator: 'lego_assembly',
+      }],
+    });
+
+    await compileBoundaryCommunity3D(previewZone.project_id, boundaryId);
+
+    expect(listBuildings).toHaveBeenCalledWith(previewZone.project_id);
+    expect(plan).toHaveBeenCalledWith(expect.objectContaining({
+      target_width_m: expected!.width_m,
+      target_depth_m: expected!.depth_m,
+      footprint_profile: expected!.profile,
+    }));
+    expect(compile).toHaveBeenCalledWith([
+      expect.objectContaining({
+        zone_id: previewZone.id,
+        source_updated_at: previewZone.updated_at,
+        recipe: expect.objectContaining({
+          target: expect.objectContaining({
+            width_m: expected!.width_m,
+            depth_m: expected!.depth_m,
+            footprint_profile: expected!.profile,
+          }),
+        }),
+      }),
+    ]);
+    expect(previewZone.coordinates).toEqual(originalParcel);
+  });
+
+  it('fails closed when a saved one-building preview has no usable linked footprint', async () => {
+    const boundaryId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+    const previewZone = zone('stale-preview-parcel', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      _saved_layout: { buildings: [{}] },
+    });
+    previewZone.building_id = 'missing-footprint-building';
+    previewZone.building_ids = ['missing-footprint-building'];
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([previewZone]);
+    vi.spyOn(siteZonesApi, 'getBoundaryAnalysis').mockResolvedValue({
+      boundary_zone_id: boundaryId,
+      contained_zones: [{
+        id: previewZone.id,
+        name: previewZone.name,
+        zone_type: previewZone.zone_type,
+        color: previewZone.color,
+        properties: previewZone.properties ?? {},
+        area_m2: 1_000,
+      }],
+      zone_summary: { building: 1 },
+      total_contained: 1,
+      osm_context: {},
+    });
+    vi.spyOn(buildingsApi, 'list').mockResolvedValue([{
+      id: 'missing-footprint-building',
+      project_id: previewZone.project_id,
+      created_at: '2026-07-21T00:00:00Z',
+    }]);
+    const plan = vi.spyOn(legoAssemblyApi, 'plan');
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity');
+
+    await expect(
+      compileBoundaryCommunity3D(previewZone.project_id, boundaryId),
+    ).rejects.toThrow('has no current linked Building footprint');
+    expect(plan).not.toHaveBeenCalled();
+    expect(compile).not.toHaveBeenCalled();
+  });
+
+  it('aborts a LEGO-only boundary compile before persistence instead of downgrading a missing family', async () => {
+    const missing = zone('missing', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'missing_building',
+    });
+    vi.spyOn(legoAssemblyApi, 'plan').mockRejectedValue({
+      response: {
+        status: 422,
+        data: { detail: { code: 'family_not_found', message: 'family unavailable' } },
+      },
+    });
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity');
+
+    await expect(compileMixedCommunity3D(
+      [missing],
+      undefined,
+      { requireDetailedBuildings: true },
+    )).rejects.toThrow('installed archetyped LEGO families');
+    expect(compile).not.toHaveBeenCalled();
+  });
+
+  it('rejects a strict server response that downgrades or adds a non-LEGO building', async () => {
+    const supported = zone('supported', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      floors: 5,
+    });
+    vi.spyOn(legoAssemblyApi, 'plan').mockResolvedValue(detailedPlan);
+    vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 2, park: 0, street: 0 },
+      items: [
+        {
+          zone_id: supported.id,
+          kind: 'building',
+          building_id: 'b-supported',
+          building_created: true,
+          generator: 'planned_massing',
+        },
+        {
+          zone_id: 'unexpected-meshy-zone',
+          kind: 'building',
+          building_id: 'b-unexpected',
+          building_created: false,
+          generator: 'meshy',
+        },
+      ],
+    });
+
+    await expect(compileMixedCommunity3D(
+      [supported],
+      undefined,
+      { requireDetailedBuildings: true },
+    )).rejects.toThrow('invalid LEGO-only Community 3D result');
   });
 });
