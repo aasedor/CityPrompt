@@ -6,16 +6,62 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
  * centerline[i] = midpoint(polygon[i], polygon[n-1-i])
  */
 export function extractCenterline(coords: number[][]): number[][] {
-  const n = coords.length;
+  // GeoJSON/PostGIS polygon rings repeat the first vertex at the end. The
+  // buffer representation itself does not; remove only that closing sentinel
+  // before pairing left and right edges or the first station collapses onto
+  // a parcel corner and subsequent pairs become diagonal.
+  const first = coords[0];
+  const last = coords[coords.length - 1];
+  const isClosed = coords.length > 2
+    && first?.length >= 2
+    && last?.length >= 2
+    && Math.abs(first[0] - last[0]) < 1e-10
+    && Math.abs(first[1] - last[1]) < 1e-10;
+  const ring = isClosed ? coords.slice(0, -1) : coords;
+  const n = ring.length;
   const half = Math.floor(n / 2);
-  if (half < 2) return coords;
+  if (half < 2) return ring;
   const center: number[][] = [];
   for (let i = 0; i < half; i++) {
-    const a = coords[i];
-    const b = coords[n - 1 - i];
+    const a = ring[i];
+    const b = ring[n - 1 - i];
     center.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
   }
   return center;
+}
+
+function parsePersistedCenterline(value: unknown): number[][] | null {
+  if (!Array.isArray(value) || value.length < 2) return null;
+  const points: number[][] = [];
+  for (const candidate of value) {
+    if (!Array.isArray(candidate) || candidate.length < 2) return null;
+    const longitude = Number(candidate[0]);
+    const latitude = Number(candidate[1]);
+    if (
+      !Number.isFinite(longitude)
+      || !Number.isFinite(latitude)
+      || Math.abs(longitude) > 180
+      || Math.abs(latitude) > 90
+    ) return null;
+    const previous = points[points.length - 1];
+    if (
+      previous
+      && Math.abs(previous[0] - longitude) < 1e-12
+      && Math.abs(previous[1] - latitude) < 1e-12
+    ) continue;
+    points.push([longitude, latitude]);
+  }
+  return points.length >= 2 ? points : null;
+}
+
+/** Prefer the source line captured before buffering/clipping. Polygon
+ * subtraction can reorder and add ring vertices, which makes midpoint
+ * reconstruction kink or backtrack on otherwise straight streets. */
+export function extractZoneCenterline(
+  zone: Pick<SiteZone, 'coordinates' | 'properties'>,
+): number[][] {
+  return parsePersistedCenterline(zone.properties?.plan_centerline)
+    ?? extractCenterline(zone.coordinates);
 }
 
 /**
@@ -56,8 +102,30 @@ export function bufferLineToPolygon(points: number[][], widthMeters: number): nu
  * Compute the effective road width from properties (width + lane minimum).
  */
 export function effectiveRoadWidth(props: SiteZoneProperties | undefined): number {
-  const width = (props?.width as number) || 10;
-  const lanes = (props?.lane_count as number) || 2;
+  const width = Number(props?.width) > 0 ? Number(props?.width) : 10;
+  const lanes = Number.isFinite(Number(props?.lane_count))
+    ? Math.max(0, Number(props?.lane_count))
+    : 2;
+  const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
+    ? props.public_realm_lego as Record<string, unknown>
+    : undefined;
+  const semantic = [
+    props?.street_role,
+    props?.road_archetype_id,
+    lego?.archetype_id,
+  ].map((value) => String(value ?? '').toLowerCase().replace(/-/g, '_')).join(' ');
+  // Trails, paths and laneways are authored by their total clear width. They
+  // must never inherit the generic two motor-lane minimum: that turned an AI
+  // planner's explicit 4 m multi-use trail into a 7 m road ribbon.
+  const hasMetricNonMotorWidth = lanes === 0 || [
+    'trail',
+    'path',
+    'cycleway',
+    'multi_use',
+    'laneway',
+    'alley',
+  ].some((token) => semantic.includes(token));
+  if (hasMetricNonMotorWidth) return width;
   return Math.max(width, lanes * 3.5);
 }
 
@@ -79,7 +147,7 @@ export function rebufferRoadOnUpdate(
   const newEffective = effectiveRoadWidth(data.properties);
 
   if (Math.abs(newEffective - oldEffective) > 0.1) {
-    const centerline = extractCenterline(zone.coordinates);
+    const centerline = extractZoneCenterline(zone);
     if (centerline.length >= 2) {
       const newCoords = bufferLineToPolygon(centerline, newEffective);
       handleZoneUpdated(zoneId, newCoords);
