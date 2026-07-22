@@ -1,5 +1,5 @@
 import type { SiteZone } from '@/types';
-import { effectiveRoadWidth, extractCenterline } from '@/utils/roadGeometry';
+import { effectiveRoadWidth, extractZoneCenterline } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import {
   PUBLIC_REALM_STREET_CATALOG_FINGERPRINT,
@@ -132,7 +132,7 @@ export function detectFourWayStreetIntersections(
   const originLat = allCoordinates.reduce((sum, point) => sum + point[1], 0) / allCoordinates.length;
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
-    const centerline = extractCenterline(zone.coordinates);
+    const centerline = extractZoneCenterline(zone);
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
     return [{
@@ -142,6 +142,7 @@ export function detectFourWayStreetIntersections(
         && validation.recipe.targetType === 'street_segment'
         && [
           'street_local_public_realm',
+          'street_complete_main_18m',
           'street_complete_main_22m',
         ].includes(validation.recipe.familyId),
       points: centerline.map((point) => ({

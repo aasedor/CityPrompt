@@ -2,6 +2,7 @@ import type { SiteZone } from '@/types';
 
 export const MAX_DETAILED_STREET_ZONES = 160;
 export const MAX_TREE_STREET_ZONES = 24;
+export const MAX_FURNISHED_STREET_ZONES = 80;
 
 /** Google Tiles keeps streets as authoritative engineering geometry. Mature
  * street trees are resolved by the final architectural render, where they can
@@ -82,6 +83,20 @@ export function selectTreeStreetIds(
     && !normalizedStreetIdentity(zone).includes('laneway')
     && !normalizedStreetIdentity(zone).includes('trail')
     && normalizedProperty(zone, 'street_role') !== 'lane'
+  ));
+  return new Set(candidates.slice(0, Math.max(0, limit)).map((zone) => zone.id));
+}
+
+/** Cars, lights, benches and engineered micro-detail are materially cheaper
+ * than mature canopies. Keep them on a much larger bounded set so a normal
+ * 50-road community does not lose its archetype identity after road 24. */
+export function selectFurnishedStreetIds(
+  zones: SiteZone[],
+  limit = MAX_FURNISHED_STREET_ZONES,
+): Set<string> {
+  const candidates = ranked(zones).filter((zone) => (
+    !normalizedStreetIdentity(zone).includes('roundabout')
+    && !normalizedStreetIdentity(zone).includes('trail')
   ));
   return new Set(candidates.slice(0, Math.max(0, limit)).map((zone) => zone.id));
 }

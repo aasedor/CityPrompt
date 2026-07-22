@@ -4,8 +4,10 @@ structure stamping, single-block typology)."""
 
 import math
 from dataclasses import replace
+from types import SimpleNamespace
 
 import pytest
+from geoalchemy2.shape import from_shape
 from shapely.geometry import LineString, Point, Polygon, box, mapping
 from shapely.ops import unary_union
 
@@ -29,6 +31,7 @@ from app.services.master_planner.spec import (
 from app.services.plan_geometry.generator import (
     _lego_park_identity_for_metric_polygon,
     generate_plan_geometry,
+    recover_street_plan_centerline_wgs84,
 )
 from app.services.plan_geometry.placement import (
     PALETTES,
@@ -53,6 +56,47 @@ def _offset(lon_m, lat_m):
 
 def _site(width_m=700.0, depth_m=520.0) -> Polygon:
     return Polygon([_offset(0, 0), _offset(width_m, 0), _offset(width_m, depth_m), _offset(0, depth_m)])
+
+
+def test_recovers_safe_centerline_metadata_for_a_locked_legacy_street():
+    street = Polygon([
+        _offset(0, 28),
+        _offset(146, 28),
+        _offset(146, 44),
+        _offset(0, 44),
+    ])
+    centerline = recover_street_plan_centerline_wgs84(street)
+    assert centerline and len(centerline) == 2
+    line = LineString(centerline)
+    assert line.difference(street.buffer(1e-10)).is_empty
+    assert line.length > 0
+
+
+def test_locked_street_centerline_backfill_invalidates_compiled_proof():
+    from app.tasks.urban_dna import _backfill_locked_street_plan_centerline
+
+    street = Polygon([
+        _offset(0, 28),
+        _offset(146, 28),
+        _offset(146, 44),
+        _offset(0, 44),
+    ])
+    zone = SimpleNamespace(
+        geometry=from_shape(street, srid=4326),
+        properties={
+            "_plan_role": "street",
+            "community_3d": {
+                "state": "compiled",
+                "source_hash": "a" * 64,
+            },
+        },
+    )
+
+    assert _backfill_locked_street_plan_centerline(zone) is True
+    assert len(zone.properties["plan_centerline"]) == 2
+    assert zone.properties["community_3d"]["state"] == "stale"
+    assert "centerline recovered" in zone.properties["community_3d"]["stale_reason"]
+    assert _backfill_locked_street_plan_centerline(zone) is False
 
 
 PARAMS = {
@@ -805,7 +849,7 @@ def test_generated_lego_plan_stamps_public_realm_variant_identity_by_role():
         palette_override=palette,
     )
 
-    assert result.rules["spine_row_width_m"] == 22.0
+    assert result.rules["spine_row_width_m"] == 18.0
     assert result.rules["local_row_width_m"] == 14.0
     assert any(
         note["code"] == "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS"
@@ -821,6 +865,7 @@ def test_generated_lego_plan_stamps_public_realm_variant_identity_by_role():
     }
     roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
     assert roads
+    spine_centerlines = []
     for zone in roads:
         role = zone["properties"].get("street_role")
         if role in expected_road_variants:
@@ -828,9 +873,16 @@ def test_generated_lego_plan_stamps_public_realm_variant_identity_by_role():
                 expected_road_variants[role]
             )
         if role == "spine":
-            assert zone["properties"]["width"] == 22.0
+            assert zone["properties"]["width"] == 18.0
+            centerline = zone["properties"].get("plan_centerline")
+            assert centerline and len(centerline) >= 2
+            source_line = LineString(centerline)
+            zone_polygon = Polygon(zone["coordinates"])
+            assert source_line.difference(zone_polygon.buffer(1e-10)).is_empty
+            spine_centerlines.append(source_line)
         if role == "local":
             assert zone["properties"]["width"] == 14.0
+    assert spine_centerlines
 
     expected_green_variants = {
         "central": variants["central"],
@@ -1007,12 +1059,68 @@ def test_locked_lego_street_area_keeps_exact_calgary_local_contract():
         assert zone["properties"]["width"] == 16.0
         assert zone["properties"]["road_archetype_id"] == "calgary_local"
         assert zone["properties"]["road_selected_variant_id"] == "calgary_local_v0"
+        centerline = zone["properties"].get("plan_centerline")
+        assert centerline and len(centerline) == 2
+        source_line = LineString(centerline)
+        zone_polygon = Polygon(zone["coordinates"])
+        assert source_line.difference(zone_polygon.buffer(1e-10)).is_empty
+        assert source_line.length > 0
         assert plan_public_realm_zone_recipe(
             zone["zone_type"],
             Polygon(zone["coordinates"]),
             zone["properties"],
             strict=True,
         ) is not None
+
+
+def test_locked_18m_street_prefers_exact_native_spine_over_local_overlap():
+    lego_catalog = _lego_catalog()
+    base = lego_fallback_spec("city_policy", lego_catalog)
+    spec = base.model_copy(update={
+        "local_archetype_id": "calgary_local",
+        "public_realm": base.public_realm.model_copy(update={
+            "local_street_variant_id": "calgary_local_v0",
+        }),
+    })
+    palette = palette_from_spec(
+        spec,
+        "city_policy",
+        lego_catalog=lego_catalog,
+    )
+    locked_street = Polygon([
+        _offset(0, 27),
+        _offset(146, 27),
+        _offset(146, 45),
+        _offset(0, 45),
+    ])
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(146, 72),
+        scenario_id="city_policy",
+        scenario_label="Locked 18 m spine",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        locked_street_area_wgs84=locked_street,
+        palette_override=palette,
+    )
+
+    roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
+    assert roads
+    for zone in roads:
+        assert zone["properties"]["width"] == 18.0
+        assert zone["properties"]["street_role"] == "spine"
+        assert zone["properties"]["road_archetype_id"] == "main_street_complete"
+        assert zone["properties"]["road_selected_variant_id"] == (
+            "main_street_complete_v0"
+        )
+        recipe = plan_public_realm_zone_recipe(
+            zone["zone_type"],
+            Polygon(zone["coordinates"]),
+            zone["properties"],
+            strict=True,
+        )
+        assert recipe is not None
+        assert recipe.family_id == "street_complete_main_18m"
 
 
 def test_locked_lego_street_reclassifies_geometry_that_disproves_local_width():
@@ -1055,6 +1163,7 @@ def test_locked_lego_street_reclassifies_geometry_that_disproves_local_width():
         assert zone["properties"]["road_selected_variant_id"] == (
             "main_street_complete_v0"
         )
+        assert len(zone["properties"]["plan_centerline"]) == 2
         assert plan_public_realm_zone_recipe(
             zone["zone_type"],
             Polygon(zone["coordinates"]),

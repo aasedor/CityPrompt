@@ -169,15 +169,15 @@ describe('street section pilot profiles', () => {
     expect(profile?.bands.find((band) => band.kind === 'motor')?.widthM).toBe(3.5);
   });
 
-  it('preserves the source-native local section and records the recipe target width', () => {
+  it('preserves the reviewed Calgary v0 local section and records the recipe target width', () => {
     const profile = resolvePilotStreetSectionProfile({
       properties: {
         public_realm_lego: {
           ...compiledStreetRecipe({
             familyId: 'street_local_public_realm',
             archetypeId: 'calgary_local',
-            variantId: 'calgary_local_v1',
-            appearanceKitId: 'heritage_brick_stone',
+            variantId: 'calgary_local_v0',
+            appearanceKitId: 'calgary_contemporary_native',
             rowM: 14,
           }),
           recipe_hash: 'd'.repeat(64),
@@ -188,7 +188,7 @@ describe('street section pilot profiles', () => {
     expect(profile).toMatchObject({
       familyId: 'street_local_public_realm',
       familyVersion: 1,
-      appearanceKitId: 'heritage_brick_stone',
+      appearanceKitId: 'calgary_contemporary_native',
       archetypeId: 'calgary_local',
       rowM: 16,
       targetRowM: 14,
@@ -198,11 +198,11 @@ describe('street section pilot profiles', () => {
     });
     expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0)).toBe(16);
     expect(profile?.treeOffsetsM).toHaveLength(2);
-    expect(profile?.bands.find((band) => band.kind === 'sidewalk')?.color).toBe('#c8bca8');
+    expect(profile?.bands.find((band) => band.kind === 'sidewalk')?.color).toBe('#c5c1b7');
     expect(profile?.rendererFingerprint).toMatch(/^street-v1-[0-9a-f]{16}$/);
   });
 
-  it('compiles a native 22 m complete main street with protected cycling', () => {
+  it('fits the approved 18 m complete-main program to a saved 22 m envelope', () => {
     const profile = resolvePilotStreetSectionProfile({
       properties: {
         public_realm_lego: {
@@ -216,11 +216,66 @@ describe('street section pilot profiles', () => {
         },
       },
     } as Pick<SiteZone, 'properties'>);
-    expect(profile?.rowM).toBe(22);
-    expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(22, 6);
-    expect(profile?.bands.filter((band) => band.kind === 'cycle')).toHaveLength(2);
+    expect(profile?.rowM).toBe(18);
+    expect(profile?.targetRowM).toBe(22);
+    expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(18, 6);
+    expect(profile?.bands.filter((band) => band.kind === 'cycle')).toHaveLength(0);
     expect(profile?.bands.filter((band) => band.kind === 'parking')).toHaveLength(2);
-    expect(profile?.appearanceKitId).toBe('timber_biophilic');
+    expect(profile?.appearanceKitId).toBe('european_cobblestone_v1');
+    expect(profile?.markings).toHaveLength(0);
+  });
+
+  it.each([
+    ['street_local_public_realm', 'narrow_residential_street', 10, 1.5, 3],
+    ['street_complete_main_18m', 'main_street_complete', 18, 3.2, 3.4],
+  ] as const)(
+    'fits the tropical %s/%s median program to the exact %sm right-of-way',
+    (familyId, archetypeId, rowM, medianWidthM, laneWidthM) => {
+      const profile = resolvePilotStreetSectionProfile({
+        properties: {
+          public_realm_lego: compiledStreetRecipe({
+            familyId,
+            archetypeId,
+            variantId: `${archetypeId}_v3`,
+            appearanceKitId: 'tropical_boulevard_v1',
+            rowM,
+          }),
+        },
+      } as Pick<SiteZone, 'properties'>);
+      const median = profile?.bands.find((band) => band.sourceType === 'planted_median');
+      const lanes = profile?.bands.filter((band) => band.kind === 'motor') ?? [];
+      expect(profile?.appearanceKitId).toBe('tropical_boulevard_v1');
+      expect(profile?.rowM).toBe(rowM);
+      expect(profile?.bands.reduce((sum, band) => sum + band.widthM, 0))
+        .toBeCloseTo(rowM, 8);
+      expect(median).toMatchObject({
+        kind: 'planting',
+        centerM: 0,
+        widthM: medianWidthM,
+        surface: 'lush tropical planting',
+      });
+      expect(lanes).toHaveLength(2);
+      expect(lanes.every((lane) => lane.widthM >= 3 && lane.widthM === laneWidthM))
+        .toBe(true);
+      expect(profile?.treeOffsetsM).toEqual([0]);
+    },
+  );
+
+  it('makes the modern-minimalist section fully flush and curb-free', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        public_realm_lego: compiledStreetRecipe({
+          familyId: 'street_local_public_realm',
+          archetypeId: 'narrow_residential_street',
+          variantId: 'narrow_residential_street_v1',
+          appearanceKitId: 'modern_minimalist_v1',
+          rowM: 10,
+        }),
+      },
+    } as Pick<SiteZone, 'properties'>);
+    expect(profile?.renderCurbs).toBe(false);
+    expect(profile?.curbOffsetsM).toEqual([]);
+    expect(new Set(profile?.bands.map((band) => band.liftM.toFixed(6))).size).toBe(1);
   });
 
   it('keeps local-family trails and laneways at their source-program metric widths', () => {
@@ -250,14 +305,14 @@ describe('street section pilot profiles', () => {
   });
 
   it.each([
-    ['yield_street', 6],
-    ['narrow_residential_street', 10],
-    ['woonerf_shared_street', 10],
-    ['green_alley', 5],
-    ['toronto_laneway', 5],
-    ['calgary_local', 16],
-    ['multi_use_trail', 4],
-  ])('executes strict-AI local source alias %s at %sm', (archetypeId, rowM) => {
+    ['yield_street', 6, 'dutch_woonerf_v1'],
+    ['narrow_residential_street', 10, 'classic_tree_lined_v1'],
+    ['woonerf_shared_street', 10, 'dutch_woonerf_v1'],
+    ['green_alley', 5, 'green_corridor_v1'],
+    ['toronto_laneway', 5, 'calgary_contemporary_native'],
+    ['calgary_local', 16, 'calgary_contemporary_native'],
+    ['multi_use_trail', 4, 'green_corridor_v1'],
+  ])('executes strict-AI local source alias %s at %sm', (archetypeId, rowM, appearanceKitId) => {
     const isTrail = archetypeId === 'multi_use_trail';
     const profile = resolvePilotStreetSectionProfile({
       properties: {
@@ -266,7 +321,7 @@ describe('street section pilot profiles', () => {
             familyId: 'street_local_public_realm',
             archetypeId,
             variantId: isTrail ? 'multi_use_trail_v1' : `${archetypeId}_v0`,
-            appearanceKitId: isTrail ? 'green_corridor_v1' : 'calgary_contemporary_native',
+            appearanceKitId,
             rowM,
           }),
         },

@@ -335,6 +335,7 @@ def community_3d_source_properties(
                     "road_archetype_id", "road_selected_variant_id", "street_role", "width",
                     "lane_count", "road_style_profile", "road_palette",
                     "road_variant_shade_id", "road_surface", "surface_type", "material",
+                    "plan_centerline",
                 )
             }),
             "generation": _semantic_generation_input(props, "streets_paths"),

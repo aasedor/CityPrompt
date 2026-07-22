@@ -371,6 +371,103 @@ _DISTRICT_APPEARANCE_KITS = (
     "industrial_adaptive_reuse",
 )
 
+# Street-card variant numbers are local to each archetype.  They are not a
+# district-palette index: for example, v0 means Classic Tree-Lined on both the
+# approved Main Street and Narrow Residential cards, while it means Dutch
+# Woonerf on the Yield Street card.  Keep this mapping explicit so adding or
+# reordering a shared palette can never silently change a selected street's
+# visual identity.
+_STREET_APPEARANCE_KITS_BY_ARCHETYPE: dict[str, tuple[str, ...]] = {
+    "main_street_complete": (
+        "classic_tree_lined_v1",
+        "modern_minimalist_v1",
+        "european_cobblestone_v1",
+        "tropical_boulevard_v1",
+    ),
+    "narrow_residential_street": (
+        "classic_tree_lined_v1",
+        "modern_minimalist_v1",
+        "european_cobblestone_v1",
+        "tropical_boulevard_v1",
+    ),
+    "yield_street": (
+        "dutch_woonerf_v1",
+    ),
+    "woonerf_shared_street": (
+        "dutch_woonerf_v1",
+    ),
+    # The source card and the render-locked V1 cohort expose only the Street
+    # Manual identity.  Historical backend catalogs accidentally synthesized
+    # v1-v3 by applying the generic district palette.
+    "calgary_local": (
+        "calgary_contemporary_native",
+    ),
+    # The green-alley V1 render lock is the permeable planted corridor.  The
+    # other source-card variants remain manual/legacy until their own kits are
+    # reviewed rather than borrowing unrelated district-building identities.
+    "green_alley": (
+        "green_corridor_v1",
+    ),
+    # Traditional service-lane v0 is intentionally neutral.  Of the existing
+    # reviewed kits, the contemporary local-street palette makes the fewest
+    # unsupported claims about heritage, timber, or industrial character.
+    "toronto_laneway": (
+        "calgary_contemporary_native",
+    ),
+}
+
+
+# These exact IDs were advertised by an earlier executable catalog even
+# though no matching visual kit existed.  Existing AI plans can therefore
+# legitimately contain them.  Community 3D compilation migrates only this
+# finite historical set to the reviewed default; every other unknown variant
+# must continue to fail closed.
+_LEGACY_STREET_VARIANT_NORMALIZATION: dict[tuple[str, str], str] = {
+    **{
+        ("yield_street", f"yield_street_v{index}"): "yield_street_v0"
+        for index in range(1, 4)
+    },
+    **{
+        ("woonerf_shared_street", f"woonerf_shared_street_v{index}"):
+            "woonerf_shared_street_v0"
+        for index in range(1, 4)
+    },
+    **{
+        ("calgary_local", f"calgary_local_v{index}"): "calgary_local_v0"
+        for index in range(1, 4)
+    },
+    **{
+        ("green_alley", f"green_alley_v{index}"): "green_alley_v0"
+        for index in range(1, 4)
+    },
+    **{
+        ("toronto_laneway", f"toronto_laneway_v{index}"): "toronto_laneway_v0"
+        for index in range(1, 4)
+    },
+}
+
+
+def normalize_legacy_ai_street_variant_properties(
+    properties: dict[str, Any] | None,
+) -> tuple[dict[str, Any], str | None]:
+    """Normalize one formerly advertised, unbuilt AI street variant.
+
+    Returns a copy plus the migrated source variant ID.  Callers deliberately
+    opt into this compatibility path only for saved AI-plan zones; the core
+    recipe planner remains strict and never accepts these retired identities.
+    """
+
+    normalized = dict(properties or {})
+    archetype_id = str(normalized.get("road_archetype_id") or "").strip()
+    variant_id = str(normalized.get("road_selected_variant_id") or "").strip()
+    canonical_variant_id = _LEGACY_STREET_VARIANT_NORMALIZATION.get(
+        (archetype_id, variant_id)
+    )
+    if canonical_variant_id is None:
+        return normalized, None
+    normalized["road_selected_variant_id"] = canonical_variant_id
+    return normalized, variant_id
+
 
 def _street_variants(
     archetype_id: str,
@@ -379,7 +476,12 @@ def _street_variants(
     compatibility: PublicRealmCompatibility,
     components: tuple[str, ...] = _STREET_COMPONENTS,
 ) -> tuple[PublicRealmSelectionCapability, ...]:
-    """Four district kits over one authoritative metric cross-section."""
+    """Four explicit card appearances over one authoritative metric section."""
+
+    appearance_kits = _STREET_APPEARANCE_KITS_BY_ARCHETYPE.get(
+        archetype_id,
+        _DISTRICT_APPEARANCE_KITS,
+    )
 
     return tuple(
         _selection(
@@ -391,7 +493,7 @@ def _street_variants(
             components=components,
             default=index == 0,
         )
-        for index, appearance_kit_id in enumerate(_DISTRICT_APPEARANCE_KITS)
+        for index, appearance_kit_id in enumerate(appearance_kits)
     )
 
 
@@ -579,9 +681,33 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
         ),
     ),
     PublicRealmFamilyCapability(
+        family_id="street_complete_main_18m",
+        kind="street",
+        title="Render-Locked 18 m Complete Main Street",
+        generator="street_section",
+        selections=_street_variants(
+            "main_street_complete",
+            profile_id="complete-main-18m-v1",
+            compatibility=_segment_envelope(
+                nominal_row_m=18,
+                row=(17.95, 18.05),
+                length=(8, 2_000),
+            ),
+            components=(
+                "complete_main_18m_bands_v1",
+                "street_edges_markings_v1",
+                "commercial_public_realm_v1",
+            ),
+        ),
+    ),
+    # Compatibility family for already-authored 22 m polygons.  New requests
+    # resolve to the canonical 18 m family above; an exact 22 m source can
+    # still be rebuilt instead of becoming an unrenderable orphan.  Retaining
+    # the historical family ID is deliberate migration compatibility.
+    PublicRealmFamilyCapability(
         family_id="street_complete_main_22m",
         kind="street",
-        title="Native 22 m Complete Main Street",
+        title="Legacy 22 m Complete Main Street",
         generator="street_section",
         selections=_street_variants(
             "main_street_complete",
@@ -892,53 +1018,77 @@ def plan_public_realm_recipe(
             supported_families=supported,
         )
 
-    capability = min(candidates, key=lambda item: item.family_id)
-    selections = [
-        selection
+    selection_candidates = [
+        (capability, selection)
+        for capability in candidates
         for selection in capability.selections
         if selection.archetype_id == request.archetype_id
     ]
     if request.variant_id is not None:
-        selections = [
-            selection
-            for selection in selections
+        selection_candidates = [
+            (capability, selection)
+            for capability, selection in selection_candidates
             if selection.variant_id == request.variant_id
         ]
-        if not selections:
+        if not selection_candidates:
             raise PublicRealmPlanningError(
                 f"Variant '{request.variant_id}' is not executable for "
                 f"'{request.archetype_id}'.",
                 code="family_incompatible",
                 requested=_request_payload(request),
-                supported_families=[_family_summary(capability)],
+                supported_families=[
+                    _family_summary(capability) for capability in candidates
+                ],
                 violations=[{
                     "field": "variant_id",
                     "requested": request.variant_id,
                     "supported": sorted({
                         selection.variant_id
+                        for capability in candidates
                         for selection in capability.selections
                         if selection.archetype_id == request.archetype_id
                     }),
                 }],
             )
     else:
-        defaults = [selection for selection in selections if selection.is_default]
-        selections = defaults or selections
+        defaults = [
+            (capability, selection)
+            for capability, selection in selection_candidates
+            if selection.is_default
+        ]
+        selection_candidates = defaults or selection_candidates
 
-    selection = min(selections, key=lambda item: item.variant_id)
     normalized_target = _normalized_target(request.target)
-    violations = _compatibility_violations(
-        normalized_target,
-        selection.compatibility,
-    )
-    if violations:
+    compatible = [
+        (capability, selection)
+        for capability, selection in selection_candidates
+        if not _compatibility_violations(
+            normalized_target,
+            selection.compatibility,
+        )
+    ]
+    if not compatible:
+        capability, selection = min(
+            selection_candidates,
+            key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+        )
+        violations = _compatibility_violations(
+            normalized_target,
+            selection.compatibility,
+        )
         raise PublicRealmPlanningError(
             f"Family '{capability.family_id}' cannot compile the requested metric target.",
             code="family_incompatible",
             requested=_request_payload(request),
-            supported_families=[_family_summary(capability)],
+            supported_families=[
+                _family_summary(candidate) for candidate in candidates
+            ],
             violations=violations,
         )
+    capability, selection = min(
+        compatible,
+        key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+    )
 
     payload = {
         "schema_version": PUBLIC_REALM_SCHEMA_VERSION,
@@ -1098,6 +1248,7 @@ def plan_public_realm_metric_street_recipe(
     """Plan a locked metric street piece using geometry-attested width."""
 
     try:
+        catalog = catalog or build_public_realm_capability_catalog()
         target = _target_from_metric_geometry(
             geometry_metric,
             {
@@ -1107,6 +1258,26 @@ def plan_public_realm_metric_street_recipe(
             target_type="street_segment",
             attest_segment_width=True,
         )
+        nominal_widths = sorted({
+            float(selection.compatibility.nominal_row_width_m)
+            for capability in catalog.capabilities
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+            and variant_id in (None, selection.variant_id)
+            and selection.compatibility.nominal_row_width_m is not None
+        })
+        if nominal_widths:
+            nearest_nominal = min(
+                nominal_widths,
+                key=lambda width: abs(width - target.row_width_m),
+            )
+            if abs(nearest_nominal - target.row_width_m) <= 0.1:
+                # Preserve canonical section widths across WGS84 projection
+                # round-trips, including the accepted legacy 22 m migration
+                # family. Geometry has already attested the value here.
+                target = target.model_copy(update={
+                    "row_width_m": nearest_nominal,
+                })
         return plan_public_realm_recipe(
             PublicRealmPlanRequest(
                 archetype_id=archetype_id,
@@ -1178,10 +1349,13 @@ def plan_public_realm_zone_recipe(
             ],
         )
 
-    capability, selection = min(
-        matching,
-        key=lambda pair: (pair[0].family_id, pair[1].variant_id),
-    )
+    target_types = {
+        selection.compatibility.target_type for _capability, selection in matching
+    }
+    if len(target_types) != 1:
+        raise ValueError(
+            f"Public-realm archetype '{archetype_id}' has ambiguous target types"
+        )
     transformer = build_transformer(
         WGS84_CRS,
         local_metric_crs_for_polygon(geometry_wgs84),
@@ -1190,7 +1364,7 @@ def plan_public_realm_zone_recipe(
     target = _target_from_metric_geometry(
         metric_geometry,
         props,
-        target_type=selection.compatibility.target_type,
+        target_type=target_types.pop(),
         # Strictness controls failure behavior, not recipe geometry.  Every
         # emitted V1 recipe must use the same target policy so a manual compile
         # and Direct's later canonical replan cannot disagree.
@@ -1202,7 +1376,6 @@ def plan_public_realm_zone_recipe(
                 archetype_id=archetype_id,
                 variant_id=variant_id,
                 target=target,
-                preferred_family_id=capability.family_id,
             ),
             catalog=catalog,
         )

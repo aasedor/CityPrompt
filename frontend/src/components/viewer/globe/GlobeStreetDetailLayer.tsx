@@ -21,7 +21,7 @@ import {
   resolveCommunity3DKind,
   shouldRenderCommunityGround,
 } from '@/features/community3d/community3d';
-import { extractCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
+import { extractZoneCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import {
@@ -37,8 +37,10 @@ import {
   buildAccessibleFourWayIntersectionGeometry,
   buildDashGeometry,
   buildOffsetCurbGeometry,
+  buildParkingStallMarkingGeometry,
   buildRibbonBandGeometry,
   buildRoundaboutGeometry,
+  buildSharrowGeometry,
   densifyPolyline,
   stationNormals,
   type LocalPt,
@@ -50,12 +52,13 @@ import {
   samplePlaneOffset,
   type TerrainContactSample,
 } from './terrainContactProfile';
-import { STREET_DETAIL_3D } from '@/data/streetGeometryParams';
+import { ROUNDABOUT_PARAMS, STREET_DETAIL_3D } from '@/data/streetGeometryParams';
 import {
   resolvePilotStreetSectionProfile,
 } from './streetSectionProfiles';
 import {
   selectDetailedStreetZones,
+  selectFurnishedStreetIds,
   selectTreeStreetIds,
   streetTerrainSampleOffset,
 } from './streetDetailLod';
@@ -64,6 +67,7 @@ import {
   PUBLIC_REALM_DETAIL_DEPTH,
   PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
 } from './publicRealmDepthPolicy';
 import {
   GlobeLandscapeBenchStand,
@@ -78,11 +82,23 @@ import { validateStreetRecipeProperties } from './streetLegoContract';
 import {
   buildStreetFamilyFixturePlacements,
   buildWoonerfPlanterPlacements,
+  buildWoonerfPlayPlacements,
+  buildYieldStreetEntrySignPlacements,
 } from './streetFamilyFurniture';
 import { GlobeStreetLightInstances } from './GlobeStreetLightInstances';
 import { GlobeStreetMicrodetailInstances } from './GlobeStreetMicrodetailInstances';
 import { GlobeIntersectionSignalInstances } from './GlobeIntersectionSignalInstances';
+import { GlobeStreetVehicleInstances } from './GlobeStreetVehicleInstances';
+import { GlobeStreetTransitShelterInstances } from './GlobeStreetTransitShelterInstances';
 import { resolveFourWayIntersectionControl } from './streetIntersectionControlPolicy';
+import {
+  createStreetSurfacePaletteTint,
+  createStreetSurfaceMaterialResources,
+  resolveStreetAppearanceMaterialKind,
+  resolveStreetSurfaceMaterialKind,
+  type StreetSurfaceMaterialResources,
+} from './streetSurfaceMaterials';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -96,10 +112,6 @@ const MAX_SAMPLE_PASSES = 3;
 
 const CURB_COLOR = '#9aa0a6';
 const DASH_COLOR = '#e0e2e4';
-const ASPHALT_COLOR = '#76787a';
-const CONCRETE_COLOR = '#c7cbce';
-const ISLAND_COLOR = '#96b08a';
-
 const RENDER_ORDER_DASHES = 122;
 const RENDER_ORDER_FLATWORK = 123;
 const RENDER_ORDER_RAISED = 130;
@@ -124,11 +136,13 @@ function StreetRibbonDetail({
   fallbackTerrainHeight,
   intersectionNodes,
   renderFamilyFurniture,
+  renderFamilyTrees,
 }: {
   zone: SiteZone;
   fallbackTerrainHeight: number;
   intersectionNodes: FourWayStreetIntersection[];
   renderFamilyFurniture: boolean;
+  renderFamilyTrees: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -148,10 +162,71 @@ function StreetRibbonDetail({
     () => resolvePilotStreetSectionProfile(zone),
     [zone.properties],
   );
+  const bandMaterials = useMemo(() => {
+    if (!sectionProfile) return [];
+    const resourcesByKey = new Map<string, StreetSurfaceMaterialResources>();
+    return sectionProfile.bands
+      .filter((band) => band.sourceType !== 'setback')
+      .map((band) => {
+      const baseKind = resolveStreetSurfaceMaterialKind({
+        kind: band.kind,
+        sourceType: band.sourceType,
+        surface: band.surface,
+        label: band.label,
+      });
+      const kind = resolveStreetAppearanceMaterialKind(
+        baseKind,
+        sectionProfile.appearanceKitId,
+        band.kind,
+      );
+      const palette = sectionProfile.appearance?.palette;
+      const paletteColor = (() => {
+        if (!palette) return band.color;
+        switch (band.kind) {
+          case 'motor': return palette.motor;
+          case 'parking': return palette.parking;
+          case 'cycle': return palette.cycle;
+          case 'sidewalk': return palette.sidewalk;
+          case 'planting':
+          case 'median': return palette.planting;
+          case 'buffer': return palette.buffer;
+          case 'shoulder': return palette.shoulder;
+          case 'path': return palette.path;
+          default: return band.color;
+        }
+      })();
+      const tint = createStreetSurfacePaletteTint(paletteColor);
+      const key = [kind, tint.getHexString(), band.roughness, band.metalness].join('|');
+      const existing = resourcesByKey.get(key);
+      if (existing) return existing;
+      const resources = createStreetSurfaceMaterialResources(kind, {
+        seed: `${sectionProfile.archetypeId}:${sectionProfile.variantId ?? 'base'}:${kind}`,
+        tint,
+        roughness: band.roughness,
+        metalness: band.metalness,
+        anisotropy: 8,
+      });
+      Object.assign(resources.material, {
+        depthTest: PUBLIC_REALM_DETAIL_DEPTH.depthTest,
+        depthWrite: PUBLIC_REALM_DETAIL_DEPTH.depthWrite,
+        polygonOffset: true,
+        polygonOffsetFactor: -3,
+        polygonOffsetUnits: -6,
+      });
+      resourcesByKey.set(key, resources);
+      return resources;
+    });
+  }, [sectionProfile]);
+  useEffect(
+    () => retainResourceForDeferredDisposal(bandMaterials, (ownedMaterials) => {
+      new Set(ownedMaterials).forEach((resources) => resources.dispose());
+    }),
+    [bandMaterials],
+  );
 
   // Centerline in lng/lat, densified so stations follow terrain.
   const { centerLngLat, centroid, halfWidth, sectionScale } = useMemo(() => {
-    const center = extractCenterline(zone.coordinates);
+    const center = extractZoneCenterline(zone);
     if (center.length < 2) return {
       centerLngLat: null, centroid: null, halfWidth: 0, sectionScale: 1,
     };
@@ -392,6 +467,33 @@ function StreetRibbonDetail({
         }))
         .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
       : [];
+    const isCompleteMainStreet = sectionProfile?.archetypeId === 'main_street_complete';
+    const parkingMarkings = isCompleteMainStreet
+      ? sectionProfile.bands
+        .filter((band) => band.kind === 'parking')
+        .map((band) => buildParkingStallMarkingGeometry(
+          centerLngLat.local,
+          band.startM * sectionScale,
+          band.endM * sectionScale,
+          zs,
+          6,
+          13,
+          curbRampClearanceMask,
+        ))
+        .filter((geometry): geometry is THREE.BufferGeometry => Boolean(geometry))
+      : [];
+    const sharrows = isCompleteMainStreet
+      ? buildSharrowGeometry(
+        centerLngLat.local,
+        sectionProfile.bands
+          .filter((band) => band.kind === 'motor')
+          .map((band) => band.centerM * sectionScale),
+        zs,
+        28,
+        18,
+        curbRampClearanceMask,
+      )
+      : null;
     return {
       curbs: sectionProfile
         ? (sectionProfile.renderCurbs
@@ -407,11 +509,17 @@ function StreetRibbonDetail({
       dashes: sectionProfile ? null : buildDashGeometry(centerLngLat.local, STREET_DETAIL_3D, zs),
       bands,
       markings,
+      parkingMarkings,
+      sharrows,
     };
   }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id]);
 
   const woonerfPlanters = useMemo(() => {
-    if (!centerLngLat || !sectionProfile?.archetypeId.includes('woonerf')) return [];
+    if (
+      !centerLngLat
+      || !sectionProfile
+      || !['woonerf_shared_street', 'yield_street'].includes(sectionProfile.archetypeId)
+    ) return [];
     return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, stationTerrain);
   }, [centerLngLat, halfWidth, sectionProfile, stationTerrain]);
 
@@ -425,6 +533,19 @@ function StreetRibbonDetail({
     })),
     [woonerfPlanters],
   );
+
+  const woonerfPlayNodes = useMemo(
+    () => sectionProfile?.archetypeId === 'woonerf_shared_street'
+      ? buildWoonerfPlayPlacements(woonerfPlanters)
+      : [],
+    [sectionProfile?.archetypeId, woonerfPlanters],
+  );
+
+  const yieldStreetSigns = useMemo(() => (
+    centerLngLat && sectionProfile?.archetypeId === 'yield_street'
+      ? buildYieldStreetEntrySignPlacements(centerLngLat.local, halfWidth, stationTerrain)
+      : []
+  ), [centerLngLat, halfWidth, sectionProfile?.archetypeId, stationTerrain]);
 
   const woonerfBenches = useMemo(
     () => woonerfPlanters
@@ -472,15 +593,17 @@ function StreetRibbonDetail({
 
   // r3f does not dispose geometry props — without this every drape freeze,
   // edit commit, and zone delete leaks the previous buffers.
-  useEffect(
-    () => () => {
-      geometries?.curbs?.dispose();
-      geometries?.dashes?.dispose();
-      geometries?.bands.forEach((item) => item.geometry.dispose());
-      geometries?.markings.forEach((item) => item.geometry.dispose());
-    },
-    [geometries],
-  );
+  useEffect(() => {
+    if (!geometries) return undefined;
+    return retainResourceForDeferredDisposal(geometries, (ownedGeometries) => {
+      ownedGeometries.curbs?.dispose();
+      ownedGeometries.dashes?.dispose();
+      ownedGeometries.bands.forEach((item) => item.geometry.dispose());
+      ownedGeometries.markings.forEach((item) => item.geometry.dispose());
+      ownedGeometries.parkingMarkings.forEach((geometry) => geometry.dispose());
+      ownedGeometries.sharrows?.dispose();
+    });
+  }, [geometries]);
 
   if (!centerLngLat || !centroid || !geometries) return null;
 
@@ -490,36 +613,14 @@ function StreetRibbonDetail({
       lon={centroid.lng * DEG_TO_RAD}
       height={frameElevation}
     >
-      {geometries.bands.map(({ band, geometry }) => (
+      {geometries.bands.map(({ band, geometry }, index) => (
         <mesh
           key={`${band.sourceType}-${band.startM}`}
           geometry={geometry}
           renderOrder={RENDER_ORDER_FLATWORK}
           frustumCulled={false}
         >
-          {sectionProfile?.familyId ? (
-            <meshStandardMaterial
-              color={band.color}
-              roughness={band.roughness ?? 0.9}
-              metalness={band.metalness ?? 0.02}
-              depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
-              depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
-              polygonOffset
-              polygonOffsetFactor={-3}
-              polygonOffsetUnits={-6}
-              side={THREE.DoubleSide}
-            />
-          ) : (
-            <meshBasicMaterial
-              color={band.color}
-              depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
-              depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
-              polygonOffset
-              polygonOffsetFactor={-3}
-              polygonOffsetUnits={-6}
-              side={THREE.DoubleSide}
-            />
-          )}
+          <primitive object={bandMaterials[index].material} attach="material" />
         </mesh>
       ))}
       {geometries.markings.map(({ marking, geometry }, index) => (
@@ -540,6 +641,25 @@ function StreetRibbonDetail({
           />
         </mesh>
       ))}
+      {[...geometries.parkingMarkings, ...(geometries.sharrows ? [geometries.sharrows] : [])]
+        .map((geometry, index) => (
+          <mesh
+            key={`street-signature-marking-${index}`}
+            geometry={geometry}
+            renderOrder={RENDER_ORDER_DASHES + 1}
+            frustumCulled={false}
+          >
+            <meshBasicMaterial
+              color={sectionProfile?.appearance?.palette.marking ?? DASH_COLOR}
+              depthTest={PUBLIC_REALM_DECAL_DEPTH.depthTest}
+              depthWrite={PUBLIC_REALM_DECAL_DEPTH.depthWrite}
+              polygonOffset
+              polygonOffsetFactor={-5}
+              polygonOffsetUnits={-10}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+        ))}
       {geometries.curbs && (
         <mesh geometry={geometries.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
           <meshStandardMaterial
@@ -567,7 +687,10 @@ function StreetRibbonDetail({
       )}
       <GlobeLandscapeTreeStand placements={woonerfTrees} renderOrder={RENDER_ORDER_FURNITURE} />
       <GlobeLandscapeBenchStand placements={woonerfBenches} renderOrder={RENDER_ORDER_FURNITURE} />
-      <GlobeLandscapeTreeStand placements={familyFixtures.trees} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeLandscapeTreeStand
+        placements={renderFamilyTrees ? familyFixtures.trees : []}
+        renderOrder={RENDER_ORDER_FURNITURE}
+      />
       <GlobeLandscapeBenchStand placements={familyFixtures.benches} renderOrder={RENDER_ORDER_FURNITURE} />
       <GlobeStreetLightInstances
         placements={familyFixtures.lights}
@@ -579,6 +702,73 @@ function StreetRibbonDetail({
         fixtureMetalColor={sectionProfile?.appearance?.palette.fixtureMetal ?? '#30383a'}
         renderOrder={RENDER_ORDER_FURNITURE}
       />
+      <GlobeStreetVehicleInstances
+        placements={familyFixtures.parkedVehicles}
+        renderOrder={RENDER_ORDER_FURNITURE + 2}
+      />
+      <GlobeStreetTransitShelterInstances
+        placements={familyFixtures.transitShelters.map((placement) => ({
+          ...placement,
+          z: placement.z + placement.surfaceLiftM,
+        }))}
+        renderOrder={RENDER_ORDER_FURNITURE + 3}
+      />
+      {yieldStreetSigns.map((placement, index) => (
+        <group
+          key={`yield-street-entry-sign-${index}`}
+          position={[placement.x, placement.y, placement.z]}
+          rotation={[0, 0, placement.yawRad]}
+        >
+          <mesh
+            position={[0, 0, 0.82]}
+            rotation={[Math.PI / 2, 0, 0]}
+            renderOrder={RENDER_ORDER_FURNITURE + 1}
+          >
+            <cylinderGeometry args={[0.032, 0.042, 1.64, 8]} />
+            <meshStandardMaterial color="#353b3c" metalness={0.55} roughness={0.42} />
+          </mesh>
+          <mesh
+            position={[0, 0, 1.7]}
+            rotation={[Math.PI / 2, 0, 0]}
+            renderOrder={RENDER_ORDER_FURNITURE + 2}
+          >
+            <circleGeometry args={[0.36, 3, -Math.PI / 2]} />
+            <meshStandardMaterial color="#c93434" roughness={0.65} side={THREE.DoubleSide} />
+          </mesh>
+        </group>
+      ))}
+      {woonerfPlayNodes.map((placement, index) => (
+        <group
+          key={`woonerf-play-node-${index}`}
+          position={[placement.x, placement.y, placement.z]}
+          rotation={[0, 0, placement.rotation]}
+          scale={placement.scale}
+        >
+          <mesh
+            position={[0, 0, 0.045]}
+            rotation={[Math.PI / 2, 0, 0]}
+            renderOrder={RENDER_ORDER_FLATWORK + 1}
+          >
+            <cylinderGeometry args={[1.08, 1.08, 0.09, 20]} />
+            <meshStandardMaterial color="#b89163" roughness={0.96} />
+          </mesh>
+          {[-0.62, 0, 0.62].map((localX, boulderIndex) => (
+            <mesh
+              key={`play-boulder-${boulderIndex}`}
+              position={[localX, boulderIndex % 2 === 0 ? -0.24 : 0.2, 0.2 + boulderIndex * 0.035]}
+              scale={[0.34, 0.3, 0.28 + boulderIndex * 0.03]}
+              renderOrder={RENDER_ORDER_FURNITURE}
+            >
+              <dodecahedronGeometry args={[1, 0]} />
+              <meshStandardMaterial color={boulderIndex === 1 ? '#a98f6c' : '#8c806d'} roughness={1} />
+            </mesh>
+          ))}
+          <mesh position={[0, 0.62, 0.28]} renderOrder={RENDER_ORDER_FURNITURE + 1}>
+            <boxGeometry args={[1.55, 0.16, 0.16]} />
+            <meshStandardMaterial color="#72513a" roughness={0.9} />
+          </mesh>
+        </group>
+      ))}
       {woonerfPlanters.map((placement, index) => (
         <group key={`woonerf-planter-${index}`}>
           <mesh
@@ -586,7 +776,13 @@ function StreetRibbonDetail({
             rotation={[0, 0, placement.rotation]}
             renderOrder={RENDER_ORDER_FURNITURE}
           >
-            <boxGeometry args={[0.55, halfWidth * 1.55, 0.06]} />
+            <boxGeometry args={[
+              sectionProfile?.archetypeId === 'woonerf_shared_street' && index % 4 === 2
+                ? 3.2
+                : 0.55,
+              halfWidth * 1.55,
+              0.06,
+            ]} />
             <meshStandardMaterial color="#d2bea0" roughness={0.90} />
           </mesh>
           <group
@@ -617,7 +813,12 @@ function StreetRibbonDetail({
               </mesh>
             ))}
             {[-1.45, 1.45].map((bollardX) => (
-              <mesh key={bollardX} position={[bollardX, 0, 0.42]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <mesh
+                key={bollardX}
+                position={[bollardX, 0, 0.42]}
+                rotation={[Math.PI / 2, 0, 0]}
+                renderOrder={RENDER_ORDER_FURNITURE}
+              >
                 <cylinderGeometry args={[0.09, 0.11, 0.84, 10]} />
                 <meshStandardMaterial color="#343b3b" metalness={0.48} roughness={0.5} />
               </mesh>
@@ -650,6 +851,35 @@ function RoundaboutDetail({
   );
   const appearance = sectionProfile?.appearance
     ?? STREET_APPEARANCE_KITS.classic_tree_lined_v1;
+  const roundaboutMaterials = useMemo(() => {
+    const ring = createStreetSurfaceMaterialResources('asphalt', {
+      seed: `${appearance.id}:roundabout:ring`,
+      anisotropy: 8,
+    });
+    const concrete = createStreetSurfaceMaterialResources('concrete', {
+      seed: `${appearance.id}:roundabout:apron`,
+      anisotropy: 8,
+    });
+    const planting = createStreetSurfaceMaterialResources('planting_grass', {
+      seed: `${appearance.id}:roundabout:planting`,
+      anisotropy: 8,
+    });
+    for (const resources of [ring, concrete, planting]) {
+      Object.assign(resources.material, {
+        depthTest: PUBLIC_REALM_DETAIL_DEPTH.depthTest,
+        depthWrite: PUBLIC_REALM_DETAIL_DEPTH.depthWrite,
+      });
+    }
+    return { ring, concrete, planting };
+  }, [appearance.id]);
+  useEffect(
+    () => retainResourceForDeferredDisposal(roundaboutMaterials, (ownedMaterials) => {
+      ownedMaterials.ring.dispose();
+      ownedMaterials.concrete.dispose();
+      ownedMaterials.planting.dispose();
+    }),
+    [roundaboutMaterials],
+  );
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
   const storedTerrain = zoneStoredTerrain(zone);
@@ -664,6 +894,8 @@ function RoundaboutDetail({
       result.apron,
       result.island,
       result.splitters,
+      result.splitterPlanting,
+      result.sidewalks,
       result.approachMarkings,
     ]) {
       applyTerrainPlaneToStreetGeometry(
@@ -677,17 +909,18 @@ function RoundaboutDetail({
     return result;
   }, [frame, terrain, terrainPlane]);
 
-  useEffect(
-    () => () => {
-      if (!geometry) return;
-      geometry.ring.dispose();
-      geometry.apron.dispose();
-      geometry.island.dispose();
-      geometry.splitters.dispose();
-      geometry.approachMarkings.dispose();
-    },
-    [geometry],
-  );
+  useEffect(() => {
+    if (!geometry) return undefined;
+    return retainResourceForDeferredDisposal(geometry, (ownedGeometry) => {
+      ownedGeometry.ring.dispose();
+      ownedGeometry.apron.dispose();
+      ownedGeometry.island.dispose();
+      ownedGeometry.splitters.dispose();
+      ownedGeometry.splitterPlanting.dispose();
+      ownedGeometry.sidewalks.dispose();
+      ownedGeometry.approachMarkings.dispose();
+    });
+  }, [geometry]);
 
   // Zone moved/reshaped under the same id — resample the anchor.
   useEffect(() => {
@@ -755,6 +988,93 @@ function RoundaboutDetail({
       y + frame.rectCenterLocal[1],
     ) - terrain
     : 0;
+  const signRadiusM = (
+    ROUNDABOUT_PARAMS.ICD / 2
+    + ROUNDABOUT_PARAMS.SETBK
+    + ROUNDABOUT_PARAMS.CW
+    + 1.4
+  ) * geometry.scale;
+  const approachSigns = Array.from({ length: 4 }, (_, index) => {
+    const angle = frame.bearingRad + index * Math.PI / 2;
+    const x = Math.cos(angle) * signRadiusM;
+    const y = Math.sin(angle) * signRadiusM;
+    return {
+      angle,
+      x,
+      y,
+      z: roundaboutTerrainZ(x, y),
+    };
+  });
+  const lampRadiusM = (
+    ROUNDABOUT_PARAMS.ICD / 2
+    + ROUNDABOUT_PARAMS.SETBK
+    + ROUNDABOUT_PARAMS.CW
+    + 1.8
+  ) * geometry.scale;
+  const lampLateralOffsetM = (ROUNDABOUT_PARAMS.APP / 2 + 1.15) * geometry.scale;
+  const approachLights = Array.from({ length: 4 }, (_, index) => {
+    const angle = frame.bearingRad + index * Math.PI / 2;
+    const tangentX = Math.cos(angle);
+    const tangentY = Math.sin(angle);
+    const normalX = -tangentY;
+    const normalY = tangentX;
+    return [-1, 1].map((side) => {
+      const x = tangentX * lampRadiusM + normalX * lampLateralOffsetM * side;
+      const y = tangentY * lampRadiusM + normalY * lampLateralOffsetM * side;
+      return {
+        angle,
+        x,
+        y,
+        z: roundaboutTerrainZ(x, y),
+        stationIndex: 0,
+        stationM: 0,
+        tangentX,
+        tangentY,
+        normalX,
+        normalY,
+        yawRad: angle + (side < 0 ? Math.PI / 2 : -Math.PI / 2),
+        offsetM: lampLateralOffsetM * side,
+      };
+    });
+  }).flat();
+  const approachTreeRadiusM = (
+    ROUNDABOUT_PARAMS.ICD / 2
+    + ROUNDABOUT_PARAMS.SETBK
+    + ROUNDABOUT_PARAMS.CW
+    + 3.8
+  ) * geometry.scale;
+  const approachTreeLateralOffsetM = (ROUNDABOUT_PARAMS.APP / 2 + 2.35) * geometry.scale;
+  const roundaboutAppearanceStyle = (() => {
+    switch (appearance.id) {
+      case 'modern_minimalist_v1':
+        return { canopyClass: 'columnar_deciduous' as const, lightStyle: 'contemporary' as const };
+      case 'european_cobblestone_v1':
+        return { canopyClass: 'pollarded_deciduous' as const, lightStyle: 'traditional' as const };
+      case 'tropical_boulevard_v1':
+        return { canopyClass: 'tropical_palm' as const, lightStyle: 'contemporary' as const };
+      default:
+        return { canopyClass: 'mature_deciduous' as const, lightStyle: 'traditional' as const };
+    }
+  })();
+  const approachTrees = Array.from({ length: 4 }, (_, index) => {
+    const angle = frame.bearingRad + index * Math.PI / 2;
+    const tangentX = Math.cos(angle);
+    const tangentY = Math.sin(angle);
+    const normalX = -tangentY;
+    const normalY = tangentX;
+    return [-1, 1].map((side) => {
+      const x = tangentX * approachTreeRadiusM + normalX * approachTreeLateralOffsetM * side;
+      const y = tangentY * approachTreeRadiusM + normalY * approachTreeLateralOffsetM * side;
+      return {
+        x,
+        y,
+        z: roundaboutTerrainZ(x, y) + PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+        yawRad: angle + side * 0.67,
+        scale: Math.max(0.42, 0.58 * geometry.scale),
+        canopyClass: roundaboutAppearanceStyle.canopyClass,
+      };
+    });
+  }).flat();
 
   return (
     <EastNorthUpFrame
@@ -764,30 +1084,22 @@ function RoundaboutDetail({
     >
       <group position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}>
         <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshStandardMaterial
-            color={appearance.palette.motor ?? ASPHALT_COLOR}
-            roughness={appearance.palette.roughness}
-            metalness={appearance.palette.metalness}
-            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
-            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
-            side={THREE.DoubleSide}
-          />
+          <primitive object={roundaboutMaterials.ring.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshStandardMaterial
-            color={appearance.palette.sidewalk ?? CONCRETE_COLOR}
-            roughness={0.94}
-            metalness={0}
-            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
-            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
-            side={THREE.DoubleSide}
-          />
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <meshStandardMaterial color={appearance.palette.planting ?? ISLAND_COLOR} roughness={0.98} metalness={0} />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <meshStandardMaterial color={appearance.palette.planting ?? ISLAND_COLOR} roughness={0.98} metalness={0} />
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+        </mesh>
+        <mesh geometry={geometry.splitterPlanting} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
+        </mesh>
+        <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
           <meshBasicMaterial
@@ -799,12 +1111,43 @@ function RoundaboutDetail({
         </mesh>
         <GlobeLandscapeTreeStand
           placements={[
-            { x: 0, y: 0, z: roundaboutTerrainZ(0, 0) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.62 * geometry.scale },
-            { x: 1.8 * geometry.scale, y: -1.1 * geometry.scale, z: roundaboutTerrainZ(1.8 * geometry.scale, -1.1 * geometry.scale) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 1.81, scale: 0.52 * geometry.scale },
-            { x: -1.5 * geometry.scale, y: 1.25 * geometry.scale, z: roundaboutTerrainZ(-1.5 * geometry.scale, 1.25 * geometry.scale) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 3.29, scale: 0.55 * geometry.scale },
+            { x: 0, y: 0, z: roundaboutTerrainZ(0, 0) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.72 * geometry.scale, canopyClass: roundaboutAppearanceStyle.canopyClass },
+            ...approachTrees,
           ]}
           renderOrder={RENDER_ORDER_FURNITURE}
         />
+        <GlobeStreetLightInstances
+          placements={approachLights.map((placement) => ({
+            ...placement,
+            fixtureStyle: roundaboutAppearanceStyle.lightStyle,
+          }))}
+          metalColor={appearance.palette.fixtureMetal}
+          renderOrder={RENDER_ORDER_FURNITURE}
+        />
+        {approachSigns.map((placement, index) => (
+          <group
+            key={`roundabout-yield-sign-${index}`}
+            position={[placement.x, placement.y, placement.z]}
+            rotation={[0, 0, placement.angle + Math.PI / 2]}
+          >
+            <mesh
+              position={[0, 0, 0.9]}
+              rotation={[Math.PI / 2, 0, 0]}
+              renderOrder={RENDER_ORDER_FURNITURE + 1}
+            >
+              <cylinderGeometry args={[0.035, 0.045, 1.8, 8]} />
+              <meshStandardMaterial color={appearance.palette.fixtureMetal} metalness={0.5} roughness={0.45} />
+            </mesh>
+            <mesh
+              position={[0, 0, 1.82]}
+              rotation={[Math.PI / 2, 0, 0]}
+              renderOrder={RENDER_ORDER_FURNITURE + 2}
+            >
+              <circleGeometry args={[0.43, 3, -Math.PI / 2]} />
+              <meshStandardMaterial color="#c93434" roughness={0.65} side={THREE.DoubleSide} />
+            </mesh>
+          </group>
+        ))}
       </group>
     </EastNorthUpFrame>
   );
@@ -923,10 +1266,13 @@ function AccessibleFourWayIntersectionDetail({
     }
   });
 
-  useEffect(() => () => {
-    geometry?.crosswalks.dispose();
-    geometry?.curbRamps.dispose();
-    geometry?.tactilePads.dispose();
+  useEffect(() => {
+    if (!geometry) return undefined;
+    return retainResourceForDeferredDisposal(geometry, (ownedGeometry) => {
+      ownedGeometry.crosswalks.dispose();
+      ownedGeometry.curbRamps.dispose();
+      ownedGeometry.tactilePads.dispose();
+    });
   }, [geometry]);
 
   if (!geometry) return null;
@@ -991,6 +1337,10 @@ export function GlobeStreetDetailLayer({
     [detailedRoadZones],
   );
   const furnitureStreetIds = useMemo(
+    () => selectFurnishedStreetIds(detailedRoadZones),
+    [detailedRoadZones],
+  );
+  const treeStreetIds = useMemo(
     () => selectTreeStreetIds(detailedRoadZones),
     [detailedRoadZones],
   );
@@ -1006,6 +1356,7 @@ export function GlobeStreetDetailLayer({
             fallbackTerrainHeight={terrainHeight}
             intersectionNodes={intersectionNodes}
             renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
+            renderFamilyTrees={treeStreetIds.has(zone.id)}
           />
         ),
       )}

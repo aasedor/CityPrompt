@@ -256,6 +256,7 @@ def test_community_source_fingerprint_tracks_park_and_street_semantics():
         "width": 18,
         "lane_count": 2,
         "road_surface": "asphalt",
+        "plan_centerline": [[-114.08, 51.04], [-114.079, 51.041]],
     }
     street_hash = source_fingerprint("road", street)
     for key, value in (
@@ -265,6 +266,7 @@ def test_community_source_fingerprint_tracks_park_and_street_semantics():
         ("width", 14),
         ("lane_count", 1),
         ("road_surface", "unit pavers"),
+        ("plan_centerline", [[-114.08, 51.04], [-114.078, 51.042]]),
     ):
         assert source_fingerprint("road", {**street, key: value}) != street_hash
 

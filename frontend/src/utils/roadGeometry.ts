@@ -30,6 +30,40 @@ export function extractCenterline(coords: number[][]): number[][] {
   return center;
 }
 
+function parsePersistedCenterline(value: unknown): number[][] | null {
+  if (!Array.isArray(value) || value.length < 2) return null;
+  const points: number[][] = [];
+  for (const candidate of value) {
+    if (!Array.isArray(candidate) || candidate.length < 2) return null;
+    const longitude = Number(candidate[0]);
+    const latitude = Number(candidate[1]);
+    if (
+      !Number.isFinite(longitude)
+      || !Number.isFinite(latitude)
+      || Math.abs(longitude) > 180
+      || Math.abs(latitude) > 90
+    ) return null;
+    const previous = points[points.length - 1];
+    if (
+      previous
+      && Math.abs(previous[0] - longitude) < 1e-12
+      && Math.abs(previous[1] - latitude) < 1e-12
+    ) continue;
+    points.push([longitude, latitude]);
+  }
+  return points.length >= 2 ? points : null;
+}
+
+/** Prefer the source line captured before buffering/clipping. Polygon
+ * subtraction can reorder and add ring vertices, which makes midpoint
+ * reconstruction kink or backtrack on otherwise straight streets. */
+export function extractZoneCenterline(
+  zone: Pick<SiteZone, 'coordinates' | 'properties'>,
+): number[][] {
+  return parsePersistedCenterline(zone.properties?.plan_centerline)
+    ?? extractCenterline(zone.coordinates);
+}
+
 /**
  * Buffer a polyline into a polygon strip of given width in meters.
  * Coordinates are [lng, lat].
@@ -113,7 +147,7 @@ export function rebufferRoadOnUpdate(
   const newEffective = effectiveRoadWidth(data.properties);
 
   if (Math.abs(newEffective - oldEffective) > 0.1) {
-    const centerline = extractCenterline(zone.coordinates);
+    const centerline = extractZoneCenterline(zone);
     if (centerline.length >= 2) {
       const newCoords = bufferLineToPolygon(centerline, newEffective);
       handleZoneUpdated(zoneId, newCoords);

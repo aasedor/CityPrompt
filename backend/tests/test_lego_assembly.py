@@ -21,6 +21,7 @@ from app.services.lego_assembly import (
     plan_vertical_assembly,
 )
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
+from app.services.residual_landscape import community_3d_source_hash
 from tests.conftest import FakeProject
 
 
@@ -1454,13 +1455,245 @@ async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe
     assert recipe["family_id"] == "street_complete_main_22m"
     assert recipe["family_version"] == 1
     assert recipe["variant_id"] == "main_street_complete_v2"
-    assert recipe["appearance_kit_id"] == "timber_biophilic"
+    assert recipe["appearance_kit_id"] == "european_cobblestone_v1"
     assert recipe["target"]["row_width_m"] == 22
     assert len(recipe["catalog_fingerprint"]) == 64
     assert len(recipe["capability_fingerprint"]) == 64
     assert len(recipe["recipe_hash"]) == 64
+    assert len(street_zone.properties["plan_centerline"]) == 2
     assert street_zone.properties["community_3d"]["representation_hash"]
     assert response.json()["items"][0]["generator"] == "street_section"
+
+
+@pytest.mark.parametrize(
+    "existing_centerline",
+    [
+        pytest.param(
+            {"coordinates": [[-114.08, 51.04], [-114.079, 51.04]]},
+            id="malformed-object",
+        ),
+        pytest.param(
+            [[-113.5, 51.5], [-113.49, 51.5]],
+            id="stale-outside-current-zone",
+        ),
+        pytest.param(
+            [
+                [-114.08 + 100 / 70_000, 51.04],
+                [-114.08 + 100 / 70_000, 51.04 + 18 / 111_000],
+            ],
+            id="contained-but-crosswise",
+        ),
+    ],
+)
+@pytest.mark.anyio
+async def test_place_community_recovers_invalid_existing_street_centerline(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    existing_centerline,
+):
+    from app.api.v1.lego_assembly import _community_source_geometry
+    from app.services.plan_geometry.generator import (
+        validate_street_plan_centerline_wgs84,
+    )
+
+    project = FakeProject(owner_id=test_user.id)
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        geometry=_calgary_rectangle_ewkt(200, 18),
+        properties={
+            "_plan_scenario": "city_policy",
+            "_plan_role": "street",
+            "street_role": "spine",
+            "road_archetype_id": "main_street_complete",
+            "road_selected_variant_id": "main_street_complete_v0",
+            "width": 18,
+            "plan_centerline": existing_centerline,
+            "community_3d": {
+                "state": "compiled",
+                "source_hash": "a" * 64,
+            },
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(street_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([street_zone]),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(street_zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    recovered = street_zone.properties["plan_centerline"]
+    assert recovered != existing_centerline
+    assert validate_street_plan_centerline_wgs84(
+        _community_source_geometry(street_zone),
+        recovered,
+    )
+    assert street_zone.properties["public_realm_lego"]["family_id"] == (
+        "street_complete_main_18m"
+    )
+    assert street_zone.properties["community_3d"]["state"] == "compiled"
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_invalid_centerline_when_recovery_is_unsafe(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+):
+    project = FakeProject(owner_id=test_user.id)
+    malformed = {"coordinates": [[-114.08, 51.04], [-114.079, 51.04]]}
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        geometry=_calgary_rectangle_ewkt(18, 18),
+        properties={
+            "_plan_scenario": "city_policy",
+            "_plan_role": "street",
+            "street_role": "spine",
+            "road_archetype_id": "main_street_complete",
+            "road_selected_variant_id": "main_street_complete_v0",
+            "width": 18,
+            "plan_centerline": malformed,
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(street_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([street_zone]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(street_zone)]},
+    )
+
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "invalid_plan_centerline"
+    assert detail["zone_id"] == str(street_zone.id)
+    assert street_zone.properties["plan_centerline"] == malformed
+    assert "public_realm_lego" not in street_zone.properties
+
+
+@pytest.mark.parametrize(
+    (
+        "archetype_id",
+        "legacy_variant_id",
+        "canonical_variant_id",
+        "row_width_m",
+        "appearance_kit_id",
+    ),
+    [
+        (
+            "yield_street",
+            "yield_street_v2",
+            "yield_street_v0",
+            10,
+            "dutch_woonerf_v1",
+        ),
+        (
+            "woonerf_shared_street",
+            "woonerf_shared_street_v3",
+            "woonerf_shared_street_v0",
+            10,
+            "dutch_woonerf_v1",
+        ),
+        (
+            "calgary_local",
+            "calgary_local_v1",
+            "calgary_local_v0",
+            16,
+            "calgary_contemporary_native",
+        ),
+        (
+            "green_alley",
+            "green_alley_v3",
+            "green_alley_v0",
+            5,
+            "green_corridor_v1",
+        ),
+        (
+            "toronto_laneway",
+            "toronto_laneway_v2",
+            "toronto_laneway_v0",
+            5,
+            "calgary_contemporary_native",
+        ),
+    ],
+)
+@pytest.mark.anyio
+async def test_place_community_migrates_known_ai_street_variants_and_backfills_line(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    archetype_id,
+    legacy_variant_id,
+    canonical_variant_id,
+    row_width_m,
+    appearance_kit_id,
+):
+    from app.api.v1.lego_assembly import _community_source_geometry
+
+    project = FakeProject(owner_id=test_user.id)
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        geometry=_calgary_rectangle_ewkt(200, row_width_m),
+        properties={
+            "_plan_scenario": "city_policy",
+            "_plan_role": "street",
+            "street_role": "local",
+            "road_archetype_id": archetype_id,
+            "road_selected_variant_id": legacy_variant_id,
+            "width": row_width_m,
+            "community_3d": {
+                "state": "compiled",
+                "source_hash": "a" * 64,
+            },
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(street_zone), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([street_zone]),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(street_zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert street_zone.properties["road_selected_variant_id"] == canonical_variant_id
+    assert len(street_zone.properties["plan_centerline"]) == 2
+    recipe = street_zone.properties["public_realm_lego"]
+    assert recipe["variant_id"] == canonical_variant_id
+    assert recipe["appearance_kit_id"] == appearance_kit_id
+    compiled = street_zone.properties["community_3d"]
+    assert compiled["state"] == "compiled"
+    assert compiled["source_hash"] == community_3d_source_hash(
+        street_zone.zone_type,
+        _community_source_geometry(street_zone),
+        street_zone.properties,
+    )
+    assert compiled["representation_hash"]
 
 
 @pytest.mark.anyio

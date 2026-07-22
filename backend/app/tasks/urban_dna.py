@@ -29,7 +29,10 @@ from app.services.plan_boundary_identity import (
 from app.services.urban_dna.builder import build_dna
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
 from app.tasks.worker import celery_app
-from app.services.residual_landscape import lock_residual_landscape_project_sync
+from app.services.residual_landscape import (
+    lock_residual_landscape_project_sync,
+    mark_community_3d_stale,
+)
 
 
 def _get_sync_session():
@@ -118,6 +121,35 @@ def _delete_community_3d_buildings_for_replaced_zones(
     for building in derived_buildings:
         session.delete(building)
     return len(derived_buildings)
+
+
+def _backfill_locked_street_plan_centerline(zone) -> bool:
+    """Add only a safely recoverable line and invalidate any compiled proof."""
+
+    properties = dict(getattr(zone, "properties", None) or {})
+    if properties.get("plan_centerline"):
+        return False
+
+    from app.services.plan_geometry.generator import (
+        recover_street_plan_centerline_wgs84,
+    )
+
+    recovered_centerline = recover_street_plan_centerline_wgs84(
+        to_shape(zone.geometry)
+    )
+    if not recovered_centerline:
+        return False
+
+    properties["plan_centerline"] = recovered_centerline
+    zone.properties = properties
+    mark_community_3d_stale(
+        zone,
+        reason=(
+            "Locked street centerline recovered during master-plan redraw; "
+            "rebuild Community 3D before Direct rendering."
+        ),
+    )
+    return True
 
 
 class PostgresDatasetCache:
@@ -1071,6 +1103,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         for old in existing:
             role = (old.properties or {}).get("_plan_role")
             if "streets" in locks and role == "street":
+                _backfill_locked_street_plan_centerline(old)
                 old.properties = stamp_plan_boundary_identity(
                     old.properties,
                     fingerprint=boundary_fingerprint,

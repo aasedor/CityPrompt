@@ -4,25 +4,39 @@ import type { SiteZone } from '@/types';
 import {
   MAX_STREET_BENCHES_PER_ZONE,
   MAX_STREET_BIKE_RACKS_PER_ZONE,
-  MAX_STREET_BOLLARDS_PER_ZONE,
   MAX_STREET_DRAINS_PER_ZONE,
   MAX_STREET_FIXTURE_STATIONS,
-  MAX_STREET_LIGHTS_PER_ZONE,
   MAX_STREET_PLANTING_CELLS_PER_ZONE,
   MAX_STREET_SIDEWALK_JOINTS_PER_ZONE,
-  MAX_STREET_TREES_PER_ZONE,
   MAX_STREET_WASTE_BINS_PER_ZONE,
   MAX_WOONERF_PLANTERS_PER_ZONE,
+  MAX_WOONERF_PLAY_NODES_PER_ZONE,
+  MAX_MAIN_STREET_LIGHTS_PER_ZONE,
+  MAX_MAIN_STREET_TREES_PER_ZONE,
+  MAX_MAIN_STREET_VEHICLES_PER_ZONE,
+  MAX_NARROW_RESIDENTIAL_LIGHTS_PER_ZONE,
+  MAX_NARROW_RESIDENTIAL_TREES_PER_ZONE,
+  MAX_NARROW_RESIDENTIAL_VEHICLES_PER_ZONE,
+  MAIN_STREET_LIGHT_SPACING_M,
+  MAIN_STREET_TREE_SPACING_M,
+  MAIN_STREET_VEHICLE_SPACING_M,
+  NARROW_RESIDENTIAL_LIGHT_SPACING_M,
+  NARROW_RESIDENTIAL_TREE_SPACING_M,
   STREET_BENCH_EDGE_CLEARANCE_M,
   STREET_NODE_FIXTURE_CLEARANCE_M,
+  STREET_PARKED_VEHICLE_EDGE_CLEARANCE_M,
+  STREET_TRANSIT_SHELTER_EDGE_CLEARANCE_M,
   buildStreetFamilyFixturePlacements,
   buildWoonerfPlanterPlacements,
+  buildWoonerfPlayPlacements,
+  buildYieldStreetEntrySignPlacements,
   interpolateStreetFixtureElevation,
   resolveBenchCenterInBand,
   type StreetFamilyFixturePlacements,
   type StreetFixturePose,
 } from './streetFamilyFurniture';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
+import { STREET_APPEARANCE_KITS, type StreetAppearanceKitId } from './streetFamilyCatalog';
 
 function mainStreetProfile() {
   return resolvePilotStreetSectionProfile({
@@ -49,6 +63,56 @@ function mainStreetProfile() {
   } as Pick<SiteZone, 'properties'>);
 }
 
+function narrowResidentialProfile() {
+  return resolvePilotStreetSectionProfile({
+    properties: {
+      road_archetype_id: 'narrow_residential_street',
+      road_selected_variant_id: 'narrow_residential_street_v0',
+      public_realm_lego: {
+        schema_version: 1,
+        family_id: 'street_local_public_realm',
+        family_version: 1,
+        kind: 'street',
+        generator: 'street_section',
+        archetype_id: 'narrow_residential_street',
+        variant_id: 'narrow_residential_street_v0',
+        profile_id: 'narrow-residential-street-v1',
+        profile_version: 1,
+        appearance_kit_id: 'classic_tree_lined_v1',
+        target: { target_type: 'street_segment', row_width_m: 10, length_m: 240 },
+        catalog_fingerprint: 'a'.repeat(64),
+        capability_fingerprint: 'b'.repeat(64),
+        recipe_hash: 'c'.repeat(64),
+      },
+    },
+  } as Pick<SiteZone, 'properties'>);
+}
+
+function tropicalMainStreetProfile() {
+  return resolvePilotStreetSectionProfile({
+    properties: {
+      road_archetype_id: 'main_street_complete',
+      road_selected_variant_id: 'main_street_complete_v3',
+      public_realm_lego: {
+        schema_version: 1,
+        family_id: 'street_complete_main_18m',
+        family_version: 1,
+        kind: 'street',
+        generator: 'street_section',
+        archetype_id: 'main_street_complete',
+        variant_id: 'main_street_complete_v3',
+        profile_id: 'complete-main-18m-tropical-v1',
+        profile_version: 1,
+        appearance_kit_id: 'tropical_boulevard_v1',
+        target: { target_type: 'street_segment', row_width_m: 18, length_m: 240 },
+        catalog_fingerprint: 'a'.repeat(64),
+        capability_fingerprint: 'b'.repeat(64),
+        recipe_hash: 'c'.repeat(64),
+      },
+    },
+  } as Pick<SiteZone, 'properties'>);
+}
+
 function straightPoints(lengthM: number) {
   return Array.from({ length: Math.floor(lengthM / 4) + 1 }, (_, index) => ({
     x: index * 4,
@@ -67,6 +131,8 @@ function allFixturePoses(fixtures: StreetFamilyFixturePlacements): StreetFixture
     ...fixtures.bikeRacks,
     ...fixtures.bollards,
     ...fixtures.plantingCells,
+    ...fixtures.parkedVehicles,
+    ...fixtures.transitShelters,
   ];
 }
 
@@ -162,17 +228,249 @@ describe('street family furniture placement', () => {
     const second = buildStreetFamilyFixturePlacements(options);
     expect(second).toEqual(first);
     expect(first.stationCount).toBe(MAX_STREET_FIXTURE_STATIONS);
-    expect(first.trees).toHaveLength(MAX_STREET_TREES_PER_ZONE);
-    expect(first.lights).toHaveLength(MAX_STREET_LIGHTS_PER_ZONE);
+    expect(first.trees).toHaveLength(MAX_MAIN_STREET_TREES_PER_ZONE);
+    expect(first.lights).toHaveLength(MAX_MAIN_STREET_LIGHTS_PER_ZONE);
     expect(first.benches).toHaveLength(MAX_STREET_BENCHES_PER_ZONE);
     expect(first.drains).toHaveLength(MAX_STREET_DRAINS_PER_ZONE);
     expect(first.sidewalkJoints).toHaveLength(MAX_STREET_SIDEWALK_JOINTS_PER_ZONE);
-    expect(first.bollards).toHaveLength(MAX_STREET_BOLLARDS_PER_ZONE);
+    expect(first.bollards).toEqual([]);
     expect(first.plantingCells).toHaveLength(MAX_STREET_PLANTING_CELLS_PER_ZONE);
     expect(first.wasteBins.length).toBeGreaterThan(0);
     expect(first.wasteBins.length).toBeLessThanOrEqual(MAX_STREET_WASTE_BINS_PER_ZONE);
     expect(first.bikeRacks.length).toBeGreaterThan(0);
     expect(first.bikeRacks.length).toBeLessThanOrEqual(MAX_STREET_BIKE_RACKS_PER_ZONE);
+    expect(first.parkedVehicles).toHaveLength(MAX_MAIN_STREET_VEHICLES_PER_ZONE);
+    expect(first.transitShelters).toHaveLength(1);
+  });
+
+  it('adds a bounded deterministic woonerf play cadence beside the chicane', () => {
+    const planters = buildWoonerfPlanterPlacements(straightPoints(1_000), 5);
+    const playNodes = buildWoonerfPlayPlacements(planters);
+    expect(playNodes).toHaveLength(MAX_WOONERF_PLAY_NODES_PER_ZONE);
+    expect(buildWoonerfPlayPlacements(planters)).toEqual(playNodes);
+    playNodes.forEach((node, index) => {
+      const sourcePlanter = planters[2 + index * 4];
+      expect(Math.hypot(node.x - sourcePlanter.x, node.y - sourcePlanter.y)).toBeCloseTo(2.35, 8);
+      expect(Math.sign(node.y)).toBe(Math.sign(sourcePlanter.y));
+    });
+  });
+
+  it('places yield signs only at bounded entry thresholds and follows cross-slope', () => {
+    const points = straightPoints(80);
+    const terrain = points.map(() => ({
+      centerZ: 10,
+      leftZ: 11,
+      rightZ: 9,
+      halfWidthM: 3,
+    }));
+    const signs = buildYieldStreetEntrySignPlacements(points, 3, terrain);
+    expect(signs).toHaveLength(2);
+    expect(signs.map((sign) => sign.stationM)).toEqual([6, 74]);
+    expect(signs.map((sign) => sign.side)).toEqual([-1, 1]);
+    expect(signs[0].offsetM).toBeCloseTo(-2.52, 8);
+    expect(signs[1].offsetM).toBeCloseTo(2.52, 8);
+    expect(signs[0].z).toBeLessThan(10);
+    expect(signs[1].z).toBeGreaterThan(10);
+  });
+
+  it('gives the complete main street its tree-lined, lit, parked-car signature', () => {
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(240),
+      profile: mainStreetProfile(),
+      sectionScale: 1,
+      enabled: true,
+    });
+    expect(fixtures.trees.every((tree) => tree.canopyClass === 'mature_deciduous')).toBe(true);
+    expect(fixtures.lights.every((light) => light.fixtureStyle === 'traditional')).toBe(true);
+    expect(fixtures.parkedVehicles.length).toBeGreaterThan(20);
+    expect(fixtures.parkedVehicles.length).toBeLessThanOrEqual(MAX_MAIN_STREET_VEHICLES_PER_ZONE);
+
+    const treeStations = [...new Set(fixtures.trees.map((tree) => tree.stationM))];
+    treeStations.slice(1).forEach((stationM, index) => {
+      expect(stationM - treeStations[index]).toBeCloseTo(MAIN_STREET_TREE_SPACING_M, 8);
+    });
+    const lightStations = [...new Set(fixtures.lights.map((light) => light.stationM))];
+    lightStations.slice(1).forEach((stationM, index) => {
+      expect(stationM - lightStations[index])
+        .toBeCloseTo(MAIN_STREET_LIGHT_SPACING_M, 8);
+    });
+    lightStations.forEach((stationM) => {
+      const stationLights = fixtures.lights.filter((light) => light.stationM === stationM);
+      expect(stationLights).toHaveLength(2);
+      expect(stationLights.some((light) => light.offsetM < 0)).toBe(true);
+      expect(stationLights.some((light) => light.offsetM > 0)).toBe(true);
+    });
+    const vehicleStations = [...new Set(fixtures.parkedVehicles.map((vehicle) => vehicle.stationM))];
+    vehicleStations.slice(1).forEach((stationM, index) => {
+      expect(stationM - vehicleStations[index]).toBeCloseTo(MAIN_STREET_VEHICLE_SPACING_M, 8);
+    });
+    expect(fixtures.transitShelters).toHaveLength(1);
+    const furnishingBand = mainStreetProfile()!.bands.find((band) => (
+      band.kind === 'planting'
+      && fixtures.transitShelters[0].offsetM >= band.startM
+      && fixtures.transitShelters[0].offsetM <= band.endM
+    ));
+    expect(furnishingBand).toBeDefined();
+    expect(fixtures.transitShelters[0].surfaceLiftM).toBe(furnishingBand!.liftM);
+    expect(fixtures.transitShelters[0].scale).toBeLessThanOrEqual(0.85);
+    expect(fixtures.transitShelters[0].offsetM - fixtures.transitShelters[0].footprintDepthM / 2)
+      .toBeGreaterThanOrEqual(
+        fixtures.transitShelters[0].bandStartM + STREET_TRANSIT_SHELTER_EDGE_CLEARANCE_M - 1e-8,
+      );
+    expect(fixtures.transitShelters[0].offsetM + fixtures.transitShelters[0].footprintDepthM / 2)
+      .toBeLessThanOrEqual(
+        fixtures.transitShelters[0].bandEndM - STREET_TRANSIT_SHELTER_EDGE_CLEARANCE_M + 1e-8,
+      );
+  });
+
+  it.each([
+    ['modern_minimalist_v1', 'columnar_deciduous', 'contemporary'],
+    ['european_cobblestone_v1', 'pollarded_deciduous', 'traditional'],
+    ['tropical_boulevard_v1', 'tropical_palm', 'contemporary'],
+  ] as const)('gives %s an archetype-owned canopy and light silhouette', (
+    appearanceKitId,
+    canopyClass,
+    fixtureStyle,
+  ) => {
+    const base = mainStreetProfile()!;
+    const profile = {
+      ...base,
+      appearanceKitId,
+      appearance: STREET_APPEARANCE_KITS[appearanceKitId as StreetAppearanceKitId],
+    };
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(180),
+      profile,
+      sectionScale: 1,
+      enabled: true,
+    });
+    expect(fixtures.trees.length).toBeGreaterThan(0);
+    expect(fixtures.trees.every((tree) => tree.canopyClass === canopyClass)).toBe(true);
+    expect(fixtures.lights.every((light) => light.fixtureStyle === fixtureStyle)).toBe(true);
+  });
+
+  it('keeps tropical-main furniture and its shelter out of the planted centre median', () => {
+    const profile = tropicalMainStreetProfile()!;
+    const median = profile.bands.find((band) => band.kind === 'planting')!;
+    const sidewalks = profile.bands.filter((band) => band.kind === 'sidewalk');
+    expect(profile.appearanceKitId).toBe('tropical_boulevard_v1');
+    expect(profile.bands.filter((band) => band.kind === 'planting')).toHaveLength(1);
+    expect(median.startM).toBeLessThan(0);
+    expect(median.endM).toBeGreaterThan(0);
+
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(180),
+      profile,
+      sectionScale: 1,
+      enabled: true,
+    });
+    expect(fixtures.trees.length).toBeGreaterThan(0);
+    expect(fixtures.trees.every((tree) => (
+      tree.offsetM >= median.startM && tree.offsetM <= median.endM
+    ))).toBe(true);
+    expect(fixtures.plantingCells).toEqual([]);
+    expect(fixtures.transitShelters).toHaveLength(1);
+
+    const sideFixtures = [
+      ...fixtures.benches,
+      ...fixtures.lights,
+      ...fixtures.wasteBins,
+      ...fixtures.bikeRacks,
+      ...fixtures.transitShelters,
+    ];
+    expect(sideFixtures.length).toBeGreaterThan(0);
+    sideFixtures.forEach((fixture) => {
+      expect(fixture.offsetM < median.startM || fixture.offsetM > median.endM).toBe(true);
+      expect(sidewalks.some((band) => (
+        fixture.offsetM >= band.startM && fixture.offsetM <= band.endM
+      ))).toBe(true);
+    });
+  });
+
+  it('gives the narrow residential archetype two mature tree rows at a 9-12 m rhythm', () => {
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(240),
+      profile: narrowResidentialProfile(),
+      sectionScale: 1,
+      enabled: true,
+    });
+    expect(fixtures.trees.length).toBeGreaterThan(30);
+    expect(fixtures.trees.length).toBeLessThanOrEqual(MAX_NARROW_RESIDENTIAL_TREES_PER_ZONE);
+    expect(fixtures.trees.every((tree) => tree.canopyClass === 'mature_deciduous')).toBe(true);
+    const rowOffsets = [...new Set(fixtures.trees.map((tree) => tree.offsetM))].sort((a, b) => a - b);
+    expect(rowOffsets).toHaveLength(2);
+    rowOffsets.forEach((offsetM) => {
+      const row = fixtures.trees
+        .filter((tree) => tree.offsetM === offsetM)
+        .sort((left, right) => left.stationM - right.stationM);
+      expect(row.length).toBeGreaterThan(15);
+      row.slice(1).forEach((tree, index) => {
+        const spacingM = tree.stationM - row[index].stationM;
+        expect(spacingM).toBeGreaterThanOrEqual(9);
+        expect(spacingM).toBeLessThanOrEqual(12);
+        expect(spacingM).toBeCloseTo(NARROW_RESIDENTIAL_TREE_SPACING_M, 8);
+      });
+    });
+  });
+
+  it('uses a bounded alternating row of traditional residential lights', () => {
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(240),
+      profile: narrowResidentialProfile(),
+      sectionScale: 1,
+      enabled: true,
+    });
+    expect(fixtures.lights.length).toBeGreaterThan(5);
+    expect(fixtures.lights.length).toBeLessThanOrEqual(MAX_NARROW_RESIDENTIAL_LIGHTS_PER_ZONE);
+    expect(fixtures.lights.every((light) => light.fixtureStyle === 'traditional')).toBe(true);
+    fixtures.lights.slice(1).forEach((light, index) => {
+      expect(light.stationM - fixtures.lights[index].stationM)
+        .toBeCloseTo(NARROW_RESIDENTIAL_LIGHT_SPACING_M, 8);
+      expect(Math.sign(light.offsetM)).not.toBe(Math.sign(fixtures.lights[index].offsetM));
+    });
+  });
+
+  it('fits deterministic parallel sedans and SUVs wholly inside residential parking bands', () => {
+    const options = {
+      points: straightPoints(240),
+      profile: narrowResidentialProfile(),
+      sectionScale: 1,
+      enabled: true,
+    } as const;
+    const fixtures = buildStreetFamilyFixturePlacements(options);
+    expect(buildStreetFamilyFixturePlacements(options)).toEqual(fixtures);
+    expect(fixtures.parkedVehicles.length).toBeGreaterThan(6);
+    expect(fixtures.parkedVehicles.length)
+      .toBeLessThanOrEqual(MAX_NARROW_RESIDENTIAL_VEHICLES_PER_ZONE);
+    expect(new Set(fixtures.parkedVehicles.map((vehicle) => vehicle.vehicleType)))
+      .toEqual(new Set(['sedan', 'suv']));
+    fixtures.parkedVehicles.forEach((vehicle) => {
+      expect(Math.abs(Math.sin(vehicle.yawRad))).toBeCloseTo(0, 8);
+      expect(vehicle.offsetM - vehicle.widthM / 2).toBeGreaterThanOrEqual(
+        vehicle.bandStartM + STREET_PARKED_VEHICLE_EDGE_CLEARANCE_M - 1e-8,
+      );
+      expect(vehicle.offsetM + vehicle.widthM / 2).toBeLessThanOrEqual(
+        vehicle.bandEndM - STREET_PARKED_VEHICLE_EDGE_CLEARANCE_M + 1e-8,
+      );
+    });
+  });
+
+  it('keeps the complete parked-vehicle footprint outside the 12 m node clearance', () => {
+    const clearance = { x: 80, y: 0 };
+    const fixtures = buildStreetFamilyFixturePlacements({
+      points: straightPoints(240),
+      profile: narrowResidentialProfile(),
+      sectionScale: 1,
+      clearancePoints: [clearance],
+      enabled: true,
+    });
+    fixtures.parkedVehicles.forEach((vehicle) => {
+      const footprintRadiusM = Math.hypot(vehicle.lengthM, vehicle.widthM) / 2;
+      expect(Math.hypot(vehicle.x - clearance.x, vehicle.y - clearance.y))
+        .toBeGreaterThanOrEqual(
+          STREET_NODE_FIXTURE_CLEARANCE_M + footprintRadiusM - 1e-8,
+        );
+    });
   });
 
   it('distributes capped stations across both ends of a long street', () => {
@@ -183,7 +481,7 @@ describe('street family furniture placement', () => {
       enabled: true,
     });
     const stations = [...new Set(fixtures.trees.map((tree) => tree.stationM))];
-    expect(stations).toHaveLength(MAX_STREET_FIXTURE_STATIONS);
+    expect(stations).toHaveLength(MAX_MAIN_STREET_TREES_PER_ZONE / 2);
     expect(stations[0]).toBeLessThanOrEqual(28);
     expect(stations[stations.length - 1]).toBeGreaterThanOrEqual(972);
     expect(fixtures.drains[0].stationM).toBeLessThanOrEqual(32);
@@ -222,7 +520,7 @@ describe('street family furniture placement', () => {
     });
   });
 
-  it('places drainage, joints, cycle protection and tree grates in their engineered bands', () => {
+  it('places drainage, joints and tree grates in their engineered bands without invented cycle protection', () => {
     const profile = mainStreetProfile()!;
     const fixtures = buildStreetFamilyFixturePlacements({
       points: straightPoints(180),
@@ -240,13 +538,8 @@ describe('street family furniture placement', () => {
       expect(joint.offsetM).toBeLessThanOrEqual(joint.bandEndM);
       expect(joint.widthM).toBeLessThan(joint.bandEndM - joint.bandStartM);
     });
-    const bufferCenters = profile.bands
-      .filter((band) => band.kind === 'buffer')
-      .map((band) => band.centerM);
-    expect(fixtures.bollards.length).toBeGreaterThan(0);
-    fixtures.bollards.forEach((bollard) => {
-      expect(bufferCenters).toContainEqual(bollard.offsetM);
-    });
+    expect(profile.bands.some((band) => band.kind === 'buffer' || band.kind === 'cycle')).toBe(false);
+    expect(fixtures.bollards).toEqual([]);
     expect(fixtures.plantingCells.length).toBeGreaterThan(0);
     fixtures.plantingCells.forEach((cell) => {
       expect(cell.style).toBe('tree_grate');
@@ -278,7 +571,7 @@ describe('street family furniture placement', () => {
     expect(fixtures.plantingCells).toEqual([]);
     expect(fixtures.drains.length).toBeGreaterThan(0);
     expect(fixtures.sidewalkJoints.length).toBeGreaterThan(0);
-    expect(fixtures.bollards.length).toBeGreaterThan(0);
+    expect(fixtures.bollards).toEqual([]);
   });
 
   it('reserves node clearances for legacy furniture and all new micro-details', () => {
@@ -362,6 +655,8 @@ describe('street family furniture placement', () => {
       bikeRacks: [],
       bollards: [],
       plantingCells: [],
+      parkedVehicles: [],
+      transitShelters: [],
       stationCount: 0,
     });
   });
@@ -376,10 +671,10 @@ describe('street family furniture placement', () => {
           kind: 'street',
           generator: 'street_section',
           archetype_id: 'green_alley',
-          variant_id: 'green_alley_v1',
+          variant_id: 'green_alley_v0',
           profile_id: 'green-alley-v1',
           profile_version: 1,
-          appearance_kit_id: 'heritage_brick_stone',
+          appearance_kit_id: 'green_corridor_v1',
           target: { target_type: 'street_segment', row_width_m: 5, length_m: 160 },
           catalog_fingerprint: 'a'.repeat(64),
           capability_fingerprint: 'b'.repeat(64),

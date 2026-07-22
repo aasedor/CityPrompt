@@ -34,9 +34,76 @@ describe('strict Public Realm LEGO street recipe validation', () => {
         familyId: 'street_complete_main_22m',
         archetypeId: 'main_street_complete',
         variantId: 'main_street_complete_v2',
-        appearanceKitId: 'timber_biophilic',
+        appearanceKitId: 'european_cobblestone_v1',
         targetRowM: 22,
       },
+    });
+  });
+
+  it('canonicalizes the exact historical ordinal palette on saved projects', () => {
+    expect(validatePublicRealmStreetRecipe(recipe({
+      variant_id: 'main_street_complete_v0',
+      appearance_kit_id: 'calgary_contemporary_native',
+    }))).toMatchObject({
+      valid: true,
+      recipe: { appearanceKitId: 'classic_tree_lined_v1' },
+    });
+    expect(validatePublicRealmStreetRecipe(recipe({
+      variant_id: 'main_street_complete_v0',
+      appearance_kit_id: 'timber_biophilic',
+    }))).toMatchObject({ valid: false, code: 'appearance_incompatible' });
+
+    expect(validatePublicRealmStreetRecipe(recipe({
+      family_id: 'street_local_public_realm',
+      archetype_id: 'narrow_residential_street',
+      variant_id: 'narrow_residential_street_v2',
+      appearance_kit_id: 'timber_biophilic',
+      target: { target_type: 'street_segment', row_width_m: 10, length_m: 80 },
+    }))).toMatchObject({
+      valid: true,
+      recipe: { appearanceKitId: 'european_cobblestone_v1' },
+    });
+  });
+
+  it.each([
+    [
+      'trail',
+      {
+        family_id: 'street_local_public_realm',
+        archetype_id: 'multi_use_trail',
+        variant_id: 'multi_use_trail_v1',
+        appearance_kit_id: 'heritage_brick_stone',
+        target: { target_type: 'street_segment', row_width_m: 4, length_m: 80 },
+      },
+    ],
+    [
+      'roundabout',
+      {
+        family_id: 'street_compact_roundabout',
+        archetype_id: 'roundabout',
+        variant_id: 'roundabout_v0',
+        appearance_kit_id: 'calgary_contemporary_native',
+        target: {
+          target_type: 'street_node', approach_row_width_m: 22, diameter_m: 28, arm_count: 4,
+        },
+      },
+    ],
+    [
+      'protected intersection',
+      {
+        family_id: 'street_four_way_intersection',
+        archetype_id: 'protected_intersection',
+        variant_id: 'protected_intersection_v0',
+        appearance_kit_id: 'calgary_contemporary_native',
+        target: {
+          target_type: 'street_node', approach_row_width_m: 22, diameter_m: 28, arm_count: 4,
+        },
+      },
+    ],
+  ])('does not apply ordinal appearance migration to an incompatible %s family', (_, overrides) => {
+    expect(validatePublicRealmStreetRecipe(recipe(overrides))).toMatchObject({
+      valid: false,
+      code: 'appearance_incompatible',
     });
   });
 

@@ -61,6 +61,35 @@ function invalid(code: StreetRecipeValidationCode, message: string): PublicRealm
 }
 
 const SHA256_HEX = /^[a-f0-9]{64}$/;
+const LEGACY_ORDINAL_APPEARANCE_KITS = [
+  'calgary_contemporary_native',
+  'heritage_brick_stone',
+  'timber_biophilic',
+  'industrial_adaptive_reuse',
+] as const;
+
+const LEGACY_ORDINAL_MIGRATION_ARCHETYPES: Readonly<
+  Partial<Record<PublicRealmStreetFamilyId, readonly string[]>>
+> = Object.freeze({
+  street_local_public_realm: Object.freeze(['narrow_residential_street']),
+  street_complete_main_18m: Object.freeze(['main_street_complete']),
+  street_complete_main_22m: Object.freeze(['main_street_complete']),
+});
+
+/** Early V1 recipes treated every card's v0-v3 suffix as one shared palette
+ * index on the classic residential/main-street cards. Accept only that exact
+ * historical family/archetype mapping, then canonicalize to the card-owned
+ * appearance in today's catalog. */
+function isMigratableOrdinalAppearance(
+  selection: PublicRealmStreetSelectionDefinition,
+  persistedAppearanceKitId: string,
+): boolean {
+  if (!LEGACY_ORDINAL_MIGRATION_ARCHETYPES[selection.familyId]
+    ?.includes(selection.archetypeId)) return false;
+  const match = selection.variantId.match(/_v([0-3])$/);
+  if (!match) return false;
+  return LEGACY_ORDINAL_APPEARANCE_KITS[Number(match[1])] === persistedAppearanceKitId;
+}
 
 /** Strict structural validation for a compiled Public Realm LEGO V1 street
  * recipe. It intentionally has no legacy fallback and is safe to reuse for
@@ -101,7 +130,10 @@ export function validatePublicRealmStreetRecipe(
     return invalid('variant_incompatible', `'${variantId || 'missing'}' is not executable for '${archetypeId}'.`);
   }
   const appearanceKitId = canonicalId(raw.appearance_kit_id);
-  if (appearanceKitId !== selection.appearanceKitId) {
+  if (
+    appearanceKitId !== selection.appearanceKitId
+    && !isMigratableOrdinalAppearance(selection, appearanceKitId)
+  ) {
     return invalid(
       'appearance_incompatible',
       `Variant '${variantId}' requires appearance kit '${selection.appearanceKitId}'.`,
@@ -165,7 +197,7 @@ export function validatePublicRealmStreetRecipe(
       variantId,
       profileId,
       profileVersion,
-      appearanceKitId: appearanceKitId as StreetAppearanceKitId,
+      appearanceKitId: selection.appearanceKitId,
       targetType: selection.targetType,
       targetRowM,
       ...(armCount !== undefined ? { armCount } : {}),

@@ -119,6 +119,49 @@ export function stationNormals(pts: LocalPt[]): LocalPt[] {
   return normals;
 }
 
+/** Metric texture coordinates for a terrain-following ribbon.
+ *
+ * U is cumulative distance along each physical ribbon edge in metres and V
+ * is the signed cross-section offset. Tracking the two offset edges
+ * independently prevents cobbles and slab joints from compressing around the
+ * inside of a curve or stretching around its outside. */
+export function buildRibbonMetricUvs(
+  centerline: readonly LocalPt[],
+  startOffsetM: number,
+  endOffsetM: number,
+): number[] {
+  if (centerline.length < 2) return [];
+  const normals = stationNormals(centerline as LocalPt[]);
+  const uvs: number[] = [];
+  let startDistanceM = 0;
+  let endDistanceM = 0;
+  let previousStart: LocalPt | null = null;
+  let previousEnd: LocalPt | null = null;
+  for (let index = 0; index < centerline.length; index += 1) {
+    const point = centerline[index];
+    const normal = normals[index];
+    const start = {
+      x: point.x + normal.x * startOffsetM,
+      y: point.y + normal.y * startOffsetM,
+    };
+    const end = {
+      x: point.x + normal.x * endOffsetM,
+      y: point.y + normal.y * endOffsetM,
+    };
+    if (previousStart && previousEnd) {
+      startDistanceM += Math.hypot(start.x - previousStart.x, start.y - previousStart.y);
+      endDistanceM += Math.hypot(end.x - previousEnd.x, end.y - previousEnd.y);
+    }
+    uvs.push(
+      startDistanceM, startOffsetM,
+      endDistanceM, endOffsetM,
+    );
+    previousStart = start;
+    previousEnd = end;
+  }
+  return uvs;
+}
+
 /** Terrain-following surface ribbon between two signed offsets from a
  * centerline. Positive offset is left of travel direction. */
 export function buildRibbonBandGeometry(
@@ -151,12 +194,23 @@ export function buildRibbonBandGeometry(
     const b = (i + 1) * 2;
     indices.push(a, b, b + 1, a, b + 1, a + 1);
   }
-  return toGeometry(positions, indices);
+  return toGeometry(
+    positions,
+    indices,
+    buildRibbonMetricUvs(centerline, startOffset, endOffset),
+  );
 }
 
-function toGeometry(positions: number[], indices: number[]): THREE.BufferGeometry {
+function toGeometry(
+  positions: number[],
+  indices: number[],
+  uvs?: number[],
+): THREE.BufferGeometry {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  if (uvs && uvs.length === (positions.length / 3) * 2) {
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  }
   geo.setIndex(indices);
   geo.computeVertexNormals();
   geo.computeBoundingSphere();
@@ -339,6 +393,236 @@ export function buildDashGeometry(
   return toGeometry(positions, indices);
 }
 
+interface StreetDistanceSample {
+  point: LocalPt;
+  tangent: LocalPt;
+  normal: LocalPt;
+  lowerIndex: number;
+  upperIndex: number;
+  mix: number;
+}
+
+function cumulativeStreetDistances(centerline: readonly LocalPt[]): number[] {
+  const distances = [0];
+  for (let index = 1; index < centerline.length; index += 1) {
+    distances.push(distances[index - 1] + Math.hypot(
+      centerline[index].x - centerline[index - 1].x,
+      centerline[index].y - centerline[index - 1].y,
+    ));
+  }
+  return distances;
+}
+
+function sampleStreetDistance(
+  centerline: readonly LocalPt[],
+  distances: readonly number[],
+  distanceM: number,
+): StreetDistanceSample {
+  let upperIndex = 1;
+  while (upperIndex < distances.length - 1 && distances[upperIndex] < distanceM) upperIndex += 1;
+  const lowerIndex = Math.max(0, upperIndex - 1);
+  const span = distances[upperIndex] - distances[lowerIndex];
+  const mix = span > 1e-8 ? (distanceM - distances[lowerIndex]) / span : 0;
+  const lower = centerline[lowerIndex];
+  const upper = centerline[upperIndex];
+  const dx = upper.x - lower.x;
+  const dy = upper.y - lower.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const tangent = { x: dx / length, y: dy / length };
+  return {
+    point: { x: lower.x + dx * mix, y: lower.y + dy * mix },
+    tangent,
+    normal: { x: -tangent.y, y: tangent.x },
+    lowerIndex,
+    upperIndex,
+    mix,
+  };
+}
+
+function sampledStreetElevation(
+  sample: StreetDistanceSample,
+  stationZ: StreetStationElevationInput | undefined,
+  offsetM: number,
+): number {
+  const lower = streetStationElevationAt(stationZ, sample.lowerIndex, offsetM);
+  const upper = streetStationElevationAt(stationZ, sample.upperIndex, offsetM);
+  return lower + (upper - lower) * sample.mix;
+}
+
+function streetDistanceSampleIsMasked(
+  sample: StreetDistanceSample,
+  clearanceMask: readonly boolean[] | undefined,
+): boolean {
+  return Boolean(
+    clearanceMask?.[sample.lowerIndex]
+    || clearanceMask?.[sample.upperIndex],
+  );
+}
+
+/** White transverse parking-bay dividers at a real six-metre vehicle module.
+ * The end inset preserves graph-owned intersection clearances. */
+export function buildParkingStallMarkingGeometry(
+  centerline: LocalPt[],
+  startOffsetM: number,
+  endOffsetM: number,
+  stationZ?: StreetStationElevationInput,
+  spacingM = 6,
+  endInsetM = 13,
+  clearanceMask?: readonly boolean[],
+): THREE.BufferGeometry | null {
+  if (centerline.length < 2 || !(spacingM > 0)) return null;
+  const distances = cumulativeStreetDistances(centerline);
+  const total = distances[distances.length - 1];
+  if (total <= endInsetM * 2) return null;
+  const positions: number[] = [];
+  const indices: number[] = [];
+  const halfThickness = 0.045;
+  for (let distanceM = endInsetM; distanceM <= total - endInsetM; distanceM += spacingM) {
+    const sample = sampleStreetDistance(centerline, distances, distanceM);
+    if (streetDistanceSampleIsMasked(sample, clearanceMask)) continue;
+    const base = positions.length / 3;
+    const zStart = sampledStreetElevation(sample, stationZ, startOffsetM)
+      + PUBLIC_REALM_STREET_MARKING_LIFT_METERS;
+    const zEnd = sampledStreetElevation(sample, stationZ, endOffsetM)
+      + PUBLIC_REALM_STREET_MARKING_LIFT_METERS;
+    positions.push(
+      sample.point.x + sample.normal.x * startOffsetM - sample.tangent.x * halfThickness,
+      sample.point.y + sample.normal.y * startOffsetM - sample.tangent.y * halfThickness,
+      zStart,
+      sample.point.x + sample.normal.x * startOffsetM + sample.tangent.x * halfThickness,
+      sample.point.y + sample.normal.y * startOffsetM + sample.tangent.y * halfThickness,
+      zStart,
+      sample.point.x + sample.normal.x * endOffsetM + sample.tangent.x * halfThickness,
+      sample.point.y + sample.normal.y * endOffsetM + sample.tangent.y * halfThickness,
+      zEnd,
+      sample.point.x + sample.normal.x * endOffsetM - sample.tangent.x * halfThickness,
+      sample.point.y + sample.normal.y * endOffsetM - sample.tangent.y * halfThickness,
+      zEnd,
+    );
+    indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  return positions.length > 0 ? toGeometry(positions, indices) : null;
+}
+
+function appendStreetStroke(
+  positions: number[],
+  indices: number[],
+  start: LocalPt,
+  end: LocalPt,
+  startZ: number,
+  endZ: number,
+  widthM: number,
+): void {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const nx = -dy / length * widthM / 2;
+  const ny = dx / length * widthM / 2;
+  const base = positions.length / 3;
+  positions.push(
+    start.x + nx, start.y + ny, startZ,
+    start.x - nx, start.y - ny, startZ,
+    end.x - nx, end.y - ny, endZ,
+    end.x + nx, end.y + ny, endZ,
+  );
+  indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+}
+
+/** A bounded, legible sharrow chevron repeated in each travel lane. */
+export function buildSharrowGeometry(
+  centerline: LocalPt[],
+  laneCenterOffsetsM: readonly number[],
+  stationZ?: StreetStationElevationInput,
+  spacingM = 28,
+  endInsetM = 18,
+  clearanceMask?: readonly boolean[],
+): THREE.BufferGeometry | null {
+  if (centerline.length < 2 || laneCenterOffsetsM.length === 0 || !(spacingM > 0)) return null;
+  const distances = cumulativeStreetDistances(centerline);
+  const total = distances[distances.length - 1];
+  if (total <= endInsetM * 2) return null;
+  const positions: number[] = [];
+  const indices: number[] = [];
+  for (let distanceM = endInsetM; distanceM <= total - endInsetM; distanceM += spacingM) {
+    const sample = sampleStreetDistance(centerline, distances, distanceM);
+    if (streetDistanceSampleIsMasked(sample, clearanceMask)) continue;
+    for (const offsetM of laneCenterOffsetsM) {
+      // With the ENU normal pointing left of the authored centerline, the
+      // negative-offset lane travels with the line and the positive-offset
+      // lane travels against it. This keeps opposing sharrows opposing even
+      // when the source line itself was digitized in the other direction.
+      const direction = offsetM <= 0 ? 1 : -1;
+      const travelTangent = {
+        x: sample.tangent.x * direction,
+        y: sample.tangent.y * direction,
+      };
+      const center = {
+        x: sample.point.x + sample.normal.x * offsetM,
+        y: sample.point.y + sample.normal.y * offsetM,
+      };
+      const apex = {
+        x: center.x + travelTangent.x * 0.9,
+        y: center.y + travelTangent.y * 0.9,
+      };
+      const left = {
+        x: center.x - travelTangent.x * 0.55 + sample.normal.x * 0.62,
+        y: center.y - travelTangent.y * 0.55 + sample.normal.y * 0.62,
+      };
+      const right = {
+        x: center.x - travelTangent.x * 0.55 - sample.normal.x * 0.62,
+        y: center.y - travelTangent.y * 0.55 - sample.normal.y * 0.62,
+      };
+      const elevationAt = (tangentShiftM: number, lateralOffsetM: number): number => {
+        const shiftedSample = sampleStreetDistance(
+          centerline,
+          distances,
+          Math.max(0, Math.min(total, distanceM + tangentShiftM)),
+        );
+        return sampledStreetElevation(shiftedSample, stationZ, lateralOffsetM)
+          + PUBLIC_REALM_STREET_MARKING_LIFT_METERS;
+      };
+      const apexShiftM = 0.9 * direction;
+      const tailShiftM = -0.55 * direction;
+      const leftOffsetM = offsetM + 0.62;
+      const rightOffsetM = offsetM - 0.62;
+      appendStreetStroke(
+        positions,
+        indices,
+        left,
+        apex,
+        elevationAt(tailShiftM, leftOffsetM),
+        elevationAt(apexShiftM, offsetM),
+        0.13,
+      );
+      appendStreetStroke(
+        positions,
+        indices,
+        right,
+        apex,
+        elevationAt(tailShiftM, rightOffsetM),
+        elevationAt(apexShiftM, offsetM),
+        0.13,
+      );
+      appendStreetStroke(
+        positions,
+        indices,
+        {
+          x: center.x - travelTangent.x * 1.15,
+          y: center.y - travelTangent.y * 1.15,
+        },
+        {
+          x: center.x - travelTangent.x * 0.2,
+          y: center.y - travelTangent.y * 0.2,
+        },
+        elevationAt(-1.15 * direction, offsetM),
+        elevationAt(-0.2 * direction, offsetM),
+        0.1,
+      );
+    }
+  }
+  return positions.length > 0 ? toGeometry(positions, indices) : null;
+}
+
 export interface AccessibleFourWayIntersectionGeometry {
   /** High-contrast zebra bars for all four approaches. */
   crosswalks: THREE.BufferGeometry;
@@ -508,10 +792,65 @@ export interface RoundaboutGeometry {
   island: THREE.BufferGeometry;
   /** four splitter-island prisms */
   splitters: THREE.BufferGeometry;
+  /** low-planted inset on each splitter island */
+  splitterPlanting: THREE.BufferGeometry;
+  /** four connected sidewalk arcs behind the setback crossings */
+  sidewalks: THREE.BufferGeometry;
   /** Four setback zebra crossings plus four yield bars. */
   approachMarkings: THREE.BufferGeometry;
   /** applied radial scale (1 = standard 28m ICD) */
   scale: number;
+}
+
+/** Street material UVs are expressed directly in local metres. This keeps
+ * procedural aggregate, concrete, and planting textures at the same physical
+ * scale on a roundabout as they have on a linear street ribbon. */
+function applyPlanarMetricUvs(geometry: THREE.BufferGeometry): void {
+  const positions = geometry.getAttribute('position');
+  const uvs = new Float32Array(positions.count * 2);
+  for (let index = 0; index < positions.count; index += 1) {
+    uvs[index * 2] = positions.getX(index);
+    uvs[index * 2 + 1] = positions.getY(index);
+  }
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+}
+
+function buildRoundaboutSidewalkArcs(
+  innerRadiusM: number,
+  outerRadiusM: number,
+  bearingRad: number,
+  approachHalfWidthM: number,
+): THREE.BufferGeometry {
+  const positions: number[] = [];
+  const indices: number[] = [];
+  const gapAngle = Math.asin(Math.min(0.8, approachHalfWidthM / innerRadiusM));
+  const segmentsPerArc = 12;
+  for (let quadrant = 0; quadrant < 4; quadrant += 1) {
+    const startAngle = bearingRad + quadrant * Math.PI / 2 + gapAngle;
+    const endAngle = bearingRad + (quadrant + 1) * Math.PI / 2 - gapAngle;
+    const base = positions.length / 3;
+    for (let segment = 0; segment <= segmentsPerArc; segment += 1) {
+      const mix = segment / segmentsPerArc;
+      const angle = startAngle + (endAngle - startAngle) * mix;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      positions.push(
+        cos * innerRadiusM,
+        sin * innerRadiusM,
+        PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+        cos * outerRadiusM,
+        sin * outerRadiusM,
+        PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+      );
+    }
+    for (let segment = 0; segment < segmentsPerArc; segment += 1) {
+      const a = base + segment * 2;
+      indices.push(a, a + 1, a + 3, a, a + 3, a + 2);
+    }
+  }
+  const geometry = toGeometry(positions, indices);
+  applyPlanarMetricUvs(geometry);
+  return geometry;
 }
 
 /**
@@ -536,9 +875,11 @@ export function buildRoundaboutGeometry(
 
   const ring = new THREE.RingGeometry(rApron, rIcd, 64);
   ring.translate(0, 0, PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS);
+  applyPlanarMetricUvs(ring);
 
   const apron = new THREE.RingGeometry(rCentral, rApron, 64);
   apron.translate(0, 0, detail.apronLift_m);
+  applyPlanarMetricUvs(apron);
 
   const island = new THREE.CylinderGeometry(rCentral, rCentral, detail.islandHeight_m, 48);
   island.rotateX(Math.PI / 2); // cylinder axis Y -> Z (ENU up)
@@ -547,6 +888,7 @@ export function buildRoundaboutGeometry(
     0,
     PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + detail.islandHeight_m / 2,
   );
+  applyPlanarMetricUvs(island);
 
   // Splitter islands: triangle (tip toward circle, base outward) extruded
   // to curb height, one per leg at bearing + 0/90/180/270.
@@ -583,6 +925,38 @@ export function buildRoundaboutGeometry(
     }
   }
   const splitters = toGeometry(positions, indices);
+  applyPlanarMetricUvs(splitters);
+
+  const splitterPlantingPositions: number[] = [];
+  const splitterPlantingIndices: number[] = [];
+  const plantingTip = (ra.ICD / 2 + 2.4) * scale;
+  const plantingBack = (ra.ICD / 2 + ra.SLEN - 1.6) * scale;
+  const plantingHalfWidth = wb * 0.55;
+  const plantingZ = PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + h + 0.006;
+  for (let leg = 0; leg < 4; leg += 1) {
+    const angle = bearingRad + (leg * Math.PI) / 2;
+    const ux = Math.cos(angle);
+    const uy = Math.sin(angle);
+    const px = -uy;
+    const py = ux;
+    const base = splitterPlantingPositions.length / 3;
+    splitterPlantingPositions.push(
+      ux * plantingTip, uy * plantingTip, plantingZ,
+      ux * plantingBack - px * plantingHalfWidth, uy * plantingBack - py * plantingHalfWidth, plantingZ,
+      ux * plantingBack + px * plantingHalfWidth, uy * plantingBack + py * plantingHalfWidth, plantingZ,
+    );
+    splitterPlantingIndices.push(base, base + 1, base + 2);
+  }
+  const splitterPlanting = toGeometry(splitterPlantingPositions, splitterPlantingIndices);
+  applyPlanarMetricUvs(splitterPlanting);
+
+  const sidewalkInnerRadius = (ra.ICD / 2 + ra.SETBK + ra.CW) * scale;
+  const sidewalks = buildRoundaboutSidewalkArcs(
+    sidewalkInnerRadius,
+    sidewalkInnerRadius + 2 * scale,
+    bearingRad,
+    (ra.APP / 2 + 0.35) * scale,
+  );
 
   const markingPositions: number[] = [];
   const markingIndices: number[] = [];
@@ -620,5 +994,14 @@ export function buildRoundaboutGeometry(
   }
   const approachMarkings = toGeometry(markingPositions, markingIndices);
 
-  return { ring, apron, island, splitters, approachMarkings, scale };
+  return {
+    ring,
+    apron,
+    island,
+    splitters,
+    splitterPlanting,
+    sidewalks,
+    approachMarkings,
+    scale,
+  };
 }

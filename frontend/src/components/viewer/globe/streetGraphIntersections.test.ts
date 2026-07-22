@@ -10,7 +10,7 @@ function street(
   width: number,
   options: { legacy?: boolean; appearanceKitId?: string; familyVersion?: number } = {},
 ): SiteZone {
-  const isMain = width >= 20;
+  const isMain = width >= 18;
   const archetypeId = isMain ? 'main_street_complete' : 'calgary_local';
   const variantId = `${archetypeId}_v0`;
   return {
@@ -30,7 +30,9 @@ function street(
       ...(!options.legacy ? {
         public_realm_lego: {
           schema_version: 1,
-          family_id: isMain ? 'street_complete_main_22m' : 'street_local_public_realm',
+          family_id: isMain
+            ? (width >= 20 ? 'street_complete_main_22m' : 'street_complete_main_18m')
+            : 'street_local_public_realm',
           family_version: options.familyVersion ?? 1,
           kind: 'street',
           generator: 'street_section',
@@ -65,6 +67,20 @@ describe('four-way street graph adapter', () => {
       zoneIds: ['east-west', 'north-south'],
     });
     expect(nodes[0].axisAHalfWidthM + nodes[0].axisBHalfWidthM).toBeCloseTo(18, 1);
+  });
+
+  it('keeps accessible node masks when an 18 m complete-main segment contributes', () => {
+    const nodes = detectFourWayStreetIntersections([
+      street('east-west-18m', [[-114.1, 51], [-114.09, 51]], 18),
+      street('north-south-local', [[-114.095, 50.995], [-114.095, 51.005]], 14),
+    ]);
+
+    expect(nodes).toHaveLength(1);
+    expect(nodes[0]).toMatchObject({
+      familyId: 'street_four_way_intersection',
+      zoneIds: ['east-west-18m', 'north-south-local'],
+    });
+    expect(nodes[0].axisAHalfWidthM + nodes[0].axisBHalfWidthM).toBeCloseTo(16, 1);
   });
 
   it('does not promote a three-arm T junction to the four-way family', () => {

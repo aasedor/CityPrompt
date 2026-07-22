@@ -31,6 +31,10 @@ export type StreetBandKind =
 
 export interface StreetSectionBand {
   sourceType: string;
+  /** Authoritative physical surface from the source section. Appearance kits
+   * may tint this material, but cannot turn brick, concrete or planting into
+   * generic asphalt. */
+  surface: string;
   label: string;
   kind: StreetBandKind;
   startM: number;
@@ -152,7 +156,7 @@ export const PILOT_STREET_ARCHETYPE_IDS = Object.freeze([
 
 interface SyntheticSection {
   rowM: number;
-  zones: CatalogSectionZone[];
+  zones: readonly CatalogSectionZone[];
   renderCurbs?: boolean;
 }
 
@@ -246,6 +250,34 @@ const SYNTHETIC_SECTIONS: Record<string, SyntheticSection> = {
     ],
   },
 };
+
+/** Appearance-owned tropical sections keep the source right-of-way exact
+ * while trading flexible edge space for a continuous palm-planted median.
+ * Both lane programs stay above the reviewed low-speed viability floor. */
+const TROPICAL_BOULEVARD_SECTIONS: Readonly<Record<string, SyntheticSection>> = Object.freeze({
+  narrow_residential_street: Object.freeze({
+    rowM: 10,
+    zones: Object.freeze([
+      { type: 'sidewalk', width_m: 1.25, label: 'Warm flush sidewalk', surface: 'warm architectural concrete' },
+      { type: 'travel_lane', width_m: 3, label: 'Low-speed tropical lane', surface: 'fine warm asphalt' },
+      { type: 'planted_median', width_m: 1.5, label: 'Palm-planted center median', surface: 'lush tropical planting' },
+      { type: 'travel_lane', width_m: 3, label: 'Low-speed tropical lane', surface: 'fine warm asphalt' },
+      { type: 'sidewalk', width_m: 1.25, label: 'Warm flush sidewalk', surface: 'warm architectural concrete' },
+    ]),
+  }),
+  main_street_complete: Object.freeze({
+    rowM: 18,
+    zones: Object.freeze([
+      { type: 'sidewalk', width_m: 2, label: 'Warm commercial sidewalk', surface: 'warm architectural concrete' },
+      { type: 'parking', width_m: 2, label: 'Parallel parking', surface: 'fine warm asphalt' },
+      { type: 'travel_lane', width_m: 3.4, label: 'Tropical boulevard lane', surface: 'fine warm asphalt' },
+      { type: 'planted_median', width_m: 3.2, label: 'Palm-planted center median', surface: 'lush tropical planting' },
+      { type: 'travel_lane', width_m: 3.4, label: 'Tropical boulevard lane', surface: 'fine warm asphalt' },
+      { type: 'parking', width_m: 2, label: 'Parallel parking', surface: 'fine warm asphalt' },
+      { type: 'sidewalk', width_m: 2, label: 'Warm commercial sidewalk', surface: 'warm architectural concrete' },
+    ]),
+  }),
+});
 
 function inferCatalogSection(entry: CatalogEntry): SyntheticSection {
   const rowM = Math.max(3, Number(entry.propertyPresets?.width) || Number(entry.typicalWidth_m) || 12);
@@ -450,6 +482,9 @@ function applyFamilyAppearance(
     })(),
     roughness: palette.roughness,
     metalness: palette.metalness,
+    ...(appearance.id === 'modern_minimalist_v1'
+      ? { liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS }
+      : {}),
   }));
 }
 
@@ -458,7 +493,7 @@ function classify(type: string): StreetBandKind {
   if (['cycle', 'cycle_track', 'bike_lane', 'advisory_bike_lane', 'bicycle_pathway'].includes(type)) return 'cycle';
   if (['parking', 'parking_lane'].includes(type)) return 'parking';
   if (type === 'sidewalk') return 'sidewalk';
-  if (['boulevard', 'furnishing'].includes(type)) return 'planting';
+  if (['boulevard', 'furnishing', 'planted_median'].includes(type)) return 'planting';
   if (type === 'median') return 'median';
   if (['buffer', 'transit_island'].includes(type)) return 'buffer';
   if (['mup', 'multi_use_pathway', 'multi_use_trail'].includes(type)) return 'path';
@@ -517,6 +552,7 @@ function addMarkings(
       if (isTwoWayCenterline && [
         'calgary_local',
         'narrow_residential_street',
+        'main_street_complete',
         'yield_street',
         'toronto_victorian_residential_street',
         'toronto_laneway',
@@ -564,6 +600,10 @@ export function resolvePilotStreetSectionProfile(
   const withVariant = <T extends StreetSectionProfile>(profile: T): T => ({
     ...profile,
     bands: applyFamilyAppearance(profile.bands, appearance),
+    ...(appearance?.id === 'modern_minimalist_v1' ? {
+      curbOffsetsM: [],
+      renderCurbs: false,
+    } : {}),
     ...(contract.family ? {
       familyId: contract.family.id,
       familyVersion: contract.family.familyVersion,
@@ -600,16 +640,19 @@ export function resolvePilotStreetSectionProfile(
     const bands: StreetSectionBand[] = [
       {
         sourceType: 'soft_shoulder', label: 'Soft shoulder', kind: 'shoulder',
+        surface: 'soft landscape shoulder',
         startM: -2, endM: -1.75, centerM: -1.875, widthM: 0.25,
         color: '#7c8068', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.01,
       },
       {
         sourceType: 'multi_use_trail', label: 'Multi-use trail', kind: 'path',
+        surface: 'asphalt',
         startM: -1.75, endM: 1.75, centerM: 0, widthM: 3.5,
         color: '#aaa8a0', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005,
       },
       {
         sourceType: 'soft_shoulder', label: 'Soft shoulder', kind: 'shoulder',
+        surface: 'soft landscape shoulder',
         startM: 1.75, endM: 2, centerM: 1.875, widthM: 0.25,
         color: '#7c8068', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.01,
       },
@@ -629,9 +672,12 @@ export function resolvePilotStreetSectionProfile(
   }
   const familySection = familySectionFor(contract.family);
   const synthetic = SYNTHETIC_SECTIONS[pilotId];
-  const compiledSection = familySection ?? (entry.section?.zones?.length
+  const baseCompiledSection = familySection ?? (entry.section?.zones?.length
     ? { rowM: Number(entry.section.row_m) || Number(entry.typicalWidth_m) || 1, zones: entry.section.zones }
     : (synthetic ?? inferCatalogSection(entry)));
+  const compiledSection = appearance?.id === 'tropical_boulevard_v1'
+    ? TROPICAL_BOULEVARD_SECTIONS[pilotId] ?? baseCompiledSection
+    : baseCompiledSection;
   const sourceZones = compiledSection.zones;
   if (!sourceZones?.length) return null;
   const widths = sourceZones.map((zone) => Math.max(0, Number(zone.width_m) || 0));
@@ -646,9 +692,16 @@ export function resolvePilotStreetSectionProfile(
     const endM = cursor + widthM;
     cursor = endM;
     const sourceType = normalizeId(zone.type);
+    const surface = normalizeId(zone.surface || (() => {
+      if (['boulevard', 'furnishing', 'median'].includes(sourceType)) return 'planting';
+      if (sourceType === 'sidewalk') return 'concrete';
+      if (['parking', 'parking_lane'].includes(sourceType)) return 'asphalt';
+      return 'asphalt';
+    })());
     const kind = classify(sourceType);
     return {
       sourceType,
+      surface,
       label: zone.label || sourceType.replace(/_/g, ' '),
       kind,
       startM,

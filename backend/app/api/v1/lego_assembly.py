@@ -36,6 +36,7 @@ from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 from app.services.public_realm_lego import (
     PUBLIC_REALM_RECIPE_PROPERTY,
     PublicRealmPlanningError,
+    normalize_legacy_ai_street_variant_properties,
     plan_public_realm_zone_recipe,
 )
 from app.services.residual_landscape import (
@@ -46,6 +47,7 @@ from app.services.residual_landscape import (
     community_3d_source_hash,
     derive_site_boundary_from_authored_zones,
     lock_residual_landscape_project,
+    mark_community_3d_stale,
     mark_linked_community_3d_stale,
 )
 
@@ -865,15 +867,85 @@ def _public_realm_recipe_for_zone(
 ) -> dict[str, Any] | None:
     """Compile a canonical V1 recipe, strict only for AI Master Plan zones."""
 
-    properties = zone.properties or {}
+    properties = dict(zone.properties or {})
     strict = bool(
         isinstance(properties.get("_plan_scenario"), str)
         and properties.get("_plan_scenario", "").strip()
     )
+    source_geometry = _community_source_geometry(zone)
+    migrated_variant_id: str | None = None
+    centerline_normalized = False
+    if kind == "street":
+        if strict:
+            properties, migrated_variant_id = (
+                normalize_legacy_ai_street_variant_properties(properties)
+            )
+        # Import lazily: the plan generator owns metric centreline validation
+        # and conservative recovery, while this API owns ORM/proof mutation.
+        from app.services.plan_geometry.generator import (
+            recover_street_plan_centerline_wgs84,
+            validate_street_plan_centerline_wgs84,
+        )
+
+        had_centerline = "plan_centerline" in properties
+        centerline_is_valid = had_centerline and (
+            validate_street_plan_centerline_wgs84(
+                source_geometry,
+                properties.get("plan_centerline"),
+            )
+        )
+        if not centerline_is_valid:
+            recovered_centerline = recover_street_plan_centerline_wgs84(
+                source_geometry
+            )
+            if recovered_centerline and validate_street_plan_centerline_wgs84(
+                source_geometry,
+                recovered_centerline,
+            ):
+                properties["plan_centerline"] = recovered_centerline
+                centerline_normalized = True
+            elif had_centerline:
+                # Never let malformed/stale authored metadata survive a
+                # recompile. Manual zones may fall back to their legacy
+                # geometry renderer; strict AI plans must fail closed.
+                properties.pop("plan_centerline", None)
+                centerline_normalized = True
+                if strict:
+                    raise HTTPException(
+                        status_code=422,
+                        detail={
+                            "code": "invalid_plan_centerline",
+                            "message": (
+                                "Street plan_centerline does not describe the "
+                                "current zone geometry and could not be safely "
+                                "recovered."
+                            ),
+                            "zone_id": str(zone.id),
+                            "kind": kind,
+                        },
+                    )
+
+    if migrated_variant_id is not None or centerline_normalized:
+        zone.properties = properties
+        mark_community_3d_stale(
+            zone,
+            reason=(
+                "Street source normalized during Community 3D compilation; "
+                "the representation is being rebuilt."
+            ),
+        )
+        flag_modified(zone, "properties")
+        properties = dict(zone.properties or {})
+        logger.info(
+            "Community 3D normalized street zone %s (legacy_variant=%s, centerline=%s)",
+            zone.id,
+            migrated_variant_id or "none",
+            centerline_normalized,
+        )
     try:
         recipe = plan_public_realm_zone_recipe(
             zone.zone_type,
-            _community_source_geometry(zone),
+            source_geometry,
             properties,
             strict=strict,
         )

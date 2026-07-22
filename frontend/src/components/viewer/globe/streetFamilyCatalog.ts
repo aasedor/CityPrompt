@@ -11,6 +11,7 @@ export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
 
 export type PublicRealmStreetFamilyId =
   | 'street_local_public_realm'
+  | 'street_complete_main_18m'
   | 'street_complete_main_22m'
   | 'street_four_way_intersection'
   | 'street_compact_roundabout';
@@ -21,8 +22,12 @@ export type StreetAppearanceKitId =
   | 'timber_biophilic'
   | 'industrial_adaptive_reuse'
   | 'green_corridor_v1'
+  | 'dutch_woonerf_v1'
   | 'dutch_corner_islands_v1'
-  | 'classic_tree_lined_v1';
+  | 'classic_tree_lined_v1'
+  | 'modern_minimalist_v1'
+  | 'european_cobblestone_v1'
+  | 'tropical_boulevard_v1';
 
 export interface StreetAppearancePalette {
   motor: string;
@@ -134,6 +139,17 @@ export const STREET_APPEARANCE_KITS: Readonly<Record<StreetAppearanceKitId, Stre
       fixtureMetal: '#3a423e', fixtureWood: '#906947', roughness: 0.93, metalness: 0.01,
     },
   },
+  dutch_woonerf_v1: {
+    id: 'dutch_woonerf_v1',
+    label: 'Dutch Woonerf',
+    description: 'Warm herringbone brick, flush granite inlays, permeable tree islands, black bollards and informal shared-space furnishing.',
+    palette: {
+      motor: '#a45f42', parking: '#8e5a47', cycle: '#a45f42', sidewalk: '#bdad96',
+      planting: '#607b4d', buffer: '#aaa08e', shoulder: '#b9ad98', path: '#aa6749',
+      curb: '#aaa394', marking: '#eee5d4', tactile: '#c99e3b',
+      fixtureMetal: '#2d3232', fixtureWood: '#79533b', roughness: 0.94, metalness: 0.01,
+    },
+  },
   dutch_corner_islands_v1: {
     id: 'dutch_corner_islands_v1',
     label: 'Dutch Protected Corner',
@@ -156,6 +172,39 @@ export const STREET_APPEARANCE_KITS: Readonly<Record<StreetAppearanceKitId, Stre
       fixtureMetal: '#292f31', fixtureWood: '#7e583d', roughness: 0.9, metalness: 0.02,
     },
   },
+  modern_minimalist_v1: {
+    id: 'modern_minimalist_v1',
+    label: 'Modern Minimalist',
+    description: 'Fine dark asphalt, light architectural concrete, steel tree grates, columnar planting and restrained brushed-metal furniture.',
+    palette: {
+      motor: '#50575b', parking: '#596064', cycle: '#657b78', sidewalk: '#cbc9c2',
+      planting: '#66805a', buffer: '#a5aaa3', shoulder: '#85827a', path: '#b0aea7',
+      curb: '#b6b9b9', marking: '#f0eee7', tactile: '#cba33c',
+      fixtureMetal: '#4a5357', fixtureWood: '#80654f', roughness: 0.84, metalness: 0.06,
+    },
+  },
+  european_cobblestone_v1: {
+    id: 'european_cobblestone_v1',
+    label: 'European Cobblestone',
+    description: 'Natural stone setts, granite curbs, limestone walks, pollarded trees and vintage black iron furniture.',
+    palette: {
+      motor: '#716b64', parking: '#777068', cycle: '#756c62', sidewalk: '#c1b7a6',
+      planting: '#63764f', buffer: '#9f9585', shoulder: '#8a7d6d', path: '#a99a88',
+      curb: '#a5a29d', marking: '#eee4d1', tactile: '#c69b3b',
+      fixtureMetal: '#252626', fixtureWood: '#76513b', roughness: 0.95, metalness: 0.01,
+    },
+  },
+  tropical_boulevard_v1: {
+    id: 'tropical_boulevard_v1',
+    label: 'Tropical Boulevard',
+    description: 'Warm asphalt and concrete, lush layered planting, coral-toned curbs, palms and decorative dark-bronze furniture.',
+    palette: {
+      motor: '#565956', parking: '#62645f', cycle: '#5d7d68', sidewalk: '#cbbd9f',
+      planting: '#477446', buffer: '#7f9872', shoulder: '#8f8067', path: '#b9a987',
+      curb: '#bdad94', marking: '#f2ead7', tactile: '#cda440',
+      fixtureMetal: '#3a3730', fixtureWood: '#8c603e', roughness: 0.9, metalness: 0.025,
+    },
+  },
 });
 
 const DISTRICT_APPEARANCE_IDS = Object.freeze([
@@ -167,12 +216,34 @@ const DISTRICT_APPEARANCE_IDS = Object.freeze([
 const LOCAL_APPEARANCE_IDS = Object.freeze([
   ...DISTRICT_APPEARANCE_IDS,
   'green_corridor_v1',
+  'dutch_woonerf_v1',
+  'classic_tree_lined_v1',
+  'modern_minimalist_v1',
+  'european_cobblestone_v1',
+  'tropical_boulevard_v1',
+] as const satisfies readonly StreetAppearanceKitId[]);
+const CLASSIC_STREET_APPEARANCE_IDS = Object.freeze([
+  'classic_tree_lined_v1',
+  'modern_minimalist_v1',
+  'european_cobblestone_v1',
+  'tropical_boulevard_v1',
 ] as const satisfies readonly StreetAppearanceKitId[]);
 const INTERSECTION_APPEARANCE_IDS: readonly StreetAppearanceKitId[] = Object.freeze([
   'dutch_corner_islands_v1',
 ]);
 const ROUNDABOUT_APPEARANCE_IDS: readonly StreetAppearanceKitId[] = Object.freeze([
   'classic_tree_lined_v1',
+]);
+
+const MAIN_STREET_RENDERLOCK_CROSS_SECTION: readonly ExecutableStreetSectionBand[] = Object.freeze([
+  { type: 'sidewalk', widthM: 2, label: 'Wide commercial sidewalk', surface: 'architectural concrete' },
+  { type: 'boulevard', widthM: 1.25, label: 'Tree / furnishing zone', surface: 'tree grates and planting' },
+  { type: 'parking', widthM: 2.1, label: 'Parallel parking', surface: 'asphalt' },
+  { type: 'travel_lane', widthM: 3.65, label: 'Travel / sharrow lane', surface: 'fine asphalt' },
+  { type: 'travel_lane', widthM: 3.65, label: 'Travel / sharrow lane', surface: 'fine asphalt' },
+  { type: 'parking', widthM: 2.1, label: 'Parallel parking', surface: 'asphalt' },
+  { type: 'boulevard', widthM: 1.25, label: 'Tree / furnishing zone', surface: 'tree grates and planting' },
+  { type: 'sidewalk', widthM: 2, label: 'Wide commercial sidewalk', surface: 'architectural concrete' },
 ]);
 
 export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFamilyId, PublicRealmStreetFamilyDefinition>> = Object.freeze({
@@ -196,30 +267,29 @@ export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFami
     appearanceKitIds: LOCAL_APPEARANCE_IDS,
     capabilities: Object.freeze(['metric_section', 'terrain_drape', 'street_trees', 'lighting', 'benches', 'accessible_intersection']),
   },
+  street_complete_main_18m: {
+    id: 'street_complete_main_18m',
+    familyVersion: 1,
+    label: '18 m Classic Complete Main Street',
+    description: 'The render-locked two-lane main street with parallel parking, broad sidewalks, tree/furnishing zones and sharrow travel lanes.',
+    sourceArchetypeIds: Object.freeze(['main_street_complete']),
+    nativeRowM: 18,
+    crossSection: MAIN_STREET_RENDERLOCK_CROSS_SECTION,
+    defaultAppearanceKitId: 'classic_tree_lined_v1',
+    appearanceKitIds: CLASSIC_STREET_APPEARANCE_IDS,
+    capabilities: Object.freeze(['metric_section', 'terrain_drape', 'parking', 'sharrows', 'street_trees', 'lighting', 'benches', 'accessible_intersection']),
+  },
   street_complete_main_22m: {
     id: 'street_complete_main_22m',
     familyVersion: 1,
-    label: '22 m Complete Main Street',
-    description: 'A native 22 m main street with protected cycling, parking/loading, furnishing zones, sidewalks and two movement lanes.',
+    label: 'Legacy 22 m Complete Main Street Envelope',
+    description: 'Migration family that fits the render-locked complete-main-street program to existing 22 m authored polygons.',
     sourceArchetypeIds: Object.freeze(['main_street_complete']),
-    nativeRowM: 22,
-    crossSection: Object.freeze([
-      { type: 'sidewalk', widthM: 2.4, label: 'Clear accessible sidewalk', surface: 'architectural concrete' },
-      { type: 'boulevard', widthM: 1.2, label: 'Tree / furnishing zone', surface: 'unit paving and tree grates' },
-      { type: 'cycle_track', widthM: 1.6, label: 'Raised protected cycle track', surface: 'red asphalt' },
-      { type: 'buffer', widthM: 0.4, label: 'Cycle buffer', surface: 'concrete separator' },
-      { type: 'parking', widthM: 2, label: 'Parking / loading', surface: 'asphalt' },
-      { type: 'travel_lane', widthM: 3.4, label: 'Movement lane', surface: 'asphalt' },
-      { type: 'travel_lane', widthM: 3.4, label: 'Movement lane', surface: 'asphalt' },
-      { type: 'parking', widthM: 2, label: 'Parking / loading', surface: 'asphalt' },
-      { type: 'buffer', widthM: 0.4, label: 'Cycle buffer', surface: 'concrete separator' },
-      { type: 'cycle_track', widthM: 1.6, label: 'Raised protected cycle track', surface: 'red asphalt' },
-      { type: 'boulevard', widthM: 1.2, label: 'Tree / furnishing zone', surface: 'unit paving and tree grates' },
-      { type: 'sidewalk', widthM: 2.4, label: 'Clear accessible sidewalk', surface: 'architectural concrete' },
-    ]),
-    defaultAppearanceKitId: 'calgary_contemporary_native',
-    appearanceKitIds: DISTRICT_APPEARANCE_IDS,
-    capabilities: Object.freeze(['metric_section', 'terrain_drape', 'protected_cycle', 'loading', 'street_trees', 'lighting', 'benches', 'accessible_intersection']),
+    nativeRowM: 18,
+    crossSection: MAIN_STREET_RENDERLOCK_CROSS_SECTION,
+    defaultAppearanceKitId: 'classic_tree_lined_v1',
+    appearanceKitIds: CLASSIC_STREET_APPEARANCE_IDS,
+    capabilities: Object.freeze(['metric_section', 'terrain_drape', 'parking', 'sharrows', 'street_trees', 'lighting', 'benches', 'accessible_intersection']),
   },
   street_four_way_intersection: {
     id: 'street_four_way_intersection',
@@ -249,10 +319,11 @@ export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFami
   },
 });
 
-const districtSelections = (
+const explicitSelections = (
   familyId: PublicRealmStreetFamilyId,
   archetypeId: string,
-): PublicRealmStreetSelectionDefinition[] => DISTRICT_APPEARANCE_IDS.map((appearanceKitId, index) => ({
+  appearanceKitIds: readonly StreetAppearanceKitId[],
+): PublicRealmStreetSelectionDefinition[] => appearanceKitIds.map((appearanceKitId, index) => ({
   familyId,
   archetypeId,
   variantId: `${archetypeId}_v${index}`,
@@ -261,8 +332,38 @@ const districtSelections = (
 }));
 
 export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelectionDefinition[] = Object.freeze([
-  ...['yield_street', 'narrow_residential_street', 'woonerf_shared_street', 'calgary_local', 'green_alley', 'toronto_laneway']
-    .flatMap((archetypeId) => districtSelections('street_local_public_realm', archetypeId)),
+  {
+    familyId: 'street_local_public_realm',
+    archetypeId: 'calgary_local',
+    variantId: 'calgary_local_v0',
+    appearanceKitId: 'calgary_contemporary_native',
+    targetType: 'street_segment',
+  },
+  {
+    familyId: 'street_local_public_realm',
+    archetypeId: 'green_alley',
+    variantId: 'green_alley_v0',
+    appearanceKitId: 'green_corridor_v1',
+    targetType: 'street_segment',
+  },
+  {
+    familyId: 'street_local_public_realm',
+    archetypeId: 'toronto_laneway',
+    variantId: 'toronto_laneway_v0',
+    appearanceKitId: 'calgary_contemporary_native',
+    targetType: 'street_segment',
+  },
+  ...explicitSelections('street_local_public_realm', 'narrow_residential_street', CLASSIC_STREET_APPEARANCE_IDS),
+  ...[
+    'yield_street',
+    'woonerf_shared_street',
+  ].map((archetypeId) => ({
+    familyId: 'street_local_public_realm' as const,
+    archetypeId,
+    variantId: `${archetypeId}_v0`,
+    appearanceKitId: 'dutch_woonerf_v1' as const,
+    targetType: 'street_segment' as const,
+  })),
   {
     familyId: 'street_local_public_realm',
     archetypeId: 'multi_use_trail',
@@ -270,7 +371,8 @@ export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelection
     appearanceKitId: 'green_corridor_v1',
     targetType: 'street_segment',
   },
-  ...districtSelections('street_complete_main_22m', 'main_street_complete'),
+  ...explicitSelections('street_complete_main_18m', 'main_street_complete', CLASSIC_STREET_APPEARANCE_IDS),
+  ...explicitSelections('street_complete_main_22m', 'main_street_complete', CLASSIC_STREET_APPEARANCE_IDS),
   {
     familyId: 'street_four_way_intersection',
     archetypeId: 'protected_intersection',
