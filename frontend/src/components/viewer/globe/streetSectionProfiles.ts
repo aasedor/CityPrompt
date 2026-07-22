@@ -10,6 +10,12 @@ import {
   type StreetAppearanceKit,
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import {
+  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+} from './publicRealmDepthPolicy';
 
 export type StreetBandKind =
   | 'motor'
@@ -151,6 +157,15 @@ interface SyntheticSection {
 }
 
 const SYNTHETIC_SECTIONS: Record<string, SyntheticSection> = {
+  green_alley: {
+    rowM: 5,
+    renderCurbs: false,
+    zones: [
+      { type: 'boulevard', width_m: 0.75, label: 'Bioswale planting edge' },
+      { type: 'shared_lane', width_m: 3.5, label: 'Permeable shared lane', surface: 'permeable unit paving' },
+      { type: 'boulevard', width_m: 0.75, label: 'Bioswale planting edge' },
+    ],
+  },
   woonerf_shared_street: {
     rowM: 10,
     renderCurbs: false,
@@ -456,23 +471,23 @@ function bandStyle(kind: StreetBandKind, surface: string): Pick<StreetSectionBan
   switch (kind) {
     case 'motor':
       if (lower.includes('brick') || lower.includes('cobble') || lower.includes('unit paving')) {
-        return { color: '#a76547', liftM: 0.14 };
+        return { color: '#a76547', liftM: PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS };
       }
-      return { color: '#565a5d', liftM: 0.075 };
+      return { color: '#565a5d', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS };
     case 'cycle':
-      if (lower.includes('green')) return { color: '#4f8065', liftM: 0.085 };
-      if (lower.includes('red') || lower.includes('brown')) return { color: '#9a624f', liftM: 0.085 };
-      return { color: '#656f72', liftM: 0.085 };
-    case 'parking': return { color: '#62666a', liftM: 0.08 };
-    case 'sidewalk': return { color: '#b8b5ac', liftM: 0.14 };
-    case 'planting': return { color: '#587545', liftM: 0.16 };
-    case 'median': return { color: '#71875b', liftM: 0.18 };
-    case 'buffer': return { color: '#8d987a', liftM: 0.13 };
-    case 'path': return { color: '#a8a69e', liftM: 0.1 };
+      if (lower.includes('green')) return { color: '#4f8065', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005 };
+      if (lower.includes('red') || lower.includes('brown')) return { color: '#9a624f', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005 };
+      return { color: '#656f72', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005 };
+    case 'parking': return { color: '#62666a', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS };
+    case 'sidewalk': return { color: '#b8b5ac', liftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS };
+    case 'planting': return { color: '#587545', liftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS - 0.005 };
+    case 'median': return { color: '#71875b', liftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS + 0.005 };
+    case 'buffer': return { color: '#8d987a', liftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS - 0.01 };
+    case 'path': return { color: '#a8a69e', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005 };
     case 'shoulder':
-      if (lower.includes('stone')) return { color: '#c4b69e', liftM: 0.15 };
-      return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: 0.06 };
-    default: return { color: '#89877f', liftM: 0.08 };
+      if (lower.includes('stone')) return { color: '#c4b69e', liftM: PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS };
+      return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.01 };
+    default: return { color: '#89877f', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS };
   }
 }
 
@@ -586,17 +601,17 @@ export function resolvePilotStreetSectionProfile(
       {
         sourceType: 'soft_shoulder', label: 'Soft shoulder', kind: 'shoulder',
         startM: -2, endM: -1.75, centerM: -1.875, widthM: 0.25,
-        color: '#7c8068', liftM: 0.07,
+        color: '#7c8068', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.01,
       },
       {
         sourceType: 'multi_use_trail', label: 'Multi-use trail', kind: 'path',
         startM: -1.75, endM: 1.75, centerM: 0, widthM: 3.5,
-        color: '#aaa8a0', liftM: 0.1,
+        color: '#aaa8a0', liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.005,
       },
       {
         sourceType: 'soft_shoulder', label: 'Soft shoulder', kind: 'shoulder',
         startM: 1.75, endM: 2, centerM: 1.875, widthM: 0.25,
-        color: '#7c8068', liftM: 0.07,
+        color: '#7c8068', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.01,
       },
     ];
     return withVariant({

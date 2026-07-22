@@ -532,7 +532,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       if (residualLandscapeRecipe) {
         applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
       }
-      return geometry;
+      // The Google-Tiles spatial mask and replacement surface are rasterized
+      // independently. A tightly coincident edge can reveal a one-pixel white
+      // seam; the bounded excess remains hidden below surviving source tiles.
+      return overlapPreparedGroundEdges(geometry);
     },
     [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id],
   );

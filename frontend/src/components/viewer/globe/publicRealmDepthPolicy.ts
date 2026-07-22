@@ -33,6 +33,22 @@ export const PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS = 0.08;
 export const PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS =
   PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.02;
 
+/** Constructible street datum. The compiled ground is the prepared subgrade;
+ * every street surface is expressed from the same reference so carriageways
+ * cannot fall below the site mesh and paint cannot hover above it. */
+export const PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS =
+  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.02;
+export const PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS =
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.01;
+export const PUBLIC_REALM_STREET_MARKING_LIFT_METERS =
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + 0.006;
+export const PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS =
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS;
+export const PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS =
+  PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + 0.145;
+export const PUBLIC_REALM_STREET_TACTILE_LIFT_METERS =
+  PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS + 0.006;
+
 export function resolvePublicRealmGroundDepthPolicy({
   isCompiledGround,
   hasAuthoredGroundTexture,

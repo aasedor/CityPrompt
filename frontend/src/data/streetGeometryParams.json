@@ -29,12 +29,12 @@
   },
   "streetDetail3D": {
     "curbHeight_m": 0.15,
-    "curbWidth_m": 0.5,
+    "curbWidth_m": 0.3,
     "dashLength_m": 3.0,
     "dashGap_m": 3.0,
     "dashWidth_m": 0.15,
-    "dashLift_m": 0.05,
-    "apronLift_m": 0.03,
+    "dashLift_m": 0.106,
+    "apronLift_m": 0.13,
     "islandHeight_m": 0.3,
     "stationStep_m": 4.0
   }

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-scottish-baronial-railway-hotel-v88",
+  "memory_version": "2026-07-21-fail-safe-facade-lod-v89",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -197,7 +197,8 @@
       "hero_range_m": [0, 180],
       "city_range_m": [180, 2000],
       "hero_strategy": "physical glazing, full PBR atlas and semantic relief",
-      "city_strategy": "compressed baked facade, preserved silhouette and simplified interiors"
+      "city_strategy": "compressed baked facade, preserved silhouette and simplified interiors",
+      "runtime_fail_safe": "Pair near and far facade sheets only within the same joined mesh and semantic band. If a matching complement is absent, keep the authored sheet visible rather than exposing an untextured or near-black structural core; near-only frames, glazing and interiors may still cull at city range."
     }
   },
   "batch_workflow": [
@@ -305,6 +306,11 @@
       "symptom": "Dead dark-blue windows",
       "cause": "Tinted alpha-blended planes without interiors or reflections.",
       "correction": "Use physical transmission near and subtle warm occupied backplates; bake semantic glass far."
+    },
+    {
+      "symptom": "A facade becomes a near-black structural slab when the camera crosses the city LOD threshold",
+      "cause": "A root-global near/far flag paired unrelated facade bands or elevations, so a far sheet elsewhere suppressed a near-only authored facade.",
+      "correction": "Pair complementary facade sheets per joined mesh and semantic band; when no matching complement exists, retain the authored sheet at both ranges and cull only explicitly near-only physical glazing detail."
     },
     {
       "symptom": "Front facade works but orbit view fails",

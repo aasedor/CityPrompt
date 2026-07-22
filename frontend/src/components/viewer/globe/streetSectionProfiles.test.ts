@@ -156,6 +156,19 @@ describe('street section pilot profiles', () => {
     expect(profile?.markings).toHaveLength(0);
   });
 
+  it('compiles green alleys as a permeable shared lane between two bioswales', () => {
+    const profile = resolvePilotStreetSectionProfile('green_alley');
+    expect(profile).not.toBeNull();
+    expect(profile?.rowM).toBe(5);
+    expect(profile?.renderCurbs).toBe(false);
+    expect(profile?.bands.map((band) => band.kind)).toEqual([
+      'planting', 'motor', 'planting',
+    ]);
+    expect(profile?.bands.filter((band) => band.kind === 'planting').map((band) => band.widthM))
+      .toEqual([0.75, 0.75]);
+    expect(profile?.bands.find((band) => band.kind === 'motor')?.widthM).toBe(3.5);
+  });
+
   it('preserves the source-native local section and records the recipe target width', () => {
     const profile = resolvePilotStreetSectionProfile({
       properties: {

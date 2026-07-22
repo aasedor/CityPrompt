@@ -19,10 +19,73 @@ import {
   type RoundaboutParams,
   type StreetDetail3DParams,
 } from '@/data/streetGeometryParams';
+import {
+  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS,
+  PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+  PUBLIC_REALM_STREET_TACTILE_LIFT_METERS,
+} from './publicRealmDepthPolicy';
+import { samplePlaneOffset, type TerrainContactPlane } from './terrainContactProfile';
 
 export interface LocalPt {
   x: number;
   y: number;
+}
+
+/** Cross-section terrain contact at one centreline station. Positive offsets
+ * use the left edge, negative offsets the right edge. */
+export interface StreetStationTerrain {
+  centerZ: number;
+  leftZ: number;
+  rightZ: number;
+  halfWidthM: number;
+}
+
+export type StreetStationElevationInput =
+  | readonly number[]
+  | readonly StreetStationTerrain[];
+
+export function streetStationElevationAt(
+  stationElevation: StreetStationElevationInput | undefined,
+  stationIndex: number,
+  signedOffsetM: number,
+): number {
+  const entry = stationElevation?.[stationIndex];
+  if (typeof entry === 'number') return entry;
+  if (!entry) return 0;
+  const amount = Math.min(1, Math.abs(signedOffsetM) / Math.max(0.01, entry.halfWidthM));
+  const edgeZ = signedOffsetM >= 0 ? entry.leftZ : entry.rightZ;
+  return entry.centerZ + (edgeZ - entry.centerZ) * amount;
+}
+
+/** Mutate component-owned geometry onto one constructible local terrain plane.
+ * Geometry-local x/y can be offset when the mesh mounts inside a translated
+ * group (roundabouts use the oriented footprint centre). */
+export function applyTerrainPlaneToStreetGeometry(
+  geometry: THREE.BufferGeometry,
+  plane: TerrainContactPlane | null | undefined,
+  frameElevationMeters: number,
+  localOriginX = 0,
+  localOriginY = 0,
+): THREE.BufferGeometry {
+  if (!plane) return geometry;
+  const positions = geometry.getAttribute('position') as THREE.BufferAttribute | undefined;
+  if (!positions) return geometry;
+  for (let index = 0; index < positions.count; index += 1) {
+    const x = positions.getX(index) + localOriginX;
+    const y = positions.getY(index) + localOriginY;
+    const groundOffset = plane.originZ
+      + samplePlaneOffset(plane, x, y)
+      - frameElevationMeters;
+    positions.setZ(index, positions.getZ(index) + groundOffset);
+  }
+  positions.needsUpdate = true;
+  geometry.computeVertexNormals();
+  geometry.computeBoundingBox();
+  geometry.computeBoundingSphere();
+  return geometry;
 }
 
 /** Insert intermediate stations so long spans can follow terrain. */
@@ -63,7 +126,7 @@ export function buildRibbonBandGeometry(
   startOffset: number,
   endOffset: number,
   liftM: number = 0.05,
-  stationZ?: number[],
+  stationZ?: StreetStationElevationInput,
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2 || Math.abs(endOffset - startOffset) < 0.01) return null;
   const normals = stationNormals(centerline);
@@ -72,14 +135,15 @@ export function buildRibbonBandGeometry(
   for (let i = 0; i < centerline.length; i += 1) {
     const point = centerline[i];
     const normal = normals[i];
-    const z = (stationZ?.[i] ?? 0) + liftM;
+    const startZ = streetStationElevationAt(stationZ, i, startOffset) + liftM;
+    const endZ = streetStationElevationAt(stationZ, i, endOffset) + liftM;
     positions.push(
       point.x + normal.x * startOffset,
       point.y + normal.y * startOffset,
-      z,
+      startZ,
       point.x + normal.x * endOffset,
       point.y + normal.y * endOffset,
-      z,
+      endZ,
     );
   }
   for (let i = 0; i < centerline.length - 1; i += 1) {
@@ -110,7 +174,7 @@ export function buildCurbBandGeometry(
   centerline: LocalPt[],
   halfWidth: number,
   params: StreetDetail3DParams = STREET_DETAIL_3D,
-  stationZ?: number[],
+  stationZ?: StreetStationElevationInput,
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2) return null;
   const normals = stationNormals(centerline);
@@ -124,12 +188,22 @@ export function buildCurbBandGeometry(
     for (let i = 0; i < centerline.length; i++) {
       const p = centerline[i];
       const nrm = normals[i];
-      const z = stationZ?.[i] ?? 0;
+      const innerOffset = inner * side;
+      const outerOffset = halfWidth * side;
+      const innerZ = streetStationElevationAt(stationZ, i, innerOffset)
+        + PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS;
+      const outerZ = streetStationElevationAt(stationZ, i, outerOffset)
+        + PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS;
       const ix = p.x + nrm.x * inner * side;
       const iy = p.y + nrm.y * inner * side;
       const ox = p.x + nrm.x * halfWidth * side;
       const oy = p.y + nrm.y * halfWidth * side;
-      positions.push(ix, iy, z, ix, iy, z + h, ox, oy, z + h, ox, oy, z);
+      positions.push(
+        ix, iy, innerZ,
+        ix, iy, innerZ + h,
+        ox, oy, outerZ + h,
+        ox, oy, outerZ,
+      );
     }
     for (let i = 0; i < centerline.length - 1; i++) {
       const a = base + i * 4;
@@ -161,7 +235,7 @@ export function buildOffsetCurbGeometry(
   centerline: LocalPt[],
   offsetsM: number[],
   params: StreetDetail3DParams = STREET_DETAIL_3D,
-  stationZ?: number[],
+  stationZ?: StreetStationElevationInput,
   skipStation?: boolean[],
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2 || offsetsM.length === 0) return null;
@@ -176,16 +250,19 @@ export function buildOffsetCurbGeometry(
     for (let index = 0; index < centerline.length; index += 1) {
       const point = centerline[index];
       const normal = normals[index];
-      const z = stationZ?.[index] ?? 0;
+      const lowZ = streetStationElevationAt(stationZ, index, offset - halfWidth)
+        + PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS;
+      const highZ = streetStationElevationAt(stationZ, index, offset + halfWidth)
+        + PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS;
       const lowX = point.x + normal.x * (offset - halfWidth);
       const lowY = point.y + normal.y * (offset - halfWidth);
       const highX = point.x + normal.x * (offset + halfWidth);
       const highY = point.y + normal.y * (offset + halfWidth);
       positions.push(
-        lowX, lowY, z,
-        lowX, lowY, z + height,
-        highX, highY, z + height,
-        highX, highY, z,
+        lowX, lowY, lowZ,
+        lowX, lowY, lowZ + height,
+        highX, highY, highZ + height,
+        highX, highY, highZ,
       );
     }
     for (let index = 0; index < centerline.length - 1; index += 1) {
@@ -210,7 +287,7 @@ export function buildOffsetCurbGeometry(
 export function buildDashGeometry(
   centerline: LocalPt[],
   params: StreetDetail3DParams = STREET_DETAIL_3D,
-  stationZ?: number[],
+  stationZ?: StreetStationElevationInput,
   offsetM: number = 0,
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2) return null;
@@ -232,8 +309,8 @@ export function buildDashGeometry(
     const t = (dist - cum[i - 1]) / (cum[i] - cum[i - 1] || 1);
     const a = centerline[i - 1];
     const b = centerline[i];
-    const za = stationZ?.[i - 1] ?? 0;
-    const zb = stationZ?.[i] ?? 0;
+    const za = streetStationElevationAt(stationZ, i - 1, offsetM);
+    const zb = streetStationElevationAt(stationZ, i, offsetM);
     return {
       p: { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t },
       n: normals[i - 1],
@@ -315,17 +392,17 @@ function appendRampWedge(
   const innerY = centerY - outward.y * depth / 2;
   const outerX = centerX + outward.x * depth / 2;
   const outerY = centerY + outward.y * depth / 2;
-  const lowZ = 0.035;
-  const highZ = STREET_DETAIL_3D.curbHeight_m + 0.025;
+  const lowZ = PUBLIC_REALM_STREET_MARKING_LIFT_METERS;
+  const highZ = PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS;
   positions.push(
     innerX - along.x * halfWidth, innerY - along.y * halfWidth, lowZ,
     innerX + along.x * halfWidth, innerY + along.y * halfWidth, lowZ,
     outerX + along.x * halfWidth, outerY + along.y * halfWidth, highZ,
     outerX - along.x * halfWidth, outerY - along.y * halfWidth, highZ,
-    innerX - along.x * halfWidth, innerY - along.y * halfWidth, 0,
-    innerX + along.x * halfWidth, innerY + along.y * halfWidth, 0,
-    outerX + along.x * halfWidth, outerY + along.y * halfWidth, 0,
-    outerX - along.x * halfWidth, outerY - along.y * halfWidth, 0,
+    innerX - along.x * halfWidth, innerY - along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+    innerX + along.x * halfWidth, innerY + along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+    outerX + along.x * halfWidth, outerY + along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+    outerX - along.x * halfWidth, outerY - along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
   );
   indices.push(
     base, base + 1, base + 2, base, base + 2, base + 3,
@@ -383,7 +460,7 @@ export function buildAccessibleFourWayIntersectionGeometry(
           across,
           0.15,
           axis.roadHalfWidth,
-          0.205,
+          PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
         );
       }
       for (const curbSide of [-1, 1]) {
@@ -410,7 +487,7 @@ export function buildAccessibleFourWayIntersectionGeometry(
           outward,
           0.62,
           0.27,
-          STREET_DETAIL_3D.curbHeight_m + 0.045,
+          PUBLIC_REALM_STREET_TACTILE_LIFT_METERS,
         );
       }
     }
@@ -431,6 +508,8 @@ export interface RoundaboutGeometry {
   island: THREE.BufferGeometry;
   /** four splitter-island prisms */
   splitters: THREE.BufferGeometry;
+  /** Four setback zebra crossings plus four yield bars. */
+  approachMarkings: THREE.BufferGeometry;
   /** applied radial scale (1 = standard 28m ICD) */
   scale: number;
 }
@@ -456,14 +535,18 @@ export function buildRoundaboutGeometry(
   const rCentral = (ra.ICD / 2 - ra.CIRC - ra.APRON) * scale;
 
   const ring = new THREE.RingGeometry(rApron, rIcd, 64);
-  ring.translate(0, 0, 0.02);
+  ring.translate(0, 0, PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS);
 
   const apron = new THREE.RingGeometry(rCentral, rApron, 64);
   apron.translate(0, 0, detail.apronLift_m);
 
   const island = new THREE.CylinderGeometry(rCentral, rCentral, detail.islandHeight_m, 48);
   island.rotateX(Math.PI / 2); // cylinder axis Y -> Z (ENU up)
-  island.translate(0, 0, detail.islandHeight_m / 2);
+  island.translate(
+    0,
+    0,
+    PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + detail.islandHeight_m / 2,
+  );
 
   // Splitter islands: triangle (tip toward circle, base outward) extruded
   // to curb height, one per leg at bearing + 0/90/180/270.
@@ -487,8 +570,12 @@ export function buildRoundaboutGeometry(
       [ux * back + px * wb, uy * back + py * wb],
     ];
     const base = positions.length / 3;
-    for (const [x, y] of tri) positions.push(x, y, 0);
-    for (const [x, y] of tri) positions.push(x, y, h);
+    for (const [x, y] of tri) positions.push(x, y, PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS);
+    for (const [x, y] of tri) positions.push(
+      x,
+      y,
+      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + h,
+    );
     indices.push(base + 3, base + 4, base + 5); // top
     for (let i = 0; i < 3; i++) {
       const j = (i + 1) % 3;
@@ -497,5 +584,41 @@ export function buildRoundaboutGeometry(
   }
   const splitters = toGeometry(positions, indices);
 
-  return { ring, apron, island, splitters, scale };
+  const markingPositions: number[] = [];
+  const markingIndices: number[] = [];
+  for (let leg = 0; leg < 4; leg += 1) {
+    const angle = bearingRad + (leg * Math.PI) / 2;
+    const along = { x: Math.cos(angle), y: Math.sin(angle) };
+    const across = { x: -along.y, y: along.x };
+    const crosswalkCenter = rIcd + (ra.SETBK + ra.CW / 2) * scale;
+    for (let stripe = -3; stripe <= 3; stripe += 1) {
+      const stripeOffset = stripe * (ra.CW * scale / 7);
+      appendQuad(
+        markingPositions,
+        markingIndices,
+        along.x * (crosswalkCenter + stripeOffset),
+        along.y * (crosswalkCenter + stripeOffset),
+        along,
+        across,
+        0.13 * scale,
+        (ra.APP * 0.46) * scale,
+        PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
+      );
+    }
+    const yieldDistance = rIcd + 1.35 * scale;
+    appendQuad(
+      markingPositions,
+      markingIndices,
+      along.x * yieldDistance,
+      along.y * yieldDistance,
+      along,
+      across,
+      0.09 * scale,
+      Math.max(0.65, (ra.APP - ra.REFUGE) * 0.22 * scale),
+      PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
+    );
+  }
+  const approachMarkings = toGeometry(markingPositions, markingIndices);
+
+  return { ring, apron, island, splitters, approachMarkings, scale };
 }

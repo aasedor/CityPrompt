@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -212,46 +212,95 @@ export function GlobeLandscapeBenchStand({
   placements: LandscapeBenchPlacement[];
   renderOrder?: number;
 }) {
+  const woodRef = useRef<THREE.InstancedMesh>(null);
+  const metalRef = useRef<THREE.InstancedMesh>(null);
+  const boxGeometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const woodPartCount = placements.length * 8;
+  const metalPartCount = placements.length * 6;
+
+  useEffect(() => () => boxGeometry.dispose(), [boxGeometry]);
+  useEffect(() => {
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const scale = new THREE.Vector3();
+    const yaw = new THREE.Quaternion();
+    const localRotation = new THREE.Quaternion();
+    const rotation = new THREE.Quaternion();
+    const zAxis = new THREE.Vector3(0, 0, 1);
+    const xAxis = new THREE.Vector3(1, 0, 0);
+    let woodIndex = 0;
+    let metalIndex = 0;
+    const setPart = (
+      ref: RefObject<THREE.InstancedMesh | null>,
+      index: number,
+      placement: LandscapeBenchPlacement,
+      localX: number,
+      localY: number,
+      localZ: number,
+      width: number,
+      depth: number,
+      height: number,
+      tiltX = 0,
+    ) => {
+      const cos = Math.cos(placement.yawRad);
+      const sin = Math.sin(placement.yawRad);
+      position.set(
+        placement.x + (localX * cos - localY * sin) * placement.scale,
+        placement.y + (localX * sin + localY * cos) * placement.scale,
+        placement.z + localZ * placement.scale,
+      );
+      yaw.setFromAxisAngle(zAxis, placement.yawRad);
+      localRotation.setFromAxisAngle(xAxis, tiltX);
+      rotation.multiplyQuaternions(yaw, localRotation);
+      scale.set(width * placement.scale, depth * placement.scale, height * placement.scale);
+      matrix.compose(position, rotation, scale);
+      ref.current?.setMatrixAt(index, matrix);
+    };
+
+    placements.forEach((placement) => {
+      [-0.20, -0.10, 0, 0.10, 0.20].forEach((slatY) => {
+        setPart(woodRef, woodIndex++, placement, 0, slatY, 0.48, 1.86, 0.074, 0.055);
+      });
+      [0.68, 0.81, 0.94].forEach((slatZ) => {
+        setPart(woodRef, woodIndex++, placement, 0, 0.255, slatZ, 1.86, 0.055, 0.075, Math.PI / 18);
+      });
+      [-0.68, 0.68].forEach((legX) => {
+        setPart(metalRef, metalIndex++, placement, legX, 0, 0.25, 0.075, 0.42, 0.5);
+        setPart(metalRef, metalIndex++, placement, legX, -0.28, 0.72, 0.075, 0.075, 0.56);
+        setPart(metalRef, metalIndex++, placement, legX, -0.08, 0.68, 0.075, 0.46, 0.075);
+      });
+    });
+    if (woodRef.current) {
+      woodRef.current.count = woodPartCount;
+      woodRef.current.instanceMatrix.needsUpdate = true;
+      woodRef.current.computeBoundingSphere();
+    }
+    if (metalRef.current) {
+      metalRef.current.count = metalPartCount;
+      metalRef.current.instanceMatrix.needsUpdate = true;
+      metalRef.current.computeBoundingSphere();
+    }
+  }, [metalPartCount, placements, woodPartCount]);
+
+  if (placements.length === 0) return null;
   return (
     <>
-      {placements.map((placement, index) => (
-        <group
-          key={`${Math.round(placement.x * 10)}-${Math.round(placement.y * 10)}-${index}`}
-          position={[placement.x, placement.y, placement.z]}
-          rotation={[0, 0, placement.yawRad]}
-          scale={[placement.scale, placement.scale, placement.scale]}
-          renderOrder={renderOrder}
-        >
-          {[-0.20, -0.10, 0, 0.10, 0.20].map((slatY) => (
-            <mesh key={`seat-${slatY}`} position={[0, slatY, 0.48]} renderOrder={renderOrder}>
-              <boxGeometry args={[1.86, 0.074, 0.055]} />
-              <meshStandardMaterial color="#8a5d3d" roughness={0.82} />
-            </mesh>
-          ))}
-          {[0.68, 0.81, 0.94].map((slatZ) => (
-            <mesh key={`back-${slatZ}`} position={[0, 0.255, slatZ]} rotation={[Math.PI / 18, 0, 0]} renderOrder={renderOrder}>
-              <boxGeometry args={[1.86, 0.055, 0.075]} />
-              <meshStandardMaterial color="#7b5036" roughness={0.84} />
-            </mesh>
-          ))}
-          {[-0.68, 0.68].map((legX) => (
-            <group key={`frame-${legX}`}>
-              <mesh position={[legX, 0, 0.25]} renderOrder={renderOrder}>
-                <boxGeometry args={[0.075, 0.42, 0.5]} />
-                <meshStandardMaterial color="#343b3c" metalness={0.54} roughness={0.48} />
-              </mesh>
-              <mesh position={[legX, -0.28, 0.72]} renderOrder={renderOrder}>
-                <boxGeometry args={[0.075, 0.075, 0.56]} />
-                <meshStandardMaterial color="#343b3c" metalness={0.54} roughness={0.48} />
-              </mesh>
-              <mesh position={[legX, -0.08, 0.68]} renderOrder={renderOrder}>
-                <boxGeometry args={[0.075, 0.46, 0.075]} />
-                <meshStandardMaterial color="#343b3c" metalness={0.54} roughness={0.48} />
-              </mesh>
-            </group>
-          ))}
-        </group>
-      ))}
+      <instancedMesh
+        ref={woodRef}
+        args={[boxGeometry, undefined, woodPartCount]}
+        renderOrder={renderOrder}
+        frustumCulled={false}
+      >
+        <meshStandardMaterial color="#835638" roughness={0.83} />
+      </instancedMesh>
+      <instancedMesh
+        ref={metalRef}
+        args={[boxGeometry, undefined, metalPartCount]}
+        renderOrder={renderOrder}
+        frustumCulled={false}
+      >
+        <meshStandardMaterial color="#343b3c" metalness={0.54} roughness={0.48} />
+      </instancedMesh>
     </>
   );
 }

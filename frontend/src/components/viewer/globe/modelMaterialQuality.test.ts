@@ -49,6 +49,33 @@ describe('prepareArchitecturalClone', () => {
 
     expect(texture.anisotropy).toBe(12);
     expect((clone.material as THREE.MeshStandardMaterial).envMapIntensity).toBe(0.9);
+    expect((clone.material as THREE.MeshStandardMaterial).map?.colorSpace).toBe(
+      THREE.SRGBColorSpace,
+    );
+  });
+
+  it('disables legacy near-black AO only for the explicit LEGO policy', () => {
+    const ao = new THREE.Texture();
+    const sourceMaterial = new THREE.MeshStandardMaterial({
+      color: '#b9aa99',
+      map: new THREE.Texture(),
+      aoMap: ao,
+      aoMapIntensity: 1,
+    });
+    sourceMaterial.name = 'MAT_Facade_Primary';
+    const source = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sourceMaterial);
+
+    const preserved = prepareArchitecturalClone(source, { renderOrder: 10 }) as THREE.Mesh;
+    const safeLego = prepareArchitecturalClone(source, {
+      renderOrder: 10,
+      ambientOcclusion: 'disable',
+    }) as THREE.Mesh;
+
+    expect((preserved.material as THREE.MeshStandardMaterial).aoMap).toBe(ao);
+    expect((safeLego.material as THREE.MeshStandardMaterial).aoMap).toBeNull();
+    expect((safeLego.material as THREE.MeshStandardMaterial).aoMapIntensity).toBe(0);
+    expect(sourceMaterial.aoMap).toBe(ao);
+    expect(sourceMaterial.aoMapIntensity).toBe(1);
   });
 
   it('uses the photo-baked calibration for facade-sheet materials', () => {
@@ -123,8 +150,7 @@ describe('prepareArchitecturalClone', () => {
     const physical = new THREE.MeshPhysicalMaterial();
     physical.name = 'MAT_GlassOverlay_reflective_curtain_wall_floor';
     root.add(
-      new THREE.Mesh(new THREE.PlaneGeometry(), far),
-      new THREE.Mesh(new THREE.PlaneGeometry(), near),
+      new THREE.Mesh(new THREE.PlaneGeometry(), [far, near]),
       new THREE.Mesh(new THREE.PlaneGeometry(), physical),
     );
 
@@ -155,6 +181,24 @@ describe('prepareArchitecturalClone', () => {
     expect(physical.visible).toBe(true);
   });
 
+  it('keeps a near facade sheet visible at far LOD when no far sheet exists', () => {
+    const root = new THREE.Group();
+    const near = new THREE.MeshStandardMaterial();
+    near.name = 'MAT_Sheet_Near_Floor';
+    const sash = new THREE.MeshStandardMaterial();
+    sash.name = 'MAT_GlazingFrame_industrial_sash';
+    sash.userData.glazing_lod = 'near';
+    root.add(
+      new THREE.Mesh(new THREE.PlaneGeometry(), near),
+      new THREE.Mesh(new THREE.BoxGeometry(), sash),
+    );
+
+    setArchitecturalGlazingLod(root, 'far');
+
+    expect(near.visible).toBe(true);
+    expect(sash.visible).toBe(false);
+  });
+
   it('does not mistake a near-only physical sash for a replacement facade sheet', () => {
     const root = new THREE.Group();
     const far = new THREE.MeshStandardMaterial();
@@ -177,6 +221,80 @@ describe('prepareArchitecturalClone', () => {
     expect(physical.visible).toBe(true);
   });
 
+  it('does not pair unrelated facade roles within a joined mixed-elevation mesh', () => {
+    const root = new THREE.Group();
+    const nearFloor = new THREE.MeshStandardMaterial();
+    nearFloor.name = 'MAT_Sheet_Near_Floor';
+    nearFloor.userData.facade_sheet_role = 'floor';
+    const farPodium = new THREE.MeshStandardMaterial();
+    farPodium.name = 'MAT_Sheet_Far_Podium';
+    farPodium.userData.facade_sheet_role = 'podium';
+    root.add(new THREE.Mesh(new THREE.BoxGeometry(), [nearFloor, farPodium]));
+
+    setArchitecturalGlazingLod(root, 'far');
+
+    expect(nearFloor.visible).toBe(true);
+    expect(farPodium.visible).toBe(true);
+
+    setArchitecturalGlazingLod(root, 'near');
+
+    expect(nearFloor.visible).toBe(true);
+    expect(farPodium.visible).toBe(true);
+  });
+
+  it('switches only a matching facade role on a mixed material mesh', () => {
+    const root = new THREE.Group();
+    const farFloor = new THREE.MeshStandardMaterial();
+    farFloor.name = 'MAT_Sheet_Far_Floor';
+    farFloor.userData.facade_sheet_role = 'floor';
+    const nearFloor = new THREE.MeshStandardMaterial();
+    nearFloor.name = 'MAT_Sheet_Near_Floor';
+    nearFloor.userData.facade_sheet_role = 'floor';
+    const farCrown = new THREE.MeshStandardMaterial();
+    farCrown.name = 'MAT_Sheet_Far_Crown';
+    farCrown.userData.facade_sheet_role = 'crown';
+    root.add(new THREE.Mesh(
+      new THREE.BoxGeometry(),
+      [farFloor, nearFloor, farCrown],
+    ));
+
+    setArchitecturalGlazingLod(root, 'near');
+
+    expect(farFloor.visible).toBe(false);
+    expect(nearFloor.visible).toBe(true);
+    expect(farCrown.visible).toBe(true);
+
+    setArchitecturalGlazingLod(root, 'far');
+
+    expect(farFloor.visible).toBe(true);
+    expect(nearFloor.visible).toBe(false);
+    expect(farCrown.visible).toBe(true);
+  });
+
+  it('does not let a facade sheet on another mesh suppress a near-only elevation', () => {
+    const root = new THREE.Group();
+    const nearNorth = new THREE.MeshStandardMaterial();
+    nearNorth.name = 'MAT_Sheet_Near_Floor';
+    nearNorth.userData.facade_sheet_role = 'floor';
+    const northSash = new THREE.MeshStandardMaterial();
+    northSash.name = 'MAT_GlazingFrame_North';
+    northSash.userData.glazing_lod = 'near';
+    const farSouth = new THREE.MeshStandardMaterial();
+    farSouth.name = 'MAT_Sheet_Far_Floor';
+    farSouth.userData.facade_sheet_role = 'floor';
+    const north = new THREE.Mesh(new THREE.BoxGeometry(), [nearNorth, northSash]);
+    north.name = 'NorthElevation';
+    const south = new THREE.Mesh(new THREE.BoxGeometry(), farSouth);
+    south.name = 'SouthElevation';
+    root.add(north, south);
+
+    setArchitecturalGlazingLod(root, 'far');
+
+    expect(nearNorth.visible).toBe(true);
+    expect(northSash.visible).toBe(false);
+    expect(farSouth.visible).toBe(true);
+  });
+
   it('keeps wrapped side and rear elevations visible while the near front sheet is active', () => {
     const root = new THREE.Group();
     const farFront = new THREE.MeshStandardMaterial();
@@ -187,8 +305,7 @@ describe('prepareArchitecturalClone', () => {
     wrappedSide.name = 'MAT_Sheet_Wrapped_Floor_Right';
     wrappedSide.userData.glazing_lod = 'always';
     root.add(
-      new THREE.Mesh(new THREE.PlaneGeometry(), farFront),
-      new THREE.Mesh(new THREE.PlaneGeometry(), nearFront),
+      new THREE.Mesh(new THREE.PlaneGeometry(), [farFront, nearFront]),
       new THREE.Mesh(new THREE.PlaneGeometry(), wrappedSide),
     );
 

@@ -328,6 +328,7 @@ function LegoStackInstance({
         const cloned = prepareArchitecturalClone(scene, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
+          ambientOcclusion: 'disable',
         });
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,

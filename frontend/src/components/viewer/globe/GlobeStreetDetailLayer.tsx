@@ -27,21 +27,29 @@ import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
-  preferLowerGroundAnchor,
   resolvePublicRealmGroundAnchor,
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import { computeFootprintFrame } from './buildingPlacement';
 import {
   buildCurbBandGeometry,
+  applyTerrainPlaneToStreetGeometry,
   buildAccessibleFourWayIntersectionGeometry,
   buildDashGeometry,
   buildOffsetCurbGeometry,
   buildRibbonBandGeometry,
   buildRoundaboutGeometry,
   densifyPolyline,
+  stationNormals,
   type LocalPt,
+  type StreetStationTerrain,
 } from './streetMesh3D';
+import {
+  fitTerrainContactPlane,
+  resolveTerrainContactElevation,
+  samplePlaneOffset,
+  type TerrainContactSample,
+} from './terrainContactProfile';
 import { STREET_DETAIL_3D } from '@/data/streetGeometryParams';
 import {
   resolvePilotStreetSectionProfile,
@@ -54,6 +62,8 @@ import {
 import {
   PUBLIC_REALM_DECAL_DEPTH,
   PUBLIC_REALM_DETAIL_DEPTH,
+  PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
+  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
 } from './publicRealmDepthPolicy';
 import {
   GlobeLandscapeBenchStand,
@@ -65,13 +75,21 @@ import {
 } from './streetGraphIntersections';
 import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
-import { buildStreetFamilyFixturePlacements } from './streetFamilyFurniture';
+import {
+  buildStreetFamilyFixturePlacements,
+  buildWoonerfPlanterPlacements,
+} from './streetFamilyFurniture';
 import { GlobeStreetLightInstances } from './GlobeStreetLightInstances';
+import { GlobeStreetMicrodetailInstances } from './GlobeStreetMicrodetailInstances';
+import { GlobeIntersectionSignalInstances } from './GlobeIntersectionSignalInstances';
+import { resolveFourWayIntersectionControl } from './streetIntersectionControlPolicy';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
-const STATIONS_PER_BATCH = 12;
+// Three cross-section rays (left/centre/right) per station. Four stations keep
+// the previous 12-ray frame budget while adding real cross-slope contact.
+const STATIONS_PER_BATCH = 4;
 // Re-sample stations that missed (tile not yet streamed) up to this many
 // passes before freezing — early rays against coarse LOD tiles miss a lot.
 const MAX_SAMPLE_PASSES = 3;
@@ -119,9 +137,13 @@ function StreetRibbonDetail({
   const frameCountRef = useRef(streetTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL));
   const attemptsRef = useRef(0);
   const nextStationRef = useRef(0);
-  const stationZRef = useRef<number[] | null>(null);
+  const rawTerrainRef = useRef<Array<{
+    center: number | null;
+    left: number | null;
+    right: number | null;
+  }> | null>(null);
   const frozenRef = useRef(false);
-  const [stationZ, setStationZ] = useState<number[] | null>(null);
+  const [stationTerrain, setStationTerrain] = useState<StreetStationTerrain[] | null>(null);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
     [zone.properties],
@@ -147,6 +169,7 @@ function StreetRibbonDetail({
       y: (c[1] - lat) * METERS_PER_DEG_LAT,
     }));
     const densified = densifyPolyline(localPts, STREET_DETAIL_3D.stationStep_m);
+    const normals = stationNormals(densified);
     const back = densified.map((p) => [
       lng + p.x / mPerLon,
       lat + p.y / METERS_PER_DEG_LAT,
@@ -155,7 +178,7 @@ function StreetRibbonDetail({
       ? (sectionProfile.targetRowM ?? sectionProfile.rowM) / 2
       : effectiveRoadWidth(zone.properties) / 2;
     return {
-      centerLngLat: { local: densified, lngLat: back },
+      centerLngLat: { local: densified, lngLat: back, normals },
       centroid: { lng, lat },
       halfWidth: resolvedHalfWidth,
       sectionScale: sectionProfile?.metricWidthLocked
@@ -180,9 +203,9 @@ function StreetRibbonDetail({
     attemptsRef.current = 0;
     nextStationRef.current = 0;
     passRef.current = 0;
-    stationZRef.current = null;
+    rawTerrainRef.current = null;
     hitFlagsRef.current = null;
-    setStationZ(null);
+    setStationTerrain(null);
     setSampledTerrain(null);
   }, [centerLngLat]);
 
@@ -191,7 +214,7 @@ function StreetRibbonDetail({
   // consecutive-frame sampling right after mount rays against coarse LOD
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
-    if (frozenRef.current || !centerLngLat) return;
+    if (frozenRef.current || !centerLngLat || !centroid) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     const tilesGroup = tiles?.group;
@@ -225,28 +248,42 @@ function StreetRibbonDetail({
     // (state is set ONCE at freeze so geometry rebuilds once).
     const anchor = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
     const n = centerLngLat.lngLat.length;
-    if (!stationZRef.current || stationZRef.current.length !== n) {
-      stationZRef.current = new Array<number>(n).fill(0);
+    if (!rawTerrainRef.current || rawTerrainRef.current.length !== n) {
+      rawTerrainRef.current = Array.from({ length: n }, () => ({
+        center: null,
+        left: null,
+        right: null,
+      }));
       hitFlagsRef.current = new Array<boolean>(n).fill(false);
       nextStationRef.current = 0;
       passRef.current = 0;
     }
-    const zs = stationZRef.current;
+    const rawTerrain = rawTerrainRef.current;
     const hits = hitFlagsRef.current!;
+    const mPerLon = metersPerDegLon(centroid.lat);
     let i = nextStationRef.current;
     let processed = 0;
     while (i < n && processed < STATIONS_PER_BATCH) {
       if (!hits[i]) {
-        const [lng, lat] = centerLngLat.lngLat[i];
-        const sampled = raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current);
-        const groundCandidate = preferLowerGroundAnchor(sampled, anchor, 4);
-        if (
-          groundCandidate !== null
-          && isPlausibleTerrainAnchor(groundCandidate, anchor)
-        ) {
-          zs[i] = groundCandidate - anchor;
-          hits[i] = true;
-        }
+        const point = centerLngLat.local[i];
+        const normal = centerLngLat.normals[i];
+        const probeAt = (offsetM: number): number | null => {
+          const lng = centroid.lng + (point.x + normal.x * offsetM) / mPerLon;
+          const lat = centroid.lat + (point.y + normal.y * offsetM) / METERS_PER_DEG_LAT;
+          const sampled = raycastTerrainHeightAtLatLng(
+            lng,
+            lat,
+            tilesGroup,
+            raycasterRef.current,
+          );
+          return isPlausibleTerrainAnchor(sampled, anchor) ? sampled : null;
+        };
+        rawTerrain[i] = {
+          center: probeAt(0),
+          left: probeAt(halfWidth),
+          right: probeAt(-halfWidth),
+        };
+        hits[i] = Object.values(rawTerrain[i]).some(Number.isFinite);
         processed++;
       }
       i++;
@@ -259,14 +296,50 @@ function StreetRibbonDetail({
         nextStationRef.current = 0;
         return;
       }
+      const fitSamples: TerrainContactSample[] = [];
+      rawTerrain.forEach((sample, stationIndex) => {
+        const point = centerLngLat.local[stationIndex];
+        const normal = centerLngLat.normals[stationIndex];
+        ([
+          [0, sample.center],
+          [halfWidth, sample.left],
+          [-halfWidth, sample.right],
+        ] as const).forEach(([offsetM, elevation]) => {
+          if (!Number.isFinite(elevation)) return;
+          fitSamples.push({
+            x: point.x + normal.x * offsetM,
+            y: point.y + normal.y * offsetM,
+            z: elevation as number,
+          });
+        });
+      });
+      const plane = fitTerrainContactPlane(fitSamples, {
+        fallbackElevationMeters: anchor,
+        outlierToleranceMeters: 1.5,
+      });
+      const profile = rawTerrain.map((sample, stationIndex): StreetStationTerrain => {
+        const point = centerLngLat.local[stationIndex];
+        const normal = centerLngLat.normals[stationIndex];
+        const elevationAt = (offsetM: number, sampled: number | null): number => {
+          const x = point.x + normal.x * offsetM;
+          const y = point.y + normal.y * offsetM;
+          return (resolveTerrainContactElevation(plane, sampled, x, y) ?? anchor) - anchor;
+        };
+        return {
+          centerZ: elevationAt(0, sample.center),
+          leftZ: elevationAt(halfWidth, sample.left),
+          rightZ: elevationAt(-halfWidth, sample.right),
+          halfWidthM: halfWidth,
+        };
+      });
       frozenRef.current = true;
-      setStationZ(zs.slice());
+      setStationTerrain(profile);
     }
   });
 
   const geometries = useMemo(() => {
     if (!centerLngLat) return null;
-    const zs = stationZ ?? undefined;
+    const zs = stationTerrain ?? undefined;
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
     const connectedIntersectionNodes = intersectionNodes.filter((node) => node.zoneIds.includes(zone.id));
     const curbRampClearanceMask = centerLngLat.local.map((point) => (
@@ -304,7 +377,7 @@ function StreetRibbonDetail({
                 dashLength_m: 3,
                 dashGap_m: 5,
                 dashWidth_m: marking.widthM * sectionScale,
-                dashLift_m: 0.17,
+                dashLift_m: PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
               },
               zs,
               marking.offsetM * sectionScale,
@@ -313,7 +386,7 @@ function StreetRibbonDetail({
               centerLngLat.local,
               (marking.offsetM - marking.widthM / 2) * sectionScale,
               (marking.offsetM + marking.widthM / 2) * sectionScale,
-              0.17,
+              PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
               zs,
             ),
         }))
@@ -335,42 +408,12 @@ function StreetRibbonDetail({
       bands,
       markings,
     };
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationZ, zone.id]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id]);
 
   const woonerfPlanters = useMemo(() => {
     if (!centerLngLat || !sectionProfile?.archetypeId.includes('woonerf')) return [];
-    const points = centerLngLat.local;
-    const placements: Array<{
-      x: number;
-      y: number;
-      centerX: number;
-      centerY: number;
-      z: number;
-      rotation: number;
-    }> = [];
-    // Alternate traffic-calming planters along the flush shared surface. Keep
-    // the first and last stations clear so the connection reads as an entry.
-    for (let index = 2; index < points.length - 2; index += 3) {
-      const previous = points[index - 1];
-      const next = points[index + 1];
-      const dx = next.x - previous.x;
-      const dy = next.y - previous.y;
-      const length = Math.hypot(dx, dy) || 1;
-      const normalX = -dy / length;
-      const normalY = dx / length;
-      const side = placements.length % 2 === 0 ? -1 : 1;
-      const offset = Math.max(0.8, halfWidth * 0.72) * side;
-      placements.push({
-        x: points[index].x + normalX * offset,
-        y: points[index].y + normalY * offset,
-        centerX: points[index].x,
-        centerY: points[index].y,
-        z: stationZ?.[index] ?? 0,
-        rotation: Math.atan2(dy, dx),
-      });
-    }
-    return placements;
-  }, [centerLngLat, halfWidth, sectionProfile, stationZ]);
+    return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, stationTerrain);
+  }, [centerLngLat, halfWidth, sectionProfile, stationTerrain]);
 
   const woonerfTrees = useMemo(
     () => woonerfPlanters.map((placement, index) => ({
@@ -403,7 +446,7 @@ function StreetRibbonDetail({
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
     return buildStreetFamilyFixturePlacements({
       points: centerLngLat?.local ?? [],
-      stationZ,
+      stationZ: stationTerrain,
       profile: sectionProfile,
       sectionScale,
       enabled: renderFamilyFurniture,
@@ -423,7 +466,7 @@ function StreetRibbonDetail({
     renderFamilyFurniture,
     sectionProfile,
     sectionScale,
-    stationZ,
+    stationTerrain,
     zone.id,
   ]);
 
@@ -531,10 +574,15 @@ function StreetRibbonDetail({
         metalColor={sectionProfile?.appearance?.palette.fixtureMetal ?? '#30383a'}
         renderOrder={RENDER_ORDER_FURNITURE}
       />
+      <GlobeStreetMicrodetailInstances
+        fixtures={familyFixtures}
+        fixtureMetalColor={sectionProfile?.appearance?.palette.fixtureMetal ?? '#30383a'}
+        renderOrder={RENDER_ORDER_FURNITURE}
+      />
       {woonerfPlanters.map((placement, index) => (
         <group key={`woonerf-planter-${index}`}>
           <mesh
-            position={[placement.centerX, placement.centerY, placement.z + 0.17]}
+            position={[placement.centerX, placement.centerY, placement.centerZ + 0.17]}
             rotation={[0, 0, placement.rotation]}
             renderOrder={RENDER_ORDER_FURNITURE}
           >
@@ -595,6 +643,7 @@ function RoundaboutDetail({
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
+  const [terrainPlane, setTerrainPlane] = useState<ReturnType<typeof fitTerrainContactPlane>>(null);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
     [zone.properties],
@@ -603,11 +652,30 @@ function RoundaboutDetail({
     ?? STREET_APPEARANCE_KITS.classic_tree_lined_v1;
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
+  const storedTerrain = zoneStoredTerrain(zone);
+  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
     if (!frame) return null;
     const inscribed = Math.min(frame.longDim, frame.shortDim) / 2;
-    return buildRoundaboutGeometry(inscribed, frame.bearingRad);
-  }, [frame]);
+    const result = buildRoundaboutGeometry(inscribed, frame.bearingRad);
+    if (!result || !terrainPlane) return result;
+    for (const item of [
+      result.ring,
+      result.apron,
+      result.island,
+      result.splitters,
+      result.approachMarkings,
+    ]) {
+      applyTerrainPlaneToStreetGeometry(
+        item,
+        terrainPlane,
+        terrain,
+        frame.rectCenterLocal[0],
+        frame.rectCenterLocal[1],
+      );
+    }
+    return result;
+  }, [frame, terrain, terrainPlane]);
 
   useEffect(
     () => () => {
@@ -616,6 +684,7 @@ function RoundaboutDetail({
       geometry.apron.dispose();
       geometry.island.dispose();
       geometry.splitters.dispose();
+      geometry.approachMarkings.dispose();
     },
     [geometry],
   );
@@ -625,9 +694,8 @@ function RoundaboutDetail({
     frozenRef.current = false;
     attemptsRef.current = 0;
     setSampledTerrain(null);
+    setTerrainPlane(null);
   }, [frame]);
-
-  const storedTerrain = zoneStoredTerrain(zone);
 
   useFrame(() => {
     if (frozenRef.current || !frame) return;
@@ -660,13 +728,33 @@ function RoundaboutDetail({
       groundCandidate !== null
       && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
     ) {
+      const mPerLon = metersPerDegLon(frame.centroidLat);
+      const contactSamples: TerrainContactSample[] = probes.flatMap(([lng, lat], index) => (
+        isPlausibleTerrainAnchor(samples[index], groundCandidate)
+          ? [{
+            x: (lng - frame.centroidLng) * mPerLon,
+            y: (lat - frame.centroidLat) * METERS_PER_DEG_LAT,
+            z: samples[index] as number,
+          }]
+          : []
+      ));
+      setTerrainPlane(fitTerrainContactPlane(contactSamples, {
+        fallbackElevationMeters: groundCandidate,
+        outlierToleranceMeters: 1.5,
+      }));
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
   });
 
   if (!frame || !geometry) return null;
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const roundaboutTerrainZ = (x: number, y: number): number => terrainPlane
+    ? terrainPlane.originZ + samplePlaneOffset(
+      terrainPlane,
+      x + frame.rectCenterLocal[0],
+      y + frame.rectCenterLocal[1],
+    ) - terrain
+    : 0;
 
   return (
     <EastNorthUpFrame
@@ -701,11 +789,19 @@ function RoundaboutDetail({
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
           <meshStandardMaterial color={appearance.palette.planting ?? ISLAND_COLOR} roughness={0.98} metalness={0} />
         </mesh>
+        <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
+          <meshBasicMaterial
+            color={appearance.palette.marking}
+            depthTest={PUBLIC_REALM_DECAL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DECAL_DEPTH.depthWrite}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
         <GlobeLandscapeTreeStand
           placements={[
-            { x: 0, y: 0, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.62 * geometry.scale },
-            { x: 1.8 * geometry.scale, y: -1.1 * geometry.scale, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 1.81, scale: 0.52 * geometry.scale },
-            { x: -1.5 * geometry.scale, y: 1.25 * geometry.scale, z: STREET_DETAIL_3D.islandHeight_m, yawRad: 3.29, scale: 0.55 * geometry.scale },
+            { x: 0, y: 0, z: roundaboutTerrainZ(0, 0) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.62 * geometry.scale },
+            { x: 1.8 * geometry.scale, y: -1.1 * geometry.scale, z: roundaboutTerrainZ(1.8 * geometry.scale, -1.1 * geometry.scale) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 1.81, scale: 0.52 * geometry.scale },
+            { x: -1.5 * geometry.scale, y: 1.25 * geometry.scale, z: roundaboutTerrainZ(-1.5 * geometry.scale, 1.25 * geometry.scale) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 3.29, scale: 0.55 * geometry.scale },
           ]}
           renderOrder={RENDER_ORDER_FURNITURE}
         />
@@ -729,27 +825,49 @@ function AccessibleFourWayIntersectionDetail({
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
+  const [terrainPlane, setTerrainPlane] = useState<ReturnType<typeof fitTerrainContactPlane>>(null);
   const connectedZones = useMemo(
     () => zones.filter((zone) => node.zoneIds.includes(zone.id)),
     [node.zoneIds, zones],
+  );
+  const intersectionControl = useMemo(
+    () => resolveFourWayIntersectionControl(connectedZones),
+    [connectedZones],
   );
   const storedTerrain = useMemo(() => {
     const values = connectedZones.map(zoneStoredTerrain).filter((value): value is number => value !== null);
     return values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
   }, [connectedZones]);
   const appearance = STREET_APPEARANCE_KITS[node.appearanceKitId];
-  const geometry = useMemo(() => buildAccessibleFourWayIntersectionGeometry(
-    node.axisABearingRad,
-    node.axisBBearingRad,
-    node.axisAHalfWidthM,
-    node.axisBHalfWidthM,
-  ), [node]);
+  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const geometry = useMemo(() => {
+    const result = buildAccessibleFourWayIntersectionGeometry(
+      node.axisABearingRad,
+      node.axisBBearingRad,
+      node.axisAHalfWidthM,
+      node.axisBHalfWidthM,
+    );
+    if (!result || !terrainPlane) return result;
+    for (const item of [result.crosswalks, result.curbRamps, result.tactilePads]) {
+      applyTerrainPlaneToStreetGeometry(item, terrainPlane, terrain);
+    }
+    return result;
+  }, [node, terrain, terrainPlane]);
 
   useEffect(() => {
     frozenRef.current = false;
     attemptsRef.current = 0;
     setSampledTerrain(null);
-  }, [node.id, node.latitude, node.longitude]);
+    setTerrainPlane(null);
+  }, [
+    node.id,
+    node.latitude,
+    node.longitude,
+    node.axisABearingRad,
+    node.axisBBearingRad,
+    node.axisAHalfWidthM,
+    node.axisBHalfWidthM,
+  ]);
 
   useFrame(() => {
     if (frozenRef.current) return;
@@ -762,12 +880,25 @@ function AccessibleFourWayIntersectionDetail({
     attemptsRef.current += 1;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
-    const sampled = raycastTerrainHeightAtLatLng(
-      node.longitude,
-      node.latitude,
+    const axisA = { x: Math.cos(node.axisABearingRad), y: Math.sin(node.axisABearingRad) };
+    const axisB = { x: Math.cos(node.axisBBearingRad), y: Math.sin(node.axisBBearingRad) };
+    const reachA = node.axisBHalfWidthM + 4;
+    const reachB = node.axisAHalfWidthM + 4;
+    const localProbes = [
+      { x: 0, y: 0 },
+      { x: axisA.x * reachA, y: axisA.y * reachA },
+      { x: -axisA.x * reachA, y: -axisA.y * reachA },
+      { x: axisB.x * reachB, y: axisB.y * reachB },
+      { x: -axisB.x * reachB, y: -axisB.y * reachB },
+    ];
+    const mPerLon = metersPerDegLon(node.latitude);
+    const samples = localProbes.map((probe) => raycastTerrainHeightAtLatLng(
+      node.longitude + probe.x / mPerLon,
+      node.latitude + probe.y / METERS_PER_DEG_LAT,
       tilesGroup,
       raycasterRef.current,
-    );
+    ));
+    const sampled = getObjectFilteredTerrainHeight(samples, storedTerrain);
     const groundCandidate = resolvePublicRealmGroundAnchor(
       sampled,
       storedTerrain,
@@ -778,6 +909,15 @@ function AccessibleFourWayIntersectionDetail({
       groundCandidate !== null
       && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
     ) {
+      const contactSamples: TerrainContactSample[] = localProbes.flatMap((probe, index) => (
+        isPlausibleTerrainAnchor(samples[index], groundCandidate)
+          ? [{ ...probe, z: samples[index] as number }]
+          : []
+      ));
+      setTerrainPlane(fitTerrainContactPlane(contactSamples, {
+        fallbackElevationMeters: groundCandidate,
+        outlierToleranceMeters: 1.5,
+      }));
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
@@ -790,7 +930,6 @@ function AccessibleFourWayIntersectionDetail({
   }, [geometry]);
 
   if (!geometry) return null;
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   return (
     <EastNorthUpFrame
       lat={node.latitude * DEG_TO_RAD}
@@ -816,6 +955,15 @@ function AccessibleFourWayIntersectionDetail({
       <mesh geometry={geometry.tactilePads} renderOrder={RENDER_ORDER_RAISED + 2} frustumCulled={false}>
         <meshStandardMaterial color={appearance.palette.tactile} roughness={0.82} metalness={0} />
       </mesh>
+      {intersectionControl === 'traffic_signal' ? (
+        <GlobeIntersectionSignalInstances
+          node={node}
+          metalColor={appearance.palette.fixtureMetal}
+          renderOrder={RENDER_ORDER_FURNITURE}
+          terrainPlane={terrainPlane}
+          frameElevation={terrain}
+        />
+      ) : null}
     </EastNorthUpFrame>
   );
 }

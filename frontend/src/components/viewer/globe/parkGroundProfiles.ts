@@ -754,11 +754,25 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
     plantingStructure: 'reservoir_perimeter',
     guides: [
       { kind: 'ellipse', x: 0.47, y: 0.52, width: 0.58, height: 0.42, color: '#416f79', strokeColor: '#889a69', strokeWidthM: 3.0 },
+      { kind: 'rectangle', x: 0.15, y: 0.52, width: 0.07, height: 0.13, color: '#858984', strokeColor: '#656b68', strokeWidthM: 0.5 },
       { kind: 'rectangle', x: 0.79, y: 0.52, width: 0.06, height: 0.10, color: '#92918a', strokeColor: '#65655f', strokeWidthM: 0.5 },
+      {
+        kind: 'polyline',
+        x: 0.88,
+        y: 0.52,
+        width: 0.18,
+        height: 0,
+        points: [[0.79, 0.52], [0.97, 0.52]],
+        color: '#a99a7c',
+        strokeColor: '#786d5d',
+        strokeWidthM: 2.4,
+      },
     ],
     guideLegend: [
       'the BLUE-GREEN ellipse is the exact variable-level open-water pool; its green rim is the wet-meadow and sedge shelf',
+      'the WEST GREY rectangle is the exact inlet and riprap energy-dissipation clear zone; keep planting and furnishings outside it',
       'the GREY rectangle is the exact outlet/weir service pad and must remain clear and connected to dry maintenance access',
+      'the TAN line is the exact dry gravel maintenance route from the outlet/weir pad to the parcel edge; keep its full width clear',
     ],
     includeCentralPlaza: false,
     renderSummary:
@@ -1280,6 +1294,8 @@ type ParkProfileZone = Pick<SiteZone, 'properties'> & Partial<Pick<SiteZone, 'zo
 
 export type ParkSpecialtyStructureKind =
   | 'civic_fountain_assembly'
+  | 'greenway_edge_assembly'
+  | 'stormwater_control_assembly'
   | 'japanese_garden_bridge'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
@@ -1366,6 +1382,16 @@ export function resolveParkSpecialtyStructureKind(
     && legoContract.supported
     && legoContract.familyId === 'park_civic_plaza'
   ) return 'civic_fountain_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_linear_greenway'
+  ) return 'greenway_edge_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_water_ecology'
+  ) return 'stormwater_control_assembly';
   const archetypeId = resolveParkGroundProfile(zone).archetypeId;
   if (archetypeId.startsWith('japanese_garden')) return 'japanese_garden_bridge';
   if (archetypeId.startsWith('sports_field_complex')) return 'sports_field_furniture';

@@ -104,6 +104,14 @@ contact shadow and grazing-angle depth.
 
 At city distance, the semantic glass mask and baked facade replace most of that geometry. Visible windows default to subtly occupied warm interiors; uniform dark-blue glass is avoided.
 
+Runtime LOD switching is fail-safe per joined facade mesh and semantic band.
+Only a matching near/far pair may replace one another. A far sheet on an
+unrelated podium, crown or elevation must never hide a near-only authored
+facade elsewhere in the GLB. When one complement is absent, keep the authored
+facade sheet visible at both ranges and cull only explicitly near-only physical
+frames, glazing and interiors. This is preferable to exposing an untextured or
+near-black structural core during an aerial orbit.
+
 For fixed render-locked curtain walls, the floor-band crop must retain the complete audited bay rhythm. A one-bay strip is appropriate only when the LEGO assembler explicitly tiles that module. Stretching one office bay across a full canonical elevation destroys the relationship between interior columns and the physical external frame. Derive a separate side crop when the side elevation has fewer bays than the front.
 
 Before reusing a glass-office massing graph, compare its width, depth, floor grid, structural bay count and roof termination to every variant reference. A structurally valid inherited tower profile is still wrong when the catalogue shows a compact infill mid-rise; reference proportions take precedence over prior showcase dimensions.

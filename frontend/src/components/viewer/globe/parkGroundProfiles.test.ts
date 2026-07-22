@@ -244,7 +244,7 @@ describe('park ground pilot profiles', () => {
     expect(parkGroundSourceSignature(candidate)).toMatch(/^pg7-/);
   });
 
-  it('binds the exact civic family to its fountain while water ecology stays ground-led', () => {
+  it('binds civic, greenway, and water families to their executable signature assemblies', () => {
     const civic = zone('formal_civic_plaza');
     civic.properties = {
       ...civic.properties,
@@ -273,8 +273,26 @@ describe('park ground pilot profiles', () => {
         planting_structure: 'reservoir_perimeter',
       }),
     };
-    expect(resolveParkSpecialtyStructureKind(water)).toBeNull();
-    expect(resolveParkGroundProfile(water).archetypeId).toBe('stormwater_retention_pond');
+    expect(resolveParkSpecialtyStructureKind(water)).toBe('stormwater_control_assembly');
+    const waterProfile = resolveParkGroundProfile(water);
+    expect(waterProfile.archetypeId).toBe('stormwater_retention_pond');
+    expect(waterProfile.guides.map(({ kind }) => kind))
+      .toEqual(['ellipse', 'rectangle', 'rectangle', 'polyline']);
+    expect(waterProfile.guideLegend.join(' ')).toContain('maintenance route');
+
+    const greenway = zone('linear_park_greenway');
+    greenway.properties = {
+      ...greenway.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_linear_greenway',
+        family_version: 1,
+        archetype_id: 'linear_park_greenway',
+        variant_id: 'linear_park_greenway_v0',
+        appearance_kit_id: 'rail_trail_v1',
+        planting_structure: 'naturalistic_grove',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(greenway)).toBe('greenway_edge_assembly');
   });
 
   it('compiles every open-space catalog entry and variant to an explicit 3D ground contract', () => {
