@@ -114,7 +114,7 @@ const planFixture: LegoAssemblyPlan = {
   fit: { scale_x: 1, scale_y: 1, score: 0.87 },
 };
 
-function make422(detail: string) {
+function make422(detail: unknown) {
   return Object.assign(new Error('Unprocessable'), {
     response: { status: 422, data: { detail } },
   });
@@ -184,6 +184,12 @@ describe('LegoBuilderPanel', () => {
               status: 'compiled',
               compiled_at: '2026-07-17T01:00:00Z',
               counts: { building: 1, park: 2, street: 1 },
+              residual_landscape: {
+                boundary_count: 1,
+                derived_boundary_count: 0,
+                area_sqm: 1234,
+                placement_count: 3,
+              },
               items: [],
             },
           })
@@ -223,17 +229,21 @@ describe('LegoBuilderPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
     await waitFor(() => expect(screen.getByText(
-      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers',
+      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers; landscaped 1,234 m² of residual site with 3 trees',
     )).toBeInTheDocument());
 
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
         items: expect.arrayContaining([
-          expect.objectContaining({ zone_id: 'z-building', recipe: expect.any(Object) }),
-          { zone_id: 'z-park' },
-          { zone_id: 'z-street' },
-          { zone_id: 'z-plaza' },
+          expect.objectContaining({
+            zone_id: 'z-building',
+            source_updated_at: '2026-07-13T00:00:00Z',
+            recipe: expect.any(Object),
+          }),
+          { zone_id: 'z-park', source_updated_at: '2026-07-13T00:00:00Z' },
+          { zone_id: 'z-street', source_updated_at: '2026-07-13T00:00:00Z' },
+          { zone_id: 'z-plaza', source_updated_at: '2026-07-13T00:00:00Z' },
         ]),
       },
     );
@@ -273,6 +283,36 @@ describe('LegoBuilderPanel', () => {
     expect(pre?.textContent).toContain('import_manifest.py build/archetypes/parkside_terraces');
     expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(2);
     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+  });
+
+  it('does not offer family-generation commands for an installed but incompatible family', async () => {
+    apiPost.mockRejectedValue(make422({
+      code: 'family_incompatible',
+      message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
+      supported_families: [{
+        family: 'industrial-brick-brewery-v1-renderlocked',
+        widths_m: [40],
+        depths_m: [26],
+        min_floors: 2,
+        max_floors: 5,
+      }],
+    }));
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({
+        id: 'z-incompatible',
+        properties: {
+          development_archetype_id: 'industrial_brick_brewery',
+          floors: 6,
+        },
+      }),
+    ]} onClose={vi.fn()} />);
+
+    expect(await screen.findByText(/Industrial Brick Brewery supports 40 × 26 m and 2–5 floors/)).toBeInTheDocument();
+    expect(screen.getByText(/No family 0/)).toBeInTheDocument();
+    expect(screen.getByText(/Failed 1/)).toBeInTheDocument();
+    expect(document.querySelector('pre')).toBeNull();
+    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
   });
 
   it('builds a grounded exact-footprint mass for a building whose detailed family is pending', async () => {
@@ -320,8 +360,8 @@ describe('LegoBuilderPanel', () => {
     const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
     expect(compileCall?.[1]).toEqual({
       items: expect.arrayContaining([
-        { zone_id: 'z-missing' },
-        { zone_id: 'z-park' },
+        { zone_id: 'z-missing', source_updated_at: '2026-07-13T00:00:00Z' },
+        { zone_id: 'z-park', source_updated_at: '2026-07-13T00:00:00Z' },
       ]),
     });
   });

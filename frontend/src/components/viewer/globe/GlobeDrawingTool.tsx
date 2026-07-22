@@ -22,10 +22,10 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
+import { isWithinPolygonCloseRadius } from './drawingGeometry';
 
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
-const CONNECT_VERTEX_RADIUS_METERS = 30;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 function distanceMeters(a: number[], b: number[]): number {
@@ -98,7 +98,7 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
       return;
     }
 
-    setCenterNearStartVertex(distanceMeters(center, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
+    setCenterNearStartVertex(isWithinPolygonCloseRadius(distanceMeters(center, pts[0])));
   }, [activeSitePlannerTool, getCanvasCenterLatLng, linear]);
 
   const addDrawingPoint = useCallback((lngLat: [number, number]) => {

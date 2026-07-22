@@ -1,4 +1,6 @@
-import type { SiteZone, SiteZoneProperties } from '@/types';
+import type { Building, SiteZone, SiteZoneProperties } from '@/types';
+import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
+import { validateStreetRecipeProperties } from '@/components/viewer/globe/streetLegoContract';
 
 /** The three pieces of a master plan that can be compiled into the globe. */
 export type Community3DKind = 'building' | 'park' | 'street';
@@ -16,6 +18,72 @@ export interface Community3DMeta {
   kind: Community3DKind;
   generator: Community3DGenerator;
   compiled_at: string;
+  /** Server-authored fingerprint of geometry and all authored 3D inputs. */
+  source_hash?: string;
+  /** Server-authored fingerprint of the exact mounted kit/model content. */
+  representation_hash?: string;
+}
+
+export interface Community3DCaptureClaim {
+  zone_id: string;
+  source_hash: string;
+  representation_hash: string;
+  building_id?: string;
+}
+
+export interface Community3DBuildingRepresentation {
+  schema_version: 1;
+  zone_id: string;
+  generator: Community3DGenerator;
+  representation_hash: string;
+  compiled_at: string;
+}
+
+/**
+ * True only when a mounted Building is the exact representation owned by the
+ * current persisted source zone. Older model-only records remain useful
+ * project context, but must not inherit a paid Direct 3D proposal role.
+ */
+export function isCurrentCommunity3DBuildingRepresentation(
+  zone: SiteZone,
+  building: Building,
+): boolean {
+  if (
+    resolveCommunity3DKind(zone) !== 'building'
+    || zone.building_id !== building.id
+    || !hasCommunity3DSourceFingerprint(zone)
+  ) return false;
+
+  const meta = getCommunity3DMeta(zone);
+  const marker = building.specifications?.community3DRepresentation as
+    | Community3DBuildingRepresentation
+    | undefined;
+  return Boolean(
+    meta
+    && marker
+    && marker.schema_version === 1
+    && marker.zone_id === zone.id
+    && marker.generator === meta.generator
+    && marker.representation_hash === meta.representation_hash
+    && marker.compiled_at === meta.compiled_at,
+  );
+}
+
+/** Building IDs safe to classify as editable Direct 3D proposal content. */
+export function getCurrentCommunity3DBuildingIds(
+  zones: SiteZone[],
+  buildings: Building[],
+): Set<string> {
+  const buildingsById = new Map(buildings.map((building) => [building.id, building]));
+  const ids = new Set<string>();
+  for (const zone of zones) {
+    if (!zone.building_id) continue;
+    const building = buildingsById.get(zone.building_id);
+    if (building && isCurrentCommunity3DBuildingRepresentation(zone, building)) {
+      ids.add(building.id);
+    }
+  }
+  return ids;
 }
 
 const BUILDING_ZONE_TYPES = new Set([
@@ -87,6 +155,83 @@ export function isCommunity3DCompiled(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   const meta = getCommunity3DMeta(zone);
   return Boolean(kind && meta?.kind === kind);
+}
+
+/** Paid Direct 3D requires the stronger post-fingerprint compile contract.
+ * Legacy compiled scenes remain visible but must be rebuilt once before they
+ * can spend render credits. */
+export function hasCommunity3DSourceFingerprint(zone: SiteZone): boolean {
+  const meta = getCommunity3DMeta(zone);
+  return Boolean(
+    meta?.source_hash
+    && /^[a-f0-9]{64}$/i.test(meta.source_hash)
+    && meta.representation_hash
+    && /^[a-f0-9]{64}$/i.test(meta.representation_hash),
+  );
+}
+
+/**
+ * AI-authored public realm may claim a paid Direct capture only when the
+ * browser understands the exact nested family contract it is about to mount.
+ * Manual/legacy public realm retains its historical compiled compatibility,
+ * but a malformed nested recipe never falls back silently.
+ */
+export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
+  const kind = resolveCommunity3DKind(zone);
+  if (kind !== 'park' && kind !== 'street') return true;
+  const props = propertiesOf(zone);
+  const nested = props.public_realm_lego;
+  const isAiPlan = typeof props._plan_scenario === 'string'
+    && props._plan_scenario.trim().length > 0;
+  if (!nested) return !isAiPlan;
+  if (kind === 'park') {
+    const contract = resolveParkLegoContract(zone);
+    return contract?.source === 'public_realm_lego' && contract.supported;
+  }
+  return validateStreetRecipeProperties(props).valid;
+}
+
+/** Bind a Direct capture to the exact compiled zone/model snapshot visible in
+ * this browser render. The server recomputes both hashes under the project lock
+ * before reserving credits, so a stale tab fails without spend. */
+export function getCommunity3DCaptureClaims(
+  zones: SiteZone[],
+  buildings: Building[],
+): Community3DCaptureClaim[] | null {
+  const communityZones = zones.filter((zone) => resolveCommunity3DKind(zone) !== null);
+  const buildingsById = new Map(buildings.map((building) => [building.id, building]));
+  const claims: Community3DCaptureClaim[] = [];
+  for (const zone of communityZones) {
+    const kind = resolveCommunity3DKind(zone);
+    const meta = getCommunity3DMeta(zone);
+    if (!kind || !hasCommunity3DSourceFingerprint(zone) || !meta) return null;
+    if (!hasExecutablePublicRealmRecipe(zone)) return null;
+    if (kind === 'building') {
+      if (!zone.building_id) return null;
+      const building = buildingsById.get(zone.building_id);
+      if (!building || !Array.isArray(building.footprint_coordinates)
+        || building.footprint_coordinates.length < 3) return null;
+      if (!isCurrentCommunity3DBuildingRepresentation(zone, building)) return null;
+
+      const hasGeneratedModel = Boolean(building.lod_urls?.['0'] ?? building.model_url);
+      const specifications = building.specifications ?? {};
+      if (
+        (meta.generator === 'lego_assembly' && typeof specifications.legoAssembly !== 'object')
+        || (
+          meta.generator === 'planned_massing'
+          && (typeof specifications.plannedMassing !== 'object' || hasGeneratedModel)
+        )
+        || (meta.generator === 'meshy' && !hasGeneratedModel)
+      ) return null;
+    }
+    claims.push({
+      zone_id: zone.id,
+      source_hash: meta.source_hash!,
+      representation_hash: meta.representation_hash!,
+      ...(kind === 'building' ? { building_id: zone.building_id } : {}),
+    });
+  }
+  return claims;
 }
 
 export type Community3DAction = 'generate' | 'complete' | 'rebuild';

@@ -10,6 +10,7 @@ import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
+  getLegoPlanningFailure,
   type LegoAssemblyPlan,
 } from './legoAssemblyApi';
 import {
@@ -138,10 +139,17 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
       const result = await legoAssemblyApi.compileCommunity([
         ...placeable.map((item) => ({
           zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
           recipe: recipeFromPlan(item),
         })),
-        ...massingOnly.map((item) => ({ zone_id: item.zone.id })),
-        ...groundToCompile.map((item) => ({ zone_id: item.zone.id })),
+        ...massingOnly.map((item) => ({
+          zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
+        })),
+        ...groundToCompile.map((item) => ({
+          zone_id: item.zone.id,
+          source_updated_at: item.zone.updated_at,
+        })),
       ]);
       setItems((prev) => prev.map((item) => {
         if (placeableIds.has(item.zone.id)) {
@@ -158,10 +166,16 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           : item
       )));
       const groundCount = result.counts.park + result.counts.street;
+      const residual = result.residual_landscape;
+      const residualSummary = residual && residual.boundary_count > 0
+        ? `; landscaped ${Math.round(residual.area_sqm).toLocaleString()} m² of residual site`
+          + ` with ${residual.placement_count} tree${residual.placement_count === 1 ? '' : 's'}`
+        : '';
       setSaveResult(
         `Built ${placeable.length} detailed building${placeable.length === 1 ? '' : 's'}, `
         + `${massingOnly.length} family-pending mass${massingOnly.length === 1 ? '' : 'es'}, and `
-        + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`,
+        + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`
+        + residualSummary,
       );
       await refetchPlacedData();
     } catch (error) {
@@ -200,6 +214,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           target_floors: item.targets.floors,
           footprint_profile: item.targets.footprint_profile,
           wing_depth_m: item.targets.wing_depth_m,
+          project_id: item.zone.project_id,
           ...legoArchetypeContextFromZone(item.zone.properties),
         }),
       8,
@@ -207,11 +222,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
     const plannedItems = base.map((item, index) => {
       const result = results[index];
       if (result.status === 'fulfilled') return { ...item, plan: result.value };
-      const status = (result.reason as { response?: { status?: number } })?.response?.status;
+      const planningFailure = getLegoPlanningFailure(result.reason);
       return {
         ...item,
-        error: getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
-        familyMissing: status === 422,
+        error: planningFailure?.message || getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
+        familyMissing: planningFailure?.code === 'family_not_found',
       };
     });
     setItems(plannedItems);

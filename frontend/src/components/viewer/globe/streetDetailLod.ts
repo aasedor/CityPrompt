@@ -2,6 +2,7 @@ import type { SiteZone } from '@/types';
 
 export const MAX_DETAILED_STREET_ZONES = 160;
 export const MAX_TREE_STREET_ZONES = 24;
+export const MAX_FURNISHED_STREET_ZONES = 80;
 
 /** Google Tiles keeps streets as authoritative engineering geometry. Mature
  * street trees are resolved by the final architectural render, where they can
@@ -14,6 +15,16 @@ export function shouldRenderLiveStreetTrees(): boolean {
 function normalizedProperty(zone: SiteZone, key: string): string {
   const props = zone.properties as Record<string, unknown> | undefined;
   return String(props?.[key] ?? '').toLowerCase().trim().replace(/-/g, '_');
+}
+
+function normalizedStreetIdentity(zone: SiteZone): string {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
+    ? props.public_realm_lego as Record<string, unknown>
+    : undefined;
+  return [props?.road_archetype_id, lego?.archetype_id, lego?.family_id]
+    .map((value) => String(value ?? '').toLowerCase().trim().replace(/-/g, '_'))
+    .join(' ');
 }
 
 /** Small deterministic hash used for stable LOD ranking and frame staggering. */
@@ -31,7 +42,7 @@ export function streetTerrainSampleOffset(zoneId: string, interval: number): num
 }
 
 function detailPriority(zone: SiteZone): number {
-  const archetype = normalizedProperty(zone, 'road_archetype_id');
+  const archetype = normalizedStreetIdentity(zone);
   const role = normalizedProperty(zone, 'street_role');
   if (archetype.includes('roundabout')) return 1000;
   if (role === 'spine' || role === 'primary' || archetype.includes('main_street')) return 900;
@@ -68,9 +79,24 @@ export function selectTreeStreetIds(
   limit = MAX_TREE_STREET_ZONES,
 ): Set<string> {
   const candidates = ranked(zones).filter((zone) => (
-    !normalizedProperty(zone, 'road_archetype_id').includes('roundabout')
-    && !normalizedProperty(zone, 'road_archetype_id').includes('laneway')
+    !normalizedStreetIdentity(zone).includes('roundabout')
+    && !normalizedStreetIdentity(zone).includes('laneway')
+    && !normalizedStreetIdentity(zone).includes('trail')
     && normalizedProperty(zone, 'street_role') !== 'lane'
+  ));
+  return new Set(candidates.slice(0, Math.max(0, limit)).map((zone) => zone.id));
+}
+
+/** Cars, lights, benches and engineered micro-detail are materially cheaper
+ * than mature canopies. Keep them on a much larger bounded set so a normal
+ * 50-road community does not lose its archetype identity after road 24. */
+export function selectFurnishedStreetIds(
+  zones: SiteZone[],
+  limit = MAX_FURNISHED_STREET_ZONES,
+): Set<string> {
+  const candidates = ranked(zones).filter((zone) => (
+    !normalizedStreetIdentity(zone).includes('roundabout')
+    && !normalizedStreetIdentity(zone).includes('trail')
   ));
   return new Set(candidates.slice(0, Math.max(0, limit)).map((zone) => zone.id));
 }

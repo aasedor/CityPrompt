@@ -15,6 +15,7 @@ import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
+import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -49,7 +50,7 @@ interface ZonePropertiesPanelProps {
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
   buildings?: Building[];
   allZones?: SiteZone[];
-  onOpenBlockEditor?: () => void;
+  onOpenBlockEditor?: (draftZone: SiteZone) => void;
 }
 
 type DevelopmentAestheticCategory = {
@@ -66,6 +67,26 @@ const customStyleKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
   p.custom_style_expanded_edited,
   p.custom_style_expansion_hash,
   p.custom_style_attachments,
+]);
+
+/** Snapshot of the catalogue identity that must be persisted as one choice. */
+const aestheticSelectionKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
+  p.development_subcategory,
+  p.development_archetype_id,
+  (p.development_selected_reference as { id?: string } | undefined)?.id,
+  p.development_selected_variant_id,
+  p.road_subcategory,
+  p.road_archetype_id,
+  (p.road_selected_reference as { id?: string } | undefined)?.id,
+  p.road_selected_variant_id,
+  p.green_space_subcategory,
+  p.green_space_archetype_id,
+  (p.green_space_selected_reference as { id?: string } | undefined)?.id,
+  p.green_space_selected_variant_id,
+  p.plaza_subcategory,
+  p.plaza_archetype_id,
+  (p.plaza_selected_reference as { id?: string } | undefined)?.id,
+  p.plaza_selected_variant_id,
 ]);
 
 type TransportModeKey = CatalogTransportModeKey;
@@ -408,6 +429,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const customStyleSaveTimerRef = useRef<number | null>(null);
   const customStyleSavePendingRef = useRef(false);
   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
+  const prevAestheticSelectionKeyRef = useRef<string | undefined>(undefined);
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
   const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
 
@@ -443,6 +465,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     // treat the restore as a user edit (it would re-commit the undone state
     // and wipe the redo stack).
     prevCustomStyleKeyRef.current = customStyleKeyOf(zone.properties || {});
+    prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(zone.properties || {});
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
@@ -524,24 +547,29 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   // Keep the ref pointing at the latest handleSave (fresh props/name closure)
   handleSaveRef.current = handleSave;
 
-  // Auto-save when the user picks a new archetype card (any zone type)
-  const prevArchetypeRef = useRef<string | undefined>(undefined);
-  useEffect(() => {
-    const currentArchetype = (props.development_subcategory as string)
-      || (props.road_subcategory as string)
-      || (props.green_space_subcategory as string)
-      || (props.plaza_subcategory as string)
-      || (props.development_archetype_id as string)
-      || (props.road_archetype_id as string)
-      || (props.green_space_archetype_id as string)
-      || (props.plaza_archetype_id as string);
+  const handleOpenBlockEditor = () => {
+    onOpenBlockEditor?.({
+      ...zone,
+      name,
+      properties: { ...props },
+    });
+  };
 
-    // Skip initial mount and zone resets — only fire when archetype actually changes
-    if (prevArchetypeRef.current !== undefined && currentArchetype && currentArchetype !== prevArchetypeRef.current) {
-      handleSave();
+  // Auto-save the complete catalogue identity (parent, reference and design
+  // variant). In particular, variant -> Automatic must save even when the
+  // parent archetype itself did not change.
+  const aestheticSelectionKey = aestheticSelectionKeyOf(props);
+  useEffect(() => {
+    // Skip initial mount and zone resets. The latest-save ref is updated during
+    // render, so this effect always persists the fully computed next props.
+    if (prevAestheticSelectionKeyRef.current === undefined) {
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
+      return;
     }
-    prevArchetypeRef.current = currentArchetype;
-  }, [props.development_subcategory, props.road_subcategory, props.green_space_subcategory, props.plaza_subcategory, props.development_archetype_id, props.road_archetype_id, props.green_space_archetype_id, props.plaza_archetype_id]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (aestheticSelectionKey === prevAestheticSelectionKeyRef.current) return;
+    prevAestheticSelectionKeyRef.current = aestheticSelectionKey;
+    handleSaveRef.current();
+  }, [aestheticSelectionKey]);
 
   // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
   useEffect(() => {
@@ -675,7 +703,17 @@ const buildAestheticSelectionProps = (
       ? selectedOption.generationTags
       : (Array.isArray(selectedOption.generationStyleInput?.generationTags) ? selectedOption.generationStyleInput?.generationTags : []);
 
-    const archetypeId = resolvedArchetype?.id || selectedOption.id;
+    const referenceArchetypeId = resolvedArchetype?.id || selectedOption.id;
+    // Public Realm LEGO compiles against the catalog's parent archetype ID
+    // (for example `main_street_complete`), while the image picker resolves a
+    // camera/lighting reference ID (for example
+    // `main_street_complete_variant_0`). Keep those identities separate so a
+    // manual road/park selection remains both compilable and visually traced.
+    // Building selection intentionally retains its existing image-qualified
+    // archetype ID contract.
+    const archetypeId = key === 'development_aesthetic'
+      ? referenceArchetypeId
+      : selectedOption.id;
     const archetypeLabel = resolvedArchetype?.label || selectedOption.label;
 
     nextProps[`${stylePrefix}_subcategory`] = selectedOption.id;
@@ -697,7 +735,7 @@ const buildAestheticSelectionProps = (
     }));
 
     nextProps[`${stylePrefix}_selected_reference`] = {
-      id: archetypeId,
+      id: referenceArchetypeId,
       label: archetypeLabel,
       imageUrl: resolvedArchetypeImage,
       imagePath: resolvedArchetype?.imagePath,
@@ -728,7 +766,7 @@ const buildAestheticSelectionProps = (
           : (baseGenerationInput.subtype || selectedOption.id),
       aestheticCategoryId: selectedOption.categoryId,
       aestheticCategoryLabel: resolvedCategoryLabel,
-      archetypeId,
+      archetypeId: referenceArchetypeId,
       archetypeLabel,
       archetypeImageUrl: resolvedArchetypeImage,
       archetypeImagePath: resolvedArchetype?.imagePath || baseGenerationInput.archetypeImagePath,
@@ -745,7 +783,7 @@ const buildAestheticSelectionProps = (
           selectedOption.id,
           selectedOption.categoryId,
           key,
-          archetypeId,
+          referenceArchetypeId,
         ].filter(Boolean) as string[],
       },
     };
@@ -875,9 +913,9 @@ const resolveOptionCategory = (
       || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined),
   );
 
-  const selectedRoadReferenceId = (props.road_archetype_id as string) || ((props.road_selected_reference as { id?: string } | undefined)?.id) || undefined;
-  const selectedGreenSpaceReferenceId = (props.green_space_archetype_id as string) || ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || undefined;
-  const selectedPlazaReferenceId = (props.plaza_archetype_id as string) || ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || undefined;
+  const selectedRoadReferenceId = ((props.road_selected_reference as { id?: string } | undefined)?.id) || (props.road_archetype_id as string) || undefined;
+  const selectedGreenSpaceReferenceId = ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || (props.green_space_archetype_id as string) || undefined;
+  const selectedPlazaReferenceId = ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || (props.plaza_archetype_id as string) || undefined;
 
   // Unified Parks / Plazas selection — reads from whichever prefix has data
   const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.plaza_aesthetic as string) || undefined;
@@ -1045,6 +1083,17 @@ const resolveOptionCategory = (
       const modeDefaults = normalizeTransportModes(selectedOption?.transportModes);
       if (modeDefaults.length > 0) {
         nextProps = applyModeDrivenRoadDefaults(nextProps, modeDefaults, (nextProps.volume as string) || undefined);
+
+        // Mode-derived defaults are only a fallback. Catalog archetypes own
+        // their engineered section dimensions (for example the 18 m Complete
+        // Main Street and 16 m Calgary Local), so restore the explicit preset
+        // after deriving generic mobility priorities. Otherwise the broad
+        // low/medium/high rules silently rewrite a selected LEGO family to an
+        // incompatible width before Community 3D compilation.
+        const catalogPreset = next ? ROADWAY_AESTHETIC_PRESETS[next] : undefined;
+        if (catalogPreset) {
+          nextProps = { ...nextProps, ...catalogPreset };
+        }
       }
 
       return nextProps;
@@ -1262,7 +1311,11 @@ const resolveOptionCategory = (
         {zone.zone_type === 'site_boundary' && (
           <>
             <SiteIntelligencePanel zone={zone} />
-            <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
+            <SiteBoundarySection
+              zone={zone}
+              allZones={allZones}
+              onOpenBlockEditor={onOpenBlockEditor ? handleOpenBlockEditor : undefined}
+            />
           </>
         )}
 
@@ -1993,7 +2046,7 @@ const resolveOptionCategory = (
           && ((['building', 'residential', 'development_area', 'development'] as string[]).includes(zone.zone_type)
             || !!props.development_archetype_id) && (
           <button
-            onClick={onOpenBlockEditor}
+            onClick={handleOpenBlockEditor}
             className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#d9ff70]"
           >
             <Box size={12} />
@@ -2167,6 +2220,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
   const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
   const [failedSiteRenderIndices, setFailedSiteRenderIndices] = useState<Set<number>>(new Set());
   const autoRenderTriggered = useRef(false);
+  const generationInFlight = useRef(false);
   const mapScreenshotsRef = useRef<{ satellite: string; withZones: string } | null>(null);
   const selectZone = useViewerStore((s) => s.selectZone);
   const mapInstance = useViewerStore((s) => s.mapInstance);
@@ -2316,49 +2370,90 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
     }
   };
 
-  const handleGenerate = async () => {
+  const handleGenerateCommunity3D = async (
+    selectedLayouts?: Record<string, LayoutOption>,
+    optionIndex = 0,
+  ) => {
     // Belt-and-braces: the button is disabled for unsaved zones, but guard the
-    // handler too — generateForBoundary UUID-validates and 422s on temp- ids.
+    // shared lightbox/history paths too because every compiler input must have
+    // a persisted UUID and a current source fingerprint.
     if (!isPersistedZoneId(zone.id)) {
       toast.error('Save the boundary first (Save Changes above) — then generate.');
       return;
     }
+    if (generationInFlight.current) return;
+    generationInFlight.current = true;
     setGenerating(true);
     try {
-      // Auto-apply any active site preview selections before generating
-      if (isSitePreviewActive) {
-        let appliedCount = 0;
-        const applyResults = await Promise.all(
-          Object.entries(siteOptions).map(async ([zoneId, options]) => {
-            if (!options[siteActiveIndex]) return null;
-            try {
-              await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
-              return zoneId;
-            } catch (e) {
-              console.warn(`Failed to apply layout for zone ${zoneId}:`, e);
-              return null;
-            }
-          })
+      const layoutEntries = Object.entries(selectedLayouts ?? {});
+      if (layoutEntries.length > 0) {
+        const invalidLayouts = layoutEntries.filter(([, layout]) => layout.buildings.length !== 1);
+        if (invalidLayouts.length > 0) {
+          const sampleZoneIds = invalidLayouts.slice(0, 3).map(([zoneId]) => zoneId).join(', ');
+          throw new Error(
+            `${invalidLayouts.length} selected preview layout${invalidLayouts.length === 1 ? '' : 's'} `
+            + 'must contain exactly one building before Community 3D can be generated. '
+            + `No preview layouts were applied.${sampleZoneIds ? ` Check zones: ${sampleZoneIds}.` : ''}`,
+          );
+        }
+        const applyResults = await Promise.allSettled(
+          layoutEntries.map(([zoneId, layout]) => (
+            siteZonesApi.applyLayout(zoneId, optionIndex, layout)
+          )),
         );
-        appliedCount = applyResults.filter(Boolean).length;
+        const failedCount = applyResults.filter((result) => result.status === 'rejected').length;
+        if (failedCount > 0) {
+          throw new Error(
+            `${failedCount} selected layout${failedCount === 1 ? '' : 's'} could not be applied. `
+            + 'Community 3D was not compiled; retry after the zones finish saving.',
+          );
+        }
         clearSitePreview();
         clearLockedLayers();
-        if (appliedCount > 0) {
-          toast.success(`Applied ${appliedCount} previewed layout${appliedCount > 1 ? 's' : ''}`);
-        }
+        toast.success(
+          `Applied ${layoutEntries.length} previewed layout${layoutEntries.length === 1 ? '' : 's'}`,
+        );
       }
 
-      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
+      const summary = await compileBoundaryCommunity3D(zone.project_id, zone.id);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+      ]);
+      const residualArea = summary.response.residual_landscape?.area_sqm ?? 0;
       toast.success(
-        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+        `Built ${summary.detailedBuildings} archetyped LEGO building${summary.detailedBuildings === 1 ? '' : 's'}, `
+        + `${summary.parks} park${summary.parks === 1 ? '' : 's'}, and `
+        + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}`
+        + (residualArea > 0
+          ? `; landscaped ${Math.round(residualArea).toLocaleString()} m² of remaining site.`
+          : '.'),
       );
-    } catch {
-      toast.error('Generation failed');
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'Community 3D generation failed'), { duration: 8000 });
+      // ImageLightbox closes only after a fulfilled onApply callback. Preserve
+      // the preview on strict/preflight failures so the user can inspect it,
+      // adjust the plan, and retry without losing context.
+      throw error;
     } finally {
+      generationInFlight.current = false;
       setGenerating(false);
     }
+  };
+
+  const selectedPreviewLayouts = (index: number): Record<string, LayoutOption> => (
+    Object.fromEntries(
+      Object.entries(siteOptions).flatMap(([zoneId, options]) => (
+        options[index] ? [[zoneId, options[index]]] : []
+      )),
+    )
+  );
+
+  const handleGenerate = () => {
+    void handleGenerateCommunity3D(
+      isSitePreviewActive ? selectedPreviewLayouts(siteActiveIndex) : undefined,
+      siteActiveIndex,
+    ).catch(() => undefined);
   };
 
   if (loading) {
@@ -2569,30 +2664,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                             link.click();
                           },
                           onApply: async () => {
-                            // Auto-apply layouts then generate 3D
-                            const applyResults = await Promise.all(
-                              Object.entries(siteOptions).map(async ([zoneId, options]) => {
-                                if (!options[idx]) return null;
-                                try {
-                                  await siteZonesApi.applyLayout(zoneId, idx, options[idx]);
-                                  return zoneId;
-                                } catch (err) {
-                                  console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                                  return null;
-                                }
-                              })
-                            );
-                            const appliedCount = applyResults.filter(Boolean).length;
-                            if (appliedCount > 0) {
-                              clearSitePreview();
-                              clearLockedLayers();
-                            }
-                            const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-                            queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-                            queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-                            toast.success(
-                              `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
-                            );
+                            await handleGenerateCommunity3D(selectedPreviewLayouts(idx), idx);
                           },
                           applyLabel: 'Generate Community',
                         });
@@ -2670,28 +2742,9 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                       link.click();
                     },
                     onApply: async () => {
-                      const applyResults = await Promise.all(
-                        Object.entries(siteOptions).map(async ([zoneId, options]) => {
-                          if (!options[siteActiveIndex]) return null;
-                          try {
-                            await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
-                            return zoneId;
-                          } catch (err) {
-                            console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                            return null;
-                          }
-                        })
-                      );
-                      const appliedCount = applyResults.filter(Boolean).length;
-                      if (appliedCount > 0) {
-                        clearSitePreview();
-                        clearLockedLayers();
-                      }
-                      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-                      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-                      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-                      toast.success(
-                        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+                      await handleGenerateCommunity3D(
+                        selectedPreviewLayouts(siteActiveIndex),
+                        siteActiveIndex,
                       );
                     },
                     applyLabel: 'Generate Community',
@@ -2753,7 +2806,10 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       )}
 
       {/* Preview History ? site boundary */}
-      <PreviewHistorySection zone={zone} />
+      <PreviewHistorySection
+        zone={zone}
+        onGenerateCommunity3D={handleGenerateCommunity3D}
+      />
     </div>
   );
 }
@@ -2956,66 +3012,95 @@ function AestheticOptionCard({
   };
 
   return (
-    <button
+    <div
       key={option.id}
-      type="button"
-      onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+      data-aesthetic-option-id={option.id}
       className={`overflow-hidden rounded-lg border text-left transition-all ${
         value === option.id
           ? 'border-primary-500 ring-2 ring-primary-500/25'
           : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
       }`}
     >
-      <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
-        <AestheticImage
-          sources={heroSources}
-          alt={option.label}
-          className="h-full w-full object-cover"
-          onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-        {showSiteFit && (
-          <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
-            areaFit
-              ? areaFit.isGoodFit
-                ? 'bg-green-100 text-green-700'
-                : 'bg-orange-100 text-orange-700'
-              : 'bg-white/85 text-[#151515]/55'
-          }`}>
-            {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+      <button
+        type="button"
+        onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+        className="block w-full text-left"
+        aria-label={`Select ${option.label} with Automatic / best-fitting family`}
+      >
+        <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
+          <AestheticImage
+            sources={heroSources}
+            alt={option.label}
+            className="h-full w-full object-cover"
+            onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+          {showSiteFit && (
+            <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
+              areaFit
+                ? areaFit.isGoodFit
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-orange-100 text-orange-700'
+                : 'bg-white/85 text-[#151515]/55'
+            }`}>
+              {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+            </div>
+          )}
+          <div className="absolute inset-x-0 bottom-0 p-2">
+            <p className="text-[10px] font-semibold text-white">{option.label}</p>
           </div>
-        )}
-        <div className="absolute inset-x-0 bottom-0 p-2">
-          <p className="text-[10px] font-semibold text-white">{option.label}</p>
         </div>
-      </div>
-      <div className="px-2 py-1.5">
-        <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-        {showSiteFit && (
-          <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
-            areaFit
-              ? areaFit.isGoodFit
-                ? 'border-green-600/25 bg-green-50 text-green-700'
-                : 'border-orange-500/25 bg-orange-50 text-orange-600'
-              : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
-          }`}>
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[9px] font-black uppercase">Site fit</span>
-              <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
-            </div>
-            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
-              Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
-              {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
-              {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
-            </div>
-            {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
-              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
-                {areaFit.floorLabel || ''}
-                {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
-                {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+        <div className="px-2 py-1.5">
+          <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+          {showSiteFit && (
+            <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
+              areaFit
+                ? areaFit.isGoodFit
+                  ? 'border-green-600/25 bg-green-50 text-green-700'
+                  : 'border-orange-500/25 bg-orange-50 text-orange-600'
+                : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
+            }`}>
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[9px] font-black uppercase">Site fit</span>
+                <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
               </div>
-            )}
-          </div>
+              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
+                Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
+                {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
+                {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
+              </div>
+              {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
+                <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
+                  {areaFit.floorLabel || ''}
+                  {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
+                  {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+                </div>
+              )}
+            </div>
+          )}
+          {hasDesignVariants && isSelected && (
+            <p className="mt-1.5 text-[9px] font-black text-primary-950/65" aria-live="polite">
+              Current selection: {activeVariant?.label || 'Automatic / best-fitting family'}
+            </p>
+          )}
+        </div>
+      </button>
+
+      <div className="px-2 pb-1.5">
+        {hasDesignVariants && (
+          <button
+            type="button"
+            onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
+            aria-pressed={isSelected && !selectedVariantId}
+            className={`mb-1.5 flex w-full items-center justify-between rounded border px-1.5 py-1 text-left text-[9px] font-bold ${
+              isSelected && !selectedVariantId
+                ? 'border-primary-500 bg-primary-500/10 text-primary-950'
+                : 'border-primary-950/[0.1] bg-white text-primary-950/60 hover:border-primary-950/[0.25]'
+            }`}
+          >
+            <span>Automatic / best-fitting family</span>
+            <span>{isSelected && !selectedVariantId ? 'Selected' : 'Use parent'}</span>
+          </button>
         )}
         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
@@ -3053,6 +3138,7 @@ function AestheticOptionCard({
               <button
                 key={`${option.id}-variant-${variant.id}`}
                 type="button"
+                aria-pressed={isActive}
                 onClick={(event) => {
                   event.stopPropagation();
                   onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id, variant.id);
@@ -3121,7 +3207,7 @@ function AestheticOptionCard({
           })}
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 function DevelopmentAestheticPicker({
@@ -3532,8 +3618,16 @@ function ReferenceImagesSection({
 // Preview History section
 // =============================================================================
 
-function PreviewHistorySection({ zone }: { zone: SiteZone }) {
-  const queryClient = useQueryClient();
+function PreviewHistorySection({
+  zone,
+  onGenerateCommunity3D,
+}: {
+  zone: SiteZone;
+  onGenerateCommunity3D?: (
+    selectedLayouts?: Record<string, LayoutOption>,
+    optionIndex?: number,
+  ) => Promise<void>;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [applyingIdx, setApplyingIdx] = useState<number | null>(null);
   const { setLightboxImage } = useViewerStore();
@@ -3584,36 +3678,19 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
         await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
         toast.success('Layout applied ? buildings created');
       };
-    } else if (entry.preview_type === 'site' && zone.zone_type === 'site_boundary') {
+    } else if (
+      entry.preview_type === 'site'
+      && zone.zone_type === 'site_boundary'
+      && onGenerateCommunity3D
+    ) {
       applyLabel = 'Generate Community';
       apply = async () => {
-        // If this history entry has stored zone layouts, apply them first
+        // If this history entry has stored zone layouts, the shared boundary
+        // action applies them before its fresh, LEGO-only Community 3D compile.
         const zoneLayouts = entry.layout_data && 'zone_layouts' in entry.layout_data
           ? (entry.layout_data as { zone_layouts: Record<string, LayoutOption> }).zone_layouts
-          : null;
-        if (zoneLayouts) {
-          const applyResults = await Promise.all(
-            Object.entries(zoneLayouts).map(async ([zoneId, layout]) => {
-              try {
-                await siteZonesApi.applyLayout(zoneId, entry.option_index, layout);
-                return zoneId;
-              } catch (err) {
-                console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
-                return null;
-              }
-            })
-          );
-          const appliedCount = applyResults.filter(Boolean).length;
-          if (appliedCount > 0) {
-            toast.success(`Applied layouts for ${appliedCount} zone${appliedCount > 1 ? 's' : ''}`);
-          }
-        }
-        const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
-        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
-        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
-        toast.success(
-          `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
-        );
+          : undefined;
+        await onGenerateCommunity3D(zoneLayouts, entry.option_index);
       };
     }
 

@@ -171,6 +171,24 @@ class Settings(BaseSettings):
             )
         return self
 
+    @model_validator(mode="after")
+    def _normalize_google_maps_api_key(self) -> "Settings":
+        """Let the backend reuse the browser Maps key in local development.
+
+        The recovered workspace historically stored the working Maps key as
+        ``VITE_GOOGLE_MAPS_API_KEY`` because Google Tiles consumes it in the
+        frontend. Backend Maps proxies should prefer a dedicated
+        ``GOOGLE_MAPS_API_KEY`` when present, but must not silently behave as
+        unconfigured when only the established Vite name exists.
+        """
+        if not self.google_maps_api_key:
+            self.google_maps_api_key = (
+                os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
+                or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
+                or _root_dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
+            )
+        return self
+
     # --- Vertex AI (Imagen 3) ---
     vertex_ai_project: str = ""
     vertex_ai_location: str = "northamerica-northeast1"

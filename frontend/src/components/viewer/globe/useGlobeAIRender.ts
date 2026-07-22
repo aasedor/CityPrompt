@@ -59,7 +59,7 @@ export type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 // richer material/lens/weathering language. Stable-only styles (night,
 // marker-render, collage, risograph, pixel-art) are preserved as-is. Codex-only
 // styles (site-plan variants, isometric) are added.
-const GLOBE_STYLE_PROMPTS: Record<string, string> = {
+export const GLOBE_STYLE_PROMPTS: Record<string, string> = {
   photorealistic: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
   photomontage: 'Professional architectural photomontage indistinguishable from a real drone photograph. DJI Mavic 3 at 60m altitude, Hasselblad sensor, 24mm lens f/5.6. Proposed development appears fully constructed within existing site context. Lighting and shadows match surroundings. Atmospheric haze increasing with distance. Realistic material weathering 1-2 years post-completion. Natural lens vignetting and chromatic aberration. Documentary aerial photography of an existing place.',
   atmospheric: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials — real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
@@ -112,7 +112,7 @@ const ARTISTIC_STYLES = new Set([
 // model's full-frame reinterpretation; boundary fidelity comes from the plan
 // diagram reference instead. site-plan-photo dictates a 15-20°-from-nadir
 // camera too, so it is deliberately included even though it isn't artistic.
-const REPROJECTING_STYLES = new Set([
+export const REPROJECTING_STYLES = new Set([
   'isometric',
   'site-plan',
   'site-plan-watercolor',

@@ -43,6 +43,12 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
+// The provider read timeout is 300 seconds. Keep the browser request alive
+// through project validation, image upload, post-generation geometry gates,
+// encoding and billing/audit finalization so callers receive the endpoint's
+// structured outcome instead of retrying an ambiguously billed request.
+const DIRECT_3D_CLIENT_TIMEOUT_MS = 420_000;
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
@@ -1316,6 +1322,204 @@ export const rendersApi = {
     image_quality?: 'auto' | 'low' | 'medium' | 'high';
   }): Promise<{ image_base64: string; seed?: number }> => {
     const { data } = await api.post('/api/v1/render/generate', request, { timeout: 300000 });
+    return data;
+  },
+
+  /** Isolated current-camera refinement for an already compiled 3D scene.
+   * This endpoint never routes through the Classic colored-zone renderer. */
+  generateDirect3D: async (request: {
+    beauty_image_base64: string;
+    proposal_mask_base64: string;
+    prompt: string;
+    style: string;
+    /** Direct v2 never requests the legacy source_anchored path. */
+    presentation_mode: 'scene' | 'reproject';
+    object_id_image_base64: string;
+    object_id_manifest: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
+    capture: {
+      width: number;
+      height: number;
+      proposal_coverage: number;
+    };
+    project_id: string;
+    community_3d_claims: Array<{
+      zone_id: string;
+      source_hash: string;
+      representation_hash: string;
+      building_id?: string;
+    }>;
+    residual_landscape_claim?: {
+      boundary_id: string;
+      source_hash: string;
+    };
+  }): Promise<{
+    image_base64: string;
+    model: 'gpt-image-2';
+    capture_fingerprint: string;
+    output_fingerprint: string;
+    diagnostics: {
+      /** Optional so saved/legacy source-anchored responses remain readable. */
+      processing_mode?: 'source_anchored' | 'scene' | 'reproject';
+      view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
+      context_restyled?: boolean;
+      provider_first?: boolean;
+      source_width: number;
+      source_height: number;
+      normalized_width: number;
+      normalized_height: number;
+      proposal_coverage: number;
+      context_coverage: number;
+      object_id_attached: boolean;
+      object_id_coverage?: number | null;
+      object_id_proposal_recall?: number | null;
+      object_id_proposal_iou?: number | null;
+      minimum_object_id_proposal_recall?: number | null;
+      minimum_object_id_proposal_iou?: number | null;
+      scene_lower_context_coverage?: number | null;
+      minimum_scene_lower_context_coverage?: number | null;
+      structural_edge_guide_attached: true;
+      finish_fusion?: {
+        method: 'source-geometry-multiscale-source-phase-detail-v2';
+        sigma_px: number;
+        rgb_delta_clip: number;
+        default_strength: number;
+        role_strengths: Record<'ground' | 'landscape' | 'street' | 'park' | 'building', number>;
+        detail_fine_sigma_px: number;
+        detail_medium_sigma_px: number;
+        detail_correction_clip: number;
+        detail_role_gain_caps: Record<string, { fine: number; medium: number }>;
+        microtexture_sigma_px: number;
+        microtexture_correction_clip: number;
+        microtexture_role_gain_caps: Record<string, number>;
+        provider_high_frequency_phase_transferred: false;
+        safe_microtexture_coverage: number;
+        source_detail_correlation?: number | null;
+        source_texture_p75?: number | null;
+        fused_texture_p75?: number | null;
+        texture_gain?: number | null;
+        role_metrics: Record<string, {
+          detail_fine_gain: number;
+          detail_medium_gain: number;
+          microtexture_gain: number;
+          safe_microtexture_pixels: number;
+          safe_microtexture_coverage: number;
+          source_texture_p75?: number | null;
+          fused_texture_p75?: number | null;
+          texture_gain?: number | null;
+          source_detail_correlation?: number | null;
+        }>;
+      } | null;
+      provider_raw_structural_edge_fidelity?: {
+        passed: boolean;
+        beauty_edge_recall: number;
+        coarse_edge_recall: number;
+        semantic_edge_recall?: number | null;
+        semantic_component_min_recall?: number | null;
+        building_internal_edge_recall?: number | null;
+      } | null;
+      macro_design_fidelity?: {
+        passed: true;
+        tolerance_px: number;
+        silhouette_edge_pixels: number;
+        silhouette_edge_recall?: number | null;
+        coarse_edge_pixels: number;
+        coarse_edge_recall: number;
+        semantic_edge_pixels: number;
+        semantic_edge_recall?: number | null;
+        evaluated_component_count: number;
+        semantic_component_min_recall?: number | null;
+        reference_edge_p90_distance_px: number;
+        candidate_coarse_edge_pixels?: number | null;
+        candidate_coarse_edge_precision?: number | null;
+        candidate_coarse_edge_density_ratio?: number | null;
+        minimum_silhouette_edge_recall?: number | null;
+        minimum_coarse_edge_recall?: number | null;
+        minimum_semantic_edge_recall?: number | null;
+        minimum_semantic_component_recall?: number | null;
+        maximum_reference_edge_p90_distance_px?: number | null;
+        minimum_candidate_coarse_edge_precision?: number | null;
+        maximum_candidate_coarse_edge_density_ratio?: number | null;
+        building_internal_edges_required: false;
+      } | null;
+      visual_change?: {
+        passed: true;
+        whole_frame_mean_absolute_delta: number;
+        proposal_mean_absolute_delta: number;
+        proposal_detail_delta_p75: number;
+        proposal_photometric_residual_p95: number;
+        novel_detail_edge_coverage: number;
+        context_mean_absolute_delta?: number | null;
+        context_photometric_residual_p95?: number | null;
+        context_detail_delta_p75?: number | null;
+        context_pixel_count?: number | null;
+        context_frame_top_fraction?: number | null;
+        minimum_whole_frame_mean_absolute_delta?: number | null;
+        minimum_proposal_mean_absolute_delta: number;
+        minimum_proposal_detail_delta_p75: number;
+        minimum_proposal_photometric_residual_p95: number;
+        minimum_novel_detail_edge_coverage: number;
+        minimum_context_mean_absolute_delta?: number | null;
+        minimum_context_photometric_residual_p95?: number | null;
+        minimum_context_detail_delta_p75?: number | null;
+        context_change_required: true;
+        color_grade_only_rejected: true;
+      } | null;
+      reproject_output_sanity?: {
+        passed: true;
+        whole_frame_mean_absolute_delta: number;
+        luminance_standard_deviation: number;
+        luminance_dynamic_range_p90: number;
+        structural_edge_coverage: number;
+        occupied_edge_cells: number;
+        significant_edge_component_count: number;
+        required_edge_component_count: number;
+        minimum_whole_frame_mean_absolute_delta: number;
+        minimum_luminance_standard_deviation: number;
+        minimum_luminance_dynamic_range_p90: number;
+        minimum_structural_edge_coverage: number;
+        maximum_structural_edge_coverage: number;
+        minimum_occupied_edge_cells: number;
+        semantic_inventory_proxy_only: true;
+      } | null;
+      structural_edge_fidelity?: {
+        passed: true;
+        tolerance_px: number;
+        reference_edge_pixels: number;
+        candidate_edge_pixels: number;
+        beauty_edge_recall: number;
+        coarse_edge_pixels: number;
+        coarse_edge_recall: number;
+        semantic_edge_pixels: number;
+        semantic_edge_recall?: number | null;
+        semantic_component_min_recall?: number | null;
+        building_internal_edge_pixels: number;
+        building_internal_edge_recall?: number | null;
+        reference_edge_p90_distance_px: number;
+      } | null;
+      registration?: {
+        method: 'identity' | 'ecc-euclidean';
+        score: number;
+        score_metric?: 'luminance-correlation' | 'bidirectional-structural-edge-recall';
+        photometric_score?: number | null;
+        structural_context_score?: number | null;
+        translation_x_px: number;
+        translation_y_px: number;
+        translation_norm_px?: number | null;
+        rotation_degrees: number;
+        maximum_translation_norm_px?: number | null;
+        maximum_abs_rotation_degrees?: number | null;
+      } | null;
+      exterior_pixel_count?: number | null;
+      exterior_max_channel_delta?: number | null;
+      inward_feather_px?: number | null;
+      mask_retry_used: false;
+    };
+  }> => {
+    const { data } = await api.post(
+      '/api/v1/render/generate-direct-3d',
+      request,
+      { timeout: DIRECT_3D_CLIENT_TIMEOUT_MS },
+    );
     return data;
   },
 

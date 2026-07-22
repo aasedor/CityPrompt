@@ -58,8 +58,8 @@ def test_signature_injection_is_renderer_agnostic_dict_extension():
     chateau = {"source": {"archetype_id": "chateauesque_grand_railway_hotel"},
                "materials": {"roof": {"base_color": "#c9c2b4"}, "accent": {}}}
     inject_signature(chateau)
-    assert chateau["materials"]["roof"]["base_color"] == "#6f9a8b"
-    assert chateau["materials"]["roof"]["texture_key"] == "verdigris_copper"
+    assert chateau["materials"]["roof"]["base_color"] == "#343c47"
+    assert chateau["materials"]["roof"]["texture_key"] == "welsh_slate"
 
 
 def test_signature_injection_prefers_an_explicit_variant_profile():
@@ -113,7 +113,6 @@ def test_modernist_civic_signature_injects_semantic_massing_graph():
     ("archetype_id", "required_skin_kind", "glass_profile_name"),
     [
         ("nordic_timber_midrise", "facade_skin", "residential_low_e"),
-        ("industrial_brick_mixed_use", "facade_skin", "industrial_sash"),
         ("modern_glass_office_institutional", "facade_skin", "reflective_curtain_wall"),
     ],
 )
@@ -134,6 +133,230 @@ def test_gemini_skin_pilots_inject_depth_backed_elevations(
     assert graph["height_m"] >= 26.0
     assert any(node["id"].endswith("shadow_core") for node in graph["nodes"])
     assert "massing_graph" not in grammar["architectural_signature"]
+
+
+def test_original_mill_variant_explicitly_inherits_parent_massing_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "industrial_brick_mixed_use",
+            "variant_id": "industrial_brick_original_mill",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "victorian_textile_mill_monitor_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 20.0,
+        "floors": 4,
+        "floor_height_m": 4.0,
+    }
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
+    assert "massing_graph_from" not in injected["architectural_signature"]
+    assert "massing_graph" not in injected["architectural_signature"]
+
+
+def test_original_mill_graph_is_not_implicitly_shared_with_sibling_variants():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "industrial_brick_mixed_use",
+            "variant_id": "industrial_brick_brewery",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+
+    assert "massing_graph" not in injected
+    assert "brewery warehouse" in injected["architectural_signature"]["identity"]
+
+
+def test_cast_iron_warehouse_variant_injects_fixed_corner_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "adaptive_reuse_warehouse_lofts",
+            "variant_id": "warehouse_loft_cast_iron",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "soho_cast_iron_corner_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 26.0,
+        "floors": 4,
+        "floor_height_m": 4.2,
+    }
+    assert sum(
+        assembly["kind"] == "fire_escape_stack"
+        for assembly in graph["assemblies"]
+    ) == 2
+    assert any(
+        assembly["kind"] == "classical_balustrade_perimeter"
+        for assembly in graph["assemblies"]
+    )
+    assert "massing_graph" not in injected["architectural_signature"]
+
+
+def test_arch_window_warehouse_variant_injects_ten_bay_romanesque_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "romanesque_revival_warehouse",
+            "variant_id": "warehouse_arch_window_brick",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "richardsonian_ten_bay_warehouse_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 44.0,
+        "depth_m": 36.0,
+        "floors": 3,
+        "floor_height_m": 5.4,
+    }
+    front_piers = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "romanesque_front_piers"
+    )
+    assert front_piers["columns"] == 10
+    assert len(front_piers["active_vertical_indices"]) == 11
+    loading = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "romanesque_front_loading_portals"
+    )
+    assert len(loading["positions_m"]) == 5
+    side_skins = [
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"].startswith("romanesque_left_elevation_")
+    ]
+    assert len(side_skins) == 5
+    assert [skin["uv_u_min"] for skin in side_skins] == [0.1, 0.2, 0.3, 0.4, 0.5]
+    assert all(skin["span_m"] == 7.1 for skin in side_skins)
+
+
+def test_cream_terracotta_art_deco_variant_injects_fixed_setback_lantern_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "art_deco_setback_tower",
+            "variant_id": "art_deco_cream_terracotta",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+
+    assert graph["profile"] == "cream_terracotta_four_stage_lantern_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 28.0,
+        "floors": 15,
+        "floor_height_m": 3.6,
+    }
+    node_ids = {node["id"] for node in graph["nodes"]}
+    assert {"deco_main_shaft", "deco_stage_one", "deco_stage_two", "deco_crown_stage"} <= node_ids
+    assert len([node_id for node_id in node_ids if node_id.startswith("deco_lantern_post_")]) == 8
+    front_stack = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "deco_front_main_skin"
+    )
+    assert front_stack["repeat_count"] == 2
+    assert len(front_stack["levels"]) == 9
+    assert "deco_front_main_glazing" in graph["disabled_assembly_ids"]
+    assert "deco_front_podium_glazing" in graph["disabled_assembly_ids"]
+
+
+def test_nordic_mass_timber_variant_injects_open_pavilion_and_planted_roof_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "nordic_timber_midrise",
+            "variant_id": "nordic_timber_mass_timber",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+
+    assert graph["profile"] == "gemini_skin_hero"
+    assert graph["reference_dimensions"] == {
+        "width_m": 20.0,
+        "depth_m": 16.0,
+        "floors": 7,
+        "floor_height_m": 3.2,
+    }
+    nodes = {node["id"]: node for node in graph["nodes"]}
+    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
+    assert "pavilion_shadow" not in nodes
+    assert nodes["pavilion_service_wall"]["size"][0] < nodes["pavilion_roof"]["size"][0]
+    pavilion_posts = [
+        node_id
+        for node_id in nodes
+        if node_id.startswith("pavilion_") and node_id.endswith("_post")
+    ]
+    assert len(pavilion_posts) == 4
+    assert assemblies["timber_roof_guard"]["kind"] == "classical_balustrade_perimeter"
+    assert not any(
+        assembly_id.startswith("pavilion_") and assembly["kind"] == "curtain_wall"
+        for assembly_id, assembly in assemblies.items()
+    )
+
+
+def test_scandi_white_plaster_variant_injects_fixed_dormer_passage_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "scandinavian_urban_residential",
+            "variant_id": "scandi_urban_white_plaster",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "white_plaster_five_dormer_perimeter_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 38.0,
+        "depth_m": 22.0,
+        "floors": 6,
+        "floor_height_m": 3.2,
+    }
+    nodes = {node["id"]: node for node in graph["nodes"]}
+    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
+    dormer_bodies = [
+        node_id
+        for node_id in nodes
+        if node_id.startswith("scandi_front_dormer_")
+        and "cap" not in node_id
+    ]
+    assert len(dormer_bodies) == 5
+    assert len([key for key in assemblies if key.endswith("_guard")]) == 5
+    assert assemblies["scandi_passage_atlas"]["band"] == "entrance"
+    passage_y = assemblies["scandi_passage_atlas"]["centre"][1]
+    wall_y = assemblies["scandi_front_skin"]["base_centre"][1]
+    assert passage_y < wall_y
+    assert injected["materials"]["roof"]["texture_key"] == "standing_seam"
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle",
+        "l_shape",
+        "u_shape",
+    ]
 
 
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
@@ -194,7 +417,7 @@ def test_collegiate_gothic_injects_variable_silhouette_geometry():
     assert assemblies["gothic_tower_buttresses"]["positions_m"] == [-6.55, 6.55]
 
 
-def test_classical_civic_injects_fixed_four_column_portico():
+def test_classical_civic_injects_courtyard_roof_ring_and_four_column_portico():
     from signature_profiles import inject_signature
 
     grammar = {"source": {"archetype_id": "civic_classical_building"}, "materials": {}}
@@ -202,10 +425,10 @@ def test_classical_civic_injects_fixed_four_column_portico():
     graph = injected["massing_graph"]
     assemblies = {item["id"]: item for item in graph["assemblies"]}
 
-    assert graph["profile"] == "classical_civic_portico_hero"
+    assert graph["profile"] == "classical_civic_courtyard_v2"
     assert graph["reference_dimensions"] == {
         "width_m": 42.0,
-        "depth_m": 26.0,
+        "depth_m": 34.0,
         "floors": 2,
         "floor_height_m": 5.6,
     }
@@ -215,7 +438,127 @@ def test_classical_civic_injects_fixed_four_column_portico():
     portico = assemblies["civic_giant_portico"]
     assert portico["kind"] == "classical_portico"
     assert portico["count"] == 4
-    assert portico["depth_m"] == 4.0
+    assert portico["door_count"] == 3
+    assert portico["depth_m"] == 3.4
+    assert any(
+        void["id"] == "civic_open_court" and void["size"][:2] == [23.0, 15.0]
+        for void in graph["voids"]
+    )
+    assert assemblies["civic_copper_roof_ring"]["kind"] == "courtyard_hip_roof"
+    assert assemblies["civic_roof_balustrade"]["kind"] == "classical_balustrade_perimeter"
+    front_windows = assemblies["civic_front_lower_windows"]
+    assert front_windows["kind"] == "classical_window_array"
+    assert front_windows["arched"] is True
+    assert graph["final_bevel_m"] == 0.0
+
+
+def test_neoclassical_courthouse_injects_eight_column_temple_and_seamed_hip():
+    from signature_profiles import inject_signature
+
+    grammar = {"source": {"archetype_id": "monumental_courthouse_axis"}, "materials": {}}
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["profile"] == "neoclassical_courthouse_temple_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 60.0,
+        "depth_m": 45.0,
+        "floors": 4,
+        "floor_height_m": 5.0,
+    }
+    portico = assemblies["courthouse_giant_portico"]
+    assert portico["count"] == 8
+    assert portico["flutes"] == 20
+    assert portico["capital_style"] == "corinthian"
+    assert portico["door_count"] == 3
+    assert assemblies["courthouse_judicial_steps"]["width_m"] == 60.0
+    assert assemblies["courthouse_main_roof_seams"]["kind"] == "hip_roof_seam_array"
+    assert nodes["courthouse_main_copper_hip"]["kind"] == "hipped_roof"
+    assert all("dome" not in node["id"] for node in graph["nodes"])
+    assert graph["final_bevel_m"] == 0.0
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "u_shape", "courtyard",
+    ]
+
+
+def test_classic_brownstone_injects_paired_streetwall_stoops_and_panelled_entries():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "classic_brownstone_streetwall",
+            "variant_id": "classic_brownstone_traditional",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "paired_brownstone_streetwall_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 22.0,
+        "floors": 4,
+        "floor_height_m": 3.2,
+    }
+    assert {
+        "brownstone_stoop_left",
+        "brownstone_stoop_centre",
+        "brownstone_stoop_right",
+    } <= assemblies.keys()
+    entries = assemblies["brownstone_arched_entries"]
+    assert entries["positions_m"] == [-11.0, 0.5, 11.0]
+    assert entries["arched"] is True
+    assert entries["panelled_door"] is True
+    assert assemblies["brownstone_upper_windows"]["pedimented"] is True
+    assert len(assemblies["brownstone_upper_windows"]["positions_m"]) == 10
+    assert {
+        "brownstone_left_cornice_brackets",
+        "brownstone_right_cornice_brackets",
+    } <= assemblies.keys()
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
+
+
+def test_victorian_main_street_injects_six_arches_segmented_bands_and_seamed_roof():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "historical_brick_main_street",
+            "variant_id": "historical_brick_victorian",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "victorian_polychrome_main_street_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 15.0,
+        "depth_m": 22.0,
+        "floors": 2,
+        "floor_height_m": 3.6,
+    }
+    assert len(assemblies["victorian_upper_arches"]["positions_m"]) == 6
+    assert assemblies["victorian_storefront_entries"]["positions_m"] == [-3.25, 3.25]
+    bands = assemblies["victorian_front_polychrome_bands"]
+    assert bands["kind"] == "band_segments"
+    assert len(bands["levels_z"]) == 4
+    assert len(bands["segments_m"]) == 7
+    assert nodes["victorian_low_hip_roof"]["ridge_axis"] == "x"
+    assert assemblies["victorian_roof_seams"]["kind"] == "hip_roof_seam_array"
+    assert "victorian_skylight_front_curb" in nodes
+    assert "victorian_skylight_rear_curb" in nodes
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
 
 
 def test_v21_expansion_graphs_preserve_family_specific_construction():
@@ -234,7 +577,7 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     assert overlays and all(item.get("frame_mode") == "mask_only" for item in overlays)
 
     eixample = graph_for("eixample_apartment_block")
-    assert eixample["profile"] == "cerda_chamfer_v21"
+    assert eixample["profile"] == "cerda_chamfer_courtyard_v24"
     assert sum(node["kind"] == "chamfered_box" for node in eixample["nodes"]) >= 2
     assert sum(item["kind"] == "balcony_array" for item in eixample["assemblies"]) == 4
     corner_skins = [
@@ -246,15 +589,15 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     assert {item["rotation_z_deg"] for item in corner_skins} == {-45.0, 45.0}
 
     chateau = graph_for("chateauesque_grand_railway_hotel")
-    assert chateau["profile"] == "chateauesque_landmark_v21"
+    assert chateau["profile"] == "scottish_baronial_granite_courtyard_v1"
     node_kinds = {node["kind"] for node in chateau["nodes"]}
     assert {"cylinder", "cone", "gable_roof"} <= node_kinds
     assembly_ids = {item["id"] for item in chateau["assemblies"]}
     assert {
-        "hotel_centre_elevation",
-        "hotel_left_tower_elevation",
-        "hotel_left_pavilion_elevation",
-        "hotel_right_pavilion_elevation",
+        "hotel_gate_stack_v2",
+        "hotel_gate_portal",
+        "hotel_crowstep_front",
+        "hotel_gate_front_battlements",
     } <= assembly_ids
 
 
@@ -566,8 +909,10 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
 
     assert turret["kind"] == "striped_turret_array"
     assert turret["window_levels_m"] == [3.75, 7.95, 12.15]
+    assert turret["window_style"] == "rectangular"
     assert turret["window_recess_m"] >= 0.1
-    assert turret["window_surround_depth_m"] >= 0.18
+    assert 0.08 <= turret["window_surround_depth_m"] <= 0.12
+    assert turret["window_surround_m"] <= 0.05
     assert len(turret["centres"]) * 2 * len(turret["window_levels_m"]) == 24
     assert not any(
         item["id"].startswith((
@@ -576,6 +921,231 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
         ))
         for item in graph["assemblies"]
     )
+
+
+def test_ruskinian_facade_period_matches_registered_source_span():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "collegiate_gothic_education",
+            "variant_id": "collegiate_gothic_ruskinian",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    front_skin = assemblies["ruskinian_front_elevation"]
+    left_skin = assemblies["ruskinian_left_elevation"]
+    rear_skin = assemblies["ruskinian_rear_elevation"]
+    front_glass = assemblies["ruskinian_front_glazing"]
+    left_glass = assemblies["ruskinian_left_glazing"]
+
+    assert graph["profile"] == "ruskinian_polychrome_hall_v68"
+    assert {level["repeat_count"] for level in front_skin["levels"][1:]} == {7}
+    assert left_skin["repeat_count"] == 6
+    assert rear_skin["repeat_count"] == 7
+    assert {level["band"] for level in left_skin["levels"]} == {"side"}
+    assert {level["band"] for level in rear_skin["levels"]} == {"side"}
+    assert front_glass["columns"] == 7
+    assert left_glass["columns"] == 6
+    assert front_glass["repeat_span_m"] == pytest.approx(30.0 / 7, abs=0.001)
+    assert left_glass["repeat_span_m"] == pytest.approx(25.0 / 6, abs=0.001)
+    assert abs(front_glass["repeat_span_m"] - 4.4) / 4.4 < 0.10
+    assert abs(left_glass["repeat_span_m"] - 3.91) / 3.91 < 0.10
+
+    gable_axes = {
+        item["axis"] for item in graph["assemblies"]
+        if item["id"].startswith("ruskinian_main_") and item["id"].endswith("_gable")
+    }
+    assert gable_axes == {"front", "rear", "left", "right"}
+
+
+def test_red_sandstone_rowhouse_preserves_reference_five_bay_rhythm():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "brownstone_rowhouse_frontage",
+            "variant_id": "brownstone_rowhouse_red_sandstone",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "red_brick_sandstone_rowhouse_v61"
+    assert assemblies["rowhouse_front_glazing"]["columns"] == 5
+    assert assemblies["rowhouse_stoop"]["base_centre"][0] == 0.0
+    assert "rowhouse_door_pediment" not in assemblies
+    assert "rowhouse_left_front_side_skin" in graph["disabled_assembly_ids"]
+    assert "rowhouse_rear_left_glazing" in graph["disabled_assembly_ids"]
+    for level in ("low", "mid", "high"):
+        assert assemblies[f"rowhouse_rear_left_{level}"]["span_m"] == 0.92
+        assert assemblies[f"rowhouse_rear_right_{level}"]["span_m"] == 0.92
+
+
+def test_dark_frame_office_preserves_compact_reference_proportions():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "modern_glass_office_institutional",
+            "variant_id": "glass_office_dark_frame",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "dark_frame_clear_glass_renderlock_v3"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 20.0,
+        "floors": 8,
+        "floor_height_m": 3.6,
+    }
+    assert assemblies["dark_glass_front_structure"]["columns"] == 4
+    assert assemblies["dark_glass_front_structure"]["rows"] == 8
+    assert len(assemblies["dark_glass_front_skin"]["levels"]) == 7
+
+
+def test_classic_eixample_preserves_four_storeys_and_real_light_court():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "eixample_apartment_block",
+            "variant_id": "eixample-apartment-block-classic",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "cerda_chamfer_courtyard_v24"
+    assert graph["reference_dimensions"] == {
+        "width_m": 23.0,
+        "depth_m": 23.0,
+        "floors": 4,
+        "floor_height_m": 5.0,
+    }
+    assert "eixample_shadow_core" in graph["disabled_node_ids"]
+    assert "eixample_roof_deck" in graph["disabled_node_ids"]
+    assert nodes["eixample_courtyard_floor"]["size"][:2] == [8.8, 8.8]
+    assert assemblies["eixample_front_glazing"]["rows"] == 4
+    assert assemblies["eixample_front_balconies"]["levels_z"] == [6.1, 10.0, 13.7]
+
+
+def test_london_mansion_uses_registered_wall_and_canonical_mansard_kit():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "london_heritage_mansion_block",
+            "variant_id": "london-heritage-mansion-portland-stone",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "portland_stone_mansion_v3"
+    assert graph["reference_dimensions"]["floors"] == 5
+    assert nodes["london_mansard_kit"]["kind"] == "canonical_roof"
+    assert nodes["london_centre_roof_cap"]["kind"] == "hipped_roof"
+    assert assemblies["london_centre_pavilion_sash"]["kind"] == "curtain_wall"
+    assert assemblies["london_front_glazing"]["frame_mode"] == "mask_only"
+    assert not any(item["kind"] == "balcony_array" for item in graph["assemblies"])
+
+
+def test_classic_haussmann_preserves_twin_courts_and_fixed_entrance():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "parisian_midrise_block",
+            "variant_id": "parisian_haussmann_classic",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "haussmann_twin_court_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 42.0,
+        "depth_m": 38.0,
+        "floors": 6,
+        "floor_height_m": 3.4,
+    }
+    assert len(graph["voids"]) == 2
+    assert assemblies["haussmann_twin_court_mansard"]["kind"] == "mansard_perimeter"
+    assert assemblies["haussmann_twin_court_mansard"]["court_count"] == 2
+    assert assemblies["haussmann_front_entrance"]["band"] == "entrance"
+    assert assemblies["haussmann_front_podium_left"]["levels"][0]["repeat_count"] == 2
+    assert assemblies["haussmann_front_balconies"]["levels_z"] == [4.65, 14.85]
+    assert assemblies["haussmann_front_balconies"]["rail_profile_m"] == 0.028
+    assert graph["final_bevel_m"] == 0.0
+
+
+def test_boulevard_corner_preserves_curved_landmark_and_open_court():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "parisian_boulevard_corner",
+            "variant_id": "parisian_corner_haussmann_turret",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "haussmann_rounded_corner_court_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 42.0,
+        "depth_m": 40.0,
+        "floors": 7,
+        "floor_height_m": 3.4,
+    }
+    assert len(graph["voids"]) == 1
+    assert graph["voids"][0]["purpose"].startswith("real open interior court")
+    assert assemblies["corner_landmark_pavilion"]["kind"] == "rounded_corner_pavilion"
+    assert assemblies["corner_landmark_pavilion"]["radius_m"] == 9.5
+    assert assemblies["corner_landmark_pavilion"]["balcony_levels_z"] == [4.65, 11.45, 18.25]
+    assert assemblies["corner_perimeter_mansard"]["rounded_corner"] == "front_left"
+    assert assemblies["corner_right_front_return_glazing"]["span_m"] == 9.5
+    assert graph["final_bevel_m"] == 0.0
+
+
+def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+    source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+
+    role_filter = source.split(
+        'for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():', 1
+    )[1].split("continue", 1)[0]
+    assert '"side"' in role_filter
+    for role in ("front_corner_oblique", "rear_corner_oblique", "facade_close"):
+        assert f'("{role}"' in source
+    assert "+ outward * profile_outward_offset" in source
+    assert "base_z + height * 0.10, depth + 0.018, brick" in source
+    assert "near_tree_offset = max(width * 0.72, 12.0)" in source
+    assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
+    assert "disabled_assembly_ids" in source
+    assert "disabled_node_ids" in source
+    assert 'kind == "canonical_roof"' in source
+    assert 'kind == "mansard_perimeter"' in source
+    assert 'kind == "rounded_corner_pavilion"' in source
+    assert 'kind == "courtyard_hip_roof"' in source
+    assert 'kind == "hip_roof_seam_array"' in source
+    assert 'kind == "classical_balustrade_perimeter"' in source
+    assert 'kind == "classical_window_array"' in source
+    assert "focus_height * 2.75" in source
+    assert "focus_height * 2.05" in source
 
 
 def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():
@@ -717,6 +1287,97 @@ def test_chateauesque_audited_bands_are_single_storeys_with_bounded_openings():
             assert 0.12 <= y1 - y0 <= 0.68
             assert 0.0 < x0 < x1 < 1.0
             assert 0.0 < y0 < y1 < 1.0
+
+
+def test_italian_portici_variant_locks_six_arch_corner_arcade_and_hip_roof():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["med_arcade_italian_portici"]
+    graph = profile["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 24.0,
+        "floors": 3,
+        "floor_height_m": 3.4,
+    }
+    assert assemblies["portici_six_arch_front"]["kind"] == "arcade_array"
+    assert assemblies["portici_six_arch_front"]["count"] == 6
+    assert assemblies["portici_four_arch_return"]["axis"] == "left"
+    assert assemblies["portici_four_arch_return"]["count"] == 4
+    assert nodes["portici_terracotta_hip"]["kind"] == "hipped_roof"
+    assert sum(node_id.startswith("portici_chimney_") and "cap" not in node_id for node_id in nodes) == 4
+    assert profile["footprint_compatibility_override"]["recommendedFloors"] == [3, 3]
+
+
+def test_restored_machiya_variant_locks_two_wall_levels_and_kawara_gable_tier():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["machiya_traditional_restored"]
+    graph = profile["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 14.0,
+        "depth_m": 20.0,
+        "floors": 3,
+        "floor_height_m": 3.3,
+    }
+    assert nodes["machiya_main_kawara_roof"]["kind"] == "gable_roof"
+    assert nodes["machiya_main_kawara_roof"]["ridge_axis"] == "y"
+    assert assemblies["machiya_kawara_ribs"]["kind"] == "gable_roof_tile_array"
+    assert assemblies["machiya_kawara_ribs"]["spacing_m"] < 0.5
+    assert assemblies["machiya_front_timber_gable"]["kind"] == "timber_gable_frame"
+    assert assemblies["machiya_front_upper_koshi"]["columns"] == 18
+    assert {"machiya_noren_1", "machiya_noren_2", "machiya_noren_3"} <= nodes.keys()
+    assert profile["footprint_compatibility_override"]["preferredProfiles"] == [
+        "rectangle",
+        "l_shape",
+        "u_shape",
+    ]
+
+
+def test_scottish_baronial_hotel_locks_open_court_gate_tower_and_crowsteps():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["chateauesque_grand_railway_hotel"]
+    graph = profile["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 55.0,
+        "depth_m": 36.0,
+        "floors": 6,
+        "floor_height_m": 4.0,
+    }
+    assert {"hotel_shadow_core", "hotel_main_roof"} <= set(graph["disabled_node_ids"])
+    assert {f"hotel_{side}_wing" for side in ("front", "rear", "left", "right")} <= nodes.keys()
+    assert {f"hotel_{side}_roof" for side in ("front", "rear", "left", "right")} <= nodes.keys()
+    assert graph["voids"][1]["size"] == [35.5, 16.5, 31.0]
+    assert nodes["hotel_centre_pavilion"]["material"] == "signature_stone"
+    assert assemblies["hotel_gate_portal"]["kind"] == "arcade_array"
+    assert assemblies["hotel_gate_portal"]["count"] == 1
+    assert assemblies["hotel_crowstep_front"]["kind"] == "crowstep_gable_array"
+    assert assemblies["hotel_crowstep_front"]["positions_m"] == [-13.0, 13.0]
+    assert all(
+        f"hotel_gate_{side}_battlements" in assemblies
+        for side in ("front", "rear", "left", "right")
+    )
+    assert profile["material_overrides"]["roof"]["texture_key"] == "welsh_slate"
+    assert profile["footprint_compatibility_override"]["recommendedFloors"] == [5, 7]
 
 
 def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():

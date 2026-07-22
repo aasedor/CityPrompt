@@ -108,6 +108,35 @@ export function resolveReplacementGroundAnchor(
   );
 }
 
+/** Public realm follows the current streamed tile surface when it agrees with
+ * persisted/project terrain. A replacement building benefits from a stable
+ * stored base, but a park or street pinned even one metre below current terrain
+ * disappears once normal depth testing is enabled. Material disagreement
+ * still resolves downward to reject roofs and canopies. */
+export function preferCurrentGroundAnchor(
+  sampled: number | null | undefined,
+  stored: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  const hasSampled = Number.isFinite(sampled);
+  const hasStored = Number.isFinite(stored);
+  if (!hasSampled) return hasStored ? stored as number : null;
+  if (!hasStored) return sampled as number;
+  return Math.abs((sampled as number) - (stored as number)) > thresholdMeters
+    ? Math.min(sampled as number, stored as number)
+    : sampled as number;
+}
+
+export function resolvePublicRealmGroundAnchor(
+  sampled: number | null | undefined,
+  stored: number | null | undefined,
+  projectTerrain: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  const local = preferCurrentGroundAnchor(sampled, stored, thresholdMeters);
+  return local ?? (Number.isFinite(projectTerrain) ? projectTerrain as number : null);
+}
+
 /**
  * Reject an isolated photogrammetry object-top hit for an interior ground
  * vertex without flattening legitimate terrain below the surrounding ground.

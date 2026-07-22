@@ -112,7 +112,7 @@ def test_excess_materials_route_to_review_without_structural_failure():
     report = {
         "status": "pass",
         "warnings": ["quality-pilot.glb: many materials"],
-        "modules": [{"role": "assembled", "materials": [f"MAT_{i}" for i in range(24)]}],
+        "modules": [{"role": "assembled", "materials": [f"MAT_{i}" for i in range(36)]}],
     }
     assessment = assess_family_quality(production_manifest(), report)
 

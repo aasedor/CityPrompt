@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-19-ruskinian-registration-v63",
+  "memory_version": "2026-07-21-fail-safe-facade-lod-v89",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -197,7 +197,8 @@
       "hero_range_m": [0, 180],
       "city_range_m": [180, 2000],
       "hero_strategy": "physical glazing, full PBR atlas and semantic relief",
-      "city_strategy": "compressed baked facade, preserved silhouette and simplified interiors"
+      "city_strategy": "compressed baked facade, preserved silhouette and simplified interiors",
+      "runtime_fail_safe": "Pair near and far facade sheets only within the same joined mesh and semantic band. If a matching complement is absent, keep the authored sheet visible rather than exposing an untextured or near-black structural core; near-only frames, glazing and interiors may still cull at city range."
     }
   },
   "batch_workflow": [
@@ -273,7 +274,7 @@
       "context"
     ],
     "preferred_footprint_profile_count": 3,
-    "material_count_review_threshold": 20,
+    "material_count_review_threshold": 32,
     "triangle_budget": {
       "city_min": 12000,
       "city_max": 180000,
@@ -305,6 +306,11 @@
       "symptom": "Dead dark-blue windows",
       "cause": "Tinted alpha-blended planes without interiors or reflections.",
       "correction": "Use physical transmission near and subtle warm occupied backplates; bake semantic glass far."
+    },
+    {
+      "symptom": "A facade becomes a near-black structural slab when the camera crosses the city LOD threshold",
+      "cause": "A root-global near/far flag paired unrelated facade bands or elevations, so a far sheet elsewhere suppressed a near-only authored facade.",
+      "correction": "Pair complementary facade sheets per joined mesh and semantic band; when no matching complement exists, retain the authored sheet at both ranges and cull only explicitly near-only physical glazing detail."
     },
     {
       "symptom": "Front facade works but orbit view fails",
@@ -540,6 +546,311 @@
       "symptom": "Stone courses, turret bands and eaves look like bright applied graphics in Google Tiles",
       "cause": "Relief geometry duplicated atlas bands with excessive projection, thickness or albedo contrast, so it separated visually from the wall material language.",
       "correction": "Let the atlas own fine coursing. Use shallow construction-scale relief only for shadow-bearing datums, inherit the same warm stone PBR family, reduce exposed profile, and calibrate in live photogrammetry rather than compensating with brighter materials."
+    },
+    {
+      "symptom": "A dedicated side-elevation atlas exists but secondary walls render as bare core material",
+      "cause": "The facade package preserved the side band while the Blender material loader filtered that semantic role out before massing-graph assembly.",
+      "correction": "Materialize every declared elevation role, including side, before graph construction and verify the role appears on left, right and rear faces in both near and far review LODs."
+    },
+    {
+      "symptom": "A family validates structurally but fails quality assessment because review cameras are missing",
+      "cause": "The presentation renderer's all-view preset drifted behind the executable required-render contract.",
+      "correction": "Keep the renderer's all-view preset synchronized with the quality gate and emit front-corner, rear-corner and facade-close views for every assembled family."
+    },
+    {
+      "symptom": "A masonry cross-gable end displays the roof-slope texture instead of striped wall construction",
+      "cause": "The generic gable-roof prism assigned one roof material to both slopes and vertical end faces.",
+      "correction": "Place fixed masonry gable-end assemblies outside the roof prism on every exposed axis, then register their verge, horizontal bands and pointed openings independently from the roof slopes."
+    },
+    {
+      "symptom": "A layered masonry gable renders as one solid pale stone triangle",
+      "cause": "The smaller brick infill prism was extruded from the same base plane as the deeper stone verge and remained completely occluded inside it.",
+      "correction": "Offset the infill to the exposed face of the outer verge before extrusion, preserving a visible brick field while the deeper stone prism reads only as a shaped edge and return."
+    },
+    {
+      "symptom": "The locked archetype review camera is completely blocked by a foreground tree on a narrow building",
+      "cause": "Near-context tree offsets scaled only from building width, placing the left tree directly on the camera-to-target corridor for narrow lots.",
+      "correction": "Clamp near-tree offsets to a camera-safe minimum while retaining width-relative spacing for larger buildings, then verify every required review view before accepting a family."
+    },
+    {
+      "symptom": "A quiet rowhouse party wall repeats ornate front-window surrounds across its full depth",
+      "cause": "The principal elevation's decorated repeat bay was reused as the side material band and tiled across every side segment.",
+      "correction": "Author a plain brick secondary-elevation band and add only evidence-supported sparse side and rear openings as physical recessed assemblies."
+    },
+    {
+      "symptom": "A compact reference office compiles as a much taller and broader generic glass tower",
+      "cause": "A variant-level massing graph inherited dimensions from a previous tower study instead of auditing all three catalogue views and the current variant bounds.",
+      "correction": "Record the reference width, depth, floor grid, structural bay count and roof termination before assembly; bypass or replace any inherited graph whose proportions contradict the authoritative variant images."
+    },
+    {
+      "symptom": "One office interior bay is smeared across an otherwise correct four-bay curtain wall",
+      "cause": "The typical-floor PBR crop isolated a single bay but the fixed canonical facade stretched that crop over the complete elevation span.",
+      "correction": "For fixed render-locked elevations, crop the complete audited floor band so every interior bay remains registered to the physical frame; reserve single-bay crops for genuinely tiled LEGO modules and derive a separate side crop for different bay counts."
+    },
+    {
+      "symptom": "A catalogue perimeter block claims a courtyard but the aerial review shows a solid roof or filled core",
+      "cause": "The family inherited a solid showcase core and roof deck while courtyard intent existed only in metadata or footprint compatibility declarations.",
+      "correction": "Disable the inherited solid core and deck at the graph level, assemble explicit cardinal and diagonal perimeter wings with matching roof pieces, and require an aerial view that proves a continuous open light court."
+    },
+    {
+      "symptom": "A one-view heritage reference passes its front camera but exposes blank, broken or contradictory construction in reverse views",
+      "cause": "The catalogue supplied no independent side or rear evidence, and the family treated the missing evidence as permission to skip those elevations.",
+      "correction": "Mark one-reference families as lower confidence, infer a conservative wrapped envelope, and require rear-corner, aerial and context review before keeper acceptance. Record the inference explicitly in human QA."
+    },
+    {
+      "symptom": "A fixed heritage facade is covered by duplicate sash cages, invented balconies or generic stacked-floor rails",
+      "cause": "A generic repeatable floor kit was layered over an atlas that already owned the complete window and masonry rhythm.",
+      "correction": "Use a fixed massing graph for the evidence-led facade, promote only audited shadow-bearing geometry, and keep semantic glazing mask-only when the atlas already supplies the sash and surround construction."
+    },
+    {
+      "symptom": "A rectified facade source produces broad blank wings on an otherwise correctly proportioned building",
+      "cause": "White presentation margins were left inside the architectural UV range and then stretched across the complete canonical elevation.",
+      "correction": "Crop the source or UV bounds to the architectural extents before PBR generation, then compare the rendered frontage against the full bay rhythm rather than accepting a technically valid texture package."
+    },
+    {
+      "symptom": "A perimeter block has open courts in its wall massing but the aerial render still shows a continuous roof or cornice lid",
+      "cause": "The body was assembled as wings while the roof retained a full-footprint base slab or top deck, so the declared void stopped at the top storey.",
+      "correction": "Build the cornice and mansard top as explicit perimeter strips, carry every court through the roof, and add only evidence-led cross-wing bridges. Require the aerial acceptance view to prove every court remains open to sky."
+    },
+    {
+      "symptom": "Scaling a boulevard facade creates several grand entrances at regular intervals",
+      "cause": "The source podium combined repeatable shopfronts with the principal entrance and the whole band was tiled across the frontage.",
+      "correction": "Extract the entrance into a fixed facade role, stitch the ordinary outer shopfront slices into a repeatable podium band, and test that the assembled principal elevation contains exactly one entrance landmark."
+    },
+    {
+      "symptom": "A dense fixed graph spends minutes beveling and exports far above the triangle budget without a visible quality gain",
+      "cause": "Identity solids were bevelled individually and the final joined graph applied a second bevel to every sash, rail picket, atlas skin and room card.",
+      "correction": "Allow an audited fixed graph to disable the final global bevel when its silhouette-bearing solids already own construction radii. Verify the optimized render at facade-close and aerial cameras before accepting the triangle reduction."
+    },
+    {
+      "symptom": "A high-detail atlas increases GLB size but the facade looks no sharper than the accepted source",
+      "cause": "A lower-resolution rectified source was upscaled to a 4K near atlas, multiplying texture payload without adding architectural evidence.",
+      "correction": "Set the near-LOD ceiling from native source evidence, never from a blanket hero preset. Keep 2048 px as the quality floor, retain the 1024 px city LOD, and reserve 4K for sources that contain genuine additional detail."
+    },
+    {
+      "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",
+      "cause": "The assembled model request no longer exactly matched the massing graph's authored reference width, depth and floor count, so the safety selector correctly bypassed fixed geometry.",
+      "correction": "Bind every accepted fixed graph to an explicit native width, depth and floor tier, keep the cohort registry synchronized with those dimensions, and test both the accepted native tier and the intentional generic fallback."
+    },
+    {
+      "symptom": "A boulevard-corner turret appears as a tiny roof bump or a floating onion behind the mansard",
+      "cause": "The crown was centered on the inner tangent origin of the rounded plan, while the continuous mansard skirt passed in front of it and hid the lower bulb; a decorative base ring then floated outside the roof without a masonry drum.",
+      "correction": "Treat the corner pavilion, curved balcony arcs and turret as one fixed landmark assembly. Place the turret centre outward on the street-corner bisector, round the outer mansard contour to the same tangent radius, seat the zinc profile on a stone drum, and prove alignment from both corner-oblique and aerial views."
+    },
+    {
+      "symptom": "A civic hall declares an open court but renders as a shallow solid block under one continuous roof",
+      "cause": "The front hero view dominated the graph while the oblique and roof-plan references were treated as presentation images instead of authoritative construction evidence.",
+      "correction": "Audit all compatible views before massing. Build four explicit perimeter wings and a hipped roof ring whose outer, ridge and inner contours preserve the court to open sky, then require aerial proof before keeper acceptance."
+    },
+    {
+      "symptom": "A classical portico and ceremonial stair fail an otherwise correct footprint-envelope gate",
+      "cause": "Reference dimensions described the main civic body while the portico and stair projected beyond its street wall.",
+      "correction": "Treat ceremonial projections as audited landmark assemblies, fit their depth to the allowed envelope, and validate the complete assembled extents rather than only the body nodes."
+    },
+    {
+      "symptom": "Civic windows disappear into a solid limestone massing core",
+      "cause": "Glazing and surround cards were placed coplanar with or behind opaque core faces instead of being registered to the exposed elevation plane.",
+      "correction": "Place evidence-led window assemblies just outside the core face, layer occupied glazing behind shallow stone surrounds, and inspect all four elevations in oblique review views."
+    },
+    {
+      "symptom": "A selected neoclassical temple courthouse grows a dome or courtyard that is absent from every variant image",
+      "cause": "Parent-archetype render prose overrode the selected variant's facade, oblique and roof-plan evidence.",
+      "correction": "Resolve conflicts in favor of the selected variant. Lock the native variant dimensions and audit all compatible views before choosing solid body, court, dome or roof topology; encode explicit negative evidence such as no dome and no courtyard in the massing graph."
+    },
+    {
+      "symptom": "A dominant patinated copper hip reads as a smooth plastic tent in aerial review",
+      "cause": "Material color carried the roof identity while the standing-seam construction visible in the roof-plan reference was omitted.",
+      "correction": "Register shallow seam geometry to the actual hipped planes, fan outer seams toward ridge endpoints, keep seam spacing evidence-scaled, and verify the ridge and hip intersections from the aerial acceptance camera."
+    },
+    {
+      "symptom": "A monumental courthouse passes its body dimensions but underfills the authored native frontage",
+      "cause": "The grammar width described the full ceremonial composition while the body and first stair terrace were authored narrower.",
+      "correction": "Treat the stair, cheek walls and temple front as one fixed frontage landmark. Validate the complete assembled extent and let the full-width stair establish the native frontage when supported by the reference."
+    },
+    {
+      "symptom": "A paired brownstone streetwall collapses into one narrow generic rowhouse",
+      "cause": "The parent catalogue defaults described an individual 18 metre lot while the selected variant images proved two joined sections, three entrances and a 30 metre frontage.",
+      "correction": "Audit all selected-variant views before accepting catalogue defaults. Lock multi-building streetwall compositions to the evidence-led native tier and keep the joined roof, entrance and cornice count fixed."
+    },
+    {
+      "symptom": "A fixed timber entry becomes a pale glass arch or an unreadable blank slab",
+      "cause": "The generic arched-opening pane rendered in front of the authored door, or the pane and frame used one undifferentiated material without leaf construction.",
+      "correction": "Assign the arched opening's semantic layers deliberately, keep the timber backing visible, and add shadow-bearing paired leaves, panel relief and a transom before accepting the street view."
+    },
+    {
+      "symptom": "Basement ironwork cuts across a brownstone's stoops and entrance landings",
+      "cause": "A continuous frontage fence was generated without reserving the three fixed stair and landing clearances.",
+      "correction": "Segment garden-level fences between fixed entrances, terminate rails at stoop cheek walls and verify every stair remains unobstructed in the front-corner acceptance view."
+    },
+    {
+      "symptom": "A flat paired rowhouse roof loses its identity and reads as one generic slab",
+      "cause": "The central party-wall seam, stepped cornice/parapet break, chimney caps, pots and skylight rhythm were omitted because none changed the gross height envelope.",
+      "correction": "Treat paired roof seams and rooftop service silhouettes as fixed construction evidence. Preserve the two roof halves, stepped front termination and bounded chimney/skylight set, then prove them from the aerial camera."
+    },
+    {
+      "symptom": "A two-storey historic shop compiles as the cohort's generic four-storey main-street block",
+      "cause": "A planning placeholder and parent floor range overrode the selected Victorian variant's three authoritative images.",
+      "correction": "Resolve the native tier from the selected variant before graph authoring. Synchronize the cohort floors and dimensions only after the street, oblique and roof-plan views agree."
+    },
+    {
+      "symptom": "Cream polychrome brick courses draw horizontal bars across upper window glass",
+      "cause": "Continuous shadow-line geometry was layered over simulated openings that used panes and room cards rather than boolean wall voids.",
+      "correction": "Segment decorative masonry bands around the audited opening schedule, placing course geometry only across solid pier spans and proving clear glazing in the front acceptance view."
+    },
+    {
+      "symptom": "A forest-green painted cast-iron storefront renders nearly black",
+      "cause": "A black-metal texture override dominated the intended painted-iron base colour and roughness.",
+      "correction": "Treat painted cast iron as its own material finish. Preserve the evidence-led green albedo and moderate metallic response instead of inheriting a generic black-metal texture key."
+    },
+    {
+      "symptom": "A concealed historic roof has the wrong ridge direction and its skylights disappear into the slope",
+      "cause": "The front hero view was accepted before the roof-plan reference was used to orient the hip, and thin glass boxes were placed below the local roof plane.",
+      "correction": "Use the aerial reference to set ridge axis and seam fan direction, seat skylights on explicit curbs above the local plane, and require the aerial review to prove ridge, seams, chimney and service openings together."
+    },
+    {
+      "symptom": "A selected original mill silently compiles as a generic stepped mixed-use block with a flat terrace",
+      "cause": "The selected variant's material profile correctly took precedence over the parent profile but therefore masked the parent's fixed original-mill massing graph.",
+      "correction": "Use an explicit opt-in massing_graph_from contract when one selected variant intentionally reuses a parent graph. Test that the target variant inherits it and that sibling variants remain isolated."
+    },
+    {
+      "symptom": "A four-level Victorian mill becomes implausibly tall and loses its catalogue proportions",
+      "cause": "A provisional parent floor height of six metres overrode the selected variant's four-metre structural grid.",
+      "correction": "Lock fixed graph height to the selected variant's audited floor count and floor height. Keep its reference dimensions synchronized with the cohort entry and canonical generation command."
+    },
+    {
+      "symptom": "A structurally valid generated building contains roof terraces and pavilion forms absent from every industrial reference",
+      "cause": "The fixed graph selector fell back to the generic LEGO stack, whose valid mixed-use defaults were mistaken for evidence-led mill construction.",
+      "correction": "Treat validation as necessary but not sufficient. Compare silhouette, roof topology, bay count and landmark service elements against the photoreal goalpost and reject any visually contradictory fallback."
+    },
+    {
+      "symptom": "A wrapped industrial elevation repeats the principal facade rhythm on less-documented side and rear walls",
+      "cause": "Only one rectified orthographic source was available, so one registered atlas supplied all four exposed elevations.",
+      "correction": "Use evidence-led UV crops or dedicated secondary schedules when side references support them. When evidence is incomplete, keep the wrap conservative, review both rear-corner and aerial views, and record the limitation in human QA."
+    },
+    {
+      "symptom": "A generated rectified warehouse elevation contains seven unequal bays when the audited construction grid requires five",
+      "cause": "The image generator preserved the material language but ignored the explicit structural count on its first pass.",
+      "correction": "Treat bay and storey counts as hard acceptance gates for source elevations. Run one bounded correction pass before schedules or PBR work, then register every opening to the accepted count."
+    },
+    {
+      "symptom": "A cast-iron warehouse shows two roof railings, including a false glazed-looking band below the real guard",
+      "cause": "The source elevation retained its photographed roof railing inside the architectural UV crop while a fixed 3D perimeter rail was also assembled above the cornice.",
+      "correction": "Crop silhouette assemblies such as roof guards out of the facade atlas when they are promoted to fixed geometry. Reprocess the registered elevation and verify the crown from both street and aerial cameras."
+    },
+    {
+      "symptom": "Exterior fire escapes disappear into a facade texture or read as unsupported black diagonals",
+      "cause": "The defining warehouse circulation was either baked into the atlas or represented without landings, guards, treads and wall braces.",
+      "correction": "Author fire escapes as an axis-aware fixed graph assembly with grated landings, three-sided guards, alternating flights, physical treads and paired braces. Keep them independent of the reusable facade skin."
+    },
+    {
+      "symptom": "A charcoal-painted cast-iron facade becomes a harsh black cage",
+      "cause": "Full-height structural pilasters inherited the same black-metal texture and high metallic response intended for fire escapes and roof railings.",
+      "correction": "Separate painted architectural iron from black exposed steel. Use a softer charcoal primary material for the fixed facade order and reserve black metal for stairs, guards and fine hardware."
+    },
+    {
+      "symptom": "A Romanesque warehouse source elevation resolves eight bays when the selected variant proves ten",
+      "cause": "The image generator preserved the architectural style but treated the required structural count as descriptive rather than fixed construction evidence.",
+      "correction": "Reject the source before scheduling openings. Run one bounded correction pass with the exact long-face bay count and do not build PBR maps until the orthographic grid passes."
+    },
+    {
+      "symptom": "A registered warehouse elevation is visibly stretched across a much wider provisional massing graph",
+      "cause": "The planning dimensions were retained after the accepted source measured a substantially smaller physical atlas span.",
+      "correction": "Compare measured atlas span with native graph frontage before canonical generation. Prefer an evidence-led native dimension tier when full-width mapping would otherwise distort bay proportions."
+    },
+    {
+      "symptom": "A five-bay short warehouse elevation displays ten compressed Romanesque bays behind five physical piers",
+      "cause": "The complete long-face atlas was wrapped onto a shorter side even though the oblique reference proved an independent five-bay structural rhythm.",
+      "correction": "Partition the secondary elevation into evidence-led per-bay UV crops and crop the semantic glazing regions with the same bounds. Verify that each cropped bay aligns to one physical side pier interval."
+    },
+    {
+      "symptom": "An Art Deco tower's black commercial podium renders as a blank block while the shaft facade begins above it",
+      "cause": "One facade stack placed the podium atlas on the inset shaft plane even though the granite base has a larger footprint, so the podium skin was buried inside the solid core.",
+      "correction": "Treat each setback footprint as its own exposed envelope. Separate podium, shaft and crown skins and place every surface at the true face of its corresponding tier."
+    },
+    {
+      "symptom": "Upper setback returns remain blank even though the front elevation is fully textured",
+      "cause": "Side skins used the tier depth coordinate instead of the tier width coordinate and landed inside the setback cores.",
+      "correction": "Resolve facade-plane coordinates by axis for every stage: front and rear use half-depth, left and right use half-width. Audit all four return faces from the aerial camera."
+    },
+    {
+      "symptom": "Legacy automatic glass masks tear silver fragments across an otherwise clean historic facade",
+      "cause": "Unregistered semantic cutouts interpreted reflective mullions, relief panels and weathering as irregular glass regions.",
+      "correction": "Do not promote noisy automatic cutouts to physical geometry. Prefer a clean deterministic PBR skin and fixed shadow-bearing piers, or create a reviewed registered opening schedule before enabling recessed semantic glazing."
+    },
+    {
+      "symptom": "A landmark Art Deco crown reads as a generic black cylinder with a gold cap",
+      "cause": "The lantern silhouette was reduced to material colour without a faceted frame, vertical posts, terrace plinth and finial.",
+      "correction": "Build landmark crowns as fixed assemblies: dark faceted lantern core, separate gilded perimeter posts, stepped plinth, polygonal roof and bounded finial, then prove the complete hierarchy in aerial review."
+    },
+    {
+      "symptom": "A light roof pavilion from the references renders as a sealed dark glass box",
+      "cause": "A full opaque shadow core and perimeter curtain walls were used to imply occupation, closing the open canopy silhouette that defines the selected timber variant.",
+      "correction": "Model evidence-led open pavilions as fixed post, canopy and compact service-wall assemblies. Preserve open air between posts and compare the skyline from both street-oblique and aerial cameras before keeper promotion."
+    },
+    {
+      "symptom": "A planted roof reads as an inaccessible green slab without an inhabited terrace edge",
+      "cause": "The sedum surface was present but the safety boundary and pavilion relationship were treated as material detail rather than roof construction.",
+      "correction": "Pair occupied green roofs with a fixed, scale-correct perimeter guard and keep the canopy visibly subordinate to that terrace. Verify deck, planting, guard and pavilion together in the aerial acceptance view."
+    },
+    {
+      "symptom": "A clean rectified elevation contains fewer storey rows than the selected reference building",
+      "cause": "The image model preserved the material and bay brief but treated the exact vertical count as optional across repeated correction prompts.",
+      "correction": "Reject the image as a full-height atlas, audit each valid construction band, and sequence those bands into the required storey count. Never stretch a short elevation vertically to hide a count mismatch."
+    },
+    {
+      "symptom": "A reviewed fixed entrance texture disappears and ordinary facade windows show inside its physical surround",
+      "cause": "The entrance card was coplanar with or behind the principal facade skin, so the broad elevation surface won the depth test.",
+      "correction": "Give fixed portal layers an explicit depth order: shadow cavity deepest, principal wall skin next, entrance identity atlas forward of the wall, and physical jambs and header outermost. Prove the ordering from the street camera."
+    },
+    {
+      "symptom": "A valid complete family fails the executable quality gate because it declares no preferred parcel profiles",
+      "cause": "An older catalogue archetype predated the footprint-compatibility contract, and fixed native geometry did not supply planning guidance by itself.",
+      "correction": "Author an explicit compatibility override before canonical generation. Name at least three bounded planning profiles, document the one native fixed tier, and state which complete assemblies derived profiles must preserve."
+    },
+    {
+      "symptom": "A corner portico keeps its curved arches on the principal face but collapses into flat rectangular openings on the return",
+      "cause": "The earlier round-arch helper was hard-wired to the front elevation and treated a deep arcade like a row of punched facade windows.",
+      "correction": "Use an axis-aware fixed arcade assembly with an explicit bay count, shared masonry piers, curved arch rings, recessed occupied shopfront cards and a continuous threshold. Prove both the principal and return rhythms in the front-corner and aerial views."
+    },
+    {
+      "symptom": "A restored machiya gable reads as an accidental cross instead of a complete timber frame",
+      "cause": "A center post and one collar beam were used as shorthand while the triangular rafters and base beam visible in the reference were omitted.",
+      "correction": "Build the gable frame as one axis-aware assembly with a base beam, paired sloped rafters, king post and bounded collar. Review the complete triangular silhouette from the principal street camera before promotion."
+    },
+    {
+      "symptom": "A machiya roof reads as a smooth dark membrane and its lower shop canopy as a gritty flat slab",
+      "cause": "Material colour carried the roof identity while the repeated kawara ribs, ridge and eave terminations were absent; the street canopy inherited a generic horizontal box.",
+      "correction": "Use an axis-aware tile-rib array with physical downslope ribs, ridge and eave caps, and assemble the lower canopy from shallow sloped roof segments. Verify both principal and return roof planes in oblique and aerial review."
+    },
+    {
+      "symptom": "A selected Scottish Baronial railway hotel compiles with green copper cladding from the parent hero image",
+      "cause": "The generic archetype hero was treated as the material authority even though all three selected-variant views proved pink-grey granite and dark slate.",
+      "correction": "Audit every compatible selected-variant angle before source generation. When parent and variant references conflict, the selected variant owns material identity, roof finish and landmark composition."
+    },
+    {
+      "symptom": "A courtyard hotel validates as one solid slab despite catalogue text promising an open court",
+      "cause": "Courtyard metadata was recorded as planning language but never converted into occupied wings and separate roof fields.",
+      "correction": "Construct open courts explicitly from four occupied wings and matching roof fields. Prove the uninterrupted void from aerial and rear-corner cameras before keeper promotion."
+    },
+    {
+      "symptom": "A clean railway-hotel elevation has fewer window rows than the audited six occupied levels",
+      "cause": "The image model preserved the selected material and style but treated the exact vertical count as approximate.",
+      "correction": "Recover the valid elevation as audited single-storey bands and sequence those bands into the exact level count. Do not stretch a short full-height atlas to conceal missing storeys."
+    },
+    {
+      "symptom": "A prominent gate tower stays blank or disappears behind the main wall while its portal competes with ordinary windows",
+      "cause": "The tower skin and portal were coplanar with or behind the tower core and inherited the principal facade depth order.",
+      "correction": "Give landmark entrance towers their own exposed envelope and layer order: core, tower skin, deep portal, then jamb and arch geometry. Verify the full tower from street and oblique cameras."
+    },
+    {
+      "symptom": "Baronial turrets read as blank cylinders or implausible tall black slots",
+      "cause": "Generic frame-grid placeholders were stretched over curved landmark volumes without a real occupied-window schedule.",
+      "correction": "Use bounded real sash assemblies on tangent facade planes and reserve curved volumes for silhouette. Review outer turrets and gate tourelles separately across front, corner and aerial views."
+    },
+    {
+      "symptom": "Crow-stepped gables are present in the graph but disappear behind the roof",
+      "cause": "The stepped profile was placed inside the sloped roof envelope and treated like applied facade ornament.",
+      "correction": "Author crowsteps as fixed silhouette geometry on the exposed gable plane, ahead of the roof field, and prove every step against the sky in the principal acceptance view."
     }
   ]
 }

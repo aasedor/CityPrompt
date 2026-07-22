@@ -366,6 +366,18 @@
     },
     {
       "id": "brownstone_rowhouse_frontage",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [5, 30],
+        "recommendedDepth_m": [12, 24],
+        "recommendedFloors": [2, 4],
+        "wingDepth_m": [5, 8],
+        "profiles": {
+          "rectangle": {"recommendedWidth_m": [5, 8], "recommendedDepth_m": [12, 18], "recommendedFloors": [2, 4]},
+          "l_shape": {"recommendedWidth_m": [12, 24], "recommendedDepth_m": [12, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]},
+          "u_shape": {"recommendedWidth_m": [18, 30], "recommendedDepth_m": [15, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]}
+        }
+      },
     "suggestedWidth_m": 6,
     "suggestedDepth_m": 15,
     "suggestedFloorHeight": 3.2,
@@ -2346,7 +2358,41 @@
       "minFloors": 1,
       "maxFloors": 4,
       "suggestedAreaSqm": 2000,
-      "developmentType": "mixed_use"
+      "developmentType": "mixed_use",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
+        "recommendedWidth_m": [30, 70],
+        "recommendedDepth_m": [18, 35],
+        "recommendedFloors": [1, 4],
+        "wingDepth_m": [8, 14],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [30, 70],
+            "recommendedDepth_m": [18, 35],
+            "recommendedFloors": [1, 4]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [38, 70],
+            "recommendedDepth_m": [24, 35],
+            "recommendedFloors": [1, 4],
+            "wingDepth_m": [8, 14]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [50, 70],
+            "recommendedDepth_m": [30, 35],
+            "recommendedFloors": [2, 4],
+            "wingDepth_m": [9, 13],
+            "minimumCourtyard_m": 10
+          }
+        },
+        "preferredBayMultiple_m": 3.6,
+        "minimumCourtyard_m": 10,
+        "notes": [
+          "Preserve the horizontal steel-frame rhythm, transparent corners and floating roof edge.",
+          "Repeat only neutral middle bays; keep the glazed entrance and carport as fixed semantic modules.",
+          "Distribute mullions and Roman-brick piers by bay count rather than stretching the facade texture."
+        ]
+      }
     },
     {
       "id": "civic_classical_building",
@@ -5504,14 +5550,41 @@
     },
     {
       "id": "parisian_boulevard_corner",
-    "suggestedWidth_m": 18,
-    "suggestedDepth_m": 18,
+    "suggestedWidth_m": 42,
+    "suggestedDepth_m": 40,
     "suggestedFloorHeight": 3.4,
-    "minWidth_m": 12,
-    "maxWidth_m": 25,
-    "minDepth_m": 12,
-    "maxDepth_m": 25,
-    "aspectRatio": "1:1",
+    "minWidth_m": 30,
+    "maxWidth_m": 45,
+    "minDepth_m": 28,
+    "maxDepth_m": 42,
+    "aspectRatio": "1.05:1",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
+        "recommendedWidth_m": [30, 42],
+        "recommendedDepth_m": [28, 40],
+        "recommendedFloors": [6, 8],
+        "wingDepth_m": [8, 12],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [30, 42],
+            "recommendedDepth_m": [28, 40],
+            "recommendedFloors": [6, 8]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [30, 42],
+            "recommendedDepth_m": [28, 40],
+            "recommendedFloors": [6, 8],
+            "wingDepth_m": [8, 12]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [36, 42],
+            "recommendedDepth_m": [34, 40],
+            "recommendedFloors": [6, 8],
+            "wingDepth_m": [8, 12],
+            "minimumCourtWidth_m": 12
+          }
+        }
+      },
       "shadeId": "#dd593c",
       "title": "Parisian Boulevard Corner",
       "aestheticCategory": "parisian",
@@ -5670,7 +5743,7 @@
       ],
       "minFloors": 5,
       "maxFloors": 8,
-      "suggestedAreaSqm": 600,
+      "suggestedAreaSqm": 1400,
       "developmentType": "mixed_use"
     },
     {
@@ -18371,6 +18444,8 @@
                       "id": "eixample-apartment-block-classic",
                       "label": "Classic Eixample",
                       "thumbnailUrl": "/archetypes/buildings/eixample-apartment-block/variant_0.png",
+                      "minFloors": 4,
+                      "maxFloors": 4,
                       "description": "Canonical Cerda-grid apartment with cream stucco facade, regular bay rhythm, iron balconies on every floor, stone-framed tribune gallery on principal floor, and flat terrace roof. Restrained classical ornament.",
                       "facadeDetail": {
                             "primaryMaterial": "cream lime-stucco with scored ashlar lines",

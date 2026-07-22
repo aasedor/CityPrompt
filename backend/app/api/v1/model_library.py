@@ -16,6 +16,10 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import require_auth
 from app.models.models import Building, ModelLibraryEntry, Project, User
+from app.services.residual_landscape import (
+    lock_residual_landscape_project,
+    mark_linked_community_3d_stale,
+)
 from app.schemas.schemas import (
     ModelLibraryApplyRequest,
     ModelLibraryResponse,
@@ -229,13 +233,26 @@ async def apply_library_model(
             except Exception:
                 pass
 
-    # Update building
+    # The object copies are external and can run without holding the project
+    # row. Serialize only the viewer-authoritative DB swap with paid Direct
+    # preflight, then invalidate any compiled zone that mounted the old model.
+    await lock_residual_landscape_project(db, building.project_id)
+    await db.refresh(building)
     building.model_url = new_url
     building.lod_urls = new_lod_urls
     building.generation_status = "completed"
     building.generation_engine = entry.generation_engine
     building.generation_prompt = entry.generation_prompt
     building.architectural_style = entry.architectural_style
+    await mark_linked_community_3d_stale(
+        db,
+        project_id=building.project_id,
+        building_id=building.id,
+        reason=(
+            "Linked generated building model changed; rebuild Community 3D "
+            "before Direct rendering."
+        ),
+    )
 
     # Increment use count
     entry.use_count = (entry.use_count or 0) + 1

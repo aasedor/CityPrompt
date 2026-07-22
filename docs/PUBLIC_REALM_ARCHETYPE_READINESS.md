@@ -147,3 +147,96 @@ The complete same-footprint screenshot audit is stored in [`artifacts/park-drape
 ### Batch 04 cost
 
 - Fifteen image calls were used: eight current-view render images and seven ground-drape generations/retries. The 100-call authorization was treated as a hard ceiling rather than a spending target.
+
+## Batch 05 - 2026-07-20 - ten-park render-lock cohort
+
+The first finite Public Realm LEGO park cohort is registered in
+`frontend/src/data/renderlockV1Parks.ts`. Each entry binds one archetype and
+selected variant to its exact ground-profile version, metric QA footprint and
+three catalog camera references (street, 60-degree oblique and 90-degree
+aerial). Image character controls material and planting appearance; the profile
+continues to control boundary, scale, topology, fixed-program count and safety
+clearances.
+
+| # | Archetype / selected variant | Locked program |
+| --- | --- | --- |
+| 1 | Neighborhood Park / Rustic Timber & Gravel | Connected circuit, four gateways, social lawn, meadow/rain garden, playground and pavilion pads |
+| 2 | Urban Pocket Park / Rustic Timber & Gravel | One clear lawn room and direct connected path |
+| 3 | Linear Greenway / Rail Trail | One continuous 3.5 m end-to-end trail |
+| 4 | Stormwater Pond / Naturalistic | Functional basin, wet shelf, inlet, outlet/weir and dry maintenance access; the reference dock is excluded |
+| 5 | Japanese Garden / Woodland Naturalistic | Stroll loop, koi pond, gravel court, stepping stones and exact bridge alignment |
+| 6 | Sports Complex / Professional Grade | One 100 x 64 m pitch and whole regulation tennis envelopes only |
+| 7 | Urban Forest / Rewilded Urban | Near-closed canopy, one continuous trail and two clearings |
+| 8 | Botanical Garden / Woodland Naturalistic | Interpretive loop, conservatory pad and three distinct collections |
+| 9 | Nature Play / Forest Adventure | Two linked safety clearings, accessible loop and contained rill |
+| 10 | Reservoir / Concrete-Edge Utility | Rectangular impoundment, complete shoreline trail and short-edge dam/spillway |
+
+### Live Google Tiles QA
+
+- Project: `http://localhost:5175/projects/c08fa377-7496-43ad-8f76-e92a15c25f64`
+- Community 3D compiled all ten park zones in one transaction with zero building
+  or street fallbacks.
+- The first downtown grid was rejected because terrain clamping correctly
+  placed the ground programs on photogrammetry rooftops. The same zones were
+  moved through supported APIs to flat open terrain south of Edmonton and
+  rebuilt before visual acceptance.
+- Close-range Tiles review verified the sports profile as one complete pitch
+  plus three complete tennis envelopes. The botanical profile retained one
+  conservatory pad, one interpretive loop and three separate collection rooms.
+- Two photoreal current-view sports renders were generated. Both retained the
+  one-plus-three program and parcel boundary. Render B is the preferred
+  appearance keeper because its goals, nets, fencing, lights and perimeter
+  planting read most clearly without entering a playing surface.
+- Cost checkpoint: two image calls. No optional AI ground drapes or external 3D
+  model-generation calls were used.
+
+### Verification
+
+- Focused registry/profile/scatter/compiler suite: 4 files / 97 tests passed.
+- Frontend TypeScript validation passed.
+
+## Batch 06 - 2026-07-20 - ten-street render-lock cohort
+
+The first finite Public Realm LEGO street cohort is registered in
+`frontend/src/data/renderlockV1Streets.ts`. Each keeper binds an existing road
+archetype and selected variant to its authoritative metric cross-section, a
+240 m live-QA segment and three catalog reference angles. Reference imagery
+controls character and material intent; `streetSectionProfiles` remains the
+source of truth for right-of-way width, band order and band dimensions.
+
+| # | Archetype / selected variant | Right-of-way | Locked character |
+| --- | --- | ---: | --- |
+| 1 | Yield Street / Dutch Woonerf | 6 m | Curb-free shared brick street |
+| 2 | Narrow Residential Street / Classic | 10 m | Compact tree-canopy residential street |
+| 3 | Collector Road / Classic | 16 m | Conventional curbed collector section |
+| 4 | Main Street Complete / Classic | 18 m | Mixed-use complete main street |
+| 5 | Calgary Local / Street Manual | 16 m | Calgary local technical section |
+| 6 | Protected Bike Lane (Bi-Directional) / Standard | 20 m | One-sided two-way protected cycle track |
+| 7 | Calgary Arterial 4-Lane 50 / Street Manual | 33 m | Four-lane Calgary arterial technical section |
+| 8 | Multi-Use Trail / Green Corridor | 4 m | Curb-free shared greenway trail |
+| 9 | Toronto Victorian Residential Street / Summer | 16 m | Summer-canopy Victorian residential street |
+| 10 | Toronto Laneway / Traditional | 5 m | Curb-free traditional service laneway |
+
+### Live Google Tiles QA
+
+- Cohort project: `http://localhost:5175/projects/8ed5fbc2-cd1d-42cc-81ea-bb8b669b5291`
+- Community 3D compiled all ten 240 m street/path zones atomically with zero
+  building or park fallbacks.
+- One-zone protected-cycle pilot:
+  `http://localhost:5175/projects/c891efec-3445-46d5-95f0-7b232c7692fc`
+- The pilot compiled one street/path layer for the exact 240 x 20 m footprint.
+  Its authoritative section is 0.3 setback, 1.8 sidewalk, 1.5 boulevard, 3.6
+  bidirectional cycle track, 0.5 separator, two 3.25 travel lanes, 2.2 parking,
+  1.5 boulevard, 1.8 sidewalk and 0.3 setback.
+- The initial A render preserved the one-sided protected track but read too
+  wide; B failed by becoming a multi-lane arterial. A masked correction is the
+  accepted photoreal keeper: one left-side two-way track with yellow centerline
+  and bollards, exactly two vehicle lanes, one right-side parallel-parking band,
+  paired sidewalks and tree boulevards.
+- Cost checkpoint: three image calls (two current-view alternatives and one
+  masked correction). No external 3D model-generation calls were used.
+
+### Verification
+
+- Focused registry/profile/mesh/LOD/compiler suite: 5 files / 50 tests passed.
+- Frontend TypeScript validation passed.

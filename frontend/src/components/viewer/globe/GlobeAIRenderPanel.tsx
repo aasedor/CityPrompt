@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { useQueryClient } from '@tanstack/react-query';
 import { Boxes, Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit, Trees } from 'lucide-react';
-import type { SiteZone, SavedRender } from '@/types';
+import type { Building, SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
@@ -24,16 +24,33 @@ import {
   takeParkGroundBatch,
 } from './parkGroundTexture';
 import {
+  getCommunity3DCaptureClaims,
+  hasCommunity3DSourceFingerprint,
   resolveCommunity3DAction,
   resolveCommunity3DKind,
   selectCommunity3DCompileZones,
 } from '@/features/community3d/community3d';
 import { analyzePlanBoundaryAlignment } from '@/features/community3d/planBoundaryAlignment';
 import {
+  communityCompileOptionsForZones,
   compileMixedCommunity3D,
   deriveItems as deriveCommunityBuildingItems,
 } from '@/features/legoAssembly/communityCompiler';
 import { estimateCurrentViewRenderCalls } from './renderCost';
+import {
+  createDirect3DCaptureQAPreview,
+  type Direct3DCaptureBundle,
+  type Direct3DCaptureQAPreview,
+} from './direct3dCapture';
+import {
+  getCurrentResidualLandscapeClaim,
+  hasCurrentResidualLandscapeRecipe,
+} from './residualLandscape';
+import {
+  resolveDirect3DPresentationMode,
+  useDirect3DRender,
+  type Direct3DRenderDiagnostics,
+} from './useDirect3DRender';
 
 // Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
@@ -64,6 +81,26 @@ function formatImageQualityLabel(quality?: OpenAIImageQuality): string | null {
   return `GPT ${OPENAI_IMAGE_QUALITY_LABELS[quality] ?? quality}`;
 }
 
+function apiErrorMessage(error: unknown, fallback: string): string {
+  const candidate = error as {
+    message?: unknown;
+    response?: { data?: { detail?: unknown } };
+  };
+  const detail = candidate?.response?.data?.detail;
+  if (typeof detail === 'string' && detail.trim()) return detail;
+  if (detail && typeof detail === 'object') {
+    const structured = detail as { message?: unknown; billed?: unknown };
+    if (typeof structured.message === 'string' && structured.message.trim()) {
+      return structured.billed === true && !/charg/i.test(structured.message)
+        ? `${structured.message} This attempt was charged.`
+        : structured.message;
+    }
+  }
+  return typeof candidate?.message === 'string' && candidate.message.trim()
+    ? candidate.message
+    : fallback;
+}
+
 function getLightboxMetaParts(render: LightboxRender): string[] {
   const qualityLabel = formatImageQualityLabel(render.imageQuality);
   return [
@@ -77,7 +114,12 @@ function getLightboxMetaParts(render: LightboxRender): string[] {
 interface GlobeAIRenderPanelProps {
   canvas: HTMLCanvasElement | null;
   camera: THREE.Camera | null;
+  /** Render/prompt zones, including transient model-only zones for Classic. */
   siteZones: SiteZone[];
+  /** Persisted source zones for Community 3D compilation and Direct claims. */
+  communitySourceZones?: SiteZone[];
+  /** Exact Building snapshot mounted by the globe alongside siteZones. */
+  buildings: Building[];
   terrainHeight: number;
   projectId?: string;
   /** Currently selected map zone; enables a one-park paid drape action. */
@@ -86,6 +128,8 @@ interface GlobeAIRenderPanelProps {
   modeledBuildingIds?: Set<string>;
   /** Hide/show placed models — used for polygon-only captures. */
   setBuildingModelsVisible?: (visible: boolean) => void;
+  /** Capture the compiled current-camera scene for the isolated Direct 3D pipeline. */
+  captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
   onRenderComplete?: (result: GlobeRenderResult) => void;
   onBeforeRender?: () => void | Promise<void>;
   dragHandleProps?: HTMLAttributes<HTMLDivElement>;
@@ -95,7 +139,7 @@ interface GlobeAIRenderPanelProps {
   onClose?: () => void;
 }
 
-const STYLES = [
+export const STYLES = [
   // ── Realistic — photo-style final-stage visualization ──
   { id: 'photorealistic', label: 'Photo Realistic' },
   { id: 'photomontage', label: 'Photomontage' },
@@ -127,13 +171,31 @@ const STYLES = [
 
 // UI grouping for the style picker — keeps the new-user taxonomy visible.
 // Update this when adding a style so it lands in the right group in the UI.
-const STYLE_GROUPS = [
+export const STYLE_GROUPS = [
   { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
   { label: 'Accurate', ids: ['survey', 'documentary'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
 ] as const;
+
+export type GlobeRenderPipeline = 'classic' | 'direct3d';
+
+export const DIRECT_3D_PIPELINE_DESCRIPTION =
+  'One-call full-scene restyle. Camera-preserving styles are geometry-checked; plan and axonometric styles are experimental reprojections.';
+export const DIRECT_3D_SCOPE_DESCRIPTION =
+  'Camera-preserving styles are checked against compiled geometry. Projection styles use the compiled design as guidance and require visual review.';
+export const DIRECT_3D_CALL_DESCRIPTION =
+  '1 image call · projection styles require visual review';
+
+/** Classic keeps its existing Development/massing gate; Direct accepts every catalogue style. */
+export function isRenderStyleDisabled(
+  pipeline: GlobeRenderPipeline,
+  style: string,
+  hasPlacedMassing: boolean,
+): boolean {
+  return pipeline === 'classic' && style === 'development' && !hasPlacedMassing;
+}
 
 type LightboxRender = {
   imageUrl: string;
@@ -153,11 +215,14 @@ export function GlobeAIRenderPanel({
   canvas,
   camera,
   siteZones,
+  communitySourceZones,
+  buildings,
   terrainHeight,
   projectId,
   selectedZoneId,
   modeledBuildingIds,
   setBuildingModelsVisible,
+  captureDirect3D,
   onRenderComplete,
   onBeforeRender,
   dragHandleProps,
@@ -167,6 +232,7 @@ export function GlobeAIRenderPanel({
   onClose,
 }: GlobeAIRenderPanelProps) {
   const { renderPreviews } = useGlobeAIRender();
+  const { renderDirect3D } = useDirect3DRender();
   const queryClient = useQueryClient();
   const [isRendering, setIsRendering] = useState(false);
   const [isPreparingCapture, setIsPreparingCapture] = useState(false);
@@ -177,6 +243,10 @@ export function GlobeAIRenderPanel({
   const [customPrompt, setCustomPrompt] = useState('');
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>('classic');
+  const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
+  const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
+  const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
   const hasPlacedMassing = useMemo(
@@ -185,8 +255,10 @@ export function GlobeAIRenderPanel({
     [siteZones, modeledBuildingIds],
   );
   useEffect(() => {
-    if (selectedStyle === 'development' && !hasPlacedMassing) setSelectedStyle('photorealistic');
-  }, [selectedStyle, hasPlacedMassing]);
+    if (renderPipeline === 'classic' && selectedStyle === 'development' && !hasPlacedMassing) {
+      setSelectedStyle('photorealistic');
+    }
+  }, [renderPipeline, selectedStyle, hasPlacedMassing]);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
@@ -197,6 +269,8 @@ export function GlobeAIRenderPanel({
   const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const savedImageKeysRef = useRef<Set<string>>(new Set());
+  const pipelineChoiceTouchedRef = useRef(false);
+  const authoritativeZones = communitySourceZones ?? siteZones;
 
   // ── 3D building models ──
   // When ON (default) placed models stay in the capture and their zones get
@@ -206,34 +280,99 @@ export function GlobeAIRenderPanel({
   const [confirm3DOpen, setConfirm3DOpen] = useState(false);
   const [isQueuing3D, setIsQueuing3D] = useState(false);
   const [generate3DStatus, setGenerate3DStatus] = useState<string | null>(null);
-  const renderCallCount = estimateCurrentViewRenderCalls(
-    COMPARE_RENDER_MODELS.length,
-    highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
-  );
+  const renderCallCount = renderPipeline === 'direct3d'
+    ? 1
+    : estimateCurrentViewRenderCalls(
+        COMPARE_RENDER_MODELS.length,
+        highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
+      );
 
-  const boundaryZone3D = siteZones.find(
+  const boundaryZone3D = authoritativeZones.find(
     (z) => z.zone_type === 'site_boundary' && z.coordinates.length >= 3,
   );
   const buildableZones = useMemo(
-    () => deriveCommunityBuildingItems(siteZones)
+    () => deriveCommunityBuildingItems(authoritativeZones)
       .map((item) => item.zone)
       .filter((zone) => (
         (zone.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height'
       )),
-    [siteZones],
+    [authoritativeZones],
   );
   const communityGroundZones = useMemo(
-    () => siteZones.filter((z) => {
+    () => authoritativeZones.filter((z) => {
       const kind = resolveCommunity3DKind(z);
       return (kind === 'park' || kind === 'street') && z.coordinates.length >= 3;
     }),
-    [siteZones],
+    [authoritativeZones],
   );
   const communityZones = useMemo(
     () => [...buildableZones, ...communityGroundZones],
     [buildableZones, communityGroundZones],
   );
   const community3DAction = resolveCommunity3DAction(communityZones);
+  const hasCompiledCommunity = communityZones.length > 0 && community3DAction === 'rebuild';
+  const community3DCaptureClaims = useMemo(
+    () => getCommunity3DCaptureClaims(authoritativeZones, buildings),
+    [authoritativeZones, buildings],
+  );
+  const hasAllCompiledSourceFingerprints = Boolean(
+    community3DCaptureClaims
+    && community3DCaptureClaims.length === communityZones.length
+    && communityZones.every(hasCommunity3DSourceFingerprint),
+  );
+  const hasCurrentResidualLandscape = useMemo(
+    () => hasCurrentResidualLandscapeRecipe(authoritativeZones),
+    [authoritativeZones],
+  );
+  const residualLandscapeClaim = useMemo(
+    () => getCurrentResidualLandscapeClaim(authoritativeZones),
+    [authoritativeZones],
+  );
+  const unsupportedDirect3DZones = useMemo(
+    () => authoritativeZones.filter((zone) => {
+      const role = (zone.properties as Record<string, unknown> | undefined)?._plan_role;
+      return zone.zone_type !== 'site_boundary'
+        && role !== 'framework_height'
+        && zone.coordinates.length >= 3
+        && resolveCommunity3DKind(zone) === null;
+    }),
+    [authoritativeZones],
+  );
+  const compiledBuildingZones = communityZones.filter(
+    (zone) => resolveCommunity3DKind(zone) === 'building',
+  );
+  const hasAllCompiledBuildingMassing = compiledBuildingZones.every(
+    (zone) => Boolean(zone.building_id && modeledBuildingIds?.has(zone.building_id)),
+  );
+  const direct3DAvailable = Boolean(
+    captureDirect3D
+    && projectId
+    && hasCompiledCommunity
+    && hasAllCompiledSourceFingerprints
+    && hasCurrentResidualLandscape
+    && unsupportedDirect3DZones.length === 0
+    && hasAllCompiledBuildingMassing,
+  );
+  const direct3DUnavailableReason = !captureDirect3D
+    ? 'The globe capture is not ready yet.'
+    : !projectId
+      ? 'Save this project before using Direct 3D.'
+    : !hasCompiledCommunity
+      ? 'Generate or complete Community 3D first.'
+    : !hasAllCompiledSourceFingerprints
+      ? 'Rebuild Community 3D once to verify every layer against its current source geometry and design settings.'
+    : !hasCurrentResidualLandscape
+        ? 'Rebuild Community 3D to refresh residual landscaping before a Direct render.'
+        : unsupportedDirect3DZones.length > 0
+          ? `${unsupportedDirect3DZones.length} authored polygon${unsupportedDirect3DZones.length === 1 ? '' : 's'} need a supported building, park/plaza, or street/path type.`
+        : !hasAllCompiledBuildingMassing
+          ? 'Turn on all compiled 3D building models before a Direct render.'
+          : null;
+  useEffect(() => {
+    if (direct3DAvailable && !pipelineChoiceTouchedRef.current) {
+      setRenderPipeline('direct3d');
+    }
+  }, [direct3DAvailable]);
   const communityCompileZones = useMemo(
     () => selectCommunity3DCompileZones(communityZones, community3DAction),
     [community3DAction, communityZones],
@@ -255,8 +394,8 @@ export function GlobeAIRenderPanel({
   const unsavedCommunityCount = communityZones
     .filter((z) => !isPersistedZoneId(z.id)).length;
   const planBoundaryAlignment = useMemo(
-    () => analyzePlanBoundaryAlignment(siteZones),
-    [siteZones],
+    () => analyzePlanBoundaryAlignment(authoritativeZones),
+    [authoritativeZones],
   );
   const planGeometryStale = !planBoundaryAlignment.isAligned;
   const stalePlanMessage = planGeometryStale
@@ -277,7 +416,7 @@ export function GlobeAIRenderPanel({
   // ── Park ground textures (AI ortho drape; one Gemini render per park) ──
   const [isGeneratingParks, setIsGeneratingParks] = useState(false);
   const [parkGroundStatus, setParkGroundStatus] = useState<string | null>(null);
-  const parkZones = siteZones.filter(
+  const parkZones = authoritativeZones.filter(
     (z) => resolveCommunity3DKind(z) === 'park'
       && z.coordinates.length >= 3
       && isPersistedZoneId(z.id),
@@ -380,7 +519,7 @@ export function GlobeAIRenderPanel({
     if (!import.meta.env.DEV) return undefined;
     const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {}) as Record<string, unknown>;
     dbg.generateParkGround = async (zoneId: string) => {
-      const zone = siteZones.find((z) => z.id === zoneId);
+      const zone = authoritativeZones.find((z) => z.id === zoneId);
       if (!zone) throw new Error(`zone ${zoneId} not loaded`);
       const diagram = buildParkDiagram(zone);
       const meta = await generateParkGroundTexture(zone);
@@ -390,7 +529,7 @@ export function GlobeAIRenderPanel({
     return () => {
       delete dbg.generateParkGround;
     };
-  }, [siteZones, queryClient, projectId]);
+  }, [authoritativeZones, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (planGeometryStale || !projectId || !communityBoundaryReady || isQueuing3D) return;
@@ -407,12 +546,22 @@ export function GlobeAIRenderPanel({
               : 'Compiling parks and streets…',
           );
         },
+        communityCompileOptionsForZones(communityCompileZones),
       );
+      const residualLandscape = summary.response.residual_landscape;
+      const residualStatus = residualLandscape && residualLandscape.boundary_count > 0
+        ? ` Landscaped ${Math.round(residualLandscape.area_sqm).toLocaleString()} m² of un-authored site`
+          + ` with ${residualLandscape.placement_count} context-aware tree${residualLandscape.placement_count === 1 ? '' : 's'}`
+          + (residualLandscape.derived_boundary_count > 0
+            ? ' inside a generated editable site boundary.'
+            : ' inside the site boundary.')
+        : '';
       setGenerate3DStatus(
         `Built ${summary.detailedBuildings} detailed modular building${summary.detailedBuildings === 1 ? '' : 's'}, `
         + `${summary.plannedMasses} family-pending exact mass${summary.plannedMasses === 1 ? '' : 'es'}, `
         + `${summary.parks} park${summary.parks === 1 ? '' : 's'}, and `
-        + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}.`,
+        + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}.`
+        + residualStatus,
       );
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
@@ -502,7 +651,9 @@ export function GlobeAIRenderPanel({
     return true;
   }, [onRenderSaved, projectId, selectedStyle]);
 
-  const handleRender = useCallback(async () => {
+  // The established colored-polygon renderer stays isolated here. Direct 3D
+  // uses its own capture, endpoint and one-call accounting path below.
+  const handleClassicRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
 
     if (planGeometryStale) {
@@ -604,6 +755,87 @@ export function GlobeAIRenderPanel({
       if (hidModels) setBuildingModelsVisible!(true);
     }
   }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible, planGeometryStale, stalePlanMessage]);
+
+  const handleCheckDirectCapture = useCallback(async () => {
+    if (!captureDirect3D || !direct3DAvailable || isCheckingDirectCapture || isRendering) return;
+    setIsCheckingDirectCapture(true);
+    setError(null);
+    try {
+      await onBeforeRender?.();
+      const capture = await captureDirect3D();
+      setDirectCapturePreview(await createDirect3DCaptureQAPreview(capture));
+    } catch (err: unknown) {
+      setDirectCapturePreview(null);
+      setError(apiErrorMessage(err, 'Direct 3D capture check failed.'));
+    } finally {
+      setIsCheckingDirectCapture(false);
+    }
+  }, [captureDirect3D, direct3DAvailable, isCheckingDirectCapture, isRendering, onBeforeRender]);
+
+  const handleDirectRender = useCallback(async () => {
+    if (!captureDirect3D || !direct3DAvailable || isRendering) return;
+    if (planGeometryStale) {
+      setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
+      return;
+    }
+    setIsRendering(true);
+    setIsPreparingCapture(true);
+    setResult(null);
+    setPreviews([]);
+    setSelectedPreviewIndex(null);
+    setDirectDiagnostics(null);
+    setError(null);
+    setRenderProgress(null);
+    const startTime = Date.now();
+    const timer = setInterval(() => setRenderTime(Math.round((Date.now() - startTime) / 1000)), 1000);
+
+    try {
+      // Always take a fresh paid-action capture. The free QA preview is never
+      // reused because the user may have moved the camera in the meantime.
+      await onBeforeRender?.();
+      setDirectCapturePreview(null);
+      const capture = await captureDirect3D();
+      setIsPreparingCapture(false);
+      const direct = await renderDirect3D(capture, {
+        style: selectedStyle,
+        customPrompt: customPrompt.trim() || undefined,
+        projectId: projectId!,
+        community3DClaims: community3DCaptureClaims!,
+        residualLandscapeClaim,
+      });
+      setPreviews([direct.render]);
+      setSelectedPreviewIndex(0);
+      setResult(direct.render);
+      setDirectDiagnostics(direct.diagnostics);
+      await autoSaveGlobeRenders([direct.render]);
+      onRenderComplete?.(direct.render);
+    } catch (err: unknown) {
+      setError(apiErrorMessage(err, 'Direct 3D render failed. Please try again.'));
+    } finally {
+      clearInterval(timer);
+      setRenderTime(0);
+      setRenderProgress(null);
+      setIsPreparingCapture(false);
+      setIsRendering(false);
+    }
+  }, [
+    autoSaveGlobeRenders,
+    captureDirect3D,
+    customPrompt,
+    community3DCaptureClaims,
+    direct3DAvailable,
+    isRendering,
+    onBeforeRender,
+    onRenderComplete,
+    planGeometryStale,
+    projectId,
+    residualLandscapeClaim,
+    renderDirect3D,
+    selectedStyle,
+    stalePlanMessage,
+  ]);
+
+  const handleRender = renderPipeline === 'direct3d' ? handleDirectRender : handleClassicRender;
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -860,12 +1092,72 @@ export function GlobeAIRenderPanel({
         <div className="flex items-start gap-2 rounded-lg border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[#151515] shadow-[3px_3px_0_0_#151515]">
           <Camera size={15} className="mt-0.5 shrink-0" />
           <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase">Current view becomes the render</p>
+            <p className="text-[11px] font-black uppercase">
+              {renderPipeline === 'direct3d' ? 'Current view anchors the design' : 'Current view becomes the render'}
+            </p>
             <p className="mt-0.5 text-[10px] font-bold leading-snug text-[#151515]/70">
-              Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.
+              {renderPipeline === 'direct3d'
+                ? 'Frame the compiled scene first. Most styles retain this camera; experimental plan and axonometric styles may change projection and must be visually checked.'
+                : 'Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.'}
             </p>
           </div>
         </div>
+      </div>
+      <div className="border-b-2 border-white/10 px-4 py-2">
+        <div className="mb-1 text-[10px] font-black uppercase text-white/50">Render pipeline</div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              pipelineChoiceTouchedRef.current = true;
+              setRenderPipeline('classic');
+              setDirectCapturePreview(null);
+              setDirectDiagnostics(null);
+            }}
+            className={`rounded-lg border-2 px-3 py-2 text-left transition ${
+              renderPipeline === 'classic'
+                ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white'
+                : 'border-white/15 bg-white/5 text-white/60 hover:bg-white/10'
+            }`}
+          >
+            <span className="block text-[11px] font-black uppercase">Classic Polygons</span>
+            <span className="mt-0.5 block text-[9px] font-semibold leading-snug opacity-65">
+              Established colored-zone pipeline and A/B previews.
+            </span>
+          </button>
+          <button
+            type="button"
+            disabled={!direct3DAvailable}
+            title={direct3DUnavailableReason ?? DIRECT_3D_PIPELINE_DESCRIPTION}
+            onClick={() => {
+              pipelineChoiceTouchedRef.current = true;
+              setRenderPipeline('direct3d');
+              setHighFidelity(false);
+              setDirectDiagnostics(null);
+            }}
+            className={`rounded-lg border-2 px-3 py-2 text-left transition ${
+              renderPipeline === 'direct3d'
+                ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white'
+                : direct3DAvailable
+                  ? 'border-white/15 bg-white/5 text-white/60 hover:bg-white/10'
+                  : 'cursor-not-allowed border-white/10 bg-white/[0.03] text-white/25'
+            }`}
+          >
+            <span className="block text-[11px] font-black uppercase">Direct 3D</span>
+            <span className="mt-0.5 block text-[9px] font-semibold leading-snug opacity-65">
+              {DIRECT_3D_PIPELINE_DESCRIPTION}
+            </span>
+          </button>
+        </div>
+        {renderPipeline === 'direct3d' ? (
+          <p className={`mt-1.5 text-[10px] font-semibold ${direct3DAvailable ? 'text-cyan-100/70' : 'text-amber-200/80'}`}>
+            {direct3DAvailable
+              ? DIRECT_3D_SCOPE_DESCRIPTION
+              : `Direct 3D unavailable: ${direct3DUnavailableReason}`}
+          </p>
+        ) : direct3DUnavailableReason ? (
+          <p className="mt-1.5 text-[10px] font-semibold text-white/45">Direct 3D: {direct3DUnavailableReason}</p>
+        ) : null}
       </div>
       <div className="grid gap-3 border-b-2 border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
         {/* Style selector */}
@@ -879,11 +1171,10 @@ export function GlobeAIRenderPanel({
                   {group.ids.map(id => {
                     const s = STYLES.find(x => x.id === id);
                     if (!s) return null;
-                    // Development mode conditions on real massing in the
-                    // capture — meaningless until a LEGO stack or 3D model is
-                    // placed on some zone in the scene.
-                    const needsPlacedMassing = s.id === 'development';
-                    const disabled = needsPlacedMassing && !hasPlacedMassing;
+                    // Preserve Classic's placed-massing gate. Direct already
+                    // requires a compiled scene and exposes the full catalogue.
+                    const disabled = isRenderStyleDisabled(renderPipeline, s.id, hasPlacedMassing);
+                    const presentationMode = resolveDirect3DPresentationMode(s.id);
                     return (
                       <button
                         key={s.id}
@@ -891,9 +1182,11 @@ export function GlobeAIRenderPanel({
                         disabled={disabled}
                         title={disabled
                           ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
-                          : s.id === 'development'
-                            ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
-                            : undefined}
+                          : renderPipeline === 'direct3d' && presentationMode === 'reproject'
+                            ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
+                            : s.id === 'development'
+                              ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
+                              : undefined}
                         className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
                           selectedStyle === s.id
                             ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
@@ -913,7 +1206,7 @@ export function GlobeAIRenderPanel({
         </div>
 
         {/* High-fidelity two-pass toggle — camera-preserving artistic styles only */}
-        {HIGH_FIDELITY_STYLES.has(selectedStyle) && (
+        {renderPipeline === 'classic' && HIGH_FIDELITY_STYLES.has(selectedStyle) && (
           <label className="flex cursor-pointer items-center gap-2 text-[11px] font-bold text-white/70">
             <input
               type="checkbox"
@@ -945,6 +1238,51 @@ export function GlobeAIRenderPanel({
           <div className="rounded-lg border-2 border-[#ff5a3d] bg-red-500/20 px-3 py-2 text-xs font-bold text-red-200">
             {error}
           </div>
+        </div>
+      )}
+
+      {renderPipeline === 'direct3d' && (
+        <div className="border-b-2 border-white/10 px-4 py-2">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-black uppercase text-white/60">Capture safety check</p>
+              <p className="text-[9px] font-semibold text-white/40">Free · never reused for the paid render</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleCheckDirectCapture}
+              disabled={!direct3DAvailable || isCheckingDirectCapture || isRendering}
+              className="flex items-center gap-1.5 rounded-full border border-cyan-200/40 bg-cyan-300/10 px-2.5 py-1.5 text-[10px] font-black uppercase text-cyan-100 transition hover:bg-cyan-300/20 disabled:opacity-40"
+            >
+              {isCheckingDirectCapture ? <Loader2 size={11} className="animate-spin" /> : <Camera size={11} />}
+              {isCheckingDirectCapture ? 'Checking…' : 'Check Direct Capture'}
+            </button>
+          </div>
+          {directCapturePreview && (
+            <div className="mt-2">
+              <div className="mb-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] font-bold text-white/55">
+                <span>{directCapturePreview.width} × {directCapturePreview.height}</span>
+                <span>{(directCapturePreview.maskCoverage * 100).toFixed(1)}% proposal</span>
+                {Object.entries(directCapturePreview.classCoverage).map(([role, coverage]) => (
+                  <span key={role}>{role} {((coverage ?? 0) * 100).toFixed(1)}%</span>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  ['Beauty', directCapturePreview.thumbnails.beauty],
+                  ['Mask', directCapturePreview.thumbnails.mask],
+                  ['Class ID', directCapturePreview.thumbnails.classId],
+                ].map(([label, source]) => (
+                  <figure key={label} className="overflow-hidden rounded border border-white/15 bg-black/30">
+                    <img src={source} alt={`Direct 3D ${label}`} className="aspect-video w-full object-contain" />
+                    <figcaption className="px-1.5 py-1 text-center text-[9px] font-black uppercase text-white/55">
+                      {label}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -1038,11 +1376,89 @@ export function GlobeAIRenderPanel({
               )}
             </div>
           </div>
+          {directDiagnostics && (
+            <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border border-emerald-300/25 bg-emerald-300/10 px-2 py-1.5 text-[9px] font-bold text-emerald-100/80">
+              {(directDiagnostics.processing_mode === 'scene'
+                || directDiagnostics.processing_mode === 'reproject'
+                || directDiagnostics.provider_first) ? (
+                <>
+                  <span className="capitalize">Mode {directDiagnostics.processing_mode ?? 'scene'}</span>
+                  <span>
+                    View {(directDiagnostics.view_lock ?? 'camera_registered').replace(/_/g, ' ')}
+                  </span>
+                  <span>Context {directDiagnostics.context_restyled ? 'restyled' : 'not restyled'}</span>
+                  <span>Provider-first {directDiagnostics.provider_first ? 'yes' : 'no'}</span>
+                  {directDiagnostics.reproject_output_sanity && (
+                    <>
+                      <span>Projection sanity proxy passed</span>
+                      <span>
+                        Content proxy {directDiagnostics.reproject_output_sanity.significant_edge_component_count}/
+                        {directDiagnostics.reproject_output_sanity.required_edge_component_count}
+                      </span>
+                      <span className="col-span-2 text-amber-100">Human layout review required</span>
+                    </>
+                  )}
+                  {directDiagnostics.macro_design_fidelity && (
+                    <>
+                      <span>Macro fidelity passed</span>
+                      <span>{directDiagnostics.macro_design_fidelity.evaluated_component_count} components checked</span>
+                      <span>
+                        Silhouette {((directDiagnostics.macro_design_fidelity.silhouette_edge_recall
+                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                      </span>
+                      <span>
+                        Topology {((directDiagnostics.macro_design_fidelity.semantic_edge_recall
+                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                      </span>
+                    </>
+                  )}
+                  {directDiagnostics.visual_change && (
+                    <>
+                      <span>Full-scene change passed</span>
+                      <span>Proposal delta {directDiagnostics.visual_change.proposal_mean_absolute_delta.toFixed(1)}</span>
+                      {directDiagnostics.visual_change.context_detail_delta_p75 != null && (
+                        <span className="col-span-2">
+                          Context detail {directDiagnostics.visual_change.context_detail_delta_p75.toFixed(1)}
+                        </span>
+                      )}
+                    </>
+                  )}
+                  {directDiagnostics.registration && (
+                    <span className="col-span-2">
+                      Camera registration {(directDiagnostics.registration.score * 100).toFixed(1)}%
+                    </span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <span className="col-span-2">Legacy source-anchored response</span>
+                  {directDiagnostics.registration && (
+                    <>
+                      <span>Registration {(directDiagnostics.registration.score * 100).toFixed(1)}%</span>
+                      <span>Shift {directDiagnostics.registration.translation_x_px.toFixed(1)}, {directDiagnostics.registration.translation_y_px.toFixed(1)} px</span>
+                    </>
+                  )}
+                  {directDiagnostics.exterior_max_channel_delta != null && (
+                    <span>Exterior delta {directDiagnostics.exterior_max_channel_delta}</span>
+                  )}
+                  {directDiagnostics.finish_fusion && <span>Finish transfer applied</span>}
+                  {directDiagnostics.structural_edge_fidelity && (
+                    <span className="col-span-2">
+                      Structural edges {((directDiagnostics.structural_edge_fidelity.semantic_edge_recall
+                        ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+          )}
           <button
             onClick={() => {
               setResult(null);
               setPreviews([]);
               setSelectedPreviewIndex(null);
+              setDirectCapturePreview(null);
+              setDirectDiagnostics(null);
             }}
             className="mt-1.5 w-full text-center text-[10px] text-gray-500 hover:text-gray-300"
           >
@@ -1066,7 +1482,7 @@ export function GlobeAIRenderPanel({
             </div>
           )}
 
-          {(modeledBuildingIds?.size ?? 0) > 0 && (
+          {renderPipeline === 'classic' && (modeledBuildingIds?.size ?? 0) > 0 && (
             <label className="mt-2 flex cursor-pointer items-center justify-between text-[11px] text-white/70">
               <span>Render with 3D models (geometry-accurate)</span>
               <input
@@ -1076,6 +1492,11 @@ export function GlobeAIRenderPanel({
                 className="h-3.5 w-3.5 accent-[#c9ff3d]"
               />
             </label>
+          )}
+          {renderPipeline === 'direct3d' && (
+            <p className="mt-2 rounded border border-cyan-200/20 bg-cyan-300/5 px-2 py-1.5 text-[10px] font-semibold text-cyan-100/65">
+              Direct 3D always captures the visible compiled models and public realm. Turning them off disables this pipeline.
+            </p>
           )}
 
           {!confirm3DOpen ? (
@@ -1090,7 +1511,7 @@ export function GlobeAIRenderPanel({
                   ? 'Generated master plans require their saved site boundary'
                   : unsavedCommunityCount > 0
                     ? 'Save your zones first — unsaved zones lose their archetype styling'
-                    : `${community3DActionLabel} the whole community with modular buildings, exact family-pending massing, parks, and engineered streets`
+                    : `${community3DActionLabel} the whole community with modular buildings, exact family-pending massing, parks, engineered streets, and residual landscaping`
               }
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
             >
@@ -1106,8 +1527,9 @@ export function GlobeAIRenderPanel({
               <p className="mt-1 text-amber-100/70">
                 Uses the same atomic compiler as LEGO Builder and no external model-generation credits.
                 Supported families use detailed modular GLBs; families still being authored use honest exact-footprint 3D massing.
-                Parks and engineered street sections compile in the same transaction. The editable tile scene intentionally leaves out
-                trees, benches and loose furniture; Render adds them after paths, water, crossings and fixed programs are known.
+                Parks and engineered street sections compile in the same transaction. Every remaining location inside the site boundary
+                is classified as lawn, groundcover, boulevard or perimeter planting; compatible residual areas receive deterministic trees.
+                If an older project has no boundary, the compiler derives and saves an editable one from the authored plan.
                 AI park ground drapes remain an optional Gemini step below.
               </p>
               <div className="mt-2 flex gap-2">
@@ -1247,7 +1669,13 @@ export function GlobeAIRenderPanel({
         )}
         <button
           onClick={handleRender}
-          disabled={planGeometryStale || isRendering || !canvas || !camera}
+          disabled={
+            planGeometryStale
+            || isRendering
+            || !canvas
+            || !camera
+            || (renderPipeline === 'direct3d' && !direct3DAvailable)
+          }
           className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
         >
           {isRendering ? (
@@ -1255,10 +1683,10 @@ export function GlobeAIRenderPanel({
               <Loader2 size={16} className="animate-spin" />
               <span className="min-w-0 truncate">
                 {isPreparingCapture
-                  ? `Preparing Google tiles... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  ? `${renderPipeline === 'direct3d' ? 'Capturing compiled 3D scene' : 'Preparing Google tiles'}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                   : renderProgress
                   ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
-                  : `Rendering current view... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  : `${renderPipeline === 'direct3d' ? 'Finishing Direct 3D scene' : 'Rendering current view'}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                 }
               </span>
             </>
@@ -1271,9 +1699,11 @@ export function GlobeAIRenderPanel({
             <>
               <Camera size={16} />
               <span className="flex min-w-0 flex-col leading-tight">
-                <span>Generate Current View Previews</span>
+                <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
                 <span className="text-[10px] font-bold opacity-70">
-                  {renderCallCount} image call{renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now
+                  {renderPipeline === 'direct3d'
+                    ? DIRECT_3D_CALL_DESCRIPTION
+                    : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
                 </span>
               </span>
             </>

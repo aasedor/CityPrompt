@@ -43,6 +43,11 @@ MODULE_STRETCH_MAX = 1.5
 # archetypes read as several buildings, not one fat block.
 MODULE_MIN_W_M = 12.0
 MAX_MODULES_PER_BAR = 8
+# Runtime LEGO plans persist one independently compiled recipe per polygon.
+# Keep exact/native cells bounded, but never batch a narrow frontage into one
+# stretched model simply to satisfy the older generic zone-count guard.
+MAX_RUNTIME_LEGO_CELLS_PER_AXIS = 48
+RUNTIME_LEGO_SCALE_MIN = 0.82
 
 # Void-safety cap: a perimeter ring built at the archetype's REAL depth can
 # still leave an oversized interior when a shallow archetype sits on a big
@@ -92,6 +97,154 @@ def _long_axis_angle(poly: BaseGeometry) -> float:
         if length > best_len:
             best_len, angle = length, math.degrees(math.atan2(y2 - y1, x2 - x1))
     return angle
+
+
+def _centered_cell_intervals(
+    lo: float,
+    hi: float,
+    cell_size: float,
+    gap: float,
+) -> list[tuple[float, float]]:
+    """Place fixed-size cells symmetrically, leaving excess span unbuilt."""
+
+    span = hi - lo
+    if cell_size <= 0 or span + 1e-6 < cell_size:
+        return []
+    count = max(1, int((span + gap) // (cell_size + gap)))
+    count = min(count, MAX_RUNTIME_LEGO_CELLS_PER_AXIS)
+    used = count * cell_size + max(0, count - 1) * gap
+    start = lo + max(0.0, span - used) / 2
+    return [
+        (
+            start + index * (cell_size + gap),
+            start + index * (cell_size + gap) + cell_size,
+        )
+        for index in range(count)
+    ]
+
+
+def _runtime_lego_mass(
+    block_m: BaseGeometry,
+    outer: BaseGeometry,
+    *,
+    typology: str,
+    dims: "TypologyDims | None",
+    target: TargetFootprint,
+    max_footprint: float,
+) -> tuple[BaseGeometry, dict[str, Any]]:
+    """Carve clean, directly compilable cells for a runtime LEGO identity.
+
+    Generic plan massing is allowed to deepen a perimeter, equal-distribute a
+    grid, batch an 8 m rowhouse into a 12-15 m frontage, or enlarge an anchor.
+    Each of those operations is useful for coloured massing but can leave the
+    selected LEGO family outside its strict 0.8-1.2 scale envelope. Runtime
+    plans instead place native cells (uniformly reduced only when a block is
+    slightly smaller) and return all leftover land to the residual landscape.
+    """
+
+    angle = _long_axis_angle(block_m)
+    origin = block_m.centroid
+    work = make_valid(affinity.rotate(outer, -angle, origin=origin))
+    minx, miny, maxx, maxy = work.bounds
+    span_x = maxx - minx
+    span_y = maxy - miny
+    if span_x <= 0 or span_y <= 0:
+        return Polygon(), {}
+
+    # Prefer the authored frontage/depth orientation. A swapped orientation is
+    # a deterministic fallback for a narrow block; the LEGO planner records a
+    # 90-degree instance rotation so facade proportions remain unchanged.
+    orientations = (
+        (float(target.width_m), float(target.depth_m), 0.0),
+        (float(target.depth_m), float(target.width_m), 90.0),
+    )
+    choices: list[tuple[float, float, float, float]] = []
+    for native_x, native_y, rotation in orientations:
+        area_scale = math.sqrt(max_footprint / max(native_x * native_y, 1e-6))
+        scale = min(1.0, span_x / native_x, span_y / native_y, area_scale)
+        if scale + 1e-9 >= RUNTIME_LEGO_SCALE_MIN:
+            choices.append((scale, -rotation, native_x, native_y))
+    if not choices:
+        return Polygon(), {}
+
+    scale, negative_rotation, native_x, native_y = max(choices)
+    orientation_rotation = -negative_rotation
+    cell_x = native_x * scale
+    cell_y = native_y * scale
+
+    if typology == "row_bars":
+        gap_x = MODULE_SEAM_M
+        gap_y = max(MODULE_SEAM_M, float(dims.gap_m) if dims else 0.0)
+    elif typology == "point_towers":
+        gap_x = gap_y = max(MODULE_SEAM_M, float(dims.gap_m) if dims else 0.0)
+    elif typology == "anchor_mass":
+        gap_x = gap_y = max(span_x, span_y)
+    else:
+        gap_x = gap_y = MODULE_SEAM_M
+
+    x_intervals = _centered_cell_intervals(minx, maxx, cell_x, gap_x)
+    y_intervals = _centered_cell_intervals(miny, maxy, cell_y, gap_y)
+    if not x_intervals or not y_intervals:
+        return Polygon(), {}
+
+    buffered_work = work.buffer(0.05)
+    indexed: list[tuple[int, int, Polygon]] = []
+    for y_index, (y0, y1) in enumerate(y_intervals):
+        for x_index, (x0, x1) in enumerate(x_intervals):
+            cell = box(x0, y0, x1, y1)
+            if buffered_work.covers(cell):
+                indexed.append((x_index, y_index, cell))
+
+    if typology == "perimeter_block" and len(indexed) > 1:
+        last_x = len(x_intervals) - 1
+        last_y = len(y_intervals) - 1
+        indexed = [
+            item
+            for item in indexed
+            if item[0] in (0, last_x) or item[1] in (0, last_y)
+        ]
+
+    # Concave/clipped blocks can miss every centered grid cell. Search a few
+    # stable centres and shrink uniformly, never below the strict fit floor.
+    if not indexed:
+        centres = (
+            work.centroid,
+            work.representative_point(),
+        )
+        probe_scale = scale
+        while probe_scale + 1e-9 >= RUNTIME_LEGO_SCALE_MIN and not indexed:
+            probe_x = native_x * probe_scale
+            probe_y = native_y * probe_scale
+            for centre in centres:
+                candidate = box(
+                    centre.x - probe_x / 2,
+                    centre.y - probe_y / 2,
+                    centre.x + probe_x / 2,
+                    centre.y + probe_y / 2,
+                )
+                if buffered_work.covers(candidate):
+                    indexed.append((0, 0, candidate))
+                    cell_x, cell_y, scale = probe_x, probe_y, probe_scale
+                    break
+            probe_scale = round(probe_scale - 0.025, 6)
+
+    if not indexed:
+        return Polygon(), {}
+
+    # Honour the loose seal cap by dropping complete cells, never distorting
+    # the selected building to consume the remainder.
+    cell_area = cell_x * cell_y
+    max_cells = max(1, int(max_footprint // max(cell_area, 1e-6)))
+    selected = [item[2] for item in indexed[:max_cells]]
+    mass = unary_union(selected)
+    mass = make_valid(affinity.rotate(mass, angle, origin=origin))
+    return mass, {
+        "runtime_lego_native_cells": True,
+        "runtime_lego_uniform_scale": round(scale, 4),
+        "runtime_lego_cell_rotation": orientation_rotation,
+        "module_w_m": round(target.width_m * scale, 1),
+        "module_d_m": round(target.depth_m * scale, 1),
+    }
 
 
 def subdivide_block(block_m: Polygon, parcel_width_m: float) -> list[Polygon]:
@@ -583,6 +736,29 @@ def building_mass_for_block(
     typology_used = typology
     extra: dict[str, Any] = {}
     mass: BaseGeometry = Polygon()
+
+    if target is not None and target.source == "runtime_lego":
+        mass, extra = _runtime_lego_mass(
+            block_m,
+            outer,
+            typology=typology,
+            dims=dims,
+            target=target,
+            max_footprint=max_footprint,
+        )
+        if mass.is_empty:
+            # The block cannot hold even an 80%-uniform version of this exact
+            # selectable identity. Leaving it unbuilt is honest and lets the
+            # residual landscape fill it; emitting a clipped generic polygon
+            # would force an unrelated post-hoc family rebound.
+            return None, None
+        info = {
+            "footprint_m2": round(float(mass.area), 1),
+            "coverage_of_block": round(float(mass.area) / float(block_m.area), 3),
+            "typology": typology_used,
+            **extra,
+        }
+        return mass, info
 
     if typology == "point_towers" and dims:
         # Target overrides the pad envelope; the grid gap stays typological.

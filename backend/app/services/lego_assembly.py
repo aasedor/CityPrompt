@@ -28,9 +28,10 @@ Expected metadata shape::
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any, Iterable, Literal
 
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
@@ -96,8 +97,29 @@ class AssemblyRequest:
     wing_depth_m: float | None = None
 
 
+AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
+
+
 class AssemblyPlanningError(ValueError):
-    """Raised when no valid modular assembly can be produced."""
+    """Raised when no valid modular assembly can be produced.
+
+    ``code`` is a stable API-facing classification. The optional metadata is
+    deliberately renderer-neutral so callers can explain an incompatible
+    target without parsing the human-readable message.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        code: AssemblyPlanningErrorCode = "family_incompatible",
+        requested: dict[str, Any] | None = None,
+        supported_families: list[dict[str, Any]] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.code = code
+        self.requested = requested
+        self.supported_families = supported_families
 
 
 def _as_float(value: Any, default: float = 0.0) -> float:
@@ -214,6 +236,55 @@ def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> Modu
     return max(candidates, key=lambda module: _module_score(module, request))
 
 
+def _requested_target_metadata(request: AssemblyRequest) -> dict[str, Any]:
+    return {
+        "width_m": float(request.target_width_m),
+        "depth_m": float(request.target_depth_m),
+        "floors": int(request.target_floors),
+        "footprint_profile": request.footprint_profile,
+    }
+
+
+def _supported_family_metadata(
+    descriptors: list[ModuleDescriptor],
+    families: Iterable[str],
+) -> list[dict[str, Any]]:
+    """Summarize the matching library families for actionable fit guidance."""
+
+    summaries: list[dict[str, Any]] = []
+    for family in families:
+        modules = [module for module in descriptors if module.family == family]
+        if not modules:
+            continue
+        minimum_floors = [
+            int(module.min_floors)
+            for module in modules
+            if module.min_floors is not None
+        ]
+        maximum_floors = [
+            int(module.max_floors)
+            for module in modules
+            if module.max_floors is not None
+        ]
+        native_floors = [
+            int(module.native_floors)
+            for module in modules
+            if module.native_floors is not None
+        ]
+        summaries.append({
+            "family": family,
+            "widths_m": sorted({round(float(module.width_m), 4) for module in modules}),
+            "depths_m": sorted({round(float(module.depth_m), 4) for module in modules}),
+            "min_floors": min(minimum_floors + native_floors)
+            if (minimum_floors or native_floors)
+            else None,
+            "max_floors": max(maximum_floors + native_floors)
+            if (maximum_floors or native_floors)
+            else None,
+        })
+    return summaries
+
+
 def footprint_segments(
     profile: str,
     width_m: float,
@@ -278,6 +349,56 @@ def footprint_segments(
     return segments
 
 
+def _rectangle_orientation(
+    module: ModuleDescriptor,
+    request: AssemblyRequest,
+    *,
+    scale_min: float,
+    scale_max: float,
+) -> tuple[float, float, float, float, float]:
+    """Choose the least-distorted direct or quarter-turned module fit.
+
+    Polygon footprint measurement intentionally reports the long bounding-box
+    side as width. A faithfully carved narrow module can therefore arrive as a
+    15 x 8 m request even though its authored local axes are 8 x 15 m. Treating
+    those numbers as semantic facade/depth axes rejects an exact fit. Returning
+    a 90-degree segment keeps the authored axes and texture proportions intact.
+    """
+
+    candidates = (
+        (
+            request.target_width_m / module.width_m,
+            request.target_depth_m / module.depth_m,
+            0.0,
+            request.target_width_m,
+            request.target_depth_m,
+        ),
+        (
+            request.target_depth_m / module.width_m,
+            request.target_width_m / module.depth_m,
+            90.0,
+            request.target_depth_m,
+            request.target_width_m,
+        ),
+    )
+
+    def fit_key(candidate: tuple[float, float, float, float, float]) -> tuple:
+        scale_x, scale_y, rotation, _, _ = candidate
+        valid = (
+            scale_min <= scale_x <= scale_max
+            and scale_min <= scale_y <= scale_max
+        )
+        distortion = (
+            abs(math.log(max(scale_x, 1e-9)))
+            + abs(math.log(max(scale_y, 1e-9)))
+            + 0.5 * abs(math.log(max(scale_x, 1e-9) / max(scale_y, 1e-9)))
+        )
+        # Preserve the historic direct orientation on an exact quality tie.
+        return (not valid, distortion, rotation != 0.0)
+
+    return min(candidates, key=fit_key)
+
+
 def plan_vertical_assembly(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
@@ -302,6 +423,12 @@ def plan_vertical_assembly(
     families = list(dict.fromkeys(module.family for module in descriptors))
     if request.preferred_family:
         families = [f for f in families if f == request.preferred_family]
+        if not families:
+            raise AssemblyPlanningError(
+                f"No module family named '{request.preferred_family}' is available.",
+                code="family_not_found",
+                requested=_requested_target_metadata(request),
+            )
     if request.archetype_id:
         families = [
             family
@@ -315,8 +442,16 @@ def plan_vertical_assembly(
         if not families:
             raise AssemblyPlanningError(
                 f"No module family explicitly matches archetype '{request.archetype_id}'. "
-                "Import that archetype/variant instead of substituting an unrelated family."
+                "Import that archetype/variant instead of substituting an unrelated family.",
+                code="family_not_found",
+                requested=_requested_target_metadata(request),
             )
+    if not families:
+        raise AssemblyPlanningError(
+            "No module families are available.",
+            code="family_not_found",
+            requested=_requested_target_metadata(request),
+        )
 
     best_plan: dict[str, Any] | None = None
     best_score = float("-inf")
@@ -342,8 +477,18 @@ def plan_vertical_assembly(
             request,
         )
         if assembled:
-            scale_x = request.target_width_m / assembled.width_m
-            scale_y = request.target_depth_m / assembled.depth_m
+            (
+                scale_x,
+                scale_y,
+                rectangle_rotation,
+                segment_length,
+                segment_thickness,
+            ) = _rectangle_orientation(
+                assembled,
+                request,
+                scale_min=FIXED_LANDMARK_SCALE_MIN,
+                scale_max=FIXED_LANDMARK_SCALE_MAX,
+            )
             if (
                 FIXED_LANDMARK_SCALE_MIN <= scale_x <= FIXED_LANDMARK_SCALE_MAX
                 and FIXED_LANDMARK_SCALE_MIN <= scale_y <= FIXED_LANDMARK_SCALE_MAX
@@ -373,7 +518,7 @@ def plan_vertical_assembly(
                         "level": 0,
                         "segment_id": "landmark",
                         "position": [0.0, 0.0, 0.0],
-                        "rotation_degrees": 0.0,
+                        "rotation_degrees": rectangle_rotation,
                         "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
                         "native_dimensions_m": [
                             assembled.width_m, assembled.depth_m, assembled.height_m,
@@ -389,9 +534,9 @@ def plan_vertical_assembly(
                     },
                     "footprint_segments": [{
                         "id": "landmark", "centre_x_m": 0.0, "centre_y_m": 0.0,
-                        "length_m": request.target_width_m,
-                        "thickness_m": request.target_depth_m,
-                        "rotation_degrees": 0.0,
+                        "length_m": segment_length,
+                        "thickness_m": segment_thickness,
+                        "rotation_degrees": rectangle_rotation,
                     }],
                 }
                 if family_score > best_score:
@@ -430,13 +575,43 @@ def plan_vertical_assembly(
         if standard_count and not floor_variants:
             continue
 
-        segments = footprint_segments(
-            request.footprint_profile,
-            request.target_width_m,
-            request.target_depth_m,
-            podium.depth_m,
-            request.wing_depth_m,
+        # Rectangles can represent either authored axis order after browser
+        # measurement. Quarter-turn the complete stack when that is the exact
+        # fit; multi-wing profiles already encode each return's rotation.
+        scale_min, scale_max = (
+            (0.80, 1.20)
+            if request.footprint_profile == "rectangle"
+            else (0.62, 1.40)
         )
+        if request.footprint_profile == "rectangle":
+            (
+                _,
+                _,
+                rectangle_rotation,
+                segment_length,
+                segment_thickness,
+            ) = _rectangle_orientation(
+                podium,
+                request,
+                scale_min=scale_min,
+                scale_max=scale_max,
+            )
+            segments = [{
+                "id": "main",
+                "centre_x_m": 0.0,
+                "centre_y_m": 0.0,
+                "length_m": segment_length,
+                "thickness_m": segment_thickness,
+                "rotation_degrees": rectangle_rotation,
+            }]
+        else:
+            segments = footprint_segments(
+                request.footprint_profile,
+                request.target_width_m,
+                request.target_depth_m,
+                podium.depth_m,
+                request.wing_depth_m,
+            )
         segment_scales = [
             (
                 float(segment["length_m"]) / podium.width_m,
@@ -447,7 +622,6 @@ def plan_vertical_assembly(
         # Rectangles use the strict production fit. Multi-wing profiles need a
         # little more latitude because the imported family is a streetwall bar,
         # but still reject anything that would visibly crush the facade atlas.
-        scale_min, scale_max = (0.80, 1.20) if request.footprint_profile == "rectangle" else (0.62, 1.40)
         if any(not (scale_min <= sx <= scale_max and scale_min <= sy <= scale_max)
                for sx, sy in segment_scales):
             continue
@@ -533,7 +707,10 @@ def plan_vertical_assembly(
     if best_plan is None:
         raise AssemblyPlanningError(
             "No compatible module family found. Add podium, repeatable floor, and roof modules "
-            "whose native footprint is within 20% of the target."
+            "whose native footprint is within 20% of the target.",
+            code="family_incompatible",
+            requested=_requested_target_metadata(request),
+            supported_families=_supported_family_metadata(descriptors, families),
         )
     return best_plan
 

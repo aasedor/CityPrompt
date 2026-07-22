@@ -49,6 +49,18 @@ function zone(archetypeId: string): SiteZone {
   };
 }
 
+function trustedParkRecipe(selection: Record<string, unknown>): Record<string, unknown> {
+  return {
+    schema_version: 1,
+    kind: 'park',
+    generator: 'park_kit',
+    catalog_fingerprint: 'a'.repeat(64),
+    capability_fingerprint: 'b'.repeat(64),
+    recipe_hash: 'c'.repeat(64),
+    ...selection,
+  };
+}
+
 describe('park ground pilot profiles', () => {
   it.each([
     ['neighborhood_park', 'active_recreation'],
@@ -134,10 +146,33 @@ describe('park ground pilot profiles', () => {
     const moved = { ...base, coordinates: base.coordinates.map(([x, y], i) => [x + (i === 0 ? 0.0001 : 0), y]) };
     const variant = { ...base, properties: { ...base.properties, green_space_selected_variant_id: 'neighborhood_park_v2' } };
     const access = { ...base, properties: { ...base.properties, park_access_points: [[-114.07, 51.041]] } };
+    // Compatibility lock for existing paid orthophotos: the legacy V6 object
+    // shape, property order and FNV-1a hash may not drift during LEGO rollout.
+    expect(signature).toBe('pg6-ae6dfa95');
     expect(parkGroundSourceSignature(moved)).not.toBe(signature);
     expect(parkGroundSourceSignature(variant)).not.toBe(signature);
     expect(parkGroundSourceSignature(access)).not.toBe(signature);
     expect(parkGroundSourceSignature(zone('japanese_garden'))).not.toBe(signature);
+  });
+
+  it('keeps an untrusted nested recipe on the exact legacy V6 cache identity', () => {
+    const legacy = zone('neighborhood_park');
+    const untrusted = {
+      ...legacy,
+      properties: {
+        ...legacy.properties,
+        public_realm_lego: {
+          family_id: 'park_neighborhood_community',
+          family_version: 1,
+          archetype_id: 'neighborhood_park',
+          variant_id: 'neighborhood_park_v0',
+          appearance_kit_id: 'rustic_timber_gravel_v1',
+          planting_structure: 'active_recreation',
+        },
+      },
+    } satisfies SiteZone;
+    expect(parkGroundSourceSignature(untrusted)).toBe(parkGroundSourceSignature(legacy));
+    expect(parkGroundSourceSignature(untrusted)).toMatch(/^pg6-/);
   });
 
   it('treats open and explicitly closed polygon rings as the same ground source', () => {
@@ -155,6 +190,109 @@ describe('park ground pilot profiles', () => {
     expect(profile.guides.length).toBeGreaterThan(0);
     expect(profile.plantingStructure).toBe('water_ecology');
     expect(profile.programDescription.toLowerCase()).toContain('wetland');
+  });
+
+  it('never mistakes courtyards or forecourts for sports courts', () => {
+    for (const id of [
+      'courtyard_plaza',
+      'academic_courtyard',
+      'cathedral_religious_forecourt',
+      'cultural_institution_forecourt',
+    ]) {
+      const profile = resolveParkGroundProfile(zone(id));
+      expect(profile.plantingStructure, id).not.toBe('sports_recreation');
+      expect(profile.guides.some((guide) => guide.kind === 'tennis_court'), id).toBe(false);
+      expect(profile.guides.some((guide) => guide.kind === 'soccer_field'), id).toBe(false);
+    }
+    expect(resolveParkGroundProfile(zone('pickleball_courts')).plantingStructure)
+      .toBe('sports_recreation');
+  });
+
+  it('prefers the nested Public Realm LEGO selection and records its family contract', () => {
+    const candidate = zone('neighborhood_park');
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_neighborhood_community',
+        family_version: 1,
+        archetype_id: 'community_park',
+        variant_id: 'community_park_v2',
+        planting_structure: 'naturalistic_grove',
+        appearance_kit_id: 'mediterranean_xeriscape_v1',
+      }),
+    };
+    const profile = resolveParkGroundProfile(candidate);
+    expect(profile.archetypeId).toBe('community_park');
+    expect(profile.title).toContain('Mediterranean Xeriscape');
+    expect(profile.legoFamilyId).toBe('park_neighborhood_community');
+    expect(profile.legoFamilyVersion).toBe(1);
+    expect(profile.variantId).toBe('community_park_v2');
+    expect(resolveParkPlantingStructure(candidate)).toBe('naturalistic_grove');
+    expect(profile.guides).toHaveLength(9);
+    const changedRecipe = {
+      ...candidate,
+      properties: {
+        ...candidate.properties,
+        public_realm_lego: {
+          ...(candidate.properties?.public_realm_lego as Record<string, unknown>),
+          recipe_hash: 'd'.repeat(64),
+        },
+      },
+    } satisfies SiteZone;
+    expect(parkGroundSourceSignature(changedRecipe))
+      .not.toBe(parkGroundSourceSignature(candidate));
+    expect(parkGroundSourceSignature(candidate)).toMatch(/^pg7-/);
+  });
+
+  it('binds civic, greenway, and water families to their executable signature assemblies', () => {
+    const civic = zone('formal_civic_plaza');
+    civic.properties = {
+      ...civic.properties,
+      planting_structure: 'active_recreation',
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_civic_plaza',
+        family_version: 1,
+        archetype_id: 'formal_civic_plaza',
+        variant_id: 'formal_civic_plaza_v0',
+        appearance_kit_id: 'neoclassical_stone_v1',
+        planting_structure: 'paved_plaza',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(civic)).toBe('civic_fountain_assembly');
+    expect(resolveParkPlantingStructure(civic)).toBe('paved_plaza');
+
+    const water = zone('stormwater_retention_pond');
+    water.properties = {
+      ...water.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_water_ecology',
+        family_version: 1,
+        archetype_id: 'stormwater_retention_pond',
+        variant_id: 'stormwater_retention_pond_v0',
+        appearance_kit_id: 'naturalistic_pond_v1',
+        planting_structure: 'reservoir_perimeter',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(water)).toBe('stormwater_control_assembly');
+    const waterProfile = resolveParkGroundProfile(water);
+    expect(waterProfile.archetypeId).toBe('stormwater_retention_pond');
+    expect(waterProfile.guides.map(({ kind }) => kind))
+      .toEqual(['ellipse', 'rectangle', 'rectangle', 'polyline']);
+    expect(waterProfile.guideLegend.join(' ')).toContain('maintenance route');
+
+    const greenway = zone('linear_park_greenway');
+    greenway.properties = {
+      ...greenway.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_linear_greenway',
+        family_version: 1,
+        archetype_id: 'linear_park_greenway',
+        variant_id: 'linear_park_greenway_v0',
+        appearance_kit_id: 'rail_trail_v1',
+        planting_structure: 'naturalistic_grove',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(greenway)).toBe('greenway_edge_assembly');
   });
 
   it('compiles every open-space catalog entry and variant to an explicit 3D ground contract', () => {
@@ -477,13 +615,20 @@ describe('park ground pilot profiles', () => {
     expect(pixels[1]).toBeLessThan(200);
   });
 
-  it('defers trees and benches to the final render for every park surface', () => {
+  it('shows finishing props only after a park surface is compiled', () => {
     const candidate = zone('urban_pocket_park');
     const profile = resolveParkGroundProfile(candidate);
     const generated = {
       ...candidate,
       properties: {
         ...candidate.properties,
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'park',
+          generator: 'park_kit',
+          compiled_at: '2026-07-17T00:00:00Z',
+        },
         park_ground_texture: {
           url: '/park.png',
           document_id: 'doc-1',
@@ -499,11 +644,12 @@ describe('park ground pilot profiles', () => {
         },
       },
     } satisfies SiteZone;
-    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(true);
-    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(true);
+    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(false);
+    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(false);
     expect(shouldDeferParkFinishingProp(generated, 'playground')).toBe(false);
     expect(shouldDeferParkFinishingProp(candidate, 'tree')).toBe(true);
     expect(shouldRenderLiveParkProp(candidate, 'tree', true)).toBe(false);
+    expect(shouldRenderLiveParkProp(generated, 'tree', true)).toBe(true);
     expect(shouldRenderLiveParkProp(candidate, 'bench', true)).toBe(false);
     expect(shouldRenderLiveParkProp(candidate, 'playground', false)).toBe(false);
     expect(shouldRenderLiveParkProp(candidate, 'playground', true)).toBe(true);
@@ -593,8 +739,8 @@ describe('park ground pilot profiles', () => {
       expect(resolveParkGroundProfile(compiled).isPilot, archetypeId).toBe(true);
       expect(resolveParkGroundSurfaceSource(compiled), archetypeId).toBe('procedural');
       expect(hasCurrentParkGroundSurface(compiled), archetypeId).toBe(true);
-      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(true);
-      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(true);
+      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(false);
+      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(false);
     }
   });
 
