@@ -4,14 +4,15 @@ This directory preserves the verified local development history from the
 recovered workspace base through the completed parcel-landscape, Direct 3D,
 and AI LEGO-only community-planning work.
 
-- Local implementation branch: `codex/ai-lego-only-planner`
-- Verified local tip: `05b7f036fb72d59b575eb5577cfe0bfd8ba397db`
+- Local implementation branch: `codex/public-realm-lego-v1`
+- Verified local tip: `2da544aa5b119a10aa562c9030f429da5040d086`
 - Recovered shallow base: `3cbfcdaa90a02fea7220d185b1230b09923f2168`
-- Patch files: `1` through `34`, in application order
+- Patch files: `1` through `35`, in application order
 - Empty-lot and Direct 3D feature patch: `32`
 - Initial LEGO archetype handoff fix: `33`
 - AI LEGO-only planner and completed handoff patch: `34`
-- Patch 34 SHA-256: `F025F4CA525E7176F4FB3DEE8087DF938F83D3F031CF60B44E263B35F10B6A56`
+- Executable public-realm LEGO families patch: `35`
+- Patch 35 SHA-256: `4EE4FB2BAF8B5D3E152D00FA74F1849D20C65BB70F0EA87824A927470A3193FE`
 
 The recovered base commit and several of its promised objects are no longer
 retained by the GitHub remote. A normal branch push therefore attempted to
@@ -23,7 +24,7 @@ Apply only to a checkout that already contains the recovered base or an
 equivalent recovered workspace:
 
 ```bash
-git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
 ```
 
 ## Final feature outcome
@@ -94,3 +95,37 @@ The paid pilot is saved as project render 8 in project
   pipeline isolation checks
 - Close Direct photoreal QA retained 92.3% registration, 99.8% building edges,
   98.6% semantic edges, and zero exterior-pixel delta
+
+## Patch 35 outcome
+
+- Nine executable public-realm families now cover pocket and community parks,
+  civic plazas, linear greenways, water ecology, local streets, native 22 m
+  main streets, four-way intersections, and compact roundabouts.
+- AI plans persist canonical, hashed public-realm recipes and fail closed when
+  a requested family cannot compile; manual legacy zones remain compatible.
+- Community 3D renders metric park and street geometry, materials, planting,
+  furnishings, lighting, intersections, and detail LOD from those recipes.
+- Site-boundary remainder continues to compile as deterministic landscaping,
+  while corridor routing now proves useful in-parcel width instead of claiming
+  narrow clipped connectors.
+- Exact boundary undo restores the matching plan cohort; genuine boundary
+  changes remain stale. Classic colored-polygon rendering is unchanged.
+- Direct 3D keeps source geometry authoritative, with a strict structural-edge
+  fallback for photoreal finishes that pass translation, rotation, class, and
+  exterior-pixel locks.
+
+## Patch 35 verification
+
+- Backend matrix: 278 passed; focused boundary follow-up: 14 passed
+- Entire frontend suite: 62 files / 557 passed
+- TypeScript type check, production build, Ruff, Python bytecode compilation,
+  Git diff checks, and patch integrity checks: passed
+- Clean pilot: 5 LEGO buildings, 2 parks, 7 streets, 6,227 m2 residual
+  landscape, and 5 deterministic trees
+- Current-contract stress pilot: 30 buildings, 5 parks, 15 streets/paths, all
+  20 public-realm systems compiled, and 7,432 m2 residual landscape
+- Browser QA passed at 30-degree oblique, 73-degree steep, and 90-degree
+  overhead, plus model off/on, plan overlay, reload, and Direct capture
+- Bounded GPT Image 2 QA rejected the first geometry-drifting result and
+  accepted the controlled retry at 78.8% registration, 98.1% building-edge
+  retention, 99.0% semantic-edge retention, and zero exterior-pixel delta
