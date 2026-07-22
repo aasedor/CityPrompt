@@ -73,15 +73,19 @@ const customStyleKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
 const aestheticSelectionKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
   p.development_subcategory,
   p.development_archetype_id,
+  (p.development_selected_reference as { id?: string } | undefined)?.id,
   p.development_selected_variant_id,
   p.road_subcategory,
   p.road_archetype_id,
+  (p.road_selected_reference as { id?: string } | undefined)?.id,
   p.road_selected_variant_id,
   p.green_space_subcategory,
   p.green_space_archetype_id,
+  (p.green_space_selected_reference as { id?: string } | undefined)?.id,
   p.green_space_selected_variant_id,
   p.plaza_subcategory,
   p.plaza_archetype_id,
+  (p.plaza_selected_reference as { id?: string } | undefined)?.id,
   p.plaza_selected_variant_id,
 ]);
 
@@ -699,7 +703,17 @@ const buildAestheticSelectionProps = (
       ? selectedOption.generationTags
       : (Array.isArray(selectedOption.generationStyleInput?.generationTags) ? selectedOption.generationStyleInput?.generationTags : []);
 
-    const archetypeId = resolvedArchetype?.id || selectedOption.id;
+    const referenceArchetypeId = resolvedArchetype?.id || selectedOption.id;
+    // Public Realm LEGO compiles against the catalog's parent archetype ID
+    // (for example `main_street_complete`), while the image picker resolves a
+    // camera/lighting reference ID (for example
+    // `main_street_complete_variant_0`). Keep those identities separate so a
+    // manual road/park selection remains both compilable and visually traced.
+    // Building selection intentionally retains its existing image-qualified
+    // archetype ID contract.
+    const archetypeId = key === 'development_aesthetic'
+      ? referenceArchetypeId
+      : selectedOption.id;
     const archetypeLabel = resolvedArchetype?.label || selectedOption.label;
 
     nextProps[`${stylePrefix}_subcategory`] = selectedOption.id;
@@ -721,7 +735,7 @@ const buildAestheticSelectionProps = (
     }));
 
     nextProps[`${stylePrefix}_selected_reference`] = {
-      id: archetypeId,
+      id: referenceArchetypeId,
       label: archetypeLabel,
       imageUrl: resolvedArchetypeImage,
       imagePath: resolvedArchetype?.imagePath,
@@ -752,7 +766,7 @@ const buildAestheticSelectionProps = (
           : (baseGenerationInput.subtype || selectedOption.id),
       aestheticCategoryId: selectedOption.categoryId,
       aestheticCategoryLabel: resolvedCategoryLabel,
-      archetypeId,
+      archetypeId: referenceArchetypeId,
       archetypeLabel,
       archetypeImageUrl: resolvedArchetypeImage,
       archetypeImagePath: resolvedArchetype?.imagePath || baseGenerationInput.archetypeImagePath,
@@ -769,7 +783,7 @@ const buildAestheticSelectionProps = (
           selectedOption.id,
           selectedOption.categoryId,
           key,
-          archetypeId,
+          referenceArchetypeId,
         ].filter(Boolean) as string[],
       },
     };
@@ -899,9 +913,9 @@ const resolveOptionCategory = (
       || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined),
   );
 
-  const selectedRoadReferenceId = (props.road_archetype_id as string) || ((props.road_selected_reference as { id?: string } | undefined)?.id) || undefined;
-  const selectedGreenSpaceReferenceId = (props.green_space_archetype_id as string) || ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || undefined;
-  const selectedPlazaReferenceId = (props.plaza_archetype_id as string) || ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || undefined;
+  const selectedRoadReferenceId = ((props.road_selected_reference as { id?: string } | undefined)?.id) || (props.road_archetype_id as string) || undefined;
+  const selectedGreenSpaceReferenceId = ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || (props.green_space_archetype_id as string) || undefined;
+  const selectedPlazaReferenceId = ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || (props.plaza_archetype_id as string) || undefined;
 
   // Unified Parks / Plazas selection — reads from whichever prefix has data
   const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.plaza_aesthetic as string) || undefined;
@@ -1069,6 +1083,17 @@ const resolveOptionCategory = (
       const modeDefaults = normalizeTransportModes(selectedOption?.transportModes);
       if (modeDefaults.length > 0) {
         nextProps = applyModeDrivenRoadDefaults(nextProps, modeDefaults, (nextProps.volume as string) || undefined);
+
+        // Mode-derived defaults are only a fallback. Catalog archetypes own
+        // their engineered section dimensions (for example the 18 m Complete
+        // Main Street and 16 m Calgary Local), so restore the explicit preset
+        // after deriving generic mobility priorities. Otherwise the broad
+        // low/medium/high rules silently rewrite a selected LEGO family to an
+        // incompatible width before Community 3D compilation.
+        const catalogPreset = next ? ROADWAY_AESTHETIC_PRESETS[next] : undefined;
+        if (catalogPreset) {
+          nextProps = { ...nextProps, ...catalogPreset };
+        }
       }
 
       return nextProps;
