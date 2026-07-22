@@ -4,12 +4,13 @@ This directory preserves the verified local development history from the
 recovered workspace base through the completed parcel-landscape and Direct 3D
 render work.
 
-- Local branch: `codex/empty-lot-community`
-- Verified local tip: `767d12351a2ec517ac2bd9ee2f2c4ff8bd0c1c2d`
+- Local branch: `codex/public-realm-render-quality-v2`
+- Verified local tip: `e4d4e3c4ad9d4cfbbccf029a3f71112071b80c8e`
 - Recovered shallow base: `3cbfcdaa90a02fea7220d185b1230b09923f2168`
-- Patch files: `1` through `33`, in application order
+- Patch files: `1` through `34`, in application order
 - Final feature patch: `32`
 - Follow-up LEGO archetype handoff fix: `33`
+- Terrain-contact, dark-LOD and public-realm detail upgrade: `34`
 
 The recovered base commit and several of its promised objects are no longer
 retained by the GitHub remote. A normal branch push therefore attempted to
@@ -21,7 +22,7 @@ Apply only to a checkout that already contains the recovered base or an
 equivalent recovered workspace:
 
 ```bash
-git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 
 ## Final feature outcome
@@ -60,3 +61,25 @@ The paid pilot is saved as project render 8 in project
 - Backend LEGO suite: 46 passed
 - TypeScript type check and production build: passed
 - Ruff and Git diff checks: passed
+
+## Patch 34 outcome and verification
+
+- Street, intersection, roundabout, park-prop and specialty-structure contact
+  now uses bounded multi-probe terrain planes with outlier rejection and
+  deterministic fallbacks.
+- Prepared ground overlaps the Google Tiles mask edge to suppress white
+  contact seams, and public-realm surface/curb/marking datums are centralized.
+- Legacy LEGO ambient-occlusion failure is disabled only on the LEGO assembly
+  path; base colour is treated as sRGB and facade LOD pairing now fails safe
+  per joined mesh and facade role.
+- Street families add drains, sidewalk joints, bins, racks, bollards, tree
+  grates, planting cells and warranted signal assemblies. Park families add
+  bounded, collision-aware furnishings and planting/stone clumps, including
+  functional greenway and stormwater assemblies.
+- Frontend: 66 files / 612 tests passed; TypeScript type check and production
+  build passed (3,379 modules transformed).
+- Compiler quality-memory suite: 6 passed; `git diff --check` passed.
+- Live City Prompt QA passed on compact, full-site and 30-building stress
+  projects at 30-degree oblique, 58/72-degree steep and 86-degree overhead.
+  Far-LOD zoom and model off/on recovery produced no black facade failures,
+  browser warnings/errors or WebGL context loss.
