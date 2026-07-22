@@ -1,0 +1,4053 @@
+From dcf2e44811112e279595e9089c1980508efad424 Mon Sep 17 00:00:00 2001
+From: aasedor <andrew.sedor@gmail.com>
+Date: Tue, 21 Jul 2026 23:43:48 -0600
+Subject: [PATCH] feat: add provider-first Direct 3D presentations
+
+---
+ backend/app/api/v1/direct_3d_render.py        |   20 +-
+ backend/app/schemas/direct_3d_render.py       |  183 ++-
+ backend/app/services/direct_3d_render.py      | 1143 ++++++++++++++++-
+ backend/tests/test_direct_3d_render.py        |  846 +++++++++++-
+ docs/DIRECT_3D_RENDER_PIPELINE_2026-07-20.md  |  255 +++-
+ .../globe/GlobeAIRenderPanel.direct3d.test.ts |   47 +
+ .../viewer/globe/GlobeAIRenderPanel.tsx       |  170 ++-
+ .../viewer/globe/useDirect3DRender.test.ts    |  285 ++--
+ .../viewer/globe/useDirect3DRender.ts         |  171 ++-
+ .../viewer/globe/useGlobeAIRender.ts          |    4 +-
+ frontend/src/services/api.direct3d.test.ts    |   22 +
+ frontend/src/services/api.ts                  |  110 +-
+ 12 files changed, 2973 insertions(+), 283 deletions(-)
+ create mode 100644 frontend/src/components/viewer/globe/GlobeAIRenderPanel.direct3d.test.ts
+ create mode 100644 frontend/src/services/api.direct3d.test.ts
+
+diff --git a/backend/app/api/v1/direct_3d_render.py b/backend/app/api/v1/direct_3d_render.py
+index 7c2e47cb8aaa0e623b725b9ed5560057df9caec1..f83e2359cf5cd43e1b6e8a2a5de6bccdc97a49a7 100644
+--- a/backend/app/api/v1/direct_3d_render.py
++++ b/backend/app/api/v1/direct_3d_render.py
+@@ -459,7 +459,7 @@ async def generate_direct_3d_render(
+     user: User = Depends(require_auth),
+     db: AsyncSession = Depends(get_db),
+ ) -> Direct3DRenderResponse:
+-    """Stylize an authoritative clean 3D capture with an exact edit mask."""
++    """Render an authoritative clean 3D capture under the requested mode contract."""
+ 
+     settings = get_settings()
+ 
+@@ -503,7 +503,9 @@ async def generate_direct_3d_render(
+         user,
+         token_cost=token_cost,
+         daily_cap=settings.render_global_daily_token_cap,
+-        prompt=req.prompt,
++        prompt=(
++            f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"
++        ),
+         project_id=req.project_id,
+     )
+     try:
+@@ -578,13 +580,23 @@ async def generate_direct_3d_render(
+         ) from exc
+ 
+     try:
++        processing_mode = str(
++            result.diagnostics.get("processing_mode", "source_anchored")
++        )
++        provider_first = bool(result.diagnostics.get("provider_first", False))
+         await _finalize_direct_audit(
+             db,
+             reservation,
+             input_b64=result.audit_input_base64,
+             output_b64=result.image_base64,
+-            status_label="success",
+-            detail=req.prompt,
++            status_label=(
++                f"success provider-first {processing_mode}"
++                if provider_first
++                else "success source-anchored"
++            ),
++            detail=(
++                f"[mode={processing_mode} style={req.style}] {req.prompt}"
++            ),
+         )
+     except Exception as audit_exc:
+         logger.warning("Failed to save Direct 3D render audit log: %s", audit_exc)
+diff --git a/backend/app/schemas/direct_3d_render.py b/backend/app/schemas/direct_3d_render.py
+index 17766a79add24b4ca15b5ef45d97a8a4f6fd1ed4..f9e4493a94352c1f819029327cad1ec5bab71bc7 100644
+--- a/backend/app/schemas/direct_3d_render.py
++++ b/backend/app/schemas/direct_3d_render.py
+@@ -1,8 +1,9 @@
+ """Schemas for the isolated Direct 3D image-refinement pipeline.
+ 
+ This contract intentionally does not inherit from the colored-polygon render
+-request.  Direct 3D starts from an authoritative viewport capture and always
+-requires an explicit proposal mask.
++request. Direct 3D starts from an authoritative viewport capture and always
++requires an explicit proposal mask for validation and design QA, even when a
++provider-first presentation mode deliberately omits that mask from generation.
+ """
+ 
+ from __future__ import annotations
+@@ -15,6 +16,41 @@ from pydantic import BaseModel, Field, field_validator, model_validator
+ 
+ 
+ Direct3DSemanticClass = Literal["ground", "landscape", "street", "park", "building"]
++Direct3DPresentationMode = Literal["source_anchored", "scene", "reproject"]
++Direct3DStyle = Literal[
++    "photorealistic",
++    "photomontage",
++    "development",
++    "atmospheric",
++    "winter",
++    "night",
++    "watercolour",
++    "charcoal",
++    "marker-render",
++    "pen-and-ink",
++    "survey",
++    "documentary",
++    "site-plan",
++    "site-plan-photo",
++    "blueprint",
++    "site-plan-watercolor",
++    "isometric",
++    "clay-maquette",
++    "woodblock",
++    "collage",
++    "risograph",
++    "pixel-art",
++]
++
++
++DIRECT_3D_REPROJECT_STYLES = frozenset({
++    "site-plan",
++    "site-plan-photo",
++    "blueprint",
++    "site-plan-watercolor",
++    "isometric",
++    "clay-maquette",
++})
+ 
+ 
+ class Direct3DCaptureClaim(BaseModel):
+@@ -43,7 +79,7 @@ class Direct3DCommunityZoneClaim(BaseModel):
+ 
+ 
+ class Direct3DRenderRequest(BaseModel):
+-    """A clean 3D capture and exact mask to refine without moving geometry."""
++    """A clean 3D capture plus mode-specific presentation and design authority."""
+ 
+     beauty_image_base64: str = Field(
+         ...,
+@@ -61,15 +97,33 @@ class Direct3DRenderRequest(BaseModel):
+         ),
+     )
+     prompt: str = Field(..., min_length=1, max_length=20_000)
++    presentation_mode: Direct3DPresentationMode = Field(
++        default="source_anchored",
++        description=(
++            "source_anchored preserves the legacy pixel-locked finish; scene "
++            "permits a camera-locked full-frame presentation finish; reproject "
++            "permits a style-directed plan or axonometric camera transform."
++        ),
++    )
++    style: Direct3DStyle = Field(
++        default="photorealistic",
++        description="The render panel style identifier governing the presentation treatment.",
++    )
+     object_id_image_base64: str | None = Field(
+         default=None,
+         min_length=32,
+         max_length=20_000_000,
+-        description="Optional same-size class-ID PNG used only as a structural guide.",
++        description=(
++            "Same-size class-ID PNG used only as a structural guide. Optional "
++            "for legacy source_anchored; required for scene and reproject."
++        ),
+     )
+     object_id_manifest: dict[str, Direct3DSemanticClass] | None = Field(
+         default=None,
+-        description="Map from #RRGGBB class-ID colors to Direct 3D semantic classes.",
++        description=(
++            "Map from #RRGGBB class-ID colors to Direct 3D semantic classes; "
++            "required with the class-ID PNG for scene and reproject."
++        ),
+     )
+     capture: Direct3DCaptureClaim | None = None
+     # Direct 3D is explicitly project-bound: omitting this identifier would
+@@ -108,9 +162,27 @@ class Direct3DRenderRequest(BaseModel):
+             raise ValueError(
+                 "object_id_image_base64 and object_id_manifest must be supplied together"
+             )
++        if (
++            self.presentation_mode in {"scene", "reproject"}
++            and not self.object_id_image_base64
++        ):
++            raise ValueError(
++                "scene and reproject require object_id_image_base64 and "
++                "object_id_manifest"
++            )
+         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
+         if len(zone_ids) != len(set(zone_ids)):
+             raise ValueError("community_3d_claims may contain each zone only once")
++        is_reproject_style = self.style in DIRECT_3D_REPROJECT_STYLES
++        if self.presentation_mode == "scene" and is_reproject_style:
++            raise ValueError(
++                f"style {self.style!r} requires presentation_mode='reproject'"
++            )
++        if self.presentation_mode == "reproject" and not is_reproject_style:
++            raise ValueError(
++                f"style {self.style!r} requires presentation_mode='scene' or "
++                "'source_anchored'"
++            )
+         return self
+ 
+ 
+@@ -125,7 +197,10 @@ class Direct3DRegistrationDiagnostics(BaseModel):
+     structural_context_score: float | None = None
+     translation_x_px: float
+     translation_y_px: float
++    translation_norm_px: float | None = None
+     rotation_degrees: float
++    maximum_translation_norm_px: float | None = None
++    maximum_abs_rotation_degrees: float | None = None
+ 
+ 
+ class Direct3DStructuralEdgeFidelityDiagnostics(BaseModel):
+@@ -155,6 +230,79 @@ class Direct3DRawStructuralEdgeFidelityDiagnostics(BaseModel):
+     building_internal_edge_recall: float | None = None
+ 
+ 
++class Direct3DMacroDesignFidelityDiagnostics(BaseModel):
++    """Primary design-geometry checks for provider-first scene finishes."""
++
++    passed: Literal[True]
++    tolerance_px: int
++    silhouette_edge_pixels: int
++    silhouette_edge_recall: float | None = None
++    coarse_edge_pixels: int
++    coarse_edge_recall: float
++    semantic_edge_pixels: int
++    semantic_edge_recall: float | None = None
++    evaluated_component_count: int
++    semantic_component_min_recall: float | None = None
++    reference_edge_p90_distance_px: float
++    candidate_coarse_edge_pixels: int | None = None
++    candidate_coarse_edge_precision: float | None = None
++    candidate_coarse_edge_density_ratio: float | None = None
++    minimum_silhouette_edge_recall: float | None = None
++    minimum_coarse_edge_recall: float | None = None
++    minimum_semantic_edge_recall: float | None = None
++    minimum_semantic_component_recall: float | None = None
++    maximum_reference_edge_p90_distance_px: float | None = None
++    minimum_candidate_coarse_edge_precision: float | None = None
++    maximum_candidate_coarse_edge_density_ratio: float | None = None
++    building_internal_edges_required: Literal[False] = False
++
++
++class Direct3DVisualChangeDiagnostics(BaseModel):
++    """Evidence that a scene finish is more than a near-identity colour grade."""
++
++    passed: Literal[True]
++    whole_frame_mean_absolute_delta: float
++    proposal_mean_absolute_delta: float
++    proposal_detail_delta_p75: float
++    proposal_photometric_residual_p95: float
++    novel_detail_edge_coverage: float
++    context_mean_absolute_delta: float | None = None
++    context_photometric_residual_p95: float | None = None
++    context_detail_delta_p75: float | None = None
++    context_pixel_count: int | None = None
++    context_frame_top_fraction: float | None = None
++    minimum_whole_frame_mean_absolute_delta: float | None = None
++    minimum_proposal_mean_absolute_delta: float
++    minimum_proposal_detail_delta_p75: float
++    minimum_proposal_photometric_residual_p95: float
++    minimum_novel_detail_edge_coverage: float
++    minimum_context_mean_absolute_delta: float | None = None
++    minimum_context_photometric_residual_p95: float | None = None
++    minimum_context_detail_delta_p75: float | None = None
++    context_change_required: Literal[True] = True
++    color_grade_only_rejected: Literal[True] = True
++
++
++class Direct3DReprojectOutputSanityDiagnostics(BaseModel):
++    """Minimum non-empty/content evidence for projection-changing output."""
++
++    passed: Literal[True]
++    whole_frame_mean_absolute_delta: float
++    luminance_standard_deviation: float
++    luminance_dynamic_range_p90: float
++    structural_edge_coverage: float
++    occupied_edge_cells: int
++    significant_edge_component_count: int
++    required_edge_component_count: int
++    minimum_whole_frame_mean_absolute_delta: float
++    minimum_luminance_standard_deviation: float
++    minimum_luminance_dynamic_range_p90: float
++    minimum_structural_edge_coverage: float
++    maximum_structural_edge_coverage: float
++    minimum_occupied_edge_cells: int
++    semantic_inventory_proxy_only: Literal[True] = True
++
++
+ class Direct3DFinishDetailGainCaps(BaseModel):
+     """Maximum source-owned contrast gain for one semantic role."""
+ 
+@@ -201,6 +349,14 @@ class Direct3DFinishFusionDiagnostics(BaseModel):
+ 
+ 
+ class Direct3DRenderDiagnostics(BaseModel):
++    processing_mode: Direct3DPresentationMode = "source_anchored"
++    view_lock: Literal[
++        "source_pixel_locked",
++        "camera_registered",
++        "not_applicable_layout_guided",
++    ] = "source_pixel_locked"
++    context_restyled: bool = False
++    provider_first: bool = False
+     source_width: int
+     source_height: int
+     normalized_width: int
+@@ -209,16 +365,25 @@ class Direct3DRenderDiagnostics(BaseModel):
+     context_coverage: float
+     object_id_attached: bool
+     object_id_coverage: float | None = None
++    object_id_proposal_recall: float | None = None
++    object_id_proposal_iou: float | None = None
++    minimum_object_id_proposal_recall: float | None = None
++    minimum_object_id_proposal_iou: float | None = None
++    scene_lower_context_coverage: float | None = None
++    minimum_scene_lower_context_coverage: float | None = None
+     structural_edge_guide_attached: Literal[True] = True
+     finish_fusion: Direct3DFinishFusionDiagnostics | None = None
+     provider_raw_structural_edge_fidelity: (
+         Direct3DRawStructuralEdgeFidelityDiagnostics | None
+     ) = None
++    macro_design_fidelity: Direct3DMacroDesignFidelityDiagnostics | None = None
++    visual_change: Direct3DVisualChangeDiagnostics | None = None
++    reproject_output_sanity: Direct3DReprojectOutputSanityDiagnostics | None = None
+     structural_edge_fidelity: Direct3DStructuralEdgeFidelityDiagnostics | None = None
+-    registration: Direct3DRegistrationDiagnostics
+-    exterior_pixel_count: int
+-    exterior_max_channel_delta: int
+-    inward_feather_px: float
++    registration: Direct3DRegistrationDiagnostics | None = None
++    exterior_pixel_count: int | None = None
++    exterior_max_channel_delta: int | None = None
++    inward_feather_px: float | None = None
+     mask_retry_used: Literal[False] = False
+ 
+ 
+diff --git a/backend/app/services/direct_3d_render.py b/backend/app/services/direct_3d_render.py
+index 77c273f6d37858418aabf38a23f15f9ff4a63d0e..0513307032baca19baade56c2495a0459e9c3d6f 100644
+--- a/backend/app/services/direct_3d_render.py
++++ b/backend/app/services/direct_3d_render.py
+@@ -2,8 +2,9 @@
+ 
+ The colored-polygon renderer deliberately remains separate.  This service
+ accepts a clean, authoritative 3D viewport capture, validates its proposal
+-mask, makes exactly one masked edit request, registers the result against the
+-immutable context, and finally restores every exterior pixel from the source.
++mask, and makes exactly one request. Legacy mode applies a masked,
++source-anchored finish; presentation modes use provider-first scene or
++projection contracts with mode-appropriate design gates.
+ """
+ 
+ from __future__ import annotations
+@@ -46,11 +47,15 @@ _MAX_PROVIDER_EDGE = DIRECT_3D_MAX_SOURCE_EDGE
+ _EDGE_MULTIPLE = 16
+ _MIN_PROPOSAL_COVERAGE = 0.0025
+ _MAX_PROPOSAL_COVERAGE = 0.85
++_MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL = 0.85
++_MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU = 0.84
+ _MIN_REGISTRATION_SCORE = 0.65
+ _IDENTITY_SCORE = 0.985
+ _MIN_STRUCTURAL_CONTEXT_SCORE = 0.62
+ _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS = 256
+ _MAX_REGISTRATION_ROTATION_DEGREES = 2.0
++_MAX_SCENE_REGISTRATION_TRANSLATION_PX = 8.0
++_MAX_SCENE_REGISTRATION_ROTATION_DEGREES = 0.35
+ _INWARD_FEATHER_PX = 2.0
+ _MIN_STRUCTURAL_EDGE_PIXELS = 64
+ _MIN_BEAUTY_EDGE_RECALL = 0.55
+@@ -58,6 +63,30 @@ _MIN_COARSE_EDGE_RECALL = 0.58
+ _MIN_SEMANTIC_EDGE_RECALL = 0.76
+ _MIN_SEMANTIC_COMPONENT_RECALL = 0.68
+ _MIN_BUILDING_INTERNAL_EDGE_RECALL = 0.68
++_MIN_MACRO_SILHOUETTE_EDGE_RECALL = 0.80
++_MIN_MACRO_COARSE_EDGE_RECALL = 0.70
++_MIN_MACRO_SEMANTIC_EDGE_RECALL = 0.78
++_MIN_MACRO_SEMANTIC_COMPONENT_RECALL = 0.72
++_MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER = 2.5
++_MAX_MACRO_REFERENCE_P90_DISTANCE_PX = 6.0
++_MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION = 0.40
++_MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO = 3.0
++_MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA = 5.0
++_MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA = 12.0
++_MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75 = 3.0
++_MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE = 0.0015
++_MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95 = 6.0
++_MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA = 4.0
++_MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95 = 4.0
++_MIN_SCENE_CONTEXT_DETAIL_DELTA_P75 = 0.75
++_SCENE_CONTEXT_TOP_FRACTION = 0.45
++_MIN_SCENE_LOWER_CONTEXT_COVERAGE = 0.08
++_MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA = 8.0
++_MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION = 10.0
++_MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90 = 35.0
++_MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE = 0.002
++_MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE = 0.30
++_MIN_REPROJECT_OCCUPIED_EDGE_CELLS = 4
+ _FINISH_FUSION_REFERENCE_DIAGONAL = math.hypot(1280, 720)
+ _FINISH_FUSION_SIGMA_AT_REFERENCE_PX = 8.0
+ _FINISH_FUSION_RGB_DELTA_CLIP = 48.0
+@@ -139,6 +168,9 @@ class PreparedDirect3DCapture:
+     normalized_object_id: Image.Image | None
+     proposal_coverage: float
+     object_id_coverage: float | None
++    object_id_proposal_recall: float | None
++    object_id_proposal_iou: float | None
++    scene_lower_context_coverage: float | None
+     capture_fingerprint: str
+     audit_input_base64: str
+ 
+@@ -175,6 +207,57 @@ class StructuralEdgeFidelityResult:
+     reference_edge_p90_distance_px: float
+ 
+ 
++@dataclass(frozen=True)
++class MacroDesignFidelityResult:
++    """Macro design agreement for a provider-first, camera-locked scene."""
++
++    passed: bool
++    tolerance_px: int
++    silhouette_edge_pixels: int
++    silhouette_edge_recall: float | None
++    coarse_edge_pixels: int
++    coarse_edge_recall: float
++    semantic_edge_pixels: int
++    semantic_edge_recall: float | None
++    evaluated_component_count: int
++    semantic_component_min_recall: float | None
++    reference_edge_p90_distance_px: float
++    candidate_coarse_edge_pixels: int
++    candidate_coarse_edge_precision: float
++    candidate_coarse_edge_density_ratio: float
++
++
++@dataclass(frozen=True)
++class VisualChangeResult:
++    """Measured scene enhancement beyond a near-identity colour grade."""
++
++    passed: bool
++    whole_frame_mean_absolute_delta: float
++    proposal_mean_absolute_delta: float
++    proposal_detail_delta_p75: float
++    proposal_photometric_residual_p95: float
++    novel_detail_edge_coverage: float
++    context_mean_absolute_delta: float
++    context_photometric_residual_p95: float
++    context_detail_delta_p75: float
++    context_pixel_count: int
++    context_frame_top_fraction: float
++
++
++@dataclass(frozen=True)
++class ReprojectOutputSanityResult:
++    """Deterministic minimum-content checks for a projection-changing result."""
++
++    passed: bool
++    whole_frame_mean_absolute_delta: float
++    luminance_standard_deviation: float
++    luminance_dynamic_range_p90: float
++    structural_edge_coverage: float
++    occupied_edge_cells: int
++    significant_edge_component_count: int
++    required_edge_component_count: int
++
++
+ @dataclass(frozen=True)
+ class FinishFusionResult:
+     """Source-anchored finish image plus auditable material-transfer metrics."""
+@@ -292,6 +375,19 @@ def _registration_context_mask(proposal_mask: Image.Image) -> np.ndarray:
+     )
+ 
+ 
++def _scene_lower_context_mask(proposal_mask: Image.Image) -> np.ndarray:
++    """Return mask-zero context in the lower, predominantly non-sky frame."""
++
++    proposal = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
++    lower_context = np.zeros(proposal.shape, dtype=bool)
++    start_row = min(
++        proposal_mask.height - 1,
++        max(0, round(proposal_mask.height * _SCENE_CONTEXT_TOP_FRACTION)),
++    )
++    lower_context[start_row:, :] = True
++    return lower_context & ~proposal
++
++
+ def _normalized_dimensions(width: int, height: int) -> tuple[int, int]:
+     """Choose an explicit GPT Image 2 size while preserving capture aspect.
+ 
+@@ -426,6 +522,8 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
+ 
+     object_id_image: Image.Image | None = None
+     object_id_coverage: float | None = None
++    object_id_proposal_recall: float | None = None
++    object_id_proposal_iou: float | None = None
+     if req.object_id_image_base64 and req.object_id_manifest:
+         object_id_raw = _decode_base64_payload(
+             req.object_id_image_base64,
+@@ -449,6 +547,16 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
+         object_id_coverage = float(classified.mean())
+         if object_id_coverage < _MIN_PROPOSAL_COVERAGE:
+             raise Direct3DValidationError("Object-ID image does not contain enough classified proposal pixels")
++        proposal_active = proposal_values >= 0.5
++        intersection_count = int(np.count_nonzero(classified & proposal_active))
++        proposal_count = int(np.count_nonzero(proposal_active))
++        union_count = int(np.count_nonzero(classified | proposal_active))
++        object_id_proposal_recall = float(
++            intersection_count / max(1, proposal_count)
++        )
++        object_id_proposal_iou = float(
++            intersection_count / max(1, union_count)
++        )
+         outside = proposal_values < (8 / 255)
+         leak_count = int(np.count_nonzero(classified & outside))
+         classified_count = int(np.count_nonzero(classified))
+@@ -456,6 +564,20 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
+             raise Direct3DValidationError(
+                 "Object-ID classes extend materially outside the proposal mask"
+             )
++        if req.presentation_mode in {"scene", "reproject"} and (
++            object_id_proposal_recall
++            < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
++            or object_id_proposal_iou < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU
++        ):
++            raise Direct3DValidationError(
++                "Presentation object-ID classes must cover the proposal "
++                f"(recall {object_id_proposal_recall:.3f}, "
++                f"IoU {object_id_proposal_iou:.3f})"
++            )
++    elif req.presentation_mode in {"scene", "reproject"}:
++        raise Direct3DValidationError(
++            "Presentation modes require an object-ID image and manifest"
++        )
+ 
+     normalized_size = _normalized_dimensions(width, height)
+     normalized_beauty = beauty_image.resize(normalized_size, Image.Resampling.LANCZOS)
+@@ -468,6 +590,18 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
+         raise Direct3DValidationError(
+             "Proposal mask must preserve at least 10% fully immutable context"
+         )
++    scene_lower_context_coverage: float | None = None
++    if req.presentation_mode == "scene":
++        scene_lower_context_coverage = float(
++            np.count_nonzero(_scene_lower_context_mask(normalized_mask))
++            / (normalized_mask.width * normalized_mask.height)
++        )
++        if scene_lower_context_coverage < _MIN_SCENE_LOWER_CONTEXT_COVERAGE:
++            raise Direct3DValidationError(
++                "Scene capture must preserve at least "
++                f"{_MIN_SCENE_LOWER_CONTEXT_COVERAGE:.0%} lower-frame context; "
++                f"received {scene_lower_context_coverage:.2%}"
++            )
+     normalized_object_id = (
+         object_id_image.resize(normalized_size, Image.Resampling.NEAREST)
+         if object_id_image is not None
+@@ -491,6 +625,9 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
+         normalized_object_id=normalized_object_id,
+         proposal_coverage=proposal_coverage,
+         object_id_coverage=object_id_coverage,
++        object_id_proposal_recall=object_id_proposal_recall,
++        object_id_proposal_iou=object_id_proposal_iou,
++        scene_lower_context_coverage=scene_lower_context_coverage,
+         capture_fingerprint=capture_fingerprint,
+         audit_input_base64=base64.b64encode(_png_bytes(beauty_image)).decode("ascii"),
+     )
+@@ -1653,6 +1790,577 @@ def assess_structural_edge_fidelity(
+     )
+ 
+ 
++def assess_macro_design_fidelity(
++    source: Image.Image,
++    candidate: Image.Image,
++    proposal_mask: Image.Image,
++    object_id: Image.Image | None = None,
++    object_id_manifest: dict[str, str] | None = None,
++) -> MacroDesignFidelityResult:
++    """Verify primary scene design while permitting new photographic detail.
++
++    The comparison is deliberately directed from the authoritative 3D capture
++    to the provider image. Extra facade, foliage and material edges are welcome;
++    source building-internal/window edges are not an acceptance requirement.
++    """
++
++    if source.size != candidate.size or source.size != proposal_mask.size:
++        raise Direct3DValidationError(
++            "Macro fidelity images and proposal mask must have identical dimensions"
++        )
++    if object_id is not None and object_id.size != source.size:
++        raise Direct3DValidationError(
++            "Macro fidelity object-ID image must match the source dimensions"
++        )
++
++    import cv2
++
++    diagonal = math.hypot(source.width, source.height)
++    # Keep the existing reviewed 2px-at-720p / 4px-at-max scale. Relaxation
++    # comes from measuring only macro/semantic boundaries, not by permitting
++    # the multi-pixel drift that allowed the rejected calibration redesign.
++    tolerance_px = max(2, min(4, round(diagonal * 0.0015)))
++    active = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
++    source_edges = _beauty_structural_edges(source, proposal_mask)
++    source_coarse = _beauty_structural_edges(source, proposal_mask, coarse=True)
++    candidate_edges = _beauty_structural_edges(candidate, proposal_mask)
++    candidate_coarse = _beauty_structural_edges(candidate, proposal_mask, coarse=True)
++    source_anchor = (source_edges | source_coarse) & active
++    candidate_anchor = (candidate_edges | candidate_coarse) & active
++
++    if np.any(candidate_anchor):
++        distance_to_candidate = cv2.distanceTransform(
++            (~candidate_anchor).astype(np.uint8),
++            cv2.DIST_L2,
++            3,
++        )
++    else:
++        distance_to_candidate = np.full(active.shape, diagonal, dtype=np.float32)
++
++    def recall(reference: np.ndarray) -> float:
++        if not np.any(reference):
++            return 1.0
++        return float(np.mean(distance_to_candidate[reference] <= tolerance_px))
++
++    # Directed source recall alone can be gamed by replacing the proposal with
++    # dense noise or stripes: unrelated edges eventually land near every
++    # source edge. Evaluate the reverse direction at the coarse scale so new
++    # fine photographic texture remains welcome while unrelated coarse edge
++    # fields fail closed.
++    if np.any(source_anchor):
++        distance_to_source = cv2.distanceTransform(
++            (~source_anchor).astype(np.uint8),
++            cv2.DIST_L2,
++            3,
++        )
++    else:
++        distance_to_source = np.full(active.shape, diagonal, dtype=np.float32)
++    candidate_coarse_active = candidate_coarse & active
++    candidate_coarse_count = int(np.count_nonzero(candidate_coarse_active))
++    candidate_coarse_precision = (
++        float(
++            np.mean(
++                distance_to_source[candidate_coarse_active] <= tolerance_px
++            )
++        )
++        if candidate_coarse_count
++        else 0.0
++    )
++
++    boundary_kernel = np.ones(
++        (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
++        dtype=np.uint8,
++    )
++    proposal_boundary = cv2.morphologyEx(
++        active.astype(np.uint8),
++        cv2.MORPH_GRADIENT,
++        np.ones((3, 3), dtype=np.uint8),
++    ) > 0
++    proposal_boundary_band = cv2.dilate(
++        proposal_boundary.astype(np.uint8),
++        boundary_kernel,
++        iterations=1,
++    ) > 0
++    silhouette_edges = source_anchor & proposal_boundary_band
++    silhouette_count = int(np.count_nonzero(silhouette_edges))
++    silhouette_recall = recall(silhouette_edges) if silhouette_count else None
++
++    coarse_edges = source_coarse & active
++    coarse_count = int(np.count_nonzero(coarse_edges))
++    coarse_recall = recall(coarse_edges)
++    candidate_coarse_density_ratio = float(
++        candidate_coarse_count / max(1, coarse_count)
++    )
++
++    raw_semantic = _semantic_boundary_edges(
++        object_id,
++        object_id_manifest,
++        proposal_mask,
++        stable_only=True,
++    ) & active
++    semantic_band = cv2.dilate(
++        raw_semantic.astype(np.uint8),
++        boundary_kernel,
++        iterations=1,
++    ) > 0
++    semantic_edges = source_anchor & semantic_band
++    semantic_count = int(np.count_nonzero(semantic_edges))
++    semantic_recall = recall(semantic_edges) if semantic_count else None
++
++    component_recalls: list[float] = []
++    if object_id is not None and object_id_manifest:
++        object_pixels = np.asarray(object_id.convert("RGB"), dtype=np.uint8)
++        for color, semantic_class in sorted(object_id_manifest.items()):
++            if semantic_class not in {"building", "street", "park"}:
++                continue
++            color_region = np.all(
++                object_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
++                axis=2,
++            ).astype(np.uint8)
++            component_count, component_labels, component_stats, _centroids = (
++                cv2.connectedComponentsWithStats(color_region, connectivity=8)
++            )
++            for component in range(1, component_count):
++                if int(component_stats[component, cv2.CC_STAT_AREA]) < 64:
++                    continue
++                component_region = (component_labels == component).astype(np.uint8)
++                raw_component_edge = cv2.morphologyEx(
++                    component_region,
++                    cv2.MORPH_GRADIENT,
++                    np.ones((3, 3), dtype=np.uint8),
++                ) > 0
++                component_band = cv2.dilate(
++                    raw_component_edge.astype(np.uint8),
++                    boundary_kernel,
++                    iterations=1,
++                ) > 0
++                component_edge = source_anchor & component_band
++                if np.count_nonzero(component_edge) >= 16:
++                    component_recalls.append(recall(component_edge))
++    component_min = min(component_recalls) if component_recalls else None
++
++    macro_reference = silhouette_edges | coarse_edges | semantic_edges
++    reference_p90 = (
++        float(np.percentile(distance_to_candidate[macro_reference], 90))
++        if np.any(macro_reference)
++        else 0.0
++    )
++    silhouette_pass = (
++        silhouette_recall is None
++        or silhouette_recall >= _MIN_MACRO_SILHOUETTE_EDGE_RECALL
++    )
++    semantic_pass = (
++        semantic_recall is None
++        or semantic_recall >= _MIN_MACRO_SEMANTIC_EDGE_RECALL
++    )
++    component_pass = (
++        component_min is None
++        or component_min >= _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
++    )
++    maximum_reference_p90_distance_px = min(
++        _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
++        tolerance_px * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
++    )
++    passed = (
++        silhouette_pass
++        and coarse_recall >= _MIN_MACRO_COARSE_EDGE_RECALL
++        and semantic_pass
++        and component_pass
++        and reference_p90 <= maximum_reference_p90_distance_px
++        and candidate_coarse_precision
++        >= _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
++        and candidate_coarse_density_ratio
++        <= _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
++    )
++    return MacroDesignFidelityResult(
++        passed=passed,
++        tolerance_px=tolerance_px,
++        silhouette_edge_pixels=silhouette_count,
++        silhouette_edge_recall=silhouette_recall,
++        coarse_edge_pixels=coarse_count,
++        coarse_edge_recall=coarse_recall,
++        semantic_edge_pixels=semantic_count,
++        semantic_edge_recall=semantic_recall,
++        evaluated_component_count=len(component_recalls),
++        semantic_component_min_recall=component_min,
++        reference_edge_p90_distance_px=reference_p90,
++        candidate_coarse_edge_pixels=candidate_coarse_count,
++        candidate_coarse_edge_precision=candidate_coarse_precision,
++        candidate_coarse_edge_density_ratio=candidate_coarse_density_ratio,
++    )
++
++
++def assess_scene_visual_change(
++    source: Image.Image,
++    candidate: Image.Image,
++    proposal_mask: Image.Image,
++) -> VisualChangeResult:
++    """Reject an expensive scene result that is only identity/colour grading."""
++
++    if source.size != candidate.size or source.size != proposal_mask.size:
++        raise Direct3DValidationError(
++            "Visual-change images and proposal mask must have identical dimensions"
++        )
++
++    import cv2
++
++    source_rgb = np.asarray(source.convert("RGB"), dtype=np.float32)
++    candidate_rgb = np.asarray(candidate.convert("RGB"), dtype=np.float32)
++    active = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
++    if not np.any(active):
++        raise Direct3DValidationError("Visual-change assessment requires proposal pixels")
++    absolute_delta = np.abs(candidate_rgb - source_rgb)
++    whole_frame_mad = float(np.mean(absolute_delta))
++    proposal_mad = float(np.mean(absolute_delta[active]))
++
++    # Full-scene presentation quality must reach the surrounding built/ground
++    # context, not merely the proposal or an easy-to-change sky. Measure only
++    # mask-zero pixels in the lower 55% of the frame for this evidence.
++    context = _scene_lower_context_mask(proposal_mask)
++    context_pixel_count = int(np.count_nonzero(context))
++    context_mad = (
++        float(np.mean(absolute_delta[context]))
++        if context_pixel_count
++        else 0.0
++    )
++
++    source_luma = _finish_luminance(source_rgb)
++    candidate_luma = _finish_luminance(candidate_rgb)
++    source_detail = source_luma - cv2.GaussianBlur(
++        source_luma,
++        (0, 0),
++        sigmaX=1.2,
++        sigmaY=1.2,
++        borderType=cv2.BORDER_REFLECT,
++    )
++    candidate_detail = candidate_luma - cv2.GaussianBlur(
++        candidate_luma,
++        (0, 0),
++        sigmaX=1.2,
++        sigmaY=1.2,
++        borderType=cv2.BORDER_REFLECT,
++    )
++    detail_delta_p75 = float(
++        np.percentile(np.abs(candidate_detail - source_detail)[active], 75)
++    )
++    context_detail_delta_p75 = (
++        float(
++            np.percentile(
++                np.abs(candidate_detail - source_detail)[context],
++                75,
++            )
++        )
++        if context_pixel_count
++        else 0.0
++    )
++
++    # Regress out a global luminance gain/offset before looking for spatial
++    # change. This makes the floor invariant to ordinary exposure, contrast and
++    # colour grading while retaining provider-authored material/foliage detail.
++    def _photometric_residual_p95(region: np.ndarray) -> float:
++        if not np.any(region):
++            return 0.0
++        source_values = source_luma[region].astype(np.float32, copy=False)
++        candidate_values = candidate_luma[region].astype(np.float32, copy=False)
++        source_centered = source_values - float(np.mean(source_values))
++        denominator = float(np.dot(source_centered, source_centered))
++        gain = (
++            float(
++                np.dot(
++                    source_centered,
++                    candidate_values - np.mean(candidate_values),
++                )
++            )
++            / denominator
++            if denominator > 1e-8
++            else 1.0
++        )
++        offset = float(np.mean(candidate_values) - gain * np.mean(source_values))
++        residual = candidate_values - (source_values * gain + offset)
++        return float(np.percentile(np.abs(residual), 95))
++
++    photometric_residual_p95 = _photometric_residual_p95(active)
++    context_photometric_residual_p95 = _photometric_residual_p95(context)
++
++    source_edges = _beauty_structural_edges(source, proposal_mask)
++    candidate_edges = _beauty_structural_edges(candidate, proposal_mask)
++    exclusion_radius = max(4, min(8, round(math.hypot(*source.size) * 0.0025)))
++    source_edge_band = cv2.dilate(
++        source_edges.astype(np.uint8),
++        np.ones(
++            (exclusion_radius * 2 + 1, exclusion_radius * 2 + 1),
++            dtype=np.uint8,
++        ),
++        iterations=1,
++    ) > 0
++    # Ignore the proposal seam itself: an additive colour grade creates a
++    # synthetic mask-boundary edge even though it added no scene detail.
++    safe_active = cv2.erode(
++        active.astype(np.uint8),
++        np.ones((7, 7), dtype=np.uint8),
++        iterations=1,
++    ) > 0
++    novel_edges = candidate_edges & ~source_edge_band & safe_active
++    novel_edge_coverage = float(
++        np.count_nonzero(novel_edges) / max(1, int(np.count_nonzero(active)))
++    )
++    passed = (
++        whole_frame_mad >= _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
++        and proposal_mad >= _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
++        and photometric_residual_p95
++        >= _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
++        and (
++            detail_delta_p75 >= _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
++            or novel_edge_coverage >= _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
++        )
++        and (
++            context_mad >= _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
++            or context_photometric_residual_p95
++            >= _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
++        )
++        and context_detail_delta_p75 >= _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
++    )
++    return VisualChangeResult(
++        passed=passed,
++        whole_frame_mean_absolute_delta=whole_frame_mad,
++        proposal_mean_absolute_delta=proposal_mad,
++        proposal_detail_delta_p75=detail_delta_p75,
++        proposal_photometric_residual_p95=photometric_residual_p95,
++        novel_detail_edge_coverage=novel_edge_coverage,
++        context_mean_absolute_delta=context_mad,
++        context_photometric_residual_p95=context_photometric_residual_p95,
++        context_detail_delta_p75=context_detail_delta_p75,
++        context_pixel_count=context_pixel_count,
++        context_frame_top_fraction=_SCENE_CONTEXT_TOP_FRACTION,
++    )
++
++
++def assess_reproject_output_sanity(
++    source: Image.Image,
++    candidate: Image.Image,
++    object_id: Image.Image | None = None,
++    object_id_manifest: dict[str, str] | None = None,
++) -> ReprojectOutputSanityResult:
++    """Reject empty, unchanged, or noise-like projection outputs.
++
++    Screen-space macro comparison is invalid after an intentional camera
++    transformation. This is therefore a conservative content/inventory proxy,
++    not proof of semantic correctness: the result must be materially changed,
++    have usable tonal range, carry bounded structural edges across the frame,
++    and contain enough significant edge components for the visible source
++    inventory. Human visual review remains required for reproject styles.
++    """
++
++    if source.size != candidate.size:
++        raise Direct3DValidationError(
++            "Reproject source and provider image must have identical dimensions"
++        )
++    if object_id is not None and object_id.size != source.size:
++        raise Direct3DValidationError(
++            "Reproject object-ID image must match the source dimensions"
++        )
++
++    import cv2
++
++    source_rgb = np.asarray(source.convert("RGB"), dtype=np.float32)
++    candidate_rgb = np.asarray(candidate.convert("RGB"), dtype=np.float32)
++    whole_frame_mad = float(np.mean(np.abs(candidate_rgb - source_rgb)))
++    luminance = _finish_luminance(candidate_rgb)
++    luminance_standard_deviation = float(np.std(luminance))
++    luminance_dynamic_range_p90 = float(
++        np.percentile(luminance, 95) - np.percentile(luminance, 5)
++    )
++
++    luminance_u8 = np.clip(luminance, 0, 255).astype(np.uint8)
++    blurred = cv2.GaussianBlur(
++        luminance_u8,
++        (0, 0),
++        sigmaX=1.0,
++        sigmaY=1.0,
++        borderType=cv2.BORDER_REFLECT,
++    )
++    gradient_x = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)
++    gradient_y = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
++    gradient = cv2.magnitude(gradient_x, gradient_y)
++    nonzero_gradient = gradient[gradient > 1.0]
++    high_threshold = (
++        float(np.percentile(nonzero_gradient, 70))
++        if nonzero_gradient.size
++        else 48.0
++    )
++    high_threshold = min(140.0, max(42.0, high_threshold))
++    edges = cv2.Canny(
++        blurred,
++        threshold1=max(16.0, high_threshold * 0.42),
++        threshold2=high_threshold,
++        L2gradient=True,
++    ) > 0
++    structural_edge_coverage = float(np.mean(edges))
++
++    occupied_edge_cells = 0
++    for row in range(4):
++        top = round(row * source.height / 4)
++        bottom = round((row + 1) * source.height / 4)
++        for column in range(4):
++            left = round(column * source.width / 4)
++            right = round((column + 1) * source.width / 4)
++            cell = edges[top:bottom, left:right]
++            if cell.size and float(np.mean(cell)) >= 0.001:
++                occupied_edge_cells += 1
++
++    connected_edges = cv2.morphologyEx(
++        edges.astype(np.uint8),
++        cv2.MORPH_CLOSE,
++        np.ones((3, 3), dtype=np.uint8),
++        iterations=1,
++    )
++    component_count, _labels, stats, _centroids = cv2.connectedComponentsWithStats(
++        connected_edges,
++        connectivity=8,
++    )
++    component_area_floor = max(12, round(source.width * source.height * 0.00002))
++    significant_edge_component_count = sum(
++        int(stats[index, cv2.CC_STAT_AREA]) >= component_area_floor
++        for index in range(1, component_count)
++    )
++    source_inventory, _labels = _visible_semantic_components(
++        object_id,
++        object_id_manifest,
++    )
++    expected_inventory_count = sum(source_inventory.values())
++    required_edge_component_count = max(1, min(3, expected_inventory_count))
++
++    passed = (
++        whole_frame_mad >= _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
++        and luminance_standard_deviation
++        >= _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
++        and luminance_dynamic_range_p90
++        >= _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
++        and structural_edge_coverage >= _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
++        and structural_edge_coverage <= _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
++        and occupied_edge_cells >= _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
++        and significant_edge_component_count >= required_edge_component_count
++    )
++    return ReprojectOutputSanityResult(
++        passed=passed,
++        whole_frame_mean_absolute_delta=whole_frame_mad,
++        luminance_standard_deviation=luminance_standard_deviation,
++        luminance_dynamic_range_p90=luminance_dynamic_range_p90,
++        structural_edge_coverage=structural_edge_coverage,
++        occupied_edge_cells=occupied_edge_cells,
++        significant_edge_component_count=significant_edge_component_count,
++        required_edge_component_count=required_edge_component_count,
++    )
++
++
++_PRESENTATION_STYLE_TREATMENTS: dict[str, str] = {
++    "photorealistic": "natural high-end architectural photography with convincing materials, glazing and planted richness",
++    "photomontage": "a polished architectural photomontage integrated seamlessly into the photographed city",
++    "development": "a completed-development visualization with crisp facades, credible roofs and public realm",
++    "atmospheric": "warm atmospheric architectural photography with soft haze, directional light and planted depth",
++    "winter": "convincing winter architectural photography with seasonal vegetation, snow and cold daylight",
++    "night": "realistic blue-hour architectural photography with plausible interior and street lighting",
++    "watercolour": "a refined architectural watercolour on textured paper",
++    "charcoal": "a controlled tonal charcoal architectural illustration",
++    "marker-render": "a professional architectural marker rendering with deliberate material strokes",
++    "pen-and-ink": "a precise architectural pen-and-ink illustration",
++    "survey": "neutral, highly legible large-format survey photography",
++    "documentary": "honest documentary architectural photography with restrained natural variation",
++    "site-plan": "a clean top-down orthographic architectural site plan",
++    "site-plan-photo": "a near-nadir photographic drone site-plan view",
++    "blueprint": "a strict orthographic architectural blueprint",
++    "site-plan-watercolor": "a near-nadir watercolour architectural site plan",
++    "isometric": "a clean 30-degree axonometric architectural visualization",
++    "clay-maquette": "high-angle studio photography of a monochrome architectural clay maquette",
++    "woodblock": "a graphic architectural woodblock print",
++    "collage": "a layered post-digital architectural collage",
++    "risograph": "a controlled limited-palette architectural risograph",
++    "pixel-art": "a polished grid-aligned architectural pixel-art scene",
++}
++
++_REPROJECT_VIEW_INSTRUCTIONS: dict[str, str] = {
++    "site-plan": "Transform the camera to a strict north-up orthographic plan looking straight down.",
++    "site-plan-photo": "Transform the camera to a near-nadir drone view, about 15-20 degrees from vertical.",
++    "blueprint": "Transform the camera to a strict north-up orthographic plan looking straight down.",
++    "site-plan-watercolor": "Transform the camera to a near-nadir architectural plan view.",
++    "isometric": "Transform the camera to a consistent 30-degree axonometric view with no perspective distortion.",
++    "clay-maquette": "Transform the camera to a high-angle isometric studio-model view.",
++}
++
++
++def _presentation_prompt(
++    client_prompt: str,
++    *,
++    presentation_mode: Literal["scene", "reproject"],
++    style: str,
++    object_id_manifest: dict[str, str] | None,
++    visible_component_summary: dict[str, int] | None = None,
++) -> str:
++    """Build one concise provider-first prompt with one authority clause."""
++
++    has_object_id = bool(object_id_manifest)
++    guide_number = 3 if has_object_id else 2
++    image_roles = [
++        "Image 1 is the clean 3D beauty capture and primary design reference.",
++    ]
++    if has_object_id:
++        image_roles.append(
++            "Image 2 is class-ID metadata only; use it to distinguish designed "
++            "buildings, streets, parks, landscape and ground, and never reproduce its colors."
++        )
++    image_roles.append(
++        f"Image {guide_number} is a monochrome structural guide; use its contours "
++        "and compact labels as layout evidence, never as visible linework or text."
++    )
++    legend = ""
++    if object_id_manifest:
++        legend = " Class legend: " + "; ".join(
++            f"{color}={semantic_class}"
++            for color, semantic_class in sorted(object_id_manifest.items())
++        ) + "."
++    components = ""
++    if visible_component_summary:
++        components = " Visible guide regions: " + ", ".join(
++            f"{count} {semantic_class}"
++            for semantic_class, count in sorted(visible_component_summary.items())
++        ) + "; keep every region distinct."
++    treatment = _PRESENTATION_STYLE_TREATMENTS.get(
++        style,
++        _PRESENTATION_STYLE_TREATMENTS["photorealistic"],
++    )
++    if presentation_mode == "scene":
++        task = (
++            f"SCENE FINISH: Re-render the full frame as {treatment}. Harmonize the "
++            "proposal and surrounding context into one coherent finished image."
++        )
++        authority = (
++            "MACRO DESIGN AUTHORITY: Keep Image 1's camera, projection, aspect, framing, "
++            "horizon, building count, primary silhouettes, footprints, heights, rooflines, "
++            "street/path topology, park boundaries and major occlusions. You may create new "
++            "photographic surface detail, glazing, windows, foliage texture, weathering, "
++            "contact shadows, lighting, people and vehicles, but do not move, merge, remove "
++            "or add a designed building, street or park."
++        )
++    else:
++        task = (
++            f"REPROJECTED PRESENTATION: Render the design as {treatment} "
++            f"{_REPROJECT_VIEW_INSTRUCTIONS[style]}"
++        )
++        authority = (
++            "LAYOUT AUTHORITY: The camera transform is intentional, so do not copy Image 1's "
++            "screen coordinates. Preserve the site layout, building count and relative massing, "
++            "footprints, street/path network, park locations and adjacency relationships while "
++            "expressing them truthfully in the requested projection."
++        )
++    prompt = "\n".join([
++        task,
++        " ".join(image_roles) + legend + components,
++        f"ART DIRECTION: {client_prompt.strip()}",
++        authority,
++    ])
++    return prompt[:31_900]
++
++
+ def _authoritative_prompt(
+     client_prompt: str,
+     object_id_manifest: dict[str, str] | None,
+@@ -1962,7 +2670,6 @@ class Direct3DRenderService:
+ 
+         normalized_width, normalized_height = capture.normalized_beauty.size
+         beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
+-        edit_mask_png = _png_bytes(build_openai_edit_mask(capture.normalized_proposal_mask))
+         structural_guide_png = _png_bytes(build_structural_edge_guide(
+             capture.normalized_beauty,
+             capture.normalized_proposal_mask,
+@@ -1985,14 +2692,32 @@ class Direct3DRenderService:
+             "image[]",
+             ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
+         ))
+-        files.append(("mask", ("direct-3d-edit-mask.png", edit_mask_png, "image/png")))
+-        data = {
+-            "model": DIRECT_3D_MODEL,
+-            "prompt": _authoritative_prompt(
++        if req.presentation_mode == "source_anchored":
++            edit_mask_png = _png_bytes(
++                build_openai_edit_mask(capture.normalized_proposal_mask)
++            )
++            files.append((
++                "mask",
++                ("direct-3d-edit-mask.png", edit_mask_png, "image/png"),
++            ))
++        prompt = (
++            _authoritative_prompt(
+                 req.prompt,
+                 object_id_manifest=req.object_id_manifest,
+                 visible_component_summary=visible_component_summary,
+-            ),
++            )
++            if req.presentation_mode == "source_anchored"
++            else _presentation_prompt(
++                req.prompt,
++                presentation_mode=req.presentation_mode,
++                style=req.style,
++                object_id_manifest=req.object_id_manifest,
++                visible_component_summary=visible_component_summary,
++            )
++        )
++        data = {
++            "model": DIRECT_3D_MODEL,
++            "prompt": prompt,
+             "n": "1",
+             "size": f"{normalized_width}x{normalized_height}",
+             "quality": "high",
+@@ -2000,16 +2725,19 @@ class Direct3DRenderService:
+         }
+         headers = {"Authorization": f"Bearer {self.api_key}"}
+         logger.info(
+-            "Direct 3D edit request: model=%s size=%s coverage=%.3f object_id=%s fingerprint=%s",
++            "Direct 3D edit request: model=%s mode=%s style=%s size=%s coverage=%.3f object_id=%s fingerprint=%s",
+             DIRECT_3D_MODEL,
++            req.presentation_mode,
++            req.style,
+             data["size"],
+             capture.proposal_coverage,
+             capture.normalized_object_id is not None,
+             capture.capture_fingerprint[:16],
+         )
+ 
+-        # Exactly one provider call.  In particular, a mask error never falls
+-        # back to an unmasked request as the legacy comparison renderer does.
++        # Exactly one provider call. Legacy source-anchored mode includes its
++        # strict edit mask; provider-first presentation modes deliberately omit
++        # it. No mode retries with a different mask contract.
+         try:
+             async with httpx.AsyncClient(timeout=300.0) as client:
+                 response = await client.post(
+@@ -2095,11 +2823,154 @@ class Direct3DRenderService:
+         provider_image_base64: str | None = None
+         try:
+             provider_image_base64 = base64.b64encode(_png_bytes(generated)).decode("ascii")
++            common_diagnostics: dict[str, Any] = {
++                "processing_mode": req.presentation_mode,
++                "source_width": capture.source_beauty.width,
++                "source_height": capture.source_beauty.height,
++                "normalized_width": capture.normalized_beauty.width,
++                "normalized_height": capture.normalized_beauty.height,
++                "proposal_coverage": capture.proposal_coverage,
++                "context_coverage": 1.0 - capture.proposal_coverage,
++                "object_id_attached": capture.normalized_object_id is not None,
++                "object_id_coverage": capture.object_id_coverage,
++                "object_id_proposal_recall": capture.object_id_proposal_recall,
++                "object_id_proposal_iou": capture.object_id_proposal_iou,
++                "minimum_object_id_proposal_recall": (
++                    _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
++                    if req.presentation_mode in {"scene", "reproject"}
++                    else None
++                ),
++                "minimum_object_id_proposal_iou": (
++                    _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU
++                    if req.presentation_mode in {"scene", "reproject"}
++                    else None
++                ),
++                "scene_lower_context_coverage": (
++                    capture.scene_lower_context_coverage
++                ),
++                "minimum_scene_lower_context_coverage": (
++                    _MIN_SCENE_LOWER_CONTEXT_COVERAGE
++                    if req.presentation_mode == "scene"
++                    else None
++                ),
++                "structural_edge_guide_attached": True,
++                "finish_fusion": None,
++                "provider_raw_structural_edge_fidelity": None,
++                "macro_design_fidelity": None,
++                "visual_change": None,
++                "reproject_output_sanity": None,
++                "structural_edge_fidelity": None,
++                "registration": None,
++                "exterior_pixel_count": None,
++                "exterior_max_channel_delta": None,
++                "inward_feather_px": None,
++                "mask_retry_used": False,
++            }
++
++            if req.presentation_mode == "reproject":
++                reproject_sanity = assess_reproject_output_sanity(
++                    capture.normalized_beauty,
++                    generated,
++                    capture.normalized_object_id,
++                    req.object_id_manifest,
++                )
++                if not reproject_sanity.passed:
++                    raise Direct3DValidationError(
++                        "Provider reproject output failed minimum content sanity "
++                        f"(whole-frame MAD "
++                        f"{reproject_sanity.whole_frame_mean_absolute_delta:.3f}, "
++                        "luminance std "
++                        f"{reproject_sanity.luminance_standard_deviation:.3f}, "
++                        "luminance P90 range "
++                        f"{reproject_sanity.luminance_dynamic_range_p90:.3f}, "
++                        "edge coverage "
++                        f"{reproject_sanity.structural_edge_coverage:.5f}, "
++                        "occupied cells "
++                        f"{reproject_sanity.occupied_edge_cells}, components "
++                        f"{reproject_sanity.significant_edge_component_count}/"
++                        f"{reproject_sanity.required_edge_component_count})"
++                    )
++                output_png = _png_bytes(generated)
++                return Direct3DServiceResult(
++                    image_base64=base64.b64encode(output_png).decode("ascii"),
++                    audit_input_base64=capture.audit_input_base64,
++                    capture_fingerprint=capture.capture_fingerprint,
++                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
++                    diagnostics={
++                        **common_diagnostics,
++                        "view_lock": "not_applicable_layout_guided",
++                        "context_restyled": True,
++                        "provider_first": True,
++                        "reproject_output_sanity": {
++                            "passed": True,
++                            "whole_frame_mean_absolute_delta": (
++                                reproject_sanity.whole_frame_mean_absolute_delta
++                            ),
++                            "luminance_standard_deviation": (
++                                reproject_sanity.luminance_standard_deviation
++                            ),
++                            "luminance_dynamic_range_p90": (
++                                reproject_sanity.luminance_dynamic_range_p90
++                            ),
++                            "structural_edge_coverage": (
++                                reproject_sanity.structural_edge_coverage
++                            ),
++                            "occupied_edge_cells": (
++                                reproject_sanity.occupied_edge_cells
++                            ),
++                            "significant_edge_component_count": (
++                                reproject_sanity.significant_edge_component_count
++                            ),
++                            "required_edge_component_count": (
++                                reproject_sanity.required_edge_component_count
++                            ),
++                            "minimum_whole_frame_mean_absolute_delta": (
++                                _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
++                            ),
++                            "minimum_luminance_standard_deviation": (
++                                _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
++                            ),
++                            "minimum_luminance_dynamic_range_p90": (
++                                _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
++                            ),
++                            "minimum_structural_edge_coverage": (
++                                _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
++                            ),
++                            "maximum_structural_edge_coverage": (
++                                _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
++                            ),
++                            "minimum_occupied_edge_cells": (
++                                _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
++                            ),
++                            "semantic_inventory_proxy_only": True,
++                        },
++                    },
++                )
++
+             registration = register_generated_image(
+                 capture.normalized_beauty,
+                 generated,
+                 capture.normalized_proposal_mask,
+             )
++            scene_translation_norm_px = math.hypot(
++                registration.translation_x_px,
++                registration.translation_y_px,
++            )
++            if req.presentation_mode == "scene":
++                if (
++                    scene_translation_norm_px
++                    > _MAX_SCENE_REGISTRATION_TRANSLATION_PX
++                ):
++                    raise Direct3DValidationError(
++                        "Provider scene camera drift exceeds the 8px translation limit"
++                    )
++                if (
++                    abs(registration.rotation_degrees)
++                    > _MAX_SCENE_REGISTRATION_ROTATION_DEGREES
++                ):
++                    raise Direct3DValidationError(
++                        "Provider scene camera drift exceeds the 0.35 degree rotation limit"
++                    )
+             provider_edge_fidelity = assess_structural_edge_fidelity(
+                 capture.normalized_beauty,
+                 registration.image,
+@@ -2107,6 +2978,231 @@ class Direct3DRenderService:
+                 capture.normalized_object_id,
+                 req.object_id_manifest,
+             )
++            provider_edge_diagnostics = {
++                "passed": provider_edge_fidelity.passed,
++                "beauty_edge_recall": provider_edge_fidelity.beauty_edge_recall,
++                "coarse_edge_recall": provider_edge_fidelity.coarse_edge_recall,
++                "semantic_edge_recall": provider_edge_fidelity.semantic_edge_recall,
++                "semantic_component_min_recall": (
++                    provider_edge_fidelity.semantic_component_min_recall
++                ),
++                "building_internal_edge_recall": (
++                    provider_edge_fidelity.building_internal_edge_recall
++                ),
++            }
++
++            if req.presentation_mode == "scene":
++                macro_fidelity = assess_macro_design_fidelity(
++                    capture.normalized_beauty,
++                    registration.image,
++                    capture.normalized_proposal_mask,
++                    capture.normalized_object_id,
++                    req.object_id_manifest,
++                )
++                if not macro_fidelity.passed:
++                    raise Direct3DValidationError(
++                        "Provider scene materially changed macro design geometry "
++                        f"(silhouette recall {macro_fidelity.silhouette_edge_recall}, "
++                        f"coarse recall {macro_fidelity.coarse_edge_recall:.3f}, "
++                        f"semantic recall {macro_fidelity.semantic_edge_recall}, "
++                        "weakest component recall "
++                        f"{macro_fidelity.semantic_component_min_recall}, p90 "
++                        f"{macro_fidelity.reference_edge_p90_distance_px:.3f}px, "
++                        "candidate coarse precision "
++                        f"{macro_fidelity.candidate_coarse_edge_precision:.3f}, "
++                        "candidate coarse density ratio "
++                        f"{macro_fidelity.candidate_coarse_edge_density_ratio:.3f})"
++                    )
++                visual_change = assess_scene_visual_change(
++                    capture.normalized_beauty,
++                    registration.image,
++                    capture.normalized_proposal_mask,
++                )
++                if not visual_change.passed:
++                    raise Direct3DValidationError(
++                        "Provider scene did not add enough photographic detail beyond "
++                        "a near-identity colour grade "
++                        "(whole-frame MAD "
++                        f"{visual_change.whole_frame_mean_absolute_delta:.3f}, "
++                        f"proposal MAD {visual_change.proposal_mean_absolute_delta:.3f}, "
++                        "detail p75 "
++                        f"{visual_change.proposal_detail_delta_p75:.3f}, novel-edge "
++                        f"coverage {visual_change.novel_detail_edge_coverage:.5f}, "
++                        "photometric residual p95 "
++                        f"{visual_change.proposal_photometric_residual_p95:.3f}, "
++                        "lower-context MAD "
++                        f"{visual_change.context_mean_absolute_delta:.3f}, "
++                        "lower-context residual p95 "
++                        f"{visual_change.context_photometric_residual_p95:.3f}, "
++                        "lower-context detail p75 "
++                        f"{visual_change.context_detail_delta_p75:.3f})"
++                    )
++                presentation = registration.image.resize(
++                    capture.source_beauty.size,
++                    Image.Resampling.LANCZOS,
++                )
++                source_pixels = np.asarray(capture.source_beauty.convert("RGB"))
++                output_pixels = np.asarray(presentation.convert("RGB"))
++                exterior = np.asarray(capture.source_proposal_mask.convert("L")) == 0
++                exterior_count = int(np.count_nonzero(exterior))
++                exterior_max_delta = (
++                    int(np.max(np.abs(
++                        output_pixels[exterior].astype(np.int16)
++                        - source_pixels[exterior].astype(np.int16)
++                    )))
++                    if exterior_count
++                    else 0
++                )
++                output_png = _png_bytes(presentation)
++                return Direct3DServiceResult(
++                    image_base64=base64.b64encode(output_png).decode("ascii"),
++                    audit_input_base64=capture.audit_input_base64,
++                    capture_fingerprint=capture.capture_fingerprint,
++                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
++                    diagnostics={
++                        **common_diagnostics,
++                        "view_lock": "camera_registered",
++                        "context_restyled": True,
++                        "provider_first": True,
++                        "provider_raw_structural_edge_fidelity": provider_edge_diagnostics,
++                        "macro_design_fidelity": {
++                            "passed": True,
++                            "tolerance_px": macro_fidelity.tolerance_px,
++                            "silhouette_edge_pixels": (
++                                macro_fidelity.silhouette_edge_pixels
++                            ),
++                            "silhouette_edge_recall": (
++                                macro_fidelity.silhouette_edge_recall
++                            ),
++                            "coarse_edge_pixels": macro_fidelity.coarse_edge_pixels,
++                            "coarse_edge_recall": macro_fidelity.coarse_edge_recall,
++                            "semantic_edge_pixels": macro_fidelity.semantic_edge_pixels,
++                            "semantic_edge_recall": macro_fidelity.semantic_edge_recall,
++                            "evaluated_component_count": (
++                                macro_fidelity.evaluated_component_count
++                            ),
++                            "semantic_component_min_recall": (
++                                macro_fidelity.semantic_component_min_recall
++                            ),
++                            "reference_edge_p90_distance_px": (
++                                macro_fidelity.reference_edge_p90_distance_px
++                            ),
++                            "candidate_coarse_edge_pixels": (
++                                macro_fidelity.candidate_coarse_edge_pixels
++                            ),
++                            "candidate_coarse_edge_precision": (
++                                macro_fidelity.candidate_coarse_edge_precision
++                            ),
++                            "candidate_coarse_edge_density_ratio": (
++                                macro_fidelity.candidate_coarse_edge_density_ratio
++                            ),
++                            "minimum_silhouette_edge_recall": (
++                                _MIN_MACRO_SILHOUETTE_EDGE_RECALL
++                            ),
++                            "minimum_coarse_edge_recall": (
++                                _MIN_MACRO_COARSE_EDGE_RECALL
++                            ),
++                            "minimum_semantic_edge_recall": (
++                                _MIN_MACRO_SEMANTIC_EDGE_RECALL
++                            ),
++                            "minimum_semantic_component_recall": (
++                                _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
++                            ),
++                            "maximum_reference_edge_p90_distance_px": min(
++                                _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
++                                macro_fidelity.tolerance_px
++                                * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
++                            ),
++                            "minimum_candidate_coarse_edge_precision": (
++                                _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
++                            ),
++                            "maximum_candidate_coarse_edge_density_ratio": (
++                                _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
++                            ),
++                            "building_internal_edges_required": False,
++                        },
++                        "visual_change": {
++                            "passed": True,
++                            "whole_frame_mean_absolute_delta": (
++                                visual_change.whole_frame_mean_absolute_delta
++                            ),
++                            "proposal_mean_absolute_delta": (
++                                visual_change.proposal_mean_absolute_delta
++                            ),
++                            "proposal_detail_delta_p75": (
++                                visual_change.proposal_detail_delta_p75
++                            ),
++                            "proposal_photometric_residual_p95": (
++                                visual_change.proposal_photometric_residual_p95
++                            ),
++                            "novel_detail_edge_coverage": (
++                                visual_change.novel_detail_edge_coverage
++                            ),
++                            "context_mean_absolute_delta": (
++                                visual_change.context_mean_absolute_delta
++                            ),
++                            "context_photometric_residual_p95": (
++                                visual_change.context_photometric_residual_p95
++                            ),
++                            "context_detail_delta_p75": (
++                                visual_change.context_detail_delta_p75
++                            ),
++                            "context_pixel_count": visual_change.context_pixel_count,
++                            "context_frame_top_fraction": (
++                                visual_change.context_frame_top_fraction
++                            ),
++                            "minimum_whole_frame_mean_absolute_delta": (
++                                _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
++                            ),
++                            "minimum_proposal_mean_absolute_delta": (
++                                _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
++                            ),
++                            "minimum_proposal_detail_delta_p75": (
++                                _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
++                            ),
++                            "minimum_proposal_photometric_residual_p95": (
++                                _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
++                            ),
++                            "minimum_novel_detail_edge_coverage": (
++                                _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
++                            ),
++                            "minimum_context_mean_absolute_delta": (
++                                _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
++                            ),
++                            "minimum_context_photometric_residual_p95": (
++                                _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
++                            ),
++                            "minimum_context_detail_delta_p75": (
++                                _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
++                            ),
++                            "context_change_required": True,
++                            "color_grade_only_rejected": True,
++                        },
++                        "registration": {
++                            "method": registration.method,
++                            "score": registration.score,
++                            "score_metric": registration.score_metric,
++                            "photometric_score": registration.photometric_score,
++                            "structural_context_score": (
++                                registration.structural_context_score
++                            ),
++                            "translation_x_px": registration.translation_x_px,
++                            "translation_y_px": registration.translation_y_px,
++                            "translation_norm_px": scene_translation_norm_px,
++                            "rotation_degrees": registration.rotation_degrees,
++                            "maximum_translation_norm_px": (
++                                _MAX_SCENE_REGISTRATION_TRANSLATION_PX
++                            ),
++                            "maximum_abs_rotation_degrees": (
++                                _MAX_SCENE_REGISTRATION_ROTATION_DEGREES
++                            ),
++                        },
++                        "exterior_pixel_count": exterior_count,
++                        "exterior_max_channel_delta": exterior_max_delta,
++                        "inward_feather_px": 0.0,
++                    },
++                )
++
+             finish_fusion = _fuse_source_geometry_with_provider_finish(
+                 capture.normalized_beauty,
+                 registration.image,
+@@ -2163,6 +3259,10 @@ class Direct3DRenderService:
+                 capture_fingerprint=capture.capture_fingerprint,
+                 output_fingerprint=output_fingerprint,
+                 diagnostics={
++                    "processing_mode": "source_anchored",
++                    "view_lock": "source_pixel_locked",
++                    "context_restyled": False,
++                    "provider_first": False,
+                     "source_width": capture.source_beauty.width,
+                     "source_height": capture.source_beauty.height,
+                     "normalized_width": capture.normalized_beauty.width,
+@@ -2171,6 +3271,14 @@ class Direct3DRenderService:
+                     "context_coverage": 1.0 - capture.proposal_coverage,
+                     "object_id_attached": capture.normalized_object_id is not None,
+                     "object_id_coverage": capture.object_id_coverage,
++                    "object_id_proposal_recall": (
++                        capture.object_id_proposal_recall
++                    ),
++                    "object_id_proposal_iou": capture.object_id_proposal_iou,
++                    "minimum_object_id_proposal_recall": None,
++                    "minimum_object_id_proposal_iou": None,
++                    "scene_lower_context_coverage": None,
++                    "minimum_scene_lower_context_coverage": None,
+                     "structural_edge_guide_attached": True,
+                     "finish_fusion": {
+                         "method": "source-geometry-multiscale-source-phase-detail-v2",
+@@ -2224,18 +3332,7 @@ class Direct3DRenderService:
+                         "provider_high_frequency_phase_transferred": False,
+                         **finish_fusion.diagnostics,
+                     },
+-                    "provider_raw_structural_edge_fidelity": {
+-                        "passed": provider_edge_fidelity.passed,
+-                        "beauty_edge_recall": provider_edge_fidelity.beauty_edge_recall,
+-                        "coarse_edge_recall": provider_edge_fidelity.coarse_edge_recall,
+-                        "semantic_edge_recall": provider_edge_fidelity.semantic_edge_recall,
+-                        "semantic_component_min_recall": (
+-                            provider_edge_fidelity.semantic_component_min_recall
+-                        ),
+-                        "building_internal_edge_recall": (
+-                            provider_edge_fidelity.building_internal_edge_recall
+-                        ),
+-                    },
++                    "provider_raw_structural_edge_fidelity": provider_edge_diagnostics,
+                     "structural_edge_fidelity": {
+                         "passed": edge_fidelity.passed,
+                         "tolerance_px": edge_fidelity.tolerance_px,
+diff --git a/backend/tests/test_direct_3d_render.py b/backend/tests/test_direct_3d_render.py
+index 261aea5eef96cb70e01283ccd61e00e556662866..15f68bd525e16c0d695f8a03cbb826ee2cc0f280 100644
+--- a/backend/tests/test_direct_3d_render.py
++++ b/backend/tests/test_direct_3d_render.py
+@@ -18,15 +18,22 @@ from pydantic import ValidationError
+ from shapely.geometry import box
+ 
+ from app.api.v1 import direct_3d_render as direct_api
+-from app.schemas.direct_3d_render import Direct3DRenderRequest
++from app.schemas.direct_3d_render import (
++    Direct3DRenderDiagnostics,
++    Direct3DRenderRequest,
++)
+ from app.services import direct_3d_render as direct_service
+ from app.services.direct_3d_render import (
+     Direct3DProviderError,
+     Direct3DRenderService,
+     Direct3DServiceResult,
+     Direct3DValidationError,
++    assess_macro_design_fidelity,
++    assess_reproject_output_sanity,
++    assess_scene_visual_change,
+     assess_structural_edge_fidelity,
+     _authoritative_prompt,
++    _presentation_prompt,
+     _load_image,
+     _normalized_dimensions,
+     build_openai_edit_mask,
+@@ -156,15 +163,79 @@ def _style_shift_without_geometry_change(image: Image.Image) -> Image.Image:
+     return Image.fromarray(shifted, mode="RGB")
+ 
+ 
++def _provider_first_finish_without_geometry_change(image: Image.Image) -> Image.Image:
++    """Add deterministic full-frame finish/detail while retaining source edges."""
++
++    source = np.asarray(image.convert("RGB"), dtype=np.float32)
++    yy, xx = np.indices((image.height, image.width))
++    texture = (
++        10 * np.sin((2 * np.pi * xx) / 12)
++        + 6 * np.cos((2 * np.pi * yy) / 18)
++    )
++    candidate = np.clip(
++        source
++        + np.asarray([22, 12, 4], dtype=np.float32)[None, None, :]
++        + texture[..., None],
++        0,
++        255,
++    ).astype(np.uint8)
++    return Image.fromarray(candidate, mode="RGB")
++
++
++def _watercolour_finish_preserving_layout(image: Image.Image) -> Image.Image:
++    source = np.asarray(image.convert("RGB"), dtype=np.uint8)
++    softened = cv2.bilateralFilter(source, 7, 32, 5).astype(np.float32)
++    yy, xx = np.indices((image.height, image.width))
++    paper = 7 * np.sin((2 * np.pi * xx) / 14) + 4 * np.cos(
++        (2 * np.pi * yy) / 21
++    )
++    rendered = np.clip(
++        softened * 0.72
++        + source.astype(np.float32) * 0.28
++        + np.asarray([22, 14, 8], dtype=np.float32)[None, None, :]
++        + paper[..., None],
++        0,
++        255,
++    ).astype(np.uint8)
++    return Image.fromarray(rendered, mode="RGB")
++
++
++def _limited_palette_line_finish_preserving_layout(image: Image.Image) -> Image.Image:
++    source = np.asarray(image.convert("RGB"), dtype=np.uint8)
++    quantized = np.clip((source // 48) * 48 + 24, 0, 255).astype(np.uint8)
++    yy, xx = np.indices((image.height, image.width))
++    halftone = np.where(((xx + yy) // 3) % 2 == 0, 3, -3)
++    gray = cv2.cvtColor(source, cv2.COLOR_RGB2GRAY)
++    edges = cv2.Canny(gray, 35, 95, L2gradient=True) > 0
++    rendered = np.clip(
++        quantized.astype(np.int16) + halftone[..., None],
++        0,
++        255,
++    ).astype(np.uint8)
++    rendered[edges] = (24, 28, 34)
++    return Image.fromarray(rendered, mode="RGB")
++
++
+ def _request(
+     *,
+     beauty: Image.Image | None = None,
+     mask: Image.Image | None = None,
+     object_id: Image.Image | None = None,
+     data_urls: bool = False,
++    presentation_mode: str = "source_anchored",
++    style: str = "photorealistic",
++    auto_presentation_object_id: bool = True,
+ ) -> Direct3DRenderRequest:
+     beauty = beauty or _capture_images()[0]
+     mask = mask or _capture_images(beauty.size)[1]
++    if (
++        object_id is None
++        and auto_presentation_object_id
++        and presentation_mode in {"scene", "reproject"}
++    ):
++        object_pixels = np.zeros((beauty.height, beauty.width, 3), dtype=np.uint8)
++        object_pixels[np.asarray(mask.convert("L")) >= 128] = (255, 0, 0)
++        object_id = Image.fromarray(object_pixels, mode="RGB")
+     beauty_b64 = _png_b64(beauty)
+     mask_b64 = _png_b64(mask)
+     payload = {
+@@ -175,6 +246,8 @@ def _request(
+             f"data:image/png;base64,{mask_b64}" if data_urls else mask_b64
+         ),
+         "prompt": "Natural stone, convincing glazing, soft afternoon light.",
++        "presentation_mode": presentation_mode,
++        "style": style,
+         "project_id": TEST_PROJECT_ID,
+         "community_3d_claims": [{
+             "zone_id": TEST_ZONE_ID,
+@@ -258,6 +331,34 @@ def test_direct_request_requires_project_identity_and_unique_zone_claims():
+         Direct3DRenderRequest(**payload)
+ 
+ 
++def test_presentation_mode_and_style_categories_are_validated_without_breaking_legacy():
++    legacy = _request()
++    assert legacy.presentation_mode == "source_anchored"
++    assert legacy.style == "photorealistic"
++    assert _request(presentation_mode="scene", style="documentary")
++    assert _request(presentation_mode="reproject", style="isometric")
++
++    with pytest.raises(ValidationError, match="require object_id_image_base64"):
++        _request(
++            presentation_mode="scene",
++            style="documentary",
++            auto_presentation_object_id=False,
++        )
++    with pytest.raises(ValidationError, match="require object_id_image_base64"):
++        _request(
++            presentation_mode="reproject",
++            style="isometric",
++            auto_presentation_object_id=False,
++        )
++
++    with pytest.raises(ValidationError, match="requires presentation_mode='reproject'"):
++        _request(presentation_mode="scene", style="site-plan")
++    with pytest.raises(ValidationError, match="requires presentation_mode='scene'"):
++        _request(presentation_mode="reproject", style="photorealistic")
++    with pytest.raises(ValidationError, match="style"):
++        _request(style="not-a-render-style")
++
++
+ def _project_request(
+     project_id: uuid.UUID,
+     boundary_id: uuid.UUID | None = None,
+@@ -836,6 +937,61 @@ def test_prepare_rejects_object_id_pixels_outside_proposal():
+         prepare_direct_3d_capture(_request(beauty=beauty, mask=mask, object_id=object_id))
+ 
+ 
++def test_presentation_object_id_must_cover_the_proposal():
++    beauty, mask = _capture_images()
++    partial_object_id = Image.new("RGB", beauty.size, (0, 0, 0))
++    ImageDraw.Draw(partial_object_id).rectangle(
++        (192, 192, 320, 320),
++        fill=(255, 0, 0),
++    )
++
++    with pytest.raises(Direct3DValidationError, match="must cover the proposal"):
++        prepare_direct_3d_capture(
++            _request(
++                beauty=beauty,
++                mask=mask,
++                object_id=partial_object_id,
++                presentation_mode="scene",
++                style="documentary",
++            )
++        )
++
++    # Legacy keeps its existing optional/partial structural-guide behavior.
++    legacy_capture = prepare_direct_3d_capture(
++        _request(beauty=beauty, mask=mask, object_id=partial_object_id)
++    )
++    assert legacy_capture.object_id_proposal_recall is not None
++    assert legacy_capture.object_id_proposal_recall < 0.85
++
++
++def test_presentation_object_id_reports_conservative_coverage_metrics():
++    request = _request(presentation_mode="scene", style="documentary")
++    capture = prepare_direct_3d_capture(request)
++
++    assert capture.object_id_proposal_recall == pytest.approx(1.0)
++    assert capture.object_id_proposal_iou == pytest.approx(1.0)
++
++
++def test_scene_prepare_rejects_insufficient_lower_frame_context():
++    beauty = Image.new("RGB", (512, 512), (80, 100, 120))
++    mask = Image.new("L", beauty.size, 0)
++    ImageDraw.Draw(mask).rectangle((0, 160, 511, 511), fill=255)
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="scene",
++        style="documentary",
++    )
++
++    with pytest.raises(Direct3DValidationError, match="lower-frame context"):
++        prepare_direct_3d_capture(request)
++
++    legacy_capture = prepare_direct_3d_capture(
++        _request(beauty=beauty, mask=mask)
++    )
++    assert legacy_capture.scene_lower_context_coverage is None
++
++
+ def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
+     prompt = _authoritative_prompt(
+         "Warm realistic materials.",
+@@ -851,6 +1007,32 @@ def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
+     assert "never draw, tint, or expose its contours or labels" in prompt
+ 
+ 
++def test_provider_first_prompts_use_one_concise_mode_specific_authority_clause():
++    scene = _presentation_prompt(
++        "Warm limestone and mature planting.",
++        presentation_mode="scene",
++        style="development",
++        object_id_manifest={"#FF0000": "building"},
++        visible_component_summary={"building": 2, "park": 1},
++    )
++    reproject = _presentation_prompt(
++        "Restrained line weights.",
++        presentation_mode="reproject",
++        style="isometric",
++        object_id_manifest=None,
++    )
++
++    assert scene.count("MACRO DESIGN AUTHORITY") == 1
++    assert scene.count("Warm limestone and mature planting.") == 1
++    assert scene.count("#FF0000=building") == 1
++    assert "Re-render the full frame" in scene
++    assert "new photographic surface detail" in scene
++    assert "source pixel" not in scene.lower()
++    assert reproject.count("LAYOUT AUTHORITY") == 1
++    assert "30-degree axonometric" in reproject
++    assert "do not copy Image 1's screen coordinates" in reproject
++
++
+ def test_structural_guide_is_deterministic_binary_and_includes_semantic_edges():
+     beauty, mask, object_id = _structured_scene()
+     manifest = {"#FF0000": "building"}
+@@ -917,6 +1099,256 @@ def test_structural_edge_fidelity_rejects_merged_buildings_and_flat_roofs():
+     )
+ 
+ 
++def test_macro_gate_allows_new_surface_edges_but_rejects_moved_merged_design():
++    beauty, mask, object_id = _structured_scene()
++    detailed = beauty.copy()
++    detail_draw = ImageDraw.Draw(detailed)
++    for x in range(102, 416, 18):
++        detail_draw.line((x, 158, x, 232), fill=(225, 230, 222), width=2)
++    accepted = assess_macro_design_fidelity(
++        beauty,
++        detailed,
++        mask,
++        object_id,
++        {"#FF0000": "building"},
++    )
++
++    redesigned = beauty.copy()
++    redesigned_draw = ImageDraw.Draw(redesigned)
++    redesigned_draw.rectangle((48, 48, 463, 463), fill=(132, 145, 118))
++    redesigned_draw.rectangle(
++        (78, 128, 434, 276),
++        fill=(198, 181, 154),
++        outline=(42, 43, 48),
++        width=5,
++    )
++    rejected = assess_macro_design_fidelity(
++        beauty,
++        redesigned,
++        mask,
++        object_id,
++        {"#FF0000": "building"},
++    )
++
++    assert accepted.passed is True
++    assert accepted.coarse_edge_recall >= 0.70
++    assert accepted.semantic_component_min_recall is not None
++    assert accepted.candidate_coarse_edge_precision >= 0.40
++    assert accepted.candidate_coarse_edge_density_ratio <= 3.0
++    assert rejected.passed is False
++    assert (
++        (rejected.silhouette_edge_recall or 0) < 0.80
++        or rejected.coarse_edge_recall < 0.70
++        or (rejected.semantic_edge_recall or 0) < 0.78
++        or (rejected.semantic_component_min_recall or 0) < 0.72
++        or rejected.reference_edge_p90_distance_px > 6.0
++    )
++
++
++def test_macro_gate_rejects_random_noise_that_games_directed_edge_recall():
++    beauty, mask, object_id = _structured_scene()
++    candidate = np.asarray(
++        _provider_first_finish_without_geometry_change(beauty)
++    ).copy()
++    proposal = np.asarray(mask) >= 128
++    candidate[proposal] = np.random.default_rng(20260722).integers(
++        0,
++        256,
++        size=(int(np.count_nonzero(proposal)), 3),
++        dtype=np.uint8,
++    )
++    rendered = Image.fromarray(candidate, mode="RGB")
++
++    result = assess_macro_design_fidelity(
++        beauty,
++        rendered,
++        mask,
++        object_id,
++        {"#FF0000": "building"},
++    )
++
++    # These source-directed recalls demonstrate the original bypass. The
++    # reverse coarse-edge precision must be what rejects the noise field.
++    assert result.coarse_edge_recall >= 0.90
++    assert (result.semantic_edge_recall or 0) >= 0.90
++    assert (result.semantic_component_min_recall or 0) >= 0.90
++    assert result.candidate_coarse_edge_precision < 0.40
++    assert result.passed is False
++    assert assess_scene_visual_change(beauty, rendered, mask).passed is True
++
++
++def test_macro_gate_rejects_dense_stripes_that_game_edge_proximity():
++    beauty, mask = _registration_context_scene()
++    candidate = np.asarray(
++        _provider_first_finish_without_geometry_change(beauty)
++    ).copy()
++    proposal = np.asarray(mask) >= 128
++    _yy, xx = np.indices(proposal.shape)
++    stripe = ((xx // 3) % 2 * 255).astype(np.uint8)
++    stripe_rgb = np.stack((stripe, 255 - stripe, stripe), axis=2)
++    candidate[proposal] = stripe_rgb[proposal]
++
++    result = assess_macro_design_fidelity(
++        beauty,
++        Image.fromarray(candidate, mode="RGB"),
++        mask,
++    )
++
++    assert result.coarse_edge_recall >= 0.90
++    assert (result.silhouette_edge_recall or 0) >= 0.80
++    assert result.candidate_coarse_edge_precision < 0.40
++    assert result.passed is False
++
++
++def test_scene_visual_change_rejects_colour_grade_only_and_accepts_new_detail():
++    beauty, mask, _object_id = _structured_scene()
++    source = np.asarray(beauty, dtype=np.uint8)
++    proposal = np.asarray(mask) > 0
++    graded = source.copy()
++    graded[proposal] = np.clip(
++        graded[proposal].astype(np.int16) + np.asarray([8, 6, 4]),
++        0,
++        255,
++    ).astype(np.uint8)
++    grade_result = assess_scene_visual_change(
++        beauty,
++        Image.fromarray(graded, mode="RGB"),
++        mask,
++    )
++
++    detailed = _provider_first_finish_without_geometry_change(beauty)
++    draw = ImageDraw.Draw(detailed)
++    for y in range(112, 330, 14):
++        draw.line((92, y, 430, y), fill=(232, 225, 210), width=2)
++    detail_result = assess_scene_visual_change(beauty, detailed, mask)
++
++    assert grade_result.whole_frame_mean_absolute_delta < 5.0
++    assert grade_result.proposal_mean_absolute_delta < 12.0
++    assert grade_result.context_mean_absolute_delta == 0.0
++    assert grade_result.passed is False
++    assert detail_result.passed is True
++    assert detail_result.whole_frame_mean_absolute_delta >= 5.0
++    assert detail_result.proposal_mean_absolute_delta >= 12.0
++    assert detail_result.proposal_photometric_residual_p95 >= 6.0
++    assert (
++        detail_result.proposal_detail_delta_p75 >= 3.0
++        or detail_result.novel_detail_edge_coverage >= 0.0015
++    )
++    assert (
++        detail_result.context_mean_absolute_delta >= 4.0
++        or detail_result.context_photometric_residual_p95 >= 4.0
++    )
++
++
++def test_scene_visual_change_rejects_proposal_and_sky_only_change():
++    beauty, mask = _registration_context_scene()
++    source = np.asarray(beauty, dtype=np.uint8)
++    proposal = np.asarray(mask) > 0
++    candidate = source.copy()
++    sky = np.zeros(proposal.shape, dtype=bool)
++    sky[: beauty.height * 2 // 5, :] = True
++    changed = proposal | sky
++    candidate[changed] = np.stack(
++        (
++            255 - source[..., 0],
++            source[..., 1],
++            255 - source[..., 2],
++        ),
++        axis=2,
++    )[changed]
++    # Draw into the array-backed image explicitly so proposal detail clears the
++    # spatial-change branch while lower mask-zero context remains untouched.
++    rendered = Image.fromarray(candidate, mode="RGB")
++    draw = ImageDraw.Draw(rendered)
++    for y in range(170, 350, 12):
++        draw.line((160, y, 350, y), fill=(245, 226, 201), width=2)
++
++    result = assess_scene_visual_change(beauty, rendered, mask)
++
++    assert result.whole_frame_mean_absolute_delta >= 5.0
++    assert result.proposal_mean_absolute_delta >= 12.0
++    assert result.context_mean_absolute_delta == 0.0
++    assert result.context_photometric_residual_p95 == 0.0
++    assert result.passed is False
++
++
++def test_scene_visual_change_rejects_flat_lower_context_tint():
++    beauty, mask = _registration_context_scene()
++    source = np.asarray(beauty, dtype=np.uint8)
++    proposal = np.asarray(mask) >= 128
++    candidate = source.copy()
++    finished = np.asarray(
++        _provider_first_finish_without_geometry_change(beauty)
++    )
++    candidate[proposal] = finished[proposal]
++
++    sky = np.zeros(proposal.shape, dtype=bool)
++    sky[: beauty.height * 2 // 5, :] = True
++    sky &= ~proposal
++    candidate[sky] = np.clip(
++        candidate[sky].astype(np.int16) + 20,
++        0,
++        255,
++    ).astype(np.uint8)
++    lower_context = np.zeros(proposal.shape, dtype=bool)
++    lower_context[round(beauty.height * 0.45) :, :] = True
++    lower_context &= ~proposal
++    candidate[lower_context] = np.clip(
++        candidate[lower_context].astype(np.int16) + 5,
++        0,
++        255,
++    ).astype(np.uint8)
++
++    result = assess_scene_visual_change(
++        beauty,
++        Image.fromarray(candidate, mode="RGB"),
++        mask,
++    )
++
++    assert result.whole_frame_mean_absolute_delta >= 5.0
++    assert result.proposal_mean_absolute_delta >= 12.0
++    assert result.context_mean_absolute_delta >= 4.0
++    assert result.context_photometric_residual_p95 < 4.0
++    assert result.context_detail_delta_p75 < 0.75
++    assert result.passed is False
++
++
++@pytest.mark.parametrize(
++    "transform",
++    [
++        _watercolour_finish_preserving_layout,
++        _limited_palette_line_finish_preserving_layout,
++    ],
++    ids=["soft-watercolour", "limited-palette-line-art"],
++)
++def test_common_scene_gates_accept_representative_artistic_finishes(transform):
++    beauty, mask = _registration_context_scene()
++    candidate = transform(beauty)
++    registration = register_generated_image(beauty, candidate, mask)
++
++    assert np.hypot(
++        registration.translation_x_px,
++        registration.translation_y_px,
++    ) <= 8.0
++    assert abs(registration.rotation_degrees) <= 0.35
++    macro = assess_macro_design_fidelity(
++        beauty,
++        registration.image,
++        mask,
++    )
++    visual = assess_scene_visual_change(
++        beauty,
++        registration.image,
++        mask,
++    )
++
++    assert macro.passed is True
++    assert macro.candidate_coarse_edge_precision >= 0.40
++    assert macro.candidate_coarse_edge_density_ratio <= 3.0
++    assert visual.passed is True
++    assert visual.context_detail_delta_p75 >= 0.75
++
++
+ def test_semantic_requirements_ignore_invisible_class_boundaries_for_one_value_change():
+     beauty, mask, _object_id = _structured_scene()
+     object_id = Image.new("RGB", beauty.size, (0, 0, 0))
+@@ -1318,6 +1750,40 @@ async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_p
+     assert sent_mask.getchannel("A").getextrema() == (0, 255)
+ 
+ 
++@pytest.mark.asyncio
++@pytest.mark.parametrize(
++    ("presentation_mode", "style", "authority"),
++    [
++        ("scene", "development", "MACRO DESIGN AUTHORITY"),
++        ("reproject", "isometric", "LAYOUT AUTHORITY"),
++    ],
++)
++async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority(
++    monkeypatch,
++    presentation_mode,
++    style,
++    authority,
++):
++    request = _request(presentation_mode=presentation_mode, style=style)
++    capture = prepare_direct_3d_capture(request)
++    _RecordingClient.calls = []
++    _RecordingClient.response = _FakeResponse(
++        200,
++        {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]},
++    )
++    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
++
++    await Direct3DRenderService("test-key")._call_openai(request, capture)
++
++    call = _RecordingClient.calls[0]
++    assert not [item for item in call["files"] if item[0] == "mask"]
++    assert call["data"]["size"] == (
++        f"{capture.normalized_beauty.width}x{capture.normalized_beauty.height}"
++    )
++    assert call["data"]["prompt"].count(authority) == 1
++    assert call["data"]["prompt"].count(request.prompt) == 1
++
++
+ @pytest.mark.asyncio
+ async def test_provider_attaches_object_id_image_and_exact_semantic_legend(monkeypatch):
+     beauty, mask = _capture_images()
+@@ -1555,6 +2021,333 @@ async def test_service_fuses_provider_finish_without_accepting_provider_geometry
+     assert isinstance(result.diagnostics["finish_fusion"]["role_metrics"], dict)
+ 
+ 
++@pytest.mark.asyncio
++async def test_scene_mode_keeps_provider_pixels_and_allows_context_restyling(monkeypatch):
++    beauty, mask = _registration_context_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="scene",
++        style="documentary",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated = _provider_first_finish_without_geometry_change(
++        capture.normalized_beauty
++    )
++    draw = ImageDraw.Draw(generated)
++    for y in range(generated.height * 3 // 10, generated.height * 7 // 10, 18):
++        draw.line(
++            (
++                generated.width * 3 // 10,
++                y,
++                generated.width * 7 // 10,
++                y,
++            ),
++            fill=(242, 228, 205),
++            width=2,
++        )
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++
++    result = await Direct3DRenderService("test-key").generate(request, capture)
++
++    output = Image.open(io.BytesIO(base64.b64decode(result.image_base64))).convert("RGB")
++    source_pixels = np.asarray(capture.source_beauty)
++    output_pixels = np.asarray(output)
++    exterior = np.asarray(capture.source_proposal_mask) == 0
++    assert output.size == capture.source_beauty.size
++    assert not np.array_equal(output_pixels[exterior], source_pixels[exterior])
++    assert result.diagnostics["processing_mode"] == "scene"
++    assert result.diagnostics["view_lock"] == "camera_registered"
++    assert result.diagnostics["context_restyled"] is True
++    assert result.diagnostics["provider_first"] is True
++    assert result.diagnostics["finish_fusion"] is None
++    assert result.diagnostics["object_id_proposal_recall"] == pytest.approx(1.0)
++    assert result.diagnostics["object_id_proposal_iou"] == pytest.approx(1.0)
++    assert result.diagnostics["minimum_object_id_proposal_recall"] == 0.85
++    assert result.diagnostics["minimum_object_id_proposal_iou"] == 0.84
++    assert result.diagnostics["scene_lower_context_coverage"] >= 0.08
++    assert result.diagnostics["minimum_scene_lower_context_coverage"] == 0.08
++    assert result.diagnostics["macro_design_fidelity"]["passed"] is True
++    assert (
++        result.diagnostics["macro_design_fidelity"][
++            "building_internal_edges_required"
++        ]
++        is False
++    )
++    assert result.diagnostics["visual_change"]["passed"] is True
++    assert (
++        result.diagnostics["visual_change"][
++            "minimum_whole_frame_mean_absolute_delta"
++        ]
++        == 5.0
++    )
++    assert (
++        result.diagnostics["visual_change"][
++            "minimum_proposal_mean_absolute_delta"
++        ]
++        == 12.0
++    )
++    assert result.diagnostics["visual_change"]["context_change_required"] is True
++    assert (
++        result.diagnostics["macro_design_fidelity"][
++            "minimum_silhouette_edge_recall"
++        ]
++        == 0.80
++    )
++    assert (
++        result.diagnostics["macro_design_fidelity"][
++            "maximum_reference_edge_p90_distance_px"
++        ]
++        <= 6.0
++    )
++    assert (
++        result.diagnostics["macro_design_fidelity"][
++            "minimum_candidate_coarse_edge_precision"
++        ]
++        == 0.40
++    )
++    assert (
++        result.diagnostics["macro_design_fidelity"][
++            "maximum_candidate_coarse_edge_density_ratio"
++        ]
++        == 3.0
++    )
++    assert (
++        result.diagnostics["visual_change"][
++            "minimum_context_detail_delta_p75"
++        ]
++        == 0.75
++    )
++    assert result.diagnostics["registration"]["maximum_translation_norm_px"] == 8.0
++    assert (
++        result.diagnostics["registration"]["maximum_abs_rotation_degrees"]
++        == 0.35
++    )
++    assert result.diagnostics["exterior_max_channel_delta"] > 0
++    Direct3DRenderDiagnostics.model_validate(result.diagnostics)
++
++
++@pytest.mark.asyncio
++async def test_scene_mode_rejects_gross_moved_or_merged_proposal_geometry(monkeypatch):
++    beauty, mask, _object_id = _structured_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="scene",
++        style="development",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated = capture.normalized_beauty.copy()
++    draw = ImageDraw.Draw(generated)
++    proposal_box = (
++        generated.width // 10,
++        generated.height // 10,
++        generated.width * 9 // 10,
++        generated.height * 9 // 10,
++    )
++    draw.rectangle(proposal_box, fill=(135, 150, 122))
++    draw.rectangle(
++        (
++            generated.width * 3 // 20,
++            generated.height // 4,
++            generated.width * 17 // 20,
++            generated.height * 11 // 20,
++        ),
++        fill=(198, 181, 154),
++        outline=(42, 43, 48),
++        width=7,
++    )
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++
++    with pytest.raises(Direct3DProviderError, match="macro design geometry") as exc_info:
++        await Direct3DRenderService("test-key").generate(request, capture)
++
++    assert exc_info.value.billing_status == "produced"
++    assert exc_info.value.provider_image_base64 is not None
++
++
++@pytest.mark.asyncio
++async def test_scene_mode_rejects_near_identity_colour_grade_only(monkeypatch):
++    beauty, mask, _object_id = _structured_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="scene",
++        style="photorealistic",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated_pixels = np.asarray(capture.normalized_beauty).copy()
++    proposal = np.asarray(capture.normalized_proposal_mask) >= 128
++    generated_pixels[proposal] = np.clip(
++        generated_pixels[proposal].astype(np.int16) + np.asarray([12, 8, 6]),
++        0,
++        255,
++    ).astype(np.uint8)
++    generated = Image.fromarray(generated_pixels, mode="RGB")
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++
++    with pytest.raises(Direct3DProviderError, match="photographic detail") as exc_info:
++        await Direct3DRenderService("test-key").generate(request, capture)
++
++    assert exc_info.value.billing_status == "produced"
++
++
++@pytest.mark.asyncio
++@pytest.mark.parametrize(
++    ("translation_x", "translation_y", "rotation", "message"),
++    [
++        (8.01, 0.0, 0.0, "8px translation limit"),
++        (0.0, 0.0, 0.351, "0.35 degree rotation limit"),
++    ],
++)
++async def test_scene_mode_rejects_camera_drift_beyond_scene_limits(
++    monkeypatch,
++    translation_x,
++    translation_y,
++    rotation,
++    message,
++):
++    beauty, mask = _registration_context_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="scene",
++        style="documentary",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated = _style_shift_without_geometry_change(capture.normalized_beauty)
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++    monkeypatch.setattr(
++        direct_service,
++        "register_generated_image",
++        MagicMock(
++            return_value=direct_service.RegistrationResult(
++                image=generated,
++                method="ecc-euclidean",
++                score=0.9,
++                score_metric="luminance-correlation",
++                photometric_score=0.9,
++                structural_context_score=None,
++                translation_x_px=translation_x,
++                translation_y_px=translation_y,
++                rotation_degrees=rotation,
++            )
++        ),
++    )
++
++    with pytest.raises(Direct3DProviderError, match=message) as exc_info:
++        await Direct3DRenderService("test-key").generate(request, capture)
++
++    assert exc_info.value.billing_status == "produced"
++
++
++@pytest.mark.asyncio
++async def test_reproject_returns_provider_output_without_screen_registration(monkeypatch):
++    beauty, mask = _registration_context_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="reproject",
++        style="isometric",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated = _limited_palette_line_finish_preserving_layout(
++        capture.normalized_beauty
++    )
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++    register = MagicMock(side_effect=AssertionError("registration must be bypassed"))
++    macro = MagicMock(side_effect=AssertionError("macro gate must be bypassed"))
++    monkeypatch.setattr(direct_service, "register_generated_image", register)
++    monkeypatch.setattr(direct_service, "assess_macro_design_fidelity", macro)
++
++    result = await Direct3DRenderService("test-key").generate(request, capture)
++
++    output = Image.open(io.BytesIO(base64.b64decode(result.image_base64))).convert("RGB")
++    assert output.size == capture.normalized_beauty.size
++    assert np.array_equal(np.asarray(output), np.asarray(generated))
++    assert result.diagnostics["processing_mode"] == "reproject"
++    assert result.diagnostics["view_lock"] == "not_applicable_layout_guided"
++    assert result.diagnostics["registration"] is None
++    assert result.diagnostics["provider_first"] is True
++    assert result.diagnostics["reproject_output_sanity"]["passed"] is True
++    assert (
++        result.diagnostics["reproject_output_sanity"][
++            "semantic_inventory_proxy_only"
++        ]
++        is True
++    )
++    Direct3DRenderDiagnostics.model_validate(result.diagnostics)
++    register.assert_not_called()
++    macro.assert_not_called()
++
++
++@pytest.mark.asyncio
++async def test_reproject_rejects_solid_provider_output(monkeypatch):
++    beauty, mask = _registration_context_scene()
++    request = _request(
++        beauty=beauty,
++        mask=mask,
++        presentation_mode="reproject",
++        style="isometric",
++    )
++    capture = prepare_direct_3d_capture(request)
++    generated = Image.new("RGB", capture.normalized_beauty.size, (23, 91, 177))
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "_call_openai",
++        AsyncMock(return_value=generated),
++    )
++
++    sanity = assess_reproject_output_sanity(
++        capture.normalized_beauty,
++        generated,
++    )
++    assert sanity.structural_edge_coverage == 0.0
++    assert sanity.passed is False
++    with pytest.raises(Direct3DProviderError, match="content sanity") as exc_info:
++        await Direct3DRenderService("test-key").generate(request, capture)
++
++    assert exc_info.value.billing_status == "produced"
++
++
++def test_reproject_sanity_rejects_random_noise():
++    beauty, _mask = _registration_context_scene()
++    noise = Image.fromarray(
++        np.random.default_rng(20260722).integers(
++            0,
++            256,
++            size=(beauty.height, beauty.width, 3),
++            dtype=np.uint8,
++        ),
++        mode="RGB",
++    )
++
++    result = assess_reproject_output_sanity(beauty, noise)
++
++    assert result.structural_edge_coverage > 0.30
++    assert result.passed is False
++
++
+ @pytest.mark.asyncio
+ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monkeypatch):
+     request = _request(data_urls=True)
+@@ -1605,6 +2398,51 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
+     audited_image = Image.open(io.BytesIO(base64.b64decode(audited_input, validate=True)))
+     assert audited_image.format == "PNG"
+     assert audited_image.size == (512, 512)
++    assert finalize_mock.await_args.kwargs["status_label"] == "success source-anchored"
++    assert "mode=source_anchored" in finalize_mock.await_args.kwargs["detail"]
++
++
++@pytest.mark.asyncio
++async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
++    request = _request(presentation_mode="scene", style="development")
++    prepared = prepare_direct_3d_capture(request)
++    result = _fake_service_result(prepared.audit_input_base64)
++    result.diagnostics.update({
++        "processing_mode": "scene",
++        "view_lock": "camera_registered",
++        "context_restyled": True,
++        "provider_first": True,
++    })
++    finalize_mock = AsyncMock()
++    monkeypatch.setattr(
++        direct_api,
++        "_reserve_direct_render",
++        AsyncMock(return_value=SimpleNamespace(id=uuid.uuid4(), tokens_spent=13)),
++    )
++    monkeypatch.setattr(
++        Direct3DRenderService,
++        "generate",
++        AsyncMock(return_value=result),
++    )
++    monkeypatch.setattr(direct_api, "_finalize_direct_audit", finalize_mock)
++    monkeypatch.setattr(
++        direct_api,
++        "get_settings",
++        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
++    )
++
++    response = await direct_api.generate_direct_3d_render(
++        request,
++        user=SimpleNamespace(role="admin", email="admin@example.com", id="admin"),
++        db=_project_preflight_db(monkeypatch),
++    )
++
++    assert response.diagnostics.processing_mode == "scene"
++    assert response.diagnostics.provider_first is True
++    assert finalize_mock.await_args.kwargs["status_label"] == (
++        "success provider-first scene"
++    )
++    assert "mode=scene style=development" in finalize_mock.await_args.kwargs["detail"]
+ 
+ 
+ @pytest.mark.asyncio
+@@ -1840,7 +2678,13 @@ async def test_reservation_serializes_daily_cap_check_before_committing_row():
+ 
+ 
+ def test_direct_route_is_registered_separately_from_classic_route():
++    from app.api.v1.render import RenderRequest, router as classic_router
++
+     paths = {route.path for route in direct_api.router.routes}
++    classic_paths = {route.path for route in classic_router.routes}
+ 
+     assert "/generate-direct-3d" in paths
+     assert "/generate" not in paths
++    assert "/generate" in classic_paths
++    assert "presentation_mode" not in RenderRequest.model_fields
++    assert "style" not in RenderRequest.model_fields
+diff --git a/docs/DIRECT_3D_RENDER_PIPELINE_2026-07-20.md b/docs/DIRECT_3D_RENDER_PIPELINE_2026-07-20.md
+index 0eca2555fe574e20c0f499728f94ebfa3c4fb4eb..ecf7d13c8f01d17ab1f2c53e78f6403a49b51e6a 100644
+--- a/docs/DIRECT_3D_RENDER_PIPELINE_2026-07-20.md
++++ b/docs/DIRECT_3D_RENDER_PIPELINE_2026-07-20.md
+@@ -8,12 +8,14 @@ colored-polygon renderer:
+ 1. Community 3D compiles every otherwise-unassigned location inside the site
+    boundary into deterministic residual landscape.
+ 2. The render panel exposes an isolated **Direct 3D** pipeline that treats the
+-   visible compiled scene as authoritative and asks GPT Image 2 for finish,
+-   material and integration work only.
++   visible compiled scene as authoritative and asks GPT Image 2 for either a
++   source-anchored finish, a camera-preserving whole-scene presentation, or an
++   explicitly projection-changing presentation.
+ 
+ **Classic Polygons remains a separate request contract, hook, endpoint and UI
+-choice.** It remains the correct pipeline for plan views, camera reprojection,
+-whole-frame seasons or lighting, and illustration/media transformations.
++choice.** Its proven colored-polygon prompts, style behavior and output
++contract are unchanged. Direct 3D now supports its own validated scene and
++reproject style families without routing through or modifying Classic.
+ 
+ ## Residual-landscape contract
+ 
+@@ -44,7 +46,7 @@ Legacy projects may derive one editable, provenance-marked metric convex-hull
+ boundary only when at least two physical polygons define a defensible parcel.
+ Projects with multiple boundaries fail closed.
+ 
+-## Direct 3D data flow
++## Legacy source-anchored data flow
+ 
+ ```mermaid
+ flowchart LR
+@@ -96,22 +98,181 @@ that same lock and mark linked compiled zones stale. A stale tab therefore gets
+ a free 409 response before spend instead of rendering a scene it did not claim.
+ 
+ The provider request is deliberately singular: GPT Image 2, high quality,
+-explicit normalized dimensions, PNG output, beauty plus an optional semantic
+-guide, a deterministic monochrome structural-edge guide, and one same-size
+-alpha edit mask. There is no maskless retry. The structural guide labels each
++explicit normalized dimensions, PNG output, beauty plus a semantic class-ID
++guide and a deterministic monochrome structural-edge guide. The semantic guide
++remains optional for legacy `source_anchored`, but is required for `scene` and
++`reproject`. Legacy source-anchored mode also supplies one same-size alpha edit
++mask; presentation modes omit it by contract. There is no maskless retry. The structural guide labels each
+ sizeable visible building/street/park component and preserves source contours;
+ the prompt treats those labels and class colors as metadata that must never
+ appear in the result. Provider output is capped at 3,686,400 pixels even though
+ source validation permits the full 2048 by 2048 safety envelope.
+ 
+-## Geometry and context safeguards
+-
+-The output is registered against immutable context pixels. Near-identity output
++## Presentation v2 modes
++
++The isolated Direct 3D request now has an explicit `presentation_mode` and
++`style`. Existing callers remain byte-contract compatible because the default
++is `source_anchored` with `photorealistic` style. The Classic Polygons request,
++hook and `/render/generate` endpoint are not imported into or modified by this
++contract.
++
++The three modes have deliberately different output authority:
++
++| Mode | Provider mask | Camera contract | Accepted pixels | Intended use |
++| --- | --- | --- | --- | --- |
++| `source_anchored` | Exact visible-proposal mask | Source camera and exterior are pixel locked | Legacy source-phase finish fusion plus inward hard composite | Measurement-sensitive review and the existing Direct 3D behaviour |
++| `scene` | Omitted intentionally | Same aspect, framing, horizon and camera after structural-context registration | Registered provider frame, resized back to the exact source dimensions | Presentation-quality photographic or camera-preserving artistic finish |
++| `reproject` | Omitted intentionally | Screen-space lock is not applicable; prompt/guides condition layout, but automated checks do not prove preservation | Provider output directly after deterministic content sanity | Experimental orthographic plan, near-nadir, axonometric and maquette transformations requiring human layout review |
++
++All modes make exactly one provider call. Omitting the mask in presentation
++modes is intentional, not a mask-error fallback: it permits coherent sky,
++terrain, surrounding buildings, roads, planting, light and atmosphere instead
++of forcing a visibly different proposal patch into unchanged Google Tiles.
++
++The request accepts the 22 render-panel style IDs. Camera-preserving `scene`
++styles comprise Photo Realistic, Photomontage, Development, Atmospheric,
++Winter, Night, Watercolour, Charcoal, Marker, Pen & Ink, Survey, Documentary,
++Wood Block, Collage, Risograph and Pixel Art. The projection-directed styles
++Site Plan, Site Plan Photo, Blueprint, Site Plan Watercolour, Isometric and
++Clay Maquette require `reproject`. An incompatible mode/style pair is rejected
++before reservation or provider spend. Legacy `source_anchored` remains
++unrestricted for backward compatibility with previously approved realistic
++treatments.
++
++### Camera-locked scene acceptance
++
++Both presentation modes require a same-size object-ID image and manifest before
++provider reservation. Classified object-ID pixels must cover at least 0.85 of
++active proposal pixels and must reach proposal/classification IoU of at least
++0.84; the existing one-percent classified-pixel leakage ceiling still applies.
++This prevents a token class-ID swatch from satisfying the guide requirement.
++Coverage and thresholds are exposed in diagnostics. Legacy mode may still omit
++the guide or use its prior partial structural guide behavior.
++
++`scene` additionally requires, before spend, mask-zero lower-frame context
++covering at least 8% of the complete normalized frame. Preparation and
++post-provider validation use the exact same deterministic region: mask-zero
++pixels below the 45%-of-height row. This fails early when the proposed geometry
++leaves too little non-sky context to prove a coherent full-scene finish.
++
++`scene` uses one concise prompt. The macro-design authority appears once after
++the requested treatment and allows new facade/window detail, glazing,
++materials, foliage texture, weathering, contact shadows and entourage. It
++locks building count, primary silhouettes, footprints, heights, rooflines,
++street/path topology, park boundaries, major occlusions, aspect and camera. It
++does not repeat the legacy pixel-lock paragraph around the user's prompt.
++
++The unmasked provider frame is first registered against structural edges in
++the original context. A provider-first macro gate then compares only design
++evidence that should survive a photographic finish:
++
++- proposal silhouette and coarse source edges;
++- visible semantic boundaries;
++- every sizeable building, street and park component independently; and
++- directed source-to-candidate displacement at the reviewed 2 px at 720p,
++  scaling to at most 4 px.
++
++Additional material, window and foliage edges are permitted. Source
++building-internal/window-edge retention is explicitly **not** required. The
++gate requires at least 0.80 silhouette recall, 0.70 coarse recall, 0.78
++semantic recall and 0.72 weakest-component recall when those measurements are
++available. P90 reference-edge displacement may not exceed the smaller of 6 px
++or 2.5 times the scale-aware edge tolerance. These thresholds reject the
++retained raw calibration redesign, which at the reviewed 2 px scale records
++0.633 silhouette, 0.614 coarse, 0.598 semantic, 0.472 weakest-component recall
++and 4.775 px P90 displacement.
++
++Source-directed recall is not sufficient by itself: dense unrelated noise or
++stripes can place a false edge near almost every source edge. The macro gate
++therefore also measures candidate-to-source precision on **coarse** edges. At
++least 0.40 of candidate coarse edges must land within the scale-aware source
++edge tolerance, and candidate coarse-edge density may not exceed 3.0 times the
++source coarse-edge density. Measuring this reverse direction only at the
++coarse scale still permits genuinely new facade, material, foliage and media
++texture. Deterministic random-noise and dense-stripe regressions reproduce high
++source-directed recall but now fail the reverse-precision requirement.
++
++Known limitation: the current class-ID pass encodes semantic classes, not a
++unique ID per design instance. Touching same-class buildings can therefore
++form one connected component, so the automated component gate cannot by itself
++prove that every attached rowhouse or touching building instance survived. A
++focused follow-up must add vectorized RGB instance-label decoding plus
++per-instance coarse/internal metrics; simply expanding the color count is not
++sufficient. Until then, the global/reverse-edge gates remain in force and the
++human composition/inventory scorecard is mandatory.
++
++A separate visual-change floor prevents charging for a result that is merely
++the source or a global colour grade. Whole-frame mean absolute RGB change must
++reach 5 levels and proposal change must reach 12 levels. The proposal must also
++demonstrate spatial detail through either high-frequency-change P75 of at least
++3 levels or novel-detail edge coverage of at least 0.0015. A luminance
++gain/offset is regressed out first and the remaining proposal residual must
++reach a P95 of 6 levels, so exposure, contrast or white-balance changes alone
++cannot satisfy the gate.
++
++The retained project `3da536b6-e853-4097-ad78-2eee8d0f3262` legacy finish is
++an explicit rejection calibration: whole-frame MAD 1.536, proposal MAD 9.325,
++proposal detail P75 2.282, residual P95 18.888 and novel-edge coverage
++0.000758. It fails the hard whole-frame, proposal and spatial-detail floors
++even though its isolated residual is high.
++
++Changing only the proposal and sky is not a full-scene finish. The visual gate
++therefore measures mask-zero context only in the lower 55% of the frame. That
++context must reach either mean absolute RGB change of 4 levels or a
++gain/offset-regressed residual P95 of 4 levels. It must additionally reach
++high-frequency context-change P75 of 0.75 levels, so a flat tint over unchanged
++Google photogrammetry cannot satisfy the context branch. Diagnostics expose
++every raw measurement, threshold, evaluated context-pixel count and the
++lower-frame start fraction.
++
++The common scene thresholds have deterministic acceptance fixtures for both a
++softened watercolour treatment and a limited-palette line-art treatment. Both
++preserve registration and macro layout while clearing the same visual-change
++floor used by photographic styles. Style-specific weakening is therefore not
++required; noise, stripes, proposal/sky-only edits and lower-context flat tints
++remain explicit rejection fixtures.
++
++Registration retains the legacy service's broad fail-closed safety limits, but
++`scene` adds a stricter camera-preservation gate after registration: translation
++norm may not exceed 8 px and absolute rotation may not exceed 0.35 degrees.
++These tighter limits are scene-only; `source_anchored` registration behavior is
++unchanged. Scene registration diagnostics expose both the measured translation
++norm and these limits.
++
++Passing `scene` output retains provider-authored photographic pixels across
++the full frame. It does not enter source-phase finish fusion and does not
++restore mask-zero context. `reproject` bypasses screen registration and macro
++pixel comparison because those measurements are invalid after an intentional
++camera transformation; the plan/component guides and concise layout authority
++remain its design conditioning. It does not accept arbitrary pixels: a
++deterministic output-sanity gate rejects unchanged, flat, empty and noise-like
++frames using whole-frame change, luminance variance/range, bounded structural
++edge coverage, 4-by-4 spatial edge occupancy and a conservative significant-
++edge-component floor derived from visible semantic inventory. This gate is an
++inventory proxy, not semantic proof; reproject output still requires human
++layout/inventory review before release.
++The sanity thresholds are whole-frame MAD 8, luminance standard deviation 10,
++luminance P95-minus-P5 range 35, edge coverage from 0.002 through 0.30 and at
++least four occupied grid cells. The significant-edge-component floor is one to
++three components, capped from the source building/street/park component count.
++All measurements and thresholds are returned in
++`reproject_output_sanity` diagnostics.
++
++Diagnostics identify `processing_mode`, `view_lock`, `context_restyled` and
++`provider_first`, plus macro fidelity, threshold values, lower-context evidence
++and visual-change measurements where applicable. Legacy finish, edge,
++registration and exterior diagnostics remain available unchanged. Successful
++audit rows include mode/style and distinguish `source-anchored` from
++`provider-first scene` or `provider-first reproject` finals.
++
++## Legacy source-anchored geometry and context safeguards
++
++In `source_anchored` mode, output is registered against immutable context pixels. Near-identity output
+ passes directly; bounded ECC Euclidean registration may correct only a small
+ translation/rotation. Low score, excessive drift, excessive rotation, wrong
+ dimensions or malformed output fail closed.
+ 
+-Provider geometry is never trusted directly. After registration, the server
++Provider geometry is never trusted directly in this legacy mode. After registration, the server
+ extracts only a clipped, mask-aware, low-frequency RGB delta from the provider
+ image and applies it to the authoritative source. The Gaussian scale is 8 px at
+ 1280 by 720 and scales by image diagonal; buildings use the most conservative
+@@ -175,26 +336,27 @@ capture.
+ ## UI routing
+ 
+ The render panel presents **Classic Polygons** and **Direct 3D** explicitly.
+-Direct becomes the default only after Community 3D is complete, the capture
++Direct becomes available only after Community 3D is complete, the capture
+ bridge is ready, and every compiled building representation is mounted. Its
+ model visibility is fixed; it cannot silently fall back to colored massing.
+ 
+-Direct initially permits only proposal-local realistic finishes:
++Direct mode routing follows the Presentation v2 contract above:
+ 
+-- Photo Realistic
+-- Development
+-- Survey
+-- Documentary
++- `source_anchored` preserves the legacy proposal-local realistic finish and
++  restores exterior context byte-for-byte;
++- `scene` accepts camera-preserving photographic, seasonal, atmospheric and
++  art-media whole-frame treatments; and
++- `reproject` accepts only the six plan, near-nadir, isometric and maquette
++  treatments for which a screen-space camera lock is intentionally invalid.
+ 
+-All plan, isometric, night, winter, atmospheric and art-media treatments remain
+-on Classic because Direct restores the exterior context byte-for-byte and those
+-treatments require coherent whole-frame change.
++Classic continues to expose its established colored-polygon styles. Nothing in
++Direct changes Classic prompts, style availability or endpoint behavior.
+ 
+ Before spending, **Check Direct Capture** produces the three capture passes and
+ coverage/class diagnostics locally at no image cost. The paid button always
+ takes a fresh capture, makes one provider request, saves the result, and displays
+-registration/exterior diagnostics. It never reuses the free preview after the
+-camera may have moved.
++mode-appropriate diagnostics. It never reuses the free preview after the camera
++may have moved.
+ 
+ ## Release gates
+ 
+@@ -205,8 +367,20 @@ The pilot sequence is intentionally finite:
+    90-degree overhead cameras;
+ 3. confirm buildings remain mounted through camera changes and panel use;
+ 4. one paid Direct 3D pilot only if beauty, mask and class-ID passes are exact;
+-5. verify byte-identical exterior and calibrated internal-edge diagnostics;
+-6. full relevant tests, production build and diff/status checks before commit.
++5. verify the selected mode's contract: byte-identical exterior and calibrated
++   internal-edge diagnostics for `source_anchored`; camera drift, macro,
++   bidirectional coarse-edge and full-scene visual-change gates for `scene`;
++   deterministic content sanity plus human layout/inventory review for
++   `reproject`;
++6. compare **Source | Legacy | New | Reference** at the same crop with a human
++   four-point scorecard: composition 15%, materials 20%, landscape/public realm
++   20%, lighting 15%, context 10%, population 10% and style 10%. Accept only a
++   weighted score of at least 3.25/4, every category at least 3, and no red-flag
++   artifact. Visible gray/white parcel voids, seams, floating elements, broken
++   terrain contact or missing major inventory are automatic failures. Every
++   `reproject` result receives explicit human layout/inventory review because
++   its automated check is only a content proxy;
++7. full relevant tests, production build and diff/status checks before commit.
+ 
+ ## Parcel pilot findings
+ 
+@@ -253,3 +427,34 @@ parts and holes rather than incorrectly treating the compiled recipe as stale.
+ The final verification set passed 147 relevant backend tests, all 445 frontend
+ tests, TypeScript type checking, the production build, Ruff and Python bytecode
+ compilation.
++
++## Provider-first presentation acceptance — 2026-07-21
++
++The provider-first `scene` and `reproject` paths were then exercised in the
++local City Prompt browser against project
++`3da536b6-e853-4097-ad78-2eee8d0f3262`. The bounded batch contained exactly
++four paid GPT Image 2 calls at 107 SiteForge tokens each:
++
++- one photographic `scene` attempt was rejected because it materially changed
++  the compiled macro geometry (including 39.6% silhouette recall and 15.7 px
++  P90 displacement);
++- one photographic `scene` attempt passed camera registration, the macro-design
++  gate and the full-scene visual-change gate, and was saved to the project;
++- one visually strong `winter` scene was rejected because the provider shifted
++  the camera beyond the strict 8 px translation limit; and
++- one `isometric` `reproject` attempt passed the deterministic output/content
++  sanity proxy and was saved with the explicit **human layout review required**
++  diagnostic. Manual review confirmed a coherent axonometric presentation of
++  the long courtyard-family mass, its repeated green-roof rhythm, the adjacent
++  public-realm area and surrounding street/context inventory. This remains a
++  presentation acceptance, not a claim of screen-space geometric proof.
++
++There were no automatic retries. The batch used 428 SiteForge tokens, or $2.14
++at the internal $0.005/token accounting rate. Accepted output was never created
++by weakening a failed gate: the winter camera-drift result and the first
++macro-geometry result remain rejected audit artifacts.
++
++Release verification for the provider-first change passed 96 focused backend
++render/API tests, 12 focused Direct 3D frontend tests, all six established
++Classic Polygons prompt regressions, TypeScript type checking and the production
++Vite build. The Classic Polygons request and generation path remain unchanged.
+diff --git a/frontend/src/components/viewer/globe/GlobeAIRenderPanel.direct3d.test.ts b/frontend/src/components/viewer/globe/GlobeAIRenderPanel.direct3d.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..da089b08b90302c4c4c04796b874f386e21c8479
+--- /dev/null
++++ b/frontend/src/components/viewer/globe/GlobeAIRenderPanel.direct3d.test.ts
+@@ -0,0 +1,47 @@
++import { describe, expect, it } from 'vitest';
++
++import {
++  DIRECT_3D_CALL_DESCRIPTION,
++  DIRECT_3D_PIPELINE_DESCRIPTION,
++  DIRECT_3D_SCOPE_DESCRIPTION,
++  isRenderStyleDisabled,
++  STYLES,
++  STYLE_GROUPS,
++} from './GlobeAIRenderPanel';
++import { GLOBE_STYLE_PROMPTS } from './useGlobeAIRender';
++
++describe('Globe AI render panel Direct 3D styles', () => {
++  it('exposes every Classic aesthetic as a selectable Direct style', () => {
++    expect(STYLES).toHaveLength(22);
++    expect(new Set(STYLES.map((style) => style.id)))
++      .toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
++
++    for (const style of STYLES) {
++      expect(isRenderStyleDisabled('direct3d', style.id, false), style.id).toBe(false);
++    }
++  });
++
++  it('preserves the existing Classic Development gate', () => {
++    for (const style of STYLES) {
++      expect(isRenderStyleDisabled('classic', style.id, false), style.id)
++        .toBe(style.id === 'development');
++      expect(isRenderStyleDisabled('classic', style.id, true), style.id).toBe(false);
++    }
++  });
++
++  it('groups all style buttons exactly once', () => {
++    const groupedIds = STYLE_GROUPS.flatMap((group) => [...group.ids]);
++    expect(groupedIds).toHaveLength(22);
++    expect(new Set(groupedIds).size).toBe(22);
++    expect(new Set(groupedIds)).toEqual(new Set(STYLES.map((style) => style.id)));
++  });
++
++  it('explains whole-scene restyling and the projection exception before spend', () => {
++    expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('full-scene restyle');
++    expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('experimental reprojections');
++    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('checked against compiled geometry');
++    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('require visual review');
++    expect(DIRECT_3D_CALL_DESCRIPTION).toContain('1 image call');
++    expect(DIRECT_3D_CALL_DESCRIPTION).toContain('projection styles require visual review');
++  });
++});
+diff --git a/frontend/src/components/viewer/globe/GlobeAIRenderPanel.tsx b/frontend/src/components/viewer/globe/GlobeAIRenderPanel.tsx
+index 0326468f2dc3e94319387c0ee5130ba586b43145..29531f00fb1288f056d9cfa95e75434baf24fe36 100644
+--- a/frontend/src/components/viewer/globe/GlobeAIRenderPanel.tsx
++++ b/frontend/src/components/viewer/globe/GlobeAIRenderPanel.tsx
+@@ -47,7 +47,7 @@ import {
+   hasCurrentResidualLandscapeRecipe,
+ } from './residualLandscape';
+ import {
+-  DIRECT_3D_ALLOWED_STYLES,
++  resolveDirect3DPresentationMode,
+   useDirect3DRender,
+   type Direct3DRenderDiagnostics,
+ } from './useDirect3DRender';
+@@ -139,7 +139,7 @@ interface GlobeAIRenderPanelProps {
+   onClose?: () => void;
+ }
+ 
+-const STYLES = [
++export const STYLES = [
+   // ── Realistic — photo-style final-stage visualization ──
+   { id: 'photorealistic', label: 'Photo Realistic' },
+   { id: 'photomontage', label: 'Photomontage' },
+@@ -171,7 +171,7 @@ const STYLES = [
+ 
+ // UI grouping for the style picker — keeps the new-user taxonomy visible.
+ // Update this when adding a style so it lands in the right group in the UI.
+-const STYLE_GROUPS = [
++export const STYLE_GROUPS = [
+   { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
+   { label: 'Accurate', ids: ['survey', 'documentary'] },
+   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
+@@ -179,6 +179,24 @@ const STYLE_GROUPS = [
+   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
+ ] as const;
+ 
++export type GlobeRenderPipeline = 'classic' | 'direct3d';
++
++export const DIRECT_3D_PIPELINE_DESCRIPTION =
++  'One-call full-scene restyle. Camera-preserving styles are geometry-checked; plan and axonometric styles are experimental reprojections.';
++export const DIRECT_3D_SCOPE_DESCRIPTION =
++  'Camera-preserving styles are checked against compiled geometry. Projection styles use the compiled design as guidance and require visual review.';
++export const DIRECT_3D_CALL_DESCRIPTION =
++  '1 image call · projection styles require visual review';
++
++/** Classic keeps its existing Development/massing gate; Direct accepts every catalogue style. */
++export function isRenderStyleDisabled(
++  pipeline: GlobeRenderPipeline,
++  style: string,
++  hasPlacedMassing: boolean,
++): boolean {
++  return pipeline === 'classic' && style === 'development' && !hasPlacedMassing;
++}
++
+ type LightboxRender = {
+   imageUrl: string;
+   prompt?: string;
+@@ -225,7 +243,7 @@ export function GlobeAIRenderPanel({
+   const [customPrompt, setCustomPrompt] = useState('');
+   const [highFidelity, setHighFidelity] = useState(false);
+   const [error, setError] = useState<string | null>(null);
+-  const [renderPipeline, setRenderPipeline] = useState<'classic' | 'direct3d'>('classic');
++  const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>('classic');
+   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
+   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
+   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
+@@ -237,8 +255,10 @@ export function GlobeAIRenderPanel({
+     [siteZones, modeledBuildingIds],
+   );
+   useEffect(() => {
+-    if (selectedStyle === 'development' && !hasPlacedMassing) setSelectedStyle('photorealistic');
+-  }, [selectedStyle, hasPlacedMassing]);
++    if (renderPipeline === 'classic' && selectedStyle === 'development' && !hasPlacedMassing) {
++      setSelectedStyle('photorealistic');
++    }
++  }, [renderPipeline, selectedStyle, hasPlacedMassing]);
+   const [saving, setSaving] = useState(false);
+   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
+   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+@@ -758,11 +778,6 @@ export function GlobeAIRenderPanel({
+       setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
+       return;
+     }
+-    if (!DIRECT_3D_ALLOWED_STYLES.has(selectedStyle)) {
+-      setError('This treatment changes the whole frame. Select Classic Polygons or choose a Direct-compatible realistic style.');
+-      return;
+-    }
+-
+     setIsRendering(true);
+     setIsPreparingCapture(true);
+     setResult(null);
+@@ -1077,9 +1092,13 @@ export function GlobeAIRenderPanel({
+         <div className="flex items-start gap-2 rounded-lg border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[#151515] shadow-[3px_3px_0_0_#151515]">
+           <Camera size={15} className="mt-0.5 shrink-0" />
+           <div className="min-w-0">
+-            <p className="text-[11px] font-black uppercase">Current view becomes the render</p>
++            <p className="text-[11px] font-black uppercase">
++              {renderPipeline === 'direct3d' ? 'Current view anchors the design' : 'Current view becomes the render'}
++            </p>
+             <p className="mt-0.5 text-[10px] font-bold leading-snug text-[#151515]/70">
+-              Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.
++              {renderPipeline === 'direct3d'
++                ? 'Frame the compiled scene first. Most styles retain this camera; experimental plan and axonometric styles may change projection and must be visually checked.'
++                : 'Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.'}
+             </p>
+           </div>
+         </div>
+@@ -1109,15 +1128,12 @@ export function GlobeAIRenderPanel({
+           <button
+             type="button"
+             disabled={!direct3DAvailable}
+-            title={direct3DUnavailableReason ?? 'Restyle the exact compiled current-camera scene in one masked call.'}
++            title={direct3DUnavailableReason ?? DIRECT_3D_PIPELINE_DESCRIPTION}
+             onClick={() => {
+               pipelineChoiceTouchedRef.current = true;
+               setRenderPipeline('direct3d');
+               setHighFidelity(false);
+               setDirectDiagnostics(null);
+-              if (!DIRECT_3D_ALLOWED_STYLES.has(selectedStyle)) {
+-                setSelectedStyle('photorealistic');
+-              }
+             }}
+             className={`rounded-lg border-2 px-3 py-2 text-left transition ${
+               renderPipeline === 'direct3d'
+@@ -1129,14 +1145,14 @@ export function GlobeAIRenderPanel({
+           >
+             <span className="block text-[11px] font-black uppercase">Direct 3D</span>
+             <span className="mt-0.5 block text-[9px] font-semibold leading-snug opacity-65">
+-              One-call finish; camera and exterior context are locked, with compiled geometry as conditioning.
++              {DIRECT_3D_PIPELINE_DESCRIPTION}
+             </span>
+           </button>
+         </div>
+         {renderPipeline === 'direct3d' ? (
+           <p className={`mt-1.5 text-[10px] font-semibold ${direct3DAvailable ? 'text-cyan-100/70' : 'text-amber-200/80'}`}>
+             {direct3DAvailable
+-              ? 'Buildings, parks, streets and residual landscape in the current 3D view are the design authority.'
++              ? DIRECT_3D_SCOPE_DESCRIPTION
+               : `Direct 3D unavailable: ${direct3DUnavailableReason}`}
+           </p>
+         ) : direct3DUnavailableReason ? (
+@@ -1155,25 +1171,22 @@ export function GlobeAIRenderPanel({
+                   {group.ids.map(id => {
+                     const s = STYLES.find(x => x.id === id);
+                     if (!s) return null;
+-                    // Development mode conditions on real massing in the
+-                    // capture — meaningless until a LEGO stack or 3D model is
+-                    // placed on some zone in the scene.
+-                    const needsPlacedMassing = s.id === 'development';
+-                    const needsWholeFrameTreatment = renderPipeline === 'direct3d'
+-                      && !DIRECT_3D_ALLOWED_STYLES.has(s.id);
+-                    const disabled = (needsPlacedMassing && !hasPlacedMassing) || needsWholeFrameTreatment;
++                    // Preserve Classic's placed-massing gate. Direct already
++                    // requires a compiled scene and exposes the full catalogue.
++                    const disabled = isRenderStyleDisabled(renderPipeline, s.id, hasPlacedMassing);
++                    const presentationMode = resolveDirect3DPresentationMode(s.id);
+                     return (
+                       <button
+                         key={s.id}
+                         onClick={() => setSelectedStyle(s.id)}
+                         disabled={disabled}
+-                        title={needsWholeFrameTreatment
+-                          ? 'This treatment changes the whole frame. Use Classic Polygons for it.'
+-                          : disabled
++                        title={disabled
+                           ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
+-                          : s.id === 'development'
+-                            ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
+-                            : undefined}
++                          : renderPipeline === 'direct3d' && presentationMode === 'reproject'
++                            ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
++                            : s.id === 'development'
++                              ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
++                              : undefined}
+                         className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
+                           selectedStyle === s.id
+                             ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
+@@ -1365,33 +1378,76 @@ export function GlobeAIRenderPanel({
+           </div>
+           {directDiagnostics && (
+             <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border border-emerald-300/25 bg-emerald-300/10 px-2 py-1.5 text-[9px] font-bold text-emerald-100/80">
+-              <span>Registration {(directDiagnostics.registration.score * 100).toFixed(1)}%</span>
+-              <span>Shift {directDiagnostics.registration.translation_x_px.toFixed(1)}, {directDiagnostics.registration.translation_y_px.toFixed(1)} px</span>
+-              <span>Rotation {directDiagnostics.registration.rotation_degrees.toFixed(2)}°</span>
+-              <span>Exterior delta {directDiagnostics.exterior_max_channel_delta}</span>
+-              {directDiagnostics.finish_fusion && (
++              {(directDiagnostics.processing_mode === 'scene'
++                || directDiagnostics.processing_mode === 'reproject'
++                || directDiagnostics.provider_first) ? (
+                 <>
+-                  <span>Finish Source-anchored</span>
+-                  <span>Geometry lock Applied</span>
+-                </>
+-              )}
+-              {directDiagnostics.provider_raw_structural_edge_fidelity && (
+-                <span className="col-span-2">
+-                  Provider geometry {directDiagnostics.provider_raw_structural_edge_fidelity.passed
+-                    ? 'passed unchanged'
+-                    : 'was discarded before finish transfer'}
+-                </span>
+-              )}
+-              {directDiagnostics.structural_edge_fidelity && (
+-                <>
+-                  <span>
+-                    Building edges {((directDiagnostics.structural_edge_fidelity.building_internal_edge_recall
+-                      ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+-                  </span>
++                  <span className="capitalize">Mode {directDiagnostics.processing_mode ?? 'scene'}</span>
+                   <span>
+-                    Semantic edges {((directDiagnostics.structural_edge_fidelity.semantic_edge_recall
+-                      ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
++                    View {(directDiagnostics.view_lock ?? 'camera_registered').replace(/_/g, ' ')}
+                   </span>
++                  <span>Context {directDiagnostics.context_restyled ? 'restyled' : 'not restyled'}</span>
++                  <span>Provider-first {directDiagnostics.provider_first ? 'yes' : 'no'}</span>
++                  {directDiagnostics.reproject_output_sanity && (
++                    <>
++                      <span>Projection sanity proxy passed</span>
++                      <span>
++                        Content proxy {directDiagnostics.reproject_output_sanity.significant_edge_component_count}/
++                        {directDiagnostics.reproject_output_sanity.required_edge_component_count}
++                      </span>
++                      <span className="col-span-2 text-amber-100">Human layout review required</span>
++                    </>
++                  )}
++                  {directDiagnostics.macro_design_fidelity && (
++                    <>
++                      <span>Macro fidelity passed</span>
++                      <span>{directDiagnostics.macro_design_fidelity.evaluated_component_count} components checked</span>
++                      <span>
++                        Silhouette {((directDiagnostics.macro_design_fidelity.silhouette_edge_recall
++                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
++                      </span>
++                      <span>
++                        Topology {((directDiagnostics.macro_design_fidelity.semantic_edge_recall
++                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
++                      </span>
++                    </>
++                  )}
++                  {directDiagnostics.visual_change && (
++                    <>
++                      <span>Full-scene change passed</span>
++                      <span>Proposal delta {directDiagnostics.visual_change.proposal_mean_absolute_delta.toFixed(1)}</span>
++                      {directDiagnostics.visual_change.context_detail_delta_p75 != null && (
++                        <span className="col-span-2">
++                          Context detail {directDiagnostics.visual_change.context_detail_delta_p75.toFixed(1)}
++                        </span>
++                      )}
++                    </>
++                  )}
++                  {directDiagnostics.registration && (
++                    <span className="col-span-2">
++                      Camera registration {(directDiagnostics.registration.score * 100).toFixed(1)}%
++                    </span>
++                  )}
++                </>
++              ) : (
++                <>
++                  <span className="col-span-2">Legacy source-anchored response</span>
++                  {directDiagnostics.registration && (
++                    <>
++                      <span>Registration {(directDiagnostics.registration.score * 100).toFixed(1)}%</span>
++                      <span>Shift {directDiagnostics.registration.translation_x_px.toFixed(1)}, {directDiagnostics.registration.translation_y_px.toFixed(1)} px</span>
++                    </>
++                  )}
++                  {directDiagnostics.exterior_max_channel_delta != null && (
++                    <span>Exterior delta {directDiagnostics.exterior_max_channel_delta}</span>
++                  )}
++                  {directDiagnostics.finish_fusion && <span>Finish transfer applied</span>}
++                  {directDiagnostics.structural_edge_fidelity && (
++                    <span className="col-span-2">
++                      Structural edges {((directDiagnostics.structural_edge_fidelity.semantic_edge_recall
++                        ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
++                    </span>
++                  )}
+                 </>
+               )}
+             </div>
+@@ -1646,7 +1702,7 @@ export function GlobeAIRenderPanel({
+                 <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
+                 <span className="text-[10px] font-bold opacity-70">
+                   {renderPipeline === 'direct3d'
+-                    ? '1 masked image call · geometry-conditioned current camera'
++                    ? DIRECT_3D_CALL_DESCRIPTION
+                     : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
+                 </span>
+               </span>
+diff --git a/frontend/src/components/viewer/globe/useDirect3DRender.test.ts b/frontend/src/components/viewer/globe/useDirect3DRender.test.ts
+index 3abbcfa2b61132a7a407ce6fbf4a00ce10409494..1672ac07526f9a9a8819b276877e45fcaa3f9c9d 100644
+--- a/frontend/src/components/viewer/globe/useDirect3DRender.test.ts
++++ b/frontend/src/components/viewer/globe/useDirect3DRender.test.ts
+@@ -4,8 +4,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
+ import { rendersApi } from '@/services/api';
+ import {
+   buildDirect3DVisualPrompt,
++  DIRECT_3D_ALLOWED_STYLES,
++  DIRECT_3D_STYLE_IDS,
++  resolveDirect3DPresentationMode,
+   useDirect3DRender,
+ } from './useDirect3DRender';
++import {
++  buildPrompt,
++  GLOBE_STYLE_PROMPTS,
++  REPROJECTING_STYLES,
++} from './useGlobeAIRender';
+ import {
+   DIRECT_3D_CAPTURE_SCHEMA,
+   DIRECT_3D_CLASS_ID_MANIFEST,
+@@ -30,6 +38,7 @@ const capture: Direct3DCaptureBundle = {
+   classCoverage: { building: 0.18, park: 0.07 },
+   fingerprint: 'd3d-1600x900-deadbeef',
+ };
++
+ const community3DClaims = [{
+   zone_id: 'zone-building-1',
+   source_hash: '1'.repeat(64),
+@@ -37,116 +46,150 @@ const community3DClaims = [{
+   building_id: 'building-1',
+ }];
+ 
+-describe('Direct 3D render adapter', () => {
+-  beforeEach(() => vi.clearAllMocks());
++const reprojectStyles = [
++  'isometric',
++  'site-plan',
++  'site-plan-photo',
++  'site-plan-watercolor',
++  'blueprint',
++  'clay-maquette',
++] as const;
++
++const response: Awaited<ReturnType<typeof rendersApi.generateDirect3D>> = {
++  image_base64: 'rendered',
++  model: 'gpt-image-2',
++  capture_fingerprint: 'a'.repeat(64),
++  output_fingerprint: 'b'.repeat(64),
++  diagnostics: {
++    processing_mode: 'scene',
++    view_lock: 'camera_registered',
++    context_restyled: true,
++    provider_first: true,
++    source_width: 1600,
++    source_height: 900,
++    normalized_width: 1600,
++    normalized_height: 912,
++    proposal_coverage: 0.25,
++    context_coverage: 0.75,
++    object_id_attached: true,
++    object_id_coverage: 0.25,
++    structural_edge_guide_attached: true,
++    finish_fusion: null,
++    provider_raw_structural_edge_fidelity: null,
++    macro_design_fidelity: {
++      passed: true,
++      tolerance_px: 5,
++      silhouette_edge_pixels: 6_400,
++      silhouette_edge_recall: 0.94,
++      coarse_edge_pixels: 3_200,
++      coarse_edge_recall: 0.91,
++      semantic_edge_pixels: 1_900,
++      semantic_edge_recall: 0.9,
++      evaluated_component_count: 8,
++      semantic_component_min_recall: 0.84,
++      reference_edge_p90_distance_px: 2.2,
++      building_internal_edges_required: false,
++    },
++    visual_change: {
++      passed: true,
++      whole_frame_mean_absolute_delta: 14.2,
++      proposal_mean_absolute_delta: 18.4,
++      proposal_detail_delta_p75: 9.1,
++      proposal_photometric_residual_p95: 12.7,
++      novel_detail_edge_coverage: 0.22,
++      context_mean_absolute_delta: 8.6,
++      context_photometric_residual_p95: 9.2,
++      context_pixel_count: 480_000,
++      context_frame_top_fraction: 0.45,
++      minimum_whole_frame_mean_absolute_delta: 5,
++      minimum_proposal_mean_absolute_delta: 12,
++      minimum_proposal_detail_delta_p75: 3,
++      minimum_proposal_photometric_residual_p95: 6,
++      minimum_novel_detail_edge_coverage: 0.0015,
++      minimum_context_mean_absolute_delta: 4,
++      minimum_context_photometric_residual_p95: 4,
++      context_change_required: true,
++      color_grade_only_rejected: true,
++    },
++    structural_edge_fidelity: null,
++    registration: {
++      method: 'identity',
++      score: 0.96,
++      score_metric: 'bidirectional-structural-edge-recall',
++      photometric_score: 0.73,
++      structural_context_score: 0.96,
++      translation_x_px: 0,
++      translation_y_px: 0,
++      rotation_degrees: 0,
++    },
++    mask_retry_used: false,
++  },
++};
++
++describe('Direct 3D presentation adapter', () => {
++  beforeEach(() => {
++    vi.clearAllMocks();
++    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
++  });
++
++  it('uses the same complete 22-style catalogue as Classic without changing Classic prompting', () => {
++    expect(DIRECT_3D_STYLE_IDS).toHaveLength(22);
++    expect(new Set(DIRECT_3D_STYLE_IDS)).toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
++    expect(DIRECT_3D_ALLOWED_STYLES).toEqual(new Set(DIRECT_3D_STYLE_IDS));
++
++    const classicPrompt = buildPrompt([], 'watercolour');
++    expect(classicPrompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS.watercolour}`);
++    expect(classicPrompt).not.toContain('PRESENTATION MODE: SCENE');
++  });
++
++  it('maps exactly the six projection-changing styles to reproject and every other style to scene', () => {
++    expect(REPROJECTING_STYLES).toEqual(new Set(reprojectStyles));
++    for (const style of DIRECT_3D_STYLE_IDS) {
++      expect(resolveDirect3DPresentationMode(style)).toBe(
++        reprojectStyles.includes(style as (typeof reprojectStyles)[number]) ? 'reproject' : 'scene',
++      );
++    }
++    expect(DIRECT_3D_STYLE_IDS.filter((style) => resolveDirect3DPresentationMode(style) === 'scene'))
++      .toHaveLength(16);
++  });
+ 
+-  it('builds camera-preserving visual direction without Classic zone language', () => {
++  it('builds a rich camera-locked whole-scene prompt rather than a color grade', () => {
+     const prompt = buildDirect3DVisualPrompt('development', 'Warm limestone.', capture);
+ 
+-    expect(prompt).toContain('compiled 3D buildings, parks, streets');
+-    expect(prompt).toContain('Keep the source camera');
++    expect(prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS.development}`);
++    expect(prompt).toContain('PRESENTATION MODE: SCENE');
++    expect(prompt).toContain('camera, perspective, framing, crop, horizon and aspect ratio are locked');
++    expect(prompt).toContain('Visibly re-render the entire frame');
++    expect(prompt).toContain('presentation-grade architectural visualization');
++    expect(prompt).toContain('white or grey parcel voids');
++    expect(prompt).toContain('surrounding city context');
++    expect(prompt).toContain('Replace raw real-time CG and Google photogrammetry artifacts');
++    expect(prompt).toContain('do not invent or retain polygon overlays');
++    expect(prompt).toContain('not a color grade');
++    expect(prompt).toContain('major tree anchors');
+     expect(prompt).toContain('building 18.0%');
+     expect(prompt).toContain('Warm limestone');
+-    expect(prompt.toLowerCase()).not.toContain('polygon');
+   });
+ 
+-  it('sends one isolated capture bundle and maps diagnostics into a render', async () => {
+-    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
+-      image_base64: 'rendered',
+-      model: 'gpt-image-2',
+-      capture_fingerprint: 'a'.repeat(64),
+-      output_fingerprint: 'b'.repeat(64),
+-      diagnostics: {
+-        source_width: 1600,
+-        source_height: 900,
+-        normalized_width: 1600,
+-        normalized_height: 912,
+-        proposal_coverage: 0.25,
+-        context_coverage: 0.75,
+-        object_id_attached: true,
+-        object_id_coverage: 0.25,
+-        structural_edge_guide_attached: true,
+-        finish_fusion: {
+-          method: 'source-geometry-multiscale-source-phase-detail-v2',
+-          sigma_px: 8,
+-          rgb_delta_clip: 48,
+-          default_strength: 0.35,
+-          role_strengths: {
+-            building: 0.24,
+-            ground: 0.42,
+-            landscape: 0.5,
+-            street: 0.34,
+-            park: 0.44,
+-          },
+-          detail_fine_sigma_px: 1,
+-          detail_medium_sigma_px: 3.5,
+-          detail_correction_clip: 12,
+-          detail_role_gain_caps: {
+-            building: { fine: 1.08, medium: 1.24 },
+-          },
+-          microtexture_sigma_px: 0.8,
+-          microtexture_correction_clip: 3,
+-          microtexture_role_gain_caps: { building: 8 },
+-          provider_high_frequency_phase_transferred: false,
+-          safe_microtexture_coverage: 0.42,
+-          source_detail_correlation: 0.99,
+-          source_texture_p75: 0.2,
+-          fused_texture_p75: 0.6,
+-          texture_gain: 3,
+-          role_metrics: {
+-            building: {
+-              detail_fine_gain: 1.08,
+-              detail_medium_gain: 1.24,
+-              microtexture_gain: 3,
+-              safe_microtexture_pixels: 1_024,
+-              safe_microtexture_coverage: 0.42,
+-              source_texture_p75: 0.2,
+-              fused_texture_p75: 0.6,
+-              texture_gain: 3,
+-              source_detail_correlation: 0.99,
+-            },
+-          },
+-        },
+-        provider_raw_structural_edge_fidelity: {
+-          passed: false,
+-          beauty_edge_recall: 0.58,
+-          coarse_edge_recall: 0.44,
+-          semantic_edge_recall: 0.57,
+-          semantic_component_min_recall: 0.53,
+-          building_internal_edge_recall: 0.57,
+-        },
+-        structural_edge_fidelity: {
+-          passed: true,
+-          tolerance_px: 2,
+-          reference_edge_pixels: 12_400,
+-          candidate_edge_pixels: 13_100,
+-          beauty_edge_recall: 0.82,
+-          coarse_edge_pixels: 3_200,
+-          coarse_edge_recall: 0.78,
+-          semantic_edge_pixels: 1_900,
+-          semantic_edge_recall: 0.91,
+-          semantic_component_min_recall: 0.86,
+-          building_internal_edge_pixels: 8_700,
+-          building_internal_edge_recall: 0.8,
+-          reference_edge_p90_distance_px: 1.4,
+-        },
+-        registration: {
+-          method: 'identity',
+-          score: 0.99,
+-          translation_x_px: 0,
+-          translation_y_px: 0,
+-          rotation_degrees: 0,
+-        },
+-        exterior_pixel_count: 1_080_000,
+-        exterior_max_channel_delta: 0,
+-        inward_feather_px: 2,
+-        mask_retry_used: false,
+-      },
+-    });
++  it('builds a layout-faithful reproject prompt with the selected rich aesthetic', () => {
++    const prompt = buildDirect3DVisualPrompt('site-plan-watercolor', undefined, capture);
++
++    expect(prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS['site-plan-watercolor']}`);
++    expect(prompt).toContain('PRESENTATION MODE: REPROJECT');
++    expect(prompt).toContain('may change the projection, viewpoint and camera orientation');
++    expect(prompt).toContain('complete object inventory');
++    expect(prompt).toContain('site layout and circulation topology');
++    expect(prompt).toContain('relative dimensions');
++    expect(prompt).toContain('identity of every designed element');
++    expect(prompt).toContain('Re-render the entire frame cohesively');
++  });
++
++  it('sends one request with the style, presentation mode and full capture contract', async () => {
+     const { result } = renderHook(() => useDirect3DRender());
+ 
+     const direct = await result.current.renderDirect3D(capture, {
+       style: 'photorealistic',
++      customPrompt: 'Natural spring planting.',
+       projectId: 'project-1',
+       community3DClaims,
+       residualLandscapeClaim: {
+@@ -160,6 +203,8 @@ describe('Direct 3D render adapter', () => {
+       beauty_image_base64: capture.beautyImageBase64,
+       proposal_mask_base64: capture.proposalMaskBase64,
+       object_id_image_base64: capture.classIdImageBase64,
++      style: 'photorealistic',
++      presentation_mode: 'scene',
+       project_id: 'project-1',
+       community_3d_claims: community3DClaims,
+       residual_landscape_claim: {
+@@ -168,26 +213,42 @@ describe('Direct 3D render adapter', () => {
+       },
+       capture: { width: 1600, height: 900, proposal_coverage: 0.25 },
+     }));
++    expect(vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0].prompt)
++      .toContain('Natural spring planting.');
+     expect(direct.render.imageUrl).toBe('data:image/png;base64,rendered');
+-    expect(direct.render.providerLabel).toBe('Direct 3D · GPT Image 2');
+-    expect(direct.diagnostics.exterior_max_channel_delta).toBe(0);
+-    expect(direct.diagnostics.finish_fusion?.sigma_px).toBe(8);
+-    expect(direct.diagnostics.provider_raw_structural_edge_fidelity?.passed).toBe(false);
+-    expect(direct.diagnostics.structural_edge_fidelity?.building_internal_edge_recall).toBe(0.8);
++    expect(direct.diagnostics.provider_first).toBe(true);
++    expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);
++  });
++
++  it('accepts every catalogue style and sends its exact deterministic mode and rich prompt', async () => {
++    const { result } = renderHook(() => useDirect3DRender());
++
++    for (const style of DIRECT_3D_STYLE_IDS) {
++      await result.current.renderDirect3D(capture, {
++        style,
++        projectId: 'project-1',
++        community3DClaims,
++      });
++    }
++
++    expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(22);
++    vi.mocked(rendersApi.generateDirect3D).mock.calls.forEach(([request], index) => {
++      const style = DIRECT_3D_STYLE_IDS[index];
++      expect(request.style).toBe(style);
++      expect(request.presentation_mode).toBe(resolveDirect3DPresentationMode(style));
++      expect(request.presentation_mode).not.toBe('source_anchored');
++      expect(request.prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS[style]}`);
++    });
+   });
+ 
+-  it.each(['site-plan', 'night', 'winter', 'watercolour']) (
+-    'fails locally before any request for whole-frame style %s',
+-    async (style) => {
++  it('rejects only unknown style identifiers before spending a call', async () => {
+     const { result } = renderHook(() => useDirect3DRender());
+ 
+     await expect(result.current.renderDirect3D(capture, {
+-      style,
++      style: 'not-a-style',
+       projectId: 'project-1',
+       community3DClaims,
+-    }))
+-      .rejects.toThrow('must use Classic Polygons');
++    })).rejects.toThrow('Unknown Direct 3D style');
+     expect(rendersApi.generateDirect3D).not.toHaveBeenCalled();
+-    },
+-  );
++  });
+ });
+diff --git a/frontend/src/components/viewer/globe/useDirect3DRender.ts b/frontend/src/components/viewer/globe/useDirect3DRender.ts
+index ae05dc661ed9caa0ba99e2164779e37ba2fb8c01..61ddf751be80fb705939acd4968f65096598808a 100644
+--- a/frontend/src/components/viewer/globe/useDirect3DRender.ts
++++ b/frontend/src/components/viewer/globe/useDirect3DRender.ts
+@@ -2,42 +2,33 @@ import { useCallback } from 'react';
+ 
+ import { rendersApi } from '@/services/api';
+ import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
+-import type { GlobeRenderResult } from './useGlobeAIRender';
++import {
++  GLOBE_STYLE_PROMPTS,
++  REPROJECTING_STYLES,
++  type GlobeRenderResult,
++} from './useGlobeAIRender';
+ import type { Direct3DCaptureBundle, Direct3DProposalRole } from './direct3dCapture';
+ import type { ResidualLandscapeClaim } from './residualLandscape';
+ 
+-const DIRECT_3D_STYLE_TREATMENTS: Record<string, string> = {
+-  photorealistic: 'Natural architectural photography with physically convincing materials and restrained daylight.',
+-  photomontage: 'A polished planning photomontage integrated into the surrounding captured city and atmosphere.',
+-  development: 'High-end development visualization with credible glazing, facade depth, roof materials and public realm.',
+-  atmospheric: 'Warm atmospheric architectural photography with soft haze, realistic shadows and planted richness.',
+-  winter: 'A convincing winter scene with seasonally appropriate vegetation, snow accumulation and cold daylight.',
+-  night: 'A realistic blue-hour or night scene with plausible interior light, street lighting and controlled reflections.',
+-  survey: 'Neutral, highly legible survey photography with even light and minimal cinematic exaggeration.',
+-  documentary: 'Honest documentary architecture photography with natural weathering and everyday material variation.',
+-  watercolour: 'A refined architectural watercolour treatment while retaining the captured camera and every silhouette.',
+-  charcoal: 'A tonal charcoal architectural illustration while retaining the captured camera and every silhouette.',
+-  'marker-render': 'A professional marker rendering while retaining the captured camera and every silhouette.',
+-  'pen-and-ink': 'A precise pen-and-ink architectural illustration while retaining the captured camera and every silhouette.',
+-  'clay-maquette': 'A crafted clay architectural model treatment while retaining the captured camera and every silhouette.',
+-  woodblock: 'A graphic woodblock treatment while retaining the captured camera and every silhouette.',
+-  collage: 'A layered architectural collage treatment while retaining the captured camera and every silhouette.',
+-  risograph: 'A controlled risograph treatment while retaining the captured camera and every silhouette.',
+-  'pixel-art': 'A polished pixel-art treatment while retaining the captured camera and every silhouette.',
+-};
++export type Direct3DPresentationMode = 'source_anchored' | 'scene' | 'reproject';
++export type Direct3DActivePresentationMode = Exclude<Direct3DPresentationMode, 'source_anchored'>;
+ 
+-// Direct 3D hard-preserves every context pixel outside the proposal mask.
+-// Only treatments that can look coherent as proposal-local refinements belong
+-// here. Whole-frame lighting, season, projection and art-media changes stay on
+-// the existing Classic pipeline, which was designed for those transformations.
+-export const DIRECT_3D_ALLOWED_STYLES = new Set([
+-  'photorealistic',
+-  'development',
+-  'survey',
+-  'documentary',
+-]);
++// Direct reuses Classic's full aesthetic catalogue verbatim. The Classic
++// renderer still owns all of its existing branching and prompting behavior;
++// Direct only consumes this exported catalogue to keep style intent aligned.
++export const DIRECT_3D_STYLE_IDS = Object.freeze(Object.keys(GLOBE_STYLE_PROMPTS));
++export const DIRECT_3D_ALLOWED_STYLES = new Set(DIRECT_3D_STYLE_IDS);
++
++export function resolveDirect3DPresentationMode(style: string): Direct3DActivePresentationMode {
++  return REPROJECTING_STYLES.has(style) ? 'reproject' : 'scene';
++}
+ 
+ export interface Direct3DRenderDiagnostics {
++  /** Missing on legacy source-anchored responses. */
++  processing_mode?: Direct3DPresentationMode;
++  view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
++  context_restyled?: boolean;
++  provider_first?: boolean;
+   source_width: number;
+   source_height: number;
+   normalized_width: number;
+@@ -46,6 +37,12 @@ export interface Direct3DRenderDiagnostics {
+   context_coverage: number;
+   object_id_attached: boolean;
+   object_id_coverage?: number | null;
++  object_id_proposal_recall?: number | null;
++  object_id_proposal_iou?: number | null;
++  minimum_object_id_proposal_recall?: number | null;
++  minimum_object_id_proposal_iou?: number | null;
++  scene_lower_context_coverage?: number | null;
++  minimum_scene_lower_context_coverage?: number | null;
+   structural_edge_guide_attached: true;
+   finish_fusion?: {
+     method: 'source-geometry-multiscale-source-phase-detail-v2';
+@@ -86,6 +83,70 @@ export interface Direct3DRenderDiagnostics {
+     semantic_component_min_recall?: number | null;
+     building_internal_edge_recall?: number | null;
+   } | null;
++  macro_design_fidelity?: {
++    passed: true;
++    tolerance_px: number;
++    silhouette_edge_pixels: number;
++    silhouette_edge_recall?: number | null;
++    coarse_edge_pixels: number;
++    coarse_edge_recall: number;
++    semantic_edge_pixels: number;
++    semantic_edge_recall?: number | null;
++    evaluated_component_count: number;
++    semantic_component_min_recall?: number | null;
++    reference_edge_p90_distance_px: number;
++    candidate_coarse_edge_pixels?: number | null;
++    candidate_coarse_edge_precision?: number | null;
++    candidate_coarse_edge_density_ratio?: number | null;
++    minimum_silhouette_edge_recall?: number | null;
++    minimum_coarse_edge_recall?: number | null;
++    minimum_semantic_edge_recall?: number | null;
++    minimum_semantic_component_recall?: number | null;
++    maximum_reference_edge_p90_distance_px?: number | null;
++    minimum_candidate_coarse_edge_precision?: number | null;
++    maximum_candidate_coarse_edge_density_ratio?: number | null;
++    building_internal_edges_required: false;
++  } | null;
++  visual_change?: {
++    passed: true;
++    whole_frame_mean_absolute_delta: number;
++    proposal_mean_absolute_delta: number;
++    proposal_detail_delta_p75: number;
++    proposal_photometric_residual_p95: number;
++    novel_detail_edge_coverage: number;
++    context_mean_absolute_delta?: number | null;
++    context_photometric_residual_p95?: number | null;
++    context_detail_delta_p75?: number | null;
++    context_pixel_count?: number | null;
++    context_frame_top_fraction?: number | null;
++    minimum_whole_frame_mean_absolute_delta?: number | null;
++    minimum_proposal_mean_absolute_delta: number;
++    minimum_proposal_detail_delta_p75: number;
++    minimum_proposal_photometric_residual_p95: number;
++    minimum_novel_detail_edge_coverage: number;
++    minimum_context_mean_absolute_delta?: number | null;
++    minimum_context_photometric_residual_p95?: number | null;
++    minimum_context_detail_delta_p75?: number | null;
++    context_change_required: true;
++    color_grade_only_rejected: true;
++  } | null;
++  reproject_output_sanity?: {
++    passed: true;
++    whole_frame_mean_absolute_delta: number;
++    luminance_standard_deviation: number;
++    luminance_dynamic_range_p90: number;
++    structural_edge_coverage: number;
++    occupied_edge_cells: number;
++    significant_edge_component_count: number;
++    required_edge_component_count: number;
++    minimum_whole_frame_mean_absolute_delta: number;
++    minimum_luminance_standard_deviation: number;
++    minimum_luminance_dynamic_range_p90: number;
++    minimum_structural_edge_coverage: number;
++    maximum_structural_edge_coverage: number;
++    minimum_occupied_edge_cells: number;
++    semantic_inventory_proxy_only: true;
++  } | null;
+   structural_edge_fidelity?: {
+     passed: true;
+     tolerance_px: number;
+@@ -101,16 +162,22 @@ export interface Direct3DRenderDiagnostics {
+     building_internal_edge_recall?: number | null;
+     reference_edge_p90_distance_px: number;
+   } | null;
+-  registration: {
++  registration?: {
+     method: 'identity' | 'ecc-euclidean';
+     score: number;
++    score_metric?: 'luminance-correlation' | 'bidirectional-structural-edge-recall';
++    photometric_score?: number | null;
++    structural_context_score?: number | null;
+     translation_x_px: number;
+     translation_y_px: number;
++    translation_norm_px?: number | null;
+     rotation_degrees: number;
+-  };
+-  exterior_pixel_count: number;
+-  exterior_max_channel_delta: number;
+-  inward_feather_px: number;
++    maximum_translation_norm_px?: number | null;
++    maximum_abs_rotation_degrees?: number | null;
++  } | null;
++  exterior_pixel_count?: number | null;
++  exterior_max_channel_delta?: number | null;
++  inward_feather_px?: number | null;
+   mask_retry_used: false;
+ }
+ 
+@@ -135,14 +202,31 @@ export function buildDirect3DVisualPrompt(
+   customPrompt: string | undefined,
+   capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
+ ): string {
+-  const treatment = DIRECT_3D_STYLE_TREATMENTS[style]
+-    ?? DIRECT_3D_STYLE_TREATMENTS.photorealistic;
++  const treatment = GLOBE_STYLE_PROMPTS[style]
++    ?? GLOBE_STYLE_PROMPTS.photorealistic;
++  const presentationMode = resolveDirect3DPresentationMode(style);
+   const custom = customPrompt?.trim();
++  const presentationInstructions = presentationMode === 'reproject'
++    ? [
++        'PRESENTATION MODE: REPROJECT (style-directed full-frame re-render).',
++        'You may change the projection, viewpoint and camera orientation only as needed to achieve the selected plan, orthographic, axonometric or maquette aesthetic.',
++        'Preserve the complete object inventory, site layout and circulation topology, adjacency, relative dimensions, building footprints and heights, park and street design, major tree anchors, and the identity of every designed element.',
++        'Re-render the entire frame cohesively in the selected medium, including the proposal and surrounding city context; replace raw real-time CG and Google photogrammetry artifacts with a deliberate finished presentation.',
++      ]
++    : [
++        'PRESENTATION MODE: SCENE (camera-preserving full-frame re-render).',
++        'The captured camera, perspective, framing, crop, horizon and aspect ratio are locked.',
++        'The compiled scene is binding for macro design: preserve object inventory, silhouettes, footprints, heights, roof forms, park and street topology, relative dimensions, occlusion order, and major tree anchors.',
++        'Visibly re-render the entire frame as one cohesive finished image, including both the designed site and its surrounding city context. Replace raw real-time CG and Google photogrammetry artifacts with convincing materials, foliage, light, atmosphere and detail in the selected medium.',
++      ];
+   return [
+-    `VISUAL FINISH: ${treatment}`,
+-    'The compiled 3D buildings, parks, streets, paths, residual landscape and placed trees are the final scene design.',
+-    'Improve material scale, glazing, foliage, weathering, illumination, contact shadows and atmospheric integration.',
+-    'Keep the source camera, perspective, object count, dimensions, placement, roof forms, circulation and occlusion unchanged.',
++    `STYLE: ${treatment}`,
++    ...presentationInstructions,
++    'The compiled 3D buildings, parks, streets, paths, residual landscape and placed trees are authoritative design input, not loose inspiration.',
++    'If the STYLE text mentions colored polygon fills, apply that instruction to unfinished real-time 3D surfaces; do not invent or retain polygon overlays.',
++    'QUALITY BAR: Produce a presentation-grade architectural visualization, not a textured viewport. Fully resolve facade depth, glazing, roofs, building-to-ground contact, continuous terrain to the parcel edge, curbs, paving, road markings, planting beds, natural tree canopies, and public-realm furniture. Add only plausible people and vehicles that clarify scale.',
++    'Use coherent light direction, contact shadows, reflections and atmospheric depth wherever the selected medium supports them. Remove labels, selection outlines, white or grey parcel voids, ground seams, floating elements, repeated procedural artifacts, and blurry photogrammetry failure geometry.',
++    'This must be a visible generative re-render of the complete image, not a color grade, texture overlay, source-pixel preservation pass, or proposal-only local edit.',
+     visibleClassSummary(capture.classCoverage),
+     custom ? `ADDITIONAL ART DIRECTION: ${custom}` : '',
+   ].filter(Boolean).join('\n');
+@@ -160,7 +244,7 @@ export function useDirect3DRender() {
+     },
+   ): Promise<Direct3DRenderResult> => {
+     if (!DIRECT_3D_ALLOWED_STYLES.has(options.style)) {
+-      throw new Error('This treatment changes the whole frame and must use Classic Polygons.');
++      throw new Error(`Unknown Direct 3D style: ${options.style}`);
+     }
+     if (!options.projectId) {
+       throw new Error('Direct 3D requires a saved project before rendering.');
+@@ -169,6 +253,7 @@ export function useDirect3DRender() {
+       throw new Error('Direct 3D requires current per-zone scene fingerprints.');
+     }
+     const prompt = buildDirect3DVisualPrompt(options.style, options.customPrompt, capture);
++    const presentationMode = resolveDirect3DPresentationMode(options.style);
+     const response = await rendersApi.generateDirect3D({
+       beauty_image_base64: capture.beautyImageBase64,
+       proposal_mask_base64: capture.proposalMaskBase64,
+@@ -180,6 +265,8 @@ export function useDirect3DRender() {
+         proposal_coverage: capture.maskCoverage,
+       },
+       prompt,
++      style: options.style,
++      presentation_mode: presentationMode,
+       project_id: options.projectId,
+       community_3d_claims: options.community3DClaims,
+       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,
+diff --git a/frontend/src/components/viewer/globe/useGlobeAIRender.ts b/frontend/src/components/viewer/globe/useGlobeAIRender.ts
+index 3062a52d1c8f6be93db179ce788d4aed0fdcf0ea..fe5d8fc9b41f272dc2b1b12ce78e083894ed59bd 100644
+--- a/frontend/src/components/viewer/globe/useGlobeAIRender.ts
++++ b/frontend/src/components/viewer/globe/useGlobeAIRender.ts
+@@ -59,7 +59,7 @@ export type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
+ // richer material/lens/weathering language. Stable-only styles (night,
+ // marker-render, collage, risograph, pixel-art) are preserved as-is. Codex-only
+ // styles (site-plan variants, isometric) are added.
+-const GLOBE_STYLE_PROMPTS: Record<string, string> = {
++export const GLOBE_STYLE_PROMPTS: Record<string, string> = {
+   photorealistic: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
+   photomontage: 'Professional architectural photomontage indistinguishable from a real drone photograph. DJI Mavic 3 at 60m altitude, Hasselblad sensor, 24mm lens f/5.6. Proposed development appears fully constructed within existing site context. Lighting and shadows match surroundings. Atmospheric haze increasing with distance. Realistic material weathering 1-2 years post-completion. Natural lens vignetting and chromatic aberration. Documentary aerial photography of an existing place.',
+   atmospheric: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials — real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
+@@ -112,7 +112,7 @@ const ARTISTIC_STYLES = new Set([
+ // model's full-frame reinterpretation; boundary fidelity comes from the plan
+ // diagram reference instead. site-plan-photo dictates a 15-20°-from-nadir
+ // camera too, so it is deliberately included even though it isn't artistic.
+-const REPROJECTING_STYLES = new Set([
++export const REPROJECTING_STYLES = new Set([
+   'isometric',
+   'site-plan',
+   'site-plan-watercolor',
+diff --git a/frontend/src/services/api.direct3d.test.ts b/frontend/src/services/api.direct3d.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..795bf0187b81bcc5d26e271b2af2eb3ab5ba68cd
+--- /dev/null
++++ b/frontend/src/services/api.direct3d.test.ts
+@@ -0,0 +1,22 @@
++import { afterEach, describe, expect, it, vi } from 'vitest';
++
++import { api, rendersApi } from './api';
++
++describe('Direct 3D API timeout contract', () => {
++  afterEach(() => {
++    vi.restoreAllMocks();
++  });
++
++  it('outlives the provider timeout and backend post-processing window', async () => {
++    const request = {} as Parameters<typeof rendersApi.generateDirect3D>[0];
++    const post = vi.spyOn(api, 'post').mockResolvedValue({ data: { ok: true } });
++
++    await rendersApi.generateDirect3D(request);
++
++    expect(post).toHaveBeenCalledWith(
++      '/api/v1/render/generate-direct-3d',
++      request,
++      { timeout: 420_000 },
++    );
++  });
++});
+diff --git a/frontend/src/services/api.ts b/frontend/src/services/api.ts
+index 3df7070e175d13d8bf3310b0bfa677cf7e28e702..4355f8c74fc4a7f5633e860815355ad94261a27a 100644
+--- a/frontend/src/services/api.ts
++++ b/frontend/src/services/api.ts
+@@ -43,6 +43,12 @@ import type {
+ 
+ const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+ 
++// The provider read timeout is 300 seconds. Keep the browser request alive
++// through project validation, image upload, post-generation geometry gates,
++// encoding and billing/audit finalization so callers receive the endpoint's
++// structured outcome instead of retrying an ambiguously billed request.
++const DIRECT_3D_CLIENT_TIMEOUT_MS = 420_000;
++
+ export const api = axios.create({
+   baseURL: API_BASE_URL,
+   headers: { 'Content-Type': 'application/json' },
+@@ -1325,8 +1331,11 @@ export const rendersApi = {
+     beauty_image_base64: string;
+     proposal_mask_base64: string;
+     prompt: string;
+-    object_id_image_base64?: string;
+-    object_id_manifest?: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
++    style: string;
++    /** Direct v2 never requests the legacy source_anchored path. */
++    presentation_mode: 'scene' | 'reproject';
++    object_id_image_base64: string;
++    object_id_manifest: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
+     capture: {
+       width: number;
+       height: number;
+@@ -1349,6 +1358,11 @@ export const rendersApi = {
+     capture_fingerprint: string;
+     output_fingerprint: string;
+     diagnostics: {
++      /** Optional so saved/legacy source-anchored responses remain readable. */
++      processing_mode?: 'source_anchored' | 'scene' | 'reproject';
++      view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
++      context_restyled?: boolean;
++      provider_first?: boolean;
+       source_width: number;
+       source_height: number;
+       normalized_width: number;
+@@ -1357,6 +1371,12 @@ export const rendersApi = {
+       context_coverage: number;
+       object_id_attached: boolean;
+       object_id_coverage?: number | null;
++      object_id_proposal_recall?: number | null;
++      object_id_proposal_iou?: number | null;
++      minimum_object_id_proposal_recall?: number | null;
++      minimum_object_id_proposal_iou?: number | null;
++      scene_lower_context_coverage?: number | null;
++      minimum_scene_lower_context_coverage?: number | null;
+       structural_edge_guide_attached: true;
+       finish_fusion?: {
+         method: 'source-geometry-multiscale-source-phase-detail-v2';
+@@ -1397,6 +1417,70 @@ export const rendersApi = {
+         semantic_component_min_recall?: number | null;
+         building_internal_edge_recall?: number | null;
+       } | null;
++      macro_design_fidelity?: {
++        passed: true;
++        tolerance_px: number;
++        silhouette_edge_pixels: number;
++        silhouette_edge_recall?: number | null;
++        coarse_edge_pixels: number;
++        coarse_edge_recall: number;
++        semantic_edge_pixels: number;
++        semantic_edge_recall?: number | null;
++        evaluated_component_count: number;
++        semantic_component_min_recall?: number | null;
++        reference_edge_p90_distance_px: number;
++        candidate_coarse_edge_pixels?: number | null;
++        candidate_coarse_edge_precision?: number | null;
++        candidate_coarse_edge_density_ratio?: number | null;
++        minimum_silhouette_edge_recall?: number | null;
++        minimum_coarse_edge_recall?: number | null;
++        minimum_semantic_edge_recall?: number | null;
++        minimum_semantic_component_recall?: number | null;
++        maximum_reference_edge_p90_distance_px?: number | null;
++        minimum_candidate_coarse_edge_precision?: number | null;
++        maximum_candidate_coarse_edge_density_ratio?: number | null;
++        building_internal_edges_required: false;
++      } | null;
++      visual_change?: {
++        passed: true;
++        whole_frame_mean_absolute_delta: number;
++        proposal_mean_absolute_delta: number;
++        proposal_detail_delta_p75: number;
++        proposal_photometric_residual_p95: number;
++        novel_detail_edge_coverage: number;
++        context_mean_absolute_delta?: number | null;
++        context_photometric_residual_p95?: number | null;
++        context_detail_delta_p75?: number | null;
++        context_pixel_count?: number | null;
++        context_frame_top_fraction?: number | null;
++        minimum_whole_frame_mean_absolute_delta?: number | null;
++        minimum_proposal_mean_absolute_delta: number;
++        minimum_proposal_detail_delta_p75: number;
++        minimum_proposal_photometric_residual_p95: number;
++        minimum_novel_detail_edge_coverage: number;
++        minimum_context_mean_absolute_delta?: number | null;
++        minimum_context_photometric_residual_p95?: number | null;
++        minimum_context_detail_delta_p75?: number | null;
++        context_change_required: true;
++        color_grade_only_rejected: true;
++      } | null;
++      reproject_output_sanity?: {
++        passed: true;
++        whole_frame_mean_absolute_delta: number;
++        luminance_standard_deviation: number;
++        luminance_dynamic_range_p90: number;
++        structural_edge_coverage: number;
++        occupied_edge_cells: number;
++        significant_edge_component_count: number;
++        required_edge_component_count: number;
++        minimum_whole_frame_mean_absolute_delta: number;
++        minimum_luminance_standard_deviation: number;
++        minimum_luminance_dynamic_range_p90: number;
++        minimum_structural_edge_coverage: number;
++        maximum_structural_edge_coverage: number;
++        minimum_occupied_edge_cells: number;
++        semantic_inventory_proxy_only: true;
++      } | null;
+       structural_edge_fidelity?: {
+         passed: true;
+         tolerance_px: number;
+@@ -1412,20 +1496,30 @@ export const rendersApi = {
+         building_internal_edge_recall?: number | null;
+         reference_edge_p90_distance_px: number;
+       } | null;
+-      registration: {
++      registration?: {
+         method: 'identity' | 'ecc-euclidean';
+         score: number;
++        score_metric?: 'luminance-correlation' | 'bidirectional-structural-edge-recall';
++        photometric_score?: number | null;
++        structural_context_score?: number | null;
+         translation_x_px: number;
+         translation_y_px: number;
++        translation_norm_px?: number | null;
+         rotation_degrees: number;
+-      };
+-      exterior_pixel_count: number;
+-      exterior_max_channel_delta: number;
+-      inward_feather_px: number;
++        maximum_translation_norm_px?: number | null;
++        maximum_abs_rotation_degrees?: number | null;
++      } | null;
++      exterior_pixel_count?: number | null;
++      exterior_max_channel_delta?: number | null;
++      inward_feather_px?: number | null;
+       mask_retry_used: false;
+     };
+   }> => {
+-    const { data } = await api.post('/api/v1/render/generate-direct-3d', request, { timeout: 300000 });
++    const { data } = await api.post(
++      '/api/v1/render/generate-direct-3d',
++      request,
++      { timeout: DIRECT_3D_CLIENT_TIMEOUT_MS },
++    );
+     return data;
+   },
+ 
+-- 
+2.55.0.windows.2
+

@@ -4,13 +4,14 @@ This directory preserves the verified local development history from the
 recovered workspace base through the completed parcel-landscape and Direct 3D
 render work.
 
-- Local branch: `codex/public-realm-render-quality-v2`
-- Verified local tip: `e4d4e3c4ad9d4cfbbccf029a3f71112071b80c8e`
+- Local branch: `codex/direct-3d-stylized-render-v2`
+- Verified local tip: `dcf2e44811112e279595e9089c1980508efad424`
 - Recovered shallow base: `3cbfcdaa90a02fea7220d185b1230b09923f2168`
-- Patch files: `1` through `34`, in application order
+- Patch files: `1` through `35`, in application order
 - Final feature patch: `32`
 - Follow-up LEGO archetype handoff fix: `33`
 - Terrain-contact, dark-LOD and public-realm detail upgrade: `34`
+- Provider-first Direct 3D presentation pipeline: `35`
 
 The recovered base commit and several of its promised objects are no longer
 retained by the GitHub remote. A normal branch push therefore attempted to
@@ -22,7 +23,7 @@ Apply only to a checkout that already contains the recovered base or an
 equivalent recovered workspace:
 
 ```bash
-git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+git am --3way 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
 ```
 
 ## Final feature outcome
@@ -83,3 +84,27 @@ The paid pilot is saved as project render 8 in project
   projects at 30-degree oblique, 58/72-degree steep and 86-degree overhead.
   Far-LOD zoom and model off/on recovery produced no black facade failures,
   browser warnings/errors or WebGL context loss.
+
+## Patch 35 outcome and verification
+
+- Direct 3D now has isolated provider-first `scene` and `reproject` modes while
+  the established Classic Polygons request and generation path remain
+  unchanged. All 22 existing aesthetic choices are available; six plan,
+  axonometric and maquette styles use the honestly disclosed experimental
+  reproject path.
+- Camera-preserving scene output must pass object-ID overlap, lower-context,
+  registration, camera drift, bidirectional macro-geometry and full-scene
+  visual-change gates. Reproject output passes a deterministic content sanity
+  proxy and is always marked **human layout review required**.
+- The browser request timeout is seven minutes, safely beyond the backend's
+  five-minute provider timeout and post-processing/audit window, reducing the
+  risk of ambiguous billed failures and duplicate retries.
+- Backend render/API suite: 96 passed; frontend Direct/Classic contract suite:
+  18 passed; TypeScript type check, production build, Ruff and
+  `git diff --check` passed.
+- Live City Prompt QA accepted one camera-preserving photoreal presentation and
+  one isometric presentation. A macro-geometry redesign and a visually strong
+  winter image with more than 8 px of camera drift were correctly rejected and
+  not presented as successes.
+- The bounded batch used four GPT Image 2 calls at 107 SiteForge tokens each:
+  428 tokens / $2.14 total, with no automatic retries or weakened gates.
