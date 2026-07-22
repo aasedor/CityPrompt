@@ -47,7 +47,7 @@ import {
   hasCurrentResidualLandscapeRecipe,
 } from './residualLandscape';
 import {
-  DIRECT_3D_ALLOWED_STYLES,
+  resolveDirect3DPresentationMode,
   useDirect3DRender,
   type Direct3DRenderDiagnostics,
 } from './useDirect3DRender';
@@ -139,7 +139,7 @@ interface GlobeAIRenderPanelProps {
   onClose?: () => void;
 }
 
-const STYLES = [
+export const STYLES = [
   // ── Realistic — photo-style final-stage visualization ──
   { id: 'photorealistic', label: 'Photo Realistic' },
   { id: 'photomontage', label: 'Photomontage' },
@@ -171,13 +171,31 @@ const STYLES = [
 
 // UI grouping for the style picker — keeps the new-user taxonomy visible.
 // Update this when adding a style so it lands in the right group in the UI.
-const STYLE_GROUPS = [
+export const STYLE_GROUPS = [
   { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
   { label: 'Accurate', ids: ['survey', 'documentary'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
 ] as const;
+
+export type GlobeRenderPipeline = 'classic' | 'direct3d';
+
+export const DIRECT_3D_PIPELINE_DESCRIPTION =
+  'One-call full-scene restyle. Camera-preserving styles are geometry-checked; plan and axonometric styles are experimental reprojections.';
+export const DIRECT_3D_SCOPE_DESCRIPTION =
+  'Camera-preserving styles are checked against compiled geometry. Projection styles use the compiled design as guidance and require visual review.';
+export const DIRECT_3D_CALL_DESCRIPTION =
+  '1 image call · projection styles require visual review';
+
+/** Classic keeps its existing Development/massing gate; Direct accepts every catalogue style. */
+export function isRenderStyleDisabled(
+  pipeline: GlobeRenderPipeline,
+  style: string,
+  hasPlacedMassing: boolean,
+): boolean {
+  return pipeline === 'classic' && style === 'development' && !hasPlacedMassing;
+}
 
 type LightboxRender = {
   imageUrl: string;
@@ -225,7 +243,7 @@ export function GlobeAIRenderPanel({
   const [customPrompt, setCustomPrompt] = useState('');
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [renderPipeline, setRenderPipeline] = useState<'classic' | 'direct3d'>('classic');
+  const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>('classic');
   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
@@ -237,8 +255,10 @@ export function GlobeAIRenderPanel({
     [siteZones, modeledBuildingIds],
   );
   useEffect(() => {
-    if (selectedStyle === 'development' && !hasPlacedMassing) setSelectedStyle('photorealistic');
-  }, [selectedStyle, hasPlacedMassing]);
+    if (renderPipeline === 'classic' && selectedStyle === 'development' && !hasPlacedMassing) {
+      setSelectedStyle('photorealistic');
+    }
+  }, [renderPipeline, selectedStyle, hasPlacedMassing]);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
@@ -758,11 +778,6 @@ export function GlobeAIRenderPanel({
       setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
       return;
     }
-    if (!DIRECT_3D_ALLOWED_STYLES.has(selectedStyle)) {
-      setError('This treatment changes the whole frame. Select Classic Polygons or choose a Direct-compatible realistic style.');
-      return;
-    }
-
     setIsRendering(true);
     setIsPreparingCapture(true);
     setResult(null);
@@ -1077,9 +1092,13 @@ export function GlobeAIRenderPanel({
         <div className="flex items-start gap-2 rounded-lg border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[#151515] shadow-[3px_3px_0_0_#151515]">
           <Camera size={15} className="mt-0.5 shrink-0" />
           <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase">Current view becomes the render</p>
+            <p className="text-[11px] font-black uppercase">
+              {renderPipeline === 'direct3d' ? 'Current view anchors the design' : 'Current view becomes the render'}
+            </p>
             <p className="mt-0.5 text-[10px] font-bold leading-snug text-[#151515]/70">
-              Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.
+              {renderPipeline === 'direct3d'
+                ? 'Frame the compiled scene first. Most styles retain this camera; experimental plan and axonometric styles may change projection and must be visually checked.'
+                : 'Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.'}
             </p>
           </div>
         </div>
@@ -1109,15 +1128,12 @@ export function GlobeAIRenderPanel({
           <button
             type="button"
             disabled={!direct3DAvailable}
-            title={direct3DUnavailableReason ?? 'Restyle the exact compiled current-camera scene in one masked call.'}
+            title={direct3DUnavailableReason ?? DIRECT_3D_PIPELINE_DESCRIPTION}
             onClick={() => {
               pipelineChoiceTouchedRef.current = true;
               setRenderPipeline('direct3d');
               setHighFidelity(false);
               setDirectDiagnostics(null);
-              if (!DIRECT_3D_ALLOWED_STYLES.has(selectedStyle)) {
-                setSelectedStyle('photorealistic');
-              }
             }}
             className={`rounded-lg border-2 px-3 py-2 text-left transition ${
               renderPipeline === 'direct3d'
@@ -1129,14 +1145,14 @@ export function GlobeAIRenderPanel({
           >
             <span className="block text-[11px] font-black uppercase">Direct 3D</span>
             <span className="mt-0.5 block text-[9px] font-semibold leading-snug opacity-65">
-              One-call finish; camera and exterior context are locked, with compiled geometry as conditioning.
+              {DIRECT_3D_PIPELINE_DESCRIPTION}
             </span>
           </button>
         </div>
         {renderPipeline === 'direct3d' ? (
           <p className={`mt-1.5 text-[10px] font-semibold ${direct3DAvailable ? 'text-cyan-100/70' : 'text-amber-200/80'}`}>
             {direct3DAvailable
-              ? 'Buildings, parks, streets and residual landscape in the current 3D view are the design authority.'
+              ? DIRECT_3D_SCOPE_DESCRIPTION
               : `Direct 3D unavailable: ${direct3DUnavailableReason}`}
           </p>
         ) : direct3DUnavailableReason ? (
@@ -1155,25 +1171,22 @@ export function GlobeAIRenderPanel({
                   {group.ids.map(id => {
                     const s = STYLES.find(x => x.id === id);
                     if (!s) return null;
-                    // Development mode conditions on real massing in the
-                    // capture — meaningless until a LEGO stack or 3D model is
-                    // placed on some zone in the scene.
-                    const needsPlacedMassing = s.id === 'development';
-                    const needsWholeFrameTreatment = renderPipeline === 'direct3d'
-                      && !DIRECT_3D_ALLOWED_STYLES.has(s.id);
-                    const disabled = (needsPlacedMassing && !hasPlacedMassing) || needsWholeFrameTreatment;
+                    // Preserve Classic's placed-massing gate. Direct already
+                    // requires a compiled scene and exposes the full catalogue.
+                    const disabled = isRenderStyleDisabled(renderPipeline, s.id, hasPlacedMassing);
+                    const presentationMode = resolveDirect3DPresentationMode(s.id);
                     return (
                       <button
                         key={s.id}
                         onClick={() => setSelectedStyle(s.id)}
                         disabled={disabled}
-                        title={needsWholeFrameTreatment
-                          ? 'This treatment changes the whole frame. Use Classic Polygons for it.'
-                          : disabled
+                        title={disabled
                           ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
-                          : s.id === 'development'
-                            ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
-                            : undefined}
+                          : renderPipeline === 'direct3d' && presentationMode === 'reproject'
+                            ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
+                            : s.id === 'development'
+                              ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
+                              : undefined}
                         className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
                           selectedStyle === s.id
                             ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
@@ -1365,33 +1378,76 @@ export function GlobeAIRenderPanel({
           </div>
           {directDiagnostics && (
             <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border border-emerald-300/25 bg-emerald-300/10 px-2 py-1.5 text-[9px] font-bold text-emerald-100/80">
-              <span>Registration {(directDiagnostics.registration.score * 100).toFixed(1)}%</span>
-              <span>Shift {directDiagnostics.registration.translation_x_px.toFixed(1)}, {directDiagnostics.registration.translation_y_px.toFixed(1)} px</span>
-              <span>Rotation {directDiagnostics.registration.rotation_degrees.toFixed(2)}°</span>
-              <span>Exterior delta {directDiagnostics.exterior_max_channel_delta}</span>
-              {directDiagnostics.finish_fusion && (
+              {(directDiagnostics.processing_mode === 'scene'
+                || directDiagnostics.processing_mode === 'reproject'
+                || directDiagnostics.provider_first) ? (
                 <>
-                  <span>Finish Source-anchored</span>
-                  <span>Geometry lock Applied</span>
+                  <span className="capitalize">Mode {directDiagnostics.processing_mode ?? 'scene'}</span>
+                  <span>
+                    View {(directDiagnostics.view_lock ?? 'camera_registered').replace(/_/g, ' ')}
+                  </span>
+                  <span>Context {directDiagnostics.context_restyled ? 'restyled' : 'not restyled'}</span>
+                  <span>Provider-first {directDiagnostics.provider_first ? 'yes' : 'no'}</span>
+                  {directDiagnostics.reproject_output_sanity && (
+                    <>
+                      <span>Projection sanity proxy passed</span>
+                      <span>
+                        Content proxy {directDiagnostics.reproject_output_sanity.significant_edge_component_count}/
+                        {directDiagnostics.reproject_output_sanity.required_edge_component_count}
+                      </span>
+                      <span className="col-span-2 text-amber-100">Human layout review required</span>
+                    </>
+                  )}
+                  {directDiagnostics.macro_design_fidelity && (
+                    <>
+                      <span>Macro fidelity passed</span>
+                      <span>{directDiagnostics.macro_design_fidelity.evaluated_component_count} components checked</span>
+                      <span>
+                        Silhouette {((directDiagnostics.macro_design_fidelity.silhouette_edge_recall
+                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                      </span>
+                      <span>
+                        Topology {((directDiagnostics.macro_design_fidelity.semantic_edge_recall
+                          ?? directDiagnostics.macro_design_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                      </span>
+                    </>
+                  )}
+                  {directDiagnostics.visual_change && (
+                    <>
+                      <span>Full-scene change passed</span>
+                      <span>Proposal delta {directDiagnostics.visual_change.proposal_mean_absolute_delta.toFixed(1)}</span>
+                      {directDiagnostics.visual_change.context_detail_delta_p75 != null && (
+                        <span className="col-span-2">
+                          Context detail {directDiagnostics.visual_change.context_detail_delta_p75.toFixed(1)}
+                        </span>
+                      )}
+                    </>
+                  )}
+                  {directDiagnostics.registration && (
+                    <span className="col-span-2">
+                      Camera registration {(directDiagnostics.registration.score * 100).toFixed(1)}%
+                    </span>
+                  )}
                 </>
-              )}
-              {directDiagnostics.provider_raw_structural_edge_fidelity && (
-                <span className="col-span-2">
-                  Provider geometry {directDiagnostics.provider_raw_structural_edge_fidelity.passed
-                    ? 'passed unchanged'
-                    : 'was discarded before finish transfer'}
-                </span>
-              )}
-              {directDiagnostics.structural_edge_fidelity && (
+              ) : (
                 <>
-                  <span>
-                    Building edges {((directDiagnostics.structural_edge_fidelity.building_internal_edge_recall
-                      ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
-                  </span>
-                  <span>
-                    Semantic edges {((directDiagnostics.structural_edge_fidelity.semantic_edge_recall
-                      ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
-                  </span>
+                  <span className="col-span-2">Legacy source-anchored response</span>
+                  {directDiagnostics.registration && (
+                    <>
+                      <span>Registration {(directDiagnostics.registration.score * 100).toFixed(1)}%</span>
+                      <span>Shift {directDiagnostics.registration.translation_x_px.toFixed(1)}, {directDiagnostics.registration.translation_y_px.toFixed(1)} px</span>
+                    </>
+                  )}
+                  {directDiagnostics.exterior_max_channel_delta != null && (
+                    <span>Exterior delta {directDiagnostics.exterior_max_channel_delta}</span>
+                  )}
+                  {directDiagnostics.finish_fusion && <span>Finish transfer applied</span>}
+                  {directDiagnostics.structural_edge_fidelity && (
+                    <span className="col-span-2">
+                      Structural edges {((directDiagnostics.structural_edge_fidelity.semantic_edge_recall
+                        ?? directDiagnostics.structural_edge_fidelity.coarse_edge_recall) * 100).toFixed(1)}%
+                    </span>
+                  )}
                 </>
               )}
             </div>
@@ -1646,7 +1702,7 @@ export function GlobeAIRenderPanel({
                 <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
                 <span className="text-[10px] font-bold opacity-70">
                   {renderPipeline === 'direct3d'
-                    ? '1 masked image call · geometry-conditioned current camera'
+                    ? DIRECT_3D_CALL_DESCRIPTION
                     : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
                 </span>
               </span>

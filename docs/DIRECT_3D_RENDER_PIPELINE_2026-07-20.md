@@ -8,12 +8,14 @@ colored-polygon renderer:
 1. Community 3D compiles every otherwise-unassigned location inside the site
    boundary into deterministic residual landscape.
 2. The render panel exposes an isolated **Direct 3D** pipeline that treats the
-   visible compiled scene as authoritative and asks GPT Image 2 for finish,
-   material and integration work only.
+   visible compiled scene as authoritative and asks GPT Image 2 for either a
+   source-anchored finish, a camera-preserving whole-scene presentation, or an
+   explicitly projection-changing presentation.
 
 **Classic Polygons remains a separate request contract, hook, endpoint and UI
-choice.** It remains the correct pipeline for plan views, camera reprojection,
-whole-frame seasons or lighting, and illustration/media transformations.
+choice.** Its proven colored-polygon prompts, style behavior and output
+contract are unchanged. Direct 3D now supports its own validated scene and
+reproject style families without routing through or modifying Classic.
 
 ## Residual-landscape contract
 
@@ -44,7 +46,7 @@ Legacy projects may derive one editable, provenance-marked metric convex-hull
 boundary only when at least two physical polygons define a defensible parcel.
 Projects with multiple boundaries fail closed.
 
-## Direct 3D data flow
+## Legacy source-anchored data flow
 
 ```mermaid
 flowchart LR
@@ -96,22 +98,181 @@ that same lock and mark linked compiled zones stale. A stale tab therefore gets
 a free 409 response before spend instead of rendering a scene it did not claim.
 
 The provider request is deliberately singular: GPT Image 2, high quality,
-explicit normalized dimensions, PNG output, beauty plus an optional semantic
-guide, a deterministic monochrome structural-edge guide, and one same-size
-alpha edit mask. There is no maskless retry. The structural guide labels each
+explicit normalized dimensions, PNG output, beauty plus a semantic class-ID
+guide and a deterministic monochrome structural-edge guide. The semantic guide
+remains optional for legacy `source_anchored`, but is required for `scene` and
+`reproject`. Legacy source-anchored mode also supplies one same-size alpha edit
+mask; presentation modes omit it by contract. There is no maskless retry. The structural guide labels each
 sizeable visible building/street/park component and preserves source contours;
 the prompt treats those labels and class colors as metadata that must never
 appear in the result. Provider output is capped at 3,686,400 pixels even though
 source validation permits the full 2048 by 2048 safety envelope.
 
-## Geometry and context safeguards
+## Presentation v2 modes
 
-The output is registered against immutable context pixels. Near-identity output
+The isolated Direct 3D request now has an explicit `presentation_mode` and
+`style`. Existing callers remain byte-contract compatible because the default
+is `source_anchored` with `photorealistic` style. The Classic Polygons request,
+hook and `/render/generate` endpoint are not imported into or modified by this
+contract.
+
+The three modes have deliberately different output authority:
+
+| Mode | Provider mask | Camera contract | Accepted pixels | Intended use |
+| --- | --- | --- | --- | --- |
+| `source_anchored` | Exact visible-proposal mask | Source camera and exterior are pixel locked | Legacy source-phase finish fusion plus inward hard composite | Measurement-sensitive review and the existing Direct 3D behaviour |
+| `scene` | Omitted intentionally | Same aspect, framing, horizon and camera after structural-context registration | Registered provider frame, resized back to the exact source dimensions | Presentation-quality photographic or camera-preserving artistic finish |
+| `reproject` | Omitted intentionally | Screen-space lock is not applicable; prompt/guides condition layout, but automated checks do not prove preservation | Provider output directly after deterministic content sanity | Experimental orthographic plan, near-nadir, axonometric and maquette transformations requiring human layout review |
+
+All modes make exactly one provider call. Omitting the mask in presentation
+modes is intentional, not a mask-error fallback: it permits coherent sky,
+terrain, surrounding buildings, roads, planting, light and atmosphere instead
+of forcing a visibly different proposal patch into unchanged Google Tiles.
+
+The request accepts the 22 render-panel style IDs. Camera-preserving `scene`
+styles comprise Photo Realistic, Photomontage, Development, Atmospheric,
+Winter, Night, Watercolour, Charcoal, Marker, Pen & Ink, Survey, Documentary,
+Wood Block, Collage, Risograph and Pixel Art. The projection-directed styles
+Site Plan, Site Plan Photo, Blueprint, Site Plan Watercolour, Isometric and
+Clay Maquette require `reproject`. An incompatible mode/style pair is rejected
+before reservation or provider spend. Legacy `source_anchored` remains
+unrestricted for backward compatibility with previously approved realistic
+treatments.
+
+### Camera-locked scene acceptance
+
+Both presentation modes require a same-size object-ID image and manifest before
+provider reservation. Classified object-ID pixels must cover at least 0.85 of
+active proposal pixels and must reach proposal/classification IoU of at least
+0.84; the existing one-percent classified-pixel leakage ceiling still applies.
+This prevents a token class-ID swatch from satisfying the guide requirement.
+Coverage and thresholds are exposed in diagnostics. Legacy mode may still omit
+the guide or use its prior partial structural guide behavior.
+
+`scene` additionally requires, before spend, mask-zero lower-frame context
+covering at least 8% of the complete normalized frame. Preparation and
+post-provider validation use the exact same deterministic region: mask-zero
+pixels below the 45%-of-height row. This fails early when the proposed geometry
+leaves too little non-sky context to prove a coherent full-scene finish.
+
+`scene` uses one concise prompt. The macro-design authority appears once after
+the requested treatment and allows new facade/window detail, glazing,
+materials, foliage texture, weathering, contact shadows and entourage. It
+locks building count, primary silhouettes, footprints, heights, rooflines,
+street/path topology, park boundaries, major occlusions, aspect and camera. It
+does not repeat the legacy pixel-lock paragraph around the user's prompt.
+
+The unmasked provider frame is first registered against structural edges in
+the original context. A provider-first macro gate then compares only design
+evidence that should survive a photographic finish:
+
+- proposal silhouette and coarse source edges;
+- visible semantic boundaries;
+- every sizeable building, street and park component independently; and
+- directed source-to-candidate displacement at the reviewed 2 px at 720p,
+  scaling to at most 4 px.
+
+Additional material, window and foliage edges are permitted. Source
+building-internal/window-edge retention is explicitly **not** required. The
+gate requires at least 0.80 silhouette recall, 0.70 coarse recall, 0.78
+semantic recall and 0.72 weakest-component recall when those measurements are
+available. P90 reference-edge displacement may not exceed the smaller of 6 px
+or 2.5 times the scale-aware edge tolerance. These thresholds reject the
+retained raw calibration redesign, which at the reviewed 2 px scale records
+0.633 silhouette, 0.614 coarse, 0.598 semantic, 0.472 weakest-component recall
+and 4.775 px P90 displacement.
+
+Source-directed recall is not sufficient by itself: dense unrelated noise or
+stripes can place a false edge near almost every source edge. The macro gate
+therefore also measures candidate-to-source precision on **coarse** edges. At
+least 0.40 of candidate coarse edges must land within the scale-aware source
+edge tolerance, and candidate coarse-edge density may not exceed 3.0 times the
+source coarse-edge density. Measuring this reverse direction only at the
+coarse scale still permits genuinely new facade, material, foliage and media
+texture. Deterministic random-noise and dense-stripe regressions reproduce high
+source-directed recall but now fail the reverse-precision requirement.
+
+Known limitation: the current class-ID pass encodes semantic classes, not a
+unique ID per design instance. Touching same-class buildings can therefore
+form one connected component, so the automated component gate cannot by itself
+prove that every attached rowhouse or touching building instance survived. A
+focused follow-up must add vectorized RGB instance-label decoding plus
+per-instance coarse/internal metrics; simply expanding the color count is not
+sufficient. Until then, the global/reverse-edge gates remain in force and the
+human composition/inventory scorecard is mandatory.
+
+A separate visual-change floor prevents charging for a result that is merely
+the source or a global colour grade. Whole-frame mean absolute RGB change must
+reach 5 levels and proposal change must reach 12 levels. The proposal must also
+demonstrate spatial detail through either high-frequency-change P75 of at least
+3 levels or novel-detail edge coverage of at least 0.0015. A luminance
+gain/offset is regressed out first and the remaining proposal residual must
+reach a P95 of 6 levels, so exposure, contrast or white-balance changes alone
+cannot satisfy the gate.
+
+The retained project `3da536b6-e853-4097-ad78-2eee8d0f3262` legacy finish is
+an explicit rejection calibration: whole-frame MAD 1.536, proposal MAD 9.325,
+proposal detail P75 2.282, residual P95 18.888 and novel-edge coverage
+0.000758. It fails the hard whole-frame, proposal and spatial-detail floors
+even though its isolated residual is high.
+
+Changing only the proposal and sky is not a full-scene finish. The visual gate
+therefore measures mask-zero context only in the lower 55% of the frame. That
+context must reach either mean absolute RGB change of 4 levels or a
+gain/offset-regressed residual P95 of 4 levels. It must additionally reach
+high-frequency context-change P75 of 0.75 levels, so a flat tint over unchanged
+Google photogrammetry cannot satisfy the context branch. Diagnostics expose
+every raw measurement, threshold, evaluated context-pixel count and the
+lower-frame start fraction.
+
+The common scene thresholds have deterministic acceptance fixtures for both a
+softened watercolour treatment and a limited-palette line-art treatment. Both
+preserve registration and macro layout while clearing the same visual-change
+floor used by photographic styles. Style-specific weakening is therefore not
+required; noise, stripes, proposal/sky-only edits and lower-context flat tints
+remain explicit rejection fixtures.
+
+Registration retains the legacy service's broad fail-closed safety limits, but
+`scene` adds a stricter camera-preservation gate after registration: translation
+norm may not exceed 8 px and absolute rotation may not exceed 0.35 degrees.
+These tighter limits are scene-only; `source_anchored` registration behavior is
+unchanged. Scene registration diagnostics expose both the measured translation
+norm and these limits.
+
+Passing `scene` output retains provider-authored photographic pixels across
+the full frame. It does not enter source-phase finish fusion and does not
+restore mask-zero context. `reproject` bypasses screen registration and macro
+pixel comparison because those measurements are invalid after an intentional
+camera transformation; the plan/component guides and concise layout authority
+remain its design conditioning. It does not accept arbitrary pixels: a
+deterministic output-sanity gate rejects unchanged, flat, empty and noise-like
+frames using whole-frame change, luminance variance/range, bounded structural
+edge coverage, 4-by-4 spatial edge occupancy and a conservative significant-
+edge-component floor derived from visible semantic inventory. This gate is an
+inventory proxy, not semantic proof; reproject output still requires human
+layout/inventory review before release.
+The sanity thresholds are whole-frame MAD 8, luminance standard deviation 10,
+luminance P95-minus-P5 range 35, edge coverage from 0.002 through 0.30 and at
+least four occupied grid cells. The significant-edge-component floor is one to
+three components, capped from the source building/street/park component count.
+All measurements and thresholds are returned in
+`reproject_output_sanity` diagnostics.
+
+Diagnostics identify `processing_mode`, `view_lock`, `context_restyled` and
+`provider_first`, plus macro fidelity, threshold values, lower-context evidence
+and visual-change measurements where applicable. Legacy finish, edge,
+registration and exterior diagnostics remain available unchanged. Successful
+audit rows include mode/style and distinguish `source-anchored` from
+`provider-first scene` or `provider-first reproject` finals.
+
+## Legacy source-anchored geometry and context safeguards
+
+In `source_anchored` mode, output is registered against immutable context pixels. Near-identity output
 passes directly; bounded ECC Euclidean registration may correct only a small
 translation/rotation. Low score, excessive drift, excessive rotation, wrong
 dimensions or malformed output fail closed.
 
-Provider geometry is never trusted directly. After registration, the server
+Provider geometry is never trusted directly in this legacy mode. After registration, the server
 extracts only a clipped, mask-aware, low-frequency RGB delta from the provider
 image and applies it to the authoritative source. The Gaussian scale is 8 px at
 1280 by 720 and scales by image diagonal; buildings use the most conservative
@@ -175,26 +336,27 @@ capture.
 ## UI routing
 
 The render panel presents **Classic Polygons** and **Direct 3D** explicitly.
-Direct becomes the default only after Community 3D is complete, the capture
+Direct becomes available only after Community 3D is complete, the capture
 bridge is ready, and every compiled building representation is mounted. Its
 model visibility is fixed; it cannot silently fall back to colored massing.
 
-Direct initially permits only proposal-local realistic finishes:
+Direct mode routing follows the Presentation v2 contract above:
 
-- Photo Realistic
-- Development
-- Survey
-- Documentary
+- `source_anchored` preserves the legacy proposal-local realistic finish and
+  restores exterior context byte-for-byte;
+- `scene` accepts camera-preserving photographic, seasonal, atmospheric and
+  art-media whole-frame treatments; and
+- `reproject` accepts only the six plan, near-nadir, isometric and maquette
+  treatments for which a screen-space camera lock is intentionally invalid.
 
-All plan, isometric, night, winter, atmospheric and art-media treatments remain
-on Classic because Direct restores the exterior context byte-for-byte and those
-treatments require coherent whole-frame change.
+Classic continues to expose its established colored-polygon styles. Nothing in
+Direct changes Classic prompts, style availability or endpoint behavior.
 
 Before spending, **Check Direct Capture** produces the three capture passes and
 coverage/class diagnostics locally at no image cost. The paid button always
 takes a fresh capture, makes one provider request, saves the result, and displays
-registration/exterior diagnostics. It never reuses the free preview after the
-camera may have moved.
+mode-appropriate diagnostics. It never reuses the free preview after the camera
+may have moved.
 
 ## Release gates
 
@@ -205,8 +367,20 @@ The pilot sequence is intentionally finite:
    90-degree overhead cameras;
 3. confirm buildings remain mounted through camera changes and panel use;
 4. one paid Direct 3D pilot only if beauty, mask and class-ID passes are exact;
-5. verify byte-identical exterior and calibrated internal-edge diagnostics;
-6. full relevant tests, production build and diff/status checks before commit.
+5. verify the selected mode's contract: byte-identical exterior and calibrated
+   internal-edge diagnostics for `source_anchored`; camera drift, macro,
+   bidirectional coarse-edge and full-scene visual-change gates for `scene`;
+   deterministic content sanity plus human layout/inventory review for
+   `reproject`;
+6. compare **Source | Legacy | New | Reference** at the same crop with a human
+   four-point scorecard: composition 15%, materials 20%, landscape/public realm
+   20%, lighting 15%, context 10%, population 10% and style 10%. Accept only a
+   weighted score of at least 3.25/4, every category at least 3, and no red-flag
+   artifact. Visible gray/white parcel voids, seams, floating elements, broken
+   terrain contact or missing major inventory are automatic failures. Every
+   `reproject` result receives explicit human layout/inventory review because
+   its automated check is only a content proxy;
+7. full relevant tests, production build and diff/status checks before commit.
 
 ## Parcel pilot findings
 
@@ -253,3 +427,34 @@ parts and holes rather than incorrectly treating the compiled recipe as stale.
 The final verification set passed 147 relevant backend tests, all 445 frontend
 tests, TypeScript type checking, the production build, Ruff and Python bytecode
 compilation.
+
+## Provider-first presentation acceptance — 2026-07-21
+
+The provider-first `scene` and `reproject` paths were then exercised in the
+local City Prompt browser against project
+`3da536b6-e853-4097-ad78-2eee8d0f3262`. The bounded batch contained exactly
+four paid GPT Image 2 calls at 107 SiteForge tokens each:
+
+- one photographic `scene` attempt was rejected because it materially changed
+  the compiled macro geometry (including 39.6% silhouette recall and 15.7 px
+  P90 displacement);
+- one photographic `scene` attempt passed camera registration, the macro-design
+  gate and the full-scene visual-change gate, and was saved to the project;
+- one visually strong `winter` scene was rejected because the provider shifted
+  the camera beyond the strict 8 px translation limit; and
+- one `isometric` `reproject` attempt passed the deterministic output/content
+  sanity proxy and was saved with the explicit **human layout review required**
+  diagnostic. Manual review confirmed a coherent axonometric presentation of
+  the long courtyard-family mass, its repeated green-roof rhythm, the adjacent
+  public-realm area and surrounding street/context inventory. This remains a
+  presentation acceptance, not a claim of screen-space geometric proof.
+
+There were no automatic retries. The batch used 428 SiteForge tokens, or $2.14
+at the internal $0.005/token accounting rate. Accepted output was never created
+by weakening a failed gate: the winter camera-drift result and the first
+macro-geometry result remain rejected audit artifacts.
+
+Release verification for the provider-first change passed 96 focused backend
+render/API tests, 12 focused Direct 3D frontend tests, all six established
+Classic Polygons prompt regressions, TypeScript type checking and the production
+Vite build. The Classic Polygons request and generation path remain unchanged.

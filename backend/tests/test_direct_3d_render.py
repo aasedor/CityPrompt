@@ -18,15 +18,22 @@ from pydantic import ValidationError
 from shapely.geometry import box
 
 from app.api.v1 import direct_3d_render as direct_api
-from app.schemas.direct_3d_render import Direct3DRenderRequest
+from app.schemas.direct_3d_render import (
+    Direct3DRenderDiagnostics,
+    Direct3DRenderRequest,
+)
 from app.services import direct_3d_render as direct_service
 from app.services.direct_3d_render import (
     Direct3DProviderError,
     Direct3DRenderService,
     Direct3DServiceResult,
     Direct3DValidationError,
+    assess_macro_design_fidelity,
+    assess_reproject_output_sanity,
+    assess_scene_visual_change,
     assess_structural_edge_fidelity,
     _authoritative_prompt,
+    _presentation_prompt,
     _load_image,
     _normalized_dimensions,
     build_openai_edit_mask,
@@ -156,15 +163,79 @@ def _style_shift_without_geometry_change(image: Image.Image) -> Image.Image:
     return Image.fromarray(shifted, mode="RGB")
 
 
+def _provider_first_finish_without_geometry_change(image: Image.Image) -> Image.Image:
+    """Add deterministic full-frame finish/detail while retaining source edges."""
+
+    source = np.asarray(image.convert("RGB"), dtype=np.float32)
+    yy, xx = np.indices((image.height, image.width))
+    texture = (
+        10 * np.sin((2 * np.pi * xx) / 12)
+        + 6 * np.cos((2 * np.pi * yy) / 18)
+    )
+    candidate = np.clip(
+        source
+        + np.asarray([22, 12, 4], dtype=np.float32)[None, None, :]
+        + texture[..., None],
+        0,
+        255,
+    ).astype(np.uint8)
+    return Image.fromarray(candidate, mode="RGB")
+
+
+def _watercolour_finish_preserving_layout(image: Image.Image) -> Image.Image:
+    source = np.asarray(image.convert("RGB"), dtype=np.uint8)
+    softened = cv2.bilateralFilter(source, 7, 32, 5).astype(np.float32)
+    yy, xx = np.indices((image.height, image.width))
+    paper = 7 * np.sin((2 * np.pi * xx) / 14) + 4 * np.cos(
+        (2 * np.pi * yy) / 21
+    )
+    rendered = np.clip(
+        softened * 0.72
+        + source.astype(np.float32) * 0.28
+        + np.asarray([22, 14, 8], dtype=np.float32)[None, None, :]
+        + paper[..., None],
+        0,
+        255,
+    ).astype(np.uint8)
+    return Image.fromarray(rendered, mode="RGB")
+
+
+def _limited_palette_line_finish_preserving_layout(image: Image.Image) -> Image.Image:
+    source = np.asarray(image.convert("RGB"), dtype=np.uint8)
+    quantized = np.clip((source // 48) * 48 + 24, 0, 255).astype(np.uint8)
+    yy, xx = np.indices((image.height, image.width))
+    halftone = np.where(((xx + yy) // 3) % 2 == 0, 3, -3)
+    gray = cv2.cvtColor(source, cv2.COLOR_RGB2GRAY)
+    edges = cv2.Canny(gray, 35, 95, L2gradient=True) > 0
+    rendered = np.clip(
+        quantized.astype(np.int16) + halftone[..., None],
+        0,
+        255,
+    ).astype(np.uint8)
+    rendered[edges] = (24, 28, 34)
+    return Image.fromarray(rendered, mode="RGB")
+
+
 def _request(
     *,
     beauty: Image.Image | None = None,
     mask: Image.Image | None = None,
     object_id: Image.Image | None = None,
     data_urls: bool = False,
+    presentation_mode: str = "source_anchored",
+    style: str = "photorealistic",
+    auto_presentation_object_id: bool = True,
 ) -> Direct3DRenderRequest:
     beauty = beauty or _capture_images()[0]
     mask = mask or _capture_images(beauty.size)[1]
+    if (
+        object_id is None
+        and auto_presentation_object_id
+        and presentation_mode in {"scene", "reproject"}
+    ):
+        object_pixels = np.zeros((beauty.height, beauty.width, 3), dtype=np.uint8)
+        object_pixels[np.asarray(mask.convert("L")) >= 128] = (255, 0, 0)
+        object_id = Image.fromarray(object_pixels, mode="RGB")
     beauty_b64 = _png_b64(beauty)
     mask_b64 = _png_b64(mask)
     payload = {
@@ -175,6 +246,8 @@ def _request(
             f"data:image/png;base64,{mask_b64}" if data_urls else mask_b64
         ),
         "prompt": "Natural stone, convincing glazing, soft afternoon light.",
+        "presentation_mode": presentation_mode,
+        "style": style,
         "project_id": TEST_PROJECT_ID,
         "community_3d_claims": [{
             "zone_id": TEST_ZONE_ID,
@@ -256,6 +329,34 @@ def test_direct_request_requires_project_identity_and_unique_zone_claims():
     payload["community_3d_claims"] *= 2
     with pytest.raises(ValidationError, match="each zone only once"):
         Direct3DRenderRequest(**payload)
+
+
+def test_presentation_mode_and_style_categories_are_validated_without_breaking_legacy():
+    legacy = _request()
+    assert legacy.presentation_mode == "source_anchored"
+    assert legacy.style == "photorealistic"
+    assert _request(presentation_mode="scene", style="documentary")
+    assert _request(presentation_mode="reproject", style="isometric")
+
+    with pytest.raises(ValidationError, match="require object_id_image_base64"):
+        _request(
+            presentation_mode="scene",
+            style="documentary",
+            auto_presentation_object_id=False,
+        )
+    with pytest.raises(ValidationError, match="require object_id_image_base64"):
+        _request(
+            presentation_mode="reproject",
+            style="isometric",
+            auto_presentation_object_id=False,
+        )
+
+    with pytest.raises(ValidationError, match="requires presentation_mode='reproject'"):
+        _request(presentation_mode="scene", style="site-plan")
+    with pytest.raises(ValidationError, match="requires presentation_mode='scene'"):
+        _request(presentation_mode="reproject", style="photorealistic")
+    with pytest.raises(ValidationError, match="style"):
+        _request(style="not-a-render-style")
 
 
 def _project_request(
@@ -836,6 +937,61 @@ def test_prepare_rejects_object_id_pixels_outside_proposal():
         prepare_direct_3d_capture(_request(beauty=beauty, mask=mask, object_id=object_id))
 
 
+def test_presentation_object_id_must_cover_the_proposal():
+    beauty, mask = _capture_images()
+    partial_object_id = Image.new("RGB", beauty.size, (0, 0, 0))
+    ImageDraw.Draw(partial_object_id).rectangle(
+        (192, 192, 320, 320),
+        fill=(255, 0, 0),
+    )
+
+    with pytest.raises(Direct3DValidationError, match="must cover the proposal"):
+        prepare_direct_3d_capture(
+            _request(
+                beauty=beauty,
+                mask=mask,
+                object_id=partial_object_id,
+                presentation_mode="scene",
+                style="documentary",
+            )
+        )
+
+    # Legacy keeps its existing optional/partial structural-guide behavior.
+    legacy_capture = prepare_direct_3d_capture(
+        _request(beauty=beauty, mask=mask, object_id=partial_object_id)
+    )
+    assert legacy_capture.object_id_proposal_recall is not None
+    assert legacy_capture.object_id_proposal_recall < 0.85
+
+
+def test_presentation_object_id_reports_conservative_coverage_metrics():
+    request = _request(presentation_mode="scene", style="documentary")
+    capture = prepare_direct_3d_capture(request)
+
+    assert capture.object_id_proposal_recall == pytest.approx(1.0)
+    assert capture.object_id_proposal_iou == pytest.approx(1.0)
+
+
+def test_scene_prepare_rejects_insufficient_lower_frame_context():
+    beauty = Image.new("RGB", (512, 512), (80, 100, 120))
+    mask = Image.new("L", beauty.size, 0)
+    ImageDraw.Draw(mask).rectangle((0, 160, 511, 511), fill=255)
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="documentary",
+    )
+
+    with pytest.raises(Direct3DValidationError, match="lower-frame context"):
+        prepare_direct_3d_capture(request)
+
+    legacy_capture = prepare_direct_3d_capture(
+        _request(beauty=beauty, mask=mask)
+    )
+    assert legacy_capture.scene_lower_context_coverage is None
+
+
 def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
     prompt = _authoritative_prompt(
         "Warm realistic materials.",
@@ -849,6 +1005,32 @@ def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
     assert "never reproduce, blend, or expose any class-ID color" in prompt
     assert "Image 3 is the authoritative monochrome structural-edge guide" in prompt
     assert "never draw, tint, or expose its contours or labels" in prompt
+
+
+def test_provider_first_prompts_use_one_concise_mode_specific_authority_clause():
+    scene = _presentation_prompt(
+        "Warm limestone and mature planting.",
+        presentation_mode="scene",
+        style="development",
+        object_id_manifest={"#FF0000": "building"},
+        visible_component_summary={"building": 2, "park": 1},
+    )
+    reproject = _presentation_prompt(
+        "Restrained line weights.",
+        presentation_mode="reproject",
+        style="isometric",
+        object_id_manifest=None,
+    )
+
+    assert scene.count("MACRO DESIGN AUTHORITY") == 1
+    assert scene.count("Warm limestone and mature planting.") == 1
+    assert scene.count("#FF0000=building") == 1
+    assert "Re-render the full frame" in scene
+    assert "new photographic surface detail" in scene
+    assert "source pixel" not in scene.lower()
+    assert reproject.count("LAYOUT AUTHORITY") == 1
+    assert "30-degree axonometric" in reproject
+    assert "do not copy Image 1's screen coordinates" in reproject
 
 
 def test_structural_guide_is_deterministic_binary_and_includes_semantic_edges():
@@ -915,6 +1097,256 @@ def test_structural_edge_fidelity_rejects_merged_buildings_and_flat_roofs():
         or (result.semantic_edge_recall or 0) < 0.76
         or (result.semantic_component_min_recall or 0) < 0.68
     )
+
+
+def test_macro_gate_allows_new_surface_edges_but_rejects_moved_merged_design():
+    beauty, mask, object_id = _structured_scene()
+    detailed = beauty.copy()
+    detail_draw = ImageDraw.Draw(detailed)
+    for x in range(102, 416, 18):
+        detail_draw.line((x, 158, x, 232), fill=(225, 230, 222), width=2)
+    accepted = assess_macro_design_fidelity(
+        beauty,
+        detailed,
+        mask,
+        object_id,
+        {"#FF0000": "building"},
+    )
+
+    redesigned = beauty.copy()
+    redesigned_draw = ImageDraw.Draw(redesigned)
+    redesigned_draw.rectangle((48, 48, 463, 463), fill=(132, 145, 118))
+    redesigned_draw.rectangle(
+        (78, 128, 434, 276),
+        fill=(198, 181, 154),
+        outline=(42, 43, 48),
+        width=5,
+    )
+    rejected = assess_macro_design_fidelity(
+        beauty,
+        redesigned,
+        mask,
+        object_id,
+        {"#FF0000": "building"},
+    )
+
+    assert accepted.passed is True
+    assert accepted.coarse_edge_recall >= 0.70
+    assert accepted.semantic_component_min_recall is not None
+    assert accepted.candidate_coarse_edge_precision >= 0.40
+    assert accepted.candidate_coarse_edge_density_ratio <= 3.0
+    assert rejected.passed is False
+    assert (
+        (rejected.silhouette_edge_recall or 0) < 0.80
+        or rejected.coarse_edge_recall < 0.70
+        or (rejected.semantic_edge_recall or 0) < 0.78
+        or (rejected.semantic_component_min_recall or 0) < 0.72
+        or rejected.reference_edge_p90_distance_px > 6.0
+    )
+
+
+def test_macro_gate_rejects_random_noise_that_games_directed_edge_recall():
+    beauty, mask, object_id = _structured_scene()
+    candidate = np.asarray(
+        _provider_first_finish_without_geometry_change(beauty)
+    ).copy()
+    proposal = np.asarray(mask) >= 128
+    candidate[proposal] = np.random.default_rng(20260722).integers(
+        0,
+        256,
+        size=(int(np.count_nonzero(proposal)), 3),
+        dtype=np.uint8,
+    )
+    rendered = Image.fromarray(candidate, mode="RGB")
+
+    result = assess_macro_design_fidelity(
+        beauty,
+        rendered,
+        mask,
+        object_id,
+        {"#FF0000": "building"},
+    )
+
+    # These source-directed recalls demonstrate the original bypass. The
+    # reverse coarse-edge precision must be what rejects the noise field.
+    assert result.coarse_edge_recall >= 0.90
+    assert (result.semantic_edge_recall or 0) >= 0.90
+    assert (result.semantic_component_min_recall or 0) >= 0.90
+    assert result.candidate_coarse_edge_precision < 0.40
+    assert result.passed is False
+    assert assess_scene_visual_change(beauty, rendered, mask).passed is True
+
+
+def test_macro_gate_rejects_dense_stripes_that_game_edge_proximity():
+    beauty, mask = _registration_context_scene()
+    candidate = np.asarray(
+        _provider_first_finish_without_geometry_change(beauty)
+    ).copy()
+    proposal = np.asarray(mask) >= 128
+    _yy, xx = np.indices(proposal.shape)
+    stripe = ((xx // 3) % 2 * 255).astype(np.uint8)
+    stripe_rgb = np.stack((stripe, 255 - stripe, stripe), axis=2)
+    candidate[proposal] = stripe_rgb[proposal]
+
+    result = assess_macro_design_fidelity(
+        beauty,
+        Image.fromarray(candidate, mode="RGB"),
+        mask,
+    )
+
+    assert result.coarse_edge_recall >= 0.90
+    assert (result.silhouette_edge_recall or 0) >= 0.80
+    assert result.candidate_coarse_edge_precision < 0.40
+    assert result.passed is False
+
+
+def test_scene_visual_change_rejects_colour_grade_only_and_accepts_new_detail():
+    beauty, mask, _object_id = _structured_scene()
+    source = np.asarray(beauty, dtype=np.uint8)
+    proposal = np.asarray(mask) > 0
+    graded = source.copy()
+    graded[proposal] = np.clip(
+        graded[proposal].astype(np.int16) + np.asarray([8, 6, 4]),
+        0,
+        255,
+    ).astype(np.uint8)
+    grade_result = assess_scene_visual_change(
+        beauty,
+        Image.fromarray(graded, mode="RGB"),
+        mask,
+    )
+
+    detailed = _provider_first_finish_without_geometry_change(beauty)
+    draw = ImageDraw.Draw(detailed)
+    for y in range(112, 330, 14):
+        draw.line((92, y, 430, y), fill=(232, 225, 210), width=2)
+    detail_result = assess_scene_visual_change(beauty, detailed, mask)
+
+    assert grade_result.whole_frame_mean_absolute_delta < 5.0
+    assert grade_result.proposal_mean_absolute_delta < 12.0
+    assert grade_result.context_mean_absolute_delta == 0.0
+    assert grade_result.passed is False
+    assert detail_result.passed is True
+    assert detail_result.whole_frame_mean_absolute_delta >= 5.0
+    assert detail_result.proposal_mean_absolute_delta >= 12.0
+    assert detail_result.proposal_photometric_residual_p95 >= 6.0
+    assert (
+        detail_result.proposal_detail_delta_p75 >= 3.0
+        or detail_result.novel_detail_edge_coverage >= 0.0015
+    )
+    assert (
+        detail_result.context_mean_absolute_delta >= 4.0
+        or detail_result.context_photometric_residual_p95 >= 4.0
+    )
+
+
+def test_scene_visual_change_rejects_proposal_and_sky_only_change():
+    beauty, mask = _registration_context_scene()
+    source = np.asarray(beauty, dtype=np.uint8)
+    proposal = np.asarray(mask) > 0
+    candidate = source.copy()
+    sky = np.zeros(proposal.shape, dtype=bool)
+    sky[: beauty.height * 2 // 5, :] = True
+    changed = proposal | sky
+    candidate[changed] = np.stack(
+        (
+            255 - source[..., 0],
+            source[..., 1],
+            255 - source[..., 2],
+        ),
+        axis=2,
+    )[changed]
+    # Draw into the array-backed image explicitly so proposal detail clears the
+    # spatial-change branch while lower mask-zero context remains untouched.
+    rendered = Image.fromarray(candidate, mode="RGB")
+    draw = ImageDraw.Draw(rendered)
+    for y in range(170, 350, 12):
+        draw.line((160, y, 350, y), fill=(245, 226, 201), width=2)
+
+    result = assess_scene_visual_change(beauty, rendered, mask)
+
+    assert result.whole_frame_mean_absolute_delta >= 5.0
+    assert result.proposal_mean_absolute_delta >= 12.0
+    assert result.context_mean_absolute_delta == 0.0
+    assert result.context_photometric_residual_p95 == 0.0
+    assert result.passed is False
+
+
+def test_scene_visual_change_rejects_flat_lower_context_tint():
+    beauty, mask = _registration_context_scene()
+    source = np.asarray(beauty, dtype=np.uint8)
+    proposal = np.asarray(mask) >= 128
+    candidate = source.copy()
+    finished = np.asarray(
+        _provider_first_finish_without_geometry_change(beauty)
+    )
+    candidate[proposal] = finished[proposal]
+
+    sky = np.zeros(proposal.shape, dtype=bool)
+    sky[: beauty.height * 2 // 5, :] = True
+    sky &= ~proposal
+    candidate[sky] = np.clip(
+        candidate[sky].astype(np.int16) + 20,
+        0,
+        255,
+    ).astype(np.uint8)
+    lower_context = np.zeros(proposal.shape, dtype=bool)
+    lower_context[round(beauty.height * 0.45) :, :] = True
+    lower_context &= ~proposal
+    candidate[lower_context] = np.clip(
+        candidate[lower_context].astype(np.int16) + 5,
+        0,
+        255,
+    ).astype(np.uint8)
+
+    result = assess_scene_visual_change(
+        beauty,
+        Image.fromarray(candidate, mode="RGB"),
+        mask,
+    )
+
+    assert result.whole_frame_mean_absolute_delta >= 5.0
+    assert result.proposal_mean_absolute_delta >= 12.0
+    assert result.context_mean_absolute_delta >= 4.0
+    assert result.context_photometric_residual_p95 < 4.0
+    assert result.context_detail_delta_p75 < 0.75
+    assert result.passed is False
+
+
+@pytest.mark.parametrize(
+    "transform",
+    [
+        _watercolour_finish_preserving_layout,
+        _limited_palette_line_finish_preserving_layout,
+    ],
+    ids=["soft-watercolour", "limited-palette-line-art"],
+)
+def test_common_scene_gates_accept_representative_artistic_finishes(transform):
+    beauty, mask = _registration_context_scene()
+    candidate = transform(beauty)
+    registration = register_generated_image(beauty, candidate, mask)
+
+    assert np.hypot(
+        registration.translation_x_px,
+        registration.translation_y_px,
+    ) <= 8.0
+    assert abs(registration.rotation_degrees) <= 0.35
+    macro = assess_macro_design_fidelity(
+        beauty,
+        registration.image,
+        mask,
+    )
+    visual = assess_scene_visual_change(
+        beauty,
+        registration.image,
+        mask,
+    )
+
+    assert macro.passed is True
+    assert macro.candidate_coarse_edge_precision >= 0.40
+    assert macro.candidate_coarse_edge_density_ratio <= 3.0
+    assert visual.passed is True
+    assert visual.context_detail_delta_p75 >= 0.75
 
 
 def test_semantic_requirements_ignore_invisible_class_boundaries_for_one_value_change():
@@ -1319,6 +1751,40 @@ async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_p
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("presentation_mode", "style", "authority"),
+    [
+        ("scene", "development", "MACRO DESIGN AUTHORITY"),
+        ("reproject", "isometric", "LAYOUT AUTHORITY"),
+    ],
+)
+async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority(
+    monkeypatch,
+    presentation_mode,
+    style,
+    authority,
+):
+    request = _request(presentation_mode=presentation_mode, style=style)
+    capture = prepare_direct_3d_capture(request)
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(
+        200,
+        {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]},
+    )
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+
+    await Direct3DRenderService("test-key")._call_openai(request, capture)
+
+    call = _RecordingClient.calls[0]
+    assert not [item for item in call["files"] if item[0] == "mask"]
+    assert call["data"]["size"] == (
+        f"{capture.normalized_beauty.width}x{capture.normalized_beauty.height}"
+    )
+    assert call["data"]["prompt"].count(authority) == 1
+    assert call["data"]["prompt"].count(request.prompt) == 1
+
+
+@pytest.mark.asyncio
 async def test_provider_attaches_object_id_image_and_exact_semantic_legend(monkeypatch):
     beauty, mask = _capture_images()
     object_id = Image.new("RGB", beauty.size, (0, 0, 0))
@@ -1556,6 +2022,333 @@ async def test_service_fuses_provider_finish_without_accepting_provider_geometry
 
 
 @pytest.mark.asyncio
+async def test_scene_mode_keeps_provider_pixels_and_allows_context_restyling(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="documentary",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    draw = ImageDraw.Draw(generated)
+    for y in range(generated.height * 3 // 10, generated.height * 7 // 10, 18):
+        draw.line(
+            (
+                generated.width * 3 // 10,
+                y,
+                generated.width * 7 // 10,
+                y,
+            ),
+            fill=(242, 228, 205),
+            width=2,
+        )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    output = Image.open(io.BytesIO(base64.b64decode(result.image_base64))).convert("RGB")
+    source_pixels = np.asarray(capture.source_beauty)
+    output_pixels = np.asarray(output)
+    exterior = np.asarray(capture.source_proposal_mask) == 0
+    assert output.size == capture.source_beauty.size
+    assert not np.array_equal(output_pixels[exterior], source_pixels[exterior])
+    assert result.diagnostics["processing_mode"] == "scene"
+    assert result.diagnostics["view_lock"] == "camera_registered"
+    assert result.diagnostics["context_restyled"] is True
+    assert result.diagnostics["provider_first"] is True
+    assert result.diagnostics["finish_fusion"] is None
+    assert result.diagnostics["object_id_proposal_recall"] == pytest.approx(1.0)
+    assert result.diagnostics["object_id_proposal_iou"] == pytest.approx(1.0)
+    assert result.diagnostics["minimum_object_id_proposal_recall"] == 0.85
+    assert result.diagnostics["minimum_object_id_proposal_iou"] == 0.84
+    assert result.diagnostics["scene_lower_context_coverage"] >= 0.08
+    assert result.diagnostics["minimum_scene_lower_context_coverage"] == 0.08
+    assert result.diagnostics["macro_design_fidelity"]["passed"] is True
+    assert (
+        result.diagnostics["macro_design_fidelity"][
+            "building_internal_edges_required"
+        ]
+        is False
+    )
+    assert result.diagnostics["visual_change"]["passed"] is True
+    assert (
+        result.diagnostics["visual_change"][
+            "minimum_whole_frame_mean_absolute_delta"
+        ]
+        == 5.0
+    )
+    assert (
+        result.diagnostics["visual_change"][
+            "minimum_proposal_mean_absolute_delta"
+        ]
+        == 12.0
+    )
+    assert result.diagnostics["visual_change"]["context_change_required"] is True
+    assert (
+        result.diagnostics["macro_design_fidelity"][
+            "minimum_silhouette_edge_recall"
+        ]
+        == 0.80
+    )
+    assert (
+        result.diagnostics["macro_design_fidelity"][
+            "maximum_reference_edge_p90_distance_px"
+        ]
+        <= 6.0
+    )
+    assert (
+        result.diagnostics["macro_design_fidelity"][
+            "minimum_candidate_coarse_edge_precision"
+        ]
+        == 0.40
+    )
+    assert (
+        result.diagnostics["macro_design_fidelity"][
+            "maximum_candidate_coarse_edge_density_ratio"
+        ]
+        == 3.0
+    )
+    assert (
+        result.diagnostics["visual_change"][
+            "minimum_context_detail_delta_p75"
+        ]
+        == 0.75
+    )
+    assert result.diagnostics["registration"]["maximum_translation_norm_px"] == 8.0
+    assert (
+        result.diagnostics["registration"]["maximum_abs_rotation_degrees"]
+        == 0.35
+    )
+    assert result.diagnostics["exterior_max_channel_delta"] > 0
+    Direct3DRenderDiagnostics.model_validate(result.diagnostics)
+
+
+@pytest.mark.asyncio
+async def test_scene_mode_rejects_gross_moved_or_merged_proposal_geometry(monkeypatch):
+    beauty, mask, _object_id = _structured_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="development",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = capture.normalized_beauty.copy()
+    draw = ImageDraw.Draw(generated)
+    proposal_box = (
+        generated.width // 10,
+        generated.height // 10,
+        generated.width * 9 // 10,
+        generated.height * 9 // 10,
+    )
+    draw.rectangle(proposal_box, fill=(135, 150, 122))
+    draw.rectangle(
+        (
+            generated.width * 3 // 20,
+            generated.height // 4,
+            generated.width * 17 // 20,
+            generated.height * 11 // 20,
+        ),
+        fill=(198, 181, 154),
+        outline=(42, 43, 48),
+        width=7,
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    with pytest.raises(Direct3DProviderError, match="macro design geometry") as exc_info:
+        await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert exc_info.value.billing_status == "produced"
+    assert exc_info.value.provider_image_base64 is not None
+
+
+@pytest.mark.asyncio
+async def test_scene_mode_rejects_near_identity_colour_grade_only(monkeypatch):
+    beauty, mask, _object_id = _structured_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="photorealistic",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated_pixels = np.asarray(capture.normalized_beauty).copy()
+    proposal = np.asarray(capture.normalized_proposal_mask) >= 128
+    generated_pixels[proposal] = np.clip(
+        generated_pixels[proposal].astype(np.int16) + np.asarray([12, 8, 6]),
+        0,
+        255,
+    ).astype(np.uint8)
+    generated = Image.fromarray(generated_pixels, mode="RGB")
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    with pytest.raises(Direct3DProviderError, match="photographic detail") as exc_info:
+        await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert exc_info.value.billing_status == "produced"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("translation_x", "translation_y", "rotation", "message"),
+    [
+        (8.01, 0.0, 0.0, "8px translation limit"),
+        (0.0, 0.0, 0.351, "0.35 degree rotation limit"),
+    ],
+)
+async def test_scene_mode_rejects_camera_drift_beyond_scene_limits(
+    monkeypatch,
+    translation_x,
+    translation_y,
+    rotation,
+    message,
+):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="documentary",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _style_shift_without_geometry_change(capture.normalized_beauty)
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    monkeypatch.setattr(
+        direct_service,
+        "register_generated_image",
+        MagicMock(
+            return_value=direct_service.RegistrationResult(
+                image=generated,
+                method="ecc-euclidean",
+                score=0.9,
+                score_metric="luminance-correlation",
+                photometric_score=0.9,
+                structural_context_score=None,
+                translation_x_px=translation_x,
+                translation_y_px=translation_y,
+                rotation_degrees=rotation,
+            )
+        ),
+    )
+
+    with pytest.raises(Direct3DProviderError, match=message) as exc_info:
+        await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert exc_info.value.billing_status == "produced"
+
+
+@pytest.mark.asyncio
+async def test_reproject_returns_provider_output_without_screen_registration(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="reproject",
+        style="isometric",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _limited_palette_line_finish_preserving_layout(
+        capture.normalized_beauty
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    register = MagicMock(side_effect=AssertionError("registration must be bypassed"))
+    macro = MagicMock(side_effect=AssertionError("macro gate must be bypassed"))
+    monkeypatch.setattr(direct_service, "register_generated_image", register)
+    monkeypatch.setattr(direct_service, "assess_macro_design_fidelity", macro)
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    output = Image.open(io.BytesIO(base64.b64decode(result.image_base64))).convert("RGB")
+    assert output.size == capture.normalized_beauty.size
+    assert np.array_equal(np.asarray(output), np.asarray(generated))
+    assert result.diagnostics["processing_mode"] == "reproject"
+    assert result.diagnostics["view_lock"] == "not_applicable_layout_guided"
+    assert result.diagnostics["registration"] is None
+    assert result.diagnostics["provider_first"] is True
+    assert result.diagnostics["reproject_output_sanity"]["passed"] is True
+    assert (
+        result.diagnostics["reproject_output_sanity"][
+            "semantic_inventory_proxy_only"
+        ]
+        is True
+    )
+    Direct3DRenderDiagnostics.model_validate(result.diagnostics)
+    register.assert_not_called()
+    macro.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_reproject_rejects_solid_provider_output(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="reproject",
+        style="isometric",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = Image.new("RGB", capture.normalized_beauty.size, (23, 91, 177))
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    sanity = assess_reproject_output_sanity(
+        capture.normalized_beauty,
+        generated,
+    )
+    assert sanity.structural_edge_coverage == 0.0
+    assert sanity.passed is False
+    with pytest.raises(Direct3DProviderError, match="content sanity") as exc_info:
+        await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert exc_info.value.billing_status == "produced"
+
+
+def test_reproject_sanity_rejects_random_noise():
+    beauty, _mask = _registration_context_scene()
+    noise = Image.fromarray(
+        np.random.default_rng(20260722).integers(
+            0,
+            256,
+            size=(beauty.height, beauty.width, 3),
+            dtype=np.uint8,
+        ),
+        mode="RGB",
+    )
+
+    result = assess_reproject_output_sanity(beauty, noise)
+
+    assert result.structural_edge_coverage > 0.30
+    assert result.passed is False
+
+
+@pytest.mark.asyncio
 async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monkeypatch):
     request = _request(data_urls=True)
     prepared = prepare_direct_3d_capture(request)
@@ -1605,6 +2398,51 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
     audited_image = Image.open(io.BytesIO(base64.b64decode(audited_input, validate=True)))
     assert audited_image.format == "PNG"
     assert audited_image.size == (512, 512)
+    assert finalize_mock.await_args.kwargs["status_label"] == "success source-anchored"
+    assert "mode=source_anchored" in finalize_mock.await_args.kwargs["detail"]
+
+
+@pytest.mark.asyncio
+async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
+    request = _request(presentation_mode="scene", style="development")
+    prepared = prepare_direct_3d_capture(request)
+    result = _fake_service_result(prepared.audit_input_base64)
+    result.diagnostics.update({
+        "processing_mode": "scene",
+        "view_lock": "camera_registered",
+        "context_restyled": True,
+        "provider_first": True,
+    })
+    finalize_mock = AsyncMock()
+    monkeypatch.setattr(
+        direct_api,
+        "_reserve_direct_render",
+        AsyncMock(return_value=SimpleNamespace(id=uuid.uuid4(), tokens_spent=13)),
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "generate",
+        AsyncMock(return_value=result),
+    )
+    monkeypatch.setattr(direct_api, "_finalize_direct_audit", finalize_mock)
+    monkeypatch.setattr(
+        direct_api,
+        "get_settings",
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+    )
+
+    response = await direct_api.generate_direct_3d_render(
+        request,
+        user=SimpleNamespace(role="admin", email="admin@example.com", id="admin"),
+        db=_project_preflight_db(monkeypatch),
+    )
+
+    assert response.diagnostics.processing_mode == "scene"
+    assert response.diagnostics.provider_first is True
+    assert finalize_mock.await_args.kwargs["status_label"] == (
+        "success provider-first scene"
+    )
+    assert "mode=scene style=development" in finalize_mock.await_args.kwargs["detail"]
 
 
 @pytest.mark.asyncio
@@ -1840,7 +2678,13 @@ async def test_reservation_serializes_daily_cap_check_before_committing_row():
 
 
 def test_direct_route_is_registered_separately_from_classic_route():
+    from app.api.v1.render import RenderRequest, router as classic_router
+
     paths = {route.path for route in direct_api.router.routes}
+    classic_paths = {route.path for route in classic_router.routes}
 
     assert "/generate-direct-3d" in paths
     assert "/generate" not in paths
+    assert "/generate" in classic_paths
+    assert "presentation_mode" not in RenderRequest.model_fields
+    assert "style" not in RenderRequest.model_fields

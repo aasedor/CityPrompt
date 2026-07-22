@@ -459,7 +459,7 @@ async def generate_direct_3d_render(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ) -> Direct3DRenderResponse:
-    """Stylize an authoritative clean 3D capture with an exact edit mask."""
+    """Render an authoritative clean 3D capture under the requested mode contract."""
 
     settings = get_settings()
 
@@ -503,7 +503,9 @@ async def generate_direct_3d_render(
         user,
         token_cost=token_cost,
         daily_cap=settings.render_global_daily_token_cap,
-        prompt=req.prompt,
+        prompt=(
+            f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"
+        ),
         project_id=req.project_id,
     )
     try:
@@ -578,13 +580,23 @@ async def generate_direct_3d_render(
         ) from exc
 
     try:
+        processing_mode = str(
+            result.diagnostics.get("processing_mode", "source_anchored")
+        )
+        provider_first = bool(result.diagnostics.get("provider_first", False))
         await _finalize_direct_audit(
             db,
             reservation,
             input_b64=result.audit_input_base64,
             output_b64=result.image_base64,
-            status_label="success",
-            detail=req.prompt,
+            status_label=(
+                f"success provider-first {processing_mode}"
+                if provider_first
+                else "success source-anchored"
+            ),
+            detail=(
+                f"[mode={processing_mode} style={req.style}] {req.prompt}"
+            ),
         )
     except Exception as audit_exc:
         logger.warning("Failed to save Direct 3D render audit log: %s", audit_exc)
