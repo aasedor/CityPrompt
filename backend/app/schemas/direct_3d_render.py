@@ -451,6 +451,7 @@ class Direct3DRenderDiagnostics(BaseModel):
     ] = "source_pixel_locked"
     context_restyled: bool = False
     provider_first: bool = False
+    provider_spatial_pixels_retained: bool = False
     fidelity_policy: Direct3DFidelityPolicy = "balanced"
     source_width: int
     source_height: int
@@ -472,10 +473,14 @@ class Direct3DRenderDiagnostics(BaseModel):
         "source_envelope",
         "source_envelope_all_authored_interiors",
         "source_envelope_building_interiors",
+        "provider_full_scene",
+        "provider_full_scene_local_repairs",
         "global_tone_with_safe_building_interiors",
         "global_tone_only",
         "authoritative_source",
     ] | None = None
+    local_repair_coverage: float | None = None
+    maximum_local_repair_coverage: float | None = None
     instance_source_presence: dict[str, object] | None = None
     unsupported_structure: dict[str, object] | None = None
     server_inventory: dict[str, int] | None = None

@@ -6,6 +6,7 @@ import {
   resolveCommunity3DKind,
   type Community3DKind,
 } from '@/features/community3d/community3d';
+import { announceCommunity3DPresentationReady } from '@/features/community3d/community3dPresentation';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import { analyzeLegoFootprint } from './footprintProfiles';
 import {
@@ -263,6 +264,12 @@ export interface MixedCommunityCompileOptions {
    * LEGO archetype to a generic exact-footprint mass. Manual/community tools
    * retain their historical mixed-mode fallback unless they opt into this. */
   requireDetailedBuildings?: boolean;
+  /** Complete visible physical-zone scope used for residual landscaping.
+   * Incremental `Complete` requests compile only unfinished items, but must
+   * still reserve every already-compiled visible building/park/street. */
+  scopeZoneIds?: string[];
+  /** Server-validated Site Boundary owning this intentionally narrow scope. */
+  scopeBoundaryId?: string;
 }
 
 /** Select the compiler safety policy from the authoritative source scope.
@@ -473,10 +480,27 @@ export async function compileMixedCommunity3D(
     throw new Error('This plan has no building, park, or street zones to generate.');
   }
 
-  const response = await legoAssemblyApi.compileCommunity(compileItems);
+  const compiledScopeZoneIds = zones
+    .filter((zone) => (
+      zone.zone_type !== 'site_boundary'
+      && zone.properties?._plan_role !== 'framework_height'
+    ))
+    .map((zone) => zone.id);
+  const scopeZoneIds = Array.from(new Set([
+    ...(options.scopeZoneIds ?? compiledScopeZoneIds),
+    ...compiledScopeZoneIds,
+  ]));
+  const response = options.scopeBoundaryId
+    ? await legoAssemblyApi.compileCommunity(
+        compileItems,
+        scopeZoneIds,
+        options.scopeBoundaryId,
+      )
+    : await legoAssemblyApi.compileCommunity(compileItems, scopeZoneIds);
   if (options.requireDetailedBuildings) {
     assertDetailedBuildingResponse(buildingItems, response);
   }
+  announceCommunity3DPresentationReady(scopeZoneIds);
   return {
     response,
     detailedBuildings: response.items.filter((item) => (
@@ -528,6 +552,10 @@ export async function compileBoundaryCommunity3D(
   return compileMixedCommunity3D(
     compilerZones,
     onProgress,
-    { requireDetailedBuildings: true },
+    {
+      requireDetailedBuildings: true,
+      scopeZoneIds: Array.from(containedZoneIds),
+      scopeBoundaryId: boundaryZoneId,
+    },
   );
 }

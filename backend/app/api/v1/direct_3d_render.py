@@ -28,6 +28,11 @@ from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import Building, RenderAuditLog, SiteZone, User
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse
+from app.services.community_3d_scope import (
+    Community3DScopeError,
+    physical_community_3d_zones,
+    resolve_community_3d_scope,
+)
 from app.services.direct_3d_render import (
     DIRECT_3D_MODEL,
     Direct3DProviderError,
@@ -37,6 +42,7 @@ from app.services.direct_3d_render import (
     estimate_direct_3d_token_cost,
     prepare_direct_3d_capture,
 )
+from app.services.direct_3d_identity import direct_3d_zone_design_identity
 from app.services.public_realm_lego import (
     PUBLIC_REALM_RECIPE_PROPERTY,
     PublicRealmPlanningError,
@@ -94,16 +100,24 @@ def _validate_direct_3d_project_zones(
     """Validate a paid capture against the locked, server-current parcel state."""
 
     boundaries = [zone for zone in zones if zone.zone_type == "site_boundary"]
-    physical_zones = [
-        zone
-        for zone in zones
-        if zone.zone_type != "site_boundary"
-        and (zone.properties or {}).get("_plan_role") != "framework_height"
-    ]
-    if not physical_zones:
+    all_physical_zones = physical_community_3d_zones(zones)
+    if not all_physical_zones:
         raise _direct_state_conflict(
             "This project has no compiled building, park, or street layers to render."
         )
+
+    claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
+    try:
+        physical_zones = resolve_community_3d_scope(
+            all_physical_zones,
+            claims_by_zone,
+        )
+    except Community3DScopeError:
+        raise _direct_state_conflict(
+            "The captured Community 3D layer set no longer matches this project. "
+            "Refresh the scene before rendering."
+        )
+
     unsupported = [
         zone
         for zone in physical_zones
@@ -114,14 +128,6 @@ def _validate_direct_3d_project_zones(
             f"Direct 3D cannot safely represent {len(unsupported)} authored polygon"
             f"{'s' if len(unsupported) != 1 else ''}. Assign a supported building, "
             "park/plaza, street/path type before rendering."
-        )
-
-    claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
-    physical_zone_ids = {str(zone.id) for zone in physical_zones}
-    if set(claims_by_zone) != physical_zone_ids:
-        raise _direct_state_conflict(
-            "The captured Community 3D layer set no longer matches this project. "
-            "Refresh the scene before rendering."
         )
 
     stale_or_uncompiled: list[SiteZone] = []
@@ -848,7 +854,7 @@ def _bind_instance_manifest_to_server_zones(
     physical_zones: list[SiteZone],
     all_zones: list[SiteZone],
 ) -> list[dict[str, object]]:
-    """Bind primary and supplemental screen-space instances to server roles."""
+    """Bind screen-space instances to the selected server-owned scene scope."""
 
     expected: dict[str, dict[str, str | None]] = {}
     for zone in physical_zones:
@@ -862,8 +868,20 @@ def _bind_instance_manifest_to_server_zones(
         expected[str(zone.id)] = {
             "semantic_class": semantic_class,
             "building_id": str(zone.building_id) if zone.building_id else None,
+            "design_identity": direct_3d_zone_design_identity(
+                semantic_class,
+                zone.properties,
+            ),
         }
-    all_zones_by_id = {str(zone.id): zone for zone in all_zones}
+    authorized_zone_ids = set(expected)
+    authorized_zone_ids.update(
+        str(zone.id) for zone in all_zones if zone.zone_type == "site_boundary"
+    )
+    all_zones_by_id = {
+        str(zone.id): zone
+        for zone in all_zones
+        if str(zone.id) in authorized_zone_ids
+    }
     all_zone_ids = set(all_zones_by_id)
     allowed_supplemental_surfaces: set[tuple[str, str]] = set()
     for zone_id, zone in all_zones_by_id.items():
@@ -898,6 +916,7 @@ def _bind_instance_manifest_to_server_zones(
                 "zone_id": zone_id,
                 "building_id": item["building_id"],
                 "source_zone_ids": [],
+                "design_identity": item["design_identity"],
             }
             for zone_id, item in sorted(expected.items())
         ]
@@ -908,6 +927,11 @@ def _bind_instance_manifest_to_server_zones(
     for _color, descriptor in sorted(req.instance_id_manifest.items()):
         zone_id = str(descriptor.zone_id) if descriptor.zone_id else None
         source_zone_ids = sorted({str(value) for value in descriptor.source_zone_ids})
+        expected_item = expected.get(zone_id) if zone_id is not None else None
+        is_supplemental_surface = descriptor.semantic_class in {
+            "ground",
+            "landscape",
+        }
         if descriptor.instance_id in seen_instance_ids:
             raise _direct_state_conflict(
                 "The instance inventory repeats a screen-space identity. Refresh "
@@ -984,11 +1008,6 @@ def _bind_instance_manifest_to_server_zones(
                     "The instance inventory references a zone that is no longer "
                     "part of this project. Refresh the scene before rendering."
                 )
-            expected_item = expected.get(zone_id)
-            is_supplemental_surface = descriptor.semantic_class in {
-                "ground",
-                "landscape",
-            }
             if source_zone_ids:
                 raise _direct_state_conflict(
                     "Zone-bound instances cannot claim additional source zones. "
@@ -1056,6 +1075,11 @@ def _bind_instance_manifest_to_server_zones(
                 str(descriptor.building_id) if descriptor.building_id else None
             ),
             "source_zone_ids": source_zone_ids,
+            "design_identity": (
+                expected_item["design_identity"]
+                if expected_item is not None and not is_supplemental_surface
+                else None
+            ),
         })
 
     if seen_primary_zone_ids != set(expected):

@@ -87,6 +87,56 @@ describe('legoAssemblyApi', () => {
     });
   });
 
+  it('compileCommunity() sends the complete visible scope separately from incremental items', async () => {
+    const response = {
+      status: 'compiled' as const,
+      compiled_at: '2026-07-17T01:00:00Z',
+      counts: { building: 0, park: 1, street: 0 },
+      items: [],
+    };
+    apiPost.mockResolvedValue({ data: response });
+    const item = {
+      zone_id: 'unfinished-park',
+      source_updated_at: '2026-07-17T00:00:00Z',
+    };
+
+    await legoAssemblyApi.compileCommunity(
+      [item],
+      ['compiled-building', 'unfinished-park'],
+    );
+
+    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
+      items: [item],
+      scope_zone_ids: ['compiled-building', 'unfinished-park'],
+    });
+  });
+
+  it('compileCommunity() sends a server-verifiable Site Boundary scope', async () => {
+    const response = {
+      status: 'compiled' as const,
+      compiled_at: '2026-07-17T01:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [],
+    };
+    apiPost.mockResolvedValue({ data: response });
+    const item = {
+      zone_id: 'inside-building',
+      source_updated_at: '2026-07-17T00:00:00Z',
+    };
+
+    await legoAssemblyApi.compileCommunity(
+      [item],
+      ['inside-building'],
+      'site-boundary',
+    );
+
+    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
+      items: [item],
+      scope_zone_ids: ['inside-building'],
+      scope_boundary_id: 'site-boundary',
+    });
+  });
+
   it('getRecipe() unwraps legoAssembly and passes null through', async () => {
     apiGet.mockResolvedValueOnce({ data: { legoAssembly: recipeFixture } });
     await expect(legoAssemblyApi.getRecipe('bldg-1')).resolves.toEqual(recipeFixture);

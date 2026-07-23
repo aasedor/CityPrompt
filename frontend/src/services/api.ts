@@ -1374,6 +1374,7 @@ export const rendersApi = {
       view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
       context_restyled?: boolean;
       provider_first?: boolean;
+      provider_spatial_pixels_retained?: boolean;
       fidelity_policy?: 'precise' | 'balanced' | 'expressive';
       instance_id_attached?: boolean;
       instance_count?: number;
@@ -1394,10 +1395,14 @@ export const rendersApi = {
         | 'source_envelope'
         | 'source_envelope_all_authored_interiors'
         | 'source_envelope_building_interiors'
+        | 'provider_full_scene'
+        | 'provider_full_scene_local_repairs'
         | 'global_tone_with_safe_building_interiors'
         | 'global_tone_only'
         | 'authoritative_source'
         | null;
+      local_repair_coverage?: number | null;
+      maximum_local_repair_coverage?: number | null;
       instance_source_presence?: {
         passed: boolean;
         evaluated_instance_count?: number;

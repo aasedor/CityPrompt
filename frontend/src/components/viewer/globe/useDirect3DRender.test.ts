@@ -5,6 +5,7 @@ import { rendersApi } from '@/services/api';
 import {
   buildDirect3DVisualPrompt,
   DIRECT_3D_ALLOWED_STYLES,
+  DIRECT_3D_DEFAULT_ART_DIRECTIONS,
   DIRECT_3D_STYLE_IDS,
   resolveDirect3DFidelityPolicy,
   resolveDirect3DPresentationMode,
@@ -150,6 +151,8 @@ describe('Direct 3D presentation adapter', () => {
   it('uses the same complete 22-style catalogue as Classic without changing Classic prompting', () => {
     expect(DIRECT_3D_STYLE_IDS).toHaveLength(22);
     expect(new Set(DIRECT_3D_STYLE_IDS)).toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
+    expect(new Set(Object.keys(DIRECT_3D_DEFAULT_ART_DIRECTIONS)))
+      .toEqual(new Set(DIRECT_3D_STYLE_IDS));
     expect(DIRECT_3D_ALLOWED_STYLES).toEqual(new Set(DIRECT_3D_STYLE_IDS));
 
     const classicPrompt = buildPrompt([], 'watercolour');
@@ -168,27 +171,38 @@ describe('Direct 3D presentation adapter', () => {
       .toHaveLength(16);
   });
 
-  it('builds a Direct-owned balanced prompt without inheriting Classic camera prose', () => {
-    const prompt = buildDirect3DVisualPrompt('development', 'Warm limestone.', capture);
+  it('keeps the selected Direct style while adding concise project-specific direction', () => {
+    const custom = 'Bright softly overcast daylight. Warm limestone.';
+    const prompt = buildDirect3DVisualPrompt('photorealistic', custom, capture);
 
-    expect(prompt).toContain('DIRECT 3D STYLE ID: development');
-    expect(prompt).toContain('PRESENTATION MODE: SCENE');
-    expect(prompt).toContain('BALANCED FIDELITY');
-    expect(prompt).toContain('Do not add, remove, split or merge permanent buildings');
-    expect(prompt).toContain('Outside the parcel, preserve the existing building, road, water and open-space inventory');
-    expect(prompt).not.toContain('DJI Mavic');
-    expect(prompt).not.toContain('colored polygon fills');
-    expect(prompt).toContain('building 18.0%');
-    expect(prompt).toContain('Warm limestone');
+    expect(prompt).toContain(DIRECT_3D_DEFAULT_ART_DIRECTIONS.photorealistic);
+    expect(prompt).toContain(`PROJECT-SPECIFIC ART DIRECTION: ${custom}`);
+    expect(prompt.match(/Bright softly overcast daylight/g)).toHaveLength(1);
+    expect(prompt).not.toContain('Golden hour');
+    expect(prompt).not.toContain('BALANCED FIDELITY');
+    expect(prompt).not.toContain('Visible proposal classes');
+    expect(prompt).not.toContain('DIRECT 3D STYLE ID');
   });
 
-  it('builds an expressive inventory-locked reproject prompt', () => {
+  it('uses a compact Direct-owned default when no custom direction is supplied', () => {
     const prompt = buildDirect3DVisualPrompt('site-plan-watercolor', undefined, capture);
 
-    expect(prompt).toContain('DIRECT 3D STYLE ID: site-plan-watercolor');
-    expect(prompt).toContain('PRESENTATION MODE: REPROJECT');
-    expect(prompt).toContain('EXPRESSIVE FIDELITY');
-    expect(prompt).toContain('exact authored building, park, street and protected-feature inventory');
+    expect(prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS['site-plan-watercolor']);
+    expect(prompt).toContain('hand-painted watercolour');
+    expect(prompt).not.toContain('PRESENTATION MODE');
+    expect(prompt).not.toContain('EXPRESSIVE FIDELITY');
+  });
+
+  it('keeps Direct photoreal defaults neutral and competition-render focused', () => {
+    const prompt = buildDirect3DVisualPrompt('photorealistic', undefined, capture);
+
+    expect(prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS.photorealistic);
+    expect(prompt).toContain('architectural competition visualization');
+    expect(prompt).toContain('softly diffused daylight');
+    expect(prompt).toContain('muted natural colours');
+    expect(prompt).not.toContain('Golden hour');
+    expect(prompt).not.toContain('ray-traced');
+    expect(prompt).not.toContain('colored polygon');
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
@@ -242,7 +256,7 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
   });
 
-  it('accepts every catalogue style and sends its exact deterministic mode and rich prompt', async () => {
+  it('accepts every catalogue style and sends its exact deterministic mode and Direct default', async () => {
     const { result } = renderHook(() => useDirect3DRender());
 
     for (const style of DIRECT_3D_STYLE_IDS) {
@@ -260,7 +274,7 @@ describe('Direct 3D presentation adapter', () => {
       expect(request.presentation_mode).toBe(resolveDirect3DPresentationMode(style));
       expect(request.fidelity_policy).toBe(resolveDirect3DFidelityPolicy(style));
       expect(request.presentation_mode).not.toBe('source_anchored');
-      expect(request.prompt).toContain(`DIRECT 3D STYLE ID: ${style}`);
+      expect(request.prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS[style]);
     });
   });
 

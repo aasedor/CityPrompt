@@ -303,15 +303,23 @@ export const legoAssemblyApi = {
   },
 
   /** Persist a mixed building/park/street build as one backend transaction. */
-  async compileCommunity(items: Array<{
-    zone_id: string;
-    /** Revision of the zone snapshot used to plan this exact item. */
-    source_updated_at: string;
-    recipe?: LegoAssemblyRecipe & { building_name?: string | null };
-  }>): Promise<Community3DCompileResponse> {
+  async compileCommunity(
+    items: Array<{
+      zone_id: string;
+      /** Revision of the zone snapshot used to plan this exact item. */
+      source_updated_at: string;
+      recipe?: LegoAssemblyRecipe & { building_name?: string | null };
+    }>,
+    scopeZoneIds?: string[],
+    scopeBoundaryId?: string,
+  ): Promise<Community3DCompileResponse> {
     const response = await api.post<Community3DCompileResponse>(
       '/api/v1/lego-assembly/place-community',
-      { items },
+      {
+        items,
+        ...(scopeZoneIds ? { scope_zone_ids: scopeZoneIds } : {}),
+        ...(scopeBoundaryId ? { scope_boundary_id: scopeBoundaryId } : {}),
+      },
     );
     return response.data;
   },

@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Building, SiteZone } from '@/types';
 import { buildingsApi, siteZonesApi } from '@/services/api';
+import {
+  COMMUNITY_3D_PRESENTATION_READY_EVENT,
+  type Community3DPresentationReadyDetail,
+} from '@/features/community3d/community3dPresentation';
 import { legoAssemblyApi, type LegoAssemblyPlan } from './legoAssemblyApi';
 import { analyzeLegoFootprint } from './footprintProfiles';
 import {
@@ -192,6 +196,11 @@ describe('mixed community compiler', () => {
       ],
     });
     const progress: string[] = [];
+    const presentationReady = vi.fn((_event: Event) => undefined);
+    window.addEventListener(
+      COMMUNITY_3D_PRESENTATION_READY_EVENT,
+      presentationReady,
+    );
 
     const result = await compileMixedCommunity3D(zones, ({ completed, total }) => {
       progress.push(`${completed}/${total}`);
@@ -208,6 +217,12 @@ describe('mixed community compiler', () => {
       { zone_id: 'park', source_updated_at: '2026-01-01T00:00:00Z' },
       { zone_id: 'street', source_updated_at: '2026-01-01T00:00:00Z' },
     ]);
+    expect(compile.mock.calls[0][1]).toEqual([
+      'supported',
+      'missing',
+      'park',
+      'street',
+    ]);
     expect(result).toMatchObject({
       detailedBuildings: 1,
       plannedMasses: 1,
@@ -216,6 +231,61 @@ describe('mixed community compiler', () => {
     });
     expect(progress[0]).toBe('0/2');
     expect(progress[progress.length - 1]).toBe('2/2');
+    expect(presentationReady).toHaveBeenCalledTimes(1);
+    expect(
+      (presentationReady.mock.calls[0][0] as CustomEvent<Community3DPresentationReadyDetail>)
+        .detail.zoneIds,
+    ).toEqual([
+      'supported',
+      'missing',
+      'park',
+      'street',
+    ]);
+    window.removeEventListener(
+      COMMUNITY_3D_PRESENTATION_READY_EVENT,
+      presentationReady,
+    );
+  });
+
+  it('keeps the complete visible scope when Complete compiles only unfinished items', async () => {
+    const alreadyCompiled = zone('compiled-building', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'building',
+        generator: 'lego_assembly',
+        compiled_at: '2026-07-18T00:00:00Z',
+      },
+    });
+    const unfinishedPark = zone('unfinished-park', 'green_space', {
+      _plan_role: 'open_space',
+      green_space_archetype_id: 'neighborhood_park',
+    });
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-18T00:00:00Z',
+      counts: { building: 0, park: 1, street: 0 },
+      items: [{
+        zone_id: unfinishedPark.id,
+        kind: 'park',
+        building_id: null,
+        building_created: false,
+        generator: 'park_kit',
+      }],
+    });
+
+    await compileMixedCommunity3D(
+      [unfinishedPark],
+      undefined,
+      { scopeZoneIds: [alreadyCompiled.id, unfinishedPark.id] },
+    );
+
+    expect(compile).toHaveBeenCalledWith(
+      [{ zone_id: unfinishedPark.id, source_updated_at: unfinishedPark.updated_at }],
+      [alreadyCompiled.id, unfinishedPark.id],
+    );
   });
 
   it('aborts before the atomic save when modular planning fails unexpectedly', async () => {
@@ -424,7 +494,7 @@ describe('mixed community compiler', () => {
         recipe: expect.objectContaining({ module_family: 'supported-family' }),
       }),
       { zone_id: park.id, source_updated_at: park.updated_at },
-    ]);
+    ], [supported.id, park.id], boundaryId);
     expect(compile.mock.calls[0][0]).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ zone_id: unrelated.id })]),
     );
@@ -522,7 +592,7 @@ describe('mixed community compiler', () => {
           }),
         }),
       }),
-    ]);
+    ], [previewZone.id], boundaryId);
     expect(previewZone.coordinates).toEqual(originalParcel);
   });
 
