@@ -5,7 +5,7 @@
 export interface Location {
   latitude: number;
   longitude: number;
-  address?: string;
+  address?: string | null;
 }
 
 export interface ConstructionPhase {
@@ -26,6 +26,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   owner_id: string;
+  owner_email?: string;
   buildings?: Building[];
   documents?: Document[];
 }
@@ -62,6 +63,17 @@ export interface BuildingSpecifications {
   [key: string]: unknown;
 }
 
+export interface SavedRender {
+  id: string;
+  image_url: string;
+  prompt: string;
+  style?: string;
+  seed?: number;
+  model?: string;
+  image_quality?: 'auto' | 'low' | 'medium' | 'high';
+  created_at: string;
+}
+
 export interface Document {
   id: string;
   project_id: string;
@@ -79,6 +91,20 @@ export interface ProcessingStatus {
   progress?: number;
   message?: string;
   result?: Record<string, unknown>;
+}
+
+export interface CustomStyleUsedDocument {
+  id: string;
+  filename: string;
+  status: string;
+  chars_used: number;
+}
+
+export interface CustomStyleExpandResponse {
+  expanded_prompt: string;
+  model: string;
+  used_documents: CustomStyleUsedDocument[];
+  truncated: boolean;
 }
 
 // =============================================================================
@@ -102,6 +128,16 @@ export interface LayoutGreenSpaceData {
   description?: string;
 }
 
+export type CustomStyleDomain = 'building' | 'open_space' | 'street';
+
+export interface CustomStyleAttachment {
+  document_id: string;
+  filename: string;
+  file_type: string;
+  kind: 'photo' | 'pdf';
+  url: string;
+}
+
 export interface SiteZoneProperties {
   height?: number;
   floors?: number;
@@ -109,6 +145,14 @@ export interface SiteZoneProperties {
   tree_density?: number;
   width?: number;
   unit_count?: number;
+  custom_style_enabled?: boolean;
+  custom_style_domain?: CustomStyleDomain;
+  custom_style_prompt?: string;
+  custom_style_expanded_prompt?: string;
+  custom_style_expanded_at?: string;
+  custom_style_expansion_hash?: string;
+  custom_style_expanded_edited?: boolean;
+  custom_style_attachments?: CustomStyleAttachment[];
   _layout_strategy?: string;
   _layout_reasoning?: string;
   _layout_roads?: LayoutRoadData[];
@@ -504,6 +548,31 @@ export interface SiteZone {
   updated_at: string;
 }
 
+export interface ZoneHistoryEntry {
+  id: string;
+  zone_id: string;
+  project_id: string;
+  action: 'create' | 'update' | 'delete';
+  snapshot: SiteZone & Record<string, unknown>;
+  previous_snapshot?: (SiteZone & Record<string, unknown>) | null;
+  user_id?: string;
+  user_email?: string;
+  description?: string;
+  created_at: string;
+}
+
+export interface ZoneHistoryListResponse {
+  items: ZoneHistoryEntry[];
+  total: number;
+  has_more: boolean;
+}
+
+export interface ZoneSnapshotRestoreResponse {
+  zone_id: string;
+  deleted: boolean;
+  zone?: SiteZone | null;
+}
+
 export interface ZoneTypeConfig {
   label: string;
   color: string;
@@ -548,7 +617,7 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
     defaultProperties: { width: 10 },
   },
   green_space: {
-    label: 'Parks / Green Space',
+    label: 'Parks / Plazas',
     color: '#4CAF50',       // APA Open Space Green
     icon: 'G',
     defaultProperties: { tree_density: 0.3 },
@@ -758,8 +827,8 @@ export interface CreateProjectRequest {
 
 export interface UpdateProjectRequest {
   name?: string;
-  description?: string;
-  location?: Location;
+  description?: string | null;
+  location?: Location | null;
   status?: string;
 }
 
@@ -812,6 +881,7 @@ export interface ViewerSettings {
   enablePostProcessing: boolean;
   enableFog: boolean;
   show3DTiles: boolean;
+  mapMode: 'mapbox' | 'globe';
 }
 
 export interface SceneObject {
@@ -968,3 +1038,153 @@ export interface BoundaryAnalysisResponse {
 
 
 
+// =============================================================================
+// Urban Intelligence DNA (backend/app/services/urban_dna)
+// =============================================================================
+
+/** Mirrors the backend ValidationNote — source_phase extends the layout-pipeline union. */
+export interface UrbanDnaValidationNote {
+  code: string;
+  severity: 'info' | 'warning' | 'error';
+  message: string;
+  source_phase:
+    | 'street_graph' | 'row_geometry' | 'parceling' | 'civic_distribution'
+    | 'zoning' | 'building_placement' | 'collision_validation'
+    | 'city_connector' | 'spatial_engine' | 'policy_intelligence'
+    | 'agent_deliberation' | 'coordinator';
+}
+
+export interface UrbanDnaField {
+  value: unknown;
+  unit?: string | null;
+  confidence: number;
+  source_datasets: string[];
+  notes: string[];
+}
+
+export interface UrbanDnaSectionMeta {
+  confidence: number;
+  missing_datasets: string[];
+  warnings: UrbanDnaValidationNote[];
+}
+
+export interface UrbanDnaSection {
+  meta: UrbanDnaSectionMeta;
+  fields: Record<string, UrbanDnaField>;
+}
+
+export const URBAN_DNA_SECTION_NAMES = [
+  'site', 'land_use', 'mobility', 'public_realm',
+  'environment', 'built_form', 'market', 'policy',
+] as const;
+export type UrbanDnaSectionName = (typeof URBAN_DNA_SECTION_NAMES)[number];
+
+export interface UrbanDnaDocument {
+  dna_schema_version: string;
+  city_id: string;
+  project_id: string;
+  zone_id: string;
+  generated_at: string;
+  site: UrbanDnaSection;
+  land_use: UrbanDnaSection;
+  mobility: UrbanDnaSection;
+  public_realm: UrbanDnaSection;
+  environment: UrbanDnaSection;
+  built_form: UrbanDnaSection;
+  market: UrbanDnaSection;
+  policy: UrbanDnaSection;
+  overall_confidence: number;
+  missing_datasets: string[];
+  warnings: UrbanDnaValidationNote[];
+}
+
+export interface UrbanDnaSnapshotResponse {
+  snapshot_id: string;
+  zone_id: string;
+  project_id: string;
+  city_id: string;
+  status: 'pending' | 'partial' | 'complete' | 'failed';
+  dna_schema_version: string;
+  dna?: UrbanDnaDocument | null;
+  overall_confidence?: number | null;
+  error?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UrbanDnaGenerateResponse {
+  snapshot_id: string;
+  zone_id: string;
+  status: string;
+  city_id: string;
+}
+
+export interface UrbanDnaScenarioRow {
+  id: string;
+  snapshot_id: string;
+  scenario_id: string;
+  label: string;
+  status: 'pending' | 'running' | 'complete' | 'failed';
+  payload?: {
+    plan_parameters?: Record<string, {
+      parameter_path: string;
+      value: unknown;
+      rationale: string;
+      contributors: string[];
+      contested: boolean;
+    }>;
+    trade_offs?: UrbanDnaValidationNote[];
+    expert_summaries?: Record<string, string>;
+    explanation?: {
+      baseline: string;
+      changed_parameters: Array<{
+        parameter_path: string;
+        baseline_value: unknown;
+        value: unknown;
+        driven_by: string;
+      }>;
+      narrative: string;
+    };
+    usage?: { input_tokens?: number; output_tokens?: number; estimated_cost_usd?: number };
+    warnings?: UrbanDnaValidationNote[];
+    metrics?: {
+      mode: 'parameter' | 'geometry';
+      metrics: Record<string, {
+        key: string;
+        label: string;
+        value: number | null;
+        unit: string;
+        derivation: string;
+        assumptions: string[];
+        confidence: number;
+      }>;
+      ceiling_reconciliation: Array<{
+        district: string;
+        area_pct_of_site?: number | null;
+        ceiling_floors?: number | null;
+        proposed_floors?: number | null;
+        status: 'within' | 'exceeds' | 'unknown';
+        source: string;
+      }>;
+      warnings: string[];
+      assumptions_used: Record<string, { value: unknown; unit: string; note: string }>;
+    } | null;
+  } | null;
+  error?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UrbanDnaScenarioListResponse {
+  snapshot_id?: string | null;
+  scenarios: UrbanDnaScenarioRow[];
+  available_presets: Array<{ scenario_id: string; label: string; description: string }>;
+  /** True when the scenarios pre-date the zone's latest DNA snapshot. */
+  stale?: boolean;
+}
+
+export interface UrbanDnaApplyScenarioResponse {
+  zone_id: string;
+  scenario_id: string;
+  applied_parameters: Record<string, unknown>;
+}

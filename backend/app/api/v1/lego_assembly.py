@@ -23,6 +23,11 @@ from app.services.community_3d_artifacts import (
     COMMUNITY_REPRESENTATION_SPEC_KEY,
     stale_community_3d_buildings,
 )
+from app.services.community_3d_scope import (
+    Community3DScopeError,
+    resolve_boundary_community_3d_scope,
+    resolve_community_3d_scope,
+)
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
@@ -137,6 +142,18 @@ class Community3DCompileRequest(BaseModel):
     # public-realm zones. Keep the atomic all-or-nothing contract for a full
     # master plan instead of forcing large communities into partial batches.
     items: list[Community3DCompileItem] = Field(min_length=1, max_length=2000)
+    # New clients send the complete visible physical-zone scope separately
+    # from the items that actually need compilation. This keeps residual land
+    # correct for hidden alternate plans and incremental Complete requests.
+    scope_zone_ids: list[uuid.UUID] | None = Field(
+        default=None,
+        min_length=1,
+        max_length=2000,
+    )
+    # Boundary entry points intentionally compile a proper subset of a larger
+    # project. The server recomputes this exact spatial scope under the project
+    # lock instead of treating the client-provided IDs as trusted selection.
+    scope_boundary_id: uuid.UUID | None = None
 
 
 def _same_source_revision(client_revision: datetime, server_revision: datetime | None) -> bool:
@@ -1294,10 +1311,10 @@ async def place_community_3d(
             )
         resolved_items.append((item, zone, kind))
 
-    # Residual land is a project-level derived result. Incremental `Complete`
-    # requests omit already-compiled zones, but those polygons still occupy
-    # land, so derive from every persisted zone in the project rather than the
-    # request subset.
+    # Residual land is derived for the visible server-verifiable layer scope.
+    # Incremental `Complete` requests may omit already-compiled members, so the
+    # request is only a seed: complete imported/plan groups are expanded below,
+    # while hidden sibling scenarios remain outside the resulting landscape.
     await lock_residual_landscape_project(db, project_id)
     project_zones_result = await db.execute(
         select(SiteZone)
@@ -1333,6 +1350,43 @@ async def place_community_3d(
             )
         refreshed_items.append((item, zone, kind))
     resolved_items = refreshed_items
+    compile_zone_ids = {str(item.zone_id) for item, _, _ in resolved_items}
+    requested_scope_ids = (
+        {str(zone_id) for zone_id in body.scope_zone_ids}
+        if body.scope_zone_ids is not None
+        else compile_zone_ids
+    )
+    if body.scope_boundary_id is not None and body.scope_zone_ids is None:
+        raise HTTPException(
+            status_code=422,
+            detail="Boundary-scoped Community 3D requires an explicit zone scope.",
+        )
+    if not compile_zone_ids.issubset(requested_scope_ids):
+        raise HTTPException(
+            status_code=422,
+            detail="Every compiled Community 3D item must belong to its visible scope.",
+        )
+    try:
+        if body.scope_boundary_id is not None:
+            residual_scope_zones = resolve_boundary_community_3d_scope(
+                project_zones,
+                requested_scope_ids,
+                str(body.scope_boundary_id),
+            )
+        else:
+            residual_scope_zones = resolve_community_3d_scope(
+                project_zones,
+                requested_scope_ids,
+                expand_groups=body.scope_zone_ids is None,
+            )
+    except Community3DScopeError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "The visible Community 3D layer scope changed before compilation; "
+                "refresh and retry."
+            ),
+        ) from exc
 
     # AI-bound recipes must still match both the catalogue revision stamped on
     # their source zones and the exact project-visible modules.  This runs
@@ -1356,7 +1410,11 @@ async def place_community_3d(
         if recipe is not None:
             public_realm_recipes[zone.id] = recipe
 
-    boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
+    if body.scope_boundary_id is not None:
+        scoped_boundary = zones_by_id.get(body.scope_boundary_id)
+        boundaries = [scoped_boundary] if scoped_boundary is not None else []
+    else:
+        boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
     if len(boundaries) > 1:
         raise HTTPException(
             status_code=422,
@@ -1368,9 +1426,7 @@ async def place_community_3d(
     derived_boundary_count = 0
     if not boundaries:
         authored_shapes = []
-        for zone in project_zones:
-            if (zone.properties or {}).get("_plan_role") == "framework_height":
-                continue
+        for zone in residual_scope_zones:
             try:
                 authored_shapes.append(to_shape(zone.geometry))
             except (AssertionError, TypeError, ValueError):
@@ -1449,13 +1505,9 @@ async def place_community_3d(
                 # implementation detail in the planning overlay.
                 boundary.name = "Site Boundary"
             source_zones: list[ResidualSourceZone] = []
-            for zone in project_zones:
-                if zone.id == boundary.id or zone.zone_type == "site_boundary":
-                    continue
+            for zone in residual_scope_zones:
                 properties = zone.properties or {}
                 role = properties.get("_plan_role")
-                if role == "framework_height":
-                    continue
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),

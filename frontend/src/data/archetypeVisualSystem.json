@@ -31,28 +31,28 @@
   ],
   "cardVariants": [
     {
-      "id": "front_day",
+      "id": "variant_0",
       "title": "Front Elevation Day",
       "description": "Clear daytime framing emphasizing form and material clarity",
       "camera": "street",
       "lighting": "soft daytime"
     },
     {
-      "id": "front_golden_hour",
+      "id": "variant_1",
       "title": "Front Golden Hour",
       "description": "Warm late-day lighting with subtle glow and material warmth",
       "camera": "street",
       "lighting": "golden hour"
     },
     {
-      "id": "front_overcast",
+      "id": "variant_2",
       "title": "Front Overcast",
       "description": "Soft overcast light that highlights texture and massing",
       "camera": "street",
       "lighting": "overcast"
     },
     {
-      "id": "front_rain_reflection",
+      "id": "variant_3",
       "title": "Front Rain Reflection",
       "description": "Moody reflective street surface with realistic atmospheric depth",
       "camera": "street",

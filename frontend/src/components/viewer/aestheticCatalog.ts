@@ -45,6 +45,7 @@ export type ArchetypeImage = {
   description: string;
   camera: 'street' | 'corner' | 'promenade' | 'courtyard';
   imageUrl: string;
+  thumbnailUrl?: string;
   imagePath?: string;
   lighting?: string;
   generationTags?: string[];
@@ -103,6 +104,38 @@ export type ArchetypeVariant = {
   shadeId?: string;
   palette?: Record<string, string>;
   description?: string;
+  /** Per-variant floor/area overrides — when set, these take priority over archetype-level values */
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedFloorHeight?: number;
+  suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  aspectRatio?: string;
+};
+
+export type BuildingFootprintProfile = 'rectangle' | 'l_shape' | 'u_shape' | 'courtyard';
+
+export type FootprintProfileGuidance = {
+  recommendedWidth_m: [number, number];
+  recommendedDepth_m: [number, number];
+  recommendedFloors: [number, number];
+  wingDepth_m?: [number, number];
+  minimumCourtyard_m?: number;
+};
+
+export type FootprintCompatibility = {
+  preferredProfiles: BuildingFootprintProfile[];
+  recommendedWidth_m: [number, number];
+  recommendedDepth_m: [number, number];
+  recommendedFloors: [number, number];
+  wingDepth_m?: [number, number];
+  profiles?: Partial<Record<BuildingFootprintProfile, FootprintProfileGuidance>>;
+  preferredBayMultiple_m?: number;
+  minimumCourtyard_m?: number;
+  notes?: string[];
 };
 
 export type AestheticOption = {
@@ -113,14 +146,27 @@ export type AestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  developmentType?: string;
   developmentTypes?: string[];
   buildingSubcategory?: string;
-  minFloors?: number;
-  maxFloors?: number;
   generationTags?: string[];
   archetypeImages?: ArchetypeImage[];
   styleProfile?: StyleProfile;
   generationStyleInput?: Partial<GenerationStyleInput>;
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedFloorHeight?: number;
+  suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  minWidth_m?: number;
+  maxWidth_m?: number;
+  minDepth_m?: number;
+  maxDepth_m?: number;
+  aspectRatio?: string;
+  footprintCompatibility?: FootprintCompatibility;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
 };
@@ -156,14 +202,27 @@ type ArchetypeSeed = {
   volume?: string;
   generationTags?: string[];
   styleProfile?: StyleProfile;
+  developmentType?: string;
   developmentTypes?: string[];
-  minFloors?: number;
-  maxFloors?: number;
   prompt?: {
     subject?: string;
     details?: string[];
     negative?: string[];
   };
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedFloorHeight?: number;
+  suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  minWidth_m?: number;
+  maxWidth_m?: number;
+  minDepth_m?: number;
+  maxDepth_m?: number;
+  aspectRatio?: string;
+  footprintCompatibility?: FootprintCompatibility;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
   thumbnailUrl?: string;
@@ -258,7 +317,7 @@ function buildImagePrompt(
   };
 }
 
-const FRONT_DAY_VARIANT_ID = 'front_day';
+const FRONT_DAY_VARIANT_ID = 'variant_0';
 
 function toArchetypeImages(
   domainPath: string,
@@ -266,14 +325,23 @@ function toArchetypeImages(
   seed: ArchetypeSeed,
 ): ArchetypeImage[] {
   const variants = visualSystem.cardVariants || [];
+  // Derive folder slug: use the slug from thumbnailUrl when the domain uses
+  // hyphenated directory names (streets, openspaces), fall back to seed.id
+  // for domains that use underscored directory names (buildings).
+  const thumbSlug = seed.thumbnailUrl
+    ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
+    : undefined;
+  const folderSlug = thumbSlug && thumbSlug.includes('-') ? thumbSlug : seed.id;
   return variants.map((variant) => {
-    const imagePath = `/archetypes/${domainPath}/${seed.id}/${variant.id}.png`;
+    const imagePath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
+    const thumbPath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
     return {
       id: `${seed.id}_${variant.id}`,
       label: variant.title,
       description: variant.description,
       camera: normalizeCamera(variant.camera),
       imageUrl: resolvePublicAssetUrl(imagePath),
+      thumbnailUrl: resolvePublicAssetUrl(thumbPath),
       imagePath,
       lighting: variant.lighting,
       generationTags: dedupeStrings(seed.generationTags),
@@ -307,21 +375,41 @@ function toAestheticOption(
   const styleProfile = (seed.styleProfile || {}) as StyleProfile;
   const category = seed.aestheticCategory;
 
+  // Use the first design variant's thumbnail as hero (paths are known-correct),
+  // fall back to the visual system primary image
+  const heroFromVariant = seed.variants?.[0]?.thumbnailUrl;
+  const heroUrl = heroFromVariant
+    ? resolvePublicAssetUrl(heroFromVariant)
+    : (primary?.imageUrl || '');
+
   return {
     id: seed.id,
     categoryId: category,
     label: seed.title,
     description: seed.description,
-    photoUrl: resolvePublicAssetUrl((seed.variants?.[0]?.thumbnailUrl) || seed.thumbnailUrl || primary?.imageUrl || ''),
+    photoUrl: heroUrl,
     photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
-    developmentTypes: Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined,
+    developmentType: seed.developmentType || (Array.isArray(seed.developmentTypes) ? seed.developmentTypes[0] : undefined),
+    developmentTypes: seed.developmentType ? [seed.developmentType] : (Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined),
     buildingSubcategory: seed.buildingSubcategory,
-    minFloors: seed.minFloors,
-    maxFloors: seed.maxFloors,
     generationTags: tags,
     archetypeImages: orderedArchetypeImages,
     styleProfile,
+    minFloors: seed.minFloors,
+    maxFloors: seed.maxFloors,
+    suggestedFloorHeight: seed.suggestedFloorHeight,
+    suggestedAreaSqm: seed.suggestedAreaSqm,
+    minAreaSqm: seed.minAreaSqm,
+    maxAreaSqm: seed.maxAreaSqm,
+    suggestedWidth_m: seed.suggestedWidth_m,
+    suggestedDepth_m: seed.suggestedDepth_m,
+    minWidth_m: seed.minWidth_m,
+    maxWidth_m: seed.maxWidth_m,
+    minDepth_m: seed.minDepth_m,
+    maxDepth_m: seed.maxDepth_m,
+    aspectRatio: seed.aspectRatio,
+    footprintCompatibility: seed.footprintCompatibility,
     propertyPresets: seed.propertyPresets,
     variants: seed.variants,
     generationStyleInput: {
@@ -365,18 +453,16 @@ export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_LIBRARY
   toAestheticOption('building', 'buildings', BUILDING_VISUAL_SYSTEM, BUILDING_LIBRARY.categories, seed),
 );
 
-export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
-  { id: 'pedestrian_oriented', label: 'Pedestrian Oriented', description: 'Streets designed primarily for walking and pedestrian comfort' },
-  { id: 'cycling_oriented', label: 'Cycling Oriented', description: 'Streets designed primarily for cycling movement and infrastructure' },
-  { id: 'transit_oriented', label: 'Transit Oriented', description: 'Streets designed primarily for public transit operations and access' },
-  { id: 'auto_oriented', label: 'Auto Oriented', description: 'Streets designed primarily for automobile movement and access' },
-];
+// Derived from the catalog (like buildings/openspaces) so new street categories
+// — e.g. "Calgary Street Manual" — appear in the picker automatically instead of
+// being silently dropped by a hardcoded list.
+export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = ROAD_LIBRARY.categories;
 export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('street_pathway', 'streets_pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
+  toAestheticOption('street_pathway', 'streets', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
 );
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('park_plaza', 'parks_plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
+  toAestheticOption('park_plaza', 'openspaces', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
 );
 
 const GREEN_SPACE_CATEGORY_IDS = new Set(
@@ -409,6 +495,16 @@ export const PLAZA_AESTHETIC_OPTIONS_V2: AestheticOption[] = OPEN_SPACE_OPTIONS.
   return seed?.spaceType === 'plaza';
 });
 
+// Combined parks + plazas — used by the unified "Parks / Plazas" picker so
+// users see all openspace archetypes regardless of the zone subtype they
+// drew the polygon with. The panel routes the selection to the correct
+// persistence prefix (green_space vs plaza) based on the picked archetype's
+// spaceType.
+export const OPENSPACE_AESTHETIC_OPTIONS_V2: AestheticOption[] = OPEN_SPACE_OPTIONS;
+export const OPENSPACE_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = OPEN_SPACE_LIBRARY.categories.filter(
+  (category) => GREEN_SPACE_CATEGORY_IDS.has(category.id) || PLAZA_CATEGORY_IDS.has(category.id),
+);
+
 export const ROADWAY_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(ROADWAY_AESTHETIC_OPTIONS_V2);
 export const GREEN_SPACE_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(GREEN_SPACE_AESTHETIC_OPTIONS_V2);
 export const PLAZA_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(PLAZA_AESTHETIC_OPTIONS_V2);
@@ -423,27 +519,19 @@ export function getAllowedDevelopmentTypes(
   developmentType?: string,
 ): string[] | null {
   // If the user has already picked a specific development_type property,
-  // return both the exact sub-type AND the broad category so archetypes
-  // tagged with either will match.
+  // use exact match for granular filtering (e.g. residential_single_family)
   if (developmentType) {
-    // Extract broad category (e.g. "residential" from "residential_single_family")
-    const broad = developmentType.split('_')[0];
-    // Return both the exact value and the broad category for matching
-    const types = [developmentType];
-    if (broad !== developmentType) types.push(broad);
-    // Also include mixed-use alias
-    if (developmentType === 'mixed_use') types.push('mixed-use');
-    return types;
+    return [developmentType];
   }
 
   // Fall back to zone_type level filtering
   switch (zoneType) {
     case 'residential':
-      return ['residential'];
+      return ['residential', 'residential_single_family', 'residential_duplex', 'residential_multifamily', 'residential_highrise'];
     case 'commercial':
-      return ['commercial'];
+      return ['commercial', 'commercial_light', 'commercial_retail', 'commercial_office'];
     case 'industrial':
-      return ['industrial'];
+      return ['industrial', 'industrial_light', 'industrial_heavy', 'industrial_warehouse'];
     case 'mixed_use':
       return ['mixed_use', 'mixed-use'];
     case 'building':
@@ -464,7 +552,11 @@ export function filterOptionsByDevelopmentType(
 ): AestheticOption[] {
   if (!allowedTypes) return options;
   return options.filter((option) => {
-    // If the archetype has no developmentTypes defined, always show it
+    // Check single developmentType first (preferred)
+    if (option.developmentType) {
+      return allowedTypes.includes(option.developmentType);
+    }
+    // Fallback to array for backwards compatibility
     if (!option.developmentTypes || option.developmentTypes.length === 0) return true;
     return option.developmentTypes.some((dt) => allowedTypes.includes(dt));
   });

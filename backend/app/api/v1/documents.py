@@ -45,10 +45,18 @@ ALLOWED_FILE_TYPES = {
 async def upload_document(
     project_id: uuid.UUID,
     file: UploadFile = File(...),
+    process_mode: str = "full",
     user: User | None = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Upload a document to a project for processing."""
+    """Upload a document to a project for processing.
+
+    process_mode:
+    - "full" (default): extract + AI interpretation + Building creation + 3D jobs.
+    - "reference": style-reference upload for custom render zones. Images are
+      stored as-is (no processing at all); PDFs get text extraction only —
+      no AI interpretation, no Building records, no 3D generation.
+    """
     # Verify project exists
     result = await db.execute(select(Project).where(Project.id == project_id))
     project = result.scalar_one_or_none()
@@ -87,6 +95,11 @@ async def upload_document(
     file_key = f"projects/{project_id}/documents/{uuid.uuid4()}{file_ext}"
     storage_url = await _upload_to_storage(file_key, contents, ALLOWED_FILE_TYPES[file_ext])
 
+    # Reference images need no processing at all — mark them completed on arrival
+    is_reference = process_mode == "reference"
+    is_image = file_ext in (".jpg", ".jpeg", ".png", ".tiff")
+    skip_processing = is_reference and is_image
+
     # Create document record
     document = Document(
         project_id=project_id,
@@ -94,7 +107,7 @@ async def upload_document(
         file_type=file_ext.lstrip("."),
         file_size_bytes=len(contents),
         storage_url=storage_url,
-        processing_status="pending",
+        processing_status="completed" if skip_processing else "pending",
     )
     db.add(document)
     await db.flush()
@@ -104,9 +117,11 @@ async def upload_document(
     from app.api.v1.activity import log_activity
     await log_activity(db, project_id, "document_uploaded", user_id=user.id if user else None, details={"filename": file.filename, "file_type": file_ext})
 
-    # Trigger async processing
-    from app.tasks.processing import process_document
-    process_document.delay(str(document.id))
+    # Trigger async processing. Reference PDFs get extraction only — no AI
+    # interpretation, no Building records, no 3D generation.
+    if not skip_processing:
+        from app.tasks.processing import process_document
+        process_document.delay(str(document.id), extract_only=is_reference)
 
     return document
 
@@ -292,6 +307,34 @@ async def get_document_file(
         raise HTTPException(status_code=404, detail="File not found in storage")
 
     return Response(content=file_data, media_type=content_type)
+
+
+@router.get("/{document_id}", response_model=DocumentResponse)
+async def get_document(
+    document_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get document metadata (including processing_status) by id."""
+    result = await db.execute(select(Document).where(Document.id == document_id))
+    document = result.scalar_one_or_none()
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    # Viewer-level read: owner or anyone the project is shared with
+    proj_result = await db.execute(select(Project).where(Project.id == document.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project and project.owner_id != user.id:
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == document.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized to view documents in this project")
+
+    return document
 
 
 async def _upload_to_storage(key: str, data: bytes, content_type: str) -> str:

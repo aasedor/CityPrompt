@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import type {
   Project,
   Building,
   Document,
   ProcessingStatus,
+  CustomStyleExpandResponse,
   CreateProjectRequest,
   UpdateProjectRequest,
   CreateBuildingRequest,
@@ -29,11 +31,25 @@ import type {
   MasterPlan3DGenerateRequest,
   MasterPlan3DGenerateResponse,
   SiteMassingResponse,
+  SavedRender,
+  ZoneHistoryListResponse,
+  ZoneHistoryEntry,
+  ZoneSnapshotRestoreResponse,
+  UrbanDnaGenerateResponse,
+  UrbanDnaSnapshotResponse,
+  UrbanDnaScenarioListResponse,
+  UrbanDnaApplyScenarioResponse,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
-const api = axios.create({
+// The provider read timeout is 300 seconds. Keep the browser request alive
+// through project validation, image upload, post-generation geometry gates,
+// encoding and billing/audit finalization so callers receive the endpoint's
+// structured outcome instead of retrying an ambiguously billed request.
+const DIRECT_3D_CLIENT_TIMEOUT_MS = 420_000;
+
+export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
@@ -51,6 +67,13 @@ export function resolveApiFileUrl(url: string): string {
     return `${API_BASE_URL}${url}`;
   }
   return url;
+}
+
+function normalizeSavedRender(render: SavedRender): SavedRender {
+  return {
+    ...render,
+    image_url: resolveApiFileUrl(render.image_url),
+  };
 }
 
 function formatApiDetail(detail: unknown): string | null {
@@ -90,10 +113,17 @@ export function getApiErrorMessage(error: unknown, fallback = 'Something went wr
   );
 }
 // Request interceptor for auth token
+/** Set by the undo/redo store during system actions to skip history recording. */
+let _skipHistoryFlag = false;
+export function setSkipHistory(v: boolean) { _skipHistoryFlag = v; }
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (_skipHistoryFlag) {
+    config.headers['X-Skip-History'] = '1';
   }
   return config;
 });
@@ -103,11 +133,11 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url?.includes('/auth/')
-    ) {
+    if (shouldAttemptTokenRefresh(
+      error.response?.status,
+      originalRequest?.url,
+      originalRequest?._retry,
+    )) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
@@ -140,6 +170,7 @@ export interface AuthUser {
   full_name?: string;
   role: string;
   is_active: boolean;
+  render_credits: number;
   created_at: string;
 }
 
@@ -204,8 +235,10 @@ export const authApi = {
 // =============================================================================
 
 export const projectsApi = {
-  list: async (skip = 0, limit = 20): Promise<Project[]> => {
-    const { data } = await api.get(`/api/v1/projects/?skip=${skip}&limit=${limit}`);
+  list: async (skip = 0, limit?: number): Promise<Project[]> => {
+    const params: { skip: number; limit?: number } = { skip };
+    if (limit !== undefined) params.limit = limit;
+    const { data } = await api.get('/api/v1/projects/', { params });
     return data;
   },
 
@@ -234,14 +267,24 @@ export const projectsApi = {
 // =============================================================================
 
 export const documentsApi = {
-  upload: async (projectId: string, file: File): Promise<Document> => {
+  /**
+   * processMode 'reference' = style-reference upload for custom render zones:
+   * images skip processing entirely; PDFs get text extraction only (no AI
+   * interpretation, no Building creation, no 3D generation).
+   */
+  upload: async (projectId: string, file: File, processMode: 'full' | 'reference' = 'full'): Promise<Document> => {
     const formData = new FormData();
     formData.append('file', file);
     const { data } = await api.post(
-      `/api/v1/documents/projects/${projectId}/upload`,
+      `/api/v1/documents/projects/${projectId}/upload?process_mode=${processMode}`,
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
+    return data;
+  },
+
+  get: async (documentId: string): Promise<Document> => {
+    const { data } = await api.get(`/api/v1/documents/${documentId}`);
     return data;
   },
 
@@ -257,6 +300,25 @@ export const documentsApi = {
 
   delete: async (documentId: string): Promise<void> => {
     await api.delete(`/api/v1/documents/${documentId}`);
+  },
+};
+
+// =============================================================================
+// Custom Style (user-defined zone prompt expansion)
+// =============================================================================
+
+export const customStyleApi = {
+  expand: async (params: {
+    project_id: string;
+    zone_id?: string;
+    user_prompt: string;
+    document_ids?: string[];
+    zone_context?: Record<string, unknown>;
+    domain?: string;
+  }): Promise<CustomStyleExpandResponse> => {
+    // LLM expansion can take longer than the default 15s API timeout
+    const { data } = await api.post('/api/v1/custom-style/expand', params, { timeout: 90000 });
+    return data;
   },
 };
 
@@ -659,6 +721,71 @@ export const siteZonesApi = {
   },
 };
 
+// =============================================================================
+// Shapefile Import
+// =============================================================================
+
+export interface ShapefileFeature {
+  coordinates: number[][];            // [[lng, lat], ...] reprojected to EPSG:4326
+  zone_type: string;                  // backend default; validated against ZONE_TYPE_CONFIG client-side
+  properties: Record<string, unknown>; // attributes carried over from the .dbf
+}
+
+export interface ParseShapefileResponse {
+  feature_count: number;
+  skipped_count: number;
+  detected_crs: string;
+  warnings: string[];
+  features: ShapefileFeature[];
+}
+
+export const shapefilesApi = {
+  /** Upload a zipped shapefile; backend parses + reprojects to lon/lat. Stateless. */
+  parse: async (file: File): Promise<ParseShapefileResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const { data } = await api.post('/api/v1/shapefiles/parse', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120000,
+    });
+    return data;
+  },
+};
+
+
+// =============================================================================
+// Zone History / Version Control
+// =============================================================================
+
+export const zoneHistoryApi = {
+  list: async (projectId: string, params?: { limit?: number; offset?: number; zone_id?: string }): Promise<ZoneHistoryListResponse> => {
+    const { data } = await api.get(`/api/v1/site-zones/projects/${projectId}/history`, { params });
+    return data;
+  },
+
+  get: async (historyId: string): Promise<ZoneHistoryEntry> => {
+    const { data } = await api.get(`/api/v1/site-zones/history/${historyId}`);
+    return data;
+  },
+
+  revert: async (historyId: string): Promise<SiteZone> => {
+    const { data } = await api.post(`/api/v1/site-zones/history/${historyId}/revert`);
+    return data;
+  },
+
+  restoreSnapshot: async (
+    projectId: string,
+    zoneId: string,
+    snapshot: SiteZone | null,
+  ): Promise<ZoneSnapshotRestoreResponse> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/restore-snapshot`, {
+      zone_id: zoneId,
+      snapshot,
+    });
+    return data;
+  },
+};
+
 
 // =============================================================================
 // 2D Master Plan Generator
@@ -738,6 +865,9 @@ export interface AdminUser {
   created_at: string;
   last_login_at?: string;
   project_count: number;
+  render_credits: number;
+  /** Set by the backend when a promotion succeeded but the welcome email failed to send. */
+  _email_failed?: boolean;
 }
 
 export interface AdminUserUpdate {
@@ -784,6 +914,30 @@ export interface AdminProject {
   building_count: number;
 }
 
+export interface RenderAuditLog {
+  id: string;
+  user_email: string;
+  project_id?: string | null;
+  project_name?: string | null;
+  model: string;
+  tokens_spent: number;
+  input_image_url?: string;
+  output_image_url?: string;
+  input_thumbnail_url?: string;
+  output_thumbnail_url?: string;
+  prompt_preview?: string;
+  created_at: string;
+}
+
+export interface RenderLogStats {
+  total_renders: number;
+  storage_bytes: number | null;
+  storage_mb: number | null;
+  storage_gb: number | null;
+  storage_limit_gb: number;
+  oldest_render?: string;
+}
+
 export const adminApi = {
   getStats: async (): Promise<AdminDashboardStats> => {
     const { data } = await api.get('/api/v1/admin/stats');
@@ -805,8 +959,32 @@ export const adminApi = {
     return data;
   },
 
+  confirmRoleChange: async (token: string): Promise<AdminUser> => {
+    const { data } = await api.post('/api/v1/admin/confirm-role-change', { token });
+    return data;
+  },
+
   deleteUser: async (userId: string): Promise<void> => {
     await api.delete(`/api/v1/admin/users/${userId}`);
+  },
+
+  updateTokens: async (userId: string, amount: number, mode: 'add' | 'set' = 'add'): Promise<AdminUser> => {
+    const { data } = await api.post(`/api/v1/admin/users/${userId}/tokens`, { amount, mode });
+    return data;
+  },
+
+  renderLogStats: async (): Promise<RenderLogStats> => {
+    const { data } = await api.get('/api/v1/admin/render-logs/stats');
+    return data;
+  },
+
+  listRenderLogs: async (params?: { skip?: number; limit?: number; user_email?: string }): Promise<RenderAuditLog[]> => {
+    const { data } = await api.get('/api/v1/admin/render-logs', { params });
+    return data;
+  },
+
+  deleteRenderLogs: async (ids: string[]): Promise<void> => {
+    await api.delete('/api/v1/admin/render-logs', { params: { ids } });
   },
 
   listAllBuildings: async (params?: {
@@ -1196,6 +1374,7 @@ export const rendersApi = {
       view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
       context_restyled?: boolean;
       provider_first?: boolean;
+      provider_spatial_pixels_retained?: boolean;
       fidelity_policy?: 'precise' | 'balanced' | 'expressive';
       instance_id_attached?: boolean;
       instance_count?: number;
@@ -1216,10 +1395,14 @@ export const rendersApi = {
         | 'source_envelope'
         | 'source_envelope_all_authored_interiors'
         | 'source_envelope_building_interiors'
+        | 'provider_full_scene'
+        | 'provider_full_scene_local_repairs'
         | 'global_tone_with_safe_building_interiors'
         | 'global_tone_only'
         | 'authoritative_source'
         | null;
+      local_repair_coverage?: number | null;
+      maximum_local_repair_coverage?: number | null;
       instance_source_presence?: {
         passed: boolean;
         evaluated_instance_count?: number;
@@ -1491,3 +1674,80 @@ export const feedbackApi = {
 };
 
 export default api;
+
+// =============================================================================
+// Urban Intelligence DNA
+// =============================================================================
+
+export const urbanDnaApi = {
+  /** Queue DNA generation for a zone (site boundaries give the fullest picture). */
+  generate: async (zoneId: string): Promise<UrbanDnaGenerateResponse> => {
+    const { data } = await api.post(`/api/v1/urban-dna/zones/${zoneId}/generate`);
+    return data;
+  },
+
+  /** Latest DNA snapshot for a zone, any status (404 if never generated). */
+  getLatest: async (zoneId: string): Promise<UrbanDnaSnapshotResponse> => {
+    const { data } = await api.get(`/api/v1/urban-dna/zones/${zoneId}`);
+    return data;
+  },
+
+  /** Which datasets/DNA fields the detected city can produce for this zone. */
+  capabilities: async (zoneId: string): Promise<{
+    city_id: string;
+    display_name: string;
+    datasets: Array<Record<string, unknown>>;
+    dna_fields: string[];
+  }> => {
+    const { data } = await api.get(`/api/v1/urban-dna/capabilities/${zoneId}`);
+    return data;
+  },
+
+  /** Queue planning-agent scenario runs against the latest snapshot.
+   * With a custom brief, scenario_ids is sent as [] EXPLICITLY — the server
+   * would otherwise default a brief-only request to all three presets. */
+  createScenarios: async (
+    zoneId: string,
+    scenarioIds?: string[],
+    customBrief?: string,
+  ): Promise<UrbanDnaScenarioListResponse> => {
+    const body: Record<string, unknown> = {};
+    if (customBrief?.trim()) {
+      body.scenario_ids = scenarioIds ?? [];
+      body.custom_brief = customBrief.trim();
+    } else if (scenarioIds) {
+      body.scenario_ids = scenarioIds;
+    }
+    const { data } = await api.post(`/api/v1/urban-dna/zones/${zoneId}/scenarios`, body);
+    return data;
+  },
+
+  /** Scenario runs for the zone's latest snapshot. */
+  listScenarios: async (zoneId: string): Promise<UrbanDnaScenarioListResponse> => {
+    const { data } = await api.get(`/api/v1/urban-dna/zones/${zoneId}/scenarios`);
+    return data;
+  },
+
+  /** Delete a CUSTOM scenario run and its drawn plan zones (presets are permanent). */
+  deleteScenario: async (scenarioRowId: string): Promise<void> => {
+    await api.delete(`/api/v1/urban-dna/scenarios/${scenarioRowId}`);
+  },
+
+  /** Apply a completed scenario's parameters onto the boundary zone as planning directives. */
+  applyScenario: async (scenarioRowId: string): Promise<UrbanDnaApplyScenarioResponse> => {
+    const { data } = await api.post(`/api/v1/urban-dna/scenarios/${scenarioRowId}/apply`);
+    return data;
+  },
+
+  /** Draw the scenario's plan (streets/blocks/park/building masses) as a zone layer. */
+  generatePlan: async (
+    scenarioRowId: string,
+    locks: string[] = [],
+  ): Promise<{ scenario_row_id: string; status: string; locks: string[] }> => {
+    const { data } = await api.post(
+      `/api/v1/urban-dna/scenarios/${scenarioRowId}/generate-plan`,
+      { locks },
+    );
+    return data;
+  },
+};

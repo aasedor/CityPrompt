@@ -7,6 +7,7 @@ __pycache__/
 # Environment
 .env
 .env.local
+.env.*.local
 .env.production
 .env-backups/
 .secret-rotation.log
@@ -15,6 +16,21 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+*.tsbuildinfo
+
+# Local generation and visual-QA outputs
+#
+# Keep heavyweight, reproducible render experiments out of the source tree's
+# normal Git status. Existing tracked assets remain tracked. Promote a chosen
+# deliverable explicitly (prefer Git LFS or artifact storage) instead of
+# committing an entire experiment directory.
+/artifacts/
+/tools/park_trials/
+/tools/archetype_compiler/facade_sheets_pbr_*/
+/tools/archetype_compiler/facade_sheets_openai*/
+/tools/archetype_compiler/facade_sheets_gpt_variant_pilot_v1/
+/tools/archetype_compiler/facade_sheets_v40/
+/tools/archetype_compiler/textures_*/
 
 # IDE
 .vscode/
@@ -47,3 +63,79 @@ nul
 docx_extracted.txt
 # Google Cloud Credentials
 vertex-key.json
+# Speculative archetypes (kept on local only, excluded from public remote)
+# See local/speculative-archive-2026-04-20 branch/tag for full catalog entries.
+/frontend/public/archetypes/buildings/experimental-grown-habitat-tree/
+/frontend/public/archetypes/buildings/experimental-memory-cathedral/
+/frontend/public/archetypes/buildings/experimental-nomadic-dacha/
+/frontend/public/archetypes/buildings/experimental-vertical-polynya/
+/frontend/public/archetypes/buildings/festival-carnival-bandstand/
+/frontend/public/archetypes/buildings/festival-diwali-pandal/
+/frontend/public/archetypes/buildings/festival-matsuri-mikoshi-pavilion/
+/frontend/public/archetypes/buildings/festival-redentore-bridge-house/
+/frontend/public/archetypes/buildings/mythic-ancestor-shrine-house/
+/frontend/public/archetypes/buildings/mythic-bardic-keep/
+/frontend/public/archetypes/buildings/mythic-moon-gate-dwelling/
+/frontend/public/archetypes/buildings/mythic-oracle-pavilion/
+/frontend/public/archetypes/buildings/scifi-gravity-orchid-tower/
+/frontend/public/archetypes/buildings/scifi-photonic-crystal-spire/
+/frontend/public/archetypes/buildings/scifi-programmable-matter-residence/
+/frontend/public/archetypes/buildings/scifi-quantum-sanctum/
+/frontend/public/archetypes/buildings/utopic-contemplation-spire/
+/frontend/public/archetypes/buildings/utopic-hearth-atrium/
+/frontend/public/archetypes/buildings/utopic-intergenerational-commons/
+/frontend/public/archetypes/buildings/utopic-sunpath-pavilion/
+/frontend/public/archetypes/openspaces/experimental-echo-garden/
+/frontend/public/archetypes/openspaces/experimental-pollinator-cathedral/
+/frontend/public/archetypes/openspaces/experimental-slow-park/
+/frontend/public/archetypes/openspaces/experimental-tidal-cathedral-park/
+/frontend/public/archetypes/openspaces/festival-burning-man-camp/
+/frontend/public/archetypes/openspaces/festival-holi-paint-plaza/
+/frontend/public/archetypes/openspaces/festival-matsuri-night-plaza/
+/frontend/public/archetypes/openspaces/festival-midsummer-bonfire/
+/frontend/public/archetypes/openspaces/mythic-dragon-spirit-pond/
+/frontend/public/archetypes/openspaces/mythic-faerie-ring-meadow/
+/frontend/public/archetypes/openspaces/mythic-oracle-cave/
+/frontend/public/archetypes/openspaces/mythic-sacred-grove/
+/frontend/public/archetypes/openspaces/scifi-dimensional-pocket-park/
+/frontend/public/archetypes/openspaces/scifi-floating-meadow-garden/
+/frontend/public/archetypes/openspaces/scifi-solid-light-canyon/
+/frontend/public/archetypes/openspaces/scifi-weather-orchestra-park/
+/frontend/public/archetypes/openspaces/utopic-aquarium-gardens/
+/frontend/public/archetypes/openspaces/utopic-night-bloom-garden/
+/frontend/public/archetypes/openspaces/utopic-savanna-garden/
+/frontend/public/archetypes/openspaces/utopic-stone-garden-of-time/
+/frontend/public/archetypes/streets/experimental-braided-transit-mesh/
+/frontend/public/archetypes/streets/experimental-ring-aqueduct/
+/frontend/public/archetypes/streets/experimental-thermal-belt/
+/frontend/public/archetypes/streets/experimental-whispering-path/
+/frontend/public/archetypes/streets/festival-carnival-parade-avenue/
+/frontend/public/archetypes/streets/festival-chariot-procession/
+/frontend/public/archetypes/streets/festival-night-market-lane/
+/frontend/public/archetypes/streets/festival-procession-way/
+/frontend/public/archetypes/streets/mythic-crossroads-shrine-path/
+/frontend/public/archetypes/streets/mythic-cunning-woman-path/
+/frontend/public/archetypes/streets/mythic-ghost-street/
+/frontend/public/archetypes/streets/mythic-pilgrims-way/
+/frontend/public/archetypes/streets/scifi-bioluminescent-memory-street/
+/frontend/public/archetypes/streets/scifi-chrono-gradient-promenade/
+/frontend/public/archetypes/streets/scifi-maglev-flow-ribbon/
+/frontend/public/archetypes/streets/scifi-wormhole-plaza/
+/frontend/public/archetypes/streets/utopic-heart-main/
+/frontend/public/archetypes/streets/utopic-plane-tree-allee/
+/frontend/public/archetypes/streets/utopic-starlight-processional/
+/frontend/public/archetypes/streets/utopic-stream-promenade/
+/scripts/generate_experimental_archetypes.py
+/scripts/generate_utopic_archetypes.py
+/scripts/generate_festival_archetypes.py
+/scripts/generate_mythic_archetypes.py
+/scripts/generate_scifi_archetypes.py
+
+# Secrets/backups and local session artifacts (never commit)
+*.env.bak*
+chat_history.*
+_bak-*/
+**/_bak-*/
+*.bak-keyrotation
+
+.venv/

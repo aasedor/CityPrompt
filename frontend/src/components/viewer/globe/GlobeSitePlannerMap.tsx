@@ -60,8 +60,10 @@ import {
 } from './sitePreparationSurface';
 import {
   getCurrentCommunity3DBuildingIds,
+  isCommunity3DCompiled,
   shouldMaskCommunityGroundTiles,
 } from '@/features/community3d/community3d';
+import { useCleanPresentationAfterCommunity3DCompile } from '@/features/community3d/community3dPresentation';
 import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
 import {
   getObjectFilteredTerrainHeight,
@@ -1422,6 +1424,14 @@ export function GlobeSitePlannerMap({
   const [zoneOverlaysVisible, setZoneOverlaysVisible] = useState(true);
   const zoneOverlaysVisibleRef = useRef(true);
   zoneOverlaysVisibleRef.current = zoneOverlaysVisible;
+  const hasCompiledCommunity3D = useMemo(
+    () => siteZones.some(isCommunity3DCompiled),
+    [siteZones],
+  );
+  useCleanPresentationAfterCommunity3DCompile(
+    setZoneOverlaysVisible,
+    hasCompiledCommunity3D,
+  );
 
   // Placed 3D building models (generated GLBs). Deliberately OUTSIDE the
   // zone-overlay toggle: models are real massing and belong in AI-render

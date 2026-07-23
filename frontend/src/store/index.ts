@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, SiteMassingOption } from '@/types';
+import type { Project, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, SiteMassingOption } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // Re-export undo/redo store
@@ -82,6 +82,7 @@ const defaultViewerSettings: ViewerSettings = {
   enablePostProcessing: true,
   enableFog: true,
   show3DTiles: true,
+  mapMode: 'globe' as 'mapbox' | 'globe',
 };
 
 export interface CameraKeyframe {
@@ -214,6 +215,12 @@ interface ViewerState {
   setMasterPlan3DResult: (projectId: string, response: MasterPlan3DGenerateResponse) => void;
   setMasterPlan3DError: (projectId: string, optionId: string | null, message: string) => void;
   clearMasterPlan3D: () => void;
+  // Street view pegman
+  streetViewPegman: { position: [number, number] | null; angle: number; isGenerating: boolean; terrainHeight?: number | null } | null;
+  setStreetViewActive: (active: boolean) => void;
+  setStreetViewPosition: (pos: [number, number] | null, terrainHeight?: number | null) => void;
+  setStreetViewAngle: (angle: number) => void;
+  setStreetViewGenerating: (generating: boolean) => void;
   // Lightbox for expanded image view
   lightboxImageUrl: string | null;
   lightboxActions: { onDownload?: () => void; onApply?: () => void; applyLabel?: string } | null;
@@ -388,7 +395,7 @@ export const useViewerStore = create<ViewerState>((set) => ({
   walkthroughReturnPos: null,
   walkthroughReturnTarget: null,
   startWalkthrough: (streetPos, lookAt) =>
-    set((state) => ({
+    set(() => ({
       isWalkthroughActive: true,
       walkthroughReturnPos: streetPos,
       walkthroughReturnTarget: lookAt,
@@ -510,6 +517,20 @@ export const useViewerStore = create<ViewerState>((set) => ({
       },
     })),
   clearMasterPlan3D: () => set({ masterPlan3D: null }),
+  // Street view pegman
+  streetViewPegman: null,
+  setStreetViewActive: (active) => set({ streetViewPegman: active ? { position: null, angle: 0, isGenerating: false, terrainHeight: null } : null, activeSitePlannerTool: null }),
+  setStreetViewPosition: (pos, terrainHeight = null) => set((state) => ({
+    streetViewPegman: state.streetViewPegman
+      ? {
+          ...state.streetViewPegman,
+          position: pos,
+          terrainHeight: pos && Number.isFinite(terrainHeight) ? terrainHeight : null,
+        }
+      : null,
+  })),
+  setStreetViewAngle: (angle) => set((state) => ({ streetViewPegman: state.streetViewPegman ? { ...state.streetViewPegman, angle } : null })),
+  setStreetViewGenerating: (generating) => set((state) => ({ streetViewPegman: state.streetViewPegman ? { ...state.streetViewPegman, isGenerating: generating } : null })),
   // Lightbox
   lightboxImageUrl: null,
   lightboxActions: null,

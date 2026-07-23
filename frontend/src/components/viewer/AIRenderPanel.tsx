@@ -6,11 +6,31 @@
  * and the result image with download/clear controls.
  */
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { Wand2 } from 'lucide-react';
 import type { Map as MapboxMap } from 'mapbox-gl';
-import type { SiteZone } from '@/types';
+import type { SiteZone, SavedRender } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
 import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
+import { RenderEditModal } from './RenderEditModal';
+import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
+import { useAuthStore } from '@/store';
+import { saveRenderedImage } from '@/utils/renderPersistence';
+import { isTextEntryTarget } from '@/utils/domEvents';
+
+// ---------------------------------------------------------------------------
+// UI grouping for the style picker
+// ---------------------------------------------------------------------------
+// Keeps the new-user taxonomy (Realistic / Concept / Plan / Stylized) visible
+// in the picker. Update this when adding a style so it lands in the right group.
+
+const STYLE_GROUPS = [
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Concept', ids: ['watercolour', 'charcoal', 'pen-and-ink'] },
+  { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
+  { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock'] },
+] as const;
 
 // ---------------------------------------------------------------------------
 // Props
@@ -29,35 +49,48 @@ interface AIRenderPanelProps {
   siteZones?: SiteZone[];
   /** Called when the user changes the render style — lets the parent sync style to other panels */
   onStyleChange?: (styleId: string) => void;
+  /** Project ID for saving/loading renders */
+  projectId?: string;
+  /** Gives parent UI a chance to hide selection handles before capture. */
+  onBeforeRender?: () => void | Promise<void>;
+  /** Notifies parent that this panel is showing a full-screen render viewer. */
+  onLightboxOpenChange?: (open: boolean) => void;
+  /** Called after a render is persisted to the project gallery. */
+  onRenderSaved?: (render: SavedRender) => void;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange, onRenderSaved }: AIRenderPanelProps) {
   const {
-    render,
-    renderPerZone,
     renderPreviews,
-    renderFull,
     isRendering,
     progress,
     result,
-    previews,
     selectedPreviewIndex,
-    setSelectedPreviewIndex,
     error,
     reset,
     statusMessage,
   } = useAIRender();
 
+  const user = useAuthStore((s) => s.user);
+  const setUser = useAuthStore((s) => s.setUser);
+  const isAdmin = user?.role === 'admin' || user?.role === 'cofounder';
+  const credits = user?.render_credits ?? 0;
+  const outOfCredits = !isAdmin && credits < 8; // minimum render cost is 8 tokens
+
+  const refreshCredits = useCallback(async () => {
+    try { const u = await authApi.me(); setUser(u); } catch { /* ignore */ }
+  }, [setUser]);
+
   // Local form state
   const [selectedStyle, setSelectedStyle] = useState(AI_RENDER_STYLES[0].id);
   const [customPrompt, setCustomPrompt] = useState('');
-  const [controlStrength, setControlStrength] = useState(0.85);
+  const [controlStrength] = useState(0.85);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
-  const [referenceStrength, setReferenceStrength] = useState(0.6);
+  const [referenceStrength] = useState(0.6);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [useArchetypes, setUseArchetypes] = useState(true);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -65,10 +98,60 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [perZoneMode, setPerZoneMode] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Saved renders gallery
+  const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [showGallery, setShowGallery] = useState(false);
+  const [galleryLightbox, setGalleryLightbox] = useState<SavedRender | null>(null);
+  const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
+  const [renderLightbox, setRenderLightbox] = useState(false);
+  const [renderSaveStatus, setRenderSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
+  const lightboxOpen = renderLightbox || !!galleryLightbox || !!editTarget;
+
+  useEffect(() => {
+    onLightboxOpenChange?.(lightboxOpen);
+    return () => onLightboxOpenChange?.(false);
+  }, [lightboxOpen, onLightboxOpenChange]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isTextEntryTarget(e.target)) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setRenderLightbox(false);
+        setGalleryLightbox(null);
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [lightboxOpen]);
+
+  useEffect(() => {
+    if (!projectId || !showGallery) return;
+    rendersApi.list(projectId).then(setSavedRenders).catch(() => {});
+  }, [projectId, showGallery]);
+
+  useEffect(() => {
+    setRenderSaveStatus('idle');
+  }, [result?.imageUrl]);
+
   // Hide zone polygon layers when a render result is displayed, restore when cleared
   const ZONE_LAYERS = [
     'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
     'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+    'zone-edit-vertices-layer', 'zone-rotation-line', 'zone-rotation-handle-layer', 'zone-rotation-north-label',
     'massing-preview-extrusion', 'massing-preview-green',
   ];
   useEffect(() => {
@@ -76,17 +159,15 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     if (!map) return;
     const visibility = result ? 'none' : 'visible';
     for (const layerId of ZONE_LAYERS) {
-      if (map.getLayer(layerId)) {
-        map.setLayoutProperty(layerId, 'visibility', visibility);
-      }
+      try { if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', visibility); } catch { /* map destroyed */ }
     }
-    // Restore layers on unmount
+    // Restore layers on unmount — guard against map already being destroyed
     return () => {
-      for (const layerId of ZONE_LAYERS) {
-        if (map.getLayer(layerId)) {
-          map.setLayoutProperty(layerId, 'visibility', 'visible');
+      try {
+        for (const layerId of ZONE_LAYERS) {
+          if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
-      }
+      } catch { /* map style already removed during navigation */ }
     };
   }, [result, mapRef]);
 
@@ -142,47 +223,21 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       siteBoundaryCoords,
       // Pass all zones for inpainting mask generation
       siteZones: siteZones.length > 0 ? siteZones : undefined,
+      projectId,
     };
-  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
+  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones, projectId]);
 
   /** Generate 3 preview renders in parallel */
   const handleGeneratePreviews = useCallback(async () => {
     const map = mapRef.current;
     if (!map) return;
+    await onBeforeRender?.();
     const results = await renderPreviews(map, buildRenderOptions());
     if (results.length > 0) {
       onPreviewsReady?.(results);
     }
-  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady]);
-
-  /** Select a preview and trigger full-quality render with its seed */
-  const handleSelectPreview = useCallback(async (index: number) => {
-    setSelectedPreviewIndex(index);
-    const preview = previews[index];
-    if (!preview?.seed) return;
-
-    const map = mapRef.current;
-    if (!map) return;
-
-    const res = await renderFull(map, buildRenderOptions(), preview.seed);
-    if (res) {
-      onRenderComplete?.(res);
-    }
-  }, [previews, setSelectedPreviewIndex, mapRef, renderFull, buildRenderOptions, onRenderComplete]);
-
-  /** Fallback: single render without previews */
-  const handleRender = useCallback(async () => {
-    const map = mapRef.current;
-    if (!map) return;
-
-    const opts = buildRenderOptions();
-    const res = perZoneMode
-      ? await renderPerZone(map, opts)
-      : await render(map, opts);
-    if (res) {
-      onRenderComplete?.(res);
-    }
-  }, [mapRef, render, renderPerZone, perZoneMode, buildRenderOptions, onRenderComplete]);
+    refreshCredits();
+  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady, onBeforeRender, refreshCredits]);
 
   const handleClear = useCallback(() => {
     reset();
@@ -200,6 +255,31 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     a.click();
     document.body.removeChild(a);
   }, [result]);
+
+  const handleSaveResult = useCallback(async () => {
+    if (!result?.imageUrl || !projectId || renderSaveStatus === 'saving' || renderSaveStatus === 'saved') return;
+    setRenderSaveStatus('saving');
+    try {
+      const saved = await saveRenderedImage(projectId, result, selectedStyle);
+      setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+      onRenderSaved?.(saved);
+      setShowGallery(true);
+      setRenderSaveStatus('saved');
+    } catch {
+      setRenderSaveStatus('error');
+    }
+  }, [onRenderSaved, projectId, renderSaveStatus, result, selectedStyle]);
+
+  const handleEditSavedRender = useCallback((saved: SavedRender) => {
+    setEditTarget(saved);
+    setGalleryLightbox(null);
+  }, []);
+
+  const handleEditedRenderSaved = useCallback((saved: SavedRender) => {
+    setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+    onRenderSaved?.(saved);
+    setShowGallery(true);
+  }, [onRenderSaved]);
 
   // Build summary text for generate button
   const summaryText = useMemo(() => {
@@ -253,19 +333,30 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
         {/* ── Style picker ─────────────────────────────────────────────── */}
         <div>
           <label className="mb-1.5 block text-xs font-medium text-gray-400">Style</label>
-          <div className="grid grid-cols-5 gap-1">
-            {AI_RENDER_STYLES.map((style) => (
-              <button
-                key={style.id}
-                onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
-                className={`rounded-lg px-1.5 py-1.5 text-[10px] font-medium transition ${
-                  selectedStyle === style.id
-                    ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
-                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
-                }`}
-              >
-                {style.label}
-              </button>
+          <div className="space-y-2">
+            {STYLE_GROUPS.map(group => (
+              <div key={group.label}>
+                <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">{group.label}</div>
+                <div className="grid grid-cols-3 gap-1">
+                  {group.ids.map(id => {
+                    const style = AI_RENDER_STYLES.find(s => s.id === id);
+                    if (!style) return null;
+                    return (
+                      <button
+                        key={style.id}
+                        onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
+                        className={`rounded-lg px-2 py-1.5 text-[11px] font-medium transition ${
+                          selectedStyle === style.id
+                            ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
+                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
+                        }`}
+                      >
+                        {style.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -330,27 +421,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               />
             </div>
 
-            {/* Geometry fidelity */}
-            <div>
-              <div className="mb-1 flex items-center justify-between">
-                <label className="text-[11px] font-medium text-gray-400">Geometry Fidelity</label>
-                <span className="text-[10px] tabular-nums text-gray-500">{controlStrength.toFixed(2)}</span>
-              </div>
-              <input
-                type="range"
-                min={0.3}
-                max={1.0}
-                step={0.05}
-                value={controlStrength}
-                onChange={(e) => setControlStrength(parseFloat(e.target.value))}
-                className="w-full accent-amber-500"
-              />
-              <div className="mt-0.5 flex justify-between text-[9px] text-gray-600">
-                <span>Creative</span>
-                <span>Faithful</span>
-              </div>
-            </div>
-
             {/* Prompt Adherence */}
             <div>
               <div className="mb-1 flex items-center justify-between">
@@ -405,19 +475,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
-                  <div className="mt-1.5 flex items-center justify-between">
-                    <label className="text-[10px] text-gray-500">Influence</label>
-                    <span className="text-[10px] tabular-nums text-gray-500">{referenceStrength.toFixed(2)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={0.1}
-                    max={1.0}
-                    step={0.05}
-                    value={referenceStrength}
-                    onChange={(e) => setReferenceStrength(parseFloat(e.target.value))}
-                    className="w-full accent-amber-500"
-                  />
                 </div>
               ) : (
                 <button
@@ -443,8 +500,24 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
 
         {/* ── Error ──────────────────────────────────────────────────────── */}
         {error && (
-          <div className="rounded-lg bg-red-500/10 px-3 py-2 text-xs text-red-400">
-            {error}
+          <div className={`rounded-lg px-3 py-3 text-sm ${
+            error.toLowerCase().includes('token') || error.toLowerCase().includes('credit')
+              ? 'bg-amber-500/15 ring-1 ring-amber-500/30'
+              : 'bg-red-500/10'
+          }`}>
+            {error.toLowerCase().includes('token') || error.toLowerCase().includes('credit') ? (
+              <div className="space-y-1.5">
+                <p className="font-semibold text-amber-400">Not enough tokens</p>
+                <p className="text-xs text-amber-400/80">
+                  You don't have enough tokens for this render. Your 1,000 weekly tokens reset every 7 days.
+                </p>
+                <p className="text-xs text-amber-400/60">
+                  Tokens remaining: <span className="font-bold">{credits}</span>
+                </p>
+              </div>
+            ) : (
+              <p className="text-red-400">{error}</p>
+            )}
           </div>
         )}
 
@@ -470,43 +543,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
           </div>
         )}
 
-        {/* ── Preview cards ─────────────────────────────────────────────── */}
-        {previews.length > 0 && !isRendering && (
-          <div>
-            <label className="mb-1.5 block text-xs font-medium text-gray-400">
-              Select a preview
-            </label>
-            <div className="grid grid-cols-3 gap-1.5">
-              {previews.map((preview, idx) => (
-                <button
-                  key={preview.seed ?? idx}
-                  onClick={() => handleSelectPreview(idx)}
-                  className={`relative overflow-hidden rounded-lg border-2 transition ${
-                    selectedPreviewIndex === idx
-                      ? 'border-amber-400 shadow-lg shadow-amber-500/20'
-                      : 'border-transparent hover:border-white/20'
-                  }`}
-                >
-                  <img
-                    src={preview.imageUrl}
-                    alt={`Preview ${idx + 1}`}
-                    className="aspect-square w-full object-cover"
-                  />
-                  {selectedPreviewIndex === idx && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                      <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                    </div>
-                  )}
-                  <span className="absolute bottom-0.5 right-1 text-[9px] text-white/60">
-                    #{idx + 1}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Preview cards removed — single render only */}
 
         {/* ── Full result ───────────────────────────────────────────────── */}
         {result && !isRendering && (
@@ -539,18 +576,39 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
             <img
               src={result.imageUrl}
               alt="AI Render"
-              className="w-full rounded-lg shadow-md"
+              className="w-full cursor-pointer rounded-lg shadow-md transition hover:opacity-90"
+              onClick={() => setRenderLightbox(true)}
+              title="Click to enlarge"
             />
           </div>
         )}
 
+        {/* ── Token balance badge ───────────────────────────────────────── */}
+        {!isAdmin && (
+          <div className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
+            credits <= 0
+              ? 'bg-red-500/15 text-red-400 ring-1 ring-red-500/20'
+              : credits <= 100
+                ? 'bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/20'
+                : 'bg-white/[0.06] text-white/60'
+          }`}>
+            <span>Tokens remaining</span>
+            <span className="text-sm font-bold">{credits.toLocaleString()} / 1,000</span>
+          </div>
+        )}
+
         {/* ── Generate buttons with summary ─────────────────────────────── */}
+        {outOfCredits && (
+          <div className="rounded-lg bg-red-500/10 px-3 py-2 text-center text-xs text-red-400">
+            Not enough tokens. Your 1,000 weekly tokens will reset soon.
+          </div>
+        )}
         <div className="flex gap-2">
           <button
             onClick={handleGeneratePreviews}
-            disabled={isRendering}
+            disabled={isRendering || outOfCredits}
             className={`flex flex-1 flex-col items-center justify-center gap-0.5 rounded-lg py-2.5 transition ${
-              isRendering
+              isRendering || outOfCredits
                 ? 'cursor-not-allowed bg-gray-700 text-gray-400'
                 : 'bg-amber-500 text-black shadow-lg shadow-amber-500/25 hover:bg-amber-400'
             }`}
@@ -570,18 +628,197 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               </>
             )}
           </button>
-          {/* Quick single render */}
-          {!isRendering && (
-            <button
-              onClick={handleRender}
-              className="rounded-lg bg-white/10 px-3 py-2.5 text-xs font-medium text-gray-300 transition hover:bg-white/15"
-              title="Single render (skip previews)"
-            >
-              1x
-            </button>
-          )}
         </div>
       </div>
+
+      {/* ── Saved Renders Gallery ── */}
+      {projectId && (
+        <div className="border-t border-white/5 px-4 py-3">
+          <button
+            onClick={() => setShowGallery(!showGallery)}
+            className="flex w-full items-center justify-between text-xs font-medium text-gray-400 hover:text-gray-200 transition"
+          >
+            <span>Saved Renders</span>
+            <svg className={`h-3.5 w-3.5 transition-transform ${showGallery ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {showGallery && (
+            <div className="mt-3">
+              {savedRenders.length === 0 ? (
+                <p className="text-xs text-gray-500 text-center py-4">
+                  No saved renders yet. New project renders save automatically as they complete.
+                </p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {savedRenders.map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => setGalleryLightbox(r)}
+                      className="group relative overflow-hidden rounded-lg border border-white/10 hover:border-amber-400/50 transition"
+                    >
+                      <img
+                        src={resolveApiFileUrl(r.image_url)}
+                        alt={r.prompt || 'Saved render'}
+                        className="aspect-square w-full object-cover"
+                      />
+                      {r.style && (
+                        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-medium text-white/80">
+                          {r.style}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Render result lightbox — click aerial render to enlarge */}
+      {renderLightbox && result && createPortal(
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 backdrop-blur-sm"
+          onClick={() => setRenderLightbox(false)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={result.imageUrl}
+              alt="AI Render"
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+              {result.prompt && (
+                <p className="text-xs text-white/80 line-clamp-2">{result.prompt}</p>
+              )}
+            </div>
+            <div className="absolute right-3 top-3 flex items-center gap-2">
+              {projectId && (
+                <button
+                  onClick={handleSaveResult}
+                  disabled={renderSaveStatus === 'saving' || renderSaveStatus === 'saved'}
+                  className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold shadow-lg transition disabled:cursor-default ${
+                    renderSaveStatus === 'saved'
+                      ? 'bg-green-600 text-white'
+                      : renderSaveStatus === 'error'
+                        ? 'bg-red-600 text-white hover:bg-red-500'
+                        : 'bg-black/60 text-white/85 hover:bg-black/80 hover:text-white'
+                  }`}
+                  title="Save to Project"
+                >
+                  {renderSaveStatus === 'saving' ? (
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                      <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" className="opacity-75" />
+                    </svg>
+                  ) : renderSaveStatus === 'saved' ? (
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  ) : (
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                    </svg>
+                  )}
+                  {renderSaveStatus === 'saving' ? 'Saving...' : renderSaveStatus === 'saved' ? 'Saved' : renderSaveStatus === 'error' ? 'Retry Save' : 'Save to Project'}
+                </button>
+              )}
+              <a
+                href={result.imageUrl}
+                download={`siteforge-render-${Date.now()}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Download"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+              </a>
+              <button
+                onClick={() => setRenderLightbox(false)}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Close"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
+
+      {/* Gallery lightbox */}
+      {galleryLightbox && createPortal(
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setGalleryLightbox(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={resolveApiFileUrl(galleryLightbox.image_url)}
+              alt={galleryLightbox.prompt || 'Saved render'}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+              {galleryLightbox.prompt && (
+                <p className="text-xs text-white/80 line-clamp-2">{galleryLightbox.prompt}</p>
+              )}
+              <p className="mt-1 text-[10px] text-white/50">
+                {new Date(galleryLightbox.created_at).toLocaleDateString()}
+                {galleryLightbox.style && ` · ${galleryLightbox.style}`}
+              </p>
+            </div>
+            <div className="absolute top-3 right-3 flex gap-2">
+              {projectId && (
+                <button
+                  type="button"
+                  onClick={() => handleEditSavedRender(galleryLightbox)}
+                  className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
+              )}
+              <a
+                href={resolveApiFileUrl(galleryLightbox.image_url)}
+                download={`render-${galleryLightbox.id}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Download"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+              </a>
+              <button
+                type="button"
+                onClick={() => setGalleryLightbox(null)}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                aria-label="Close saved render"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
+      {projectId && editTarget && createPortal(
+        <RenderEditModal
+          projectId={projectId}
+          render={editTarget}
+          imageUrl={resolveApiFileUrl(editTarget.image_url)}
+          onSaved={handleEditedRenderSaved}
+          onClose={() => setEditTarget(null)}
+        />,
+        document.body,
+      )}
     </div>
   );
 }

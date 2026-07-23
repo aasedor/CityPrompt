@@ -572,7 +572,10 @@ export function GlobeAIRenderPanel({
               : 'Compiling parks and streets…',
           );
         },
-        communityCompileOptionsForZones(communityCompileZones),
+        {
+          ...communityCompileOptionsForZones(communityCompileZones),
+          scopeZoneIds: communityZones.map((zone) => zone.id),
+        },
       );
       const residualLandscape = summary.response.residual_landscape;
       const residualStatus = residualLandscape && residualLandscape.boundary_count > 0
@@ -599,7 +602,15 @@ export function GlobeAIRenderPanel({
       setIsQueuing3D(false);
       setConfirm3DOpen(false);
     }
-  }, [planGeometryStale, projectId, communityBoundaryReady, isQueuing3D, communityCompileZones, queryClient]);
+  }, [
+    planGeometryStale,
+    projectId,
+    communityBoundaryReady,
+    isQueuing3D,
+    communityCompileZones,
+    communityZones,
+    queryClient,
+  ]);
 
   useEffect(() => {
     onLightboxOpenChange?.(!!lightboxRender);

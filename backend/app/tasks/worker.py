@@ -30,3 +30,4 @@ celery_app.conf.update(
 # Import tasks so they register with Celery
 import app.tasks.processing  # noqa: F401, E402
 import app.tasks.render_preview  # noqa: F401, E402
+import app.tasks.urban_dna  # noqa: F401, E402

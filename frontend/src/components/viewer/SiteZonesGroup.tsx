@@ -41,9 +41,12 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
     return result;
   }, [zones]);
 
+  // Filter out zones with missing or invalid coordinates to prevent react-three crashes
+  const validZones = zones.filter(z => z.coordinates && Array.isArray(z.coordinates) && z.coordinates.length >= 3);
+
   return (
     <group name="site-zones">
-      {zones.map((zone) => (
+      {validZones.map((zone) => (
         <SiteZoneMesh
           key={zone.id}
           zone={zone}
@@ -53,7 +56,7 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
           onClick={onZoneClick ? () => onZoneClick(zone.id) : undefined}
         />
       ))}
-      <LayoutPreviewOverlay zones={zones} origin={origin} />
+      <LayoutPreviewOverlay zones={validZones} origin={origin} />
     </group>
   );
 }
@@ -74,6 +77,7 @@ function toLocalPoints(
   origin: { lat: number; lon: number },
 ): THREE.Vector2[] {
   const mLon = metersPerDegLon(origin.lat);
+  if (!coords || coords.length === 0) return [];
   const rawPts = coords.map((p) => {
     const x = (p[0] - origin.lon) * mLon;
     const z = (p[1] - origin.lat) * METERS_PER_DEG_LAT;
@@ -408,6 +412,7 @@ function SiteBoundaryZone({
   }, [geometry]);
 
   return (
+    // @ts-expect-error R3F line type conflict — JSX <line> resolves to SVG typings here
     <line ref={lineRef as React.RefObject<THREE.Line>} geometry={geometry}>
       <lineDashedMaterial
         color={zone.color || '#f59e0b'}
@@ -787,7 +792,6 @@ function PolygonDoor({ wall, doorColor, frameColor }: { wall: WallSegment; doorC
 
 function PolygonFloorDividers({
   walls,
-  height,
   floors,
   floorHeight,
   color,
@@ -1936,6 +1940,7 @@ function RoadZone({
 
       {/* Center line stripe — fallback for odd lane counts with lane markings */}
       {showCenterLine && !centerDividerGeo && centerLineGeometry && (
+        // @ts-expect-error R3F line type conflict — JSX <line> resolves to SVG typings here
         <line geometry={centerLineGeometry}>
           <lineBasicMaterial color={surfaceMat.lineColor || '#e0e0e0'} transparent opacity={0.7} />
         </line>
@@ -2742,7 +2747,6 @@ function PerimeterLightPoles({ points2D }: { points2D: THREE.Vector2[] }) {
 // =============================================================================
 
 function ParkingZone({
-  zone,
   points2D,
 }: {
   zone: SiteZone;
@@ -2876,7 +2880,6 @@ function ParkingZone({
 // =============================================================================
 
 function WaterZone({
-  zone,
   points2D,
 }: {
   zone: SiteZone;
@@ -3087,6 +3090,7 @@ function LayoutInfrastructure({
   // Compute zone centroid for offset conversion
   const centroid = useMemo(() => {
     const coords = zone.coordinates;
+    if (!coords || coords.length === 0) return { lon: 0, lat: 0 };
     let cx = 0, cy = 0;
     for (const p of coords) {
       cx += p[0];
@@ -3117,7 +3121,7 @@ function LayoutRoadMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (road.centerline.length < 2) return null;
+    if (!road.centerline || road.centerline.length < 2) return null;
 
     const mLon = metersPerDegLon(origin.lat);
     const halfW = road.width_m / 2;
@@ -3187,7 +3191,7 @@ function LayoutGreenMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (greenSpace.polygon.length < 3) return null;
+    if (!greenSpace.polygon || greenSpace.polygon.length < 3) return null;
 
     const mLon = metersPerDegLon(origin.lat);
 
@@ -3282,6 +3286,7 @@ function ZoneLayoutOverlay({
   // Zone centroid for converting offsets
   const centroid = useMemo(() => {
     const coords = zone.coordinates;
+    if (!coords || coords.length === 0) return { lon: 0, lat: 0 };
     let cx = 0, cy = 0;
     for (const p of coords) {
       cx += p[0];
@@ -3292,7 +3297,7 @@ function ZoneLayoutOverlay({
 
   return (
     <group name={`zone-overlay-${zone.id}`}>
-      {option.buildings.map((bld, i) => (
+      {(option.buildings ?? []).map((bld, i) => (
         <PreviewBuildingFootprint
           key={`preview-bld-${zone.id}-${i}`}
           building={bld}
@@ -3301,7 +3306,7 @@ function ZoneLayoutOverlay({
           height={bld.height_m || (zone.properties?.height as number) || 12}
         />
       ))}
-      {option.roads.map((road, i) => (
+      {(option.roads ?? []).map((road, i) => (
         <LayoutRoadMesh
           key={`preview-road-${zone.id}-${i}`}
           road={road}
@@ -3309,7 +3314,7 @@ function ZoneLayoutOverlay({
           origin={origin}
         />
       ))}
-      {option.green_spaces.map((gs, i) => (
+      {(option.green_spaces ?? []).map((gs, i) => (
         <LayoutGreenMesh
           key={`preview-green-${zone.id}-${i}`}
           greenSpace={gs}

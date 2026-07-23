@@ -10,18 +10,29 @@ from datetime import datetime, timezone
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_Intersects
 from geoalchemy2.shape import to_shape
+from pydantic import BaseModel
 from shapely.geometry import Polygon
-from sqlalchemy import select
+from shapely.validation import explain_validity
+from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import is_admin_or_above, require_auth
-from app.models.models import Building, Project, ProjectShare, SiteZone, User
+from app.models.models import (
+    Building,
+    Project,
+    ProjectShare,
+    SiteZone,
+    UrbanDnaScenario,
+    UrbanDnaSnapshot,
+    User,
+    ZoneHistory,
+)
 from app.schemas.schemas import (
     ApplyLayoutRequest,
     BuildingResponse,
@@ -34,15 +45,343 @@ from app.schemas.schemas import (
     SiteZoneCreate,
     SiteZoneResponse,
     SiteZoneUpdate,
+    ZoneSnapshotRestoreRequest,
+    ZoneSnapshotRestoreResponse,
+    ZoneHistoryResponse,
+    ZoneHistoryListResponse,
 )
 from app.api.v1.buildings import _building_to_response
 from app.services.generation_queue import queue_ai_generation_task
 from app.services.layout_planner import LayoutPlanner
 from app.services.osm_context import OSMContextFetcher
+from app.services.plan_boundary_identity import (
+    PLAN_BOUNDARY_RESTORE_STATE_KEY,
+    plan_boundary_fingerprint,
+)
+from app.services.residual_landscape import (
+    community_3d_source_hash,
+    lock_residual_landscape_project,
+    mark_community_3d_stale,
+    mark_residual_landscape_stale,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+_PLAN_BOUNDARY_STALE_MESSAGE = (
+    "Site boundary changed; regenerate Site DNA and master-plan scenarios."
+)
+_PLAN_BOUNDARY_RESTORE_SCHEMA_VERSION = 1
+
+
+def _open_ring(coordinates: list[list[float]] | None) -> list[list[float]]:
+    ring = [list(point[:2]) for point in (coordinates or []) if len(point) >= 2]
+    if len(ring) > 1 and ring[0] == ring[-1]:
+        ring.pop()
+    return ring
+
+
+def _coordinates_materially_changed(
+    before: list[list[float]] | None,
+    after: list[list[float]] | None,
+    *,
+    tolerance: float = 1e-9,
+) -> bool:
+    """True when a boundary edit changes geometry, ignoring the closing point."""
+    left = _open_ring(before)
+    right = _open_ring(after)
+    if len(left) != len(right):
+        return True
+    return any(
+        abs(a[0] - b[0]) > tolerance or abs(a[1] - b[1]) > tolerance
+        for a, b in zip(left, right)
+    )
+
+
+def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
+    """Normalize a polygon ring and reject geometry PostGIS cannot use safely.
+
+    Clicking the first vertex is a natural way to finish a polygon. Globe
+    raycasts can return that closing click a few centimetres away from the
+    original coordinate, leaving a tiny self-intersecting sliver. Treat a
+    near-closing final vertex as closure, but reject every material
+    self-intersection instead of persisting geometry that later crashes the
+    master planner.
+    """
+    cleaned: list[list[float]] = []
+    for candidate in raw_coordinates or []:
+        if not isinstance(candidate, (list, tuple)) or len(candidate) < 2:
+            continue
+        try:
+            lng = float(candidate[0])
+            lat = float(candidate[1])
+        except (TypeError, ValueError):
+            continue
+        if not (-180 <= lng <= 180 and -90 <= lat <= 90):
+            continue
+        if (
+            not cleaned
+            or abs(lng - cleaned[-1][0]) > 1e-7
+            or abs(lat - cleaned[-1][1]) > 1e-7
+        ):
+            cleaned.append([lng, lat])
+
+    # A last click near the first vertex means "close", not "add a tiny edge".
+    if (
+        len(cleaned) >= 4
+        and abs(cleaned[-1][0] - cleaned[0][0]) <= 1e-7
+        and abs(cleaned[-1][1] - cleaned[0][1]) <= 1e-7
+    ):
+        cleaned.pop()
+    if len(cleaned) < 3:
+        raise ValueError("Polygon must have at least 3 unique vertices")
+
+    polygon = Polygon(cleaned)
+    if polygon.is_empty:
+        raise ValueError("Polygon must enclose a non-zero area")
+    if not polygon.is_valid:
+        raise ValueError(
+            "Polygon boundary self-intersects or overlaps; undo the last point and redraw "
+            f"({explain_validity(polygon)})"
+        )
+    if polygon.area <= 0:
+        raise ValueError("Polygon must enclose a non-zero area")
+    return [*cleaned, cleaned[0]]
+
+
+async def _invalidate_boundary_dependents(
+    db: AsyncSession,
+    boundary: SiteZone,
+    *,
+    previous_geometry=None,
+    current_geometry=None,
+) -> None:
+    """Invalidate a derived plan, or restore it after an exact boundary undo.
+
+    The previous one-way invalidation left an otherwise valid generated plan
+    permanently stale after the user undid an accidental boundary drag.  A
+    canonical source fingerprint now distinguishes that exact undo from a
+    genuinely changed (including expanded) site.  Statuses are restored from
+    the boundary's captured pre-edit state rather than guessed.
+    """
+    changed_at = datetime.now(timezone.utc).isoformat()
+    zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == boundary.project_id,
+            SiteZone.id != boundary.id,
+        )
+    )
+    dependents = list(zones_result.scalars().all())
+
+    snapshots_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id)
+    )
+    snapshots = list(snapshots_result.scalars().all())
+    snapshot_ids = [snapshot.id for snapshot in snapshots]
+    scenarios: list[UrbanDnaScenario] = []
+    if snapshot_ids:
+        scenarios_result = await db.execute(
+            select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id.in_(snapshot_ids))
+        )
+        scenarios = list(scenarios_result.scalars().all())
+
+    previous_fingerprint = plan_boundary_fingerprint(previous_geometry)
+    current_fingerprint = plan_boundary_fingerprint(current_geometry)
+    boundary_props = dict(getattr(boundary, "properties", None) or {})
+    restore_state = boundary_props.get(PLAN_BOUNDARY_RESTORE_STATE_KEY)
+    if not isinstance(restore_state, dict):
+        restore_state = None
+    source_fingerprint = (
+        restore_state.get("source_fingerprint") if restore_state is not None else None
+    )
+
+    # A reordered/reversed ring has the same canonical identity.  It must not
+    # refresh timestamps or destroy an active restore checkpoint.
+    if (
+        previous_fingerprint is not None
+        and previous_fingerprint == current_fingerprint
+        and current_fingerprint != source_fingerprint
+    ):
+        return
+
+    if current_fingerprint is not None and current_fingerprint == source_fingerprint:
+        snapshot_state = {
+            item.get("id"): item
+            for item in (restore_state.get("snapshots") or [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        scenario_state = {
+            item.get("id"): item
+            for item in (restore_state.get("scenarios") or [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        matching_snapshot_ids: set[str] = set()
+        for snapshot in snapshots:
+            dna = snapshot.dna if isinstance(snapshot.dna, dict) else {}
+            snapshot_fingerprint = plan_boundary_fingerprint(dna.get("site_boundary"))
+            saved = snapshot_state.get(str(snapshot.id))
+            if snapshot_fingerprint == current_fingerprint and saved is not None:
+                snapshot.status = saved.get("status", snapshot.status)
+                snapshot.error = saved.get("error")
+                matching_snapshot_ids.add(str(snapshot.id))
+            elif snapshot_fingerprint is not None:
+                snapshot.status = "failed"
+                snapshot.error = _PLAN_BOUNDARY_STALE_MESSAGE
+
+        for scenario in scenarios:
+            saved = scenario_state.get(str(scenario.id))
+            if str(scenario.snapshot_id) in matching_snapshot_ids and saved is not None:
+                scenario.status = saved.get("status", scenario.status)
+                scenario.error = saved.get("error")
+            else:
+                scenario.status = "failed"
+                scenario.error = _PLAN_BOUNDARY_STALE_MESSAGE
+
+        for dependent in dependents:
+            props = dict(dependent.properties or {})
+            if not isinstance(props.get("_plan_scenario"), str):
+                continue
+            if props.get("_plan_boundary_fingerprint") == current_fingerprint:
+                props.pop("_plan_boundary_stale", None)
+                props.pop("_plan_boundary_changed_at", None)
+            else:
+                props.update({
+                    "_plan_boundary_stale": True,
+                    "_plan_boundary_zone_id": str(boundary.id),
+                    "_plan_boundary_changed_at": changed_at,
+                })
+            dependent.properties = props
+            flag_modified(dependent, "properties")
+
+        boundary_props.pop(PLAN_BOUNDARY_RESTORE_STATE_KEY, None)
+        boundary.properties = boundary_props
+        flag_modified(boundary, "properties")
+        return
+
+    # Capture one checkpoint for the full edit/undo sequence.  Subsequent
+    # drags retain the original source identity and exact prior statuses.
+    if restore_state is None:
+        restore_state = {
+            "schema_version": _PLAN_BOUNDARY_RESTORE_SCHEMA_VERSION,
+            "source_fingerprint": previous_fingerprint,
+            "source_zone_id": str(boundary.id),
+            "captured_at": changed_at,
+            "snapshots": [
+                {
+                    "id": str(snapshot.id),
+                    "status": snapshot.status,
+                    "error": snapshot.error,
+                }
+                for snapshot in snapshots
+            ],
+            "scenarios": [
+                {
+                    "id": str(scenario.id),
+                    "status": scenario.status,
+                    "error": scenario.error,
+                }
+                for scenario in scenarios
+            ],
+        }
+        boundary_props[PLAN_BOUNDARY_RESTORE_STATE_KEY] = restore_state
+        boundary.properties = boundary_props
+        flag_modified(boundary, "properties")
+
+    snapshot_fingerprints = {
+        str(snapshot.id): plan_boundary_fingerprint(
+            snapshot.dna.get("site_boundary")
+            if isinstance(snapshot.dna, dict)
+            else None
+        )
+        for snapshot in snapshots
+    }
+    matching_snapshot_ids = [
+        snapshot_id
+        for snapshot_id, fingerprint in snapshot_fingerprints.items()
+        if fingerprint == previous_fingerprint
+    ]
+    legacy_snapshot_id = matching_snapshot_ids[0] if len(matching_snapshot_ids) == 1 else None
+    for dependent in dependents:
+        props = dict(dependent.properties or {})
+        if not isinstance(props.get("_plan_scenario"), str):
+            continue
+        if previous_fingerprint is not None:
+            props.setdefault("_plan_boundary_fingerprint", previous_fingerprint)
+        if legacy_snapshot_id is not None:
+            props.setdefault("_plan_snapshot_id", legacy_snapshot_id)
+        props.update({
+            "_plan_boundary_stale": True,
+            "_plan_boundary_zone_id": str(boundary.id),
+            "_plan_boundary_changed_at": changed_at,
+        })
+        dependent.properties = props
+        flag_modified(dependent, "properties")
+
+    for snapshot in snapshots:
+        snapshot.status = "failed"
+        snapshot.error = _PLAN_BOUNDARY_STALE_MESSAGE
+    for scenario in scenarios:
+        scenario.status = "failed"
+        scenario.error = _PLAN_BOUNDARY_STALE_MESSAGE
+
+
+async def _invalidate_residual_landscape(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    *,
+    changed_zone_id: uuid.UUID,
+    reason: str,
+    boundary: SiteZone | None = None,
+) -> None:
+    """Fail closed when authored geometry changes after a 3D compile.
+
+    Residual landscaping is derived from the complete set of physical zones,
+    not an independently editable polygon. Keeping an old recipe visible after
+    any contributing zone changes would make the scene look plausible while no
+    longer matching the plan. Preserve the recipe for diagnostics, but mark it
+    stale so clients ignore it until Community 3D is rebuilt.
+    """
+
+    await lock_residual_landscape_project(db, project_id)
+
+    if boundary is not None:
+        boundaries = [boundary] if boundary.zone_type == "site_boundary" else []
+    else:
+        boundaries_result = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == project_id,
+                SiteZone.zone_type == "site_boundary",
+            ).execution_options(populate_existing=True)
+        )
+        boundaries = list(boundaries_result.scalars().all())
+
+    for site_boundary in boundaries:
+        if mark_residual_landscape_stale(
+            site_boundary,
+            changed_zone_id=str(changed_zone_id),
+            reason=reason,
+        ):
+            flag_modified(site_boundary, "properties")
+
+
+def _residual_source_identity(
+    zone_type: str | None,
+    properties: dict | None,
+) -> tuple[str, str | None, bool]:
+    """Return only fields that can change residual occupancy/classification.
+
+    Material, render and generated-texture metadata are deliberately excluded:
+    they do not move a polygon or change whether it is a building, park,
+    street, framework overlay or unclassified physical zone.
+    """
+
+    props = properties or {}
+    return (
+        str(zone_type or ""),
+        str(props.get("_plan_role")) if props.get("_plan_role") is not None else None,
+        bool(props.get("development_archetype_id")),
+    )
 
 
 def _safe_int(value, default: int) -> int:
@@ -124,6 +463,7 @@ STYLE_METADATA_KEYS = (
     "development_aesthetic_category",
     "development_selected_reference",
     "development_archetype_id",
+    "development_selected_variant_id",
     "development_archetype_label",
     "development_archetype_image",
     "development_archetype_images",
@@ -252,6 +592,166 @@ def _zone_to_response(zone: SiteZone) -> dict:
     }
 
 
+def _snapshot_from_zone(zone: SiteZone) -> dict:
+    """Build a JSON-safe snapshot dict from a SiteZone ORM object."""
+    snapshot = _zone_to_response(zone)
+    for key in ("id", "project_id", "building_id"):
+        if snapshot.get(key) is not None:
+            snapshot[key] = str(snapshot[key])
+    if snapshot.get("building_ids"):
+        snapshot["building_ids"] = [str(b) for b in snapshot["building_ids"]]
+    for key in ("created_at", "updated_at"):
+        if snapshot.get(key) is not None:
+            snapshot[key] = snapshot[key].isoformat() if hasattr(snapshot[key], "isoformat") else str(snapshot[key])
+    return snapshot
+
+
+def _optional_uuid(value) -> uuid.UUID | None:
+    if value is None:
+        return None
+    return value if isinstance(value, uuid.UUID) else uuid.UUID(str(value))
+
+
+def _wkt_from_snapshot(snapshot: dict) -> str:
+    coords = [list(coord) for coord in snapshot.get("coordinates", [])]
+    if len(coords) < 3:
+        raise HTTPException(status_code=400, detail="Snapshot has insufficient coordinates to restore")
+    if coords[0] != coords[-1]:
+        coords.append(coords[0])
+    return ", ".join(f"{c[0]} {c[1]}" for c in coords)
+
+
+async def _restore_zone_snapshot(
+    db: AsyncSession,
+    snapshot: dict,
+    *,
+    project_id: uuid.UUID,
+    expected_zone_id: uuid.UUID | None = None,
+) -> SiteZone:
+    """Apply a zone snapshot without recording history."""
+    await lock_residual_landscape_project(db, project_id)
+    try:
+        zone_id = uuid.UUID(str(snapshot["id"]))
+    except (KeyError, TypeError, ValueError):
+        raise HTTPException(status_code=400, detail="Snapshot is missing a valid zone id")
+
+    if expected_zone_id is not None and zone_id != expected_zone_id:
+        raise HTTPException(status_code=400, detail="Snapshot zone id does not match request zone id")
+
+    snapshot_project_id = _optional_uuid(snapshot.get("project_id")) or project_id
+    if snapshot_project_id != project_id:
+        raise HTTPException(status_code=400, detail="Snapshot project id does not match request project id")
+
+    coords_str = _wkt_from_snapshot(snapshot)
+    building_ids = snapshot.get("building_ids")
+    if building_ids:
+        building_ids = [str(bid) for bid in building_ids]
+
+    zone_result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = zone_result.scalar_one_or_none()
+
+    if zone and zone.project_id != project_id:
+        raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
+
+    if zone:
+        zone.name = snapshot.get("name")
+        zone.zone_type = snapshot["zone_type"]
+        zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
+        zone.color = snapshot.get("color", "#9b59b6")
+        zone.properties = snapshot.get("properties")
+        zone.sort_order = snapshot.get("sort_order", 0)
+        zone.building_id = _optional_uuid(snapshot.get("building_id"))
+        zone.building_ids = building_ids
+    else:
+        zone = SiteZone(
+            id=zone_id,
+            project_id=project_id,
+            name=snapshot.get("name"),
+            zone_type=snapshot["zone_type"],
+            geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
+            color=snapshot.get("color", "#9b59b6"),
+            properties=snapshot.get("properties"),
+            sort_order=snapshot.get("sort_order", 0),
+            building_id=_optional_uuid(snapshot.get("building_id")),
+            building_ids=building_ids,
+        )
+        db.add(zone)
+
+    if mark_community_3d_stale(
+        zone,
+        reason="Zone history restored; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
+
+    await _invalidate_residual_landscape(
+        db,
+        project_id,
+        changed_zone_id=zone_id,
+        reason="Zone history restored; rebuild Community 3D landscaping.",
+        boundary=zone if zone.zone_type == "site_boundary" else None,
+    )
+    await db.flush()
+    await db.refresh(zone)
+    return zone
+
+
+async def _record_zone_history(
+    db: AsyncSession,
+    zone: SiteZone,
+    action: str,
+    user: User,
+    description: str | None = None,
+    previous_snapshot: dict | None = None,
+) -> None:
+    """Record a zone snapshot in the history table."""
+    entry = ZoneHistory(
+        zone_id=zone.id,
+        project_id=zone.project_id,
+        action=action,
+        snapshot=_snapshot_from_zone(zone),
+        previous_snapshot=previous_snapshot,
+        user_id=user.id,
+        user_email=user.email,
+        description=description,
+    )
+    db.add(entry)
+
+
+async def _ensure_project_access(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    user: User,
+    *,
+    write: bool = False,
+) -> Project:
+    """Verify that the user can read or edit project-scoped zone history."""
+    result = await db.execute(select(Project).where(Project.id == project_id))
+    project = result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id == user.id or is_admin_or_above(user):
+        return project
+
+    permission_filter = (
+        ProjectShare.permission == "editor"
+        if write
+        else ProjectShare.permission.in_(("viewer", "editor"))
+    )
+    share_result = await db.execute(
+        select(ProjectShare).where(
+            ProjectShare.project_id == project_id,
+            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            permission_filter,
+        )
+    )
+    if not share_result.scalar_one_or_none():
+        action = "edit" if write else "view"
+        raise HTTPException(status_code=403, detail=f"Not authorized to {action} zones in this project")
+
+    return project
+
+
 @router.get("/projects/{project_id}/zones", response_model=list[SiteZoneResponse])
 async def list_zones(
     project_id: uuid.UUID,
@@ -275,6 +775,7 @@ async def list_zones(
 async def create_zone(
     project_id: uuid.UUID,
     zone_in: SiteZoneCreate,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -297,19 +798,14 @@ async def create_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to add zones to this project")
 
-    # Convert coordinates to WKT POLYGON
-    coords = zone_in.coordinates
-    # De-duplicate nearly-identical consecutive vertices
-    unique_coords: list[list[float]] = []
-    for c in coords:
-        if not unique_coords or abs(c[0] - unique_coords[-1][0]) > 1e-7 or abs(c[1] - unique_coords[-1][1]) > 1e-7:
-            unique_coords.append(c)
-    coords = unique_coords
-    if len(coords) < 3:
-        raise HTTPException(status_code=400, detail="Polygon must have at least 3 unique vertices")
-    # Close the polygon if not already closed
-    if coords[0] != coords[-1]:
-        coords.append(coords[0])
+    await lock_residual_landscape_project(db, project_id)
+
+    # Convert coordinates to a valid WKT POLYGON. Invalid rings used to be
+    # accepted by PostGIS and fail much later in the master planner.
+    try:
+        coords = _validated_polygon_coordinates(zone_in.coordinates)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
     zone = SiteZone(
@@ -345,6 +841,20 @@ async def create_zone(
             )
         except Exception as e:
             logger.warning("Failed to auto-fetch OSM context for zone %s: %s", zone.id, e)
+    await _invalidate_residual_landscape(
+        db,
+        project_id,
+        changed_zone_id=zone.id,
+        reason=(
+            "Site boundary created; resolve the authoritative boundary and rebuild Community 3D landscaping."
+            if zone_in.zone_type == "site_boundary"
+            else "Authored zone created; rebuild Community 3D landscaping."
+        ),
+    )
+
+    # Record history (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        await _record_zone_history(db, zone, "create", user, f"Created {zone_in.zone_type} zone")
 
     return _zone_to_response(zone)
 
@@ -420,6 +930,7 @@ async def fetch_context(
 async def update_zone(
     zone_id: uuid.UUID,
     zone_in: SiteZoneUpdate,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -443,19 +954,91 @@ async def update_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to edit zones in this project")
 
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
+    # Capture state BEFORE the update for diff / revert
+    before_snapshot = _snapshot_from_zone(zone)
+
     update_data = zone_in.model_dump(exclude_unset=True)
+    zone_geometry_changed = False
+    boundary_geometry_changed = False
+    updated_coordinates: list[list[float]] | None = None
 
     # Handle coordinates to geometry conversion
     if "coordinates" in update_data:
-        coords = update_data.pop("coordinates")
-        if coords and len(coords) >= 3:
-            if coords[0] != coords[-1]:
-                coords.append(coords[0])
+        raw_coords = update_data.pop("coordinates")
+        if raw_coords:
+            try:
+                coords = _validated_polygon_coordinates(raw_coords)
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
+            zone_geometry_changed = _coordinates_materially_changed(
+                before_snapshot.get("coordinates"), coords
+            )
+            updated_coordinates = coords
+            boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
 
     for field, value in update_data.items():
         setattr(zone, field, value)
+
+    before_coordinates = _open_ring(before_snapshot.get("coordinates"))
+    after_coordinates = _open_ring(updated_coordinates or before_coordinates)
+    try:
+        before_source_hash = community_3d_source_hash(
+            before_snapshot.get("zone_type"),
+            Polygon(before_coordinates),
+            before_snapshot.get("properties"),
+        )
+        after_source_hash = community_3d_source_hash(
+            zone.zone_type,
+            Polygon(after_coordinates),
+            zone.properties,
+        )
+        compiled_source_changed = before_source_hash != after_source_hash
+    except (TypeError, ValueError):
+        # Invalid historical snapshots still fail closed for the coarse inputs
+        # we can compare; current API coordinate validation prevents new ones.
+        compiled_source_changed = bool(
+            zone_geometry_changed
+            or before_snapshot.get("zone_type") != zone.zone_type
+        )
+    if compiled_source_changed and mark_community_3d_stale(
+        zone,
+        reason="Authored zone changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
+
+    if boundary_geometry_changed:
+        await _invalidate_boundary_dependents(
+            db,
+            zone,
+            previous_geometry=Polygon(before_coordinates),
+            current_geometry=Polygon(after_coordinates),
+        )
+
+    source_identity_changed = _residual_source_identity(
+        before_snapshot.get("zone_type"),
+        before_snapshot.get("properties"),
+    ) != _residual_source_identity(zone.zone_type, zone.properties)
+    residual_source_changed = bool(
+        zone_geometry_changed or source_identity_changed
+    )
+    if residual_source_changed:
+        await _invalidate_residual_landscape(
+            db,
+            zone.project_id,
+            changed_zone_id=zone.id,
+            reason="Authored zone changed; rebuild Community 3D landscaping.",
+            boundary=(
+                zone
+                if before_snapshot.get("zone_type") == "site_boundary"
+                and zone.zone_type == "site_boundary"
+                else None
+            ),
+        )
 
     await db.flush()
 
@@ -482,12 +1065,20 @@ async def update_zone(
             await db.flush()
 
     await db.refresh(zone)
+
+    # Record history with before/after (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        changed = list(zone_in.model_dump(exclude_unset=True).keys())
+        desc_parts = ", ".join(changed[:3])
+        await _record_zone_history(db, zone, "update", user, f"Updated {desc_parts}", previous_snapshot=before_snapshot)
+
     return _zone_to_response(zone)
 
 
 @router.delete("/{zone_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_zone(
     zone_id: uuid.UUID,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -510,6 +1101,21 @@ async def delete_zone(
         )
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to delete zones in this project")
+
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
+    # Record history before deletion (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        await _record_zone_history(db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}")
+
+    if zone.zone_type != "site_boundary":
+        await _invalidate_residual_landscape(
+            db,
+            zone.project_id,
+            changed_zone_id=zone.id,
+            reason="Authored zone deleted; rebuild Community 3D landscaping.",
+        )
 
     await db.delete(zone)
 
@@ -690,8 +1296,6 @@ async def _generate_layout_for_zone(
 
     Falls back to algorithmic layout if AI is unavailable.
     """
-    from app.schemas.schemas import SiteLayoutResponse
-
     shape = to_shape(zone.geometry)
     if not isinstance(shape, Polygon):
         # If geometry is not a polygon, convert bounds to polygon
@@ -1113,6 +1717,9 @@ async def apply_layout(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # If zone already has linked buildings, delete them first (re-applying layout)
     if zone.building_ids:
         for old_bid in _normalize_building_ids(zone.building_ids):
@@ -1170,6 +1777,7 @@ async def apply_layout(
 
     # Store layout metadata in zone properties
     updated_props = dict(props)
+    updated_props["_saved_layout"] = layout.model_dump()
     updated_props["_layout_strategy"] = layout.layout_strategy
     updated_props["_layout_reasoning"] = layout.reasoning
     updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
@@ -1177,6 +1785,11 @@ async def apply_layout(
     if layout.density_achieved:
         updated_props["_layout_density"] = layout.density_achieved
     zone.properties = updated_props
+    if mark_community_3d_stale(
+        zone,
+        reason="Building layout changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
 
     # Link zone to all buildings
     zone.building_id = first_building.id
@@ -1561,7 +2174,6 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
     # 6. Neighbor context
     if all_zones:
         try:
-            buffered = zone.geometry.ST_Buffer(0.0002)  # ~20m buffer at equator
             neighbor_types: set[str] = set()
             for other in all_zones:
                 if other.id == zone.id:
@@ -1629,6 +2241,26 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         if ctx_parts:
             parts.append("SITE CONTEXT: " + ". ".join(ctx_parts))
 
+        # Urban DNA planning directives (applied scenario) — advisory guidance
+        # the planning-agent panel produced; the layout engine still draws.
+        directives = site_context.get("planning_directives")
+        if isinstance(directives, dict) and directives.get("parameters"):
+            directive_bits = [
+                f"{key.replace('_', ' ')}: {value}"
+                for key, value in directives["parameters"].items()
+                if value is not None and key != "description_text"
+            ]
+            brief = directives["parameters"].get("description_text")
+            directive_text = (
+                f"PLANNING DIRECTIVES (applied scenario '{directives.get('label', '')}'): "
+                + "; ".join(directive_bits)
+            )
+            if brief:
+                directive_text += f". Design brief: {brief}"
+            if directives.get("narrative"):
+                directive_text += f". Scenario intent: {directives['narrative']}"
+            parts.append(directive_text)
+
     return ". ".join(parts)
 
 
@@ -1687,11 +2319,19 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
             "by_type": by_road_type,
         }
 
-    return {
+    context = {
         "sibling_zones": sibling_zones,
         "osm_buildings": osm_buildings_summary,
         "osm_roads": osm_roads_summary,
     }
+
+    # Urban DNA planning directives (written by POST /urban-dna/scenarios/{id}/apply).
+    # Absent for zones that never applied a scenario — output is unchanged then.
+    directives = boundary_props.get("_urban_dna_directives")
+    if isinstance(directives, dict) and directives.get("parameters"):
+        context["planning_directives"] = directives
+
+    return context
 
 
 def _compute_zone_area(zone: SiteZone) -> float:
@@ -1862,8 +2502,38 @@ async def generate_all(
     total_zones = len(all_zones)
     failed_zones = []
 
+    # The 45s stagger exists to dodge Meshy's concurrent-task 400s — but a
+    # probable cache hit makes no Meshy call, so it neither waits nor
+    # advances the stagger. Advisory only; the worker re-checks the cache
+    # authoritatively.
+    stagger_index = 0
+
+    async def _generation_countdown(bld, cacheable: bool) -> int:
+        nonlocal stagger_index
+        if cacheable:
+            from app.core.config import get_settings as _get_settings
+            from app.services.archetype_model_cache import (
+                has_completed_entry,
+                normalize_cache_key,
+            )
+
+            if _get_settings().archetype_cache_enabled:
+                key = normalize_cache_key(bld.specifications)
+                # generate-all enqueues with the queue helper's default engine.
+                if key is not None and await has_completed_entry(db, key[0], key[1], "meshy"):
+                    return 0
+        delay = stagger_index * 45
+        stagger_index += 1
+        return delay
+
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
+            continue
+        # AI-planner framework bands ("≤6 storeys", "≤27+ storeys") share
+        # zone_type development_area but are height-reference OVERLAYS, not
+        # buildable content — generating slabs for them wastes Meshy credits
+        # and litters the scene (the render pipeline drops them the same way).
+        if (zone.properties or {}).get("_plan_role") == "framework_height":
             continue
 
         try:
@@ -1894,6 +2564,7 @@ async def generate_all(
                     await db.flush()
 
                     try:
+                        countdown = await _generation_countdown(building, cacheable=not ref_images)
                         if ref_images:
                             await queue_ai_generation_task(
                                 db,
@@ -1901,9 +2572,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
+                                countdown=countdown,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt)
+                            await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -1980,6 +2652,7 @@ async def generate_all(
                     await db.flush()
 
                     try:
+                        countdown = await _generation_countdown(building, cacheable=not ref_images)
                         if ref_images:
                             await queue_ai_generation_task(
                                 db,
@@ -1987,9 +2660,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
+                                countdown=countdown,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt)
+                            await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2054,6 +2728,7 @@ async def generate_all(
             building.generation_prompt = prompt
             await db.flush()
             try:
+                countdown = await _generation_countdown(building, cacheable=not ref_images)
                 if ref_images:
                     await queue_ai_generation_task(
                         db,
@@ -2061,9 +2736,10 @@ async def generate_all(
                         prompt,
                         mode="image",
                         image_url=ref_images[0],
+                        countdown=countdown,
                     )
                 else:
-                    await queue_ai_generation_task(db, building, prompt)
+                    await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                 generations_queued += 1
                 queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
             except Exception as e:
@@ -2088,9 +2764,7 @@ async def generate_all(
 # =============================================================================
 
 
-from pydantic import BaseModel as _BaseModel
-
-class SaveLayoutRequest(_BaseModel):
+class SaveLayoutRequest(BaseModel):
     """Request to save an edited layout to zone properties."""
     layout: SiteLayoutResponse
 
@@ -2108,11 +2782,20 @@ async def save_layout(
     if not zone:
         raise HTTPException(status_code=404, detail="Zone not found")
 
+    await _ensure_project_access(db, zone.project_id, current_user, write=True)
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+
     # 1. Save layout to zone properties
     props = zone.properties or {}
     props["_saved_layout"] = body.layout.model_dump()
     zone.properties = props
     flag_modified(zone, "properties")
+    if mark_community_3d_stale(
+        zone,
+        reason="Saved building layout changed; rebuild Community 3D before Direct rendering.",
+    ):
+        flag_modified(zone, "properties")
 
     # 2. Sync building records with layout blocks
     shape = to_shape(zone.geometry)
@@ -2299,4 +2982,162 @@ async def generate_site_massing(
             status_code=500,
             detail=f"Massing generation failed: {str(e)[:200]}",
         )
+
+
+# =============================================================================
+# Zone History / Version Control Endpoints
+# =============================================================================
+
+@router.post("/projects/{project_id}/restore-snapshot", response_model=ZoneSnapshotRestoreResponse)
+async def restore_working_snapshot(
+    project_id: uuid.UUID,
+    body: ZoneSnapshotRestoreRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """Silently restore or delete a zone working snapshot for client-side undo/redo."""
+    await _ensure_project_access(db, project_id, user, write=True)
+    await lock_residual_landscape_project(db, project_id)
+
+    if body.snapshot is None:
+        zone_result = await db.execute(select(SiteZone).where(SiteZone.id == body.zone_id))
+        zone = zone_result.scalar_one_or_none()
+        if zone:
+            if zone.project_id != project_id:
+                raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
+            if zone.zone_type != "site_boundary":
+                await _invalidate_residual_landscape(
+                    db,
+                    project_id,
+                    changed_zone_id=zone.id,
+                    reason="Zone removed by undo/redo; rebuild Community 3D landscaping.",
+                )
+            await db.delete(zone)
+            await db.flush()
+        return {
+            "zone_id": body.zone_id,
+            "deleted": True,
+            "zone": None,
+        }
+
+    zone = await _restore_zone_snapshot(
+        db,
+        body.snapshot,
+        project_id=project_id,
+        expected_zone_id=body.zone_id,
+    )
+    return {
+        "zone_id": zone.id,
+        "deleted": False,
+        "zone": _zone_to_response(zone),
+    }
+
+
+@router.get("/projects/{project_id}/history", response_model=ZoneHistoryListResponse)
+async def list_project_history(
+    project_id: uuid.UUID,
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    zone_id: Optional[uuid.UUID] = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """List zone change history for a project, newest first. Optionally filter by zone_id."""
+    await _ensure_project_access(db, project_id, user)
+
+    query = select(ZoneHistory).where(ZoneHistory.project_id == project_id)
+    count_query = select(sa_func.count()).select_from(ZoneHistory).where(ZoneHistory.project_id == project_id)
+
+    if zone_id is not None:
+        query = query.where(ZoneHistory.zone_id == zone_id)
+        count_query = count_query.where(ZoneHistory.zone_id == zone_id)
+
+    total_result = await db.execute(count_query)
+    total = total_result.scalar() or 0
+
+    query = query.order_by(desc(ZoneHistory.created_at)).offset(offset).limit(limit)
+    result = await db.execute(query)
+    entries = result.scalars().all()
+
+    return {
+        "items": entries,
+        "total": total,
+        "has_more": (offset + limit) < total,
+    }
+
+
+@router.get("/history/{history_id}", response_model=ZoneHistoryResponse)
+async def get_history_entry(
+    history_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """Get a specific history entry by ID."""
+    result = await db.execute(select(ZoneHistory).where(ZoneHistory.id == history_id))
+    entry = result.scalar_one_or_none()
+    if not entry:
+        raise HTTPException(status_code=404, detail="History entry not found")
+    await _ensure_project_access(db, entry.project_id, user)
+    return entry
+
+
+@router.post("/history/{history_id}/revert", response_model=SiteZoneResponse)
+async def revert_to_version(
+    history_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Restore a zone to the state represented by a history entry.
+
+    Restores behave like checking out an older working state. They intentionally
+    do not create another history row; the next user edit records the new branch.
+    """
+    result = await db.execute(select(ZoneHistory).where(ZoneHistory.id == history_id))
+    entry = result.scalar_one_or_none()
+    if not entry:
+        raise HTTPException(status_code=404, detail="History entry not found")
+    await _ensure_project_access(db, entry.project_id, user, write=True)
+    await lock_residual_landscape_project(db, entry.project_id)
+
+    if entry.action == "create":
+        zone_result = await db.execute(select(SiteZone).where(SiteZone.id == entry.zone_id))
+        zone = zone_result.scalar_one_or_none()
+        if not zone:
+            raise HTTPException(status_code=404, detail="Zone no longer exists")
+
+        response = _zone_to_response(zone)
+        if zone.zone_type != "site_boundary":
+            await _invalidate_residual_landscape(
+                db,
+                entry.project_id,
+                changed_zone_id=zone.id,
+                reason="Zone removed by history revert; rebuild Community 3D landscaping.",
+            )
+        await db.delete(zone)
+        return response
+
+    # For updates, revert to the BEFORE state; for deletes, restore the zone
+    if entry.action == "update" and entry.previous_snapshot:
+        snapshot = entry.previous_snapshot
+    elif entry.action == "update":
+        # No previous_snapshot stored — find the prior entry for this zone
+        prev_result = await db.execute(
+            select(ZoneHistory)
+            .where(ZoneHistory.zone_id == entry.zone_id)
+            .where(ZoneHistory.created_at < entry.created_at)
+            .order_by(desc(ZoneHistory.created_at))
+            .limit(1)
+        )
+        prev_entry = prev_result.scalar_one_or_none()
+        snapshot = prev_entry.snapshot if prev_entry else entry.snapshot
+    else:
+        snapshot = entry.snapshot
+    zone = await _restore_zone_snapshot(
+        db,
+        snapshot,
+        project_id=entry.project_id,
+        expected_zone_id=entry.zone_id,
+    )
+
+    return _zone_to_response(zone)
 

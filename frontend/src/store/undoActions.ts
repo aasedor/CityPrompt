@@ -1,7 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { ZONE_TYPE_CONFIG } from '@/types';
 import type { UndoableAction } from './undoRedo';
 
 // =============================================================================
@@ -14,11 +13,11 @@ interface IdRef {
 }
 
 function invalidateZones(queryClient: QueryClient, projectId: string) {
-  queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+  return queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
 }
 
 function invalidateProject(queryClient: QueryClient, projectId: string) {
-  queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+  return queryClient.invalidateQueries({ queryKey: ['project', projectId] });
 }
 
 // =============================================================================
@@ -30,13 +29,16 @@ export function createZoneCreateAction(
   createdZone: SiteZone,
   queryClient: QueryClient,
 ): UndoableAction {
+  const originalZoneId = createdZone.id;
   const idRef: IdRef = { current: createdZone.id };
 
   return {
     label: 'Create zone',
+    getZoneId: () => idRef.current,
+    matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
       await siteZonesApi.delete(idRef.current);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       const zone = await siteZonesApi.create(projectId, {
@@ -48,7 +50,7 @@ export function createZoneCreateAction(
         sort_order: createdZone.sort_order,
       });
       idRef.current = zone.id;
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -58,10 +60,13 @@ export function createZoneDeleteAction(
   deletedZone: SiteZone,
   queryClient: QueryClient,
 ): UndoableAction {
+  const originalZoneId = deletedZone.id;
   const idRef: IdRef = { current: deletedZone.id };
 
   return {
     label: 'Delete zone',
+    getZoneId: () => idRef.current,
+    matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
       const zone = await siteZonesApi.create(projectId, {
         name: deletedZone.name,
@@ -72,11 +77,11 @@ export function createZoneDeleteAction(
         sort_order: deletedZone.sort_order,
       });
       idRef.current = zone.id;
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.delete(idRef.current);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -84,19 +89,20 @@ export function createZoneDeleteAction(
 export function createZoneUpdateAction(
   projectId: string,
   zoneId: string,
-  prevData: { name?: string; properties?: SiteZoneProperties },
-  newData: { name?: string; properties?: SiteZoneProperties },
+  prevData: { name?: string; color?: string; properties?: SiteZoneProperties },
+  newData: { name?: string; color?: string; properties?: SiteZoneProperties },
   queryClient: QueryClient,
 ): UndoableAction {
   return {
     label: 'Update zone',
+    zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, prevData);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.update(zoneId, newData);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -110,13 +116,14 @@ export function createZoneCoordinatesAction(
 ): UndoableAction {
   return {
     label: 'Move zone',
+    zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, { coordinates: prevCoords });
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.update(zoneId, { coordinates: newCoords });
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -160,11 +167,11 @@ export function createBuildingDeleteAction(
         specifications: building.specifications,
       });
       idRef.current = created.id;
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
     redo: async () => {
       await buildingsApi.delete(idRef.current);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
   };
 }
@@ -181,11 +188,11 @@ export function createBuildingUpdateAction(
     label,
     undo: async () => {
       await buildingsApi.update(buildingId, prevData);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
     redo: async () => {
       await buildingsApi.update(buildingId, newData);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
   };
 }

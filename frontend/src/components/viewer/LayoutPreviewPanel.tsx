@@ -1,5 +1,4 @@
-﻿import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock, ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, LayoutOption, OSMContext, LockedLayers } from '@/types';
@@ -16,7 +15,6 @@ interface LayoutPreviewPanelProps {
 }
 
 export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZones }: LayoutPreviewPanelProps) {
-  const navigate = useNavigate();
   const {
     layoutPreview, setLayoutPreview, clearLayoutPreview, setActivePreviewIndex,
     setPreviewImageUrl, setLightboxImage,

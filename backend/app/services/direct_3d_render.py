@@ -98,6 +98,7 @@ _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95 = 4.0
 _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75 = 0.75
 _SCENE_CONTEXT_TOP_FRACTION = 0.45
 _MIN_SCENE_LOWER_CONTEXT_COVERAGE = 0.08
+_MAX_SCENE_LOCAL_REPAIR_COVERAGE = 0.30
 _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA = 8.0
 _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION = 10.0
 _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90 = 35.0
@@ -2345,14 +2346,14 @@ def assess_instance_source_presence(
     )
 
 
-def assess_unsupported_coarse_structure(
+def _unsupported_coarse_structure_analysis(
     source: Image.Image,
     candidate: Image.Image,
     proposal_mask: Image.Image,
     instance_id: Image.Image | None = None,
     instance_id_manifest: dict[str, Any] | None = None,
-) -> UnsupportedStructureResult:
-    """Detect large new coarse components outside approved building envelopes."""
+) -> tuple[UnsupportedStructureResult, Image.Image]:
+    """Detect unsupported components and return a bounded local repair mask."""
 
     if source.size != candidate.size or source.size != proposal_mask.size:
         raise Direct3DValidationError(
@@ -2415,7 +2416,7 @@ def assess_unsupported_coarse_structure(
     unsupported = cv2.morphologyEx(
         unsupported.astype(np.uint8),
         cv2.MORPH_CLOSE,
-        np.ones((3, 3), dtype=np.uint8),
+        np.ones((5, 5), dtype=np.uint8),
         iterations=1,
     )
     component_count, labels, stats, _centroids = cv2.connectedComponentsWithStats(
@@ -2433,21 +2434,57 @@ def assess_unsupported_coarse_structure(
     component_floor = max(48, min(96, round(frame_pixels * 0.00012)))
     bbox_area_floor = max(256, min(900, round(frame_pixels * 0.00030)))
     bbox_min_span = max(8, min(16, round(min(source.size) * 0.01)))
+    minimum_component_density = 0.08
+    minimum_component_aspect_ratio = 0.24
     proposal = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
     proposal_components = 0
     context_components = 0
     largest_pixels = 0
     largest_bbox_fraction = 0.0
+    repair_mask = np.zeros(source_anchor.shape, dtype=np.uint8)
+    repair_pad = max(
+        tolerance_px * 2,
+        min(28, round(min(source.size) * 0.012)),
+    )
+    component_records: list[dict[str, Any]] = []
+    qualifying_components: list[int] = []
     for component in range(1, component_count):
         pixel_count = int(stats[component, cv2.CC_STAT_AREA])
+        bbox_x = int(stats[component, cv2.CC_STAT_LEFT])
+        bbox_y = int(stats[component, cv2.CC_STAT_TOP])
         bbox_width = int(stats[component, cv2.CC_STAT_WIDTH])
         bbox_height = int(stats[component, cv2.CC_STAT_HEIGHT])
         bbox_area = bbox_width * bbox_height
         bbox_fraction = float(bbox_area / max(1, frame_pixels))
+        bbox_aspect_ratio = min(bbox_width, bbox_height) / max(
+            1,
+            max(bbox_width, bbox_height),
+        )
+        component_density = pixel_count / max(1, bbox_area)
+        if (
+            pixel_count >= max(24, component_floor // 3)
+            and bbox_area >= 96
+            and component_density >= 0.035
+            and bbox_aspect_ratio >= 0.18
+        ):
+            component_records.append({
+                "component": component,
+                "x0": bbox_x,
+                "y0": bbox_y,
+                "x1": bbox_x + bbox_width,
+                "y1": bbox_y + bbox_height,
+            })
         if (
             pixel_count < component_floor
             or bbox_area < bbox_area_floor
             or min(bbox_width, bbox_height) < bbox_min_span
+            # A coherent permanent addition produces a genuinely
+            # two-dimensional, substantially closed edge component. Sparse
+            # material grain, foliage, hatch and long photogrammetry seams are
+            # legitimate full-frame finish and must not masquerade as a new
+            # building merely because their loose bounding box is large.
+            or component_density < minimum_component_density
+            or bbox_aspect_ratio < minimum_component_aspect_ratio
         ):
             continue
         component_region = labels == component
@@ -2458,13 +2495,105 @@ def assess_unsupported_coarse_structure(
         if pixel_count > largest_pixels:
             largest_pixels = pixel_count
             largest_bbox_fraction = bbox_fraction
-    return UnsupportedStructureResult(
-        passed=(proposal_components + context_components) == 0,
-        largest_component_pixels=largest_pixels,
-        largest_component_bbox_fraction=largest_bbox_fraction,
-        proposal_component_count=proposal_components,
-        context_component_count=context_components,
+        qualifying_components.append(component)
+
+    # Authoritative source edges can split one invented object into several
+    # unsupported fragments. Group only nearby, reasonably two-dimensional
+    # fragments around each qualifying seed, then fill their convex hull. This
+    # removes the whole object without replacing a conspicuous rectangular
+    # neighborhood of otherwise valid provider pixels.
+    records_by_component = {
+        int(record["component"]): record
+        for record in component_records
+    }
+    for seed_component in qualifying_components:
+        seed = records_by_component.get(seed_component)
+        if seed is None:
+            continue
+        grouped = {seed_component}
+        group_x0 = int(seed["x0"])
+        group_y0 = int(seed["y0"])
+        group_x1 = int(seed["x1"])
+        group_y1 = int(seed["y1"])
+        changed = True
+        while changed:
+            changed = False
+            link_distance = max(
+                repair_pad * 2,
+                round(max(
+                    group_x1 - group_x0,
+                    group_y1 - group_y0,
+                ) * 0.18),
+            )
+            for record in component_records:
+                record_component = int(record["component"])
+                if record_component in grouped:
+                    continue
+                dx = max(
+                    0,
+                    group_x0 - int(record["x1"]),
+                    int(record["x0"]) - group_x1,
+                )
+                dy = max(
+                    0,
+                    group_y0 - int(record["y1"]),
+                    int(record["y0"]) - group_y1,
+                )
+                if dx > link_distance or dy > link_distance:
+                    continue
+                grouped.add(record_component)
+                group_x0 = min(group_x0, int(record["x0"]))
+                group_y0 = min(group_y0, int(record["y0"]))
+                group_x1 = max(group_x1, int(record["x1"]))
+                group_y1 = max(group_y1, int(record["y1"]))
+                changed = True
+
+        grouped_pixels = np.isin(labels, list(grouped))
+        grouped_yx = np.argwhere(grouped_pixels)
+        if grouped_yx.shape[0] < 3:
+            continue
+        grouped_xy = grouped_yx[:, [1, 0]].astype(np.int32)
+        hull = cv2.convexHull(grouped_xy)
+        cv2.fillConvexPoly(repair_mask, hull, 255)
+
+    if np.any(repair_mask):
+        repair_mask = cv2.dilate(
+            repair_mask,
+            np.ones(
+                (repair_pad * 2 + 1, repair_pad * 2 + 1),
+                dtype=np.uint8,
+            ),
+            iterations=1,
+        )
+    return (
+        UnsupportedStructureResult(
+            passed=(proposal_components + context_components) == 0,
+            largest_component_pixels=largest_pixels,
+            largest_component_bbox_fraction=largest_bbox_fraction,
+            proposal_component_count=proposal_components,
+            context_component_count=context_components,
+        ),
+        Image.fromarray(repair_mask, mode="L"),
     )
+
+
+def assess_unsupported_coarse_structure(
+    source: Image.Image,
+    candidate: Image.Image,
+    proposal_mask: Image.Image,
+    instance_id: Image.Image | None = None,
+    instance_id_manifest: dict[str, Any] | None = None,
+) -> UnsupportedStructureResult:
+    """Detect large new coarse components outside approved building envelopes."""
+
+    result, _repair_mask = _unsupported_coarse_structure_analysis(
+        source,
+        candidate,
+        proposal_mask,
+        instance_id,
+        instance_id_manifest,
+    )
+    return result
 
 
 def _safe_instance_interior_mask(
@@ -2585,6 +2714,106 @@ def _balanced_scene_hybrid(
         missing_instance_ids,
         semantic_classes=frozenset({"building"}),
     )
+
+
+def _locally_repair_scene_candidate(
+    source: Image.Image,
+    provider: Image.Image,
+    proposal_mask: Image.Image,
+    object_id: Image.Image | None,
+    object_id_manifest: dict[str, str] | None,
+    instance_id: Image.Image,
+    instance_id_manifest: dict[str, Any],
+    missing_instance_ids: set[str],
+) -> tuple[Image.Image, FinishFusionResult, float]:
+    """Repair only unsupported additions or missing persisted instances.
+
+    The full registered provider render remains authoritative everywhere
+    outside the bounded repair mask. Unsupported provider-only objects are
+    removed with style-preserving local inpainting; missing authored instances
+    are restored from source-owned phase pixels. The unchanged inventory gates
+    validate the result before it can be returned.
+    """
+
+    import cv2
+
+    _unsupported, unsupported_mask = _unsupported_coarse_structure_analysis(
+        source,
+        provider,
+        proposal_mask,
+        instance_id,
+        instance_id_manifest,
+    )
+    unsupported_pixels = np.asarray(
+        unsupported_mask.convert("L"),
+        dtype=np.uint8,
+    ).copy()
+    missing_restore = np.zeros(unsupported_pixels.shape, dtype=np.uint8)
+
+    if missing_instance_ids:
+        instance_pixels = np.asarray(instance_id.convert("RGB"), dtype=np.uint8)
+        for color, descriptor in sorted(instance_id_manifest.items()):
+            if descriptor.instance_id not in missing_instance_ids:
+                continue
+            region = np.all(
+                instance_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                axis=2,
+            )
+            missing_restore |= cv2.dilate(
+                region.astype(np.uint8),
+                np.ones((5, 5), dtype=np.uint8),
+                iterations=1,
+            )
+
+    source_phase = _fuse_source_geometry_with_provider_finish(
+        source,
+        provider,
+        Image.new("L", source.size, 255),
+        object_id,
+        object_id_manifest,
+    )
+    repair_pixels = unsupported_pixels | (missing_restore * 255)
+    repair_coverage = float(
+        np.count_nonzero(repair_pixels) / max(1, repair_pixels.size)
+    )
+    if not np.any(repair_pixels):
+        return provider.convert("RGB").copy(), source_phase, repair_coverage
+
+    repaired = provider.convert("RGB").copy()
+    if np.any(unsupported_pixels):
+        provider_bgr = cv2.cvtColor(
+            np.asarray(repaired, dtype=np.uint8),
+            cv2.COLOR_RGB2BGR,
+        )
+        inpaint_radius = max(
+            3.0,
+            min(
+                9.0,
+                5.0 * _finish_detail_scale(source.width, source.height),
+            ),
+        )
+        inpainted_bgr = cv2.inpaint(
+            provider_bgr,
+            unsupported_pixels,
+            inpaint_radius,
+            cv2.INPAINT_TELEA,
+        )
+        repaired = Image.fromarray(
+            cv2.cvtColor(inpainted_bgr, cv2.COLOR_BGR2RGB),
+            mode="RGB",
+        )
+
+    if np.any(missing_restore):
+        repaired, _exterior_count, _exterior_delta = hard_composite_direct_3d(
+            repaired,
+            source_phase.image,
+            Image.fromarray(missing_restore * 255, mode="L"),
+            inward_feather_px=max(
+                2.0,
+                2.5 * _finish_detail_scale(source.width, source.height),
+            ),
+        )
+    return repaired, source_phase, repair_coverage
 
 
 def _global_tone_source_finish(
@@ -2967,7 +3196,7 @@ def assess_reproject_output_sanity(
 
 
 _PRESENTATION_STYLE_TREATMENTS: dict[str, str] = {
-    "photorealistic": "natural high-end architectural photography with convincing materials, glazing and planted richness",
+    "photorealistic": "a high-end contemporary architectural visualization with photographic realism",
     "photomontage": "a polished architectural photomontage integrated seamlessly into the photographed city",
     "development": "a completed-development visualization with crisp facades, credible roofs and public realm",
     "atmospheric": "warm atmospheric architectural photography with soft haze, directional light and planted depth",
@@ -3011,42 +3240,34 @@ def _presentation_prompt(
     server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
 ) -> str:
-    """Build one concise provider-first prompt with one authority clause."""
+    """Build a natural provider-first prompt with one final design lock."""
 
+    del visible_component_summary
     has_object_id = bool(object_id_manifest)
     has_instance_id = bool(instance_id_manifest)
     guide_number = 2 + int(has_object_id) + int(has_instance_id)
     image_roles = [
-        "Image 1 is the clean 3D beauty capture and primary design reference.",
+        "Image 1 is the clean 3D source and primary visual reference",
     ]
     if has_object_id:
         image_roles.append(
-            "Image 2 is class-ID metadata only; use it to distinguish designed "
-            "buildings, streets, parks, landscape and ground, and never reproduce its colors."
+            "Image 2 is class-ID metadata for distinguishing proposal roles"
         )
     if has_instance_id:
         instance_number = 2 + int(has_object_id)
         image_roles.append(
-            f"Image {instance_number} is exact instance-ID metadata only. Every "
-            "non-black color is one existing authored instance; preserve each "
-            "instance exactly once and never reproduce these colors."
+            f"Image {instance_number} is instance-ID metadata in which each "
+            "non-black colour is one authored instance"
         )
     image_roles.append(
-        f"Image {guide_number} is a monochrome structural guide; use its contours "
-        "and compact labels as layout evidence, never as visible linework or text."
+        f"Image {guide_number} is monochrome structure and layout metadata"
     )
-    legend = ""
-    if object_id_manifest:
-        legend = " Class legend: " + "; ".join(
-            f"{color}={semantic_class}"
-            for color, semantic_class in sorted(object_id_manifest.items())
-        ) + "."
-    components = ""
-    if visible_component_summary:
-        components = " Visible guide regions: " + ", ".join(
-            f"{count} {semantic_class}"
-            for semantic_class, count in sorted(visible_component_summary.items())
-        ) + "; keep every region distinct."
+    guide = (
+        "REFERENCE IMAGES: "
+        + "; ".join(image_roles)
+        + "; use the metadata only as design evidence and never render its "
+        "colours, contours, labels or text."
+    )
     inventory = _server_inventory_prompt(server_inventory)
     treatment = _PRESENTATION_STYLE_TREATMENTS.get(
         style,
@@ -3054,36 +3275,58 @@ def _presentation_prompt(
     )
     if presentation_mode == "scene":
         task = (
-            f"SCENE FINISH: Re-render the full frame as {treatment}. Harmonize the "
-            "proposal and surrounding context into one coherent finished image."
+            f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}, "
+            "re-rendering the proposal and surrounding photographed or Google "
+            "Tiles context as one coherent finished image with consistent "
+            "materials, light, shadows, weather and atmospheric depth while "
+            "removing visible CGI and photogrammetry seams."
         )
-        authority = (
-            "MACRO DESIGN AUTHORITY: Keep Image 1's camera, projection, aspect, framing, "
-            "horizon, building count, primary silhouettes, footprints, heights, rooflines, "
-            "street/path topology, park boundaries and major occlusions. You may create new "
-            "photographic surface detail, glazing, windows, foliage texture, weathering, "
-            "contact shadows, lighting, people and vehicles, but do not move, merge, remove "
-            "or add a designed building, street or park."
+        final_lock = (
+            "FINAL PRESERVATION LOCK: Preserve Image 1's exact camera angle, "
+            "projection, framing, horizon, permanent building count, massing, "
+            "floor count, facade proportions and opening pattern, footprints, "
+            "setbacks, rooflines, site layout, terrain, street, intersection and "
+            "path topology, park boundaries, water bodies and major occlusions. "
+            "Do not add, remove, split, merge, move or redesign any permanent "
+            "building, road, park, water body or site feature. You may add only "
+            "non-permanent entourage and finish detail such as people, bicycles, "
+            "vehicles, cafe seating, planting, benches and lighting."
         )
     else:
         task = (
-            f"REPROJECTED PRESENTATION: Render the design as {treatment} "
-            f"{_REPROJECT_VIEW_INSTRUCTIONS[style]}"
+            f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}. "
+            f"{_REPROJECT_VIEW_INSTRUCTIONS[style]} Re-render the proposal and "
+            "surrounding context as one coherent finished image."
         )
-        authority = (
-            "LAYOUT AUTHORITY: The camera transform is intentional, so do not copy Image 1's "
-            "screen coordinates. Preserve the site layout, building count and relative massing, "
-            "footprints, street/path network, park locations and adjacency relationships while "
-            "expressing them truthfully in the requested projection."
+        final_lock = (
+            "FINAL PRESERVATION LOCK: Apply only the requested projection change; "
+            "preserve the exact authored permanent-instance count, relative massing, "
+            "floor count, facade proportions and opening pattern, footprints, "
+            "rooflines, site layout, street, intersection and path topology, park "
+            "boundaries, water bodies and adjacency relationships. Do not add, "
+            "remove, split, merge, move or redesign any permanent building, road, "
+            "park, water body or site feature."
         )
-    prompt = "\n".join([
+    prompt_prefix = "\n".join([
         task,
-        " ".join(image_roles) + legend + components,
+        guide,
         inventory,
-        f"ART DIRECTION: {client_prompt.strip()}",
-        authority,
+        "PRIMARY ART DIRECTION: ",
     ])
-    return prompt[:31_900]
+    prompt_suffix = f"\n{final_lock}"
+    # Truncate only client-controlled art direction. The final inventory lock
+    # must remain present and last even when a caller supplies the maximum
+    # accepted prompt length.
+    available_art_direction = max(
+        0,
+        31_900 - len(prompt_prefix) - len(prompt_suffix),
+    )
+    prompt = (
+        prompt_prefix
+        + client_prompt.strip()[:available_art_direction]
+        + prompt_suffix
+    )
+    return prompt
 
 
 def _authoritative_prompt(
@@ -3176,29 +3419,33 @@ def _authoritative_prompt(
 def _server_inventory_prompt(
     server_inventory: list[dict[str, Any]] | None,
 ) -> str:
-    """Serialize only server-validated permanent inventory into provider authority."""
+    """Summarize server-validated inventory without provider-irrelevant IDs."""
 
     if not server_inventory:
-        return "SERVER INVENTORY: no additional server-bound instance list."
+        return "SERVER-VALIDATED AUTHORED INVENTORY: no separately listed instances."
     counts: dict[str, int] = {}
-    entries: list[str] = []
     for item in server_inventory:
         semantic_class = str(item["semantic_class"])
         counts[semantic_class] = counts.get(semantic_class, 0) + 1
-        zone_id = str(item.get("zone_id") or "-")
-        building_id = str(item.get("building_id") or "-")
-        entries.append(
-            f"{item['instance_id']}|{semantic_class}|zone={zone_id}|building={building_id}"
-        )
     count_text = ", ".join(
         f"{semantic_class}={count}"
         for semantic_class, count in sorted(counts.items())
     )
+    identity_counts: dict[str, int] = {}
+    for item in server_inventory:
+        identity = item.get("design_identity")
+        if isinstance(identity, str) and identity.strip():
+            normalized = identity.strip()
+            identity_counts[normalized] = identity_counts.get(normalized, 0) + 1
+    identity_text = ""
+    if identity_counts:
+        identity_text = "; design identities: " + ", ".join(
+            f"{count}x {identity}"
+            for identity, count in sorted(identity_counts.items())
+        )
     return (
-        "SERVER-VALIDATED PERMANENT INVENTORY (binding; client art direction "
-        f"cannot relabel it): {count_text}. Exact instances: "
-        + "; ".join(entries)
-        + ". Do not add, remove, split, merge, or change the role of any listed instance."
+        "SERVER-VALIDATED AUTHORED INVENTORY (binding): "
+        f"{count_text}{identity_text}; preserve every instance exactly once."
     )
 
 
@@ -3504,6 +3751,54 @@ def _unsupported_structure_diagnostics(
         "largest_component_bbox_fraction": result.largest_component_bbox_fraction,
         "proposal_component_count": result.proposal_component_count,
         "context_component_count": result.context_component_count,
+    }
+
+
+def _visual_change_diagnostics(result: VisualChangeResult) -> dict[str, Any]:
+    return {
+        "passed": True,
+        "whole_frame_mean_absolute_delta": (
+            result.whole_frame_mean_absolute_delta
+        ),
+        "proposal_mean_absolute_delta": result.proposal_mean_absolute_delta,
+        "proposal_detail_delta_p75": result.proposal_detail_delta_p75,
+        "proposal_photometric_residual_p95": (
+            result.proposal_photometric_residual_p95
+        ),
+        "novel_detail_edge_coverage": result.novel_detail_edge_coverage,
+        "context_mean_absolute_delta": result.context_mean_absolute_delta,
+        "context_photometric_residual_p95": (
+            result.context_photometric_residual_p95
+        ),
+        "context_detail_delta_p75": result.context_detail_delta_p75,
+        "context_pixel_count": result.context_pixel_count,
+        "context_frame_top_fraction": result.context_frame_top_fraction,
+        "minimum_whole_frame_mean_absolute_delta": (
+            _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
+        ),
+        "minimum_proposal_mean_absolute_delta": (
+            _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
+        ),
+        "minimum_proposal_detail_delta_p75": (
+            _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
+        ),
+        "minimum_proposal_photometric_residual_p95": (
+            _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
+        ),
+        "minimum_novel_detail_edge_coverage": (
+            _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
+        ),
+        "minimum_context_mean_absolute_delta": (
+            _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
+        ),
+        "minimum_context_photometric_residual_p95": (
+            _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
+        ),
+        "minimum_context_detail_delta_p75": (
+            _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
+        ),
+        "context_change_required": True,
+        "color_grade_only_rejected": True,
     }
 
 
@@ -4062,6 +4357,8 @@ class Direct3DRenderService:
                     )
 
                 missing_instance_ids = set(instance_presence.missing_instance_ids)
+                local_repair_coverage: float | None = None
+                local_repair_exceeded_limit = False
                 if scene_source_lock_required:
                     # Gross or unreliable camera drift makes every local
                     # provider pixel spatially untrustworthy. Retain only
@@ -4080,33 +4377,97 @@ class Direct3DRenderService:
                         presentation_normalized
                     )
                 else:
-                    # Public-realm roles use source-owned spatial phase only.
-                    # Raw provider pixels are admitted solely inside persisted,
-                    # safely inset building interiors.
-                    presentation_normalized, _source_phase = (
-                        _balanced_scene_hybrid(
-                            capture.normalized_beauty,
-                            provider_analysis_image,
-                            capture.normalized_object_id,
-                            req.object_id_manifest,
-                            capture.normalized_instance_id,
-                            req.instance_id_manifest,
-                            missing_instance_ids,
-                        )
+                    # Keep the registered full-frame AI finish whenever the
+                    # authoritative inventory gates accept it. If the provider
+                    # added a structure or weakened an authored instance,
+                    # restore only those bounded regions from source phase so
+                    # the surrounding Google Tiles treatment and public-realm
+                    # finish survive.
+                    presentation_normalized = (
+                        provider_analysis_image.convert("RGB").copy()
                     )
-                    safety_strategy = "source_envelope_building_interiors"
-
-                    # This is the authoritative final gate. A
-                    # provider-conditioned intermediate is never a valid
-                    # baseline for proving that no provider-only structure
-                    # survived into the returned pixels.
+                    safety_strategy = "provider_full_scene"
                     safe_presence, safe_unsupported = assess_returned_scene(
                         presentation_normalized
                     )
                     if not safe_presence.passed or not safe_unsupported.passed:
-                        safety_strategy = (
-                            "global_tone_with_safe_building_interiors"
+                        (
+                            presentation_normalized,
+                            _source_phase,
+                            local_repair_coverage,
+                        ) = _locally_repair_scene_candidate(
+                            capture.normalized_beauty,
+                            presentation_normalized,
+                            capture.normalized_proposal_mask,
+                            capture.normalized_object_id,
+                            req.object_id_manifest,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            set(safe_presence.missing_instance_ids),
                         )
+                        safety_strategy = "provider_full_scene_local_repairs"
+                        safe_presence, safe_unsupported = assess_returned_scene(
+                            presentation_normalized
+                        )
+                        local_repair_exceeded_limit = (
+                            local_repair_coverage
+                            > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
+                        )
+                    if (
+                        not local_repair_exceeded_limit
+                        and (
+                            not safe_presence.passed
+                            or not safe_unsupported.passed
+                        )
+                    ):
+                        (
+                            presentation_normalized,
+                            _source_phase,
+                            second_repair_coverage,
+                        ) = _locally_repair_scene_candidate(
+                            capture.normalized_beauty,
+                            presentation_normalized,
+                            capture.normalized_proposal_mask,
+                            capture.normalized_object_id,
+                            req.object_id_manifest,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            set(safe_presence.missing_instance_ids),
+                        )
+                        local_repair_coverage = min(
+                            1.0,
+                            (local_repair_coverage or 0.0)
+                            + second_repair_coverage,
+                        )
+                        local_repair_exceeded_limit = (
+                            local_repair_coverage
+                            > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
+                        )
+                        safe_presence, safe_unsupported = assess_returned_scene(
+                            presentation_normalized
+                        )
+                    if (
+                        local_repair_exceeded_limit
+                        or not safe_presence.passed
+                        or not safe_unsupported.passed
+                    ):
+                        presentation_normalized, _source_phase = (
+                            _balanced_scene_hybrid(
+                                capture.normalized_beauty,
+                                provider_analysis_image,
+                                capture.normalized_object_id,
+                                req.object_id_manifest,
+                                capture.normalized_instance_id,
+                                req.instance_id_manifest,
+                                missing_instance_ids,
+                            )
+                        )
+                        safety_strategy = "source_envelope_building_interiors"
+                        safe_presence, safe_unsupported = assess_returned_scene(
+                            presentation_normalized
+                        )
+                    if not safe_presence.passed or not safe_unsupported.passed:
+                        safety_strategy = "global_tone_with_safe_building_interiors"
                         presentation_normalized = _source_locked_scene_fallback(
                             capture.normalized_beauty,
                             provider_analysis_image,
@@ -4187,9 +4548,8 @@ class Direct3DRenderService:
                     if not macro_fidelity.passed:
                         warnings.append(
                             "The provider varied macro geometry beyond the balanced "
-                            "automatic threshold; the returned image confines raw "
-                            "provider pixels to safety-checked persisted building "
-                            "interiors while public-realm detail stays source-owned."
+                            "automatic threshold; the inventory-safe returned image "
+                            "requires source/candidate review."
                         )
                     if not instance_presence.passed:
                         warnings.append(
@@ -4199,7 +4559,8 @@ class Direct3DRenderService:
                     if not unsupported_structure.passed:
                         warnings.append(
                             "Unsupported coarse structures were detected in the provider "
-                            "image and excluded from the returned source-envelope result."
+                            "image and repaired against the authoritative source before "
+                            "the final inventory gate."
                         )
                     if warnings:
                         outcome = "review_required"
@@ -4212,7 +4573,8 @@ class Direct3DRenderService:
                     if not unsupported_structure.passed:
                         warnings.append(
                             "Unsupported coarse structures were detected in the provider "
-                            "image and excluded from the returned source-envelope result."
+                            "image and repaired against the authoritative source before "
+                            "the final inventory gate."
                         )
                     if not macro_fidelity.passed:
                         warnings.append(
@@ -4237,19 +4599,41 @@ class Direct3DRenderService:
                         )
                     if not unsupported_structure.passed:
                         warnings.append(
-                            "Unsupported coarse structures were excluded from the "
-                            "returned source-envelope result."
+                            "Unsupported coarse structures were repaired against the "
+                            "authoritative source before the final inventory gate."
                         )
 
-                if safety_strategy != "source_envelope_building_interiors":
+                if safety_strategy not in {
+                    "provider_full_scene",
+                    "provider_full_scene_local_repairs",
+                }:
                     outcome = "review_required"
                     if not scene_source_lock_required:
                         warnings.append(
-                            "The source-phase finish with safe building interiors did "
-                            "not pass the authoritative source gate, so the returned "
-                            "image uses the "
+                            "Bounded provider repair did not pass the authoritative "
+                            "inventory gate, so the returned image uses the "
                             f"safer {safety_strategy.replace('_', ' ')} fallback."
                         )
+
+                returned_visual_change = assess_scene_visual_change(
+                    capture.normalized_beauty,
+                    presentation_normalized,
+                    capture.normalized_proposal_mask,
+                )
+                provider_spatial_pixels_retained = safety_strategy in {
+                    "provider_full_scene",
+                    "provider_full_scene_local_repairs",
+                }
+                if (
+                    provider_spatial_pixels_retained
+                    and not returned_visual_change.passed
+                ):
+                    outcome = "review_required"
+                    warnings.append(
+                        "The inventory-safe returned image did not retain enough "
+                        "full-scene spatial enhancement for automatic acceptance; "
+                        "review it against the source before saving."
+                    )
 
                 presentation = presentation_normalized.resize(
                     capture.source_beauty.size,
@@ -4295,64 +4679,8 @@ class Direct3DRenderService:
                     else None
                 )
                 visual_change_diagnostics = (
-                    {
-                        "passed": True,
-                        "whole_frame_mean_absolute_delta": (
-                            visual_change.whole_frame_mean_absolute_delta
-                        ),
-                        "proposal_mean_absolute_delta": (
-                            visual_change.proposal_mean_absolute_delta
-                        ),
-                        "proposal_detail_delta_p75": (
-                            visual_change.proposal_detail_delta_p75
-                        ),
-                        "proposal_photometric_residual_p95": (
-                            visual_change.proposal_photometric_residual_p95
-                        ),
-                        "novel_detail_edge_coverage": (
-                            visual_change.novel_detail_edge_coverage
-                        ),
-                        "context_mean_absolute_delta": (
-                            visual_change.context_mean_absolute_delta
-                        ),
-                        "context_photometric_residual_p95": (
-                            visual_change.context_photometric_residual_p95
-                        ),
-                        "context_detail_delta_p75": (
-                            visual_change.context_detail_delta_p75
-                        ),
-                        "context_pixel_count": visual_change.context_pixel_count,
-                        "context_frame_top_fraction": (
-                            visual_change.context_frame_top_fraction
-                        ),
-                        "minimum_whole_frame_mean_absolute_delta": (
-                            _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-                        ),
-                        "minimum_proposal_mean_absolute_delta": (
-                            _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
-                        ),
-                        "minimum_proposal_detail_delta_p75": (
-                            _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
-                        ),
-                        "minimum_proposal_photometric_residual_p95": (
-                            _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
-                        ),
-                        "minimum_novel_detail_edge_coverage": (
-                            _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
-                        ),
-                        "minimum_context_mean_absolute_delta": (
-                            _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
-                        ),
-                        "minimum_context_photometric_residual_p95": (
-                            _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
-                        ),
-                        "minimum_context_detail_delta_p75": (
-                            _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
-                        ),
-                        "context_change_required": True,
-                        "color_grade_only_rejected": True,
-                    }
-                    if visual_change.passed
+                    _visual_change_diagnostics(returned_visual_change)
+                    if returned_visual_change.passed
                     else None
                 )
                 output_png = _png_bytes(presentation)
@@ -4370,8 +4698,14 @@ class Direct3DRenderService:
                             if returned_source_pixel_locked
                             else "camera_registered"
                         ),
-                        "context_restyled": safety_strategy != "authoritative_source",
-                        "provider_first": True,
+                        "context_restyled": (
+                            provider_spatial_pixels_retained
+                            and returned_visual_change.passed
+                        ),
+                        "provider_first": provider_spatial_pixels_retained,
+                        "provider_spatial_pixels_retained": (
+                            provider_spatial_pixels_retained
+                        ),
                         "provider_raw_structural_edge_fidelity": provider_edge_diagnostics,
                         "provider_raw_instance_source_presence": (
                             _instance_presence_diagnostics(instance_presence)
@@ -4382,6 +4716,10 @@ class Direct3DRenderService:
                             )
                         ),
                         "returned_safety_strategy": safety_strategy,
+                        "local_repair_coverage": local_repair_coverage,
+                        "maximum_local_repair_coverage": (
+                            _MAX_SCENE_LOCAL_REPAIR_COVERAGE
+                        ),
                         "macro_design_fidelity": _macro_diagnostics(
                             macro_fidelity,
                             req.fidelity_policy,

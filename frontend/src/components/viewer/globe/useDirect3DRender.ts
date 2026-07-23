@@ -20,6 +20,37 @@ export type Direct3DFidelityPolicy = 'precise' | 'balanced' | 'expressive';
 export const DIRECT_3D_STYLE_IDS = Object.freeze(Object.keys(GLOBE_STYLE_PROMPTS));
 export const DIRECT_3D_ALLOWED_STYLES = new Set(DIRECT_3D_STYLE_IDS);
 
+/**
+ * Direct 3D starts from an already designed, textured scene, so its defaults
+ * describe only the desired finish. Classic's prompts also contain
+ * polygon-to-building reconstruction instructions and remain deliberately
+ * unchanged for the colored-polygon pipeline.
+ */
+export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> = Object.freeze({
+  photorealistic: 'Create a high-end contemporary architectural competition visualization with convincing real materials, clear glazing, polished public realm, realistic landscape detail and natural atmospheric depth. Use bright softly diffused daylight, balanced exposure, gentle shadows and reflections, muted natural colours, crisp facade detail and a subtly softened photographic finish. The completed proposal and its city context should read as one calm, elegant, believable place.',
+  photomontage: 'Create a professional architectural photomontage that reads as a real drone photograph of the completed proposal. Match material response, daylight, shadows, atmospheric haze, lens character and colour across the proposal and surrounding city so there is no visible compositing seam.',
+  development: 'Create a polished completed-development visualization with credible facade, glazing, roof, entrance and public-realm detail. Use natural daylight, realistic material variation, restrained planting and believable everyday activity so the proposal feels built, occupied and integrated with its surroundings.',
+  atmospheric: 'Create cinematic architectural photography with warm directional light, soft haze, layered atmospheric depth, convincing reflections and restrained interior glow. Keep materials believable and the overall image elegant rather than theatrical or oversaturated.',
+  winter: 'Create convincing winter architectural photography with seasonally appropriate snow, bare deciduous trees, evergreens, cold diffused daylight, soft blue-grey shadows, subtle melt and salt-grit detail, and restrained warm interior light.',
+  night: 'Create realistic blue-hour architectural photography with plausible interior, facade and street lighting, wet or softly reflective paving, natural dark-sky exposure and legible material detail without excessive glow.',
+  watercolour: 'Create a refined architectural watercolour on textured paper with translucent layered washes, restrained earth colours, soft pigment blooms, loose foliage and enough precise edge definition to keep the design clearly legible.',
+  charcoal: 'Create a controlled architectural charcoal illustration on textured paper with a full tonal range, confident structural edges, atmospheric smudging and deep but readable shadows.',
+  'marker-render': 'Create a professional architectural marker rendering with precise ink linework, visible directional marker strokes, warm greys and ochres, restrained landscape colour and deliberate white highlights.',
+  'pen-and-ink': 'Create a precise architectural pen-and-ink illustration on warm paper using varied line weights, discrete hatching and stippling, crisp construction edges and no colour wash.',
+  survey: 'Create a neutral large-format aerial survey photograph with even daylight, true-to-life colour, edge-to-edge clarity and highly legible materials, roofs, streets and landscape.',
+  documentary: 'Create calm documentary architectural photography with flat natural daylight, restrained true-to-life colour, honest material variation and an ordinary inhabited quality without cinematic dramatization.',
+  'site-plan': 'Create a clean north-up orthographic architectural site plan with precise linework, a restrained pastel palette, clear circulation, simple top-down trees and professional planning-drawing legibility.',
+  'site-plan-photo': 'Create a near-nadir photographic drone site-plan view with realistic roofs, landscape, streets and short shadows, integrated seamlessly with the surrounding city context.',
+  blueprint: 'Create a strict orthographic architectural blueprint with crisp white construction linework, hatching and tree symbols on a deep Prussian-blue cyanotype ground with subtle aged-paper texture.',
+  'site-plan-watercolor': 'Create a near-nadir architectural site plan as a refined hand-painted watercolour with translucent ochre, sage, grey and ultramarine washes, faint pencil construction lines and clearly legible site organization.',
+  isometric: 'Create a clean 30-degree axonometric architectural visualization with consistent parallel projection, smooth matte colours, crisp edges and a polished contemporary diagram aesthetic.',
+  'clay-maquette': 'Create high-angle studio photography of a monochrome pure-white plaster architectural scale model, using soft overhead light and ambient-occlusion shadows to reveal form without any coloured materials.',
+  woodblock: 'Create a graphic architectural woodblock print with bold carved outlines, visible wood grain and a restrained vintage palette of crisp flat colours.',
+  collage: 'Create a refined post-digital architectural collage with layered paper, carefully cut photographic textures, restrained colour blocks and competition-board composition while keeping the design clearly readable.',
+  risograph: 'Create an architectural risograph with a controlled two- or three-colour spot palette, halftone texture, light grain and subtle intentional colour misregistration.',
+  'pixel-art': 'Create a polished 16-bit architectural pixel-art scene with uniform grid-aligned pixels, a strict limited palette, selective outlines and checkerboard dithering.',
+});
+
 export function resolveDirect3DPresentationMode(style: string): Direct3DActivePresentationMode {
   return REPROJECTING_STYLES.has(style) ? 'reproject' : 'scene';
 }
@@ -53,6 +84,7 @@ export interface Direct3DRenderDiagnostics {
   view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
   context_restyled?: boolean;
   provider_first?: boolean;
+  provider_spatial_pixels_retained?: boolean;
   fidelity_policy?: Direct3DFidelityPolicy;
   instance_id_attached?: boolean;
   instance_count?: number;
@@ -73,10 +105,14 @@ export interface Direct3DRenderDiagnostics {
     | 'source_envelope'
     | 'source_envelope_all_authored_interiors'
     | 'source_envelope_building_interiors'
+    | 'provider_full_scene'
+    | 'provider_full_scene_local_repairs'
     | 'global_tone_with_safe_building_interiors'
     | 'global_tone_only'
     | 'authoritative_source'
     | null;
+  local_repair_coverage?: number | null;
+  maximum_local_repair_coverage?: number | null;
   instance_source_presence?: {
     passed: boolean;
     evaluated_instance_count?: number;
@@ -261,38 +297,24 @@ export interface Direct3DRenderResult {
   fidelityPolicy: Direct3DFidelityPolicy;
 }
 
-function visibleClassSummary(
-  coverage: Partial<Record<Direct3DProposalRole, number>>,
-): string {
-  const parts = Object.entries(coverage)
-    .filter((entry): entry is [Direct3DProposalRole, number] => Number.isFinite(entry[1]) && entry[1] > 0)
-    .map(([role, amount]) => `${role} ${(amount * 100).toFixed(1)}%`);
-  return parts.length ? `Visible proposal classes: ${parts.join(', ')}.` : '';
-}
-
 export function buildDirect3DVisualPrompt(
   style: string,
   customPrompt: string | undefined,
-  capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
-  fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
+  _capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
+  _fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
 ): string {
-  const presentationMode = resolveDirect3DPresentationMode(style);
   const custom = customPrompt?.trim();
-  const fidelityInstruction = fidelityPolicy === 'precise'
-    ? 'PRECISE FIDELITY: retain surveyed silhouettes, rooflines, dimensions, camera and context structure; improve only finish, material realism, lighting and atmosphere.'
-    : fidelityPolicy === 'expressive'
-      ? 'EXPRESSIVE FIDELITY: artistic edge and projection interpretation is permitted, but the exact authored building, park, street and protected-feature inventory and topology remain binding.'
-      : 'BALANCED FIDELITY: improve facade, roof, landscape and public-realm presentation with modest edge variation while preserving every authored building, park, street, intersection and protected feature.';
-  return [
-    `DIRECT 3D STYLE ID: ${DIRECT_3D_ALLOWED_STYLES.has(style) ? style : 'photorealistic'}.`,
-    `PRESENTATION MODE: ${presentationMode.toUpperCase()}.`,
-    fidelityInstruction,
-    'The server-supplied semantic, instance and structural guides are authoritative. Do not add, remove, split or merge permanent buildings or major site features.',
-    'Outside the parcel, preserve the existing building, road, water and open-space inventory. Changes to material, light, weather and atmospheric finish are allowed.',
-    'Allowed additions are limited to non-permanent scale entourage such as people and vehicles unless the instance inventory explicitly identifies another authored feature.',
-    visibleClassSummary(capture.classCoverage),
-    custom ? `ADDITIONAL ART DIRECTION: ${custom}` : '',
-  ].filter(Boolean).join('\n');
+  const resolvedStyle = DIRECT_3D_ALLOWED_STYLES.has(style)
+    ? style
+    : 'photorealistic';
+  const styleDirection = DIRECT_3D_DEFAULT_ART_DIRECTIONS[resolvedStyle];
+  // Keep the selected aesthetic meaningful when the user adds only a short
+  // project cue such as "New York brownstone multifamily." Direct defaults
+  // are deliberately concise, so a full custom brief can refine them without
+  // recreating the former prompt wall.
+  return custom
+    ? `${styleDirection}\nPROJECT-SPECIFIC ART DIRECTION: ${custom}`
+    : styleDirection;
 }
 
 export function useDirect3DRender() {

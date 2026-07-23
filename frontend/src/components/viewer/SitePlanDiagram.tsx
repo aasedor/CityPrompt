@@ -27,23 +27,29 @@ export function SitePlanDiagram({
   showLabels = true,
   showDimensions = true,
 }: SitePlanDiagramProps) {
+  const coords = zone.coordinates;
+
   const transform = useMemo(
-    () => computeTransform(zone.coordinates, width, height),
-    [zone.coordinates, width, height],
+    () => coords && coords.length >= 3
+      ? computeTransform(coords, width, height)
+      : { cx: 0, cy: 0, mlon: 1, mlat: 1, scale: 1, offsetX: 0, offsetY: 0, svgW: width, svgH: height },
+    [coords, width, height],
   );
 
   // Zone boundary polygon SVG points
   const boundaryPoints = useMemo(() => {
-    return zone.coordinates
+    if (!coords || coords.length < 3) return '';
+    return coords
       .map((c) => toSVG(c[0], c[1], transform))
       .map(([x, y]) => `${x},${y}`)
       .join(' ');
-  }, [zone.coordinates, transform]);
+  }, [coords, transform]);
 
   // Compute zone dimensions in meters
   const dimensions = useMemo(() => {
-    const lngs = zone.coordinates.map((c) => c[0]);
-    const lats = zone.coordinates.map((c) => c[1]);
+    if (!coords || coords.length < 2) return { width: 0, depth: 0 };
+    const lngs = coords.map((c) => c[0]);
+    const lats = coords.map((c) => c[1]);
     const w = (Math.max(...lngs) - Math.min(...lngs)) * transform.mlon;
     const d = (Math.max(...lats) - Math.min(...lats)) * transform.mlat;
     return { width: Math.round(w), depth: Math.round(d) };

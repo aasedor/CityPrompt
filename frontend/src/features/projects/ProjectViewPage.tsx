@@ -1,31 +1,98 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Building2, Plus, Loader2, CheckCircle, AlertCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
-import { projectsApi, buildingsApi } from '@/services/api';
+import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
+import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
+import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
+import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
+import { LegoBuilderPanel } from '@/features/legoAssembly/LegoBuilderPanel';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
+import { HistoryPanel } from '@/components/viewer/HistoryPanel';
+import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
+import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
+import { useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
+import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
+import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
+import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { ShapefileImportButton } from './ShapefileImportButton';
+import { LayersPanel } from './LayersPanel';
+import { OnboardingTour } from '@/components/viewer/OnboardingTour';
 import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
+import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
+import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { isTextEntryTarget } from '@/utils/domEvents';
+import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
+import type { Direct3DCaptureBundle } from '@/components/viewer/globe/direct3dCapture';
+
+const GLOBE_RENDER_PANEL_WIDTH = 704;
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
+  const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
+  const [showLegoBuilder, setShowLegoBuilder] = useState(false);
+  const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
+  const [showProjectRenders, setShowProjectRenders] = useState(false);
+  const [showTour, setShowTour] = useState(false);
+  const [showGlobeRender, setShowGlobeRender] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [measureActive, setMeasureActive] = useState(false);
+  const [aiPanelLightboxOpen, setAiPanelLightboxOpen] = useState(false);
+  const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
+  const [globeRefs, setGlobeRefs] = useState<{
+    canvas: HTMLCanvasElement;
+    camera: any;
+    terrainHeight: number;
+    isSettled?: boolean;
+    waitForTilesSettled?: () => Promise<boolean>;
+    setBuildingModelsVisible?: (visible: boolean) => void;
+    captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+  } | null>(null);
+  // Buildings whose generated GLB is currently placed on the globe — the
+  // render panel keys "render with 3D models" behavior off this set.
+  const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
+  const globeRenderDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
+
+  // Globe street view capture
+  const { captureStreetView } = useGlobeAIRender();
+  const { flyToStreetLevel, restoreAerialView, saveCameraState } = useGlobeCamera();
+
+  const handleGlobeStreetCapture = useCallback(async (): Promise<string | null> => {
+    if (!globeRefs?.canvas || !globeRefs?.camera) return null;
+    const pegman = useViewerStore.getState().streetViewPegman;
+    if (!pegman?.position) return null;
+    const [lng, lat] = pegman.position;
+    return captureStreetView(
+      globeRefs.canvas, globeRefs.camera,
+      lat, lng, pegman.angle,
+      pegman.terrainHeight ?? globeRefs.terrainHeight,
+      flyToStreetLevel, restoreAerialView, saveCameraState,
+    );
+  }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
+
+  // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
+  useUndoRedoKeyboard();
 
   // Site planner store + zone CRUD + workflow
   const {
@@ -36,6 +103,9 @@ export function ProjectViewPage() {
     mapInstance,
     workflowStep,
     setWorkflowStep,
+    settings,
+    activeSitePlannerTool,
+    lightboxImageUrl,
   } = useViewerStore();
 
   const {
@@ -48,14 +118,116 @@ export function ProjectViewPage() {
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
 
+  // --- Imported shapefile "layers" (zones grouped by properties._imported_from) ---
+  const [hiddenLayers, setHiddenLayers] = useState<Set<string>>(new Set());
+  const [deletingLayer, setDeletingLayer] = useState<string | null>(null);
+
+  const toggleLayer = useCallback((name: string) => {
+    setHiddenLayers((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }, []);
+
+  const visibleZones = useMemo(() => {
+    if (hiddenLayers.size === 0) return siteZones;
+    return siteZones.filter((z) => {
+      const src = z.properties?._imported_from;
+      return !(typeof src === 'string' && hiddenLayers.has(src));
+    });
+  }, [siteZones, hiddenLayers]);
+
+  // Height-framework layers are reference overlays (LAP-style storey bands
+  // covering whole blocks) — visible by default they bury the actual plan
+  // under one giant polygon. Hide each ONCE on first sight; a user re-show
+  // from the Layers panel sticks because we never auto-hide the same layer twice.
+  const autoHiddenFrameworksRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const frameworks = siteZones
+      .map((z) => z.properties?._imported_from)
+      .filter((src): src is string => typeof src === 'string' && src.startsWith('Height framework — '));
+    const fresh = frameworks.filter((name) => !autoHiddenFrameworksRef.current.has(name));
+    if (fresh.length === 0) return;
+    fresh.forEach((name) => autoHiddenFrameworksRef.current.add(name));
+    setHiddenLayers((prev) => {
+      const next = new Set(prev);
+      fresh.forEach((name) => next.add(name));
+      return next;
+    });
+  }, [siteZones]);
+
+  // Solo one scenario's plan on the globe (dispatched by SiteIntelligencePanel,
+  // which sits two components down inside ZonePropertiesPanel). Only plan and
+  // height-framework layers are touched; shapefile-layer hiding is preserved.
+  useEffect(() => {
+    // Solo manages ONLY drawn plan layers. Height-framework overlays are owned
+    // by the auto-hide effect above and must stay hidden — including through
+    // "All" (a null label). Treating frameworks as "planish" here previously
+    // stripped them out of hiddenLayers on every solo/All, and the auto-hide
+    // effect (one-shot per name) never re-hid them, flooding the plan with
+    // giant storey-band polygons.
+    const isPlanLayer = (name: string) => name.startsWith('Plan — ');
+    const onSolo = (event: Event) => {
+      const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
+      setHiddenLayers((prev) => {
+        const next = new Set([...prev].filter((n) => !isPlanLayer(n)));
+        if (!label) return next; // "All" — show every plan (frameworks untouched)
+        for (const zone of siteZones) {
+          const src = zone.properties?._imported_from;
+          if (typeof src === 'string' && isPlanLayer(src) && src !== `Plan — ${label}`) {
+            next.add(src);
+          }
+        }
+        return next;
+      });
+    };
+    window.addEventListener('cityprompt:solo-plan-layer', onSolo);
+    return () => window.removeEventListener('cityprompt:solo-plan-layer', onSolo);
+  }, [siteZones]);
+
+  const deleteLayer = useCallback(async (name: string) => {
+    const zones = siteZones.filter((z) => {
+      const src = z.properties?._imported_from;
+      return typeof src === 'string' && src === name;
+    });
+    if (zones.length === 0) return;
+    setDeletingLayer(name);
+    const toastId = toast.loading(`Deleting layer "${name}"…`);
+    try {
+      for (const z of zones) await siteZonesApi.delete(z.id);
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+      setHiddenLayers((prev) => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+      toast.success(
+        `Deleted "${name}" (${zones.length} feature${zones.length === 1 ? '' : 's'})`,
+        { id: toastId },
+      );
+    } catch (e) {
+      toast.error(`Failed to delete layer: ${(e as Error).message}`, { id: toastId });
+    } finally {
+      setDeletingLayer(null);
+    }
+  }, [siteZones, queryClient, id]);
+
   const hasEditableZones = siteZones.some((z) =>
-    (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area')
+    z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3
   );
 
   // Activate site planner on mount, pre-select buildings tool, reset workflow step
+  // Load saved renders for this project
+  useEffect(() => {
+    if (!id) return;
+    rendersApi.list(id).then(setSavedRenders).catch(() => {});
+  }, [id]);
+
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool('building');
+    setActiveSitePlannerTool(window.matchMedia('(min-width: 640px)').matches ? 'building' : null);
     setWorkflowStep(1);
     return () => {
       setSitePlannerActive(false);
@@ -69,6 +241,129 @@ export function ProjectViewPage() {
     selectZone(zoneId);
   }, [selectZone]);
 
+  const clampGlobeRenderPosition = useCallback((position: { x: number; y: number }) => {
+    if (typeof window === 'undefined') return position;
+    const panelWidth = Math.min(GLOBE_RENDER_PANEL_WIDTH, Math.max(320, window.innerWidth - 32));
+    return {
+      x: Math.min(Math.max(12, position.x), Math.max(12, window.innerWidth - panelWidth - 12)),
+      y: Math.min(Math.max(12, position.y), Math.max(12, window.innerHeight - 96)),
+    };
+  }, []);
+
+  const getDefaultGlobeRenderPosition = useCallback(() => {
+    if (typeof window === 'undefined') return { x: 320, y: 420 };
+    const panelWidth = Math.min(GLOBE_RENDER_PANEL_WIDTH, Math.max(320, window.innerWidth - 32));
+    const panelHeight = Math.min(420, window.innerHeight * 0.44);
+    return clampGlobeRenderPosition({
+      x: (window.innerWidth - panelWidth) / 2,
+      y: window.innerHeight - panelHeight - 16,
+    });
+  }, [clampGlobeRenderPosition]);
+
+  const handleGlobeRenderDragStart = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+
+    const handleRect = event.currentTarget.getBoundingClientRect();
+    const origin = globeRenderPosition ?? (
+      handleRect.width > 0 && handleRect.height > 0
+        ? clampGlobeRenderPosition({ x: handleRect.left, y: handleRect.top })
+        : getDefaultGlobeRenderPosition()
+    );
+    globeRenderDragRef.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: origin.x,
+      originY: origin.y,
+    };
+    setGlobeRenderPosition(origin);
+    setIsDraggingGlobeRender(true);
+
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      const drag = globeRenderDragRef.current;
+      if (!drag) return;
+      setGlobeRenderPosition(clampGlobeRenderPosition({
+        x: drag.originX + moveEvent.clientX - drag.startX,
+        y: drag.originY + moveEvent.clientY - drag.startY,
+      }));
+    };
+
+    const handlePointerUp = () => {
+      globeRenderDragRef.current = null;
+      setIsDraggingGlobeRender(false);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointercancel', handlePointerUp);
+  }, [clampGlobeRenderPosition, getDefaultGlobeRenderPosition, globeRenderPosition]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setGlobeRenderPosition((position) => position ? clampGlobeRenderPosition(position) : position);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [clampGlobeRenderPosition]);
+
+  const handleMeasureModeChange = useCallback((active: boolean) => {
+    setMeasureActive(active);
+    if (active) {
+      setShowGlobeRender(false);
+      selectZone(null);
+      setActiveSitePlannerTool(null);
+    }
+  }, [selectZone, setActiveSitePlannerTool]);
+
+  const handleToggleHistory = useCallback(() => {
+    setShowGlobeRender(false);
+    setMeasureActive(false);
+    setShowHistory((open) => !open);
+  }, []);
+
+  // Master Plan tool: open Site Intelligence on the site boundary (or start drawing one).
+  // Must clear every state that hides ZonePropertiesPanel (history, measure, step 2),
+  // or the click is invisible and the button reads as dead.
+  const handleMasterPlan = useCallback(() => {
+    setMeasureActive(false);
+    setShowHistory(false);
+    setWorkflowStep(1);
+    const boundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    if (boundary) {
+      setActiveSitePlannerTool(null);
+      selectZone(boundary.id);
+    } else {
+      selectZone(null);
+      setActiveSitePlannerTool('site_boundary');
+      toast('Draw your site boundary first — the Master Plan tool analyzes everything inside it.', { icon: '🧠' });
+    }
+  }, [siteZones, selectZone, setActiveSitePlannerTool, setWorkflowStep]);
+
+  const masterPlanActive =
+    workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
+
+  const handleOpenGlobeRender = useCallback(() => {
+    setShowHistory(false);
+    setMeasureActive(false);
+    setGlobeRenderPosition(null);
+    setShowGlobeRender(true);
+  }, []);
+
+  const prepareForAIRenderCapture = useCallback(async () => {
+    const tilesSettled = await globeRefs?.waitForTilesSettled?.();
+    if (tilesSettled === false) {
+      throw new Error('Google 3D detail is still loading. Keep this view still for a few seconds, then try the render again. No credits were used.');
+    }
+    if (useViewerStore.getState().selectedZoneId) {
+      selectZone(null);
+    }
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+  }, [globeRefs, selectZone]);
+
   // ── AI Render state ────────────────────────────────────────────────
   const [aiRenderResult, setAiRenderResult] = useState<AIRenderResult | null>(null);
   const [showRenderModal, setShowRenderModal] = useState(false);
@@ -77,6 +372,59 @@ export function ProjectViewPage() {
   const [isGeneratingFull, setIsGeneratingFull] = useState(false);
   const [fullRenderResult, setFullRenderResult] = useState<AIRenderResult | null>(null);
   const [renderProgressMessage, setRenderProgressMessage] = useState('');
+  const [activeAIStyle, setActiveAIStyle] = useState('photorealistic');
+  const autoSavedRenderKeysRef = useRef<Set<string>>(new Set());
+
+  const rememberSavedRender = useCallback((render: SavedRender) => {
+    setSavedRenders((current) => [render, ...current.filter((item) => item.id !== render.id)]);
+    setShowProjectRenders(true);
+  }, []);
+
+  const handleEditRender = useCallback((render: SavedRender) => {
+    setRenderEditTarget(render);
+    setRenderLightbox(null);
+  }, []);
+
+  const refreshSavedRenders = useCallback(() => {
+    if (!id) return;
+    rendersApi.list(id).then(setSavedRenders).catch(() => {});
+  }, [id]);
+
+  const autoSaveAIRenders = useCallback((renders: AIRenderResult[], style: string) => {
+    if (!id || renders.length === 0) return;
+
+    const unsaved = renders.map((render, index) => ({ render, index, key: getRenderImageKey(render) })).filter(({ key }) => {
+      if (autoSavedRenderKeysRef.current.has(key)) return false;
+      autoSavedRenderKeysRef.current.add(key);
+      return true;
+    });
+
+    if (unsaved.length === 0) return;
+
+    Promise.allSettled(
+      unsaved.map(({ render, index }) => saveRenderedImage(
+        id,
+        render,
+        renders.length > 1 ? `${style} preview ${index + 1}` : style,
+      )),
+    ).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          autoSavedRenderKeysRef.current.delete(unsaved[index].key);
+        }
+      });
+      const saved = results
+        .filter((result): result is PromiseFulfilledResult<SavedRender> => result.status === 'fulfilled')
+        .map((result) => result.value);
+
+      if (saved.length === 0) return;
+      setSavedRenders((current) => [
+        ...saved,
+        ...current.filter((item) => !saved.some((render) => render.id === item.id)),
+      ]);
+      setShowProjectRenders(true);
+    }).catch(() => undefined);
+  }, [id]);
 
   /** Handle AI render result — overlay on map */
   const handleAIRenderComplete = useCallback((result: AIRenderResult) => {
@@ -118,13 +466,15 @@ export function ProjectViewPage() {
     }
   }, [mapInstance]);
 
-  /** When AIRenderPanel produces previews, open the full-screen modal */
+  /** When AIRenderPanel produces previews, persist them and return to the project workspace. */
   const handlePreviewsReady = useCallback((previews: AIRenderResult[]) => {
     setRenderPreviews(previews);
     setRenderModalSelectedIdx(null);
     setFullRenderResult(null);
-    setShowRenderModal(true);
-  }, []);
+    setShowRenderModal(false);
+    autoSaveAIRenders(previews, activeAIStyle);
+    setWorkflowStep(1);
+  }, [activeAIStyle, autoSaveAIRenders, setWorkflowStep]);
 
   /** When user selects a preview in the modal */
   const handleModalSelectPreview = useCallback(async (index: number) => {
@@ -160,6 +510,61 @@ export function ProjectViewPage() {
     }
   }, [handleAIRenderComplete, showRenderModal]);
 
+  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!renderEditTarget || !!lightboxImageUrl || aiPanelLightboxOpen;
+
+  const stepRenderLightbox = useCallback((direction: -1 | 1) => {
+    setRenderLightbox((current) => {
+      if (!current || savedRenders.length < 2) return current;
+      const currentIndex = savedRenders.findIndex((render) => render.id === current.id);
+      const startIndex = currentIndex >= 0 ? currentIndex : 0;
+      const nextIndex = (startIndex + direction + savedRenders.length) % savedRenders.length;
+      return savedRenders[nextIndex] ?? current;
+    });
+  }, [savedRenders]);
+
+
+  useEffect(() => {
+    if (!renderLightbox) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't hijack keys while typing in a field (e.g. the Edit Render box).
+      if (isTextEntryTarget(e.target)) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setRenderLightbox(null);
+        return;
+        }
+
+        if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          stepRenderLightbox(-1);
+          return;
+        }
+
+        if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          stepRenderLightbox(1);
+          return;
+        }
+
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown, true);
+      return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [renderLightbox, stepRenderLightbox]);
+
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
     queryFn: () => projectsApi.get(id!),
@@ -172,6 +577,21 @@ export function ProjectViewPage() {
       );
       return hasGenerating ? 3000 : false;
     },
+  });
+
+  const deleteModeledBuilding = useMutation({
+    mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
+    onSuccess: async (_result, buildingId) => {
+      setModeledBuildingIds((previous) => {
+        const next = new Set(previous);
+        next.delete(buildingId);
+        return next;
+      });
+      await queryClient.invalidateQueries({ queryKey: ['project', id] });
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+      toast.success('3D model deleted');
+    },
+    onError: (error: Error) => toast.error(`Failed to delete 3D model: ${error.message}`),
   });
 
   // Toast when document processing completes or fails
@@ -190,34 +610,298 @@ export function ProjectViewPage() {
     }
   }, [project?.documents]);
 
-  // Generation elapsed timer
-  const generatingBuildingCount = useMemo(() => {
-    if (!project?.buildings) return 0;
-    return project.buildings.filter((b: { generation_status?: string }) => b.generation_status === 'generating').length;
-  }, [project?.buildings]);
-
-  const [genStartTime, setGenStartTime] = useState<number | null>(null);
-  const [genElapsed, setGenElapsed] = useState(0);
-
-  useEffect(() => {
-    if (generatingBuildingCount > 0) {
-      setGenStartTime((prev) => prev ?? Date.now());
-    } else if (genStartTime) {
-      setGenStartTime(null);
-      setGenElapsed(0);
-    }
-  }, [generatingBuildingCount, genStartTime]);
-
-  useEffect(() => {
-    if (!genStartTime) return;
-    const tick = setInterval(() => {
-      setGenElapsed(Math.floor((Date.now() - genStartTime) / 1000));
-    }, 1000);
-    return () => clearInterval(tick);
-  }, [genStartTime]);
-
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
   if (!project) return <div className="text-center text-primary-950/50">Project not found</div>;
+
+  const globeRenderZones = withModeledBuildingRenderZones(
+    visibleZones,
+    project.buildings ?? [],
+    modeledBuildingIds,
+    project.id,
+  );
+
+  // --- Globe mode: full-screen Google 3D Tiles ---
+  if (settings.mapMode === 'globe') {
+    return (
+      <div className="fixed inset-0 z-50 bg-black" style={{ top: 0 }}>
+        <GlobeSitePlannerMap
+          latitude={project.location?.latitude}
+          longitude={project.location?.longitude}
+          siteZones={visibleZones}
+          buildings={project.buildings}
+          onZoneCreated={handleZoneCreated}
+          onZoneUpdated={handleZoneUpdated}
+          onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
+          onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+          onBuildingDeleted={(buildingId) => deleteModeledBuilding.mutate(buildingId)}
+          onGlobeReady={setGlobeRefs}
+          onModeledBuildingsChange={setModeledBuildingIds}
+          measureModeActive={measureActive}
+          interactionPaused={renderViewerActive}
+          onMeasureModeChange={handleMeasureModeChange}
+        />
+
+        {/* Toolbar - hidden on phones during focused vertex placement. */}
+        <div
+          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          style={{
+            top: 'clamp(5rem, 22dvh, 17rem)',
+          }}
+        >
+          <div className="pointer-events-auto">
+            <SitePlannerToolbar
+              layout="sidebar"
+              isGlobeMode
+              onToggleHistory={handleToggleHistory}
+              historyOpen={showHistory}
+              measureActive={measureActive}
+              onMeasureModeChange={handleMeasureModeChange}
+              onMasterPlan={handleMasterPlan}
+              masterPlanActive={masterPlanActive}
+              uploadSlot={
+                <ShapefileImportButton
+                  projectId={project.id}
+                  iconSize={14}
+                  className="site-planner-tool-button flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515] disabled:opacity-60"
+                />
+              }
+              bottomSlot={
+                !showGlobeRender ? (
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={handleOpenGlobeRender}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                    >
+                      <Camera size={16} />
+                      Render
+                    </button>
+                    <button
+                      onClick={() => setShowLegoBuilder(true)}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                    >
+                      <Blocks size={16} />
+                      LEGO Builder
+                    </button>
+                  </div>
+                ) : null
+              }
+            />
+          </div>
+        </div>
+
+        {/* Imported layers panel (top-right; yields to the zone properties panel) */}
+        {!selectedZone && !showHistory && !measureActive && (
+          <div className="absolute right-4 top-16 z-40 max-w-[calc(100vw-2rem)]">
+            <LayersPanel
+              siteZones={siteZones}
+              hiddenLayers={hiddenLayers}
+              onToggleLayer={toggleLayer}
+              onDeleteLayer={deleteLayer}
+              deletingLayer={deletingLayer}
+            />
+          </div>
+        )}
+
+        {/* Zone properties panel */}
+        {selectedZone && !showHistory && !measureActive && (
+          <div className="pointer-events-none absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
+            <ZonePropertiesPanel
+              key={selectedZone.id}
+              zone={selectedZone}
+              onUpdate={(zoneId, data) => {
+                const previousZone = siteZones.find((z) => z.id === zoneId);
+                updateZone.mutate({
+                  zoneId,
+                  data,
+                  previousData: previousZone
+                    ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
+                    : undefined,
+                });
+                if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+              }}
+              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+              onClose={() => selectZone(null)}
+              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+              buildings={project.buildings}
+              allZones={siteZones}
+            />
+          </div>
+        )}
+
+        {showHistory && !showGlobeRender && id && (
+          <HistoryPanel
+            projectId={id}
+            siteZones={siteZones}
+            onClose={() => setShowHistory(false)}
+          />
+        )}
+
+        {/* AI Render expanded panel — bottom dock keeps the properties panel reachable. */}
+        {showGlobeRender && (
+          <div
+            className="absolute z-30"
+            style={{
+              left: globeRenderPosition?.x ?? '50%',
+              top: globeRenderPosition?.y,
+              bottom: globeRenderPosition ? undefined : 48,
+              transform: globeRenderPosition ? undefined : 'translateX(-50%)',
+            }}
+          >
+            <div className="w-[44rem] max-w-[calc(100vw-2rem)]">
+              <GlobeAIRenderPanel
+                canvas={globeRefs?.canvas ?? null}
+                camera={globeRefs?.camera ?? null}
+                siteZones={globeRenderZones}
+                communitySourceZones={visibleZones}
+                buildings={project?.buildings ?? []}
+                terrainHeight={globeRefs?.terrainHeight ?? 1045}
+                projectId={project?.id}
+                selectedZoneId={selectedZoneId}
+                modeledBuildingIds={modeledBuildingIds}
+                setBuildingModelsVisible={globeRefs?.setBuildingModelsVisible}
+                captureDirect3D={globeRefs?.captureDirect3D}
+                onBeforeRender={prepareForAIRenderCapture}
+                isDragging={isDraggingGlobeRender}
+                onLightboxOpenChange={setAiPanelLightboxOpen}
+                onRenderSaved={rememberSavedRender}
+                dragHandleProps={{
+                  onPointerDown: handleGlobeRenderDragStart,
+                }}
+                onClose={() => setShowGlobeRender(false)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Back button */}
+        <div className="absolute left-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] items-center gap-3">
+          <Link to="/projects" className="shrink-0 rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
+            <ArrowLeft size={18} className="text-white" />
+          </Link>
+          <span className="min-w-0 max-w-[calc(100vw-5.5rem)] truncate text-sm font-medium text-white/80 sm:max-w-none">
+            {project.name}
+          </span>
+        </div>
+
+        {/* Street View Panel — with globe 3D tiles capture */}
+
+        <ProjectRendersTray
+          renders={savedRenders}
+          open={showProjectRenders}
+          onToggle={() => setShowProjectRenders((open) => !open)}
+          onClose={() => setShowProjectRenders(false)}
+          onSelect={setRenderLightbox}
+        />
+
+        <StreetViewPanel
+          siteZones={siteZones}
+          projectId={project?.id}
+          globeCapture={handleGlobeStreetCapture}
+          onRenderSaved={rememberSavedRender}
+        />
+
+        {renderLightbox && (
+          <div
+            className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setRenderLightbox(null)}
+          >
+            <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(event) => event.stopPropagation()}>
+              <img
+                src={resolveApiFileUrl(renderLightbox.image_url)}
+                alt={renderLightbox.prompt || 'Saved render'}
+                className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+              />
+              {savedRenders.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => stepRenderLightbox(-1)}
+                    className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                    aria-label="Previous render"
+                    title="Previous render (Left or A)"
+                  >
+                    <ArrowLeft size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => stepRenderLightbox(1)}
+                    className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                    aria-label="Next render"
+                    title="Next render (Right or D)"
+                  >
+                    <ArrowLeft size={20} className="rotate-180" />
+                  </button>
+                </>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+                {renderLightbox.prompt && (
+                  <p className="text-sm text-white/90 line-clamp-2">{renderLightbox.prompt}</p>
+                )}
+                <p className="mt-1 text-xs text-white/50">
+                  {new Date(renderLightbox.created_at).toLocaleDateString()}
+                  {renderLightbox.style && ` · ${renderLightbox.style}`}
+                </p>
+              </div>
+              <div className="absolute top-3 right-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleEditRender(renderLightbox)}
+                  className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
+                <a
+                  href={resolveApiFileUrl(renderLightbox.image_url)}
+                  download={`render-${renderLightbox.id}.png`}
+                  className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                  title="Download"
+                >
+                  <FileDown size={18} />
+                </a>
+                <button
+                  onClick={() => setRenderLightbox(null)}
+                  className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Close render"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Double-click a variant to open large preview */}
+        <ImageLightbox />
+        {id && renderEditTarget && (
+          <RenderEditModal
+            projectId={id}
+            render={renderEditTarget}
+            imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+            onSaved={rememberSavedRender}
+            onClose={() => setRenderEditTarget(null)}
+          />
+        )}
+
+        {/* LEGO assembly composer — modular building preview + saved recipes */}
+        {legoZone && (
+          <LegoAssemblyPreview
+            zone={legoZone}
+            buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
+            onClose={() => setLegoZone(null)}
+          />
+        )}
+
+        {/* LEGO builder — the whole plan assembled from archetype modules */}
+        {showLegoBuilder && (
+          <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -276,19 +960,45 @@ export function ProjectViewPage() {
             onZoneUpdated={handleZoneUpdated}
             onZoneSelected={handleZoneSelected}
             onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+            interactionPaused={renderViewerActive}
           />
           {/* GIS color legend */}
           <ZoneLegend siteZones={siteZones} />
 
+          {/* Street View Panel */}
+          <StreetViewPanel siteZones={siteZones} projectId={project?.id} onRenderSaved={rememberSavedRender} />
+
+          {showHistory && id && (
+            <HistoryPanel
+              projectId={id}
+              siteZones={siteZones}
+              onClose={() => setShowHistory(false)}
+            />
+          )}
+
           {/* Step 1: Zone properties panel */}
-          {workflowStep === 1 && selectedZone && (
+          {workflowStep === 1 && selectedZone && !showHistory && (
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
-              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+              onUpdate={(zoneId, data) => {
+                const previousZone = siteZones.find((z) => z.id === zoneId);
+                updateZone.mutate({
+                  zoneId,
+                  data,
+                  previousData: previousZone
+                    ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
+                    : undefined,
+                });
+                // Re-buffer road polygon when width changes
+                if (siteZones) {
+                  rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+                }
+              }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />
@@ -302,8 +1012,21 @@ export function ProjectViewPage() {
               onRenderComplete={handleAIRenderCompleteWithModal}
               onPreviewsReady={handlePreviewsReady}
               onClearOverlay={handleClearAIOverlay}
+              projectId={project?.id}
+              onBeforeRender={prepareForAIRenderCapture}
+              onLightboxOpenChange={setAiPanelLightboxOpen}
+              onStyleChange={setActiveAIStyle}
+              onRenderSaved={rememberSavedRender}
             />
           )}
+
+          <ProjectRendersTray
+            renders={savedRenders}
+            open={showProjectRenders}
+            onToggle={() => setShowProjectRenders((open) => !open)}
+            onClose={() => setShowProjectRenders(false)}
+            onSelect={setRenderLightbox}
+          />
 
           {/* AI render result indicator */}
           {aiRenderResult && (
@@ -320,23 +1043,44 @@ export function ProjectViewPage() {
           )}
         </div>
 
+        {/* Onboarding tour */}
+        {workflowStep === 1 && <OnboardingTour forceShow={showTour} onComplete={() => setShowTour(false)} />}
+
         {/* Bottom toolbar — context-sensitive per step */}
-        <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
+        <div className="flex min-h-0 items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
           <div className="flex-1 min-w-0">
-            <SitePlannerToolbar />
+            <SitePlannerToolbar
+              onShowGuide={() => setShowTour(true)}
+              onToggleHistory={handleToggleHistory}
+              historyOpen={showHistory}
+              onMasterPlan={handleMasterPlan}
+              masterPlanActive={masterPlanActive}
+            />
           </div>
 
-          {/* Step 1: Render button to advance to step 2 */}
+          {/* Step 1: LEGO builder + Render button to advance to step 2 */}
           {workflowStep === 1 && (
-            <button
-              onClick={() => setWorkflowStep(2)}
-              disabled={!hasEditableZones}
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              title={hasEditableZones ? 'Generate AI render from current view' : 'Draw building or residential zones first'}
-            >
-              <Sparkles size={16} />
-              AI Render
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowLegoBuilder(true)}
+                disabled={!hasEditableZones}
+                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                title={hasEditableZones ? 'Assemble the whole plan from LEGO archetype modules' : 'Draw zones first (buildings, parks, or streets)'}
+              >
+                <Blocks size={16} />
+                LEGO BUILDER
+              </button>
+              <button
+                data-tour="ai-render-btn"
+                onClick={() => setWorkflowStep(2)}
+                disabled={!hasEditableZones}
+                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                title={hasEditableZones ? 'Generate AI render from current view' : 'Draw zones first (buildings, parks, or streets)'}
+              >
+                <Sparkles size={16} />
+                AI Render
+              </button>
+            </div>
           )}
 
           {/* Step 2: Back to drawing */}
@@ -354,85 +1098,47 @@ export function ProjectViewPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Buildings */}
+          {/* Saved Renders Gallery */}
           <section className="card">
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-primary-950">
-                <Building2 size={20} />
-                Buildings
+                <Sparkles size={20} />
+                Saved Renders
               </h2>
-              <button
-                onClick={() => setShowAddBuilding(true)}
-                className="flex items-center gap-1 rounded-lg bg-primary-500/15 px-3 py-1.5 text-sm font-medium text-primary-400 hover:bg-primary-500/25"
-              >
-                <Plus size={16} />
-                Add Building
-              </button>
+              <span className="text-sm text-primary-950/50">
+                {savedRenders.length} {savedRenders.length === 1 ? 'render' : 'renders'}
+              </span>
             </div>
-            {project.buildings?.length ? (
-              <div className="mt-4 space-y-3">
-                {project.buildings.map((b) => (
-                  <div key={b.id} className="flex items-center justify-between rounded-lg border border-primary-950/[0.08] p-4">
-                    <div>
-                      <p className="font-medium text-primary-950">{b.name || 'Unnamed Building'}</p>
-                      <p className="text-sm text-primary-950/50">
-                        {b.floor_count && `${b.floor_count} floors`}
-                        {b.height_meters && ` | ${b.height_meters}m tall`}
-                        {b.roof_type && ` | ${b.roof_type} roof`}
+            {savedRenders.length > 0 ? (
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {savedRenders.map((r) => (
+                  <button
+                    key={r.id}
+                    onClick={() => setRenderLightbox(r)}
+                    className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] hover:border-primary-400 transition"
+                  >
+                    <img
+                      src={resolveApiFileUrl(r.image_url)}
+                      alt={r.prompt || 'Saved render'}
+                      className="aspect-video w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
+                    <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 opacity-0 group-hover:opacity-100 transition">
+                      {r.style && (
+                        <span className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                          {r.style}
+                        </span>
+                      )}
+                      <p className="mt-0.5 text-[10px] text-white/70 truncate">
+                        {new Date(r.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {b.model_url ? (
-                        <span className="badge bg-emerald-500/15 text-emerald-400">
-                          3D Ready
-                        </span>
-                      ) : b.generation_status === 'generating' ? (
-                        <span className="flex items-center gap-1 badge bg-primary-500/15 text-primary-400">
-                          <Loader2 size={10} className="animate-spin" />
-                          Generating...
-                          {genElapsed > 0 && (
-                            <span className="tabular-nums text-primary-500">
-                              {Math.floor(genElapsed / 60)}:{(genElapsed % 60).toString().padStart(2, '0')}
-                            </span>
-                          )}
-                        </span>
-                      ) : b.generation_status === 'failed' ? (
-                        <span className="badge bg-red-500/15 text-red-600">
-                          Failed
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => setAiGenerateBuildingId(b.id)}
-                          className="flex items-center gap-1 rounded-full bg-purple-500/15 px-2.5 py-0.5 text-xs font-medium text-purple-400 hover:bg-purple-500/25"
-                          title="Generate 3D model with AI"
-                        >
-                          <Sparkles size={10} />
-                          Generate 3D
-                        </button>
-                      )}
-                      <button
-                        onClick={() => {
-                          if (confirm(`Delete "${b.name || 'this building'}"? This cannot be undone.`)) {
-                            buildingsApi.delete(b.id).then(() => {
-                              queryClient.invalidateQueries({ queryKey: ['project', id] });
-                              toast.success('Building deleted');
-                            }).catch(() => {
-                              toast.error('Failed to delete building');
-                            });
-                          }
-                        }}
-                        className="rounded-md p-1.5 text-primary-950/40 hover:bg-red-50 hover:text-red-600"
-                        title="Delete building"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             ) : (
               <p className="mt-4 text-sm text-primary-950/50">
-                No buildings yet. Add buildings manually or draw zones on the map.
+                No saved renders yet. Aerial and street-view renders save here automatically as they complete.
               </p>
             )}
           </section>
@@ -457,6 +1163,18 @@ export function ProjectViewPage() {
                 setAiGenerateBuildingId(null);
               }}
             />
+          )}
+          {/* LEGO assembly composer — modular building preview + saved recipes */}
+          {legoZone && (
+            <LegoAssemblyPreview
+              zone={legoZone}
+              buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
+              onClose={() => setLegoZone(null)}
+            />
+          )}
+          {/* LEGO builder — the whole plan assembled from archetype modules */}
+          {showLegoBuilder && (
+            <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
           )}
         </div>
 
@@ -491,6 +1209,95 @@ export function ProjectViewPage() {
       </div>
       <ImageLightbox />
 
+      {/* Saved render lightbox */}
+      {renderLightbox && (
+        <div
+          className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setRenderLightbox(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={resolveApiFileUrl(renderLightbox.image_url)}
+              alt={renderLightbox.prompt || 'Saved render'}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            {savedRenders.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => stepRenderLightbox(-1)}
+                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Previous render"
+                  title="Previous render (Left or A)"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => stepRenderLightbox(1)}
+                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Next render"
+                  title="Next render (Right or D)"
+                >
+                  <ArrowLeft size={20} className="rotate-180" />
+                </button>
+              </>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+              {renderLightbox.prompt && (
+                <p className="text-sm text-white/90 line-clamp-2">{renderLightbox.prompt}</p>
+              )}
+              <p className="mt-1 text-xs text-white/50">
+                {new Date(renderLightbox.created_at).toLocaleDateString()}
+                {renderLightbox.style && ` · ${renderLightbox.style}`}
+              </p>
+            </div>
+            <div className="absolute top-3 right-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleEditRender(renderLightbox)}
+                className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                title="Edit masked area"
+                aria-label="Edit render"
+              >
+                <Wand2 size={16} />
+                Edit Render
+              </button>
+              <a
+                href={resolveApiFileUrl(renderLightbox.image_url)}
+                download={`render-${renderLightbox.id}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+                title="Download"
+              >
+                <FileDown size={18} />
+              </a>
+              <button
+                onClick={() => {
+                  if (!id) return;
+                  rendersApi.delete(id, renderLightbox.id).then(() => {
+                    setSavedRenders((prev) => prev.filter((r) => r.id !== renderLightbox.id));
+                    setRenderLightbox(null);
+                    toast.success('Render deleted');
+                  }).catch(() => toast.error('Failed to delete'));
+                }}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-red-600 hover:text-white transition"
+                title="Delete render"
+              >
+                <Trash2 size={18} />
+              </button>
+              <button
+                onClick={() => setRenderLightbox(null)}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+              >
+                <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Full-screen AI render result modal */}
       {showRenderModal && renderPreviews.length > 0 && (
         <RenderResultModal
@@ -501,8 +1308,98 @@ export function ProjectViewPage() {
           isGeneratingFull={isGeneratingFull}
           fullResult={fullRenderResult}
           progressMessage={renderProgressMessage}
+          projectId={project?.id}
+          style={activeAIStyle}
+          onSaved={() => {
+            refreshSavedRenders();
+          }}
         />
       )}
+      {id && renderEditTarget && (
+        <RenderEditModal
+          projectId={id}
+          render={renderEditTarget}
+          imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+          onSaved={rememberSavedRender}
+          onClose={() => setRenderEditTarget(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+interface ProjectRendersTrayProps {
+  renders: SavedRender[];
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  onSelect: (render: SavedRender) => void;
+}
+
+function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: ProjectRendersTrayProps) {
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={onToggle}
+        className="absolute bottom-3 left-3 z-30 flex items-center gap-2 rounded-lg bg-gray-900/90 px-3 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition hover:bg-gray-800/95"
+        title="Open project renders"
+      >
+        <Camera size={16} className="text-amber-300" />
+        Project Renders
+        <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs text-white/80">{renders.length}</span>
+      </button>
+    );
+  }
+
+  return (
+    <div className="absolute bottom-3 left-3 z-40 flex max-h-[min(28rem,calc(100%-1.5rem))] w-[22rem] max-w-[calc(100%-1.5rem)] flex-col overflow-hidden rounded-xl bg-white/95 shadow-2xl ring-1 ring-black/10 backdrop-blur-md">
+      <div className="flex items-center justify-between border-b border-primary-950/[0.08] px-4 py-3">
+        <div>
+          <h3 className="text-sm font-bold text-primary-950">Project Renders</h3>
+          <p className="text-xs text-primary-950/50">{renders.length} saved in this project</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.12] px-2.5 py-1.5 text-xs font-semibold text-primary-950/65 transition hover:bg-primary-950/[0.06] hover:text-primary-950"
+          aria-label="Close project renders"
+        >
+          <X size={14} />
+          Hide
+        </button>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        {renders.length === 0 ? (
+          <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
+            <Sparkles size={22} className="text-primary-950/25" />
+            <p className="mt-2 text-sm font-medium text-primary-950/70">No renders yet</p>
+            <p className="mt-1 text-xs text-primary-950/45">New aerial and street-view renders save here automatically.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            {renders.map((render) => (
+              <button
+                key={render.id}
+                type="button"
+                onClick={() => onSelect(render)}
+                className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80"
+              >
+                <img
+                  src={resolveApiFileUrl(render.image_url)}
+                  alt={render.prompt || 'Saved render'}
+                  className="aspect-square w-full object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
+                  <p className="truncate text-[10px] font-semibold text-white">{render.style || 'render'}</p>
+                  <p className="text-[10px] text-white/65">{new Date(render.created_at).toLocaleDateString()}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

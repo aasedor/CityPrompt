@@ -2476,6 +2476,135 @@ async def test_place_community_derives_residual_from_all_project_zones(
 
 
 @pytest.mark.anyio
+async def test_place_community_residual_uses_visible_complete_imported_scope(
+    client, mock_db, test_user, auth_headers
+):
+    from geoalchemy2.shape import from_shape, to_shape
+    from shapely.geometry import box
+    from app.services.site_engine import (
+        WGS84_CRS,
+        build_transformer,
+        local_metric_crs_for_polygon,
+        project_geometry,
+    )
+
+    project = FakeProject(owner_id=test_user.id)
+    boundary = _make_zone(
+        project,
+        zone_type="site_boundary",
+        geometry=from_shape(box(-114.0800, 51.0400, -114.0780, 51.0415), srid=4326),
+    )
+    selected_building = _make_zone(
+        project,
+        geometry=from_shape(box(-114.0798, 51.0402, -114.0793, 51.0407), srid=4326),
+        properties={
+            "_plan_role": "building",
+            "_imported_from": "Plan — City Policy",
+            "floors": 4,
+        },
+    )
+    hidden_alternative = _make_zone(
+        project,
+        zone_type="green_space",
+        geometry=from_shape(box(-114.0791, 51.0404, -114.0784, 51.0411), srid=4326),
+        properties={
+            "_plan_role": "open_space",
+            "_imported_from": "Plan — Economic",
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(selected_building), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([boundary, selected_building, hidden_alternative]),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={
+            "items": [_community_item(selected_building)],
+            "scope_zone_ids": [str(selected_building.id)],
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    recipe = boundary.properties["community_3d_landscape"]
+    boundary_shape = to_shape(boundary.geometry)
+    metric_crs = local_metric_crs_for_polygon(boundary_shape)
+    to_metric = build_transformer(WGS84_CRS, metric_crs)
+    selected_area = project_geometry(
+        to_shape(selected_building.geometry),
+        to_metric,
+    ).area
+    hidden_area = project_geometry(
+        to_shape(hidden_alternative.geometry),
+        to_metric,
+    ).area
+    assert recipe["occupied_area_sqm"] == pytest.approx(selected_area, abs=0.2)
+    assert recipe["occupied_area_sqm"] < selected_area + hidden_area - 1
+
+
+@pytest.mark.anyio
+async def test_place_community_accepts_exact_boundary_subset_and_excludes_outside(
+    client, mock_db, test_user, auth_headers
+):
+    from geoalchemy2.shape import from_shape, to_shape
+    from shapely.geometry import box
+    from app.services.site_engine import (
+        WGS84_CRS,
+        build_transformer,
+        local_metric_crs_for_polygon,
+        project_geometry,
+    )
+
+    project = FakeProject(owner_id=test_user.id)
+    boundary = _make_zone(
+        project,
+        zone_type="site_boundary",
+        geometry=from_shape(box(-114.0800, 51.0400, -114.0780, 51.0415), srid=4326),
+    )
+    inside = _make_zone(
+        project,
+        geometry=from_shape(box(-114.0798, 51.0402, -114.0793, 51.0407), srid=4326),
+        properties={"_plan_role": "building", "floors": 4},
+    )
+    outside = _make_zone(
+        project,
+        geometry=from_shape(box(-114.0700, 51.0500, -114.0690, 51.0510), srid=4326),
+        properties={"_plan_role": "building", "floors": 4},
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(inside), _scalar_result(project),
+        _scalar_result(project.id),
+        _scalars_result([boundary, inside, outside]),
+        _scalars_result([]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={
+            "items": [_community_item(inside)],
+            "scope_zone_ids": [str(inside.id)],
+            "scope_boundary_id": str(boundary.id),
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    recipe = boundary.properties["community_3d_landscape"]
+    boundary_shape = to_shape(boundary.geometry)
+    metric_crs = local_metric_crs_for_polygon(boundary_shape)
+    to_metric = build_transformer(WGS84_CRS, metric_crs)
+    inside_area = project_geometry(to_shape(inside.geometry), to_metric).area
+    outside_area = project_geometry(to_shape(outside.geometry), to_metric).area
+    assert recipe["occupied_area_sqm"] == pytest.approx(inside_area, abs=0.2)
+    assert recipe["occupied_area_sqm"] < inside_area + outside_area - 1
+
+
+@pytest.mark.anyio
 async def test_place_community_infers_and_persists_boundary_for_legacy_plan(
     client, mock_db, test_user, auth_headers
 ):

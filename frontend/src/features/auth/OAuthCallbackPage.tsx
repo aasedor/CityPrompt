@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
+import { resetSessionState } from '@/utils/sessionReset';
 
 /**
  * Handles the OAuth2 redirect callback.
@@ -12,6 +14,7 @@ import { useAuthStore } from '@/store';
  */
 export function OAuthCallbackPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { setUser } = useAuthStore();
 
@@ -43,9 +46,12 @@ export function OAuthCallbackPage() {
     authApi
       .me()
       .then((user) => {
+        resetSessionState(queryClient);
         setUser(user);
         toast.success(`Welcome, ${user.full_name || user.email}!`);
-        navigate('/projects', { replace: true });
+        const returnTo = localStorage.getItem('oauth_return_to');
+        localStorage.removeItem('oauth_return_to');
+        navigate(returnTo?.startsWith('/') ? returnTo : '/projects', { replace: true });
       })
       .catch(() => {
         toast.error('Failed to load user profile after OAuth login');
@@ -53,7 +59,7 @@ export function OAuthCallbackPage() {
         localStorage.removeItem('refresh_token');
         navigate('/login', { replace: true });
       });
-  }, [searchParams, navigate, setUser]);
+  }, [searchParams, navigate, queryClient, setUser]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">

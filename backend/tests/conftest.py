@@ -30,6 +30,8 @@ class FakeUser:
         self.full_name = kwargs.get("full_name", "Test User")
         self.role = kwargs.get("role", "editor")
         self.is_active = kwargs.get("is_active", True)
+        self.render_credits = kwargs.get("render_credits", 1000)
+        self.credits_reset_at = kwargs.get("credits_reset_at", None)
         self.created_at = kwargs.get("created_at", datetime.now(timezone.utc))
 
 

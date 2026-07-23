@@ -37,6 +37,7 @@ class UserResponse(BaseModel):
     full_name: Optional[str] = Field(description="Display name")
     role: str = Field(description="User role: viewer, editor, or admin")
     is_active: bool = Field(description="Whether the account is active")
+    render_credits: int = Field(description="Remaining AI render credits")
     created_at: datetime = Field(description="Account creation timestamp")
 
 
@@ -152,6 +153,7 @@ class ProjectListResponse(BaseModel):
     location: Optional[LocationResponse] = Field(None, description="Project site location")
     created_at: datetime = Field(description="Creation timestamp")
     updated_at: datetime = Field(description="Last update timestamp")
+    owner_email: Optional[str] = Field(None, description="Owner email (admin view only)")
 
 
 # =============================================================================
@@ -333,6 +335,45 @@ class SiteZoneResponse(BaseModel):
     building_ids: Optional[list[uuid.UUID]] = None
     created_at: datetime
     updated_at: datetime
+
+
+# =============================================================================
+# Zone History Schemas
+# =============================================================================
+
+class ZoneHistoryResponse(BaseModel):
+    """A single zone history entry."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    zone_id: uuid.UUID
+    project_id: uuid.UUID
+    action: str  # 'create' | 'update' | 'delete'
+    snapshot: dict[str, Any]
+    previous_snapshot: Optional[dict[str, Any]] = None
+    user_id: Optional[uuid.UUID] = None
+    user_email: Optional[str] = None
+    description: Optional[str] = None
+    created_at: datetime
+
+
+class ZoneHistoryListResponse(BaseModel):
+    """Paginated zone history."""
+    items: list[ZoneHistoryResponse]
+    total: int
+    has_more: bool
+
+
+class ZoneSnapshotRestoreRequest(BaseModel):
+    """Restore a zone working state without creating a history entry."""
+    zone_id: uuid.UUID
+    snapshot: Optional[dict[str, Any]] = None
+
+
+class ZoneSnapshotRestoreResponse(BaseModel):
+    """Result from silently restoring or deleting a zone working snapshot."""
+    zone_id: uuid.UUID
+    deleted: bool = False
+    zone: Optional[SiteZoneResponse] = None
 
 
 # =============================================================================
@@ -1065,6 +1106,7 @@ class AdminUserListResponse(BaseModel):
     created_at: datetime
     last_login_at: Optional[datetime] = None
     project_count: int
+    render_credits: int = 1000
 
 
 class AdminUserUpdate(BaseModel):

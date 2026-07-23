@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react';
-import { MousePointer, HelpCircle, Layers3 } from 'lucide-react';
+import { useMemo, useState, type ReactNode } from 'react';
+import { Brain, MousePointer, HelpCircle, Layers3, Eye, Building2, History, Ruler } from 'lucide-react';
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
-import siteBoundaryIcon from '@/assets/site-planner-tools/site-boundary.svg';
 import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
 import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
 import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
@@ -21,11 +20,11 @@ interface CoreToolDef {
 
 const CORE_TOOLS: CoreToolDef[] = [
   {
-    id: 'siteBoundary',
-    label: 'Site Boundary',
-    drawType: 'Polygon',
-    description: 'Define the generation area',
-    icon: siteBoundaryIcon,
+    id: 'streetsPaths',
+    label: 'Streets and Paths',
+    drawType: 'Line',
+    description: 'Draw streets, routes, and corridors',
+    icon: streetsPathsIcon,
   },
   {
     id: 'buildings',
@@ -33,13 +32,6 @@ const CORE_TOOLS: CoreToolDef[] = [
     drawType: 'Polygon',
     description: 'Place building development zones',
     icon: buildingsIcon,
-  },
-  {
-    id: 'streetsPaths',
-    label: 'Streets and Paths',
-    drawType: 'Line',
-    description: 'Draw streets, routes, and corridors',
-    icon: streetsPathsIcon,
   },
   {
     id: 'parksPlazas',
@@ -52,6 +44,22 @@ const CORE_TOOLS: CoreToolDef[] = [
 
 interface SitePlannerToolbarProps {
   onShowGuide?: () => void;
+  onToggleHistory?: () => void;
+  historyOpen?: boolean;
+  measureActive?: boolean;
+  onMeasureModeChange?: (active: boolean) => void;
+  isGlobeMode?: boolean;
+  /** 'sidebar' stacks zone-type cards in a single column (for left-rail placement).
+   *  'default' keeps the existing 2x2 / 1x4 grid (for bottom-center placement). */
+  layout?: 'default' | 'sidebar';
+  /** Optional content rendered at the bottom of the toolbar card (e.g. AI Render action). */
+  bottomSlot?: ReactNode;
+  /** Optional tool rendered inside the tool box, alongside Measure / History / More Tools. */
+  uploadSlot?: ReactNode;
+  /** Opens the Master Plan tool (Site Intelligence on the site boundary). Renders the card when provided. */
+  onMasterPlan?: () => void;
+  /** Highlights the Master Plan card (site boundary currently selected). */
+  masterPlanActive?: boolean;
 }
 
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -69,10 +77,39 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
   return parksSubtype === 'plaza' ? 'parking' : 'green_space';
 }
 
-export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
-  const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
+export function SitePlannerToolbar({
+  onShowGuide,
+  onToggleHistory,
+  historyOpen,
+  measureActive = false,
+  onMeasureModeChange,
+  isGlobeMode = false,
+  layout = 'default',
+  bottomSlot,
+  uploadSlot,
+  onMasterPlan,
+  masterPlanActive = false,
+}: SitePlannerToolbarProps) {
+  const {
+    activeSitePlannerTool,
+    setActiveSitePlannerTool,
+    streetViewPegman,
+    setStreetViewActive,
+    settings,
+    updateSettings,
+  } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const isSidebar = layout === 'sidebar';
+  const compactDrawingDock = isSidebar && activeSitePlannerTool !== null;
+  const showExistingBuildings = settings.showExistingBuildings;
+  const smallToolButtonBase = 'flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all';
+  const smallToolButtonActive = 'bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]';
+  const smallToolButtonIdle = 'bg-white hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515]';
+  const advancedToolButtonClass = (active: boolean) =>
+    `rounded-full border-2 border-[#151515] px-2 py-1 text-[11px] font-black uppercase text-[#151515] ${
+      active ? 'bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]' : 'bg-white hover:bg-[#fff9ec]'
+    }`;
 
   const activeCoreTool = useMemo(
     () => mapToolToCoreTool(activeSitePlannerTool),
@@ -80,6 +117,9 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   );
 
   const activateCoreTool = (id: CoreToolId) => {
+    // Deactivate street view when switching to a drawing tool
+    if (streetViewPegman) setStreetViewActive(false);
+    onMeasureModeChange?.(false);
     const zoneType = resolveZoneTypeForCoreTool(id, parksSubtype);
     if (activeSitePlannerTool === zoneType) {
       setActiveSitePlannerTool(null);
@@ -89,7 +129,16 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   };
 
   const handleSelectMode = () => {
+    // Deactivate street view when switching to select mode
+    if (streetViewPegman) setStreetViewActive(false);
+    onMeasureModeChange?.(false);
     setActiveSitePlannerTool(null);
+  };
+
+  const handleMeasureMode = () => {
+    if (streetViewPegman) setStreetViewActive(false);
+    setActiveSitePlannerTool(null);
+    onMeasureModeChange?.(!measureActive);
   };
 
   const onChangeParksSubtype = (next: ParksSubtype) => {
@@ -100,42 +149,100 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   };
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded-xl bg-white/95 px-3 py-2 shadow-2xl backdrop-blur-sm">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+    <div className={`site-planner-toolbar ${isSidebar ? 'site-planner-toolbar--sidebar' : 'site-planner-toolbar--default'} flex min-h-0 w-full flex-col gap-1.5 overflow-y-auto overscroll-contain rounded-lg border-2 border-[#151515] bg-[#fff9ec]/95 ${isSidebar ? 'px-2 py-1.5 sm:px-2.5 sm:py-2' : 'px-3 py-2'} ${compactDrawingDock ? 'shadow-[4px_4px_0_0_#151515]' : 'shadow-[6px_6px_0_0_#151515]'} backdrop-blur-xl sm:gap-2 sm:shadow-[8px_8px_0_0_#151515]`}>
+      <div className={`site-planner-core-grid grid gap-1.5 sm:gap-2 ${
+        isSidebar
+          ? compactDrawingDock
+            ? `${onMasterPlan ? 'grid-cols-4' : 'grid-cols-3'} sm:grid-cols-1`
+            : 'grid-cols-2 sm:grid-cols-1'
+          : onMasterPlan ? 'grid-cols-4' : 'grid-cols-3'
+      }`}>
         {CORE_TOOLS.map((tool) => {
           const isActive = activeCoreTool === tool.id;
           return (
             <button
               key={tool.id}
+              data-tour={`tool-${tool.id}`}
               onClick={() => activateCoreTool(tool.id)}
-              className={`group flex min-h-[86px] flex-col items-start rounded-xl border px-3 py-2 text-left transition-all ${
+              className={`site-planner-core-tool group flex rounded-lg border-2 text-left transition-all ${
+                isSidebar
+                  ? compactDrawingDock
+                    ? 'min-h-[54px] flex-col items-center justify-center gap-1 px-1 py-1 text-center sm:min-h-[56px] sm:flex-row sm:justify-start sm:gap-2.5 sm:px-2.5 sm:py-2 sm:text-left'
+                    : 'min-h-[48px] items-center gap-2 px-2 py-1.5 sm:min-h-[56px] sm:gap-2.5 sm:px-2.5 sm:py-2'
+                  : 'min-h-[66px] flex-col items-center px-1.5 py-1.5 text-center sm:min-h-[86px] sm:items-start sm:px-3 sm:py-2 sm:text-left'
+              } ${
                 isActive
-                  ? 'border-primary-500 bg-primary-500/10 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] bg-white hover:border-primary-300 hover:bg-primary-950/[0.03]'
+                  ? 'border-[#151515] bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]'
+                  : 'border-[#151515] bg-white hover:bg-[#fff9ec] hover:shadow-[3px_3px_0_0_#151515]'
               }`}
               title={`${tool.label} (${tool.drawType})`}
             >
               <img
                 src={tool.icon}
                 alt=""
-                className="h-9 w-9 rounded-md object-cover"
+                className={`site-planner-core-icon ${isSidebar ? compactDrawingDock ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-9 sm:w-9'} rounded-md object-cover`}
                 aria-hidden
               />
-              <span className="mt-2 text-sm font-semibold text-primary-950">{tool.label}</span>
-              <span className="mt-0.5 text-[11px] text-primary-950/60">{tool.drawType}</span>
+              {isSidebar ? (
+                <div className={`flex min-w-0 flex-col leading-tight ${compactDrawingDock ? 'items-center sm:items-start' : ''}`}>
+                  <span className={`site-planner-core-label ${compactDrawingDock ? 'line-clamp-2 text-center text-[9px] sm:truncate sm:text-left sm:text-[13px]' : 'truncate text-[11px] sm:text-[13px]'} font-black text-[#151515]`}>{tool.label}</span>
+                  <span className="site-planner-core-drawtype hidden truncate text-[10px] font-bold uppercase text-[#151515]/55 sm:block">{tool.drawType}</span>
+                </div>
+              ) : (
+                <>
+                  <span className="site-planner-core-label mt-1 text-[10px] font-black leading-tight text-[#151515] sm:mt-2 sm:text-sm">{tool.label}</span>
+                  <span className="site-planner-core-drawtype mt-0.5 hidden text-[10px] font-bold uppercase text-[#151515]/55 sm:block">{tool.drawType}</span>
+                </>
+              )}
             </button>
           );
         })}
+
+        {onMasterPlan && (
+          <button
+            data-tour="tool-masterPlan"
+            onClick={onMasterPlan}
+            className={`site-planner-core-tool group flex rounded-lg border-2 text-left transition-all ${
+              isSidebar
+                ? compactDrawingDock
+                  ? 'min-h-[54px] flex-col items-center justify-center gap-1 px-1 py-1 text-center sm:min-h-[56px] sm:flex-row sm:justify-start sm:gap-2.5 sm:px-2.5 sm:py-2 sm:text-left'
+                  : 'min-h-[48px] items-center gap-2 px-2 py-1.5 sm:min-h-[56px] sm:gap-2.5 sm:px-2.5 sm:py-2'
+                : 'min-h-[66px] flex-col items-center px-1.5 py-1.5 text-center sm:min-h-[86px] sm:items-start sm:px-3 sm:py-2 sm:text-left'
+            } ${
+              masterPlanActive
+                ? 'border-[#151515] bg-[#9d6bff] shadow-[3px_3px_0_0_#151515]'
+                : 'border-[#151515] bg-[#b78aff] hover:bg-[#c9a2ff] hover:shadow-[3px_3px_0_0_#151515]'
+            }`}
+            title="Master Plan — site intelligence and AI planning scenarios for your site boundary"
+          >
+            <Brain
+              className={`site-planner-core-icon ${isSidebar ? compactDrawingDock ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-9 sm:w-9'} rounded-md text-[#151515]`}
+              aria-hidden
+            />
+            {isSidebar ? (
+              <div className={`flex min-w-0 flex-col leading-tight ${compactDrawingDock ? 'items-center sm:items-start' : ''}`}>
+                <span className={`site-planner-core-label ${compactDrawingDock ? 'line-clamp-2 text-center text-[9px] sm:truncate sm:text-left sm:text-[13px]' : 'truncate text-[11px] sm:text-[13px]'} font-black text-[#151515]`}>Master Plan</span>
+                <span className="site-planner-core-drawtype hidden truncate text-[10px] font-bold uppercase text-[#151515]/55 sm:block">AI Planner</span>
+              </div>
+            ) : (
+              <>
+                <span className="site-planner-core-label mt-1 text-[10px] font-black leading-tight text-[#151515] sm:mt-2 sm:text-sm">Master Plan</span>
+                <span className="site-planner-core-drawtype mt-0.5 hidden text-[10px] font-bold uppercase text-[#151515]/55 sm:block">AI Planner</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-primary-950/[0.03] px-2 py-1.5">
-        <div className="flex flex-wrap items-center gap-1.5">
+      <div className={`site-planner-control-row ${compactDrawingDock ? 'hidden sm:flex' : 'flex'} flex-wrap items-center justify-between gap-1.5 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 sm:gap-2`}>
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
           <button
+            data-tour="select-btn"
             onClick={handleSelectMode}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+            className={`site-planner-tool-button ${smallToolButtonBase} ${
               activeSitePlannerTool === null
-                ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
-                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                ? smallToolButtonActive
+                : smallToolButtonIdle
             }`}
             title="Select and edit existing zones"
           >
@@ -146,11 +253,75 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           <UndoRedoButtons />
 
           <button
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setStreetViewActive(!streetViewPegman);
+            }}
+            className={`site-planner-tool-button ${smallToolButtonBase} ${
+              streetViewPegman
+                ? 'bg-[#ffb000] shadow-[3px_3px_0_0_#151515]'
+                : smallToolButtonIdle
+            }`}
+            title="Drop a pin to generate a street-level view"
+          >
+            <Eye size={14} />
+            Street View
+          </button>
+
+          {onMeasureModeChange && (
+            <button
+              onClick={handleMeasureMode}
+              className={`site-planner-tool-button ${smallToolButtonBase} ${
+                measureActive
+                  ? 'bg-[#28c7e8] shadow-[3px_3px_0_0_#151515]'
+                  : smallToolButtonIdle
+              }`}
+              title="Measure distance"
+            >
+              <Ruler size={14} />
+              Measure
+            </button>
+          )}
+
+          {!isGlobeMode && (
+            <button
+              onClick={() => updateSettings({ showExistingBuildings: !showExistingBuildings })}
+              className={`site-planner-tool-button ${smallToolButtonBase} ${
+                showExistingBuildings
+                  ? smallToolButtonActive
+                  : smallToolButtonIdle
+              }`}
+              title={showExistingBuildings ? 'Hide existing 3D buildings' : 'Show existing 3D buildings'}
+            >
+              <Building2 size={14} />
+              Buildings
+            </button>
+          )}
+
+          {onToggleHistory && (
+            <button
+              onClick={onToggleHistory}
+              className={`site-planner-tool-button ${smallToolButtonBase} ${
+                historyOpen
+                  ? smallToolButtonActive
+                  : smallToolButtonIdle
+              }`}
+              title="Version history"
+            >
+              <History size={14} />
+              History
+            </button>
+          )}
+
+          {uploadSlot}
+
+          <button
+            data-tour="more-tools-btn"
             onClick={() => setShowAdvanced((v) => !v)}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
-              showAdvanced
-                ? 'bg-primary-950/[0.08] text-primary-950'
-                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            className={`site-planner-tool-button ${smallToolButtonBase} ${
+              showAdvanced || activeCoreTool === 'siteBoundary'
+                ? smallToolButtonActive
+                : smallToolButtonIdle
             }`}
             title="Show additional technical tools"
           >
@@ -159,13 +330,13 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
           {activeCoreTool === 'parksPlazas' && (
-            <div className="mr-1 inline-flex rounded-lg border border-primary-950/[0.1] bg-white p-0.5 text-xs">
+            <div className="mr-1 inline-flex rounded-full border-2 border-[#151515] bg-white p-0.5 text-xs shadow-[3px_3px_0_0_#151515]">
               <button
                 onClick={() => onChangeParksSubtype('park')}
-                className={`rounded-md px-2 py-1 font-medium ${
-                  parksSubtype === 'park' ? 'bg-emerald-500/15 text-emerald-700' : 'text-primary-950/60 hover:text-primary-950'
+                className={`rounded-full px-2 py-1 font-black uppercase ${
+                  parksSubtype === 'park' ? 'bg-[#c9ff3d] text-[#151515]' : 'text-[#151515]/60 hover:text-[#151515]'
                 }`}
                 title="Draw park zones"
               >
@@ -173,8 +344,8 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
               </button>
               <button
                 onClick={() => onChangeParksSubtype('plaza')}
-                className={`rounded-md px-2 py-1 font-medium ${
-                  parksSubtype === 'plaza' ? 'bg-sky-500/15 text-sky-700' : 'text-primary-950/60 hover:text-primary-950'
+                className={`rounded-full px-2 py-1 font-black uppercase ${
+                  parksSubtype === 'plaza' ? 'bg-[#28c7e8] text-[#151515]' : 'text-[#151515]/60 hover:text-[#151515]'
                 }`}
                 title="Draw plaza zones"
               >
@@ -186,41 +357,61 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           {onShowGuide && (
             <button
               onClick={onShowGuide}
-              className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-primary-950/60 hover:bg-primary-950/[0.05] hover:text-primary-950"
+              className={`site-planner-tool-button ${smallToolButtonBase} bg-[#ff5a3d] text-white shadow-[3px_3px_0_0_#151515] hover:bg-[#ff725c]`}
               title="Show quick-start guide"
             >
               <HelpCircle size={14} />
+              Guide
             </button>
           )}
         </div>
       </div>
 
       {showAdvanced && (
-        <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-primary-950/[0.08] bg-white px-2 py-1.5">
-          <span className="text-[11px] font-medium uppercase tracking-wide text-primary-950/50">Advanced</span>
+        <div className={`site-planner-advanced-row rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
+          <span className="text-[10px] font-black uppercase text-[#151515]/55">Advanced</span>
           <button
-            onClick={() => setActiveSitePlannerTool('residential')}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            data-tour="tool-siteBoundary"
+            onClick={() => activateCoreTool('siteBoundary')}
+            className={advancedToolButtonClass(activeCoreTool === 'siteBoundary')}
+            title="Site Boundary (Polygon)"
+          >
+            Site Boundary
+          </button>
+          <button
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('residential');
+            }}
+            className={advancedToolButtonClass(activeSitePlannerTool === 'residential')}
             title="Residential (Polygon)"
           >
             Residential
           </button>
           <button
-            onClick={() => setActiveSitePlannerTool('development_area')}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('development_area');
+            }}
+            className={advancedToolButtonClass(activeSitePlannerTool === 'development_area')}
             title="Development Area (Polygon)"
           >
             Development Area
           </button>
           <button
-            onClick={() => setActiveSitePlannerTool('water')}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('water');
+            }}
+            className={advancedToolButtonClass(activeSitePlannerTool === 'water')}
             title="Water (Polygon)"
           >
             Water
           </button>
         </div>
       )}
+
+      {bottomSlot}
     </div>
   );
 }

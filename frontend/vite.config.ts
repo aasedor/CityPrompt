@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  // Local launchers can point Vite at a shared, untracked environment directory
+  // without copying browser API keys into this checkout.
+  envDir: process.env.VITE_ENV_DIR || undefined,
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,10 +18,22 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 1000,
+      // Do NOT watch the generated archetype/entourage image dirs. The polling
+      // watcher repeatedly accesses these 1000+ binaries every second, which on
+      // Windows collides with `git stash` / branch-switch file deletions and
+      // causes "failed to remove" lock failures (see CLAUDE.md). These are static
+      // generated assets that don't need HMR, so ignoring them is free.
+      ignored: [
+        '**/public/archetypes/**',
+        '**/public/entourage/**',
+      ],
     },
     proxy: {
       '/api': {
-        target: process.env.API_PROXY_TARGET || 'http://localhost:8000',
+        // Use the explicit IPv4 loopback in local development. On Windows with
+        // Docker + WSL, `localhost` can resolve to an orphaned IPv6 wslrelay
+        // listener and leave otherwise healthy API requests hanging.
+        target: process.env.API_PROXY_TARGET || 'http://127.0.0.1:8000',
         changeOrigin: true,
       },
     },

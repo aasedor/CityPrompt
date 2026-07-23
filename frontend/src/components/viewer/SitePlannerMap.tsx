@@ -6,170 +6,122 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import { getColourForDevelopmentType } from '@/data/landUseColours';
+import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import {
-  DEVELOPMENT_AESTHETIC_OPTIONS,
-  ROADWAY_AESTHETIC_OPTIONS,
-  GREEN_SPACE_AESTHETIC_OPTIONS,
-  PLAZA_AESTHETIC_OPTIONS,
+  BUILDING_AESTHETIC_OPTIONS_V2,
+  ROADWAY_AESTHETIC_OPTIONS_V2,
+  GREEN_SPACE_AESTHETIC_OPTIONS_V2,
+  PLAZA_AESTHETIC_OPTIONS_V2,
 } from './aestheticCatalog';
+import { getViewConePolygon } from './useStreetViewRender';
+import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from './cameraAngles';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
-// Build a quick lookup map: subcategory ID → label for all aesthetic options
+/** Lookup map from archetype/subcategory id → human-readable label */
 const _subcategoryLabelMap = new Map<string, string>();
 for (const opt of [
-  ...DEVELOPMENT_AESTHETIC_OPTIONS,
-  ...ROADWAY_AESTHETIC_OPTIONS,
-  ...GREEN_SPACE_AESTHETIC_OPTIONS,
-  ...PLAZA_AESTHETIC_OPTIONS,
+  ...BUILDING_AESTHETIC_OPTIONS_V2,
+  ...ROADWAY_AESTHETIC_OPTIONS_V2,
+  ...GREEN_SPACE_AESTHETIC_OPTIONS_V2,
+  ...PLAZA_AESTHETIC_OPTIONS_V2,
 ]) {
-  if (opt.id && opt.label) _subcategoryLabelMap.set(opt.id, opt.label);
+  _subcategoryLabelMap.set(opt.id, opt.label);
 }
 
-// ---------------------------------------------------------------------------
-// Variant color shifting (keep polygons visually distinct per variant)
-// ---------------------------------------------------------------------------
-
-function hexToHsl(hex: string): [number, number, number] {
-  const raw = hex.replace('#', '');
-  const r = parseInt(raw.substring(0, 2), 16) / 255;
-  const g = parseInt(raw.substring(2, 4), 16) / 255;
-  const b = parseInt(raw.substring(4, 6), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const l = (max + min) / 2;
-  if (max === min) return [0, 0, l * 100];
-  const d = max - min;
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  let h = 0;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
-  return [h * 360, s * 100, l * 100];
-}
-
-function hslToHex(h: number, s: number, l: number): string {
-  h = ((h % 360) + 360) % 360;
-  s = Math.max(0, Math.min(100, s)) / 100;
-  l = Math.max(0, Math.min(100, l)) / 100;
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  const m = l - c / 2;
-  let rr = 0, gg = 0, bb = 0;
-  if (h < 60) { rr = c; gg = x; }
-  else if (h < 120) { rr = x; gg = c; }
-  else if (h < 180) { gg = c; bb = x; }
-  else if (h < 240) { gg = x; bb = c; }
-  else if (h < 300) { rr = x; bb = c; }
-  else { rr = c; bb = x; }
-  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-  return `#${toHex(rr)}${toHex(gg)}${toHex(bb)}`;
-}
-
-function shiftColorForVariant(baseHex: string, variantIndex: number): string {
-  const lightnessShifts = [-8, -3, 3, 8];
-  const hueShifts = [-5, 5, -10, 10];
-  const idx = Math.min(variantIndex, lightnessShifts.length - 1);
-  const [h, s, l] = hexToHsl(baseHex);
-  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
-}
-
-/** Hash a string to a consistent integer. */
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash);
-}
-
-/**
- * Derive archetype and variant info from zone properties.
- * Returns { archetypeId, variantId } or null if nothing selected.
- */
-function getArchetypeVariantFromZone(zone: SiteZone): { archetypeId: string; variantId: string | null } | null {
-  const props = zone.properties;
-  if (!props) return null;
-  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-  for (const prefix of PREFIXES) {
+/** Resolve a zone's display label from its selected archetype, falling back to zone name or type */
+function resolveZoneLabel(zone: SiteZone): string {
+  const props = zone.properties || {};
+  for (const prefix of ['development', 'green_space', 'road', 'plaza'] as const) {
+    // Check subcategory first (the specific archetype), then archetype_id, then aesthetic (category)
+    const subcatId = props[`${prefix}_subcategory`] as string | undefined;
     const archetypeId = props[`${prefix}_archetype_id`] as string | undefined;
-    if (!archetypeId) continue;
-    const variantId = props[`${prefix}_selected_variant_id`] as string | undefined;
-    return { archetypeId, variantId: variantId || null };
-  }
-  return null;
-}
-
-/**
- * Resolve zone color with unique shading per archetype + variant combination.
- *
- * - Base color comes from development type (APA standard) or zone type config
- * - Archetype selection shifts the hue (each sub-category gets a distinct hue offset)
- * - Variant selection shifts the lightness (each variant within that archetype is distinguishable)
- *
- * Example: 3 retail archetypes × 4 variants = 12 unique shades of the retail base color
- */
-function resolveZoneColor(zone: SiteZone): string {
-  let baseColor: string;
-
-  // Water features (park sub-category) get blue instead of green
-  const parkCategory = zone.properties?.green_space_aesthetic_category as string | undefined;
-  if (zone.zone_type === 'green_space' && parkCategory === 'water_features') {
-    baseColor = '#4A90D9'; // Water blue
-  } else {
-    const devType = zone.properties?.development_type as string | undefined;
-    if (devType) {
-      const apaColor = getColourForDevelopmentType(devType);
-      if (apaColor.label !== 'Unclassified') {
-        baseColor = apaColor.fill;
-      } else {
-        baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
-      }
-    } else {
-      baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
+    const aestheticId = props[`${prefix}_aesthetic`] as string | undefined;
+    const id = subcatId || archetypeId || aestheticId;
+    if (id && _subcategoryLabelMap.has(id)) {
+      return _subcategoryLabelMap.get(id)!;
     }
   }
-
-  const info = getArchetypeVariantFromZone(zone);
-  if (!info) return baseColor;
-
-  const [h, s, l] = hexToHsl(baseColor);
-
-  // Archetype shifts hue: spread evenly across ±30° range
-  const archetypeHash = hashString(info.archetypeId);
-  // Use golden ratio to spread hues evenly (avoids clustering)
-  const hueOffset = ((archetypeHash * 137.508) % 60) - 30; // range: -30° to +30°
-
-  // Variant shifts lightness: 4 distinct steps
-  let lightnessOffset = 0;
-  if (info.variantId) {
-    const variantHash = hashString(info.variantId);
-    const lightnessSteps = [-10, -4, 4, 10];
-    lightnessOffset = lightnessSteps[variantHash % 4];
-  }
-
-  return hslToHex(h + hueOffset, s, l + lightnessOffset);
+  return zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
 }
 
-/**
- * Resolve the map label for a zone. Shows the archetype sub-category name
- * instead of the generic zone type (e.g. "Minimalist Infill Townhouse" instead of "Building").
- */
-function resolveZoneLabel(zone: SiteZone): string {
+/** Simple HSL shift for variant-level color differentiation on the map */
+function shiftHex(hex: string, hueShift: number, lightnessShift: number): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  h = ((h * 360 + hueShift) % 360 + 360) % 360 / 360;
+  l = Math.max(0, Math.min(1, l + lightnessShift));
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const toHex = (v: number) => Math.round(v * 255).toString(16).padStart(2, '0');
+  return `#${toHex(hue2rgb(p, q, h + 1/3))}${toHex(hue2rgb(p, q, h))}${toHex(hue2rgb(p, q, h - 1/3))}`;
+}
+
+const VARIANT_SHIFTS: [number, number][] = [[0, 0], [8, -0.06], [-8, 0.06], [16, -0.03]];
+const CONNECT_VERTEX_RADIUS_PX = 34;
+const MOBILE_DRAWING_MEDIA_QUERY = '(max-width: 639px)';
+
+function isMobileDrawingViewport(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia(MOBILE_DRAWING_MEDIA_QUERY).matches;
+}
+
+/** Resolve zone color: per-archetype shade + variant shift, else dev-type color, else zone-type fallback */
+function resolveZoneColor(zone: SiteZone): string {
   const props = zone.properties;
   if (props) {
-    // Look up the typology/sub-category label from the catalog using the subcategory ID
-    const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-    for (const prefix of PREFIXES) {
-      const subcategoryId = props[`${prefix}_subcategory`] as string | undefined;
-      if (subcategoryId) {
-        const catalogLabel = _subcategoryLabelMap.get(subcategoryId);
-        if (catalogLabel) return catalogLabel;
+    // Get archetype ID from any zone type prefix
+    const archetypeId =
+      (props.development_subcategory as string) ||
+      (props.road_subcategory as string) ||
+      (props.green_space_subcategory as string) ||
+      (props.plaza_subcategory as string) ||
+      (props.development_archetype_id as string) ||
+      (props.road_archetype_id as string) ||
+      (props.green_space_archetype_id as string) ||
+      (props.plaza_archetype_id as string);
+
+    if (archetypeId) {
+      const baseColor = getShadeForArchetype(archetypeId);
+      if (baseColor !== '#888888') {
+        // Apply variant-level shift if a variant is selected
+        const variantId =
+          (props.development_selected_variant_id as string) ||
+          (props.road_selected_variant_id as string) ||
+          (props.green_space_selected_variant_id as string) ||
+          (props.plaza_selected_variant_id as string) || '';
+        // Extract variant index from id (e.g. "archetype_v2" → 1)
+        const vMatch = variantId.match(/_v(\d+)$/);
+        const vIdx = vMatch ? Math.max(0, parseInt(vMatch[1], 10) - 1) : 0;
+        const [hShift, lShift] = VARIANT_SHIFTS[vIdx % VARIANT_SHIFTS.length];
+        return hShift === 0 && lShift === 0 ? baseColor : shiftHex(baseColor, hShift, lShift);
       }
     }
+
+    // Fallback: dev-type APA color
+    const devType = props.development_type as string | undefined;
+    if (devType) {
+      const apaColor = getColourForDevelopmentType(devType);
+      if (apaColor.label !== 'Unclassified') return apaColor.fill;
+    }
   }
-  // Fall back to zone name or zone type config label
-  return zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
+  return ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
 }
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
@@ -177,6 +129,10 @@ const LINEAR_ZONE_TYPES: SiteZoneType[] = ['road'];
 
 function isLinearTool(tool: SiteZoneType | null): boolean {
   return tool != null && LINEAR_ZONE_TYPES.includes(tool);
+}
+
+function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential';
 }
 
 /**
@@ -206,6 +162,26 @@ function polylineLength(pts: number[][]): number {
 function formatDistance(meters: number): string {
   if (meters < 1000) return `${Math.round(meters)} m`;
   return `${(meters / 1000).toFixed(2)} km`;
+}
+
+/** Calculate geodesic polygon area in square meters using the spherical excess formula */
+function geodesicArea(coords: number[][]): number {
+  if (coords.length < 3) return 0;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const R = 6371000;
+  let total = 0;
+  for (let i = 0; i < coords.length; i++) {
+    const j = (i + 1) % coords.length;
+    total += toRad(coords[j][0] - coords[i][0]) *
+      (2 + Math.sin(toRad(coords[i][1])) + Math.sin(toRad(coords[j][1])));
+  }
+  return Math.abs(total * R * R / 2);
+}
+
+/** Format area into a human-readable string */
+function formatArea(sqm: number): string {
+  if (sqm < 10000) return `${Math.round(sqm).toLocaleString()} m\u00B2`;
+  return `${(sqm / 10000).toFixed(1)} ha`;
 }
 
 /**
@@ -313,7 +289,7 @@ function getToolDisplayLabel(tool: SiteZoneType): string {
  * polygon area (the innermost / most specific zone). Uses the shoelace formula
  * on raw coordinates — absolute value is fine for relative comparison.
  */
-function pickSmallestFeature(features: mapboxgl.MapGeoJSONFeature[]): mapboxgl.MapGeoJSONFeature {
+function pickSmallestFeature(features: mapboxgl.GeoJSONFeature[]): mapboxgl.GeoJSONFeature {
   if (features.length <= 1) return features[0];
 
   let best = features[0];
@@ -341,11 +317,15 @@ function pickSmallestFeature(features: mapboxgl.MapGeoJSONFeature[]): mapboxgl.M
 }
 
 interface DragState {
-  type: 'zone' | 'vertex';
+  type: 'zone' | 'vertex' | 'rotate';
   zoneId: string;
   vertexIndex?: number;
   startLngLat: [number, number];
   originalCoords: number[][];
+  /** For rotate: the centroid of the polygon */
+  centroid?: [number, number];
+  /** For rotate: the angle (radians) at drag start */
+  startAngle?: number;
 }
 
 interface SitePlannerMapProps {
@@ -353,6 +333,7 @@ interface SitePlannerMapProps {
   longitude?: number;
   siteZones: SiteZone[];
   massingFeatures?: GeoJSON.FeatureCollection;
+  interactionPaused?: boolean;
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
@@ -364,6 +345,7 @@ export function SitePlannerMap({
   longitude,
   siteZones,
   massingFeatures,
+  interactionPaused = false,
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
@@ -371,12 +353,13 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setActiveSitePlannerTool, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewActive, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
   const removedPointsRef = useRef<number[][]>([]);  // stack for redo of removed vertices
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
+  const [centerNearStartVertex, setCenterNearStartVertex] = useState(false);
   const onZoneCreatedRef = useRef(onZoneCreated);
   onZoneCreatedRef.current = onZoneCreated;
   const onZoneDeletedRef = useRef(onZoneDeleted);
@@ -389,15 +372,36 @@ export function SitePlannerMap({
   activeSitePlannerToolRef.current = activeSitePlannerTool;
   const activeToolPropertiesRef = useRef(activeToolProperties);
   activeToolPropertiesRef.current = activeToolProperties;
+  const interactionPausedRef = useRef(interactionPaused);
+  interactionPausedRef.current = interactionPaused;
   const siteZonesRef = useRef(siteZones);
   siteZonesRef.current = siteZones;
+  const streetViewPegmanRef = useRef(streetViewPegman);
+  streetViewPegmanRef.current = streetViewPegman;
+  const pegmanMarkerRef = useRef<mapboxgl.Marker | null>(null);
   const mapLoadedRef = useRef(false);
+  const hasUserInteractedRef = useRef(false);
+  const hasAppliedInitialZoneViewRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
+  const [currentPitch, setCurrentPitch] = useState(60);
+  const cameraElevation = pitchFromNadirToCameraElevation(currentPitch);
+  const cameraElevationBadge = getCameraElevationBadge(cameraElevation);
 
   // Drag state for zone/vertex editing
   const dragStateRef = useRef<DragState | null>(null);
+  const suppressNextClickRef = useRef(false);
   // Ref to track pending coords during drag for persistence on mouseup
   const pendingCoordsRef = useRef<{ zoneId: string; coords: number[][] } | null>(null);
+  // Live area display during drag/resize
+  const [dragArea, setDragArea] = useState<number>(0);
+  const selectedZoneIdRef = useRef(selectedZoneId);
+  selectedZoneIdRef.current = selectedZoneId;
+  // Clipboard for copy/paste
+  const clipboardRef = useRef<{ coords: number[][]; zoneType: SiteZoneType; properties?: SiteZoneProperties } | null>(null);
+  // Rotation UI state
+  const [isRotating, setIsRotating] = useState(false);
+  const [currentRotationDeg, setCurrentRotationDeg] = useState(0);
+  const [rotationCentroidScreen, setRotationCentroidScreen] = useState<{ x: number; y: number } | null>(null);
 
   /** Build GeoJSON preview features for the current drawing */
   const buildPreviewFeatures = useCallback((pts: number[][], tool: SiteZoneType | null): GeoJSON.Feature[] => {
@@ -477,6 +481,33 @@ export function SitePlannerMap({
   }, [buildPreviewFeatures]);
 
   // ─── Drawing interceptor: lets undo button / Ctrl+Z remove vertices ───
+  const updateCenterConnectionState = useCallback(() => {
+    const map = mapRef.current;
+    const tool = activeSitePlannerToolRef.current;
+    const pts = drawingPointsRef.current;
+
+    if (!map || !tool || isLinearTool(tool) || pts.length < minPointsForTool(tool)) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    const centerPx = map.project(map.getCenter());
+    const startPx = map.project({ lng: pts[0][0], lat: pts[0][1] });
+    const dx = centerPx.x - startPx.x;
+    const dy = centerPx.y - startPx.y;
+    setCenterNearStartVertex(Math.sqrt(dx * dx + dy * dy) <= CONNECT_VERTEX_RADIUS_PX);
+  }, []);
+
+  const addDrawingPoint = useCallback((point: number[]) => {
+    drawingPointsRef.current = [...drawingPointsRef.current, point];
+    removedPointsRef.current = [];
+    setDrawingPoints([...drawingPointsRef.current]);
+    requestAnimationFrame(() => {
+      updateDrawingPreview();
+      updateCenterConnectionState();
+    });
+  }, [updateCenterConnectionState, updateDrawingPreview]);
+
   const { setDrawingInterceptor, clearDrawingInterceptor } = useUndoRedoStore.getState();
 
   // Helper to remove last drawing vertex (shared by interceptor and Backspace handler)
@@ -486,8 +517,9 @@ export function SitePlannerMap({
     removedPointsRef.current.push(removed);
     setDrawingPoints([...drawingPointsRef.current]);
     updateDrawingPreview();
+    updateCenterConnectionState();
     return true;
-  }, [updateDrawingPreview]);
+  }, [updateCenterConnectionState, updateDrawingPreview]);
 
   // Helper to redo a removed vertex
   const redoLastVertex = useCallback(() => {
@@ -496,8 +528,9 @@ export function SitePlannerMap({
     drawingPointsRef.current.push(restored);
     setDrawingPoints([...drawingPointsRef.current]);
     updateDrawingPreview();
+    updateCenterConnectionState();
     return true;
-  }, [updateDrawingPreview]);
+  }, [updateCenterConnectionState, updateDrawingPreview]);
 
   // Register / clear interceptor whenever drawing points change
   useEffect(() => {
@@ -517,6 +550,38 @@ export function SitePlannerMap({
   useEffect(() => {
     return () => clearDrawingInterceptor();
   }, [clearDrawingInterceptor]);
+
+  // Capture drawing undo/redo before the global undo stack handles completed zones.
+  useEffect(() => {
+    if (interactionPaused) return;
+
+    const handleDrawingUndoRedo = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const tag = target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (target?.isContentEditable) return;
+
+      const isMod = e.ctrlKey || e.metaKey;
+      if (!isMod || !activeSitePlannerToolRef.current) return;
+
+      const key = e.key.toLowerCase();
+      const wantsUndo = key === 'z' && !e.shiftKey;
+      const wantsRedo = key === 'y' || (key === 'z' && e.shiftKey);
+      if (!wantsUndo && !wantsRedo) return;
+
+      const handled = wantsUndo
+        ? undoLastVertex()
+        : redoLastVertex();
+
+      if (!handled) return;
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+
+    window.addEventListener('keydown', handleDrawingUndoRedo, true);
+    return () => window.removeEventListener('keydown', handleDrawingUndoRedo, true);
+  }, [interactionPaused, redoLastVertex, undoLastVertex]);
 
   /** Finish the current drawing and create a zone */
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
@@ -540,8 +605,49 @@ export function SitePlannerMap({
     drawingPointsRef.current = [];
     removedPointsRef.current = [];
     setDrawingPoints([]);
+    setCenterNearStartVertex(false);
+    if (isMobileDrawingViewport()) {
+      setActiveSitePlannerTool(null);
+    }
     updateDrawingPreview();
-  }, [updateDrawingPreview, finishDrawing]);
+  }, [setActiveSitePlannerTool, updateDrawingPreview, finishDrawing]);
+
+  const cancelDrawing = useCallback(() => {
+    drawingPointsRef.current = [];
+    removedPointsRef.current = [];
+    setDrawingPoints([]);
+    setCenterNearStartVertex(false);
+    setActiveSitePlannerTool(null);
+    updateDrawingPreview();
+  }, [setActiveSitePlannerTool, updateDrawingPreview]);
+
+  const placeCenterVertex = useCallback(() => {
+    const map = mapRef.current;
+    const tool = activeSitePlannerToolRef.current;
+    if (!map || !tool) return;
+
+    if (centerNearStartVertex && drawingPointsRef.current.length >= minPointsForTool(tool)) {
+      finishPolygon();
+      return;
+    }
+
+    const center = map.getCenter();
+    addDrawingPoint([center.lng, center.lat]);
+  }, [addDrawingPoint, centerNearStartVertex, finishPolygon]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || !activeSitePlannerTool) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    updateCenterConnectionState();
+    map.on('move', updateCenterConnectionState);
+    return () => {
+      map.off('move', updateCenterConnectionState);
+    };
+  }, [activeSitePlannerTool, drawingPoints.length, mapReady, updateCenterConnectionState]);
 
   /** Build zone features for the map source, optionally with modified coords for a specific zone */
   const buildZoneFeatures = useCallback((zones: SiteZone[], overrideZoneId?: string, overrideCoords?: number[][]): GeoJSON.Feature[] => {
@@ -568,6 +674,9 @@ export function SitePlannerMap({
         };
       }
 
+      if (!zone.coordinates || zone.coordinates.length === 0) {
+        return null as unknown as GeoJSON.Feature; // skip zones without coordinates
+      }
       const zoneCoords = [...zone.coordinates];
       if (
         zoneCoords.length > 0 &&
@@ -599,33 +708,42 @@ export function SitePlannerMap({
     const map = mapRef.current;
     if (!map || !mapLoadedRef.current) return;
 
-    // Debug: log zone dimensions for alignment comparison with block editor
-    for (const z of zones) {
-      if (z.coordinates.length >= 3) {
-        const lat = z.coordinates[0][1];
-        const mlon = 111320 * Math.abs(Math.cos((lat * Math.PI) / 180));
-        const cx = z.coordinates.reduce((s, c) => s + c[0], 0) / z.coordinates.length;
-        const cy = z.coordinates.reduce((s, c) => s + c[1], 0) / z.coordinates.length;
-        const xs = z.coordinates.map((c) => (c[0] - cx) * mlon);
-        const ys = z.coordinates.map((c) => (c[1] - cy) * 111320);
-        const w = Math.max(...xs) - Math.min(...xs);
-        const d = Math.max(...ys) - Math.min(...ys);
-        console.log('[MasterPlan Debug]', {
-          zoneId: z.id, zoneName: z.name, zoneType: z.zone_type,
-          numCoords: z.coordinates.length,
-          centroid: [cx.toFixed(6), cy.toFixed(6)],
-          zoneWidthM: w.toFixed(1), zoneDepthM: d.toFixed(1),
-          firstCoord: z.coordinates[0], lastCoord: z.coordinates[z.coordinates.length - 1],
-        });
-      }
-    }
-
     const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
     if (!source) return;
 
     const features = buildZoneFeatures(zones);
     source.setData({ type: 'FeatureCollection', features });
   }, [buildZoneFeatures]);
+
+  const getZoneBounds = useCallback((zones: SiteZone[]): mapboxgl.LngLatBounds | null => {
+    const sourceZones = zones.some((zone) => zone.zone_type === 'site_boundary')
+      ? zones.filter((zone) => zone.zone_type === 'site_boundary')
+      : zones;
+    const bounds = new mapboxgl.LngLatBounds();
+    let validPointCount = 0;
+
+    for (const zone of sourceZones) {
+      for (const coord of zone.coordinates ?? []) {
+        if (!Array.isArray(coord) || coord.length < 2) continue;
+        const lng = Number(coord[0]);
+        const lat = Number(coord[1]);
+        if (!Number.isFinite(lng) || !Number.isFinite(lat)) continue;
+        if (Math.abs(lng) > 180 || Math.abs(lat) > 90) continue;
+        bounds.extend([lng, lat]);
+        validPointCount += 1;
+      }
+    }
+
+    if (validPointCount < 2) return null;
+    if (
+      Math.abs(bounds.getEast() - bounds.getWest()) < 1e-10
+      && Math.abs(bounds.getNorth() - bounds.getSouth()) < 1e-10
+    ) {
+      return null;
+    }
+
+    return bounds;
+  }, []);
 
   // Update massing preview layer when massingFeatures prop changes
   useEffect(() => {
@@ -650,34 +768,109 @@ export function SitePlannerMap({
     }
   }, [massingFeatures]);
 
+  /** Compute the centroid of a polygon (simple average of vertices) */
+  const computeCentroid = useCallback((coords: number[][]): [number, number] => {
+    let lng = 0, lat = 0;
+    for (const c of coords) { lng += c[0]; lat += c[1]; }
+    return [lng / coords.length, lat / coords.length];
+  }, []);
+
+  /** Compute rotation handle position: extends outward from centroid through
+   *  the midpoint of the first edge so it visually tracks the polygon face. */
+  const computeRotationHandlePos = useCallback((coords: number[][]): [number, number] => {
+    const [cx, cy] = computeCentroid(coords);
+    // Midpoint of first edge
+    const a = coords[0];
+    const b = coords[1 % coords.length];
+    const mx = (a[0] + b[0]) / 2;
+    const my = (a[1] + b[1]) / 2;
+    // Direction from centroid through that midpoint
+    let dx = mx - cx;
+    let dy = my - cy;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    if (len < 1e-12) return [cx, cy + 0.00015];
+    dx /= len;
+    dy /= len;
+    // Extend outward past the edge by a comfortable margin
+    let maxDist = 0;
+    for (const c of coords) {
+      const d = Math.sqrt((c[0] - cx) ** 2 + (c[1] - cy) ** 2);
+      if (d > maxDist) maxDist = d;
+    }
+    const offset = Math.max(maxDist * 1.5, 0.00015);
+    return [cx + dx * offset, cy + dy * offset];
+  }, [computeCentroid]);
+
   /** Update vertex handles for the selected zone */
   const updateVertexHandles = useCallback((zoneId: string | null, zones: SiteZone[], overrideCoords?: number[][]) => {
     const map = mapRef.current;
     if (!map || !mapLoadedRef.current) return;
 
-    const src = map.getSource('zone-edit-vertices') as mapboxgl.GeoJSONSource | undefined;
-    if (!src) return;
+    const vertexSrc = map.getSource('zone-edit-vertices') as mapboxgl.GeoJSONSource | undefined;
+    const rotSrc = map.getSource('zone-rotation-handle') as mapboxgl.GeoJSONSource | undefined;
 
-    if (!zoneId) {
-      src.setData({ type: 'FeatureCollection', features: [] });
+    if (!zoneId || interactionPausedRef.current) {
+      vertexSrc?.setData({ type: 'FeatureCollection', features: [] });
+      rotSrc?.setData({ type: 'FeatureCollection', features: [] });
       return;
     }
 
     const zone = zones.find((z) => z.id === zoneId);
     if (!zone) {
-      src.setData({ type: 'FeatureCollection', features: [] });
+      vertexSrc?.setData({ type: 'FeatureCollection', features: [] });
+      rotSrc?.setData({ type: 'FeatureCollection', features: [] });
       return;
     }
 
     const coords = overrideCoords || zone.coordinates;
-    const features: GeoJSON.Feature[] = coords.map((c, i) => ({
+
+    // Vertex handles
+    const vertexFeatures: GeoJSON.Feature[] = coords.map((c, i) => ({
       type: 'Feature',
       properties: { zoneId, vertexIndex: i },
       geometry: { type: 'Point', coordinates: c },
     }));
+    vertexSrc?.setData({ type: 'FeatureCollection', features: vertexFeatures });
 
-    src.setData({ type: 'FeatureCollection', features });
-  }, []);
+    // Rotation handle (only for building/residential zones)
+    const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
+    if (isBuilding && coords.length >= 3 && rotSrc) {
+      const centroid = computeCentroid(coords);
+      const handlePos = computeRotationHandlePos(coords);
+      // North marker: always due north of centroid
+      let maxDist = 0;
+      for (const c of coords) {
+        const d = Math.sqrt((c[0] - centroid[0]) ** 2 + (c[1] - centroid[1]) ** 2);
+        if (d > maxDist) maxDist = d;
+      }
+      const northOffset = Math.max(maxDist * 1.6, 0.00018);
+      const northPos: [number, number] = [centroid[0], centroid[1] + northOffset];
+
+      const rotFeatures: GeoJSON.Feature[] = [
+        // Line from centroid to handle
+        {
+          type: 'Feature',
+          properties: { zoneId, featureType: 'line' },
+          geometry: { type: 'LineString', coordinates: [centroid, handlePos] },
+        },
+        // Handle point
+        {
+          type: 'Feature',
+          properties: { zoneId, featureType: 'handle' },
+          geometry: { type: 'Point', coordinates: handlePos },
+        },
+        // North indicator
+        {
+          type: 'Feature',
+          properties: { zoneId, featureType: 'north' },
+          geometry: { type: 'Point', coordinates: northPos },
+        },
+      ];
+      rotSrc.setData({ type: 'FeatureCollection', features: rotFeatures });
+    } else {
+      rotSrc?.setData({ type: 'FeatureCollection', features: [] });
+    }
+  }, [computeCentroid, computeRotationHandlePos]);
 
   // ─── Initialize map ───
   useEffect(() => {
@@ -702,6 +895,18 @@ export function SitePlannerMap({
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     mapRef.current = map;
     setMapInstance(map);
+    hasUserInteractedRef.current = false;
+    hasAppliedInitialZoneViewRef.current = false;
+
+    map.on('pitch', () => setCurrentPitch(Math.round(map.getPitch())));
+    const markUserInteracted = () => { hasUserInteractedRef.current = true; };
+    map.on('mousedown', markUserInteracted);
+    map.on('dragstart', markUserInteracted);
+    map.on('zoomstart', markUserInteracted);
+    map.on('rotatestart', markUserInteracted);
+    map.on('pitchstart', markUserInteracted);
+    map.getCanvas().addEventListener('wheel', markUserInteracted, { passive: true });
+    map.getCanvas().addEventListener('touchstart', markUserInteracted, { passive: true });
 
     map.on('load', () => {
       mapLoadedRef.current = true;
@@ -713,7 +918,7 @@ export function SitePlannerMap({
         tileSize: 512,
         maxzoom: 14,
       });
-      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.2 });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 0.5 });
 
       // --- 3D Buildings from Mapbox composite source ---
       const layers = map.getStyle().layers;
@@ -746,7 +951,7 @@ export function SitePlannerMap({
             ],
             'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'height']],
             'fill-extrusion-base': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'min_height']],
-            'fill-extrusion-opacity': 0.8,
+            'fill-extrusion-opacity': 1.0,
           },
         },
         labelLayerId,
@@ -778,7 +983,7 @@ export function SitePlannerMap({
           'fill-extrusion-color': ['get', 'color'],
           'fill-extrusion-height': ['get', 'height'],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.85,
+          'fill-extrusion-opacity': 1.0,
         },
       });
 
@@ -797,7 +1002,7 @@ export function SitePlannerMap({
         type: 'fill',
         source: 'site-zones',
         filter: ['all', ['!', ['has', 'height']], ['!=', ['get', 'zone_type'], 'site_boundary']],
-        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.85 },
+        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 1.0 },
       });
 
       map.addLayer({
@@ -847,7 +1052,7 @@ export function SitePlannerMap({
           'fill-extrusion-color': ['get', 'color'],
           'fill-extrusion-height': ['get', 'height'],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.85,
+          'fill-extrusion-opacity': 1.0,
         },
       });
 
@@ -858,7 +1063,7 @@ export function SitePlannerMap({
         filter: ['==', ['get', 'type'], 'green_space'],
         paint: {
           'fill-color': ['get', 'color'],
-          'fill-opacity': 0.6,
+          'fill-opacity': 1.0,
         },
       });
 
@@ -877,6 +1082,58 @@ export function SitePlannerMap({
           'circle-color': '#ffffff',
           'circle-stroke-color': '#3b82f6',
           'circle-stroke-width': 2,
+        },
+      });
+
+      // --- Rotation handle source + layers ---
+      map.addSource('zone-rotation-handle', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      // Dashed line from centroid to rotation handle
+      map.addLayer({
+        id: 'zone-rotation-line',
+        type: 'line',
+        source: 'zone-rotation-handle',
+        filter: ['==', ['get', 'featureType'], 'line'],
+        paint: {
+          'line-color': '#f59e0b',
+          'line-width': 2,
+          'line-dasharray': [3, 2],
+        },
+      });
+
+      // Rotation handle circle
+      map.addLayer({
+        id: 'zone-rotation-handle-layer',
+        type: 'circle',
+        source: 'zone-rotation-handle',
+        filter: ['==', ['get', 'featureType'], 'handle'],
+        paint: {
+          'circle-radius': 9,
+          'circle-color': '#f59e0b',
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 2,
+        },
+      });
+
+      // North indicator label — always due north of centroid
+      map.addLayer({
+        id: 'zone-rotation-north-label',
+        type: 'symbol',
+        source: 'zone-rotation-handle',
+        filter: ['==', ['get', 'featureType'], 'north'],
+        layout: {
+          'text-field': 'N',
+          'text-size': 14,
+          'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-allow-overlap': true,
+        },
+        paint: {
+          'text-color': '#ef4444',
+          'text-halo-color': 'rgba(0,0,0,0.8)',
+          'text-halo-width': 1.5,
         },
       });
 
@@ -919,46 +1176,61 @@ export function SitePlannerMap({
       setMapReady(true);
     });
 
+    const zoneHitLayers = () => ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l));
+    const buildingZoneFeaturesAtPoint = (point: mapboxgl.PointLike) => (
+      map
+        .queryRenderedFeatures(point, { layers: zoneHitLayers() })
+        .filter((feature) => isBuildingZoneType(feature.properties?.zone_type))
+    );
+    const selectedZoneAtPoint = (point: mapboxgl.PointLike) => {
+      const selectedId = selectedZoneIdRef.current;
+      if (!selectedId) return null;
+      const selectedZone = siteZonesRef.current.find((zone) => zone.id === selectedId) || null;
+      if (!selectedZone || (selectedZone.zone_type !== 'building' && selectedZone.zone_type !== 'residential')) {
+        return null;
+      }
+      const hits = map.queryRenderedFeatures(point, { layers: zoneHitLayers() });
+      return hits.some((feature) => feature.properties?.id === selectedId)
+        ? selectedZone
+        : null;
+    };
+
     // ─── Click to place points (drawing mode) OR select zones ───
     map.on('click', (e) => {
       // Don't process click events during/right after drag
-      if (dragStateRef.current) return;
+      if (dragStateRef.current || suppressNextClickRef.current) {
+        suppressNextClickRef.current = false;
+        return;
+      }
 
       const tool = activeSitePlannerToolRef.current;
       if (tool) {
-        drawingPointsRef.current = [
-          ...drawingPointsRef.current,
-          [e.lngLat.lng, e.lngLat.lat],
-        ];
-        removedPointsRef.current = [];  // clear redo stack on new point
-        setDrawingPoints([...drawingPointsRef.current]);
-        requestAnimationFrame(() => {
-          const m = mapRef.current;
-          if (!m || !mapLoadedRef.current) return;
-          const src = m.getSource('drawing-preview') as mapboxgl.GeoJSONSource | undefined;
-          if (!src) return;
-
-          const currentTool = activeSitePlannerToolRef.current;
-          const color = currentTool ? ZONE_TYPE_CONFIG[currentTool].color : '#fbbf24';
-          try {
-            m.setPaintProperty('drawing-preview-fill', 'fill-color', color);
-            m.setPaintProperty('drawing-preview-line', 'line-color', color);
-            m.setPaintProperty('drawing-preview-points', 'circle-color', color);
-          } catch { /* layers may not exist yet */ }
-
-          const pts = drawingPointsRef.current;
-          const features = buildPreviewFeatures(pts, currentTool);
-          src.setData({ type: 'FeatureCollection', features });
-        });
+        if (isBuildingZoneType(tool)) {
+          const features = buildingZoneFeaturesAtPoint(e.point);
+          if (features.length > 0) {
+            const zoneId = pickSmallestFeature(features).properties?.id;
+            if (zoneId) {
+              drawingPointsRef.current = [];
+              removedPointsRef.current = [];
+              setDrawingPoints([]);
+              setCenterNearStartVertex(false);
+              setActiveSitePlannerTool(null);
+              const src = map.getSource('drawing-preview') as mapboxgl.GeoJSONSource | undefined;
+              if (src) src.setData({ type: 'FeatureCollection', features: [] });
+              onZoneSelectedRef.current(zoneId);
+              return;
+            }
+          }
+        }
+        addDrawingPoint([e.lngLat.lng, e.lngLat.lat]);
+      } else if (streetViewPegmanRef.current) {
+        // Street view mode — place the pegman at the clicked location
+        setStreetViewPosition([e.lngLat.lng, e.lngLat.lat]);
+        return;
       } else {
         // Selection mode — but only if not coming from a drag
         // Query both flat fill and extruded layers so building zones (with height) are clickable
-        const queryLayers = ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(
-          (l) => map.getLayer(l),
-        );
-        const features = map.queryRenderedFeatures(e.point, {
-          layers: queryLayers,
-        });
+        const features = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
         if (features.length > 0) {
           const zoneId = pickSmallestFeature(features).properties?.id;
           if (zoneId) {
@@ -995,7 +1267,25 @@ export function SitePlannerMap({
     // ─── Mousedown: start drag (zone body or vertex) ───
     map.on('mousedown', (e) => {
       const tool = activeSitePlannerToolRef.current;
-      if (tool) return; // Drawing mode — don't interfere
+      if (tool) {
+        // Drawing mode still allows moving the currently selected zone by
+        // dragging from inside its body, which avoids accidental new vertices.
+        const selectedZone = selectedZoneAtPoint(e.point);
+        if (!selectedZone) return;
+
+        e.preventDefault();
+        suppressNextClickRef.current = true;
+        dragStateRef.current = {
+          type: 'zone',
+          zoneId: selectedZone.id,
+          startLngLat: [e.lngLat.lng, e.lngLat.lat],
+          originalCoords: selectedZone.coordinates.map((c) => [...c]),
+        };
+        map.dragPan.disable();
+        map.getCanvas().style.cursor = 'grabbing';
+        setDraggingZone(true);
+        return;
+      }
 
       // Check vertex handles first (higher priority)
       const vertexFeatures = map.queryRenderedFeatures(e.point, {
@@ -1022,10 +1312,40 @@ export function SitePlannerMap({
         }
       }
 
-      // Check zone body for zone dragging
-      const zoneFeatures = map.queryRenderedFeatures(e.point, {
-        layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
+      // Check rotation handle (between vertex and zone body priority)
+      const rotHandleFeatures = map.queryRenderedFeatures(e.point, {
+        layers: ['zone-rotation-handle-layer'],
       });
+      if (rotHandleFeatures.length > 0) {
+        const zoneId = rotHandleFeatures[0].properties?.zoneId as string;
+        const zone = siteZonesRef.current.find((z) => z.id === zoneId);
+        if (zone && zone.coordinates.length >= 3) {
+          e.preventDefault();
+          const centroid = computeCentroid(zone.coordinates) as [number, number];
+          const startAngle = Math.atan2(
+            e.lngLat.lat - centroid[1],
+            e.lngLat.lng - centroid[0],
+          );
+          dragStateRef.current = {
+            type: 'rotate',
+            zoneId,
+            startLngLat: [e.lngLat.lng, e.lngLat.lat],
+            originalCoords: zone.coordinates.map((c) => [...c]),
+            centroid,
+            startAngle,
+          };
+          map.dragPan.disable();
+          map.getCanvas().style.cursor = 'grabbing';
+          setDraggingZone(true);
+          setIsRotating(true);
+          const screenPt = map.project(centroid);
+          setRotationCentroidScreen({ x: screenPt.x, y: screenPt.y });
+          return;
+        }
+      }
+
+      // Check zone body for zone dragging (include extrusions so buildings can be dragged)
+      const zoneFeatures = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
       if (zoneFeatures.length > 0) {
         const zoneId = pickSmallestFeature(zoneFeatures).properties?.id as string;
         const zone = siteZonesRef.current.find((z) => z.id === zoneId);
@@ -1094,7 +1414,7 @@ export function SitePlannerMap({
           const features = siteZonesRef.current.map(z => {
             const c = z.id === selId ? newCoords : z.coordinates;
             if (!c || c.length < 3) return null;
-            const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+            const zoneHeight = z.properties?.height != null ? Number(z.properties.height) : undefined;
             return {
               type: 'Feature' as const,
               properties: {
@@ -1128,7 +1448,19 @@ export function SitePlannerMap({
         // Cursor hints when not dragging
         const tool = activeSitePlannerToolRef.current;
         if (tool) {
+          if (selectedZoneAtPoint(e.point)) {
+            map.getCanvas().style.cursor = 'grab';
+            return;
+          }
           map.getCanvas().style.cursor = 'crosshair';
+          return;
+        }
+        // Check if hovering rotation handle
+        const rotHits = map.queryRenderedFeatures(e.point, {
+          layers: ['zone-rotation-handle-layer'],
+        });
+        if (rotHits.length > 0) {
+          map.getCanvas().style.cursor = 'grab';
           return;
         }
         // Check if hovering vertex handle
@@ -1139,10 +1471,8 @@ export function SitePlannerMap({
           map.getCanvas().style.cursor = 'crosshair';
           return;
         }
-        // Check if hovering zone body
-        const zoneHits = map.queryRenderedFeatures(e.point, {
-          layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
-        });
+        // Check if hovering zone body (include extrusions for buildings)
+        const zoneHits = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
         if (zoneHits.length > 0) {
           map.getCanvas().style.cursor = 'grab';
           return;
@@ -1168,6 +1498,33 @@ export function SitePlannerMap({
         ];
         updateZoneOnMap(ds.zoneId, newCoords);
         updateVertexHandles(ds.zoneId, siteZonesRef.current, newCoords);
+      } else if (ds.type === 'rotate' && ds.centroid && ds.startAngle != null) {
+        // Rotate all vertices around the centroid
+        const currentAngle = Math.atan2(
+          e.lngLat.lat - ds.centroid[1],
+          e.lngLat.lng - ds.centroid[0],
+        );
+        const deltaAngle = currentAngle - ds.startAngle;
+        setCurrentRotationDeg(deltaAngle * (180 / Math.PI));
+        // Project centroid to screen for the compass overlay
+        const screenPt = map.project(ds.centroid as [number, number]);
+        setRotationCentroidScreen({ x: screenPt.x, y: screenPt.y });
+        const cos = Math.cos(deltaAngle);
+        const sin = Math.sin(deltaAngle);
+        const [cx, cy] = ds.centroid;
+        const newCoords = ds.originalCoords.map((c) => {
+          const rx = c[0] - cx;
+          const ry = c[1] - cy;
+          return [cx + rx * cos - ry * sin, cy + rx * sin + ry * cos];
+        });
+        updateZoneOnMap(ds.zoneId, newCoords);
+        updateVertexHandles(ds.zoneId, siteZonesRef.current, newCoords);
+      }
+
+      // Live area update during any drag type
+      const pending = pendingCoordsRef.current;
+      if (pending && pending.coords.length >= 3) {
+        setDragArea(geodesicArea(pending.coords));
       }
     });
 
@@ -1180,7 +1537,7 @@ export function SitePlannerMap({
       mapRef.current = null;
       setMapInstance(null);
     };
-  }, [latitude, longitude, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
+  }, [latitude, longitude, addDrawingPoint, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
 
   // Helper to update a zone's geometry on the map in real-time
   function updateZoneOnMap(zoneId: string, newCoords: number[][]) {
@@ -1203,12 +1560,19 @@ export function SitePlannerMap({
       const ds = dragStateRef.current;
       if (!ds) return;
 
+      if (ds.type === 'rotate') {
+        setIsRotating(false);
+        setCurrentRotationDeg(0);
+        setRotationCentroidScreen(null);
+      }
+
       const map = mapRef.current;
       if (map) {
         map.dragPan.enable();
         map.getCanvas().style.cursor = '';
       }
       setDraggingZone(false);
+      setDragArea(0);
       dragStateRef.current = null;
 
       // Persist the pending coordinates
@@ -1217,6 +1581,10 @@ export function SitePlannerMap({
         onZoneUpdatedRef.current(pending.zoneId, pending.coords);
         pendingCoordsRef.current = null;
       }
+
+      window.setTimeout(() => {
+        suppressNextClickRef.current = false;
+      }, 0);
     };
 
     window.addEventListener('mouseup', handleMouseUp);
@@ -1267,27 +1635,176 @@ export function SitePlannerMap({
   useEffect(() => {
     if (mapReady) {
       syncZonesToMap(siteZones);
+      if (
+        !hasAppliedInitialZoneViewRef.current
+        && !hasUserInteractedRef.current
+        && siteZones.length > 0
+      ) {
+        hasAppliedInitialZoneViewRef.current = true;
+        const bounds = getZoneBounds(siteZones);
+        if (bounds) {
+          mapRef.current?.fitBounds(bounds, {
+            padding: 96,
+            duration: 0,
+            maxZoom: 18,
+            pitch: 60,
+            bearing: -30,
+          });
+        }
+      }
     }
-  }, [siteZones, mapReady, syncZonesToMap]);
+  }, [siteZones, mapReady, syncZonesToMap, getZoneBounds]);
 
   // ─── Selected zone highlight + vertex handles ───
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !mapReady) return;
     try {
-      map.setFilter('site-zones-selected', ['==', ['get', 'id'], selectedZoneId || '']);
+      map.setFilter('site-zones-selected', ['==', ['get', 'id'], interactionPaused ? '' : (selectedZoneId || '')]);
     } catch { /* Layer might not be ready yet */ }
 
     // Update vertex handles for selected zone (only in select mode)
-    if (!activeSitePlannerTool) {
+    if (!interactionPaused && !activeSitePlannerTool) {
       updateVertexHandles(selectedZoneId, siteZones);
     } else {
       updateVertexHandles(null, siteZones);
     }
-  }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, updateVertexHandles]);
+  }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, interactionPaused, updateVertexHandles]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+
+    const hiddenWhilePaused = [
+      'site-zones-labels',
+      'zone-edit-vertices-layer',
+      'zone-rotation-line',
+      'zone-rotation-handle-layer',
+      'zone-rotation-north-label',
+    ];
+    const visibility = interactionPaused ? 'none' : 'visible';
+
+    for (const layerId of hiddenWhilePaused) {
+      try {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', visibility);
+        }
+      } catch { /* Layer might not be ready yet */ }
+    }
+
+    return () => {
+      try {
+        for (const layerId of hiddenWhilePaused) {
+          if (map.getLayer(layerId)) {
+            map.setLayoutProperty(layerId, 'visibility', 'visible');
+          }
+        }
+      } catch { /* map may already be destroyed */ }
+    };
+  }, [interactionPaused, mapReady]);
+
+  // ─── WASD/Arrow movement + Q/E rotation ───
+  // When a zone is selected: WASD and arrow keys move the zone.
+  // When no zone is selected: WASD pans the map.
+  // Q/E always rotate the map bearing.
+  useEffect(() => {
+    if (interactionPaused) return;
+
+    const keysDown = new Set<string>();
+    const PAN_PX = 4; // pixels per frame for both panning and zone movement
+    const ROTATE_SPEED = 1.5; // degrees per frame
+    let rafId = 0;
+
+    const isEditable = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      return tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable;
+    };
+
+    const tick = () => {
+      const map = mapRef.current;
+      if (!map || keysDown.size === 0) { rafId = 0; return; }
+
+      // Q/E rotation
+      if (keysDown.has('q')) map.setBearing(map.getBearing() - ROTATE_SPEED);
+      if (keysDown.has('e')) map.setBearing(map.getBearing() + ROTATE_SPEED);
+
+      // Movement keys
+      const moveKeys = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+      const hasMove = moveKeys.some(k => keysDown.has(k));
+
+      if (hasMove) {
+        const selId = selectedZoneIdRef.current;
+        const zones = siteZonesRef.current;
+        const zone = selId ? zones.find(z => z.id === selId) : null;
+
+        if (zone) {
+          // Move selected zone — use pixel offset so speed matches zoom/pitch
+          let dx = 0, dy = 0;
+          if (keysDown.has('a') || keysDown.has('arrowleft')) dx -= PAN_PX;
+          if (keysDown.has('d') || keysDown.has('arrowright')) dx += PAN_PX;
+          if (keysDown.has('w') || keysDown.has('arrowup')) dy -= PAN_PX;
+          if (keysDown.has('s') || keysDown.has('arrowdown')) dy += PAN_PX;
+          if (dx !== 0 || dy !== 0) {
+            // Convert pixel offset to lng/lat delta using the map's current projection
+            const center = map.getCenter();
+            const centerPx = map.project(center);
+            const offsetLngLat = map.unproject([centerPx.x + dx, centerPx.y + dy]);
+            const dlng = offsetLngLat.lng - center.lng;
+            const dlat = offsetLngLat.lat - center.lat;
+            const newCoords = zone.coordinates.map(([lng, lat]) => [lng + dlng, lat + dlat]);
+            updateZoneOnMap(selId!, newCoords);
+            pendingCoordsRef.current = { zoneId: selId!, coords: newCoords };
+          }
+        } else {
+          // Pan map when no zone selected
+          let dx = 0, dy = 0;
+          if (keysDown.has('a') || keysDown.has('arrowleft')) dx -= PAN_PX;
+          if (keysDown.has('d') || keysDown.has('arrowright')) dx += PAN_PX;
+          if (keysDown.has('w') || keysDown.has('arrowup')) dy -= PAN_PX;
+          if (keysDown.has('s') || keysDown.has('arrowdown')) dy += PAN_PX;
+          if (dx !== 0 || dy !== 0) map.panBy([dx, dy], { duration: 0 });
+        }
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const onDown = (e: KeyboardEvent) => {
+      if (isEditable(e)) return;
+      const k = e.key.toLowerCase();
+      const validKeys = ['w', 'a', 's', 'd', 'q', 'e', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+      if (validKeys.includes(k)) {
+        if (k.startsWith('arrow')) e.preventDefault();
+        keysDown.add(k);
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+    };
+    const onUp = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase();
+      keysDown.delete(k);
+      // Persist zone move on key release
+      if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(k)) {
+        const pending = pendingCoordsRef.current;
+        if (pending && keysDown.size === 0) {
+          onZoneUpdatedRef.current(pending.zoneId, pending.coords);
+          pendingCoordsRef.current = null;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', onDown);
+    window.addEventListener('keyup', onUp);
+    return () => {
+      window.removeEventListener('keydown', onDown);
+      window.removeEventListener('keyup', onUp);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [interactionPaused, updateZoneOnMap]);
 
   // ─── Keyboard shortcuts ───
   useEffect(() => {
+    if (interactionPaused) return;
+
     const handleKey = (e: KeyboardEvent) => {
       // Skip when focus is in an editable element
       const tag = (e.target as HTMLElement)?.tagName;
@@ -1300,6 +1817,10 @@ export function SitePlannerMap({
         drawingPointsRef.current = [];
         removedPointsRef.current = [];
         setDrawingPoints([]);
+        setCenterNearStartVertex(false);
+        if (isMobileDrawingViewport()) {
+          setActiveSitePlannerTool(null);
+        }
         updateDrawingPreview();
       }
       if (e.key === 'Enter' && tool && drawingPointsRef.current.length >= minPointsForTool(tool)) {
@@ -1317,10 +1838,29 @@ export function SitePlannerMap({
           onZoneDeletedRef.current(selectedZoneId);
         }
       }
+      // Ctrl+C / Cmd+C — copy selected zone
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedZoneId) {
+        const zone = siteZonesRef.current.find(z => z.id === selectedZoneId);
+        if (zone) {
+          clipboardRef.current = {
+            coords: zone.coordinates.map(c => [...c]),
+            zoneType: zone.zone_type,
+            properties: zone.properties ? { ...zone.properties } : undefined,
+          };
+        }
+      }
+      // Ctrl+V / Cmd+V — paste copied zone with slight offset
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v' && clipboardRef.current) {
+        e.preventDefault();
+        const { coords, zoneType, properties } = clipboardRef.current;
+        const OFFSET = 0.0003; // ~30m offset so it doesn't land exactly on top
+        const offsetCoords = coords.map(([lng, lat]) => [lng + OFFSET, lat - OFFSET]);
+        onZoneCreatedRef.current(offsetCoords, zoneType, properties);
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
+  }, [interactionPaused, setActiveSitePlannerTool, updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -1330,27 +1870,206 @@ export function SitePlannerMap({
     );
   }
 
+  // ─── Street View Pegman marker + view cone ───
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    // Remove existing marker when pegman is deactivated or position cleared
+    if (!streetViewPegman?.position) {
+      if (pegmanMarkerRef.current) {
+        pegmanMarkerRef.current.remove();
+        pegmanMarkerRef.current = null;
+      }
+      // Remove view cone layer/source
+      if (map.getLayer('street-view-cone-fill')) map.removeLayer('street-view-cone-fill');
+      if (map.getLayer('street-view-cone-line')) map.removeLayer('street-view-cone-line');
+      if (map.getSource('street-view-cone')) map.removeSource('street-view-cone');
+      return;
+    }
+
+    const pos = streetViewPegman.position;
+    const angle = streetViewPegman.angle;
+
+    // Create or update marker
+    if (!pegmanMarkerRef.current) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:32px;height:32px;border-radius:50%;background:#f59e0b;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:grab;display:flex;align-items:center;justify-content:center;font-size:16px;';
+      el.textContent = '\uD83D\uDC41'; // eye emoji
+      pegmanMarkerRef.current = new mapboxgl.Marker({ element: el, draggable: true })
+        .setLngLat(pos)
+        .addTo(map);
+      pegmanMarkerRef.current.on('dragend', () => {
+        const lngLat = pegmanMarkerRef.current!.getLngLat();
+        setStreetViewPosition([lngLat.lng, lngLat.lat]);
+      });
+    } else {
+      pegmanMarkerRef.current.setLngLat(pos);
+    }
+
+    // Update view cone
+    const coneCoords = getViewConePolygon(pos, angle, 70, 200);
+    const coneGeoJSON: GeoJSON.FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [{
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [coneCoords.map(c => [c[0], c[1]]).concat([coneCoords[0]])],
+        },
+      }],
+    };
+
+    if (map.getSource('street-view-cone')) {
+      (map.getSource('street-view-cone') as mapboxgl.GeoJSONSource).setData(coneGeoJSON);
+    } else {
+      map.addSource('street-view-cone', { type: 'geojson', data: coneGeoJSON });
+      map.addLayer({
+        id: 'street-view-cone-fill',
+        type: 'fill',
+        source: 'street-view-cone',
+        paint: { 'fill-color': '#f59e0b', 'fill-opacity': 0.15 },
+      });
+      map.addLayer({
+        id: 'street-view-cone-line',
+        type: 'line',
+        source: 'street-view-cone',
+        paint: { 'line-color': '#f59e0b', 'line-width': 2, 'line-dasharray': [3, 2] },
+      });
+    }
+  }, [streetViewPegman?.position, streetViewPegman?.angle, mapReady, setStreetViewPosition]);
+
+  // ─── Arrow key rotation for street view ───
+  useEffect(() => {
+    if (interactionPaused) return;
+    if (!streetViewPegman?.position) return;
+
+    // Disable Mapbox keyboard navigation while street view is active
+    const map = mapRef.current;
+    if (map) {
+      map.keyboard.disable();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!streetViewPegmanRef.current) return;
+      const currentAngle = streetViewPegmanRef.current.angle;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        e.stopPropagation();
+        setStreetViewAngle(((currentAngle - 45) + 360) % 360);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        e.stopPropagation();
+        setStreetViewAngle((currentAngle + 45) % 360);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        setStreetViewActive(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true); // capture phase
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+      // Re-enable Mapbox keyboard navigation
+      if (map) {
+        map.keyboard.enable();
+      }
+    };
+  }, [interactionPaused, streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition, setStreetViewActive]);
+
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);
   const currentLength = linear && drawingPoints.length >= 2 ? polylineLength(drawingPoints) : 0;
+  const currentArea = !linear && drawingPoints.length >= 3 ? geodesicArea(drawingPoints) : 0;
+  const canFinishDrawing = drawingPoints.length >= minPts;
+  const canConnectToStart = !!activeSitePlannerTool && !linear && centerNearStartVertex && canFinishDrawing;
+  const placeVertexLabel = canConnectToStart
+    ? 'Connect & Finish'
+    : drawingPoints.length === 0
+      ? 'Place First Vertex'
+      : linear
+        ? 'Place Waypoint'
+        : 'Place Vertex';
 
   return (
     <>
       <div ref={containerRef} className="h-full w-full" />
       {/* Drawing hint */}
       {activeSitePlannerTool && (
-        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm sm:hidden">
           {drawingPoints.length === 0
             ? linear
-              ? `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Line)`
-              : `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Polygon)`
+              ? `Center the crosshair, then place ${getToolDisplayLabel(activeSitePlannerTool)} waypoint`
+              : `Center the crosshair, then place ${getToolDisplayLabel(activeSitePlannerTool)} vertex`
             : drawingPoints.length < minPts
             ? linear
-              ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
-              : `Click to add points (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
+              ? `Place waypoints (${drawingPoints.length}/${minPts} min)`
+              : `Place vertices (${drawingPoints.length}/${minPts} min)`
             : linear
-            ? `${drawingPoints.length} waypoints · ${formatDistance(currentLength)} — Double-click or Enter to finish — Esc to cancel`
-            : `${drawingPoints.length} points — Double-click or Enter to finish — Esc to cancel`}
+            ? `${drawingPoints.length} waypoints - ${formatDistance(currentLength)} - Tap Finish when ready`
+            : centerNearStartVertex
+              ? `${drawingPoints.length} points - near start vertex - connect to finish`
+              : `${drawingPoints.length} points - ${formatArea(currentArea)} - move crosshair near start or tap Finish`}
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="absolute left-1/2 top-16 z-30 hidden max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm sm:block">
+          {drawingPoints.length === 0
+            ? `Click to place first ${getToolDisplayLabel(activeSitePlannerTool)} point`
+            : drawingPoints.length < minPts
+            ? `Click to place points (${drawingPoints.length}/${minPts} min) - Backspace to undo`
+            : linear
+            ? `${drawingPoints.length} points - ${formatDistance(currentLength)} - Double-click or Enter to finish`
+            : `${drawingPoints.length} points - ${formatArea(currentArea)} - Double-click or Enter to finish`}
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 sm:hidden">
+          <div className={`h-8 w-8 rounded-full border-2 ${canConnectToStart ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
+            <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
+            <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
+          </div>
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="absolute inset-x-3 bottom-4 z-40 mx-auto max-w-[34rem] sm:hidden">
+          <div
+            className="grid grid-cols-3 gap-2 rounded-2xl border border-white/15 bg-gray-950/80 p-2 shadow-2xl backdrop-blur-md"
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={placeCenterVertex}
+              className={`col-span-3 min-h-12 rounded-xl px-3 py-2 text-sm font-black shadow-lg ${canConnectToStart ? 'bg-emerald-400 text-slate-950 shadow-emerald-500/25' : 'bg-amber-500 text-slate-950 shadow-amber-500/25'}`}
+            >
+              {placeVertexLabel}
+            </button>
+            <button
+              type="button"
+              onClick={undoLastVertex}
+              disabled={drawingPoints.length === 0}
+              className="min-h-11 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50"
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              onClick={cancelDrawing}
+              className="min-h-11 rounded-xl bg-slate-800 px-3 py-2 text-xs font-semibold text-white shadow-lg ring-1 ring-white/10"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={finishPolygon}
+              disabled={!canFinishDrawing}
+              className="min-h-11 rounded-xl bg-amber-500 px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-500/25 disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50 disabled:shadow-none"
+            >
+              Finish
+            </button>
+          </div>
         </div>
       )}
       {/* Live distance badge for roads */}
@@ -1359,10 +2078,59 @@ export function SitePlannerMap({
           {formatDistance(currentLength)}
         </div>
       )}
+      {activeSitePlannerTool && !linear && currentArea > 0 && (
+        <div className="absolute left-1/2 top-[6.5rem] z-30 -translate-x-1/2 rounded-full bg-blue-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
+          {formatArea(currentArea)}
+        </div>
+      )}
+      {/* Live area badge during drag/resize */}
+      {!activeSitePlannerTool && dragArea > 0 && (
+        <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-full bg-blue-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
+          {formatArea(dragArea)}
+        </div>
+      )}
+      {/* Street View mode hint */}
+      {streetViewPegman && !streetViewPegman.position && (
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-amber-600/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+          Click on the map to place the street view camera
+        </div>
+      )}
+      {streetViewPegman?.position && (
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-amber-600/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+          Use ← → arrow keys to rotate view — Esc to remove pin
+        </div>
+      )}
       {/* Select mode hint */}
-      {!activeSitePlannerTool && (
-        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+      {!activeSitePlannerTool && !streetViewPegman && (
+        <div className="absolute left-1/2 top-4 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
+        </div>
+      )}
+      {/* Pitch angle indicator */}
+      <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg select-none">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none" className="shrink-0" style={{ color: cameraElevationBadge.color }}>
+          <ellipse cx="8" cy="10" rx="6" ry="3" stroke="currentColor" strokeWidth="1.3" fill="none"/>
+          <line x1="8" y1="10" x2="8" y2="2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+          <line x1="8" y1="2" x2="11" y2="6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <span className="text-[13px] font-bold tabular-nums" style={{ color: cameraElevationBadge.color }}>{cameraElevation}°</span>
+        <span className="text-[10px]" style={{ color: cameraElevationBadge.mutedColor }}>
+          {cameraElevationBadge.label}
+        </span>
+      </div>
+      {/* Rotation angle badge — anchored at the zone centroid */}
+      {isRotating && rotationCentroidScreen && (
+        <div
+          className="pointer-events-none absolute z-40"
+          style={{
+            left: rotationCentroidScreen.x,
+            top: rotationCentroidScreen.y,
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <div className="rounded-full bg-gray-900/80 px-3 py-1 text-xs font-semibold text-amber-400 shadow-lg backdrop-blur-sm">
+            {currentRotationDeg >= 0 ? '+' : ''}{Math.round(currentRotationDeg)}°
+          </div>
         </div>
       )}
     </>

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Crown, Loader2, Search, AlertTriangle, ShieldAlert, Trash2 } from 'lucide-react';
+import { ArrowLeft, Crown, Loader2, Search, AlertTriangle, ShieldAlert, Trash2, Plus, RotateCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
@@ -161,6 +161,7 @@ export function AdminUsersPage() {
                 <th className="px-4 py-3">User</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
+                <th className="px-4 py-3">Tokens</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Last Login</th>
                 <th className="px-4 py-3">Joined</th>
@@ -189,6 +190,57 @@ export function AdminUsersPage() {
                   </td>
                   <td className="px-4 py-3 text-primary-950/50">{u.project_count}</td>
                   <td className="px-4 py-3">
+                    {['admin', 'cofounder'].includes(u.role) ? (
+                      <span className="text-xs text-primary-950/40">Unlimited</span>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-16 h-1.5 rounded-full bg-primary-950/[0.08] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${
+                              u.render_credits > 500 ? 'bg-emerald-500' : u.render_credits > 100 ? 'bg-amber-500' : 'bg-red-500'
+                            }`}
+                            style={{ width: `${Math.min(100, (u.render_credits / 1000) * 100)}%` }}
+                          />
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          u.render_credits > 500 ? 'text-emerald-600' : u.render_credits > 100 ? 'text-amber-600' : 'text-red-500'
+                        }`}>
+                          {u.render_credits.toLocaleString()}
+                        </span>
+                        <span className="text-[10px] text-primary-950/30">/ 1,000</span>
+                        <button
+                          onClick={() => {
+                            const amt = prompt('Add tokens:', '500');
+                            if (amt && !isNaN(Number(amt)) && Number(amt) > 0) {
+                              adminApi.updateTokens(u.id, Number(amt), 'add').then((updated) => {
+                                setUsers((prev) => prev.map((x) => x.id === updated.id ? updated : x));
+                                toast.success(`Added ${amt} tokens to ${u.email}`);
+                              }).catch(() => toast.error('Failed to add tokens'));
+                            }
+                          }}
+                          className="rounded p-0.5 text-primary-950/40 hover:bg-emerald-500/15 hover:text-emerald-600"
+                          title="Add tokens"
+                        >
+                          <Plus size={13} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Reset ${u.email} to 1,000 tokens?`)) {
+                              adminApi.updateTokens(u.id, 1000, 'set').then((updated) => {
+                                setUsers((prev) => prev.map((x) => x.id === updated.id ? updated : x));
+                                toast.success(`Reset ${u.email} to 1,000 tokens`);
+                              }).catch(() => toast.error('Failed to reset tokens'));
+                            }
+                          }}
+                          className="rounded p-0.5 text-primary-950/40 hover:bg-primary-500/15 hover:text-primary-600"
+                          title="Reset to 1,000 tokens"
+                        >
+                          <RotateCcw size={13} />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         u.is_active
@@ -199,7 +251,7 @@ export function AdminUsersPage() {
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-primary-950/50">
+                  <td className="px-4 py-3 text-primary-950/50" title={u.last_login_at ? new Date(u.last_login_at).toLocaleString() : undefined}>
                     {u.last_login_at
                       ? new Date(u.last_login_at).toLocaleDateString()
                       : <span className="text-primary-950/40">Never</span>}

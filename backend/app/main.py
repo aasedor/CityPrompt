@@ -62,8 +62,9 @@ Transform architectural documents (PDFs, images, CAD files) into interactive 3D 
 Most endpoints require a JWT Bearer token. Obtain tokens via `POST /api/v1/auth/login`.
 Include the token in the `Authorization: Bearer <token>` header.
 """,
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url=None if settings.is_production else "/docs",
+    redoc_url=None if settings.is_production else "/redoc",
+    openapi_url=None if settings.is_production else "/openapi.json",
     lifespan=lifespan,
 )
 
@@ -93,7 +94,7 @@ app.add_middleware(MetricsMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
-    allow_origin_regex=r"^https?://localhost(:\d+)?$",
+    allow_origin_regex=settings.cors_allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -112,35 +113,36 @@ async def health_check():
     return {"status": "healthy", "version": settings.app_version}
 
 
-@app.get("/metrics")
-async def metrics():
-    """Basic API metrics endpoint."""
-    times = list(_request_times)
-    avg_ms = (sum(times) / len(times) * 1000) if times else 0
-    p95_ms = sorted(times)[int(len(times) * 0.95)] * 1000 if len(times) > 1 else 0
+if not settings.is_production:
+    @app.get("/metrics")
+    async def metrics():
+        """Basic API metrics endpoint."""
+        times = list(_request_times)
+        avg_ms = (sum(times) / len(times) * 1000) if times else 0
+        p95_ms = sorted(times)[int(len(times) * 0.95)] * 1000 if len(times) > 1 else 0
 
-    # Celery queue depth
-    queue_info = {"active": 0, "reserved": 0, "scheduled": 0, "available": False}
-    try:
-        from app.tasks.worker import celery_app
-        inspector = celery_app.control.inspect(timeout=1.0)
-        active = inspector.active() or {}
-        reserved = inspector.reserved() or {}
-        scheduled = inspector.scheduled() or {}
-        queue_info = {
-            "active": sum(len(v) for v in active.values()),
-            "reserved": sum(len(v) for v in reserved.values()),
-            "scheduled": sum(len(v) for v in scheduled.values()),
-            "available": True,
+        # Celery queue depth
+        queue_info = {"active": 0, "reserved": 0, "scheduled": 0, "available": False}
+        try:
+            from app.tasks.worker import celery_app
+            inspector = celery_app.control.inspect(timeout=1.0)
+            active = inspector.active() or {}
+            reserved = inspector.reserved() or {}
+            scheduled = inspector.scheduled() or {}
+            queue_info = {
+                "active": sum(len(v) for v in active.values()),
+                "reserved": sum(len(v) for v in reserved.values()),
+                "scheduled": sum(len(v) for v in scheduled.values()),
+                "available": True,
+            }
+        except Exception:
+            pass
+
+        return {
+            "total_requests": _request_count,
+            "uptime_seconds": round(time.time() - _start_time, 1),
+            "avg_response_ms": round(avg_ms, 2),
+            "p95_response_ms": round(p95_ms, 2),
+            "recent_samples": len(times),
+            "queue": queue_info,
         }
-    except Exception:
-        pass
-
-    return {
-        "total_requests": _request_count,
-        "uptime_seconds": round(time.time() - _start_time, 1),
-        "avg_response_ms": round(avg_ms, 2),
-        "p95_response_ms": round(p95_ms, 2),
-        "recent_samples": len(times),
-        "queue": queue_info,
-    }
