@@ -6,6 +6,7 @@ import {
   buildDirect3DVisualPrompt,
   DIRECT_3D_ALLOWED_STYLES,
   DIRECT_3D_STYLE_IDS,
+  resolveDirect3DFidelityPolicy,
   resolveDirect3DPresentationMode,
   useDirect3DRender,
 } from './useDirect3DRender';
@@ -30,6 +31,15 @@ const capture: Direct3DCaptureBundle = {
   proposalMaskBase64: 'data:image/png;base64,mask',
   classIdImageBase64: 'data:image/png;base64,classes',
   classIdManifest: DIRECT_3D_CLASS_ID_MANIFEST,
+  instanceIdImageBase64: 'data:image/png;base64,instances',
+  instanceIdManifest: {
+    '#204060': {
+      instance_id: 'zone:zone-building-1:building',
+      semantic_class: 'building',
+      zone_id: 'zone-building-1',
+      building_id: 'building-1',
+    },
+  },
   width: 1600,
   height: 900,
   proposalPixelCount: 360_000,
@@ -58,6 +68,8 @@ const reprojectStyles = [
 const response: Awaited<ReturnType<typeof rendersApi.generateDirect3D>> = {
   image_base64: 'rendered',
   model: 'gpt-image-2',
+  outcome: 'accepted',
+  warnings: [],
   capture_fingerprint: 'a'.repeat(64),
   output_fingerprint: 'b'.repeat(64),
   diagnostics: {
@@ -65,6 +77,9 @@ const response: Awaited<ReturnType<typeof rendersApi.generateDirect3D>> = {
     view_lock: 'camera_registered',
     context_restyled: true,
     provider_first: true,
+    fidelity_policy: 'balanced',
+    instance_id_attached: true,
+    instance_count: 1,
     source_width: 1600,
     source_height: 900,
     normalized_width: 1600,
@@ -153,35 +168,37 @@ describe('Direct 3D presentation adapter', () => {
       .toHaveLength(16);
   });
 
-  it('builds a rich camera-locked whole-scene prompt rather than a color grade', () => {
+  it('builds a Direct-owned balanced prompt without inheriting Classic camera prose', () => {
     const prompt = buildDirect3DVisualPrompt('development', 'Warm limestone.', capture);
 
-    expect(prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS.development}`);
+    expect(prompt).toContain('DIRECT 3D STYLE ID: development');
     expect(prompt).toContain('PRESENTATION MODE: SCENE');
-    expect(prompt).toContain('camera, perspective, framing, crop, horizon and aspect ratio are locked');
-    expect(prompt).toContain('Visibly re-render the entire frame');
-    expect(prompt).toContain('presentation-grade architectural visualization');
-    expect(prompt).toContain('white or grey parcel voids');
-    expect(prompt).toContain('surrounding city context');
-    expect(prompt).toContain('Replace raw real-time CG and Google photogrammetry artifacts');
-    expect(prompt).toContain('do not invent or retain polygon overlays');
-    expect(prompt).toContain('not a color grade');
-    expect(prompt).toContain('major tree anchors');
+    expect(prompt).toContain('BALANCED FIDELITY');
+    expect(prompt).toContain('Do not add, remove, split or merge permanent buildings');
+    expect(prompt).toContain('Outside the parcel, preserve the existing building, road, water and open-space inventory');
+    expect(prompt).not.toContain('DJI Mavic');
+    expect(prompt).not.toContain('colored polygon fills');
     expect(prompt).toContain('building 18.0%');
     expect(prompt).toContain('Warm limestone');
   });
 
-  it('builds a layout-faithful reproject prompt with the selected rich aesthetic', () => {
+  it('builds an expressive inventory-locked reproject prompt', () => {
     const prompt = buildDirect3DVisualPrompt('site-plan-watercolor', undefined, capture);
 
-    expect(prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS['site-plan-watercolor']}`);
+    expect(prompt).toContain('DIRECT 3D STYLE ID: site-plan-watercolor');
     expect(prompt).toContain('PRESENTATION MODE: REPROJECT');
-    expect(prompt).toContain('may change the projection, viewpoint and camera orientation');
-    expect(prompt).toContain('complete object inventory');
-    expect(prompt).toContain('site layout and circulation topology');
-    expect(prompt).toContain('relative dimensions');
-    expect(prompt).toContain('identity of every designed element');
-    expect(prompt).toContain('Re-render the entire frame cohesively');
+    expect(prompt).toContain('EXPRESSIVE FIDELITY');
+    expect(prompt).toContain('exact authored building, park, street and protected-feature inventory');
+  });
+
+  it('separates aesthetic style from the default fidelity policy', () => {
+    expect(resolveDirect3DFidelityPolicy('survey')).toBe('precise');
+    expect(resolveDirect3DFidelityPolicy('documentary')).toBe('precise');
+    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('winter')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('watercolour')).toBe('expressive');
+    expect(resolveDirect3DFidelityPolicy('isometric')).toBe('expressive');
+    expect(resolveDirect3DFidelityPolicy('site-plan-photo')).toBe('expressive');
   });
 
   it('sends one request with the style, presentation mode and full capture contract', async () => {
@@ -203,7 +220,10 @@ describe('Direct 3D presentation adapter', () => {
       beauty_image_base64: capture.beautyImageBase64,
       proposal_mask_base64: capture.proposalMaskBase64,
       object_id_image_base64: capture.classIdImageBase64,
+      instance_id_image_base64: capture.instanceIdImageBase64,
+      instance_id_manifest: capture.instanceIdManifest,
       style: 'photorealistic',
+      fidelity_policy: 'balanced',
       presentation_mode: 'scene',
       project_id: 'project-1',
       community_3d_claims: community3DClaims,
@@ -218,6 +238,8 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.render.imageUrl).toBe('data:image/png;base64,rendered');
     expect(direct.diagnostics.provider_first).toBe(true);
     expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);
+    expect(direct.outcome).toBe('accepted');
+    expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
   });
 
   it('accepts every catalogue style and sends its exact deterministic mode and rich prompt', async () => {
@@ -236,8 +258,9 @@ describe('Direct 3D presentation adapter', () => {
       const style = DIRECT_3D_STYLE_IDS[index];
       expect(request.style).toBe(style);
       expect(request.presentation_mode).toBe(resolveDirect3DPresentationMode(style));
+      expect(request.fidelity_policy).toBe(resolveDirect3DFidelityPolicy(style));
       expect(request.presentation_mode).not.toBe('source_anchored');
-      expect(request.prompt).toContain(`STYLE: ${GLOBE_STYLE_PROMPTS[style]}`);
+      expect(request.prompt).toContain(`DIRECT 3D STYLE ID: ${style}`);
     });
   });
 

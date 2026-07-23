@@ -40,6 +40,7 @@ DIRECT_3D_MAX_PROVIDER_PIXELS = 3_686_400
 DIRECT_3D_OUTPUT_TOKENS_PER_MEGAPIXEL = 41
 DIRECT_3D_BASE_INPUT_TOKENS = 4
 DIRECT_3D_CLASS_ID_INPUT_TOKENS = 2
+DIRECT_3D_INSTANCE_ID_INPUT_TOKENS = 2
 DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS = 2
 DIRECT_3D_MIN_TOKEN_COST = 13
 _MAX_PROVIDER_PIXELS = DIRECT_3D_MAX_PROVIDER_PIXELS
@@ -49,13 +50,29 @@ _MIN_PROPOSAL_COVERAGE = 0.0025
 _MAX_PROPOSAL_COVERAGE = 0.85
 _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL = 0.85
 _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU = 0.84
+_MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL = 0.85
+_MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU = 0.84
 _MIN_REGISTRATION_SCORE = 0.65
 _IDENTITY_SCORE = 0.985
 _MIN_STRUCTURAL_CONTEXT_SCORE = 0.62
 _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS = 256
 _MAX_REGISTRATION_ROTATION_DEGREES = 2.0
-_MAX_SCENE_REGISTRATION_TRANSLATION_PX = 8.0
-_MAX_SCENE_REGISTRATION_ROTATION_DEGREES = 0.35
+# Scene registration drift is evidence for review/fallback selection, not a
+# reason to discard an otherwise valid (and already billed) provider result.
+# Precise work has the tightest automatic-acceptance envelope; expressive work
+# permits more corrected camera motion before review.  The source-lock limits
+# are deliberately wider: crossing them removes every provider spatial pixel
+# from the return path while retaining only global colour statistics.
+_SCENE_REGISTRATION_REVIEW_LIMITS: dict[str, tuple[float, float]] = {
+    "precise": (6.0, 0.25),
+    "balanced": (8.0, 0.35),
+    "expressive": (12.0, 0.50),
+}
+_SCENE_REGISTRATION_SOURCE_LOCK_LIMITS: dict[str, tuple[float, float]] = {
+    "precise": (12.0, 0.75),
+    "balanced": (16.0, 1.00),
+    "expressive": (24.0, 1.50),
+}
 _INWARD_FEATHER_PX = 2.0
 _MIN_STRUCTURAL_EDGE_PIXELS = 64
 _MIN_BEAUTY_EDGE_RECALL = 0.55
@@ -166,10 +183,15 @@ class PreparedDirect3DCapture:
     normalized_beauty: Image.Image
     normalized_proposal_mask: Image.Image
     normalized_object_id: Image.Image | None
+    normalized_instance_id: Image.Image | None
     proposal_coverage: float
     object_id_coverage: float | None
     object_id_proposal_recall: float | None
     object_id_proposal_iou: float | None
+    instance_id_coverage: float | None
+    instance_id_proposal_recall: float | None
+    instance_id_proposal_iou: float | None
+    instance_count: int
     scene_lower_context_coverage: float | None
     capture_fingerprint: str
     audit_input_base64: str
@@ -228,6 +250,35 @@ class MacroDesignFidelityResult:
 
 
 @dataclass(frozen=True)
+class MacroFidelityThresholds:
+    minimum_silhouette_edge_recall: float
+    minimum_coarse_edge_recall: float
+    minimum_semantic_edge_recall: float
+    minimum_semantic_component_recall: float
+    maximum_reference_p90_distance_px: float
+    minimum_candidate_coarse_edge_precision: float
+    maximum_candidate_coarse_edge_density_ratio: float
+
+
+@dataclass(frozen=True)
+class InstanceSourcePresenceResult:
+    passed: bool
+    evaluated_instance_count: int
+    weakest_instance_recall: float | None
+    missing_instance_ids: tuple[str, ...]
+    instance_recalls: dict[str, float | None]
+
+
+@dataclass(frozen=True)
+class UnsupportedStructureResult:
+    passed: bool
+    largest_component_pixels: int
+    largest_component_bbox_fraction: float
+    proposal_component_count: int
+    context_component_count: int
+
+
+@dataclass(frozen=True)
 class VisualChangeResult:
     """Measured scene enhancement beyond a near-identity colour grade."""
 
@@ -273,6 +324,8 @@ class Direct3DServiceResult:
     capture_fingerprint: str
     output_fingerprint: str
     diagnostics: dict[str, Any]
+    outcome: Literal["accepted", "review_required"] = "accepted"
+    warnings: tuple[str, ...] = ()
 
 
 def estimate_direct_3d_token_cost(
@@ -280,6 +333,7 @@ def estimate_direct_3d_token_cost(
     normalized_height: int,
     *,
     object_id_attached: bool,
+    instance_id_attached: bool = False,
 ) -> int:
     """Return the conservative credit reservation for one Direct 3D edit."""
 
@@ -290,6 +344,7 @@ def estimate_direct_3d_token_cost(
         DIRECT_3D_OUTPUT_TOKENS_PER_MEGAPIXEL * megapixels
         + DIRECT_3D_BASE_INPUT_TOKENS
         + (DIRECT_3D_CLASS_ID_INPUT_TOKENS if object_id_attached else 0)
+        + (DIRECT_3D_INSTANCE_ID_INPUT_TOKENS if instance_id_attached else 0)
         + DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS
     )
     return max(DIRECT_3D_MIN_TOKEN_COST, estimated)
@@ -458,6 +513,8 @@ def _capture_fingerprint(
     proposal_mask: Image.Image,
     object_id: Image.Image | None,
     manifest: dict[str, str] | None,
+    instance_id: Image.Image | None = None,
+    instance_manifest: dict[str, Any] | None = None,
 ) -> str:
     digest = hashlib.sha256(b"siteforge-direct-3d-capture-v1\0")
     digest.update(beauty.width.to_bytes(4, "big"))
@@ -468,6 +525,24 @@ def _capture_fingerprint(
         digest.update(object_id.tobytes())
     if manifest:
         digest.update(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+    if instance_id is not None:
+        digest.update(instance_id.tobytes())
+    if instance_manifest:
+        serializable_manifest = {
+            color: (
+                descriptor.model_dump(mode="json")
+                if hasattr(descriptor, "model_dump")
+                else descriptor
+            )
+            for color, descriptor in instance_manifest.items()
+        }
+        digest.update(
+            json.dumps(
+                serializable_manifest,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
     return digest.hexdigest()
 
 
@@ -579,6 +654,113 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             "Presentation modes require an object-ID image and manifest"
         )
 
+    instance_id_image: Image.Image | None = None
+    instance_id_coverage: float | None = None
+    instance_id_proposal_recall: float | None = None
+    instance_id_proposal_iou: float | None = None
+    if req.instance_id_image_base64 and req.instance_id_manifest:
+        instance_id_raw = _decode_base64_payload(
+            req.instance_id_image_base64,
+            label="instance_id_image_base64",
+        )
+        instance_id_image = _load_image(
+            instance_id_raw,
+            label="instance_id_image_base64",
+            allowed_formats={"PNG"},
+        ).convert("RGB")
+        if instance_id_image.size != beauty_image.size:
+            raise Direct3DValidationError(
+                "Instance-ID image dimensions must exactly match the beauty capture"
+            )
+
+        instance_pixels = np.asarray(instance_id_image)
+        classified_instances = np.zeros((height, width), dtype=bool)
+        semantic_pixels = (
+            np.asarray(object_id_image)
+            if object_id_image is not None
+            else None
+        )
+        semantic_colors: dict[str, np.ndarray] = {}
+        if req.object_id_manifest:
+            for color, semantic_class in req.object_id_manifest.items():
+                semantic_colors[semantic_class] = (
+                    semantic_colors.get(
+                        semantic_class,
+                        np.zeros((height, width), dtype=bool),
+                    )
+                    | np.all(
+                        semantic_pixels
+                        == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                        axis=2,
+                    )
+                )
+
+        for color, descriptor in req.instance_id_manifest.items():
+            rgb = np.asarray(_hex_to_rgb(color), dtype=np.uint8)
+            matches = np.all(instance_pixels == rgb, axis=2)
+            classified_instances |= matches
+            if np.any(matches) and semantic_colors:
+                expected_semantic_pixels = semantic_colors.get(
+                    descriptor.semantic_class,
+                    np.zeros((height, width), dtype=bool),
+                )
+                agreement = float(np.mean(expected_semantic_pixels[matches]))
+                if agreement < 0.90:
+                    raise Direct3DValidationError(
+                        "Instance-ID semantic class conflicts with the class-ID image "
+                        f"for {descriptor.instance_id!r} (agreement {agreement:.3f})"
+                    )
+
+        non_black = np.any(instance_pixels != 0, axis=2)
+        unmanifested_count = int(
+            np.count_nonzero(non_black & ~classified_instances)
+        )
+        if unmanifested_count:
+            raise Direct3DValidationError(
+                "Instance-ID image contains non-black colors absent from "
+                f"instance_id_manifest ({unmanifested_count} pixels)"
+            )
+
+        instance_id_coverage = float(classified_instances.mean())
+        if instance_id_coverage < _MIN_PROPOSAL_COVERAGE:
+            raise Direct3DValidationError(
+                "Instance-ID image does not contain enough classified proposal pixels"
+            )
+        proposal_active = proposal_values >= 0.5
+        intersection_count = int(
+            np.count_nonzero(classified_instances & proposal_active)
+        )
+        proposal_count = int(np.count_nonzero(proposal_active))
+        union_count = int(np.count_nonzero(classified_instances | proposal_active))
+        instance_id_proposal_recall = float(
+            intersection_count / max(1, proposal_count)
+        )
+        instance_id_proposal_iou = float(
+            intersection_count / max(1, union_count)
+        )
+        outside = proposal_values < (8 / 255)
+        leak_count = int(np.count_nonzero(classified_instances & outside))
+        classified_count = int(np.count_nonzero(classified_instances))
+        if leak_count / max(classified_count, 1) > 0.01:
+            raise Direct3DValidationError(
+                "Instance-ID classes extend materially outside the proposal mask"
+            )
+        if req.presentation_mode in {"scene", "reproject"} and (
+            instance_id_proposal_recall
+            < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL
+            or instance_id_proposal_iou
+            < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU
+        ):
+            raise Direct3DValidationError(
+                "Presentation instance-ID classes must cover the proposal "
+                f"(recall {instance_id_proposal_recall:.3f}, "
+                f"IoU {instance_id_proposal_iou:.3f})"
+            )
+    elif req.presentation_mode in {"scene", "reproject"}:
+        raise Direct3DValidationError(
+            "Presentation modes require an instance-ID image and manifest"
+        )
+
     normalized_size = _normalized_dimensions(width, height)
     normalized_beauty = beauty_image.resize(normalized_size, Image.Resampling.LANCZOS)
     normalized_mask = proposal_mask.resize(normalized_size, Image.Resampling.LANCZOS)
@@ -607,11 +789,18 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         if object_id_image is not None
         else None
     )
+    normalized_instance_id = (
+        instance_id_image.resize(normalized_size, Image.Resampling.NEAREST)
+        if instance_id_image is not None
+        else None
+    )
     capture_fingerprint = _capture_fingerprint(
         beauty_image,
         proposal_mask,
         object_id_image,
         req.object_id_manifest,
+        instance_id_image,
+        req.instance_id_manifest,
     )
     if req.capture and req.capture.fingerprint:
         if req.capture.fingerprint.lower() != capture_fingerprint:
@@ -623,10 +812,15 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         normalized_beauty=normalized_beauty,
         normalized_proposal_mask=normalized_mask,
         normalized_object_id=normalized_object_id,
+        normalized_instance_id=normalized_instance_id,
         proposal_coverage=proposal_coverage,
         object_id_coverage=object_id_coverage,
         object_id_proposal_recall=object_id_proposal_recall,
         object_id_proposal_iou=object_id_proposal_iou,
+        instance_id_coverage=instance_id_coverage,
+        instance_id_proposal_recall=instance_id_proposal_recall,
+        instance_id_proposal_iou=instance_id_proposal_iou,
+        instance_count=len(req.instance_id_manifest or {}),
         scene_lower_context_coverage=scene_lower_context_coverage,
         capture_fingerprint=capture_fingerprint,
         audit_input_base64=base64.b64encode(_png_bytes(beauty_image)).decode("ascii"),
@@ -1796,6 +1990,8 @@ def assess_macro_design_fidelity(
     proposal_mask: Image.Image,
     object_id: Image.Image | None = None,
     object_id_manifest: dict[str, str] | None = None,
+    *,
+    fidelity_policy: Literal["precise", "balanced", "expressive"] = "precise",
 ) -> MacroDesignFidelityResult:
     """Verify primary scene design while permitting new photographic detail.
 
@@ -1945,32 +2141,32 @@ def assess_macro_design_fidelity(
         if np.any(macro_reference)
         else 0.0
     )
+    thresholds = _macro_fidelity_thresholds(
+        fidelity_policy,
+        tolerance_px=tolerance_px,
+    )
     silhouette_pass = (
         silhouette_recall is None
-        or silhouette_recall >= _MIN_MACRO_SILHOUETTE_EDGE_RECALL
+        or silhouette_recall >= thresholds.minimum_silhouette_edge_recall
     )
     semantic_pass = (
         semantic_recall is None
-        or semantic_recall >= _MIN_MACRO_SEMANTIC_EDGE_RECALL
+        or semantic_recall >= thresholds.minimum_semantic_edge_recall
     )
     component_pass = (
         component_min is None
-        or component_min >= _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
-    )
-    maximum_reference_p90_distance_px = min(
-        _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
-        tolerance_px * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
+        or component_min >= thresholds.minimum_semantic_component_recall
     )
     passed = (
         silhouette_pass
-        and coarse_recall >= _MIN_MACRO_COARSE_EDGE_RECALL
+        and coarse_recall >= thresholds.minimum_coarse_edge_recall
         and semantic_pass
         and component_pass
-        and reference_p90 <= maximum_reference_p90_distance_px
+        and reference_p90 <= thresholds.maximum_reference_p90_distance_px
         and candidate_coarse_precision
-        >= _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
+        >= thresholds.minimum_candidate_coarse_edge_precision
         and candidate_coarse_density_ratio
-        <= _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
+        <= thresholds.maximum_candidate_coarse_edge_density_ratio
     )
     return MacroDesignFidelityResult(
         passed=passed,
@@ -1988,6 +2184,523 @@ def assess_macro_design_fidelity(
         candidate_coarse_edge_precision=candidate_coarse_precision,
         candidate_coarse_edge_density_ratio=candidate_coarse_density_ratio,
     )
+
+
+def _macro_fidelity_thresholds(
+    fidelity_policy: Literal["precise", "balanced", "expressive"],
+    *,
+    tolerance_px: int,
+) -> MacroFidelityThresholds:
+    """Return reviewed, policy-specific macro thresholds.
+
+    Precise is byte-for-byte the historical acceptance policy. Balanced only
+    relaxes the source-directed silhouette/semantic measures that artistic
+    facade and planting finishes legitimately perturb; reverse precision and
+    density stay strict so noise cannot game the gate. Expressive is an
+    advisory assessment because its result is always review-required.
+    """
+
+    if fidelity_policy == "precise":
+        return MacroFidelityThresholds(
+            minimum_silhouette_edge_recall=_MIN_MACRO_SILHOUETTE_EDGE_RECALL,
+            minimum_coarse_edge_recall=_MIN_MACRO_COARSE_EDGE_RECALL,
+            minimum_semantic_edge_recall=_MIN_MACRO_SEMANTIC_EDGE_RECALL,
+            minimum_semantic_component_recall=(
+                _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
+            ),
+            maximum_reference_p90_distance_px=min(
+                _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
+                tolerance_px * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
+            ),
+            minimum_candidate_coarse_edge_precision=(
+                _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
+            ),
+            maximum_candidate_coarse_edge_density_ratio=(
+                _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
+            ),
+        )
+    if fidelity_policy == "balanced":
+        return MacroFidelityThresholds(
+            minimum_silhouette_edge_recall=0.70,
+            minimum_coarse_edge_recall=0.70,
+            minimum_semantic_edge_recall=0.70,
+            minimum_semantic_component_recall=0.70,
+            maximum_reference_p90_distance_px=6.0,
+            minimum_candidate_coarse_edge_precision=0.40,
+            maximum_candidate_coarse_edge_density_ratio=3.0,
+        )
+    return MacroFidelityThresholds(
+        minimum_silhouette_edge_recall=0.50,
+        minimum_coarse_edge_recall=0.55,
+        minimum_semantic_edge_recall=0.55,
+        minimum_semantic_component_recall=0.65,
+        maximum_reference_p90_distance_px=10.0,
+        minimum_candidate_coarse_edge_precision=0.25,
+        maximum_candidate_coarse_edge_density_ratio=4.5,
+    )
+
+
+def assess_instance_source_presence(
+    source: Image.Image,
+    candidate: Image.Image,
+    proposal_mask: Image.Image,
+    instance_id: Image.Image | None,
+    instance_id_manifest: dict[str, Any] | None,
+    *,
+    fidelity_policy: Literal["precise", "balanced", "expressive"],
+) -> InstanceSourcePresenceResult:
+    """Measure source-edge presence independently for every visible authored instance."""
+
+    if instance_id is None or not instance_id_manifest:
+        return InstanceSourcePresenceResult(
+            passed=True,
+            evaluated_instance_count=0,
+            weakest_instance_recall=None,
+            missing_instance_ids=(),
+            instance_recalls={},
+        )
+    if not (
+        source.size
+        == candidate.size
+        == proposal_mask.size
+        == instance_id.size
+    ):
+        raise Direct3DValidationError(
+            "Instance-presence images must have identical dimensions"
+        )
+
+    import cv2
+
+    tolerance_px = max(2, min(4, round(math.hypot(*source.size) * 0.0015)))
+    active = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
+    source_anchor = (
+        _beauty_structural_edges(source, proposal_mask)
+        | _beauty_structural_edges(source, proposal_mask, coarse=True)
+    ) & active
+    candidate_anchor = (
+        _beauty_structural_edges(candidate, proposal_mask)
+        | _beauty_structural_edges(candidate, proposal_mask, coarse=True)
+    ) & active
+    if np.any(candidate_anchor):
+        distance_to_candidate = cv2.distanceTransform(
+            (~candidate_anchor).astype(np.uint8),
+            cv2.DIST_L2,
+            3,
+        )
+    else:
+        distance_to_candidate = np.full(
+            active.shape,
+            math.hypot(*source.size),
+            dtype=np.float32,
+        )
+    minimum_recall = {
+        "precise": 0.72,
+        "balanced": 0.60,
+        "expressive": 0.45,
+    }[fidelity_policy]
+    instance_pixels = np.asarray(instance_id.convert("RGB"), dtype=np.uint8)
+    kernel = np.ones(
+        (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
+        dtype=np.uint8,
+    )
+    recalls: dict[str, float | None] = {}
+    missing: list[str] = []
+    evaluated: list[float] = []
+    for color, descriptor in sorted(instance_id_manifest.items()):
+        instance_identifier = str(descriptor.instance_id)
+        if descriptor.semantic_class not in {"building", "street", "park"}:
+            recalls[instance_identifier] = None
+            continue
+        region = np.all(
+            instance_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+            axis=2,
+        )
+        if int(np.count_nonzero(region)) < 16:
+            # Fully occluded inventory entries remain server-bound but cannot
+            # produce screen-space evidence in this capture.
+            recalls[instance_identifier] = None
+            continue
+        region_band = cv2.dilate(
+            region.astype(np.uint8),
+            kernel,
+            iterations=1,
+        ) > 0
+        reference = source_anchor & region_band
+        if int(np.count_nonzero(reference)) < 16:
+            recalls[instance_identifier] = None
+            continue
+        instance_recall = float(
+            np.mean(distance_to_candidate[reference] <= tolerance_px)
+        )
+        recalls[instance_identifier] = instance_recall
+        evaluated.append(instance_recall)
+        if instance_recall < minimum_recall:
+            missing.append(instance_identifier)
+    return InstanceSourcePresenceResult(
+        passed=not missing,
+        evaluated_instance_count=len(evaluated),
+        weakest_instance_recall=min(evaluated) if evaluated else None,
+        missing_instance_ids=tuple(sorted(missing)),
+        instance_recalls=recalls,
+    )
+
+
+def assess_unsupported_coarse_structure(
+    source: Image.Image,
+    candidate: Image.Image,
+    proposal_mask: Image.Image,
+    instance_id: Image.Image | None = None,
+    instance_id_manifest: dict[str, Any] | None = None,
+) -> UnsupportedStructureResult:
+    """Detect large new coarse components outside approved building envelopes."""
+
+    if source.size != candidate.size or source.size != proposal_mask.size:
+        raise Direct3DValidationError(
+            "Unsupported-structure images must have identical dimensions"
+        )
+    if instance_id is not None and instance_id.size != source.size:
+        raise Direct3DValidationError(
+            "Unsupported-structure instance-ID image must match the source"
+        )
+
+    import cv2
+
+    full_frame_mask = Image.new("L", source.size, 255)
+    source_anchor = (
+        _beauty_structural_edges(source, full_frame_mask)
+        | _beauty_structural_edges(source, full_frame_mask, coarse=True)
+    )
+    candidate_coarse = _beauty_structural_edges(
+        candidate,
+        full_frame_mask,
+        coarse=True,
+    )
+    tolerance_px = max(3, min(6, round(math.hypot(*source.size) * 0.0025)))
+    if np.any(source_anchor):
+        distance_to_source = cv2.distanceTransform(
+            (~source_anchor).astype(np.uint8),
+            cv2.DIST_L2,
+            3,
+        )
+    else:
+        distance_to_source = np.full(
+            source_anchor.shape,
+            math.hypot(*source.size),
+            dtype=np.float32,
+        )
+    unsupported = candidate_coarse & (distance_to_source > tolerance_px)
+
+    # New facade/window detail is allowed only inside an existing building's
+    # safely eroded source envelope. The boundary itself remains testable.
+    if instance_id is not None and instance_id_manifest:
+        pixels = np.asarray(instance_id.convert("RGB"), dtype=np.uint8)
+        erosion_kernel = np.ones(
+            (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
+            dtype=np.uint8,
+        )
+        for color, descriptor in instance_id_manifest.items():
+            if descriptor.semantic_class != "building":
+                continue
+            region = np.all(
+                pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                axis=2,
+            )
+            allowed_interior = cv2.erode(
+                region.astype(np.uint8),
+                erosion_kernel,
+                iterations=1,
+            ) > 0
+            unsupported &= ~allowed_interior
+
+    unsupported = cv2.morphologyEx(
+        unsupported.astype(np.uint8),
+        cv2.MORPH_CLOSE,
+        np.ones((3, 3), dtype=np.uint8),
+        iterations=1,
+    )
+    component_count, labels, stats, _centroids = cv2.connectedComponentsWithStats(
+        unsupported,
+        connectivity=8,
+    )
+    frame_pixels = source.width * source.height
+    # Connected edge pixels scale with perimeter, not frame area. An uncapped
+    # area-relative floor therefore becomes less sensitive as capture
+    # resolution grows: at 2048x1536 it used to ignore coherent 50x30 and
+    # 80x20 additions. Keep a small noise floor, but cap it and independently
+    # require a meaningful two-dimensional span/bounding area. These limits
+    # remain strict enough to ignore isolated paving/foliage specks while
+    # detecting building-sized structures at every supported capture size.
+    component_floor = max(48, min(96, round(frame_pixels * 0.00012)))
+    bbox_area_floor = max(256, min(900, round(frame_pixels * 0.00030)))
+    bbox_min_span = max(8, min(16, round(min(source.size) * 0.01)))
+    proposal = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
+    proposal_components = 0
+    context_components = 0
+    largest_pixels = 0
+    largest_bbox_fraction = 0.0
+    for component in range(1, component_count):
+        pixel_count = int(stats[component, cv2.CC_STAT_AREA])
+        bbox_width = int(stats[component, cv2.CC_STAT_WIDTH])
+        bbox_height = int(stats[component, cv2.CC_STAT_HEIGHT])
+        bbox_area = bbox_width * bbox_height
+        bbox_fraction = float(bbox_area / max(1, frame_pixels))
+        if (
+            pixel_count < component_floor
+            or bbox_area < bbox_area_floor
+            or min(bbox_width, bbox_height) < bbox_min_span
+        ):
+            continue
+        component_region = labels == component
+        if np.any(component_region & proposal):
+            proposal_components += 1
+        if np.any(component_region & ~proposal):
+            context_components += 1
+        if pixel_count > largest_pixels:
+            largest_pixels = pixel_count
+            largest_bbox_fraction = bbox_fraction
+    return UnsupportedStructureResult(
+        passed=(proposal_components + context_components) == 0,
+        largest_component_pixels=largest_pixels,
+        largest_component_bbox_fraction=largest_bbox_fraction,
+        proposal_component_count=proposal_components,
+        context_component_count=context_components,
+    )
+
+
+def _safe_instance_interior_mask(
+    instance_id: Image.Image,
+    instance_id_manifest: dict[str, Any],
+    missing_instance_ids: set[str],
+    *,
+    semantic_classes: frozenset[str],
+) -> Image.Image:
+    """Build a safely inset mask from server-bound persisted instances.
+
+    The mask is deliberately only an admission envelope. Every composite made
+    with it must still pass the authoritative instance-presence and unsupported
+    coarse-structure gates before it can be returned.
+    """
+
+    import cv2
+
+    pixels = np.asarray(instance_id.convert("RGB"), dtype=np.uint8)
+    safe_interiors = np.zeros(
+        (instance_id.height, instance_id.width),
+        dtype=np.uint8,
+    )
+    scale = _finish_detail_scale(instance_id.width, instance_id.height)
+    unsupported_tolerance_px = max(
+        3,
+        min(6, round(math.hypot(*instance_id.size) * 0.0025)),
+    )
+    erosion_radius = max(
+        unsupported_tolerance_px,
+        3,
+        round(4 * scale),
+    )
+    erosion_kernel = np.ones(
+        (erosion_radius * 2 + 1, erosion_radius * 2 + 1),
+        dtype=np.uint8,
+    )
+    for color, descriptor in sorted(instance_id_manifest.items()):
+        if (
+            descriptor.semantic_class not in semantic_classes
+            or descriptor.instance_id in missing_instance_ids
+        ):
+            continue
+        region = np.all(
+            pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+            axis=2,
+        )
+        safe_interiors |= cv2.erode(
+            region.astype(np.uint8),
+            erosion_kernel,
+            iterations=1,
+        )
+    return Image.fromarray(safe_interiors * 255, mode="L")
+
+
+def _scene_hybrid_with_instance_interiors(
+    source: Image.Image,
+    provider: Image.Image,
+    object_id: Image.Image | None,
+    object_id_manifest: dict[str, str] | None,
+    instance_id: Image.Image,
+    instance_id_manifest: dict[str, Any],
+    missing_instance_ids: set[str],
+    *,
+    semantic_classes: frozenset[str],
+) -> tuple[Image.Image, FinishFusionResult]:
+    """Finish source phase, then admit provider pixels in persisted interiors."""
+
+    full_frame_mask = Image.new("L", source.size, 255)
+    source_phase = _fuse_source_geometry_with_provider_finish(
+        source,
+        provider,
+        full_frame_mask,
+        object_id,
+        object_id_manifest,
+    )
+    scale = _finish_detail_scale(source.width, source.height)
+    safe_interiors = _safe_instance_interior_mask(
+        instance_id,
+        instance_id_manifest,
+        missing_instance_ids,
+        semantic_classes=semantic_classes,
+    )
+    hybrid, _exterior_count, _exterior_delta = hard_composite_direct_3d(
+        source_phase.image,
+        provider,
+        safe_interiors,
+        inward_feather_px=max(2.0, 2.5 * scale),
+    )
+    return hybrid, source_phase
+
+
+def _balanced_scene_hybrid(
+    source: Image.Image,
+    provider: Image.Image,
+    object_id: Image.Image | None,
+    object_id_manifest: dict[str, str] | None,
+    instance_id: Image.Image,
+    instance_id_manifest: dict[str, Any],
+    missing_instance_ids: set[str],
+) -> tuple[Image.Image, FinishFusionResult]:
+    """Source-phase public realm plus provider pixels in building interiors.
+
+    Parks, streets, ground and landscape receive only source-owned spatial
+    detail whose contrast/tone is informed by provider statistics. Raw provider
+    pixels are limited to safely inset persisted building envelopes, preventing
+    a facade, pavilion or other invented structure from hiding inside a broad
+    public-realm instance.
+    """
+
+    return _scene_hybrid_with_instance_interiors(
+        source,
+        provider,
+        object_id,
+        object_id_manifest,
+        instance_id,
+        instance_id_manifest,
+        missing_instance_ids,
+        semantic_classes=frozenset({"building"}),
+    )
+
+
+def _global_tone_source_finish(
+    source: Image.Image,
+    provider: Image.Image,
+) -> Image.Image:
+    """Apply bounded provider colour statistics without provider spatial structure.
+
+    The transform is one affine operation per RGB channel. Its coefficients are
+    derived from whole-frame robust statistics, so provider pixels cannot create
+    a line, silhouette, building, or other local feature in the returned image.
+    Source contrast and all source-owned spatial detail remain in place.
+    """
+
+    if source.size != provider.size:
+        raise Direct3DValidationError(
+            "Source-locked tone images must have identical dimensions"
+        )
+
+    source_rgb = np.asarray(source.convert("RGB"), dtype=np.float32)
+    provider_rgb = np.asarray(provider.convert("RGB"), dtype=np.float32)
+    source_flat = source_rgb.reshape((-1, 3))
+    provider_flat = provider_rgb.reshape((-1, 3))
+    source_p10, source_median, source_p90 = np.percentile(
+        source_flat,
+        (10, 50, 90),
+        axis=0,
+    )
+    provider_p10, provider_median, provider_p90 = np.percentile(
+        provider_flat,
+        (10, 50, 90),
+        axis=0,
+    )
+    source_span = np.maximum(source_p90 - source_p10, 1.0)
+    provider_span = np.maximum(provider_p90 - provider_p10, 1.0)
+
+    # Keep the fallback visibly finished but deliberately conservative. Large
+    # provider exposure/white-balance changes are review information, not a
+    # reason to crush or erase source edges in the safe returned image.
+    scale = np.clip(provider_span / source_span, 0.90, 1.10)
+    shift = np.clip(provider_median - source_median, -18.0, 18.0)
+    transformed = (
+        (source_rgb - source_median.reshape((1, 1, 3)))
+        * scale.reshape((1, 1, 3))
+        + source_median.reshape((1, 1, 3))
+        + shift.reshape((1, 1, 3))
+    )
+    # A partial blend further protects low-contrast source structure while
+    # retaining provider-derived colour and exposure direction.
+    finished = source_rgb * 0.55 + transformed * 0.45
+    return Image.fromarray(
+        np.clip(np.rint(finished), 0, 255).astype(np.uint8),
+        mode="RGB",
+    )
+
+
+def _source_locked_scene_fallback(
+    source: Image.Image,
+    provider: Image.Image,
+    instance_id: Image.Image,
+    instance_id_manifest: dict[str, Any],
+    missing_instance_ids: set[str],
+    *,
+    admit_building_interiors: bool,
+) -> Image.Image:
+    """Return a source-geometry fallback with optional safe facade interiors."""
+
+    toned_source = _global_tone_source_finish(source, provider)
+    if not admit_building_interiors:
+        return toned_source
+
+    import cv2
+
+    pixels = np.asarray(instance_id.convert("RGB"), dtype=np.uint8)
+    safe_buildings = np.zeros((source.height, source.width), dtype=np.uint8)
+    scale = _finish_detail_scale(source.width, source.height)
+    # Match or exceed the unsupported-structure gate's building-envelope
+    # erosion so provider pixels cannot reach an authored silhouette.
+    unsupported_tolerance_px = max(
+        3,
+        min(6, round(math.hypot(*source.size) * 0.0025)),
+    )
+    erosion_radius = max(
+        unsupported_tolerance_px,
+        3,
+        round(4 * scale),
+    )
+    erosion_kernel = np.ones(
+        (erosion_radius * 2 + 1, erosion_radius * 2 + 1),
+        dtype=np.uint8,
+    )
+    for color, descriptor in sorted(instance_id_manifest.items()):
+        if (
+            descriptor.semantic_class != "building"
+            or descriptor.instance_id in missing_instance_ids
+        ):
+            continue
+        region = np.all(
+            pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+            axis=2,
+        )
+        safe_buildings |= cv2.erode(
+            region.astype(np.uint8),
+            erosion_kernel,
+            iterations=1,
+        )
+
+    if not np.any(safe_buildings):
+        return toned_source
+    hybrid, _exterior_count, _exterior_delta = hard_composite_direct_3d(
+        toned_source,
+        provider,
+        Image.fromarray(safe_buildings * 255, mode="L"),
+        inward_feather_px=max(2.0, 2.5 * scale),
+    )
+    return hybrid
 
 
 def assess_scene_visual_change(
@@ -2294,12 +3007,15 @@ def _presentation_prompt(
     presentation_mode: Literal["scene", "reproject"],
     style: str,
     object_id_manifest: dict[str, str] | None,
+    instance_id_manifest: dict[str, Any] | None = None,
+    server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
 ) -> str:
     """Build one concise provider-first prompt with one authority clause."""
 
     has_object_id = bool(object_id_manifest)
-    guide_number = 3 if has_object_id else 2
+    has_instance_id = bool(instance_id_manifest)
+    guide_number = 2 + int(has_object_id) + int(has_instance_id)
     image_roles = [
         "Image 1 is the clean 3D beauty capture and primary design reference.",
     ]
@@ -2307,6 +3023,13 @@ def _presentation_prompt(
         image_roles.append(
             "Image 2 is class-ID metadata only; use it to distinguish designed "
             "buildings, streets, parks, landscape and ground, and never reproduce its colors."
+        )
+    if has_instance_id:
+        instance_number = 2 + int(has_object_id)
+        image_roles.append(
+            f"Image {instance_number} is exact instance-ID metadata only. Every "
+            "non-black color is one existing authored instance; preserve each "
+            "instance exactly once and never reproduce these colors."
         )
     image_roles.append(
         f"Image {guide_number} is a monochrome structural guide; use its contours "
@@ -2324,6 +3047,7 @@ def _presentation_prompt(
             f"{count} {semantic_class}"
             for semantic_class, count in sorted(visible_component_summary.items())
         ) + "; keep every region distinct."
+    inventory = _server_inventory_prompt(server_inventory)
     treatment = _PRESENTATION_STYLE_TREATMENTS.get(
         style,
         _PRESENTATION_STYLE_TREATMENTS["photorealistic"],
@@ -2355,6 +3079,7 @@ def _presentation_prompt(
     prompt = "\n".join([
         task,
         " ".join(image_roles) + legend + components,
+        inventory,
         f"ART DIRECTION: {client_prompt.strip()}",
         authority,
     ])
@@ -2364,10 +3089,13 @@ def _presentation_prompt(
 def _authoritative_prompt(
     client_prompt: str,
     object_id_manifest: dict[str, str] | None,
+    instance_id_manifest: dict[str, Any] | None = None,
+    server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
 ) -> str:
     has_object_id = bool(object_id_manifest)
-    structural_guide_number = 3 if has_object_id else 2
+    has_instance_id = bool(instance_id_manifest)
+    structural_guide_number = 2 + int(has_object_id) + int(has_instance_id)
     id_guidance = (
         " Image 2 is a machine-readable class-ID guide only; use its classes to "
         "understand object ownership. Its legend is metadata only: never reproduce, "
@@ -2382,6 +3110,14 @@ def _authoritative_prompt(
             for color, semantic_class in sorted(object_id_manifest.items())
         )
         legend = f"\n\nCLASS-ID METADATA LEGEND (Image 2 only): {entries}."
+    instance_guidance = ""
+    if has_instance_id:
+        instance_number = 2 + int(has_object_id)
+        instance_guidance = (
+            f" Image {instance_number} is exact instance-ID metadata only. "
+            "Every non-black color denotes one existing authored instance; "
+            "preserve each exactly once and never reproduce these colors."
+        )
     edge_guidance = (
         f" Image {structural_guide_number} is the authoritative monochrome structural-edge "
         "guide deterministically extracted from the clean scene and class boundaries. "
@@ -2414,22 +3150,56 @@ def _authoritative_prompt(
         "unmasked context exactly. The result must be a direct stylization of Image 1, "
         "not a redesigned scene."
         + id_guidance
+        + instance_guidance
         + edge_guidance
         + component_guidance
     )
+    inventory = _server_inventory_prompt(server_inventory)
     # Repeat the non-negotiable lock after user prose so a client prompt cannot
     # weaken the geometry rules through recency or contradictory instructions.
     prompt = (
-        f"{authority}{legend}\n\nDESIRED VISUAL TREATMENT:\n"
+        f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
         f"{client_prompt.strip()}\n\n{authority}"
     )
     if len(prompt) > 31_900:
-        available = max(1, 31_900 - len(authority) * 2 - len(legend) - 40)
+        available = max(
+            1,
+            31_900 - len(authority) * 2 - len(legend) - len(inventory) - 44,
+        )
         prompt = (
-            f"{authority}{legend}\n\nDESIRED VISUAL TREATMENT:\n"
+            f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
             f"{client_prompt.strip()[:available]}\n\n{authority}"
         )
     return prompt
+
+
+def _server_inventory_prompt(
+    server_inventory: list[dict[str, Any]] | None,
+) -> str:
+    """Serialize only server-validated permanent inventory into provider authority."""
+
+    if not server_inventory:
+        return "SERVER INVENTORY: no additional server-bound instance list."
+    counts: dict[str, int] = {}
+    entries: list[str] = []
+    for item in server_inventory:
+        semantic_class = str(item["semantic_class"])
+        counts[semantic_class] = counts.get(semantic_class, 0) + 1
+        zone_id = str(item.get("zone_id") or "-")
+        building_id = str(item.get("building_id") or "-")
+        entries.append(
+            f"{item['instance_id']}|{semantic_class}|zone={zone_id}|building={building_id}"
+        )
+    count_text = ", ".join(
+        f"{semantic_class}={count}"
+        for semantic_class, count in sorted(counts.items())
+    )
+    return (
+        "SERVER-VALIDATED PERMANENT INVENTORY (binding; client art direction "
+        f"cannot relabel it): {count_text}. Exact instances: "
+        + "; ".join(entries)
+        + ". Do not add, remove, split, merge, or change the role of any listed instance."
+    )
 
 
 def _masked_correlation(
@@ -2512,8 +3282,16 @@ def register_generated_image(
     source: Image.Image,
     generated: Image.Image,
     proposal_mask: Image.Image,
+    *,
+    enforce_transform_limits: bool = True,
 ) -> RegistrationResult:
-    """Align generated pixels to the clean capture using immutable context."""
+    """Align generated pixels to the clean capture using immutable context.
+
+    Source-anchored callers retain the historical transform limits. Scene
+    callers may request the measured transform even when it is large so the
+    service can report the drift and select a source-locked safe fallback
+    instead of turning a produced provider image into a billed rejection.
+    """
 
     if source.size != generated.size or source.size != proposal_mask.size:
         raise Direct3DValidationError("Registration images and mask must have identical dimensions")
@@ -2566,9 +3344,15 @@ def register_generated_image(
     translation_y = float(warp[1, 2])
     rotation_degrees = math.degrees(math.atan2(float(warp[1, 0]), float(warp[0, 0])))
     max_translation = max(12.0, math.hypot(source.width, source.height) * 0.025)
-    if math.hypot(translation_x, translation_y) > max_translation:
+    if (
+        enforce_transform_limits
+        and math.hypot(translation_x, translation_y) > max_translation
+    ):
         raise Direct3DValidationError("Generated image drift exceeds the Direct 3D translation limit")
-    if abs(rotation_degrees) > _MAX_REGISTRATION_ROTATION_DEGREES:
+    if (
+        enforce_transform_limits
+        and abs(rotation_degrees) > _MAX_REGISTRATION_ROTATION_DEGREES
+    ):
         raise Direct3DValidationError("Generated image rotation exceeds the Direct 3D limit")
 
     registered_rgb = cv2.warpAffine(
@@ -2653,6 +3437,88 @@ def hard_composite_direct_3d(
     return Image.fromarray(output, mode="RGB"), exterior_count, exterior_max_delta
 
 
+def _macro_diagnostics(
+    result: MacroDesignFidelityResult,
+    fidelity_policy: Literal["precise", "balanced", "expressive"],
+) -> dict[str, Any]:
+    thresholds = _macro_fidelity_thresholds(
+        fidelity_policy,
+        tolerance_px=result.tolerance_px,
+    )
+    return {
+        "passed": result.passed,
+        "tolerance_px": result.tolerance_px,
+        "silhouette_edge_pixels": result.silhouette_edge_pixels,
+        "silhouette_edge_recall": result.silhouette_edge_recall,
+        "coarse_edge_pixels": result.coarse_edge_pixels,
+        "coarse_edge_recall": result.coarse_edge_recall,
+        "semantic_edge_pixels": result.semantic_edge_pixels,
+        "semantic_edge_recall": result.semantic_edge_recall,
+        "evaluated_component_count": result.evaluated_component_count,
+        "semantic_component_min_recall": result.semantic_component_min_recall,
+        "reference_edge_p90_distance_px": result.reference_edge_p90_distance_px,
+        "candidate_coarse_edge_pixels": result.candidate_coarse_edge_pixels,
+        "candidate_coarse_edge_precision": result.candidate_coarse_edge_precision,
+        "candidate_coarse_edge_density_ratio": (
+            result.candidate_coarse_edge_density_ratio
+        ),
+        "minimum_silhouette_edge_recall": (
+            thresholds.minimum_silhouette_edge_recall
+        ),
+        "minimum_coarse_edge_recall": thresholds.minimum_coarse_edge_recall,
+        "minimum_semantic_edge_recall": thresholds.minimum_semantic_edge_recall,
+        "minimum_semantic_component_recall": (
+            thresholds.minimum_semantic_component_recall
+        ),
+        "maximum_reference_edge_p90_distance_px": (
+            thresholds.maximum_reference_p90_distance_px
+        ),
+        "minimum_candidate_coarse_edge_precision": (
+            thresholds.minimum_candidate_coarse_edge_precision
+        ),
+        "maximum_candidate_coarse_edge_density_ratio": (
+            thresholds.maximum_candidate_coarse_edge_density_ratio
+        ),
+        "building_internal_edges_required": False,
+    }
+
+
+def _instance_presence_diagnostics(
+    result: InstanceSourcePresenceResult,
+) -> dict[str, Any]:
+    return {
+        "passed": result.passed,
+        "evaluated_instance_count": result.evaluated_instance_count,
+        "weakest_instance_recall": result.weakest_instance_recall,
+        "missing_instance_ids": list(result.missing_instance_ids),
+        "instance_recalls": result.instance_recalls,
+    }
+
+
+def _unsupported_structure_diagnostics(
+    result: UnsupportedStructureResult,
+) -> dict[str, Any]:
+    return {
+        "passed": result.passed,
+        "largest_component_pixels": result.largest_component_pixels,
+        "largest_component_bbox_fraction": result.largest_component_bbox_fraction,
+        "proposal_component_count": result.proposal_component_count,
+        "context_component_count": result.context_component_count,
+    }
+
+
+def _server_inventory_counts(
+    server_inventory: list[dict[str, Any]] | None,
+) -> dict[str, int] | None:
+    if server_inventory is None:
+        return None
+    counts: dict[str, int] = {}
+    for item in server_inventory:
+        semantic_class = str(item["semantic_class"])
+        counts[semantic_class] = counts.get(semantic_class, 0) + 1
+    return counts
+
+
 class Direct3DRenderService:
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -2661,6 +3527,8 @@ class Direct3DRenderService:
         self,
         req: Direct3DRenderRequest,
         capture: PreparedDirect3DCapture,
+        *,
+        server_inventory: list[dict[str, Any]] | None = None,
     ) -> Image.Image:
         if not self.api_key:
             raise Direct3DProviderError(
@@ -2688,6 +3556,15 @@ class Direct3DRenderService:
                 "image[]",
                 ("direct-3d-class-id.png", _png_bytes(capture.normalized_object_id), "image/png"),
             ))
+        if capture.normalized_instance_id is not None:
+            files.append((
+                "image[]",
+                (
+                    "direct-3d-instance-id.png",
+                    _png_bytes(capture.normalized_instance_id),
+                    "image/png",
+                ),
+            ))
         files.append((
             "image[]",
             ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
@@ -2704,6 +3581,8 @@ class Direct3DRenderService:
             _authoritative_prompt(
                 req.prompt,
                 object_id_manifest=req.object_id_manifest,
+                instance_id_manifest=req.instance_id_manifest,
+                server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
             )
             if req.presentation_mode == "source_anchored"
@@ -2712,6 +3591,8 @@ class Direct3DRenderService:
                 presentation_mode=req.presentation_mode,
                 style=req.style,
                 object_id_manifest=req.object_id_manifest,
+                instance_id_manifest=req.instance_id_manifest,
+                server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
             )
         )
@@ -2725,13 +3606,15 @@ class Direct3DRenderService:
         }
         headers = {"Authorization": f"Bearer {self.api_key}"}
         logger.info(
-            "Direct 3D edit request: model=%s mode=%s style=%s size=%s coverage=%.3f object_id=%s fingerprint=%s",
+            "Direct 3D edit request: model=%s mode=%s style=%s fidelity=%s size=%s coverage=%.3f object_id=%s instance_id=%s fingerprint=%s",
             DIRECT_3D_MODEL,
             req.presentation_mode,
             req.style,
+            req.fidelity_policy,
             data["size"],
             capture.proposal_coverage,
             capture.normalized_object_id is not None,
+            capture.normalized_instance_id is not None,
             capture.capture_fingerprint[:16],
         )
 
@@ -2817,14 +3700,21 @@ class Direct3DRenderService:
         self,
         req: Direct3DRenderRequest,
         capture: PreparedDirect3DCapture | None = None,
+        *,
+        server_inventory: list[dict[str, Any]] | None = None,
     ) -> Direct3DServiceResult:
         capture = capture or prepare_direct_3d_capture(req)
-        generated = await self._call_openai(req, capture)
+        generated = await self._call_openai(
+            req,
+            capture,
+            server_inventory=server_inventory,
+        )
         provider_image_base64: str | None = None
         try:
             provider_image_base64 = base64.b64encode(_png_bytes(generated)).decode("ascii")
             common_diagnostics: dict[str, Any] = {
                 "processing_mode": req.presentation_mode,
+                "fidelity_policy": req.fidelity_policy,
                 "source_width": capture.source_beauty.width,
                 "source_height": capture.source_beauty.height,
                 "normalized_width": capture.normalized_beauty.width,
@@ -2845,6 +3735,13 @@ class Direct3DRenderService:
                     if req.presentation_mode in {"scene", "reproject"}
                     else None
                 ),
+                "instance_id_attached": (
+                    capture.normalized_instance_id is not None
+                ),
+                "instance_count": capture.instance_count,
+                "instance_source_presence": None,
+                "unsupported_structure": None,
+                "server_inventory": _server_inventory_counts(server_inventory),
                 "scene_lower_context_coverage": (
                     capture.scene_lower_context_coverage
                 ),
@@ -2896,6 +3793,11 @@ class Direct3DRenderService:
                     audit_input_base64=capture.audit_input_base64,
                     capture_fingerprint=capture.capture_fingerprint,
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome="review_required",
+                    warnings=(
+                        "Projection-changing Direct 3D renders require human review "
+                        "against the source inventory.",
+                    ),
                     diagnostics={
                         **common_diagnostics,
                         "view_lock": "not_applicable_layout_guided",
@@ -2947,33 +3849,79 @@ class Direct3DRenderService:
                     },
                 )
 
-            registration = register_generated_image(
-                capture.normalized_beauty,
-                generated,
-                capture.normalized_proposal_mask,
-            )
-            scene_translation_norm_px = math.hypot(
-                registration.translation_x_px,
-                registration.translation_y_px,
-            )
+            registration: RegistrationResult | None = None
+            scene_registration_error: str | None = None
             if req.presentation_mode == "scene":
-                if (
-                    scene_translation_norm_px
-                    > _MAX_SCENE_REGISTRATION_TRANSLATION_PX
-                ):
-                    raise Direct3DValidationError(
-                        "Provider scene camera drift exceeds the 8px translation limit"
+                try:
+                    registration = register_generated_image(
+                        capture.normalized_beauty,
+                        generated,
+                        capture.normalized_proposal_mask,
+                        enforce_transform_limits=False,
                     )
-                if (
-                    abs(registration.rotation_degrees)
-                    > _MAX_SCENE_REGISTRATION_ROTATION_DEGREES
-                ):
-                    raise Direct3DValidationError(
-                        "Provider scene camera drift exceeds the 0.35 degree rotation limit"
+                except Direct3DValidationError as exc:
+                    # A provider image already exists. Failed or unreliable
+                    # screen registration therefore selects the non-spatial
+                    # source-locked fallback below rather than becoming a
+                    # billed rejection. The original error is retained in the
+                    # human-review warning; diagnostics report registration as
+                    # unavailable instead of inventing an identity transform.
+                    scene_registration_error = str(exc)
+                    logger.warning(
+                        "Direct 3D scene registration was unreliable; using "
+                        "source-locked fallback: %s",
+                        exc,
                     )
+            else:
+                registration = register_generated_image(
+                    capture.normalized_beauty,
+                    generated,
+                    capture.normalized_proposal_mask,
+                )
+
+            provider_analysis_image = (
+                registration.image if registration is not None else generated
+            )
+            scene_translation_norm_px = (
+                math.hypot(
+                    registration.translation_x_px,
+                    registration.translation_y_px,
+                )
+                if registration is not None
+                else None
+            )
+            scene_review_translation_px: float | None = None
+            scene_review_rotation_degrees: float | None = None
+            scene_drift_requires_review = False
+            scene_drift_requires_source_lock = False
+            if req.presentation_mode == "scene":
+                (
+                    scene_review_translation_px,
+                    scene_review_rotation_degrees,
+                ) = _SCENE_REGISTRATION_REVIEW_LIMITS[req.fidelity_policy]
+                (
+                    source_lock_translation_px,
+                    source_lock_rotation_degrees,
+                ) = _SCENE_REGISTRATION_SOURCE_LOCK_LIMITS[
+                    req.fidelity_policy
+                ]
+                scene_drift_requires_review = (
+                    registration is None
+                    or scene_translation_norm_px is None
+                    or scene_translation_norm_px > scene_review_translation_px
+                    or abs(registration.rotation_degrees)
+                    > scene_review_rotation_degrees
+                )
+                scene_drift_requires_source_lock = (
+                    registration is None
+                    or scene_translation_norm_px is None
+                    or scene_translation_norm_px > source_lock_translation_px
+                    or abs(registration.rotation_degrees)
+                    > source_lock_rotation_degrees
+                )
             provider_edge_fidelity = assess_structural_edge_fidelity(
                 capture.normalized_beauty,
-                registration.image,
+                provider_analysis_image,
                 capture.normalized_proposal_mask,
                 capture.normalized_object_id,
                 req.object_id_manifest,
@@ -2994,50 +3942,316 @@ class Direct3DRenderService:
             if req.presentation_mode == "scene":
                 macro_fidelity = assess_macro_design_fidelity(
                     capture.normalized_beauty,
-                    registration.image,
+                    provider_analysis_image,
                     capture.normalized_proposal_mask,
                     capture.normalized_object_id,
                     req.object_id_manifest,
+                    fidelity_policy=req.fidelity_policy,
                 )
-                if not macro_fidelity.passed:
-                    raise Direct3DValidationError(
-                        "Provider scene materially changed macro design geometry "
-                        f"(silhouette recall {macro_fidelity.silhouette_edge_recall}, "
-                        f"coarse recall {macro_fidelity.coarse_edge_recall:.3f}, "
-                        f"semantic recall {macro_fidelity.semantic_edge_recall}, "
-                        "weakest component recall "
-                        f"{macro_fidelity.semantic_component_min_recall}, p90 "
-                        f"{macro_fidelity.reference_edge_p90_distance_px:.3f}px, "
-                        "candidate coarse precision "
-                        f"{macro_fidelity.candidate_coarse_edge_precision:.3f}, "
-                        "candidate coarse density ratio "
-                        f"{macro_fidelity.candidate_coarse_edge_density_ratio:.3f})"
+                instance_presence = assess_instance_source_presence(
+                    capture.normalized_beauty,
+                    provider_analysis_image,
+                    capture.normalized_proposal_mask,
+                    capture.normalized_instance_id,
+                    req.instance_id_manifest,
+                    fidelity_policy=req.fidelity_policy,
+                )
+                unsupported_structure = assess_unsupported_coarse_structure(
+                    capture.normalized_beauty,
+                    provider_analysis_image,
+                    capture.normalized_proposal_mask,
+                    capture.normalized_instance_id,
+                    req.instance_id_manifest,
+                )
+                severe_macro_redesign = (
+                    (
+                        macro_fidelity.silhouette_edge_recall is not None
+                        and macro_fidelity.silhouette_edge_recall < 0.55
+                    )
+                    or macro_fidelity.coarse_edge_recall < 0.55
+                    or (
+                        macro_fidelity.semantic_edge_recall is not None
+                        and macro_fidelity.semantic_edge_recall < 0.60
+                    )
+                    or (
+                        macro_fidelity.semantic_component_min_recall is not None
+                        and macro_fidelity.semantic_component_min_recall < 0.55
+                    )
+                )
+                provider_quality_warnings: list[str] = []
+                provider_quality_requires_source_lock = False
+                if (
+                    req.fidelity_policy == "precise"
+                    and severe_macro_redesign
+                    and not scene_drift_requires_source_lock
+                ):
+                    provider_quality_requires_source_lock = True
+                    provider_quality_warnings.append(
+                        "The provider materially changed macro design geometry under "
+                        "the precise policy; the returned image uses only source-owned "
+                        "spatial pixels."
                     )
                 visual_change = assess_scene_visual_change(
                     capture.normalized_beauty,
-                    registration.image,
+                    provider_analysis_image,
                     capture.normalized_proposal_mask,
                 )
-                if not visual_change.passed:
-                    raise Direct3DValidationError(
-                        "Provider scene did not add enough photographic detail beyond "
-                        "a near-identity colour grade "
-                        "(whole-frame MAD "
-                        f"{visual_change.whole_frame_mean_absolute_delta:.3f}, "
-                        f"proposal MAD {visual_change.proposal_mean_absolute_delta:.3f}, "
-                        "detail p75 "
-                        f"{visual_change.proposal_detail_delta_p75:.3f}, novel-edge "
-                        f"coverage {visual_change.novel_detail_edge_coverage:.5f}, "
-                        "photometric residual p95 "
-                        f"{visual_change.proposal_photometric_residual_p95:.3f}, "
-                        "lower-context MAD "
-                        f"{visual_change.context_mean_absolute_delta:.3f}, "
-                        "lower-context residual p95 "
-                        f"{visual_change.context_photometric_residual_p95:.3f}, "
-                        "lower-context detail p75 "
-                        f"{visual_change.context_detail_delta_p75:.3f})"
+                if (
+                    not visual_change.passed
+                    and not scene_drift_requires_source_lock
+                ):
+                    provider_quality_requires_source_lock = True
+                    provider_quality_warnings.append(
+                        "The provider result was too close to a colour grade to prove "
+                        "a useful spatial finish; the returned image uses only "
+                        "source-owned spatial pixels."
                     )
-                presentation = registration.image.resize(
+
+                # Dense noise can satisfy directed source recall by chance and
+                # is not useful even as a review candidate.
+                if (
+                    not scene_drift_requires_source_lock
+                    and (
+                        macro_fidelity.candidate_coarse_edge_precision < 0.18
+                        or macro_fidelity.candidate_coarse_edge_density_ratio > 5.5
+                    )
+                ):
+                    provider_quality_requires_source_lock = True
+                    provider_quality_warnings.append(
+                        "The provider produced an invalid coarse edge field; the "
+                        "returned image uses only source-owned spatial pixels."
+                    )
+
+                scene_source_lock_required = (
+                    scene_drift_requires_source_lock
+                    or provider_quality_requires_source_lock
+                )
+
+                outcome: Literal["accepted", "review_required"] = "accepted"
+                warnings: list[str] = list(provider_quality_warnings)
+                if (
+                    capture.normalized_instance_id is None
+                    or not req.instance_id_manifest
+                ):
+                    raise Direct3DValidationError(
+                        "Scene output requires exact instance inventory"
+                    )
+
+                def assess_returned_scene(
+                    candidate: Image.Image,
+                ) -> tuple[
+                    InstanceSourcePresenceResult,
+                    UnsupportedStructureResult,
+                ]:
+                    return (
+                        assess_instance_source_presence(
+                            capture.normalized_beauty,
+                            candidate,
+                            capture.normalized_proposal_mask,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            fidelity_policy=req.fidelity_policy,
+                        ),
+                        assess_unsupported_coarse_structure(
+                            capture.normalized_beauty,
+                            candidate,
+                            capture.normalized_proposal_mask,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                        ),
+                    )
+
+                missing_instance_ids = set(instance_presence.missing_instance_ids)
+                if scene_source_lock_required:
+                    # Gross or unreliable camera drift makes every local
+                    # provider pixel spatially untrustworthy. Retain only
+                    # provider-derived whole-frame colour statistics; the
+                    # returned topology remains entirely source-owned.
+                    safety_strategy = "global_tone_only"
+                    presentation_normalized = _source_locked_scene_fallback(
+                        capture.normalized_beauty,
+                        generated,
+                        capture.normalized_instance_id,
+                        req.instance_id_manifest,
+                        missing_instance_ids,
+                        admit_building_interiors=False,
+                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(
+                        presentation_normalized
+                    )
+                else:
+                    # Public-realm roles use source-owned spatial phase only.
+                    # Raw provider pixels are admitted solely inside persisted,
+                    # safely inset building interiors.
+                    presentation_normalized, _source_phase = (
+                        _balanced_scene_hybrid(
+                            capture.normalized_beauty,
+                            provider_analysis_image,
+                            capture.normalized_object_id,
+                            req.object_id_manifest,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            missing_instance_ids,
+                        )
+                    )
+                    safety_strategy = "source_envelope_building_interiors"
+
+                    # This is the authoritative final gate. A
+                    # provider-conditioned intermediate is never a valid
+                    # baseline for proving that no provider-only structure
+                    # survived into the returned pixels.
+                    safe_presence, safe_unsupported = assess_returned_scene(
+                        presentation_normalized
+                    )
+                    if not safe_presence.passed or not safe_unsupported.passed:
+                        safety_strategy = (
+                            "global_tone_with_safe_building_interiors"
+                        )
+                        presentation_normalized = _source_locked_scene_fallback(
+                            capture.normalized_beauty,
+                            provider_analysis_image,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            missing_instance_ids,
+                            admit_building_interiors=True,
+                        )
+                        safe_presence, safe_unsupported = assess_returned_scene(
+                            presentation_normalized
+                        )
+
+                if not safe_presence.passed or not safe_unsupported.passed:
+                    safety_strategy = "global_tone_only"
+                    presentation_normalized = _source_locked_scene_fallback(
+                        capture.normalized_beauty,
+                        generated,
+                        capture.normalized_instance_id,
+                        req.instance_id_manifest,
+                        missing_instance_ids,
+                        admit_building_interiors=False,
+                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(
+                        presentation_normalized
+                    )
+
+                if not safe_presence.passed or not safe_unsupported.passed:
+                    # The exact authoritative capture is the deterministic last
+                    # resort after a paid provider response. It prevents both an
+                    # unsafe return and an avoidable post-generation hard block.
+                    safety_strategy = "authoritative_source"
+                    presentation_normalized = (
+                        capture.normalized_beauty.convert("RGB").copy()
+                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(
+                        presentation_normalized
+                    )
+
+                if not safe_presence.passed or not safe_unsupported.passed:
+                    raise Direct3DValidationError(
+                        "Authoritative source fallback could not produce a safe, "
+                        "inventory-preserving result "
+                        f"(instance presence={safe_presence.passed}, "
+                        f"unsupported structure={safe_unsupported.passed}, "
+                        "weakest instance recall="
+                        f"{safe_presence.weakest_instance_recall}, "
+                        "unsupported components="
+                        f"{safe_unsupported.proposal_component_count + safe_unsupported.context_component_count})"
+                    )
+
+                if scene_registration_error is not None:
+                    warnings.append(
+                        "Provider scene registration was unreliable "
+                        f"({scene_registration_error}); the returned image is "
+                        "source-locked and contains no provider spatial pixels."
+                    )
+                elif scene_drift_requires_source_lock:
+                    warnings.append(
+                        "Provider scene camera drift was too large for safe local "
+                        "pixel transfer "
+                        f"({scene_translation_norm_px:.2f}px translation, "
+                        f"{abs(registration.rotation_degrees):.3f} degree rotation); "
+                        "the returned image is source-locked and contains no "
+                        "provider spatial pixels."
+                    )
+                elif scene_drift_requires_review:
+                    warnings.append(
+                        "Provider scene camera drift exceeded the "
+                        f"{req.fidelity_policy} automatic threshold "
+                        f"({scene_translation_norm_px:.2f}px translation versus "
+                        f"{scene_review_translation_px:.2f}px, "
+                        f"{abs(registration.rotation_degrees):.3f} degree rotation "
+                        f"versus {scene_review_rotation_degrees:.3f}); review the "
+                        "source/candidate comparison before saving."
+                    )
+
+                if req.fidelity_policy == "balanced":
+                    if not macro_fidelity.passed:
+                        warnings.append(
+                            "The provider varied macro geometry beyond the balanced "
+                            "automatic threshold; the returned image confines raw "
+                            "provider pixels to safety-checked persisted building "
+                            "interiors while public-realm detail stays source-owned."
+                        )
+                    if not instance_presence.passed:
+                        warnings.append(
+                            "One or more authored instances were weak in the provider "
+                            "image and were restored from source geometry."
+                        )
+                    if not unsupported_structure.passed:
+                        warnings.append(
+                            "Unsupported coarse structures were detected in the provider "
+                            "image and excluded from the returned source-envelope result."
+                        )
+                    if warnings:
+                        outcome = "review_required"
+                elif req.fidelity_policy == "precise":
+                    if not instance_presence.passed:
+                        warnings.append(
+                            "One or more authored instances were weak in the provider "
+                            "image and were restored from source geometry."
+                        )
+                    if not unsupported_structure.passed:
+                        warnings.append(
+                            "Unsupported coarse structures were detected in the provider "
+                            "image and excluded from the returned source-envelope result."
+                        )
+                    if not macro_fidelity.passed:
+                        warnings.append(
+                            "The render exceeded precise macro-geometry tolerances; "
+                            "compare it with the source before approval."
+                        )
+                    if warnings:
+                        outcome = "review_required"
+                else:
+                    outcome = "review_required"
+                    warnings.append(
+                        "Expressive Direct 3D renders require human review against "
+                        "the source and exact instance inventory."
+                    )
+                    if not macro_fidelity.passed:
+                        warnings.append(
+                            "The expressive render materially reinterpreted source edges."
+                        )
+                    if not instance_presence.passed:
+                        warnings.append(
+                            "At least one authored instance has weak source-presence evidence."
+                        )
+                    if not unsupported_structure.passed:
+                        warnings.append(
+                            "Unsupported coarse structures were excluded from the "
+                            "returned source-envelope result."
+                        )
+
+                if safety_strategy != "source_envelope_building_interiors":
+                    outcome = "review_required"
+                    if not scene_source_lock_required:
+                        warnings.append(
+                            "The source-phase finish with safe building interiors did "
+                            "not pass the authoritative source gate, so the returned "
+                            "image uses the "
+                            f"safer {safety_strategy.replace('_', ' ')} fallback."
+                        )
+
+                presentation = presentation_normalized.resize(
                     capture.source_beauty.size,
                     Image.Resampling.LANCZOS,
                 )
@@ -3053,150 +4267,135 @@ class Direct3DRenderService:
                     if exterior_count
                     else 0
                 )
+                returned_source_pixel_locked = safety_strategy in {
+                    "global_tone_only",
+                    "authoritative_source",
+                }
+                registration_diagnostics = (
+                    {
+                        "method": registration.method,
+                        "score": registration.score,
+                        "score_metric": registration.score_metric,
+                        "photometric_score": registration.photometric_score,
+                        "structural_context_score": (
+                            registration.structural_context_score
+                        ),
+                        "translation_x_px": registration.translation_x_px,
+                        "translation_y_px": registration.translation_y_px,
+                        "translation_norm_px": scene_translation_norm_px,
+                        "rotation_degrees": registration.rotation_degrees,
+                        "maximum_translation_norm_px": (
+                            scene_review_translation_px
+                        ),
+                        "maximum_abs_rotation_degrees": (
+                            scene_review_rotation_degrees
+                        ),
+                    }
+                    if registration is not None
+                    else None
+                )
+                visual_change_diagnostics = (
+                    {
+                        "passed": True,
+                        "whole_frame_mean_absolute_delta": (
+                            visual_change.whole_frame_mean_absolute_delta
+                        ),
+                        "proposal_mean_absolute_delta": (
+                            visual_change.proposal_mean_absolute_delta
+                        ),
+                        "proposal_detail_delta_p75": (
+                            visual_change.proposal_detail_delta_p75
+                        ),
+                        "proposal_photometric_residual_p95": (
+                            visual_change.proposal_photometric_residual_p95
+                        ),
+                        "novel_detail_edge_coverage": (
+                            visual_change.novel_detail_edge_coverage
+                        ),
+                        "context_mean_absolute_delta": (
+                            visual_change.context_mean_absolute_delta
+                        ),
+                        "context_photometric_residual_p95": (
+                            visual_change.context_photometric_residual_p95
+                        ),
+                        "context_detail_delta_p75": (
+                            visual_change.context_detail_delta_p75
+                        ),
+                        "context_pixel_count": visual_change.context_pixel_count,
+                        "context_frame_top_fraction": (
+                            visual_change.context_frame_top_fraction
+                        ),
+                        "minimum_whole_frame_mean_absolute_delta": (
+                            _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
+                        ),
+                        "minimum_proposal_mean_absolute_delta": (
+                            _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
+                        ),
+                        "minimum_proposal_detail_delta_p75": (
+                            _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
+                        ),
+                        "minimum_proposal_photometric_residual_p95": (
+                            _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
+                        ),
+                        "minimum_novel_detail_edge_coverage": (
+                            _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
+                        ),
+                        "minimum_context_mean_absolute_delta": (
+                            _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
+                        ),
+                        "minimum_context_photometric_residual_p95": (
+                            _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
+                        ),
+                        "minimum_context_detail_delta_p75": (
+                            _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
+                        ),
+                        "context_change_required": True,
+                        "color_grade_only_rejected": True,
+                    }
+                    if visual_change.passed
+                    else None
+                )
                 output_png = _png_bytes(presentation)
                 return Direct3DServiceResult(
                     image_base64=base64.b64encode(output_png).decode("ascii"),
                     audit_input_base64=capture.audit_input_base64,
                     capture_fingerprint=capture.capture_fingerprint,
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome=outcome,
+                    warnings=tuple(warnings),
                     diagnostics={
                         **common_diagnostics,
-                        "view_lock": "camera_registered",
-                        "context_restyled": True,
+                        "view_lock": (
+                            "source_pixel_locked"
+                            if returned_source_pixel_locked
+                            else "camera_registered"
+                        ),
+                        "context_restyled": safety_strategy != "authoritative_source",
                         "provider_first": True,
                         "provider_raw_structural_edge_fidelity": provider_edge_diagnostics,
-                        "macro_design_fidelity": {
-                            "passed": True,
-                            "tolerance_px": macro_fidelity.tolerance_px,
-                            "silhouette_edge_pixels": (
-                                macro_fidelity.silhouette_edge_pixels
-                            ),
-                            "silhouette_edge_recall": (
-                                macro_fidelity.silhouette_edge_recall
-                            ),
-                            "coarse_edge_pixels": macro_fidelity.coarse_edge_pixels,
-                            "coarse_edge_recall": macro_fidelity.coarse_edge_recall,
-                            "semantic_edge_pixels": macro_fidelity.semantic_edge_pixels,
-                            "semantic_edge_recall": macro_fidelity.semantic_edge_recall,
-                            "evaluated_component_count": (
-                                macro_fidelity.evaluated_component_count
-                            ),
-                            "semantic_component_min_recall": (
-                                macro_fidelity.semantic_component_min_recall
-                            ),
-                            "reference_edge_p90_distance_px": (
-                                macro_fidelity.reference_edge_p90_distance_px
-                            ),
-                            "candidate_coarse_edge_pixels": (
-                                macro_fidelity.candidate_coarse_edge_pixels
-                            ),
-                            "candidate_coarse_edge_precision": (
-                                macro_fidelity.candidate_coarse_edge_precision
-                            ),
-                            "candidate_coarse_edge_density_ratio": (
-                                macro_fidelity.candidate_coarse_edge_density_ratio
-                            ),
-                            "minimum_silhouette_edge_recall": (
-                                _MIN_MACRO_SILHOUETTE_EDGE_RECALL
-                            ),
-                            "minimum_coarse_edge_recall": (
-                                _MIN_MACRO_COARSE_EDGE_RECALL
-                            ),
-                            "minimum_semantic_edge_recall": (
-                                _MIN_MACRO_SEMANTIC_EDGE_RECALL
-                            ),
-                            "minimum_semantic_component_recall": (
-                                _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
-                            ),
-                            "maximum_reference_edge_p90_distance_px": min(
-                                _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
-                                macro_fidelity.tolerance_px
-                                * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
-                            ),
-                            "minimum_candidate_coarse_edge_precision": (
-                                _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
-                            ),
-                            "maximum_candidate_coarse_edge_density_ratio": (
-                                _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
-                            ),
-                            "building_internal_edges_required": False,
-                        },
-                        "visual_change": {
-                            "passed": True,
-                            "whole_frame_mean_absolute_delta": (
-                                visual_change.whole_frame_mean_absolute_delta
-                            ),
-                            "proposal_mean_absolute_delta": (
-                                visual_change.proposal_mean_absolute_delta
-                            ),
-                            "proposal_detail_delta_p75": (
-                                visual_change.proposal_detail_delta_p75
-                            ),
-                            "proposal_photometric_residual_p95": (
-                                visual_change.proposal_photometric_residual_p95
-                            ),
-                            "novel_detail_edge_coverage": (
-                                visual_change.novel_detail_edge_coverage
-                            ),
-                            "context_mean_absolute_delta": (
-                                visual_change.context_mean_absolute_delta
-                            ),
-                            "context_photometric_residual_p95": (
-                                visual_change.context_photometric_residual_p95
-                            ),
-                            "context_detail_delta_p75": (
-                                visual_change.context_detail_delta_p75
-                            ),
-                            "context_pixel_count": visual_change.context_pixel_count,
-                            "context_frame_top_fraction": (
-                                visual_change.context_frame_top_fraction
-                            ),
-                            "minimum_whole_frame_mean_absolute_delta": (
-                                _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-                            ),
-                            "minimum_proposal_mean_absolute_delta": (
-                                _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
-                            ),
-                            "minimum_proposal_detail_delta_p75": (
-                                _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
-                            ),
-                            "minimum_proposal_photometric_residual_p95": (
-                                _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
-                            ),
-                            "minimum_novel_detail_edge_coverage": (
-                                _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
-                            ),
-                            "minimum_context_mean_absolute_delta": (
-                                _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
-                            ),
-                            "minimum_context_photometric_residual_p95": (
-                                _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
-                            ),
-                            "minimum_context_detail_delta_p75": (
-                                _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
-                            ),
-                            "context_change_required": True,
-                            "color_grade_only_rejected": True,
-                        },
-                        "registration": {
-                            "method": registration.method,
-                            "score": registration.score,
-                            "score_metric": registration.score_metric,
-                            "photometric_score": registration.photometric_score,
-                            "structural_context_score": (
-                                registration.structural_context_score
-                            ),
-                            "translation_x_px": registration.translation_x_px,
-                            "translation_y_px": registration.translation_y_px,
-                            "translation_norm_px": scene_translation_norm_px,
-                            "rotation_degrees": registration.rotation_degrees,
-                            "maximum_translation_norm_px": (
-                                _MAX_SCENE_REGISTRATION_TRANSLATION_PX
-                            ),
-                            "maximum_abs_rotation_degrees": (
-                                _MAX_SCENE_REGISTRATION_ROTATION_DEGREES
-                            ),
-                        },
+                        "provider_raw_instance_source_presence": (
+                            _instance_presence_diagnostics(instance_presence)
+                        ),
+                        "provider_raw_unsupported_structure": (
+                            _unsupported_structure_diagnostics(
+                                unsupported_structure
+                            )
+                        ),
+                        "returned_safety_strategy": safety_strategy,
+                        "macro_design_fidelity": _macro_diagnostics(
+                            macro_fidelity,
+                            req.fidelity_policy,
+                        ),
+                        "instance_source_presence": (
+                            _instance_presence_diagnostics(safe_presence)
+                        ),
+                        "unsupported_structure": (
+                            _unsupported_structure_diagnostics(
+                                safe_unsupported
+                            )
+                        ),
+                        "visual_change": visual_change_diagnostics,
+                        "registration": registration_diagnostics,
                         "exterior_pixel_count": exterior_count,
                         "exterior_max_channel_delta": exterior_max_delta,
                         "inward_feather_px": 0.0,
@@ -3260,6 +4459,7 @@ class Direct3DRenderService:
                 output_fingerprint=output_fingerprint,
                 diagnostics={
                     "processing_mode": "source_anchored",
+                    "fidelity_policy": req.fidelity_policy,
                     "view_lock": "source_pixel_locked",
                     "context_restyled": False,
                     "provider_first": False,
@@ -3277,6 +4477,13 @@ class Direct3DRenderService:
                     "object_id_proposal_iou": capture.object_id_proposal_iou,
                     "minimum_object_id_proposal_recall": None,
                     "minimum_object_id_proposal_iou": None,
+                    "instance_id_attached": (
+                        capture.normalized_instance_id is not None
+                    ),
+                    "instance_count": capture.instance_count,
+                    "instance_source_presence": None,
+                    "unsupported_structure": None,
+                    "server_inventory": _server_inventory_counts(server_inventory),
                     "scene_lower_context_coverage": None,
                     "minimum_scene_lower_context_coverage": None,
                     "structural_edge_guide_attached": True,

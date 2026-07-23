@@ -12,6 +12,7 @@ import type { ResidualLandscapeClaim } from './residualLandscape';
 
 export type Direct3DPresentationMode = 'source_anchored' | 'scene' | 'reproject';
 export type Direct3DActivePresentationMode = Exclude<Direct3DPresentationMode, 'source_anchored'>;
+export type Direct3DFidelityPolicy = 'precise' | 'balanced' | 'expressive';
 
 // Direct reuses Classic's full aesthetic catalogue verbatim. The Classic
 // renderer still owns all of its existing branching and prompting behavior;
@@ -23,12 +24,80 @@ export function resolveDirect3DPresentationMode(style: string): Direct3DActivePr
   return REPROJECTING_STYLES.has(style) ? 'reproject' : 'scene';
 }
 
+const PRECISE_DIRECT_3D_STYLES = new Set(['survey', 'documentary']);
+const EXPRESSIVE_DIRECT_3D_STYLES = new Set([
+  'site-plan',
+  'site-plan-watercolor',
+  'blueprint',
+  'watercolour',
+  'charcoal',
+  'pen-and-ink',
+  'isometric',
+  'marker-render',
+  'clay-maquette',
+  'woodblock',
+  'collage',
+  'risograph',
+  'pixel-art',
+]);
+
+export function resolveDirect3DFidelityPolicy(style: string): Direct3DFidelityPolicy {
+  if (PRECISE_DIRECT_3D_STYLES.has(style)) return 'precise';
+  if (REPROJECTING_STYLES.has(style) || EXPRESSIVE_DIRECT_3D_STYLES.has(style)) return 'expressive';
+  return 'balanced';
+}
+
 export interface Direct3DRenderDiagnostics {
   /** Missing on legacy source-anchored responses. */
   processing_mode?: Direct3DPresentationMode;
   view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
   context_restyled?: boolean;
   provider_first?: boolean;
+  fidelity_policy?: Direct3DFidelityPolicy;
+  instance_id_attached?: boolean;
+  instance_count?: number;
+  provider_raw_instance_source_presence?: {
+    passed: boolean;
+    evaluated_instance_count?: number;
+    weakest_instance_recall?: number | null;
+    missing_instance_ids?: string[];
+  } | null;
+  provider_raw_unsupported_structure?: {
+    passed: boolean;
+    largest_component_pixels?: number;
+    largest_component_bbox_fraction?: number;
+    proposal_component_count?: number;
+    context_component_count?: number;
+  } | null;
+  returned_safety_strategy?:
+    | 'source_envelope'
+    | 'source_envelope_all_authored_interiors'
+    | 'source_envelope_building_interiors'
+    | 'global_tone_with_safe_building_interiors'
+    | 'global_tone_only'
+    | 'authoritative_source'
+    | null;
+  instance_source_presence?: {
+    passed: boolean;
+    evaluated_instance_count?: number;
+    weakest_instance_recall?: number | null;
+    missing_instance_ids?: string[];
+  } | null;
+  unsupported_structure?: {
+    passed: boolean;
+    largest_component_pixels?: number;
+    largest_component_bbox_fraction?: number;
+    proposal_component_count?: number;
+    context_component_count?: number;
+  } | null;
+  server_inventory?: {
+    building?: number;
+    park?: number;
+    street?: number;
+    ground?: number;
+    landscape?: number;
+    [key: string]: number | undefined;
+  } | null;
   source_width: number;
   source_height: number;
   normalized_width: number;
@@ -84,7 +153,7 @@ export interface Direct3DRenderDiagnostics {
     building_internal_edge_recall?: number | null;
   } | null;
   macro_design_fidelity?: {
-    passed: true;
+    passed: boolean;
     tolerance_px: number;
     silhouette_edge_pixels: number;
     silhouette_edge_recall?: number | null;
@@ -186,6 +255,10 @@ export interface Direct3DRenderResult {
   diagnostics: Direct3DRenderDiagnostics;
   captureFingerprint: string;
   outputFingerprint: string;
+  outcome: 'accepted' | 'review_required';
+  warnings: string[];
+  sourceImageUrl: string;
+  fidelityPolicy: Direct3DFidelityPolicy;
 }
 
 function visibleClassSummary(
@@ -201,32 +274,22 @@ export function buildDirect3DVisualPrompt(
   style: string,
   customPrompt: string | undefined,
   capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
+  fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
 ): string {
-  const treatment = GLOBE_STYLE_PROMPTS[style]
-    ?? GLOBE_STYLE_PROMPTS.photorealistic;
   const presentationMode = resolveDirect3DPresentationMode(style);
   const custom = customPrompt?.trim();
-  const presentationInstructions = presentationMode === 'reproject'
-    ? [
-        'PRESENTATION MODE: REPROJECT (style-directed full-frame re-render).',
-        'You may change the projection, viewpoint and camera orientation only as needed to achieve the selected plan, orthographic, axonometric or maquette aesthetic.',
-        'Preserve the complete object inventory, site layout and circulation topology, adjacency, relative dimensions, building footprints and heights, park and street design, major tree anchors, and the identity of every designed element.',
-        'Re-render the entire frame cohesively in the selected medium, including the proposal and surrounding city context; replace raw real-time CG and Google photogrammetry artifacts with a deliberate finished presentation.',
-      ]
-    : [
-        'PRESENTATION MODE: SCENE (camera-preserving full-frame re-render).',
-        'The captured camera, perspective, framing, crop, horizon and aspect ratio are locked.',
-        'The compiled scene is binding for macro design: preserve object inventory, silhouettes, footprints, heights, roof forms, park and street topology, relative dimensions, occlusion order, and major tree anchors.',
-        'Visibly re-render the entire frame as one cohesive finished image, including both the designed site and its surrounding city context. Replace raw real-time CG and Google photogrammetry artifacts with convincing materials, foliage, light, atmosphere and detail in the selected medium.',
-      ];
+  const fidelityInstruction = fidelityPolicy === 'precise'
+    ? 'PRECISE FIDELITY: retain surveyed silhouettes, rooflines, dimensions, camera and context structure; improve only finish, material realism, lighting and atmosphere.'
+    : fidelityPolicy === 'expressive'
+      ? 'EXPRESSIVE FIDELITY: artistic edge and projection interpretation is permitted, but the exact authored building, park, street and protected-feature inventory and topology remain binding.'
+      : 'BALANCED FIDELITY: improve facade, roof, landscape and public-realm presentation with modest edge variation while preserving every authored building, park, street, intersection and protected feature.';
   return [
-    `STYLE: ${treatment}`,
-    ...presentationInstructions,
-    'The compiled 3D buildings, parks, streets, paths, residual landscape and placed trees are authoritative design input, not loose inspiration.',
-    'If the STYLE text mentions colored polygon fills, apply that instruction to unfinished real-time 3D surfaces; do not invent or retain polygon overlays.',
-    'QUALITY BAR: Produce a presentation-grade architectural visualization, not a textured viewport. Fully resolve facade depth, glazing, roofs, building-to-ground contact, continuous terrain to the parcel edge, curbs, paving, road markings, planting beds, natural tree canopies, and public-realm furniture. Add only plausible people and vehicles that clarify scale.',
-    'Use coherent light direction, contact shadows, reflections and atmospheric depth wherever the selected medium supports them. Remove labels, selection outlines, white or grey parcel voids, ground seams, floating elements, repeated procedural artifacts, and blurry photogrammetry failure geometry.',
-    'This must be a visible generative re-render of the complete image, not a color grade, texture overlay, source-pixel preservation pass, or proposal-only local edit.',
+    `DIRECT 3D STYLE ID: ${DIRECT_3D_ALLOWED_STYLES.has(style) ? style : 'photorealistic'}.`,
+    `PRESENTATION MODE: ${presentationMode.toUpperCase()}.`,
+    fidelityInstruction,
+    'The server-supplied semantic, instance and structural guides are authoritative. Do not add, remove, split or merge permanent buildings or major site features.',
+    'Outside the parcel, preserve the existing building, road, water and open-space inventory. Changes to material, light, weather and atmospheric finish are allowed.',
+    'Allowed additions are limited to non-permanent scale entourage such as people and vehicles unless the instance inventory explicitly identifies another authored feature.',
     visibleClassSummary(capture.classCoverage),
     custom ? `ADDITIONAL ART DIRECTION: ${custom}` : '',
   ].filter(Boolean).join('\n');
@@ -237,6 +300,7 @@ export function useDirect3DRender() {
     capture: Direct3DCaptureBundle,
     options: {
       style: string;
+      fidelityPolicy?: Direct3DFidelityPolicy;
       customPrompt?: string;
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
@@ -252,13 +316,22 @@ export function useDirect3DRender() {
     if (!options.community3DClaims.length) {
       throw new Error('Direct 3D requires current per-zone scene fingerprints.');
     }
-    const prompt = buildDirect3DVisualPrompt(options.style, options.customPrompt, capture);
+    const fidelityPolicy = options.fidelityPolicy
+      ?? resolveDirect3DFidelityPolicy(options.style);
+    const prompt = buildDirect3DVisualPrompt(
+      options.style,
+      options.customPrompt,
+      capture,
+      fidelityPolicy,
+    );
     const presentationMode = resolveDirect3DPresentationMode(options.style);
     const response = await rendersApi.generateDirect3D({
       beauty_image_base64: capture.beautyImageBase64,
       proposal_mask_base64: capture.proposalMaskBase64,
       object_id_image_base64: capture.classIdImageBase64,
       object_id_manifest: { ...capture.classIdManifest },
+      instance_id_image_base64: capture.instanceIdImageBase64,
+      instance_id_manifest: { ...capture.instanceIdManifest },
       capture: {
         width: capture.width,
         height: capture.height,
@@ -266,6 +339,7 @@ export function useDirect3DRender() {
       },
       prompt,
       style: options.style,
+      fidelity_policy: fidelityPolicy,
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
@@ -282,6 +356,10 @@ export function useDirect3DRender() {
       diagnostics: response.diagnostics,
       captureFingerprint: response.capture_fingerprint,
       outputFingerprint: response.output_fingerprint,
+      outcome: response.outcome,
+      warnings: [...response.warnings],
+      sourceImageUrl: capture.beautyImageBase64,
+      fidelityPolicy,
     };
   }, []);
 

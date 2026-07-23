@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import base64
 import logging
+import math
 from datetime import datetime, timezone
 
 import boto3
@@ -40,6 +41,7 @@ from app.services.public_realm_lego import (
     PUBLIC_REALM_RECIPE_PROPERTY,
     PublicRealmPlanningError,
     plan_public_realm_zone_recipe,
+    public_realm_recipe_identity,
 )
 from app.services.render_audit_images import put_image_with_thumbnail
 from app.services.residual_landscape import (
@@ -88,7 +90,7 @@ def _validate_direct_3d_project_zones(
     req: Direct3DRenderRequest,
     zones: list[SiteZone],
     available_buildings: dict[str, Building],
-) -> None:
+) -> list[dict[str, object]]:
     """Validate a paid capture against the locked, server-current parcel state."""
 
     boundaries = [zone for zone in zones if zone.zone_type == "site_boundary"]
@@ -263,6 +265,12 @@ def _validate_direct_3d_project_zones(
             f"{'s are' if len(missing_buildings) != 1 else ' is'} no longer available. "
             "Rebuild Community 3D before rendering."
         )
+
+    server_inventory = _bind_instance_manifest_to_server_zones(
+        req,
+        physical_zones,
+        zones,
+    )
     if len(boundaries) > 1:
         raise _direct_state_conflict(
             "Direct 3D requires one authoritative site boundary. Resolve duplicate "
@@ -279,7 +287,7 @@ def _validate_direct_3d_project_zones(
                 "The compiled site boundary changed after capture. Refresh and rebuild "
                 "Community 3D before rendering."
             )
-        return
+        return server_inventory
 
     boundary = boundaries[0]
     stored = (boundary.properties or {}).get("community_3d_landscape")
@@ -326,6 +334,736 @@ def _validate_direct_3d_project_zones(
             "The parcel changed after capture. Refresh and rebuild Community 3D before "
             "spending on a Direct render."
         )
+    return server_inventory
+
+
+def _fnv1a32(value: str) -> int:
+    """Match the browser's ``Math.imul`` FNV-1a identity for ASCII zone IDs."""
+
+    value_hash = 0x811C9DC5
+    for character in value:
+        value_hash ^= ord(character)
+        value_hash = (value_hash * 0x01000193) & 0xFFFFFFFF
+    return value_hash
+
+
+def _canonical_junction_instance_id(source_zone_ids: list[str]) -> str:
+    normalized = sorted({str(value).strip() for value in source_zone_ids if str(value).strip()})
+    source_hash = _fnv1a32(":".join(normalized))
+    return f"junction:zones-{source_hash:08x}:street"
+
+
+def _valid_centerline_points(value: object) -> list[tuple[float, float]] | None:
+    if not isinstance(value, list) or len(value) < 2:
+        return None
+    points: list[tuple[float, float]] = []
+    for candidate in value:
+        if not isinstance(candidate, (list, tuple)) or len(candidate) < 2:
+            return None
+        try:
+            longitude = float(candidate[0])
+            latitude = float(candidate[1])
+        except (TypeError, ValueError):
+            return None
+        if (
+            not math.isfinite(longitude)
+            or not math.isfinite(latitude)
+            or abs(longitude) > 180
+            or abs(latitude) > 90
+        ):
+            return None
+        point = (longitude, latitude)
+        if points and all(abs(a - b) < 1e-12 for a, b in zip(points[-1], point)):
+            continue
+        points.append(point)
+    return points if len(points) >= 2 else None
+
+
+def _street_zone_centerline(zone: SiteZone) -> list[tuple[float, float]] | None:
+    """Read the persisted centerline, falling back to the authored geometry."""
+
+    persisted = _valid_centerline_points((zone.properties or {}).get("plan_centerline"))
+    if persisted is not None:
+        return persisted
+    try:
+        geometry = _direct_source_geometry(zone)
+    except ValueError:
+        return None
+    if geometry.geom_type == "LineString":
+        return _valid_centerline_points([list(point) for point in geometry.coords])
+    if geometry.geom_type == "MultiLineString":
+        lines = list(geometry.geoms)
+        if not lines:
+            return None
+        longest = max(lines, key=lambda line: line.length)
+        return _valid_centerline_points([list(point) for point in longest.coords])
+    if geometry.geom_type == "MultiPolygon":
+        polygons = list(geometry.geoms)
+        if not polygons:
+            return None
+        geometry = max(polygons, key=lambda polygon: polygon.area)
+    if geometry.geom_type != "Polygon":
+        return None
+    # GeoJSON ring start/orientation is not a stable signal after PostGIS has
+    # normalized a polygon. Recover the buffered street's dominant axis from
+    # its minimum rotated rectangle instead of trusting vertex-pair order.
+    rectangle = list(geometry.minimum_rotated_rectangle.exterior.coords)
+    if len(rectangle) >= 4:
+        latitude = float(geometry.centroid.y)
+        meters_per_longitude = max(1.0, 111_320 * math.cos(math.radians(latitude)))
+        longest = max(
+            zip(rectangle, rectangle[1:]),
+            key=lambda segment: math.hypot(
+                (segment[1][0] - segment[0][0]) * meters_per_longitude,
+                (segment[1][1] - segment[0][1]) * 111_320,
+            ),
+        )
+        delta_longitude = float(longest[1][0] - longest[0][0])
+        delta_latitude = float(longest[1][1] - longest[0][1])
+        center_longitude = float(geometry.centroid.x)
+        center_latitude = latitude
+        rectangle_centerline = [
+            [
+                center_longitude - delta_longitude / 2,
+                center_latitude - delta_latitude / 2,
+            ],
+            [
+                center_longitude + delta_longitude / 2,
+                center_latitude + delta_latitude / 2,
+            ],
+        ]
+        recovered = _valid_centerline_points(rectangle_centerline)
+        if recovered is not None:
+            return recovered
+    ring = [(float(x), float(y)) for x, y, *_rest in geometry.exterior.coords]
+    if (
+        len(ring) > 2
+        and abs(ring[0][0] - ring[-1][0]) < 1e-10
+        and abs(ring[0][1] - ring[-1][1]) < 1e-10
+    ):
+        ring = ring[:-1]
+    half = len(ring) // 2
+    if half < 2:
+        return _valid_centerline_points([list(point) for point in ring])
+    centerline = [
+        (
+            (ring[index][0] + ring[len(ring) - 1 - index][0]) / 2,
+            (ring[index][1] + ring[len(ring) - 1 - index][1]) / 2,
+        )
+        for index in range(half)
+    ]
+    return _valid_centerline_points([list(point) for point in centerline])
+
+
+def _effective_street_width(zone: SiteZone) -> float:
+    properties = zone.properties or {}
+    try:
+        width = float(properties.get("width", 10))
+    except (TypeError, ValueError):
+        width = 10
+    if not math.isfinite(width) or width <= 0:
+        width = 10
+    try:
+        lanes = max(0.0, float(properties.get("lane_count", 2)))
+    except (TypeError, ValueError):
+        lanes = 2
+    if not math.isfinite(lanes):
+        lanes = 2
+    lego = properties.get("public_realm_lego")
+    lego = lego if isinstance(lego, dict) else {}
+    semantic = " ".join(
+        str(value or "").lower().replace("-", "_")
+        for value in (
+            properties.get("street_role"),
+            properties.get("road_archetype_id"),
+            lego.get("archetype_id"),
+        )
+    )
+    if lanes == 0 or any(
+        token in semantic
+        for token in ("trail", "path", "cycleway", "multi_use", "laneway", "alley")
+    ):
+        return width
+    return max(width, lanes * 3.5)
+
+
+def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
+    """Mirror the browser's executable street-axis eligibility, fail closed."""
+
+    properties = zone.properties or {}
+    raw_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
+    if not isinstance(raw_recipe, dict):
+        return False
+    identity = public_realm_recipe_identity(raw_recipe)
+    if identity is None:
+        return False
+    recipe = identity["recipe"]
+    if not isinstance(recipe, dict):
+        return False
+    target = recipe.get("target")
+    if not isinstance(target, dict):
+        return False
+    if (
+        recipe.get("schema_version") != 1
+        or recipe.get("family_version") != 1
+        or recipe.get("kind") != "street"
+        or recipe.get("generator") != "street_section"
+        or target.get("target_type") != "street_segment"
+        or recipe.get("family_id") not in {
+            "street_local_public_realm",
+            "street_complete_main_18m",
+            "street_complete_main_22m",
+        }
+    ):
+        return False
+    recipe_archetype_id = str(recipe.get("archetype_id") or "").strip()
+    recipe_variant_id = str(recipe.get("variant_id") or "").strip()
+    persisted_archetype_id = str(properties.get("road_archetype_id") or "").strip()
+    persisted_variant_id = str(properties.get("road_selected_variant_id") or "").strip()
+    if persisted_archetype_id and persisted_archetype_id != recipe_archetype_id:
+        return False
+    if persisted_variant_id and persisted_variant_id != recipe_variant_id:
+        return False
+    semantic = " ".join(
+        str(value or "").lower().replace("-", "_")
+        for value in (
+            properties.get("street_role"),
+            properties.get("road_archetype_id"),
+            recipe.get("archetype_id"),
+            recipe.get("family_id"),
+        )
+    )
+    return _effective_street_width(zone) >= 6 and not any(
+        token in semantic
+        for token in ("trail", "path", "laneway", "alley", "roundabout")
+    )
+
+
+def _angle_distance(first: float, second: float) -> float:
+    delta = abs((first - second) % (math.pi * 2))
+    return min(delta, math.pi * 2 - delta)
+
+
+def _undirected_angle(value: float) -> float:
+    normalized = value % (math.pi * 2)
+    return normalized - math.pi if normalized >= math.pi else normalized
+
+
+def _undirected_angle_distance(first: float, second: float) -> float:
+    delta = abs(_undirected_angle(first) - _undirected_angle(second))
+    return min(delta, math.pi - delta)
+
+
+def _closest_point_on_segment(
+    point: tuple[float, float],
+    start: tuple[float, float],
+    end: tuple[float, float],
+) -> tuple[float, float, float, float]:
+    dx = end[0] - start[0]
+    dy = end[1] - start[1]
+    length_squared = dx * dx + dy * dy
+    interpolation = (
+        max(
+            0.0,
+            min(
+                1.0,
+                ((point[0] - start[0]) * dx + (point[1] - start[1]) * dy)
+                / length_squared,
+            ),
+        )
+        if length_squared > 0
+        else 0.0
+    )
+    x = start[0] + dx * interpolation
+    y = start[1] + dy * interpolation
+    return x, y, interpolation, math.hypot(point[0] - x, point[1] - y)
+
+
+def _segment_intersection(
+    first_start: tuple[float, float],
+    first_end: tuple[float, float],
+    second_start: tuple[float, float],
+    second_end: tuple[float, float],
+) -> tuple[float, float] | None:
+    first_dx = first_end[0] - first_start[0]
+    first_dy = first_end[1] - first_start[1]
+    second_dx = second_end[0] - second_start[0]
+    second_dy = second_end[1] - second_start[1]
+    denominator = first_dx * second_dy - first_dy * second_dx
+    if abs(denominator) < 1e-7:
+        return None
+    offset_x = second_start[0] - first_start[0]
+    offset_y = second_start[1] - first_start[1]
+    first_t = (offset_x * second_dy - offset_y * second_dx) / denominator
+    second_t = (offset_x * first_dy - offset_y * first_dx) / denominator
+    if (
+        first_t < -1e-6
+        or first_t > 1 + 1e-6
+        or second_t < -1e-6
+        or second_t > 1 + 1e-6
+    ):
+        return None
+    return (
+        first_start[0] + first_dx * first_t,
+        first_start[1] + first_dy * first_t,
+    )
+
+
+def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool:
+    """Independently prove the claimed street sources form one four-arm node."""
+
+    if len(street_zones) < 2:
+        return False
+    geographic_axes: list[dict[str, object]] = []
+    for zone in street_zones:
+        centerline = _street_zone_centerline(zone)
+        width = _effective_street_width(zone)
+        if (
+            centerline is None
+            or len(centerline) > 512
+            or not _street_supports_v1_four_way_junction(zone)
+        ):
+            return False
+        geographic_axes.append({
+            "zone_id": str(zone.id),
+            "width": width,
+            "points": centerline,
+        })
+    all_points = [
+        point
+        for axis in geographic_axes
+        for point in axis["points"]  # type: ignore[union-attr]
+    ]
+    origin_longitude = sum(point[0] for point in all_points) / len(all_points)
+    origin_latitude = sum(point[1] for point in all_points) / len(all_points)
+    meters_per_longitude = max(
+        1.0,
+        111_320 * math.cos(math.radians(origin_latitude)),
+    )
+    axes: list[dict[str, object]] = []
+    for geographic_axis in geographic_axes:
+        axes.append({
+            **geographic_axis,
+            "points": [
+                (
+                    (point[0] - origin_longitude) * meters_per_longitude,
+                    (point[1] - origin_latitude) * 111_320,
+                )
+                for point in geographic_axis["points"]  # type: ignore[union-attr]
+            ],
+        })
+
+    candidates: list[dict[str, object]] = []
+    for first_index, first in enumerate(axes):
+        first_points = first["points"]
+        first_width = float(first["width"])
+        for second in axes[first_index + 1:]:
+            second_points = second["points"]
+            second_width = float(second["width"])
+            tolerance = max(first_width, second_width) / 2 + 2
+            for a in range(len(first_points) - 1):  # type: ignore[arg-type]
+                first_start = first_points[a]  # type: ignore[index]
+                first_end = first_points[a + 1]  # type: ignore[index]
+                first_bearing = math.atan2(
+                    first_end[1] - first_start[1],
+                    first_end[0] - first_start[0],
+                )
+                for b in range(len(second_points) - 1):  # type: ignore[arg-type]
+                    second_start = second_points[b]  # type: ignore[index]
+                    second_end = second_points[b + 1]  # type: ignore[index]
+                    second_bearing = math.atan2(
+                        second_end[1] - second_start[1],
+                        second_end[0] - second_start[0],
+                    )
+                    crossing_angle = _undirected_angle_distance(
+                        first_bearing,
+                        second_bearing,
+                    )
+                    if crossing_angle < math.pi / 6 or crossing_angle > math.pi * 5 / 6:
+                        continue
+                    intersection = _segment_intersection(
+                        first_start,
+                        first_end,
+                        second_start,
+                        second_end,
+                    )
+                    if intersection is not None:
+                        candidates.append({
+                            "x": intersection[0],
+                            "y": intersection[1],
+                            "zone_ids": {
+                                str(first["zone_id"]),
+                                str(second["zone_id"]),
+                            },
+                        })
+                        continue
+                    for endpoint in (first_start, first_end):
+                        projected = _closest_point_on_segment(
+                            endpoint,
+                            second_start,
+                            second_end,
+                        )
+                        if projected[3] <= tolerance:
+                            candidates.append({
+                                "x": projected[0],
+                                "y": projected[1],
+                                "zone_ids": {
+                                    str(first["zone_id"]),
+                                    str(second["zone_id"]),
+                                },
+                            })
+                    for endpoint in (second_start, second_end):
+                        projected = _closest_point_on_segment(
+                            endpoint,
+                            first_start,
+                            first_end,
+                        )
+                        if projected[3] <= tolerance:
+                            candidates.append({
+                                "x": projected[0],
+                                "y": projected[1],
+                                "zone_ids": {
+                                    str(first["zone_id"]),
+                                    str(second["zone_id"]),
+                                },
+                            })
+
+    clusters: list[dict[str, object]] = []
+    for candidate in candidates:
+        cluster = next(
+            (
+                item
+                for item in clusters
+                if math.hypot(
+                    float(item["x"]) - float(candidate["x"]),
+                    float(item["y"]) - float(candidate["y"]),
+                ) <= 4
+            ),
+            None,
+        )
+        if cluster is None:
+            clusters.append({
+                "x": candidate["x"],
+                "y": candidate["y"],
+                "count": 1,
+                "zone_ids": set(candidate["zone_ids"]),
+            })
+        else:
+            count = int(cluster["count"])
+            cluster["x"] = (
+                float(cluster["x"]) * count + float(candidate["x"])
+            ) / (count + 1)
+            cluster["y"] = (
+                float(cluster["y"]) * count + float(candidate["y"])
+            ) / (count + 1)
+            cluster["count"] = count + 1
+            cluster_zone_ids = cluster["zone_ids"]
+            if isinstance(cluster_zone_ids, set):
+                cluster_zone_ids.update(candidate["zone_ids"])
+
+    expected_zone_ids = {str(zone.id) for zone in street_zones}
+    for cluster in clusters:
+        arms: list[dict[str, object]] = []
+        contributing_zone_ids: set[str] = set()
+        cluster_zone_ids = cluster["zone_ids"]
+        cluster_connection_tolerance = max(
+            2.0,
+            *(
+                float(axis["width"]) / 2 + 2
+                for axis in axes
+                if isinstance(cluster_zone_ids, set)
+                and str(axis["zone_id"]) in cluster_zone_ids
+            ),
+        )
+        for axis in axes:
+            points = axis["points"]
+            best: tuple[float, float, float, float, int] | None = None
+            for index in range(len(points) - 1):  # type: ignore[arg-type]
+                closest = _closest_point_on_segment(
+                    (float(cluster["x"]), float(cluster["y"])),
+                    points[index],  # type: ignore[index]
+                    points[index + 1],  # type: ignore[index]
+                )
+                candidate_best = (*closest, index)
+                if best is None or candidate_best[3] < best[3]:
+                    best = candidate_best
+            if best is None or best[3] > max(
+                float(axis["width"]) / 2 + 2,
+                cluster_connection_tolerance,
+            ):
+                continue
+            contributing_zone_ids.add(str(axis["zone_id"]))
+            segment_index = best[4]
+            start = points[segment_index]  # type: ignore[index]
+            end = points[segment_index + 1]  # type: ignore[index]
+            bearing = math.atan2(end[1] - start[1], end[0] - start[0])
+            at_first_end = segment_index == 0 and best[2] < 0.08
+            at_last_end = segment_index == len(points) - 2 and best[2] > 0.92  # type: ignore[arg-type]
+            if not at_last_end:
+                arms.append({"bearing": bearing, "width": float(axis["width"])})
+            if not at_first_end:
+                arms.append({
+                    "bearing": (bearing + math.pi) % (math.pi * 2),
+                    "width": float(axis["width"]),
+                })
+        if contributing_zone_ids != expected_zone_ids:
+            continue
+        grouped_arms: list[dict[str, float]] = []
+        for arm in arms:
+            matching = next(
+                (
+                    item
+                    for item in grouped_arms
+                    if _angle_distance(item["bearing"], float(arm["bearing"])) < math.pi / 9
+                ),
+                None,
+            )
+            if matching is None:
+                grouped_arms.append({
+                    "bearing": float(arm["bearing"]),
+                    "width": float(arm["width"]),
+                })
+            else:
+                matching["width"] = max(matching["width"], float(arm["width"]))
+        if len(grouped_arms) != 4:
+            continue
+        orientations: list[float] = []
+        for arm in grouped_arms:
+            orientation = _undirected_angle(arm["bearing"])
+            if not any(
+                _undirected_angle_distance(existing, orientation) < math.pi / 12
+                for existing in orientations
+            ):
+                orientations.append(orientation)
+        if len(orientations) != 2:
+            continue
+        separation = _undirected_angle_distance(orientations[0], orientations[1])
+        if math.pi / 6 <= separation <= math.pi * 5 / 6:
+            return True
+    return False
+
+
+def _bind_instance_manifest_to_server_zones(
+    req: Direct3DRenderRequest,
+    physical_zones: list[SiteZone],
+    all_zones: list[SiteZone],
+) -> list[dict[str, object]]:
+    """Bind primary and supplemental screen-space instances to server roles."""
+
+    expected: dict[str, dict[str, str | None]] = {}
+    for zone in physical_zones:
+        semantic_class = community_3d_kind_for_source(
+            zone.zone_type,
+            zone.properties,
+        )
+        if semantic_class not in {"building", "park", "street"}:
+            # Unsupported kinds were rejected by the caller above.
+            continue
+        expected[str(zone.id)] = {
+            "semantic_class": semantic_class,
+            "building_id": str(zone.building_id) if zone.building_id else None,
+        }
+    all_zones_by_id = {str(zone.id): zone for zone in all_zones}
+    all_zone_ids = set(all_zones_by_id)
+    allowed_supplemental_surfaces: set[tuple[str, str]] = set()
+    for zone_id, zone in all_zones_by_id.items():
+        source_kind = community_3d_kind_for_source(
+            zone.zone_type,
+            zone.properties,
+        )
+        # The frontend ground layer labels park/street fills with their primary
+        # role. Building pads and non-program zones (principally the site
+        # boundary) are the only server-derived ground supplements.
+        if source_kind not in {"park", "street"}:
+            allowed_supplemental_surfaces.add((zone_id, "ground"))
+
+        stored_landscape = (zone.properties or {}).get("community_3d_landscape")
+        if (
+            zone.zone_type == "site_boundary"
+            and isinstance(stored_landscape, dict)
+            and stored_landscape.get("state") == "compiled"
+            and str(stored_landscape.get("boundary_id")) == zone_id
+            and isinstance(stored_landscape.get("placements"), list)
+            and bool(stored_landscape["placements"])
+        ):
+            allowed_supplemental_surfaces.add((zone_id, "landscape"))
+
+    if not req.instance_id_manifest:
+        # Legacy source_anchored requests remain compatible, while their
+        # provider prompt still receives a server-owned inventory.
+        return [
+            {
+                "instance_id": f"zone:{zone_id}:{item['semantic_class']}",
+                "semantic_class": item["semantic_class"],
+                "zone_id": zone_id,
+                "building_id": item["building_id"],
+                "source_zone_ids": [],
+            }
+            for zone_id, item in sorted(expected.items())
+        ]
+
+    seen_primary_zone_ids: set[str] = set()
+    seen_instance_ids: set[str] = set()
+    server_inventory: list[dict[str, object]] = []
+    for _color, descriptor in sorted(req.instance_id_manifest.items()):
+        zone_id = str(descriptor.zone_id) if descriptor.zone_id else None
+        source_zone_ids = sorted({str(value) for value in descriptor.source_zone_ids})
+        if descriptor.instance_id in seen_instance_ids:
+            raise _direct_state_conflict(
+                "The instance inventory repeats a screen-space identity. Refresh "
+                "the scene before rendering."
+            )
+        seen_instance_ids.add(descriptor.instance_id)
+        unknown_source_ids = sorted(set(source_zone_ids) - all_zone_ids)
+        if unknown_source_ids:
+            raise _direct_state_conflict(
+                "The instance inventory references source zones that are no longer "
+                "part of this project. Refresh the scene before rendering."
+            )
+        for source_zone_id in source_zone_ids:
+            source_expected = expected.get(source_zone_id)
+            if (
+                descriptor.semantic_class in {"building", "park"}
+                and (
+                    source_expected is None
+                    or source_expected["semantic_class"]
+                    != descriptor.semantic_class
+                )
+            ):
+                raise _direct_state_conflict(
+                    "The instance inventory source-zone role no longer matches the "
+                    "compiled project. Refresh the scene before rendering."
+                )
+            if (
+                descriptor.semantic_class == "street"
+                and (
+                    source_expected is None
+                    or source_expected["semantic_class"] != "street"
+                )
+            ):
+                raise _direct_state_conflict(
+                    "Street topology instances may reference only compiled street "
+                    "zones. Refresh the scene before rendering."
+                )
+
+        if zone_id is None:
+            is_topology_street = (
+                descriptor.semantic_class == "street"
+                and 2 <= len(source_zone_ids) <= 4
+            )
+            if (
+                descriptor.semantic_class in {"building", "park", "street"}
+                and not is_topology_street
+            ):
+                raise _direct_state_conflict(
+                    "Every building, park, and street instance must identify its "
+                    "server-authored zone, except validated street junctions. "
+                    "Refresh the scene before rendering."
+                )
+            if descriptor.semantic_class in {"ground", "landscape"}:
+                raise _direct_state_conflict(
+                    "Supplemental ground and landscape instances must identify their "
+                    "server-authored zone. Refresh the scene before rendering."
+                )
+            if is_topology_street:
+                canonical_junction_id = _canonical_junction_instance_id(source_zone_ids)
+                if descriptor.instance_id != canonical_junction_id:
+                    raise _direct_state_conflict(
+                        "The street-junction identity does not match its persisted "
+                        "street sources. Refresh the scene before rendering."
+                    )
+                source_streets = [all_zones_by_id[source_id] for source_id in source_zone_ids]
+                if not _street_sources_form_four_arm_junction(source_streets):
+                    raise _direct_state_conflict(
+                        "The claimed street sources do not form a persisted four-arm "
+                        "junction. Refresh the scene before rendering."
+                    )
+        else:
+            if zone_id not in all_zone_ids:
+                raise _direct_state_conflict(
+                    "The instance inventory references a zone that is no longer "
+                    "part of this project. Refresh the scene before rendering."
+                )
+            expected_item = expected.get(zone_id)
+            is_supplemental_surface = descriptor.semantic_class in {
+                "ground",
+                "landscape",
+            }
+            if source_zone_ids:
+                raise _direct_state_conflict(
+                    "Zone-bound instances cannot claim additional source zones. "
+                    "Refresh the scene before rendering."
+                )
+            canonical_instance_id = f"zone:{zone_id}:{descriptor.semantic_class}"
+            if descriptor.instance_id != canonical_instance_id:
+                raise _direct_state_conflict(
+                    "The instance identity does not match its server-authored zone "
+                    "and semantic role. Refresh the scene before rendering."
+                )
+            if (
+                is_supplemental_surface
+                and (zone_id, descriptor.semantic_class)
+                not in allowed_supplemental_surfaces
+            ):
+                raise _direct_state_conflict(
+                    "The supplemental surface is not present in the server-compiled "
+                    "scene. Refresh the scene before rendering."
+                )
+            if not is_supplemental_surface:
+                if expected_item is None:
+                    raise _direct_state_conflict(
+                        "Only supplemental ground or landscape may bind to the site "
+                        "boundary. Refresh the scene before rendering."
+                    )
+                if zone_id in seen_primary_zone_ids:
+                    raise _direct_state_conflict(
+                        "The instance inventory represents one primary authored zone "
+                        "more than once. Refresh the scene before rendering."
+                    )
+                if descriptor.semantic_class != expected_item["semantic_class"]:
+                    raise _direct_state_conflict(
+                        "The instance inventory relabels a server-authored zone. Refresh "
+                        "the scene before rendering."
+                    )
+                seen_primary_zone_ids.add(zone_id)
+            expected_building_id = (
+                expected_item["building_id"] if expected_item is not None else None
+            )
+            descriptor_building_id = (
+                str(descriptor.building_id) if descriptor.building_id else None
+            )
+            primary_building = (
+                not is_supplemental_surface
+                and expected_item is not None
+                and expected_item["semantic_class"] == "building"
+            )
+            if (
+                (primary_building and descriptor_building_id != expected_building_id)
+                or (
+                    descriptor_building_id is not None
+                    and descriptor_building_id != expected_building_id
+                )
+            ):
+                raise _direct_state_conflict(
+                    "The instance inventory building identity no longer matches the "
+                    "compiled model. Refresh the scene before rendering."
+                )
+        server_inventory.append({
+            "instance_id": descriptor.instance_id,
+            "semantic_class": descriptor.semantic_class,
+            "zone_id": zone_id,
+            "building_id": (
+                str(descriptor.building_id) if descriptor.building_id else None
+            ),
+            "source_zone_ids": source_zone_ids,
+        })
+
+    if seen_primary_zone_ids != set(expected):
+        raise _direct_state_conflict(
+            "The exact instance inventory no longer matches every compiled building, "
+            "park, and street. Refresh the scene before rendering."
+        )
+    return sorted(server_inventory, key=lambda item: str(item["instance_id"]))
 
 
 async def _reserve_direct_render(
@@ -474,7 +1212,7 @@ async def generate_direct_3d_render(
         select(Building).where(Building.project_id == req.project_id)
     )
     current_buildings = list(buildings_result.scalars().all())
-    _validate_direct_3d_project_zones(
+    server_inventory = _validate_direct_3d_project_zones(
         req,
         list(zones_result.scalars().all()),
         {str(building.id): building for building in current_buildings},
@@ -496,6 +1234,7 @@ async def generate_direct_3d_render(
         capture.normalized_beauty.width,
         capture.normalized_beauty.height,
         object_id_attached=capture.normalized_object_id is not None,
+        instance_id_attached=capture.normalized_instance_id is not None,
     )
 
     reservation = await _reserve_direct_render(
@@ -509,7 +1248,11 @@ async def generate_direct_3d_render(
         project_id=req.project_id,
     )
     try:
-        result = await Direct3DRenderService(settings.openai_api_key).generate(req, capture)
+        result = await Direct3DRenderService(settings.openai_api_key).generate(
+            req,
+            capture,
+            server_inventory=server_inventory,
+        )
     except Direct3DProviderError as exc:
         logger.warning("Direct 3D provider failure: %s", exc)
         if not exc.refund_eligible:
@@ -590,9 +1333,9 @@ async def generate_direct_3d_render(
             input_b64=result.audit_input_base64,
             output_b64=result.image_base64,
             status_label=(
-                f"success provider-first {processing_mode}"
+                f"{result.outcome} provider-first {processing_mode}"
                 if provider_first
-                else "success source-anchored"
+                else f"{result.outcome} source-anchored"
             ),
             detail=(
                 f"[mode={processing_mode} style={req.style}] {req.prompt}"
@@ -603,6 +1346,8 @@ async def generate_direct_3d_render(
 
     return Direct3DRenderResponse(
         image_base64=result.image_base64,
+        outcome=result.outcome,
+        warnings=list(result.warnings),
         capture_fingerprint=result.capture_fingerprint,
         output_fingerprint=result.output_fingerprint,
         diagnostics=result.diagnostics,

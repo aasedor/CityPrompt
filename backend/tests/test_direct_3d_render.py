@@ -1,5 +1,6 @@
 import base64
 import io
+import math
 import struct
 import uuid
 import zlib
@@ -29,6 +30,7 @@ from app.services.direct_3d_render import (
     Direct3DServiceResult,
     Direct3DValidationError,
     assess_macro_design_fidelity,
+    assess_unsupported_coarse_structure,
     assess_reproject_output_sanity,
     assess_scene_visual_change,
     assess_structural_edge_fidelity,
@@ -221,10 +223,13 @@ def _request(
     beauty: Image.Image | None = None,
     mask: Image.Image | None = None,
     object_id: Image.Image | None = None,
+    instance_id: Image.Image | None = None,
     data_urls: bool = False,
     presentation_mode: str = "source_anchored",
     style: str = "photorealistic",
     auto_presentation_object_id: bool = True,
+    auto_presentation_instance_id: bool = True,
+    fidelity_policy: str = "precise",
 ) -> Direct3DRenderRequest:
     beauty = beauty or _capture_images()[0]
     mask = mask or _capture_images(beauty.size)[1]
@@ -236,6 +241,14 @@ def _request(
         object_pixels = np.zeros((beauty.height, beauty.width, 3), dtype=np.uint8)
         object_pixels[np.asarray(mask.convert("L")) >= 128] = (255, 0, 0)
         object_id = Image.fromarray(object_pixels, mode="RGB")
+    if (
+        instance_id is None
+        and auto_presentation_instance_id
+        and presentation_mode in {"scene", "reproject"}
+    ):
+        instance_pixels = np.zeros((beauty.height, beauty.width, 3), dtype=np.uint8)
+        instance_pixels[np.asarray(mask.convert("L")) >= 128] = (1, 0, 1)
+        instance_id = Image.fromarray(instance_pixels, mode="RGB")
     beauty_b64 = _png_b64(beauty)
     mask_b64 = _png_b64(mask)
     payload = {
@@ -248,6 +261,7 @@ def _request(
         "prompt": "Natural stone, convincing glazing, soft afternoon light.",
         "presentation_mode": presentation_mode,
         "style": style,
+        "fidelity_policy": fidelity_policy,
         "project_id": TEST_PROJECT_ID,
         "community_3d_claims": [{
             "zone_id": TEST_ZONE_ID,
@@ -262,6 +276,22 @@ def _request(
                 f"data:image/png;base64,{object_id_b64}" if data_urls else object_id_b64
             ),
             "object_id_manifest": {"#FF0000": "building"},
+        })
+    if instance_id is not None:
+        instance_id_b64 = _png_b64(instance_id)
+        payload.update({
+            "instance_id_image_base64": (
+                f"data:image/png;base64,{instance_id_b64}"
+                if data_urls
+                else instance_id_b64
+            ),
+            "instance_id_manifest": {
+                "#010001": {
+                    "instance_id": "zone:test-building:building",
+                    "semantic_class": "building",
+                    "zone_id": TEST_ZONE_ID,
+                },
+            },
         })
     return Direct3DRenderRequest(**payload)
 
@@ -343,6 +373,13 @@ def test_presentation_mode_and_style_categories_are_validated_without_breaking_l
             presentation_mode="scene",
             style="documentary",
             auto_presentation_object_id=False,
+        )
+
+    with pytest.raises(ValidationError, match="require instance_id_image_base64"):
+        _request(
+            presentation_mode="scene",
+            style="documentary",
+            auto_presentation_instance_id=False,
         )
     with pytest.raises(ValidationError, match="require object_id_image_base64"):
         _request(
@@ -479,6 +516,447 @@ def _claims_for(zones) -> list[dict]:
             claim["building_id"] = zone.building_id
         claims.append(claim)
     return claims
+
+
+def _supported_street_properties(
+    width: float,
+    centerline: list[list[float]],
+    *,
+    archetype_id: str | None = None,
+) -> dict:
+    if archetype_id is None:
+        archetype_id = (
+            "main_street_complete"
+            if width >= 18
+            else "calgary_local"
+            if width >= 14
+            else "narrow_residential_street"
+        )
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        target=StreetSegmentTarget(row_width_m=width, length_m=100),
+    ))
+    return {
+        "width": width,
+        "lane_count": 2,
+        "road_archetype_id": recipe.archetype_id,
+        "road_selected_variant_id": recipe.variant_id,
+        "plan_centerline": centerline,
+        "public_realm_lego": recipe.model_dump(mode="json"),
+    }
+
+
+def test_instance_inventory_binds_frontend_primary_surface_residual_and_junction_shapes():
+    building_id = uuid.uuid4()
+    building_zone = _zone(uuid.uuid4(), "building", building_id=building_id)
+    park_zone = _zone(uuid.uuid4(), "green_space")
+    street_a = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(
+            10,
+            [[-114.081, 51.04], [-114.079, 51.04]],
+        ),
+    )
+    street_b = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(
+            10,
+            [[-114.08, 51.039], [-114.08, 51.041]],
+        ),
+    )
+    boundary = _zone(uuid.uuid4(), "site_boundary")
+    boundary.properties = {
+        "community_3d_landscape": {
+            "state": "compiled",
+            "boundary_id": str(boundary.id),
+            "placements": [{"id": "tree-0001"}],
+        }
+    }
+    payload = _request(
+        presentation_mode="scene",
+        style="development",
+    ).model_dump()
+    payload["instance_id_manifest"] = {
+        "#010001": {
+            "instance_id": f"zone:{building_zone.id}:building",
+            "semantic_class": "building",
+            "zone_id": building_zone.id,
+            "building_id": building_id,
+        },
+        "#010002": {
+            "instance_id": f"zone:{building_zone.id}:ground",
+            "semantic_class": "ground",
+            "zone_id": building_zone.id,
+            "building_id": building_id,
+        },
+        "#010003": {
+            "instance_id": f"zone:{park_zone.id}:park",
+            "semantic_class": "park",
+            "zone_id": park_zone.id,
+        },
+        "#010004": {
+            "instance_id": f"zone:{street_a.id}:street",
+            "semantic_class": "street",
+            "zone_id": street_a.id,
+        },
+        "#010005": {
+            "instance_id": f"zone:{street_b.id}:street",
+            "semantic_class": "street",
+            "zone_id": street_b.id,
+        },
+        "#010006": {
+            "instance_id": direct_api._canonical_junction_instance_id(
+                [str(street_a.id), str(street_b.id)]
+            ),
+            "semantic_class": "street",
+            "source_zone_ids": [street_a.id, street_b.id],
+        },
+        "#010007": {
+            "instance_id": f"zone:{boundary.id}:landscape",
+            "semantic_class": "landscape",
+            "zone_id": boundary.id,
+        },
+    }
+    request = Direct3DRenderRequest(**payload)
+
+    inventory = direct_api._bind_instance_manifest_to_server_zones(
+        request,
+        [building_zone, park_zone, street_a, street_b],
+        [boundary, building_zone, park_zone, street_a, street_b],
+    )
+
+    assert len(inventory) == 7
+    assert sum(item["semantic_class"] == "building" for item in inventory) == 1
+    assert sum(item["semantic_class"] == "street" for item in inventory) == 3
+    assert any(item["semantic_class"] == "ground" for item in inventory)
+    assert any(item["semantic_class"] == "landscape" for item in inventory)
+
+
+@pytest.mark.parametrize(
+    ("zone_type", "supplemental_role"),
+    [
+        ("green_space", "ground"),
+        ("building", "landscape"),
+        ("site_boundary", "landscape"),
+    ],
+)
+def test_instance_inventory_rejects_server_unsupported_supplemental_surfaces(
+    zone_type,
+    supplemental_role,
+):
+    building_id = uuid.uuid4() if zone_type == "building" else None
+    zone = _zone(uuid.uuid4(), zone_type, building_id=building_id)
+    kind = direct_api.community_3d_kind_for_source(zone.zone_type, zone.properties)
+    payload = _request(presentation_mode="scene", style="development").model_dump()
+    manifest = {}
+    if kind is not None:
+        primary = {
+            "instance_id": f"zone:{zone.id}:{kind}",
+            "semantic_class": kind,
+            "zone_id": zone.id,
+        }
+        if building_id is not None:
+            primary["building_id"] = building_id
+        manifest["#010001"] = primary
+    manifest["#010002"] = {
+        "instance_id": f"zone:{zone.id}:{supplemental_role}",
+        "semantic_class": supplemental_role,
+        "zone_id": zone.id,
+    }
+    payload["instance_id_manifest"] = manifest
+
+    with pytest.raises(HTTPException, match="supplemental surface is not present"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            Direct3DRenderRequest(**payload),
+            [zone] if kind is not None else [],
+            [zone],
+        )
+
+
+def test_instance_inventory_rejects_junctions_sourced_from_non_street_zones():
+    street_zone = _zone(uuid.uuid4(), "street")
+    park_zone = _zone(uuid.uuid4(), "green_space")
+    payload = _request(
+        presentation_mode="scene",
+        style="development",
+    ).model_dump()
+    payload["instance_id_manifest"] = {
+        "#010001": {
+            "instance_id": f"zone:{street_zone.id}:street",
+            "semantic_class": "street",
+            "zone_id": street_zone.id,
+        },
+        "#010002": {
+            "instance_id": f"zone:{park_zone.id}:park",
+            "semantic_class": "park",
+            "zone_id": park_zone.id,
+        },
+        "#010003": {
+            "instance_id": direct_api._canonical_junction_instance_id(
+                [str(street_zone.id), str(park_zone.id)]
+            ),
+            "semantic_class": "street",
+            "source_zone_ids": [street_zone.id, park_zone.id],
+        },
+    }
+    request = Direct3DRenderRequest(**payload)
+
+    with pytest.raises(HTTPException, match="only compiled street zones"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            request,
+            [street_zone, park_zone],
+            [street_zone, park_zone],
+        )
+
+
+@pytest.mark.parametrize(
+    ("descriptor_key", "bad_instance_id"),
+    [
+        ("primary", "zone:forged:building"),
+        ("supplement", "zone:forged:ground"),
+    ],
+)
+def test_instance_inventory_rejects_noncanonical_zone_instance_ids(
+    descriptor_key,
+    bad_instance_id,
+):
+    building_id = uuid.uuid4()
+    building_zone = _zone(uuid.uuid4(), "building", building_id=building_id)
+    descriptors = {
+        "primary": {
+            "instance_id": f"zone:{building_zone.id}:building",
+            "semantic_class": "building",
+            "zone_id": building_zone.id,
+            "building_id": building_id,
+        },
+        "supplement": {
+            "instance_id": f"zone:{building_zone.id}:ground",
+            "semantic_class": "ground",
+            "zone_id": building_zone.id,
+            "building_id": building_id,
+        },
+    }
+    descriptors[descriptor_key]["instance_id"] = bad_instance_id
+    payload = _request(presentation_mode="scene", style="development").model_dump()
+    payload["instance_id_manifest"] = {
+        "#010001": descriptors["primary"],
+        "#010002": descriptors["supplement"],
+    }
+
+    with pytest.raises(HTTPException, match="instance identity does not match"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            Direct3DRenderRequest(**payload),
+            [building_zone],
+            [building_zone],
+        )
+
+
+def _street_junction_request(
+    streets,
+    *,
+    junction_id: str | None = None,
+    source_zone_ids=None,
+):
+    sources = list(source_zone_ids or [street.id for street in streets])
+    payload = _request(presentation_mode="scene", style="development").model_dump()
+    manifest = {
+        f"#{index + 1:06x}": {
+            "instance_id": f"zone:{street.id}:street",
+            "semantic_class": "street",
+            "zone_id": street.id,
+        }
+        for index, street in enumerate(streets)
+    }
+    manifest[f"#{len(streets) + 1:06x}"] = {
+        "instance_id": junction_id or direct_api._canonical_junction_instance_id(
+            [str(source_id) for source_id in sources]
+        ),
+        "semantic_class": "street",
+        "source_zone_ids": sources,
+    }
+    payload["instance_id_manifest"] = manifest
+    return Direct3DRenderRequest(**payload)
+
+
+def _crossing_street_zones():
+    return [
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                10,
+                [[-114.081, 51.04], [-114.079, 51.04]],
+            ),
+        ),
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                10,
+                [[-114.08, 51.039], [-114.08, 51.041]],
+            ),
+        ),
+    ]
+
+
+def test_instance_inventory_rejects_one_source_junction():
+    street = _crossing_street_zones()[0]
+    request = _street_junction_request([street], source_zone_ids=[street.id])
+
+    with pytest.raises(HTTPException, match="except validated street junctions"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            request,
+            [street],
+            [street],
+        )
+
+
+def test_instance_inventory_rejects_fake_junction_identity():
+    streets = _crossing_street_zones()
+    request = _street_junction_request(
+        streets,
+        junction_id="junction:zones-deadbeef:street",
+    )
+
+    with pytest.raises(HTTPException, match="junction identity does not match"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            request,
+            streets,
+            streets,
+        )
+
+
+def test_instance_inventory_rejects_nonintersecting_street_sources():
+    streets = [
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                10,
+                [[-114.081, 51.04], [-114.079, 51.04]],
+            ),
+        ),
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                10,
+                [[-114.081, 51.041], [-114.079, 51.041]],
+            ),
+        ),
+    ]
+    request = _street_junction_request(streets)
+
+    with pytest.raises(HTTPException, match="do not form a persisted four-arm junction"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            request,
+            streets,
+            streets,
+        )
+
+
+def test_street_junction_topology_uses_polygon_centerline_fallback():
+    horizontal = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(
+            10,
+            [[-114.081, 51.04], [-114.079, 51.04]],
+        ),
+    )
+    horizontal.properties.pop("plan_centerline")
+    horizontal.geometry = from_shape(
+        box(-114.081, 51.03995, -114.079, 51.04005),
+        srid=4326,
+    )
+    vertical = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(
+            10,
+            [[-114.08, 51.039], [-114.08, 51.041]],
+        ),
+    )
+    vertical.properties.pop("plan_centerline")
+    vertical.geometry = from_shape(
+        box(-114.08005, 51.039, -114.07995, 51.041),
+        srid=4326,
+    )
+
+    assert direct_api._street_sources_form_four_arm_junction([horizontal, vertical])
+
+
+def test_instance_inventory_accepts_ordered_subtraction_four_way_junction():
+    center_longitude = -114.08
+    center_latitude = 51.04
+    eleven_metres_latitude = 11 / 111_320
+    streets = [
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                22,
+                [[-114.082, center_latitude], [-114.078, center_latitude]],
+            ),
+        ),
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                14,
+                [
+                    [center_longitude, center_latitude + eleven_metres_latitude],
+                    [center_longitude, 51.042],
+                ],
+            ),
+        ),
+        _zone(
+            uuid.uuid4(),
+            "street",
+            properties=_supported_street_properties(
+                14,
+                [
+                    [center_longitude, 51.038],
+                    [center_longitude, center_latitude - eleven_metres_latitude],
+                ],
+            ),
+        ),
+    ]
+    request = _street_junction_request(streets)
+
+    inventory = direct_api._bind_instance_manifest_to_server_zones(
+        request,
+        streets,
+        streets,
+    )
+
+    junction_id = direct_api._canonical_junction_instance_id(
+        [str(street.id) for street in streets]
+    )
+    assert any(item["instance_id"] == junction_id for item in inventory)
+
+
+def test_street_junction_topology_rejects_non_v1_and_ineligible_street_sources():
+    supported_main, unsupported_crossing = _crossing_street_zones()
+    unsupported_crossing.properties.pop("public_realm_lego")
+    assert not direct_api._street_sources_form_four_arm_junction(
+        [supported_main, unsupported_crossing]
+    )
+
+    ineligible_alley = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(
+            6,
+            [[-114.08, 51.039], [-114.08, 51.041]],
+            archetype_id="green_alley",
+        ),
+    )
+    assert not direct_api._street_sources_form_four_arm_junction(
+        [supported_main, ineligible_alley]
+    )
 
 
 def test_paid_project_preflight_requires_matching_current_residual_claim():
@@ -937,6 +1415,35 @@ def test_prepare_rejects_object_id_pixels_outside_proposal():
         prepare_direct_3d_capture(_request(beauty=beauty, mask=mask, object_id=object_id))
 
 
+def test_prepare_rejects_unmanifested_instance_colors():
+    beauty, mask = _capture_images()
+    instance = Image.new("RGB", beauty.size, (0, 0, 0))
+    ImageDraw.Draw(instance).rectangle((128, 128, 384, 384), fill=(2, 0, 2))
+
+    with pytest.raises(Direct3DValidationError, match="absent from instance_id_manifest"):
+        prepare_direct_3d_capture(_request(
+            beauty=beauty,
+            mask=mask,
+            instance_id=instance,
+            presentation_mode="scene",
+            style="development",
+        ))
+
+
+def test_prepare_rejects_instance_semantic_relabeling_against_class_id():
+    request = _request(
+        presentation_mode="scene",
+        style="development",
+    )
+    payload = request.model_dump()
+    descriptor = payload["instance_id_manifest"]["#010001"]
+    descriptor["semantic_class"] = "park"
+    relabeled = Direct3DRenderRequest(**payload)
+
+    with pytest.raises(Direct3DValidationError, match="semantic class conflicts"):
+        prepare_direct_3d_capture(relabeled)
+
+
 def test_presentation_object_id_must_cover_the_proposal():
     beauty, mask = _capture_images()
     partial_object_id = Image.new("RGB", beauty.size, (0, 0, 0))
@@ -1198,6 +1705,86 @@ def test_macro_gate_rejects_dense_stripes_that_game_edge_proximity():
     assert (result.silhouette_edge_recall or 0) >= 0.80
     assert result.candidate_coarse_edge_precision < 0.40
     assert result.passed is False
+
+
+@pytest.mark.parametrize("added_shape", ["slab", "tower", "gable", "stepped"])
+def test_unsupported_structure_rejects_four_coherent_added_buildings_even_when_macro_passes(
+    added_shape,
+):
+    beauty, mask, object_id = _structured_scene()
+    candidate = beauty.copy()
+    draw = ImageDraw.Draw(candidate)
+    if added_shape == "slab":
+        draw.rectangle((7, 7, 43, 42), fill=(205, 190, 166), outline=(25, 28, 32), width=4)
+    elif added_shape == "tower":
+        draw.rectangle((19, 3, 39, 43), fill=(182, 198, 205), outline=(25, 28, 32), width=4)
+    elif added_shape == "gable":
+        draw.polygon(
+            [(6, 43), (6, 19), (24, 4), (44, 19), (44, 43)],
+            fill=(198, 174, 150),
+            outline=(25, 28, 32),
+        )
+        draw.line((6, 19, 24, 4, 44, 19), fill=(25, 28, 32), width=4)
+    else:
+        draw.polygon(
+            [(5, 43), (5, 24), (15, 24), (15, 15), (27, 15), (27, 7), (44, 7), (44, 43)],
+            fill=(192, 183, 164),
+            outline=(25, 28, 32),
+        )
+        draw.line((5, 43, 5, 24, 15, 24, 15, 15, 27, 15, 27, 7, 44, 7, 44, 43), fill=(25, 28, 32), width=4)
+
+    macro = assess_macro_design_fidelity(
+        beauty,
+        candidate,
+        mask,
+        object_id,
+        {"#FF0000": "building"},
+        fidelity_policy="balanced",
+    )
+    unsupported = assess_unsupported_coarse_structure(
+        beauty,
+        candidate,
+        mask,
+    )
+
+    assert macro.passed is True
+    assert unsupported.passed is False
+    assert unsupported.context_component_count >= 1
+    assert unsupported.largest_component_pixels >= 48
+
+
+@pytest.mark.parametrize(
+    ("size", "building_size"),
+    [
+        ((1910, 1150), (50, 30)),
+        ((2048, 1536), (80, 20)),
+    ],
+)
+def test_unsupported_structure_remains_sensitive_to_small_buildings_at_capture_resolution(
+    size,
+    building_size,
+):
+    source = Image.new("RGB", size, (132, 148, 126))
+    proposal_mask = Image.new("L", size, 255)
+    candidate = source.copy()
+    building_width, building_height = building_size
+    left = size[0] // 2 - building_width // 2
+    top = size[1] // 2 - building_height // 2
+    ImageDraw.Draw(candidate).rectangle(
+        (left, top, left + building_width, top + building_height),
+        fill=(208, 190, 162),
+        outline=(18, 22, 27),
+        width=4,
+    )
+
+    unsupported = assess_unsupported_coarse_structure(
+        source,
+        candidate,
+        proposal_mask,
+    )
+
+    assert unsupported.passed is False
+    assert unsupported.proposal_component_count >= 1
 
 
 def test_scene_visual_change_rejects_colour_grade_only_and_accepts_new_detail():
@@ -1596,6 +2183,28 @@ def test_registration_structural_fallback_does_not_weaken_translation_limit():
         register_generated_image(beauty, Image.fromarray(translated), mask)
 
 
+def test_scene_registration_can_report_large_transform_for_safe_fallback():
+    beauty, mask = _registration_context_scene()
+    translated = cv2.warpAffine(
+        np.asarray(beauty),
+        np.asarray(((1, 0, 20), (0, 1, 0)), dtype=np.float32),
+        beauty.size,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+
+    registration = register_generated_image(
+        beauty,
+        Image.fromarray(translated),
+        mask,
+        enforce_transform_limits=False,
+    )
+
+    assert math.hypot(
+        registration.translation_x_px,
+        registration.translation_y_px,
+    ) > 8.0
+
+
 def test_registration_structural_fallback_does_not_weaken_rotation_limit():
     beauty, mask = _registration_context_scene()
     rotation = cv2.getRotationMatrix2D(
@@ -1782,6 +2391,51 @@ async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority
     )
     assert call["data"]["prompt"].count(authority) == 1
     assert call["data"]["prompt"].count(request.prompt) == 1
+
+
+@pytest.mark.asyncio
+async def test_provider_receives_exact_instance_guide_and_server_owned_inventory(monkeypatch):
+    request = _request(
+        presentation_mode="scene",
+        style="development",
+    )
+    capture = prepare_direct_3d_capture(request)
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(
+        200,
+        {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]},
+    )
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    inventory = [{
+        "instance_id": "zone:test-building:building",
+        "semantic_class": "building",
+        "zone_id": str(TEST_ZONE_ID),
+        "building_id": None,
+        "source_zone_ids": [],
+    }]
+
+    await Direct3DRenderService("test-key")._call_openai(
+        request,
+        capture,
+        server_inventory=inventory,
+    )
+
+    call = _RecordingClient.calls[0]
+    image_names = [
+        item[1][0]
+        for item in call["files"]
+        if item[0] == "image[]"
+    ]
+    assert image_names == [
+        "direct-3d-beauty.png",
+        "direct-3d-class-id.png",
+        "direct-3d-instance-id.png",
+        "direct-3d-structural-edges.png",
+    ]
+    assert "SERVER-VALIDATED PERMANENT INVENTORY" in call["data"]["prompt"]
+    assert "zone:test-building:building|building" in call["data"]["prompt"]
+    assert "Image 3 is exact instance-ID metadata only" in call["data"]["prompt"]
+    assert "Image 4 is a monochrome structural guide" in call["data"]["prompt"]
 
 
 @pytest.mark.asyncio
@@ -2122,17 +2776,357 @@ async def test_scene_mode_keeps_provider_pixels_and_allows_context_restyling(mon
         ]
         == 0.75
     )
-    assert result.diagnostics["registration"]["maximum_translation_norm_px"] == 8.0
+    assert result.diagnostics["registration"]["maximum_translation_norm_px"] == 6.0
     assert (
         result.diagnostics["registration"]["maximum_abs_rotation_degrees"]
-        == 0.35
+        == 0.25
     )
     assert result.diagnostics["exterior_max_channel_delta"] > 0
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
 
 
 @pytest.mark.asyncio
-async def test_scene_mode_rejects_gross_moved_or_merged_proposal_geometry(monkeypatch):
+async def test_expressive_scene_never_returns_raw_invented_building(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="watercolour",
+        fidelity_policy="expressive",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    draw = ImageDraw.Draw(generated)
+    draw.polygon(
+        [(22, 128), (22, 65), (78, 22), (138, 65), (138, 128)],
+        fill=(214, 193, 163),
+        outline=(20, 24, 29),
+    )
+    draw.line((22, 128, 22, 65, 78, 22, 138, 65, 138, 128), fill=(20, 24, 29), width=7)
+    raw_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        generated,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert raw_unsupported.passed is False
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    returned = Image.open(
+        io.BytesIO(base64.b64decode(result.image_base64))
+    ).convert("RGB").resize(
+        capture.normalized_beauty.size,
+        Image.Resampling.LANCZOS,
+    )
+    returned_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        returned,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert result.outcome == "review_required"
+    assert returned_unsupported.passed is True
+    assert (
+        result.diagnostics["provider_raw_unsupported_structure"]["passed"]
+        is False
+    )
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("excluded" in warning for warning in result.warnings)
+
+
+@pytest.mark.parametrize("semantic_class", ["park", "street", "landscape", "ground"])
+def test_public_realm_finish_uses_source_phase_and_never_raw_provider_pixels(
+    semantic_class,
+):
+    source, proposal_mask = _registration_context_scene()
+    instance_pixels = np.zeros((source.height, source.width, 3), dtype=np.uint8)
+    proposal = np.asarray(proposal_mask.convert("L")) >= 128
+    instance_pixels[proposal] = (1, 0, 1)
+    instance_id = Image.fromarray(instance_pixels, mode="RGB")
+    descriptor = next(
+        iter(_request(presentation_mode="scene").instance_id_manifest.values())
+    ).model_copy(update={
+        "instance_id": f"zone:test-{semantic_class}:{semantic_class}",
+        "semantic_class": semantic_class,
+    })
+    manifest = {"#010001": descriptor}
+
+    provider = source.copy()
+    draw = ImageDraw.Draw(provider)
+    # Mix legitimate-looking specks with an aligned grid of sub-threshold
+    # facade windows. No raw spatial provider pixel may enter a public-realm
+    # role even when individual components look like harmless micro-detail.
+    finish_points = [(190, 190), (226, 214), (260, 250), (302, 286), (334, 320)]
+    for x, y in finish_points:
+        draw.rectangle((x, y, x + 1, y + 1), fill=(246, 214, 126))
+    for y in range(210, 307, 16):
+        for x in range(205, 318, 18):
+            draw.rectangle((x, y, x + 7, y + 5), fill=(28, 34, 40))
+
+    safe_finish, source_phase = direct_service._balanced_scene_hybrid(
+        source,
+        provider,
+        None,
+        None,
+        instance_id,
+        manifest,
+        set(),
+    )
+
+    safe_pixels = np.asarray(safe_finish)
+    provider_pixels = np.asarray(provider)
+    assert np.array_equal(safe_pixels, np.asarray(source_phase.image))
+    for x, y in finish_points:
+        assert not np.array_equal(safe_pixels[y, x], provider_pixels[y, x])
+    presence = direct_service.assess_instance_source_presence(
+        source,
+        safe_finish,
+        proposal_mask,
+        instance_id,
+        manifest,
+        fidelity_policy="balanced",
+    )
+    unsupported = assess_unsupported_coarse_structure(
+        source,
+        safe_finish,
+        proposal_mask,
+        instance_id,
+        manifest,
+    )
+    assert presence.passed is True
+    assert unsupported.passed is True
+
+
+@pytest.mark.asyncio
+async def test_scene_returns_source_phase_park_finish_without_raw_provider_pixels(
+    monkeypatch,
+):
+    beauty, mask = _registration_context_scene()
+    base_request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="photorealistic",
+        fidelity_policy="balanced",
+    )
+    payload = base_request.model_dump(mode="json")
+    payload["object_id_manifest"] = {"#FF0000": "park"}
+    payload["instance_id_manifest"]["#010001"].update({
+        "instance_id": "zone:test-park:park",
+        "semantic_class": "park",
+    })
+    request = Direct3DRenderRequest(**payload)
+    capture = prepare_direct_3d_capture(request)
+    source_pixels = np.asarray(capture.normalized_beauty).astype(np.int16)
+    yy, xx = np.indices((capture.normalized_beauty.height, capture.normalized_beauty.width))
+    microfinish = np.where(((xx // 2) + (yy // 2)) % 2 == 0, 8, -8)
+    generated_pixels = np.clip(
+        source_pixels
+        + np.asarray([22, 12, 4], dtype=np.int16)[None, None, :]
+        + microfinish[..., None],
+        0,
+        255,
+    ).astype(np.uint8)
+    generated = Image.fromarray(generated_pixels, mode="RGB")
+    assert assess_scene_visual_change(
+        capture.normalized_beauty,
+        generated,
+        capture.normalized_proposal_mask,
+    ).passed is True
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    returned = Image.open(
+        io.BytesIO(base64.b64decode(result.image_base64))
+    ).convert("RGB")
+    building_only, _finish = direct_service._balanced_scene_hybrid(
+        capture.normalized_beauty,
+        generated,
+        capture.normalized_object_id,
+        request.object_id_manifest,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+        set(),
+    )
+    building_only = building_only.resize(
+        capture.source_beauty.size,
+        Image.Resampling.LANCZOS,
+    )
+    safe_park = np.asarray(mask.convert("L")) >= 128
+    safe_park[:160, :] = False
+    safe_park[350:, :] = False
+    safe_park[:, :160] = False
+    safe_park[:, 350:] = False
+    assert result.diagnostics["returned_safety_strategy"] == (
+        "source_envelope_building_interiors"
+    )
+    assert np.array_equal(np.asarray(returned), np.asarray(building_only))
+    returned_delta_from_source = np.abs(
+        np.asarray(returned).astype(np.int16)
+        - np.asarray(beauty).astype(np.int16)
+    )
+    assert float(np.mean(returned_delta_from_source[safe_park])) > 1.0
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+
+
+@pytest.mark.asyncio
+async def test_public_realm_added_structure_never_enters_source_phase_finish(
+    monkeypatch,
+):
+    beauty, mask = _registration_context_scene()
+    base_request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="watercolour",
+        fidelity_policy="expressive",
+    )
+    payload = base_request.model_dump(mode="json")
+    payload["object_id_manifest"] = {"#FF0000": "park"}
+    payload["instance_id_manifest"]["#010001"].update({
+        "instance_id": "zone:test-park:park",
+        "semantic_class": "park",
+    })
+    request = Direct3DRenderRequest(**payload)
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    draw = ImageDraw.Draw(generated)
+    # A coherent provider-only building sits fully inside the persisted park.
+    # Public-realm roles never admit raw provider spatial pixels.
+    draw.polygon(
+        [(220, 330), (220, 225), (286, 178), (352, 225), (352, 330)],
+        fill=(214, 193, 163),
+        outline=(20, 24, 29),
+    )
+    draw.line(
+        (220, 330, 220, 225, 286, 178, 352, 225, 352, 330),
+        fill=(20, 24, 29),
+        width=7,
+    )
+    raw_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        generated,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert raw_unsupported.passed is False
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    returned = Image.open(
+        io.BytesIO(base64.b64decode(result.image_base64))
+    ).convert("RGB").resize(
+        capture.normalized_beauty.size,
+        Image.Resampling.LANCZOS,
+    )
+    returned_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        returned,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert result.outcome == "review_required"
+    assert result.diagnostics["returned_safety_strategy"] == (
+        "source_envelope_building_interiors"
+    )
+    assert returned_unsupported.passed is True
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("excluded" in warning for warning in result.warnings)
+
+
+@pytest.mark.asyncio
+async def test_balanced_soft_macro_failure_returns_safe_review_candidate(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="photorealistic",
+        fidelity_policy="balanced",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    monkeypatch.setattr(
+        direct_service,
+        "assess_macro_design_fidelity",
+        MagicMock(return_value=direct_service.MacroDesignFidelityResult(
+            passed=False,
+            tolerance_px=2,
+            silhouette_edge_pixels=500,
+            silhouette_edge_recall=0.604,
+            coarse_edge_pixels=900,
+            coarse_edge_recall=0.75,
+            semantic_edge_pixels=300,
+            semantic_edge_recall=0.708,
+            evaluated_component_count=2,
+            semantic_component_min_recall=0.73,
+            reference_edge_p90_distance_px=3.0,
+            candidate_coarse_edge_pixels=950,
+            candidate_coarse_edge_precision=0.78,
+            candidate_coarse_edge_density_ratio=1.06,
+        )),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert result.outcome == "review_required"
+    assert result.diagnostics["macro_design_fidelity"]["passed"] is False
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("balanced" in warning for warning in result.warnings)
+
+
+def test_balanced_policy_accepts_second_trial_thresholds_while_precise_stays_strict():
+    precise = direct_service._macro_fidelity_thresholds("precise", tolerance_px=2)
+    balanced = direct_service._macro_fidelity_thresholds("balanced", tolerance_px=2)
+
+    trial_two_silhouette_recall = 0.745
+    trial_two_semantic_recall = 0.72
+    assert trial_two_silhouette_recall < precise.minimum_silhouette_edge_recall
+    assert trial_two_silhouette_recall >= balanced.minimum_silhouette_edge_recall
+    assert trial_two_semantic_recall < precise.minimum_semantic_edge_recall
+    assert trial_two_semantic_recall >= balanced.minimum_semantic_edge_recall
+
+
+@pytest.mark.asyncio
+async def test_scene_mode_source_locks_gross_moved_or_merged_proposal_geometry(
+    monkeypatch,
+):
     beauty, mask, _object_id = _structured_scene()
     request = _request(
         beauty=beauty,
@@ -2167,15 +3161,17 @@ async def test_scene_mode_rejects_gross_moved_or_merged_proposal_geometry(monkey
         AsyncMock(return_value=generated),
     )
 
-    with pytest.raises(Direct3DProviderError, match="macro design geometry") as exc_info:
-        await Direct3DRenderService("test-key").generate(request, capture)
+    result = await Direct3DRenderService("test-key").generate(request, capture)
 
-    assert exc_info.value.billing_status == "produced"
-    assert exc_info.value.provider_image_base64 is not None
+    assert result.outcome == "review_required"
+    assert result.diagnostics["returned_safety_strategy"] == "global_tone_only"
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("macro design geometry" in warning for warning in result.warnings)
 
 
 @pytest.mark.asyncio
-async def test_scene_mode_rejects_near_identity_colour_grade_only(monkeypatch):
+async def test_scene_mode_source_locks_near_identity_colour_grade_only(monkeypatch):
     beauty, mask, _object_id = _structured_scene()
     request = _request(
         beauty=beauty,
@@ -2198,26 +3194,77 @@ async def test_scene_mode_rejects_near_identity_colour_grade_only(monkeypatch):
         AsyncMock(return_value=generated),
     )
 
-    with pytest.raises(Direct3DProviderError, match="photographic detail") as exc_info:
-        await Direct3DRenderService("test-key").generate(request, capture)
+    result = await Direct3DRenderService("test-key").generate(request, capture)
 
-    assert exc_info.value.billing_status == "produced"
+    assert result.outcome == "review_required"
+    assert result.diagnostics["returned_safety_strategy"] == "global_tone_only"
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("colour grade" in warning for warning in result.warnings)
+
+
+@pytest.mark.asyncio
+async def test_scene_mode_source_locks_invalid_provider_coarse_edge_field(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="photorealistic",
+        fidelity_policy="balanced",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    monkeypatch.setattr(
+        direct_service,
+        "assess_macro_design_fidelity",
+        MagicMock(return_value=direct_service.MacroDesignFidelityResult(
+            passed=False,
+            tolerance_px=2,
+            silhouette_edge_pixels=500,
+            silhouette_edge_recall=0.90,
+            coarse_edge_pixels=900,
+            coarse_edge_recall=0.90,
+            semantic_edge_pixels=300,
+            semantic_edge_recall=0.90,
+            evaluated_component_count=2,
+            semantic_component_min_recall=0.90,
+            reference_edge_p90_distance_px=2.0,
+            candidate_coarse_edge_pixels=6000,
+            candidate_coarse_edge_precision=0.10,
+            candidate_coarse_edge_density_ratio=6.5,
+        )),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert result.outcome == "review_required"
+    assert result.diagnostics["returned_safety_strategy"] == "global_tone_only"
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("invalid coarse edge field" in warning for warning in result.warnings)
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    ("translation_x", "translation_y", "rotation", "message"),
+    ("translation_x", "translation_y", "rotation"),
     [
-        (8.01, 0.0, 0.0, "8px translation limit"),
-        (0.0, 0.0, 0.351, "0.35 degree rotation limit"),
+        (8.01, 0.0, 0.0),
+        (0.0, 0.0, 0.351),
     ],
 )
-async def test_scene_mode_rejects_camera_drift_beyond_scene_limits(
+async def test_scene_mode_marks_camera_drift_beyond_balanced_limits_for_review(
     monkeypatch,
     translation_x,
     translation_y,
     rotation,
-    message,
 ):
     beauty, mask = _registration_context_scene()
     request = _request(
@@ -2225,6 +3272,7 @@ async def test_scene_mode_rejects_camera_drift_beyond_scene_limits(
         mask=mask,
         presentation_mode="scene",
         style="documentary",
+        fidelity_policy="balanced",
     )
     capture = prepare_direct_3d_capture(request)
     generated = _style_shift_without_geometry_change(capture.normalized_beauty)
@@ -2251,10 +3299,144 @@ async def test_scene_mode_rejects_camera_drift_beyond_scene_limits(
         ),
     )
 
-    with pytest.raises(Direct3DProviderError, match=message) as exc_info:
-        await Direct3DRenderService("test-key").generate(request, capture)
+    result = await Direct3DRenderService("test-key").generate(request, capture)
 
-    assert exc_info.value.billing_status == "produced"
+    assert result.outcome == "review_required"
+    assert result.diagnostics["view_lock"] == "camera_registered"
+    assert result.diagnostics["registration"]["translation_x_px"] == translation_x
+    assert result.diagnostics["registration"]["translation_y_px"] == translation_y
+    assert result.diagnostics["registration"]["rotation_degrees"] == rotation
+    assert result.diagnostics["registration"]["maximum_translation_norm_px"] == 8.0
+    assert result.diagnostics["registration"]["maximum_abs_rotation_degrees"] == 0.35
+    assert any("camera drift" in warning for warning in result.warnings)
+
+
+@pytest.mark.asyncio
+async def test_gross_balanced_drift_excludes_unsafe_shifted_structure(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="documentary",
+        fidelity_policy="balanced",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    draw = ImageDraw.Draw(generated)
+    invented_building = [(22, 128), (22, 65), (78, 22), (138, 65), (138, 128)]
+    draw.polygon(
+        invented_building,
+        fill=(214, 193, 163),
+        outline=(20, 24, 29),
+    )
+    draw.line(
+        (22, 128, 22, 65, 78, 22, 138, 65, 138, 128),
+        fill=(20, 24, 29),
+        width=7,
+    )
+    raw_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        generated,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert raw_unsupported.passed is False
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    monkeypatch.setattr(
+        direct_service,
+        "register_generated_image",
+        MagicMock(
+            return_value=direct_service.RegistrationResult(
+                image=generated,
+                method="ecc-euclidean",
+                score=0.9,
+                score_metric="luminance-correlation",
+                photometric_score=0.9,
+                structural_context_score=None,
+                translation_x_px=18.0,
+                translation_y_px=0.0,
+                rotation_degrees=0.0,
+            )
+        ),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    returned = Image.open(
+        io.BytesIO(base64.b64decode(result.image_base64))
+    ).convert("RGB").resize(
+        capture.normalized_beauty.size,
+        Image.Resampling.LANCZOS,
+    )
+    returned_unsupported = assess_unsupported_coarse_structure(
+        capture.normalized_beauty,
+        returned,
+        capture.normalized_proposal_mask,
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+    )
+    assert result.outcome == "review_required"
+    assert result.diagnostics["view_lock"] == "source_pixel_locked"
+    assert result.diagnostics["returned_safety_strategy"] == "global_tone_only"
+    assert result.diagnostics["registration"]["translation_norm_px"] == 18.0
+    assert result.diagnostics["provider_raw_unsupported_structure"]["passed"] is False
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert returned_unsupported.passed is True
+    assert any("no provider spatial pixels" in warning for warning in result.warnings)
+    provider_pixels = np.asarray(generated)
+    returned_pixels = np.asarray(returned)
+    invented_mask = Image.new("L", generated.size, 0)
+    ImageDraw.Draw(invented_mask).polygon(invented_building, fill=255)
+    invented = np.asarray(invented_mask) > 0
+    assert not np.array_equal(returned_pixels[invented], provider_pixels[invented])
+
+
+@pytest.mark.asyncio
+async def test_unreliable_scene_registration_returns_source_locked_review(monkeypatch):
+    beauty, mask = _registration_context_scene()
+    request = _request(
+        beauty=beauty,
+        mask=mask,
+        presentation_mode="scene",
+        style="documentary",
+        fidelity_policy="balanced",
+    )
+    capture = prepare_direct_3d_capture(request)
+    generated = _provider_first_finish_without_geometry_change(
+        capture.normalized_beauty
+    )
+    monkeypatch.setattr(
+        Direct3DRenderService,
+        "_call_openai",
+        AsyncMock(return_value=generated),
+    )
+    monkeypatch.setattr(
+        direct_service,
+        "register_generated_image",
+        MagicMock(
+            side_effect=Direct3DValidationError(
+                "Generated image could not be registered to the 3D capture"
+            )
+        ),
+    )
+
+    result = await Direct3DRenderService("test-key").generate(request, capture)
+
+    assert result.outcome == "review_required"
+    assert result.diagnostics["view_lock"] == "source_pixel_locked"
+    assert result.diagnostics["returned_safety_strategy"] == "global_tone_only"
+    assert result.diagnostics["registration"] is None
+    assert result.diagnostics["instance_source_presence"]["passed"] is True
+    assert result.diagnostics["unsupported_structure"]["passed"] is True
+    assert any("registration was unreliable" in warning for warning in result.warnings)
 
 
 @pytest.mark.asyncio
@@ -2289,6 +3471,8 @@ async def test_reproject_returns_provider_output_without_screen_registration(mon
     assert result.diagnostics["view_lock"] == "not_applicable_layout_guided"
     assert result.diagnostics["registration"] is None
     assert result.diagnostics["provider_first"] is True
+    assert result.outcome == "review_required"
+    assert result.warnings
     assert result.diagnostics["reproject_output_sanity"]["passed"] is True
     assert (
         result.diagnostics["reproject_output_sanity"][
@@ -2398,7 +3582,7 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
     audited_image = Image.open(io.BytesIO(base64.b64decode(audited_input, validate=True)))
     assert audited_image.format == "PNG"
     assert audited_image.size == (512, 512)
-    assert finalize_mock.await_args.kwargs["status_label"] == "success source-anchored"
+    assert finalize_mock.await_args.kwargs["status_label"] == "accepted source-anchored"
     assert "mode=source_anchored" in finalize_mock.await_args.kwargs["detail"]
 
 
@@ -2440,7 +3624,7 @@ async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
     assert response.diagnostics.processing_mode == "scene"
     assert response.diagnostics.provider_first is True
     assert finalize_mock.await_args.kwargs["status_label"] == (
-        "success provider-first scene"
+        "accepted provider-first scene"
     )
     assert "mode=scene style=development" in finalize_mock.await_args.kwargs["detail"]
 

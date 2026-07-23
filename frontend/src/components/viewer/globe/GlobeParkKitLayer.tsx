@@ -78,6 +78,10 @@ import {
   shouldDeferParkFinishingProp,
   shouldRenderLiveParkProp,
 } from './parkGroundTexture';
+import {
+  direct3DInstanceUserData,
+  direct3DZoneInstanceDescriptor,
+} from './direct3dCapture';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import {
   parkTerrainSampleOffset,
@@ -1975,7 +1979,13 @@ export function GlobeParkKitLayer({
   return (
     <>
       {parkZones.map((zone) => (
-        <ParkKitInstance key={zone.id} zone={zone} fallbackTerrainHeight={terrainHeight} />
+        <group
+          key={zone.id}
+          name={`siteforge-direct3d-park-${zone.id}`}
+          userData={direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'park'))}
+        >
+          <ParkKitInstance zone={zone} fallbackTerrainHeight={terrainHeight} />
+        </group>
       ))}
     </>
   );

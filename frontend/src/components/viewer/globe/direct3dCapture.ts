@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v1' as const;
 export const DIRECT_3D_PROPOSAL_ROLE_KEY = 'siteforgeDirect3DProposalRole';
+export const DIRECT_3D_INSTANCE_KEY = 'siteforgeDirect3DInstance';
 export const DIRECT_3D_CAPTURE_EXCLUDE_KEY = 'siteforgeExcludeFromDirect3DCapture';
 export const DIRECT_3D_CAPTURE_CONTEXT_KEY = 'siteforgeDirect3DContextOnly';
 
@@ -14,6 +15,14 @@ export const DIRECT_3D_PROPOSAL_ROLES = [
 ] as const;
 
 export type Direct3DProposalRole = (typeof DIRECT_3D_PROPOSAL_ROLES)[number];
+
+export interface Direct3DInstanceDescriptor {
+  instance_id: string;
+  semantic_class: Direct3DProposalRole;
+  zone_id?: string;
+  building_id?: string;
+  source_zone_ids?: string[];
+}
 
 /**
  * Deliberately high-separation colors for a semantic ID pass. The image sent
@@ -40,6 +49,8 @@ export interface Direct3DCaptureBundle {
   proposalMaskBase64: string;
   classIdImageBase64: string;
   classIdManifest: Readonly<Record<string, Direct3DProposalRole>>;
+  instanceIdImageBase64: string;
+  instanceIdManifest: Readonly<Record<string, Direct3DInstanceDescriptor>>;
   width: number;
   height: number;
   proposalPixelCount: number;
@@ -58,6 +69,7 @@ export interface Direct3DCaptureQAPreview {
     beauty: string;
     mask: string;
     classId: string;
+    instanceId: string;
   };
 }
 
@@ -98,12 +110,13 @@ export async function createDirect3DCaptureQAPreview(
   const beauty = await downscaleCapturePreview(capture.beautyImageBase64, maxLongEdge);
   const mask = await downscaleCapturePreview(capture.proposalMaskBase64, maxLongEdge);
   const classId = await downscaleCapturePreview(capture.classIdImageBase64, maxLongEdge);
+  const instanceId = await downscaleCapturePreview(capture.instanceIdImageBase64, maxLongEdge);
   return {
     width: capture.width,
     height: capture.height,
     maskCoverage: capture.maskCoverage,
     classCoverage: { ...capture.classCoverage },
-    thumbnails: { beauty, mask, classId },
+    thumbnails: { beauty, mask, classId, instanceId },
   };
 }
 
@@ -150,7 +163,18 @@ interface RenderableSnapshot {
   effectivelyVisible: boolean;
   material: THREE.Material | THREE.Material[] | undefined;
   role: Direct3DProposalRole | null;
+  instance: Direct3DInstanceDescriptor | null;
   excluded: boolean;
+}
+
+export interface Direct3DInstanceColorAssignment {
+  color: string;
+  descriptor: Direct3DInstanceDescriptor;
+}
+
+interface InstanceCaptureAnalysis {
+  instanceIdPixels: Uint8ClampedArray;
+  pixelCounts: Readonly<Record<string, number>>;
 }
 
 interface RendererSnapshot {
@@ -176,6 +200,98 @@ const MASK_SOLID_ALPHA = 128;
 
 export function direct3DProposalUserData(role: Direct3DProposalRole): Record<string, unknown> {
   return { [DIRECT_3D_PROPOSAL_ROLE_KEY]: role };
+}
+
+function normalizeInstanceDescriptor(
+  value: Direct3DInstanceDescriptor | Record<string, unknown>,
+): Direct3DInstanceDescriptor | null {
+  const instanceId = typeof value.instance_id === 'string' ? value.instance_id.trim() : '';
+  const semanticClass = value.semantic_class;
+  if (
+    !instanceId
+    || typeof semanticClass !== 'string'
+    || !(DIRECT_3D_PROPOSAL_ROLES as readonly string[]).includes(semanticClass)
+  ) {
+    return null;
+  }
+
+  const descriptor: Direct3DInstanceDescriptor = {
+    instance_id: instanceId,
+    semantic_class: semanticClass as Direct3DProposalRole,
+  };
+  if (typeof value.zone_id === 'string' && value.zone_id.trim()) {
+    descriptor.zone_id = value.zone_id.trim();
+  }
+  if (typeof value.building_id === 'string' && value.building_id.trim()) {
+    descriptor.building_id = value.building_id.trim();
+  }
+  if (Array.isArray(value.source_zone_ids)) {
+    const sourceZoneIds = [...new Set(value.source_zone_ids
+      .filter((entry): entry is string => typeof entry === 'string' && Boolean(entry.trim()))
+      .map((entry) => entry.trim()))]
+      .sort();
+    if (sourceZoneIds.length > 0) descriptor.source_zone_ids = sourceZoneIds;
+  }
+  return descriptor;
+}
+
+export function direct3DZoneInstanceDescriptor(
+  zoneId: string,
+  semanticClass: Direct3DProposalRole,
+  details: Pick<Direct3DInstanceDescriptor, 'building_id' | 'source_zone_ids'> = {},
+): Direct3DInstanceDescriptor {
+  const normalizedZoneId = zoneId.trim();
+  if (!normalizedZoneId) {
+    throw new Direct3DCaptureError('capture_failed', 'Direct 3D instance zones require a stable id.');
+  }
+  return normalizeInstanceDescriptor({
+    instance_id: `zone:${normalizedZoneId}:${semanticClass}`,
+    semantic_class: semanticClass,
+    zone_id: normalizedZoneId,
+    ...details,
+  }) as Direct3DInstanceDescriptor;
+}
+
+function fnv1a32(value: string): number {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
+/** Canonical client/server junction identity. The server independently
+ * verifies that these persisted street sources form a four-arm node. */
+export function direct3DStreetJunctionInstanceDescriptor(
+  sourceZoneIds: readonly string[],
+): Direct3DInstanceDescriptor {
+  const normalized = [...new Set(sourceZoneIds.map((value) => value.trim()).filter(Boolean))].sort();
+  if (normalized.length < 2) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      'Direct 3D street junctions require at least two persisted street sources.',
+    );
+  }
+  const hash = fnv1a32(normalized.join(':')).toString(16).padStart(8, '0');
+  return {
+    instance_id: `junction:zones-${hash}:street`,
+    semantic_class: 'street',
+    source_zone_ids: normalized,
+  };
+}
+
+export function direct3DInstanceUserData(
+  descriptor: Direct3DInstanceDescriptor,
+): Record<string, unknown> {
+  const normalized = normalizeInstanceDescriptor(descriptor);
+  if (!normalized) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      'Direct 3D instances require a stable id and semantic class.',
+    );
+  }
+  return { [DIRECT_3D_INSTANCE_KEY]: normalized };
 }
 
 export function direct3DGroundRoleForCommunityKind(
@@ -234,6 +350,46 @@ export function getDirect3DProposalRole(object: THREE.Object3D): Direct3DProposa
   return null;
 }
 
+/** Resolve the nearest semantic instance tag. A context-only subtree clears
+ * both role and instance inheritance so legacy models remain immutable. */
+export function getDirect3DInstanceDescriptor(
+  object: THREE.Object3D,
+): Direct3DInstanceDescriptor | null {
+  let current: THREE.Object3D | null = object;
+  while (current) {
+    if (current.userData?.[DIRECT_3D_CAPTURE_CONTEXT_KEY] === true) return null;
+    const candidate = current.userData?.[DIRECT_3D_INSTANCE_KEY];
+    if (candidate && typeof candidate === 'object' && !Array.isArray(candidate)) {
+      const normalized = normalizeInstanceDescriptor(candidate as Record<string, unknown>);
+      if (normalized) return normalized;
+    }
+    current = current.parent;
+  }
+  return null;
+}
+
+/** Fail closed when semantic proposal geometry is not represented by the
+ * exact instance pass. Context geometry has no instance by design. */
+export function requireDirect3DInstanceDescriptor(
+  role: Direct3DProposalRole | null,
+  instance: Direct3DInstanceDescriptor | null,
+): Direct3DInstanceDescriptor | null {
+  if (!role) return null;
+  if (!instance) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      `Visible Direct 3D ${role} geometry is missing a stable instance tag.`,
+    );
+  }
+  if (instance.semantic_class !== role) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      `Direct 3D instance ${instance.instance_id} does not match its semantic class.`,
+    );
+  }
+  return instance;
+}
+
 export function isExcludedFromDirect3DCapture(object: THREE.Object3D): boolean {
   let current: THREE.Object3D | null = object;
   while (current) {
@@ -275,6 +431,7 @@ function collectRenderableSnapshots(scene: THREE.Scene): RenderableSnapshot[] {
       effectivelyVisible: isEffectivelyVisible(object),
       material: object.material,
       role: getDirect3DProposalRole(object),
+      instance: getDirect3DInstanceDescriptor(object),
       excluded: isExcludedFromDirect3DCapture(object),
     });
   });
@@ -331,7 +488,7 @@ function createCaptureTarget(
   renderer: THREE.WebGLRenderer,
   width: number,
   height: number,
-  pass: 'beauty' | 'class-id',
+  pass: 'beauty' | 'class-id' | 'instance-id',
 ): THREE.WebGLRenderTarget {
   const target = new THREE.WebGLRenderTarget(width, height, {
     depthBuffer: true,
@@ -347,9 +504,9 @@ function createCaptureTarget(
 
 export function getDirect3DTargetSampleCount(
   isWebGL2: boolean,
-  pass: 'beauty' | 'class-id',
+  pass: 'beauty' | 'class-id' | 'instance-id',
 ): number {
-  if (!isWebGL2 || pass === 'class-id') return 0;
+  if (!isWebGL2 || pass !== 'beauty') return 0;
   // Two samples soften the final beauty edge without the 4x multisample GPU
   // footprint that previously overlapped two 2048² capture targets.
   return 2;
@@ -408,6 +565,88 @@ function parseHexColor(hex: string): [number, number, number] {
 const CLASS_RGB = Object.fromEntries(
   DIRECT_3D_PROPOSAL_ROLES.map((role) => [role, parseHexColor(DIRECT_3D_CLASS_COLORS[role])]),
 ) as Record<Direct3DProposalRole, [number, number, number]>;
+
+const INSTANCE_COLOR_LEVELS = Array.from({ length: 16 }, (_, index) => 24 + index * 14);
+// Keep the free client gate aligned with the Pydantic request schema so a
+// large scene fails before upload rather than after the paid action begins.
+export const MAX_DIRECT_3D_INSTANCES = 2048;
+
+function reverseTwelveBits(value: number): number {
+  let source = value & 0xfff;
+  let reversed = 0;
+  for (let index = 0; index < 12; index += 1) {
+    reversed = (reversed << 1) | (source & 1);
+    source >>>= 1;
+  }
+  return reversed;
+}
+
+function instanceColorForOrdinal(ordinal: number): string {
+  // Bit reversal distributes early colors across the full quantized RGB cube
+  // instead of assigning visually adjacent shades to neighboring ids. The 16
+  // non-black channel levels provide 4,096 exact, opaque instance colors.
+  const cubeIndex = reverseTwelveBits(ordinal);
+  const red = INSTANCE_COLOR_LEVELS[cubeIndex & 0xf];
+  const green = INSTANCE_COLOR_LEVELS[(cubeIndex >>> 4) & 0xf];
+  const blue = INSTANCE_COLOR_LEVELS[(cubeIndex >>> 8) & 0xf];
+  return `#${[red, green, blue]
+    .map((channel) => channel.toString(16).padStart(2, '0'))
+    .join('')}`.toUpperCase();
+}
+
+function descriptorsEqual(
+  left: Direct3DInstanceDescriptor,
+  right: Direct3DInstanceDescriptor,
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+/** Build the deterministic exact-color inventory used by the instance pass.
+ * Sorting makes the result independent of scene traversal order. */
+export function buildDirect3DInstanceColorManifest(
+  descriptors: readonly Direct3DInstanceDescriptor[],
+): {
+  assignments: Direct3DInstanceColorAssignment[];
+  manifest: Readonly<Record<string, Direct3DInstanceDescriptor>>;
+} {
+  const byId = new Map<string, Direct3DInstanceDescriptor>();
+  for (const value of descriptors) {
+    const descriptor = normalizeInstanceDescriptor(value);
+    if (!descriptor) {
+      throw new Direct3DCaptureError(
+        'capture_failed',
+        'A Direct 3D scene instance has invalid inventory metadata.',
+      );
+    }
+    const previous = byId.get(descriptor.instance_id);
+    if (previous && !descriptorsEqual(previous, descriptor)) {
+      throw new Direct3DCaptureError(
+        'capture_failed',
+        `Direct 3D instance ${descriptor.instance_id} has conflicting inventory metadata.`,
+      );
+    }
+    byId.set(descriptor.instance_id, descriptor);
+  }
+
+  const sorted = [...byId.values()].sort((left, right) => (
+    left.instance_id < right.instance_id ? -1 : left.instance_id > right.instance_id ? 1 : 0
+  ));
+  if (sorted.length > MAX_DIRECT_3D_INSTANCES) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      `Direct 3D capture supports at most ${MAX_DIRECT_3D_INSTANCES.toLocaleString()} visible scene instances.`,
+    );
+  }
+
+  const assignments = sorted.map((descriptor, index) => ({
+    color: instanceColorForOrdinal(index + 1),
+    descriptor,
+  }));
+  const manifest = Object.freeze(Object.fromEntries(
+    assignments.map(({ color, descriptor }) => [color, descriptor]),
+  ) as Record<string, Direct3DInstanceDescriptor>);
+  return { assignments, manifest };
+}
 
 function closestProposalRole(red: number, green: number, blue: number): Direct3DProposalRole {
   let bestRole: Direct3DProposalRole = DIRECT_3D_PROPOSAL_ROLES[0];
@@ -483,6 +722,148 @@ export function analyzeDirect3DClassPixels(
   };
 }
 
+export function analyzeDirect3DInstancePixels(
+  bottomUpPixels: Uint8Array | Uint8ClampedArray,
+  width: number,
+  height: number,
+  manifest: Readonly<Record<string, Direct3DInstanceDescriptor>>,
+  classIdPixels?: Uint8ClampedArray,
+): InstanceCaptureAnalysis {
+  if (bottomUpPixels.length !== width * height * 4) {
+    throw new Direct3DCaptureError('capture_failed', 'Direct 3D instance buffer dimensions do not match.');
+  }
+  if (classIdPixels && classIdPixels.length !== width * height * 4) {
+    throw new Direct3DCaptureError('capture_failed', 'Direct 3D class and instance buffer dimensions do not match.');
+  }
+
+  const source = flipRgbaRows(bottomUpPixels, width, height);
+  const instanceIdPixels = new Uint8ClampedArray(source.length);
+  const candidates = Object.entries(manifest).map(([color, descriptor]) => ({
+    color,
+    descriptor,
+    rgb: parseHexColor(color),
+  }));
+  const candidatesByRole = new Map<Direct3DProposalRole, typeof candidates>();
+  for (const role of DIRECT_3D_PROPOSAL_ROLES) {
+    candidatesByRole.set(role, candidates.filter((candidate) => candidate.descriptor.semantic_class === role));
+  }
+  const roleByClassColor = new Map(DIRECT_3D_PROPOSAL_ROLES.map((role) => {
+    const [red, green, blue] = CLASS_RGB[role];
+    return [(red << 16) | (green << 8) | blue, role] as const;
+  }));
+  const nearestColorCache = new Map<string, typeof candidates[number] | null>();
+  const pixelCounts: Record<string, number> = {};
+
+  for (let index = 0; index < source.length; index += 4) {
+    const alpha = source[index + 3];
+    instanceIdPixels[index + 3] = 255;
+    if (alpha < MASK_SOLID_ALPHA || candidates.length === 0) continue;
+
+    const alphaScale = 255 / Math.max(alpha, 1);
+    const red = Math.round(Math.min(255, source[index] * alphaScale));
+    const green = Math.round(Math.min(255, source[index + 1] * alphaScale));
+    const blue = Math.round(Math.min(255, source[index + 2] * alphaScale));
+    const cacheKey = (red << 16) | (green << 8) | blue;
+    const classKey = classIdPixels
+      ? (classIdPixels[index] << 16) | (classIdPixels[index + 1] << 8) | classIdPixels[index + 2]
+      : null;
+    const semanticRole = classKey === null ? null : roleByClassColor.get(classKey) ?? null;
+    const eligibleCandidates = semanticRole ? candidatesByRole.get(semanticRole) ?? [] : candidates;
+    if (eligibleCandidates.length === 0) continue;
+    const scopedCacheKey = `${semanticRole ?? '*'}:${cacheKey}`;
+    let nearest = nearestColorCache.get(scopedCacheKey);
+    if (nearest === undefined) {
+      nearest = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      for (const candidate of eligibleCandidates) {
+        const distance = (red - candidate.rgb[0]) ** 2
+          + (green - candidate.rgb[1]) ** 2
+          + (blue - candidate.rgb[2]) ** 2;
+        if (distance < bestDistance) {
+          nearest = candidate;
+          bestDistance = distance;
+        }
+      }
+      nearestColorCache.set(scopedCacheKey, nearest);
+    }
+    if (!nearest) continue;
+
+    instanceIdPixels[index] = nearest.rgb[0];
+    instanceIdPixels[index + 1] = nearest.rgb[1];
+    instanceIdPixels[index + 2] = nearest.rgb[2];
+    pixelCounts[nearest.descriptor.instance_id] = (
+      pixelCounts[nearest.descriptor.instance_id] ?? 0
+    ) + 1;
+  }
+
+  return { instanceIdPixels, pixelCounts };
+}
+
+/** Mirror the backend's authoritative class/instance ownership check so the
+ * free capture preview catches render-order disagreements before a paid action. */
+export function validateDirect3DInstanceSemanticAgreement(
+  classIdPixels: Uint8ClampedArray,
+  instanceIdPixels: Uint8ClampedArray,
+  width: number,
+  height: number,
+  manifest: Readonly<Record<string, Direct3DInstanceDescriptor>>,
+  minimumAgreement = 0.9,
+): void {
+  const expectedLength = width * height * 4;
+  if (
+    classIdPixels.length !== expectedLength
+    || instanceIdPixels.length !== expectedLength
+  ) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      'Direct 3D class and instance buffers must have matching dimensions.',
+    );
+  }
+  const ownership = new Map<number, {
+    descriptor: Direct3DInstanceDescriptor;
+    expectedClass: number;
+    pixels: number;
+    matches: number;
+  }>();
+  for (const [color, descriptor] of Object.entries(manifest)) {
+    const [red, green, blue] = parseHexColor(color);
+    const [classRed, classGreen, classBlue] = CLASS_RGB[descriptor.semantic_class];
+    ownership.set((red << 16) | (green << 8) | blue, {
+      descriptor,
+      expectedClass: (classRed << 16) | (classGreen << 8) | classBlue,
+      pixels: 0,
+      matches: 0,
+    });
+  }
+  for (let offset = 0; offset < expectedLength; offset += 4) {
+    const instanceColor = (
+      (instanceIdPixels[offset] << 16)
+      | (instanceIdPixels[offset + 1] << 8)
+      | instanceIdPixels[offset + 2]
+    );
+    const entry = ownership.get(instanceColor);
+    if (!entry) continue;
+    entry.pixels += 1;
+    const classColor = (
+      (classIdPixels[offset] << 16)
+      | (classIdPixels[offset + 1] << 8)
+      | classIdPixels[offset + 2]
+    );
+    if (classColor === entry.expectedClass) entry.matches += 1;
+  }
+  for (const entry of ownership.values()) {
+    if (entry.pixels === 0) continue;
+    const agreement = entry.matches / entry.pixels;
+    if (agreement < minimumAgreement) {
+      throw new Direct3DCaptureError(
+        'capture_failed',
+        `Direct 3D instance ${entry.descriptor.instance_id} conflicts with its semantic class `
+          + `(agreement ${agreement.toFixed(3)}).`,
+      );
+    }
+  }
+}
+
 function assertBeautyPlausible(pixels: Uint8Array, width: number, height: number): void {
   let minLuma = 255;
   let maxLuma = 0;
@@ -534,6 +915,7 @@ function hashCapture(
   height: number,
   maskPixels: Uint8ClampedArray,
   classIdPixels: Uint8ClampedArray,
+  instanceIdPixels: Uint8ClampedArray,
   camera: THREE.Camera,
 ): string {
   let hash = 0x811c9dc5;
@@ -548,6 +930,9 @@ function hashCapture(
     feed(classIdPixels[index]);
     feed(classIdPixels[index + 1]);
     feed(classIdPixels[index + 2]);
+    feed(instanceIdPixels[index]);
+    feed(instanceIdPixels[index + 1]);
+    feed(instanceIdPixels[index + 2]);
   }
   const cameraValues = [...camera.projectionMatrix.elements, ...camera.matrixWorld.elements];
   for (const value of cameraValues) {
@@ -681,9 +1066,10 @@ function createSingleDirect3DSemanticMaterial(
   source: THREE.Material,
   role: Direct3DProposalRole,
   object: THREE.Object3D,
+  semanticColor = DIRECT_3D_CLASS_COLORS[role],
 ): THREE.Material {
   const sourceTyped = source as MaterialWithAlphaTextures;
-  const color = DIRECT_3D_CLASS_COLORS[role];
+  const color = semanticColor;
   const kind = semanticObjectKind(object);
   let target: THREE.Material;
 
@@ -746,11 +1132,14 @@ export function createDirect3DSemanticMaterial(
   source: Direct3DSemanticMaterial,
   role: Direct3DProposalRole,
   object: THREE.Object3D,
+  semanticColor = DIRECT_3D_CLASS_COLORS[role],
 ): Direct3DSemanticMaterial {
   if (Array.isArray(source)) {
-    return source.map((material) => createSingleDirect3DSemanticMaterial(material, role, object));
+    return source.map((material) => (
+      createSingleDirect3DSemanticMaterial(material, role, object, semanticColor)
+    ));
   }
-  return createSingleDirect3DSemanticMaterial(source, role, object);
+  return createSingleDirect3DSemanticMaterial(source, role, object, semanticColor);
 }
 
 export function disposeDirect3DSemanticMaterial(material: Direct3DSemanticMaterial): void {
@@ -766,6 +1155,7 @@ function createSemanticMaterialCache(): {
     source: Direct3DSemanticMaterial,
     role: Direct3DProposalRole,
     object: THREE.Object3D,
+    semanticColor?: string,
   ) => Direct3DSemanticMaterial;
   dispose: () => void;
 } {
@@ -776,8 +1166,9 @@ function createSemanticMaterialCache(): {
     source: THREE.Material,
     role: Direct3DProposalRole,
     object: THREE.Object3D,
+    semanticColor = DIRECT_3D_CLASS_COLORS[role],
   ): THREE.Material => {
-    const key = `${role}:${semanticObjectKind(object)}`;
+    const key = `${role}:${semanticColor.toUpperCase()}:${semanticObjectKind(object)}`;
     let variants = cache.get(source);
     if (!variants) {
       variants = new Map();
@@ -785,17 +1176,17 @@ function createSemanticMaterialCache(): {
     }
     const existing = variants.get(key);
     if (existing) return existing;
-    const material = createSingleDirect3DSemanticMaterial(source, role, object);
+    const material = createSingleDirect3DSemanticMaterial(source, role, object, semanticColor);
     variants.set(key, material);
     created.add(material);
     return material;
   };
 
   return {
-    get: (source, role, object) => (
+    get: (source, role, object, semanticColor) => (
       Array.isArray(source)
-        ? source.map((material) => getSingle(material, role, object))
-        : getSingle(source, role, object)
+        ? source.map((material) => getSingle(material, role, object, semanticColor))
+        : getSingle(source, role, object, semanticColor)
     ),
     dispose: () => created.forEach((material) => material.dispose()),
   };
@@ -828,11 +1219,25 @@ export async function captureDirect3DScene(
       'No visible compiled 3D proposal is mounted in the current scene.',
     );
   }
+  const encounteredInstances: Direct3DInstanceDescriptor[] = [];
+  for (const snapshot of renderables) {
+    if (!snapshot.effectivelyVisible || snapshot.excluded || !snapshot.role) continue;
+    encounteredInstances.push(requireDirect3DInstanceDescriptor(
+      snapshot.role,
+      snapshot.instance,
+    ) as Direct3DInstanceDescriptor);
+  }
+  const {
+    assignments: instanceAssignments,
+    manifest: instanceIdManifest,
+  } = buildDirect3DInstanceColorManifest(encounteredInstances);
 
   const rendererSnapshot = snapshotRenderer(renderer, scene);
   const semanticMaterials = createSemanticMaterialCache();
   let beautyTarget: THREE.WebGLRenderTarget | null = null;
   let classTarget: THREE.WebGLRenderTarget | null = null;
+  let instanceTarget: THREE.WebGLRenderTarget | null = null;
+  let captureFailure: Direct3DCaptureError | null = null;
 
   try {
     // Beauty: preserve every scene material and Google tile/stencil hook, but
@@ -911,37 +1316,144 @@ export async function captureDirect3DScene(
       options.maxMaskCoverage ?? DEFAULT_MAX_MASK_COVERAGE,
     );
 
+    // Instance inventory: repeat the context depth seed in a separate target,
+    // then paint every stable scene instance with its own exact color. The
+    // class framebuffer is already disposed, bounding peak GPU memory to one
+    // full-size semantic target at a time. The manifest was built from all
+    // effectively-visible tagged renderables before rendering, so off-camera
+    // and fully occluded instances remain represented with zero pixels.
+    for (const snapshot of renderables) {
+      snapshot.object.visible = snapshot.role === null && snapshot.effectivelyVisible && !snapshot.excluded;
+      if (snapshot.material !== undefined) snapshot.object.material = snapshot.material;
+    }
+    scene.fog = rendererSnapshot.fog;
+    scene.overrideMaterial = rendererSnapshot.overrideMaterial;
+    renderer.autoClear = true;
+    instanceTarget = createCaptureTarget(renderer, width, height, 'instance-id');
+    renderer.setRenderTarget(instanceTarget);
+    renderer.setScissorTest(false);
+    renderer.setViewport(0, 0, width, height);
+    renderer.setClearColor(0x000000, 0);
+    renderer.render(scene, camera);
+    assertContextAvailable(renderer);
+
+    scene.fog = null;
+    scene.overrideMaterial = null;
+    renderer.autoClear = false;
+    renderer.clear(true, false, false);
+
+    const instanceAssignmentById = new Map(instanceAssignments.map((assignment) => (
+      [assignment.descriptor.instance_id, assignment]
+    )));
+    // Match the class pass's role ordering exactly. A single all-instance
+    // render can disagree wherever authored layers intentionally use
+    // renderOrder/depthTest overrides (for example a terrain footprint under
+    // its detailed building). Rendering the same role sequence makes every
+    // surviving instance pixel provably owned by the class pixel beneath it.
+    for (const role of DIRECT_3D_PROPOSAL_ROLES) {
+      for (const snapshot of renderables) {
+        const assignment = snapshot.instance
+          ? instanceAssignmentById.get(snapshot.instance.instance_id)
+          : undefined;
+        const visible = Boolean(
+          assignment
+          && snapshot.role === role
+          && assignment.descriptor.semantic_class === role
+          && snapshot.effectivelyVisible
+          && !snapshot.excluded,
+        );
+        snapshot.object.visible = visible;
+        if (visible && snapshot.material !== undefined && assignment) {
+          snapshot.object.material = semanticMaterials.get(
+            snapshot.material,
+            assignment.descriptor.semantic_class,
+            snapshot.object,
+            assignment.color,
+          );
+        }
+      }
+      renderer.render(scene, camera);
+      assertContextAvailable(renderer);
+    }
+
+    const instanceBottomUp = readTargetPixels(renderer, instanceTarget, width, height);
+    renderer.setRenderTarget(rendererSnapshot.renderTarget);
+    instanceTarget.dispose();
+    instanceTarget = null;
+    const instanceAnalysis = analyzeDirect3DInstancePixels(
+      instanceBottomUp,
+      width,
+      height,
+      instanceIdManifest,
+      analysis.classIdPixels,
+    );
+    validateDirect3DInstanceSemanticAgreement(
+      analysis.classIdPixels,
+      instanceAnalysis.instanceIdPixels,
+      width,
+      height,
+      instanceIdManifest,
+    );
+
     return {
       schema: DIRECT_3D_CAPTURE_SCHEMA,
       beautyImageBase64,
       proposalMaskBase64: rgbaToPngDataUrl(analysis.maskPixels, width, height),
       classIdImageBase64: rgbaToPngDataUrl(analysis.classIdPixels, width, height),
       classIdManifest: DIRECT_3D_CLASS_ID_MANIFEST,
+      instanceIdImageBase64: rgbaToPngDataUrl(instanceAnalysis.instanceIdPixels, width, height),
+      instanceIdManifest,
       width,
       height,
       proposalPixelCount: analysis.proposalPixelCount,
       contextPixelCount: analysis.contextPixelCount,
       maskCoverage: analysis.maskCoverage,
       classCoverage: analysis.classCoverage,
-      fingerprint: hashCapture(width, height, analysis.maskPixels, analysis.classIdPixels, camera),
+      fingerprint: hashCapture(
+        width,
+        height,
+        analysis.maskPixels,
+        analysis.classIdPixels,
+        instanceAnalysis.instanceIdPixels,
+        camera,
+      ),
     };
   } catch (error) {
-    if (error instanceof Direct3DCaptureError) throw error;
-    throw new Direct3DCaptureError(
-      'capture_failed',
-      'The Direct 3D scene could not be captured safely.',
-      error,
-    );
+    captureFailure = error instanceof Direct3DCaptureError
+      ? error
+      : new Direct3DCaptureError(
+          'capture_failed',
+          'The Direct 3D scene could not be captured safely.',
+          error,
+        );
+    throw captureFailure;
   } finally {
+    let cleanupFailure: unknown;
     try {
       restoreCaptureState(renderer, scene, rendererSnapshot, renderables);
-    } finally {
+    } catch (error) {
+      cleanupFailure = error;
+    }
+    try {
+      semanticMaterials.dispose();
+    } catch (error) {
+      cleanupFailure ??= error;
+    }
+    for (const target of [beautyTarget, classTarget, instanceTarget]) {
       try {
-        semanticMaterials.dispose();
-      } finally {
-        beautyTarget?.dispose();
-        classTarget?.dispose();
+        target?.dispose();
+      } catch (error) {
+        cleanupFailure ??= error;
       }
+    }
+    // Cleanup on a lost context is best-effort. Never replace the actionable
+    // context_lost/capture error that caused us to enter this path.
+    if (cleanupFailure !== undefined && captureFailure === null) {
+      throw new Direct3DCaptureError(
+        'capture_failed',
+        'The Direct 3D capture completed but renderer state could not be restored.',
+        cleanupFailure,
+      );
     }
   }
 }

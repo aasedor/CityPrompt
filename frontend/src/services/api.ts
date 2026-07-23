@@ -1336,6 +1336,15 @@ export const rendersApi = {
     presentation_mode: 'scene' | 'reproject';
     object_id_image_base64: string;
     object_id_manifest: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
+    instance_id_image_base64: string;
+    instance_id_manifest: Record<string, {
+      instance_id: string;
+      semantic_class: 'ground' | 'landscape' | 'street' | 'park' | 'building';
+      zone_id?: string;
+      building_id?: string;
+      source_zone_ids?: string[];
+    }>;
+    fidelity_policy: 'precise' | 'balanced' | 'expressive';
     capture: {
       width: number;
       height: number;
@@ -1355,6 +1364,8 @@ export const rendersApi = {
   }): Promise<{
     image_base64: string;
     model: 'gpt-image-2';
+    outcome: 'accepted' | 'review_required';
+    warnings: string[];
     capture_fingerprint: string;
     output_fingerprint: string;
     diagnostics: {
@@ -1363,6 +1374,44 @@ export const rendersApi = {
       view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
       context_restyled?: boolean;
       provider_first?: boolean;
+      fidelity_policy?: 'precise' | 'balanced' | 'expressive';
+      instance_id_attached?: boolean;
+      instance_count?: number;
+      provider_raw_instance_source_presence?: {
+        passed: boolean;
+        evaluated_instance_count?: number;
+        weakest_instance_recall?: number | null;
+        missing_instance_ids?: string[];
+      } | null;
+      provider_raw_unsupported_structure?: {
+        passed: boolean;
+        largest_component_pixels?: number;
+        largest_component_bbox_fraction?: number;
+        proposal_component_count?: number;
+        context_component_count?: number;
+      } | null;
+      returned_safety_strategy?:
+        | 'source_envelope'
+        | 'source_envelope_all_authored_interiors'
+        | 'source_envelope_building_interiors'
+        | 'global_tone_with_safe_building_interiors'
+        | 'global_tone_only'
+        | 'authoritative_source'
+        | null;
+      instance_source_presence?: {
+        passed: boolean;
+        evaluated_instance_count?: number;
+        weakest_instance_recall?: number | null;
+        missing_instance_ids?: string[];
+      } | null;
+      unsupported_structure?: {
+        passed: boolean;
+        largest_component_pixels?: number;
+        largest_component_bbox_fraction?: number;
+        proposal_component_count?: number;
+        context_component_count?: number;
+      } | null;
+      server_inventory?: Record<string, number> | null;
       source_width: number;
       source_height: number;
       normalized_width: number;
@@ -1418,7 +1467,7 @@ export const rendersApi = {
         building_internal_edge_recall?: number | null;
       } | null;
       macro_design_fidelity?: {
-        passed: true;
+        passed: boolean;
         tolerance_px: number;
         silhouette_edge_pixels: number;
         silhouette_edge_recall?: number | null;

@@ -60,7 +60,9 @@ import {
 } from './residualLandscape';
 import {
   direct3DGroundRoleForCommunityKind,
+  direct3DInstanceUserData,
   direct3DProposalUserData,
+  direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -1147,28 +1149,36 @@ export function GlobeZoneLayer({
   const lightweight = zones.length > LIGHTWEIGHT_ZONE_THRESHOLD;
   return (
     <>
-      {zones.map(zone => (
-        <group
-          key={zone.id}
-          name={`siteforge-direct3d-zone-${zone.id}`}
-          userData={direct3DProposalUserData(
-            direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone)),
-          )}
-        >
-          <ZoneMesh
-            zone={zone}
-            isSelected={zone.id === selectedZoneId}
-            terrainHeight={terrainHeight}
-            onZoneClick={onZoneClick}
-            selectionEnabled={selectionEnabled}
-            lightweight={lightweight}
-            suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
-            keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
-            planningOverlaysVisible={showPlanningOverlays}
-            sitePrepared={sitePrepared}
-          />
-        </group>
-      ))}
+      {zones.map((zone) => {
+        const role = direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone));
+        return (
+          <group
+            key={zone.id}
+            name={`siteforge-direct3d-zone-${zone.id}`}
+            userData={{
+              ...direct3DProposalUserData(role),
+              ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(
+                zone.id,
+                role,
+                zone.building_id ? { building_id: zone.building_id } : {},
+              )),
+            }}
+          >
+            <ZoneMesh
+              zone={zone}
+              isSelected={zone.id === selectedZoneId}
+              terrainHeight={terrainHeight}
+              onZoneClick={onZoneClick}
+              selectionEnabled={selectionEnabled}
+              lightweight={lightweight}
+              suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
+              keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
+              planningOverlaysVisible={showPlanningOverlays}
+              sitePrepared={sitePrepared}
+            />
+          </group>
+        );
+      })}
     </>
   );
 }

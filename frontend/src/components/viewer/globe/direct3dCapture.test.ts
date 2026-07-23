@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
 import {
   analyzeDirect3DClassPixels,
+  analyzeDirect3DInstancePixels,
+  buildDirect3DInstanceColorManifest,
   computeDirect3DCaptureSize,
   createDirect3DSemanticMaterial,
   DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
@@ -9,12 +11,19 @@ import {
   DIRECT_3D_CLASS_COLORS,
   DIRECT_3D_CLASS_ID_MANIFEST,
   direct3DGroundRoleForCommunityKind,
+  direct3DInstanceUserData,
   Direct3DCaptureError,
   direct3DProposalUserData,
+  direct3DStreetJunctionInstanceDescriptor,
+  direct3DZoneInstanceDescriptor,
   disposeDirect3DSemanticMaterial,
+  getDirect3DInstanceDescriptor,
   getDirect3DProposalRole,
   getDirect3DTargetSampleCount,
   isExcludedFromDirect3DCapture,
+  MAX_DIRECT_3D_INSTANCES,
+  requireDirect3DInstanceDescriptor,
+  validateDirect3DInstanceSemanticAgreement,
   validateDirect3DMaskCoverage,
 } from './direct3dCapture';
 
@@ -33,6 +42,7 @@ describe('Direct 3D capture helpers', () => {
   it('uses bounded beauty MSAA and no class-ID multisampling', () => {
     expect(getDirect3DTargetSampleCount(true, 'beauty')).toBe(2);
     expect(getDirect3DTargetSampleCount(true, 'class-id')).toBe(0);
+    expect(getDirect3DTargetSampleCount(true, 'instance-id')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'beauty')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'class-id')).toBe(0);
   });
@@ -67,6 +77,45 @@ describe('Direct 3D capture helpers', () => {
 
     legacyMesh.geometry.dispose();
     (legacyMesh.material as THREE.Material).dispose();
+  });
+
+  it('inherits the nearest stable instance tag and clears it in context-only subtrees', () => {
+    const proposalRoot = new THREE.Group();
+    proposalRoot.userData = direct3DProposalUserData('building');
+    const buildingRoot = new THREE.Group();
+    buildingRoot.userData = direct3DInstanceUserData(direct3DZoneInstanceDescriptor(
+      'zone-a',
+      'building',
+      { building_id: 'building-a' },
+    ));
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial());
+    proposalRoot.add(buildingRoot);
+    buildingRoot.add(mesh);
+
+    expect(getDirect3DInstanceDescriptor(mesh)).toEqual({
+      instance_id: 'zone:zone-a:building',
+      semantic_class: 'building',
+      zone_id: 'zone-a',
+      building_id: 'building-a',
+    });
+
+    mesh.userData = { ...DIRECT_3D_CAPTURE_CONTEXT_USER_DATA };
+    expect(getDirect3DInstanceDescriptor(mesh)).toBeNull();
+
+    mesh.geometry.dispose();
+    (mesh.material as THREE.Material).dispose();
+  });
+
+  it('fails closed when visible proposal geometry is missing or mismatches an instance tag', () => {
+    expect(() => requireDirect3DInstanceDescriptor('building', null)).toThrowError(
+      expect.objectContaining({ code: 'capture_failed' }),
+    );
+    expect(() => requireDirect3DInstanceDescriptor('building', {
+      instance_id: 'zone:park-a:park',
+      semantic_class: 'park',
+      zone_id: 'park-a',
+    })).toThrowError(expect.objectContaining({ code: 'capture_failed' }));
+    expect(requireDirect3DInstanceDescriptor(null, null)).toBeNull();
   });
 
   it('assigns compiled public-realm bases to their exact semantic owner', () => {
@@ -205,6 +254,124 @@ describe('Direct 3D capture helpers', () => {
     expect(result.maskPixels[12]).toBe(0);
   });
 
+  it('keeps touching building instances separate in an exact top-down ID pass', () => {
+    const buildingA = direct3DZoneInstanceDescriptor('zone-a', 'building', {
+      building_id: 'building-a',
+    });
+    const buildingB = direct3DZoneInstanceDescriptor('zone-b', 'building', {
+      building_id: 'building-b',
+    });
+    const { assignments, manifest } = buildDirect3DInstanceColorManifest([buildingA, buildingB]);
+    const colorById = new Map(assignments.map((entry) => (
+      [entry.descriptor.instance_id, hexRgb(entry.color)]
+    )));
+    const colorA = colorById.get(buildingA.instance_id) as [number, number, number];
+    const colorB = colorById.get(buildingB.instance_id) as [number, number, number];
+    const readback = new Uint8Array([
+      ...colorA, 255,
+      ...colorB, 255,
+    ]);
+
+    const result = analyzeDirect3DInstancePixels(readback, 2, 1, manifest);
+
+    expect([...result.instanceIdPixels.slice(0, 3)]).toEqual(colorA);
+    expect([...result.instanceIdPixels.slice(4, 7)]).toEqual(colorB);
+    expect(result.pixelCounts).toEqual({
+      [buildingA.instance_id]: 1,
+      [buildingB.instance_id]: 1,
+    });
+  });
+
+  it('uses the class pass to disambiguate transparent instance-color blends', () => {
+    const ground = direct3DZoneInstanceDescriptor('zone-a', 'ground');
+    const building = direct3DZoneInstanceDescriptor('zone-a', 'building', {
+      building_id: 'building-a',
+    });
+    const { assignments, manifest } = buildDirect3DInstanceColorManifest([ground, building]);
+    const colorById = new Map(assignments.map((entry) => (
+      [entry.descriptor.instance_id, hexRgb(entry.color)]
+    )));
+    const groundColor = colorById.get(ground.instance_id) as [number, number, number];
+    const buildingColor = colorById.get(building.instance_id) as [number, number, number];
+    const buildingClass = hexRgb(DIRECT_3D_CLASS_COLORS.building);
+
+    const result = analyzeDirect3DInstancePixels(
+      new Uint8Array([...groundColor, 255]),
+      1,
+      1,
+      manifest,
+      new Uint8ClampedArray([...buildingClass, 255]),
+    );
+
+    expect([...result.instanceIdPixels.slice(0, 3)]).toEqual(buildingColor);
+    expect(result.pixelCounts).toEqual({ [building.instance_id]: 1 });
+  });
+
+  it('tags intersecting street segments and their graph-owned junction separately', () => {
+    const streetRoot = new THREE.Group();
+    streetRoot.userData = direct3DProposalUserData('street');
+    const firstStreet = new THREE.Group();
+    firstStreet.userData = direct3DInstanceUserData(
+      direct3DZoneInstanceDescriptor('street-a', 'street'),
+    );
+    const secondStreet = new THREE.Group();
+    secondStreet.userData = direct3DInstanceUserData(
+      direct3DZoneInstanceDescriptor('street-b', 'street'),
+    );
+    const junction = new THREE.Group();
+    const junctionDescriptor = direct3DStreetJunctionInstanceDescriptor([
+      'street-b',
+      'street-a',
+      'street-a',
+    ]);
+    junction.userData = direct3DInstanceUserData(junctionDescriptor);
+    const firstMesh = new THREE.Mesh();
+    const secondMesh = new THREE.Mesh();
+    const junctionMesh = new THREE.Mesh();
+    streetRoot.add(firstStreet, secondStreet, junction);
+    firstStreet.add(firstMesh);
+    secondStreet.add(secondMesh);
+    junction.add(junctionMesh);
+
+    expect(getDirect3DInstanceDescriptor(firstMesh)?.instance_id).toBe('zone:street-a:street');
+    expect(getDirect3DInstanceDescriptor(secondMesh)?.instance_id).toBe('zone:street-b:street');
+    expect(getDirect3DInstanceDescriptor(junctionMesh)).toEqual({
+      instance_id: junctionDescriptor.instance_id,
+      semantic_class: 'street',
+      source_zone_ids: ['street-a', 'street-b'],
+    });
+    expect(direct3DStreetJunctionInstanceDescriptor(['street-a', 'street-b'])).toEqual(
+      junctionDescriptor,
+    );
+    expect(() => direct3DStreetJunctionInstanceDescriptor(['street-a'])).toThrow(
+      'at least two persisted street sources',
+    );
+  });
+
+  it('rejects class and instance ownership disagreements before a paid render', () => {
+    const descriptor = direct3DZoneInstanceDescriptor('building-a', 'building');
+    const { assignments, manifest } = buildDirect3DInstanceColorManifest([descriptor]);
+    const instanceRgb = hexRgb(assignments[0].color);
+    const buildingRgb = hexRgb(DIRECT_3D_CLASS_COLORS.building);
+    const groundRgb = hexRgb(DIRECT_3D_CLASS_COLORS.ground);
+    const instancePixels = new Uint8ClampedArray([...instanceRgb, 255]);
+
+    expect(() => validateDirect3DInstanceSemanticAgreement(
+      new Uint8ClampedArray([...buildingRgb, 255]),
+      instancePixels,
+      1,
+      1,
+      manifest,
+    )).not.toThrow();
+    expect(() => validateDirect3DInstanceSemanticAgreement(
+      new Uint8ClampedArray([...groundRgb, 255]),
+      instancePixels,
+      1,
+      1,
+      manifest,
+    )).toThrow('conflicts with its semantic class');
+  });
+
   it('fails closed for empty and context-free proposal masks', () => {
     expect(() => validateDirect3DMaskCoverage(0, 0)).toThrowError(
       expect.objectContaining({ code: 'no_proposal_content' }),
@@ -224,5 +391,44 @@ describe('Direct 3D capture helpers', () => {
       '#B452FF': 'building',
     });
     expect(new Set(Object.keys(DIRECT_3D_CLASS_ID_MANIFEST)).size).toBe(5);
+  });
+
+  it('exports a stable unique instance manifest even when an instance has zero pixels', () => {
+    const descriptors = [
+      direct3DZoneInstanceDescriptor('park-a', 'park'),
+      direct3DZoneInstanceDescriptor('building-a', 'building', { building_id: 'bldg-a' }),
+      direct3DZoneInstanceDescriptor('street-a', 'street'),
+    ];
+    const forward = buildDirect3DInstanceColorManifest(descriptors);
+    const reversed = buildDirect3DInstanceColorManifest([...descriptors].reverse());
+
+    expect(forward.manifest).toEqual(reversed.manifest);
+    expect(new Set(Object.keys(forward.manifest)).size).toBe(descriptors.length);
+    expect(Object.values(forward.manifest).map((entry) => entry.instance_id).sort()).toEqual(
+      descriptors.map((entry) => entry.instance_id).sort(),
+    );
+
+    const visible = forward.assignments[0];
+    const visibleRgb = hexRgb(visible.color);
+    const analysis = analyzeDirect3DInstancePixels(
+      new Uint8Array([...visibleRgb, 255]),
+      1,
+      1,
+      forward.manifest,
+    );
+    expect(analysis.pixelCounts[visible.descriptor.instance_id]).toBe(1);
+    expect(Object.keys(forward.manifest)).toHaveLength(3);
+  });
+
+  it('fails locally at the same 2,048-instance limit as the API schema', () => {
+    const descriptors = Array.from({ length: MAX_DIRECT_3D_INSTANCES + 1 }, (_, index) => (
+      direct3DZoneInstanceDescriptor(`zone-${index}`, 'building', {
+        building_id: `building-${index}`,
+      })
+    ));
+
+    expect(() => buildDirect3DInstanceColorManifest(descriptors)).toThrowError(
+      expect.objectContaining({ code: 'capture_failed' }),
+    );
   });
 });

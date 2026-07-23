@@ -47,8 +47,10 @@ import {
   hasCurrentResidualLandscapeRecipe,
 } from './residualLandscape';
 import {
+  resolveDirect3DFidelityPolicy,
   resolveDirect3DPresentationMode,
   useDirect3DRender,
+  type Direct3DFidelityPolicy,
   type Direct3DRenderDiagnostics,
 } from './useDirect3DRender';
 
@@ -182,11 +184,25 @@ export const STYLE_GROUPS = [
 export type GlobeRenderPipeline = 'classic' | 'direct3d';
 
 export const DIRECT_3D_PIPELINE_DESCRIPTION =
-  'One-call full-scene restyle. Camera-preserving styles are geometry-checked; plan and axonometric styles are experimental reprojections.';
+  'One-call inventory-locked finish of the compiled 3D scene. Style changes appearance; fidelity controls geometric freedom.';
 export const DIRECT_3D_SCOPE_DESCRIPTION =
-  'Camera-preserving styles are checked against compiled geometry. Projection styles use the compiled design as guidance and require visual review.';
+  'Precise and Balanced preserve authored structure. Expressive and reprojected results require source/candidate review before saving.';
 export const DIRECT_3D_CALL_DESCRIPTION =
-  '1 image call · projection styles require visual review';
+  '1 image call · review-required results are never auto-saved';
+
+export const DIRECT_3D_FIDELITY_OPTIONS: ReadonlyArray<{
+  id: Direct3DFidelityPolicy;
+  label: string;
+  description: string;
+}> = [
+  { id: 'precise', label: 'Precise', description: 'Survey-grade structure lock' },
+  { id: 'balanced', label: 'Balanced', description: 'Better finish with modest edge freedom' },
+  { id: 'expressive', label: 'Expressive', description: 'Artistic interpretation; review required' },
+];
+
+export function shouldAutoSaveDirect3D(outcome: 'accepted' | 'review_required'): boolean {
+  return outcome === 'accepted';
+}
 
 /** Classic keeps its existing Development/massing gate; Direct accepts every catalogue style. */
 export function isRenderStyleDisabled(
@@ -209,6 +225,14 @@ type LightboxRender = {
   createdAt?: string;
   downloadName: string;
   canSave?: boolean;
+};
+
+type Direct3DReview = {
+  outcome: 'accepted' | 'review_required';
+  warnings: string[];
+  sourceImageUrl: string;
+  fidelityPolicy: Direct3DFidelityPolicy;
+  style: string;
 };
 
 export function GlobeAIRenderPanel({
@@ -247,6 +271,8 @@ export function GlobeAIRenderPanel({
   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
+  const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('balanced');
+  const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
   const hasPlacedMassing = useMemo(
@@ -784,6 +810,7 @@ export function GlobeAIRenderPanel({
     setPreviews([]);
     setSelectedPreviewIndex(null);
     setDirectDiagnostics(null);
+    setDirectReview(null);
     setError(null);
     setRenderProgress(null);
     const startTime = Date.now();
@@ -798,6 +825,7 @@ export function GlobeAIRenderPanel({
       setIsPreparingCapture(false);
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
+        fidelityPolicy: directFidelityPolicy,
         customPrompt: customPrompt.trim() || undefined,
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
@@ -807,8 +835,20 @@ export function GlobeAIRenderPanel({
       setSelectedPreviewIndex(0);
       setResult(direct.render);
       setDirectDiagnostics(direct.diagnostics);
-      await autoSaveGlobeRenders([direct.render]);
-      onRenderComplete?.(direct.render);
+      setDirectReview(direct.outcome === 'review_required'
+        ? {
+            outcome: direct.outcome,
+            warnings: direct.warnings,
+            sourceImageUrl: direct.sourceImageUrl,
+            fidelityPolicy: direct.fidelityPolicy,
+            style: selectedStyle,
+          }
+        : null);
+      if (shouldAutoSaveDirect3D(direct.outcome)) {
+        const saved = await autoSaveGlobeRenders([direct.render]);
+        if (saved) setSaveStatus('saved');
+        onRenderComplete?.(direct.render);
+      }
     } catch (err: unknown) {
       setError(apiErrorMessage(err, 'Direct 3D render failed. Please try again.'));
     } finally {
@@ -823,6 +863,7 @@ export function GlobeAIRenderPanel({
     captureDirect3D,
     customPrompt,
     community3DCaptureClaims,
+    directFidelityPolicy,
     direct3DAvailable,
     isRendering,
     onBeforeRender,
@@ -908,7 +949,7 @@ export function GlobeAIRenderPanel({
   }, [result]);
 
   const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed' | 'providerLabel' | 'model' | 'imageQuality'>) => {
-    if (!renderToSave.imageUrl || !projectId || saving) return;
+    if (!renderToSave.imageUrl || !projectId || saving) return false;
     setSaving(true);
     setSaveStatus('idle');
     try {
@@ -934,8 +975,10 @@ export function GlobeAIRenderPanel({
             downloadName: `render-${saved.id}.png`,
           }
         : current);
+      return true;
     } catch {
       setSaveStatus('error');
+      return false;
     } finally {
       setSaving(false);
     }
@@ -943,30 +986,38 @@ export function GlobeAIRenderPanel({
 
   const handleSave = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;
-    await saveRenderToProject({
+    const saved = await saveRenderToProject({
       imageUrl: result.imageUrl,
       prompt: result.prompt,
-      style: selectedStyle,
+      style: directReview?.style ?? selectedStyle,
       seed: result.seed,
       providerLabel: result.providerLabel,
       model: result.model,
       imageQuality: result.imageQuality,
     });
-  }, [result, saveRenderToProject, selectedStyle]);
+    if (saved && directReview?.outcome === 'review_required') {
+      onRenderComplete?.(result);
+    }
+  }, [directReview, onRenderComplete, result, saveRenderToProject, selectedStyle]);
 
   const openResultLightbox = useCallback((renderResult: GlobeRenderResult, label: string) => {
     setLightboxRender({
       imageUrl: renderResult.imageUrl,
       prompt: renderResult.prompt,
-      style: [formatImageQualityLabel(renderResult.imageQuality), selectedStyle].filter(Boolean).join(' / '),
+      style: [
+        formatImageQualityLabel(renderResult.imageQuality),
+        directReview?.style ?? selectedStyle,
+      ].filter(Boolean).join(' / '),
       seed: renderResult.seed,
       model: renderResult.model,
       imageQuality: renderResult.imageQuality,
       providerLabel: renderResult.providerLabel,
       downloadName: `${label}-${Date.now()}.png`,
-      canSave: Boolean(projectId),
+      // A review-required candidate may be enlarged here, but acceptance stays
+      // beside the authoritative source/candidate comparison in the panel.
+      canSave: Boolean(projectId) && directReview?.outcome !== 'review_required',
     });
-  }, [projectId, selectedStyle]);
+  }, [directReview, projectId, selectedStyle]);
 
   const openSavedRenderLightbox = useCallback((saved: SavedRender) => {
     setLightboxRender({
@@ -1111,8 +1162,14 @@ export function GlobeAIRenderPanel({
             onClick={() => {
               pipelineChoiceTouchedRef.current = true;
               setRenderPipeline('classic');
+              if (directReview?.outcome === 'review_required') {
+                setResult(null);
+                setPreviews([]);
+                setSelectedPreviewIndex(null);
+              }
               setDirectCapturePreview(null);
               setDirectDiagnostics(null);
+              setDirectReview(null);
             }}
             className={`rounded-lg border-2 px-3 py-2 text-left transition ${
               renderPipeline === 'classic'
@@ -1133,7 +1190,8 @@ export function GlobeAIRenderPanel({
               pipelineChoiceTouchedRef.current = true;
               setRenderPipeline('direct3d');
               setHighFidelity(false);
-              setDirectDiagnostics(null);
+              if (!directReview) setDirectDiagnostics(null);
+              setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(selectedStyle));
             }}
             className={`rounded-lg border-2 px-3 py-2 text-left transition ${
               renderPipeline === 'direct3d'
@@ -1178,7 +1236,12 @@ export function GlobeAIRenderPanel({
                     return (
                       <button
                         key={s.id}
-                        onClick={() => setSelectedStyle(s.id)}
+                        onClick={() => {
+                          setSelectedStyle(s.id);
+                          if (renderPipeline === 'direct3d') {
+                            setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(s.id));
+                          }
+                        }}
                         disabled={disabled}
                         title={disabled
                           ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
@@ -1196,6 +1259,7 @@ export function GlobeAIRenderPanel({
                         }`}
                       >
                         {s.label}
+                        {renderPipeline === 'direct3d' && presentationMode === 'reproject' ? ' · Review' : ''}
                       </button>
                     );
                   })}
@@ -1221,6 +1285,36 @@ export function GlobeAIRenderPanel({
 
         {/* Custom prompt */}
         <div>
+          {renderPipeline === 'direct3d' && (
+            <div className="mb-3">
+              <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-black uppercase text-white/50">
+                <span>Geometry fidelity</span>
+                {(directFidelityPolicy === 'expressive'
+                  || resolveDirect3DPresentationMode(selectedStyle) === 'reproject') && (
+                  <span className="rounded-full border border-amber-300/40 bg-amber-300/10 px-1.5 py-0.5 text-[8px] text-amber-100">
+                    Review required
+                  </span>
+                )}
+              </div>
+              <div className="grid gap-1">
+                {DIRECT_3D_FIDELITY_OPTIONS.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setDirectFidelityPolicy(option.id)}
+                    className={`rounded border px-2 py-1.5 text-left transition ${
+                      directFidelityPolicy === option.id
+                        ? 'border-cyan-200/60 bg-cyan-300/15 text-cyan-50'
+                        : 'border-white/10 bg-white/5 text-white/55 hover:bg-white/10'
+                    }`}
+                  >
+                    <span className="block text-[10px] font-black uppercase">{option.label}</span>
+                    <span className="block text-[9px] font-semibold opacity-70">{option.description}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="mb-1 text-[10px] font-black uppercase text-white/50">Prompt</div>
           <textarea
             value={customPrompt}
@@ -1267,11 +1361,12 @@ export function GlobeAIRenderPanel({
                   <span key={role}>{role} {((coverage ?? 0) * 100).toFixed(1)}%</span>
                 ))}
               </div>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
                 {[
                   ['Beauty', directCapturePreview.thumbnails.beauty],
                   ['Mask', directCapturePreview.thumbnails.mask],
                   ['Class ID', directCapturePreview.thumbnails.classId],
+                  ['Instance ID', directCapturePreview.thumbnails.instanceId],
                 ].map(([label, source]) => (
                   <figure key={label} className="overflow-hidden rounded border border-white/15 bg-black/30">
                     <img src={source} alt={`Direct 3D ${label}`} className="aspect-video w-full object-contain" />
@@ -1336,10 +1431,54 @@ export function GlobeAIRenderPanel({
       {/* Result */}
       {result && (
         <div className="px-4 pb-3">
+          {directReview?.outcome === 'review_required' && (
+            <div className="mb-2 rounded-lg border-2 border-amber-300/45 bg-amber-300/10 px-3 py-2 text-amber-50">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-black uppercase">Review required before saving</span>
+                <span className="rounded-full border border-amber-200/40 px-2 py-0.5 text-[9px] font-black uppercase">
+                  {directReview.style} · {directReview.fidelityPolicy}
+                </span>
+              </div>
+              <p className="mt-1 text-[10px] font-semibold text-amber-50/75">
+                Compare the authored source and candidate. Confirm that no permanent building or major feature was added, removed, split, or merged.
+              </p>
+              {directReview.warnings.length > 0 && (
+                <ul className="mt-1 list-disc space-y-0.5 pl-4 text-[9px] font-semibold text-amber-100/75">
+                  {directReview.warnings.map((warning) => <li key={warning}>{warning}</li>)}
+                </ul>
+              )}
+            </div>
+          )}
+          <div className={directReview?.outcome === 'review_required' ? 'grid grid-cols-2 gap-2' : undefined}>
+            {directReview?.outcome === 'review_required' && (
+              <figure className="overflow-hidden rounded-lg border border-white/15 bg-black/30">
+                <img
+                  src={directReview.sourceImageUrl}
+                  alt="Direct 3D authored source"
+                  className="h-full min-h-36 w-full cursor-zoom-in object-contain"
+                  title="Open authored source"
+                  onClick={() => setLightboxRender({
+                    imageUrl: directReview.sourceImageUrl,
+                    style: `${directReview.style} / ${directReview.fidelityPolicy}`,
+                    providerLabel: 'Authoritative 3D source',
+                    downloadName: `siteforge-direct3d-source-${Date.now()}.png`,
+                    canSave: false,
+                  })}
+                />
+                <figcaption className="bg-black/70 px-2 py-1 text-center text-[9px] font-black uppercase text-white/70">
+                  Authored source
+                </figcaption>
+              </figure>
+            )}
           <div className="relative rounded-lg overflow-hidden border border-white/10">
             {result.providerLabel && (
               <span className="pointer-events-none absolute left-2 top-2 z-10 rounded bg-black/70 px-2 py-1 text-[10px] font-bold text-white">
                 {[result.providerLabel, formatImageQualityLabel(result.imageQuality)].filter(Boolean).join(' / ')}
+              </span>
+            )}
+            {directReview?.outcome === 'review_required' && (
+              <span className="pointer-events-none absolute right-2 top-2 z-10 rounded bg-amber-300 px-2 py-1 text-[9px] font-black uppercase text-[#151515]">
+                Candidate
               </span>
             )}
             <img
@@ -1363,7 +1502,15 @@ export function GlobeAIRenderPanel({
                   >
                     {saving && <Loader2 size={10} className="animate-spin" />}
                     {saveStatus === 'saved' && <Check size={10} />}
-                    {saving ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Retry save' : 'Save to Project'}
+                    {saving
+                      ? 'Saving...'
+                      : saveStatus === 'saved'
+                        ? 'Saved'
+                        : saveStatus === 'error'
+                          ? 'Retry save'
+                          : directReview?.outcome === 'review_required'
+                            ? 'Accept & Save'
+                            : 'Save to Project'}
                   </button>
                   <button
                     onClick={handleDownload}
@@ -1376,8 +1523,59 @@ export function GlobeAIRenderPanel({
               )}
             </div>
           </div>
+          </div>
           {directDiagnostics && (
-            <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border border-emerald-300/25 bg-emerald-300/10 px-2 py-1.5 text-[9px] font-bold text-emerald-100/80">
+            <div className={`mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border px-2 py-1.5 text-[9px] font-bold ${
+              directReview?.outcome === 'review_required'
+                ? 'border-amber-300/25 bg-amber-300/10 text-amber-100/80'
+                : 'border-emerald-300/25 bg-emerald-300/10 text-emerald-100/80'
+            }`}>
+              {directDiagnostics.fidelity_policy && (
+                <span className="capitalize">Fidelity {directDiagnostics.fidelity_policy}</span>
+              )}
+              {directDiagnostics.instance_count != null && (
+                <span>{directDiagnostics.instance_count} authored instances</span>
+              )}
+              {directDiagnostics.server_inventory && (
+                <span className="col-span-2">
+                  Server inventory {Object.entries(directDiagnostics.server_inventory)
+                    .filter(([, count]) => Boolean(count))
+                    .map(([role, count]) => `${count} ${role}`)
+                    .join(' · ')}
+                </span>
+              )}
+              {directDiagnostics.provider_raw_instance_source_presence && (
+                <span className="col-span-2">
+                  AI candidate inventory {directDiagnostics.provider_raw_instance_source_presence.passed
+                    ? 'preserved'
+                    : 'changed — corrected before return'}
+                </span>
+              )}
+              {directDiagnostics.provider_raw_unsupported_structure && (
+                <span className="col-span-2">
+                  AI candidate no-additions check {directDiagnostics.provider_raw_unsupported_structure.passed
+                    ? 'passed'
+                    : 'failed — corrected before return'}
+                </span>
+              )}
+              {directDiagnostics.returned_safety_strategy && (
+                <span className="col-span-2 capitalize">
+                  Returned safety strategy {directDiagnostics.returned_safety_strategy.replace(/_/g, ' ')}
+                </span>
+              )}
+              {directDiagnostics.instance_source_presence && (
+                <span className="col-span-2">
+                  Returned instance presence {directDiagnostics.instance_source_presence.passed ? 'passed' : 'needs review'}
+                  {directDiagnostics.instance_source_presence.missing_instance_ids?.length
+                    ? ` · ${directDiagnostics.instance_source_presence.missing_instance_ids.length} missing`
+                    : ''}
+                </span>
+              )}
+              {directDiagnostics.unsupported_structure && (
+                <span className="col-span-2">
+                  Returned no-invention check {directDiagnostics.unsupported_structure.passed ? 'passed' : 'needs review'}
+                </span>
+              )}
               {(directDiagnostics.processing_mode === 'scene'
                 || directDiagnostics.processing_mode === 'reproject'
                 || directDiagnostics.provider_first) ? (
@@ -1400,7 +1598,7 @@ export function GlobeAIRenderPanel({
                   )}
                   {directDiagnostics.macro_design_fidelity && (
                     <>
-                      <span>Macro fidelity passed</span>
+                      <span>Macro fidelity {directDiagnostics.macro_design_fidelity.passed ? 'passed' : 'needs review'}</span>
                       <span>{directDiagnostics.macro_design_fidelity.evaluated_component_count} components checked</span>
                       <span>
                         Silhouette {((directDiagnostics.macro_design_fidelity.silhouette_edge_recall
@@ -1459,6 +1657,7 @@ export function GlobeAIRenderPanel({
               setSelectedPreviewIndex(null);
               setDirectCapturePreview(null);
               setDirectDiagnostics(null);
+              setDirectReview(null);
             }}
             className="mt-1.5 w-full text-center text-[10px] text-gray-500 hover:text-gray-300"
           >

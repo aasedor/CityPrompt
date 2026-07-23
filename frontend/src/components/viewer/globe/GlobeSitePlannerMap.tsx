@@ -37,6 +37,7 @@ import { excludeLegoStackBuildings, hasLegoRecipe, hasPlannedMassing } from './l
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
+import { getResidualLandscapeRecipe } from './residualLandscape';
 import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
@@ -89,7 +90,9 @@ import {
   captureDirect3DScene,
   Direct3DCaptureError,
   DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA,
+  direct3DInstanceUserData,
   direct3DProposalUserData,
+  direct3DZoneInstanceDescriptor,
   type Direct3DCaptureBundle,
 } from './direct3dCapture';
 
@@ -3140,10 +3143,24 @@ export function GlobeSitePlannerMap({
               the prepared boundary surface; this layer adds the deterministic
               canopy placements that are safe outside every authored zone. */}
           <group name="siteforge-direct3d-landscape" userData={direct3DProposalUserData('landscape')}>
-            <GlobeResidualLandscapeLayer
-              zones={siteZones}
-              terrainHeight={terrainElevation}
-            />
+            {siteZones.flatMap((zone) => {
+              const recipe = getResidualLandscapeRecipe(zone);
+              if (!recipe?.placements.length) return [];
+              return [(
+                <group
+                  key={`${zone.id}-${recipe.source_hash}`}
+                  name={`siteforge-direct3d-landscape-${zone.id}`}
+                  userData={direct3DInstanceUserData(
+                    direct3DZoneInstanceDescriptor(zone.id, 'landscape'),
+                  )}
+                >
+                  <GlobeResidualLandscapeLayer
+                    zones={[zone]}
+                    terrainHeight={terrainElevation}
+                  />
+                </group>
+              )];
+            })}
           </group>
 
           {/* Generated street sections are proposal content, not planning

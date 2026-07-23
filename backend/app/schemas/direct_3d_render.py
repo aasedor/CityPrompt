@@ -17,6 +17,8 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 Direct3DSemanticClass = Literal["ground", "landscape", "street", "park", "building"]
 Direct3DPresentationMode = Literal["source_anchored", "scene", "reproject"]
+Direct3DFidelityPolicy = Literal["precise", "balanced", "expressive"]
+Direct3DRenderOutcome = Literal["accepted", "review_required"]
 Direct3DStyle = Literal[
     "photorealistic",
     "photomontage",
@@ -78,6 +80,30 @@ class Direct3DCommunityZoneClaim(BaseModel):
     building_id: uuid.UUID | None = None
 
 
+class Direct3DInstanceDescriptor(BaseModel):
+    """One exact, server-bindable authored instance in the capture pass."""
+
+    instance_id: str = Field(
+        ...,
+        min_length=1,
+        max_length=180,
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+    )
+    semantic_class: Direct3DSemanticClass
+    zone_id: uuid.UUID | None = None
+    building_id: uuid.UUID | None = None
+    source_zone_ids: list[uuid.UUID] = Field(default_factory=list, max_length=2000)
+
+    @field_validator("source_zone_ids")
+    @classmethod
+    def validate_unique_source_zone_ids(
+        cls,
+        source_zone_ids: list[uuid.UUID],
+    ) -> list[uuid.UUID]:
+        if len(source_zone_ids) != len(set(source_zone_ids)):
+            raise ValueError("source_zone_ids may contain each zone only once")
+        return source_zone_ids
+
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
@@ -125,6 +151,30 @@ class Direct3DRenderRequest(BaseModel):
             "required with the class-ID PNG for scene and reproject."
         ),
     )
+    instance_id_image_base64: str | None = Field(
+        default=None,
+        min_length=32,
+        max_length=20_000_000,
+        description=(
+            "Same-size exact instance-ID PNG. Optional for legacy "
+            "source_anchored; required for scene and reproject."
+        ),
+    )
+    instance_id_manifest: dict[str, Direct3DInstanceDescriptor] | None = Field(
+        default=None,
+        description=(
+            "Map from #RRGGBB instance colors to exact authored instance, "
+            "semantic, zone, and building identities."
+        ),
+    )
+    fidelity_policy: Direct3DFidelityPolicy = Field(
+        default="balanced",
+        description=(
+            "Geometry/render trade-off. Precise retains the historical strict "
+            "gate; balanced permits bounded artistic edge variation; expressive "
+            "always requires human review."
+        ),
+    )
     capture: Direct3DCaptureClaim | None = None
     # Direct 3D is explicitly project-bound: omitting this identifier would
     # bypass the locked source/boundary/model freshness checks before spend.
@@ -156,6 +206,37 @@ class Direct3DRenderRequest(BaseModel):
             raise ValueError("#000000 is reserved for non-proposal context")
         return normalized
 
+    @field_validator("instance_id_manifest")
+    @classmethod
+    def validate_instance_id_manifest(
+        cls,
+        manifest: dict[str, Direct3DInstanceDescriptor] | None,
+    ) -> dict[str, Direct3DInstanceDescriptor] | None:
+        if manifest is None:
+            return None
+        if not 1 <= len(manifest) <= 2048:
+            raise ValueError(
+                "instance_id_manifest must contain between 1 and 2048 colors"
+            )
+
+        normalized: dict[str, Direct3DInstanceDescriptor] = {}
+        instance_ids: set[str] = set()
+        for color, descriptor in manifest.items():
+            if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
+                raise ValueError(f"Invalid instance-ID color {color!r}; expected #RRGGBB")
+            normalized_color = color.upper()
+            if normalized_color == "#000000":
+                raise ValueError("#000000 is reserved for non-instance pixels")
+            if normalized_color in normalized:
+                raise ValueError(f"Duplicate instance-ID color {normalized_color}")
+            if descriptor.instance_id in instance_ids:
+                raise ValueError(
+                    "instance_id_manifest may contain each instance_id only once"
+                )
+            normalized[normalized_color] = descriptor
+            instance_ids.add(descriptor.instance_id)
+        return normalized
+
     @model_validator(mode="after")
     def validate_object_id_pair(self) -> "Direct3DRenderRequest":
         if bool(self.object_id_image_base64) != bool(self.object_id_manifest):
@@ -169,6 +250,19 @@ class Direct3DRenderRequest(BaseModel):
             raise ValueError(
                 "scene and reproject require object_id_image_base64 and "
                 "object_id_manifest"
+            )
+        if bool(self.instance_id_image_base64) != bool(self.instance_id_manifest):
+            raise ValueError(
+                "instance_id_image_base64 and instance_id_manifest must be "
+                "supplied together"
+            )
+        if (
+            self.presentation_mode in {"scene", "reproject"}
+            and not self.instance_id_image_base64
+        ):
+            raise ValueError(
+                "scene and reproject require instance_id_image_base64 and "
+                "instance_id_manifest"
             )
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
@@ -233,7 +327,7 @@ class Direct3DRawStructuralEdgeFidelityDiagnostics(BaseModel):
 class Direct3DMacroDesignFidelityDiagnostics(BaseModel):
     """Primary design-geometry checks for provider-first scene finishes."""
 
-    passed: Literal[True]
+    passed: bool
     tolerance_px: int
     silhouette_edge_pixels: int
     silhouette_edge_recall: float | None = None
@@ -357,6 +451,7 @@ class Direct3DRenderDiagnostics(BaseModel):
     ] = "source_pixel_locked"
     context_restyled: bool = False
     provider_first: bool = False
+    fidelity_policy: Direct3DFidelityPolicy = "balanced"
     source_width: int
     source_height: int
     normalized_width: int
@@ -369,6 +464,21 @@ class Direct3DRenderDiagnostics(BaseModel):
     object_id_proposal_iou: float | None = None
     minimum_object_id_proposal_recall: float | None = None
     minimum_object_id_proposal_iou: float | None = None
+    instance_id_attached: bool = False
+    instance_count: int = 0
+    provider_raw_instance_source_presence: dict[str, object] | None = None
+    provider_raw_unsupported_structure: dict[str, object] | None = None
+    returned_safety_strategy: Literal[
+        "source_envelope",
+        "source_envelope_all_authored_interiors",
+        "source_envelope_building_interiors",
+        "global_tone_with_safe_building_interiors",
+        "global_tone_only",
+        "authoritative_source",
+    ] | None = None
+    instance_source_presence: dict[str, object] | None = None
+    unsupported_structure: dict[str, object] | None = None
+    server_inventory: dict[str, int] | None = None
     scene_lower_context_coverage: float | None = None
     minimum_scene_lower_context_coverage: float | None = None
     structural_edge_guide_attached: Literal[True] = True
@@ -390,6 +500,8 @@ class Direct3DRenderDiagnostics(BaseModel):
 class Direct3DRenderResponse(BaseModel):
     image_base64: str
     model: Literal["gpt-image-2"] = "gpt-image-2"
+    outcome: Direct3DRenderOutcome = "accepted"
+    warnings: list[str] = Field(default_factory=list)
     capture_fingerprint: str
     output_fingerprint: str
     diagnostics: Direct3DRenderDiagnostics

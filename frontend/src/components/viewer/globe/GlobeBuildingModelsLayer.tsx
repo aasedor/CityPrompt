@@ -54,7 +54,11 @@ import {
 } from './generatedBuildingLod';
 import { modelAssetAvailable } from './modelAssetAvailability';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
-import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from './direct3dCapture';
+import {
+  DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
+  direct3DInstanceUserData,
+  direct3DZoneInstanceDescriptor,
+} from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_EMBED_METERS = 0.3;
@@ -65,6 +69,19 @@ const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
 const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
 const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
 const generatedTerrainSampleCache = new Map<string, number>();
+
+function direct3DBuildingInstanceUserData(
+  building: Building,
+  zone: SiteZone | undefined,
+): Record<string, unknown> {
+  return direct3DInstanceUserData(zone
+    ? direct3DZoneInstanceDescriptor(zone.id, 'building', { building_id: building.id })
+    : {
+      instance_id: `building:${building.id}:building`,
+      semantic_class: 'building',
+      building_id: building.id,
+    });
+}
 
 interface GlobeBuildingModelsLayerProps {
   buildings: Building[];
@@ -249,7 +266,9 @@ function BuildingModelInstance({
         ref={modelRootRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, placement.yawRad]}
-        userData={proposalForDirect3D ? {} : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
+        userData={proposalForDirect3D
+          ? direct3DBuildingInstanceUserData(building, zone)
+          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -383,7 +402,9 @@ function GeneratedBuildingMassing({
         geometry={geometry}
         position={[0, 0, -GROUND_EMBED_METERS]}
         renderOrder={MODEL_RENDER_ORDER}
-        userData={proposalForDirect3D ? {} : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
+        userData={proposalForDirect3D
+          ? direct3DBuildingInstanceUserData(building, zone)
+          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
