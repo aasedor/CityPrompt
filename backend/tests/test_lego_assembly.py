@@ -2958,3 +2958,28 @@ async def test_recipe_delete_also_clears_placed_stamp(client, mock_db, test_user
     assert "legoAssembly" not in building.specifications
     assert "lego_placed" not in building.specifications
     assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"
+
+
+def test_planned_massing_height_survives_numeric_column_round_trip():
+    """6 * 3.2 = 19.200000000000003 in floats, but Building.height_meters is
+    Numeric(5,2). The representation hash is stamped from the in-memory value
+    and re-derived from the round-tripped row on every Direct 3D render, so an
+    unquantized height makes the project permanently stale (409)."""
+    from decimal import Decimal
+
+    from app.api.v1.lego_assembly import _planned_massing_dimensions
+    from app.services.residual_landscape import _semantic_number
+
+    zone = SimpleNamespace(properties={"floors": 6})
+    floors, height = _planned_massing_dimensions(zone)
+
+    assert floors == 6
+    # The stamped value must equal its own Numeric(5,2) round-trip exactly,
+    # through the same normalization the representation hash applies.
+    round_tripped = Decimal(str(height)).quantize(Decimal("0.01"))
+    assert _semantic_number(height) == _semantic_number(round_tripped)
+
+    # Authored explicit heights keep their value (already column-precision).
+    zone_explicit = SimpleNamespace(properties={"height_m": 27.35})
+    _floors, explicit_height = _planned_massing_dimensions(zone_explicit)
+    assert explicit_height == 27.35

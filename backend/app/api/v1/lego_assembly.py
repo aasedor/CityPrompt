@@ -1096,7 +1096,7 @@ async def _place_recipe_on_zone(
             name=(body.building_name or zone.name or body.archetype_id or "LEGO Building")[:255],
             footprint=zone.geometry,
             floor_count=body.target.floors,
-            height_meters=body.assembled_height_m,
+            height_meters=_column_height_meters(body.assembled_height_m),
             # SQLAlchemy's insert default is not visible until flush, but the
             # representation fingerprint is stamped before the final atomic
             # flush. Make the renderer's neutral rotation explicit so the
@@ -1141,6 +1141,18 @@ def _positive_int(value: Any) -> int | None:
     return max(1, round(parsed)) if parsed is not None else None
 
 
+def _column_height_meters(value: float) -> float:
+    """Quantize a height to the Building.height_meters column scale.
+
+    The representation fingerprint is computed from the in-memory value before
+    flush and re-derived from the Numeric(5,2) round-trip on every Direct 3D
+    render. An unquantized product such as 6 * 3.2 = 19.200000000000003 stores
+    as 19.20, so the re-derived hash never matches and the project 409s as
+    permanently stale.
+    """
+    return float(round(value, 2))
+
+
 def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
     """Resolve the planner's authoritative height without inventing a family."""
     properties = zone.properties or {}
@@ -1152,7 +1164,7 @@ def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
         or (floors * floor_height if floors is not None else None)
         or 10.0
     )
-    return floors, height
+    return floors, _column_height_meters(height)
 
 
 async def _place_planned_massing_on_zone(
