@@ -198,7 +198,7 @@ describe('Direct 3D presentation adapter', () => {
 
     expect(prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS.photorealistic);
     expect(prompt).toContain('architectural competition visualization');
-    expect(prompt).toContain('softly diffused daylight');
+    expect(prompt).toContain('softly overcast daytime atmosphere');
     expect(prompt).toContain('muted natural colours');
     expect(prompt).not.toContain('Golden hour');
     expect(prompt).not.toContain('ray-traced');
