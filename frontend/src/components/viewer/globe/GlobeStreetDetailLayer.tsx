@@ -78,6 +78,11 @@ import {
   type FourWayStreetIntersection,
 } from './streetGraphIntersections';
 import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
+import {
+  direct3DInstanceUserData,
+  direct3DStreetJunctionInstanceDescriptor,
+  direct3DZoneInstanceDescriptor,
+} from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import {
   buildStreetFamilyFixturePlacements,
@@ -1346,27 +1351,39 @@ export function GlobeStreetDetailLayer({
   );
   return (
     <>
-      {detailedRoadZones.map((zone) =>
-        isRoundaboutZone(zone) ? (
-          <RoundaboutDetail key={zone.id} zone={zone} fallbackTerrainHeight={terrainHeight} />
-        ) : (
-          <StreetRibbonDetail
-            key={zone.id}
-            zone={zone}
-            fallbackTerrainHeight={terrainHeight}
-            intersectionNodes={intersectionNodes}
-            renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
-            renderFamilyTrees={treeStreetIds.has(zone.id)}
-          />
-        ),
-      )}
+      {detailedRoadZones.map((zone) => (
+        <group
+          key={zone.id}
+          name={`siteforge-direct3d-street-${zone.id}`}
+          userData={direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'street'))}
+        >
+          {isRoundaboutZone(zone) ? (
+            <RoundaboutDetail zone={zone} fallbackTerrainHeight={terrainHeight} />
+          ) : (
+            <StreetRibbonDetail
+              zone={zone}
+              fallbackTerrainHeight={terrainHeight}
+              intersectionNodes={intersectionNodes}
+              renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
+              renderFamilyTrees={treeStreetIds.has(zone.id)}
+            />
+          )}
+        </group>
+      ))}
       {intersectionNodes.map((node) => (
-        <AccessibleFourWayIntersectionDetail
+        <group
           key={node.id}
-          node={node}
-          zones={detailedRoadZones}
-          fallbackTerrainHeight={terrainHeight}
-        />
+          name={`siteforge-direct3d-junction-${node.id}`}
+          userData={direct3DInstanceUserData(
+            direct3DStreetJunctionInstanceDescriptor(node.zoneIds),
+          )}
+        >
+          <AccessibleFourWayIntersectionDetail
+            node={node}
+            zones={detailedRoadZones}
+            fallbackTerrainHeight={terrainHeight}
+          />
+        </group>
       ))}
     </>
   );
