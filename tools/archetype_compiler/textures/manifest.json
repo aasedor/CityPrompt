@@ -1,0 +1,992 @@
+{
+  "charred_timber": {
+    "prompt": "Seamless tileable texture of charred black shou-sugi-ban timber cladding, vertical board-on-board planks, subtle alligator-skin char, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:22:36.766470+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.544
+      }
+    ],
+    "target_base_color": "#2e2a26",
+    "target_roughness": 0.62,
+    "seam_ratio_flattened": 1.544,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.11,
+    "mean_rgb": [
+      34,
+      35,
+      35
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 643
+  },
+  "buff_brick": {
+    "prompt": "Seamless tileable texture of buff cream-yellow brick wall in running bond, subtle tonal variation, light grey mortar joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:22:49.014688+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.284
+      }
+    ],
+    "target_base_color": "#c8a878",
+    "target_roughness": 0.85,
+    "seam_ratio_flattened": 1.284,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.292,
+    "mean_rgb": [
+      208,
+      181,
+      144
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 631
+  },
+  "zinc": {
+    "prompt": "Seamless tileable texture of blue-grey zinc facade cladding, flat-lock rectangular panels with staggered joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:23:00.113477+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 2.484
+      }
+    ],
+    "target_base_color": "#8d939a",
+    "target_roughness": 0.45,
+    "seam_ratio_flattened": 2.484,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 2.868,
+    "mean_rgb": [
+      111,
+      131,
+      146
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 370
+  },
+  "concrete": {
+    "prompt": "Seamless tileable texture of cast-in-place concrete wall, light warm grey, subtle formwork marks and small pores, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:33:20.933020+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 2.465
+      }
+    ],
+    "target_base_color": "#b5b1a8",
+    "target_roughness": 0.82,
+    "seam_ratio_flattened": 2.465,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 2.629,
+    "mean_rgb": [
+      192,
+      185,
+      173
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 499
+  },
+  "roof_membrane": {
+    "prompt": "Seamless tileable texture of grey built-up bitumen roof membrane with fine gravel ballast, seen from directly above, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:33:32.442513+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.418
+      }
+    ],
+    "target_base_color": "#4a4d4f",
+    "target_roughness": 0.85,
+    "seam_ratio_flattened": 1.418,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.043,
+    "mean_rgb": [
+      106,
+      104,
+      97
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 1021
+  },
+  "sedum_roof": {
+    "prompt": "Seamless tileable texture of extensive sedum green roof carpet, mixed green and russet succulents, seen from directly above, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:33:42.675044+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.628
+      }
+    ],
+    "target_base_color": "#5f7a48",
+    "target_roughness": 0.9,
+    "seam_ratio_flattened": 1.628,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.113,
+    "mean_rgb": [
+      101,
+      106,
+      38
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 1004
+  },
+  "black_metal": {
+    "prompt": "Seamless tileable texture of matte charcoal-black architectural metal panels, fine vertical brushed grain, thin recessed panel joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:34:16.415003+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 10.785
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 3.282
+      },
+      {
+        "attempt": 3,
+        "seam_ratio_flattened": 6.181
+      }
+    ],
+    "target_base_color": "#26282c",
+    "target_roughness": 0.4,
+    "seam_ratio_flattened": 3.282,
+    "seam_method": "mirror_tile",
+    "seam_feather": null,
+    "seam_ratio_final": 0.0,
+    "mean_rgb": [
+      56,
+      56,
+      56
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 281
+  },
+  "corten_steel": {
+    "prompt": "Seamless tileable texture of weathered corten steel plates, rust-orange patina with subtle vertical streaking, thin panel seams, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:34:37.666416+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.508
+      }
+    ],
+    "target_base_color": "#8a4a2e",
+    "target_roughness": 0.7,
+    "seam_ratio_flattened": 1.508,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.204,
+    "mean_rgb": [
+      158,
+      78,
+      30
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 569
+  },
+  "copper": {
+    "prompt": "Architectural material swatch: aged copper facade panels, warm russet brown with soft patina variation, orthographic straight-on view filling the whole frame, soft uniform illumination, subtle real-world imperfections, roughly 2 metres of coverage. Edges must wrap so the image tiles perfectly.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:48:00.860041+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 3.387
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 3.231
+      },
+      {
+        "attempt": 3,
+        "seam_ratio_flattened": 6.447
+      }
+    ],
+    "target_base_color": "#9a5b3c",
+    "target_roughness": 0.4,
+    "seam_ratio_flattened": 3.231,
+    "seam_method": "mirror_tile",
+    "seam_feather": null,
+    "seam_ratio_final": 0.0,
+    "mean_rgb": [
+      132,
+      89,
+      58
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 540
+  },
+  "standing_seam": {
+    "prompt": "Seamless tileable texture of dark grey standing-seam metal cladding, parallel vertical seams every half metre, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:35:20.454694+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 2.124
+      }
+    ],
+    "target_base_color": "#4c5257",
+    "target_roughness": 0.45,
+    "seam_ratio_flattened": 2.124,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.954,
+    "mean_rgb": [
+      75,
+      79,
+      83
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 267
+  },
+  "glulam": {
+    "prompt": "Seamless tileable texture of glue-laminated timber surface, warm honey tone, visible horizontal lamination lines, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:36:12.429410+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 3.829
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 1.354
+      }
+    ],
+    "target_base_color": "#c9a878",
+    "target_roughness": 0.6,
+    "seam_ratio_flattened": 1.354,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 2.303,
+    "mean_rgb": [
+      212,
+      145,
+      69
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 450
+  },
+  "clt": {
+    "prompt": "Seamless tileable texture of exposed cross-laminated timber panel, pale honey spruce, fine vertical board joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:36:23.383406+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.029
+      }
+    ],
+    "target_base_color": "#cbb089",
+    "target_roughness": 0.6,
+    "seam_ratio_flattened": 1.029,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.72,
+    "mean_rgb": [
+      230,
+      199,
+      159
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 402
+  },
+  "pine_wood": {
+    "prompt": "Seamless tileable texture of golden pine wood cladding boards, occasional small knots, straight grain, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:36:43.960692+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.731
+      }
+    ],
+    "target_base_color": "#d3b98a",
+    "target_roughness": 0.6,
+    "seam_ratio_flattened": 1.731,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.012,
+    "mean_rgb": [
+      211,
+      150,
+      76
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 457
+  },
+  "cedar_wood": {
+    "prompt": "Seamless tileable texture of western red cedar cladding boards, warm reddish-brown, fine straight grain, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:37:06.005398+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.313
+      }
+    ],
+    "target_base_color": "#a87848",
+    "target_roughness": 0.65,
+    "seam_ratio_flattened": 1.313,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.68,
+    "mean_rgb": [
+      146,
+      87,
+      43
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 445
+  },
+  "oak_wood": {
+    "prompt": "Seamless tileable texture of european oak boards, medium warm brown, straight grain, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:37:17.196787+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.411
+      }
+    ],
+    "target_base_color": "#a8845c",
+    "target_roughness": 0.65,
+    "seam_ratio_flattened": 1.411,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.827,
+    "mean_rgb": [
+      168,
+      117,
+      68
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 500
+  },
+  "natural_timber": {
+    "prompt": "Seamless tileable texture of warm natural timber cladding boards, medium brown, vertical orientation, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:37:28.363601+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.314
+      }
+    ],
+    "target_base_color": "#b08a5a",
+    "target_roughness": 0.65,
+    "seam_ratio_flattened": 1.314,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.721,
+    "mean_rgb": [
+      125,
+      85,
+      53
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 567
+  },
+  "white_plaster": {
+    "prompt": "Seamless tileable texture of smooth white lime plaster wall, very subtle trowel texture, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:37:48.707247+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.127
+      }
+    ],
+    "target_base_color": "#e8e6e0",
+    "target_roughness": 0.8,
+    "seam_ratio_flattened": 1.127,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.082,
+    "mean_rgb": [
+      232,
+      232,
+      231
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 317
+  },
+  "limestone": {
+    "prompt": "Seamless tileable texture of pale limestone ashlar wall, large smooth blocks, thin flush joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:38:30.080744+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 7.061
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 3.408
+      },
+      {
+        "attempt": 3,
+        "seam_ratio_flattened": 5.186
+      }
+    ],
+    "target_base_color": "#d5cbb8",
+    "target_roughness": 0.75,
+    "seam_ratio_flattened": 3.408,
+    "seam_method": "mirror_tile",
+    "seam_feather": null,
+    "seam_ratio_final": 0.0,
+    "mean_rgb": [
+      223,
+      214,
+      197
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 320
+  },
+  "sandstone": {
+    "prompt": "Seamless tileable texture of warm buff sandstone ashlar wall, soft tonal banding across blocks, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:38:40.613619+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 2.333
+      }
+    ],
+    "target_base_color": "#c9b090",
+    "target_roughness": 0.78,
+    "seam_ratio_flattened": 2.333,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.713,
+    "mean_rgb": [
+      195,
+      162,
+      125
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 559
+  },
+  "granite": {
+    "prompt": "Seamless tileable texture of grey granite wall panels, flame-finished, fine salt-and-pepper speckle, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:38:52.197846+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.297
+      }
+    ],
+    "target_base_color": "#8c8c8c",
+    "target_roughness": 0.6,
+    "seam_ratio_flattened": 1.297,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.374,
+    "mean_rgb": [
+      148,
+      147,
+      147
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 904
+  },
+  "natural_stone": {
+    "prompt": "Seamless tileable texture of coursed natural stone wall, mixed warm grey tones, split-face texture, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:39:02.880199+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.07
+      }
+    ],
+    "target_base_color": "#9a938a",
+    "target_roughness": 0.72,
+    "seam_ratio_flattened": 1.07,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.861,
+    "mean_rgb": [
+      126,
+      117,
+      107
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 740
+  },
+  "precast_concrete": {
+    "prompt": "Seamless tileable texture of smooth precast concrete panels, pale warm grey, slim recessed reveals, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:39:25.751969+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 5.572
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 1.929
+      }
+    ],
+    "target_base_color": "#bcb8af",
+    "target_roughness": 0.8,
+    "seam_ratio_flattened": 1.929,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.545,
+    "mean_rgb": [
+      186,
+      179,
+      168
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 321
+  },
+  "curtain_wall": {
+    "prompt": "Seamless tileable texture of glass curtain wall, blue-grey reflective glazing panels between slim dark aluminium mullions, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:39:47.730318+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 4.117
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 1.769
+      }
+    ],
+    "target_base_color": "#6e8ea4",
+    "target_roughness": 0.1,
+    "seam_ratio_flattened": 1.769,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.779,
+    "mean_rgb": [
+      102,
+      132,
+      157
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 320
+  },
+  "terracotta": {
+    "prompt": "Seamless tileable texture of terracotta rainscreen panels, warm orange-brown, horizontal format with fine grooves, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:40:27.496744+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 3.939
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 2.841
+      },
+      {
+        "attempt": 3,
+        "seam_ratio_flattened": 2.624
+      }
+    ],
+    "target_base_color": "#b06a48",
+    "target_roughness": 0.75,
+    "seam_ratio_flattened": 2.624,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.543,
+    "mean_rgb": [
+      188,
+      112,
+      64
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 440
+  },
+  "metal_panel": {
+    "prompt": "Seamless tileable texture of silver-grey aluminium composite facade panels with slim recessed joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:41:45.915299+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 15.238
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 8.171
+      },
+      {
+        "attempt": 3,
+        "seam_ratio_flattened": 17.544
+      }
+    ],
+    "target_base_color": "#5a5e63",
+    "target_roughness": 0.45,
+    "seam_ratio_flattened": 8.171,
+    "seam_method": "mirror_tile",
+    "seam_feather": null,
+    "seam_ratio_final": 0.0,
+    "mean_rgb": [
+      171,
+      174,
+      177
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 257
+  },
+  "red_brick": {
+    "prompt": "Seamless tileable texture of red-brown clay brick wall in running bond, slight tonal variation per brick, recessed grey mortar joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:42:29.419918+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.184
+      }
+    ],
+    "target_base_color": "#8a4a3a",
+    "target_roughness": 0.85,
+    "seam_ratio_flattened": 1.184,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.012,
+    "mean_rgb": [
+      142,
+      91,
+      69
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 706
+  },
+  "fiber_cement": {
+    "prompt": "Seamless tileable texture of smooth fibre-cement facade panels, pale grey, matte finish, faint fibre texture, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:42:49.295892+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.119
+      }
+    ],
+    "target_base_color": "#a8a49c",
+    "target_roughness": 0.75,
+    "seam_ratio_flattened": 1.119,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 5.605,
+    "mean_rgb": [
+      194,
+      195,
+      190
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 303
+  },
+  "larch_wood": {
+    "prompt": "Seamless tileable texture of natural larch wood cladding, narrow vertical boards, warm amber tone, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:43:52.355819+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 0.888
+      }
+    ],
+    "target_base_color": "#b08a5a",
+    "target_roughness": 0.65,
+    "seam_ratio_flattened": 0.888,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.592,
+    "mean_rgb": [
+      199,
+      127,
+      62
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 600
+  },
+  "birch_wood": {
+    "prompt": "Seamless tileable texture of pale birch wood cladding boards, smooth fine grain, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:45:36.483039+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.027
+      }
+    ],
+    "target_base_color": "#dcc9a3",
+    "target_roughness": 0.6,
+    "seam_ratio_flattened": 1.027,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 6.109,
+    "mean_rgb": [
+      221,
+      195,
+      166
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 345
+  },
+  "stucco": {
+    "prompt": "Flat frontal close-up photograph of light beige mineral stucco wall, fine sand-float texture on a building, slightly weathered with natural variation, overcast even light, no shadows or perspective, about 2 by 2 metres of the surface. The pattern must repeat seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:45:57.013091+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "error": "Gemini returned no image part. finish_reason=FinishReason.IMAGE_RECITATION"
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 1.057
+      }
+    ],
+    "target_base_color": "#ddd9d0",
+    "target_roughness": 0.8,
+    "seam_ratio_flattened": 1.057,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.12,
+    "mean_rgb": [
+      214,
+      191,
+      160
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 797
+  },
+  "corrugated_steel": {
+    "prompt": "Flat frontal close-up photograph of industrial ribbed steel siding on a Canadian prairie workshop, vertical corrugations, cool grey zinc coating with faint weathering streaks on a building, slightly weathered with natural variation, overcast even light, no shadows or perspective, about 2 by 2 metres of the surface. The pattern must repeat seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:46:41.723560+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "error": "Gemini returned no image part. finish_reason=FinishReason.IMAGE_RECITATION"
+      },
+      {
+        "attempt": 2,
+        "seam_ratio_flattened": 1.684
+      }
+    ],
+    "target_base_color": "#7d8286",
+    "target_roughness": 0.5,
+    "seam_ratio_flattened": 1.684,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.134,
+    "mean_rgb": [
+      131,
+      141,
+      147
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 539
+  }
+}
