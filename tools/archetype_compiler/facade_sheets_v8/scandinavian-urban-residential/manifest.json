@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "scandinavian-urban-residential",
+  "archetype_id": "scandinavian_urban_residential",
+  "created_at": "2026-07-17T06:43:20.937322+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/scandinavian_urban_residential/hero.png",
+  "architectural_signature": {
+    "identity": "Quiet Scandinavian apartment building with pale masonry field, deep timber-lined loggias, projecting window frames, subtle asymmetry and a crisp pitched roof edge.",
+    "material_zones": "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
+    "kits": [
+      "timber_picture_frames",
+      "recessed_balcony_columns",
+      "asymmetric_bays",
+      "slim_eaves"
+    ]
+  },
+  "span_m": 12.05,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        272
+      ],
+      "height_m": 3.2
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        272
+      ],
+      "height_m": 3.2
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        895
+      ],
+      "height_m": 3.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        352
+      ],
+      "height_m": 4.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-418px-0.57",
+    "floor_alt": [
+      0.1959,
+      0.3477
+    ],
+    "crown": [
+      0.0,
+      0.4996
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

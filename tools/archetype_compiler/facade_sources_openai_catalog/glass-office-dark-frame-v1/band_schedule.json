@@ -1,0 +1,14 @@
+{
+  "schema": "registered-facade-bands@1",
+  "source": "elevation_raw.jpg",
+  "notes": "Audited crops from the GPT orthographic Dark Frame & Clear Glass elevation. The double-height lobby and open roof crown remain fixed while only occupied middle floors repeat.",
+  "elevation": {"x": [0.003, 0.997], "y": [0.003, 0.997]},
+  "podium": {"x": [0.003, 0.997], "y": [0.855, 0.997]},
+  "floor": {"x": [0.003, 0.997], "y": [0.642, 0.753]},
+  "floor_alt": {"x": [0.003, 0.997], "y": [0.532, 0.641]},
+  "crown": {"x": [0.003, 0.997], "y": [0.003, 0.076]},
+  "side": {
+    "source": "floor_alt",
+    "x": [0.018, 0.982]
+  }
+}
