@@ -54,11 +54,6 @@ import {
 } from './generatedBuildingLod';
 import { modelAssetAvailable } from './modelAssetAvailability';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
-import {
-  DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
-  direct3DInstanceUserData,
-  direct3DZoneInstanceDescriptor,
-} from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_EMBED_METERS = 0.3;
@@ -70,24 +65,9 @@ const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
 const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
 const generatedTerrainSampleCache = new Map<string, number>();
 
-function direct3DBuildingInstanceUserData(
-  building: Building,
-  zone: SiteZone | undefined,
-): Record<string, unknown> {
-  return direct3DInstanceUserData(zone
-    ? direct3DZoneInstanceDescriptor(zone.id, 'building', { building_id: building.id })
-    : {
-      instance_id: `building:${building.id}:building`,
-      semantic_class: 'building',
-      building_id: building.id,
-    });
-}
-
 interface GlobeBuildingModelsLayerProps {
   buildings: Building[];
   zones: SiteZone[];
-  /** Exact server-claimed buildings editable by Direct 3D. */
-  direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
   /** Buildings whose detailed or massing representation is mounted. */
@@ -134,7 +114,6 @@ function BuildingModelInstance({
   onLoaded,
   onUnloaded,
   selected,
-  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -145,7 +124,6 @@ function BuildingModelInstance({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
-  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   const url = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
@@ -201,14 +179,6 @@ function BuildingModelInstance({
   const frameCountRef = useRef(0);
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
-  // The zone moved: unfreeze and re-sample terrain at the new centroid so the
-  // model seats on the ground it now stands over (sinking-on-move fix).
-  const anchorKey = `${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
-  useEffect(() => {
-    setSampledTerrain(null);
-    frozenRef.current = false;
-    attemptsRef.current = 0;
-  }, [anchorKey]);
   const modelRootRef = useRef<THREE.Group>(null);
   const modelWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
@@ -274,9 +244,6 @@ function BuildingModelInstance({
         ref={modelRootRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, placement.yawRad]}
-        userData={proposalForDirect3D
-          ? direct3DBuildingInstanceUserData(building, zone)
-          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -305,7 +272,6 @@ function GeneratedBuildingMassing({
   onLoaded,
   onUnloaded,
   selected,
-  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -316,7 +282,6 @@ function GeneratedBuildingMassing({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
-  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   const height = Math.max(2.5, Number(building.height_meters) || 3.2);
@@ -341,9 +306,8 @@ function GeneratedBuildingMassing({
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const anchorKey = `${building.id}:${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
-    () => generatedTerrainSampleCache.get(anchorKey) ?? null,
+    () => generatedTerrainSampleCache.get(building.id) ?? null,
   );
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(stableFrameOffset(
@@ -352,13 +316,6 @@ function GeneratedBuildingMassing({
   ));
   const attemptsRef = useRef(0);
   const frozenRef = useRef(sampledTerrain !== null);
-  // The zone moved: drop the stale frozen anchor and re-sample at the new spot.
-  useEffect(() => {
-    const cached = generatedTerrainSampleCache.get(anchorKey) ?? null;
-    setSampledTerrain(cached);
-    frozenRef.current = cached !== null;
-    attemptsRef.current = 0;
-  }, [anchorKey]);
 
   useFrame(() => {
     if (frozenRef.current || !geometry) return;
@@ -389,7 +346,7 @@ function GeneratedBuildingMassing({
         storedTerrain ?? fallbackTerrainHeight,
       )
     ) {
-      generatedTerrainSampleCache.set(anchorKey, groundCandidate);
+      generatedTerrainSampleCache.set(building.id, groundCandidate);
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
@@ -418,9 +375,6 @@ function GeneratedBuildingMassing({
         geometry={geometry}
         position={[0, 0, -GROUND_EMBED_METERS]}
         renderOrder={MODEL_RENDER_ORDER}
-        userData={proposalForDirect3D
-          ? direct3DBuildingInstanceUserData(building, zone)
-          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -441,7 +395,6 @@ function GeneratedBuildingMassing({
 export function GlobeBuildingModelsLayer({
   buildings,
   zones,
-  direct3DProposalBuildingIds,
   terrainHeight,
   onLoadedIdsChange,
   selectedBuildingId = null,
@@ -462,14 +415,9 @@ export function GlobeBuildingModelsLayer({
     .map((building) => {
       if (!(building.lod_urls?.['0'] ?? building.model_url)) return null;
       const zone = zoneByBuildingId.get(building.id);
-      // Zone-first: the owning zone's live ring drives placement so edits
-      // (rotate/move/reshape) move the model immediately, before regenerate.
-      // The stored footprint is the compile-time fallback for zone-less models.
-      const ring = zone?.coordinates && zone.coordinates.length >= 3
-        ? zone.coordinates
-        : building.footprint_coordinates && building.footprint_coordinates.length >= 3
-          ? building.footprint_coordinates
-          : undefined;
+      const ring = building.footprint_coordinates && building.footprint_coordinates.length >= 3
+        ? building.footprint_coordinates
+        : zone?.coordinates;
       const frame = ring && ring.length >= 3 ? computeFootprintFrame(ring) : null;
       return ring && frame ? { building, zone, ring, frame } : null;
     })
@@ -582,7 +530,6 @@ export function GlobeBuildingModelsLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
-            proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />
         );
@@ -598,7 +545,6 @@ export function GlobeBuildingModelsLayer({
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
-              proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
             />
           );
@@ -615,7 +561,6 @@ export function GlobeBuildingModelsLayer({
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 selected={selectedBuildingId === building.id}
-                proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
               />
             </Suspense>
