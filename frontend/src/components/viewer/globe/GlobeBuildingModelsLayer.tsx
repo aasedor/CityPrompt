@@ -201,6 +201,14 @@ function BuildingModelInstance({
   const frameCountRef = useRef(0);
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
+  // The zone moved: unfreeze and re-sample terrain at the new centroid so the
+  // model seats on the ground it now stands over (sinking-on-move fix).
+  const anchorKey = `${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
+  useEffect(() => {
+    setSampledTerrain(null);
+    frozenRef.current = false;
+    attemptsRef.current = 0;
+  }, [anchorKey]);
   const modelRootRef = useRef<THREE.Group>(null);
   const modelWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
@@ -333,8 +341,9 @@ function GeneratedBuildingMassing({
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
+  const anchorKey = `${building.id}:${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
-    () => generatedTerrainSampleCache.get(building.id) ?? null,
+    () => generatedTerrainSampleCache.get(anchorKey) ?? null,
   );
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(stableFrameOffset(
@@ -343,6 +352,13 @@ function GeneratedBuildingMassing({
   ));
   const attemptsRef = useRef(0);
   const frozenRef = useRef(sampledTerrain !== null);
+  // The zone moved: drop the stale frozen anchor and re-sample at the new spot.
+  useEffect(() => {
+    const cached = generatedTerrainSampleCache.get(anchorKey) ?? null;
+    setSampledTerrain(cached);
+    frozenRef.current = cached !== null;
+    attemptsRef.current = 0;
+  }, [anchorKey]);
 
   useFrame(() => {
     if (frozenRef.current || !geometry) return;
@@ -373,7 +389,7 @@ function GeneratedBuildingMassing({
         storedTerrain ?? fallbackTerrainHeight,
       )
     ) {
-      generatedTerrainSampleCache.set(building.id, groundCandidate);
+      generatedTerrainSampleCache.set(anchorKey, groundCandidate);
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
@@ -446,9 +462,14 @@ export function GlobeBuildingModelsLayer({
     .map((building) => {
       if (!(building.lod_urls?.['0'] ?? building.model_url)) return null;
       const zone = zoneByBuildingId.get(building.id);
-      const ring = building.footprint_coordinates && building.footprint_coordinates.length >= 3
-        ? building.footprint_coordinates
-        : zone?.coordinates;
+      // Zone-first: the owning zone's live ring drives placement so edits
+      // (rotate/move/reshape) move the model immediately, before regenerate.
+      // The stored footprint is the compile-time fallback for zone-less models.
+      const ring = zone?.coordinates && zone.coordinates.length >= 3
+        ? zone.coordinates
+        : building.footprint_coordinates && building.footprint_coordinates.length >= 3
+          ? building.footprint_coordinates
+          : undefined;
       const frame = ring && ring.length >= 3 ? computeFootprintFrame(ring) : null;
       return ring && frame ? { building, zone, ring, frame } : null;
     })

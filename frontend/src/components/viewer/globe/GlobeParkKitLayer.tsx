@@ -1749,6 +1749,8 @@ function ParkKitInstance({
   const storedTerrain = zoneStoredTerrain(zone);
   const hitFlagsRef = useRef<boolean[] | null>(null);
   const passRef = useRef(0);
+  const missesAtFreezeRef = useRef(0);
+  const redrapesRef = useRef(0);
 
   // Coordinates/recipe changed under the same zone id — restart draping.
   useEffect(() => {
@@ -1758,9 +1760,52 @@ function ParkKitInstance({
     passRef.current = 0;
     rawElevationRef.current = null;
     hitFlagsRef.current = null;
+    missesAtFreezeRef.current = 0;
+    redrapesRef.current = 0;
     setInstanceZ(null);
     setSampledTerrain(null);
   }, [terrainTargets]);
+
+  // Self-healing re-drape: a freeze taken against unrefined tiles can seat the
+  // kit tens of metres off the true surface (floating-tree bug, 2026-07-24).
+  // When the tile set settles after a freeze, spot-check the anchor; if any
+  // instance rays missed at freeze time or the centroid drifted, re-drape.
+  useEffect(() => {
+    const tilesRenderer = tiles;
+    if (!tilesRenderer) return;
+    const handleLoadEnd = () => {
+      if (!frozenRef.current || redrapesRef.current >= 3) return;
+      const tilesGroup = tilesRenderer.group;
+      if (!tilesGroup || tilesGroup.children.length === 0) return;
+      const fresh = raycastTerrainHeightAtLatLng(
+        centroid.lng,
+        centroid.lat,
+        tilesGroup,
+        raycasterRef.current,
+      );
+      const anchorDrifted = (
+        fresh !== null
+        && sampledTerrain !== null
+        && Number.isFinite(fresh)
+        && Math.abs(fresh - sampledTerrain) > 2.5
+      );
+      if (!anchorDrifted && missesAtFreezeRef.current === 0) return;
+      redrapesRef.current += 1;
+      frozenRef.current = false;
+      attemptsRef.current = 0;
+      nextInstanceRef.current = 0;
+      passRef.current = 0;
+      rawElevationRef.current = null;
+      hitFlagsRef.current = null;
+      missesAtFreezeRef.current = 0;
+      setInstanceZ(null);
+      setSampledTerrain(null);
+    };
+    tilesRenderer.addEventListener('tiles-load-end', handleLoadEnd);
+    return () => {
+      tilesRenderer.removeEventListener('tiles-load-end', handleLoadEnd);
+    };
+  }, [tiles, centroid.lat, centroid.lng, sampledTerrain]);
 
   // Anchor the frame, then seat instances in interval-gated batches
   // (drape-and-freeze; z accumulates in refs, state set once at freeze).
@@ -1859,6 +1904,7 @@ function ParkKitInstance({
           target.y,
         ) ?? anchor) - anchor
       ));
+      missesAtFreezeRef.current = misses;
       frozenRef.current = true;
       setInstanceZ(zs);
     }

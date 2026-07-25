@@ -28,6 +28,12 @@ from app.schemas.direct_3d_render import Direct3DRenderRequest
 logger = logging.getLogger(__name__)
 
 DIRECT_3D_MODEL = "gpt-image-2"
+# Presentation-first contract (product decision 2026-07-24): the provider image
+# IS the product. Scene/reproject renders return it untouched — no registration,
+# inventory gates, local repairs, or source-lock fallbacks. The legacy gate
+# machinery below stays compilable behind this flag for one-line reversal and
+# for the regression suite, which pins it False.
+DIRECT_3D_PRESENTATION_FIRST = True
 _OPENAI_EDIT_URL = "https://api.openai.com/v1/images/edits"
 _MIN_PROVIDER_PIXELS = 655_360
 DIRECT_3D_MAX_SOURCE_EDGE = 2_048
@@ -327,6 +333,10 @@ class Direct3DServiceResult:
     diagnostics: dict[str, Any]
     outcome: Literal["accepted", "review_required"] = "accepted"
     warnings: tuple[str, ...] = ()
+    # Untouched provider image (canonical PNG b64) regardless of which safety
+    # strategy shaped image_base64. The user paid for this image; the API layer
+    # persists it to the gallery whenever a fallback replaced it.
+    provider_image_base64: str | None = None
 
 
 def estimate_direct_3d_token_cost(
@@ -3279,7 +3289,11 @@ def _presentation_prompt(
             "re-rendering the proposal and surrounding photographed or Google "
             "Tiles context as one coherent finished image with consistent "
             "materials, light, shadows, weather and atmospheric depth while "
-            "removing visible CGI and photogrammetry seams."
+            "removing visible CGI and photogrammetry seams. Blend the proposal "
+            "site's edges seamlessly into the surrounding streets and "
+            "sidewalks with natural curbs, grading and planting — never render "
+            "the site boundary as a raised platform, plinth, retaining wall, "
+            "or visible cut edge."
         )
         final_lock = (
             "FINAL PRESERVATION LOCK: Preserve Image 1's exact camera angle, "
@@ -3290,7 +3304,12 @@ def _presentation_prompt(
             "Do not add, remove, split, merge, move or redesign any permanent "
             "building, road, park, water body or site feature. You may add only "
             "non-permanent entourage and finish detail such as people, bicycles, "
-            "vehicles, cafe seating, planting, benches and lighting."
+            "vehicles, cafe seating, planting, benches and lighting. "
+            "CONTEXT IDENTITY: every existing building around the proposal is a "
+            "real photographed structure — keep each one recognizably itself, "
+            "with its own cladding colours, materials, window pattern and roof "
+            "form, improving only photographic clarity. Never re-clad, restyle, "
+            "modernize or replace a neighbouring building."
         )
     else:
         task = (
@@ -4059,6 +4078,36 @@ class Direct3DRenderService:
                 "mask_retry_used": False,
             }
 
+            if (
+                DIRECT_3D_PRESENTATION_FIRST
+                and req.presentation_mode in {"scene", "reproject"}
+            ):
+                # The provider image is returned untouched. Style choice governs
+                # appearance; the capture/claim validation that already ran
+                # before spend remains the only structural contract.
+                output_png = _png_bytes(generated)
+                return Direct3DServiceResult(
+                    image_base64=base64.b64encode(output_png).decode("ascii"),
+                    audit_input_base64=capture.audit_input_base64,
+                    capture_fingerprint=capture.capture_fingerprint,
+                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome="accepted",
+                    provider_image_base64=provider_image_base64,
+                    warnings=(),
+                    diagnostics={
+                        **common_diagnostics,
+                        "view_lock": (
+                            "camera_registered"
+                            if req.presentation_mode == "scene"
+                            else "not_applicable_layout_guided"
+                        ),
+                        "context_restyled": True,
+                        "provider_first": True,
+                        "provider_spatial_pixels_retained": True,
+                        "returned_safety_strategy": "provider_full_scene",
+                    },
+                )
+
             if req.presentation_mode == "reproject":
                 reproject_sanity = assess_reproject_output_sanity(
                     capture.normalized_beauty,
@@ -4089,6 +4138,7 @@ class Direct3DRenderService:
                     capture_fingerprint=capture.capture_fingerprint,
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
                     outcome="review_required",
+                    provider_image_base64=provider_image_base64,
                     warnings=(
                         "Projection-changing Direct 3D renders require human review "
                         "against the source inventory.",
@@ -4690,6 +4740,7 @@ class Direct3DRenderService:
                     capture_fingerprint=capture.capture_fingerprint,
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
                     outcome=outcome,
+                    provider_image_base64=provider_image_base64,
                     warnings=tuple(warnings),
                     diagnostics={
                         **common_diagnostics,
@@ -4795,6 +4846,7 @@ class Direct3DRenderService:
                 audit_input_base64=capture.audit_input_base64,
                 capture_fingerprint=capture.capture_fingerprint,
                 output_fingerprint=output_fingerprint,
+                provider_image_base64=provider_image_base64,
                 diagnostics={
                     "processing_mode": "source_anchored",
                     "fidelity_policy": req.fidelity_policy,

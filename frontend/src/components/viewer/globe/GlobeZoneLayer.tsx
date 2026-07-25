@@ -59,6 +59,7 @@ import {
   getResidualLandscapeRecipe,
 } from './residualLandscape';
 import {
+  DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA,
   direct3DGroundRoleForCommunityKind,
   direct3DInstanceUserData,
   direct3DProposalUserData,
@@ -1001,6 +1002,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
+          // Pure planning washes (the translucent boundary/zone fills) are
+          // editor chrome, not design content: exclude them from Direct 3D
+          // captures so they never tint the render. Compiled/drape surfaces
+          // stay captured — they ARE the designed ground.
+          userData={
+            !isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround
+              ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
+              : undefined
+          }
         >
           {/* key remounts the material when the ground drape toggles so the
               map define recompiles (toggling `map` in place leaves it white) */}
