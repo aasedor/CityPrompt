@@ -1,0 +1,423 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --city-bg: #fff9ec;
+  --city-surface: #ffffff;
+  --city-surface-soft: #fff9ec;
+  --city-ink: #151515;
+  --city-muted: #5c554d;
+  --city-grid-line: rgba(21, 21, 21, 0.95);
+}
+
+html.dark {
+  --city-bg: #120d22;
+  --city-surface: #211735;
+  --city-surface-soft: #181229;
+  --city-ink: #fff9ec;
+  --city-muted: rgba(255, 249, 236, 0.72);
+  --city-grid-line: rgba(255, 249, 236, 0.3);
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-accent-50 text-primary-950;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes globe-ai-panel-flow {
+  0%, 100% { background-position: 50% 50%, 6% 22%, 92% 18%, 46% 110%, 50% 50%, 50% 50%; }
+  50% { background-position: 50% 50%, 96% 42%, 8% 78%, 28% -10%, 50% 50%, 50% 50%; }
+}
+
+.globe-ai-dynamic-bg {
+  --globe-ai-x: 50%;
+  --globe-ai-y: 46%;
+  background:
+    radial-gradient(circle at var(--globe-ai-x) var(--globe-ai-y), rgba(255, 255, 255, 0.17), transparent 18rem),
+    radial-gradient(circle at 12% 16%, rgba(40, 199, 232, 0.46), transparent 44%),
+    radial-gradient(circle at 82% 18%, rgba(201, 255, 61, 0.32), transparent 40%),
+    radial-gradient(circle at 48% 105%, rgba(255, 90, 61, 0.3), transparent 42%),
+    linear-gradient(105deg, rgba(40, 199, 232, 0.18), rgba(201, 255, 61, 0.12), rgba(255, 90, 61, 0.14), rgba(40, 199, 232, 0.12)),
+    linear-gradient(125deg, #091721 0%, #112f36 34%, #18272b 62%, #0d1c27 100%);
+  background-size: 100% 100%, 170% 170%, 185% 185%, 190% 190%, 220% 220%, 240% 240%;
+  background-repeat: no-repeat;
+  animation: globe-ai-panel-flow 16s ease-in-out infinite;
+  transition: background-position 180ms ease;
+}
+
+.globe-ai-rendering {
+  animation-duration: 8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-ai-dynamic-bg {
+    animation: none;
+  }
+}
+
+@layer components {
+  /* -- Buttons ------------------------------------------------- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-primary-400 px-4 py-2.5
+           text-sm font-semibold text-white shadow-lg shadow-primary-400/25 transition-all duration-200
+           hover:bg-primary-300 hover:shadow-glow
+           focus:outline-none focus:ring-2 focus:ring-primary-400/30
+           active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-primary-950/[0.1]
+           px-4 py-2.5 text-sm font-semibold text-primary-950/60
+           transition-all duration-200
+           hover:bg-primary-950/[0.04] hover:text-primary-950 hover:border-primary-950/20
+           focus:outline-none focus:ring-2 focus:ring-primary-400/30
+           active:scale-[0.97];
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-xl bg-accent-500 px-4 py-2.5
+           text-sm font-semibold text-white shadow-lg shadow-accent-500/20 transition-all duration-200
+           hover:bg-coral-400 hover:shadow-glow-accent
+           focus:outline-none focus:ring-2 focus:ring-accent-500/30
+           active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* -- Cards --------------------------------------------------- */
+  .card {
+    @apply rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm sm:p-6;
+  }
+  .card-hover {
+    @apply rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm
+           sm:p-6 transition-all duration-300
+           hover:border-primary-950/[0.1] hover:shadow-lg;
+  }
+  .card-glow {
+    @apply rounded-2xl border border-primary-400/20 bg-white p-4 shadow-sm
+           sm:p-6 transition-all duration-300
+           hover:border-primary-400/30 hover:shadow-lg;
+  }
+
+  /* -- Glass --------------------------------------------------- */
+  .glass {
+    @apply border border-primary-950/[0.06] bg-white/80 backdrop-blur-xl;
+  }
+  .glass-dark {
+    @apply border border-primary-950/[0.08] bg-primary-950/80 backdrop-blur-xl;
+  }
+
+  /* -- Inputs -------------------------------------------------- */
+  .input-base {
+    @apply rounded-xl border border-primary-950/[0.1] bg-accent-50 px-3.5 py-2.5 text-sm
+           text-primary-950 placeholder:text-primary-950/30 transition-all duration-200
+           focus:border-primary-400 focus:outline-none
+           focus:ring-2 focus:ring-primary-400/20;
+  }
+
+  /* -- Badges -------------------------------------------------- */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  /* -- Glow line (decorative) ---------------------------------- */
+  .glow-line {
+    @apply h-px bg-gradient-to-r from-transparent via-primary-400/30 to-transparent;
+  }
+  .glow-line-accent {
+    @apply h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent;
+  }
+
+  /* -- Dividers ------------------------------------------------ */
+  .divider {
+    @apply border-t border-primary-950/[0.06];
+  }
+}
+
+/* =================================================================
+   DARK MODE  --  all overrides via html.dark descendant selectors
+   This avoids Tailwind CSS-variable conflicts with dark: variants.
+   ================================================================= */
+
+html.dark body {
+  background-color: var(--city-bg);
+  color: #fefaf7;
+}
+
+html.dark .bg-accent-50        { background-color: var(--city-bg); }
+html.dark .bg-accent-50\/80   { background-color: rgba(18,13,34,0.8); }
+html.dark .bg-accent-50\/95   { background-color: rgba(18,13,34,0.95); }
+html.dark .bg-white            { background-color: var(--city-surface); }
+
+html.dark .bg-\[\#fff9ec\]      { background-color: var(--city-bg); }
+html.dark .bg-\[\#fff9ec\]\/90 { background-color: rgba(18,13,34,0.9); }
+html.dark .bg-\[\#fff9ec\]\/95 { background-color: rgba(18,13,34,0.95); }
+html.dark .bg-\[\#fff0ec\]      { background-color: rgba(255,90,61,0.14); }
+html.dark .bg-\[\#c9ff3d\],
+html.dark .bg-\[\#c9ff3d\].text-\[\#151515\],
+html.dark .bg-\[\#d7ff66\],
+html.dark .bg-\[\#f2b84b\],
+html.dark .bg-\[\#ff9f0a\],
+html.dark .bg-\[\#ffb13b\],
+html.dark .bg-\[\#fefaf7\],
+html.dark .bg-\[\#fefaf7\].text-\[\#151515\] {
+  color: #151515;
+}
+
+html.dark .text-primary-950       { color: #fefaf7; }
+html.dark .text-primary-950\/20  { color: rgba(255,255,255,0.2); }
+html.dark .text-primary-950\/25  { color: rgba(255,255,255,0.25); }
+html.dark .text-primary-950\/30  { color: rgba(255,255,255,0.3); }
+html.dark .text-primary-950\/40  { color: rgba(255,255,255,0.4); }
+html.dark .text-primary-950\/50  { color: rgba(255,255,255,0.5); }
+html.dark .text-primary-950\/60  { color: rgba(255,255,255,0.6); }
+html.dark .text-primary-950\/70  { color: rgba(255,255,255,0.7); }
+html.dark .text-primary-950\/80  { color: rgba(255,255,255,0.8); }
+html.dark .text-primary-950\/90  { color: rgba(255,255,255,0.9); }
+
+html.dark .text-\[\#151515\]     { color: var(--city-ink); }
+html.dark .text-\[\#151515\]\/20 { color: rgba(255,249,236,0.2); }
+html.dark .text-\[\#151515\]\/25 { color: rgba(255,249,236,0.25); }
+html.dark .text-\[\#151515\]\/30 { color: rgba(255,249,236,0.3); }
+html.dark .text-\[\#151515\]\/35 { color: rgba(255,249,236,0.35); }
+html.dark .text-\[\#151515\]\/40 { color: rgba(255,249,236,0.4); }
+html.dark .text-\[\#151515\]\/45 { color: rgba(255,249,236,0.45); }
+html.dark .text-\[\#151515\]\/50 { color: rgba(255,249,236,0.5); }
+html.dark .text-\[\#151515\]\/55 { color: rgba(255,249,236,0.55); }
+html.dark .text-\[\#151515\]\/60 { color: rgba(255,249,236,0.6); }
+html.dark .text-\[\#151515\]\/65 { color: rgba(255,249,236,0.65); }
+html.dark .text-\[\#151515\]\/70 { color: rgba(255,249,236,0.72); }
+html.dark .text-\[\#151515\]\/80 { color: rgba(255,249,236,0.8); }
+html.dark .text-\[\#5c554d\],
+html.dark .text-\[\#55504a\],
+html.dark .text-\[\#5a5a5a\] {
+  color: var(--city-muted);
+}
+html.dark .text-\[\#b5652f\] { color: #ffb36f; }
+html.dark .text-\[\#0aa6a6\] { color: #39d8d7; }
+
+html.dark .border-primary-950\/\[0\.06\] { border-color: rgba(255,255,255,0.06); }
+html.dark .border-primary-950\/\[0\.08\] { border-color: rgba(255,255,255,0.08); }
+html.dark .border-primary-950\/\[0\.1\]  { border-color: rgba(255,255,255,0.1); }
+html.dark .border-primary-950\/20 { border-color: rgba(255,255,255,0.2); }
+html.dark .border-\[\#151515\] { border-color: var(--city-ink); }
+
+html.dark .bg-primary-950\/\[0\.04\] { background-color: rgba(255,255,255,0.04); }
+html.dark .bg-primary-950\/\[0\.06\] { background-color: rgba(255,255,255,0.06); }
+html.dark .bg-primary-950\/\[0\.08\] { background-color: rgba(255,255,255,0.08); }
+
+html.dark .hover\:bg-primary-950\/\[0\.04\]:hover { background-color: rgba(255,255,255,0.06); }
+html.dark .hover\:bg-primary-950\/\[0\.08\]:hover { background-color: rgba(255,255,255,0.08); }
+html.dark .hover\:bg-primary-950\/\[0\.1\]:hover  { background-color: rgba(255,255,255,0.1); }
+html.dark .hover\:bg-\[\#151515\]\/5:hover { background-color: rgba(255,249,236,0.08); }
+html.dark .hover\:bg-white:hover { background-color: rgba(255,249,236,0.12); }
+html.dark .hover\:bg-\[\#c9ff3d\]:hover,
+html.dark .hover\:bg-\[\#d7ff66\]:hover,
+html.dark .hover\:bg-\[\#ffb13b\]:hover {
+  color: #151515;
+}
+html.dark .hover\:text-primary-950:hover { color: #fefaf7; }
+html.dark .hover\:border-primary-950\/20:hover { border-color: rgba(255,255,255,0.2); }
+
+html.dark .placeholder\:text-primary-950\/30::placeholder { color: rgba(255,255,255,0.3); }
+html.dark .placeholder\:text-\[\#151515\]\/35::placeholder { color: rgba(255,249,236,0.38); }
+
+html.dark .group:hover .group-hover\:text-primary-950 { color: #fefaf7; }
+html.dark .group:hover .group-hover\:text-coral-500 { color: #f14a72; }
+
+html.dark .card,
+html.dark .card-hover,
+html.dark .card-glow {
+  background-color: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+}
+html.dark .card-hover:hover { border-color: rgba(255,255,255,0.1); }
+
+html.dark .btn-secondary {
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+}
+html.dark .btn-secondary:hover {
+  background-color: rgba(255,255,255,0.06);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.2);
+}
+
+html.dark .input-base {
+  border-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.05);
+  color: #fefaf7;
+}
+html.dark .input-base::placeholder { color: rgba(255,255,255,0.3); }
+html.dark .input-base:focus { border-color: #4496d5; }
+
+html.dark .glass {
+  border-color: rgba(255,255,255,0.06);
+  background-color: rgba(29,27,79,0.8);
+}
+
+html.dark .divider { border-color: rgba(255,255,255,0.06); }
+
+html.dark .bg-\[\#c9ff3d\],
+html.dark .bg-\[\#d7ff66\],
+html.dark .bg-\[\#f2b84b\],
+html.dark .bg-\[\#ff9f0a\],
+html.dark .bg-\[\#ffb13b\],
+html.dark .bg-\[\#fefaf7\] {
+  color: #151515;
+}
+
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\],
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\],
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\],
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\],
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\],
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\] {
+  color: #151515;
+}
+
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\]\/60 {
+  color: rgba(21,21,21,0.62);
+}
+
+.city-account-button {
+  color: #151515;
+}
+
+.city-account-button:hover,
+html.dark .city-account-button:hover {
+  background-color: #c9ff3d;
+  border-color: #151515;
+  color: #151515;
+}
+
+html.dark .city-account-button {
+  background-color: var(--city-surface);
+  color: #fff9ec;
+}
+
+html.dark .city-account-button:hover * {
+  color: #151515;
+}
+
+.street-view-card {
+  border: 2px solid #151515;
+  background: rgba(255, 249, 236, 0.96);
+  color: #151515;
+}
+
+.street-view-card--prompt {
+  box-shadow: 6px 6px 0 0 #151515;
+}
+
+.street-view-card--panel {
+  box-shadow: 10px 10px 0 0 #151515;
+}
+
+.street-view-badge,
+.street-view-icon-button,
+.street-view-compass,
+.street-view-style-list {
+  border: 2px solid #151515;
+  color: #151515;
+}
+
+.street-view-badge {
+  background: #f2b84b;
+}
+
+.street-view-icon-button,
+.street-view-style-list {
+  background: #ffffff;
+}
+
+.street-view-icon-button:hover {
+  background: #c9ff3d;
+}
+
+.street-view-compass {
+  background: #fefaf7;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-compass-needle {
+  background: #ff9f0a;
+}
+
+.street-view-helper,
+.street-view-group-label {
+  color: rgba(21, 21, 21, 0.55);
+}
+
+.street-view-divider {
+  background: rgba(21, 21, 21, 0.2);
+}
+
+.street-view-style-pill {
+  border: 2px solid #151515;
+  color: #151515;
+}
+
+.street-view-style-pill--active {
+  background: #f2b84b;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-style-pill--idle {
+  background: #fff9ec;
+  color: rgba(21, 21, 21, 0.7);
+}
+
+.street-view-style-pill--idle:hover {
+  background: #c9ff3d;
+  color: #151515;
+}
+
+.street-view-generate-button {
+  border: 2px solid #151515;
+  background: #ff9f0a;
+  color: #151515;
+  box-shadow: 5px 5px 0 0 #151515;
+}
+
+.street-view-generate-button:hover {
+  background: #ffb13b;
+}
+
+.street-view-close-button {
+  border: 2px solid #151515;
+  background: #ff5a3d;
+  color: #ffffff;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-close-button:hover {
+  background: #ff725c;
+}
+
+.street-view-close-button--small {
+  background: #ffffff;
+  color: #151515;
+}
+
+.street-view-close-button--small:hover {
+  background: #ff5a3d;
+  color: #ffffff;
+}

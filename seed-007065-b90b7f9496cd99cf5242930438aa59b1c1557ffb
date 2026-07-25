@@ -1,0 +1,38 @@
+{
+  "schema": "facade-sheet@2",
+  "family": "nordic-timber-midrise",
+  "archetype_id": "nordic_timber_midrise",
+  "created_at": "2026-07-17T05:43:29.585775+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 4.0 metre taller ground floor with a clearly detailed main entrance and larger windows; exactly 3 identical 3.2 metre upper storeys; then a thin parapet. Exactly 4 equal structural bays across. Architectural identity: Nordic Timber Mid-Rise; Scandinavian / Nordic; regular facade; flat roof; charred timber (shou sugi ban) or natural larch cladding, vertical board-on-board; exposed CLT structural elements at balconies and reveals; dark metal flashings, natural stone base plinth. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/nordic_timber_mid_rise/hero.png",
+  "span_m": 12.48,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        263
+      ],
+      "height_m": 3.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        338
+      ],
+      "height_m": 4.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-404px-0.65",
+    "podium": "pavement-cut-2750px"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "worldclass-lego-library@1",
+  "name": "Codex LEGO Pilot — World-Class Facade Library v7",
+  "description": "Twenty representative City Prompt building families using generated rectified facade sheets on reusable modular geometry.",
+  "generation_profile": {
+    "facade_model": "gemini-3.1-flash-image",
+    "facade_sheet_schema": "facade-sheet@2",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "city",
+    "presentation_view_set": "preview",
+    "ambient_occlusion": false
+  },
+  "entries": [
+    {"archetype_id": "london_heritage_mansion_block", "floors": 6, "group": "European heritage"},
+    {"archetype_id": "parisian_midrise_block", "floors": 7, "group": "European heritage"},
+    {"archetype_id": "parisian_boulevard_corner", "floors": 7, "group": "European heritage"},
+    {"archetype_id": "civic_classical_building", "floors": 4, "group": "Civic and monumental"},
+    {"archetype_id": "monumental_courthouse_axis", "floors": 5, "group": "Civic and monumental"},
+    {"archetype_id": "collegiate_gothic_education", "floors": 4, "group": "Civic and monumental"},
+    {"archetype_id": "classic_brownstone_streetwall", "floors": 4, "group": "Historic urban"},
+    {"archetype_id": "historical_brick_main_street", "floors": 4, "group": "Historic urban"},
+    {"archetype_id": "industrial_brick_mixed_use", "floors": 5, "group": "Industrial reuse"},
+    {"archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "group": "Industrial reuse"},
+    {"archetype_id": "romanesque_revival_warehouse", "floors": 5, "group": "Industrial reuse"},
+    {"archetype_id": "art_deco_setback_tower", "floors": 14, "group": "Metropolitan icons"},
+    {"archetype_id": "nordic_timber_midrise", "floors": 8, "group": "Timber and regional"},
+    {"archetype_id": "scandinavian_urban_residential", "floors": 7, "group": "Timber and regional"},
+    {"archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "group": "Timber and regional"},
+    {"archetype_id": "japanese_machiya_mixed_use", "floors": 3, "group": "Timber and regional"},
+    {"archetype_id": "modernist_civic_block", "floors": 5, "group": "Modern and contemporary"},
+    {"archetype_id": "modern_glass_office_institutional", "floors": 10, "group": "Modern and contemporary"},
+    {"archetype_id": "chateauesque_grand_railway_hotel", "floors": 8, "group": "Metropolitan icons"},
+    {"archetype_id": "eixample_apartment_block", "floors": 7, "group": "Metropolitan icons"}
+  ]
+}

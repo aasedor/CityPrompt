@@ -1,0 +1,30 @@
+{
+  "profile": "archviz-v5",
+  "created": "2026-07-16",
+  "generator": "GPT Image via Codex imagegen",
+  "intent": "Versioned AI source images with deterministic local PBR derivation; baseline texture library remains unchanged.",
+  "materials": {
+    "clt": {
+      "source": "clt/gpt-image-source.png",
+      "coverage_m": [2, 2],
+      "view": "orthographic front elevation",
+      "derived": ["clt/albedo.jpg", "clt/normal.png", "clt/roughness.jpg"],
+      "seam_ratio": 0.531,
+      "notes": "Honey-toned engineered timber rainscreen; de-lit, cross-blended and catalogue-graded."
+    },
+    "sedum_roof": {
+      "source": "sedum_roof/gpt-image-source.png",
+      "coverage_m": [2, 2],
+      "view": "orthographic top-down",
+      "derived": ["sedum_roof/albedo.jpg", "sedum_roof/normal.png", "sedum_roof/roughness.jpg"],
+      "seam_ratio": 1.039,
+      "notes": "Restrained mixed-species extensive sedum carpet; no modeled roof fixtures baked into the image."
+    },
+    "interior_atlas": {
+      "source": "_shared/interior-atlas-gpt-v1.png",
+      "runtime": "_shared/interior-atlas-gpt-v1.jpg",
+      "layout": [4, 2],
+      "notes": "Eight room backplates selected per face with guttered atlas UVs; shared image payload."
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "facade-sheet@2",
+  "family": "parisian-midrise-block",
+  "archetype_id": "parisian_midrise_block",
+  "created_at": "2026-07-17T05:36:28.495684+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 4.5 metre commercial ground floor with detailed glazed storefronts and a main entrance; exactly 3 identical 3.4 metre upper storeys; then a thin parapet. Exactly 4 equal structural bays across. Architectural identity: Parisian Mid-Rise; Parisian; heritage stone facade; mansard roof; cream Lutetian limestone, smooth-dressed ashlar blocks; carved stone balcony supports, window surrounds, and cartouches; wrought-iron balcony railings with scrollwork, zinc mansard cladding, brass door hardware. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/parisian_mid_rise/hero.png",
+  "span_m": 8.93,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 3.4
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        515
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.18",
+    "podium": "pavement-cut-2751px"
+  }
+}

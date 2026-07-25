@@ -1,0 +1,138 @@
+# Render Blueprint — 3D Development Platform
+# https://render.com/docs/blueprint-spec
+
+databases:
+  - name: 3d-platform-db
+    plan: basic-256mb
+    databaseName: dev_platform
+    postgresMajorVersion: "16"
+    ipAllowList: []  # only internal access
+
+services:
+  # --- PostgreSQL PostGIS extensions are enabled via start.sh ---
+
+  # --- Redis ---
+  - type: redis
+    name: 3d-platform-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
+
+  # --- Backend API ---
+  - type: web
+    name: 3d-platform-api
+    runtime: docker
+    plan: standard
+    dockerfilePath: ./backend/Dockerfile.render
+    dockerContext: ./backend
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: 3d-platform-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: 3d-platform-redis
+          type: redis
+          property: connectionString
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+        value: "5000"
+      - key: ALLOWED_ORIGINS
+        value: https://cityprompt.ca,https://www.cityprompt.ca,https://threed-platform-frontend.onrender.com
+      - key: FRONTEND_URL
+        value: https://cityprompt.ca
+      - key: GOOGLE_REDIRECT_URI
+        value: https://threed-platform-api.onrender.com/api/v1/auth/oauth/google/callback
+      - key: MICROSOFT_REDIRECT_URI
+        value: https://threed-platform-api.onrender.com/api/v1/auth/oauth/microsoft/callback
+      - key: S3_BUCKET_NAME
+        value: 3d-platform-uploads
+      - key: S3_REGION
+        value: auto
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      # Set these manually in Render dashboard:
+      # S3_ENDPOINT_URL, S3_ACCESS_KEY, S3_SECRET_KEY
+      # ANTHROPIC_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, MESHY_API_KEY
+      # GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+      # MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET
+      # GOOGLE_MAPS_API_KEY, SENTRY_DSN
+
+  # --- Celery Worker ---
+  - type: worker
+    name: 3d-platform-worker
+    runtime: docker
+    plan: standard
+    dockerfilePath: ./backend/Dockerfile.render
+    dockerContext: ./backend
+    dockerCommand: celery -A app.tasks.worker:celery_app worker --loglevel=info --concurrency=2
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: 3d-platform-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: 3d-platform-redis
+          type: redis
+          property: connectionString
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+        value: "5000"
+      - key: ALLOWED_ORIGINS
+        value: https://cityprompt.ca,https://www.cityprompt.ca,https://threed-platform-frontend.onrender.com
+      - key: FRONTEND_URL
+        value: https://cityprompt.ca
+      - key: GOOGLE_REDIRECT_URI
+        value: https://threed-platform-api.onrender.com/api/v1/auth/oauth/google/callback
+      - key: MICROSOFT_REDIRECT_URI
+        value: https://threed-platform-api.onrender.com/api/v1/auth/oauth/microsoft/callback
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: S3_BUCKET_NAME
+        value: 3d-platform-uploads
+      - key: S3_REGION
+        value: auto
+      # Set these manually in Render dashboard:
+      # S3_ENDPOINT_URL, S3_ACCESS_KEY, S3_SECRET_KEY
+      # ANTHROPIC_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, MESHY_API_KEY
+      # GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+      # MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET
+      # GOOGLE_MAPS_API_KEY, SENTRY_DSN
+
+  # --- Frontend Static Site ---
+  - type: web
+    name: 3d-platform-frontend
+    runtime: static
+    buildCommand: >-
+      echo 'VITE_API_URL=https://threed-platform-api.onrender.com' > .env.production &&
+      echo 'VITE_WS_URL=wss://threed-platform-api.onrender.com' >> .env.production &&
+      echo "VITE_MAPBOX_TOKEN=$VITE_MAPBOX_TOKEN" >> .env.production &&
+      echo "VITE_GOOGLE_MAPS_API_KEY=$VITE_GOOGLE_MAPS_API_KEY" >> .env.production &&
+      echo "VITE_SENTRY_DSN=$VITE_SENTRY_DSN" >> .env.production &&
+      echo "--- .env.production contents ---" && cat .env.production && echo "---" &&
+      cd frontend && npm install && npx vite build
+    staticPublishPath: frontend/dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://threed-platform-api.onrender.com
+      - key: VITE_WS_URL
+        value: wss://threed-platform-api.onrender.com
+      # Set manually in Render dashboard:
+      # VITE_MAPBOX_TOKEN, VITE_GOOGLE_MAPS_API_KEY, VITE_SENTRY_DSN

@@ -1,0 +1,38 @@
+{
+  "schema": "facade-sheet@2",
+  "family": "rndsqr-terraced-mixed-use-midrise",
+  "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+  "created_at": "2026-07-17T05:34:50.842759+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0.png",
+  "span_m": 16.36,
+  "requested_span_m": 9.6,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        225
+      ],
+      "height_m": 3.6
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        294
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-346px-0.52",
+    "podium": "pavement-cut-2676px"
+  }
+}

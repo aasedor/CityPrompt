@@ -1,0 +1,318 @@
+{
+  "schema": "facade-sheet@4",
+  "family": "mid-century-pavilion-brick-minimal-v1-renderlocked",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "created_at": "2026-07-20T20:03:46.726182+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 4.5 metre commercial ground floor with detailed glazed storefronts and a main entrance; exactly 3 coordinated 3.8 metre upper storeys; then a thin parapet. COUNTING CHECK: show exactly 3 and only 3 horizontal rows of upper-storey windows; do not add, subdivide or imply any extra storey rows. Exactly 4 structural bays across, but preserve intentional asymmetry and signature bays. Architectural identity: Brick & Glass Minimal; Modernist; brick bays facade; flat roof; Roman-format buff brick in running bond; frameless glass corner windows. NON-NEGOTIABLE identity cues: preserve the reference's distinctive composition and proportions. Material zoning: faithful archetype-specific material hierarchy. Do not genericize, regularize away, or substitute these cues. Preserve the reference's actual opening shapes: segmental, round or pointed arches must remain arches rather than being regularized into rectangles. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/mid_century_modern_pavilion_block/variant_3.png",
+  "architectural_signature": null,
+  "span_m": 11.74,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "elevation_source": "elevation_raw.jpg",
+  "semantic_glass": {
+    "source": "gemini-semantic",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-image",
+    "prompt": "Create a SEMANTIC GLASS MASK for the attached rectified architectural facade elevation. This is a pixel-aligned material-selection map, not a redesigned facade. Preserve the exact camera, crop, proportions, floor lines, bays, openings and edge positions of the source image. Output pure WHITE only for transparent or translucent vision glazing: windows, glazed doors, storefront panes and curtain-wall vision glass. Output pure BLACK for every opaque material, including frames, mullions, spandrel panels, metal backpans, masonry, timber, concrete, roofs, shadows and interiors. Do not include reflections outside the physical pane boundaries. No grey shading, no labels, no legend, no border, no perspective and no artistic reinterpretation. The result must be one edge-to-edge black-and-white mask registered to the source elevation.",
+    "opening_schedule": null,
+    "glass_mask": "glass_mask_raw.png",
+    "opaque_mask": "opaque_mask_raw.png",
+    "coverage": 0.36182,
+    "glass_regions": [
+      [
+        0.31771,
+        0.07122,
+        0.45312,
+        0.21948
+      ],
+      [
+        0.54948,
+        0.07122,
+        0.6875,
+        0.21948
+      ],
+      [
+        0.79427,
+        0.07122,
+        0.93229,
+        0.21948
+      ],
+      [
+        0.06771,
+        0.25436,
+        0.20573,
+        0.40262
+      ],
+      [
+        0.31771,
+        0.25436,
+        0.45312,
+        0.40262
+      ],
+      [
+        0.79427,
+        0.25436,
+        0.93229,
+        0.40262
+      ],
+      [
+        0.31771,
+        0.4375,
+        0.45312,
+        0.48256
+      ],
+      [
+        0.79427,
+        0.4375,
+        0.92969,
+        0.58866
+      ],
+      [
+        0.39844,
+        0.51744,
+        0.45312,
+        0.58866
+      ],
+      [
+        0.06771,
+        0.625,
+        0.20573,
+        0.77326
+      ],
+      [
+        0.31771,
+        0.625,
+        0.45312,
+        0.77326
+      ],
+      [
+        0.54688,
+        0.625,
+        0.6875,
+        0.77326
+      ],
+      [
+        0.79427,
+        0.625,
+        0.93229,
+        0.77326
+      ],
+      [
+        0.07031,
+        0.82558,
+        0.92969,
+        0.99709
+      ]
+    ],
+    "full_source_glass_mask": null,
+    "full_source_opaque_mask": null,
+    "identity_crop_normalized": null
+  },
+  "registered_band_schedule": null,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "glass_mask": "floor_glass.png",
+      "opaque_mask": "floor_opaque.png",
+      "glass_regions": [
+        [
+          0.31771,
+          0.15323,
+          0.45573,
+          0.40323
+        ],
+        [
+          0.79427,
+          0.15323,
+          0.93229,
+          0.99194
+        ],
+        [
+          0.39844,
+          0.60484,
+          0.45573,
+          0.99194
+        ]
+      ],
+      "px": [
+        1024,
+        331
+      ],
+      "height_m": 3.8
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "glass_mask": "floor_alt_glass.png",
+      "opaque_mask": "floor_alt_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.16935,
+          0.03385,
+          0.99194
+        ],
+        [
+          0.15885,
+          0.16935,
+          0.29427,
+          0.99194
+        ],
+        [
+          0.43229,
+          0.16935,
+          0.56771,
+          0.99194
+        ],
+        [
+          0.68229,
+          0.16935,
+          0.81771,
+          0.99194
+        ],
+        [
+          0.96615,
+          0.16935,
+          1.0,
+          0.99194
+        ]
+      ],
+      "px": [
+        1024,
+        331
+      ],
+      "height_m": 3.8
+    },
+    "side": {
+      "albedo": "side_albedo.jpg",
+      "roughness": "side_roughness.jpg",
+      "emissive": "side_emissive.png",
+      "glass_mask": "side_glass.png",
+      "opaque_mask": "side_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.15917,
+          0.03646,
+          0.99654
+        ],
+        [
+          0.1875,
+          0.15917,
+          0.82031,
+          0.99654
+        ],
+        [
+          0.96354,
+          0.15917,
+          1.0,
+          0.99654
+        ]
+      ],
+      "px": [
+        1024,
+        1542
+      ],
+      "height_m": 3.8,
+      "span_m": 2.52
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "glass_mask": "crown_glass.png",
+      "opaque_mask": "crown_opaque.png",
+      "glass_regions": [
+        [
+          0.31771,
+          0.1685,
+          0.45573,
+          0.53846
+        ],
+        [
+          0.54948,
+          0.1685,
+          0.6875,
+          0.53846
+        ],
+        [
+          0.79427,
+          0.1685,
+          0.93229,
+          0.53846
+        ],
+        [
+          0.06771,
+          0.63004,
+          0.20573,
+          1.0
+        ],
+        [
+          0.31771,
+          0.63004,
+          0.45573,
+          1.0
+        ],
+        [
+          0.79427,
+          0.63004,
+          0.93229,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        729
+      ],
+      "height_m": 3.8
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "glass_mask": "podium_glass.png",
+      "opaque_mask": "podium_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.21333,
+          0.57031,
+          1.0
+        ],
+        [
+          0.71094,
+          0.21333,
+          1.0,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        400
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-509px-0.30",
+    "floor_alt": [
+      0.222,
+      0.407
+    ],
+    "side": [
+      0.7548,
+      0.9692
+    ],
+    "crown": [
+      0.0,
+      0.407
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

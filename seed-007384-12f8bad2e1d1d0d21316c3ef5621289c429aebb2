@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "romanesque-revival-warehouse",
+  "archetype_id": "romanesque_revival_warehouse",
+  "created_at": "2026-07-17T06:43:19.521344+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/romanesque_revival_warehouse/hero.png",
+  "architectural_signature": {
+    "identity": "Richardsonian warehouse with a massive round-arched base, grouped arched openings, deep voussoirs, heavy masonry piers and corbelled cornice.",
+    "material_zones": "dark rock-faced stone and red brick; deep window shadows; copper accents",
+    "kits": [
+      "romanesque_arcade",
+      "heavy_masonry_piers",
+      "corbelled_cornice",
+      "gabled_pavilions"
+    ]
+  },
+  "span_m": 14.5,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        297
+      ],
+      "height_m": 4.2
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        297
+      ],
+      "height_m": 4.2
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        1105
+      ],
+      "height_m": 4.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 5.2
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-455px-0.37",
+    "floor_alt": [
+      0.286,
+      0.4513
+    ],
+    "crown": [
+      0.0,
+      0.6166
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

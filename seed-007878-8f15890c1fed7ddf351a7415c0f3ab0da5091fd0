@@ -1,0 +1,505 @@
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { Canvas } from '@react-three/fiber';
+import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
+import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
+import { getApiErrorMessage } from '@/services/api';
+import type { SiteZone, SiteZoneProperties } from '@/types';
+import {
+  legoArchetypeContextFromZone,
+  legoAssemblyApi,
+  type LegoAssemblyPlan,
+  type LegoAssemblyRecipe,
+} from './legoAssemblyApi';
+import {
+  MAX_DIMENSION_M,
+  MAX_FLOORS,
+  MIN_DIMENSION_M,
+  MIN_FLOORS,
+  ModuleInstance,
+  PreviewErrorBoundary,
+  Progress,
+  clamp,
+  deriveZoneTargets,
+  familyGenerationCommands,
+  findZoneCatalogOption,
+  fitIsStretched,
+  normalizeArchetypeId,
+} from './legoShared';
+
+function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
+  return (
+    <>
+      <ambientLight intensity={0.8} />
+      <directionalLight castShadow position={[8, 12, 7]} intensity={1.5} />
+      <directionalLight position={[-8, 5, -6]} intensity={0.35} />
+      <Environment preset="city" background={false} />
+      <Grid args={[80, 80]} cellSize={1} sectionSize={5} fadeDistance={70} />
+      <Bounds fit clip observe margin={1.25}>
+        <group>
+          {plan.instances.map((instance, index) => (
+            <ModuleInstance key={`${instance.asset_id}-${instance.level}-${index}`} instance={instance} />
+          ))}
+        </group>
+      </Bounds>
+      <OrbitControls makeDefault enablePan />
+    </>
+  );
+}
+
+export function LegoAssemblyPreview({
+  widthM,
+  depthM,
+  floors,
+  properties,
+  zone,
+  buildingId = null,
+  onClose,
+}: {
+  widthM?: number;
+  depthM?: number;
+  floors?: number;
+  properties?: SiteZoneProperties;
+  /** Preferred entry point — properties are derived from zone.properties. */
+  zone?: SiteZone;
+  /** Generated building linked to the zone; enables saving/restoring recipes. */
+  buildingId?: string | null;
+  onClose: () => void;
+}) {
+  const zoneProperties = zone?.properties ?? properties;
+  const archetypeContext = useMemo(() => legoArchetypeContextFromZone(zoneProperties), [zoneProperties]);
+
+  const catalogOption = useMemo(
+    () => findZoneCatalogOption(archetypeContext.archetype_id, zoneProperties),
+    [archetypeContext.archetype_id, zoneProperties],
+  );
+
+  const archetypeLabel = catalogOption?.label
+    || (zoneProperties?.development_archetype_label as string | undefined)
+    || normalizeArchetypeId(archetypeContext.archetype_id)
+    || 'No archetype selected';
+
+  // Catalogue-derived defaults, computed once on open; explicit props win.
+  const [defaultTargets] = useState(() => deriveZoneTargets(catalogOption, zoneProperties));
+  const [targetWidth, setTargetWidth] = useState(() =>
+    clamp(widthM ?? defaultTargets.width_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
+  const [targetDepth, setTargetDepth] = useState(() =>
+    clamp(depthM ?? defaultTargets.depth_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
+  const [targetFloors, setTargetFloors] = useState(() =>
+    clamp(floors ?? defaultTargets.floors, MIN_FLOORS, MAX_FLOORS));
+  const [allowSetback, setAllowSetback] = useState(() => archetypeContext.allow_setback ?? false);
+
+  const [plan, setPlan] = useState<LegoAssemblyPlan | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [familyMissing, setFamilyMissing] = useState(false);
+  const [savedRecipe, setSavedRecipe] = useState<LegoAssemblyRecipe | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [placing, setPlacing] = useState(false);
+  // Building the recipe landed on via Place — the zone prop is a snapshot, so
+  // a building created by Place is only known through the endpoint's response.
+  const [placedBuildingId, setPlacedBuildingId] = useState<string | null>(null);
+  const [clearing, setClearing] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Restore any saved recipe for this building when the composer opens.
+  useEffect(() => {
+    if (!buildingId) return;
+    let cancelled = false;
+    legoAssemblyApi
+      .getRecipe(buildingId)
+      .then((recipe) => {
+        if (!cancelled) setSavedRecipe(recipe);
+      })
+      .catch(() => {
+        // No saved recipe (or backend unavailable) — the composer still works.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [buildingId]);
+
+  const assemble = async (targets?: { width_m: number; depth_m: number; floors: number }) => {
+    const width = clamp(targets?.width_m ?? targetWidth, MIN_DIMENSION_M, MAX_DIMENSION_M);
+    const depth = clamp(targets?.depth_m ?? targetDepth, MIN_DIMENSION_M, MAX_DIMENSION_M);
+    const floorCount = clamp(Math.round(targets?.floors ?? targetFloors), MIN_FLOORS, MAX_FLOORS);
+    setTargetWidth(width);
+    setTargetDepth(depth);
+    setTargetFloors(floorCount);
+    setLoading(true);
+    setError(null);
+    setFamilyMissing(false);
+    try {
+      const result = await legoAssemblyApi.plan({
+        target_width_m: width,
+        target_depth_m: depth,
+        target_floors: floorCount,
+        ...archetypeContext,
+        allow_setback: allowSetback,
+      });
+      setPlan(result);
+    } catch (cause) {
+      const status = (cause as { response?: { status?: number } })?.response?.status;
+      setError(getApiErrorMessage(cause, 'Could not assemble this building.'));
+      if (status === 422) setFamilyMissing(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadSavedRecipe = () => {
+    if (!savedRecipe) return;
+    void assemble({
+      width_m: savedRecipe.target.width_m,
+      depth_m: savedRecipe.target.depth_m,
+      floors: savedRecipe.target.floors,
+    });
+  };
+
+  const handleSaveRecipe = async () => {
+    if (!plan || !buildingId) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const saved = await legoAssemblyApi.saveRecipe(buildingId, {
+        schema_version: 1,
+        module_family: plan.family,
+        archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
+        reuse_keys: plan.reuse_keys,
+        target: plan.target,
+        instances: plan.instances,
+        assembled_height_m: plan.assembled_height_m,
+        fit: plan.fit,
+        assembled_preview_url: null,
+      });
+      setSavedRecipe(saved);
+    } catch (cause) {
+      setError(getApiErrorMessage(cause, 'Could not save the assembly recipe.'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const recipeFromCurrentPlan = (): LegoAssemblyRecipe | null => {
+    if (!plan) return null;
+    return {
+      schema_version: 1,
+      module_family: plan.family,
+      archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
+      reuse_keys: plan.reuse_keys,
+      target: plan.target,
+      instances: plan.instances,
+      assembled_height_m: plan.assembled_height_m,
+      fit: plan.fit,
+      assembled_preview_url: null,
+    };
+  };
+
+  // Place = save the recipe zone-addressed; the backend creates/links the
+  // building when the zone has none, then the globe swaps polygon -> stack.
+  const handlePlace = async () => {
+    const recipe = recipeFromCurrentPlan();
+    if (!recipe || !zone) return;
+    setPlacing(true);
+    setError(null);
+    try {
+      const result = await legoAssemblyApi.place(zone.id, { ...recipe, building_name: archetypeLabel });
+      setSavedRecipe(recipe);
+      setPlacedBuildingId(result.building_id);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+      ]);
+    } catch (cause) {
+      setError(getApiErrorMessage(cause, 'Could not place the assembly on the map.'));
+    } finally {
+      setPlacing(false);
+    }
+  };
+
+  const handleClearRecipe = async () => {
+    const clearTarget = buildingId ?? placedBuildingId;
+    if (!clearTarget || !savedRecipe) return;
+    setClearing(true);
+    setError(null);
+    try {
+      await legoAssemblyApi.clearRecipe(clearTarget);
+      setSavedRecipe(null);
+      setPlacedBuildingId(null);
+      if (zone) {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+          queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+        ]);
+      }
+    } catch (cause) {
+      setError(getApiErrorMessage(cause, 'Could not clear the saved recipe.'));
+    } finally {
+      setClearing(false);
+    }
+  };
+
+  const hintArchetypeId = normalizeArchetypeId(archetypeContext.archetype_id) ?? '<archetype-id>';
+  const generateFamilyCommand = familyGenerationCommands(hintArchetypeId);
+
+  const copyGenerateCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(generateFamilyCommand);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard unavailable (e.g. insecure context) — the command stays selectable.
+    }
+  };
+
+  const scaleWarning = fitIsStretched(plan?.fit);
+
+  const stepperButtonClass = 'flex h-7 w-7 items-center justify-center rounded border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_rgba(21,21,21,0.25)] transition hover:bg-[#fff9ec] disabled:opacity-40';
+  const numberFieldClass = 'mt-0.5 w-full rounded border-2 border-[#151515] bg-white px-2 py-1 text-xs font-bold text-[#151515] focus:bg-[#fff9ec] focus:outline-none';
+
+  return createPortal(
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/75 p-4" onClick={onClose}>
+      <div
+        className="relative flex h-[84vh] w-[94vw] max-w-6xl overflow-hidden rounded-xl border-2 border-[#151515] bg-[#f7f7f1] shadow-[8px_8px_0_0_rgba(0,0,0,0.45)]"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <aside className="w-72 shrink-0 overflow-y-auto border-r-2 border-[#151515] bg-white p-4">
+          <div className="mb-3 flex items-center gap-2">
+            <Box className="h-5 w-5" />
+            <h2 className="text-sm font-black uppercase">LEGO Assembly</h2>
+          </div>
+
+          {savedRecipe && (
+            <div className="mb-3 rounded border-2 border-emerald-600 bg-emerald-50 p-2">
+              <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-emerald-700">
+                <Bookmark className="h-3.5 w-3.5" />
+                Saved recipe
+              </div>
+              <p className="mt-1 text-[11px] text-emerald-900">
+                {savedRecipe.target.floors} floors · <span className="break-all font-semibold">{savedRecipe.module_family}</span>
+              </p>
+              <button
+                type="button"
+                onClick={loadSavedRecipe}
+                disabled={loading}
+                className="mt-1.5 w-full rounded border-2 border-emerald-700 bg-white px-2 py-1 text-[11px] font-black uppercase text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50"
+              >
+                Load
+              </button>
+            </div>
+          )}
+
+          <dl className="space-y-2 text-xs">
+            <div className="flex items-baseline justify-between gap-2">
+              <dt className="shrink-0">Archetype</dt>
+              <dd className="truncate text-right font-bold" title={archetypeLabel}>{archetypeLabel}</dd>
+            </div>
+          </dl>
+
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <label className="block text-xs">
+              Width (m)
+              <input
+                type="number"
+                min={MIN_DIMENSION_M}
+                max={MAX_DIMENSION_M}
+                step={0.5}
+                value={targetWidth}
+                onChange={(event) => {
+                  const value = event.target.valueAsNumber;
+                  if (!Number.isNaN(value)) setTargetWidth(value);
+                }}
+                onBlur={() => setTargetWidth((value) => clamp(value, MIN_DIMENSION_M, MAX_DIMENSION_M))}
+                className={numberFieldClass}
+              />
+            </label>
+            <label className="block text-xs">
+              Depth (m)
+              <input
+                type="number"
+                min={MIN_DIMENSION_M}
+                max={MAX_DIMENSION_M}
+                step={0.5}
+                value={targetDepth}
+                onChange={(event) => {
+                  const value = event.target.valueAsNumber;
+                  if (!Number.isNaN(value)) setTargetDepth(value);
+                }}
+                onBlur={() => setTargetDepth((value) => clamp(value, MIN_DIMENSION_M, MAX_DIMENSION_M))}
+                className={numberFieldClass}
+              />
+            </label>
+          </div>
+
+          <div className="mt-2 flex items-center justify-between text-xs">
+            <span>Floors</span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setTargetFloors((value) => clamp(value - 1, MIN_FLOORS, MAX_FLOORS))}
+                disabled={targetFloors <= MIN_FLOORS}
+                className={stepperButtonClass}
+                aria-label="Fewer floors"
+              >
+                <Minus className="h-3.5 w-3.5" />
+              </button>
+              <span className="w-8 text-center text-sm font-black">{targetFloors}</span>
+              <button
+                type="button"
+                onClick={() => setTargetFloors((value) => clamp(value + 1, MIN_FLOORS, MAX_FLOORS))}
+                disabled={targetFloors >= MAX_FLOORS}
+                className={stepperButtonClass}
+                aria-label="More floors"
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <label className="mt-2 flex items-center justify-between text-xs">
+            <span>Allow setback modules</span>
+            <input
+              type="checkbox"
+              checked={allowSetback}
+              onChange={(event) => setAllowSetback(event.target.checked)}
+              className="h-4 w-4 accent-[#151515]"
+            />
+          </label>
+
+          {plan && (
+            <dl className="mt-3 space-y-2 border-t-2 border-[#151515]/15 pt-3 text-xs">
+              <div className="flex justify-between"><dt>Family</dt><dd className="max-w-32 truncate font-bold" title={plan.family}>{plan.family}</dd></div>
+              <div className="flex justify-between"><dt>Fit score</dt><dd className="font-bold">{plan.fit.score.toFixed(2)}</dd></div>
+              <div className="flex justify-between"><dt>Height</dt><dd className="font-bold">{plan.assembled_height_m.toFixed(1)} m</dd></div>
+              <div className="flex justify-between"><dt>Modules</dt><dd className="font-bold">{plan.instances.length}</dd></div>
+            </dl>
+          )}
+
+          {scaleWarning && plan && (
+            <div className="mt-2 flex items-start gap-1.5 rounded border border-amber-400 bg-amber-50 p-2 text-[11px] text-amber-800">
+              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span>
+                Modules are stretched to fit ({(plan.fit.scale_x * 100).toFixed(0)}% × {(plan.fit.scale_y * 100).toFixed(0)}%).
+                Adjust width/depth toward the family's native size for cleaner joints.
+              </span>
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={() => assemble()}
+            disabled={loading}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+          >
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            {plan ? 'Reassemble' : 'Auto assemble'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePlace}
+            disabled={!plan || !zone || placing}
+            title={!zone
+              ? 'Open the composer from a zone to place its assembly on the map.'
+              : !plan
+                ? 'Assemble the building first.'
+                : 'Save the recipe on this zone (a building is created if needed) and show the stack on the globe.'}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+          >
+            {placing ? <Loader2 className="h-4 w-4 animate-spin" /> : placedBuildingId ? <Check className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
+            {placedBuildingId ? 'Placed — place again' : 'Place on map'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSaveRecipe}
+            disabled={!plan || !buildingId || saving}
+            title={!buildingId
+              ? 'This zone has no generated building yet — Place on map creates one, or generate buildings first.'
+              : !plan
+                ? 'Assemble the building first.'
+                : 'Save this assembly so it can be restored later.'}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-white px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            Save assembly recipe
+          </button>
+
+          {savedRecipe && (buildingId || placedBuildingId) && (
+            <button
+              type="button"
+              onClick={handleClearRecipe}
+              disabled={clearing}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-white px-3 py-2 text-xs font-black uppercase text-[#d92618] shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+            >
+              {clearing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+              Clear saved recipe
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-white px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515]"
+          >
+            <X className="h-4 w-4" />
+            Close
+          </button>
+
+          {error && <p className="mt-3 rounded border border-red-300 bg-red-50 p-2 text-xs text-red-800">{error}</p>}
+
+          {familyMissing && (
+            <div className="mt-2 rounded border border-red-300 bg-red-50 p-2 text-[11px] text-red-900">
+              <p className="font-bold">No module family covers this archetype yet.</p>
+              <p className="mt-1">Generate one, then import its manifest:</p>
+              <pre className="mt-1.5 select-all overflow-x-auto whitespace-pre-wrap break-all rounded bg-red-100 p-1.5 font-mono text-[10px] leading-relaxed">{generateFamilyCommand}</pre>
+              <button
+                type="button"
+                onClick={copyGenerateCommand}
+                className="mt-1.5 flex items-center gap-1 rounded border border-red-400 bg-white px-2 py-0.5 text-[10px] font-bold text-red-800 hover:bg-red-100"
+              >
+                {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                {copied ? 'Copied' : 'Copy commands'}
+              </button>
+            </div>
+          )}
+
+          <p className="mt-4 text-[11px] leading-relaxed text-black/55">
+            Uses the selected Urban Intelligence archetype ID and reuse keys to choose a compatible podium, repeating floor, setback and roof family.
+          </p>
+        </aside>
+
+        <main className="relative min-w-0 flex-1 bg-[#1b1b1b]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-3 top-3 z-10 rounded bg-black/60 p-2 text-white hover:bg-black"
+            aria-label="Close LEGO assembly preview"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
+          {plan ? (
+            <Canvas shadows camera={{ position: [12, 10, 16], fov: 42 }} dpr={[1, 2]}>
+              <PreviewErrorBoundary>
+                <Suspense fallback={<Progress />}>
+                  <AssemblyScene plan={plan} />
+                </Suspense>
+              </PreviewErrorBoundary>
+            </Canvas>
+          ) : (
+            <div className="flex h-full items-center justify-center text-center text-white/55">
+              <div>
+                <Box className="mx-auto mb-3 h-10 w-10" />
+                <p className="text-sm font-bold">Choose Auto Assemble to preview the archetype as reusable modules.</p>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>,
+    document.body,
+  );
+}

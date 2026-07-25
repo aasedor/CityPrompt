@@ -1,0 +1,122 @@
+{
+  "victorian_brick": {
+    "source_model": "gpt-image (Codex built-in image generation)",
+    "source_prompt": "Seamless square material scan of late-19th-century Chicago red-brown pressed clay brick in running bond, recessed warm-grey lime mortar, darker fired bricks and subtle soot and age; orthographic, de-lit, tileable, no objects.",
+    "target_base_color": "#7c3d30",
+    "target_roughness": 0.86,
+    "seam_ratio_flattened": 4.096,
+    "seam_method": "mirror_tile",
+    "seam_feather": null,
+    "seam_ratio_final": 0.0,
+    "mean_rgb": [
+      113,
+      82,
+      70
+    ],
+    "files": {
+      "source": "gpt-image-source.png",
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 675,
+    "reprocessed_at": "2026-07-17T05:36:48.305643+00:00"
+  },
+  "brownstone": {
+    "source_model": "gpt-image (Codex built-in image generation)",
+    "source_prompt": "Seamless square material scan of historic New York brownstone sandstone ashlar, warm umber-brown blocks, sedimentary banding, hand-dressed faces and fine matching mortar; orthographic, de-lit, tileable, no objects.",
+    "target_base_color": "#875a43",
+    "target_roughness": 0.8,
+    "seam_ratio_flattened": 0.906,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.042,
+    "mean_rgb": [
+      101,
+      76,
+      62
+    ],
+    "files": {
+      "source": "gpt-image-source.png",
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 694,
+    "reprocessed_at": "2026-07-17T05:36:49.072119+00:00"
+  },
+  "scandinavian_larch": {
+    "source_model": "gpt-image (Codex built-in image generation)",
+    "source_prompt": "Seamless square premium Scandinavian exposed glulam and larch facade, honey-amber narrow vertical boards, straight grain and restrained board variation; orthographic, de-lit, tileable, no objects.",
+    "target_base_color": "#b98248",
+    "target_roughness": 0.62,
+    "seam_ratio_flattened": 1.547,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.724,
+    "mean_rgb": [
+      216,
+      151,
+      66
+    ],
+    "files": {
+      "source": "gpt-image-source.png",
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 564,
+    "reprocessed_at": "2026-07-17T05:36:49.894033+00:00"
+  },
+  "art_deco_terracotta": {
+    "source_model": "gpt-image (Codex built-in image generation)",
+    "source_prompt": "Seamless square premium 1920s Art Deco glazed architectural terracotta, warm ivory and pale sandstone blocks, champagne-gold flecks, fine joints and subtle glaze crazing; orthographic, de-lit, tileable, no objects.",
+    "target_base_color": "#d5c7a5",
+    "target_roughness": 0.43,
+    "seam_ratio_flattened": 1.692,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.202,
+    "mean_rgb": [
+      218,
+      200,
+      171
+    ],
+    "files": {
+      "source": "gpt-image-source.png",
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 663,
+    "reprocessed_at": "2026-07-17T05:36:50.567541+00:00"
+  },
+  "mediterranean_roof_tile": {
+    "source_model": "gpt-image (Codex built-in image generation)",
+    "source_prompt": "Seamless square premium Mediterranean terracotta barrel roof tiles, burnt orange and ochre, overlapping rows, handmade variation and fine weathering; orthographic, de-lit, tileable, no objects.",
+    "target_base_color": "#b45f35",
+    "target_roughness": 0.72,
+    "seam_ratio_flattened": 1.303,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 0.94,
+    "mean_rgb": [
+      208,
+      132,
+      76
+    ],
+    "files": {
+      "source": "gpt-image-source.png",
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 624,
+    "reprocessed_at": "2026-07-17T05:36:51.279984+00:00"
+  }
+}

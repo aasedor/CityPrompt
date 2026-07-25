@@ -1,0 +1,30 @@
+{
+  "schema": "city-prompt-renderlock-cohort@1",
+  "name": "City Prompt Render-Locked Building Cohort v1",
+  "target_count": 20,
+  "method": "reference audit, rectified photoreal source, deterministic PBR/LOD, modular assembly, eight-view review, photoreal goalpost, automated and human QA",
+  "artifact_root": "C:/dev-artifacts/3D-Maps/families",
+  "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+  "entries": [
+    {"sequence": 1, "archetype_id": "collegiate_gothic_education", "variant_id": "collegiate_gothic_ruskinian", "family_id": "collegiate-gothic-ruskinian-v1-renderlocked", "state": "keeper", "artifact": "ruskinian-pilot-a/05-canonical-v68"},
+    {"sequence": 2, "archetype_id": "brownstone_rowhouse_frontage", "variant_id": "brownstone_rowhouse_red_sandstone", "family_id": "brownstone-rowhouse-red-sandstone-v1-renderlocked", "state": "keeper", "artifact": "brownstone-red-sandstone-pilot-a/03-canonical-v61"},
+    {"sequence": 3, "archetype_id": "modern_glass_office_institutional", "variant_id": "glass_office_dark_frame", "family_id": "glass-office-dark-frame-v1-renderlocked", "state": "keeper", "artifact": "glass-office-dark-frame-pilot-a/02-canonical-v3"},
+    {"sequence": 4, "archetype_id": "eixample_apartment_block", "variant_id": "eixample-apartment-block-classic", "family_id": "eixample-classic-v1-renderlocked", "floors": 4, "width_m": 23, "depth_m": 23, "allow_outside_bounds": true, "state": "keeper", "artifact": "eixample-classic-v1/03-canonical-v24", "group": "chamfered urban perimeter block"},
+    {"sequence": 5, "archetype_id": "london_heritage_mansion_block", "variant_id": "london-heritage-mansion-portland-stone", "family_id": "london-heritage-mansion-portland-stone-v1-renderlocked", "floors": 5, "width_m": 24, "depth_m": 18, "state": "keeper", "artifact": "london-heritage-mansion-v1/04-canonical-v4", "group": "European heritage stonework"},
+    {"sequence": 6, "archetype_id": "parisian_midrise_block", "variant_id": "parisian_haussmann_classic", "family_id": "parisian-haussmann-classic-v1-renderlocked", "floors": 6, "width_m": 42, "depth_m": 38, "allow_outside_bounds": true, "state": "keeper", "artifact": "parisian-haussmann-classic-v1/05-canonical-v4", "group": "European heritage boulevard"},
+    {"sequence": 7, "archetype_id": "parisian_boulevard_corner", "variant_id": "parisian_corner_haussmann_turret", "family_id": "parisian-boulevard-corner-v1-renderlocked", "floors": 7, "width_m": 42, "depth_m": 40, "state": "keeper", "artifact": "parisian-boulevard-corner-v1/05-canonical-v4", "group": "European heritage corner"},
+    {"sequence": 8, "archetype_id": "civic_classical_building", "variant_id": "civic_classical_limestone_ionic", "family_id": "civic-classical-limestone-ionic-v1-renderlocked", "floors": 2, "width_m": 42, "depth_m": 34, "state": "keeper", "artifact": "civic-classical-limestone-v1/06-canonical-v6", "group": "classical civic monument"},
+    {"sequence": 9, "archetype_id": "monumental_courthouse_axis", "variant_id": "courthouse_neoclassical_temple", "family_id": "courthouse-neoclassical-temple-v1-renderlocked", "floors": 4, "width_m": 60, "depth_m": 45, "state": "keeper", "artifact": "monumental-courthouse-axis-v1/03-canonical-v3", "group": "ceremonial civic axis"},
+    {"sequence": 10, "archetype_id": "classic_brownstone_streetwall", "variant_id": "classic_brownstone_traditional", "family_id": "classic-brownstone-streetwall-v1-renderlocked", "floors": 4, "width_m": 30, "depth_m": 22, "state": "keeper", "artifact": "classic-brownstone-streetwall-v1/03-canonical-v3", "group": "historic urban streetwall"},
+    {"sequence": 11, "archetype_id": "historical_brick_main_street", "floors": 4, "state": "pending", "group": "historic mixed-use main street"},
+    {"sequence": 12, "archetype_id": "industrial_brick_mixed_use", "floors": 4, "width_m": 30, "depth_m": 20, "state": "pending", "group": "industrial reuse"},
+    {"sequence": 13, "archetype_id": "adaptive_reuse_warehouse_lofts", "floors": 6, "state": "pending", "group": "warehouse conversion"},
+    {"sequence": 14, "archetype_id": "romanesque_revival_warehouse", "floors": 5, "state": "pending", "group": "Romanesque industrial heritage"},
+    {"sequence": 15, "archetype_id": "art_deco_setback_tower", "floors": 14, "state": "pending", "group": "metropolitan setback icon"},
+    {"sequence": 16, "archetype_id": "nordic_timber_midrise", "floors": 7, "width_m": 20, "depth_m": 16, "state": "pending", "group": "mass-timber residential"},
+    {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "floors": 7, "state": "pending", "group": "Scandinavian urban housing"},
+    {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "state": "pending", "group": "arcaded mixed-use"},
+    {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "floors": 3, "state": "pending", "group": "timber mixed-use"},
+    {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "floors": 6, "width_m": 55, "depth_m": 36, "state": "pending", "group": "historic railway hotel"}
+  ]
+}

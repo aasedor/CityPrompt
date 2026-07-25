@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "adaptive-reuse-warehouse-lofts",
+  "archetype_id": "adaptive_reuse_warehouse_lofts",
+  "created_at": "2026-07-17T06:42:49.815143+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/hero.png",
+  "architectural_signature": {
+    "identity": "Converted warehouse retaining heavy masonry piers while inserting large steel-and-glass bays, roof monitor, terraces and selective industrial bracing.",
+    "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",
+    "kits": [
+      "industrial_steel_bays",
+      "steel_bracing",
+      "roof_monitor",
+      "reuse_terraces"
+    ]
+  },
+  "span_m": 10.29,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        418
+      ],
+      "height_m": 4.2
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        418
+      ],
+      "height_m": 4.2
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        925
+      ],
+      "height_m": 4.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        447
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.14",
+    "floor_alt": [
+      0.05,
+      0.2833
+    ],
+    "crown": [
+      0.0,
+      0.5167
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

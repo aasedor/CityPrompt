@@ -1,0 +1,395 @@
+"""Schemas for the isolated Direct 3D image-refinement pipeline.
+
+This contract intentionally does not inherit from the colored-polygon render
+request. Direct 3D starts from an authoritative viewport capture and always
+requires an explicit proposal mask for validation and design QA, even when a
+provider-first presentation mode deliberately omits that mask from generation.
+"""
+
+from __future__ import annotations
+
+import re
+import uuid
+from typing import Literal
+
+from pydantic import BaseModel, Field, field_validator, model_validator
+
+
+Direct3DSemanticClass = Literal["ground", "landscape", "street", "park", "building"]
+Direct3DPresentationMode = Literal["source_anchored", "scene", "reproject"]
+Direct3DStyle = Literal[
+    "photorealistic",
+    "photomontage",
+    "development",
+    "atmospheric",
+    "winter",
+    "night",
+    "watercolour",
+    "charcoal",
+    "marker-render",
+    "pen-and-ink",
+    "survey",
+    "documentary",
+    "site-plan",
+    "site-plan-photo",
+    "blueprint",
+    "site-plan-watercolor",
+    "isometric",
+    "clay-maquette",
+    "woodblock",
+    "collage",
+    "risograph",
+    "pixel-art",
+]
+
+
+DIRECT_3D_REPROJECT_STYLES = frozenset({
+    "site-plan",
+    "site-plan-photo",
+    "blueprint",
+    "site-plan-watercolor",
+    "isometric",
+    "clay-maquette",
+})
+
+
+class Direct3DCaptureClaim(BaseModel):
+    """Optional client measurements which the server verifies against pixels."""
+
+    width: int = Field(..., ge=1, le=2048)
+    height: int = Field(..., ge=1, le=2048)
+    proposal_coverage: float = Field(..., ge=0.0, le=1.0)
+    fingerprint: str | None = Field(default=None, pattern=r"^[a-fA-F0-9]{64}$")
+
+
+class Direct3DResidualLandscapeClaim(BaseModel):
+    """Version claim tying a paid capture to the server-current compiled parcel."""
+
+    boundary_id: uuid.UUID
+    source_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
+
+
+class Direct3DCommunityZoneClaim(BaseModel):
+    """Exact compiled zone/model identity observed by the captured browser scene."""
+
+    zone_id: uuid.UUID
+    source_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
+    representation_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
+    building_id: uuid.UUID | None = None
+
+
+class Direct3DRenderRequest(BaseModel):
+    """A clean 3D capture plus mode-specific presentation and design authority."""
+
+    beauty_image_base64: str = Field(
+        ...,
+        min_length=32,
+        max_length=40_000_000,
+        description="Base64 PNG/JPEG/WebP clean 3D viewport capture.",
+    )
+    proposal_mask_base64: str = Field(
+        ...,
+        min_length=32,
+        max_length=20_000_000,
+        description=(
+            "Same-size PNG proposal mask. Zero/black is immutable context; "
+            "255/white is proposal area. An RGBA alpha channel is also accepted."
+        ),
+    )
+    prompt: str = Field(..., min_length=1, max_length=20_000)
+    presentation_mode: Direct3DPresentationMode = Field(
+        default="source_anchored",
+        description=(
+            "source_anchored preserves the legacy pixel-locked finish; scene "
+            "permits a camera-locked full-frame presentation finish; reproject "
+            "permits a style-directed plan or axonometric camera transform."
+        ),
+    )
+    style: Direct3DStyle = Field(
+        default="photorealistic",
+        description="The render panel style identifier governing the presentation treatment.",
+    )
+    object_id_image_base64: str | None = Field(
+        default=None,
+        min_length=32,
+        max_length=20_000_000,
+        description=(
+            "Same-size class-ID PNG used only as a structural guide. Optional "
+            "for legacy source_anchored; required for scene and reproject."
+        ),
+    )
+    object_id_manifest: dict[str, Direct3DSemanticClass] | None = Field(
+        default=None,
+        description=(
+            "Map from #RRGGBB class-ID colors to Direct 3D semantic classes; "
+            "required with the class-ID PNG for scene and reproject."
+        ),
+    )
+    capture: Direct3DCaptureClaim | None = None
+    # Direct 3D is explicitly project-bound: omitting this identifier would
+    # bypass the locked source/boundary/model freshness checks before spend.
+    project_id: uuid.UUID
+    community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(
+        ...,
+        min_length=1,
+        max_length=2000,
+    )
+    residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None
+
+    @field_validator("object_id_manifest")
+    @classmethod
+    def validate_object_id_manifest(
+        cls,
+        manifest: dict[str, Direct3DSemanticClass] | None,
+    ) -> dict[str, Direct3DSemanticClass] | None:
+        if manifest is None:
+            return None
+        if not 1 <= len(manifest) <= 64:
+            raise ValueError("object_id_manifest must contain between 1 and 64 colors")
+
+        normalized: dict[str, Direct3DSemanticClass] = {}
+        for color, semantic_class in manifest.items():
+            if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
+                raise ValueError(f"Invalid object-ID color {color!r}; expected #RRGGBB")
+            normalized[color.upper()] = semantic_class
+        if "#000000" in normalized:
+            raise ValueError("#000000 is reserved for non-proposal context")
+        return normalized
+
+    @model_validator(mode="after")
+    def validate_object_id_pair(self) -> "Direct3DRenderRequest":
+        if bool(self.object_id_image_base64) != bool(self.object_id_manifest):
+            raise ValueError(
+                "object_id_image_base64 and object_id_manifest must be supplied together"
+            )
+        if (
+            self.presentation_mode in {"scene", "reproject"}
+            and not self.object_id_image_base64
+        ):
+            raise ValueError(
+                "scene and reproject require object_id_image_base64 and "
+                "object_id_manifest"
+            )
+        zone_ids = [claim.zone_id for claim in self.community_3d_claims]
+        if len(zone_ids) != len(set(zone_ids)):
+            raise ValueError("community_3d_claims may contain each zone only once")
+        is_reproject_style = self.style in DIRECT_3D_REPROJECT_STYLES
+        if self.presentation_mode == "scene" and is_reproject_style:
+            raise ValueError(
+                f"style {self.style!r} requires presentation_mode='reproject'"
+            )
+        if self.presentation_mode == "reproject" and not is_reproject_style:
+            raise ValueError(
+                f"style {self.style!r} requires presentation_mode='scene' or "
+                "'source_anchored'"
+            )
+        return self
+
+
+class Direct3DRegistrationDiagnostics(BaseModel):
+    method: Literal["identity", "ecc-euclidean"]
+    score: float
+    score_metric: Literal[
+        "luminance-correlation",
+        "bidirectional-structural-edge-recall",
+    ] = "luminance-correlation"
+    photometric_score: float | None = None
+    structural_context_score: float | None = None
+    translation_x_px: float
+    translation_y_px: float
+    translation_norm_px: float | None = None
+    rotation_degrees: float
+    maximum_translation_norm_px: float | None = None
+    maximum_abs_rotation_degrees: float | None = None
+
+
+class Direct3DStructuralEdgeFidelityDiagnostics(BaseModel):
+    passed: Literal[True]
+    tolerance_px: int
+    reference_edge_pixels: int
+    candidate_edge_pixels: int
+    beauty_edge_recall: float
+    coarse_edge_pixels: int
+    coarse_edge_recall: float
+    semantic_edge_pixels: int
+    semantic_edge_recall: float | None = None
+    semantic_component_min_recall: float | None = None
+    building_internal_edge_pixels: int
+    building_internal_edge_recall: float | None = None
+    reference_edge_p90_distance_px: float
+
+
+class Direct3DRawStructuralEdgeFidelityDiagnostics(BaseModel):
+    """Geometry diagnostics for the untrusted provider image before fusion."""
+
+    passed: bool
+    beauty_edge_recall: float
+    coarse_edge_recall: float
+    semantic_edge_recall: float | None = None
+    semantic_component_min_recall: float | None = None
+    building_internal_edge_recall: float | None = None
+
+
+class Direct3DMacroDesignFidelityDiagnostics(BaseModel):
+    """Primary design-geometry checks for provider-first scene finishes."""
+
+    passed: Literal[True]
+    tolerance_px: int
+    silhouette_edge_pixels: int
+    silhouette_edge_recall: float | None = None
+    coarse_edge_pixels: int
+    coarse_edge_recall: float
+    semantic_edge_pixels: int
+    semantic_edge_recall: float | None = None
+    evaluated_component_count: int
+    semantic_component_min_recall: float | None = None
+    reference_edge_p90_distance_px: float
+    candidate_coarse_edge_pixels: int | None = None
+    candidate_coarse_edge_precision: float | None = None
+    candidate_coarse_edge_density_ratio: float | None = None
+    minimum_silhouette_edge_recall: float | None = None
+    minimum_coarse_edge_recall: float | None = None
+    minimum_semantic_edge_recall: float | None = None
+    minimum_semantic_component_recall: float | None = None
+    maximum_reference_edge_p90_distance_px: float | None = None
+    minimum_candidate_coarse_edge_precision: float | None = None
+    maximum_candidate_coarse_edge_density_ratio: float | None = None
+    building_internal_edges_required: Literal[False] = False
+
+
+class Direct3DVisualChangeDiagnostics(BaseModel):
+    """Evidence that a scene finish is more than a near-identity colour grade."""
+
+    passed: Literal[True]
+    whole_frame_mean_absolute_delta: float
+    proposal_mean_absolute_delta: float
+    proposal_detail_delta_p75: float
+    proposal_photometric_residual_p95: float
+    novel_detail_edge_coverage: float
+    context_mean_absolute_delta: float | None = None
+    context_photometric_residual_p95: float | None = None
+    context_detail_delta_p75: float | None = None
+    context_pixel_count: int | None = None
+    context_frame_top_fraction: float | None = None
+    minimum_whole_frame_mean_absolute_delta: float | None = None
+    minimum_proposal_mean_absolute_delta: float
+    minimum_proposal_detail_delta_p75: float
+    minimum_proposal_photometric_residual_p95: float
+    minimum_novel_detail_edge_coverage: float
+    minimum_context_mean_absolute_delta: float | None = None
+    minimum_context_photometric_residual_p95: float | None = None
+    minimum_context_detail_delta_p75: float | None = None
+    context_change_required: Literal[True] = True
+    color_grade_only_rejected: Literal[True] = True
+
+
+class Direct3DReprojectOutputSanityDiagnostics(BaseModel):
+    """Minimum non-empty/content evidence for projection-changing output."""
+
+    passed: Literal[True]
+    whole_frame_mean_absolute_delta: float
+    luminance_standard_deviation: float
+    luminance_dynamic_range_p90: float
+    structural_edge_coverage: float
+    occupied_edge_cells: int
+    significant_edge_component_count: int
+    required_edge_component_count: int
+    minimum_whole_frame_mean_absolute_delta: float
+    minimum_luminance_standard_deviation: float
+    minimum_luminance_dynamic_range_p90: float
+    minimum_structural_edge_coverage: float
+    maximum_structural_edge_coverage: float
+    minimum_occupied_edge_cells: int
+    semantic_inventory_proxy_only: Literal[True] = True
+
+
+class Direct3DFinishDetailGainCaps(BaseModel):
+    """Maximum source-owned contrast gain for one semantic role."""
+
+    fine: float
+    medium: float
+
+
+class Direct3DFinishRoleMetrics(BaseModel):
+    """Auditable source-phase detail measurements for one proposal role."""
+
+    detail_fine_gain: float
+    detail_medium_gain: float
+    microtexture_gain: float
+    safe_microtexture_pixels: int
+    safe_microtexture_coverage: float
+    source_texture_p75: float | None = None
+    fused_texture_p75: float | None = None
+    texture_gain: float | None = None
+    source_detail_correlation: float | None = None
+
+
+class Direct3DFinishFusionDiagnostics(BaseModel):
+    """Finish transfer settings applied while source geometry stays authoritative."""
+
+    method: Literal["source-geometry-multiscale-source-phase-detail-v2"]
+    sigma_px: float
+    rgb_delta_clip: float
+    default_strength: float
+    role_strengths: dict[str, float]
+    detail_fine_sigma_px: float
+    detail_medium_sigma_px: float
+    detail_correction_clip: float
+    detail_role_gain_caps: dict[str, Direct3DFinishDetailGainCaps]
+    microtexture_sigma_px: float
+    microtexture_correction_clip: float
+    microtexture_role_gain_caps: dict[str, float]
+    provider_high_frequency_phase_transferred: Literal[False]
+    safe_microtexture_coverage: float
+    source_detail_correlation: float | None = None
+    source_texture_p75: float | None = None
+    fused_texture_p75: float | None = None
+    texture_gain: float | None = None
+    role_metrics: dict[str, Direct3DFinishRoleMetrics]
+
+
+class Direct3DRenderDiagnostics(BaseModel):
+    processing_mode: Direct3DPresentationMode = "source_anchored"
+    view_lock: Literal[
+        "source_pixel_locked",
+        "camera_registered",
+        "not_applicable_layout_guided",
+    ] = "source_pixel_locked"
+    context_restyled: bool = False
+    provider_first: bool = False
+    source_width: int
+    source_height: int
+    normalized_width: int
+    normalized_height: int
+    proposal_coverage: float
+    context_coverage: float
+    object_id_attached: bool
+    object_id_coverage: float | None = None
+    object_id_proposal_recall: float | None = None
+    object_id_proposal_iou: float | None = None
+    minimum_object_id_proposal_recall: float | None = None
+    minimum_object_id_proposal_iou: float | None = None
+    scene_lower_context_coverage: float | None = None
+    minimum_scene_lower_context_coverage: float | None = None
+    structural_edge_guide_attached: Literal[True] = True
+    finish_fusion: Direct3DFinishFusionDiagnostics | None = None
+    provider_raw_structural_edge_fidelity: (
+        Direct3DRawStructuralEdgeFidelityDiagnostics | None
+    ) = None
+    macro_design_fidelity: Direct3DMacroDesignFidelityDiagnostics | None = None
+    visual_change: Direct3DVisualChangeDiagnostics | None = None
+    reproject_output_sanity: Direct3DReprojectOutputSanityDiagnostics | None = None
+    structural_edge_fidelity: Direct3DStructuralEdgeFidelityDiagnostics | None = None
+    registration: Direct3DRegistrationDiagnostics | None = None
+    exterior_pixel_count: int | None = None
+    exterior_max_channel_delta: int | None = None
+    inward_feather_px: float | None = None
+    mask_retry_used: Literal[False] = False
+
+
+class Direct3DRenderResponse(BaseModel):
+    image_base64: str
+    model: Literal["gpt-image-2"] = "gpt-image-2"
+    capture_fingerprint: str
+    output_fingerprint: str
+    diagnostics: Direct3DRenderDiagnostics
