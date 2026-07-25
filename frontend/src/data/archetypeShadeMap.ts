@@ -83,7 +83,7 @@ export const SHADE_MAP: Record<string, string> = {
   separated_bike_lane:                '#959595',
   multi_use_trail:                    '#4f4a4a',
   pedestrian_promenade:               '#585353',
-  woonerf_shared_street:              '#9b674f',
+  woonerf_shared_street:              '#615c5c',
   brt_corridor:                       '#6a6565',
   light_rail_avenue:                  '#736e6e',
   main_street_complete:               '#7c7777',

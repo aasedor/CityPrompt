@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent as ReactFormEvent } from 'react';
 import { MapPin, X } from 'lucide-react';
 import type { Location, Project, UpdateProjectRequest } from '@/types';
-import { getApiErrorMessage } from '@/services/api';
-import { geocodingApi, type GeocodeSuggestion } from '@/services/geocoding';
+
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+
+interface GeocodeSuggestion {
+  place_name: string;
+  center: [number, number];
+}
 
 interface ProjectEditModalProps {
   project: Project;
@@ -18,7 +23,6 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [suggestions, setSuggestions] = useState<GeocodeSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isResolvingLocation, setIsResolvingLocation] = useState(false);
   const [error, setError] = useState('');
   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -39,50 +43,60 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
 
   const geocodeAddress = useCallback((query: string) => {
     if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
-    if (query.trim().length < 3) {
+    if (!query.trim() || !MAPBOX_TOKEN) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
     }
     geocodeTimerRef.current = setTimeout(async () => {
       try {
-        const nextSuggestions = await geocodingApi.autocomplete(query.trim());
+        const res = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=5&types=address,place,locality,neighborhood`
+        );
+        const data = await res.json();
+        const nextSuggestions = Array.isArray(data.features)
+          ? data.features.map((feature: any) => ({
+            place_name: feature.place_name,
+            center: feature.center,
+          }))
+          : [];
         setSuggestions(nextSuggestions);
         setShowSuggestions(nextSuggestions.length > 0);
-        setError('');
-      } catch (err) {
+      } catch {
         setSuggestions([]);
         setShowSuggestions(false);
-        setError(getApiErrorMessage(err, 'Address search is temporarily unavailable.'));
       }
     }, 350);
   }, []);
 
   const geocodeFirstResult = useCallback(async (query: string): Promise<Location | null> => {
-    if (query.trim().length < 3) return null;
+    if (!query.trim() || !MAPBOX_TOKEN) return null;
     try {
-      const [suggestion] = await geocodingApi.autocomplete(query.trim());
-      return suggestion ? await geocodingApi.resolve(suggestion.id) : null;
+      const res = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=1&types=address,place,locality,neighborhood`
+      );
+      const data = await res.json();
+      const feature = Array.isArray(data.features) ? data.features[0] : null;
+      if (!feature?.center) return null;
+      return {
+        latitude: feature.center[1],
+        longitude: feature.center[0],
+        address: feature.place_name || query.trim(),
+      };
     } catch {
       return null;
     }
   }, []);
 
-  const selectSuggestion = async (suggestion: GeocodeSuggestion) => {
+  const selectSuggestion = (suggestion: GeocodeSuggestion) => {
     setAddressQuery(suggestion.place_name);
+    setSelectedLocation({
+      latitude: suggestion.center[1],
+      longitude: suggestion.center[0],
+      address: suggestion.place_name,
+    });
     setShowSuggestions(false);
-    setIsResolvingLocation(true);
-    try {
-      const resolved = await geocodingApi.resolve(suggestion.id);
-      setSelectedLocation(resolved);
-      setAddressQuery(resolved.address ?? suggestion.place_name);
-      setError('');
-    } catch (err) {
-      setSelectedLocation(null);
-      setError(getApiErrorMessage(err, 'The selected address could not be located.'));
-    } finally {
-      setIsResolvingLocation(false);
-    }
+    setError('');
   };
 
   const handleSubmit = async (event: ReactFormEvent) => {
@@ -99,7 +113,7 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
     let location: Location | null | undefined;
     if (selectedLocation) {
       location = selectedLocation;
-    } else if (trimmedAddress) {
+    } else if (trimmedAddress && MAPBOX_TOKEN) {
       const geocodedLocation = await geocodeFirstResult(trimmedAddress);
       if (!geocodedLocation) {
         setError('Select an address suggestion so the map location can be saved.');
@@ -184,16 +198,16 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
                 }}
                 onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
                 className="input-base w-full pl-9"
-                placeholder="Search for an address..."
+                placeholder={MAPBOX_TOKEN ? 'Search for an address...' : 'Address label'}
               />
             </div>
             {showSuggestions && suggestions.length > 0 && (
               <div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-primary-950/[0.08] bg-white shadow-elevated">
                 {suggestions.map((suggestion) => (
                   <button
-                    key={suggestion.id}
+                    key={`${suggestion.place_name}-${suggestion.center.join(',')}`}
                     type="button"
-                    onClick={() => void selectSuggestion(suggestion)}
+                    onClick={() => selectSuggestion(suggestion)}
                     className="w-full border-b border-primary-950/[0.04] px-3 py-2 text-left text-sm text-primary-950/70 last:border-0 hover:bg-primary-950/[0.04] hover:text-primary-400"
                   >
                     <MapPin size={12} className="mr-2 inline text-primary-950/30" />
@@ -222,10 +236,10 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
           </button>
           <button
             type="submit"
-            disabled={isSaving || isResolvingLocation}
+            disabled={isSaving}
             className="inline-flex items-center justify-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
           >
-            {isSaving ? 'Saving...' : isResolvingLocation ? 'Locating...' : 'Save Changes'}
+            {isSaving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
       </form>

@@ -1,10 +1,5 @@
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import type { SiteZone } from '@/types';
-import {
-  resolveParkLegoAppearance,
-  resolveParkLegoContract,
-  type ParkLegoFamilyId,
-} from './parkLegoFamilies';
 
 export type ParkGuideKind =
   | 'ellipse'
@@ -479,11 +474,6 @@ export interface ParkGroundProfile {
   /** Short, geometry-first summary for the mixed-plan AI finishing pass. */
   renderSummary: string;
   isPilot: boolean;
-  /** Present when this profile is backed by an executable Public Realm LEGO
-   * family rather than only a catalog-derived visual description. */
-  legoFamilyId?: ParkLegoFamilyId;
-  legoFamilyVersion?: number;
-  variantId?: string;
 }
 
 export const JAPANESE_GARDEN_BRIDGE_DIMENSIONS_M = Object.freeze({
@@ -754,25 +744,11 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
     plantingStructure: 'reservoir_perimeter',
     guides: [
       { kind: 'ellipse', x: 0.47, y: 0.52, width: 0.58, height: 0.42, color: '#416f79', strokeColor: '#889a69', strokeWidthM: 3.0 },
-      { kind: 'rectangle', x: 0.15, y: 0.52, width: 0.07, height: 0.13, color: '#858984', strokeColor: '#656b68', strokeWidthM: 0.5 },
       { kind: 'rectangle', x: 0.79, y: 0.52, width: 0.06, height: 0.10, color: '#92918a', strokeColor: '#65655f', strokeWidthM: 0.5 },
-      {
-        kind: 'polyline',
-        x: 0.88,
-        y: 0.52,
-        width: 0.18,
-        height: 0,
-        points: [[0.79, 0.52], [0.97, 0.52]],
-        color: '#a99a7c',
-        strokeColor: '#786d5d',
-        strokeWidthM: 2.4,
-      },
     ],
     guideLegend: [
       'the BLUE-GREEN ellipse is the exact variable-level open-water pool; its green rim is the wet-meadow and sedge shelf',
-      'the WEST GREY rectangle is the exact inlet and riprap energy-dissipation clear zone; keep planting and furnishings outside it',
       'the GREY rectangle is the exact outlet/weir service pad and must remain clear and connected to dry maintenance access',
-      'the TAN line is the exact dry gravel maintenance route from the outlet/weir pad to the parcel edge; keep its full width clear',
     ],
     includeCentralPlaza: false,
     renderSummary:
@@ -1013,19 +989,6 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
   },
 };
 
-// Community Park shares the same executable metric program as Neighborhood
-// Park in Public Realm LEGO V1. Its catalog variants still provide distinct
-// planting/material kits, while topology and fixed-program count stay locked.
-PROFILES.community_park = {
-  ...PROFILES.neighborhood_park,
-  id: 'community-park-lego-v1',
-  version: 1,
-  programDescription: PROFILES.neighborhood_park.programDescription
-    .replace('contemporary neighborhood park', 'community park'),
-  renderSummary: PROFILES.neighborhood_park.renderSummary
-    .replace('neighborhood park', 'community park'),
-};
-
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -1060,15 +1023,9 @@ function catalogParkFamily(entry: CatalogEntry | undefined, archetypeId: string)
     ...(entry?.generationTags ?? []),
   ].join(' '));
   if (containsAny(semantic, ['parking', 'airport', 'airfield'])) return 'parking_facility';
-  // `court` used to be a raw substring and therefore misclassified every
-  // courtyard and forecourt as a sports facility. Sports categories and
-  // explicit activity nouns are unambiguous; a bare court is accepted only
-  // as its own normalized token.
-  const hasCourtToken = /(?:^|[_\s])courts?(?:$|[_\s])/.test(semantic);
-  if (containsAny(category, ['sports_recreation']) || hasCourtToken || containsAny(semantic, [
-    'tennis', 'pickleball', 'basketball', 'pitch', 'athletic', 'fitness',
-    'golf', 'velodrome', 'pump_track', 'skate', 'bouldering', 'equestrian',
-    'baseball', 'softball', 'cricket', 'disc_golf',
+  if (containsAny(category, ['sports_recreation']) || containsAny(semantic, [
+    'court', 'pitch', 'athletic', 'fitness', 'golf', 'velodrome', 'pump_track',
+    'skate', 'bouldering', 'equestrian', 'baseball', 'cricket', 'disc_golf',
   ])) return 'sports_recreation';
   if (entry?.spaceType === 'plaza' || containsAny(category, [
     'civic', 'social_event', 'urban', 'plaza',
@@ -1293,9 +1250,6 @@ export function buildParkRenderQualityInstruction(
 type ParkProfileZone = Pick<SiteZone, 'properties'> & Partial<Pick<SiteZone, 'zone_type'>>;
 
 export type ParkSpecialtyStructureKind =
-  | 'civic_fountain_assembly'
-  | 'greenway_edge_assembly'
-  | 'stormwater_control_assembly'
   | 'japanese_garden_bridge'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
@@ -1314,24 +1268,16 @@ function isPlazaZone(zone: ParkProfileZone): boolean {
 export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfile {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
   const plaza = isPlazaZone(zone);
-  const legoContract = resolveParkLegoContract(zone);
   const archetypeId = normalizeId(
-    legoContract?.supported
-      ? legoContract.archetypeId
-      : plaza
+    plaza
       ? (props.plaza_archetype_id ?? props.green_space_archetype_id)
       : (props.green_space_archetype_id ?? props.plaza_archetype_id),
   ) || (plaza ? 'formal_civic_plaza' : 'neighborhood_park');
   const entry = findEntry(archetypeId);
   const exact = PROFILES[archetypeId]
-    ?? (archetypeId === 'community_park' && legoContract?.supported
-      ? PROFILES.neighborhood_park
-      : undefined)
     ?? Object.entries(PROFILES).find(([id]) => archetypeId.startsWith(`${id}_`))?.[1];
   const variantId = normalizeId(
-    legoContract?.supported
-      ? legoContract.variantId
-      : plaza
+    plaza
       ? (props.plaza_selected_variant_id ?? props.green_space_selected_variant_id)
       : (props.green_space_selected_variant_id ?? props.plaza_selected_variant_id),
   );
@@ -1339,17 +1285,7 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
     normalizeId(candidate.id) === variantId
     || normalizeId(candidate.id) === archetypeId
   ));
-  if (!exact) {
-    const fallback = fallbackProfile(entry, archetypeId, variant);
-    return legoContract?.supported
-      ? {
-          ...fallback,
-          legoFamilyId: legoContract.familyId,
-          legoFamilyVersion: legoContract.familyVersion,
-          variantId: legoContract.variantId,
-        }
-      : fallback;
-  }
+  if (!exact) return fallbackProfile(entry, archetypeId, variant);
   const variantSuffix = variant?.label
     ? ` Selected variant style: ${variant.label}. Apply that variant only through compatible planting character, colour palette, paving and material finish; it does not authorize any new path, pond, fountain, field, bed, building or program element beyond this exact profile.`
     : '';
@@ -1360,13 +1296,6 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
     programDescription: `${exact.programDescription}${variantSuffix}`,
     groundDescription: `${exact.groundDescription}${variantSuffix}`,
     renderSummary: `${exact.renderSummary}${variant?.label ? `; selected ${variant.label} planting and material character without changing the locked program` : ''}`,
-    ...(legoContract?.supported
-      ? {
-          legoFamilyId: legoContract.familyId,
-          legoFamilyVersion: legoContract.familyVersion,
-          variantId: legoContract.variantId,
-        }
-      : {}),
   };
 }
 
@@ -1376,22 +1305,6 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
 export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
-  const legoContract = resolveParkLegoContract(zone);
-  if (
-    legoContract?.source === 'public_realm_lego'
-    && legoContract.supported
-    && legoContract.familyId === 'park_civic_plaza'
-  ) return 'civic_fountain_assembly';
-  if (
-    legoContract?.source === 'public_realm_lego'
-    && legoContract.supported
-    && legoContract.familyId === 'park_linear_greenway'
-  ) return 'greenway_edge_assembly';
-  if (
-    legoContract?.source === 'public_realm_lego'
-    && legoContract.supported
-    && legoContract.familyId === 'park_water_ecology'
-  ) return 'stormwater_control_assembly';
   const archetypeId = resolveParkGroundProfile(zone).archetypeId;
   if (archetypeId.startsWith('japanese_garden')) return 'japanese_garden_bridge';
   if (archetypeId.startsWith('sports_field_complex')) return 'sports_field_furniture';
@@ -1411,35 +1324,11 @@ export function shouldMountParkProgramFrame(
 
 export function resolveParkPlantingStructure(zone: ParkProfileZone): string | undefined {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
-  const legoContract = resolveParkLegoContract(zone);
-  const legoAppearance = resolveParkLegoAppearance(zone);
-  if (legoContract?.source === 'public_realm_lego' && legoContract.supported) {
-    return legoContract.plantingStructure ?? legoAppearance?.plantingStructure;
-  }
-  if (typeof props.planting_structure === 'string' && props.planting_structure) {
-    return props.planting_structure;
-  }
-  if (legoAppearance) return legoAppearance.plantingStructure;
-  return resolveParkGroundProfile(zone).plantingStructure
-    ?? (isPlazaZone(zone) ? 'paved_plaza' : undefined);
-}
-
-function legacyParkPlantingStructureForSignature(zone: ParkProfileZone): string | undefined {
-  const props = (zone.properties ?? {}) as Record<string, unknown>;
   if (typeof props.planting_structure === 'string' && props.planting_structure) {
     return props.planting_structure;
   }
   return resolveParkGroundProfile(zone).plantingStructure
     ?? (isPlazaZone(zone) ? 'paved_plaza' : undefined);
-}
-
-function parkGroundPayloadHash(payload: string, version: 6 | 7): string {
-  let hash = 0x811c9dc5;
-  for (let index = 0; index < payload.length; index += 1) {
-    hash ^= payload.charCodeAt(index);
-    hash = Math.imul(hash, 0x01000193);
-  }
-  return `pg${version}-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
 /** Stable signature: geometry or archetype changes make a persisted texture stale. */
@@ -1448,7 +1337,6 @@ export function parkGroundSourceSignature(
 ): string {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
   const profile = resolveParkGroundProfile(zone);
-  const legoContract = resolveParkLegoContract(zone);
   const coordinates = zone.coordinates.map(([lng, lat]) => [
     Number(lng.toFixed(7)),
     Number(lat.toFixed(7)),
@@ -1464,36 +1352,8 @@ export function parkGroundSourceSignature(
   ) {
     coordinates.pop();
   }
-  const access = Array.isArray(props.park_access_points)
-    ? props.park_access_points.map((candidate) => (
-      Array.isArray(candidate)
-        ? [Number(Number(candidate[0]).toFixed(7)), Number(Number(candidate[1]).toFixed(7))]
-        : candidate
-    ))
-    : [];
-  const canonicalLegoContract = legoContract?.source === 'public_realm_lego'
-    && legoContract.supported
-    ? legoContract
-    : null;
-  if (!canonicalLegoContract) {
-    // Preserve the exact V6 object shape and property order. Paid legacy park
-    // orthophotos persist this hash and must not be invalidated by LEGO V1.
-    return parkGroundPayloadHash(JSON.stringify({
-      generator: 'park-ground-v6-orientation-search',
-      profile: profile.id,
-      profileVersion: profile.version,
-      zoneType: zone.zone_type,
-      archetype: normalizeId(props.green_space_archetype_id),
-      variant: normalizeId(props.green_space_selected_variant_id),
-      plazaArchetype: normalizeId(props.plaza_archetype_id),
-      plazaVariant: normalizeId(props.plaza_selected_variant_id),
-      planting: legacyParkPlantingStructureForSignature(zone),
-      access,
-      coordinates,
-    }), 6);
-  }
-  return parkGroundPayloadHash(JSON.stringify({
-    generator: 'park-ground-v7-public-realm-lego',
+  const payload = JSON.stringify({
+    generator: 'park-ground-v6-orientation-search',
     profile: profile.id,
     profileVersion: profile.version,
     zoneType: zone.zone_type,
@@ -1501,21 +1361,22 @@ export function parkGroundSourceSignature(
     variant: normalizeId(props.green_space_selected_variant_id),
     plazaArchetype: normalizeId(props.plaza_archetype_id),
     plazaVariant: normalizeId(props.plaza_selected_variant_id),
-    publicRealmLego: {
-      familyId: canonicalLegoContract.familyId,
-      familyVersion: canonicalLegoContract.familyVersion,
-      archetypeId: canonicalLegoContract.archetypeId,
-      variantId: canonicalLegoContract.variantId,
-      plantingStructure: canonicalLegoContract.plantingStructure,
-      appearanceKitId: canonicalLegoContract.appearanceKitId,
-      catalogFingerprint: canonicalLegoContract.catalogFingerprint,
-      capabilityFingerprint: canonicalLegoContract.capabilityFingerprint,
-      recipeHash: canonicalLegoContract.recipeHash,
-    },
     planting: resolveParkPlantingStructure(zone),
-    access,
+    access: Array.isArray(props.park_access_points)
+      ? props.park_access_points.map((candidate) => (
+        Array.isArray(candidate)
+          ? [Number(Number(candidate[0]).toFixed(7)), Number(Number(candidate[1]).toFixed(7))]
+          : candidate
+      ))
+      : [],
     coordinates,
-  }), 7);
+  });
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < payload.length; i += 1) {
+    hash ^= payload.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return `pg6-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
 export const PILOT_PARK_ARCHETYPE_IDS = Object.freeze(Object.keys(PROFILES));

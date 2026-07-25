@@ -4,11 +4,9 @@ import type { SiteZone } from '@/types';
 import {
   createSitePreparationGeometry,
   createSitePreparationTexture,
-  createWoonerfPaverTexture,
   getPreparedSiteBoundaryIds,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
-  shouldMaskReplacementBuildingTiles,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
 
@@ -45,11 +43,6 @@ describe('compiled site preparation', () => {
     expect(
       shouldRenderReplacementFootprintGround(zone('park', 'green_space'), true, false),
     ).toBe(false);
-    const clearedLotBuilding = zone('cleared', 'building', {
-      community_3d_mask_existing_tiles: false,
-    });
-    expect(shouldMaskReplacementBuildingTiles(clearedLotBuilding, true)).toBe(false);
-    expect(shouldRenderReplacementFootprintGround(clearedLotBuilding, true, false)).toBe(false);
   });
 
   it('activates only when a compilable community zone has been built', () => {
@@ -102,25 +95,6 @@ describe('compiled site preparation', () => {
     expect(channelMeans.every((mean) => mean > 100 && mean < 165)).toBe(true);
     expect(channelMeans[0]).toBeGreaterThanOrEqual(channelMeans[1]);
     expect(channelMeans[1] - channelMeans[2]).toBeLessThan(24);
-    textureA.dispose();
-    textureB.dispose();
-  });
-
-  it('creates a deterministic warm unit-paver texture for woonerfs', () => {
-    const textureA = createWoonerfPaverTexture('street-1', 64);
-    const textureB = createWoonerfPaverTexture('street-1', 64);
-    const dataA = textureA.image.data as Uint8Array;
-    const dataB = textureB.image.data as Uint8Array;
-    expect(Array.from(dataA)).toEqual(Array.from(dataB));
-    expect(textureA.wrapS).toBe(THREE.RepeatWrapping);
-    expect(textureA.wrapT).toBe(THREE.RepeatWrapping);
-    const channelMeans = [0, 1, 2].map((channel) => {
-      let total = 0;
-      for (let index = channel; index < dataA.length; index += 4) total += dataA[index];
-      return total / (dataA.length / 4);
-    });
-    expect(channelMeans[0]).toBeGreaterThan(channelMeans[1] + 35);
-    expect(channelMeans[1]).toBeGreaterThan(channelMeans[2] + 15);
     textureA.dispose();
     textureB.dispose();
   });

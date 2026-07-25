@@ -2,26 +2,13 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildCurbBandGeometry,
-  applyTerrainPlaneToStreetGeometry,
-  buildAccessibleFourWayIntersectionGeometry,
   buildOffsetCurbGeometry,
   buildDashGeometry,
-  buildParkingStallMarkingGeometry,
   buildRibbonBandGeometry,
-  buildRibbonMetricUvs,
   buildRoundaboutGeometry,
-  buildSharrowGeometry,
   densifyPolyline,
-  streetStationElevationAt,
 } from './streetMesh3D';
 import { ROUNDABOUT_PARAMS, STREET_DETAIL_3D } from '@/data/streetGeometryParams';
-import {
-  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
-  PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS,
-  PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
-  PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
-  PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
-} from './publicRealmDepthPolicy';
 
 const line100 = [
   { x: 0, y: 0 },
@@ -59,11 +46,8 @@ describe('buildCurbBandGeometry', () => {
     const geo = buildCurbBandGeometry(line100, 5);
     expect(geo).not.toBeNull();
     const [zMin, zMax] = zRange(geo);
-    expect(zMin).toBeCloseTo(PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS, 5);
-    expect(zMax).toBeCloseTo(
-      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + STREET_DETAIL_3D.curbHeight_m,
-      5,
-    );
+    expect(zMin).toBe(0);
+    expect(zMax).toBeCloseTo(STREET_DETAIL_3D.curbHeight_m, 5);
 
     // 2 sides x stations x 4 cross-section verts
     const pos = geo!.getAttribute('position');
@@ -113,15 +97,6 @@ describe('buildOffsetCurbGeometry', () => {
     expect(Math.max(...ys)).toBeCloseTo(4 + STREET_DETAIL_3D.curbWidth_m / 2, 5);
     geometry!.dispose();
   });
-
-  it('leaves graph-owned curb-ramp gaps at skipped intersection stations', () => {
-    const full = buildOffsetCurbGeometry(line100, [-3, 3])!;
-    const withGap = buildOffsetCurbGeometry(line100, [-3, 3], undefined, undefined, [true, false])!;
-    expect(withGap.getIndex()?.count).toBeLessThan(full.getIndex()?.count ?? 0);
-    expect(withGap.getIndex()?.count).toBe(0);
-    full.dispose();
-    withGap.dispose();
-  });
 });
 
 describe('buildRibbonBandGeometry', () => {
@@ -140,186 +115,6 @@ describe('buildRibbonBandGeometry', () => {
     expect(maxY).toBeCloseTo(3);
     expect(pos.getZ(0)).toBeCloseTo(1.2);
     expect(pos.getZ(2)).toBeCloseTo(2.2);
-    geo.dispose();
-  });
-
-  it('writes metre-scaled UVs along both physical edges and signed offsets', () => {
-    const centerline = [
-      { x: 0, y: 0 },
-      { x: 3, y: 4 },
-      { x: 3, y: 10 },
-    ];
-    const geometry = buildRibbonBandGeometry(centerline, -1.5, 2.5)!;
-    const uv = geometry.getAttribute('uv');
-    expect(uv.count).toBe(centerline.length * 2);
-    expect(Array.from({ length: uv.count }, (_, index) => uv.getY(index)))
-      .toEqual([-1.5, 2.5, -1.5, 2.5, -1.5, 2.5]);
-    expect(uv.getX(0)).toBe(0);
-    expect(uv.getX(1)).toBe(0);
-    expect(uv.getX(2)).toBeGreaterThan(0);
-    expect(uv.getX(3)).toBeGreaterThan(0);
-    expect(uv.getX(4)).toBeGreaterThan(uv.getX(2));
-    expect(uv.getX(5)).toBeGreaterThan(uv.getX(3));
-    expect(uv.getX(4)).not.toBeCloseTo(uv.getX(5), 4);
-    geometry.dispose();
-  });
-
-  it('swaps the two physical edge distances when the cross-section is reversed', () => {
-    const centerline = [
-      { x: 0, y: 0 },
-      { x: 0, y: 2 },
-      { x: -3, y: 6 },
-    ];
-    const forward = buildRibbonMetricUvs(centerline, 4, -2);
-    const reversed = buildRibbonMetricUvs(centerline, -2, 4);
-    for (let station = 0; station < centerline.length; station += 1) {
-      expect(forward[station * 4]).toBeCloseTo(reversed[station * 4 + 2], 8);
-      expect(forward[station * 4 + 2]).toBeCloseTo(reversed[station * 4], 8);
-      expect(forward[station * 4 + 1]).toBe(4);
-      expect(forward[station * 4 + 3]).toBe(-2);
-    }
-  });
-});
-
-describe('complete-main-street signature markings', () => {
-  it('lays out six-metre parking bays while preserving intersection insets', () => {
-    const geometry = buildParkingStallMarkingGeometry(line100, -7.75, -5.65);
-    expect(geometry).not.toBeNull();
-    const position = geometry!.getAttribute('position');
-    expect(position.count).toBeGreaterThanOrEqual(12 * 4);
-    for (let index = 0; index < position.count; index += 1) {
-      expect(position.getY(index)).toBeGreaterThanOrEqual(-7.76);
-      expect(position.getY(index)).toBeLessThanOrEqual(-5.64);
-      expect(position.getZ(index)).toBeCloseTo(PUBLIC_REALM_STREET_MARKING_LIFT_METERS, 6);
-    }
-  });
-
-  it('builds bounded sharrow chevrons in both lane centres', () => {
-    const geometry = buildSharrowGeometry(line100, [-1.825, 1.825]);
-    expect(geometry).not.toBeNull();
-    const positions = geometry!.getAttribute('position');
-    expect(positions.count).toBeGreaterThan(0);
-    const firstWithTraffic = Array.from({ length: 12 }, (_, index) => positions.getX(index));
-    const firstAgainstTraffic = Array.from({ length: 12 }, (_, index) => positions.getX(12 + index));
-    expect(Math.max(...firstWithTraffic)).toBeGreaterThan(18.8);
-    expect(Math.min(...firstAgainstTraffic)).toBeLessThan(17.2);
-    expect(zRange(geometry)[0]).toBeCloseTo(PUBLIC_REALM_STREET_MARKING_LIFT_METERS, 6);
-  });
-
-  it('removes parking dividers and sharrows from graph-owned internal intersections', () => {
-    const centerline = Array.from({ length: 11 }, (_, index) => ({ x: index * 10, y: 0 }));
-    const clearanceMask = centerline.map((_, index) => index === 5);
-    const fullParking = buildParkingStallMarkingGeometry(centerline, -7.75, -5.65)!;
-    const maskedParking = buildParkingStallMarkingGeometry(
-      centerline,
-      -7.75,
-      -5.65,
-      undefined,
-      6,
-      13,
-      clearanceMask,
-    )!;
-    expect(maskedParking.getAttribute('position').count)
-      .toBeLessThan(fullParking.getAttribute('position').count);
-    const parkingPositions = maskedParking.getAttribute('position');
-    for (let index = 0; index < parkingPositions.count; index += 1) {
-      expect(parkingPositions.getX(index) < 40 || parkingPositions.getX(index) > 60).toBe(true);
-    }
-
-    const fullSharrows = buildSharrowGeometry(centerline, [-1.825, 1.825])!;
-    const maskedSharrows = buildSharrowGeometry(
-      centerline,
-      [-1.825, 1.825],
-      undefined,
-      28,
-      18,
-      clearanceMask,
-    )!;
-    expect(maskedSharrows.getAttribute('position').count)
-      .toBeLessThan(fullSharrows.getAttribute('position').count);
-    const sharrowPositions = maskedSharrows.getAttribute('position');
-    for (let index = 0; index < sharrowPositions.count; index += 1) {
-      expect(sharrowPositions.getX(index) < 40 || sharrowPositions.getX(index) > 60).toBe(true);
-    }
-
-    fullParking.dispose();
-    maskedParking.dispose();
-    fullSharrows.dispose();
-    maskedSharrows.dispose();
-  });
-
-  it('drapes each sharrow stroke endpoint along the local grade', () => {
-    const geometry = buildSharrowGeometry(line100, [-1.825], [0, 10])!;
-    const [minimumZ, maximumZ] = zRange(geometry);
-    expect(maximumZ - minimumZ).toBeGreaterThan(0.08);
-    geometry.dispose();
-  });
-});
-
-describe('buildAccessibleFourWayIntersectionGeometry', () => {
-  it('builds four zebra crossings and eight directional curb-ramp/tactile pairs', () => {
-    const geometry = buildAccessibleFourWayIntersectionGeometry(0, Math.PI / 2, 11, 7)!;
-    expect(geometry).not.toBeNull();
-    expect(geometry.crosswalks.getAttribute('position').count).toBe(2 * 2 * 7 * 4);
-    expect(geometry.curbRamps.getAttribute('position').count).toBe(8 * 8);
-    expect(geometry.tactilePads.getAttribute('position').count).toBe(8 * 4);
-    expect(zRange(geometry.curbRamps)[0]).toBeCloseTo(PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS, 5);
-    expect(zRange(geometry.curbRamps)[1]).toBeCloseTo(PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS, 5);
-    expect(zRange(geometry.crosswalks)[0]).toBeCloseTo(
-      PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
-      6,
-    );
-    expect(zRange(geometry.crosswalks)[1]).toBeCloseTo(
-      PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
-      6,
-    );
-    geometry.crosswalks.dispose();
-    geometry.curbRamps.dispose();
-    geometry.tactilePads.dispose();
-  });
-
-  it('drapes a node assembly onto one terrain plane without changing its authored separation', () => {
-    const road = buildRibbonBandGeometry(line100, -2, 2, 0.1)!;
-    const before = zRange(road);
-    applyTerrainPlaneToStreetGeometry(road, {
-      originX: 0,
-      originY: 0,
-      originZ: 100,
-      slopeX: 0.02,
-      slopeY: 0.1,
-      kind: 'least_squares',
-      sampleCount: 5,
-      fitSampleCount: 5,
-      inlierCount: 5,
-      rmsResidualMeters: 0,
-      maxResidualMeters: 0,
-    }, 100);
-    const position = road.getAttribute('position');
-    expect(position.getZ(0)).toBeCloseTo(before[0] - 0.2, 6);
-    expect(position.getZ(1)).toBeCloseTo(before[1] + 0.2, 6);
-    expect(position.getZ(2)).toBeCloseTo(before[0] + 2 - 0.2, 6);
-    road.dispose();
-  });
-
-  it('rejects implausibly narrow or invalid graph nodes', () => {
-    expect(buildAccessibleFourWayIntersectionGeometry(0, Math.PI / 2, 1, 7)).toBeNull();
-    expect(buildAccessibleFourWayIntersectionGeometry(Number.NaN, Math.PI / 2, 7, 7)).toBeNull();
-  });
-
-  it('interpolates distinct left and right terrain contact across the right-of-way', () => {
-    const crossSlope = [0, 1].map(() => ({
-      centerZ: 0,
-      leftZ: 1,
-      rightZ: -1,
-      halfWidthM: 5,
-    }));
-    const geo = buildRibbonBandGeometry(line100, -5, 5, 0.1, crossSlope)!;
-    const pos = geo.getAttribute('position');
-    expect(pos.getZ(0)).toBeCloseTo(-0.9, 6);
-    expect(pos.getZ(1)).toBeCloseTo(1.1, 6);
-    expect(streetStationElevationAt(crossSlope, 0, -2.5)).toBeCloseTo(-0.5, 8);
-    expect(streetStationElevationAt(crossSlope, 0, 2.5)).toBeCloseTo(0.5, 8);
-    geo.dispose();
   });
 });
 
@@ -348,20 +143,14 @@ function topFaceNormalZs(geo: THREE.BufferGeometry, z: number): number[] {
 describe('winding (regression: side=-1 curbs and splitters rendered inside-out)', () => {
   it('curb tops face up on BOTH sides of the road', () => {
     const geo = buildCurbBandGeometry(line100, 5)!;
-    const tops = topFaceNormalZs(
-      geo,
-      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + STREET_DETAIL_3D.curbHeight_m,
-    );
+    const tops = topFaceNormalZs(geo, STREET_DETAIL_3D.curbHeight_m);
     expect(tops.length).toBeGreaterThan(0);
     for (const nz of tops) expect(nz).toBeGreaterThan(0);
   });
 
   it('splitter island tops face up on all four legs', () => {
     const rb = buildRoundaboutGeometry(ROUNDABOUT_PARAMS.ICD / 2 + ROUNDABOUT_PARAMS.SLEN)!;
-    const tops = topFaceNormalZs(
-      rb.splitters,
-      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + STREET_DETAIL_3D.curbHeight_m,
-    );
+    const tops = topFaceNormalZs(rb.splitters, STREET_DETAIL_3D.curbHeight_m);
     expect(tops.length).toBe(4);
     for (const nz of tops) expect(nz).toBeGreaterThan(0);
   });
@@ -386,45 +175,9 @@ describe('buildRoundaboutGeometry', () => {
 
     // island stands islandHeight above grade; splitters at curb height
     const [, islandTop] = zRange(rb!.island);
-    expect(islandTop).toBeCloseTo(
-      PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m,
-      5,
-    );
+    expect(islandTop).toBeCloseTo(STREET_DETAIL_3D.islandHeight_m, 5);
     const [, splitterTop] = zRange(rb!.splitters);
-    expect(splitterTop).toBeCloseTo(
-      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + STREET_DETAIL_3D.curbHeight_m,
-      5,
-    );
-    expect(rb!.approachMarkings.getAttribute('position').count).toBe(4 * (7 + 1) * 4);
-    expect(rb!.splitterPlanting.getAttribute('position').count).toBe(4 * 3);
-    expect(rb!.sidewalks.getAttribute('position').count).toBeGreaterThan(4 * 20);
-    expect(zRange(rb!.approachMarkings)[0]).toBeCloseTo(
-      PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
-      6,
-    );
-    expect(zRange(rb!.splitterPlanting)[0]).toBeGreaterThan(
-      PUBLIC_REALM_STREET_CURB_BASE_LIFT_METERS + STREET_DETAIL_3D.curbHeight_m,
-    );
-    const [sidewalkBottom, sidewalkTop] = zRange(rb!.sidewalks);
-    expect(sidewalkBottom).toBeCloseTo(PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS, 6);
-    expect(sidewalkTop).toBeCloseTo(PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS, 6);
-
-    for (const surface of [
-      rb!.ring,
-      rb!.apron,
-      rb!.island,
-      rb!.splitters,
-      rb!.splitterPlanting,
-      rb!.sidewalks,
-    ]) {
-      const positions = surface.getAttribute('position');
-      const uv = surface.getAttribute('uv');
-      expect(uv.count).toBe(positions.count);
-      for (let index = 0; index < positions.count; index += 1) {
-        expect(uv.getX(index)).toBeCloseTo(positions.getX(index), 6);
-        expect(uv.getY(index)).toBeCloseTo(positions.getY(index), 6);
-      }
-    }
+    expect(splitterTop).toBeCloseTo(STREET_DETAIL_3D.curbHeight_m, 5);
   });
 
   it('clamps into small zones via uniform radial scale', () => {

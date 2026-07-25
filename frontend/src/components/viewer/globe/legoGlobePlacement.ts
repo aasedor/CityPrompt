@@ -83,23 +83,15 @@ export function extractPlannedMassing(building: Building): PlannedMassingSpec | 
   return massing as PlannedMassingSpec;
 }
 
-function validRing(ring: unknown): number[][] | null {
+/** Footprint ring for LEGO placement: building.footprint_coordinates ONLY
+ *  (no zone fallback — the recipe was planned against the building parcel). */
+export function legoFootprintRing(building: Building): number[][] | null {
+  const ring = building.footprint_coordinates;
   if (!Array.isArray(ring)) return null;
   const pts = ring.filter(
     (c) => Array.isArray(c) && c.length >= 2 && Number.isFinite(c[0]) && Number.isFinite(c[1]),
   );
-  return pts.length >= 3 ? (pts as number[][]) : null;
-}
-
-/** Footprint ring for LEGO placement. The owning zone's CURRENT ring wins when
- *  provided: rotating/moving/reshaping a zone edits only zone coordinates, and
- *  placement must follow live — the stored building footprint is the fallback
- *  compile-time truth (regenerate re-fits the modules to the new ring). */
-export function legoFootprintRing(
-  building: Building,
-  owningZoneRing?: number[][] | null,
-): number[][] | null {
-  return validRing(owningZoneRing) ?? validRing(building.footprint_coordinates);
+  return pts.length >= 3 ? pts : null;
 }
 
 /** True when the building will actually render as a LEGO stack on the globe:

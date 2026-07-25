@@ -81,85 +81,6 @@ export interface LegoPlanRequest {
   allow_setback?: boolean;
   footprint_profile?: LegoFootprintProfile;
   wing_depth_m?: number;
-  project_id?: string;
-}
-
-export type LegoPlanningFailureCode = 'family_not_found' | 'family_incompatible';
-
-export interface LegoSupportedFamily {
-  family: string;
-  widths_m: number[];
-  depths_m: number[];
-  min_floors?: number | null;
-  max_floors?: number | null;
-}
-
-export interface LegoPlanningFailure {
-  code: LegoPlanningFailureCode;
-  message: string;
-  requested?: {
-    width_m: number;
-    depth_m: number;
-    floors: number;
-    footprint_profile?: LegoFootprintProfile;
-  };
-  supported_families?: LegoSupportedFamily[];
-}
-
-const LEGO_PLANNING_FAILURE_CODES = new Set<LegoPlanningFailureCode>([
-  'family_not_found',
-  'family_incompatible',
-]);
-
-/**
- * Decode the planner's semantic 422 payload. Legacy text/header recognition is
- * deliberately narrow so validation failures are never mislabeled as a
- * missing family during a rolling frontend/backend deployment.
- */
-export function getLegoPlanningFailure(error: unknown): LegoPlanningFailure | null {
-  const response = (error as {
-    response?: {
-      status?: number;
-      data?: { detail?: unknown };
-      headers?: Record<string, unknown>;
-    };
-  })?.response;
-  if (response?.status !== 422) return null;
-
-  const detail = response.data?.detail;
-  if (detail && typeof detail === 'object' && !Array.isArray(detail)) {
-    const record = detail as Record<string, unknown>;
-    const code = record.code;
-    const message = record.message;
-    if (
-      typeof code === 'string'
-      && LEGO_PLANNING_FAILURE_CODES.has(code as LegoPlanningFailureCode)
-      && typeof message === 'string'
-      && message.trim()
-    ) {
-      return {
-        ...(record as unknown as LegoPlanningFailure),
-        code: code as LegoPlanningFailureCode,
-        message: message.trim(),
-      };
-    }
-  }
-
-  const legacyHeader = response.headers?.['x-city-prompt-error-code'];
-  const legacyMessage = typeof detail === 'string' ? detail.trim() : '';
-  if (
-    legacyHeader === 'MODULE_FAMILY_MISSING'
-    || /^No module family (?:explicitly matches|covers) archetype\b/i.test(legacyMessage)
-  ) {
-    return {
-      code: 'family_not_found',
-      message: legacyMessage || 'No module family covers this archetype.',
-    };
-  }
-  if (/^No compatible module family\b/i.test(legacyMessage)) {
-    return { code: 'family_incompatible', message: legacyMessage };
-  }
-  return null;
 }
 
 /**
@@ -169,9 +90,6 @@ export function getLegoPlanningFailure(error: unknown): LegoPlanningFailure | nu
 export interface LegoAssemblyRecipe {
   schema_version: 1;
   module_family: string;
-  /** Executable catalogue revision stamped by the AI Master Planner. Manual
-   * LEGO recipes intentionally omit it for backwards compatibility. */
-  catalog_fingerprint?: string | null;
   archetype_id?: string | null;
   reuse_keys: string[];
   target: {
@@ -191,22 +109,12 @@ export interface Community3DCompileResponse {
   status: 'compiled';
   compiled_at: string;
   counts: { building: number; park: number; street: number };
-  /**
-   * Additive compiler diagnostics for the generated site-boundary remainder.
-   * Optional keeps older saved responses and test fixtures source-compatible.
-   */
-  residual_landscape?: {
-    boundary_count: number;
-    derived_boundary_count: number;
-    area_sqm: number;
-    placement_count: number;
-  };
   items: Array<{
     zone_id: string;
     kind: 'building' | 'park' | 'street';
     building_id: string | null;
     building_created: boolean;
-    generator: 'lego_assembly' | 'planned_massing' | 'meshy' | 'park_kit' | 'street_section';
+    generator: 'lego_assembly' | 'planned_massing' | 'park_kit' | 'street_section';
   }>;
 }
 
@@ -303,23 +211,13 @@ export const legoAssemblyApi = {
   },
 
   /** Persist a mixed building/park/street build as one backend transaction. */
-  async compileCommunity(
-    items: Array<{
-      zone_id: string;
-      /** Revision of the zone snapshot used to plan this exact item. */
-      source_updated_at: string;
-      recipe?: LegoAssemblyRecipe & { building_name?: string | null };
-    }>,
-    scopeZoneIds?: string[],
-    scopeBoundaryId?: string,
-  ): Promise<Community3DCompileResponse> {
+  async compileCommunity(items: Array<{
+    zone_id: string;
+    recipe?: LegoAssemblyRecipe & { building_name?: string | null };
+  }>): Promise<Community3DCompileResponse> {
     const response = await api.post<Community3DCompileResponse>(
       '/api/v1/lego-assembly/place-community',
-      {
-        items,
-        ...(scopeZoneIds ? { scope_zone_ids: scopeZoneIds } : {}),
-        ...(scopeBoundaryId ? { scope_boundary_id: scopeBoundaryId } : {}),
-      },
+      { items },
     );
     return response.data;
   },

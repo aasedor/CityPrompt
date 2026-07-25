@@ -21,11 +21,6 @@ export interface ArchitecturalCloneOptions {
   renderOrder: number;
   maxAnisotropy?: number;
   restyleUntextured?: boolean;
-  /** Legacy LEGO compiler assets can contain effectively black ambient-
-   * occlusion maps. Keep AO for authored standalone/Meshy models by default,
-   * and disable it only for the LEGO assembly path where the preview already
-   * follows this presentation-safe policy. */
-  ambientOcclusion?: 'preserve' | 'disable';
 }
 
 function tuneTexture(texture: THREE.Texture | null, maxAnisotropy: number): void {
@@ -38,7 +33,6 @@ function tuneMaterial(
   source: THREE.Material,
   maxAnisotropy: number,
   restyleUntextured: boolean,
-  ambientOcclusion: 'preserve' | 'disable',
 ): THREE.Material {
   const material = source.clone();
   const standard = material as THREE.MeshStandardMaterial;
@@ -49,15 +43,6 @@ function tuneMaterial(
   tuneTexture(standard.roughnessMap, maxAnisotropy);
   tuneTexture(standard.metalnessMap, maxAnisotropy);
   tuneTexture(standard.aoMap, maxAnisotropy);
-
-  // Base-colour textures exported by older compiler versions do not always
-  // carry colour-space metadata. Treating them as linear makes facades much
-  // darker than the same module in LEGO Builder.
-  if (standard.map) standard.map.colorSpace = THREE.SRGBColorSpace;
-  if (ambientOcclusion === 'disable') {
-    standard.aoMap = null;
-    standard.aoMapIntensity = 0;
-  }
 
   const materialName = standard.name.toLowerCase();
   if (materialName.startsWith('mat_sheet_')) {
@@ -168,83 +153,37 @@ function isNearFacadeSheet(material: THREE.Material): boolean {
   );
 }
 
-function isFarFacadeSheet(material: THREE.Material): boolean {
-  const name = material.name.toLowerCase();
-  if (name.startsWith('mat_sheet_far_')) return true;
-  return (
-    glazingLodTag(material) === 'far'
-    && typeof material.userData?.facade_sheet_role === 'string'
-  );
-}
-
-function facadeSheetPairingKey(material: THREE.Material): string | undefined {
-  if (!isNearFacadeSheet(material) && !isFarFacadeSheet(material)) return undefined;
-
-  const explicitRole = material.userData?.facade_sheet_role;
-  if (typeof explicitRole === 'string' && explicitRole.trim()) {
-    return `role:${explicitRole.trim().toLowerCase()}`;
-  }
-
-  // Older compiler exports did not always copy ``facade_sheet_role`` onto a
-  // near PBR material. Recover the standard band identity from its material
-  // name. Pairing an unknown name is intentionally conservative: if the two
-  // names do not normalize to the same value, both authored sheets remain
-  // visible rather than exposing the structural core at either LOD.
-  const normalizedName = material.name
-    .toLowerCase()
-    .replace(/^mat_sheet_(?:near|far)_/, '')
-    .trim();
-  return normalizedName ? `name:${normalizedName}` : undefined;
-}
-
 /** Toggle the complementary materials exported in a semantic-glazing GLB. */
 export function setArchitecturalGlazingLod(
   root: THREE.Object3D,
   mode: ArchitecturalGlazingLod,
 ): void {
+  let hasNearFacadeSheet = false;
   root.traverse((object) => {
     const mesh = object as THREE.Mesh;
     if (!mesh.isMesh) return;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    // Pair only facade sheets authored for the same band on the same joined
-    // mesh. A root-level flag is unsafe for mixed GLBs: a far podium material
-    // on one module must not suppress a near-only floor/elevation elsewhere.
-    // Frames and sashes have no facade pairing key and therefore still follow
-    // their normal near-only culling policy.
-    const nearFacadeKeys = new Set(
-      materials
-        .filter((material) => isNearFacadeSheet(material))
-        .map((material) => facadeSheetPairingKey(material))
-        .filter((key): key is string => Boolean(key)),
-    );
-    const farFacadeKeys = new Set(
-      materials
-        .filter((material) => isFarFacadeSheet(material))
-        .map((material) => facadeSheetPairingKey(material))
-        .filter((key): key is string => Boolean(key)),
-    );
+    // A physical sash/frame is also tagged ``near`` so it can disappear at
+    // city scale, but it is not a replacement facade. Treating any near-tagged
+    // material as a full near sheet hid the baked wall and exposed the plain
+    // structural core as soon as registered window bars were introduced.
+    if (materials.some((material) => isNearFacadeSheet(material))) {
+      hasNearFacadeSheet = true;
+    }
+  });
 
+  root.traverse((object) => {
+    const mesh = object as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     materials.forEach((material) => {
       const tag = glazingLodTag(material);
-      const facadeKey = facadeSheetPairingKey(material);
       // City-detail exports intentionally contain the baked far sheet plus
       // physical glazing overlays, but no duplicate near facade sheet. Keep
       // the baked facade visible in that case so entering the close-range LOD
       // does not expose the untextured wall substrate.
-      if (tag === 'far') {
-        material.visible = mode === 'far'
-          || !facadeKey
-          || !nearFacadeKeys.has(facadeKey);
-      }
-      if (tag === 'near') {
-        // A few valid compiler assets contain only a near facade sheet. Keep
-        // that authored sheet at city distance rather than hiding it and
-        // exposing the dark structural substrate. Near-only frames/sashes are
-        // still culled normally because they are not facade sheets.
-        material.visible = mode === 'near'
-          || (facadeKey !== undefined && !farFacadeKeys.has(facadeKey));
-      }
-      if (tag === 'physical' || tag === 'interior') {
+      if (tag === 'far') material.visible = mode === 'far' || !hasNearFacadeSheet;
+      if (tag === 'near' || tag === 'physical' || tag === 'interior') {
         material.visible = mode === 'near';
       }
     });
@@ -265,12 +204,7 @@ export function resolveArchitecturalGlazingLod(
 /** Clone a cached GLTF scene without sharing mutable material instances. */
 export function prepareArchitecturalClone(
   source: THREE.Object3D,
-  {
-    renderOrder,
-    maxAnisotropy = 8,
-    restyleUntextured = false,
-    ambientOcclusion = 'preserve',
-  }: ArchitecturalCloneOptions,
+  { renderOrder, maxAnisotropy = 8, restyleUntextured = false }: ArchitecturalCloneOptions,
 ): THREE.Object3D {
   const clone = source.clone(true);
   clone.traverse((object) => {
@@ -283,7 +217,7 @@ export function prepareArchitecturalClone(
     mesh.receiveShadow = true;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     const tuned = materials.map((material) => (
-      tuneMaterial(material, maxAnisotropy, restyleUntextured, ambientOcclusion)
+      tuneMaterial(material, maxAnisotropy, restyleUntextured)
     ));
     mesh.material = Array.isArray(mesh.material) ? tuned : tuned[0];
   });

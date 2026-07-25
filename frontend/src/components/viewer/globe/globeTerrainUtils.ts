@@ -74,19 +74,9 @@ export function hasUsableElevationRelief(
   return Math.max(...finite) - Math.min(...finite) >= minimumRangeMeters;
 }
 
-/** Reconcile a current tile probe with a stored placement height. The
- * disagreement rule is DIRECTIONAL (sunk-building fix, 2026-07-25):
- * - stored far ABOVE the sample: the stored height was likely a legacy roof
- *   click — seat on the sampled ground.
- * - sample far BELOW stored: the ray fell into an excavation, ditch, or
- *   unrefined-tile pit — keep the stored site grade so buildings seat level
- *   with the drapes and lawns that share it. */
-/** Real sites vary a few metres below a coarse stored/project reference;
- *  drops inside this window are treated as excavation/ditch artifacts and
- *  keep the stored grade, while deeper drops indicate a roof-click store or
- *  a genuinely descending site and trust the sample. */
-const EXCAVATION_REJECT_METERS = 6;
-
+/** Reconcile a current tile probe with a stored placement height. A material
+ * disagreement is usually "ground versus roof"; the lower plausible surface
+ * is the safe seating plane for replacement development. */
 export function preferLowerGroundAnchor(
   sampled: number | null | undefined,
   stored: number | null | undefined,
@@ -96,21 +86,9 @@ export function preferLowerGroundAnchor(
   const hasStored = Number.isFinite(stored);
   if (!hasSampled) return hasStored ? stored as number : null;
   if (!hasStored) return sampled as number;
-  const sampledValue = sampled as number;
-  const storedValue = stored as number;
-  const drop = storedValue - sampledValue;
-  // Three-band rule:
-  // - deep drop (> EXCAVATION_REJECT): the stored value was a roof click or
-  //   the site genuinely descends a storey — seat on the sampled ground.
-  // - shallow drop (threshold..EXCAVATION_REJECT]: the ray likely fell into
-  //   an excavation, ditch, or curb cut beside the footprint — keep the
-  //   stored site grade so buildings seat level with drapes and lawns
-  //   (sunk-building fix, 2026-07-25).
-  // - otherwise (agreement, or sample above stored): the stored grade is the
-  //   stable reference.
-  if (drop > EXCAVATION_REJECT_METERS) return sampledValue;
-  if (drop > thresholdMeters) return storedValue;
-  return storedValue;
+  return Math.abs((sampled as number) - (stored as number)) > thresholdMeters
+    ? Math.min(sampled as number, stored as number)
+    : stored as number;
 }
 
 /** Choose the safest bare-ground frame origin for replacement development.
@@ -128,35 +106,6 @@ export function resolveReplacementGroundAnchor(
     projectTerrain,
     thresholdMeters,
   );
-}
-
-/** Public realm follows the current streamed tile surface when it agrees with
- * persisted/project terrain. A replacement building benefits from a stable
- * stored base, but a park or street pinned even one metre below current terrain
- * disappears once normal depth testing is enabled. Material disagreement
- * still resolves downward to reject roofs and canopies. */
-export function preferCurrentGroundAnchor(
-  sampled: number | null | undefined,
-  stored: number | null | undefined,
-  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
-): number | null {
-  const hasSampled = Number.isFinite(sampled);
-  const hasStored = Number.isFinite(stored);
-  if (!hasSampled) return hasStored ? stored as number : null;
-  if (!hasStored) return sampled as number;
-  return Math.abs((sampled as number) - (stored as number)) > thresholdMeters
-    ? Math.min(sampled as number, stored as number)
-    : sampled as number;
-}
-
-export function resolvePublicRealmGroundAnchor(
-  sampled: number | null | undefined,
-  stored: number | null | undefined,
-  projectTerrain: number | null | undefined,
-  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
-): number | null {
-  const local = preferCurrentGroundAnchor(sampled, stored, thresholdMeters);
-  return local ?? (Number.isFinite(projectTerrain) ? projectTerrain as number : null);
 }
 
 /**

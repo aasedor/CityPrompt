@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import {
   computeParkPlacements,
-  resolveContainedParkProgramAnchor,
   resolveParkRecipeForZone,
   PLANTING_STRUCTURES,
   type PropPlacement,
@@ -23,10 +22,6 @@ import {
 } from '@/data/parkKitRecipes';
 import { pointInPolygon } from '@/utils/coordTransform';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
-import {
-  CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
-  NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS,
-} from './parkLegoFamilies';
 
 // ~1 hectare square (100m x 100m) near Calgary
 const LAT = 51.05;
@@ -41,49 +36,6 @@ function squareRing(sizeM: number): number[][] {
     [LNG + dLng, LAT + dLat],
     [LNG, LAT + dLat],
   ];
-}
-
-function rectangleRing(widthM: number, depthM: number): number[][] {
-  const dLng = widthM / M_PER_LON;
-  const dLat = depthM / METERS_PER_DEG_LAT;
-  return [
-    [LNG, LAT],
-    [LNG + dLng, LAT],
-    [LNG + dLng, LAT + dLat],
-    [LNG, LAT + dLat],
-  ];
-}
-
-function rotatedRectangleLocal(widthM: number, depthM: number, angleDeg: number): number[][] {
-  const angle = (angleDeg * Math.PI) / 180;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  return [
-    [-widthM / 2, -depthM / 2],
-    [widthM / 2, -depthM / 2],
-    [widthM / 2, depthM / 2],
-    [-widthM / 2, depthM / 2],
-  ].map(([x, y]) => [x * cos - y * sin, x * sin + y * cos]);
-}
-
-function localRingToLngLat(local: number[][]): number[][] {
-  return local.map(([x, y]) => [LNG + x / M_PER_LON, LAT + y / METERS_PER_DEG_LAT]);
-}
-
-function localBoundaryDistance(ring: number[][], point: { x: number; y: number }): number {
-  return ring.reduce((best, start, index) => {
-    const end = ring[(index + 1) % ring.length];
-    const dx = end[0] - start[0];
-    const dy = end[1] - start[1];
-    const lengthSquared = dx * dx + dy * dy;
-    const t = lengthSquared > 0
-      ? Math.max(0, Math.min(1, ((point.x - start[0]) * dx + (point.y - start[1]) * dy) / lengthSquared))
-      : 0;
-    return Math.min(best, Math.hypot(
-      point.x - (start[0] + dx * t),
-      point.y - (start[1] + dy * t),
-    ));
-  }, Infinity);
 }
 
 const NEIGHBORHOOD = resolveParkRecipe('neighborhood_park');
@@ -151,121 +103,11 @@ describe('computeParkPlacements', () => {
     }
   });
 
-  it('frames an urban pocket park with a restrained, distributed specimen canopy', () => {
-    const trees = treesOf(computeParkPlacements(
-      { id: 'pocket-frame', coordinates: squareRing(36) },
-      URBAN_POCKET_PARK,
-      'garden_courtyard',
-    ));
-    const quadrants = new Set(trees.map((tree) => {
-      const [x, y] = toMeters(tree);
-      return `${x < 18 ? 'west' : 'east'}-${y < 18 ? 'south' : 'north'}`;
-    }));
-    expect(trees.length).toBeGreaterThanOrEqual(3);
-    expect(trees.length).toBeLessThanOrEqual(5);
-    expect(quadrants.size).toBeGreaterThanOrEqual(3);
-  });
-
-  it('matches the render-scale canopy rhythm on a 60m by 37m pocket park', () => {
-    const trees = treesOf(computeParkPlacements(
-      { id: 'render-scale-pocket', coordinates: rectangleRing(60, 37) },
-      URBAN_POCKET_PARK,
-      'garden_courtyard',
-    ));
-    expect(trees.length).toBeGreaterThanOrEqual(6);
-    expect(trees.length).toBeLessThanOrEqual(8);
-  });
-
-  it('makes the modern pocket variant a formal but still perimeter-only tree frame', () => {
-    const zone = { id: 'pocket-variant-frame', coordinates: squareRing(40) };
-    const rustic = treesOf(computeParkPlacements(zone, URBAN_POCKET_PARK, 'garden_courtyard'));
-    const modern = treesOf(computeParkPlacements(zone, URBAN_POCKET_PARK, 'formal_quad'));
-    expect(modern.length).toBeGreaterThanOrEqual(3);
-    expect(modern.length).toBeLessThanOrEqual(rustic.length);
-    expect(modern).not.toEqual(rustic);
-    expect(modern.every((tree) => tree.scale === 1)).toBe(true);
-    for (const tree of modern) {
-      const [x, y] = toMeters(tree);
-      expect(Math.min(x, y, 40 - x, 40 - y)).toBeLessThanOrEqual(4.3);
-    }
-  });
-
   it('gates the playground on area', () => {
     const small = computeParkPlacements({ id: 'z-small', coordinates: squareRing(45) }, NEIGHBORHOOD); // ~2000 m²
     const big = computeParkPlacements({ id: 'z-big', coordinates: squareRing(70) }, NEIGHBORHOOD); // ~4900 m²
     expect(small.filter((p) => p.propId === 'playground')).toHaveLength(0);
     expect(big.filter((p) => p.propId === 'playground').length).toBeGreaterThan(0);
-  });
-
-  it('places executable neighborhood modules on the exact ground-guide anchors', () => {
-    const placements = computeParkPlacements(
-      { id: 'lego-program-anchors', coordinates: squareRing(100) },
-      NEIGHBORHOOD,
-      'active_recreation',
-      NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS,
-    );
-    const playground = placements.filter((placement) => placement.propId === 'playground');
-    const pavilion = placements.filter((placement) => placement.propId === 'pavilion');
-    expect(playground).toHaveLength(NEIGHBORHOOD.playground!.instances);
-    expect(pavilion).toHaveLength(1);
-    const playgroundCenter = playground.map(toMeters).reduce(
-      ([sumX, sumY], [x, y]) => [sumX + x, sumY + y],
-      [0, 0],
-    ).map((value) => value / playground.length);
-    // Individual equipment pieces are scattered within the cluster radius;
-    // their mean remains close to the authored x=.82, north-up y=.22 pad.
-    expect(playgroundCenter[0]).toBeCloseTo(82, 4);
-    expect(playgroundCenter[1]).toBeCloseTo(78, 4);
-    const [pavilionX, pavilionY] = toMeters(pavilion[0]);
-    expect(pavilionX).toBeCloseTo(77, 4);
-    expect(pavilionY).toBeCloseTo(42, 4);
-  });
-
-  it('rotates authored program anchors with a valid oriented parcel', () => {
-    const local = rotatedRectangleLocal(100, 80, 45);
-    const placements = computeParkPlacements(
-      { id: 'rotated-lego-program', coordinates: localRingToLngLat(local) },
-      NEIGHBORHOOD,
-      'active_recreation',
-      NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS,
-    );
-    expect(placements.filter((placement) => placement.propId === 'playground'))
-      .toHaveLength(NEIGHBORHOOD.playground!.instances);
-    expect(placements.filter((placement) => placement.propId === 'pavilion')).toHaveLength(1);
-
-    const playgroundAnchor = resolveContainedParkProgramAnchor(
-      local,
-      NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS.playground!,
-      NEIGHBORHOOD.playground!.clearance_m,
-    );
-    expect(playgroundAnchor).not.toBeNull();
-    expect(localBoundaryDistance(local, playgroundAnchor!))
-      .toBeGreaterThanOrEqual(NEIGHBORHOOD.playground!.clearance_m - 1e-6);
-    expect(playgroundAnchor!.yawRad).toBeCloseTo(Math.PI / 4, 5);
-  });
-
-  it('fits the metric civic fountain clearance disc inside its minimum rotated envelope', () => {
-    const local = rotatedRectangleLocal(40, 35, 33);
-    const anchor = resolveContainedParkProgramAnchor(
-      local,
-      [0.5, 0.5],
-      CIVIC_FOUNTAIN_ASSEMBLY_SPEC.wholeElementClearanceM,
-    );
-    expect(anchor).not.toBeNull();
-    expect(localBoundaryDistance(local, anchor!))
-      .toBeGreaterThanOrEqual(CIVIC_FOUNTAIN_ASSEMBLY_SPEC.wholeElementClearanceM - 1e-6);
-    expect(CIVIC_FOUNTAIN_ASSEMBLY_SPEC.outerRadiusM)
-      .toBeLessThan(CIVIC_FOUNTAIN_ASSEMBLY_SPEC.wholeElementClearanceM);
-  });
-
-  it('omits an anchored playground as one whole element when no safety disc can fit', () => {
-    const placements = computeParkPlacements(
-      { id: 'lego-program-too-narrow', coordinates: rectangleRing(18, 200) },
-      NEIGHBORHOOD,
-      'active_recreation',
-      NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS,
-    );
-    expect(placements.filter((placement) => placement.propId === 'playground')).toHaveLength(0);
   });
 
   it('keeps trees out of the playground clearance', () => {
@@ -660,30 +502,6 @@ describe('resolveParkRecipeForZone', () => {
       coordinates: bigRing,
     });
     expect(recipe).toBe(URBAN_POCKET_PARK);
-  });
-
-  it('uses the canonical nested family selection ahead of stale legacy fields', () => {
-    const recipe = resolveParkRecipeForZone({
-      properties: {
-        green_space_archetype_id: 'urban_pocket_park',
-        public_realm_lego: {
-          schema_version: 1,
-          kind: 'park',
-          generator: 'park_kit',
-          family_id: 'park_neighborhood_community',
-          family_version: 1,
-          archetype_id: 'neighborhood_park',
-          variant_id: 'neighborhood_park_v0',
-          planting_structure: 'active_recreation',
-          appearance_kit_id: 'rustic_timber_gravel_v1',
-          catalog_fingerprint: 'a'.repeat(64),
-          capability_fingerprint: 'b'.repeat(64),
-          recipe_hash: 'c'.repeat(64),
-        },
-      },
-      coordinates: bigRing,
-    });
-    expect(recipe).toBe(NEIGHBORHOOD_PARK);
   });
 
   it('the Japanese garden pilot resolves to a restrained garden kit', () => {

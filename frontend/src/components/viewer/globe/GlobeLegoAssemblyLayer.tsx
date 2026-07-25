@@ -66,11 +66,6 @@ import {
   partitionLegoStacksByDistance,
 } from './legoStackBudget';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
-import {
-  DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
-  direct3DInstanceUserData,
-  direct3DZoneInstanceDescriptor,
-} from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_EMBED_METERS = 0.3;
@@ -83,34 +78,9 @@ const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
 const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
 const legoTerrainSampleCache = new Map<string, number>();
 
-/** Terrain anchors are frozen per placement LOCATION, not per building: the
- *  key carries the quantized centroid so moving a zone invalidates the cached
- *  sample and the stack re-seats on the new ground (sinking-on-move fix). */
-function terrainAnchorKey(
-  buildingId: string,
-  frame: { centroidLat: number; centroidLng: number },
-): string {
-  return `${buildingId}:${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
-}
-
-function direct3DBuildingInstanceUserData(
-  building: Building,
-  zone: SiteZone | undefined,
-): Record<string, unknown> {
-  return direct3DInstanceUserData(zone
-    ? direct3DZoneInstanceDescriptor(zone.id, 'building', { building_id: building.id })
-    : {
-      instance_id: `building:${building.id}:building`,
-      semantic_class: 'building',
-      building_id: building.id,
-    });
-}
-
 interface GlobeLegoAssemblyLayerProps {
   buildings: Building[];
   zones: SiteZone[];
-  /** Exact server-claimed buildings editable by Direct 3D. */
-  direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
@@ -169,7 +139,6 @@ function LegoMassingStack({
   onLoaded,
   onUnloaded,
   selected,
-  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -182,7 +151,6 @@ function LegoMassingStack({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
-  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   const height = Math.max(
@@ -213,9 +181,8 @@ function LegoMassingStack({
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const anchorKey = terrainAnchorKey(building.id, frame);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
-    () => legoTerrainSampleCache.get(anchorKey) ?? null,
+    () => legoTerrainSampleCache.get(building.id) ?? null,
   );
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(stableFrameOffset(
@@ -224,13 +191,6 @@ function LegoMassingStack({
   ));
   const attemptsRef = useRef(0);
   const frozenRef = useRef(sampledTerrain !== null);
-  // The zone moved: drop the stale frozen anchor and re-sample at the new spot.
-  useEffect(() => {
-    const cached = legoTerrainSampleCache.get(anchorKey) ?? null;
-    setSampledTerrain(cached);
-    frozenRef.current = cached !== null;
-    attemptsRef.current = 0;
-  }, [anchorKey]);
   useFrame(() => {
     if (frozenRef.current || !geometry) return;
     frameCountRef.current += 1;
@@ -260,7 +220,7 @@ function LegoMassingStack({
         storedTerrain ?? fallbackTerrainHeight,
       )
     ) {
-      legoTerrainSampleCache.set(anchorKey, groundCandidate);
+      legoTerrainSampleCache.set(building.id, groundCandidate);
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
@@ -289,9 +249,6 @@ function LegoMassingStack({
         geometry={geometry}
         position={[0, 0, -GROUND_EMBED_METERS]}
         renderOrder={LEGO_RENDER_ORDER}
-        userData={proposalForDirect3D
-          ? direct3DBuildingInstanceUserData(building, zone)
-          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -319,7 +276,6 @@ function LegoStackInstance({
   onLoaded,
   onUnloaded,
   selected,
-  proposalForDirect3D,
   onBuildingClick,
 }: {
   building: Building;
@@ -331,7 +287,6 @@ function LegoStackInstance({
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
-  proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
   // One suspension point for the whole stack: all distinct module GLBs load
@@ -365,7 +320,6 @@ function LegoStackInstance({
         const cloned = prepareArchitecturalClone(scene, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
-          ambientOcclusion: 'disable',
         });
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
@@ -393,21 +347,13 @@ function LegoStackInstance({
   const zoneProps = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(zoneProps?.terrain_elevation_m ?? zoneProps?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const anchorKey = frame ? terrainAnchorKey(building.id, frame) : building.id;
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
-    () => legoTerrainSampleCache.get(anchorKey) ?? null,
+    () => legoTerrainSampleCache.get(building.id) ?? null,
   );
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(0);
   const attemptsRef = useRef(0);
   const frozenRef = useRef(sampledTerrain !== null);
-  // The zone moved: drop the stale frozen anchor and re-sample at the new spot.
-  useEffect(() => {
-    const cached = legoTerrainSampleCache.get(anchorKey) ?? null;
-    setSampledTerrain(cached);
-    frozenRef.current = cached !== null;
-    attemptsRef.current = 0;
-  }, [anchorKey]);
   const stackRef = useRef<THREE.Group>(null);
   const stackWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
@@ -448,7 +394,7 @@ function LegoStackInstance({
       groundCandidate !== null
       && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
     ) {
-      legoTerrainSampleCache.set(anchorKey, groundCandidate);
+      legoTerrainSampleCache.set(building.id, groundCandidate);
       setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
@@ -472,9 +418,6 @@ function LegoStackInstance({
         ref={stackRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, yawRad]}
-        userData={proposalForDirect3D
-          ? direct3DBuildingInstanceUserData(building, zone)
-          : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
         onClick={(event) => {
           event.stopPropagation();
           onBuildingClick?.(building.id);
@@ -505,7 +448,6 @@ function LegoStackInstance({
 export function GlobeLegoAssemblyLayer({
   buildings,
   zones,
-  direct3DProposalBuildingIds,
   terrainHeight,
   onLoadedIdsChange,
   selectedBuildingId = null,
@@ -514,16 +456,6 @@ export function GlobeLegoAssemblyLayer({
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
   const camera = useThree((state) => state.camera);
 
-  const zoneRingByBuildingId = useMemo(() => {
-    const map = new Map<string, number[][]>();
-    for (const zone of zones) {
-      if (zone.building_id && Array.isArray(zone.coordinates)) {
-        map.set(zone.building_id, zone.coordinates);
-      }
-    }
-    return map;
-  }, [zones]);
-
   const { entries, skippedWithoutFootprint } = useMemo(() => {
     const nextEntries: GlobeBuildingEntry[] = [];
     let skipped = 0;
@@ -531,9 +463,7 @@ export function GlobeLegoAssemblyLayer({
       const recipe = extractLegoRecipe(building);
       const massing = recipe ? null : extractPlannedMassing(building);
       if (!recipe && !massing) continue;
-      // Zone-first: the owning zone's live ring drives placement so edits
-      // (rotate/move/reshape) move the stack immediately, before regenerate.
-      const ring = legoFootprintRing(building, zoneRingByBuildingId.get(building.id));
+      const ring = legoFootprintRing(building);
       const frame = ring ? computeFootprintFrame(ring) : null;
       if (!ring || !frame) {
         skipped += 1;
@@ -548,7 +478,7 @@ export function GlobeLegoAssemblyLayer({
       || a.building.id.localeCompare(b.building.id)
     ));
     return { entries: nextEntries, skippedWithoutFootprint: skipped };
-  }, [buildings, zoneRingByBuildingId]);
+  }, [buildings]);
 
   const entryWorldPositions = useMemo(() => {
     const positions = new Map<string, THREE.Vector3>();
@@ -663,7 +593,6 @@ export function GlobeLegoAssemblyLayer({
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
-              proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
             />
           );
@@ -681,7 +610,6 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
-            proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />
         );
@@ -698,7 +626,6 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
-            proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />;
         }
@@ -715,7 +642,6 @@ export function GlobeLegoAssemblyLayer({
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 selected={selectedBuildingId === building.id}
-                proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
               />
             </Suspense>

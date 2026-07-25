@@ -48,10 +48,7 @@ export const NEIGHBORHOOD_PARK: ParkKitRecipe = {
 };
 
 export const URBAN_POCKET_PARK: ParkKitRecipe = {
-  // Match the render contract: a few specimen-scale trees form a legible room
-  // around the compact lawn. Leaf-textured crowns supply apparent canopy mass;
-  // dozens of overlapping low-poly trees only obscure paths and gateways.
-  trees: { perHectare: 34, edgeBias: 0.88, bandDepth_m: 7, minSpacing_m: 7.2, scaleJitter: [0.84, 1.18] },
+  trees: { perHectare: 60, edgeBias: 0.8, bandDepth_m: 6, minSpacing_m: 5, scaleJitter: [0.8, 1.15] },
   benches: { areaPerBench_m2: 800, min: 2, max: 4, edgeInset_m: 1.5 },
 };
 

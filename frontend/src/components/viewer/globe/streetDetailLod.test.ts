@@ -1,9 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import {
-  MAX_FURNISHED_STREET_ZONES,
   selectDetailedStreetZones,
-  selectFurnishedStreetIds,
   selectTreeStreetIds,
   shouldRenderLiveStreetTrees,
   streetTerrainSampleOffset,
@@ -27,15 +25,6 @@ function street(id: string, roadArchetypeId: string, streetRole?: string): SiteZ
 }
 
 describe('street detail LOD', () => {
-  it('keeps non-tree archetype furniture across a normal 50-road community', () => {
-    const zones = Array.from(
-      { length: 50 },
-      (_, index) => street(`local-${index}`, 'narrow_residential_street', 'local'),
-    );
-    expect(selectFurnishedStreetIds(zones)).toHaveLength(50);
-    expect(MAX_FURNISHED_STREET_ZONES).toBeGreaterThanOrEqual(50);
-  });
-
   it('keeps hierarchy streets when the detail budget is exceeded', () => {
     const zones = [
       street('lane-a', 'toronto_laneway', 'lane'),

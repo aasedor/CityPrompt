@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
-  getLegoPlanningFailure,
   type LegoAssemblyRecipe,
 } from './legoAssemblyApi';
 
@@ -70,70 +69,19 @@ describe('legoAssemblyApi', () => {
       items: [],
     };
     apiPost.mockResolvedValue({ data: response });
-    const sourceUpdatedAt = '2026-07-17T00:00:00Z';
 
     await expect(legoAssemblyApi.compileCommunity([
-      { zone_id: 'building-1', source_updated_at: sourceUpdatedAt, recipe: recipeFixture },
-      { zone_id: 'park-1', source_updated_at: sourceUpdatedAt },
-      { zone_id: 'street-1', source_updated_at: sourceUpdatedAt },
+      { zone_id: 'building-1', recipe: recipeFixture },
+      { zone_id: 'park-1' },
+      { zone_id: 'street-1' },
     ])).resolves.toEqual(response);
 
     expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
       items: [
-        { zone_id: 'building-1', source_updated_at: sourceUpdatedAt, recipe: recipeFixture },
-        { zone_id: 'park-1', source_updated_at: sourceUpdatedAt },
-        { zone_id: 'street-1', source_updated_at: sourceUpdatedAt },
+        { zone_id: 'building-1', recipe: recipeFixture },
+        { zone_id: 'park-1' },
+        { zone_id: 'street-1' },
       ],
-    });
-  });
-
-  it('compileCommunity() sends the complete visible scope separately from incremental items', async () => {
-    const response = {
-      status: 'compiled' as const,
-      compiled_at: '2026-07-17T01:00:00Z',
-      counts: { building: 0, park: 1, street: 0 },
-      items: [],
-    };
-    apiPost.mockResolvedValue({ data: response });
-    const item = {
-      zone_id: 'unfinished-park',
-      source_updated_at: '2026-07-17T00:00:00Z',
-    };
-
-    await legoAssemblyApi.compileCommunity(
-      [item],
-      ['compiled-building', 'unfinished-park'],
-    );
-
-    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
-      items: [item],
-      scope_zone_ids: ['compiled-building', 'unfinished-park'],
-    });
-  });
-
-  it('compileCommunity() sends a server-verifiable Site Boundary scope', async () => {
-    const response = {
-      status: 'compiled' as const,
-      compiled_at: '2026-07-17T01:00:00Z',
-      counts: { building: 1, park: 0, street: 0 },
-      items: [],
-    };
-    apiPost.mockResolvedValue({ data: response });
-    const item = {
-      zone_id: 'inside-building',
-      source_updated_at: '2026-07-17T00:00:00Z',
-    };
-
-    await legoAssemblyApi.compileCommunity(
-      [item],
-      ['inside-building'],
-      'site-boundary',
-    );
-
-    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
-      items: [item],
-      scope_zone_ids: ['inside-building'],
-      scope_boundary_id: 'site-boundary',
     });
   });
 
@@ -150,51 +98,6 @@ describe('legoAssemblyApi', () => {
     apiDelete.mockResolvedValue({ data: { status: 'deleted' } });
     await legoAssemblyApi.clearRecipe('bldg-1');
     expect(apiDelete).toHaveBeenCalledWith('/api/v1/lego-assembly/recipes/bldg-1');
-  });
-});
-
-describe('getLegoPlanningFailure', () => {
-  it('parses structured missing and incompatible family failures', () => {
-    expect(getLegoPlanningFailure({
-      response: {
-        status: 422,
-        data: { detail: { code: 'family_not_found', message: 'No family is installed.' } },
-      },
-    })).toEqual({ code: 'family_not_found', message: 'No family is installed.' });
-
-    expect(getLegoPlanningFailure({
-      response: {
-        status: 422,
-        data: {
-          detail: {
-            code: 'family_incompatible',
-            message: 'The installed family does not fit.',
-            supported_families: [{
-              family: 'industrial-brick-brewery',
-              widths_m: [40],
-              depths_m: [26],
-              min_floors: 2,
-              max_floors: 5,
-            }],
-          },
-        },
-      },
-    })).toEqual(expect.objectContaining({
-      code: 'family_incompatible',
-      supported_families: [expect.objectContaining({ family: 'industrial-brick-brewery' })],
-    }));
-  });
-
-  it('recognizes only narrow legacy planner failures and ignores unrelated 422s', () => {
-    expect(getLegoPlanningFailure({
-      response: { status: 422, data: { detail: 'No module family covers archetype industrial_brick_mixed_use.' } },
-    })?.code).toBe('family_not_found');
-    expect(getLegoPlanningFailure({
-      response: { status: 422, data: { detail: 'No compatible module family found for this target.' } },
-    })?.code).toBe('family_incompatible');
-    expect(getLegoPlanningFailure({
-      response: { status: 422, data: { detail: [{ loc: ['body'], msg: 'Invalid request' }] } },
-    })).toBeNull();
   });
 });
 
@@ -228,20 +131,6 @@ describe('legoArchetypeContextFromZone', () => {
     });
 
     expect(context.archetype_id).toBe('toronto_junction_contemporary_addition');
-  });
-
-  it('uses the parent generation reference after an explicit variant is cleared', () => {
-    const context = legoArchetypeContextFromZone({
-      development_subcategory: 'industrial_brick_mixed_use',
-      development_archetype_id: 'industrial_brick_mixed_use_variant_0',
-      development_selected_variant_id: undefined,
-      generation_style_input: {
-        archetypeId: 'industrial_brick_mixed_use_variant_0',
-      },
-    });
-
-    expect(context.archetype_id).toBe('industrial_brick_mixed_use_variant_0');
-    expect(context.archetype_id).not.toBe('industrial_brick_brewery');
   });
 
   it('falls back to development_* fields when no generation style input exists', () => {

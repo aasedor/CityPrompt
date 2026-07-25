@@ -36,7 +36,6 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
-import type { Direct3DCaptureBundle } from '@/components/viewer/globe/direct3dCapture';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 
@@ -65,7 +64,6 @@ export function ProjectViewPage() {
     isSettled?: boolean;
     waitForTilesSettled?: () => Promise<boolean>;
     setBuildingModelsVisible?: (visible: boolean) => void;
-    captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
   // render panel keys "render with 3D models" behavior off this set.
@@ -722,7 +720,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+              onOpenBlockEditor={() => setLegoZone(selectedZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />
@@ -753,14 +751,11 @@ export function ProjectViewPage() {
                 canvas={globeRefs?.canvas ?? null}
                 camera={globeRefs?.camera ?? null}
                 siteZones={globeRenderZones}
-                communitySourceZones={visibleZones}
-                buildings={project?.buildings ?? []}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
                 selectedZoneId={selectedZoneId}
                 modeledBuildingIds={modeledBuildingIds}
                 setBuildingModelsVisible={globeRefs?.setBuildingModelsVisible}
-                captureDirect3D={globeRefs?.captureDirect3D}
                 onBeforeRender={prepareForAIRenderCapture}
                 isDragging={isDraggingGlobeRender}
                 onLightboxOpenChange={setAiPanelLightboxOpen}
@@ -998,7 +993,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+              onOpenBlockEditor={() => setLegoZone(selectedZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />

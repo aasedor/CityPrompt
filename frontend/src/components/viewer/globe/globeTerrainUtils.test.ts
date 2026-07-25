@@ -6,7 +6,6 @@ import {
   MAX_ANCHOR_DEVIATION_METERS,
   preferLowerGroundAnchor,
   rejectRaisedObjectTop,
-  resolvePublicRealmGroundAnchor,
   resolveReplacementGroundAnchor,
   shouldFilterObjectTerrainHeight,
 } from './globeTerrainUtils';
@@ -72,21 +71,6 @@ describe('resolveReplacementGroundAnchor', () => {
 
   it('preserves a lower current sample on a descending site', () => {
     expect(resolveReplacementGroundAnchor(1112, 1120, 1121)).toBe(1112);
-  });
-});
-
-describe('resolvePublicRealmGroundAnchor', () => {
-  it('follows a nearby current tile surface instead of pinning to stale stored terrain', () => {
-    expect(resolvePublicRealmGroundAnchor(1026.7, 1025.8, 1025.9)).toBe(1026.7);
-    expect(resolvePublicRealmGroundAnchor(1028.8, 1025.8, 1018.4, 4)).toBe(1028.8);
-  });
-
-  it('still rejects a material roof-height disagreement', () => {
-    expect(resolvePublicRealmGroundAnchor(1040, 1025.8, 1025.9)).toBe(1025.8);
-  });
-
-  it('uses project terrain only when no local source is available', () => {
-    expect(resolvePublicRealmGroundAnchor(null, null, 1018.4)).toBe(1018.4);
   });
 });
 

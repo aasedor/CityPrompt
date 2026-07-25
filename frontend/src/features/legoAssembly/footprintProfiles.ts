@@ -55,17 +55,7 @@ function concaveVertexCount(points: Array<{ x: number; y: number }>): number {
   return count;
 }
 
-const NEAR_RECTANGLE_FILL_RATIO = 0.96;
-
-function classifyProfile(
-  concaveVertices: number,
-  orientedFillRatio: number,
-): BuildingFootprintProfile {
-  // Clipping and round-buffer cleanup often leave tiny chamfers or near-
-  // collinear vertices on an otherwise rectangular plan bar. Topology alone
-  // mislabels those 96%+ full footprints as L/U/courtyard shapes, even though
-  // a rectangular LEGO stack is the faithful representation.
-  if (orientedFillRatio >= NEAR_RECTANGLE_FILL_RATIO) return 'rectangle';
+function classifyProfile(concaveVertices: number): BuildingFootprintProfile {
   if (concaveVertices >= 3) return 'courtyard';
   if (concaveVertices === 2) return 'u_shape';
   if (concaveVertices === 1) return 'l_shape';
@@ -114,12 +104,8 @@ export function analyzeLegoFootprint(
   const width = Math.max(1, dimensions[0]);
   const depth = Math.max(1, dimensions[1]);
   const concaveVertices = concaveVertexCount(local);
-  const orientedFillRatio = Math.min(1, Math.abs(polygonArea(local)) / (width * depth));
-  const detected = classifyProfile(concaveVertices, orientedFillRatio);
-  // Geometry is authoritative. `preferredProfiles` describes the catalogue's
-  // ideal design envelope; it must not relabel a real L/U/courtyard footprint
-  // as a rectangle and let a rectangular recipe overwrite its topology.
-  const profile = detected;
+  const detected = classifyProfile(concaveVertices);
+  const profile = compatibility?.preferredProfiles.includes(detected) === false ? 'rectangle' : detected;
   const profileGuidance = compatibility?.profiles?.[profile];
   const recommendedWidth = profileGuidance?.recommendedWidth_m ?? compatibility?.recommendedWidth_m;
   const recommendedDepth = profileGuidance?.recommendedDepth_m ?? compatibility?.recommendedDepth_m;

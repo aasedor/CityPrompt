@@ -29,7 +29,6 @@ import {
   hasUsableElevationRelief,
   isPlausibleTerrainAnchor,
   rejectRaisedObjectTop,
-  resolvePublicRealmGroundAnchor,
   resolveReplacementGroundAnchor,
   resolveZoneTerrainHeight,
   shouldFilterObjectTerrainHeight,
@@ -42,37 +41,20 @@ import {
 import {
   createSitePreparationGeometry,
   createSitePreparationTexture,
-  createWoonerfPaverTexture,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
-import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
-import {
-  PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
-  resolvePublicRealmGroundDepthPolicy,
-} from './publicRealmDepthPolicy';
-import {
-  applyResidualLandscapeUVs,
-  createResidualLandscapeTexture,
-  getResidualLandscapeRecipe,
-} from './residualLandscape';
-import {
-  DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA,
-  direct3DGroundRoleForCommunityKind,
-  direct3DInstanceUserData,
-  direct3DProposalUserData,
-  direct3DZoneInstanceDescriptor,
-} from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const REPLACEMENT_GROUND_SAMPLE_RADII_METERS = [8, 20, 36] as const;
-// With the live tile surface as the authoritative anchor, only a decal-scale
-// clearance is needed. Normal depth testing prevents the ground from painting
-// across buildings while polygon offset avoids coplanar terrain flicker.
-const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.11;
+// Keep proposal ground just above the noisy photogrammetry skin. A curb-scale
+// clearance avoids flicker/disappearance without recreating the former
+// metre-scale floating parks that buried building and prop bases.
+const FLAT_ZONE_SURFACE_LIFT_METERS = 0.32;
+const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.4;
 const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 12;
 const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
 const FLAT_ZONE_DEPTH_OFFSET_FACTOR = -4;
@@ -239,7 +221,7 @@ function createLocalGeometry(
   // Flat zone
   if (!useTerrainGridFlat) {
     const flatVerts: number[] = [];
-    for (const p of localPts) flatVerts.push(p.x, p.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+    for (const p of localPts) flatVerts.push(p.x, p.y, FLAT_ZONE_SURFACE_LIFT_METERS);
 
     const fillGeo = new THREE.BufferGeometry();
     fillGeo.setAttribute('position', new THREE.Float32BufferAttribute(flatVerts, 3));
@@ -262,7 +244,7 @@ function createLocalGeometry(
   const flatVerts: number[] = [];
   const fillCoords: number[][] = [];
   for (const point of terrainGrid.vertices) {
-    flatVerts.push(point.x, point.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+    flatVerts.push(point.x, point.y, FLAT_ZONE_SURFACE_LIFT_METERS);
     fillCoords.push([
       centroidLng + point.x / mPerDegLon,
       centroidLat + point.y / METERS_PER_DEG_LAT,
@@ -282,32 +264,6 @@ function createLocalGeometry(
   outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
   return { fillGeo, fillCoords, outlineGeo, flatTopGeo: fillGeo, localPts };
-}
-
-type LocalZoneGeometry = NonNullable<ReturnType<typeof createLocalGeometry>>;
-
-function disposeLocalZoneGeometry(resource: LocalZoneGeometry) {
-  resource.fillGeo.dispose();
-  if (resource.flatTopGeo && resource.flatTopGeo !== resource.fillGeo) {
-    resource.flatTopGeo.dispose();
-  }
-  resource.outlineGeo.dispose();
-}
-
-function useDeferredLocalGeometryDisposal(resource: LocalZoneGeometry | null) {
-  useEffect(() => (
-    resource
-      ? retainResourceForDeferredDisposal(resource, disposeLocalZoneGeometry)
-      : undefined
-  ), [resource]);
-}
-
-function useDeferredDisposable(resource: { dispose: () => void } | null | undefined) {
-  useEffect(() => (
-    resource
-      ? retainResourceForDeferredDisposal(resource, (value) => value.dispose())
-      : undefined
-  ), [resource]);
 }
 
 /**
@@ -342,7 +298,7 @@ export function raycastTerrainHeightAtLatLng(
   return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
 }
 
-export function raycastObjectFilteredTerrainHeightAtLatLng(
+function raycastObjectFilteredTerrainHeightAtLatLng(
   lng: number,
   lat: number,
   tilesGroup: THREE.Object3D,
@@ -431,10 +387,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
-  const residualLandscapeRecipe = useMemo(
-    () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
-    [isPreparedBoundary, zone],
-  );
   const isReplacementFootprintGround = shouldRenderReplacementFootprintGround(
     zone,
     suppressed,
@@ -456,11 +408,18 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || typeof zoneProps?.plaza_archetype_id === 'string'
     || typeof zoneProps?.plaza_aesthetic === 'string'
   );
-  const isWoonerfGround = communityKind === 'street'
-    && String(zoneProps?.road_archetype_id ?? '').toLowerCase().replace(/-/g, '_').includes('woonerf');
   const compiledSurfaceColor = communityKind === 'park'
     ? (isPlazaGround ? '#b5b1a7' : '#66874f')
-    : (isWoonerfGround ? '#9b674f' : '#656765');
+    : '#656765';
+  // A prepared site boundary (or an explicit per-zone mask) already removes
+  // source photogrammetry. In that case public-realm surfaces must participate
+  // in the normal depth buffer so they cannot paint roads and lawns across the
+  // facades of generated buildings. Standalone drapes without a tile mask keep
+  // the historical overlay behavior so source roofs/cars cannot punch through.
+  const compiledGroundHasTileMask = isCompiledGround && (
+    sitePrepared || zoneProps?.community_3d_mask_existing_tiles === true
+  );
+  const shouldRespectTileDepth = isBuilding || isPreparedBoundary || compiledGroundHasTileMask;
   const isImported = typeof zoneProps?._imported_from === 'string';
   // Imported reference layers (and big layers) drape ONCE then freeze — stable,
   // no per-frame re-draping that makes long corridors shimmer/jitter while orbiting.
@@ -491,21 +450,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     );
   }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
 
-  const woonerfGroundGeo = useMemo(
-    () => (
-      isWoonerfGround && geoData?.flatTopGeo
-        ? createSitePreparationGeometry(geoData.flatTopGeo, `${zone.id}-woonerf`)
-        : null
-    ),
-    [geoData, isWoonerfGround, zone.id],
-  );
-  useDeferredDisposable(woonerfGroundGeo);
-  const woonerfGroundTexture = useMemo(
-    () => (isWoonerfGround ? createWoonerfPaverTexture(zone.id) : null),
-    [isWoonerfGround, zone.id],
-  );
-  useDeferredDisposable(woonerfGroundTexture);
-
   const replacementGroundData = useMemo(
     () => (
       isReplacementFootprintGround
@@ -520,39 +464,49 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [centroid, isReplacementFootprintGround, zone.coordinates],
   );
-  useDeferredLocalGeometryDisposal(replacementGroundData);
+  useEffect(
+    () => () => {
+      if (!replacementGroundData) return;
+      replacementGroundData.fillGeo.dispose();
+      if (
+        replacementGroundData.flatTopGeo
+        && replacementGroundData.flatTopGeo !== replacementGroundData.fillGeo
+      ) replacementGroundData.flatTopGeo.dispose();
+      replacementGroundData.outlineGeo.dispose();
+    },
+    [replacementGroundData],
+  );
 
   // All geometry from createLocalGeometry is component-owned. Reuse it
   // directly in JSX (instead of cloning on every state render) and dispose it
   // when the polygon changes or unmounts. A long drape session otherwise
   // leaked one fill/outline pair per terrain update.
-  useDeferredLocalGeometryDisposal(geoData);
+  useEffect(
+    () => () => {
+      if (!geoData) return;
+      geoData.fillGeo.dispose();
+      if (geoData.flatTopGeo && geoData.flatTopGeo !== geoData.fillGeo) {
+        geoData.flatTopGeo.dispose();
+      }
+      geoData.outlineGeo.dispose();
+    },
+    [geoData],
+  );
 
   const preparedSiteGeo = useMemo(
-    () => {
-      if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
-      const geometry = createSitePreparationGeometry(geoData.flatTopGeo, zone.id);
-      if (residualLandscapeRecipe) {
-        applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
-      }
-      // The Google-Tiles spatial mask and replacement surface are rasterized
-      // independently. A tightly coincident edge can reveal a one-pixel white
-      // seam; the bounded excess remains hidden below surviving source tiles.
-      return overlapPreparedGroundEdges(geometry);
-    },
-    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id],
+    () => (
+      isPreparedBoundary && geoData?.flatTopGeo
+        ? createSitePreparationGeometry(geoData.flatTopGeo, zone.id)
+        : null
+    ),
+    [geoData, isPreparedBoundary, zone.id],
   );
-  useDeferredDisposable(preparedSiteGeo);
+  useEffect(() => () => preparedSiteGeo?.dispose(), [preparedSiteGeo]);
   const preparedSiteTexture = useMemo(
-    () => {
-      if (!isPreparedBoundary) return null;
-      return residualLandscapeRecipe
-        ? createResidualLandscapeTexture(zone, residualLandscapeRecipe)
-        : createSitePreparationTexture(zone.id);
-    },
-    [isPreparedBoundary, residualLandscapeRecipe, zone],
+    () => (isPreparedBoundary ? createSitePreparationTexture(zone.id) : null),
+    [isPreparedBoundary, zone.id],
   );
-  useDeferredDisposable(preparedSiteTexture);
+  useEffect(() => () => preparedSiteTexture?.dispose(), [preparedSiteTexture]);
   const replacementGroundGeo = useMemo(
     () => (
       replacementGroundData?.flatTopGeo
@@ -563,7 +517,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [replacementGroundData, zone.id],
   );
-  useDeferredDisposable(replacementGroundGeo);
+  useEffect(() => () => replacementGroundGeo?.dispose(), [replacementGroundGeo]);
   const replacementGroundTexture = useMemo(
     () => (
       isReplacementFootprintGround
@@ -572,7 +526,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [isReplacementFootprintGround, zone.id],
   );
-  useDeferredDisposable(replacementGroundTexture);
+  useEffect(
+    () => () => replacementGroundTexture?.dispose(),
+    [replacementGroundTexture],
+  );
 
   // AI park ground texture on the green_space fill mesh (per-zone meta in
   // zone.properties.park_ground_texture; see parkGroundTexture.ts).
@@ -591,14 +548,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     applyParkGroundUVs(geo, geoData.fillCoords, groundMeta);
     return geo;
   }, [groundMeta, geoData]);
-  useDeferredDisposable(orthoGeo);
+  useEffect(() => () => orthoGeo?.dispose(), [orthoGeo]);
   const drapeActive = Boolean(orthoGeo && groundTexture);
-  const publicRealmDepthPolicy = resolvePublicRealmGroundDepthPolicy({
-    isCompiledGround,
-    hasAuthoredGroundTexture: drapeActive,
-    isPreparedBoundary,
-    isSiteBoundary,
-  });
 
   // --- Terrain draping for flat zones ---
   // Raycast each vertex onto the tile mesh to get precise ground elevation offsets
@@ -655,18 +606,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       terrainReferenceHeight,
     );
     const sampledHeight = filterObjectHeights
-      ? (communityKind === 'park' || communityKind === 'street'
-        ? resolvePublicRealmGroundAnchor(
-            representativeHeight,
-            storedTerrainHeight,
-            terrainHeight,
-            4,
-          )
-        : resolveReplacementGroundAnchor(
-            representativeHeight,
-            storedTerrainHeight,
-            terrainHeight,
-          ))
+      ? resolveReplacementGroundAnchor(
+          representativeHeight,
+          storedTerrainHeight,
+          terrainHeight,
+        )
       : representativeHeight;
     if (!isPlausibleTerrainAnchor(sampledHeight, terrainReferenceHeight)) {
       return false;
@@ -679,7 +623,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : trustedSampledHeight
     ));
     return true;
-  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
+  }, [centroid, filterObjectHeights, isCompiledGround, isPreparedBoundary, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -801,7 +745,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : rawHitElev;
       if (hitElev !== null && isPlausibleTerrainAnchor(hitElev, zoneTerrainHeight)) {
         // Z offset in ENU = hitElev - zoneTerrainHeight (the ENU frame origin elevation)
-        const zOffset = hitElev - zoneTerrainHeight + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS;
+        const zOffset = hitElev - zoneTerrainHeight + FLAT_ZONE_SURFACE_LIFT_METERS;
         posAttr.setZ(i, zOffset);
         if (isBoundaryPoint) {
           trustedBoundaryGround.push({ coord, elevation: hitElev });
@@ -941,13 +885,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const n = Math.min(geoData.fillCoords.length, pos.count, bakedElevations.length);
     for (let i = 0; i < n; i += 1) {
       const e = bakedElevations[i];
-      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + FLAT_ZONE_SURFACE_LIFT_METERS);
     }
     pos.needsUpdate = true;
     geo.computeBoundingSphere();
     return geo;
   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference]);
-  useDeferredDisposable(importedFillGeo);
+  useEffect(() => () => importedFillGeo?.dispose(), [importedFillGeo]);
 
   // A persisted park orthophoto must use the same bare-earth-conforming mesh
   // as every other imported plan surface. Previously `orthoGeo` won the render
@@ -960,7 +904,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     return geo;
   }, [geoData, groundMeta, importedFillGeo]);
 
-  useDeferredDisposable(importedOrthoGeo);
+  useEffect(() => () => importedOrthoGeo?.dispose(), [importedOrthoGeo]);
 
   const importedOutlineGeo = useMemo(() => {
     if (!hasBakedElevationRelief || !geoData?.outlineGeo || !bakedElevations || bakedReference == null) return null;
@@ -977,7 +921,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     pos.needsUpdate = true;
     return geo;
   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference, renderCoordinates]);
-  useDeferredDisposable(importedOutlineGeo);
+  useEffect(() => () => importedOutlineGeo?.dispose(), [importedOutlineGeo]);
 
   if (!geoData) return null;
 
@@ -998,19 +942,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? geoData.flatTopGeo}
+          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? geoData.flatTopGeo}
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
-          // Pure planning washes (the translucent boundary/zone fills) are
-          // editor chrome, not design content: exclude them from Direct 3D
-          // captures so they never tint the render. Compiled/drape surfaces
-          // stay captured — they ARE the designed ground.
-          userData={
-            !isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround
-              ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
-              : undefined
-          }
         >
           {/* key remounts the material when the ground drape toggles so the
               map define recompiles (toggling `map` in place leaves it white) */}
@@ -1029,15 +964,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
             />
           ) : (
             <meshBasicMaterial
-              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : 'plain'}
-              color={drapeActive || isWoonerfGround ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
-              map={drapeActive ? groundTexture : woonerfGroundTexture ?? undefined}
-              transparent={publicRealmDepthPolicy.transparent}
+              key={drapeActive ? groundMeta?.document_id ?? 'drape' : 'plain'}
+              color={drapeActive ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
+              map={drapeActive ? groundTexture : undefined}
+              transparent
               opacity={isSiteBoundary ? 0.15 : 1.0}
               side={THREE.DoubleSide}
-              depthTest={publicRealmDepthPolicy.depthTest}
-              depthWrite={publicRealmDepthPolicy.depthWrite}
-              polygonOffset
+              depthTest={shouldRespectTileDepth}
+              depthWrite={compiledGroundHasTileMask}
+              polygonOffset={shouldRespectTileDepth}
               polygonOffsetFactor={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_FACTOR}
               polygonOffsetUnits={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_UNITS}
             />
@@ -1056,7 +991,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         >
           <meshBasicMaterial
             key="replacement-footprint-ground"
-            color="#9b9488"
+            color="#ffffff"
             map={replacementGroundTexture ?? undefined}
             side={THREE.DoubleSide}
             depthTest
@@ -1103,7 +1038,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           <lineBasicMaterial
             color={isSelected ? '#ffffff' : color}
             linewidth={isSelected ? 3 : 1.5}
-            depthTest
+            depthTest={shouldRespectTileDepth}
             depthWrite={false}
           />
         </line>
@@ -1159,36 +1094,21 @@ export function GlobeZoneLayer({
   const lightweight = zones.length > LIGHTWEIGHT_ZONE_THRESHOLD;
   return (
     <>
-      {zones.map((zone) => {
-        const role = direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone));
-        return (
-          <group
-            key={zone.id}
-            name={`siteforge-direct3d-zone-${zone.id}`}
-            userData={{
-              ...direct3DProposalUserData(role),
-              ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(
-                zone.id,
-                role,
-                zone.building_id ? { building_id: zone.building_id } : {},
-              )),
-            }}
-          >
-            <ZoneMesh
-              zone={zone}
-              isSelected={zone.id === selectedZoneId}
-              terrainHeight={terrainHeight}
-              onZoneClick={onZoneClick}
-              selectionEnabled={selectionEnabled}
-              lightweight={lightweight}
-              suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
-              keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
-              planningOverlaysVisible={showPlanningOverlays}
-              sitePrepared={sitePrepared}
-            />
-          </group>
-        );
-      })}
+      {zones.map(zone => (
+        <ZoneMesh
+          key={zone.id}
+          zone={zone}
+          isSelected={zone.id === selectedZoneId}
+          terrainHeight={terrainHeight}
+          onZoneClick={onZoneClick}
+          selectionEnabled={selectionEnabled}
+          lightweight={lightweight}
+          suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
+          keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
+          planningOverlaysVisible={showPlanningOverlays}
+          sitePrepared={sitePrepared}
+        />
+      ))}
     </>
   );
 }
