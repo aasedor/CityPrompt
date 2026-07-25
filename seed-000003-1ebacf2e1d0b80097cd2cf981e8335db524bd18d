@@ -1,4 +1,0 @@
-# This repository is large enough to benefit from deliberate reasoning, but
-# Extra High is unnecessarily slow for routine implementation and test loops.
-# Individual difficult tasks can still opt into Extra High when needed.
-model_reasoning_effort = "high"
