@@ -472,29 +472,19 @@ async def test_delete_scenario_rejects_presets(client, mock_db, test_user, auth_
 
 @pytest.mark.anyio
 async def test_delete_scenario_removes_row_and_plan_zones(
-    client, mock_db, test_user, auth_headers, monkeypatch
+    client, mock_db, test_user, auth_headers
 ):
     zone = FakeZone()
-    zone.properties = {
-        "community_3d_landscape": {
-            "schema_version": 1,
-            "state": "compiled",
-            "source_hash": "compiled-before-delete",
-        },
-    }
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     row = _FakeScenarioRow()
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
-    plan_zone_a = SimpleNamespace(id=uuid.uuid4())
-    plan_zone_b = SimpleNamespace(id=uuid.uuid4())
-    monkeypatch.setattr("app.api.v1.urban_dna.flag_modified", lambda *_args: None)
+    plan_zone_a, plan_zone_b = MagicMock(), MagicMock()
     mock_db.execute = AsyncMock(side_effect=[
         _scalar_result(test_user),
         _scalar_result(row),
         _scalar_result(snapshot),
         _scalar_result(zone),
         _scalar_result(project),
-        _scalar_result(project.id),  # project row lock before source mutation
         _zones_result([plan_zone_a, plan_zone_b]),
     ])
     response = await client.delete(
@@ -503,12 +493,6 @@ async def test_delete_scenario_removes_row_and_plan_zones(
     assert response.status_code == 204
     deleted = [call.args[0] for call in mock_db.delete.call_args_list]
     assert plan_zone_a in deleted and plan_zone_b in deleted and row in deleted
-    residual = zone.properties["community_3d_landscape"]
-    assert residual["state"] == "stale"
-    assert residual["source_hash"] == "compiled-before-delete"
-    assert residual["changed_zone_id"] == str(plan_zone_a.id)
-    assert "Scenario plan zones deleted" in residual["stale_reason"]
-    mock_db.refresh.assert_awaited_once_with(zone)
     mock_db.commit.assert_awaited()
 
 

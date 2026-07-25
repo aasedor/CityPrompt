@@ -442,16 +442,14 @@ Live evidence from `Mixed Parks + Streets QA` on 2026-07-18:
 - Backend LEGO assembly suite: 30/30 tests passed.
 - No paid image-generation or rendering API call was used.
 
-## Render-owned dressing with bounded live-canopy exceptions
+## Render-only landscape-dressing invariant
 
-The 2026-07-18 audit removed the old generic procedural street trees, cone
-trees, box benches and placeholder playground/pavilion objects. Those rejected
-fallbacks remain prohibited. The 2026-07-19/20 photoreal landscape-kit work
-adds a deliberately narrower exception: authored parks/woonerfs and compiled
-residual landscape may instantiate bounded, leaf-textured, metric trees and
-approved slatted seating where deterministic clearance rules prove they fit.
-Render still owns people, vehicles, loose furniture, cinematic lighting and
-most ornamental planting; it no longer owns every tree unconditionally.
+The final audit found a second tree path in the street-detail layer after park
+trees and benches had already been deferred. That path is now removed as well:
+the editable Google Tiles scene carries only terrain-seated park ground,
+authoritative paths/water/fixed pads, engineered street cross-sections and
+genuine fixed-structure assets. It can no longer instantiate procedural street
+trees, cone trees, box benches or placeholder playground/pavilion objects.
 
 The render handoff was corrected at the same time. Street prompts no longer
 claim that a non-existent live tree row must be preserved. Profiles with real
@@ -686,67 +684,8 @@ starting another generation. Both retain a clear impoundment, continuous
 perimeter circulation and coherent context; the B variant has the clearest
 reservoir geometry and the A variant the softer atmospheric presentation.
 They confirm the intended division of responsibility: Google Tiles carries
-the accurate fixed park geometry plus approved deterministic live canopy,
-while Render adds richer planting character, furniture, people, lighting and
-presentation finish.
-
-## Site-boundary residual landscape compiler (2026-07-20)
-
-Community 3D now treats otherwise blank parcel space as derived landscape
-instead of asking users to draw filler polygons. In a local metric CRS it
-computes exactly:
-
-`site boundary - union(all physical authored zone geometry)`
-
-All authored zones in the project participate, including zones omitted from an
-incremental Complete request. Framework-height overlays do not. Overlaps are
-unioned, outside geometry is clipped, and Polygon/MultiPolygon topology and
-holes remain exact. The result is stored as a versioned deterministic recipe on
-the boundary because a multi-part remainder is not an honest editable SiteZone.
-
-Every residual square metre is partitioned, in precedence order, into
-foundation planting, boulevard planting, perimeter planting, lawn or low
-groundcover. A north-up classified surface covers the full prepared-site safety
-deck, while authored park, street and building layers remain authoritative
-above it. Texture rasterization uses a deterministic even-odd scanline fill
-rather than repeating point-in-polygon work for every texel, with extent-aware
-256/512/1024 resolution so narrow bands survive kilometre-scale districts
-without unbounded main-thread or GPU cost. Stress coverage includes a
-1,001-vertex exterior at 1024 resolution and a 40-hole polygon.
-
-Tree placement is stable from a source hash and intentionally restrained.
-Candidate centres are eroded 5.1 m from non-residual geometry, covering the
-largest yawed crown plane at maximum generated scale; terrain seating uses the
-same object-filtered multi-sample logic as replacement public realm so old
-photogrammetry roofs and canopies are rejected. Ordinary zone geometry or
-classification edits, undo/redo, History restores and master-plan regeneration
-mark the recipe stale. Appearance-only changes such as an AI park-ground drape
-do not. The client refuses stale or partial recipes until Community 3D rebuilds
-them atomically.
-
-Legacy projects with no boundary receive a provenance-marked editable metric
-convex hull only when at least two authored polygons define one. Projects with
-multiple boundaries fail closed and require the user to resolve one
-authoritative boundary. The parcel pilot at project
-`1c46efd3-03df-4a70-b977-35631c755e46` compiled 3,109 m² of residual land and
-two full-canopy-safe residual trees after the final clearance pass. No paid API
-call was used by the compiler.
-
-The final browser acceptance rebuild found four valid classified residual
-regions that became MultiPolygon after inverse-projection repair. The original
-client decoder accepted only Polygon region geometry, which suppressed the
-otherwise-current residual recipe and disabled Direct 3D. The decoder, spatial
-index and scanline rasterizer now traverse both Polygon and MultiPolygon
-regions while preserving holes and first-region precedence. Focused multipart
-acceptance, hit-test and raster tests pass, and a fresh project reload recognizes
-the stored recipe without another rebuild.
-
-The subsequent free 1280 x 720 Direct capture reported 10.8% proposal coverage
-with explicit ground, landscape, street, park and building classes. One bounded
-46-token ($0.23) paid acceptance render then saved successfully with exterior
-maximum delta 0, geometry lock applied, provider geometry discarded before
-finish transfer, 98.9% building-edge retention and 93.5% semantic-edge
-retention. This paid call tested the render pipeline, not residual compilation.
+the accurate fixed park geometry, while Render adds vegetation, furniture,
+people, lighting and presentation finish.
 
 ## Reservoir Clean 3D and cache-stability recheck
 

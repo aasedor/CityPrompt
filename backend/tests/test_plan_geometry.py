@@ -292,52 +292,6 @@ def test_context_connector_tries_visible_network_line_on_concave_site():
     assert boundary.buffer(0.05).covers(segments[0].line)
 
 
-def test_context_connector_uses_inward_route_instead_of_half_width_edge_route():
-    boundary = Polygon([(0, 0), (100, 0), (100, 100), (0, 100)])
-    entry = Point(20, 0)
-    # The 10 m candidate is the shortest centreline connection, but it runs
-    # along the parcel edge and only half of a 14 m ROW would survive clipping.
-    # The 20 m inward candidate is the shortest truthful full-section route.
-    centerlines = [
-        LineString([(30, 0), (100, 0)]),
-        LineString([(0, 20), (100, 20)]),
-    ]
-    segments = []
-
-    added = _append_context_connectors(
-        boundary_m=boundary,
-        entries=[entry],
-        role="local",
-        width_m=14.0,
-        centerlines=centerlines,
-        segments=segments,
-    )
-
-    assert added == 1
-    connector = segments[0].line
-    assert Point(connector.coords[-1]).distance(Point(20, 20)) < 0.01
-    corridor = connector.buffer(7.0, cap_style=2, join_style=2)
-    assert corridor.intersection(boundary.buffer(0.05)).area / corridor.area >= 0.9
-
-
-def test_context_connector_leaves_edge_only_half_width_route_unserved():
-    boundary = Polygon([(0, 0), (100, 0), (100, 100), (0, 100)])
-    centerlines = [LineString([(30, 0), (100, 0)])]
-    segments = []
-
-    added = _append_context_connectors(
-        boundary_m=boundary,
-        entries=[Point(20, 0)],
-        role="local",
-        width_m=14.0,
-        centerlines=centerlines,
-        segments=segments,
-    )
-
-    assert added == 0
-    assert segments == []
-
-
 def test_drivable_context_filter_rejects_limited_access_and_unbuilt_roads():
     residential = {
         "properties": {"ctp_class": "Residential Street", "built_status": "Built"}
@@ -439,10 +393,6 @@ def test_single_block_plan_draws_courtyard_and_unique_bar_names():
 
     courtyards = [z for z in result.zones if z["properties"].get("_plan_role") == "courtyard"]
     assert courtyards and all(z["zone_type"] == "green_space" for z in courtyards)
-    assert all(
-        z["properties"].get("green_space_archetype_id") == "urban_pocket_park"
-        for z in courtyards
-    )
     # Visual zone only: the frozen metrics/evaluator loop must not see it.
     assert result.geometry_inputs["open_space_area_m2"] == 0.0
 

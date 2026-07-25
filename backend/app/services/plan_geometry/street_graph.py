@@ -26,7 +26,6 @@ logger = logging.getLogger(__name__)
 
 MIN_SEGMENT_M = 40.0     # drop grid stubs shorter than this
 ENTRY_CONNECTOR_MAX_M = 90.0
-MIN_CONNECTOR_CORRIDOR_COVERAGE = 0.90
 CONNECTION_EPSILON_M = 0.05
 ROAD_FRONTAGE_PROXIMITY_M = 32.0
 PATH_FRONTAGE_PROXIMITY_M = 24.0
@@ -447,12 +446,7 @@ def _append_context_connectors(
         if entry.distance(connected) <= CONNECTION_EPSILON_M:
             continue
         anchor = nearest_points(entry, boundary_m.exterior)[1]
-        raw = _shortest_visible_connector(
-            anchor,
-            centerlines,
-            boundary_m,
-            corridor_width_m=width_m,
-        )
+        raw = _shortest_visible_connector(anchor, centerlines, boundary_m)
         if raw is None:
             continue
         try:
@@ -484,43 +478,22 @@ def _shortest_visible_connector(
     anchor: Point,
     centerlines: list[LineString],
     boundary_m: Polygon,
-    *,
-    corridor_width_m: float,
 ) -> LineString | None:
-    """Return the shortest direct connection whose usable ROW fits the parcel.
+    """Return the shortest direct connection that remains inside the parcel.
 
     On a concave site, the nearest network point may sit across a notch. The
     one-shot nearest-point approach rejected that unsafe shortcut and stopped,
     even when another centreline was fully visible from the same entrance.
     Evaluate each line's nearest point and endpoints, then choose the shortest
     deterministic candidate covered by the valid site.
-
-    Centreline coverage alone is insufficient near a frontage. A candidate
-    may run tangentially along the parcel edge while remaining topologically
-    inside; clipping its buffered ROW then leaves a half-width street or path.
-    Require at least 90% of the authored corridor to fit inside the parcel so
-    the generator either chooses a slightly longer inward connection or leaves
-    the context anchor truthfully unserved. The small uncovered allowance is
-    for an oblique entrance's clipped portal and projection/overlay noise.
     """
     candidates: list[tuple[float, float, float, LineString]] = []
     seen: set[tuple[float, float]] = set()
     for line in centerlines:
-        # Grid centreline endpoints normally land on the parcel boundary. A
-        # frontage anchor near one of them would otherwise see only the short
-        # boundary-tangent shortcut. Include one design-width-aware interior
-        # target from each end so the connector can turn into the site while
-        # still joining the exact existing centreline.
-        portal_inset_m = min(
-            max(corridor_width_m * 2, 4.0),
-            line.length / 2,
-        )
         targets = [
             nearest_points(anchor, line)[1],
             Point(line.coords[0]),
             Point(line.coords[-1]),
-            line.interpolate(portal_inset_m),
-            line.interpolate(max(line.length - portal_inset_m, 0.0)),
         ]
         for target in targets:
             key = (round(target.x, 6), round(target.y, 6))
@@ -536,16 +509,6 @@ def _shortest_visible_connector(
     for _length, _x, _y, raw in sorted(candidates, key=lambda item: item[:3]):
         try:
             if not safe_site.covers(raw):
-                continue
-            corridor = raw.buffer(
-                corridor_width_m / 2,
-                cap_style=2,
-                join_style=2,
-            )
-            corridor_coverage = (
-                corridor.intersection(safe_site).area / max(corridor.area, 1e-9)
-            )
-            if corridor_coverage < MIN_CONNECTOR_CORRIDOR_COVERAGE:
                 continue
             clipped = raw.intersection(boundary_m)
             pieces = [clipped] if isinstance(clipped, LineString) else [

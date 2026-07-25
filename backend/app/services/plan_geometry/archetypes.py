@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import json
 import re
-from collections.abc import Collection, Mapping
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -109,8 +108,6 @@ def _stable_pick(candidates: list[dict]) -> dict | None:
 def resolve_building_archetype(
     development_type: object, aesthetic: object, floors: object,
     prefer_family: str | None = None,
-    allowed_archetype_ids: Collection[str] | None = None,
-    supported_floors_by_archetype: Mapping[str, Collection[int]] | None = None,
 ) -> dict | None:
     """Port of resolveBuilding (resolvePlanZoneArchetypes.ts:79-137).
 
@@ -121,14 +118,6 @@ def resolve_building_archetype(
     is byte-identical to the frontend resolver (parity pinned by
     test_plan_archetypes.py)."""
     table = load_dims_table()
-    if allowed_archetype_ids is not None:
-        allowed = {str(value) for value in allowed_archetype_ids}
-        # ``None`` preserves the legacy full-catalog resolver. An explicitly
-        # empty capability set is a hard no-match: callers must never escape
-        # a LEGO-only inventory by falling back to the full catalog.
-        if not allowed:
-            return None
-        table = [entry for entry in table if entry["id"] in allowed]
     dev_type = _norm(development_type) or "mixed_use"
     aesthetic_n = _norm(aesthetic)
     try:
@@ -151,11 +140,6 @@ def resolve_building_archetype(
         ]
     if not pool:
         pool = [e for e in table if e["usable"] and _norm(e["development_type"]) == "mixed_use"]
-    if not pool:
-        # In an inventory-constrained plan, keeping the request inside the
-        # installed catalog is more important than preserving an unavailable
-        # type label. The exact id stamped downstream remains authoritative.
-        pool = [entry for entry in table if entry["usable"]]
     if not pool:
         return None
 
@@ -188,33 +172,15 @@ def resolve_building_archetype(
     def _max_f(e: dict) -> float:
         return e["max_floors"] if e["max_floors"] is not None else 999
 
-    if supported_floors_by_archetype is not None:
-        floor_map = {
-            str(archetype_id): tuple(sorted({int(value) for value in values}))
-            for archetype_id, values in supported_floors_by_archetype.items()
-        }
-        pool = [entry for entry in pool if floor_map.get(entry["id"])]
-        if not pool:
-            return None
-        exact = [entry for entry in pool if floors_n in floor_map[entry["id"]]]
-        if exact:
-            pool = exact
-        else:
-            def _lego_floor_distance(entry: dict) -> int:
-                return min(abs(value - floors_n) for value in floor_map[entry["id"]])
-
-            best = min(_lego_floor_distance(entry) for entry in pool)
-            pool = [entry for entry in pool if _lego_floor_distance(entry) == best]
+    in_range = [e for e in pool if _min_f(e) <= floors_n <= _max_f(e)]
+    if in_range:
+        pool = in_range
     else:
-        in_range = [e for e in pool if _min_f(e) <= floors_n <= _max_f(e)]
-        if in_range:
-            pool = in_range
-        else:
-            def _distance(e: dict) -> float:
-                return min(abs(_min_f(e) - floors_n), abs(_max_f(e) - floors_n))
+        def _distance(e: dict) -> float:
+            return min(abs(_min_f(e) - floors_n), abs(_max_f(e) - floors_n))
 
-            best = min(_distance(e) for e in pool)
-            pool = [e for e in pool if _distance(e) == best]
+        best = min(_distance(e) for e in pool)
+        pool = [e for e in pool if _distance(e) == best]
 
     if prefer_family:
         allowed = compatible_families(prefer_family)
@@ -225,38 +191,6 @@ def resolve_building_archetype(
             pool = exact or in_family
 
     return _stable_pick(pool)
-
-
-def closest_supported_floor(
-    archetype_id: str | None,
-    floors: object,
-    supported_floors_by_archetype: Mapping[str, Collection[int]] | None,
-    *,
-    at_or_below: bool = False,
-) -> int | None:
-    """Return the nearest runtime-proven storey count for an archetype.
-
-    ``at_or_below`` is used after a district height ceiling clamps a plan: a
-    LEGO recipe may step down to the closest supported height, but it must not
-    jump back above the policy ceiling merely to preserve a family.
-    """
-    if not archetype_id or supported_floors_by_archetype is None:
-        return None
-    available = sorted({
-        int(value)
-        for value in supported_floors_by_archetype.get(archetype_id, ())
-        if int(value) >= 1
-    })
-    if not available:
-        return None
-    try:
-        target = max(1, int(round(float(floors))))
-    except (TypeError, ValueError):
-        target = available[0]
-    if at_or_below:
-        lower = [value for value in available if value <= target]
-        return max(lower) if lower else None
-    return min(available, key=lambda value: (abs(value - target), value))
 
 
 @dataclass(frozen=True)

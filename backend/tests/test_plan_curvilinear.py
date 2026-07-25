@@ -21,6 +21,7 @@ from app.services.plan_geometry.generator import (
 from app.services.plan_geometry.parceling import decompose_holed
 from app.services.plan_geometry.placement import PALETTES, effective_palette, palette_for, site_hash
 from app.services.plan_geometry.street_graph import (
+    CRESCENT_SAGITTA_MIN_M,
     CURVE_AMPLITUDE_MIN_M,
     generate_street_network,
 )
@@ -214,19 +215,8 @@ def test_crescent_tagging():
                      if z["properties"].get("road_archetype_id") == "london_crescent_road"]
         assert crescents, scenario_id
         assert all(MIN_ROW_M <= z["properties"]["width"] < 15 for z in crescents)
-        # Straight cross-streets survive alongside the crescents, and the
-        # LEGO-only public-realm contract now gives those ordinary locals a
-        # deterministic measured street archetype instead of leaving them
-        # untyped for the frontend to infer.
-        assert any(
-            z["properties"].get("road_archetype_id") != "london_crescent_road"
-            for z in locals_
-        ), scenario_id
-        assert all(
-            isinstance(z["properties"].get("road_archetype_id"), str)
-            and z["properties"]["road_archetype_id"]
-            for z in locals_
-        ), scenario_id
+        # Straight cross-streets guarantee plain locals survive alongside.
+        assert any(z["properties"].get("road_archetype_id") is None for z in locals_), scenario_id
 
     environmental = _generate("environmental")
     env_locals = [z for z in environmental.zones if z["properties"].get("street_role") == "local"]

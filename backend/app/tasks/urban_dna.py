@@ -20,19 +20,9 @@ from shapely.geometry import Polygon
 
 from app.services.city_connector import get_connector_for_site
 from app.services.city_connector.base import DatasetFetchResult, DatasetSpec
-from app.services.plan_boundary_identity import (
-    PLAN_BOUNDARY_FINGERPRINT_VERSION,
-    PLAN_BOUNDARY_RESTORE_STATE_KEY,
-    plan_boundary_fingerprint,
-    stamp_plan_boundary_identity,
-)
 from app.services.urban_dna.builder import build_dna
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
 from app.tasks.worker import celery_app
-from app.services.residual_landscape import (
-    lock_residual_landscape_project_sync,
-    mark_community_3d_stale,
-)
 
 
 def _get_sync_session():
@@ -43,113 +33,6 @@ def _get_sync_session():
     return factory()
 
 logger = logging.getLogger(__name__)
-
-
-class LegoInventoryChangedDuringPlan(RuntimeError):
-    """Raised when the executable project LEGO catalog changes mid-draw."""
-
-
-def _load_project_lego_inventory(session, owner_id):
-    """Load the project-scoped LEGO rows and rebuild their executable catalog.
-
-    ``populate_existing`` is important here: a plan task can run long enough
-    for another transaction to update a module already present in this
-    session's identity map.  A plain repeat query would otherwise hand final
-    preflight the stale ORM object even though PostgreSQL returned the row.
-    """
-
-    from sqlalchemy import or_
-
-    from app.models.models import ModelLibraryEntry
-    from app.services.master_planner import build_lego_planning_catalog
-
-    entries = (
-        session.query(ModelLibraryEntry)
-        .filter(or_(
-            ModelLibraryEntry.owner_id == owner_id,
-            ModelLibraryEntry.is_public.is_(True),
-        ))
-        .order_by(ModelLibraryEntry.created_at.desc(), ModelLibraryEntry.id.desc())
-        .execution_options(populate_existing=True)
-        .all()
-    )
-    return entries, build_lego_planning_catalog(entries)
-
-
-def _refresh_project_lego_inventory(
-    session,
-    owner_id,
-    expected_fingerprint: str,
-):
-    """Requery immediately before binding and reject a moving catalog."""
-
-    entries, catalog = _load_project_lego_inventory(session, owner_id)
-    if catalog.fingerprint != expected_fingerprint:
-        raise LegoInventoryChangedDuringPlan(
-            "The executable LEGO inventory changed while the AI plan was drawing."
-        )
-    return entries, catalog
-
-
-def _delete_community_3d_buildings_for_replaced_zones(
-    session,
-    project_id: uuid.UUID,
-    replaced_zone_ids: set[uuid.UUID],
-) -> int:
-    """Delete derived 3D buildings owned by plan zones being replaced.
-
-    The explicit ``community3DRepresentation`` marker is the sole deletion
-    authority.  This deliberately preserves every unmarked/user-created
-    building, even when its name or LEGO recipe resembles generated content.
-    """
-
-    if not replaced_zone_ids:
-        return 0
-
-    from app.models.models import Building
-    from app.services.community_3d_artifacts import community_3d_buildings_for_zones
-
-    project_buildings = (
-        session.query(Building)
-        .filter(Building.project_id == project_id)
-        .all()
-    )
-    derived_buildings = community_3d_buildings_for_zones(
-        project_buildings,
-        replaced_zone_ids,
-    )
-    for building in derived_buildings:
-        session.delete(building)
-    return len(derived_buildings)
-
-
-def _backfill_locked_street_plan_centerline(zone) -> bool:
-    """Add only a safely recoverable line and invalidate any compiled proof."""
-
-    properties = dict(getattr(zone, "properties", None) or {})
-    if properties.get("plan_centerline"):
-        return False
-
-    from app.services.plan_geometry.generator import (
-        recover_street_plan_centerline_wgs84,
-    )
-
-    recovered_centerline = recover_street_plan_centerline_wgs84(
-        to_shape(zone.geometry)
-    )
-    if not recovered_centerline:
-        return False
-
-    properties["plan_centerline"] = recovered_centerline
-    zone.properties = properties
-    mark_community_3d_stale(
-        zone,
-        reason=(
-            "Locked street centerline recovered during master-plan redraw; "
-            "rebuild Community 3D before Direct rendering."
-        ),
-    )
-    return True
 
 
 class PostgresDatasetCache:
@@ -580,10 +463,8 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
     from shapely.ops import unary_union
 
     from app.models.models import SiteZone, UrbanDnaScenario
-    from app.services.residual_landscape import mark_residual_landscape_stale
     from app.services.city_connector import get_connector_for_site
     from app.services.urban_dna.builder import _fetch_with_cache
-    from sqlalchemy.orm.attributes import flag_modified
 
     locks = locks or []
     session = _get_sync_session()
@@ -600,18 +481,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             return {"status": "failed"}
         site_shape = to_shape(zone.geometry)
         site_polygon = site_shape if isinstance(site_shape, ShapelyPolygon) else site_shape.convex_hull
-        boundary_fingerprint = plan_boundary_fingerprint(site_polygon)
-        snapshot_boundary_fingerprint = plan_boundary_fingerprint(
-            (snapshot.dna or {}).get("site_boundary")
-        )
-        if boundary_fingerprint is None or snapshot_boundary_fingerprint != boundary_fingerprint:
-            _set_plan_state(
-                session,
-                row,
-                status="failed",
-                error="Site boundary does not match the scenario's Urban DNA snapshot.",
-            )
-            return {"status": "failed", "error": "boundary_identity_mismatch"}
 
         _set_plan_state(session, row, status="drawing", locks=locks)
 
@@ -740,39 +609,30 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             if aesthetic_hint and "buildings.development_aesthetic" not in plan_parameters:
                 plan_parameters["buildings.development_aesthetic"] = {"value": str(aesthetic_hint)}
 
-        # Runtime LEGO capability is the sole building vocabulary for AI plans.
-        # Use the same ownership/public visibility contract and newest-first
-        # ordering as the assembly API; render cards and old Meshy cache rows
-        # are not evidence that a modular building can actually be assembled.
-        lego_entries, lego_catalog = _load_project_lego_inventory(
-            session,
-            snapshot.project.owner_id,
-        )
-        if not lego_catalog.capabilities:
-            message = (
-                "No executable archetyped LEGO building families are installed. "
-                "Import at least one complete podium/floor/roof family before drawing the AI plan."
-            )
-            _set_plan_state(session, row, status="failed", error=message)
-            return {"status": "failed", "error": message}
+        # Measured 3D-model dims (one bulk query; the geometry engine stays a
+        # pure function of its inputs). Parcels get carved to these footprints
+        # so cached GLBs land at uniform, correct scale on the globe.
+        from app.models.models import ArchetypeModelCache
+        from app.services.plan_geometry.archetypes import build_measured_dims
 
-        # LEGO metadata supplies the authoritative native footprint. The old
-        # Meshy cache measurement path is intentionally excluded from AI plans.
-        measured_model_dims = None
+        cache_rows = (
+            session.query(ArchetypeModelCache)
+            .filter_by(status="completed", engine="meshy")
+            .all()
+        )
+        measured_model_dims = build_measured_dims(cache_rows)
 
         # --- Master Planner: the design intelligence ahead of the engine ----------
         # One LLM composes the whole-plan spec (band characters WITH variety,
         # massing typologies, open-space program, landscape structure). The
         # validated spec is cached on the row: redraws are free, deterministic,
-        # and the narrative stays presentable. Any failure falls back to a
-        # deterministic palette built from the same executable LEGO catalog.
+        # and the narrative stays presentable. Any failure falls back to the
+        # scenario's preset palette — the draw itself never depends on the LLM.
         from app.core.config import get_settings
         from app.services.master_planner import (
             MasterPlanSpec,
             compose_master_plan,
-            lego_fallback_spec,
             palette_from_spec,
-            validate_spec,
         )
         from app.services.planning_agents.scenarios import resolve_scenario_preset
         from app.services.planning_agents.schemas import ScenarioDefinition
@@ -780,40 +640,12 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         settings = get_settings()
         master_notes: list[dict] = []
         master_spec = None
-        master_usage = None
-        master_source = "runtime_lego_fallback"
-        cached_master = row.payload.get("master_plan") or {}
-        cached_spec = cached_master.get("spec")
-        cached_fingerprint = cached_master.get("lego_catalog_fingerprint")
-        cached_reusable = cached_master.get("cache_reusable") is True
-        if (
-            isinstance(cached_spec, dict)
-            and cached_fingerprint == lego_catalog.fingerprint
-            and cached_reusable
-        ):
+        cached_spec = (row.payload.get("master_plan") or {}).get("spec")
+        if isinstance(cached_spec, dict):
             try:
-                parsed_spec = MasterPlanSpec(**cached_spec)
-                master_spec, repair_notes = validate_spec(
-                    parsed_spec,
-                    row.scenario_id,
-                    palette_hint,
-                    lego_catalog=lego_catalog,
-                )
-                master_notes.extend(repair_notes)
-                master_source = "cached_runtime_lego"
+                master_spec = MasterPlanSpec(**cached_spec)
             except Exception:  # noqa: BLE001 — stale spec schema: recompose below
                 master_spec = None
-
-        if isinstance(cached_spec, dict) and cached_fingerprint != lego_catalog.fingerprint:
-            master_notes.append({
-                "code": "MASTER_PLAN_LEGO_CATALOG_CHANGED",
-                "severity": "info",
-                "message": (
-                    "The imported LEGO inventory changed; the cached plan palette "
-                    "was recomposed against the current executable families."
-                ),
-                "source_phase": "master_planner",
-            })
 
         if master_spec is None and settings.master_planner_enabled and settings.anthropic_api_key:
             definition = resolve_scenario_preset(row.scenario_id)
@@ -838,8 +670,9 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 }
                 # compose_master_plan never raises, but the event-loop plumbing
                 # around it can — and the draw must never depend on the LLM.
+                master_usage = None
                 try:
-                    composed_spec, master_usage, composition_notes = asyncio.run(compose_master_plan(
+                    master_spec, master_usage, master_notes = asyncio.run(compose_master_plan(
                         dna_json=snapshot.dna,
                         definition=definition,
                         site_summary=site_summary,
@@ -848,27 +681,18 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                         api_key=settings.anthropic_api_key,
                         model=settings.urban_dna_agent_model,
                         palette_hint=palette_hint,
-                        lego_catalog=lego_catalog,
                     ))
-                    master_notes.extend(composition_notes)
-                    if composed_spec is not None:
-                        master_spec = composed_spec
-                        master_source = (
-                            "ai_runtime_lego"
-                            if master_usage.get("status") == "success"
-                            else "runtime_lego_fallback"
-                        )
                 except SoftTimeLimitExceeded:
                     raise
                 except Exception as exc:  # noqa: BLE001 — preset palette path
                     logger.warning("Master planner composition errored: %s", exc)
                     master_spec = None
-                    master_notes.append({
+                    master_notes = [{
                         "code": "MASTER_PLANNER_UNAVAILABLE", "severity": "warning",
                         "message": f"Master Planner unavailable ({type(exc).__name__}) — "
-                                   "the current imported LEGO catalog drew this plan.",
+                                   "the scenario's preset palette drew this plan.",
                         "source_phase": "master_planner",
-                    })
+                    }]
                 if master_usage is not None:
                     try:
                         log_api_usage_sync(
@@ -883,37 +707,20 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                         raise
                     except Exception as exc:  # noqa: BLE001
                         logger.warning("Failed to log master planner usage: %s", exc)
-        if master_spec is None:
-            master_spec = lego_fallback_spec(
-                row.scenario_id,
-                lego_catalog,
-                palette_hint,
-            )
-            master_notes.append({
-                "code": "MASTER_PLAN_RUNTIME_LEGO_FALLBACK",
-                "severity": "info",
-                "message": (
-                    "The plan was deterministically composed from the current imported "
-                    "archetyped LEGO catalog; no unsupported building was substituted."
-                ),
-                "source_phase": "master_planner",
-            })
+                if master_spec is not None:
+                    payload = dict(row.payload or {})
+                    payload["master_plan"] = {
+                        "spec": master_spec.model_dump(mode="json"),
+                        "narrative": master_spec.design_narrative,
+                        "generated_at": datetime.now(tz.utc).isoformat(),
+                        "usage": master_usage,
+                    }
+                    row.payload = payload
+                    session.commit()
 
-        pending_master_plan = {
-            "spec": master_spec.model_dump(mode="json"),
-            "narrative": master_spec.design_narrative,
-            "generated_at": datetime.now(tz.utc).isoformat(),
-            "usage": master_usage,
-            "source": master_source,
-            "lego_catalog_fingerprint": lego_catalog.fingerprint,
-            "lego_parent_count": len(lego_catalog.parent_ids),
-        }
-
-        palette_override = palette_from_spec(
-            master_spec,
-            row.scenario_id,
-            palette_hint,
-            lego_catalog=lego_catalog,
+        palette_override = (
+            palette_from_spec(master_spec, row.scenario_id, palette_hint)
+            if master_spec is not None else None
         )
 
         # The planner's urban grain becomes a rule hint (block spacing + the
@@ -940,185 +747,14 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             measured_model_dims=measured_model_dims,
             palette_override=palette_override,
         )
-
-        # The catalog above is a planning snapshot, not a lock. Imports and
-        # module configuration can change while Anthropic/refinement runs.
-        # Requery now so persisted zones are never certified against assets
-        # that no longer exist. A changed capability vocabulary requires a
-        # clean redraw/recomposition rather than a mixed-catalog result.
-        try:
-            lego_entries, lego_catalog = _refresh_project_lego_inventory(
-                session,
-                snapshot.project.owner_id,
-                lego_catalog.fingerprint,
-            )
-        except LegoInventoryChangedDuringPlan as exc:
-            message = (
-                f"{exc} Retry Generate Plan so the Master Planner can recompose "
-                "against the current project-owner LEGO catalog."
-            )
-            if cached_reusable:
-                failed_payload = dict(row.payload or {})
-                failed_master = dict(failed_payload.get("master_plan") or {})
-                failed_master["cache_reusable"] = False
-                failed_payload["master_plan"] = failed_master
-                row.payload = failed_payload
-            _set_plan_state(session, row, status="failed", error=message)
-            return {"status": "failed", "error": message}
-
-        from app.services.master_planner.lego_geometry import (
-            LegoGeometryCompatibilityError,
-            bind_building_zones_to_lego,
-        )
-
-        try:
-            result.zones, lego_binding = bind_building_zones_to_lego(
-                result.zones,
-                lego_entries,
-                lego_catalog,
-            )
-        except LegoGeometryCompatibilityError as exc:
-            message = (
-                f"AI plan could not be bound entirely to the imported LEGO catalog: {exc}"
-            )
-            if cached_reusable:
-                failed_payload = dict(row.payload or {})
-                failed_master = dict(failed_payload.get("master_plan") or {})
-                failed_master["cache_reusable"] = False
-                failed_payload["master_plan"] = failed_master
-                row.payload = failed_payload
-            _set_plan_state(session, row, status="failed", error=message)
-            return {"status": "failed", "error": message}
-        if lego_binding.omitted_count:
-            # Building zones and metric-space masses are emitted in the same
-            # order by the geometry generator. Keep the persisted plan,
-            # reported yield and evaluator trace consistent after bounded
-            # clipped slivers are returned to residual landscaping.
-            if (
-                len(result.masses_m) != lego_binding.building_count
-                or len(result.mass_floors) != lego_binding.building_count
-            ):
-                message = (
-                    "AI plan LEGO binding could not reconcile building zones with "
-                    "the geometry metric trace; the previous plan was preserved."
-                )
-                if cached_reusable:
-                    failed_payload = dict(row.payload or {})
-                    failed_master = dict(failed_payload.get("master_plan") or {})
-                    failed_master["cache_reusable"] = False
-                    failed_payload["master_plan"] = failed_master
-                    row.payload = failed_payload
-                _set_plan_state(session, row, status="failed", error=message)
-                return {"status": "failed", "error": message}
-            omitted_indices = set(lego_binding.omitted_building_indices)
-            retained_masses = [
-                mass
-                for index, mass in enumerate(result.masses_m)
-                if index not in omitted_indices
-            ]
-            retained_floors = [
-                floors
-                for index, floors in enumerate(result.mass_floors)
-                if index not in omitted_indices
-            ]
-            result.masses_m = retained_masses
-            result.mass_floors = retained_floors
-            result.building_count = lego_binding.retained_count
-            result.geometry_inputs["building_footprint_m2"] = sum(
-                float(mass.area) for mass in retained_masses
-            )
-            result.geometry_inputs["gfa_m2"] = sum(
-                float(mass.area) * floors
-                for mass, floors in zip(retained_masses, retained_floors)
-            )
-
-            from app.services.plan_geometry.plan_evaluator import evaluate_plan
-            from app.services.plan_metrics import compute_metrics
-
-            metrics_report = compute_metrics(
-                scenario_id=row.scenario_id,
-                dna=snapshot.dna or {},
-                parameters=plan_parameters,
-                geometry_inputs=result.geometry_inputs,
-                effective_floors=float(result.rules.get("floors") or 0) or None,
-            )
-            units_metric = metrics_report.metrics.get("units")
-            evaluation = evaluate_plan(
-                result,
-                plan_parameters,
-                units_estimate=units_metric.value if units_metric else None,
-            )
-            if iterations:
-                iterations[-1]["overall_score"] = evaluation.overall
-                iterations[-1]["scores"] = {
-                    key: score.model_dump()
-                    for key, score in evaluation.scores.items()
-                }
-                iterations[-1]["building_count"] = result.building_count
-                iterations[-1]["postprocess"] = {
-                    "omitted_incompatible_lego_footprints": (
-                        lego_binding.omitted_count
-                    )
-                }
-            result.notes.append({
-                "code": "LEGO_INCOMPATIBLE_SLIVER_TO_LANDSCAPE",
-                "severity": "info",
-                "message": (
-                    f"{lego_binding.omitted_count} of {lego_binding.building_count} "
-                    "clipped building footprints could not accept any imported LEGO "
-                    "family and were returned to the site-boundary residual landscape."
-                ),
-                "source_phase": "building_placement",
-            })
-        if lego_binding.repaired_count:
-            result.notes.append({
-                "code": "LEGO_ACTUAL_FOOTPRINT_REBOUND",
-                "severity": "info",
-                "message": (
-                    f"{lego_binding.repaired_count} of {lego_binding.building_count} "
-                    "building footprints were rebound to a stylistically closest "
-                    "LEGO family proven at their final parcel dimensions."
-                ),
-                "source_phase": "building_placement",
-            })
         # The planner's own notes (composition + repairs) lead the plan notes.
         result.notes[:0] = master_notes
 
-        lock_residual_landscape_project_sync(session, snapshot.project_id)
-        session.refresh(zone)
-        if plan_boundary_fingerprint(to_shape(zone.geometry)) != boundary_fingerprint:
-            raise RuntimeError("Site boundary changed while the master plan was drawing")
-        if mark_residual_landscape_stale(
-            zone,
-            changed_zone_id=str(zone.id),
-            reason="Master plan regenerated; rebuild Community 3D landscaping.",
-        ):
-            flag_modified(zone, "properties")
-
-        # Replace previous plan zones (keep locked streets).  Remove only the
-        # Community 3D Building artifacts explicitly owned by those zones
-        # before their source rows disappear; otherwise the old models remain
-        # visible as ghosts beside the regenerated plan.
-        zones_to_replace = []
+        # Replace previous plan zones (keep locked streets).
         for old in existing:
             role = (old.properties or {}).get("_plan_role")
             if "streets" in locks and role == "street":
-                _backfill_locked_street_plan_centerline(old)
-                old.properties = stamp_plan_boundary_identity(
-                    old.properties,
-                    fingerprint=boundary_fingerprint,
-                    boundary_zone_id=zone.id,
-                    snapshot_id=snapshot.id,
-                )
-                flag_modified(old, "properties")
                 continue
-            zones_to_replace.append(old)
-        stale_buildings_removed = _delete_community_3d_buildings_for_replaced_zones(
-            session,
-            snapshot.project_id,
-            {old.id for old in zones_to_replace},
-        )
-        for old in zones_to_replace:
             session.delete(old)
         session.flush()
 
@@ -1129,12 +765,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             ring = zone_dict["coordinates"]
             if len(ring) < 3:
                 continue
-            properties = stamp_plan_boundary_identity(
-                zone_dict["properties"],
-                fingerprint=boundary_fingerprint,
-                boundary_zone_id=zone.id,
-                snapshot_id=snapshot.id,
-            )
             session.add(SiteZone(
                 id=uuid.uuid4(),
                 project_id=snapshot.project_id,
@@ -1142,44 +772,21 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 zone_type=zone_dict["zone_type"],
                 geometry=from_shape(ShapelyPolygon(ring), srid=4326),
                 color=zone_dict["color"],
-                properties=properties,
+                properties=zone_dict["properties"],
                 sort_order=zone_dict.get("sort_order", 500),
             ))
             inserted += 1
 
         payload = dict(row.payload or {})
-        payload["master_plan"] = {
-            **pending_master_plan,
-            "validated_for_lego_geometry": True,
-            # A deterministic fallback is safe to draw but should not turn a
-            # transient Anthropic failure into a permanent no-retry cache.
-            "cache_reusable": master_source != "runtime_lego_fallback",
-        }
         payload["metrics"] = metrics_report.model_dump(mode="json")
         payload["plan"] = {
             "status": "complete",
             "generated_at": datetime.now(tz.utc).isoformat(),
-            "boundary_identity": {
-                "schema_version": PLAN_BOUNDARY_FINGERPRINT_VERSION,
-                "fingerprint": boundary_fingerprint,
-                "zone_id": str(zone.id),
-                "snapshot_id": str(snapshot.id),
-            },
             "locks": locks,
             "zone_count": inserted,
             "block_count": result.block_count,
             "parcel_count": result.parcel_count,
             "building_count": result.building_count,
-            "stale_buildings_removed": stale_buildings_removed,
-            "lego_binding": {
-                "catalog_fingerprint": lego_catalog.fingerprint,
-                "catalog_parent_count": len(lego_catalog.parent_ids),
-                "building_count": lego_binding.building_count,
-                "retained_count": lego_binding.retained_count,
-                "unchanged_count": lego_binding.unchanged_count,
-                "repaired_count": lego_binding.repaired_count,
-                "omitted_count": lego_binding.omitted_count,
-            },
             "intersection_density_per_km2": round(result.intersection_density_per_km2, 1),
             "rules": result.rules,
             "geometry_inputs": {k: round(v, 1) for k, v in result.geometry_inputs.items()},
@@ -1188,10 +795,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             "final_score": iterations[-1]["overall_score"] if iterations else None,
         }
         row.payload = payload
-        boundary_props = dict(zone.properties or {})
-        if boundary_props.pop(PLAN_BOUNDARY_RESTORE_STATE_KEY, None) is not None:
-            zone.properties = boundary_props
-            flag_modified(zone, "properties")
         session.commit()
         logger.info(
             "Plan drawn for %s: %d zones, %d blocks, %d parcels",

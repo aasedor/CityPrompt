@@ -8,12 +8,7 @@ from shapely.geometry import Polygon
 
 from app.services.plan_geometry.community_rules import LANE_ROW_M, MIN_ROW_M
 from app.services.plan_geometry.generator import generate_plan_geometry
-from app.services.plan_geometry.placement import (
-    CATALOG_DEV_TYPES,
-    Palette,
-    runtime_lego_rectangle_fit,
-    selected_target_footprint,
-)
+from app.services.plan_geometry.placement import CATALOG_DEV_TYPES
 from app.services.site_engine import (
     build_transformer,
     local_metric_crs_for_polygon,
@@ -96,42 +91,6 @@ def test_measured_dims_change_target_not_archetype():
     }
     # Same archetype choices; only parcel geometry may differ.
     assert set(base_buildings.values()) == set(measured_buildings.values())
-
-
-def test_runtime_lego_variant_native_dimensions_override_parent_card():
-    from app.services.plan_geometry.archetypes import dims_by_id
-
-    entry = dims_by_id()["london_heritage_mansion_block"]
-    palette = Palette(
-        bands={},
-        allowed_archetype_ids=frozenset({entry["id"]}),
-        target_dimensions_by_selectable_id={
-            "london-heritage-mansion-portland-stone": (45.0, 27.0),
-        },
-    )
-
-    target = selected_target_footprint(
-        entry,
-        5,
-        None,
-        palette,
-        "london-heritage-mansion-portland-stone",
-    )
-
-    assert target is not None
-    assert (target.width_m, target.depth_m, target.source) == (
-        45.0,
-        27.0,
-        "runtime_lego",
-    )
-
-
-def test_runtime_alternates_allow_uniform_resize_but_reject_axis_distortion():
-    # A 15x8 rowhouse fits a 13x7 cell with an almost uniform ~87% scale.
-    assert runtime_lego_rectangle_fit(13.0, 7.0, 15.0, 8.0)
-    # A 12x8 townhouse would need roughly 108% on one authored axis and 88%
-    # on the other, visibly warping openings and facade textures.
-    assert not runtime_lego_rectangle_fit(13.0, 7.0, 12.0, 8.0)
 
 
 def _rect_stats(zone, site):
@@ -247,7 +206,6 @@ def test_street_hierarchy_spine_and_locals():
     roads = [z for z in result.zones if z["zone_type"] == "road"]
     spine = [z for z in roads if z["properties"].get("street_role") == "spine"]
     locals_ = [z for z in roads if z["properties"].get("street_role") == "local"]
-    assert all(z["properties"].get("road_archetype_id") for z in roads)
     assert spine and all(z["properties"]["width"] >= 22.0 for z in spine)
     assert locals_ and all(MIN_ROW_M <= z["properties"]["width"] < 15.0 for z in locals_)
 
@@ -286,22 +244,6 @@ def test_park_mix_and_archetype_fallback_stamps():
                   if z["properties"].get("green_kind") in ("central", "pocket")]
     assert any(a >= 2000.0 for a in park_areas)
     assert any(a <= 900.0 for a in park_areas)
-
-
-def test_every_generated_public_realm_zone_has_an_explicit_catalog_identity():
-    result = _generate()
-    roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
-    greens = [
-        zone
-        for zone in result.zones
-        if zone["zone_type"] == "green_space"
-    ]
-
-    assert roads and all(zone["properties"].get("road_archetype_id") for zone in roads)
-    assert greens and all(
-        zone["properties"].get("green_space_archetype_id")
-        for zone in greens
-    )
 
 
 def test_palette_stays_under_render_caps():

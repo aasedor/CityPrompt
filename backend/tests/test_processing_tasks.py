@@ -100,28 +100,14 @@ class _DummyQuery:
 
 
 class _DummyAISession:
-    def __init__(self, building, linked_zones=None):
+    def __init__(self, building):
         self._building = building
-        self._linked_zones = list(linked_zones or [])
-        self.executed = []
         self.commit_calls = 0
         self.rollback_calls = 0
         self.closed = False
 
     def query(self, model):
         return _DummyQuery(self._building)
-
-    def execute(self, statement, *_args, **_kwargs):
-        # Project-lock result is ignored; linked-zone invalidation consumes an
-        # optional scalar collection supplied by the focused freshness test.
-        self.executed.append(statement)
-        values = self._linked_zones if "FROM site_zones" in str(statement) else []
-        return SimpleNamespace(
-            scalars=lambda: SimpleNamespace(all=lambda: values),
-        )
-
-    def refresh(self, _value):
-        return None
 
     def commit(self):
         self.commit_calls += 1
@@ -135,7 +121,6 @@ class _DummyAISession:
 
 def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
     from app.generation.engine import GenerationResult
-    from app.models.models import SiteZone
 
     building = SimpleNamespace(
         id=uuid.uuid4(),
@@ -153,21 +138,7 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
         # test keeps exercising the plain provider path.
         specifications=None,
     )
-    linked_zone = SiteZone(
-        id=uuid.uuid4(),
-        project_id=building.project_id,
-        zone_type="building",
-        building_id=building.id,
-        building_ids=[str(building.id)],
-        properties={
-            "community_3d": {
-                "state": "compiled",
-                "kind": "building",
-                "generator": "meshy",
-            },
-        },
-    )
-    session = _DummyAISession(building, [linked_zone])
+    session = _DummyAISession(building)
     storage_writes = []
     propagated = []
     progress_updates = []
@@ -235,8 +206,6 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
     assert building.lod_urls == {'0': building.model_url}
     assert any(update['meta']['step'] == 'preview_ready' for update in progress_updates)
     assert propagated
-    assert linked_zone.properties['community_3d']['state'] == 'stale'
-    assert any('FOR UPDATE' in str(statement) for statement in session.executed)
     assert session.commit_calls >= 4
     assert session.rollback_calls == 0
     assert session.closed is True

@@ -17,10 +17,6 @@ from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
 from app.services.generation_queue import queue_ai_generation_task
-from app.services.residual_landscape import (
-    lock_residual_landscape_project,
-    mark_linked_community_3d_stale,
-)
 from app.schemas.schemas import (
     ArchitecturalStyleResponse,
     BuildingCreate, BuildingResponse, BuildingUpdate,
@@ -233,24 +229,6 @@ async def update_building(
             raise HTTPException(status_code=403, detail="Not authorized to edit buildings in this project")
 
     update_data = building_in.model_dump(exclude_unset=True)
-    representation_changed = bool({
-        "name",
-        "height_meters",
-        "floor_count",
-        "floor_height_meters",
-        "roof_type",
-        "specifications",
-        "footprint_coordinates",
-        "rotation_degrees",
-        "architectural_style",
-        # Not currently exposed by BuildingUpdate, but keep the guard aligned
-        # with the generated-model viewer if that schema is expanded later.
-        "model_url",
-        "lod_urls",
-    }.intersection(update_data))
-    if representation_changed:
-        await lock_residual_landscape_project(db, building.project_id)
-        await db.refresh(building)
 
     # Handle footprint_coordinates to geometry conversion
     if "footprint_coordinates" in update_data:
@@ -264,14 +242,6 @@ async def update_building(
 
     for field, value in update_data.items():
         setattr(building, field, value)
-
-    if representation_changed:
-        await mark_linked_community_3d_stale(
-            db,
-            project_id=building.project_id,
-            building_id=building.id,
-            reason="Linked building representation changed; rebuild Community 3D before Direct rendering.",
-        )
 
     await db.flush()
     await db.refresh(building)
@@ -304,18 +274,6 @@ async def delete_building(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to delete buildings in this project")
 
-    # Serialize model deletion with Community compile and paid Direct
-    # preflight. A request validated before this lock may finish against its
-    # already captured pixels; a request arriving after deletion must observe
-    # the missing model and fail before credits are reserved.
-    await lock_residual_landscape_project(db, building.project_id)
-    await db.refresh(building)
-    await mark_linked_community_3d_stale(
-        db,
-        project_id=building.project_id,
-        building_id=building.id,
-        reason="Linked building deleted; rebuild Community 3D before Direct rendering.",
-    )
     await db.delete(building)
 
 
@@ -498,10 +456,6 @@ async def generate_from_text(
 
     # Resolve style: request > building > project default
     style_id = req.style or building.architectural_style or getattr(project, 'default_style', None)
-    style_changed = bool(style_id and style_id != building.architectural_style)
-    if style_changed:
-        await lock_residual_landscape_project(db, building.project_id)
-        await db.refresh(building)
 
     # Enrich prompt with style
     enriched_prompt = _enrich_prompt_with_style(req.prompt, style_id)
@@ -513,16 +467,6 @@ async def generate_from_text(
     if style_id:
         building.architectural_style = style_id
     building.generation_engine = engine
-    if style_changed:
-        await mark_linked_community_3d_stale(
-            db,
-            project_id=building.project_id,
-            building_id=building.id,
-            reason=(
-                "Linked building display style changed; rebuild Community 3D "
-                "before Direct rendering."
-            ),
-        )
     await db.flush()
 
     await queue_ai_generation_task(
