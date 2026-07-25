@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "modernist-civic-block",
+  "archetype_id": "modernist_civic_block",
+  "created_at": "2026-07-17T06:43:11.787533+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/modernist_civic_block/hero.png",
+  "architectural_signature": {
+    "identity": "Monumental modernist civic block with a floating upper volume, pilotis, deep brise-soleil, ceremonial cantilever canopy and exposed concrete frame.",
+    "material_zones": "board-marked concrete; dark bronze frames; clear glass; warm soffit",
+    "kits": [
+      "pilotis",
+      "cantilever_canopy",
+      "brise_soleil",
+      "concrete_frame"
+    ]
+  },
+  "span_m": 12.92,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        357
+      ],
+      "height_m": 4.5
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        357
+      ],
+      "height_m": 4.5
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        908
+      ],
+      "height_m": 4.5
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        475
+      ],
+      "height_m": 5.2
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-549px-0.54",
+    "floor_alt": [
+      0.1083,
+      0.3078
+    ],
+    "crown": [
+      0.0,
+      0.5073
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}
