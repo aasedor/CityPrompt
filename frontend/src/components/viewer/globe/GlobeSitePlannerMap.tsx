@@ -2523,16 +2523,18 @@ export function GlobeSitePlannerMap({
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-      // Delete the selected planning zone or generated 3D model.
+      // Delete the selected generated 3D model, else the planning zone. Model
+      // selection now co-selects its zone, so the model branch must win first —
+      // Delete on a clicked model removes the model, never the zone under it.
       if (e.key === 'Delete' || (e.key === 'Backspace' && !e.metaKey && !e.ctrlKey)) {
-        if (selectedZoneId) {
-          e.preventDefault();
-          _onZoneDeleted?.(selectedZoneId);
-          onZoneSelected(null);
-        } else if (selectedBuildingId) {
+        if (selectedBuildingId) {
           e.preventDefault();
           onBuildingDeleted?.(selectedBuildingId);
           setSelectedBuildingId(null);
+        } else if (selectedZoneId) {
+          e.preventDefault();
+          _onZoneDeleted?.(selectedZoneId);
+          onZoneSelected(null);
         }
         return;
       }
@@ -2925,9 +2927,13 @@ export function GlobeSitePlannerMap({
   const handleBuildingModelClick = useCallback((buildingId: string) => {
     if (interactionPaused || hasDrawingTool || measureModeActive) return;
     ignoreNextCanvasClickRef.current = true;
-    onZoneSelected(null);
+    // A generated model is a first-class handle onto its zone: select both so
+    // the properties panel (type/floors/Quick Regenerate) and the polygon
+    // transform affordances (move/reshape/rotate) light up together.
+    const owningZone = siteZones.find((zone) => zone.building_id === buildingId);
+    onZoneSelected(owningZone ? owningZone.id : null);
     setSelectedBuildingId(buildingId);
-  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected]);
+  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones]);
 
   useEffect(() => {
     if (!selectedBuildingId) return;
@@ -3454,7 +3460,9 @@ export function GlobeSitePlannerMap({
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none sm:block">
-          {selectedBuildingId
+          {selectedBuildingId && selectedZoneId
+            ? '3D model selected | Edit type/floors in the panel, then Regenerate | Drag body/vertices or amber handle to move/reshape/rotate | Delete removes the model | Esc to deselect'
+            : selectedBuildingId
             ? '3D model selected | Delete/Backspace to remove | Esc to deselect'
             : selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | Drag amber handle or Q/E to rotate buildings | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'

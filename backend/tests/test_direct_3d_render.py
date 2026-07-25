@@ -66,6 +66,17 @@ TEST_PROJECT_ID = uuid.UUID("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 TEST_ZONE_ID = uuid.UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 
+@pytest.fixture(autouse=True)
+def _pin_legacy_gate_contract(monkeypatch):
+    """This module is the regression suite for the dormant gate machinery.
+
+    The live product contract is presentation-first (provider image returned
+    untouched — see test_direct_3d_presentation_first.py); these tests pin the
+    legacy fail-closed behavior so the flagged-off code keeps its coverage.
+    """
+    monkeypatch.setattr(direct_service, "DIRECT_3D_PRESENTATION_FIRST", False)
+
+
 def _png_b64(image: Image.Image) -> str:
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
@@ -1794,8 +1805,10 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
     assert "Visible guide regions" not in scene
     assert "BALANCED FIDELITY" not in scene
     assert len(scene) < 2_500
+    # The lock now closes with the context-identity clause (2026-07-25): the
+    # neighbouring-building protection must be the final, most-recent text.
     assert scene.rstrip().endswith(
-        "people, bicycles, vehicles, cafe seating, planting, benches and lighting."
+        "Never re-clad, restyle, modernize or replace a neighbouring building."
     )
     assert reproject.count("FINAL PRESERVATION LOCK") == 1
     assert "30-degree axonometric" in reproject
@@ -1814,7 +1827,7 @@ def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock
     assert len(prompt) == 31_900
     assert prompt.count("FINAL PRESERVATION LOCK") == 1
     assert prompt.rstrip().endswith(
-        "people, bicycles, vehicles, cafe seating, planting, benches and lighting."
+        "Never re-clad, restyle, modernize or replace a neighbouring building."
     )
 
 

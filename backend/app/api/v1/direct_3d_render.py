@@ -22,6 +22,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.v1.render import (
     _WEEKLY_TOKEN_ALLOWANCE,
     _enforce_global_daily_render_cap,
+    SaveRenderRequest,
+    persist_render_to_gallery,
 )
 from app.core.config import get_settings
 from app.core.database import get_db
@@ -1367,6 +1369,49 @@ async def generate_direct_3d_render(
         )
     except Exception as audit_exc:
         logger.warning("Failed to save Direct 3D render audit log: %s", audit_exc)
+
+    # The user paid for every produced image: persist all results to the
+    # project gallery, and keep the untouched provider image whenever a safety
+    # fallback replaced it (parity with pasting the capture into an external
+    # image chat). Gallery failures never block returning the render.
+    try:
+        strategy = result.diagnostics.get("returned_safety_strategy")
+        await persist_render_to_gallery(
+            db,
+            req.project_id,
+            SaveRenderRequest(
+                image_base64=result.image_base64,
+                prompt=req.prompt,
+                style=req.style,
+                model="gpt-image-2",
+                image_quality="high",
+            ),
+            variant="final",
+            outcome=(
+                f"{result.outcome} · {strategy}" if strategy else str(result.outcome)
+            ),
+        )
+        if result.provider_image_base64 and strategy not in (
+            None,
+            "provider_full_scene",
+        ):
+            await persist_render_to_gallery(
+                db,
+                req.project_id,
+                SaveRenderRequest(
+                    image_base64=result.provider_image_base64,
+                    prompt=req.prompt,
+                    style=req.style,
+                    model="gpt-image-2",
+                    image_quality="high",
+                ),
+                variant="provider_original",
+                outcome="review_required",
+            )
+    except Exception as gallery_exc:
+        logger.warning(
+            "Failed to auto-save Direct 3D render to gallery: %s", gallery_exc
+        )
 
     return Direct3DRenderResponse(
         image_base64=result.image_base64,

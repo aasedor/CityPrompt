@@ -1109,9 +1109,12 @@ async def _place_recipe_on_zone(
         zone.building_ids = [str(building.id)]
         created = True
     else:
-        # Older flows can link a Building without a usable footprint.
-        if building.footprint is None:
-            building.footprint = zone.geometry
+        # The zone ring is the single source of orientation truth: rotating or
+        # reshaping a zone only rewrites zone.geometry, and the globe derives
+        # its placement bearing from the building footprint. Sync the footprint
+        # unconditionally on every re-place (mirrors the block-editor sync in
+        # site_zones.py) so a rotated zone produces a rotated building.
+        building.footprint = zone.geometry
         if building.floor_count is None:
             building.floor_count = body.target.floors
 
@@ -1187,8 +1190,9 @@ async def _place_planned_massing_on_zone(
         zone.building_ids = [str(building.id)]
         created = True
     else:
-        if building.footprint is None:
-            building.footprint = zone.geometry
+        # Same orientation-truth rule as _place_recipe_on_zone: the rotated /
+        # reshaped zone ring must reach the footprint the globe places from.
+        building.footprint = zone.geometry
         if building.floor_count is None:
             building.floor_count = floors
         if building.height_meters is None:

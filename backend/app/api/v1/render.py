@@ -1055,6 +1055,11 @@ class SavedRenderResponse(BaseModel):
     model: Optional[str] = None
     image_quality: Optional[str] = None
     created_at: str
+    # Direct 3D auto-saves: "final" (what the pipeline returned) or
+    # "provider_original" (the untouched paid provider image when a safety
+    # fallback replaced it). Manual gallery saves leave these unset.
+    variant: Optional[str] = None
+    outcome: Optional[str] = None
 
 
 def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> bytes:
@@ -1106,16 +1111,20 @@ def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> b
         return image_bytes
 
 
-@router.post("/projects/{project_id}/save", response_model=SavedRenderResponse, status_code=status.HTTP_201_CREATED)
-async def save_render(
+async def persist_render_to_gallery(
+    db: AsyncSession,
     project_id: _uuid.UUID,
     req: SaveRenderRequest,
-    user: User = Depends(require_auth),
-    db: AsyncSession = Depends(get_db),
-):
-    """Save an AI render image to the project's gallery in S3."""
-    await check_project_permission(project_id, user, db, required="editor")
+    *,
+    variant: Optional[str] = None,
+    outcome: Optional[str] = None,
+) -> SavedRenderResponse:
+    """Core gallery save: watermark, dedupe, upload, append to project metadata.
 
+    Shared by the manual Accept & Save endpoint and the Direct 3D auto-save
+    path (which persists every paid result, including the untouched provider
+    image when a safety fallback replaced it).
+    """
     project_result = await db.execute(
         select(Project)
         .where(Project.id == project_id)
@@ -1159,6 +1168,8 @@ async def save_render(
         "image_quality": req.image_quality,
         "image_hash": image_hash,
         "created_at": now,
+        "variant": variant,
+        "outcome": outcome,
     }
 
     renders.insert(0, entry)
@@ -1167,14 +1178,27 @@ async def save_render(
 
     await db.commit()
     logger.info(
-        "Saved render %s for project %s (model=%s, quality=%s)",
+        "Saved render %s for project %s (model=%s, quality=%s, variant=%s)",
         render_id,
         project_id,
         req.model or "unknown",
         req.image_quality or "unknown",
+        variant or "manual",
     )
 
     return SavedRenderResponse(**entry)
+
+
+@router.post("/projects/{project_id}/save", response_model=SavedRenderResponse, status_code=status.HTTP_201_CREATED)
+async def save_render(
+    project_id: _uuid.UUID,
+    req: SaveRenderRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Save an AI render image to the project's gallery in S3."""
+    await check_project_permission(project_id, user, db, required="editor")
+    return await persist_render_to_gallery(db, project_id, req)
 
 
 @router.get("/projects/{project_id}/renders", response_model=list[SavedRenderResponse])

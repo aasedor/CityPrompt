@@ -1303,8 +1303,11 @@ async def test_place_reuses_existing_building_and_preserves_specifications(
     assert payload["building_id"] == str(building.id)
 
     mock_db.add.assert_not_called()
-    # existing footprint and floor count are authoritative — not overwritten
-    assert building.footprint == "SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))"
+    # The zone ring is the orientation source of truth: every re-place syncs
+    # the building footprint from the CURRENT zone geometry so rotating or
+    # reshaping the zone rotates the compiled building (2026-07-24 fix).
+    # Floor count, when already set, remains authoritative.
+    assert building.footprint == zone.geometry
     assert building.floor_count == 4
     # copy-update-reassign: the untouched workflow fields survive
     assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"

@@ -184,11 +184,11 @@ export const STYLE_GROUPS = [
 export type GlobeRenderPipeline = 'classic' | 'direct3d';
 
 export const DIRECT_3D_PIPELINE_DESCRIPTION =
-  'One-call inventory-locked finish of the compiled 3D scene. Style changes appearance; fidelity controls geometric freedom.';
+  'One-call AI finish of the compiled 3D scene. The style you pick governs the look; the compiled models and public realm anchor the layout.';
 export const DIRECT_3D_SCOPE_DESCRIPTION =
-  'Precise and Balanced preserve authored structure. Expressive and reprojected results require source/candidate review before saving.';
+  'Pick a style and render. The AI image is returned exactly as generated — visually check reprojected views, since the camera transform cannot be proven from the source.';
 export const DIRECT_3D_CALL_DESCRIPTION =
-  '1 image call · review-required results are never auto-saved';
+  '1 image call · every result is saved to Project Renders, including the untouched AI original';
 
 export const DIRECT_3D_FIDELITY_OPTIONS: ReadonlyArray<{
   id: Direct3DFidelityPolicy;
@@ -1270,7 +1270,6 @@ export function GlobeAIRenderPanel({
                         }`}
                       >
                         {s.label}
-                        {renderPipeline === 'direct3d' && presentationMode === 'reproject' ? ' · Review' : ''}
                       </button>
                     );
                   })}
@@ -1296,36 +1295,6 @@ export function GlobeAIRenderPanel({
 
         {/* Custom prompt */}
         <div>
-          {renderPipeline === 'direct3d' && (
-            <div className="mb-3">
-              <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-black uppercase text-white/50">
-                <span>Geometry fidelity</span>
-                {(directFidelityPolicy === 'expressive'
-                  || resolveDirect3DPresentationMode(selectedStyle) === 'reproject') && (
-                  <span className="rounded-full border border-amber-300/40 bg-amber-300/10 px-1.5 py-0.5 text-[8px] text-amber-100">
-                    Review required
-                  </span>
-                )}
-              </div>
-              <div className="grid gap-1">
-                {DIRECT_3D_FIDELITY_OPTIONS.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => setDirectFidelityPolicy(option.id)}
-                    className={`rounded border px-2 py-1.5 text-left transition ${
-                      directFidelityPolicy === option.id
-                        ? 'border-cyan-200/60 bg-cyan-300/15 text-cyan-50'
-                        : 'border-white/10 bg-white/5 text-white/55 hover:bg-white/10'
-                    }`}
-                  >
-                    <span className="block text-[10px] font-black uppercase">{option.label}</span>
-                    <span className="block text-[9px] font-semibold opacity-70">{option.description}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
           <div className="mb-1 text-[10px] font-black uppercase text-white/50">Prompt</div>
           <textarea
             value={customPrompt}
