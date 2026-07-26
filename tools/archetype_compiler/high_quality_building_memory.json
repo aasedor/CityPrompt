@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-26-crystalline-concert-surfaces-v64",
+  "memory_version": "2026-07-26-registered-concert-skins-v65",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -550,6 +550,16 @@
       "symptom": "A large reflective glass landmark becomes milky white or uniformly dead blue",
       "cause": "A clear window-glass profile was stretched across the full envelope without reflection density or occupied-zone variation.",
       "correction": "Use a darker physical reflective-skin material for the continuous envelope, preserve warm occupied lower foyer zones, and keep entrance and aperture glazing as separate clear construction assemblies."
+    },
+    {
+      "symptom": "A free-form landmark has plausible geometry but still reads like a procedural grey model",
+      "cause": "Flat catalogue materials or one complete elevation image were expected to describe several unrelated systems: historic brick, warped curtain wall and a metallic tensile roof.",
+      "correction": "Generate and retain separate shadow-neutral PBR sources for each continuous material system. Register repeatable warehouse brick only to exposed masonry skins, curtain-wall panels only to the warped envelope, and top-down metallic cladding only to the roof; keep silhouette and openings in geometry."
+    },
+    {
+      "symptom": "A realistic curtain-wall atlas fights the physical mullions, tiles at the perimeter seam or makes Blender's joined bevel take minutes",
+      "cause": "The image period did not match the panel cadence, or a multi-repeat authored unwrap was applied before the global joined-mesh bevel.",
+      "correction": "Match atlas columns and rows to physical mullion/transom counts, correct the cyclic seam per polygon and apply the registered shell UVs after beveling. Keep aperture and entrance glazing on independent materials so the envelope atlas cannot leak into those assemblies."
     },
     {
       "symptom": "A valid cultural or industrial catalogue entry fails grammar compilation because its storeys exceed six metres",

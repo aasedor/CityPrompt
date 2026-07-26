@@ -205,6 +205,9 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "welsh_slate": 0.74,
             "standing_seam": 1.10,
             "verdigris_copper": 0.98,
+            "concert_crystalline_glass": 1.0,
+            "concert_warehouse_brick": 1.0,
+            "concert_tensile_roof": 1.0,
         }.get(texture_key, 0.84)
         grade_node.location = (-190, 260)
         links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
@@ -225,6 +228,9 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "welsh_slate": 0.06,
             "standing_seam": 0.04,
             "verdigris_copper": 0.03,
+            "concert_crystalline_glass": 0.0,
+            "concert_warehouse_brick": 0.0,
+            "concert_tensile_roof": 0.0,
         }.get(texture_key, 0.14)
         tint_node.inputs[2].default_value = color
         tint_node.location = (20, 260)
@@ -316,6 +322,7 @@ def make_reflective_skin_material(name: str, spec: dict) -> bpy.types.Material:
         "base_color": spec.get("base_color", "#6f8494"),
         "roughness": spec.get("roughness", 0.075),
         "metallic": 0.0,
+        "texture_key": spec.get("texture_key"),
     })
     principled = next(
         (node for node in mat.node_tree.nodes if node.type == "BSDF_PRINCIPLED"),
@@ -735,6 +742,10 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "ior": 1.48, "clearcoat": 0.62, "clearcoat_roughness": 0.045,
         **dict(signature_materials.get("signature_glass") or {}),
     }
+    signature_brick_skin_spec = {
+        "base_color": "#9b4f38", "roughness": 0.76, "metallic": 0.0,
+        **dict(signature_materials.get("signature_brick_skin") or {}),
+    }
     result = {
         "primary": make_material("MAT_Facade_Primary", materials["primary"]),
         "secondary": make_material("MAT_Facade_Secondary", materials["secondary"]),
@@ -767,6 +778,9 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "signature_metal": make_material("MAT_Signature_BlackMetal", signature_metal_spec),
         "signature_glass": make_reflective_skin_material(
             "MAT_Signature_ReflectiveGlass", signature_glass_spec,
+        ),
+        "signature_brick_skin": make_material(
+            "MAT_Signature_WarehouseBrickSkin", signature_brick_skin_spec,
         ),
         "massing_soffit": make_material("MAT_Massing_DarkConcreteSoffit", {
             "base_color": "#42413e", "roughness": 0.88, "metallic": 0.0,
@@ -1487,6 +1501,8 @@ def apply_box_uv(obj: bpy.types.Object, tile: float = UV_TILE_METRES) -> None:
         n = poly.normal
         ax, ay, az = abs(n.x), abs(n.y), abs(n.z)
         material = mesh.materials[poly.material_index] if poly.material_index < len(mesh.materials) else None
+        if material and material.get("preserve_authored_uv"):
+            continue
         atlas_cell = material.get("interior_atlas_cell") if material else None
         projected: list[tuple[float, float]] = []
         for loop_index in poly.loop_indices:
@@ -6936,6 +6952,49 @@ def _graph_skin_material(mats: dict, spec: dict, *, suffix: str = ""):
     return material
 
 
+def _graph_texture_skin(parts: list, spec: dict, mats: dict) -> None:
+    """Map a registered repeatable PBR atlas onto one thin graph elevation."""
+    base = _graph_material(mats, spec.get("material", "primary"))
+    material = base.copy()
+    material.name = f"{base.name}_{spec.get('id', 'TextureSkin')}"
+    material["massing_skin"] = True
+    material["massing_skin_canonical"] = base.name
+    material["massing_skin_axis"] = str(spec.get("axis", "front"))
+    material["massing_skin_flip_u"] = bool(spec.get("flip_u", False))
+
+    axis = str(spec.get("axis", "front"))
+    cx, cy, cz = (float(value) for value in spec["centre"])
+    span = float(spec["span_m"])
+    height = float(spec["height_m"])
+    depth = float(spec.get("depth_m", 0.045))
+    if axis in ("front", "rear"):
+        size = (span, depth, height)
+        u_min, u_max = cx - span / 2, cx + span / 2
+    elif axis in ("left", "right"):
+        size = (depth, span, height)
+        u_min, u_max = cy - span / 2, cy + span / 2
+    else:
+        raise ValueError(f"massing graph texture skin axis {axis!r} is unsupported")
+
+    repeat_span = max(0.1, float(spec.get("repeat_span_m", span)))
+    material["massing_skin_u_min"] = u_min
+    material["massing_skin_u_max"] = u_max
+    material["massing_skin_z_min"] = cz - height / 2
+    material["massing_skin_z_max"] = cz + height / 2
+    material["massing_skin_tex_u_min"] = float(spec.get("uv_u_min", 0.0))
+    material["massing_skin_tex_u_max"] = float(
+        spec.get("uv_u_max", span / repeat_span)
+    )
+    material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
+    material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    parts.append(add_box(
+        str(spec.get("id", "GraphTextureSkin")),
+        size,
+        (cx, cy, cz),
+        material,
+    ))
+
+
 def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "") -> None:
     """Apply one rectified Gemini elevation to a thin, shadow-backed surface.
 
@@ -7805,6 +7864,61 @@ def _concert_shell_point(
     return tuple(coordinate)
 
 
+def _apply_concert_shell_uv(obj: bpy.types.Object) -> None:
+    """Unwrap registered concert shells after the joined-mesh bevel is applied.
+
+    Deferring this step avoids asking Blender's bevel modifier to interpolate a
+    multi-repeat seam across every warped panel, which is pathologically slow.
+    """
+    mesh = obj.data
+    uv_layer = mesh.uv_layers.get("UVMap") or mesh.uv_layers.new(name="UVMap")
+    mesh.uv_layers.active = uv_layer
+    for polygon in mesh.polygons:
+        if polygon.material_index >= len(mesh.materials):
+            continue
+        material = mesh.materials[polygon.material_index]
+        if not material or not material.get("concert_shell_uv"):
+            continue
+        cx = float(material["concert_shell_centre_x"])
+        cy = float(material["concert_shell_centre_y"])
+        half_width = float(material["concert_shell_half_width"])
+        half_depth = float(material["concert_shell_half_depth"])
+        rounded_power = float(material["concert_shell_rounded_power"])
+        repeats = float(material["concert_shell_repeats"])
+        shell_spec = {
+            "centre": [cx, cy],
+            "width_m": half_width * 2,
+            "depth_m": half_depth * 2,
+            "base_z_m": float(material["concert_shell_base_z"]),
+            "edge_z_m": float(material["concert_shell_edge_z"]),
+            "rounded_power": rounded_power,
+            "wave_amplitude_m": float(material["concert_shell_wave_amplitude"]),
+            "entrance_x_m": float(material["concert_shell_entrance_x"]),
+            "entrance_width_m": float(material["concert_shell_entrance_width"]),
+            "entrance_drop_m": float(material["concert_shell_entrance_drop"]),
+        }
+        coordinates = []
+        for loop_index in polygon.loop_indices:
+            co = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            normalized_x = max(-1.0, min(1.0, (co.x - cx) / half_width))
+            normalized_y = max(-1.0, min(1.0, (co.y - cy) / half_depth))
+            recovered_cos = math.copysign(abs(normalized_x) ** (rounded_power / 2), normalized_x)
+            recovered_sin = math.copysign(abs(normalized_y) ** (rounded_power / 2), normalized_y)
+            theta = math.atan2(recovered_sin, recovered_cos) % math.tau
+            bottom = _concert_shell_point(theta, 0.0, shell_spec)[2]
+            top = _concert_shell_point(theta, 1.0, shell_spec)[2]
+            u = theta / math.tau * repeats
+            v = max(0.0, min(1.0, (co.z - bottom) / max(top - bottom, 1e-6)))
+            coordinates.append([u, v])
+        u_values = [coordinate[0] for coordinate in coordinates]
+        if u_values and max(u_values) - min(u_values) > repeats / 2:
+            for coordinate in coordinates:
+                if coordinate[0] < repeats / 2:
+                    coordinate[0] += repeats
+        for loop_index, coordinate in zip(polygon.loop_indices, coordinates):
+            uv_layer.data[loop_index].uv = coordinate
+
+
 def _graph_undulating_glass_crown(parts: list, spec: dict, mats: dict) -> None:
     """Build the continuous warped-glass body, warm foyer belt and mullions."""
     prefix = str(spec.get("id", "ConcertGlassCrown"))
@@ -7825,7 +7939,26 @@ def _graph_undulating_glass_crown(parts: list, spec: dict, mats: dict) -> None:
         for level in range(levels)
         for index in range(segments)
     ]
-    shell = add_prism(prefix, shell_vertices, shell_faces, _graph_material(mats, spec.get("material", "glass")))
+    source_material = _graph_material(mats, spec.get("material", "glass"))
+    shell_material = source_material.copy()
+    shell_material.name = f"{source_material.name}_{prefix}_Registered"
+    shell_material["preserve_authored_uv"] = True
+    shell_material["concert_shell_uv"] = True
+    shell_material["concert_shell_centre_x"] = float(spec.get("centre", (0.0, 0.0))[0])
+    shell_material["concert_shell_centre_y"] = float(spec.get("centre", (0.0, 0.0))[1])
+    shell_material["concert_shell_half_width"] = float(spec["width_m"]) / 2
+    shell_material["concert_shell_half_depth"] = float(spec["depth_m"]) / 2
+    shell_material["concert_shell_rounded_power"] = float(spec.get("rounded_power", 5.0))
+    shell_material["concert_shell_repeats"] = float(
+        spec.get("horizontal_texture_repeats", segments / 10)
+    )
+    shell_material["concert_shell_base_z"] = float(spec["base_z_m"])
+    shell_material["concert_shell_edge_z"] = float(spec["edge_z_m"])
+    shell_material["concert_shell_wave_amplitude"] = float(spec.get("wave_amplitude_m", 2.6))
+    shell_material["concert_shell_entrance_x"] = float(spec.get("entrance_x_m", 0.0))
+    shell_material["concert_shell_entrance_width"] = float(spec.get("entrance_width_m", 7.0))
+    shell_material["concert_shell_entrance_drop"] = float(spec.get("entrance_drop_m", 0.0))
+    shell = add_prism(prefix, shell_vertices, shell_faces, shell_material)
     for polygon in shell.data.polygons:
         polygon.use_smooth = True
     parts.append(shell)
@@ -8248,6 +8381,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_shadow_line(parts, assembly, mats)
         elif kind == "facade_skin":
             _graph_facade_skin(parts, assembly, mats)
+        elif kind == "texture_skin":
+            _graph_texture_skin(parts, assembly, mats)
         elif kind == "facade_skin_stack":
             _graph_facade_skin_stack(parts, assembly, mats)
         elif kind == "frame_grid":
@@ -8285,9 +8420,16 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
 
     if not parts:
         raise ValueError("massing graph contains no renderable nodes or assemblies")
+    print(
+        f"[blender_generate] massing graph parts ready: {len(parts)}; joining...",
+        flush=True,
+    )
     model = join_as("ASM_MassingGraph", parts)
+    print("[blender_generate] massing graph joined; registering UVs...", flush=True)
     _apply_massing_skin_uv(model)
+    _apply_concert_shell_uv(model)
     _consolidate_massing_skin_materials(model)
+    print("[blender_generate] massing graph UV registration complete", flush=True)
     # Bevelled plinths and stair nosings can produce a tiny negative export
     # bound even when their design datum is exactly zero.  Runtime placement
     # requires a true bottom-centre origin, so normalize the completed graph
@@ -9043,7 +9185,9 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
     rendered_views: list[str] = []
     if assembled:
         reset_scene()
+        print("[blender_generate] building assembled materials...", flush=True)
         mats = build_materials(grammar)
+        print("[blender_generate] assembled materials ready", flush=True)
         stack: list[bpy.types.Object] = []
         target_width = float(footprint_width_m or dims["width_m"])
         target_depth = float(footprint_depth_m or dims["depth_m"])
@@ -9071,6 +9215,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             else None
         )
         if massing_graph:
+            print("[blender_generate] building fixed landmark graph...", flush=True)
             landmark = build_massing_graph(grammar, mats)
             stack.append(landmark)
             z = float(massing_graph["height_m"])

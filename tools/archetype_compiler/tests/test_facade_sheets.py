@@ -289,7 +289,7 @@ def test_concert_crystalline_variant_injects_render_locked_landmark_geometry():
         "undulating_glass_crown",
         "tension_roof",
         "concert_oval_apertures",
-        "warehouse_window_array",
+        "texture_skin",
         "curtain_wall",
     } <= kinds
     roof = next(item for item in assemblies if item["kind"] == "tension_roof")
@@ -300,7 +300,41 @@ def test_concert_crystalline_variant_injects_render_locked_landmark_geometry():
     assert len(apertures["apertures"]) >= 6
     assert injected["materials"]["primary"]["texture_key"] == "red_brick"
     assert injected["architectural_signature"]["glass_profile"] == "reflective_curtain_wall"
+    signature_materials = injected["architectural_signature"]["signature_material_overrides"]
+    assert signature_materials["signature_glass"]["texture_key"] == "concert_crystalline_glass"
+    assert signature_materials["signature_brick_skin"]["texture_key"] == "concert_warehouse_brick"
+    assert signature_materials["signature_roof"]["texture_key"] == "concert_tensile_roof"
     assert "massing_graph" not in injected["architectural_signature"]
+
+
+def test_concert_skin_builder_writes_runtime_texture_contract(tmp_path):
+    pytest.importorskip("PIL")
+    pytest.importorskip("numpy")
+    from PIL import Image
+    from build_concert_skin_pbr import build
+
+    source = tmp_path / "source"
+    output = tmp_path / "textures"
+    source.mkdir()
+    for filename, color in (
+        ("crystalline-glass-elevation-v1.png", (104, 132, 154)),
+        ("warehouse-brick-elevation-v1.png", (144, 72, 48)),
+        ("tensile-roof-tiles-v1.png", (178, 190, 201)),
+    ):
+        Image.new("RGB", (64, 64), color).save(source / filename)
+
+    build(source, output)
+
+    for texture_key in (
+        "concert_crystalline_glass",
+        "concert_warehouse_brick",
+        "concert_tensile_roof",
+    ):
+        texture_dir = output / texture_key
+        assert (texture_dir / "albedo.jpg").exists()
+        assert (texture_dir / "normal.png").exists()
+        assert (texture_dir / "roughness.jpg").exists()
+        assert (texture_dir / "raw.jpg").exists()
 
 
 def test_corner_archetype_compiles_corner_condition():

@@ -1026,9 +1026,10 @@
       "signature_material_overrides": {
         "signature_stone": {"base_color": "#c8ad87", "roughness": 0.72, "metallic": 0.0, "texture_key": "sandstone"},
         "signature_warm": {"base_color": "#8b5c2f", "roughness": 0.62, "metallic": 0.0, "texture_key": "oak_wood"},
-        "signature_roof": {"base_color": "#b7c5d0", "roughness": 0.22, "metallic": 0.82, "texture_key": null},
+        "signature_roof": {"base_color": "#cbd7df", "roughness": 0.30, "metallic": 0.48, "texture_key": "concert_tensile_roof"},
         "signature_metal": {"base_color": "#20272c", "roughness": 0.26, "metallic": 0.78, "texture_key": null},
-        "signature_glass": {"base_color": "#647f93", "roughness": 0.07, "transmission": 0.50, "ior": 1.48, "clearcoat": 0.64, "clearcoat_roughness": 0.04}
+        "signature_glass": {"base_color": "#647f93", "roughness": 0.07, "transmission": 0.50, "ior": 1.48, "clearcoat": 0.64, "clearcoat_roughness": 0.04, "texture_key": "concert_crystalline_glass"},
+        "signature_brick_skin": {"base_color": "#9b4f38", "roughness": 0.76, "metallic": 0.0, "texture_key": "concert_warehouse_brick"}
       },
       "massing_graph": {
         "schema": "massing-graph@1",
@@ -1076,7 +1077,8 @@
             "entrance_drop_m": 19.8,
             "segments": 88,
             "levels": 16,
-            "horizontal_rows": 9,
+            "horizontal_rows": 6,
+            "horizontal_texture_repeats": 8.8,
             "vertical_stride": 1,
             "frame_radius_m": 0.052,
             "material": "signature_glass",
@@ -1115,7 +1117,7 @@
             "id": "crystalline_oval_foyers",
             "kind": "concert_oval_apertures",
             "ring_material": "signature_roof",
-            "glass_material": "signature_glass",
+            "glass_material": "interior_warm",
             "interior_material": "interior_warm",
             "brace_material": "signature_metal",
             "segments": 40,
@@ -1140,11 +1142,13 @@
               {"theta_deg": 168.0, "z_m": 34.0, "width_m": 7.2, "height_m": 10.0, "tilt_deg": -22.0, "profile_m": 0.64, "projection_m": 0.24}
             ]
           },
-          {"id": "warehouse_front_left_windows", "kind": "warehouse_window_array", "axis": "front", "centre": [-15.5, -32.58, 9.5], "span_m": 52.0, "height_m": 14.0, "columns": 10, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
-          {"id": "warehouse_front_right_windows", "kind": "warehouse_window_array", "axis": "front", "centre": [35.5, -32.58, 9.5], "span_m": 14.5, "height_m": 14.0, "columns": 3, "rows": 3, "window_width_ratio": 0.44, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
-          {"id": "warehouse_left_windows", "kind": "warehouse_window_array", "axis": "left", "centre": [-45.08, 0.0, 9.5], "span_m": 35.0, "height_m": 14.0, "columns": 7, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
-          {"id": "warehouse_right_windows", "kind": "warehouse_window_array", "axis": "right", "centre": [45.08, 0.0, 9.5], "span_m": 35.0, "height_m": 14.0, "columns": 7, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
-          {"id": "warehouse_rear_windows", "kind": "warehouse_window_array", "axis": "rear", "centre": [0.0, 32.08, 9.5], "span_m": 80.0, "height_m": 14.0, "columns": 15, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "warehouse_front_left_skin", "kind": "texture_skin", "axis": "front", "centre": [-15.5, -32.56, 8.9], "span_m": 55.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
+          {"id": "warehouse_front_right_skin", "kind": "texture_skin", "axis": "front", "centre": [35.5, -32.56, 8.9], "span_m": 15.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
+          {"id": "warehouse_left_skin", "kind": "texture_skin", "axis": "left", "centre": [-45.06, 0.0, 8.9], "span_m": 38.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
+          {"id": "warehouse_right_skin", "kind": "texture_skin", "axis": "right", "centre": [45.06, 0.0, 8.9], "span_m": 38.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
+          {"id": "warehouse_front_left_return_skin", "kind": "texture_skin", "axis": "left", "centre": [-44.06, -25.5, 8.9], "span_m": 13.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
+          {"id": "warehouse_front_right_return_skin", "kind": "texture_skin", "axis": "right", "centre": [44.06, -25.5, 8.9], "span_m": 13.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
+          {"id": "warehouse_rear_skin", "kind": "texture_skin", "axis": "rear", "centre": [0.0, 32.06, 8.9], "span_m": 87.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
           {"id": "concert_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [20.0, -31.0, 10.5], "span_m": 13.0, "height_m": 20.4, "columns": 4, "rows": 5, "frame_m": 0.11, "depth_m": 0.16, "glass_material": "glass", "frame_material": "signature_metal", "interior_material": "interior_warm", "interior_recess_m": 0.24},
           {"id": "concert_entry_steps", "kind": "steps", "centre": [20.0, -33.3, 0.0], "width_m": 15.0, "depth_m": 1.8, "count": 5, "rise_m": 0.13, "material": "signature_stone"}
         ],

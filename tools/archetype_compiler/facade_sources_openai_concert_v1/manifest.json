@@ -1,0 +1,26 @@
+{
+  "schema": "concert-material-sources@1",
+  "generated_at": "2026-07-26",
+  "generator": "OpenAI image generation",
+  "reference_role": "Concert Hall Modern variant 1 material appearance only",
+  "assets": [
+    {
+      "file": "crystalline-glass-elevation-v1.png",
+      "sha256": "1115FC7E0AEBDC6C2D2A060DCA65AC4EB39D317E40665FC9125373D71F19E25E",
+      "texture_key": "concert_crystalline_glass",
+      "prompt": "Create a strict rectified orthographic curtain-wall texture atlas filling the image edge-to-edge, with exactly 10 equal glazing bays and 6 panel rows. Preserve iridescent blue-silver reflective glass, restrained warm amber lower-zone reflections, fine dark/silver mullions, subtle panel variation and faint urban reflections. Flat front-on, tileable left-to-right, shadow-neutral, with no building silhouette, oval openings, doors, brick, roof, people, text or watermark."
+    },
+    {
+      "file": "warehouse-brick-elevation-v1.png",
+      "sha256": "0FA4129D7C4E00585543885E2AB48AF264ED9C9321D6120BBD736D1BD0F833ED",
+      "texture_key": "concert_warehouse_brick",
+      "prompt": "Create a strict rectified orthographic historic warehouse facade atlas filling the image edge-to-edge, with exactly 6 equal structural brick bays and 3 storeys. Use deep red and burnt-orange hand-fired brick, dark steel-sash segmental-arched windows, shallow pilasters, soldier-course arches, pale sandstone sills and restrained age staining. Flat front-on, tileable left-to-right, shadow-neutral, with no entrance, glass crown, roof, people, text or watermark."
+    },
+    {
+      "file": "tensile-roof-tiles-v1.png",
+      "sha256": "6943F29301C0C1A9211F896CD5B7769D9052023F3EC9DB185E3C43A0C5DECF2E",
+      "texture_key": "concert_tensile_roof",
+      "prompt": "Create a seamless top-down orthographic PBR albedo source for a tensile concert-hall roof: a dense field of small pale silver-grey metallic cladding tiles over fine cable-net seams, with subtle blue reflection, restrained weathering and panel variation. Fill every edge, use shadow-neutral overcast light, and include no roof outline, peaks, valleys, holes, facade, people, text or watermark."
+    }
+  ]
+}

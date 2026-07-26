@@ -413,6 +413,20 @@ free-form cultural landmarks:
   Concert halls, assembly spaces and industrial halls can exceed a six-metre
   storey height; validate those acoustic/structural dimensions explicitly and
   retain the tighter ordinary-building behavior through regression tests.
+- Do not wrap a whole generated elevation around free-form geometry. Generate
+  separate shadow-neutral PBR sources for each continuous material system:
+  repeatable warehouse brick, rectified curtain-wall panels and top-down roof
+  cladding. Geometry continues to own gables, apertures, entrance cuts and roof
+  peaks.
+- Register the curtain-wall atlas to the physical panel grid. The horizontal
+  atlas period must equal the mullion cadence, the vertical rows must equal the
+  transom cadence, and the perimeter seam must be corrected per polygon.
+  Apply that authored unwrap after joined-mesh beveling so Blender does not
+  spend minutes interpolating a multi-repeat seam through every panel.
+- A realistic skin must cover every exposed return, but it must not leak onto
+  unrelated construction. Use thin registered brick skins on front, side,
+  rear and short return faces; keep aperture glazing, entrance glazing and
+  chromed lips as independent materials and depth assemblies.
 
 ## Updating this memory
 
