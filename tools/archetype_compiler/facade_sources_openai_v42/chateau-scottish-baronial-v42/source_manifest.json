@@ -1,0 +1,17 @@
+{
+  "schema": "facade-source@1",
+  "family": "chateau-scottish-baronial-v42",
+  "archetype_id": "chateauesque_grand_railway_hotel",
+  "variant_id": "scottish_baronial_granite_tower",
+  "generator": "Codex built-in image generation",
+  "created_at": "2026-07-26",
+  "source": "elevation_source.png",
+  "reference_images": [
+    "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+    "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg",
+    "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg"
+  ],
+  "prompt": "Create one strict rectified orthographic front-elevation texture map derived from the exact Scottish Baronial references. Use pink-grey granite ashlar, exactly six coordinated storey bands, four regular bays of tall narrow timber-sash windows in deep stone reveals, restrained granite lintels and sills, a darker rusticated ground-floor band, and a thin corbelled upper cornice. Make this an ordinary repeatable wall elevation rather than a hero tower, roof, turret, gable, or entrance. Use photorealistic, shadow-neutral overcast material-capture lighting with zero perspective; the wall must reach every edge. Exclude sky, roof, turrets, gables, portals, pavement, ground, people, cars, trees, signs, text, watermarks, dramatic light, and whole-building scenery.",
+  "registered_opening_schedule": "opening_schedule.json",
+  "registered_band_schedule": "band_schedule.json"
+}

@@ -195,7 +195,7 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         grade_node.inputs["Saturation"].default_value = (
             0.9 if archviz_timber else (0.88 if archviz_sedum else (1.04 if texture_key == "red_brick" else 1.08))
         )
-        grade_node.inputs["Value"].default_value = {
+        default_texture_value = {
             "red_brick": 0.64,
             "clt": 0.82 if archviz_timber else 0.8,
             "sedum_roof": 0.94 if archviz_sedum else 0.84,
@@ -206,6 +206,9 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "standing_seam": 1.10,
             "verdigris_copper": 0.98,
         }.get(texture_key, 0.84)
+        grade_node.inputs["Value"].default_value = float(
+            spec.get("texture_value", default_texture_value)
+        )
         grade_node.location = (-190, 260)
         links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
         # The texture supplies real surface variation; the catalogue colour
@@ -214,8 +217,8 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         # while carrying the archetype-specific tint into renders and GLB.
         tint_node = nodes.new("ShaderNodeMixRGB")
         tint_node.name = tint_node.label = "TEX_CatalogueTint"
-        tint_node.blend_type = "MULTIPLY"
-        tint_node.inputs[0].default_value = {
+        tint_node.blend_type = str(spec.get("texture_tint_mode", "MULTIPLY")).upper()
+        default_tint_strength = {
             "clt": 0.15 if archviz_timber else 0.46,
             "sedum_roof": 0.04 if archviz_sedum else 0.14,
             "red_brick": 0.18,
@@ -226,6 +229,9 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "standing_seam": 0.04,
             "verdigris_copper": 0.03,
         }.get(texture_key, 0.14)
+        tint_node.inputs[0].default_value = float(
+            spec.get("texture_tint_strength", default_tint_strength)
+        )
         tint_node.inputs[2].default_value = color
         tint_node.location = (20, 260)
         links.new(grade_node.outputs["Color"], tint_node.inputs[1])
@@ -6454,6 +6460,21 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             (-0.075, 0.86), (0.00, 1.00), (0.075, 0.86),
             (0.455, 0.10), (0.50, 0.10), (0.50, 0.00),
         ]
+    elif profile_style == "crow_step":
+        # Scottish Baronial gables are read first by their staircase verge.
+        # Keep each riser broad enough to survive GLB simplification and use a
+        # compact apex rather than smoothing the silhouette into a triangle.
+        outline = [
+            (-0.50, 0.00), (-0.50, 0.16), (-0.42, 0.16),
+            (-0.42, 0.30), (-0.34, 0.30), (-0.34, 0.44),
+            (-0.26, 0.44), (-0.26, 0.58), (-0.18, 0.58),
+            (-0.18, 0.72), (-0.10, 0.72), (-0.10, 0.86),
+            (-0.04, 0.86), (0.00, 1.00), (0.04, 0.86),
+            (0.10, 0.86), (0.10, 0.72), (0.18, 0.72),
+            (0.18, 0.58), (0.26, 0.58), (0.26, 0.44),
+            (0.34, 0.44), (0.34, 0.30), (0.42, 0.30),
+            (0.42, 0.16), (0.50, 0.16), (0.50, 0.00),
+        ]
     else:
         # A sampled ogee/scroll outline reads as curved after the construction
         # bevel is applied, while remaining deterministic and inexpensive in GLB.
@@ -6511,16 +6532,17 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
             base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
         ))
-        finial_radius = float(spec.get("finial_radius_m", 0.19))
-        finial_z = base_z + height + finial_radius * 1.15
-        parts.append(add_cylinder(
-            f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
-            (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
-        ))
-        parts.append(add_ellipsoid(
-            f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
-            (finial_radius, finial_radius, finial_radius), stone,
-        ))
+        if bool(spec.get("include_finial", profile_style != "crow_step")):
+            finial_radius = float(spec.get("finial_radius_m", 0.19))
+            finial_z = base_z + height + finial_radius * 1.15
+            parts.append(add_cylinder(
+                f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
+                (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
+            ))
+            parts.append(add_ellipsoid(
+                f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
+                (finial_radius, finial_radius, finial_radius), stone,
+            ))
 
 
 def _graph_chimney_cluster_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7117,6 +7139,127 @@ def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
         parts, str(spec.get("id", "GraphPointedPortal")), cx, cy, base_z,
         spring_z, apex_z, width, depth, profile, stone, back,
     )
+
+
+def _graph_rect_window_array(parts: list, spec: dict, mats: dict) -> None:
+    """Discrete punched sash windows on planar and tangential tower faces."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right", "angle"}:
+        raise ValueError(f"rect window array axis {axis!r} is unsupported")
+    centre = Vector(tuple(float(value) for value in spec["centre"]))
+    span = float(spec.get("span_m", 3.0))
+    height = float(spec.get("height_m", 20.0))
+    columns = max(1, int(spec.get("columns", 1)))
+    rows = max(1, int(spec.get("rows", 4)))
+    width_ratio = min(0.88, max(0.20, float(spec.get("width_ratio", 0.46))))
+    height_ratio = min(0.88, max(0.20, float(spec.get("height_ratio", 0.58))))
+    frame = max(0.06, float(spec.get("profile_m", 0.16)))
+    depth = max(0.08, float(spec.get("depth_m", 0.28)))
+    recess = max(0.04, float(spec.get("recess_m", 0.16)))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    interior = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+    prefix = str(spec.get("id", "GraphRectWindows"))
+
+    if axis == "front":
+        along, outward, angle = Vector((1, 0, 0)), Vector((0, -1, 0)), 0.0
+    elif axis == "rear":
+        along, outward, angle = Vector((-1, 0, 0)), Vector((0, 1, 0)), math.pi
+    elif axis == "left":
+        along, outward, angle = Vector((0, 1, 0)), Vector((-1, 0, 0)), math.pi / 2
+    elif axis == "right":
+        along, outward, angle = Vector((0, -1, 0)), Vector((1, 0, 0)), -math.pi / 2
+    else:
+        angle = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+        along = Vector((math.cos(angle), math.sin(angle), 0.0))
+        outward = Vector((-math.sin(angle), math.cos(angle), 0.0))
+
+    bay = span / columns
+    floor = height / rows
+    opening_w = bay * width_ratio
+    opening_h = floor * height_ratio
+
+    def oriented_box(name: str, size: tuple[float, float, float],
+                     location: Vector, material, bevel: float = 0.0):
+        obj = (
+            add_beveled_box(name, size, tuple(location), material, bevel)
+            if bevel > 0.0
+            else add_box(name, size, tuple(location), material)
+        )
+        obj.rotation_euler.z = angle
+        parts.append(obj)
+
+    for row in range(rows):
+        z = centre.z - height / 2 + floor * (row + 0.5)
+        for column in range(columns):
+            offset = -span / 2 + bay * (column + 0.5)
+            face = centre + along * offset
+            face.z = z
+            tag = f"{prefix}_{row:02d}_{column:02d}"
+            glass_centre = face - outward * recess
+            interior_centre = face - outward * (recess + 0.08)
+            oriented_box(f"{tag}_Glass", (opening_w, 0.035, opening_h),
+                         glass_centre, glass)
+            oriented_box(f"{tag}_Interior", (opening_w * 0.90, 0.025, opening_h * 0.90),
+                         interior_centre, interior)
+            for side, x_offset in (("L", -opening_w / 2), ("R", opening_w / 2)):
+                oriented_box(
+                    f"{tag}_Jamb{side}", (frame, depth, opening_h + frame),
+                    face + along * x_offset, stone, min(0.025, frame * 0.14),
+                )
+            for edge, z_offset in (("Head", opening_h / 2), ("Sill", -opening_h / 2)):
+                location = face.copy()
+                location.z += z_offset
+                member_depth = depth + (0.10 if edge == "Sill" else 0.0)
+                oriented_box(
+                    f"{tag}_{edge}", (opening_w + frame, member_depth, frame),
+                    location, stone, min(0.022, frame * 0.12),
+                )
+
+
+def _graph_round_portal(parts: list, spec: dict, mats: dict) -> None:
+    """Deep semicircular masonry gateway for Romanesque/Baronial landmarks."""
+    axis = str(spec.get("axis", "front"))
+    if axis != "front":
+        raise ValueError("round portal currently supports the front facade only")
+    cx, cy, base_z = (float(value) for value in spec["base_centre"])
+    inner_width = float(spec.get("width_m", 4.8))
+    spring_height = float(spec.get("spring_height_m", 4.4))
+    depth = float(spec.get("depth_m", 0.86))
+    profile = float(spec.get("profile_m", 0.48))
+    recess_m = max(0.08, float(spec.get("recess_m", 0.38)))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    back = _graph_material(mats, spec.get("back_material", "interior_warm"))
+    prefix = str(spec.get("id", "GraphRoundPortal"))
+    radius = inner_width / 2
+    spring_z = base_z + spring_height
+    jamb_height = max(0.3, spring_height)
+    jamb_bevel = min(0.07, profile * 0.14)
+
+    for side, x in (("L", cx - radius - profile / 2), ("R", cx + radius + profile / 2)):
+        parts.append(add_beveled_box(
+            f"{prefix}_Jamb{side}", (profile, depth, jamb_height),
+            (x, cy, base_z + jamb_height / 2), stone, jamb_bevel,
+        ))
+    parts.append(add_arch_ring(
+        f"{prefix}_ArchRing", cx, cy, spring_z, radius, profile, depth,
+        stone, max(18, int(spec.get("segments", 24))),
+    ))
+    # A full-height recessed plane keeps the arch opening dark and inhabited
+    # while leaving the actual semicircular void legible around its perimeter.
+    reveal_height = spring_height + radius
+    parts.append(add_beveled_box(
+        f"{prefix}_Recess", (inner_width, 0.08, reveal_height),
+        (cx, cy + recess_m, base_z + reveal_height / 2), back, 0.035,
+    ))
+    if bool(spec.get("include_keystone", True)):
+        key_width = profile * 1.18
+        key_height = profile * 1.55
+        parts.append(add_beveled_box(
+            f"{prefix}_Keystone", (key_width, depth * 1.08, key_height),
+            (cx, cy - depth * 0.04, spring_z + radius + key_height * 0.18),
+            stone, min(0.045, profile * 0.10),
+        ))
 
 
 def _graph_pointed_window_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7766,6 +7909,10 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_bay_frame_array(parts, assembly, mats)
         elif kind == "pointed_portal":
             _graph_pointed_portal(parts, assembly, mats)
+        elif kind == "rect_window_array":
+            _graph_rect_window_array(parts, assembly, mats)
+        elif kind == "round_portal":
+            _graph_round_portal(parts, assembly, mats)
         elif kind == "pointed_window_array":
             _graph_pointed_window_array(parts, assembly, mats)
         elif kind == "buttress_array":

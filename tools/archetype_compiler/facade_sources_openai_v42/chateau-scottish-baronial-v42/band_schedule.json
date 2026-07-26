@@ -1,0 +1,9 @@
+{
+  "schema": "registered-bands@1",
+  "source": "elevation_source.png",
+  "crown": {"y": [0.045, 0.204]},
+  "floor": {"y": [0.205, 0.358]},
+  "floor_alt": {"y": [0.359, 0.511]},
+  "podium": {"y": [0.823, 1.0]},
+  "side": {"source": "floor_alt", "x": [0.0, 0.25]}
+}

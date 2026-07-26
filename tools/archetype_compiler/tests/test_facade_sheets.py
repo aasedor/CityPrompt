@@ -83,6 +83,71 @@ def test_signature_injection_prefers_an_explicit_variant_profile():
     assert "massing_graph" not in result
 
 
+def test_scottish_baronial_variant_locks_granite_slate_and_landmark_geometry():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "chateauesque_grand_railway_hotel",
+            "variant_id": "scottish_baronial_granite_tower",
+        },
+        "materials": {
+            "primary": {}, "secondary": {}, "roof": {}, "accent": {},
+        },
+    }
+    result = inject_signature(grammar)
+    signature = result["architectural_signature"]
+    graph = result["massing_graph"]
+    kinds = {assembly["kind"] for assembly in graph["assemblies"]}
+    node_ids = {node["id"] for node in graph["nodes"]}
+
+    assert "Scottish Baronial" in signature["identity"]
+    assert result["materials"]["primary"]["texture_key"] == "granite"
+    assert result["materials"]["primary"]["texture_tint_strength"] > 0.5
+    assert result["materials"]["roof"]["texture_key"] == "welsh_slate"
+    assert result["materials"]["roof"]["base_color"] == "#343b46"
+    assert signature["signature_material_overrides"]["signature_stone"]["texture_key"] == "granite"
+    assert graph["profile"] == "chateauesque_scottish_baronial_v42"
+    assert graph["reference_dimensions"] == {
+        "width_m": 55.0,
+        "depth_m": 36.0,
+        "floors": 6,
+        "floor_height_m": 4.0,
+    }
+    assert {
+        "baronial_gate_tower",
+        "baronial_left_front_turret_roof",
+        "baronial_right_front_turret_roof",
+    } <= node_ids
+    assert {
+        "round_portal", "rect_window_array", "crenellation_array",
+        "shaped_gable_array", "chimney_cluster_array",
+    } <= kinds
+    crow_gables = next(
+        item for item in graph["assemblies"] if item["id"] == "baronial_crow_gables"
+    )
+    assert crow_gables["profile_style"] == "crow_step"
+    assert crow_gables["include_finial"] is False
+
+
+def test_scottish_baronial_pilot_preserves_audited_facade_source():
+    source_dir = (
+        Path(__file__).parents[1]
+        / "facade_sources_openai_v42"
+        / "chateau-scottish-baronial-v42"
+    )
+    manifest = json.loads((source_dir / "source_manifest.json").read_text(encoding="utf-8"))
+    openings = json.loads((source_dir / "opening_schedule.json").read_text(encoding="utf-8"))
+    bands = json.loads((source_dir / "band_schedule.json").read_text(encoding="utf-8"))
+
+    assert (source_dir / manifest["source"]).stat().st_size > 1_000_000
+    assert manifest["variant_id"] == "scottish_baronial_granite_tower"
+    assert len(manifest["reference_images"]) == 3
+    assert len(openings["openings"]) == 24
+    assert set(bands) >= {"crown", "floor", "floor_alt", "podium", "side"}
+    assert bands["podium"]["y"][1] == 1.0
+
+
 def test_modernist_civic_signature_injects_semantic_massing_graph():
     from signature_profiles import inject_signature
 
