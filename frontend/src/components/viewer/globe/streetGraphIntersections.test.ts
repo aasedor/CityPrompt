@@ -52,6 +52,35 @@ function street(
 }
 
 describe('four-way street graph adapter', () => {
+  it('drops the node when a planner street has a present-but-invalid plan_centerline', () => {
+    // An empty persisted centerline (seen on AI-plan access stubs next to a
+    // roundabout) must exclude the street from V1 junction anchoring — the
+    // server's independent proof falls back to different polygon geometry
+    // and would 409 every claim forever.
+    const eastWest = street('east-west', [[-114.1, 51], [-114.09, 51]], 22);
+    const northSouth = street('north-south', [[-114.095, 50.995], [-114.095, 51.005]], 14);
+    (northSouth.properties as Record<string, unknown>).plan_centerline = [];
+
+    expect(detectFourWayStreetIntersections([eastWest, northSouth])).toHaveLength(0);
+  });
+
+  it('drops the node when a planner-marked street has no persisted centerline', () => {
+    const eastWest = street('east-west', [[-114.1, 51], [-114.09, 51]], 22);
+    const northSouth = street('north-south', [[-114.095, 50.995], [-114.095, 51.005]], 14);
+    (northSouth.properties as Record<string, unknown>)._imported_from = 'plan';
+
+    expect(detectFourWayStreetIntersections([eastWest, northSouth])).toHaveLength(0);
+  });
+
+  it('keeps the node when persisted plan_centerlines are valid', () => {
+    const eastWest = street('east-west', [[-114.1, 51], [-114.09, 51]], 22);
+    const northSouth = street('north-south', [[-114.095, 50.995], [-114.095, 51.005]], 14);
+    (eastWest.properties as Record<string, unknown>).plan_centerline = [[-114.1, 51], [-114.09, 51]];
+    (northSouth.properties as Record<string, unknown>).plan_centerline = [[-114.095, 50.995], [-114.095, 51.005]];
+
+    expect(detectFourWayStreetIntersections([eastWest, northSouth])).toHaveLength(1);
+  });
+
   it('emits one graph-owned node for two continuous crossing centerlines', () => {
     const nodes = detectFourWayStreetIntersections([
       street('east-west', [[-114.1, 51], [-114.09, 51]], 22),

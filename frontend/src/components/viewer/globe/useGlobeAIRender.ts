@@ -221,7 +221,7 @@ const SUPPORTED_ASPECT_RATIOS: Array<[string, number]> = [
   ['5:4', 1.25], ['1:1', 1], ['4:5', 0.8], ['3:4', 0.75],
   ['2:3', 2 / 3], ['9:16', 9 / 16],
 ];
-function nearestAspectRatio(width: number, height: number): string {
+export function nearestAspectRatio(width: number, height: number): string {
   if (!width || !height) return '4:3';
   const target = width / height;
   let best = '4:3';
@@ -3168,12 +3168,26 @@ export function useGlobeAIRender() {
     flyToStreetLevel: (lat: number, lng: number, heading: number, terrainH: number, cam?: THREE.Camera) => void,
     restoreAerialView: (state: any, cam?: THREE.Camera) => void,
     saveCameraState: (cam?: THREE.Camera) => any,
+    waitForTiles?: () => Promise<boolean>,
+    captureFrame?: () => Promise<string | null>,
   ): Promise<string | null> => {
     // Save current camera state
     const savedState = saveCameraState(camera);
     if (!savedState) return null;
 
+    // Pin the lens to the street-view contract (70° FOV) so the capture
+    // matches the prompt's view-cone zone analysis, then restore.
+    const perspective = (camera as THREE.PerspectiveCamera).isPerspectiveCamera
+      ? (camera as THREE.PerspectiveCamera)
+      : null;
+    const savedFov = perspective?.fov;
+
     try {
+      if (perspective) {
+        perspective.fov = 70;
+        perspective.updateProjectionMatrix();
+      }
+
       // Move camera to street level
       flyToStreetLevel(lat, lng, headingDeg, terrainHeight, camera);
 
@@ -3183,13 +3197,23 @@ export function useGlobeAIRender() {
         await new Promise(r => requestAnimationFrame(r));
       }
 
-      // Phase 2: Wait for tile streaming with timeout
-      // Poll every 500ms for up to 8 seconds
+      // Phase 2: Wait for tile streaming. Prefer the tiles renderer's own
+      // settle signal (fast + accurate); fall back to a fixed 8s poll.
       console.log('[GlobeAIRender] Waiting for street-level tiles to load...');
-      for (let attempt = 0; attempt < 16; attempt++) {
-        await new Promise(r => setTimeout(r, 500));
-        // Render a frame to trigger tile updates
-        await new Promise(r => requestAnimationFrame(r));
+      let settled = false;
+      if (waitForTiles) {
+        try {
+          settled = await waitForTiles();
+        } catch {
+          settled = false;
+        }
+      }
+      if (!settled) {
+        for (let attempt = 0; attempt < 16; attempt++) {
+          await new Promise(r => setTimeout(r, 500));
+          // Render a frame to trigger tile updates
+          await new Promise(r => requestAnimationFrame(r));
+        }
       }
 
       // Phase 3: Final frames for render completion
@@ -3197,12 +3221,28 @@ export function useGlobeAIRender() {
         await new Promise(r => requestAnimationFrame(r));
       }
 
-      // Capture the street-level view
+      // Capture the street-level view. A caller-provided frame capture (e.g.
+      // the Direct 3D off-screen pass stack) runs while the camera is still
+      // parked at street level; a null result falls back to the screenshot.
       console.log('[GlobeAIRender] Capturing street-level view...');
-      const imageBase64 = await captureCanvasBase64(canvas);
+      let imageBase64: string | null = null;
+      if (captureFrame) {
+        try {
+          imageBase64 = await captureFrame();
+        } catch (err) {
+          console.warn('[GlobeAIRender] Street frame capture override failed, using screenshot:', err);
+        }
+      }
+      if (!imageBase64) {
+        imageBase64 = await captureCanvasBase64(canvas);
+      }
 
       return imageBase64 || null;
     } finally {
+      if (perspective && savedFov !== undefined) {
+        perspective.fov = savedFov;
+        perspective.updateProjectionMatrix();
+      }
       // Always restore the camera
       restoreAerialView(savedState, camera);
     }

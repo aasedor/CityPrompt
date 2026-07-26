@@ -1031,6 +1031,46 @@ def test_street_junction_topology_uses_polygon_centerline_fallback():
     assert direct_api._street_sources_form_four_arm_junction([horizontal, vertical])
 
 
+def test_street_junction_rejects_present_but_invalid_plan_centerline():
+    """AI plans sometimes persist an EMPTY centerline (roundabout access stubs).
+
+    Client and server would then fall back to different polygon-derived axes
+    and every junction claim 409s forever. Such a street must not anchor a V1
+    junction on either side.
+    """
+    streets = _crossing_street_zones()
+    streets[1].properties["plan_centerline"] = []
+
+    assert not direct_api._street_supports_v1_four_way_junction(streets[1])
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+
+
+def test_street_junction_rejects_planner_street_missing_centerline():
+    """A planner-authored street with NO persisted centerline (the observed
+    roundabout access stub) must not anchor a junction either — the polygon
+    fallbacks diverge between browser and server."""
+    streets = _crossing_street_zones()
+    streets[1].properties.pop("plan_centerline", None)
+    streets[1].properties["_plan_snapshot_id"] = "snapshot"
+
+    assert not direct_api._street_supports_v1_four_way_junction(streets[1])
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+
+
+def test_instance_inventory_conflicts_on_invalid_plan_centerline_claim():
+    """An OLD capture claiming such a junction gets a clean free 409."""
+    streets = _crossing_street_zones()
+    streets[0].properties["plan_centerline"] = [[-114.081]]
+    request = _street_junction_request(streets)
+
+    with pytest.raises(HTTPException, match="do not form a persisted four-arm junction"):
+        direct_api._bind_instance_manifest_to_server_zones(
+            request,
+            streets,
+            streets,
+        )
+
+
 def test_instance_inventory_accepts_ordered_subtraction_four_way_junction():
     center_longitude = -114.08
     center_latitude = 51.04

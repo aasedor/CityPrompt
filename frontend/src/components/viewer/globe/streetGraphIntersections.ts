@@ -1,5 +1,5 @@
 import type { SiteZone } from '@/types';
-import { effectiveRoadWidth, extractZoneCenterline } from '@/utils/roadGeometry';
+import { effectiveRoadWidth, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import {
   PUBLIC_REALM_STREET_CATALOG_FINGERPRINT,
@@ -135,10 +135,29 @@ export function detectFourWayStreetIntersections(
     const centerline = extractZoneCenterline(zone);
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
+    // Junction anchoring requires a centerline BOTH sides derive identically.
+    // Without a valid persisted plan_centerline this detector walks polygon
+    // vertices while the server proof takes the minimum-rotated-rectangle
+    // axis — for degenerate planner fragments (e.g. a 4 m roundabout access
+    // stub whose centerline the AI planner omitted) the two diverge and the
+    // server 409s every claim forever. So: a present-but-invalid centerline
+    // never anchors a junction, and a planner-authored street (markers
+    // below) must carry a valid one. Hand-drawn streets keep the fallback,
+    // which both sides derive the same way for line-sourced geometry.
+    const props = zone.properties as Record<string, unknown> | undefined;
+    const persistedCenterlineValid = parsePersistedCenterline(props?.plan_centerline) !== null;
+    const centerlineAnchorsJunction = persistedCenterlineValid
+      || (
+        props != null
+        && !('plan_centerline' in props)
+        && !('_plan_snapshot_id' in props)
+        && !('_imported_from' in props)
+      );
     return [{
       zoneId: zone.id,
       widthM: effectiveRoadWidth(zone.properties),
       supportedV1: validation.valid
+        && centerlineAnchorsJunction
         && validation.recipe.targetType === 'street_segment'
         && [
           'street_local_public_realm',

@@ -6,23 +6,55 @@
  * structured prompt building for Vertex AI Imagen 3 text-to-image generation.
  */
 import { useCallback } from 'react';
-import axios from 'axios';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import type { Direct3DCaptureBundle } from './globe/direct3dCapture';
+import { api, getApiErrorMessage } from '@/services/api';
 import { prepareZonesForRender } from './resolvePlanZoneArchetypes';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
+import legoFamilySignatures from '@/data/legoFamilySignatures.json';
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-const API_BASE = import.meta.env.VITE_API_URL || '';
-const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
+// Relative path — routed through the shared authed axios client (`api`), which
+// carries the auth header, refreshes expired tokens on 401 and retries. The old
+// raw-axios call here died with a generic "backend returned no image" whenever
+// the access token had expired.
+const RENDER_API_PATH = '/api/v1/render/generate';
+const RENDER_TIMEOUT_MS = 300_000;
 const DEG_TO_RAD = Math.PI / 180;
 const EARTH_RADIUS_M = 6_371_000;
 const STREET_VIEW_RENDER_MODEL = 'gpt-image-2';
+
+/**
+ * What the guide image (Image 1) actually depicts. Drives both the frontend
+ * prompt clauses and the backend's provider-facing image description.
+ * - 'clay'      — synthetic color-coded massing render (2D planner mode)
+ * - 'context3d' — 3D-tiles capture of the EXISTING site, zone overlays visible
+ * - 'model3d'   — capture of the authored 3D building models in real context
+ */
+export type StreetViewGuideKind = 'clay' | 'context3d' | 'model3d';
+
+/** Result of a globe street-level capture handed to the street view panel. */
+export interface StreetCaptureResult {
+  /** Raw base64 (no data: prefix) of the street-level capture. */
+  imageBase64: string;
+  /** What the capture shows — authored 3D models or existing context only. */
+  kind: Exclude<StreetViewGuideKind, 'clay'>;
+  /** Gemini-supported aspect ratio nearest to the capture canvas (e.g. '16:9'). */
+  aspectRatio: string;
+  /** Raw base64 flat-color class-ID frame from the same camera (Direct 3D
+   *  semantic pass) — anchors depth ordering and zone containment. */
+  semanticBase64?: string;
+  /** Full Direct 3D pass stack from the street camera — present when the
+   *  scene held authored models and the off-screen capture succeeded. Feeds
+   *  the inventory-locked street Direct 3D render path. */
+  direct3d?: Direct3DCaptureBundle;
+}
 // Last pegman [lng, lat] from the view-cone analysis — the camera ground point,
 // used to anchor the real-world site-context pack on street-view renders.
 let lastPegmanLngLat: [number, number] | null = null;
@@ -38,6 +70,31 @@ const catalog: any[] = [
   ...((openSpaceCatalog as any)?.archetypes || []),
   ...((streetPathCatalog as any)?.archetypes || []),
 ];
+
+/**
+ * LEGO family signatures — authored identity text + facade elevation sheets
+ * compiled from tools/archetype_compiler (commit c0ddf4f). Keyed by snake_case
+ * archetype id; building zones carry the id in development_archetype_id.
+ */
+interface LegoFamilySignature {
+  archetypeId: string;
+  identity?: string;
+  materialZones?: string;
+  glassProfile?: string;
+  elevationUrl?: string;
+}
+const FAMILY_SIGNATURES: Record<string, LegoFamilySignature> =
+  (legoFamilySignatures as { families?: Record<string, LegoFamilySignature> }).families ?? {};
+
+/** Resolve the authored LEGO family signature for a zone, if it has one. */
+function getLegoFamilySignature(zone: SiteZone): LegoFamilySignature | null {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const props: any = zone.properties || {};
+  const rawId = props.development_archetype_id || props.archetype_id;
+  if (!rawId) return null;
+  const baseId = String(rawId).replace(/_(?:variant_|v)\d+$/, '');
+  return FAMILY_SIGNATURES[baseId] ?? FAMILY_SIGNATURES[String(rawId)] ?? null;
+}
 
 // ---------------------------------------------------------------------------
 // Compass helpers
@@ -873,6 +930,20 @@ export function detectPegmanContext(
   return { context: 'default' };
 }
 
+/**
+ * Zone description enriched with the authored LEGO family identity when the
+ * zone is a compiled family building. The identity sentence and material
+ * palette come from the compiler's signature profiles — binding design facts,
+ * not stylistic suggestions.
+ */
+function describeZoneWithFamilySignature(zone: SiteZone, info: ArchetypeInfo): string {
+  const base = describeZoneForStreetView(zone, info);
+  const sig = getLegoFamilySignature(zone);
+  if (!sig?.identity) return base;
+  const materials = sig.materialZones ? ` Materials: ${sig.materialZones}.` : '';
+  return `${base} AUTHORED FAMILY IDENTITY (binding): ${sig.identity}${materials}`;
+}
+
 export function buildStreetViewPrompt(
   _pegmanPos: [number, number],
   angleDeg: number,
@@ -881,10 +952,14 @@ export function buildStreetViewPrompt(
   standingZoneInfo?: ArchetypeInfo,
   includePeople: boolean = false,
   includeVehicles: boolean = false,
+  guideKind: StreetViewGuideKind = 'clay',
 ): string {
   const direction = compassDirection(angleDeg);
   const lines: string[] = [];
   const { context: pegmanContext } = detectPegmanContext(_pegmanPos, visibleZones);
+  // 3D-capture guides carry real surrounding context that must survive the
+  // render; the clay guide is synthetic and context-free.
+  const guideHasRealContext = guideKind !== 'clay';
 
   // ─── Style instruction FIRST — Gemini weights earlier instructions more heavily ───
   if (styleModifier) {
@@ -909,12 +984,31 @@ export function buildStreetViewPrompt(
   // Uses foreground/midground/background depth planes with optical constraints
 
   // ─── CLAUSE 1: GEOMETRIC LOCKDOWN ───
-  lines.push(
-    `GEOMETRIC LOCKDOWN: Analyze the provided reference image (Image 1). It is a color-coded ` +
-    `3D massing model. Strictly adhere to the perspective, building geometry, volumetric proportions, ` +
-    `and structural massing shown in the reference. Do not alter the silhouette, scale, or footprint ` +
-    `of any provided volume. Each colored volume maps to a specific architectural zone described below.`,
-  );
+  if (guideKind === 'model3d') {
+    lines.push(
+      `GEOMETRIC LOCKDOWN: Analyze the provided reference image (Image 1). It is a street-level ` +
+      `capture of the site's detailed 3D DEVELOPMENT MODEL standing in real photographic context. ` +
+      `The modelled buildings ARE the proposed design — their positions, silhouettes, storey counts, ` +
+      `floor heights, facade rhythm, fenestration, and materials are authored ground truth. ` +
+      `Strictly adhere to the perspective and geometry shown. Do not move, resize, restyle, add, or ` +
+      `remove any modelled building. Your task is to resolve the models into photorealistic built ` +
+      `reality, not to redesign them.`,
+    );
+  } else if (guideKind === 'context3d') {
+    lines.push(
+      `GEOMETRIC LOCKDOWN: Analyze the provided reference image (Image 1). It is a photorealistic ` +
+      `street-level capture of the EXISTING site. Colored semi-transparent overlay areas mark where ` +
+      `new architecture is planned. Strictly adhere to the perspective, terrain, and existing ` +
+      `structures shown. Each colored overlay area maps to a specific architectural zone described below.`,
+    );
+  } else {
+    lines.push(
+      `GEOMETRIC LOCKDOWN: Analyze the provided reference image (Image 1). It is a color-coded ` +
+      `3D massing model. Strictly adhere to the perspective, building geometry, volumetric proportions, ` +
+      `and structural massing shown in the reference. Do not alter the silhouette, scale, or footprint ` +
+      `of any provided volume. Each colored volume maps to a specific architectural zone described below.`,
+    );
+  }
 
   // ─── CLAUSE 2: NUMERICAL INVENTORY ───
   const buildingCount = visibleZones.filter(z =>
@@ -927,9 +1021,13 @@ export function buildStreetViewPrompt(
     return zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian';
   }).length;
   lines.push(
-    `NUMERICAL INVENTORY: This scene contains exactly ${visibleZones.length} zones: ` +
+    `NUMERICAL INVENTORY: This scene contains exactly ${visibleZones.length} proposed zones: ` +
     `${buildingCount} building(s), ${parkCount} park(s), ${waterCount} water feature(s), ` +
-    `${streetCount} street/path(s). Render ONLY these elements. Do not add any additional structures.`,
+    `${streetCount} street/path(s). ` +
+    (guideHasRealContext
+      ? `Render ONLY these elements as new interventions. The real existing surroundings visible ` +
+        `in Image 1 stay exactly as captured. Do not add any further new structures beyond this inventory.`
+      : `Render ONLY these elements. Do not add any additional structures.`),
   );
 
   // ─── CLAUSE 3: VOID DEFINITION (context-aware, archetype-enriched) ───
@@ -961,12 +1059,22 @@ export function buildStreetViewPrompt(
   const skyDesc = isWinter
     ? 'a pale blue-grey winter overcast gradient'
     : 'a continuous atmospheric gradient';
-  lines.push(
-    `VOID DEFINITION: All space between the defined zones consists of ${voidSurface}. ` +
-    `The background behind all structures consists solely ` +
-    `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is ${skyDesc} ` +
-    `with no additional towers, buildings, or structures on the horizon.`,
-  );
+  if (guideHasRealContext) {
+    lines.push(
+      `VOID DEFINITION: Ground between the proposed zones consists of ${voidSurface} where the ` +
+      `capture shows unbuilt site ground. The background and skyline are the REAL surroundings ` +
+      `visible in Image 1 — preserve every existing building, tree, and terrain feature on the ` +
+      `horizon exactly as captured. Do not invent additional towers or structures beyond those ` +
+      `present in Image 1 and the inventory above. The sky is ${skyDesc}.`,
+    );
+  } else {
+    lines.push(
+      `VOID DEFINITION: All space between the defined zones consists of ${voidSurface}. ` +
+      `The background behind all structures consists solely ` +
+      `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is ${skyDesc} ` +
+      `with no additional towers, buildings, or structures on the horizon.`,
+    );
+  }
 
   // ─── COLOR-TO-ZONE MAPPING LEGEND ───
   const DEFAULT_ZONE_COLORS: Record<string, string> = {
@@ -974,17 +1082,35 @@ export function buildStreetViewPrompt(
     green_space: '#4CAF50', water: '#2196F3',
     road: '#757575', street: '#757575', path: '#9E9E9E', pedestrian: '#8D6E63',
   };
-  const colorLegend = visibleZones.map(entry => {
-    const info = getZoneArchetypeInfo(entry.zone);
-    const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
-    const color = entry.zone.color || DEFAULT_ZONE_COLORS[entry.zone.zone_type] || '#888888';
-    return `  • The ${color} colored volume = "${name}"`;
-  });
-  lines.push(
-    `COLOR-TO-ZONE MAPPING (match the colored volumes in Image 1):\n${colorLegend.join('\n')}\n` +
-    `Apply photorealistic materials and textures ONLY within each color zone's boundary. ` +
-    `Do not allow materials from one zone to bleed into adjacent zones.`,
-  );
+  if (guideKind === 'model3d') {
+    const modelLegend = visibleZones.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+      const pos = entry.relativePosition === 'left' ? 'LEFT' :
+                  entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+      return `  • ${pos} of frame, ~${Math.round(entry.distance)}m away = "${name}"`;
+    });
+    lines.push(
+      `MODEL-TO-ZONE MAPPING (locate each modelled element in Image 1 by position):\n` +
+      `${modelLegend.join('\n')}\n` +
+      `Each modelled building already carries its authored design. Photorealize each one using its ` +
+      `zone description below for material intent, keeping the modelled geometry and facade ` +
+      `arrangement exactly. Do not let materials or styles bleed between adjacent buildings.`,
+    );
+  } else {
+    const overlayNoun = guideKind === 'context3d' ? 'overlay area' : 'volume';
+    const colorLegend = visibleZones.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+      const color = entry.zone.color || DEFAULT_ZONE_COLORS[entry.zone.zone_type] || '#888888';
+      return `  • The ${color} colored ${overlayNoun} = "${name}"`;
+    });
+    lines.push(
+      `COLOR-TO-ZONE MAPPING (match the colored ${overlayNoun}s in Image 1):\n${colorLegend.join('\n')}\n` +
+      `Apply photorealistic materials and textures ONLY within each color zone's boundary. ` +
+      `Do not allow materials from one zone to bleed into adjacent zones.`,
+    );
+  }
 
   lines.push(
     `PERSPECTIVE GRID LAYOUT: 3-Tier Depth Frustum (Foreground, Midground, Background).`,
@@ -1014,7 +1140,7 @@ export function buildStreetViewPrompt(
   if (foreground.length > 0) {
     const fgDescriptions = foreground.map(entry => {
       const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
+      const desc = describeZoneWithFamilySignature(entry.zone, info);
       const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
       const pos = entry.relativePosition === 'left' ? 'LEFT' :
                   entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
@@ -1052,7 +1178,7 @@ export function buildStreetViewPrompt(
   if (midground.length > 0) {
     const mgDescriptions = midground.map(entry => {
       const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
+      const desc = describeZoneWithFamilySignature(entry.zone, info);
       const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
       const pos = entry.relativePosition === 'left' ? 'LEFT' :
                   entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
@@ -1078,7 +1204,7 @@ export function buildStreetViewPrompt(
   if (background.length > 0) {
     const bgDescriptions = background.map(entry => {
       const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
+      const desc = describeZoneWithFamilySignature(entry.zone, info);
       const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
       const pos = entry.relativePosition === 'left' ? 'LEFT' :
                   entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
@@ -1119,10 +1245,15 @@ export function buildStreetViewPrompt(
   const hasWater = visibleZones.some(z => z.zone.zone_type === 'water');
   const hasParks = visibleZones.some(z => z.zone.zone_type === 'green_space');
 
+  const guideNoun = guideKind === 'model3d'
+    ? 'the 3D development model'
+    : guideKind === 'context3d'
+      ? 'the marked overlay areas'
+      : 'the clay model';
   if (hasWater) {
     lines.push(
       `═══ WATER RENDERING (MANDATORY) ═══\n` +
-      `Any blue surface in the clay model MUST be rendered as a body of water. ` +
+      `Any water zone in ${guideNoun} MUST be rendered as a body of water. ` +
       `Show realistic water with: mirror-like reflections of adjacent buildings and sky, ` +
       `subtle ripples on the surface, natural shoreline with reeds/rocks/vegetation at edges, ` +
       `color gradient from deep blue in the center to lighter blue-green at shallow edges. ` +
@@ -1133,7 +1264,7 @@ export function buildStreetViewPrompt(
   if (hasParks) {
     lines.push(
       `═══ PARK/GREEN SPACE RENDERING (MANDATORY) ═══\n` +
-      `Green volumes in the clay model represent parks and green spaces. These MUST be rendered as ` +
+      `Park and green-space zones in ${guideNoun} MUST be rendered as ` +
       `lush, detailed landscape with: mature trees with visible trunks and leafy canopies, ` +
       `manicured lawns, walking paths (gravel or stone), park benches, planted beds, ` +
       `and natural ground cover. Parks should feel alive and inviting — NOT empty grass fields. ` +
@@ -1908,6 +2039,14 @@ async function fetchImageAsBase64(url: string): Promise<string | null> {
     const resp = await fetch(fullUrl);
     if (!resp.ok) return null;
     const blob = await resp.blob();
+    // Dev servers (and some CDNs) answer missing files with 200 + an HTML
+    // fallback page. Forwarding those bytes labeled as an image poisons the
+    // entire provider request — Gemini 400s "Unable to process input image",
+    // OpenAI 400s "Invalid image file". Only forward genuine images.
+    if (!blob.type.startsWith('image/')) {
+      console.warn(`[StreetView] Skipping archetype card with non-image response (${blob.type || 'unknown type'}):`, url);
+      return null;
+    }
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -1936,6 +2075,20 @@ async function collectArchetypeImages(
   const promises = candidates.map(async (entry) => {
     const info = getZoneArchetypeInfo(entry.zone);
     const title = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+
+    // LEGO families first: their facade elevation sheet IS the authored design
+    // source (not stylistic inspiration), so it beats any catalog thumbnail.
+    const familySignature = getLegoFamilySignature(entry.zone);
+    if (familySignature?.elevationUrl) {
+      const facadeB64 = await fetchImageAsBase64(familySignature.elevationUrl);
+      if (facadeB64) {
+        return {
+          image_base64: facadeB64,
+          label: `FACADE SOURCE — ${title}: authored facade elevation. Reproduce this exact facade system — bay rhythm, opening proportions, coursing, cornice/parapet treatment, and materials — on the matching modelled building`,
+          zone_color: entry.relativePosition,
+        };
+      }
+    }
 
     // Try to find the archetype's thumbnail image
     let thumbnailUrl: string | null = null;
@@ -2017,6 +2170,9 @@ export async function generateStreetView(
     projectId?: string;
     previousRenderBase64?: string; // For dual anchoring on re-render
     overrideGuideImage?: string; // Base64 image to use instead of clay render (e.g. 3D tiles capture)
+    guideKind?: StreetViewGuideKind; // What the override guide depicts; defaults to context3d for overrides
+    aspectRatio?: string; // Aspect ratio of the guide capture (e.g. '16:9'); mismatches distort geometry
+    semanticGuideBase64?: string; // Flat-color class-ID frame from the same camera (depth/containment anchor)
     useRealContext?: boolean; // Attach real Street View/Places/satellite context, anchored at the pegman
     includePeople?: boolean; // Populate with pedestrians/cyclists (entourage); off = clean/unpopulated
     includeVehicles?: boolean; // Include parked + moving vehicles; off = empty road
@@ -2025,6 +2181,8 @@ export async function generateStreetView(
   const fov = options?.fovDeg ?? 70;
   const distance = options?.distanceMeters ?? 200;
   const renderModel = options?.model ?? STREET_VIEW_RENDER_MODEL;
+  const guideKind: StreetViewGuideKind =
+    options?.guideKind ?? (options?.overrideGuideImage ? 'context3d' : 'clay');
 
   // 0. Pre-process: buffer street/path polylines into polygons
   const processedZones = preprocessZonesForStreetView(siteZones);
@@ -2060,8 +2218,8 @@ export async function generateStreetView(
   const { context: pegmanCtx, zone: standingZone } = detectPegmanContext(pegmanPos, visible, processedZones);
   const standingZoneInfo = standingZone ? getZoneArchetypeInfo(standingZone) : undefined;
   console.log(`[StreetView] Pegman context: ${pegmanCtx} — standing on: ${standingZoneInfo?.archetypeTitle || standingZone?.name || 'unknown'}`);
-  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo, options?.includePeople ?? false, options?.includeVehicles ?? false);
-  console.log('[StreetView] Prompt length:', prompt.length, 'chars');
+  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo, options?.includePeople ?? false, options?.includeVehicles ?? false, guideKind);
+  console.log('[StreetView] Prompt length:', prompt.length, 'chars — guide kind:', guideKind);
 
   // 5. Generate guide image — use override (e.g. 3D tiles capture) or clay render
   let guideImageBase64: string;
@@ -2087,10 +2245,30 @@ export async function generateStreetView(
   }
 
   // 7. Call render API with guide image + archetype images + optional dual anchor
-  const isRealContext = !!options?.overrideGuideImage;
   try {
-    const spatialRef = isRealContext
-      ? '\n\nSPATIAL REFERENCE (Image 1): This is a real 3D photorealistic capture of the existing site from street level. ' +
+    let spatialRef: string;
+    if (guideKind === 'model3d') {
+      spatialRef =
+        '\n\nSPATIAL REFERENCE (Image 1): This is a street-level capture of the site\'s authored 3D ' +
+        'DEVELOPMENT MODEL standing inside real photographic 3D context. The detailed modelled buildings ' +
+        'ARE the proposed design. ' +
+        'CRITICAL INSTRUCTIONS: ' +
+        '1. The modelled buildings are authored ground truth — preserve their exact positions, silhouettes, ' +
+        'storey counts, floor heights, fenestration patterns, and material palettes. Do NOT move, resize, ' +
+        'restyle, add, or remove any modelled building. ' +
+        '2. Photorealize the models: resolve their surfaces into believable built reality — real glass with ' +
+        'reflections and slightly warm interior light, real masonry and metal with texture grain and subtle ' +
+        'weathering — without changing the design. ' +
+        '3. The real surrounding buildings, streets, trees, and terrain visible in the capture are GROUND ' +
+        'TRUTH — preserve them exactly and sharpen them photographically. ' +
+        '4. Unify the scene: one consistent sun direction, shadow behavior, atmospheric haze, and color ' +
+        'temperature across modelled and real elements, so the result reads as a single real photograph. ' +
+        '5. Blend the seam where the modelled ground meets the real ground: continuous grading, sidewalks, ' +
+        'curbs, and landscaping per the zone descriptions above. ' +
+        '6. Camera is at human eye level (1.7m); maintain exact perspective and focal length.';
+    } else if (guideKind === 'context3d') {
+      spatialRef =
+        '\n\nSPATIAL REFERENCE (Image 1): This is a real 3D photorealistic capture of the existing site from street level. ' +
         'You can see the actual existing buildings, trees, roads, and terrain of this real-world location. ' +
         'The colored semi-transparent polygon overlays visible in the image mark where NEW architectural interventions should be placed. ' +
         'CRITICAL INSTRUCTIONS: ' +
@@ -2099,8 +2277,10 @@ export async function generateStreetView(
         '3. Render the new architecture so it seamlessly integrates with the REAL surrounding buildings — match the exact lighting direction, shadow angles, atmospheric haze, and color temperature visible in the photograph. ' +
         '4. The result must be indistinguishable from a real photograph — a photomontage where new buildings appear to genuinely exist alongside the real ones. ' +
         '5. Camera is at human eye level (1.7m), maintain exact perspective and focal length. ' +
-        '6. Add realistic street-level details: people walking, parked cars, street furniture, trees with accurate shadow casting.'
-      : '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
+        '6. Add realistic street-level details: people walking, parked cars, street furniture, trees with accurate shadow casting.';
+    } else {
+      spatialRef =
+        '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
         'Each colored volume maps to a specific architectural zone described in the COLOR-TO-ZONE MAPPING above. ' +
         'The ground plane grid provides perspective and scale calibration. ' +
         'STRICT RULES: ' +
@@ -2109,28 +2289,46 @@ export async function generateStreetView(
         '3. Render ONLY the structures shown in the massing model as listed in the NUMERICAL INVENTORY. ' +
         '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
         '5. Maintain camera height (1.7m) and viewing angle exactly.';
+    }
+    const archetypeAnchorNoun = guideKind === 'model3d'
+      ? 'the corresponding modelled building at the mapped frame position in Image 1'
+      : guideKind === 'context3d'
+        ? 'the corresponding colored overlay area in Image 1'
+        : 'the corresponding colored volume in Image 1';
+    const semanticRef = options?.semanticGuideBase64
+      ? '\n\nDEPTH ORDER (binding): A flat-color SEMANTIC ZONE MAP of this exact view is attached. ' +
+        'Each proposed volume is one flat color; real context is dark. It is the authority on which ' +
+        'volume is which, their silhouettes, and their occlusion: nearer volumes cover farther ones ' +
+        'exactly as painted. Never merge separate volumes, never float or stack them, and never let a ' +
+        'rear building bleed over a nearer one. Do not copy the flat colors into the output.'
+      : '';
     const enhancedPrompt =
-      prompt + spatialRef +
+      prompt + spatialRef + semanticRef +
       (archetypeImages.length > 0
-        ? '\n\nARCHETYPE STYLE REFERENCES (Images 2+): Additional images show the exact architectural ' +
+        ? '\n\nARCHETYPE STYLE REFERENCES: Additional images show the exact architectural ' +
           'style and materials for specific zones. Use Image 1 strictly as the structural foundation. ' +
           'Extract material textures and architectural aesthetic from the style reference images. ' +
-          'Apply each reference image\'s style to the corresponding colored volume in Image 1.'
+          `Apply each reference image's style to ${archetypeAnchorNoun}.`
         : '');
 
+    const GUIDE_KIND_WIRE: Record<StreetViewGuideKind, string> = {
+      clay: 'clay',
+      context3d: 'context_3d',
+      model3d: 'model_3d',
+    };
     const body: Record<string, unknown> = {
       prompt: enhancedPrompt,
       image_base64: guideImageBase64,
-      aspect_ratio: '16:9',
+      // Must match the capture's real shape — a mismatched ratio silently
+      // distorts geometry (same failure mode as the aerial pipeline).
+      aspect_ratio: options?.aspectRatio ?? '16:9',
       model: renderModel,
-      // Optimal API config from research: temp=0.35 prevents hallucinations while
-      // preserving photorealistic material variance; topP=0.85 trims long-tail
-      // improbable elements; topK=32 restricts to probable geometric interpretations
-      temperature: 0.35,
-      top_p: 0.85,
-      top_k: 32,
+      guide_image_kind: GUIDE_KIND_WIRE[guideKind],
     };
 
+    if (options?.semanticGuideBase64) {
+      body.semantic_guide_base64 = options.semanticGuideBase64;
+    }
     if (renderModel.startsWith('gpt-image-2')) {
       body.image_quality = options?.imageQuality ?? 'auto';
     }
@@ -2158,17 +2356,13 @@ export async function generateStreetView(
       console.log('[StreetView] Dual anchoring: including previous render as structural anchor');
     }
 
-    const svToken = localStorage.getItem('access_token');
-    const response = await axios.post(RENDER_API_URL, body, {
-      timeout: 300_000,
-      headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
-    });
+    const response = await api.post(RENDER_API_PATH, body, { timeout: RENDER_TIMEOUT_MS });
 
     let resultBase64: string | undefined = response.data?.image_base64;
 
     if (!resultBase64) {
       console.error('[useStreetViewRender] No image data in API response', response.data);
-      return null;
+      throw new Error('The backend returned no image. Check backend logs for provider details.');
     }
 
     // --- TWO-PASS GENERATION ---
@@ -2200,10 +2394,7 @@ export async function generateStreetView(
           pass2Body.archetype_images = archetypeImages;
         }
 
-        const pass2Response = await axios.post(RENDER_API_URL, pass2Body, {
-          timeout: 300_000,
-          headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
-        });
+        const pass2Response = await api.post(RENDER_API_PATH, pass2Body, { timeout: RENDER_TIMEOUT_MS });
         const pass2Base64: string | undefined = pass2Response.data?.image_base64;
 
         if (pass2Base64) {
@@ -2220,8 +2411,11 @@ export async function generateStreetView(
     const imageUrl = `data:image/png;base64,${resultBase64}`;
     return { imageUrl, prompt, model: renderModel, imageQuality: options?.imageQuality };
   } catch (err) {
+    // Surface the real backend/provider detail (e.g. "OpenAI image error (429):
+    // …", "Not enough tokens…") instead of collapsing every failure into a
+    // generic "no image" — the panel shows this message on the provider card.
     console.error('[useStreetViewRender] Render API call failed:', err);
-    return null;
+    throw new Error(getApiErrorMessage(err, 'Street view render failed. Check backend logs for provider details.'));
   }
 }
 
@@ -2253,6 +2447,9 @@ export function useStreetViewRender() {
         projectId?: string;
         previousRenderBase64?: string;
         overrideGuideImage?: string;
+        guideKind?: StreetViewGuideKind;
+        aspectRatio?: string;
+        semanticGuideBase64?: string;
         useRealContext?: boolean;
         includePeople?: boolean;
         includeVehicles?: boolean;

@@ -784,7 +784,10 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             "Proposal mask must preserve at least 10% fully immutable context"
         )
     scene_lower_context_coverage: float | None = None
-    if req.presentation_mode == "scene":
+    # The lower-frame-context gate encodes an AERIAL framing assumption (site
+    # ground ringed by real context). A street capture legitimately fills the
+    # lower band with proposal street surface, so street view skips the gate.
+    if req.presentation_mode == "scene" and req.view_mode != "street":
         scene_lower_context_coverage = float(
             np.count_nonzero(_scene_lower_context_mask(normalized_mask))
             / (normalized_mask.width * normalized_mask.height)
@@ -3249,6 +3252,7 @@ def _presentation_prompt(
     instance_id_manifest: dict[str, Any] | None = None,
     server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
+    view_mode: Literal["aerial", "street"] = "aerial",
 ) -> str:
     """Build a natural provider-first prompt with one final design lock."""
 
@@ -3284,17 +3288,30 @@ def _presentation_prompt(
         _PRESENTATION_STYLE_TREATMENTS["photorealistic"],
     )
     if presentation_mode == "scene":
-        task = (
-            f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}, "
-            "re-rendering the proposal and surrounding photographed or Google "
-            "Tiles context as one coherent finished image with consistent "
-            "materials, light, shadows, weather and atmospheric depth while "
-            "removing visible CGI and photogrammetry seams. Blend the proposal "
-            "site's edges seamlessly into the surrounding streets and "
-            "sidewalks with natural curbs, grading and planting — never render "
-            "the site boundary as a raised platform, plinth, retaining wall, "
-            "or visible cut edge."
-        )
+        if view_mode == "street":
+            task = (
+                f"FULL-FRAME TASK: Image 1 is a street-level, eye-height (~1.7 m) "
+                f"pedestrian view of the authored development standing in real "
+                f"photographed context. Transform all of it into {treatment}, "
+                "re-rendering the modelled buildings and surrounding context as "
+                "one coherent finished image with consistent materials, light, "
+                "shadows, weather and atmospheric depth while removing visible "
+                "CGI and photogrammetry seams. Keep the pedestrian standpoint "
+                "and lens exactly — no aerial, elevated or pulled-back "
+                "reinterpretation."
+            )
+        else:
+            task = (
+                f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}, "
+                "re-rendering the proposal and surrounding photographed or Google "
+                "Tiles context as one coherent finished image with consistent "
+                "materials, light, shadows, weather and atmospheric depth while "
+                "removing visible CGI and photogrammetry seams. Blend the proposal "
+                "site's edges seamlessly into the surrounding streets and "
+                "sidewalks with natural curbs, grading and planting — never render "
+                "the site boundary as a raised platform, plinth, retaining wall, "
+                "or visible cut edge."
+            )
         final_lock = (
             "FINAL PRESERVATION LOCK: Preserve Image 1's exact camera angle, "
             "projection, framing, horizon, permanent building count, massing, "
@@ -3311,6 +3328,12 @@ def _presentation_prompt(
             "form, improving only photographic clarity. Never re-clad, restyle, "
             "modernize or replace a neighbouring building."
         )
+        if view_mode == "street":
+            final_lock += (
+                " Respect Image 1's depth ordering exactly: nearer volumes "
+                "occlude farther ones; never merge, float or stack separate "
+                "buildings."
+            )
     else:
         task = (
             f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}. "
@@ -3908,6 +3931,7 @@ class Direct3DRenderService:
                 instance_id_manifest=req.instance_id_manifest,
                 server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
+                view_mode=req.view_mode,
             )
         )
         data = {
@@ -4077,6 +4101,94 @@ class Direct3DRenderService:
                 "inward_feather_px": None,
                 "mask_retry_used": False,
             }
+
+            if req.view_mode == "street":
+                # Street v1 is review-first even under presentation-first: the
+                # aerial gates (registration, macro planform fidelity,
+                # visual-change) encode top-down assumptions, so run only
+                # generic content sanity and hand the candidate to human
+                # review with the source for comparison. Must precede the
+                # presentation-first return so street keeps its outcome.
+                street_sanity = assess_reproject_output_sanity(
+                    capture.normalized_beauty,
+                    generated,
+                    capture.normalized_object_id,
+                    req.object_id_manifest,
+                )
+                if not street_sanity.passed:
+                    raise Direct3DValidationError(
+                        "Provider street output failed minimum content sanity "
+                        f"(whole-frame MAD "
+                        f"{street_sanity.whole_frame_mean_absolute_delta:.3f}, "
+                        "luminance std "
+                        f"{street_sanity.luminance_standard_deviation:.3f}, "
+                        "edge coverage "
+                        f"{street_sanity.structural_edge_coverage:.5f})"
+                    )
+                output_png = _png_bytes(generated)
+                return Direct3DServiceResult(
+                    image_base64=base64.b64encode(output_png).decode("ascii"),
+                    audit_input_base64=capture.audit_input_base64,
+                    capture_fingerprint=capture.capture_fingerprint,
+                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome="review_required",
+                    provider_image_base64=provider_image_base64,
+                    warnings=(
+                        "Street-level Direct 3D renders are review-first in this "
+                        "version: compare the candidate against the source "
+                        "capture before saving.",
+                    ),
+                    diagnostics={
+                        **common_diagnostics,
+                        "view_mode": "street",
+                        "view_lock": "not_applicable_layout_guided",
+                        "context_restyled": True,
+                        "provider_first": True,
+                        "reproject_output_sanity": {
+                            "passed": True,
+                            "whole_frame_mean_absolute_delta": (
+                                street_sanity.whole_frame_mean_absolute_delta
+                            ),
+                            "luminance_standard_deviation": (
+                                street_sanity.luminance_standard_deviation
+                            ),
+                            "luminance_dynamic_range_p90": (
+                                street_sanity.luminance_dynamic_range_p90
+                            ),
+                            "structural_edge_coverage": (
+                                street_sanity.structural_edge_coverage
+                            ),
+                            "occupied_edge_cells": (
+                                street_sanity.occupied_edge_cells
+                            ),
+                            "significant_edge_component_count": (
+                                street_sanity.significant_edge_component_count
+                            ),
+                            "required_edge_component_count": (
+                                street_sanity.required_edge_component_count
+                            ),
+                            "minimum_whole_frame_mean_absolute_delta": (
+                                _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
+                            ),
+                            "minimum_luminance_standard_deviation": (
+                                _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
+                            ),
+                            "minimum_luminance_dynamic_range_p90": (
+                                _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
+                            ),
+                            "minimum_structural_edge_coverage": (
+                                _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
+                            ),
+                            "maximum_structural_edge_coverage": (
+                                _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
+                            ),
+                            "minimum_occupied_edge_cells": (
+                                _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
+                            ),
+                            "semantic_inventory_proxy_only": True,
+                        },
+                    },
+                )
 
             if (
                 DIRECT_3D_PRESENTATION_FIRST

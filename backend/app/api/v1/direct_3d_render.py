@@ -499,6 +499,21 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     """Mirror the browser's executable street-axis eligibility, fail closed."""
 
     properties = zone.properties or {}
+    # Junction anchoring requires a centerline BOTH sides derive identically.
+    # Without a valid persisted plan_centerline, the browser walks polygon
+    # vertices while this proof takes the minimum-rotated-rectangle axis —
+    # for degenerate planner fragments (e.g. a 4 m roundabout access stub
+    # whose centerline the AI planner omitted) the two diverge and every
+    # claim 409s forever. So: a present-but-invalid centerline never anchors
+    # a junction, and a planner-authored street (markers below) must carry a
+    # valid one. Hand-drawn streets (no markers, line-sourced) keep the
+    # geometry fallback, which both sides derive the same way.
+    persisted_centerline = _valid_centerline_points(properties.get("plan_centerline"))
+    if persisted_centerline is None:
+        if "plan_centerline" in properties:
+            return False
+        if "_plan_snapshot_id" in properties or "_imported_from" in properties:
+            return False
     raw_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
     if not isinstance(raw_recipe, dict):
         return False

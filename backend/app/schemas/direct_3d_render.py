@@ -131,6 +131,16 @@ class Direct3DRenderRequest(BaseModel):
             "permits a style-directed plan or axonometric camera transform."
         ),
     )
+    view_mode: Literal["aerial", "street"] = Field(
+        default="aerial",
+        description=(
+            "Camera family of the capture. 'aerial' (default) keeps every "
+            "historical behavior. 'street' marks an eye-level capture: the "
+            "aerial lower-frame-context gate is skipped, the prompt asserts a "
+            "pedestrian standpoint, and the outcome is always review_required "
+            "in this first version. Street requires presentation_mode='scene'."
+        ),
+    )
     style: Direct3DStyle = Field(
         default="photorealistic",
         description="The render panel style identifier governing the presentation treatment.",
@@ -239,6 +249,10 @@ class Direct3DRenderRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_object_id_pair(self) -> "Direct3DRenderRequest":
+        if self.view_mode == "street" and self.presentation_mode != "scene":
+            raise ValueError(
+                "view_mode='street' requires presentation_mode='scene'"
+            )
         if bool(self.object_id_image_base64) != bool(self.object_id_manifest):
             raise ValueError(
                 "object_id_image_base64 and object_id_manifest must be supplied together"

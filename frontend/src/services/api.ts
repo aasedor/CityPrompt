@@ -1334,6 +1334,9 @@ export const rendersApi = {
     style: string;
     /** Direct v2 never requests the legacy source_anchored path. */
     presentation_mode: 'scene' | 'reproject';
+    /** 'street' = eye-level capture; server is review-first and skips the
+     *  aerial lower-frame-context gate. Defaults to 'aerial'. */
+    view_mode?: 'aerial' | 'street';
     object_id_image_base64: string;
     object_id_manifest: Record<string, 'ground' | 'landscape' | 'street' | 'park' | 'building'>;
     instance_id_image_base64: string;

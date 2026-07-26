@@ -6,8 +6,11 @@ from fastapi import HTTPException
 from google.auth.exceptions import DefaultCredentialsError, TransportError
 
 from app.api.v1.render import (
+    RenderRequest,
     _describe_google_auth_failure,
     _enforce_global_daily_render_cap,
+    _gemini_guide_image_text,
+    _openai_source_framing,
     _utc_day_start,
 )
 
@@ -153,3 +156,49 @@ def test_describe_google_auth_failure_includes_debug_suffix(monkeypatch, tmp_pat
     )
 
     assert "[TransportError: connection blocked]" in detail
+
+
+def test_render_request_accepts_guide_image_kind():
+    req = RenderRequest(prompt="p", guide_image_kind="model_3d")
+    assert req.guide_image_kind == "model_3d"
+    # Unset stays None and maps to the legacy clay description.
+    assert RenderRequest(prompt="p").guide_image_kind is None
+
+
+def test_render_request_rejects_unknown_guide_image_kind():
+    with pytest.raises(ValueError):
+        RenderRequest(prompt="p", guide_image_kind="hologram")
+
+
+def test_gemini_guide_image_text_matches_kind():
+    clay = _gemini_guide_image_text(None, 1)
+    model_3d = _gemini_guide_image_text("model_3d", 1)
+    context_3d = _gemini_guide_image_text("context_3d", 2)
+
+    assert "clay massing model" in clay
+    assert "Image 1" in clay
+    # The model_3d framing must present the modelled buildings as the authored
+    # design, never as clay.
+    assert "clay" not in model_3d.lower()
+    assert "proposed design" in model_3d
+    assert "Image 2" in context_3d
+    assert "EXISTING site" in context_3d
+
+
+def test_render_request_accepts_semantic_guide():
+    req = RenderRequest(prompt="p", image_base64="abc", semantic_guide_base64="def")
+    assert req.semantic_guide_base64 == "def"
+    assert RenderRequest(prompt="p").semantic_guide_base64 is None
+
+
+def test_openai_source_framing_matches_kind():
+    clay = _openai_source_framing(None)
+    model_3d = _openai_source_framing("model_3d")
+    context_3d = _openai_source_framing("context_3d")
+
+    assert "edit mask" in clay
+    assert "authored 3D development model" in model_3d
+    assert "clay" not in model_3d.lower()
+    assert "colored overlays mark" in context_3d
+    for framing in (clay, model_3d, context_3d):
+        assert framing.endswith("\n\n")

@@ -1,0 +1,289 @@
+{
+    "schema":  "lego-family-signatures@1",
+    "source":  "tools/archetype_compiler/architectural_signature_profiles.json + facade_sheets (commit c0ddf4f)",
+    "families":  {
+                     "toronto_junction_printing_press":  {
+                                                             "archetypeId":  "toronto_junction_printing_press",
+                                                             "identity":  "Aged painted-brick printing works with oversized black steel sash, deep masonry openings, one fixed studio entrance, a stackable exterior fire escape and a restrained roof terrace rail.",
+                                                             "materialZones":  "weathered warm-white painted brick; blackened steel sash and fire escape; pale concrete sills; warm occupied studio glazing",
+                                                             "glassProfile":  "industrial_sash"
+                                                         },
+                     "toronto_junction_cold_storage":  {
+                                                           "archetypeId":  "toronto_junction_cold_storage",
+                                                           "identity":  "Massive red-brick cold-storage conversion with thick punched openings, an end-bay loading entrance, a small suspended steel canopy and one preserved painted warehouse ghost sign.",
+                                                           "materialZones":  "deep aged red brick; charcoal and cor-ten opening frames; pale concrete base; black steel canopy; warm occupied studio glazing",
+                                                           "glassProfile":  "industrial_sash"
+                                                       },
+                     "collegiate_gothic_perpendicular":  {
+                                                             "archetypeId":  "collegiate_gothic_perpendicular",
+                                                             "identity":  "Perpendicular Collegiate Gothic chapel with giant traceried windows, a fixed central lantern tower, vertical stone buttresses, corner towers, pinnacles and a crenellated parapet.",
+                                                             "materialZones":  "pale warm limestone; deep carved tracery; clear warm glazing; lead-grey roof; dark bronze doors",
+                                                             "glassProfile":  "heritage_leaded_occupied"
+                                                         },
+                     "contemporary_midrise_variant_brick_bronze":  {
+                                                                       "archetypeId":  "contemporary_midrise_variant_brick_bronze",
+                                                                       "identity":  "Contemporary urban mid-rise with deep red-brown brick pilasters, bronze-anodized window reveals, one fixed arched entrance and a quiet parapet crown.",
+                                                                       "materialZones":  "red-brown pressed brick; bronze window frames and spandrels; pale stone base; warm occupied glazing",
+                                                                       "glassProfile":  "residential_low_e"
+                                                                   },
+                     "glass_office_terracotta_fins":  {
+                                                          "archetypeId":  "glass_office_terracotta_fins",
+                                                          "identity":  "Stepped low-iron glass office wrapped in warm terracotta fins, with a transparent double-height lobby, planted setback bands and an occupied glazed crown.",
+                                                          "materialZones":  "clear low-iron glass; ribbed terracotta fins; charcoal-bronze mullions; pale concrete slab edges; integrated planting",
+                                                          "glassProfile":  "low_iron_clear"
+                                                      },
+                     "victorian_heritage_second_empire":  {
+                                                              "archetypeId":  "victorian_heritage_second_empire",
+                                                              "identity":  "Formal Second Empire mansion with rusticated limestone corners, a fixed columned portico, pedimented windows, balustrades and an ornate patterned-slate mansard with cresting.",
+                                                              "materialZones":  "pale warm limestone; dark bronze sash windows and doors; patterned blue-grey slate; black iron cresting",
+                                                              "glassProfile":  "residential_low_e"
+                                                          },
+                     "london_heritage_mansion_block":  {
+                                                           "archetypeId":  "london_heritage_mansion_block",
+                                                           "identity":  "Portland-stone mansion block with a composed centre pavilion, giant bay windows, wrought-iron balcony datum and inhabited mansard skyline.",
+                                                           "materialZones":  "rusticated pale-stone base; dressed-stone middle; dark slate mansard; bronze-black metalwork",
+                                                           "glassProfile":  "residential_low_e",
+                                                           "elevationUrl":  "/families/london-heritage-mansion-block/elevation.jpg"
+                                                       },
+                     "parisian_midrise_block":  {
+                                                    "archetypeId":  "parisian_midrise_block",
+                                                    "identity":  "Haussmann boulevard block with a tall shopfront base, ordered French windows, two continuous iron balconies, deep cornice and slate mansard dormers.",
+                                                    "materialZones":  "warm limestone; black iron balconies; dark slate roof; restrained awnings at street level",
+                                                    "glassProfile":  "residential_low_e",
+                                                    "elevationUrl":  "/families/parisian-midrise-block/elevation.jpg"
+                                                },
+                     "parisian_haussmann_classic":  {
+                                                        "archetypeId":  "parisian_haussmann_classic",
+                                                        "identity":  "Classic Haussmann perimeter block with a fixed arched entrance, ordered French-window bays, two continuous iron balcony datums, chamfered street corners, twin light courts and an inhabited zinc mansard.",
+                                                        "materialZones":  "warm Lutetian limestone; black iron balconies; grey standing-seam zinc; dark timber-and-metal shopfronts",
+                                                        "glassProfile":  "residential_low_e"
+                                                    },
+                     "parisian_boulevard_corner":  {
+                                                       "archetypeId":  "parisian_boulevard_corner",
+                                                       "identity":  "Parisian corner landmark with a real open court, broad rounded corner pavilion, three wraparound balcony datums, sculptural limestone relief and a dominant zinc onion turret.",
+                                                       "materialZones":  "cream Lutetian limestone; zinc-grey standing-seam roof; black iron; darker rusticated commercial base",
+                                                       "glassProfile":  "residential_low_e",
+                                                       "elevationUrl":  "/families/parisian-boulevard-corner/elevation.jpg"
+                                                   },
+                     "civic_classical_building":  {
+                                                      "archetypeId":  "civic_classical_building",
+                                                      "identity":  "Low two-storey civic perimeter hall with a dominant four-column Ionic portico, broad ceremonial stair, open central court and patinated copper hipped roof ring.",
+                                                      "materialZones":  "warm ashlar limestone; bronze entrance doors; dark recessed glazing; pale green patinated standing-seam copper",
+                                                      "glassProfile":  "residential_low_e",
+                                                      "elevationUrl":  "/families/civic-classical-building/elevation.jpg"
+                                                  },
+                     "monumental_courthouse_axis":  {
+                                                        "archetypeId":  "monumental_courthouse_axis",
+                                                        "identity":  "Deep axial neoclassical courthouse with an eight-column Corinthian temple front, full-width judicial stair, sculpted pediment and cross-hipped patinated copper roof.",
+                                                        "materialZones":  "white granite and cream limestone ashlar; bronze entrance doors; dark recessed glazing; pale green patinated copper",
+                                                        "glassProfile":  "residential_low_e",
+                                                        "elevationUrl":  "/families/monumental-courthouse-axis/elevation.jpg"
+                                                    },
+                     "collegiate_gothic_jacobethan":  {
+                                                          "archetypeId":  "collegiate_gothic_jacobethan",
+                                                          "identity":  "Symmetrical Jacobethan collegiate manor with red Flemish-bond brick, pale stone quoins and strapwork, five fixed shaped gables, a projecting centre bay, classical entrance porch, steep slate quadrangle roofs and dense grouped chimney stacks.",
+                                                          "materialZones":  "warm handmade red brick; pale carved Portland stone; dark leaded occupied glazing; blue-black Welsh slate; dark oak entrance doors",
+                                                          "glassProfile":  "residential_low_e"
+                                                      },
+                     "collegiate_gothic_ruskinian":  {
+                                                         "archetypeId":  "collegiate_gothic_ruskinian",
+                                                         "identity":  "Compact Ruskinian Gothic collegiate hall with alternating red, cream and blue-black masonry bands, four fixed cylindrical corner turrets, deeply carved pointed lancets, a ceremonial central arch, steep cross gables and a patterned slate crown.",
+                                                         "materialZones":  "warm red pressed brick; cream limestone banding and naturalistic carving; blue-black brick base and courses; dark occupied leaded glazing; polychrome red, grey and purple slate; dark oak entrance doors",
+                                                         "glassProfile":  "heritage_leaded_occupied"
+                                                     },
+                     "collegiate_gothic_education":  {
+                                                         "archetypeId":  "collegiate_gothic_education",
+                                                         "identity":  "Collegiate Gothic hall with a crenellated central tower, buttressed bays, pointed entrance arch, tracery-like verticals and steep slate roofs.",
+                                                         "materialZones":  "weathered buff stone; dark tracery; slate roofs; oxidized metal accents",
+                                                         "glassProfile":  "residential_low_e",
+                                                         "elevationUrl":  "/families/collegiate-gothic-education/elevation.jpg"
+                                                     },
+                     "classic_brownstone_streetwall":  {
+                                                           "archetypeId":  "classic_brownstone_streetwall",
+                                                           "identity":  "Paired four-storey New York brownstone streetwall with three fixed high stoops, arched timber entrances, dense pedimented sash rhythm, iron-grilled basement and two continuous bracketed cornice sections.",
+                                                           "materialZones":  "warm reddish brownstone ashlar; cream carved window and cornice stone; black iron; dark green and oak doors; pale membrane roofs",
+                                                           "glassProfile":  "residential_low_e",
+                                                           "elevationUrl":  "/families/classic-brownstone-streetwall/elevation.jpg"
+                                                       },
+                     "brownstone_rowhouse_red_sandstone":  {
+                                                               "archetypeId":  "brownstone_rowhouse_red_sandstone",
+                                                               "identity":  "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
+                                                               "materialZones":  "warm variegated red-brown brick; carved buff sandstone base, lintels, sills and stoop; black wrought iron; dark stained timber door; softly occupied clear sash; grey membrane roof",
+                                                               "glassProfile":  "residential_low_e"
+                                                           },
+                     "historical_brick_main_street":  {
+                                                          "archetypeId":  "historical_brick_main_street",
+                                                          "identity":  "Two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, cream-and-red brick striping, a deep forest-green cast-iron double storefront, carved frieze and a tall panelled parapet concealing a low service roof.",
+                                                          "materialZones":  "rich red pressed brick; repeated cream-brick bands and carved limestone; forest-green painted cast iron and timber; dark membrane and corrugated roof; warm occupied glazing",
+                                                          "glassProfile":  "heritage_leaded_occupied",
+                                                          "elevationUrl":  "/families/historical-brick-main-street/elevation.jpg"
+                                                      },
+                     "industrial_brick_original_mill":  {
+                                                            "archetypeId":  "industrial_brick_original_mill",
+                                                            "identity":  "Converted Victorian textile mill with tall segmental-arched multi-pane iron sash, deep brick reveals, arched loading-bay shopfronts, corbelled eaves, a restored chimney and a restrained contemporary glass roof monitor.",
+                                                            "materialZones":  "aged red load-bearing brick and lime mortar; blackened cast-iron sash; dark slate and folded metal; clear softly occupied glass",
+                                                            "glassProfile":  "industrial_sash"
+                                                        },
+                     "industrial_brick_brewery":  {
+                                                      "archetypeId":  "industrial_brick_brewery",
+                                                      "identity":  "Monumental brewery warehouse composed around four ground-to-crown brick arches, deep glazed loading portals, painted ghost signs, projecting timber crane beams and a field of silver corrugated barrel vaults with a raised central clerestory.",
+                                                      "materialZones":  "weathered umber engineering brick; blackened industrial sash; aged oak loading beams; dull silver corrugated metal; warm occupied glazing",
+                                                      "glassProfile":  "industrial_sash"
+                                                  },
+                     "industrial_brick_powerstation":  {
+                                                           "archetypeId":  "industrial_brick_powerstation",
+                                                           "identity":  "Monumental dark-brick turbine hall with multi-storey Crittall glazing, deep masonry piers, a continuous glazed gabled roof lantern and one fixed weathering-steel end insertion.",
+                                                           "materialZones":  "dark soot-stained engineering brick; black steel; weathering steel; clear low-iron roof glass; warmly occupied turbine-hall glazing",
+                                                           "glassProfile":  "industrial_sash"
+                                                       },
+                     "industrial_brick_modern_loft":  {
+                                                          "archetypeId":  "industrial_brick_modern_loft",
+                                                          "identity":  "Contemporary dark-brick loft infill with a pale precast structural frame wrapping the corners, large recessed industrial sash, a double-height glazed base and an inhabited roof terrace beneath a black-steel and timber pergola.",
+                                                          "materialZones":  "charcoal brick; pale precast concrete; black steel; warm timber soffits and pergola; clear occupied glazing",
+                                                          "glassProfile":  "industrial_sash"
+                                                      },
+                     "industrial_brick_mixed_use":  {
+                                                        "archetypeId":  "industrial_brick_mixed_use",
+                                                        "identity":  "Converted Victorian textile mill with tall segmental-arched multi-pane steel windows, arched ground-floor shopfronts, deeply recessed brick openings, projecting brick piers, corbelled eaves, a shallow gabled roof, restored chimney and contemporary glass roof monitor.",
+                                                        "materialZones":  "aged load-bearing red brick and lime mortar; blackened cast-iron sash; pale concrete sills; dark slate; clear contemporary monitor glass",
+                                                        "glassProfile":  "industrial_sash",
+                                                        "elevationUrl":  "/families/industrial-brick-mixed-use/elevation.jpg"
+                                                    },
+                     "warehouse_loft_cast_iron":  {
+                                                      "archetypeId":  "warehouse_loft_cast_iron",
+                                                      "identity":  "Four-level SoHo cast-iron corner warehouse with a tall gallery base, five equal loft bays, fluted full-height iron pilasters, pale window architraves, paired exterior fire escapes, a deep panelled cornice and a continuous ornamental roof rail.",
+                                                      "materialZones":  "charcoal-grey painted cast iron; warm cream architraves and sills; black fire-escape steel; clear divided-light occupied glazing; pale weathered membrane roof",
+                                                      "glassProfile":  "industrial_sash"
+                                                  },
+                     "adaptive_reuse_warehouse_lofts":  {
+                                                            "archetypeId":  "adaptive_reuse_warehouse_lofts",
+                                                            "identity":  "Converted warehouse retaining heavy masonry piers while inserting large steel-and-glass bays, roof monitor, terraces and selective industrial bracing.",
+                                                            "materialZones":  "aged brick; charcoal steel; large reflective glass; weathered concrete",
+                                                            "elevationUrl":  "/families/adaptive-reuse-warehouse-lofts/elevation.jpg"
+                                                        },
+                     "warehouse_arch_window_brick":  {
+                                                         "archetypeId":  "warehouse_arch_window_brick",
+                                                         "identity":  "Monumental three-level Richardsonian warehouse with ten heavy red-brick bays, five rock-faced arched loading portals, paired round-arched windows, pale giant archivolts, carved colonettes, string courses and a dense blind-arcade parapet.",
+                                                         "materialZones":  "deep red-brown load-bearing brick; rough brownstone plinth and loading voussoirs; warm pale sandstone archivolts, sills and colonettes; black divided-light occupied glazing; weathered built-up roof",
+                                                         "glassProfile":  "industrial_sash"
+                                                     },
+                     "romanesque_revival_warehouse":  {
+                                                          "archetypeId":  "romanesque_revival_warehouse",
+                                                          "identity":  "Richardsonian warehouse with a massive round-arched base, grouped arched openings, deep voussoirs, heavy masonry piers and corbelled cornice.",
+                                                          "materialZones":  "dark rock-faced stone and red brick; deep window shadows; copper accents",
+                                                          "elevationUrl":  "/families/romanesque-revival-warehouse/elevation.jpg"
+                                                      },
+                     "art_deco_cream_terracotta":  {
+                                                       "archetypeId":  "art_deco_cream_terracotta",
+                                                       "identity":  "Cream glazed terra-cotta Art Deco corner tower with a dark granite commercial base, uninterrupted vertical piers, four stepped massing stages and a faceted gilded lantern crown.",
+                                                       "materialZones":  "cream glazed architectural terra cotta; polished black granite podium; dark bronze windows and spandrels; restrained gold leaf sunbursts and crown metal",
+                                                       "glassProfile":  "office_clear_occupied"
+                                                   },
+                     "art_deco_setback_tower":  {
+                                                    "archetypeId":  "art_deco_setback_tower",
+                                                    "identity":  "Vertical Art Deco tower with a richly modelled entrance, uninterrupted piers, stepped setbacks, fluted spandrels and an illuminated geometric crown.",
+                                                    "materialZones":  "warm buff masonry; dark bronze; emerald and gold crown accents; shadowed spandrels",
+                                                    "elevationUrl":  "/families/art-deco-setback-tower/elevation.jpg"
+                                                },
+                     "nordic_timber_midrise":  {
+                                                   "archetypeId":  "nordic_timber_midrise",
+                                                   "identity":  "Warm mass-timber urban midrise with an expressed honey-tone glulam post-and-beam frame, deep timber loggias, alternating natural vertical-larch infill, slender dark rails, a transparent street level, planted roof terrace and light pavilion canopy.",
+                                                   "materialZones":  "honey-toned glulam structural frame; naturally varied vertical larch infill; shadowed timber loggias; clear warm glazing; dark bronze rails; planted roof",
+                                                   "glassProfile":  "residential_low_e",
+                                                   "elevationUrl":  "/families/nordic-timber-midrise/elevation.jpg"
+                                               },
+                     "scandinavian_urban_residential":  {
+                                                            "archetypeId":  "scandinavian_urban_residential",
+                                                            "identity":  "Quiet Scandinavian apartment building with pale masonry field, deep timber-lined loggias, projecting window frames, subtle asymmetry and a crisp pitched roof edge.",
+                                                            "materialZones":  "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
+                                                            "elevationUrl":  "/families/scandinavian-urban-residential/elevation.jpg"
+                                                        },
+                     "scandi_urban_white_plaster":  {
+                                                        "archetypeId":  "scandi_urban_white_plaster",
+                                                        "identity":  "Long white-plaster Scandinavian perimeter block with asymmetric warm-timber balconies, a planted garden passage and five box dormers in a dark standing-seam gable roof.",
+                                                        "materialZones":  "warm-white mineral plaster; charcoal windows and rails; oiled-larch balcony decks and passage lining; dark grey standing-seam metal roof",
+                                                        "glassProfile":  "residential_low_e"
+                                                    },
+                     "mediterranean_arcade_mixed_use":  {
+                                                            "archetypeId":  "mediterranean_arcade_mixed_use",
+                                                            "identity":  "Mediterranean mixed-use palazzo with a deep ground arcade, shaded upper loggias, stucco wall field, stone trim and generous terracotta eaves.",
+                                                            "materialZones":  "sun-washed stucco; warm stone arches; dark timber shutters; terracotta roof",
+                                                            "elevationUrl":  "/families/mediterranean-arcade-mixed-use/elevation.jpg"
+                                                        },
+                     "med_arcade_italian_portici":  {
+                                                        "archetypeId":  "med_arcade_italian_portici",
+                                                        "identity":  "Three-level northern Italian corner palazzo with exactly six pale-limestone arches on the principal portico, a four-arch return, two ochre shuttered residential levels, sparse iron balconies, deep bracketed timber eaves and a low terracotta hip roof.",
+                                                        "materialZones":  "ochre mineral stucco; pale warm limestone arcade; forest-green shutters; black wrought iron; dark timber eaves; weathered terracotta tile",
+                                                        "glassProfile":  "residential_low_e"
+                                                    },
+                     "japanese_machiya_mixed_use":  {
+                                                        "archetypeId":  "japanese_machiya_mixed_use",
+                                                        "identity":  "Contemporary machiya with a narrow timber structural rhythm, deep eaves, translucent lattice screens, recessed shopfront and layered threshold.",
+                                                        "materialZones":  "smoked timber; warm cedar lattice; charcoal plaster; translucent glass",
+                                                        "elevationUrl":  "/families/japanese-machiya-mixed-use/elevation.jpg"
+                                                    },
+                     "machiya_traditional_restored":  {
+                                                          "archetypeId":  "machiya_traditional_restored",
+                                                          "identity":  "Restored Kyoto machiya corner with two full timber-and-clay wall levels, an inhabited gable tier, fine koshi screens, an indigo noren, a mossy tsuboniwa threshold and a deeply overhanging charcoal kawara roof.",
+                                                          "materialZones":  "weathered dark timber; white shikkui clay plaster; indigo cloth; charcoal ceramic kawara tile; warm shop interior; moss and cut stone",
+                                                          "glassProfile":  "heritage_leaded_occupied"
+                                                      },
+                     "modernist_civic_block":  {
+                                                   "archetypeId":  "modernist_civic_block",
+                                                   "identity":  "Monumental modernist civic block with a floating upper volume, pilotis, deep brise-soleil, ceremonial cantilever canopy and exposed concrete frame.",
+                                                   "materialZones":  "board-marked concrete; dark bronze frames; clear glass; warm soffit",
+                                                   "elevationUrl":  "/families/modernist-civic-block/elevation.jpg"
+                                               },
+                     "modern_glass_office_institutional":  {
+                                                               "archetypeId":  "modern_glass_office_institutional",
+                                                               "identity":  "Compact institutional office with continuous low-iron blue curtain wall, slim silver transoms, dark expressed corner mullions, transparent double-height lobby and a restrained parapet roofline.",
+                                                               "materialZones":  "low-iron blue glass; charcoal corner mullions; silver aluminum transoms and spandrels; pale stone lobby base",
+                                                               "glassProfile":  "reflective_curtain_wall",
+                                                               "elevationUrl":  "/families/modern-glass-office-institutional/elevation.jpg"
+                                                           },
+                     "glass_office_dark_frame":  {
+                                                     "archetypeId":  "glass_office_dark_frame",
+                                                     "identity":  "Dark Frame \u0026 Clear Glass office with a bold external charcoal-bronze structural grid, ultra-clear glazing, visibly occupied warm floor plates, a recessed double-height lobby, a real projecting entrance canopy and a lightweight open rooftop terrace crown.",
+                                                     "materialZones":  "ultra-clear low-iron glazing; matte charcoal-bronze expressed steel; pale concrete floor edges; warm occupied office interiors; transparent double-height lobby",
+                                                     "glassProfile":  "office_clear_occupied"
+                                                 },
+                     "chateauesque_grand_railway_hotel":  {
+                                                              "archetypeId":  "chateauesque_grand_railway_hotel",
+                                                              "identity":  "Scottish Baronial grand railway hotel with a central crenellated gate tower, round conical tourelles, crow-stepped gables, a steep dark-slate courtyard roof and six occupied pink-grey granite wall levels.",
+                                                              "materialZones":  "pink-grey rusticated granite ashlar; smooth dressed granite courses; charcoal natural slate; black iron; softly occupied sash glazing",
+                                                              "glassProfile":  "low_iron_clear",
+                                                              "elevationUrl":  "/families/chateauesque-grand-railway-hotel/elevation.jpg"
+                                                          },
+                     "eixample_apartment_block":  {
+                                                      "archetypeId":  "eixample_apartment_block",
+                                                      "identity":  "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
+                                                      "materialZones":  "warm carved stone and stucco; black iron; timber shutters; darker stone base",
+                                                      "glassProfile":  "residential_low_e",
+                                                      "elevationUrl":  "/families/eixample-apartment-block/elevation.jpg"
+                                                  },
+                     "contemporary_townhouse_courtyard":  {
+                                                              "archetypeId":  "contemporary_townhouse_courtyard",
+                                                              "elevationUrl":  "/families/contemporary-townhouse-courtyard/elevation.jpg"
+                                                          },
+                     "courtyard_family_housing":  {
+                                                      "archetypeId":  "courtyard_family_housing",
+                                                      "elevationUrl":  "/families/courtyard-family-housing/elevation.jpg"
+                                                  },
+                     "london_heritage_mansion_portland_stone":  {
+                                                                    "archetypeId":  "london_heritage_mansion_portland_stone",
+                                                                    "elevationUrl":  "/families/london-heritage-mansion-portland-stone-v1-renderlocked/elevation.jpg"
+                                                                },
+                     "mid_century_pavilion_brick_minimal":  {
+                                                                "archetypeId":  "mid_century_pavilion_brick_minimal",
+                                                                "elevationUrl":  "/families/mid-century-pavilion-brick-minimal-v1-renderlocked/elevation.jpg"
+                                                            },
+                     "minimalist_courtyard_block":  {
+                                                        "archetypeId":  "minimalist_courtyard_block",
+                                                        "elevationUrl":  "/families/minimalist-courtyard-block/elevation.jpg"
+                                                    },
+                     "rndsqr_terraced_mixed_use_midrise":  {
+                                                               "archetypeId":  "rndsqr_terraced_mixed_use_midrise",
+                                                               "elevationUrl":  "/families/rndsqr-terraced-mixed-use-midrise/elevation.jpg"
+                                                           }
+                 }
+}

@@ -30,7 +30,7 @@ export function extractCenterline(coords: number[][]): number[][] {
   return center;
 }
 
-function parsePersistedCenterline(value: unknown): number[][] | null {
+export function parsePersistedCenterline(value: unknown): number[][] | null {
   if (!Array.isArray(value) || value.length < 2) return null;
   const points: number[][] = [];
   for (const candidate of value) {
