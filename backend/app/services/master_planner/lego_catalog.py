@@ -265,6 +265,9 @@ def _runtime_native_floors(
                     allow_setback=False,
                     footprint_profile="rectangle",
                 ),
+                # Catalogue probes prove real fits; forced fits would
+                # advertise every floor count.
+                allow_forced_fit=False,
             )
         except AssemblyPlanningError:
             continue
@@ -301,6 +304,7 @@ def _supported_floors(
                     allow_setback=False,
                     footprint_profile="rectangle",
                 ),
+                allow_forced_fit=False,
             )
         except AssemblyPlanningError:
             continue

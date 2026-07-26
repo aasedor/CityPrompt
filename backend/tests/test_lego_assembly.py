@@ -172,18 +172,94 @@ def test_exact_variant_landmark_resizes_to_a_small_city_parcel():
     assert plan["instances"][0]["scale"] == [pytest.approx(0.57324), pytest.approx(0.50304), 1.0]
 
 
-def test_rejects_destructive_footprint_scaling():
+def test_wide_parcel_builds_as_streetwall_repeat():
+    """A 40 m frontage against a 24 m native facade is covered by two abutting
+    bars instead of one visibly crushed stretch — and never rejected."""
     modules = [
         descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
         descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
         descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
     ]
 
-    with pytest.raises(AssemblyPlanningError):
-        plan_vertical_assembly(
-            [module for module in modules if module],
-            AssemblyRequest(target_width_m=40, target_depth_m=18, target_floors=5),
-        )
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(target_width_m=40, target_depth_m=18, target_floors=5),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert plan["fit"]["segment_count"] == 2
+    segments = plan["footprint_segments"]
+    assert [segment["rotation_degrees"] for segment in segments] == [0.0, 0.0]
+    assert sorted(segment["centre_x_m"] for segment in segments) == [-10.0, 10.0]
+    assert plan["fit"]["scale_x"] == pytest.approx(0.83333, abs=1e-4)
+    assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+    roles = [item["role"] for item in plan["instances"]]
+    assert roles.count("podium") == 2
+    assert roles.count("roof") == 2
+
+
+def test_deep_parcel_builds_two_back_to_back_rows():
+    """A deep double-loaded block (40 x 34.2 m on 30 x 20 m natives — the live
+    planner case) becomes two quarter-turned rows at scale 1.14 / 1.0."""
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5, width=30, depth=20)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2, width=30, depth=20)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0, width=30, depth=20)),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(target_width_m=40, target_depth_m=34.2, target_floors=7),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert plan["fit"]["segment_count"] == 2
+    segments = plan["footprint_segments"]
+    assert [segment["rotation_degrees"] for segment in segments] == [90.0, 90.0]
+    assert sorted(segment["centre_x_m"] for segment in segments) == [-10.0, 10.0]
+    assert all(segment["centre_y_m"] == 0.0 for segment in segments)
+    assert plan["fit"]["scale_x"] == pytest.approx(1.14, abs=1e-4)
+    assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+
+
+def test_extreme_parcel_still_builds_with_forced_fit():
+    """Even far outside every band the builder assembles the least-distorted
+    configuration and labels it, instead of failing. That is its purpose."""
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(target_width_m=200, target_depth_m=18, target_floors=5),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "forced_fit"
+    assert plan["fit"]["segment_count"] == 4
+    assert plan["fit"]["scale_x"] == pytest.approx(200 / 4 / 24, abs=1e-4)
+    assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+
+
+def test_floor_count_beyond_family_range_still_builds():
+    """A 20-floor request on a 3-12 floor family stacks 20 floors anyway —
+    the authored floor range is preference, not a build gate."""
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(target_width_m=24, target_depth_m=18, target_floors=20),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "forced_fit"
+    roles = [item["role"] for item in plan["instances"]]
+    assert roles == ["podium"] + ["floor"] * 19 + ["roof"]
+    assert plan["assembled_height_m"] == pytest.approx(4.5 + 19 * 3.2 + 1.0)
 
 
 def test_allow_setback_false_suppresses_setback_even_at_six_floors():
@@ -463,11 +539,36 @@ def test_rectangle_plan_quarter_turns_an_exact_narrow_module():
     }]
 
 
-def test_matching_family_reports_incompatible_target_and_supported_ranges():
+def test_oversized_parcel_builds_as_streetwall_grid():
+    """60 x 40 m on 24 x 18 m natives assembles as a 3 x 2 bar grid."""
     modules = [
         descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
         descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
         descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=60,
+            target_depth_m=40,
+            target_floors=6,
+            archetype_id="nordic-midrise",
+        ),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert plan["fit"]["segment_count"] == 6
+    assert plan["fit"]["scale_x"] == pytest.approx(60 / 3 / 24, abs=1e-4)
+    assert plan["fit"]["scale_y"] == pytest.approx(40 / 2 / 18, abs=1e-4)
+
+
+def test_family_missing_roof_still_reports_incompatible_with_ranges():
+    """The structured incompatible report remains for families that
+    structurally cannot assemble (no roof module at all)."""
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
     ]
 
     with pytest.raises(AssemblyPlanningError, match="No compatible module family") as error:
@@ -665,13 +766,46 @@ async def test_plan_api_returns_structured_family_not_found_error(
 
 
 @pytest.mark.anyio
-async def test_plan_api_returns_structured_family_incompatible_error(
+async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(
     client, mock_db, test_user, auth_headers
 ):
     library_entries = [
         entry("podium", "Podium", "podium", height=4.5),
         entry("floor", "Floor", "floor", height=3.2),
         entry("roof", "Roof", "roof", height=1.0),
+    ]
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 60,
+            "target_depth_m": 40,
+            "target_floors": 6,
+            "archetype_id": "nordic-midrise",
+        },
+    )
+
+    assert response.status_code == 200
+    plan = response.json()
+    assert plan["family"] == "nordic-midrise"
+    assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert plan["fit"]["segment_count"] == 6
+
+
+@pytest.mark.anyio
+async def test_plan_api_returns_structured_family_incompatible_error(
+    client, mock_db, test_user, auth_headers
+):
+    # A family with no roof module structurally cannot assemble — the
+    # structured 422 remains for that case (dimensions never cause it now).
+    library_entries = [
+        entry("podium", "Podium", "podium", height=4.5),
+        entry("floor", "Floor", "floor", height=3.2),
     ]
     mock_db.execute = AsyncMock(side_effect=[
         _scalar_result(test_user),

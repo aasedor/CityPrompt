@@ -302,8 +302,17 @@ def _declared_profile_covers_target(
     return dimensions_declared and dimensions_fit and floors_fit
 
 
-def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> ModuleDescriptor | None:
-    candidates = [m for m in modules if _valid_for_floor_count(m, request.target_floors)]
+def _best(
+    modules: Iterable[ModuleDescriptor],
+    request: AssemblyRequest,
+    *,
+    forced: bool = False,
+) -> ModuleDescriptor | None:
+    pool = list(modules)
+    candidates = [m for m in pool if _valid_for_floor_count(m, request.target_floors)]
+    if not candidates and forced:
+        # Forced fit: the authored floor-range is guidance, not a build gate.
+        candidates = pool
     if not candidates:
         return None
     return max(candidates, key=lambda module: _module_score(module, request))
@@ -472,11 +481,100 @@ def _rectangle_orientation(
     return min(candidates, key=fit_key)
 
 
+# Streetwall repeat: bars validate against the same relaxed band multi-wing
+# profiles already use — repeated bars keep authored facade proportions, so the
+# strict single-bar production band would be needlessly conservative here.
+_STREETWALL_BAND = (0.62, 1.40)
+_MAX_STREETWALL_BARS_ALONG = 4
+_MAX_STREETWALL_ROWS_DEEP = 2
+
+
+def _best_bar_count(scale: float, limit: int, *, forced: bool = False) -> int | None:
+    """Bar count whose per-bar scale sits in the repeat band, least distorted.
+
+    Forced mode drops the band requirement and simply returns the count with
+    the least per-bar distortion — it always finds an answer.
+    """
+    lo, hi = _STREETWALL_BAND
+    best: tuple[float, int] | None = None
+    for count in range(1, limit + 1):
+        per_bar = scale / count
+        if not forced and not (lo <= per_bar <= hi):
+            continue
+        distortion = abs(math.log(max(per_bar, 1e-9)))
+        if best is None or distortion < best[0]:
+            best = (distortion, count)
+    return best[1] if best else None
+
+
+def _rectangle_repeat_segments(
+    module: ModuleDescriptor,
+    request: AssemblyRequest,
+    *,
+    forced: bool = False,
+) -> list[dict[str, float | str]] | None:
+    """Cover an out-of-band rectangle with a grid of abutting module bars.
+
+    A parcel too large for one stretched module (e.g. 46 m frontage against a
+    30 m native facade) is planned as repeated streetwall bars along the long
+    axis — and up to two back-to-back rows for deep double-loaded blocks. The
+    module facades are authored to tile, and the composer already places every
+    instance by per-segment position/rotation. Outside forced mode a 1x1 grid
+    is never returned: single bars must pass the strict band, not sneak
+    through the repeat band. Forced mode always returns the least-distorted
+    configuration, including a plain stretched single bar.
+    """
+    best: tuple[float, list[dict[str, float | str]]] | None = None
+    for rotation, length, thickness in (
+        (0.0, request.target_width_m, request.target_depth_m),
+        (90.0, request.target_depth_m, request.target_width_m),
+    ):
+        scale_len = length / module.width_m
+        scale_thk = thickness / module.depth_m
+        bars_along = _best_bar_count(scale_len, _MAX_STREETWALL_BARS_ALONG, forced=forced)
+        rows_deep = _best_bar_count(scale_thk, _MAX_STREETWALL_ROWS_DEEP, forced=forced)
+        if bars_along is None or rows_deep is None:
+            continue
+        if not forced and bars_along * rows_deep == 1:
+            continue
+        distortion = (
+            abs(math.log(scale_len / bars_along))
+            + abs(math.log(scale_thk / rows_deep))
+        )
+        if best is not None and distortion >= best[0]:
+            continue
+        bar_length = length / bars_along
+        bar_thickness = thickness / rows_deep
+        theta = math.radians(rotation)
+        segments: list[dict[str, float | str]] = []
+        for row in range(rows_deep):
+            v = -thickness / 2 + bar_thickness * (row + 0.5)
+            for col in range(bars_along):
+                u = -length / 2 + bar_length * (col + 0.5)
+                segments.append({
+                    "id": f"bar_r{row}_c{col}",
+                    "centre_x_m": round(u * math.cos(theta) - v * math.sin(theta), 4),
+                    "centre_y_m": round(u * math.sin(theta) + v * math.cos(theta), 4),
+                    "length_m": bar_length,
+                    "thickness_m": bar_thickness,
+                    "rotation_degrees": rotation,
+                })
+        best = (distortion, segments)
+    return best[1] if best else None
+
+
 def plan_vertical_assembly(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
+    *,
+    allow_forced_fit: bool = True,
 ) -> dict[str, Any]:
     """Build a podium + repeatable floor + optional setback + roof recipe.
+
+    ``allow_forced_fit=True`` (the interactive LEGO Builder contract) always
+    assembles a matched family, labeling out-of-band results instead of
+    rejecting them. Planner probes pass ``False`` so genuine incompatibility
+    keeps raising and can drive re-homing and catalogue decisions.
 
     The output is intentionally renderer-neutral. Each instance has a model URL,
     vertical position and scale. A future Three.js composer or GLB baking worker
@@ -529,7 +627,17 @@ def plan_vertical_assembly(
     best_plan: dict[str, Any] | None = None
     best_score = float("-inf")
 
-    for family in families:
+    # Two-pass contract: pass 1 honors the production fit bands; the forced
+    # pass runs only when nothing fit and always builds the least-distorted
+    # configuration. The LEGO builder's promise is that a matched family
+    # assembles even outside its preferred ranges — out-of-band results are
+    # labeled (compatibility_source="forced_fit"), never rejected.
+    passes = [(family, False) for family in families]
+    if allow_forced_fit:
+        passes += [(family, True) for family in families]
+    for family, forced in passes:
+        if forced and best_plan is not None:
+            break
         family_modules = [m for m in descriptors if m.family == family]
         assembled = _best(
             (
@@ -562,11 +670,16 @@ def plan_vertical_assembly(
                 scale_min=FIXED_LANDMARK_SCALE_MIN,
                 scale_max=FIXED_LANDMARK_SCALE_MAX,
             )
-            if (
+            if forced or (
                 FIXED_LANDMARK_SCALE_MIN <= scale_x <= FIXED_LANDMARK_SCALE_MAX
                 and FIXED_LANDMARK_SCALE_MIN <= scale_y <= FIXED_LANDMARK_SCALE_MAX
             ):
                 family_score = 100.0 + _module_score(assembled, request)
+                if forced:
+                    family_score -= 2.0 * (
+                        abs(math.log(max(scale_x, 1e-9)))
+                        + abs(math.log(max(scale_y, 1e-9)))
+                    )
                 plan = {
                     "version": 3,
                     "family": family,
@@ -616,10 +729,11 @@ def plan_vertical_assembly(
                     best_score = family_score
                     best_plan = plan
                 continue
-        podium = _best((m for m in family_modules if m.role == "podium"), request)
+        podium = _best((m for m in family_modules if m.role == "podium"), request, forced=forced)
         floor_candidates = [
             m for m in family_modules
-            if m.role == "floor" and m.repeatable_z and _valid_for_floor_count(m, request.target_floors)
+            if m.role == "floor" and m.repeatable_z
+            and (forced or _valid_for_floor_count(m, request.target_floors))
         ]
         # Pick one render LOD for each design variant. Cycling LOD0/LOD1 as if
         # they were different facades would create visual and performance pops.
@@ -630,9 +744,9 @@ def plan_vertical_assembly(
             )
             for variant_key in sorted({module.variant_key for module in floor_candidates})
         ]
-        roof = _best((m for m in family_modules if m.role == "roof"), request)
-        setback = _best((m for m in family_modules if m.role == "setback"), request)
-        crown = _best((m for m in family_modules if m.role == "crown"), request)
+        roof = _best((m for m in family_modules if m.role == "roof"), request, forced=forced)
+        setback = _best((m for m in family_modules if m.role == "setback"), request, forced=forced)
+        crown = _best((m for m in family_modules if m.role == "crown"), request, forced=forced)
 
         if not podium or not roof:
             continue
@@ -657,6 +771,7 @@ def plan_vertical_assembly(
             if declared_profile_fit or request.footprint_profile != "rectangle"
             else (0.80, 1.20)
         )
+        streetwall_repeat = False
         if request.footprint_profile == "rectangle":
             (
                 _,
@@ -678,6 +793,20 @@ def plan_vertical_assembly(
                 "thickness_m": segment_thickness,
                 "rotation_degrees": rectangle_rotation,
             }]
+            single_fits = (
+                scale_min <= segment_length / podium.width_m <= scale_max
+                and scale_min <= segment_thickness / podium.depth_m <= scale_max
+            )
+            if not single_fits:
+                # A parcel no single stretched bar can cover (wide frontage or
+                # deep double-loaded block) is planned as repeated abutting
+                # bars instead of being rejected outright. In forced mode the
+                # helper always answers, possibly with one stretched bar.
+                repeated = _rectangle_repeat_segments(podium, request, forced=forced)
+                if repeated is None:
+                    continue
+                segments = repeated
+                streetwall_repeat = len(segments) > 1
         else:
             segments = footprint_segments(
                 request.footprint_profile,
@@ -693,11 +822,17 @@ def plan_vertical_assembly(
             )
             for segment in segments
         ]
-        # Rectangles use the strict production fit. Multi-wing profiles need a
-        # little more latitude because the imported family is a streetwall bar,
-        # but still reject anything that would visibly crush the facade atlas.
-        if any(not (scale_min <= sx <= scale_max and scale_min <= sy <= scale_max)
-               for sx, sy in segment_scales):
+        # Rectangles use the strict production fit. Multi-wing profiles and
+        # streetwall-repeat bars need a little more latitude because each bar
+        # keeps authored facade proportions, but still reject anything that
+        # would visibly crush the facade atlas.
+        bar_scale_min, bar_scale_max = (
+            _STREETWALL_BAND if streetwall_repeat else (scale_min, scale_max)
+        )
+        if not forced and any(
+            not (bar_scale_min <= sx <= bar_scale_max and bar_scale_min <= sy <= bar_scale_max)
+            for sx, sy in segment_scales
+        ):
             continue
 
         levels: list[tuple[ModuleDescriptor, str, int, float]] = []
@@ -751,6 +886,16 @@ def plan_vertical_assembly(
             family_score += _module_score(setback, request)
         if use_crown and crown:
             family_score += _module_score(crown, request)
+        if streetwall_repeat:
+            # Prefer a family that covers the parcel in one bar over one that
+            # needs repetition, all else equal.
+            family_score -= 0.25 * (len(segments) - 1)
+        if forced:
+            # Within the forced pass the least-distorted family must win.
+            family_score -= 2.0 * sum(
+                abs(math.log(max(sx, 1e-9))) + abs(math.log(max(sy, 1e-9)))
+                for sx, sy in segment_scales
+            ) / len(segment_scales)
         plan = {
             "version": 2,
             "family": family,
@@ -772,7 +917,13 @@ def plan_vertical_assembly(
                 "profile": request.footprint_profile,
                 "segment_count": len(segments),
                 "compatibility_source": (
-                    "manifest_shape_matrix" if declared_profile_fit else "native_scale"
+                    "forced_fit"
+                    if forced
+                    else "streetwall_repeat"
+                    if streetwall_repeat
+                    else "manifest_shape_matrix"
+                    if declared_profile_fit
+                    else "native_scale"
                 ),
             },
             "footprint_segments": segments,

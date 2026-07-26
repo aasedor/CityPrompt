@@ -208,6 +208,9 @@ def bind_building_zones_to_lego(
                     allow_setback=False,
                     footprint_profile=footprint_profile,
                 ),
+                # Binding is a proof: genuine incompatibility must keep
+                # raising so identities re-home instead of force-fitting.
+                allow_forced_fit=False,
             )
         except AssemblyPlanningError:
             return None
