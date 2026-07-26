@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 interface OAuthButtonsProps {
   returnTo?: string;
@@ -15,7 +15,7 @@ export function OAuthButtons({ returnTo = '/projects' }: OAuthButtonsProps) {
     setLoadingProvider(provider);
     try {
       localStorage.setItem('oauth_return_to', returnTo);
-      const url = new URL(`${API_BASE}/api/v1/auth/oauth/${provider}`);
+      const url = new URL(`${API_BASE}/api/v1/auth/oauth/${provider}`, API_BASE || window.location.origin);
       url.searchParams.set('frontend_origin', window.location.origin);
 
       const response = await fetch(url.toString());

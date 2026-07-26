@@ -3,8 +3,11 @@
   "configurations": [
     {
       "name": "frontend",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["node_modules/vite/bin/vite.js"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "set API_PROXY_TARGET=http://127.0.0.1:8010&& node node_modules/vite/bin/vite.js"
+      ],
       "port": 5174,
       "cwd": "frontend"
     }
