@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { FootprintFrame } from './buildingPlacement';
+import { DIRECT_3D_CAPTURE_EXCLUDE_KEY } from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const METRES_PER_DEG_LAT = 111_320;
@@ -18,6 +19,20 @@ export function buildModelSelectionOutlinePoints(
   ));
   if (points.length > 0) points.push(points[0].clone());
   return points;
+}
+
+export function createModelSelectionOutlineLine(
+  geometry: THREE.BufferGeometry,
+  material: THREE.LineBasicMaterial,
+): THREE.Line {
+  const line = new THREE.Line(geometry, material);
+  line.renderOrder = 1000;
+  // Editor chrome: the outline mounts under role-tagged building groups, so
+  // without this tag the Direct 3D capture classifies it as untagged proposal
+  // geometry and fails closed ("missing a stable instance tag") whenever a
+  // model is selected at render time.
+  line.userData[DIRECT_3D_CAPTURE_EXCLUDE_KEY] = true;
+  return line;
 }
 
 export function GlobeModelSelectionOutline({
@@ -56,11 +71,10 @@ export function LocalModelSelectionOutline({
     depthTest: false,
     depthWrite: false,
   }), []);
-  const outline = useMemo(() => {
-    const line = new THREE.Line(geometry, material);
-    line.renderOrder = 1000;
-    return line;
-  }, [geometry, material]);
+  const outline = useMemo(
+    () => createModelSelectionOutlineLine(geometry, material),
+    [geometry, material],
+  );
   useEffect(() => () => geometry.dispose(), [geometry]);
   useEffect(() => () => material.dispose(), [material]);
 
