@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-26-meshy-hybrid-lego-v66",
+  "memory_version": "2026-07-26-semantic-fixed-assembly-v67",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -565,6 +565,11 @@
       "symptom": "An image-to-3D landmark looks excellent in one GLB but cannot be resized, restacked or safely imported as a LEGO family",
       "cause": "The generator fused roof, facade, apertures, entrance and base into one high-triangle mesh with one baked material and no semantic module boundaries.",
       "correction": "Preserve the original GLB with Git LFS, record its hash, normalize it to the authored metric envelope, crop and decimate only the identity-bearing crown/roof above a documented interface, and classify it as a non-repeatable fixed assembly. Rebuild the ordinary base from registered repeatable bays and validate the combined manifest as a fixed landmark plus parametric fallback family."
+    },
+    {
+      "symptom": "A strong image-to-3D silhouette still carries a blurry city panorama, black reflection band or one material across glass, roof and historic masonry",
+      "cause": "The fused source retained its single baked scene material after cropping, so unrelated construction systems shared one UV/photo treatment and identity openings remained only texture artifacts.",
+      "correction": "Classify retained faces into semantic glass, roof and transition regions; assign each region a registered PBR source with its own projection; and rebuild apertures and the public entrance as independent depth assemblies while preserving the original fixed mesh and source hash."
     },
     {
       "symptom": "A valid cultural or industrial catalogue entry fails grammar compilation because its storeys exceed six metres",

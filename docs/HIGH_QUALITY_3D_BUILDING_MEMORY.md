@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-18-nine-family-v21`.
+Current executable memory: `2026-07-26-semantic-fixed-assembly-v67`.
 
 ## The quality target
 
@@ -434,6 +434,12 @@ free-form cultural landmarks:
   asset, and pair it with separately generated repeatable bays below. The
   manifest must identify the imported surface as non-repeatable fixed crown/roof
   geometry and retain the original source hash.
+- A fused image-to-3D mesh does not have to keep its baked scene photograph.
+  Classify retained faces into construction systems such as curtain wall,
+  metallic roof and historic transition, replace the baked panorama with
+  registered PBR sources, and rebuild identity-critical openings and entrances
+  as separate depth assemblies. This preserves the valuable free-form silhouette
+  while removing black reflection bands, blurry context and material leakage.
 
 ## Updating this memory
 

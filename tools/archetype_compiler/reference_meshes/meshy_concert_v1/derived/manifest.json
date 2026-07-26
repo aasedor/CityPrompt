@@ -3,7 +3,7 @@
   "source_file": "meshy-elbphilharmonie-image-to-3d.glb",
   "source_sha256": "596C2A1C58E44781DEDBEBE29A4BD56D62753BA56CB3B06C1D4EDF11ACA5D683",
   "output_file": "concert-hall-modern-v1-meshy-crown.glb",
-  "output_sha256": "4592BD4747216972AC6A0A0871C6D614FCDB530238777B6F70E688806E8DD980",
+  "output_sha256": "09EAC0D1EEA221C5D624EEC93EBB6D859068885435EB1360123A888B7157E9B8",
   "source_triangles": 1126080,
   "pre_decimate_triangles": 441515,
   "output_triangles": 119998,
@@ -14,6 +14,23 @@
   ],
   "interface_z_m": 17.4,
   "max_texture_px": 1024,
+  "material_segmentation": {
+    "schema": "concert-crown-material-segmentation@1",
+    "face_counts": {
+      "glass": 53385,
+      "roof": 2147,
+      "historic_transition": 64467
+    },
+    "roof_classification_z_m": 38.0,
+    "roof_normal_z": 0.22,
+    "transition_classification_z_m": 23.5,
+    "glass_texture_repeats": 3.4,
+    "materials": {
+      "glass": "concert_crystalline_glass",
+      "roof": "concert_tensile_roof",
+      "historic_transition": "concert_warehouse_brick"
+    }
+  },
   "lego_contract": {
     "role": "fixed_crown_roof",
     "repeatable": false,

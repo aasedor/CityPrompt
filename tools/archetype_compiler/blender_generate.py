@@ -8202,9 +8202,9 @@ def _ellipse_surface_points(
 def _graph_concert_oval_apertures(parts: list, spec: dict, mats: dict) -> None:
     """Add chromed, irregularly tilted foyer apertures to the warped shell."""
     prefix = str(spec.get("id", "ConcertOval"))
-    shell_spec = dict(spec["shell"])
-    half_width = float(shell_spec["width_m"]) / 2
-    half_depth = float(shell_spec["depth_m"]) / 2
+    shell_spec = dict(spec.get("shell") or {})
+    half_width = float(shell_spec.get("width_m", 90.0)) / 2
+    half_depth = float(shell_spec.get("depth_m", 65.0)) / 2
     rounded_power = float(shell_spec.get("rounded_power", 5.0))
     ring_mat = _graph_material(mats, spec.get("ring_material", "signature_roof"))
     glass_mat = _graph_material(mats, spec.get("glass_material", "glass"))
@@ -8213,42 +8213,77 @@ def _graph_concert_oval_apertures(parts: list, spec: dict, mats: dict) -> None:
     segments = max(20, int(spec.get("segments", 36)))
 
     for aperture_index, aperture in enumerate(spec.get("apertures", [])):
-        theta = math.radians(float(aperture["theta_deg"]))
-        z = float(aperture["z_m"])
+        explicit_centre = aperture.get("centre")
         width = float(aperture["width_m"])
         height = float(aperture["height_m"])
         tilt = float(aperture.get("tilt_deg", 0.0))
-        x0, y0 = _concert_perimeter_point(theta, half_width, half_depth, rounded_power)
-        normal = Vector((x0 / (half_width * half_width), y0 / (half_depth * half_depth), 0.0)).normalized()
-        vertical_fraction = max(
-            0.05,
-            min(0.95, (z - float(shell_spec["base_z_m"])) / (
-                float(shell_spec["edge_z_m"]) - float(shell_spec["base_z_m"])
-            )),
-        )
-        shell_coordinate = Vector(_concert_shell_point(theta, vertical_fraction, shell_spec))
-        shell_coordinate.z = z
+        if explicit_centre is not None:
+            shell_coordinate = Vector(tuple(float(value) for value in explicit_centre))
+            normal = Vector(tuple(float(value) for value in aperture.get("normal", (0.0, -1.0, 0.0))))
+            normal.normalize()
+        else:
+            theta = math.radians(float(aperture["theta_deg"]))
+            z = float(aperture["z_m"])
+            x0, y0 = _concert_perimeter_point(theta, half_width, half_depth, rounded_power)
+            normal = Vector((
+                x0 / (half_width * half_width),
+                y0 / (half_depth * half_depth),
+                0.0,
+            )).normalized()
+            vertical_fraction = max(
+                0.05,
+                min(0.95, (z - float(shell_spec["base_z_m"])) / (
+                    float(shell_spec["edge_z_m"]) - float(shell_spec["base_z_m"])
+                )),
+            )
+            shell_coordinate = Vector(_concert_shell_point(theta, vertical_fraction, shell_spec))
+            shell_coordinate.z = z
         lip_centre = shell_coordinate + normal * float(aperture.get("projection_m", 0.22))
-        outer = _ellipse_surface_points(lip_centre, normal, width, height, tilt, segments)
-        inner = _ellipse_surface_points(
-            lip_centre + normal * 0.015,
+        profile = float(aperture.get("profile_m", 0.72))
+        lip_depth = float(aperture.get("lip_depth_m", 0.42))
+        outer_front = _ellipse_surface_points(lip_centre, normal, width, height, tilt, segments)
+        inner_front = _ellipse_surface_points(
+            lip_centre - normal * 0.015,
+            normal,
+            width - profile * 2,
+            height - profile * 2,
+            tilt,
+            segments,
+        )
+        back_centre = lip_centre - normal * lip_depth
+        outer_back = _ellipse_surface_points(back_centre, normal, width, height, tilt, segments)
+        inner_back = _ellipse_surface_points(
+            back_centre,
             normal,
             width - float(aperture.get("profile_m", 0.72)) * 2,
             height - float(aperture.get("profile_m", 0.72)) * 2,
             tilt,
             segments,
         )
-        ring_vertices = [tuple(point) for point in outer + inner]
-        ring_faces = [
-            (index, (index + 1) % segments, segments + (index + 1) % segments, segments + index)
-            for index in range(segments)
+        ring_vertices = [
+            tuple(point)
+            for group in (outer_front, inner_front, outer_back, inner_back)
+            for point in group
         ]
+        ring_faces = []
+        for index in range(segments):
+            nxt = (index + 1) % segments
+            outer_front_index, inner_front_index = index, segments + index
+            outer_back_index, inner_back_index = segments * 2 + index, segments * 3 + index
+            outer_front_next, inner_front_next = nxt, segments + nxt
+            outer_back_next, inner_back_next = segments * 2 + nxt, segments * 3 + nxt
+            ring_faces.extend((
+                (outer_front_index, outer_front_next, inner_front_next, inner_front_index),
+                (outer_back_next, outer_back_index, inner_back_index, inner_back_next),
+                (outer_front_index, outer_back_index, outer_back_next, outer_front_next),
+                (inner_front_next, inner_back_next, inner_back_index, inner_front_index),
+            ))
         ring = add_prism(f"{prefix}_Lip_{aperture_index:02d}", ring_vertices, ring_faces, ring_mat)
         for polygon in ring.data.polygons:
             polygon.use_smooth = True
         parts.append(ring)
 
-        pane_centre = lip_centre - normal * 0.16
+        pane_centre = back_centre - normal * 0.035
         pane_ring = _ellipse_surface_points(
             pane_centre, normal, width * 0.78, height * 0.78, tilt, segments,
         )
@@ -8257,9 +8292,23 @@ def _graph_concert_oval_apertures(parts: list, spec: dict, mats: dict) -> None:
             (0, 1 + index, 1 + (index + 1) % segments)
             for index in range(segments)
         ]
-        parts.append(add_prism(
+        pane = add_prism(
             f"{prefix}_Pane_{aperture_index:02d}", pane_vertices, pane_faces, glass_mat,
-        ))
+        )
+        pane_uv = pane.data.uv_layers.get("UVMap") or pane.data.uv_layers.new(name="UVMap")
+        for polygon in pane.data.polygons:
+            for loop_index in polygon.loop_indices:
+                vertex_index = pane.data.loops[loop_index].vertex_index
+                if vertex_index == 0:
+                    coordinate = (0.5, 0.5)
+                else:
+                    angle = math.tau * (vertex_index - 1) / segments
+                    coordinate = (
+                        0.5 + math.cos(angle) * 0.49,
+                        0.5 + math.sin(angle) * 0.49,
+                    )
+                pane_uv.data[loop_index].uv = coordinate
+        parts.append(pane)
         warm_centre = pane_centre - normal * 0.18
         warm_ring = _ellipse_surface_points(
             warm_centre, normal, width * 0.64, height * 0.64, tilt, segments,
@@ -8285,6 +8334,116 @@ def _graph_concert_oval_apertures(parts: list, spec: dict, mats: dict) -> None:
             float(aperture.get("brace_radius_m", 0.085)),
             brace_mat,
         ))
+
+
+def _graph_concert_entrance_scoop(parts: list, spec: dict, mats: dict) -> None:
+    """Build the deep, hourglass-shaped glazed arrival in front of the fixed crown."""
+    prefix = str(spec.get("id", "ConcertEntranceScoop"))
+    cx, front_y, base_z = (float(value) for value in spec.get("base_centre", (20.0, -32.8, 0.8)))
+    height = float(spec.get("height_m", 27.0))
+    bottom_span = float(spec.get("bottom_span_m", 7.2))
+    top_span = float(spec.get("top_span_m", 18.0))
+    recess = float(spec.get("recess_m", 3.2))
+    columns = max(4, int(spec.get("columns", 8)))
+    rows = max(4, int(spec.get("rows", 10)))
+    glass_mat = _graph_material(mats, spec.get("glass_material", "glass"))
+    warm_mat = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+    frame_mat = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    chrome_mat = _graph_material(mats, spec.get("edge_material", "signature_roof"))
+
+    def point(row: int, column: int, *, behind_m: float = 0.0) -> tuple[float, float, float]:
+        t = row / rows
+        u = column / columns * 2.0 - 1.0
+        half_span = (bottom_span + (top_span - bottom_span) * (t ** 0.72)) * 0.5
+        centre_recess = recess * (1.0 - u * u) * (0.58 + 0.42 * t)
+        edge_curl = 0.42 * abs(u) ** 3
+        return (
+            cx + u * half_span,
+            front_y + centre_recess + edge_curl + behind_m,
+            base_z + height * t,
+        )
+
+    vertices = [
+        point(row, column)
+        for row in range(rows + 1)
+        for column in range(columns + 1)
+    ]
+    faces = [
+        (
+            row * (columns + 1) + column,
+            row * (columns + 1) + column + 1,
+            (row + 1) * (columns + 1) + column + 1,
+            (row + 1) * (columns + 1) + column,
+        )
+        for row in range(rows)
+        for column in range(columns)
+    ]
+    scoop = add_prism(prefix, vertices, faces, glass_mat)
+    for polygon in scoop.data.polygons:
+        polygon.use_smooth = True
+    uv_layer = scoop.data.uv_layers.get("UVMap") or scoop.data.uv_layers.new(name="UVMap")
+    for face_index, polygon in enumerate(scoop.data.polygons):
+        row, column = divmod(face_index, columns)
+        coordinates = (
+            (column / columns, row / rows),
+            ((column + 1) / columns, row / rows),
+            ((column + 1) / columns, (row + 1) / rows),
+            (column / columns, (row + 1) / rows),
+        )
+        for loop_index, coordinate in zip(polygon.loop_indices, coordinates):
+            uv_layer.data[loop_index].uv = coordinate
+    parts.append(scoop)
+
+    warm_vertices = [
+        point(row, column, behind_m=float(spec.get("interior_recess_m", 0.48)))
+        for row in range(rows + 1)
+        for column in range(columns + 1)
+    ]
+    warm = add_prism(f"{prefix}_WarmFoyer", warm_vertices, faces, warm_mat)
+    for polygon in warm.data.polygons:
+        polygon.use_smooth = True
+    parts.append(warm)
+
+    frame_radius = float(spec.get("frame_radius_m", 0.075))
+    for column in range(columns + 1):
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_Mullion_{column:02d}",
+            [point(row, column, behind_m=-0.045) for row in range(rows + 1)],
+            frame_radius,
+            frame_mat,
+        ))
+    for row in range(rows + 1):
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_Transom_{row:02d}",
+            [point(row, column, behind_m=-0.045) for column in range(columns + 1)],
+            frame_radius,
+            frame_mat,
+        ))
+    for column, label in ((0, "LeftEdge"), (columns, "RightEdge")):
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_{label}",
+            [point(row, column, behind_m=-0.08) for row in range(rows + 1)],
+            float(spec.get("edge_radius_m", 0.18)),
+            chrome_mat,
+        ))
+
+    door_height = float(spec.get("door_height_m", 4.8))
+    door_span = float(spec.get("door_span_m", bottom_span * 0.72))
+    _graph_curtain_wall(parts, {
+        "id": f"{prefix}_Doors",
+        "axis": "front",
+        "centre": [cx, front_y - 0.11, base_z + door_height / 2],
+        "span_m": door_span,
+        "height_m": door_height,
+        "columns": 3,
+        "rows": 2,
+        "frame_m": 0.10,
+        "depth_m": 0.12,
+        "glass_material": spec.get("door_glass_material", "glass"),
+        "frame_material": spec.get("frame_material", "signature_metal"),
+        "interior_material": spec.get("interior_material", "interior_warm"),
+        "interior_recess_m": 0.22,
+    }, mats)
 
 
 def _graph_warehouse_window_array(parts: list, spec: dict, mats: dict) -> None:
@@ -8473,6 +8632,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_tension_roof(parts, assembly, mats)
         elif kind == "concert_oval_apertures":
             _graph_concert_oval_apertures(parts, assembly, mats)
+        elif kind == "concert_entrance_scoop":
+            _graph_concert_entrance_scoop(parts, assembly, mats)
         elif kind == "warehouse_window_array":
             _graph_warehouse_window_array(parts, assembly, mats)
         else:

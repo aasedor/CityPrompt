@@ -1033,8 +1033,8 @@
       },
       "massing_graph": {
         "schema": "massing-graph@1",
-        "profile": "concert_crystalline_glass_v1",
-        "description": "Variant-locked hybrid: a repeatable registered-brick warehouse kit supports a dimension-normalized fixed Meshy crown/roof assembly, with a separate LEGO entrance and public threshold.",
+        "profile": "concert_crystalline_glass_v2",
+        "description": "Variant-locked hybrid: a repeatable registered-brick warehouse kit supports a semantically re-skinned fixed Meshy crown/roof assembly, with independent sculpted foyer apertures and an hourglass glazed entrance scoop.",
         "height_m": 57.2,
         "reference_dimensions": {"width_m": 90.0, "depth_m": 65.0, "floors": 7, "floor_height_m": 6.5},
         "nodes": [
@@ -1048,9 +1048,7 @@
           {"id": "warehouse_front_cornice_left", "kind": "box", "size": [57.4, 0.65, 0.50], "location": [-15.5, -32.35, 17.1], "material": "secondary", "bevel_m": 0.05},
           {"id": "warehouse_front_cornice_right", "kind": "box", "size": [17.4, 0.65, 0.50], "location": [35.5, -32.35, 17.1], "material": "secondary", "bevel_m": 0.05},
           {"id": "warehouse_left_cornice", "kind": "box", "size": [0.65, 39.4, 0.50], "location": [-44.85, 0.0, 17.1], "material": "secondary", "bevel_m": 0.05},
-          {"id": "warehouse_right_cornice", "kind": "box", "size": [0.65, 39.4, 0.50], "location": [44.85, 0.0, 17.1], "material": "secondary", "bevel_m": 0.05},
-          {"id": "entrance_canopy", "kind": "box", "size": [14.2, 3.6, 0.48], "location": [20.0, -33.0, 5.8], "material": "signature_metal", "bevel_m": 0.08},
-          {"id": "entrance_canopy_soffit", "kind": "box", "size": [13.8, 3.3, 0.14], "location": [20.0, -33.0, 5.48], "material": "signature_warm", "bevel_m": 0.03}
+          {"id": "warehouse_right_cornice", "kind": "box", "size": [0.65, 39.4, 0.50], "location": [44.85, 0.0, 17.1], "material": "secondary", "bevel_m": 0.05}
         ],
         "voids": [
           {"id": "public_entrance_cleft", "size": [14.0, 8.0, 21.0], "location": [20.0, -29.0, 10.5], "purpose": "full-height glazed public arrival carved between the preserved brick wings"},
@@ -1065,6 +1063,21 @@
             "location": [0.0, 0.0, 0.0],
             "scale": [1.0, 1.0, 1.0]
           },
+          {
+            "id": "concert_front_foyer_apertures",
+            "kind": "concert_oval_apertures",
+            "segments": 40,
+            "ring_material": "roof",
+            "glass_material": "signature_glass",
+            "interior_material": "interior_warm",
+            "brace_material": "signature_metal",
+            "apertures": [
+              {"centre": [-27.0, -32.85, 35.0], "normal": [0.0, -1.0, 0.0], "width_m": 14.0, "height_m": 10.0, "tilt_deg": 5.0, "profile_m": 0.80, "lip_depth_m": 0.58, "projection_m": 0.32, "brace_angle_deg": 22.0},
+              {"centre": [-4.0, -32.85, 34.0], "normal": [0.0, -1.0, 0.0], "width_m": 8.0, "height_m": 7.0, "tilt_deg": -10.0, "profile_m": 0.62, "lip_depth_m": 0.46, "projection_m": 0.30, "brace_angle_deg": 32.0},
+              {"centre": [15.0, -32.85, 32.0], "normal": [0.0, -1.0, 0.0], "width_m": 12.0, "height_m": 18.0, "tilt_deg": -27.0, "profile_m": 0.86, "lip_depth_m": 0.62, "projection_m": 0.34, "brace_angle_deg": 25.0},
+              {"centre": [35.5, -32.85, 36.0], "normal": [0.0, -1.0, 0.0], "width_m": 6.3, "height_m": 7.0, "tilt_deg": 10.0, "profile_m": 0.54, "lip_depth_m": 0.42, "projection_m": 0.30, "brace_angle_deg": 34.0}
+            ]
+          },
           {"id": "warehouse_front_left_skin", "kind": "texture_skin", "axis": "front", "centre": [-15.5, -32.56, 8.9], "span_m": 55.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
           {"id": "warehouse_front_right_skin", "kind": "texture_skin", "axis": "front", "centre": [35.5, -32.56, 8.9], "span_m": 15.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
           {"id": "warehouse_left_skin", "kind": "texture_skin", "axis": "left", "centre": [-45.06, 0.0, 8.9], "span_m": 38.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
@@ -1072,7 +1085,7 @@
           {"id": "warehouse_front_left_return_skin", "kind": "texture_skin", "axis": "left", "centre": [-44.06, -25.5, 8.9], "span_m": 13.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
           {"id": "warehouse_front_right_return_skin", "kind": "texture_skin", "axis": "right", "centre": [44.06, -25.5, 8.9], "span_m": 13.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin"},
           {"id": "warehouse_rear_skin", "kind": "texture_skin", "axis": "rear", "centre": [0.0, 32.06, 8.9], "span_m": 87.8, "height_m": 17.0, "depth_m": 0.05, "repeat_span_m": 30.6, "material": "signature_brick_skin", "flip_u": true},
-          {"id": "concert_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [20.0, -31.0, 10.5], "span_m": 13.0, "height_m": 20.4, "columns": 4, "rows": 5, "frame_m": 0.11, "depth_m": 0.16, "glass_material": "interior_warm", "frame_material": "signature_metal", "interior_material": "interior_warm", "interior_recess_m": 0.24},
+          {"id": "concert_entry_scoop", "kind": "concert_entrance_scoop", "base_centre": [20.0, -32.84, 0.78], "height_m": 27.0, "bottom_span_m": 7.2, "top_span_m": 18.0, "recess_m": 3.2, "columns": 8, "rows": 10, "frame_radius_m": 0.075, "edge_radius_m": 0.18, "glass_material": "signature_glass", "door_glass_material": "interior_warm", "interior_material": "interior_warm", "frame_material": "signature_metal", "edge_material": "roof", "door_span_m": 5.4, "door_height_m": 4.8},
           {"id": "concert_entry_steps", "kind": "steps", "centre": [20.0, -33.3, 0.0], "width_m": 15.0, "depth_m": 1.8, "count": 5, "rise_m": 0.13, "material": "signature_stone"}
         ],
         "target_views": ["archetype_match", "street", "aerial", "context"]

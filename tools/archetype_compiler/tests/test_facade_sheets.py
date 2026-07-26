@@ -278,7 +278,7 @@ def test_concert_crystalline_variant_injects_meshy_hybrid_lego_contract():
     assemblies = graph["assemblies"]
     kinds = {item["kind"] for item in assemblies}
 
-    assert graph["profile"] == "concert_crystalline_glass_v1"
+    assert graph["profile"] == "concert_crystalline_glass_v2"
     assert graph["reference_dimensions"] == {
         "width_m": 90.0,
         "depth_m": 65.0,
@@ -288,7 +288,8 @@ def test_concert_crystalline_variant_injects_meshy_hybrid_lego_contract():
     assert {
         "external_glb",
         "texture_skin",
-        "curtain_wall",
+        "concert_oval_apertures",
+        "concert_entrance_scoop",
     } <= kinds
     fixed_crown = next(item for item in assemblies if item["kind"] == "external_glb")
     assert fixed_crown["role"] == "fixed_crown_roof"
@@ -296,8 +297,11 @@ def test_concert_crystalline_variant_injects_meshy_hybrid_lego_contract():
     assert {
         "undulating_glass_crown",
         "tension_roof",
-        "concert_oval_apertures",
     }.isdisjoint(kinds)
+    apertures = next(item for item in assemblies if item["kind"] == "concert_oval_apertures")
+    assert len(apertures["apertures"]) == 4
+    entrance = next(item for item in assemblies if item["kind"] == "concert_entrance_scoop")
+    assert entrance["top_span_m"] > entrance["bottom_span_m"]
     assert injected["materials"]["primary"]["texture_key"] == "red_brick"
     assert injected["architectural_signature"]["glass_profile"] == "reflective_curtain_wall"
     signature_materials = injected["architectural_signature"]["signature_material_overrides"]
@@ -354,6 +358,19 @@ def test_meshy_concert_reference_is_a_bounded_fixed_lego_assembly():
     assert manifest["interface_z_m"] == 17.4
     assert manifest["target_dimensions_m"] == [90.0, 65.0, 57.2]
     assert manifest["max_texture_px"] == 1024
+    segmentation = manifest["material_segmentation"]
+    assert segmentation["schema"] == "concert-crown-material-segmentation@1"
+    assert set(segmentation["face_counts"]) == {
+        "glass",
+        "roof",
+        "historic_transition",
+    }
+    assert all(count > 0 for count in segmentation["face_counts"].values())
+    assert segmentation["materials"] == {
+        "glass": "concert_crystalline_glass",
+        "roof": "concert_tensile_roof",
+        "historic_transition": "concert_warehouse_brick",
+    }
     assert manifest["lego_contract"] == {
         "role": "fixed_crown_roof",
         "repeatable": False,
