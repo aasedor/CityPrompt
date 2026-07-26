@@ -1012,6 +1012,145 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "concert_crystalline_glass": {
+      "identity": "Render-locked crystalline concert hall: a preserved red-brick warehouse perimeter carries a continuous undulating reflective-glass crown, irregular chromed oval foyer apertures, a full-height front-right entrance cleft and a silver multi-peak cable-net roof with real saddle valleys.",
+      "material_zones": "weathered red warehouse brick and pale sandstone trim; cool reflective low-iron glass; warm occupied foyer interiors; dark bronze mullions; silver chrome aperture lips; pale metallic cable-net roof",
+      "glass_profile": "reflective_curtain_wall",
+      "kits": ["preserved_warehouse_base", "undulating_glass_crown", "oval_foyer_apertures", "entrance_cleft", "multi_peak_tension_roof", "cable_net_seams"],
+      "material_overrides": {
+        "primary": {"base_color": "#9b4f38", "roughness": 0.80, "metallic": 0.0, "texture_key": "red_brick"},
+        "secondary": {"base_color": "#c4a47c", "roughness": 0.72, "metallic": 0.0, "texture_key": "sandstone"},
+        "accent": {"base_color": "#26292c", "roughness": 0.32, "metallic": 0.72, "texture_key": null},
+        "roof": {"base_color": "#aab7c2", "roughness": 0.24, "metallic": 0.76, "texture_key": null}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#c8ad87", "roughness": 0.72, "metallic": 0.0, "texture_key": "sandstone"},
+        "signature_warm": {"base_color": "#8b5c2f", "roughness": 0.62, "metallic": 0.0, "texture_key": "oak_wood"},
+        "signature_roof": {"base_color": "#b7c5d0", "roughness": 0.22, "metallic": 0.82, "texture_key": null},
+        "signature_metal": {"base_color": "#20272c", "roughness": 0.26, "metallic": 0.78, "texture_key": null},
+        "signature_glass": {"base_color": "#647f93", "roughness": 0.07, "transmission": 0.50, "ior": 1.48, "clearcoat": 0.64, "clearcoat_roughness": 0.04}
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "concert_crystalline_glass_v1",
+        "description": "Variant-locked concert hall assembled as a real preserved warehouse base, warped perimeter glass mesh, projected oval foyer apertures, front-right public entrance cleft and a multi-peak tensile roof surface.",
+        "height_m": 57.2,
+        "reference_dimensions": {"width_m": 90.0, "depth_m": 65.0, "floors": 7, "floor_height_m": 6.5},
+        "nodes": [
+          {"id": "concert_plinth", "kind": "box", "size": [90.0, 65.0, 0.42], "location": [0.0, 0.0, 0.21], "material": "signature_stone", "bevel_m": 0.05},
+          {"id": "warehouse_front_left", "kind": "box", "size": [57.0, 14.0, 18.0], "location": [-15.5, -25.5, 9.2], "material": "primary", "bevel_m": 0.10},
+          {"id": "warehouse_front_right", "kind": "box", "size": [17.0, 14.0, 18.0], "location": [35.5, -25.5, 9.2], "material": "primary", "bevel_m": 0.10},
+          {"id": "warehouse_left_wing", "kind": "box", "size": [12.0, 39.0, 18.0], "location": [-39.0, 0.0, 9.2], "material": "primary", "bevel_m": 0.10},
+          {"id": "warehouse_right_wing", "kind": "box", "size": [12.0, 39.0, 18.0], "location": [39.0, 0.0, 9.2], "material": "primary", "bevel_m": 0.10},
+          {"id": "warehouse_rear", "kind": "box", "size": [88.0, 12.0, 18.0], "location": [0.0, 26.0, 9.2], "material": "primary", "bevel_m": 0.10},
+          {"id": "auditorium_shadow_core", "kind": "box", "size": [55.0, 39.0, 35.0], "location": [-3.0, 2.0, 29.0], "material": "interior", "bevel_m": 0.40},
+          {"id": "warehouse_gable_01", "kind": "gable_roof", "size": [13.0, 15.0, 3.6], "location": [-36.0, -25.5, 18.0], "material": "primary", "bevel_m": 0.08, "ridge_axis": "y"},
+          {"id": "warehouse_gable_02", "kind": "gable_roof", "size": [12.5, 15.0, 3.9], "location": [-22.8, -25.5, 18.0], "material": "primary", "bevel_m": 0.08, "ridge_axis": "y"},
+          {"id": "warehouse_gable_03", "kind": "gable_roof", "size": [12.5, 15.0, 3.4], "location": [-9.8, -25.5, 18.0], "material": "primary", "bevel_m": 0.08, "ridge_axis": "y"},
+          {"id": "warehouse_gable_04", "kind": "gable_roof", "size": [12.0, 15.0, 3.8], "location": [3.0, -25.5, 18.0], "material": "primary", "bevel_m": 0.08, "ridge_axis": "y"},
+          {"id": "warehouse_gable_05", "kind": "gable_roof", "size": [16.0, 15.0, 3.5], "location": [35.5, -25.5, 18.0], "material": "primary", "bevel_m": 0.08, "ridge_axis": "y"},
+          {"id": "warehouse_front_cornice_left", "kind": "box", "size": [57.4, 0.65, 0.50], "location": [-15.5, -32.35, 17.1], "material": "secondary", "bevel_m": 0.05},
+          {"id": "warehouse_front_cornice_right", "kind": "box", "size": [17.4, 0.65, 0.50], "location": [35.5, -32.35, 17.1], "material": "secondary", "bevel_m": 0.05},
+          {"id": "warehouse_left_cornice", "kind": "box", "size": [0.65, 39.4, 0.50], "location": [-44.85, 0.0, 17.1], "material": "secondary", "bevel_m": 0.05},
+          {"id": "warehouse_right_cornice", "kind": "box", "size": [0.65, 39.4, 0.50], "location": [44.85, 0.0, 17.1], "material": "secondary", "bevel_m": 0.05},
+          {"id": "entrance_canopy", "kind": "box", "size": [14.2, 3.6, 0.48], "location": [20.0, -33.0, 5.8], "material": "signature_roof", "bevel_m": 0.08},
+          {"id": "entrance_canopy_soffit", "kind": "box", "size": [13.8, 3.3, 0.14], "location": [20.0, -33.0, 5.48], "material": "signature_warm", "bevel_m": 0.03}
+        ],
+        "voids": [
+          {"id": "public_entrance_cleft", "size": [14.0, 8.0, 21.0], "location": [20.0, -29.0, 10.5], "purpose": "full-height glazed public arrival carved between the preserved brick wings"},
+          {"id": "foyer_oval_field", "size": [72.0, 4.0, 24.0], "location": [0.0, -29.0, 33.0], "purpose": "irregular chromed oval openings registered across the warped glass skin"}
+        ],
+        "assemblies": [
+          {
+            "id": "crystalline_glass_crown",
+            "kind": "undulating_glass_crown",
+            "centre": [0.0, 0.0],
+            "width_m": 86.0,
+            "depth_m": 59.0,
+            "base_z_m": 21.0,
+            "edge_z_m": 46.8,
+            "rounded_power": 5.2,
+            "wave_amplitude_m": 3.2,
+            "entrance_x_m": 20.0,
+            "entrance_width_m": 7.0,
+            "entrance_drop_m": 19.8,
+            "segments": 88,
+            "levels": 16,
+            "horizontal_rows": 9,
+            "vertical_stride": 1,
+            "frame_radius_m": 0.052,
+            "material": "signature_glass",
+            "frame_material": "signature_metal",
+            "interior_material": "interior_warm",
+            "interior_recess_m": 0.58
+          },
+          {
+            "id": "crystalline_tension_roof",
+            "kind": "tension_roof",
+            "centre": [0.0, 0.0],
+            "width_m": 86.4,
+            "depth_m": 59.4,
+            "edge_z_m": 46.8,
+            "rounded_power": 5.2,
+            "segments": 88,
+            "rings": 20,
+            "sag_m": 2.8,
+            "peaks": [
+              [-29.0, -16.0, 10.8, 9.5],
+              [-10.0, -18.0, 12.7, 9.2],
+              [11.0, -18.0, 11.5, 9.2],
+              [30.0, -11.0, 10.2, 9.0],
+              [-26.0, 5.0, 10.0, 9.5],
+              [-4.0, 4.0, 12.8, 9.4],
+              [21.0, 7.0, 11.0, 9.2],
+              [-8.0, 21.0, 10.0, 9.5]
+            ],
+            "material": "signature_roof",
+            "cable_material": "signature_metal",
+            "cable_radius_m": 0.038,
+            "radial_stride": 4,
+            "ring_stride": 4
+          },
+          {
+            "id": "crystalline_oval_foyers",
+            "kind": "concert_oval_apertures",
+            "ring_material": "signature_roof",
+            "glass_material": "signature_glass",
+            "interior_material": "interior_warm",
+            "brace_material": "signature_metal",
+            "segments": 40,
+            "shell": {
+              "centre": [0.0, 0.0],
+              "width_m": 86.0,
+              "depth_m": 59.0,
+              "base_z_m": 21.0,
+              "edge_z_m": 46.8,
+              "rounded_power": 5.2,
+              "wave_amplitude_m": 3.2,
+              "entrance_x_m": 20.0,
+              "entrance_width_m": 7.0,
+              "entrance_drop_m": 19.8
+            },
+            "apertures": [
+              {"theta_deg": -116.0, "z_m": 35.5, "width_m": 13.5, "height_m": 8.5, "tilt_deg": -9.0, "profile_m": 0.78, "projection_m": 0.28},
+              {"theta_deg": -94.0, "z_m": 31.5, "width_m": 7.0, "height_m": 8.2, "tilt_deg": 12.0, "profile_m": 0.62, "projection_m": 0.24},
+              {"theta_deg": -71.0, "z_m": 31.0, "width_m": 8.5, "height_m": 14.5, "tilt_deg": 31.0, "profile_m": 0.72, "projection_m": 0.30},
+              {"theta_deg": -53.0, "z_m": 28.0, "width_m": 6.0, "height_m": 7.4, "tilt_deg": -14.0, "profile_m": 0.58, "projection_m": 0.24},
+              {"theta_deg": 12.0, "z_m": 32.0, "width_m": 6.4, "height_m": 8.8, "tilt_deg": 18.0, "profile_m": 0.62, "projection_m": 0.24},
+              {"theta_deg": 168.0, "z_m": 34.0, "width_m": 7.2, "height_m": 10.0, "tilt_deg": -22.0, "profile_m": 0.64, "projection_m": 0.24}
+            ]
+          },
+          {"id": "warehouse_front_left_windows", "kind": "warehouse_window_array", "axis": "front", "centre": [-15.5, -32.58, 9.5], "span_m": 52.0, "height_m": 14.0, "columns": 10, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "warehouse_front_right_windows", "kind": "warehouse_window_array", "axis": "front", "centre": [35.5, -32.58, 9.5], "span_m": 14.5, "height_m": 14.0, "columns": 3, "rows": 3, "window_width_ratio": 0.44, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "warehouse_left_windows", "kind": "warehouse_window_array", "axis": "left", "centre": [-45.08, 0.0, 9.5], "span_m": 35.0, "height_m": 14.0, "columns": 7, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "warehouse_right_windows", "kind": "warehouse_window_array", "axis": "right", "centre": [45.08, 0.0, 9.5], "span_m": 35.0, "height_m": 14.0, "columns": 7, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "warehouse_rear_windows", "kind": "warehouse_window_array", "axis": "rear", "centre": [0.0, 32.08, 9.5], "span_m": 80.0, "height_m": 14.0, "columns": 15, "rows": 3, "window_width_ratio": 0.45, "window_height_ratio": 0.58, "frame_m": 0.15, "frame_material": "secondary"},
+          {"id": "concert_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [20.0, -31.0, 10.5], "span_m": 13.0, "height_m": 20.4, "columns": 4, "rows": 5, "frame_m": 0.11, "depth_m": 0.16, "glass_material": "glass", "frame_material": "signature_metal", "interior_material": "interior_warm", "interior_recess_m": 0.24},
+          {"id": "concert_entry_steps", "kind": "steps", "centre": [20.0, -33.3, 0.0], "width_m": 15.0, "depth_m": 1.8, "count": 5, "rise_m": 0.13, "material": "signature_stone"}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "material_zones": "warm carved stone and stucco; black iron; timber shutters; darker stone base",

@@ -395,6 +395,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
   narrow profiles; validate in Google Tiles because bright runtime exposure can
   turn a restrained offline course into detached white trim.
 
+### Crystalline concert-hall surface lessons
+
+The Concert Hall Modern crystalline-glass pilot added three rules for
+free-form cultural landmarks:
+
+- A warped envelope and a cable-net roof are continuous surface systems, not
+  stacks of boxes or cones. Build one perimeter glass mesh and one roof mesh
+  tied to the same edge curve; blend multiple roof peaks smoothly so the
+  valleys remain saddles rather than hard mountain ridges.
+- Large reflective envelopes need a denser exterior-skin optical profile than
+  individual clear windows. Keep physical transmission, but use a darker
+  blue-grey reflective skin, warm occupied lower foyer zones and separate
+  clear glazing at entrances and apertures so the landmark is neither milky
+  white nor uniformly black.
+- Catalogue validation must accommodate legitimate non-residential sections.
+  Concert halls, assembly spaces and industrial halls can exceed a six-metre
+  storey height; validate those acoustic/structural dimensions explicitly and
+  retain the tighter ordinary-building behavior through regression tests.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

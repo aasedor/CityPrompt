@@ -304,6 +304,47 @@ def make_profile_glass_material(name: str, profile_name: str) -> bpy.types.Mater
     return mat
 
 
+def make_reflective_skin_material(name: str, spec: dict) -> bpy.types.Material:
+    """Darker architectural glass for large reflective landmark envelopes.
+
+    The shared clear-glass profiles are calibrated for individual windows.
+    Across a 90-m warped surface they render too pale, so this material keeps
+    physical transmission while adding the blue-grey reflection density seen
+    in the concert-hall reference.
+    """
+    mat = make_material(name, {
+        "base_color": spec.get("base_color", "#6f8494"),
+        "roughness": spec.get("roughness", 0.075),
+        "metallic": 0.0,
+    })
+    principled = next(
+        (node for node in mat.node_tree.nodes if node.type == "BSDF_PRINCIPLED"),
+        None,
+    )
+    if principled is not None:
+        principled.inputs["Base Color"].default_value = hex_rgba(
+            str(spec.get("base_color", "#6f8494"))
+        )
+        principled.inputs["Metallic"].default_value = 0.0
+        principled.inputs["Roughness"].default_value = float(spec.get("roughness", 0.075))
+        transmission = principled.inputs.get("Transmission Weight") or principled.inputs.get("Transmission")
+        if transmission:
+            transmission.default_value = float(spec.get("transmission", 0.52))
+        if principled.inputs.get("IOR"):
+            principled.inputs["IOR"].default_value = float(spec.get("ior", 1.48))
+        if principled.inputs.get("Coat Weight"):
+            principled.inputs["Coat Weight"].default_value = float(spec.get("clearcoat", 0.62))
+        if principled.inputs.get("Coat Roughness"):
+            principled.inputs["Coat Roughness"].default_value = float(
+                spec.get("clearcoat_roughness", 0.045)
+            )
+    mat.diffuse_color = hex_rgba(str(spec.get("base_color", "#6f8494")))
+    mat["glazing_profile"] = "crystalline_reflective_skin"
+    mat["glazing_lod"] = "physical"
+    mat["alpha_strategy"] = "opaque_physical_transmission"
+    return mat
+
+
 def make_facade_sheet_material(
     name: str,
     albedo: Path,
@@ -689,6 +730,11 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "base_color": "#17191b", "roughness": 0.34, "metallic": 0.72,
         **dict(signature_materials.get("signature_metal") or {}),
     }
+    signature_glass_spec = {
+        "base_color": "#6f8494", "roughness": 0.075, "transmission": 0.52,
+        "ior": 1.48, "clearcoat": 0.62, "clearcoat_roughness": 0.045,
+        **dict(signature_materials.get("signature_glass") or {}),
+    }
     result = {
         "primary": make_material("MAT_Facade_Primary", materials["primary"]),
         "secondary": make_material("MAT_Facade_Secondary", materials["secondary"]),
@@ -719,6 +765,9 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "signature_stone": make_material("MAT_Signature_CutStone", signature_stone_spec),
         "signature_roof": make_material("MAT_Signature_AgedLeadRoof", signature_roof_spec),
         "signature_metal": make_material("MAT_Signature_BlackMetal", signature_metal_spec),
+        "signature_glass": make_reflective_skin_material(
+            "MAT_Signature_ReflectiveGlass", signature_glass_spec,
+        ),
         "massing_soffit": make_material("MAT_Massing_DarkConcreteSoffit", {
             "base_color": "#42413e", "roughness": 0.88, "metallic": 0.0,
             "texture_key": "concrete",
@@ -7667,6 +7716,447 @@ def _consolidate_massing_skin_materials(obj: bpy.types.Object) -> None:
             mesh.materials[index] = canonical
 
 
+def _add_polyline_mesh(
+    name: str,
+    points: list[tuple[float, float, float]],
+    radius_m: float,
+    mat,
+    *,
+    cyclic: bool = False,
+) -> bpy.types.Object:
+    """Create a round structural line and convert it to a joinable mesh."""
+    curve = bpy.data.curves.new(name=f"{name}_Curve", type="CURVE")
+    curve.dimensions = "3D"
+    curve.resolution_u = 1
+    curve.bevel_depth = max(0.005, float(radius_m))
+    curve.bevel_resolution = 1
+    curve.resolution_u = 1
+    curve.use_fill_caps = True
+    spline = curve.splines.new("POLY")
+    spline.points.add(len(points) - 1)
+    for point, coordinate in zip(spline.points, points):
+        point.co = (*coordinate, 1.0)
+    spline.use_cyclic_u = cyclic
+    obj = bpy.data.objects.new(name, curve)
+    bpy.context.scene.collection.objects.link(obj)
+    obj.data.materials.append(mat)
+    bpy.ops.object.select_all(action="DESELECT")
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.convert(target="MESH")
+    return bpy.context.object
+
+
+def _concert_perimeter_point(
+    theta: float,
+    half_width: float,
+    half_depth: float,
+    rounded_power: float,
+) -> tuple[float, float]:
+    exponent = 2.0 / max(2.01, rounded_power)
+    cosine, sine = math.cos(theta), math.sin(theta)
+    x = math.copysign(abs(cosine) ** exponent, cosine) * half_width
+    y = math.copysign(abs(sine) ** exponent, sine) * half_depth
+    return x, y
+
+
+def _concert_edge_height(theta: float, edge_z: float) -> float:
+    return edge_z + 0.52 * math.sin(theta * 3.0 + 0.35) + 0.28 * math.sin(theta * 5.0 - 0.6)
+
+
+def _concert_shell_point(
+    theta: float,
+    vertical_fraction: float,
+    spec: dict,
+    *,
+    inward_m: float = 0.0,
+) -> tuple[float, float, float]:
+    cx, cy = (float(value) for value in spec.get("centre", (0.0, 0.0)))
+    half_width = float(spec["width_m"]) / 2
+    half_depth = float(spec["depth_m"]) / 2
+    rounded_power = float(spec.get("rounded_power", 5.0))
+    base_z = float(spec["base_z_m"])
+    edge_z = float(spec["edge_z_m"])
+    x0, y0 = _concert_perimeter_point(theta, half_width, half_depth, rounded_power)
+    normal = Vector((x0 / max(half_width * half_width, 1e-6), y0 / max(half_depth * half_depth, 1e-6), 0.0))
+    if normal.length <= 1e-6:
+        normal = Vector((math.cos(theta), math.sin(theta), 0.0))
+    normal.normalize()
+
+    # The canonical reference has a deep public entrance cleft on the
+    # front-right elevation, where the glass crown drops through the brick
+    # warehouse datum nearly to grade.
+    frontness = max(0.0, min(1.0, (-y0 / half_depth - 0.70) / 0.30))
+    entrance_x = float(spec.get("entrance_x_m", half_width * 0.42))
+    entrance_width = max(0.1, float(spec.get("entrance_width_m", half_width * 0.18)))
+    entrance_drop = float(spec.get("entrance_drop_m", base_z - 1.2))
+    entrance = frontness * math.exp(-((x0 - entrance_x) / entrance_width) ** 2)
+    bottom_z = base_z - entrance_drop * entrance
+    top_z = _concert_edge_height(theta, edge_z)
+
+    v = max(0.0, min(1.0, vertical_fraction))
+    wave = float(spec.get("wave_amplitude_m", 2.6)) * math.sin(math.pi * v) * (
+        0.48 * math.sin(theta * 3.0 + 0.9)
+        + 0.34 * math.sin(theta * 5.0 - 0.4)
+        + 0.22 * math.cos(theta * 2.0 + v * math.tau)
+    )
+    coordinate = Vector((cx + x0, cy + y0, bottom_z + (top_z - bottom_z) * v))
+    coordinate += normal * (wave - inward_m)
+    return tuple(coordinate)
+
+
+def _graph_undulating_glass_crown(parts: list, spec: dict, mats: dict) -> None:
+    """Build the continuous warped-glass body, warm foyer belt and mullions."""
+    prefix = str(spec.get("id", "ConcertGlassCrown"))
+    segments = max(32, int(spec.get("segments", 88)))
+    levels = max(8, int(spec.get("levels", 16)))
+    shell_vertices = [
+        _concert_shell_point(math.tau * index / segments, level / levels, spec)
+        for level in range(levels + 1)
+        for index in range(segments)
+    ]
+    shell_faces = [
+        (
+            level * segments + index,
+            level * segments + (index + 1) % segments,
+            (level + 1) * segments + (index + 1) % segments,
+            (level + 1) * segments + index,
+        )
+        for level in range(levels)
+        for index in range(segments)
+    ]
+    shell = add_prism(prefix, shell_vertices, shell_faces, _graph_material(mats, spec.get("material", "glass")))
+    for polygon in shell.data.polygons:
+        polygon.use_smooth = True
+    parts.append(shell)
+
+    # A shallow occupied layer gives the physical glass something real to
+    # reveal and supplies the warm foyer band visible in the sunset references.
+    band_low = float(spec.get("warm_band_low", 0.05))
+    band_high = float(spec.get("warm_band_high", 0.34))
+    band_steps = 4
+    band_vertices = [
+        _concert_shell_point(
+            math.tau * index / segments,
+            band_low + (band_high - band_low) * level / band_steps,
+            spec,
+            inward_m=float(spec.get("interior_recess_m", 0.55)),
+        )
+        for level in range(band_steps + 1)
+        for index in range(segments)
+    ]
+    band_faces = [
+        (
+            level * segments + index,
+            level * segments + (index + 1) % segments,
+            (level + 1) * segments + (index + 1) % segments,
+            (level + 1) * segments + index,
+        )
+        for level in range(band_steps)
+        for index in range(segments)
+    ]
+    warm_band = add_prism(
+        f"{prefix}_OccupiedFoyer", band_vertices, band_faces,
+        _graph_material(mats, spec.get("interior_material", "interior_warm")),
+    )
+    for polygon in warm_band.data.polygons:
+        polygon.use_smooth = True
+    parts.append(warm_band)
+
+    frame_mat = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    vertical_stride = max(1, int(spec.get("vertical_stride", 1)))
+    frame_radius = float(spec.get("frame_radius_m", 0.052))
+    for index in range(0, segments, vertical_stride):
+        theta = math.tau * index / segments
+        points = [
+            _concert_shell_point(theta, level / levels, spec, inward_m=-0.035)
+            for level in range(levels + 1)
+        ]
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_Mullion_{index:03d}", points, frame_radius, frame_mat,
+        ))
+    horizontal_rows = max(3, int(spec.get("horizontal_rows", 9)))
+    for row in range(horizontal_rows + 1):
+        fraction = row / horizontal_rows
+        points = [
+            _concert_shell_point(math.tau * index / segments, fraction, spec, inward_m=-0.04)
+            for index in range(segments)
+        ]
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_Transom_{row:02d}", points, frame_radius * 0.86, frame_mat, cyclic=True,
+        ))
+
+
+def _concert_roof_height(x: float, y: float, radial: float, theta: float, spec: dict) -> float:
+    edge_z = _concert_edge_height(theta, float(spec["edge_z_m"]))
+    sag = float(spec.get("sag_m", 3.2)) * max(0.0, 1.0 - radial * radial)
+    peak_values = []
+    for peak_spec in spec.get("peaks", []):
+        px, py, height, spread = (float(value) for value in peak_spec)
+        distance_sq = (x - px) ** 2 + (y - py) ** 2
+        peak_values.append(
+            height * math.exp(-distance_sq / max(2.0 * spread * spread, 1e-6))
+        )
+    # A fourth-order blend preserves distinct tent peaks without the hard
+    # Voronoi creases created by max(), producing continuous saddle valleys.
+    peak = sum(value ** 4 for value in peak_values) ** 0.25 if peak_values else 0.0
+    # Keep the perimeter tied to the crown while allowing interior peaks and
+    # saddles to carry the cable-net silhouette.
+    boundary_falloff = 0.16 + 0.84 * max(0.0, 1.0 - radial ** 4)
+    return edge_z - sag + peak * boundary_falloff
+
+
+def _graph_tension_roof(parts: list, spec: dict, mats: dict) -> None:
+    """Build a multi-peak cable-net roof as one smooth saddle surface."""
+    prefix = str(spec.get("id", "ConcertTensionRoof"))
+    cx, cy = (float(value) for value in spec.get("centre", (0.0, 0.0)))
+    half_width = float(spec["width_m"]) / 2
+    half_depth = float(spec["depth_m"]) / 2
+    rounded_power = float(spec.get("rounded_power", 5.0))
+    segments = max(36, int(spec.get("segments", 88)))
+    rings = max(8, int(spec.get("rings", 20)))
+
+    vertices = [(cx, cy, _concert_roof_height(0.0, 0.0, 0.0, 0.0, spec))]
+    for ring in range(1, rings + 1):
+        radial = ring / rings
+        for index in range(segments):
+            theta = math.tau * index / segments
+            boundary_x, boundary_y = _concert_perimeter_point(
+                theta, half_width, half_depth, rounded_power,
+            )
+            x, y = boundary_x * radial, boundary_y * radial
+            vertices.append((
+                cx + x, cy + y, _concert_roof_height(x, y, radial, theta, spec),
+            ))
+
+    faces: list[tuple[int, ...]] = [
+        (0, 1 + index, 1 + (index + 1) % segments)
+        for index in range(segments)
+    ]
+    for ring in range(1, rings):
+        inner_start = 1 + (ring - 1) * segments
+        outer_start = 1 + ring * segments
+        for index in range(segments):
+            next_index = (index + 1) % segments
+            faces.append((
+                inner_start + index,
+                outer_start + index,
+                outer_start + next_index,
+                inner_start + next_index,
+            ))
+    roof = add_prism(
+        prefix, vertices, faces, _graph_material(mats, spec.get("material", "signature_roof")),
+    )
+    for polygon in roof.data.polygons:
+        polygon.use_smooth = True
+    parts.append(roof)
+
+    cable_mat = _graph_material(mats, spec.get("cable_material", "signature_metal"))
+    cable_radius = float(spec.get("cable_radius_m", 0.038))
+    for index in range(0, segments, max(1, int(spec.get("radial_stride", 4)))):
+        theta = math.tau * index / segments
+        boundary_x, boundary_y = _concert_perimeter_point(
+            theta, half_width, half_depth, rounded_power,
+        )
+        points = []
+        for ring in range(1, rings + 1):
+            radial = ring / rings
+            x, y = boundary_x * radial, boundary_y * radial
+            points.append((
+                cx + x, cy + y,
+                _concert_roof_height(x, y, radial, theta, spec) + cable_radius * 1.4,
+            ))
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_RadialCable_{index:03d}", points, cable_radius, cable_mat,
+        ))
+    for ring in range(4, rings + 1, max(2, int(spec.get("ring_stride", 4)))):
+        radial = ring / rings
+        points = []
+        for index in range(segments):
+            theta = math.tau * index / segments
+            boundary_x, boundary_y = _concert_perimeter_point(
+                theta, half_width, half_depth, rounded_power,
+            )
+            x, y = boundary_x * radial, boundary_y * radial
+            points.append((
+                cx + x, cy + y,
+                _concert_roof_height(x, y, radial, theta, spec) + cable_radius * 1.4,
+            ))
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_RingCable_{ring:02d}", points, cable_radius, cable_mat, cyclic=True,
+        ))
+
+
+def _ellipse_surface_points(
+    centre: Vector,
+    normal: Vector,
+    width: float,
+    height: float,
+    tilt_deg: float,
+    segments: int,
+) -> list[Vector]:
+    tangent = Vector((-normal.y, normal.x, 0.0)).normalized()
+    vertical = Vector((0.0, 0.0, 1.0))
+    tilt = math.radians(tilt_deg)
+    points = []
+    for index in range(segments):
+        angle = math.tau * index / segments
+        u, v = width * 0.5 * math.cos(angle), height * 0.5 * math.sin(angle)
+        along = u * math.cos(tilt) - v * math.sin(tilt)
+        up = u * math.sin(tilt) + v * math.cos(tilt)
+        points.append(centre + tangent * along + vertical * up)
+    return points
+
+
+def _graph_concert_oval_apertures(parts: list, spec: dict, mats: dict) -> None:
+    """Add chromed, irregularly tilted foyer apertures to the warped shell."""
+    prefix = str(spec.get("id", "ConcertOval"))
+    shell_spec = dict(spec["shell"])
+    half_width = float(shell_spec["width_m"]) / 2
+    half_depth = float(shell_spec["depth_m"]) / 2
+    rounded_power = float(shell_spec.get("rounded_power", 5.0))
+    ring_mat = _graph_material(mats, spec.get("ring_material", "signature_roof"))
+    glass_mat = _graph_material(mats, spec.get("glass_material", "glass"))
+    warm_mat = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+    brace_mat = _graph_material(mats, spec.get("brace_material", "signature_metal"))
+    segments = max(20, int(spec.get("segments", 36)))
+
+    for aperture_index, aperture in enumerate(spec.get("apertures", [])):
+        theta = math.radians(float(aperture["theta_deg"]))
+        z = float(aperture["z_m"])
+        width = float(aperture["width_m"])
+        height = float(aperture["height_m"])
+        tilt = float(aperture.get("tilt_deg", 0.0))
+        x0, y0 = _concert_perimeter_point(theta, half_width, half_depth, rounded_power)
+        normal = Vector((x0 / (half_width * half_width), y0 / (half_depth * half_depth), 0.0)).normalized()
+        vertical_fraction = max(
+            0.05,
+            min(0.95, (z - float(shell_spec["base_z_m"])) / (
+                float(shell_spec["edge_z_m"]) - float(shell_spec["base_z_m"])
+            )),
+        )
+        shell_coordinate = Vector(_concert_shell_point(theta, vertical_fraction, shell_spec))
+        shell_coordinate.z = z
+        lip_centre = shell_coordinate + normal * float(aperture.get("projection_m", 0.22))
+        outer = _ellipse_surface_points(lip_centre, normal, width, height, tilt, segments)
+        inner = _ellipse_surface_points(
+            lip_centre + normal * 0.015,
+            normal,
+            width - float(aperture.get("profile_m", 0.72)) * 2,
+            height - float(aperture.get("profile_m", 0.72)) * 2,
+            tilt,
+            segments,
+        )
+        ring_vertices = [tuple(point) for point in outer + inner]
+        ring_faces = [
+            (index, (index + 1) % segments, segments + (index + 1) % segments, segments + index)
+            for index in range(segments)
+        ]
+        ring = add_prism(f"{prefix}_Lip_{aperture_index:02d}", ring_vertices, ring_faces, ring_mat)
+        for polygon in ring.data.polygons:
+            polygon.use_smooth = True
+        parts.append(ring)
+
+        pane_centre = lip_centre - normal * 0.16
+        pane_ring = _ellipse_surface_points(
+            pane_centre, normal, width * 0.78, height * 0.78, tilt, segments,
+        )
+        pane_vertices = [tuple(pane_centre)] + [tuple(point) for point in pane_ring]
+        pane_faces = [
+            (0, 1 + index, 1 + (index + 1) % segments)
+            for index in range(segments)
+        ]
+        parts.append(add_prism(
+            f"{prefix}_Pane_{aperture_index:02d}", pane_vertices, pane_faces, glass_mat,
+        ))
+        warm_centre = pane_centre - normal * 0.18
+        warm_ring = _ellipse_surface_points(
+            warm_centre, normal, width * 0.64, height * 0.64, tilt, segments,
+        )
+        warm_vertices = [tuple(warm_centre)] + [tuple(point) for point in warm_ring]
+        parts.append(add_prism(
+            f"{prefix}_WarmInterior_{aperture_index:02d}",
+            warm_vertices,
+            pane_faces,
+            warm_mat,
+        ))
+
+        tangent = Vector((-normal.y, normal.x, 0.0)).normalized()
+        brace_angle = math.radians(tilt + float(aperture.get("brace_angle_deg", 28.0)))
+        brace_vector = tangent * math.cos(brace_angle) + Vector((0.0, 0.0, 1.0)) * math.sin(brace_angle)
+        brace_length = min(width, height) * 0.62
+        parts.append(_add_polyline_mesh(
+            f"{prefix}_Brace_{aperture_index:02d}",
+            [
+                tuple(pane_centre - brace_vector * brace_length / 2 + normal * 0.035),
+                tuple(pane_centre + brace_vector * brace_length / 2 + normal * 0.035),
+            ],
+            float(aperture.get("brace_radius_m", 0.085)),
+            brace_mat,
+        ))
+
+
+def _graph_warehouse_window_array(parts: list, spec: dict, mats: dict) -> None:
+    """Build discrete deep-set warehouse windows over the preserved brick base."""
+    axis = str(spec.get("axis", "front"))
+    outward, along = _glazing_axis_vectors(axis)
+    centre = Vector(tuple(float(value) for value in spec["centre"]))
+    span = float(spec["span_m"])
+    height = float(spec["height_m"])
+    columns = max(1, int(spec.get("columns", 6)))
+    rows = max(1, int(spec.get("rows", 3)))
+    cell_width, cell_height = span / columns, height / rows
+    window_width = cell_width * float(spec.get("window_width_ratio", 0.48))
+    window_height = cell_height * float(spec.get("window_height_ratio", 0.58))
+    frame = float(spec.get("frame_m", 0.16))
+    depth = float(spec.get("depth_m", 0.16))
+    pane_mat = _graph_material(mats, spec.get("glass_material", "glass"))
+    frame_mat = _graph_material(mats, spec.get("frame_material", "secondary"))
+    back_mat = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+    prefix = str(spec.get("id", "WarehouseWindows"))
+
+    for row in range(rows):
+        z = centre.z - height / 2 + cell_height * (row + 0.5)
+        for column in range(columns):
+            location = (
+                centre
+                + along * (-span / 2 + cell_width * (column + 0.5))
+                + Vector((0.0, 0.0, z - centre.z))
+            )
+            back_location = location + outward * depth * 0.18
+            if axis in ("front", "rear"):
+                back_size = (window_width + frame * 1.8, depth * 0.7, window_height + frame * 1.8)
+                pane_size = (window_width, depth * 0.36, window_height)
+            else:
+                back_size = (depth * 0.7, window_width + frame * 1.8, window_height + frame * 1.8)
+                pane_size = (depth * 0.36, window_width, window_height)
+            parts.append(add_beveled_box(
+                f"{prefix}_Recess_{row:02d}_{column:02d}",
+                back_size,
+                tuple(back_location),
+                back_mat,
+                min(0.06, frame * 0.25),
+            ))
+            parts.append(add_box(
+                f"{prefix}_Pane_{row:02d}_{column:02d}",
+                pane_size,
+                tuple(location + outward * depth * 0.62),
+                pane_mat,
+            ))
+            add_frame_bars(
+                parts,
+                f"{prefix}_Frame_{row:02d}_{column:02d}",
+                axis,
+                tuple(location + outward * depth * 0.78),
+                window_width,
+                window_height,
+                depth,
+                frame_mat,
+                profile=frame,
+                mullions="single",
+            )
+
+
 def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     """Build a single landmark asset from an opt-in ``massing-graph@1`` recipe.
 
@@ -7782,6 +8272,14 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
+        elif kind == "undulating_glass_crown":
+            _graph_undulating_glass_crown(parts, assembly, mats)
+        elif kind == "tension_roof":
+            _graph_tension_roof(parts, assembly, mats)
+        elif kind == "concert_oval_apertures":
+            _graph_concert_oval_apertures(parts, assembly, mats)
+        elif kind == "warehouse_window_array":
+            _graph_warehouse_window_array(parts, assembly, mats)
         else:
             raise ValueError(f"massing graph assembly {assembly.get('id')!r} has unsupported kind {kind!r}")
 

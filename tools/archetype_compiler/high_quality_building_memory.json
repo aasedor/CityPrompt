@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-19-ruskinian-registration-v63",
+  "memory_version": "2026-07-26-crystalline-concert-surfaces-v64",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -540,6 +540,21 @@
       "symptom": "Stone courses, turret bands and eaves look like bright applied graphics in Google Tiles",
       "cause": "Relief geometry duplicated atlas bands with excessive projection, thickness or albedo contrast, so it separated visually from the wall material language.",
       "correction": "Let the atlas own fine coursing. Use shallow construction-scale relief only for shadow-bearing datums, inherit the same warm stone PBR family, reduce exposed profile, and calibrate in live photogrammetry rather than compensating with brighter materials."
+    },
+    {
+      "symptom": "A multi-peak tensile roof reads as a faceted mountain range with hard ridges between peaks",
+      "cause": "Independent roof primitives or a maximum-of-peaks height field created discontinuous transitions instead of a shared cable-net surface.",
+      "correction": "Build one continuous roof mesh tied to the envelope edge, blend peak influence with a smooth high-order norm, retain real saddle valleys and validate the complete seam network from an oblique aerial view."
+    },
+    {
+      "symptom": "A large reflective glass landmark becomes milky white or uniformly dead blue",
+      "cause": "A clear window-glass profile was stretched across the full envelope without reflection density or occupied-zone variation.",
+      "correction": "Use a darker physical reflective-skin material for the continuous envelope, preserve warm occupied lower foyer zones, and keep entrance and aperture glazing as separate clear construction assemblies."
+    },
+    {
+      "symptom": "A valid cultural or industrial catalogue entry fails grammar compilation because its storeys exceed six metres",
+      "cause": "Residential floor-height limits were applied universally to acoustic halls and large assembly spaces.",
+      "correction": "Permit a reviewed non-residential floor-height range, preserve catalogue provenance and add a regression test using the canonical tall-storey entry."
     }
   ]
 }

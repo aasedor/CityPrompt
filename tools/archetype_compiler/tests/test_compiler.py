@@ -297,6 +297,19 @@ def test_variant_override_changes_family_and_materials():
     assert grammar.dimensions.floor_height_m == pytest.approx(3.1)
 
 
+def test_cultural_hall_accepts_catalogue_acoustic_floor_height():
+    payload = payload_mixed_use_midrise()
+    payload["archetypeId"] = "concert_hall_modern"
+    payload["archetypeLabel"] = "Concert Hall (Modern)"
+    payload["developmentType"] = "recreational"
+    payload["dimensions"]["suggestedFloorHeight"] = 6.5
+
+    grammar = compile_archetype(payload)
+
+    assert grammar.dimensions.floor_height_m == pytest.approx(6.5)
+    grammar.validate()
+
+
 def test_floor_override_clamped_to_catalogue_range():
     grammar = compile_archetype(payload_mixed_use_midrise(), floors=40)
     assert grammar.dimensions.default_floors == 12  # clamped to maxFloors

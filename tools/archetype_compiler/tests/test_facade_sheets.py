@@ -258,6 +258,51 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     } <= assembly_ids
 
 
+def test_concert_crystalline_variant_injects_render_locked_landmark_geometry():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "concert_hall_modern",
+            "variant_id": "concert_crystalline_glass",
+        },
+        "materials": {
+            "primary": {},
+            "secondary": {},
+            "accent": {},
+            "roof": {},
+        },
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = graph["assemblies"]
+    kinds = {item["kind"] for item in assemblies}
+
+    assert graph["profile"] == "concert_crystalline_glass_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 90.0,
+        "depth_m": 65.0,
+        "floors": 7,
+        "floor_height_m": 6.5,
+    }
+    assert {
+        "undulating_glass_crown",
+        "tension_roof",
+        "concert_oval_apertures",
+        "warehouse_window_array",
+        "curtain_wall",
+    } <= kinds
+    roof = next(item for item in assemblies if item["kind"] == "tension_roof")
+    crown = next(item for item in assemblies if item["kind"] == "undulating_glass_crown")
+    apertures = next(item for item in assemblies if item["kind"] == "concert_oval_apertures")
+    assert len(roof["peaks"]) >= 7
+    assert crown["entrance_drop_m"] >= 18.0
+    assert len(apertures["apertures"]) >= 6
+    assert injected["materials"]["primary"]["texture_key"] == "red_brick"
+    assert injected["architectural_signature"]["glass_profile"] == "reflective_curtain_wall"
+    assert "massing_graph" not in injected["architectural_signature"]
+
+
 def test_corner_archetype_compiles_corner_condition():
     from compiler import compile_archetype
     from test_compiler import payload_mixed_use_midrise
