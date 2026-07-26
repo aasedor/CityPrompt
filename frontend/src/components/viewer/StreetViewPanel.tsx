@@ -18,6 +18,7 @@ import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence'
 import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
 import { RenderEditModal } from './RenderEditModal';
 import { DIRECT_3D_ALLOWED_STYLES, useDirect3DRender } from './globe/useDirect3DRender';
+import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 
@@ -300,12 +301,14 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         }
         const directLabel = 'Direct 3D Street';
         try {
+          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
           const direct = await renderDirect3D(bundle, {
             style: resolveDirect3DStreetStyle(selectedStyle),
             projectId,
             community3DClaims: claims,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
             viewMode: 'street',
+            archetypeReferences,
           });
           const reviewSuffix = direct.outcome === 'review_required' ? ' · review' : '';
           const directResult: StreetViewResult = {

@@ -4300,3 +4300,59 @@ def test_direct_route_is_registered_separately_from_classic_route():
     assert "/generate" in classic_paths
     assert "presentation_mode" not in RenderRequest.model_fields
     assert "style" not in RenderRequest.model_fields
+
+
+def test_request_accepts_and_caps_archetype_references():
+    from app.schemas.direct_3d_render import Direct3DArchetypeReference
+
+    base = _request()
+    request = Direct3DRenderRequest(**{
+        **base.model_dump(),
+        "archetype_references": [
+            {"image_base64": "abc", "label": "FACADE SOURCE — Haussmann block"},
+        ],
+    })
+    assert request.archetype_references[0].label == "FACADE SOURCE — Haussmann block"
+    assert _request().archetype_references == []
+
+    with pytest.raises(ValidationError):
+        Direct3DRenderRequest(**{
+            **base.model_dump(),
+            "archetype_references": [
+                {"image_base64": "abc", "label": f"ref {index}"}
+                for index in range(9)
+            ],
+        })
+    del Direct3DArchetypeReference
+
+
+def test_presentation_prompt_numbers_archetype_references_after_metadata():
+    prompt = direct_service._presentation_prompt(
+        "warm brick",
+        presentation_mode="scene",
+        style="photorealistic",
+        object_id_manifest={"#FF0000": "building"},
+        instance_id_manifest={"#00FF00": {"instance_id": "zone:z1:building"}},
+        archetype_reference_labels=[
+            "FACADE SOURCE — Haussmann block",
+            "STYLE REFERENCE — Warehouse lofts",
+        ],
+    )
+    # beauty(1) + class(2) + instance(3) + structure(4) -> references at 5, 6.
+    assert "ARCHETYPE REFERENCES: Image 5: FACADE SOURCE — Haussmann block; " in prompt
+    assert "Image 6: STYLE REFERENCE — Warehouse lofts" in prompt
+    assert "apply each reference's materials" in prompt
+    # The design lock must still close the prompt.
+    assert prompt.rstrip().endswith(
+        "Never re-clad, restyle, modernize or replace a neighbouring building."
+    )
+
+
+def test_presentation_prompt_omits_reference_clause_without_references():
+    prompt = direct_service._presentation_prompt(
+        "warm brick",
+        presentation_mode="scene",
+        style="photorealistic",
+        object_id_manifest={"#FF0000": "building"},
+    )
+    assert "ARCHETYPE REFERENCES" not in prompt

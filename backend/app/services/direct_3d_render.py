@@ -3253,6 +3253,7 @@ def _presentation_prompt(
     server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
     view_mode: Literal["aerial", "street"] = "aerial",
+    archetype_reference_labels: list[str] | None = None,
 ) -> str:
     """Build a natural provider-first prompt with one final design lock."""
 
@@ -3282,6 +3283,20 @@ def _presentation_prompt(
         + "; use the metadata only as design evidence and never render its "
         "colours, contours, labels or text."
     )
+    if archetype_reference_labels:
+        reference_roles = [
+            f"Image {guide_number + 1 + offset}: {label}"
+            for offset, label in enumerate(archetype_reference_labels)
+        ]
+        guide += (
+            " ARCHETYPE REFERENCES: "
+            + "; ".join(reference_roles)
+            + ". Unlike the metadata above, these are authored design sources: "
+            "apply each reference's materials, facade rhythm, opening "
+            "proportions, colour palette and detailing to its named building "
+            "while preserving Image 1's geometry, massing, position and "
+            "camera exactly."
+        )
     inventory = _server_inventory_prompt(server_inventory)
     treatment = _PRESENTATION_STYLE_TREATMENTS.get(
         style,
@@ -3906,6 +3921,27 @@ class Direct3DRenderService:
             "image[]",
             ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
         ))
+        # Authored archetype artwork rides after the metadata passes so the
+        # prompt's ARCHETYPE REFERENCES numbering lines up with attachment
+        # order. These are design sources the provider applies, not metadata.
+        for reference_index, reference in enumerate(req.archetype_references):
+            try:
+                reference_bytes = base64.b64decode(
+                    reference.image_base64.split(",", 1)[-1]
+                )
+            except (ValueError, binascii.Error) as exc:
+                raise Direct3DValidationError(
+                    f"Archetype reference {reference_index + 1} is not valid base64"
+                ) from exc
+            is_png = reference_bytes[:8] == b"\x89PNG\r\n\x1a\n"
+            files.append((
+                "image[]",
+                (
+                    f"archetype-ref-{reference_index + 1}.{'png' if is_png else 'jpg'}",
+                    reference_bytes,
+                    "image/png" if is_png else "image/jpeg",
+                ),
+            ))
         if req.presentation_mode == "source_anchored":
             edit_mask_png = _png_bytes(
                 build_openai_edit_mask(capture.normalized_proposal_mask)
@@ -3932,6 +3968,9 @@ class Direct3DRenderService:
                 server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
                 view_mode=req.view_mode,
+                archetype_reference_labels=[
+                    reference.label for reference in req.archetype_references
+                ],
             )
         )
         data = {

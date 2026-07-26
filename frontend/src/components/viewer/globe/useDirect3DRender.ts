@@ -330,6 +330,9 @@ export function useDirect3DRender() {
       /** 'street' marks an eye-level capture: scene presentation is forced and
        *  the server returns review_required in this first version. */
       viewMode?: 'aerial' | 'street';
+      /** Authored archetype artwork (facade sheets, catalogue cards) the
+       *  provider applies to the named buildings. Max 8, server-enforced. */
+      archetypeReferences?: Array<{ image_base64: string; label: string }>;
     },
   ): Promise<Direct3DRenderResult> => {
     if (!DIRECT_3D_ALLOWED_STYLES.has(options.style)) {
@@ -355,6 +358,9 @@ export function useDirect3DRender() {
       : resolveDirect3DPresentationMode(options.style);
     const response = await rendersApi.generateDirect3D({
       view_mode: viewMode,
+      ...(options.archetypeReferences?.length
+        ? { archetype_references: options.archetypeReferences.slice(0, 8) }
+        : {}),
       beauty_image_base64: capture.beautyImageBase64,
       proposal_mask_base64: capture.proposalMaskBase64,
       object_id_image_base64: capture.classIdImageBase64,

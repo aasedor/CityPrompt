@@ -104,6 +104,19 @@ class Direct3DInstanceDescriptor(BaseModel):
             raise ValueError("source_zone_ids may contain each zone only once")
         return source_zone_ids
 
+
+class Direct3DArchetypeReference(BaseModel):
+    """Authored archetype artwork attached to the provider call.
+
+    Unlike the metadata passes (class/instance/structure), these images are
+    design sources: the prompt instructs the provider to apply each
+    reference's materials and facade character to its named building.
+    """
+
+    image_base64: str = Field(min_length=1)
+    label: str = Field(min_length=1, max_length=600)
+
+
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
@@ -129,6 +142,15 @@ class Direct3DRenderRequest(BaseModel):
             "source_anchored preserves the legacy pixel-locked finish; scene "
             "permits a camera-locked full-frame presentation finish; reproject "
             "permits a style-directed plan or axonometric camera transform."
+        ),
+    )
+    archetype_references: list[Direct3DArchetypeReference] = Field(
+        default_factory=list,
+        max_length=8,
+        description=(
+            "Authored archetype artwork (facade elevation sheets, catalogue "
+            "cards) attached after the metadata passes. Each label names the "
+            "building the reference styles and is quoted in the prompt."
         ),
     )
     view_mode: Literal["aerial", "street"] = Field(

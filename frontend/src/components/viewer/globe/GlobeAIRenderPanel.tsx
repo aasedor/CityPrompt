@@ -30,6 +30,7 @@ import {
   resolveCommunity3DKind,
   selectCommunity3DCompileZones,
 } from '@/features/community3d/community3d';
+import { collectDirect3DArchetypeReferences } from './direct3dArchetypeReferences';
 import { analyzePlanBoundaryAlignment } from '@/features/community3d/planBoundaryAlignment';
 import {
   communityCompileOptionsForZones,
@@ -834,6 +835,10 @@ export function GlobeAIRenderPanel({
       setDirectCapturePreview(null);
       const capture = await captureDirect3D();
       setIsPreparingCapture(false);
+      // Authored archetype artwork (facade sheets / catalogue cards) pushes
+      // each building toward its archetype's real character instead of a
+      // generic palette-preserving restyle.
+      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
@@ -841,6 +846,7 @@ export function GlobeAIRenderPanel({
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
         residualLandscapeClaim,
+        archetypeReferences,
       });
       setPreviews([direct.render]);
       setSelectedPreviewIndex(0);
@@ -884,6 +890,7 @@ export function GlobeAIRenderPanel({
     residualLandscapeClaim,
     renderDirect3D,
     selectedStyle,
+    siteZones,
     stalePlanMessage,
   ]);
 
