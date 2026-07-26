@@ -258,7 +258,7 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     } <= assembly_ids
 
 
-def test_concert_crystalline_variant_injects_render_locked_landmark_geometry():
+def test_concert_crystalline_variant_injects_meshy_hybrid_lego_contract():
     from signature_profiles import inject_signature
 
     grammar = {
@@ -286,18 +286,18 @@ def test_concert_crystalline_variant_injects_render_locked_landmark_geometry():
         "floor_height_m": 6.5,
     }
     assert {
-        "undulating_glass_crown",
-        "tension_roof",
-        "concert_oval_apertures",
+        "external_glb",
         "texture_skin",
         "curtain_wall",
     } <= kinds
-    roof = next(item for item in assemblies if item["kind"] == "tension_roof")
-    crown = next(item for item in assemblies if item["kind"] == "undulating_glass_crown")
-    apertures = next(item for item in assemblies if item["kind"] == "concert_oval_apertures")
-    assert len(roof["peaks"]) >= 7
-    assert crown["entrance_drop_m"] >= 18.0
-    assert len(apertures["apertures"]) >= 6
+    fixed_crown = next(item for item in assemblies if item["kind"] == "external_glb")
+    assert fixed_crown["role"] == "fixed_crown_roof"
+    assert fixed_crown["source"].endswith("concert-hall-modern-v1-meshy-crown.glb")
+    assert {
+        "undulating_glass_crown",
+        "tension_roof",
+        "concert_oval_apertures",
+    }.isdisjoint(kinds)
     assert injected["materials"]["primary"]["texture_key"] == "red_brick"
     assert injected["architectural_signature"]["glass_profile"] == "reflective_curtain_wall"
     signature_materials = injected["architectural_signature"]["signature_material_overrides"]
@@ -335,6 +335,30 @@ def test_concert_skin_builder_writes_runtime_texture_contract(tmp_path):
         assert (texture_dir / "normal.png").exists()
         assert (texture_dir / "roughness.jpg").exists()
         assert (texture_dir / "raw.jpg").exists()
+
+
+def test_meshy_concert_reference_is_a_bounded_fixed_lego_assembly():
+    manifest = json.loads(
+        (
+            Path(__file__).parents[1]
+            / "reference_meshes"
+            / "meshy_concert_v1"
+            / "derived"
+            / "manifest.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert manifest["schema"] == "external-fixed-assembly@1"
+    assert manifest["source_triangles"] > 1_000_000
+    assert manifest["output_triangles"] <= 120_000
+    assert manifest["interface_z_m"] == 17.4
+    assert manifest["target_dimensions_m"] == [90.0, 65.0, 57.2]
+    assert manifest["max_texture_px"] == 1024
+    assert manifest["lego_contract"] == {
+        "role": "fixed_crown_roof",
+        "repeatable": False,
+        "paired_repeatable_kit": "concert_warehouse_brick",
+    }
 
 
 def test_corner_archetype_compiles_corner_condition():

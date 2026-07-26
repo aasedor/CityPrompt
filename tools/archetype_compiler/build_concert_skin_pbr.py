@@ -69,6 +69,8 @@ def _save_texture_set(
 
     albedo.save(output / "albedo.jpg", quality=95, subsampling=0)
     normal.save(output / "normal.png", compress_level=7)
+    if surface != "glass":
+        normal.save(output / "normal.jpg", quality=92, subsampling=0)
     roughness.save(output / "roughness.jpg", quality=95, subsampling=0)
 
 

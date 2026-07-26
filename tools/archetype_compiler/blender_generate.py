@@ -94,9 +94,12 @@ def _texture_set(texture_key: str | None) -> dict[str, Path] | None:
         return None
     albedo = tex_dir / "albedo.jpg"
     found = {"albedo": albedo}
-    for slot, filename in (("normal", "normal.png"), ("roughness", "roughness.jpg")):
-        path = tex_dir / filename
-        if path.exists():
+    for slot, filenames in (
+        ("normal", ("normal.jpg", "normal.png")),
+        ("roughness", ("roughness.jpg",)),
+    ):
+        path = next((tex_dir / filename for filename in filenames if (tex_dir / filename).exists()), None)
+        if path is not None:
             found[slot] = path
     return found
 
@@ -1461,6 +1464,9 @@ def add_frame_bars(
 
 def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
     """Join module parts into a single mesh so the GLB gets one node per module."""
+    has_external_fixed_assembly = any(
+        bool(obj.get("external_fixed_assembly")) for obj in objects
+    )
     bpy.ops.object.select_all(action="DESELECT")
     for obj in objects:
         obj.select_set(True)
@@ -1472,20 +1478,23 @@ def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
     joined.data.name = name
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     # Small real-world edge radii create highlight lines and eliminate the
-    # unmistakable razor-edged procedural-box look.
-    bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
-    bevel.width = 0.025
-    bevel.segments = 1
-    bevel.limit_method = "ANGLE"
-    try:
-        bevel.harden_normals = True
-    except AttributeError:
-        pass
-    bpy.context.view_layer.objects.active = joined
-    try:
-        bpy.ops.object.modifier_apply(modifier=bevel.name)
-    except RuntimeError:
-        joined.modifiers.remove(bevel)
+    # unmistakable razor-edged procedural-box look. Imported hero surfaces
+    # already carry authored micro-bevels and can contain 100k+ triangles;
+    # globally beveling them would damage their UVs and runtime budget.
+    if not has_external_fixed_assembly:
+        bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
+        bevel.width = 0.025
+        bevel.segments = 1
+        bevel.limit_method = "ANGLE"
+        try:
+            bevel.harden_normals = True
+        except AttributeError:
+            pass
+        bpy.context.view_layer.objects.active = joined
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            joined.modifiers.remove(bevel)
     apply_box_uv(joined)
     return joined
 
@@ -6995,6 +7004,55 @@ def _graph_texture_skin(parts: list, spec: dict, mats: dict) -> None:
     ))
 
 
+def _graph_external_glb(parts: list, spec: dict, mats: dict) -> None:
+    """Import a reviewed fixed hero assembly while preserving authored UVs."""
+    source_value = str(spec.get("source") or "")
+    if not source_value:
+        raise ValueError(f"external GLB assembly {spec.get('id')!r} has no source")
+    source = Path(source_value)
+    if not source.is_absolute():
+        source = Path(__file__).resolve().parent / source
+    source = source.resolve()
+    if not source.exists():
+        raise FileNotFoundError(source)
+
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.gltf(filepath=str(source))
+    imported = [obj for obj in bpy.data.objects if obj not in before]
+    imported_meshes = [obj for obj in imported if obj.type == "MESH"]
+    if not imported_meshes:
+        raise ValueError(f"external GLB assembly {source} contains no mesh")
+
+    location = Vector(tuple(float(value) for value in spec.get("location", (0.0, 0.0, 0.0))))
+    scale_values = tuple(float(value) for value in spec.get("scale", (1.0, 1.0, 1.0)))
+    rotation_z = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+    prefix = str(spec.get("id", "ExternalFixedAssembly"))
+    for index, obj in enumerate(imported_meshes):
+        world_matrix = obj.matrix_world.copy()
+        obj.parent = None
+        obj.matrix_world = world_matrix
+        obj.location += location
+        obj.scale.x *= scale_values[0]
+        obj.scale.y *= scale_values[1]
+        obj.scale.z *= scale_values[2]
+        obj.rotation_euler.z += rotation_z
+        bpy.ops.object.select_all(action="DESELECT")
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+        obj.name = f"{prefix}_{index:02d}"
+        obj["external_fixed_assembly"] = True
+        obj["external_source"] = source.name
+        for material in obj.data.materials:
+            if material is not None:
+                material["preserve_authored_uv"] = True
+        parts.append(obj)
+
+    for obj in imported:
+        if obj.type != "MESH" and obj.name in bpy.data.objects:
+            bpy.data.objects.remove(obj, do_unlink=True)
+
+
 def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "") -> None:
     """Apply one rectified Gemini elevation to a thin, shadow-backed surface.
 
@@ -8383,6 +8441,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_facade_skin(parts, assembly, mats)
         elif kind == "texture_skin":
             _graph_texture_skin(parts, assembly, mats)
+        elif kind == "external_glb":
+            _graph_external_glb(parts, assembly, mats)
         elif kind == "facade_skin_stack":
             _graph_facade_skin_stack(parts, assembly, mats)
         elif kind == "frame_grid":

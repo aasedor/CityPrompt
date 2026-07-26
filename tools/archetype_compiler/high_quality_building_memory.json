@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-26-registered-concert-skins-v65",
+  "memory_version": "2026-07-26-meshy-hybrid-lego-v66",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -560,6 +560,11 @@
       "symptom": "A realistic curtain-wall atlas fights the physical mullions, tiles at the perimeter seam or makes Blender's joined bevel take minutes",
       "cause": "The image period did not match the panel cadence, or a multi-repeat authored unwrap was applied before the global joined-mesh bevel.",
       "correction": "Match atlas columns and rows to physical mullion/transom counts, correct the cyclic seam per polygon and apply the registered shell UVs after beveling. Keep aperture and entrance glazing on independent materials so the envelope atlas cannot leak into those assemblies."
+    },
+    {
+      "symptom": "An image-to-3D landmark looks excellent in one GLB but cannot be resized, restacked or safely imported as a LEGO family",
+      "cause": "The generator fused roof, facade, apertures, entrance and base into one high-triangle mesh with one baked material and no semantic module boundaries.",
+      "correction": "Preserve the original GLB with Git LFS, record its hash, normalize it to the authored metric envelope, crop and decimate only the identity-bearing crown/roof above a documented interface, and classify it as a non-repeatable fixed assembly. Rebuild the ordinary base from registered repeatable bays and validate the combined manifest as a fixed landmark plus parametric fallback family."
     },
     {
       "symptom": "A valid cultural or industrial catalogue entry fails grammar compilation because its storeys exceed six metres",

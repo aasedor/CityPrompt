@@ -427,6 +427,13 @@ free-form cultural landmarks:
   unrelated construction. Use thin registered brick skins on front, side,
   rear and short return faces; keep aperture glazing, entrance glazing and
   chromed lips as independent materials and depth assemblies.
+- A strong image-to-3D result may become a fixed LEGO assembly, but never
+  pretend that one fused mesh is a repeatable family. Preserve the source with
+  Git LFS, normalize it to the authored metric envelope, crop it at a documented
+  construction interface, decimate and downsample it to a bounded runtime
+  asset, and pair it with separately generated repeatable bays below. The
+  manifest must identify the imported surface as non-repeatable fixed crown/roof
+  geometry and retain the original source hash.
 
 ## Updating this memory
 
