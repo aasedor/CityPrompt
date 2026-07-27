@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T16:34:44.035856+00:00",
+  "created_at": "2026-07-27T21:37:44.340332+00:00",
   "family": "modern-sports-arena",
   "archetype_id": "modern_sports_arena",
   "archetype_label": "Modern Sports Arena \u2014 Faceted Indoor Bowl",
@@ -645,7 +645,7 @@
         "roof"
       ],
       "ao_baked": true,
-      "size_bytes": 3938064
+      "size_bytes": 3938080
     },
     {
       "role": "roof",
@@ -671,7 +671,7 @@
         "roof"
       ],
       "ao_baked": true,
-      "size_bytes": 4024160
+      "size_bytes": 4024304
     }
   ],
   "assembled": {
@@ -680,7 +680,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 42.0,
-    "triangle_count": 32294,
+    "triangle_count": 37400,
     "stack": [
       {
         "role": "assembled",

@@ -546,43 +546,152 @@ def arena_entry_stairs(
     rx, ry = 75.0, 60.0
     facade_y = -ry * math.sqrt(max(0.0, 1.0 - (centre_x / rx) ** 2))
     normal = Vector((centre_x / (rx * rx), facade_y / (ry * ry), 0)).normalized()
+    tangent = Vector((-normal.y, normal.x, 0))
     rotation_z = math.atan2(normal.y, normal.x) - math.pi / 2
-    for index in range(8):
-        width = 26.0 - index * 0.55
-        depth = 1.15 + index * 0.32
+    step_count = 18
+    step_run = 1.02
+    riser_height = 0.38
+    width = 18.5
+    outer_offset = 9.0
+    for index in range(step_count):
+        height = riser_height * (index + 1)
+        offset = outer_offset - index * step_run
         stair = box(
             f"{name}_{index:02d}",
-            (width, depth, 0.28),
+            (width, step_run + 0.06, height),
             (
-                centre_x + normal.x * (1.0 + index * 0.36),
-                facade_y + normal.y * (1.0 + index * 0.36),
-                0.14 + index * 0.28,
+                centre_x + normal.x * offset,
+                facade_y + normal.y * offset,
+                height / 2,
             ),
-            m["metal_alt"],
-            0.04,
+            m["stone"],
+            0.025,
         )
         stair.rotation_euler.z = rotation_z
         result.append(stair)
+        nosing_offset = offset + step_run / 2
+        nosing = box(
+            f"{name}_Nosing_{index:02d}",
+            (width + 0.10, 0.07, 0.055),
+            (
+                centre_x + normal.x * nosing_offset,
+                facade_y + normal.y * nosing_offset,
+                height + 0.025,
+            ),
+            m["dark"],
+        )
+        nosing.rotation_euler.z = rotation_z
+        result.append(nosing)
+
+    inner_offset = outer_offset - (step_count - 1) * step_run
+    rail_start_centre = Vector((
+        centre_x + normal.x * (outer_offset + 0.35),
+        facade_y + normal.y * (outer_offset + 0.35),
+        0.62,
+    ))
+    rail_end_centre = Vector((
+        centre_x + normal.x * (inner_offset - 0.35),
+        facade_y + normal.y * (inner_offset - 0.35),
+        step_count * riser_height + 0.78,
+    ))
+    for side in (-1.0, 1.0):
+        offset = tangent * (width / 2 + 0.32) * side
+        result.append(beam(
+            f"{name}_Balustrade_{'L' if side < 0 else 'R'}",
+            tuple(rail_start_centre + offset),
+            tuple(rail_end_centre + offset),
+            0.16,
+            m["dark"],
+        ))
+        result.append(beam(
+            f"{name}_Handrail_{'L' if side < 0 else 'R'}",
+            tuple(rail_start_centre + offset + Vector((0, 0, 0.24))),
+            tuple(rail_end_centre + offset + Vector((0, 0, 0.24))),
+            0.055,
+            m["amber_solid"],
+        ))
+
+    # Join the highest tread to a genuine upper concourse landing.
+    landing_offset = inner_offset - 2.0
+    landing = box(
+        f"{name}_UpperLanding",
+        (width + 0.8, 4.2, 0.34),
+        (
+            centre_x + normal.x * landing_offset,
+            facade_y + normal.y * landing_offset,
+            step_count * riser_height + 0.17,
+        ),
+        m["stone"],
+        0.035,
+    )
+    landing.rotation_euler.z = rotation_z
+    result.append(landing)
     return result
 
 
-def arena_portal_material(
-    bowl: bpy.types.Object,
-    glass: bpy.types.Material,
-) -> None:
-    bowl.data.materials.append(glass)
-    glass_index = len(bowl.data.materials) - 1
-    for polygon in bowl.data.polygons:
+def arena_point_in_portal(x: float, z: float) -> bool:
+    for portal_x in (-49.0, 49.0):
+        t = (x - portal_x) / 26.0
+        if abs(t) <= 1.0:
+            arch_z = 19.5 * (1.0 - t * t) + 2.5
+            if z <= arch_z:
+                return True
+    return False
+
+
+def arena_cut_portals(obj: bpy.types.Object) -> None:
+    """Delete public-shell faces inside the twin entrance arches."""
+    for vertex in obj.data.vertices:
+        vertex.select = False
+    for edge in obj.data.edges:
+        edge.select = False
+    for polygon in obj.data.polygons:
         centre = polygon.center
-        if centre.y >= -28.0:
-            continue
-        for portal_x in (-49.0, 49.0):
-            t = (centre.x - portal_x) / 26.0
-            if abs(t) <= 1.0:
-                arch_z = 19.5 * (1.0 - t * t) + 2.5
-                if centre.z <= arch_z:
-                    polygon.material_index = glass_index
-                    break
+        polygon.select = centre.y < -28.0 and arena_point_in_portal(centre.x, centre.z)
+    bpy.context.view_layer.objects.active = obj
+    obj.select_set(True)
+    bpy.context.tool_settings.mesh_select_mode = (False, False, True)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.delete(type="FACE")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    obj.select_set(False)
+    obj.data.update()
+
+
+def arena_portal_backdrop(
+    name: str,
+    centre_x: float,
+    mat: bpy.types.Material,
+    inset: float = 5.0,
+    segments: int = 32,
+) -> bpy.types.Object:
+    """Recessed arched concourse wall behind a physically open portal."""
+    verts: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+    half_width = 25.2
+    for index in range(segments + 1):
+        t = -1.0 + 2.0 * index / segments
+        x = centre_x + half_width * t
+        facade_y = -60.0 * math.sqrt(max(0.0, 1.0 - (x / 75.0) ** 2))
+        outward = Vector((x / (75.0 * 75.0), facade_y / (60.0 * 60.0), 0)).normalized()
+        inset_point = Vector((x, facade_y, 0)) - outward * inset
+        top = 19.0 * (1.0 - t * t) + 1.9
+        verts.extend([
+            (inset_point.x, inset_point.y, 0.18),
+            (inset_point.x, inset_point.y, top),
+        ])
+    for index in range(segments):
+        a = index * 2
+        b = a + 2
+        faces.append((a, b, b + 1, a + 1))
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.materials.append(mat)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    if mat.get("skin_zone"):
+        cylindrical_uv(obj, 2.0)
+    return obj
 
 
 def arena_media_ribbon(
@@ -683,17 +792,24 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         bowl_rings,
         m["metal"], m["metal_alt"], segments=128, cap_bottom=False,
     )
-    arena_portal_material(bowl, m["glass"])
+    arena_cut_portals(bowl)
     objs.append(bowl)
-    objs.append(tapered_ellipse(
+    concourse = tapered_ellipse(
         "FIXED_ArenaConcourseGlass",
         [(0.15, 75, 60), (0.3, 75, 60), (11.5, 75, 60), (12.0, 75, 60)],
         m["glass"], segments=128,
-    ))
+    )
+    arena_cut_portals(concourse)
+    objs.append(concourse)
     objs.extend(arena_media_ribbon("FIXED_ArenaMediaRibbon", m["amber_solid"]))
     objs.extend(ellipse_ring("FIXED_ArenaRoofEdge", 66.8, 52.8, 36.0, 0.28, m["dark"], 128))
     # Two integrated sweeping entrance cuts, matching the goal-post elevation.
     for x in (-49.0, 49.0):
+        objs.append(arena_portal_backdrop(
+            f"FIXED_ArenaPortalBackdrop_{x}",
+            x,
+            m["glass"],
+        ))
         objs.extend(sweeping_arch(
             f"FIXED_ArenaPortalFrame_{x}",
             x,
@@ -705,6 +821,18 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             ellipse=(75.0, 60.0),
             facade_offset=0.54,
             base_z=2.5,
+        ))
+        objs.extend(sweeping_arch(
+            f"FIXED_ArenaPortalInnerFrame_{x}",
+            x,
+            -54.0,
+            25.2,
+            19.0,
+            0.30,
+            m["dark"],
+            ellipse=(75.0, 60.0),
+            facade_offset=-4.4,
+            base_z=2.1,
         ))
         objs.extend(sweeping_arch(
             f"FIXED_ArenaPortalLight_{x}",
@@ -736,24 +864,42 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         ry = lower[2] + (upper[2] - lower[2]) * blend
         return -ry * math.sqrt(max(0.0, 1.0 - (x / rx) ** 2))
 
+    def clipped_diagonal(
+        name: str,
+        start: tuple[float, float, float],
+        end: tuple[float, float, float],
+    ) -> None:
+        segment_count = 8
+        a = Vector(start)
+        b = Vector(end)
+        for segment in range(segment_count):
+            p0 = a.lerp(b, segment / segment_count)
+            p1 = a.lerp(b, (segment + 1) / segment_count)
+            midpoint = (p0 + p1) * 0.5
+            if arena_point_in_portal(midpoint.x, midpoint.z):
+                continue
+            objs.append(beam(
+                f"{name}_{segment:02d}",
+                tuple(p0),
+                tuple(p1),
+                0.065,
+                m["dark"],
+            ))
+
     columns = 10
     xs = [(-60 + i * 120 / columns) for i in range(columns + 1)]
     for i in range(columns):
         x0, x1 = xs[i], xs[i + 1]
-        objs.append(beam(
+        clipped_diagonal(
             f"FIXED_ArenaDiagA{i}",
             (x0, front_y(x0, 13) - 0.12, 13),
             (x1, front_y(x1, 31) - 0.12, 31),
-            0.065,
-            m["dark"],
-        ))
-        objs.append(beam(
+        )
+        clipped_diagonal(
             f"FIXED_ArenaDiagB{i}",
             (x0, front_y(x0, 31) - 0.12, 31),
             (x1, front_y(x1, 13) - 0.12, 13),
-            0.065,
-            m["dark"],
-        ))
+        )
     # Ribbed shallow roof and open oculus.
     objs.append(arena_roof_membrane("FIXED_ArenaRoofMembrane", m["roof"]))
     roof_segments = 96
