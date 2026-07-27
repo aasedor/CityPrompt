@@ -94,7 +94,8 @@ FAMILIES = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, required=True)
-    parser.add_argument("--markthal-fixed", type=Path, required=True)
+    parser.add_argument("--markthal-fixed", type=Path)
+    parser.add_argument("--family", action="append", choices=sorted(FAMILIES))
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     return parser.parse_args(argv)
 
@@ -134,8 +135,73 @@ def material(name: str, color: tuple[float, float, float, float], roughness: flo
     return mat
 
 
-def palette() -> dict[str, bpy.types.Material]:
-    return {
+def load_skin_manifest(family_dir: Path) -> dict | None:
+    path = family_dir / "textures" / "skin_manifest.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+
+def skin_material(
+    name: str,
+    family_dir: Path,
+    assets: dict[str, str],
+    zone: str,
+    *,
+    metallic: float = 0.0,
+    transmission: float = 0.0,
+    emission_strength: float = 0.0,
+) -> bpy.types.Material:
+    mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Metallic"].default_value = metallic
+    if bsdf.inputs.get("Transmission Weight"):
+        bsdf.inputs["Transmission Weight"].default_value = transmission
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+
+    def image_node(channel: str, *, non_color: bool = False) -> bpy.types.Node:
+        node = nodes.new("ShaderNodeTexImage")
+        node.name = node.label = f"SKIN_{channel.upper()}"
+        node.image = bpy.data.images.load(str(family_dir / assets[channel]), check_existing=True)
+        node.extension = "REPEAT"
+        if non_color:
+            node.image.colorspace_settings.name = "Non-Color"
+        return node
+
+    albedo = image_node("albedo")
+    ao = image_node("ao", non_color=True)
+    multiply = nodes.new("ShaderNodeMixRGB")
+    multiply.blend_type = "MULTIPLY"
+    multiply.inputs[0].default_value = 0.68
+    links.new(albedo.outputs["Color"], multiply.inputs[1])
+    links.new(ao.outputs["Color"], multiply.inputs[2])
+    links.new(multiply.outputs["Color"], bsdf.inputs["Base Color"])
+
+    roughness = image_node("roughness", non_color=True)
+    links.new(roughness.outputs["Color"], bsdf.inputs["Roughness"])
+    normal = image_node("normal", non_color=True)
+    normal_map_node = nodes.new("ShaderNodeNormalMap")
+    normal_map_node.inputs["Strength"].default_value = 0.62
+    links.new(normal.outputs["Color"], normal_map_node.inputs["Color"])
+    links.new(normal_map_node.outputs["Normal"], bsdf.inputs["Normal"])
+
+    emissive = image_node("emissive")
+    if bsdf.inputs.get("Emission Color"):
+        links.new(emissive.outputs["Color"], bsdf.inputs["Emission Color"])
+        bsdf.inputs["Emission Strength"].default_value = emission_strength
+
+    mat["skin_zone"] = zone
+    mat["pbr_channels"] = json.dumps(["albedo", "normal", "roughness", "ao", "depth", "emissive"])
+    mat["semantic_glass_mask"] = assets["glass_mask"]
+    mat["semantic_opaque_mask"] = assets["opaque_mask"]
+    return mat
+
+
+def palette(family_dir: Path) -> dict[str, bpy.types.Material]:
+    mats = {
         "stone": material("MAT_W3_Stone", (0.78, 0.76, 0.70, 1), 0.62),
         "marble": material("MAT_W3_Marble", (0.88, 0.87, 0.82, 1), 0.5),
         "metal": material("MAT_W3_SilverMetal", (0.62, 0.66, 0.70, 1), 0.28, 0.62),
@@ -148,10 +214,100 @@ def palette() -> dict[str, bpy.types.Material]:
                           emission=(1.0, 0.12, 0.008, 1), emission_strength=4.0),
         "copper": material("MAT_W3_PatinatedCopper", (0.23, 0.48, 0.40, 1), 0.46, 0.7),
         "bronze": material("MAT_W3_Bronze", (0.14, 0.07, 0.028, 1), 0.34, 0.72),
+        "recess": material("MAT_W3_PorticoRecess", (0.10, 0.065, 0.042, 1), 0.44, 0.20),
         "roof": material("MAT_W3_Roof", (0.09, 0.10, 0.11, 1), 0.72),
         "mural": material("MAT_W3_Mural", (0.76, 0.06, 0.16, 1), 0.45,
                          emission=(0.32, 0.015, 0.04, 1), emission_strength=0.7),
     }
+    skin = load_skin_manifest(family_dir)
+    if skin and family_dir.name == "modern-sports-arena":
+        near = {zone: values["near"] for zone, values in skin["zones"].items()}
+        mats.update({
+            "metal": skin_material(
+                "MAT_W3_ArenaMetalSkin", family_dir, near["metal"], "metal", metallic=0.66
+            ),
+            "metal_alt": skin_material(
+                "MAT_W3_ArenaMetalSkinAlt", family_dir, near["metal"], "metal", metallic=0.58
+            ),
+            "roof": skin_material(
+                "MAT_W3_ArenaRoofSkin", family_dir, near["roof"], "roof", metallic=0.18
+            ),
+            "glass": skin_material(
+                "MAT_W3_ArenaGlassSkin", family_dir, near["glass"], "glass",
+                transmission=0.08, emission_strength=0.85,
+            ),
+            "warm": skin_material(
+                "MAT_W3_ArenaInteriorSkin", family_dir, near["glass"], "glass",
+                emission_strength=1.25,
+            ),
+            "amber": skin_material(
+                "MAT_W3_ArenaAccentSkin", family_dir, near["accent"], "accent",
+                metallic=0.22, emission_strength=3.0,
+            ),
+        })
+    elif skin and family_dir.name == "civic-monumental-neoclassical":
+        near = {zone: values["near"] for zone, values in skin["zones"].items()}
+        mats.update({
+            "marble": skin_material(
+                "MAT_W3_CivicMarbleSkin", family_dir, near["marble"], "marble"
+            ),
+            "stone": skin_material(
+                "MAT_W3_CivicReliefSkin", family_dir, near["relief"], "relief"
+            ),
+            "glass": skin_material(
+                "MAT_W3_CivicGlassSkin", family_dir, near["glass"], "glass",
+                transmission=0.06, emission_strength=0.55,
+            ),
+            "bronze": skin_material(
+                "MAT_W3_CivicBronzeSkin", family_dir, near["glass"], "glass",
+                metallic=0.58, emission_strength=0.18,
+            ),
+            "copper": skin_material(
+                "MAT_W3_CivicCopperSkin", family_dir, near["copper"], "copper",
+                metallic=0.48,
+            ),
+        })
+    return mats
+
+
+def box_project_uv(obj: bpy.types.Object, zone: str) -> None:
+    mesh = obj.data
+    layer = mesh.uv_layers.active or mesh.uv_layers.new(name="UVMap")
+    xs = [vertex.co.x for vertex in mesh.vertices]
+    ys = [vertex.co.y for vertex in mesh.vertices]
+    zs = [vertex.co.z for vertex in mesh.vertices]
+    spans = (
+        max(max(xs) - min(xs), 0.001),
+        max(max(ys) - min(ys), 0.001),
+        max(max(zs) - min(zs), 0.001),
+    )
+    mins = (min(xs), min(ys), min(zs))
+    for polygon in mesh.polygons:
+        normal = polygon.normal
+        for loop_index in polygon.loop_indices:
+            co = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            nx = (co.x - mins[0]) / spans[0]
+            ny = (co.y - mins[1]) / spans[1]
+            nz = (co.z - mins[2]) / spans[2]
+            if abs(normal.z) > 0.8:
+                u, v = nx, ny
+            elif abs(normal.y) > abs(normal.x):
+                u, v = nx, nz
+            else:
+                u, v = ny, nz
+            if zone in {"marble", "relief"}:
+                horizontal_span = spans[0] if abs(normal.y) > abs(normal.x) else spans[1]
+                u *= max(1.0, horizontal_span / 18.0)
+                v *= max(1.0, spans[2] / 7.0)
+            elif zone == "glass":
+                # The generated glazing source contains a registered run of
+                # arched windows plus a central door. Select one semantic bay
+                # rather than shrinking the full elevation onto every pane.
+                if "Door" in obj.name:
+                    u = 0.435 + u * 0.13
+                else:
+                    u = 0.018 + u * 0.078
+            layer.data[loop_index].uv = (u, v)
 
 
 def box(name: str, size: tuple[float, float, float], location: tuple[float, float, float],
@@ -162,6 +318,8 @@ def box(name: str, size: tuple[float, float, float], location: tuple[float, floa
     obj.dimensions = size
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     obj.data.materials.append(mat)
+    if mat.get("skin_zone"):
+        box_project_uv(obj, str(mat["skin_zone"]))
     if bevel:
         mod = obj.modifiers.new("EdgeSoftening", "BEVEL")
         mod.width = bevel
@@ -210,6 +368,45 @@ def beam(name: str, start: tuple[float, float, float], end: tuple[float, float, 
     return obj
 
 
+def cylindrical_uv(obj: bpy.types.Object, u_repeats: float = 1.0) -> None:
+    mesh = obj.data
+    layer = mesh.uv_layers.new(name="UVMap")
+    zs = [vertex.co.z for vertex in mesh.vertices]
+    z0, z1 = min(zs), max(zs)
+    height = max(z1 - z0, 0.001)
+    for polygon in mesh.polygons:
+        values = []
+        for loop_index in polygon.loop_indices:
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index]
+            values.append((math.atan2(vertex.co.y, vertex.co.x) / (2 * math.pi)) % 1.0)
+        seam = max(values) - min(values) > 0.5
+        for loop_index, u in zip(polygon.loop_indices, values):
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index]
+            if seam and u < 0.5:
+                u += 1.0
+            layer.data[loop_index].uv = (u * u_repeats, (vertex.co.z - z0) / height)
+
+
+def radial_uv(obj: bpy.types.Object, u_repeats: float = 1.0) -> None:
+    mesh = obj.data
+    layer = mesh.uv_layers.new(name="UVMap")
+    radii = [math.hypot(vertex.co.x, vertex.co.y) for vertex in mesh.vertices]
+    r0, r1 = min(radii), max(radii)
+    span = max(r1 - r0, 0.001)
+    for polygon in mesh.polygons:
+        values = []
+        for loop_index in polygon.loop_indices:
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index]
+            values.append((math.atan2(vertex.co.y, vertex.co.x) / (2 * math.pi)) % 1.0)
+        seam = max(values) - min(values) > 0.5
+        for loop_index, u in zip(polygon.loop_indices, values):
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index]
+            if seam and u < 0.5:
+                u += 1.0
+            radius = math.hypot(vertex.co.x, vertex.co.y)
+            layer.data[loop_index].uv = (u * u_repeats, (radius - r0) / span)
+
+
 def tapered_ellipse(name: str, rings: list[tuple[float, float, float]],
                     mat_a: bpy.types.Material, mat_b: bpy.types.Material | None = None,
                     segments: int = 96, cap_bottom: bool = True, cap_top: bool = True) -> bpy.types.Object:
@@ -245,6 +442,9 @@ def tapered_ellipse(name: str, rings: list[tuple[float, float, float]],
     if mat_b:
         for polygon in mesh.polygons:
             polygon.material_index = polygon.index % 2
+    zone = str(mat_a.get("skin_zone", ""))
+    if zone:
+        cylindrical_uv(obj, {"metal": 10.0, "glass": 4.0, "accent": 8.0}.get(zone, 4.0))
     return obj
 
 
@@ -289,6 +489,8 @@ def arena_roof_membrane(name: str, mat: bpy.types.Material,
     mesh.materials.append(mat)
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
+    if mat.get("skin_zone"):
+        radial_uv(obj, 8.0)
     return obj
 
 
@@ -392,6 +594,8 @@ def dome_mesh(name: str, radius: float, z: float, mat: bpy.types.Material,
     mesh.materials.append(mat)
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
+    if mat.get("skin_zone"):
+        cylindrical_uv(obj, 10.0)
     return obj
 
 
@@ -413,9 +617,9 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             (0, -20.0 - i * 0.4, 0.18 + i * 0.36), m["marble"],
         ))
     # Deep six-column portico with capitals and bronze doors.
-    objs.append(box("FIXED_CivicPorticoShadow", (30.0, 0.5, 13.4), (0, -16.35, 9.7), m["dark"]))
+    objs.append(box("FIXED_CivicPorticoRecess", (30.0, 0.5, 13.4), (0, -16.35, 9.7), m["recess"]))
     for x in (-12.5, -7.5, -2.5, 2.5, 7.5, 12.5):
-        objs.append(cylinder(f"FIXED_CivicColumn_{x}", 0.72, 14.2, (x, -19.0, 9.6), m["stone"], 32))
+        objs.append(cylinder(f"FIXED_CivicColumn_{x}", 0.72, 14.2, (x, -19.0, 9.6), m["marble"], 32))
         objs.append(cylinder(f"FIXED_CivicBase_{x}", 1.0, 0.55, (x, -19.0, 2.75), m["marble"], 32))
         objs.append(cylinder(f"FIXED_CivicCapital_{x}", 1.18, 0.62, (x, -19.0, 16.7), m["marble"], 32))
     objs.append(box("FIXED_CivicPorticoBeam", (31.5, 6.0, 1.2), (0, -16.2, 17.4), m["stone"], 0.16))
@@ -436,7 +640,9 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             f"FIXED_CivicDrumWindow{i:02d}", (1.5, 0.2, 4.0),
             (12.9 * math.cos(a), 2.0 + 11.3 * math.sin(a), 22.2), m["glass"],
         ))
-    objs.append(dome_mesh("FIXED_CivicCopperDome", 14.3, 26.0, m["copper"], 128, 40))
+    dome = dome_mesh("FIXED_CivicCopperDome", 14.3, 26.0, m["copper"], 128, 40)
+    dome.location.y = 2.0
+    objs.append(dome)
     for i in range(24):
         a = 2 * math.pi * i / 24
         points = []
@@ -536,7 +742,9 @@ def civic_module(role: str, variant: str, height: float,
         objs.append(box("CIVIC_Crown", (72, 41, height * 0.55), (0, 0, height * 0.275), m["stone"], 0.2))
         objs.append(cylinder("CIVIC_CrownDrum", 12, height * 0.75, (0, 2, height * 0.45), m["marble"], 64, (1.0, 0.88)))
     elif role == "roof":
-        objs.append(dome_mesh("CIVIC_RoofDome", 12.5, 0.0, m["copper"], 64, 16))
+        dome = dome_mesh("CIVIC_RoofDome", 12.5, 0.0, m["copper"], 64, 16)
+        dome.location.y = 2.0
+        objs.append(dome)
         objs.append(cylinder("CIVIC_RoofLantern", 2.4, 3.0, (0, 2, height - 2.0), m["marble"], 24))
     return objs
 
@@ -630,17 +838,17 @@ def setup_render() -> None:
     scene.render.image_settings.file_format = "PNG"
     scene.render.film_transparent = False
     scene.view_settings.look = "AgX - Medium High Contrast"
-    scene.view_settings.exposure = 1.35
+    scene.view_settings.exposure = 1.75
     scene.world.use_nodes = True
     background = scene.world.node_tree.nodes.get("Background")
     background.inputs["Color"].default_value = (0.12, 0.14, 0.17, 1)
-    background.inputs["Strength"].default_value = 0.65
+    background.inputs["Strength"].default_value = 0.88
     ground_mat = material("MAT_W3_Ground", (0.18, 0.20, 0.23, 1), 0.88)
     box("PRESENTATION_Ground", (420, 420, 0.20), (0, 0, -0.11), ground_mat)
     bpy.ops.object.light_add(type="AREA", location=(-90, -110, 130))
     key = bpy.context.object
     key.name = "PRESENTATION_Key"
-    key.data.energy = 5200
+    key.data.energy = 6600
     key.data.shape = "DISK"
     key.data.size = 70
     key.rotation_euler = (Vector((0, 0, 18)) - key.location).to_track_quat("-Z", "Y").to_euler()
@@ -695,7 +903,7 @@ def render_views(folder: Path, family: str, width: float, depth: float, height: 
 
 def module_payload(family: str, role: str, variant: str, filename: str,
                    width: float, depth: float, height: float, tris: int,
-                   size_bytes: int) -> dict:
+                   size_bytes: int, skin: dict | None = None) -> dict:
     repeat = role == "floor"
     payload = {
         "role": role,
@@ -714,15 +922,15 @@ def module_payload(family: str, role: str, variant: str, filename: str,
         "allow_inset_footprint": True,
         "triangle_count": tris,
         "material_count": 10,
-        "texture_keys": [],
-        "ao_baked": False,
+        "texture_keys": sorted(skin.get("zones", {}).keys()) if skin else [],
+        "ao_baked": bool(skin),
         "size_bytes": size_bytes,
     }
     return payload
 
 
-def facade_contract(family: str) -> dict:
-    return {
+def facade_contract(family: str, skin: dict | None = None) -> dict:
+    contract = {
         "schema": "facade-sheet@5",
         "source_directory": f"/families/{family}",
         "model": "gpt-image-2",
@@ -746,7 +954,7 @@ def facade_contract(family: str) -> dict:
             "far_atlas_width_px": 1024,
             "near_usage": "close-range physical glazing and material reference",
             "far_usage": "city-scale baked facade reference",
-            "container": "JPEG design source; GLB materials packaged separately",
+            "container": "PNG registered PBR atlases embedded in GLB materials",
         },
         "assembly_contract": {
             "fixed": ["podium/entrance", "corner returns", "crown", "roof"],
@@ -761,6 +969,42 @@ def facade_contract(family: str) -> dict:
             "abutting_policy": "author all elevations; site geometry alone controls occlusion",
         },
     }
+    if skin:
+        contract["assets"] = {
+            "skin_manifest": "textures/skin_manifest.json",
+            "source": skin["source"],
+            "near": skin["atlases"]["near"],
+            "far": skin["atlases"]["far"],
+            "semantic_masks": {
+                "glass_mask": skin["atlases"]["near"]["glass_mask"],
+                "opaque_mask": skin["atlases"]["near"]["opaque_mask"],
+            },
+        }
+    return contract
+
+
+def texture_inventory(skin: dict | None) -> list[dict]:
+    if not skin:
+        return []
+    inventory = []
+    for lod, assets in skin["atlases"].items():
+        for channel, path in assets.items():
+            inventory.append({
+                "key": f"{lod}_atlas_{channel}",
+                "path": path,
+                "lod": lod,
+                "channel": channel,
+            })
+    for zone, lods in skin["zones"].items():
+        for channel, path in lods["near"].items():
+            inventory.append({
+                "key": f"near_{zone}_{channel}",
+                "path": path,
+                "lod": "near",
+                "zone": zone,
+                "channel": channel,
+            })
+    return inventory
 
 
 def module_contract_markers(role: str, variant: str, height: float) -> list[bpy.types.Object]:
@@ -786,11 +1030,17 @@ def module_contract_markers(role: str, variant: str, height: float) -> list[bpy.
     return markers
 
 
-def build_family(family: str, config: dict, output_root: Path, markthal_fixed: Path) -> None:
+def build_family(
+    family: str,
+    config: dict,
+    output_root: Path,
+    markthal_fixed: Path | None,
+) -> None:
     clear_scene()
-    mats = palette()
     folder = output_root / family
     folder.mkdir(parents=True, exist_ok=True)
+    skin = load_skin_manifest(folder)
+    mats = palette(folder)
     width, depth, height = config["dimensions"]
     min_floors, max_floors, native_floors = config["floors"]
     source_provenance = {
@@ -800,6 +1050,8 @@ def build_family(family: str, config: dict, output_root: Path, markthal_fixed: P
     }
 
     if family == "food-hall-market-hall":
+        if markthal_fixed is None or not markthal_fixed.is_file():
+            raise FileNotFoundError("--markthal-fixed is required for food-hall-market-hall")
         assembled_path = folder / f"{family}_assembled.glb"
         before = set(bpy.data.objects)
         bpy.ops.import_scene.gltf(filepath=str(markthal_fixed))
@@ -867,7 +1119,7 @@ def build_family(family: str, config: dict, output_root: Path, markthal_fixed: P
         export_glb(path, objs)
         modules.append(module_payload(
             family, role, variant, filename, width, depth, module_height,
-            triangle_count(objs), path.stat().st_size,
+            triangle_count(objs), path.stat().st_size, skin,
         ))
         delete_objects(objs)
 
@@ -894,6 +1146,8 @@ def build_family(family: str, config: dict, output_root: Path, markthal_fixed: P
             }],
         },
         "massing_graph": {"type": "fixed_landmark", "silhouette": family},
+        "texture_keys": sorted(skin.get("zones", {}).keys()) if skin else [],
+        "ao_baked": bool(skin),
     }
     footprint = {
         "preferredProfiles": ["rectangle"],
@@ -924,8 +1178,8 @@ def build_family(family: str, config: dict, output_root: Path, markthal_fixed: P
         "generation_tags": ["wave3", "fixed_landmark", "sculpted_silhouette"],
         "footprint_compatibility": footprint,
         "coordinate_contract": COORDINATE_CONTRACT,
-        "textures": [],
-        "facade_sheet": facade_contract(family),
+        "textures": texture_inventory(skin),
+        "facade_sheet": facade_contract(family, skin),
         "massing_graph": {"type": "fixed_landmark", "silhouette": family, "render_locked": True},
         "material_budget": {
             "max_assembled_materials": 20,
@@ -990,10 +1244,10 @@ def build_family(family: str, config: dict, output_root: Path, markthal_fixed: P
 def main() -> int:
     args = parse_args()
     output_root = args.output_root.resolve()
-    markthal_fixed = args.markthal_fixed.resolve()
-    if not markthal_fixed.is_file():
-        raise FileNotFoundError(markthal_fixed)
-    for family, config in FAMILIES.items():
+    markthal_fixed = args.markthal_fixed.resolve() if args.markthal_fixed else None
+    selected = args.family or list(FAMILIES)
+    for family in selected:
+        config = FAMILIES[family]
         build_family(family, config, output_root, markthal_fixed)
     return 0
 

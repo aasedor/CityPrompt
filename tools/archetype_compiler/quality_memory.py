@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from PIL import Image
+
 
 TOOL_DIR = Path(__file__).resolve().parent
 DEFAULT_MEMORY_PATH = TOOL_DIR / "high_quality_building_memory.json"
@@ -71,6 +73,7 @@ def assess_family_quality(
     manifest: dict[str, Any],
     report: dict[str, Any],
     memory: dict[str, Any] | None = None,
+    family_dir: Path | None = None,
 ) -> dict[str, Any]:
     """Assess one generated family without requiring Blender or image APIs.
 
@@ -141,6 +144,41 @@ def assess_family_quality(
     pbr_memory = memory.get("construction_memory", {}).get("facade_pbr", {})
     min_near = int(pbr_memory.get("near_atlas_min_width_px") or 2048)
     max_far = int(pbr_memory.get("far_atlas_max_width_px") or 1024)
+    asset_detail = "filesystem context unavailable; declaration-only compatibility check"
+    pbr_assets_valid = True
+    if family_dir is not None:
+        assets = facade.get("assets") or {}
+        expected_asset_channels = required_channels | {"glass_mask", "opaque_mask"}
+        problems: list[str] = []
+        for lod, expected_width in (("near", near_width), ("far", far_width)):
+            lod_assets = assets.get(lod) or {}
+            for channel in sorted(expected_asset_channels):
+                relative = str(lod_assets.get(channel) or "").strip()
+                if not relative:
+                    problems.append(f"{lod}.{channel} missing declaration")
+                    continue
+                path = family_dir / relative
+                if not path.is_file():
+                    problems.append(f"{lod}.{channel} missing file: {relative}")
+                    continue
+                try:
+                    with Image.open(path) as image:
+                        if image.width != expected_width:
+                            problems.append(
+                                f"{lod}.{channel} width {image.width}px != {expected_width}px"
+                            )
+                except OSError as exc:
+                    problems.append(f"{lod}.{channel} unreadable: {exc}")
+        for key in ("skin_manifest", "source"):
+            relative = str(assets.get(key) or "").strip()
+            if not relative or not (family_dir / relative).is_file():
+                problems.append(f"{key} missing file")
+        pbr_assets_valid = not problems
+        asset_detail = (
+            "all declared near/far PBR atlases, masks, source, and skin manifest resolve on disk"
+            if not problems
+            else "; ".join(problems)
+        )
     min_variants = int(
         memory.get("construction_memory", {}).get("variation", {}).get(
             "minimum_middle_bay_variants", 3
@@ -233,6 +271,11 @@ def assess_family_quality(
             ),
         ),
         _gate(
+            "missing_or_invalid_pbr_assets",
+            pbr_assets_valid,
+            asset_detail,
+        ),
+        _gate(
             "missing_variant_alias_contract",
             not variant_id or required_aliases <= aliases,
             (
@@ -293,7 +336,12 @@ def assess_paths(
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     report_path = report_path or manifest_path.with_name("validation_report.json")
     report = json.loads(report_path.read_text(encoding="utf-8"))
-    return assess_family_quality(manifest, report, load_quality_memory(memory_path))
+    return assess_family_quality(
+        manifest,
+        report,
+        load_quality_memory(memory_path),
+        family_dir=manifest_path.parent,
+    )
 
 
 def main() -> int:

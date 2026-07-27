@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-fixed-landmark-silhouette-contract-v88`.
+Current executable memory: `2026-07-27-verified-pbr-asset-contract-v89`.
 
 ## The quality target
 
@@ -80,6 +80,13 @@ The image provider receives the archetype views as hard design references and ge
 - podium, typical, alternate and crown bands.
 
 The close-range atlas is normally 4K and must be at least 2K. A compressed 1K-or-smaller LOD serves city scale. The albedo must not contain directional sunlight or cast shadows; City Prompt owns illumination.
+
+A channel list in a manifest is not proof of a skinned model. Production
+assessment resolves every near/far albedo, normal, roughness, AO, depth,
+emissive, glass-mask and opaque-mask path on disk, verifies the declared atlas
+widths, and requires the render-locked source plus skin manifest. The exported
+GLB must embed the same registered materials; an empty texture inventory is a
+contract defect even when the channel names are correct.
 
 Gemini and GPT Image are interchangeable source providers. Provider choice is recorded as provenance, while rectification, PBR derivation, assembly and validation remain identical.
 

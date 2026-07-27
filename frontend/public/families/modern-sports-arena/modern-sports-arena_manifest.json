@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T06:08:10.680594+00:00",
+  "created_at": "2026-07-27T14:43:24.733841+00:00",
   "family": "modern-sports-arena",
   "archetype_id": "modern_sports_arena",
   "archetype_label": "Modern Sports Arena \u2014 Faceted Indoor Bowl",
@@ -72,7 +72,328 @@
     "front_facade": "-Y in Blender, +Z in glTF",
     "transforms": "applied"
   },
-  "textures": [],
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/near/arena_atlas_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/near/arena_atlas_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/near/arena_atlas_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/near/arena_atlas_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/near/arena_atlas_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/near/arena_atlas_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/near/arena_atlas_glass_mask.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/near/arena_atlas_opaque_mask.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/far/arena_atlas_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/far/arena_atlas_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/far/arena_atlas_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/far/arena_atlas_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/far/arena_atlas_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/far/arena_atlas_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/far/arena_atlas_glass_mask.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/far/arena_atlas_opaque_mask.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_metal_albedo",
+      "path": "textures/near/metal/metal_albedo.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_metal_normal",
+      "path": "textures/near/metal/metal_normal.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "normal"
+    },
+    {
+      "key": "near_metal_roughness",
+      "path": "textures/near/metal/metal_roughness.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_metal_ao",
+      "path": "textures/near/metal/metal_ao.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "ao"
+    },
+    {
+      "key": "near_metal_depth",
+      "path": "textures/near/metal/metal_depth.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "depth"
+    },
+    {
+      "key": "near_metal_emissive",
+      "path": "textures/near/metal/metal_emissive.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_metal_glass_mask",
+      "path": "textures/near/metal/metal_glass_mask.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_metal_opaque_mask",
+      "path": "textures/near/metal/metal_opaque_mask.png",
+      "lod": "near",
+      "zone": "metal",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/near/roof/roof_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/near/roof/roof_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/near/roof/roof_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/near/roof/roof_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/near/roof/roof_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/near/roof/roof_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/near/roof/roof_glass_mask.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/near/roof/roof_opaque_mask.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/near/glass/glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/near/glass/glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/near/glass/glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/near/glass/glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/near/glass/glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/near/glass/glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/near/glass/glass_glass_mask.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/near/glass/glass_opaque_mask.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_accent_albedo",
+      "path": "textures/near/accent/accent_albedo.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_accent_normal",
+      "path": "textures/near/accent/accent_normal.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "normal"
+    },
+    {
+      "key": "near_accent_roughness",
+      "path": "textures/near/accent/accent_roughness.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_accent_ao",
+      "path": "textures/near/accent/accent_ao.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "ao"
+    },
+    {
+      "key": "near_accent_depth",
+      "path": "textures/near/accent/accent_depth.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "depth"
+    },
+    {
+      "key": "near_accent_emissive",
+      "path": "textures/near/accent/accent_emissive.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_accent_glass_mask",
+      "path": "textures/near/accent/accent_glass_mask.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_accent_opaque_mask",
+      "path": "textures/near/accent/accent_opaque_mask.png",
+      "lod": "near",
+      "zone": "accent",
+      "channel": "opaque_mask"
+    }
+  ],
   "facade_sheet": {
     "schema": "facade-sheet@5",
     "source_directory": "/families/modern-sports-arena",
@@ -114,7 +435,7 @@
       "far_atlas_width_px": 1024,
       "near_usage": "close-range physical glazing and material reference",
       "far_usage": "city-scale baked facade reference",
-      "container": "JPEG design source; GLB materials packaged separately"
+      "container": "PNG registered PBR atlases embedded in GLB materials"
     },
     "assembly_contract": {
       "fixed": [
@@ -136,6 +457,34 @@
         "rear": "authored service/secondary elevation"
       },
       "abutting_policy": "author all elevations; site geometry alone controls occlusion"
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/arena_material_source.png",
+      "near": {
+        "albedo": "textures/near/arena_atlas_albedo.png",
+        "normal": "textures/near/arena_atlas_normal.png",
+        "roughness": "textures/near/arena_atlas_roughness.png",
+        "ao": "textures/near/arena_atlas_ao.png",
+        "depth": "textures/near/arena_atlas_depth.png",
+        "emissive": "textures/near/arena_atlas_emissive.png",
+        "glass_mask": "textures/near/arena_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/arena_atlas_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/arena_atlas_albedo.png",
+        "normal": "textures/far/arena_atlas_normal.png",
+        "roughness": "textures/far/arena_atlas_roughness.png",
+        "ao": "textures/far/arena_atlas_ao.png",
+        "depth": "textures/far/arena_atlas_depth.png",
+        "emissive": "textures/far/arena_atlas_emissive.png",
+        "glass_mask": "textures/far/arena_atlas_glass_mask.png",
+        "opaque_mask": "textures/far/arena_atlas_opaque_mask.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/near/arena_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/arena_atlas_opaque_mask.png"
+      }
     }
   },
   "massing_graph": {
@@ -183,9 +532,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 3104,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 251420
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 6615248
     },
     {
       "role": "floor",
@@ -204,9 +558,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 416,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 27796
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 3716316
     },
     {
       "role": "floor",
@@ -225,9 +584,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 416,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 27856
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 3716376
     },
     {
       "role": "floor",
@@ -246,9 +610,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 416,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 27856
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 3716376
     },
     {
       "role": "crown",
@@ -267,9 +636,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 3104,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 254728
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 3943784
     },
     {
       "role": "roof",
@@ -288,9 +662,14 @@
       "allow_inset_footprint": true,
       "triangle_count": 4068,
       "material_count": 10,
-      "texture_keys": [],
-      "ao_baked": false,
-      "size_bytes": 347672
+      "texture_keys": [
+        "accent",
+        "glass",
+        "metal",
+        "roof"
+      ],
+      "ao_baked": true,
+      "size_bytes": 4029880
     }
   ],
   "assembled": {
@@ -328,7 +707,14 @@
     "massing_graph": {
       "type": "fixed_landmark",
       "silhouette": "modern-sports-arena"
-    }
+    },
+    "texture_keys": [
+      "accent",
+      "glass",
+      "metal",
+      "roof"
+    ],
+    "ao_baked": true
   },
   "thumbnail": "modern-sports-arena_preview.png",
   "renders": [

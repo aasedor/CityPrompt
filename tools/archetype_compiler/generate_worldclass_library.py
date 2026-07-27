@@ -74,7 +74,7 @@ def family_result(entry: dict, family_dir: Path, sheet_dir: Path, quality_memory
     report = json.loads(reports[0].read_text(encoding="utf-8")) if reports else {}
     preview_name = manifest.get("thumbnail")
     quality_assessment = (
-        assess_family_quality(manifest, report, quality_memory)
+        assess_family_quality(manifest, report, quality_memory, family_dir=family_dir)
         if manifest and report
         else {
             "schema": "high-quality-building-assessment@1",

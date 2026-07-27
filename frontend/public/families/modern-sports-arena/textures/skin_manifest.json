@@ -1,0 +1,131 @@
+{
+  "schema": "wave3-landmark-skin@1",
+  "family": "modern-sports-arena",
+  "source": "textures/source/arena_material_source.png",
+  "source_model": "gpt-image-2",
+  "registration": "four horizontal bands, all runtime channels derived pixel-for-pixel",
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "zones": {
+    "metal": {
+      "near": {
+        "albedo": "textures/near/metal/metal_albedo.png",
+        "normal": "textures/near/metal/metal_normal.png",
+        "roughness": "textures/near/metal/metal_roughness.png",
+        "ao": "textures/near/metal/metal_ao.png",
+        "depth": "textures/near/metal/metal_depth.png",
+        "emissive": "textures/near/metal/metal_emissive.png",
+        "glass_mask": "textures/near/metal/metal_glass_mask.png",
+        "opaque_mask": "textures/near/metal/metal_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/metal/metal_albedo.png",
+        "normal": "textures/far/metal/metal_normal.png",
+        "roughness": "textures/far/metal/metal_roughness.png",
+        "ao": "textures/far/metal/metal_ao.png",
+        "depth": "textures/far/metal/metal_depth.png",
+        "emissive": "textures/far/metal/metal_emissive.png",
+        "glass_mask": "textures/far/metal/metal_glass_mask.png",
+        "opaque_mask": "textures/far/metal/metal_opaque_mask.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/near/roof/roof_albedo.png",
+        "normal": "textures/near/roof/roof_normal.png",
+        "roughness": "textures/near/roof/roof_roughness.png",
+        "ao": "textures/near/roof/roof_ao.png",
+        "depth": "textures/near/roof/roof_depth.png",
+        "emissive": "textures/near/roof/roof_emissive.png",
+        "glass_mask": "textures/near/roof/roof_glass_mask.png",
+        "opaque_mask": "textures/near/roof/roof_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/roof/roof_albedo.png",
+        "normal": "textures/far/roof/roof_normal.png",
+        "roughness": "textures/far/roof/roof_roughness.png",
+        "ao": "textures/far/roof/roof_ao.png",
+        "depth": "textures/far/roof/roof_depth.png",
+        "emissive": "textures/far/roof/roof_emissive.png",
+        "glass_mask": "textures/far/roof/roof_glass_mask.png",
+        "opaque_mask": "textures/far/roof/roof_opaque_mask.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/near/glass/glass_albedo.png",
+        "normal": "textures/near/glass/glass_normal.png",
+        "roughness": "textures/near/glass/glass_roughness.png",
+        "ao": "textures/near/glass/glass_ao.png",
+        "depth": "textures/near/glass/glass_depth.png",
+        "emissive": "textures/near/glass/glass_emissive.png",
+        "glass_mask": "textures/near/glass/glass_glass_mask.png",
+        "opaque_mask": "textures/near/glass/glass_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/glass/glass_albedo.png",
+        "normal": "textures/far/glass/glass_normal.png",
+        "roughness": "textures/far/glass/glass_roughness.png",
+        "ao": "textures/far/glass/glass_ao.png",
+        "depth": "textures/far/glass/glass_depth.png",
+        "emissive": "textures/far/glass/glass_emissive.png",
+        "glass_mask": "textures/far/glass/glass_glass_mask.png",
+        "opaque_mask": "textures/far/glass/glass_opaque_mask.png"
+      }
+    },
+    "accent": {
+      "near": {
+        "albedo": "textures/near/accent/accent_albedo.png",
+        "normal": "textures/near/accent/accent_normal.png",
+        "roughness": "textures/near/accent/accent_roughness.png",
+        "ao": "textures/near/accent/accent_ao.png",
+        "depth": "textures/near/accent/accent_depth.png",
+        "emissive": "textures/near/accent/accent_emissive.png",
+        "glass_mask": "textures/near/accent/accent_glass_mask.png",
+        "opaque_mask": "textures/near/accent/accent_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/accent/accent_albedo.png",
+        "normal": "textures/far/accent/accent_normal.png",
+        "roughness": "textures/far/accent/accent_roughness.png",
+        "ao": "textures/far/accent/accent_ao.png",
+        "depth": "textures/far/accent/accent_depth.png",
+        "emissive": "textures/far/accent/accent_emissive.png",
+        "glass_mask": "textures/far/accent/accent_glass_mask.png",
+        "opaque_mask": "textures/far/accent/accent_opaque_mask.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/near/arena_atlas_albedo.png",
+      "normal": "textures/near/arena_atlas_normal.png",
+      "roughness": "textures/near/arena_atlas_roughness.png",
+      "ao": "textures/near/arena_atlas_ao.png",
+      "depth": "textures/near/arena_atlas_depth.png",
+      "emissive": "textures/near/arena_atlas_emissive.png",
+      "glass_mask": "textures/near/arena_atlas_glass_mask.png",
+      "opaque_mask": "textures/near/arena_atlas_opaque_mask.png"
+    },
+    "far": {
+      "albedo": "textures/far/arena_atlas_albedo.png",
+      "normal": "textures/far/arena_atlas_normal.png",
+      "roughness": "textures/far/arena_atlas_roughness.png",
+      "ao": "textures/far/arena_atlas_ao.png",
+      "depth": "textures/far/arena_atlas_depth.png",
+      "emissive": "textures/far/arena_atlas_emissive.png",
+      "glass_mask": "textures/far/arena_atlas_glass_mask.png",
+      "opaque_mask": "textures/far/arena_atlas_opaque_mask.png"
+    }
+  }
+}

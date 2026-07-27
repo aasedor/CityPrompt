@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-27-fixed-landmark-silhouette-contract-v88",
+  "memory_version": "2026-07-27-verified-pbr-asset-contract-v89",
   "archetype_id": "civic_monumental_institution",
   "family": "civic-monumental-neoclassical",
   "status": "pass",
@@ -77,6 +77,11 @@
         "detail": "1 preferred profiles; target is 1; exception rationale: This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette."
       },
       {
+        "id": "missing_or_invalid_pbr_assets",
+        "passed": true,
+        "detail": "all declared near/far PBR atlases, masks, source, and skin manifest resolve on disk"
+      },
+      {
         "id": "missing_variant_alias_contract",
         "passed": true,
         "detail": "parent and selected variant aliases declared"
@@ -89,7 +94,7 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "6 assembled materials; review above 20"
+        "detail": "7 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",

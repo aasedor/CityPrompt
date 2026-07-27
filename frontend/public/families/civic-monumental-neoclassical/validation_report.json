@@ -10,7 +10,8 @@
   "manifest": "civic-monumental-neoclassical_manifest.json",
   "errors": [],
   "warnings": [
-    "no setback module (optional)"
+    "no setback module (optional)",
+    "civic-monumental-neoclassical_assembled.glb: 15.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -27,10 +28,10 @@
         "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
-        "MAT_W3_Marble",
-        "MAT_W3_Stone"
+        "MAT_W3_CivicMarbleSkin",
+        "MAT_W3_CivicReliefSkin"
       ],
-      "size_bytes": 21304
+      "size_bytes": 6860732
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_a.glb",
@@ -46,10 +47,10 @@
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
-        "MAT_W3_ClearGlass",
-        "MAT_W3_Marble"
+        "MAT_W3_CivicGlassSkin",
+        "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 26236
+      "size_bytes": 6469668
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_b.glb",
@@ -65,10 +66,10 @@
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
-        "MAT_W3_ClearGlass",
-        "MAT_W3_Marble"
+        "MAT_W3_CivicGlassSkin",
+        "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 27712
+      "size_bytes": 6471152
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_c.glb",
@@ -84,10 +85,10 @@
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
-        "MAT_W3_ClearGlass",
-        "MAT_W3_Marble"
+        "MAT_W3_CivicGlassSkin",
+        "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 24760
+      "size_bytes": 6468188
     },
     {
       "file": "civic-monumental-neoclassical_crown_crown.glb",
@@ -103,10 +104,10 @@
         "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
         "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
         "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
-        "MAT_W3_Marble",
-        "MAT_W3_Stone"
+        "MAT_W3_CivicMarbleSkin",
+        "MAT_W3_CivicReliefSkin"
       ],
-      "size_bytes": 28804
+      "size_bytes": 6868200
     },
     {
       "file": "civic-monumental-neoclassical_roof.glb",
@@ -122,10 +123,10 @@
         "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
         "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
         "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
-        "MAT_W3_Marble",
-        "MAT_W3_PatinatedCopper"
+        "MAT_W3_CivicCopperSkin",
+        "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 123132
+      "size_bytes": 7093460
     },
     {
       "file": "civic-monumental-neoclassical_assembled.glb",
@@ -138,14 +139,15 @@
       },
       "bottom_y": 0.0,
       "materials": [
-        "MAT_W3_Bronze",
-        "MAT_W3_ClearGlass",
+        "MAT_W3_CivicBronzeSkin",
+        "MAT_W3_CivicCopperSkin",
+        "MAT_W3_CivicGlassSkin",
+        "MAT_W3_CivicMarbleSkin",
+        "MAT_W3_CivicReliefSkin",
         "MAT_W3_DarkSteel",
-        "MAT_W3_Marble",
-        "MAT_W3_PatinatedCopper",
-        "MAT_W3_Stone"
+        "MAT_W3_PorticoRecess"
       ],
-      "size_bytes": 1913320,
+      "size_bytes": 15854828,
       "role": "assembled"
     }
   ]

@@ -57,7 +57,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-27-fixed-landmark-silhouette-contract-v88"
+        == "2026-07-27-verified-pbr-asset-contract-v89"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -74,6 +74,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "geometry_carries_identity",
         "fixed_ends_repeat_middle",
         "materials_are_pbr",
+        "pbr_assets_are_verified",
         "glass_is_layered",
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",
@@ -91,6 +92,87 @@ def test_complete_family_passes_executable_quality_memory():
     assert assessment["high_quality_ready"] is True
     assert assessment["hard_failures"] == []
     assert assessment["review_findings"] == []
+
+
+def test_filesystem_assessor_rejects_declared_channels_without_real_assets(tmp_path):
+    from quality_memory import assess_family_quality
+
+    manifest = production_manifest()
+    manifest["facade_sheet"]["assets"] = {
+        "skin_manifest": "textures/skin_manifest.json",
+        "source": "textures/source.png",
+        "near": {
+            channel: f"textures/near_{channel}.png"
+            for channel in ("albedo", "normal", "roughness", "ao", "depth", "emissive")
+        },
+        "far": {
+            channel: f"textures/far_{channel}.png"
+            for channel in ("albedo", "normal", "roughness", "ao", "depth", "emissive")
+        },
+    }
+    assessment = assess_family_quality(
+        manifest,
+        {"status": "pass", "warnings": []},
+        family_dir=tmp_path,
+    )
+
+    assert assessment["status"] == "review"
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_or_invalid_pbr_assets"
+    }
+
+
+def write_verified_assets(manifest: dict, family_dir: Path) -> None:
+    from PIL import Image
+
+    textures = family_dir / "textures"
+    textures.mkdir(exist_ok=True)
+    (textures / "skin_manifest.json").write_text("{}\n", encoding="utf-8")
+    Image.new("RGB", (8, 8)).save(textures / "source.png")
+    near = {}
+    far = {}
+    for channel in (
+        "albedo",
+        "normal",
+        "roughness",
+        "ao",
+        "depth",
+        "emissive",
+        "glass_mask",
+        "opaque_mask",
+    ):
+        near_path = textures / f"near_{channel}.png"
+        far_path = textures / f"far_{channel}.png"
+        Image.new("RGB", (4096, 8)).save(near_path)
+        Image.new("RGB", (1024, 8)).save(far_path)
+        near[channel] = near_path.relative_to(family_dir).as_posix()
+        far[channel] = far_path.relative_to(family_dir).as_posix()
+    manifest["facade_sheet"]["assets"] = {
+        "skin_manifest": "textures/skin_manifest.json",
+        "source": "textures/source.png",
+        "near": near,
+        "far": far,
+    }
+
+
+def test_filesystem_assessor_verifies_atlas_files_and_declared_widths(tmp_path):
+    from quality_memory import assess_family_quality
+
+    manifest = production_manifest()
+    write_verified_assets(manifest, tmp_path)
+    assessment = assess_family_quality(
+        manifest,
+        {"status": "pass", "warnings": []},
+        family_dir=tmp_path,
+    )
+
+    assert assessment["status"] == "pass"
+    asset_gate = next(
+        gate
+        for gate in assessment["gates"]["review"]
+        if gate["id"] == "missing_or_invalid_pbr_assets"
+    )
+    assert asset_gate["passed"] is True
 
 
 def test_legacy_family_routes_to_review_without_stopping_batch():
@@ -209,6 +291,7 @@ def test_resume_safe_batch_writes_per_family_quality_assessment(tmp_path, monkey
     family_dir.mkdir(parents=True)
     sheet_dir.mkdir(parents=True)
     manifest = production_manifest()
+    write_verified_assets(manifest, family_dir)
     (family_dir / "quality-pilot_manifest.json").write_text(
         json.dumps(manifest), encoding="utf-8"
     )

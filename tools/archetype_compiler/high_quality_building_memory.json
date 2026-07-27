@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-fixed-landmark-silhouette-contract-v88",
+  "memory_version": "2026-07-27-verified-pbr-asset-contract-v89",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -19,6 +19,10 @@
     {
       "id": "materials_are_pbr",
       "rule": "Close-range facades use shadow-neutral albedo plus normal, roughness, AO/depth and emissive channels. City lighting remains the lighting authority."
+    },
+    {
+      "id": "pbr_assets_are_verified",
+      "rule": "A manifest channel declaration is not evidence of a textured model. The assessor resolves every near/far PBR atlas, semantic mask, render-locked source and skin manifest on disk, verifies declared widths, and the exported GLB must embed the registered materials."
     },
     {
       "id": "glass_is_layered",
@@ -266,6 +270,7 @@
     "review": [
       "fewer_than_three_middle_variants",
       "missing_full_pbr_channels",
+      "missing_or_invalid_pbr_assets",
       "albedo_not_shadow_neutral",
       "near_atlas_below_2048",
       "far_atlas_above_1024",

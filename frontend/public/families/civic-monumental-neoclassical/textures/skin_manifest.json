@@ -1,0 +1,131 @@
+{
+  "schema": "wave3-landmark-skin@1",
+  "family": "civic-monumental-neoclassical",
+  "source": "textures/source/civic_material_source.png",
+  "source_model": "gpt-image-2",
+  "registration": "four horizontal bands, all runtime channels derived pixel-for-pixel",
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "zones": {
+    "marble": {
+      "near": {
+        "albedo": "textures/near/marble/marble_albedo.png",
+        "normal": "textures/near/marble/marble_normal.png",
+        "roughness": "textures/near/marble/marble_roughness.png",
+        "ao": "textures/near/marble/marble_ao.png",
+        "depth": "textures/near/marble/marble_depth.png",
+        "emissive": "textures/near/marble/marble_emissive.png",
+        "glass_mask": "textures/near/marble/marble_glass_mask.png",
+        "opaque_mask": "textures/near/marble/marble_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/marble/marble_albedo.png",
+        "normal": "textures/far/marble/marble_normal.png",
+        "roughness": "textures/far/marble/marble_roughness.png",
+        "ao": "textures/far/marble/marble_ao.png",
+        "depth": "textures/far/marble/marble_depth.png",
+        "emissive": "textures/far/marble/marble_emissive.png",
+        "glass_mask": "textures/far/marble/marble_glass_mask.png",
+        "opaque_mask": "textures/far/marble/marble_opaque_mask.png"
+      }
+    },
+    "relief": {
+      "near": {
+        "albedo": "textures/near/relief/relief_albedo.png",
+        "normal": "textures/near/relief/relief_normal.png",
+        "roughness": "textures/near/relief/relief_roughness.png",
+        "ao": "textures/near/relief/relief_ao.png",
+        "depth": "textures/near/relief/relief_depth.png",
+        "emissive": "textures/near/relief/relief_emissive.png",
+        "glass_mask": "textures/near/relief/relief_glass_mask.png",
+        "opaque_mask": "textures/near/relief/relief_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/relief/relief_albedo.png",
+        "normal": "textures/far/relief/relief_normal.png",
+        "roughness": "textures/far/relief/relief_roughness.png",
+        "ao": "textures/far/relief/relief_ao.png",
+        "depth": "textures/far/relief/relief_depth.png",
+        "emissive": "textures/far/relief/relief_emissive.png",
+        "glass_mask": "textures/far/relief/relief_glass_mask.png",
+        "opaque_mask": "textures/far/relief/relief_opaque_mask.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/near/glass/glass_albedo.png",
+        "normal": "textures/near/glass/glass_normal.png",
+        "roughness": "textures/near/glass/glass_roughness.png",
+        "ao": "textures/near/glass/glass_ao.png",
+        "depth": "textures/near/glass/glass_depth.png",
+        "emissive": "textures/near/glass/glass_emissive.png",
+        "glass_mask": "textures/near/glass/glass_glass_mask.png",
+        "opaque_mask": "textures/near/glass/glass_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/glass/glass_albedo.png",
+        "normal": "textures/far/glass/glass_normal.png",
+        "roughness": "textures/far/glass/glass_roughness.png",
+        "ao": "textures/far/glass/glass_ao.png",
+        "depth": "textures/far/glass/glass_depth.png",
+        "emissive": "textures/far/glass/glass_emissive.png",
+        "glass_mask": "textures/far/glass/glass_glass_mask.png",
+        "opaque_mask": "textures/far/glass/glass_opaque_mask.png"
+      }
+    },
+    "copper": {
+      "near": {
+        "albedo": "textures/near/copper/copper_albedo.png",
+        "normal": "textures/near/copper/copper_normal.png",
+        "roughness": "textures/near/copper/copper_roughness.png",
+        "ao": "textures/near/copper/copper_ao.png",
+        "depth": "textures/near/copper/copper_depth.png",
+        "emissive": "textures/near/copper/copper_emissive.png",
+        "glass_mask": "textures/near/copper/copper_glass_mask.png",
+        "opaque_mask": "textures/near/copper/copper_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/copper/copper_albedo.png",
+        "normal": "textures/far/copper/copper_normal.png",
+        "roughness": "textures/far/copper/copper_roughness.png",
+        "ao": "textures/far/copper/copper_ao.png",
+        "depth": "textures/far/copper/copper_depth.png",
+        "emissive": "textures/far/copper/copper_emissive.png",
+        "glass_mask": "textures/far/copper/copper_glass_mask.png",
+        "opaque_mask": "textures/far/copper/copper_opaque_mask.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/near/civic_atlas_albedo.png",
+      "normal": "textures/near/civic_atlas_normal.png",
+      "roughness": "textures/near/civic_atlas_roughness.png",
+      "ao": "textures/near/civic_atlas_ao.png",
+      "depth": "textures/near/civic_atlas_depth.png",
+      "emissive": "textures/near/civic_atlas_emissive.png",
+      "glass_mask": "textures/near/civic_atlas_glass_mask.png",
+      "opaque_mask": "textures/near/civic_atlas_opaque_mask.png"
+    },
+    "far": {
+      "albedo": "textures/far/civic_atlas_albedo.png",
+      "normal": "textures/far/civic_atlas_normal.png",
+      "roughness": "textures/far/civic_atlas_roughness.png",
+      "ao": "textures/far/civic_atlas_ao.png",
+      "depth": "textures/far/civic_atlas_depth.png",
+      "emissive": "textures/far/civic_atlas_emissive.png",
+      "glass_mask": "textures/far/civic_atlas_glass_mask.png",
+      "opaque_mask": "textures/far/civic_atlas_opaque_mask.png"
+    }
+  }
+}
