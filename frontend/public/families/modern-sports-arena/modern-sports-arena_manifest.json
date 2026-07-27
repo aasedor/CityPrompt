@@ -1,0 +1,351 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_landmark_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-27T06:08:10.680594+00:00",
+  "family": "modern-sports-arena",
+  "archetype_id": "modern_sports_arena",
+  "archetype_label": "Modern Sports Arena \u2014 Faceted Indoor Bowl",
+  "variant_id": "sports_arena_indoor",
+  "generation_archetype_id": "sports_arena_indoor",
+  "archetype_aliases": [
+    "modern_sports_arena",
+    "sports_arena_indoor"
+  ],
+  "aesthetic_category_id": "civic_landmark",
+  "development_type": "institutional",
+  "reuse_keys": [
+    "modern_sports_arena",
+    "sports_arena_indoor",
+    "Sports / Entertainment"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      100,
+      210
+    ],
+    "recommendedDepth_m": [
+      80,
+      168
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          100,
+          210
+        ],
+        "recommendedDepth_m": [
+          80,
+          168
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/modern-sports-arena",
+    "model": "gpt-image-2",
+    "style_reference": "/families/modern-sports-arena/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "city",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "landmark silhouette stays fixed; only the conservative fallback middle modules repeat"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "JPEG design source; GLB materials packaged separately"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "authored four-sided landmark geometry with distinct public, side, rear, and roof construction",
+      "elevation_coverage": {
+        "front": "physical facade and glazing",
+        "left": "authored secondary elevation",
+        "right": "authored secondary elevation",
+        "rear": "authored service/secondary elevation"
+      },
+      "abutting_policy": "author all elevations; site geometry alone controls occlusion"
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "modern-sports-arena",
+    "render_locked": true
+  },
+  "material_budget": {
+    "max_assembled_materials": 20,
+    "rationale": "Landmark shell, structure, glazing, interior, roof, and accent materials remain separate to preserve construction legibility."
+  },
+  "dimensions": {
+    "width_m": 150.0,
+    "depth_m": 120.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 5.0,
+    "crown_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "native_width_m": 150.0,
+  "native_depth_m": 120.0,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 5,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_podium.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 3104,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 251420
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_floor_typical_a.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 416,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 27796
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_floor_typical_b.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 416,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 27856
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_floor_typical_c.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 416,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 27856
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_crown_crown.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 3104,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 254728
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "modern-sports-arena_roof.glb",
+      "module_family": "modern-sports-arena",
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 4068,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 347672
+    }
+  ],
+  "assembled": {
+    "filename": "modern-sports-arena_assembled.glb",
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 42.0,
+    "triangle_count": 24482,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 42.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 150.0,
+      "depth_m": 120.0,
+      "wing_depth_m": 120.0,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 150.0,
+          "thickness_m": 120.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "modern-sports-arena"
+    }
+  },
+  "thumbnail": "modern-sports-arena_preview.png",
+  "renders": [
+    "modern-sports-arena_preview.png",
+    "modern-sports-arena_front_corner_oblique.png",
+    "modern-sports-arena_rear_corner_oblique.png",
+    "modern-sports-arena_facade_close.png",
+    "modern-sports-arena_street.png",
+    "modern-sports-arena_aerial.png",
+    "modern-sports-arena_context.png"
+  ],
+  "architectural_identity": "Low elliptical indoor arena with a silver faceted diagrid bowl, transparent public concourse, twin sweeping entrance cuts, amber media ribbon, ribbed roof, and central oval oculus.",
+  "material_zones": "satin silver aluminum facets; charcoal steel ribs; low-iron concourse glass; warm occupied lobby; restrained amber media ribbon; dark roof membrane",
+  "glass_profile": "arena_concourse_clear",
+  "source_provenance": {
+    "catalogue_archetype_id": "modern_sports_arena",
+    "catalogue_variant_id": "sports_arena_indoor",
+    "elevation_source": "/families/modern-sports-arena/elevation.jpg"
+  }
+}

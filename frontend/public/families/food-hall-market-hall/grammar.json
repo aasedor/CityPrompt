@@ -1,0 +1,80 @@
+{
+  "family_id": "food-hall-market-hall",
+  "source": {
+    "archetype_id": "food_hall_market_hall",
+    "variant_id": "market_contemporary",
+    "generation_archetype_id": "market_contemporary",
+    "reuse_keys": [
+      "food_hall_market_hall",
+      "market_contemporary",
+      "Food Hall / Market"
+    ]
+  },
+  "dimensions": {
+    "width_m": 60.0,
+    "depth_m": 96.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 5.0,
+    "crown_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "Inhabited pale-stone horseshoe arch enclosing a monumental cable-net market hall, vivid inner-vault mural, long residential side lattice, and an occupied roof court.",
+    "material_zones": "pale limestone panels; dark steel cable net; low-iron glass; vivid mural vault; warm market interiors; charcoal roof membrane",
+    "glass_profile": "low_iron_cable_net",
+    "kits": [
+      "fixed_landmark",
+      "sculpted_shell",
+      "physical_glazing",
+      "authored_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "food_hall_market_hall",
+    "market_contemporary"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      42,
+      84
+    ],
+    "recommendedDepth_m": [
+      62,
+      134
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          42,
+          84
+        ],
+        "recommendedDepth_m": [
+          62,
+          134
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "food-hall-market-hall",
+    "render_locked": true
+  }
+}

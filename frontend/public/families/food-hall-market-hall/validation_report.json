@@ -1,0 +1,153 @@
+{
+  "status": "pass",
+  "family": "food-hall-market-hall",
+  "archetype_id": "food_hall_market_hall",
+  "reuse_keys": [
+    "food_hall_market_hall",
+    "market_contemporary",
+    "Food Hall / Market"
+  ],
+  "manifest": "food-hall-market-hall_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "food-hall-market-hall_assembled.glb: 162042 triangles (heavy; consider simplification)",
+    "food-hall-market-hall_assembled.glb: 13.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "food-hall-market-hall_podium.glb",
+      "status": "ok",
+      "triangles": 588,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 96.325
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Stone",
+        "MAT_W3_WarmInterior"
+      ],
+      "size_bytes": 46348
+    },
+    {
+      "file": "food-hall-market-hall_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 444,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 97.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 45900
+    },
+    {
+      "file": "food-hall-market-hall_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 444,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 97.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 46124
+    },
+    {
+      "file": "food-hall-market-hall_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 444,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 97.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 46124
+    },
+    {
+      "file": "food-hall-market-hall_crown_crown.glb",
+      "status": "ok",
+      "triangles": 628,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 96.24
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_DarkSteel",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 53656
+    },
+    {
+      "file": "food-hall-market-hall_roof.glb",
+      "status": "ok",
+      "triangles": 476,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.0,
+        "depth_z": 96.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W3_Roof",
+        "MAT_W3_SilverMetal"
+      ],
+      "size_bytes": 40492
+    },
+    {
+      "file": "food-hall-market-hall_assembled.glb",
+      "status": "ok",
+      "triangles": 162042,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 36.75,
+        "depth_z": 96.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Markthal_CableNetGlass",
+        "MAT_Markthal_CableNetSteel",
+        "MAT_Markthal_MeshySurface"
+      ],
+      "size_bytes": 14473264,
+      "role": "assembled"
+    }
+  ]
+}

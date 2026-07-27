@@ -1,0 +1,152 @@
+{
+  "status": "pass",
+  "family": "civic-monumental-neoclassical",
+  "archetype_id": "civic_monumental_institution",
+  "reuse_keys": [
+    "civic_monumental_institution",
+    "civic_monumental_neoclassical",
+    "Civic / Institutional"
+  ],
+  "manifest": "civic-monumental-neoclassical_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "civic-monumental-neoclassical_podium.glb",
+      "status": "ok",
+      "triangles": 204,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 5.0,
+        "depth_z": 46.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W3_Marble",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 21304
+    },
+    {
+      "file": "civic-monumental-neoclassical_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 240,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 5.0,
+        "depth_z": 40.19
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Marble"
+      ],
+      "size_bytes": 26236
+    },
+    {
+      "file": "civic-monumental-neoclassical_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 5.0,
+        "depth_z": 40.19
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Marble"
+      ],
+      "size_bytes": 27712
+    },
+    {
+      "file": "civic-monumental-neoclassical_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 228,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 5.0,
+        "depth_z": 40.19
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_Marble"
+      ],
+      "size_bytes": 24760
+    },
+    {
+      "file": "civic-monumental-neoclassical_crown_crown.glb",
+      "status": "ok",
+      "triangles": 396,
+      "extent_m": {
+        "width_x": 72.0,
+        "height_y": 5.0,
+        "depth_z": 41.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W3_Marble",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 28804
+    },
+    {
+      "file": "civic-monumental-neoclassical_roof.glb",
+      "status": "ok",
+      "triangles": 2176,
+      "extent_m": {
+        "width_x": 25.0,
+        "height_y": 8.5,
+        "depth_z": 25.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W3_Marble",
+        "MAT_W3_PatinatedCopper"
+      ],
+      "size_bytes": 123132
+    },
+    {
+      "file": "civic-monumental-neoclassical_assembled.glb",
+      "status": "ok",
+      "triangles": 26640,
+      "extent_m": {
+        "width_x": 72.0,
+        "height_y": 43.0,
+        "depth_z": 48.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W3_Bronze",
+        "MAT_W3_ClearGlass",
+        "MAT_W3_DarkSteel",
+        "MAT_W3_Marble",
+        "MAT_W3_PatinatedCopper",
+        "MAT_W3_Stone"
+      ],
+      "size_bytes": 1913320,
+      "role": "assembled"
+    }
+  ]
+}

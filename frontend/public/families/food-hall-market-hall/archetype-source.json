@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "food_hall_market_hall",
+  "catalogue_variant_id": "market_contemporary",
+  "elevation_source": "/families/food-hall-market-hall/elevation.jpg",
+  "kind": "user_supplied_image_to_3d_fixed_landmark",
+  "source_file": "Meshy_AI_Markthal_3D_Model_0727041711_image-to-3d-texture.glb",
+  "source_sha256": "618BE480CB183D2CF63479992504497AE3EEDD90F8E044342DD857E35F194951",
+  "source_triangles": 1411270,
+  "conversion_output_sha256": "CB159DBF0E439F64DC833BF4DE9B719323382644F8F850AE94D08BD5176E39A7",
+  "converter": "tools/archetype_compiler/convert_meshy_markthal_reference.py",
+  "delivery_note": "world hierarchy frozen, metric envelope revalidated, and re-exported without Draco for contract inspection"
+}

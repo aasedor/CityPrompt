@@ -1,0 +1,80 @@
+{
+  "family_id": "civic-monumental-neoclassical",
+  "source": {
+    "archetype_id": "civic_monumental_institution",
+    "variant_id": "civic_monumental_neoclassical",
+    "generation_archetype_id": "civic_monumental_neoclassical",
+    "reuse_keys": [
+      "civic_monumental_institution",
+      "civic_monumental_neoclassical",
+      "Civic / Institutional"
+    ]
+  },
+  "dimensions": {
+    "width_m": 72.0,
+    "depth_m": 48.3,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 8.5,
+    "crown_height_m": 5.0,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "Symmetrical white-marble civic institution with arched wings, a deep hexastyle Corinthian portico, sculpted pediment, broad ceremonial stair, central drum, patinated-copper dome, and lantern.",
+    "material_zones": "white marble ashlar; carved stone order; dark bronze doors; clear occupied arched glazing; pale green patinated copper; black iron",
+    "glass_profile": "heritage_civic_clear",
+    "kits": [
+      "fixed_landmark",
+      "sculpted_shell",
+      "physical_glazing",
+      "authored_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "civic_monumental_institution",
+    "civic_monumental_neoclassical"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      45,
+      98
+    ],
+    "recommendedDepth_m": [
+      28,
+      56
+    ],
+    "recommendedFloors": [
+      3,
+      6
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45,
+          98
+        ],
+        "recommendedDepth_m": [
+          28,
+          56
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "civic-monumental-neoclassical",
+    "render_locked": true
+  }
+}

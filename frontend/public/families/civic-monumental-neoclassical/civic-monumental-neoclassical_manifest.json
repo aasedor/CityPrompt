@@ -1,0 +1,351 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_landmark_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-27T06:08:20.783318+00:00",
+  "family": "civic-monumental-neoclassical",
+  "archetype_id": "civic_monumental_institution",
+  "archetype_label": "Civic Monumental Institution \u2014 Domed Neoclassical",
+  "variant_id": "civic_monumental_neoclassical",
+  "generation_archetype_id": "civic_monumental_neoclassical",
+  "archetype_aliases": [
+    "civic_monumental_institution",
+    "civic_monumental_neoclassical"
+  ],
+  "aesthetic_category_id": "civic_landmark",
+  "development_type": "institutional",
+  "reuse_keys": [
+    "civic_monumental_institution",
+    "civic_monumental_neoclassical",
+    "Civic / Institutional"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      45,
+      98
+    ],
+    "recommendedDepth_m": [
+      28,
+      56
+    ],
+    "recommendedFloors": [
+      3,
+      6
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45,
+          98
+        ],
+        "recommendedDepth_m": [
+          28,
+          56
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/civic-monumental-neoclassical",
+    "model": "gpt-image-2",
+    "style_reference": "/families/civic-monumental-neoclassical/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "city",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "landmark silhouette stays fixed; only the conservative fallback middle modules repeat"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "JPEG design source; GLB materials packaged separately"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "authored four-sided landmark geometry with distinct public, side, rear, and roof construction",
+      "elevation_coverage": {
+        "front": "physical facade and glazing",
+        "left": "authored secondary elevation",
+        "right": "authored secondary elevation",
+        "rear": "authored service/secondary elevation"
+      },
+      "abutting_policy": "author all elevations; site geometry alone controls occlusion"
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "civic-monumental-neoclassical",
+    "render_locked": true
+  },
+  "material_budget": {
+    "max_assembled_materials": 20,
+    "rationale": "Landmark shell, structure, glazing, interior, roof, and accent materials remain separate to preserve construction legibility."
+  },
+  "dimensions": {
+    "width_m": 72.0,
+    "depth_m": 48.3,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 8.5,
+    "crown_height_m": 5.0,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 6
+  },
+  "native_width_m": 72.0,
+  "native_depth_m": 48.3,
+  "native_floors": 4,
+  "min_floors": 3,
+  "max_floors": 6,
+  "default_floors": 4,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_podium.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 108,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 21304
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_floor_typical_a.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 144,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 26236
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_floor_typical_b.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 156,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 27712
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_floor_typical_c.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 132,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 24760
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_crown_crown.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 300,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 28804
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-monumental-neoclassical_roof.glb",
+      "module_family": "civic-monumental-neoclassical",
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "height_m": 8.5,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 2176,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 123132
+    }
+  ],
+  "assembled": {
+    "filename": "civic-monumental-neoclassical_assembled.glb",
+    "floors": 4,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 43.0,
+    "triangle_count": 26352,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 43.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 72.0,
+      "depth_m": 48.3,
+      "wing_depth_m": 48.3,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 72.0,
+          "thickness_m": 48.3,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "civic-monumental-neoclassical"
+    }
+  },
+  "thumbnail": "civic-monumental-neoclassical_preview.png",
+  "renders": [
+    "civic-monumental-neoclassical_preview.png",
+    "civic-monumental-neoclassical_front_corner_oblique.png",
+    "civic-monumental-neoclassical_rear_corner_oblique.png",
+    "civic-monumental-neoclassical_facade_close.png",
+    "civic-monumental-neoclassical_street.png",
+    "civic-monumental-neoclassical_aerial.png",
+    "civic-monumental-neoclassical_context.png"
+  ],
+  "architectural_identity": "Symmetrical white-marble civic institution with arched wings, a deep hexastyle Corinthian portico, sculpted pediment, broad ceremonial stair, central drum, patinated-copper dome, and lantern.",
+  "material_zones": "white marble ashlar; carved stone order; dark bronze doors; clear occupied arched glazing; pale green patinated copper; black iron",
+  "glass_profile": "heritage_civic_clear",
+  "source_provenance": {
+    "catalogue_archetype_id": "civic_monumental_institution",
+    "catalogue_variant_id": "civic_monumental_neoclassical",
+    "elevation_source": "/families/civic-monumental-neoclassical/elevation.jpg"
+  }
+}

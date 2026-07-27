@@ -1,0 +1,358 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_landmark_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-27T06:07:59.106938+00:00",
+  "family": "food-hall-market-hall",
+  "archetype_id": "food_hall_market_hall",
+  "archetype_label": "Food Hall Market Hall \u2014 Contemporary Arch",
+  "variant_id": "market_contemporary",
+  "generation_archetype_id": "market_contemporary",
+  "archetype_aliases": [
+    "food_hall_market_hall",
+    "market_contemporary"
+  ],
+  "aesthetic_category_id": "civic_landmark",
+  "development_type": "institutional",
+  "reuse_keys": [
+    "food_hall_market_hall",
+    "market_contemporary",
+    "Food Hall / Market"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      42,
+      84
+    ],
+    "recommendedDepth_m": [
+      62,
+      134
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          42,
+          84
+        ],
+        "recommendedDepth_m": [
+          62,
+          134
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/food-hall-market-hall",
+    "model": "gpt-image-2",
+    "style_reference": "/families/food-hall-market-hall/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "city",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "landmark silhouette stays fixed; only the conservative fallback middle modules repeat"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "JPEG design source; GLB materials packaged separately"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "authored four-sided landmark geometry with distinct public, side, rear, and roof construction",
+      "elevation_coverage": {
+        "front": "physical facade and glazing",
+        "left": "authored secondary elevation",
+        "right": "authored secondary elevation",
+        "rear": "authored service/secondary elevation"
+      },
+      "abutting_policy": "author all elevations; site geometry alone controls occlusion"
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "food-hall-market-hall",
+    "render_locked": true
+  },
+  "material_budget": {
+    "max_assembled_materials": 20,
+    "rationale": "Landmark shell, structure, glazing, interior, roof, and accent materials remain separate to preserve construction legibility."
+  },
+  "dimensions": {
+    "width_m": 60.0,
+    "depth_m": 96.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 5.0,
+    "crown_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "native_width_m": 60.0,
+  "native_depth_m": 96.0,
+  "native_floors": 3,
+  "min_floors": 1,
+  "max_floors": 3,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_podium.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 108,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 46348
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_floor_typical_a.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 252,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 45900
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_floor_typical_b.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 252,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 46124
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_floor_typical_c.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 252,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 46124
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_crown_crown.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 436,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 53656
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "food-hall-market-hall_roof.glb",
+      "module_family": "food-hall-market-hall",
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 284,
+      "material_count": 10,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 40492
+    }
+  ],
+  "assembled": {
+    "filename": "food-hall-market-hall_assembled.glb",
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 36.75,
+    "triangle_count": 162042,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 36.75
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 60.0,
+      "depth_m": 96.0,
+      "wing_depth_m": 96.0,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 60.0,
+          "thickness_m": 96.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "food-hall-market-hall"
+    }
+  },
+  "thumbnail": "food-hall-market-hall_preview.png",
+  "renders": [
+    "food-hall-market-hall_preview.png",
+    "food-hall-market-hall_front_corner_oblique.png",
+    "food-hall-market-hall_rear_corner_oblique.png",
+    "food-hall-market-hall_facade_close.png",
+    "food-hall-market-hall_street.png",
+    "food-hall-market-hall_aerial.png",
+    "food-hall-market-hall_context.png"
+  ],
+  "architectural_identity": "Inhabited pale-stone horseshoe arch enclosing a monumental cable-net market hall, vivid inner-vault mural, long residential side lattice, and an occupied roof court.",
+  "material_zones": "pale limestone panels; dark steel cable net; low-iron glass; vivid mural vault; warm market interiors; charcoal roof membrane",
+  "glass_profile": "low_iron_cable_net",
+  "source_provenance": {
+    "catalogue_archetype_id": "food_hall_market_hall",
+    "catalogue_variant_id": "market_contemporary",
+    "elevation_source": "/families/food-hall-market-hall/elevation.jpg",
+    "kind": "user_supplied_image_to_3d_fixed_landmark",
+    "source_file": "Meshy_AI_Markthal_3D_Model_0727041711_image-to-3d-texture.glb",
+    "source_sha256": "618BE480CB183D2CF63479992504497AE3EEDD90F8E044342DD857E35F194951",
+    "source_triangles": 1411270,
+    "conversion_output_sha256": "CB159DBF0E439F64DC833BF4DE9B719323382644F8F850AE94D08BD5176E39A7",
+    "converter": "tools/archetype_compiler/convert_meshy_markthal_reference.py",
+    "delivery_note": "world hierarchy frozen, metric envelope revalidated, and re-exported without Draco for contract inspection"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-archetype-massing-over-parcel-fill-v87",
+  "memory_version": "2026-07-27-fixed-landmark-silhouette-contract-v88",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -609,6 +609,11 @@
       "symptom": "A civic archetype has detailed textures but still reads as a generic rectangular office block",
       "cause": "Every vertical module filled the complete nominal parcel envelope, erasing the shallow lobby, deeper hall, stepped shoulders, roof volume and service tower visible in the reference.",
       "correction": "Treat native dimensions as the matching envelope. Construct role-specific occupied solids inside it, allow inset module extents, and validate the assembled silhouette against front, rear-corner and aerial reference views."
+    },
+    {
+      "symptom": "An arena, dome or inhabited-arch landmark is technically modular but still reads as a box, or its exported bounds no longer match the authored envelope",
+      "cause": "The one-off silhouette was forced into ordinary stacked rectangular roles, or an imported image-to-3D hierarchy was compressed/exported without freezing world transforms and validating the delivered GLB.",
+      "correction": "Ship the canonical form as a variant-bound fixed assembled landmark with physical ellipse, dome, arch, portico, oculus and cable-net geometry. Keep a separate conservative six-module fallback for oversized streetwall-repeat planning, freeze imported hierarchies in world space, normalize the metric envelope and validate final on-disk bounds."
     }
   ]
 }

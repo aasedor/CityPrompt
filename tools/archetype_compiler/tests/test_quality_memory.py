@@ -57,7 +57,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-27-archetype-massing-over-parcel-fill-v87"
+        == "2026-07-27-fixed-landmark-silhouette-contract-v88"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -65,6 +65,10 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         / "HIGH_QUALITY_3D_BUILDING_MEMORY.md"
     ).read_text(encoding="utf-8")
     assert memory["memory_version"] in memory_doc
+    assert any(
+        "arena, dome or inhabited-arch landmark" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",

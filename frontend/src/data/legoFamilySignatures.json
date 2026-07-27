@@ -285,6 +285,27 @@
                                                                "archetypeId":  "rndsqr_terraced_mixed_use_midrise",
                                                                "elevationUrl":  "/families/rndsqr-terraced-mixed-use-midrise/elevation.jpg"
                                                            },
+                     "food_hall_market_hall":  {
+                                                    "archetypeId":  "food_hall_market_hall",
+                                                    "identity":  "An inhabited pale-stone horseshoe arch encloses one monumental cable-net market hall, with a vivid inner-vault mural, long residential side lattice, and occupied roof court.",
+                                                    "materialZones":  "pale limestone panels; dark steel cable net; low-iron glass; vivid mural vault; warm market interiors; charcoal roof membrane",
+                                                    "glassProfile":  "low_iron_cable_net",
+                                                    "elevationUrl":  "/families/food-hall-market-hall/elevation.jpg"
+                                                },
+                     "modern_sports_arena":  {
+                                                   "archetypeId":  "modern_sports_arena",
+                                                   "identity":  "A low elliptical indoor arena wrapped by a silver faceted diagrid bowl, transparent public concourse, twin sweeping entrance cuts, amber media ribbon, ribbed roof, and central oval oculus.",
+                                                   "materialZones":  "satin silver aluminum facets; charcoal steel ribs; low-iron concourse glass; warm occupied lobby; amber media ribbon; dark roof membrane",
+                                                   "glassProfile":  "arena_concourse_clear",
+                                                   "elevationUrl":  "/families/modern-sports-arena/elevation.jpg"
+                                               },
+                     "civic_monumental_institution":  {
+                                                            "archetypeId":  "civic_monumental_institution",
+                                                            "identity":  "A symmetrical white-marble civic institution with arched wings, deep hexastyle Corinthian portico, sculpted pediment, broad ceremonial stair, central drum, patinated-copper dome, and lantern.",
+                                                            "materialZones":  "white marble ashlar; carved stone order; dark bronze doors; clear occupied arched glazing; pale green patinated copper; black iron",
+                                                            "glassProfile":  "heritage_civic_clear",
+                                                            "elevationUrl":  "/families/civic-monumental-neoclassical/elevation.jpg"
+                                                        },
                      "deco_theater_mainstreet":  {
                                                        "archetypeId":  "deco_theater_mainstreet",
                                                        "identity":  "A red-and-cream Art Deco movie palace whose deep illuminated marquee, stepped entrance fins, vertical blade sign, and recessed auditorium fly tower remain one unmistakable composition.",

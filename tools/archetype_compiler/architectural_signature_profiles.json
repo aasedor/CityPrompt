@@ -1178,6 +1178,72 @@
         "signature_metal": {"base_color": "#b7a46b", "metallic": 0.68, "roughness": 0.30, "texture_key": null}
       }
     },
+    "food_hall_market_hall": {
+      "identity": "Inhabited pale-stone horseshoe arch enclosing a monumental cable-net market hall, vivid inner-vault mural, long residential side lattice, and an occupied roof court.",
+      "material_zones": "pale limestone panels; dark steel cable net; low-iron glass; vivid mural vault; warm market interiors; charcoal roof membrane",
+      "glass_profile": "low_iron_cable_net",
+      "kits": ["inhabited_arch", "cable_net_end_wall", "market_void", "side_lattice", "roof_court"],
+      "archetype_aliases": ["food_hall_market_hall", "market_contemporary"],
+      "dimension_overrides": {
+        "width_m": 60.0,
+        "depth_m": 96.0,
+        "default_floors": 3,
+        "min_floors": 1,
+        "max_floors": 3
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_markthal_arch_v1",
+        "description": "Fixed landmark envelope preserving the inhabited arch, market void, cable-net end walls, long lattice sides, and roof court.",
+        "height_m": 36.75,
+        "reference_dimensions": {"width_m": 60.0, "depth_m": 96.0, "floors": 3},
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
+    "modern_sports_arena": {
+      "identity": "Low elliptical indoor arena with a silver faceted diagrid bowl, transparent public concourse, twin entrance cuts, amber media ribbon, ribbed roof, and central oval oculus.",
+      "material_zones": "satin silver aluminum facets; charcoal steel ribs; low-iron concourse glass; warm occupied lobby; amber media ribbon; dark roof membrane",
+      "glass_profile": "arena_concourse_clear",
+      "kits": ["elliptical_bowl", "faceted_diagrid", "concourse_ring", "sweeping_portals", "media_ribbon", "oculus_roof"],
+      "archetype_aliases": ["modern_sports_arena", "sports_arena_indoor"],
+      "dimension_overrides": {
+        "width_m": 150.0,
+        "depth_m": 120.0,
+        "default_floors": 3,
+        "min_floors": 2,
+        "max_floors": 5
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_faceted_arena_v1",
+        "description": "Fixed elliptical arena bowl with authored shell taper, entrance cuts, concourse glazing and roof oculus.",
+        "height_m": 42.0,
+        "reference_dimensions": {"width_m": 150.0, "depth_m": 120.0, "floors": 3},
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
+    "civic_monumental_institution": {
+      "identity": "Symmetrical white-marble civic institution with arched wings, a deep hexastyle Corinthian portico, sculpted pediment, broad stair, central drum, patinated-copper dome, and lantern.",
+      "material_zones": "white marble ashlar; carved stone order; dark bronze doors; clear occupied arched glazing; pale green patinated copper; black iron",
+      "glass_profile": "heritage_civic_clear",
+      "kits": ["ceremonial_steps", "hexastyle_portico", "sculpted_pediment", "arched_wings", "civic_drum", "copper_dome", "lantern"],
+      "archetype_aliases": ["civic_monumental_institution", "civic_monumental_neoclassical"],
+      "dimension_overrides": {
+        "width_m": 72.0,
+        "depth_m": 48.3,
+        "default_floors": 4,
+        "min_floors": 3,
+        "max_floors": 6
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_domed_civic_v1",
+        "description": "Fixed ceremonial envelope preserving the complete stair, portico, arched wings, drum, copper dome and lantern.",
+        "height_m": 43.0,
+        "reference_dimensions": {"width_m": 72.0, "depth_m": 48.3, "floors": 4},
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "material_zones": "warm carved stone and stucco; black iron; timber shutters; darker stone base",

@@ -860,6 +860,91 @@ async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
 
 
 @pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("family", "archetype_id", "width", "depth", "floors", "oversized_width"),
+    [
+        ("food-hall-market-hall", "food_hall_market_hall", 60.0, 96.0, 3, 156.0),
+        ("modern-sports-arena", "modern_sports_arena", 150.0, 120.0, 3, 390.0),
+        (
+            "civic-monumental-neoclassical",
+            "civic_monumental_institution",
+            72.0,
+            48.3,
+            4,
+            188.0,
+        ),
+    ],
+)
+async def test_wave3_sculpted_landmark_manifests_plan_in_band_and_repeat_oversized(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    family,
+    archetype_id,
+    width,
+    depth,
+    floors,
+    oversized_width,
+):
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    library_entries = [
+        SimpleNamespace(
+            id=f"{family}-{module['role']}-{module.get('variant_key', 'default')}",
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest, module, validation_status="pass"
+                )
+            },
+        )
+        for module in manifest["modules"]
+    ]
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+    ])
+
+    in_band = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": width,
+            "target_depth_m": depth,
+            "target_floors": floors,
+            "archetype_id": archetype_id,
+        },
+    )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": oversized_width,
+            "target_depth_m": depth,
+            "target_floors": floors,
+            "archetype_id": archetype_id,
+        },
+    )
+
+    assert in_band.status_code == 200
+    assert in_band.json()["family"] == family
+    assert oversized.status_code == 200
+    assert oversized.json()["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert oversized.json()["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
 async def test_plan_api_returns_structured_family_incompatible_error(
     client, mock_db, test_user, auth_headers
 ):

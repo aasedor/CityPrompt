@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-archetype-massing-over-parcel-fill-v87`.
+Current executable memory: `2026-07-27-fixed-landmark-silhouette-contract-v88`.
 
 ## The quality target
 
@@ -805,6 +805,22 @@ The polychrome collegiate family added four rules for resizable hero facades:
   through a bounded per-family `material_budget` with a construction rationale.
   The global waiver ceiling remains enforced; this is not permission to retain
   accidental duplicate materials.
+
+### Fixed landmark silhouette + fallback-kit lessons
+
+- Arena, dome and inhabited-arch families must preserve their one-off silhouette
+  as an enabled `assembled` landmark with exact variant identity and native
+  floors. An ellipse, dome, arch, oculus, drum, portico or cable-net opening is
+  authored construction geometry; it is never approximated by a textured box.
+- The fixed landmark and its conservative stack fallback serve different
+  targets. The landmark owns native-scale visual identity. Podium, three
+  repeatable middle variants, crown and roof keep oversized targets plannable
+  through `streetwall_repeat` without pretending that a repeated arena or dome
+  is the canonical building.
+- Validate the delivered GLB bounds after compression and coordinate export,
+  not only inside Blender. Imported image-to-3D hierarchies must be frozen in
+  world space, normalized to the declared metric envelope and exported in a
+  validator-readable package before promotion.
 
 ## Updating this memory
 

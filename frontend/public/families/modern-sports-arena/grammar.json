@@ -1,0 +1,80 @@
+{
+  "family_id": "modern-sports-arena",
+  "source": {
+    "archetype_id": "modern_sports_arena",
+    "variant_id": "sports_arena_indoor",
+    "generation_archetype_id": "sports_arena_indoor",
+    "reuse_keys": [
+      "modern_sports_arena",
+      "sports_arena_indoor",
+      "Sports / Entertainment"
+    ]
+  },
+  "dimensions": {
+    "width_m": 150.0,
+    "depth_m": 120.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 5.0,
+    "crown_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "Low elliptical indoor arena with a silver faceted diagrid bowl, transparent public concourse, twin sweeping entrance cuts, amber media ribbon, ribbed roof, and central oval oculus.",
+    "material_zones": "satin silver aluminum facets; charcoal steel ribs; low-iron concourse glass; warm occupied lobby; restrained amber media ribbon; dark roof membrane",
+    "glass_profile": "arena_concourse_clear",
+    "kits": [
+      "fixed_landmark",
+      "sculpted_shell",
+      "physical_glazing",
+      "authored_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "modern_sports_arena",
+    "sports_arena_indoor"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a singular landmark with one primary public front; L, U, or courtyard tiling would duplicate its entrance and silhouette.",
+    "recommendedWidth_m": [
+      100,
+      210
+    ],
+    "recommendedDepth_m": [
+      80,
+      168
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          100,
+          210
+        ],
+        "recommendedDepth_m": [
+          80,
+          168
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "modern-sports-arena",
+    "render_locked": true
+  }
+}
