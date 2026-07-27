@@ -284,6 +284,13 @@
                      "rndsqr_terraced_mixed_use_midrise":  {
                                                                "archetypeId":  "rndsqr_terraced_mixed_use_midrise",
                                                                "elevationUrl":  "/families/rndsqr-terraced-mixed-use-midrise/elevation.jpg"
+                                                           },
+                     "deco_theater_mainstreet":  {
+                                                       "archetypeId":  "deco_theater_mainstreet",
+                                                       "identity":  "A red-and-cream Art Deco movie palace whose deep illuminated marquee, stepped entrance fins, vertical blade sign, and recessed auditorium fly tower remain one unmistakable composition.",
+                                                       "materialZones":  "red glazed faience base and piers; cream limestone fins and crown; dark bronze frames; emerald-and-gold marquee and spandrel accents",
+                                                       "glassProfile":  "office_clear_occupied",
+                                                       "elevationUrl":  "/families/deco-theater-mainstreet/elevation.jpg"
                                                            }
                  }
 }

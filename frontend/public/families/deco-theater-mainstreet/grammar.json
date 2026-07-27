@@ -1,0 +1,535 @@
+{
+  "family_id": "deco-theater-mainstreet",
+  "source": {
+    "archetype_id": "deco_theater_mainstreet",
+    "archetype_label": "Deco Theater Mainstreet",
+    "variant_id": "deco_theater_movie_palace",
+    "variant_label": "Movie Palace Grand",
+    "generation_archetype_id": "deco_theater_mainstreet_variant_0",
+    "aesthetic_category_id": "art_deco",
+    "aesthetic_category_label": "Art Deco",
+    "development_type": "commercial_light",
+    "building_subcategory": "Entertainment / Culture",
+    "reuse_keys": [
+      "deco_theater_mainstreet",
+      "art_deco",
+      "Entertainment / Culture"
+    ],
+    "generation_tags": [
+      "art_deco",
+      "main_street_entertainment",
+      "deco",
+      "theater",
+      "mainstreet"
+    ],
+    "catalog_palette": {
+      "primary": "#883907"
+    },
+    "thumbnail_url": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+    "exported_at": "2026-07-27T04:02:41.268Z"
+  },
+  "dimensions": {
+    "width_m": 20.0,
+    "depth_m": 30.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 6.0,
+    "setback_height_m": 6.0,
+    "roof_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4,
+    "crown_height_m": 6.0
+  },
+  "facade": {
+    "bay_width_m": 3.0,
+    "front_bay_count": 7,
+    "side_bay_count": 10,
+    "window_width_ratio": 0.55,
+    "window_height_ratio": 0.52,
+    "sill_height_m": 0.9,
+    "frame_depth_m": 0.12,
+    "storefront_height_ratio": 0.6,
+    "balcony_mode": "none",
+    "balcony_frequency": 2,
+    "balcony_depth_m": 1.5,
+    "vertical_rhythm": "regular",
+    "mullions": true,
+    "system": "regular",
+    "window_recess_m": 0.18,
+    "panel_projection_m": 0.08,
+    "material_bay_frequency": 3,
+    "feature_bay_frequency": 3,
+    "planter_frequency": 0,
+    "balcony_guard": "metal",
+    "entrance_type": "canopy",
+    "top_band": true
+  },
+  "facade_graph": {
+    "openings": [
+      {
+        "id": "standard_window",
+        "kind": "window",
+        "width_ratio": 0.55,
+        "height_ratio": 0.52,
+        "sill_m": 0.9,
+        "reveal_depth_m": 0.18,
+        "frame_profile_id": "deep",
+        "mullion_pattern": "single"
+      },
+      {
+        "id": "balcony_door",
+        "kind": "door",
+        "width_ratio": 0.58,
+        "height_ratio": 0.72,
+        "sill_m": 0.18,
+        "reveal_depth_m": 0.18,
+        "frame_profile_id": "slim",
+        "mullion_pattern": "double"
+      },
+      {
+        "id": "shopfront",
+        "kind": "shopfront",
+        "width_ratio": 0.84,
+        "height_ratio": 0.6,
+        "sill_m": 0.18,
+        "reveal_depth_m": 0.108,
+        "frame_profile_id": "storefront",
+        "mullion_pattern": "double"
+      }
+    ],
+    "attachments": [
+      {
+        "id": "balcony",
+        "kind": "balcony",
+        "geometry_profile_id": "standard_balcony",
+        "material_slots": [
+          "concrete",
+          "accent"
+        ],
+        "anchor": "bay",
+        "width_bays": 1,
+        "height_floors": 1
+      },
+      {
+        "id": "entrance",
+        "kind": "canopy",
+        "geometry_profile_id": "standard_canopy",
+        "material_slots": [
+          "accent"
+        ],
+        "anchor": "base",
+        "width_bays": 1,
+        "height_floors": 1
+      },
+      {
+        "id": "crown_feature",
+        "kind": "cornice",
+        "geometry_profile_id": "standard_cornice",
+        "material_slots": [
+          "primary"
+        ],
+        "anchor": "crown",
+        "width_bays": 1,
+        "height_floors": 1
+      }
+    ],
+    "bays": [
+      {
+        "id": "standard",
+        "opening_id": "standard_window",
+        "material_slot": "primary",
+        "projection_m": 0.0,
+        "attachment_ids": []
+      },
+      {
+        "id": "feature",
+        "opening_id": "balcony_door",
+        "material_slot": "primary",
+        "projection_m": 0.08,
+        "attachment_ids": [
+          "balcony"
+        ]
+      },
+      {
+        "id": "material",
+        "opening_id": "standard_window",
+        "material_slot": "secondary",
+        "projection_m": 0.027999999999999997,
+        "attachment_ids": []
+      },
+      {
+        "id": "upper",
+        "opening_id": "standard_window",
+        "material_slot": "primary",
+        "projection_m": 0.0,
+        "attachment_ids": []
+      },
+      {
+        "id": "crown",
+        "opening_id": "standard_window",
+        "material_slot": "primary",
+        "projection_m": 0.0,
+        "attachment_ids": [
+          "crown_feature"
+        ]
+      }
+    ],
+    "floor_variants": [
+      {
+        "key": "typical_a",
+        "bay_sequence": [
+          "feature",
+          "standard",
+          "standard",
+          "feature",
+          "standard",
+          "standard",
+          "feature"
+        ],
+        "facade_zone": "middle",
+        "left_corner_id": "standard",
+        "right_corner_id": "standard",
+        "slab_edge_profile_id": "standard",
+        "allowed_levels": null,
+        "repeat_every": 2
+      },
+      {
+        "key": "typical_b",
+        "bay_sequence": [
+          "standard",
+          "feature",
+          "standard",
+          "standard",
+          "feature",
+          "standard",
+          "standard"
+        ],
+        "facade_zone": "middle",
+        "left_corner_id": "standard",
+        "right_corner_id": "standard",
+        "slab_edge_profile_id": "standard",
+        "allowed_levels": null,
+        "repeat_every": 2
+      },
+      {
+        "key": "upper",
+        "bay_sequence": [
+          "upper",
+          "upper",
+          "upper",
+          "upper",
+          "upper",
+          "upper",
+          "upper"
+        ],
+        "facade_zone": "upper",
+        "left_corner_id": "standard",
+        "right_corner_id": "standard",
+        "slab_edge_profile_id": "standard",
+        "allowed_levels": [
+          1
+        ],
+        "repeat_every": null
+      },
+      {
+        "key": "crown",
+        "bay_sequence": [
+          "crown",
+          "crown",
+          "crown",
+          "crown",
+          "crown",
+          "crown",
+          "crown"
+        ],
+        "facade_zone": "crown",
+        "left_corner_id": "standard",
+        "right_corner_id": "standard",
+        "slab_edge_profile_id": "standard",
+        "allowed_levels": [
+          2
+        ],
+        "repeat_every": null
+      }
+    ],
+    "zones": [
+      {
+        "kind": "base",
+        "start_level": 0,
+        "end_level": 0,
+        "primary_material_slot": "primary",
+        "floor_variant_sequence": [
+          "typical_a"
+        ],
+        "projection_m": 0.0,
+        "inset_m": 0.0
+      },
+      {
+        "kind": "middle",
+        "start_level": 1,
+        "end_level": 1,
+        "primary_material_slot": "primary",
+        "floor_variant_sequence": [
+          "typical_a",
+          "typical_b"
+        ],
+        "projection_m": 0.0,
+        "inset_m": 0.0
+      },
+      {
+        "kind": "upper",
+        "start_level": 1,
+        "end_level": 1,
+        "primary_material_slot": "primary",
+        "floor_variant_sequence": [
+          "upper"
+        ],
+        "projection_m": 0.0,
+        "inset_m": 0.8
+      },
+      {
+        "kind": "crown",
+        "start_level": 2,
+        "end_level": 2,
+        "primary_material_slot": "primary",
+        "floor_variant_sequence": [
+          "crown"
+        ],
+        "projection_m": 0.0,
+        "inset_m": 0.4
+      }
+    ],
+    "sides": {
+      "front": [
+        "feature",
+        "standard",
+        "standard",
+        "feature",
+        "standard",
+        "standard",
+        "feature"
+      ],
+      "rear": [
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard"
+      ],
+      "left": [
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard"
+      ],
+      "right": [
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard",
+        "standard"
+      ]
+    }
+  },
+  "massing": {
+    "podium_inset_m": 0.0,
+    "upper_floor_inset_m": 0.0,
+    "setback_front_m": 2.0,
+    "setback_side_m": 1.2,
+    "corner_condition": "midblock",
+    "has_setback": false,
+    "setback_min_floors": 5,
+    "rooftop_pavilion": false,
+    "has_podium_retail": false
+  },
+  "roof": {
+    "type": "flat",
+    "parapet": true,
+    "green_roof": false,
+    "mechanical_screen": true,
+    "pitch_height_m": 2.4
+  },
+  "materials": {
+    "primary": {
+      "name": "MAT_Facade_Primary",
+      "base_color": "#8f2f34",
+      "roughness": 0.58,
+      "metallic": 0.0,
+      "source_text": "polychrome glazed terra cotta with Mayan motifs",
+      "texture_key": null
+    },
+    "secondary": {
+      "name": "MAT_Facade_Secondary",
+      "base_color": "#e2dac7",
+      "roughness": 0.56,
+      "metallic": 0.0,
+      "source_text": "illuminated marquee with chaser lights",
+      "texture_key": null
+    },
+    "accent": {
+      "name": "MAT_Accent",
+      "base_color": "#b7a46b",
+      "roughness": 0.32,
+      "metallic": 0.62,
+      "source_text": "",
+      "texture_key": null
+    },
+    "glass": {
+      "name": "MAT_Glass",
+      "base_color": "#5f7f95",
+      "roughness": 0.08,
+      "metallic": 0.0,
+      "source_text": "",
+      "texture_key": null
+    },
+    "concrete": {
+      "name": "MAT_Concrete",
+      "base_color": "#b5b1a8",
+      "roughness": 0.8,
+      "metallic": 0.0,
+      "source_text": "",
+      "texture_key": "concrete"
+    },
+    "roof": {
+      "name": "MAT_Roof",
+      "base_color": "#4b4b4d",
+      "roughness": 0.76,
+      "metallic": 0.0,
+      "source_text": "terra cotta parapet with illuminated signage",
+      "texture_key": null
+    },
+    "green_roof": {
+      "name": "MAT_GreenRoof",
+      "base_color": "#5f7a48",
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "source_text": "",
+      "texture_key": "sedum_roof"
+    }
+  },
+  "schema_version": 3,
+  "generator_version": "0.8.0",
+  "notes": [
+    "podium retail: False (developmentType=commercial_light, groundFloor=\"terrazzo-floored ticket lobby under ornate marquee\")",
+    "balconies: none (no residential use or balcony mention)",
+    "roof: type=flat green_roof=False mechanical_screen=False from roofDetail.form=\"decorative parapet with vertical blade sign\"",
+    "setback: False (default_floors=3, explicit massing language=False)",
+    "facade system: regular / entrance=canopy / guard=metal",
+    "materials.primary: no keyword matched \"polychrome glazed terra cotta with Mayan motifs...\"; using neutral default #c9c2b4",
+    "materials.secondary: no keyword matched \"illuminated marquee with chaser lights...\"; using neutral default #8a8176",
+    "materials.accent: no facadeDetail text; using neutral default #2b2e33",
+    "materials.glass: default cool blue-grey",
+    "materials.roof: no keyword matched \"terra cotta parapet with illuminated signage...\"; using neutral default #c9c2b4"
+  ],
+  "architectural_signature": {
+    "identity": "Grand Art Deco movie palace with a fixed projecting bulb-lit marquee, a pier-mounted vertical blade sign, tall arched foyer glazing, stepped oxblood-and-cream faience fins and a deep auditorium terminating in a raised fly tower.",
+    "material_zones": "deep oxblood glazed terra cotta at the public base; cream fluted faience piers; emerald and gold geometric spandrels; aged brass and chrome marquee trim; warm occupied foyer glazing; quiet membrane auditorium roof",
+    "glass_profile": "office_clear_occupied",
+    "material_budget": {
+      "max_assembled_materials": 36,
+      "rationale": "The render-locked civic atlas keeps separate podium, floor and crown PBR bands on four elevations plus occupied-room glazing; collapsing those zones would break registration and side-elevation identity."
+    },
+    "kits": [
+      "deco_portal",
+      "vertical_fins",
+      "stepped_crown",
+      "sign_frieze",
+      "cantilever_canopy",
+      "vertical_blade_sign",
+      "fly_tower"
+    ],
+    "material_overrides": {
+      "primary": {
+        "base_color": "#8f2f34",
+        "roughness": 0.58,
+        "texture_key": null
+      },
+      "secondary": {
+        "base_color": "#e2dac7",
+        "roughness": 0.56,
+        "texture_key": null
+      },
+      "accent": {
+        "base_color": "#b7a46b",
+        "metallic": 0.62,
+        "roughness": 0.32,
+        "texture_key": null
+      },
+      "roof": {
+        "base_color": "#4b4b4d",
+        "roughness": 0.76,
+        "texture_key": null
+      }
+    },
+    "signature_material_overrides": {
+      "signature_stone": {
+        "base_color": "#e2dac7",
+        "roughness": 0.58,
+        "texture_key": null
+      },
+      "signature_warm": {
+        "base_color": "#8f2f34",
+        "roughness": 0.56,
+        "texture_key": null
+      },
+      "signature_metal": {
+        "base_color": "#b7a46b",
+        "metallic": 0.68,
+        "roughness": 0.3,
+        "texture_key": null
+      }
+    }
+  },
+  "archetype_aliases": [
+    "deco_theater_mainstreet",
+    "deco_theater_movie_palace"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "A movie palace is a single-frontage auditorium with one fixed marquee and entrance; L, U, and courtyard assembly would duplicate its public face.",
+    "recommendedWidth_m": [
+      16,
+      26
+    ],
+    "recommendedDepth_m": [
+      24,
+      38
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          16,
+          26
+        ],
+        "recommendedDepth_m": [
+          24,
+          38
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ]
+      }
+    }
+  }
+}

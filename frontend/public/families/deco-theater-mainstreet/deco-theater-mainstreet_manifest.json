@@ -1,0 +1,388 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/blender_generate.py",
+    "version": "0.14.1",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-27T04:03:44.541077+00:00",
+  "family": "deco-theater-mainstreet",
+  "archetype_id": "deco_theater_mainstreet",
+  "archetype_label": "Deco Theater Mainstreet",
+  "variant_id": "deco_theater_movie_palace",
+  "generation_archetype_id": "deco_theater_mainstreet_variant_0",
+  "archetype_aliases": [
+    "deco_theater_mainstreet",
+    "deco_theater_movie_palace"
+  ],
+  "aesthetic_category_id": "art_deco",
+  "development_type": "commercial_light",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "art_deco",
+    "Entertainment / Culture"
+  ],
+  "generation_tags": [
+    "art_deco",
+    "main_street_entertainment",
+    "deco",
+    "theater",
+    "mainstreet"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "A movie palace is a single-frontage auditorium with one fixed marquee and entrance; L, U, and courtyard assembly would duplicate its public face.",
+    "recommendedWidth_m": [
+      16,
+      26
+    ],
+    "recommendedDepth_m": [
+      24,
+      38
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          16,
+          26
+        ],
+        "recommendedDepth_m": [
+          24,
+          38
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": {
+    "keys_used": [],
+    "uv_tile_metres": 2.0,
+    "ao_requested": false,
+    "uv_layers": {
+      "UVMap": "box projection, tiled materials",
+      "AOMap": "smart project, baked AO"
+    }
+  },
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "C:\\dev\\3D-Maps-wave3\\artifacts\\wave3\\facade-sheets\\deco-theater-mainstreet",
+    "model": "gemini-3.1-flash-image",
+    "span_m": 26.33,
+    "style_reference": "/archetypes/buildings/deco_theater_mainstreet/hero.png",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "city",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "multiscale-linear-delighting plus audited storey crops",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "sheet_bays": 4,
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "floor",
+        "floor_alt",
+        "floor_c"
+      ],
+      "rule": "entrance, corner, crown and roof remain fixed; only middle floor bays repeat"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and PBR facade",
+      "far_usage": "city-scale baked facade",
+      "container": "PNG source; KTX2/UASTC packaged at GLB delivery"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "wrapped PBR atlas with physical recessed glazing",
+      "elevation_coverage": {
+        "front": "near/far PBR facade plus physical glazing",
+        "left": "always-visible wrapped secondary elevation",
+        "right": "always-visible wrapped secondary elevation",
+        "rear": "always-visible wrapped secondary elevation"
+      },
+      "abutting_policy": "author all four elevations in the asset; City Prompt may occlude an elevation only when site geometry confirms a true party-wall condition"
+    }
+  },
+  "massing_graph": null,
+  "material_budget": {
+    "max_assembled_materials": 36,
+    "rationale": "The render-locked civic atlas keeps separate podium, floor and crown PBR bands on four elevations plus occupied-room glazing; collapsing those zones would break registration and side-elevation identity."
+  },
+  "dimensions": {
+    "width_m": 20.0,
+    "depth_m": 30.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 6.0,
+    "setback_height_m": 6.0,
+    "roof_height_m": 5.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4,
+    "crown_height_m": 6.0
+  },
+  "native_width_m": 20.0,
+  "native_depth_m": 30.0,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 4,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "deco-theater-mainstreet_podium.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 5.2,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "triangle_count": 12584,
+      "material_count": 19,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 1810592
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "deco-theater-mainstreet_floor_typical_a.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "triangle_count": 24144,
+      "material_count": 18,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 2562316
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "deco-theater-mainstreet_floor_typical_b.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "triangle_count": 23880,
+      "material_count": 18,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 2532064
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "deco-theater-mainstreet_floor_typical_c.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "triangle_count": 23956,
+      "material_count": 18,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 2530456
+    },
+    {
+      "role": "setback",
+      "variant_key": "upper",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        1
+      ],
+      "filename": "deco-theater-mainstreet_setback_upper.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "setback_min_floors": 5,
+      "triangle_count": 21172,
+      "material_count": 18,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 2357340
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        2
+      ],
+      "filename": "deco-theater-mainstreet_crown_crown.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "triangle_count": 23900,
+      "material_count": 17,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 3919068
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "deco-theater-mainstreet_roof.glb",
+      "module_family": "deco-theater-mainstreet",
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "height_m": 5.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "triangle_count": 3904,
+      "material_count": 7,
+      "texture_keys": [],
+      "ao_baked": false,
+      "size_bytes": 202640
+    }
+  ],
+  "assembled": {
+    "filename": "deco-theater-mainstreet_assembled.glb",
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 22.2,
+    "triangle_count": 64532,
+    "stack": [
+      {
+        "role": "podium",
+        "variant_key": "default",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 5.2
+      },
+      {
+        "role": "floor",
+        "variant_key": "typical_a",
+        "level": 1,
+        "z_m": 5.2,
+        "height_m": 6.0
+      },
+      {
+        "role": "crown",
+        "variant_key": "crown",
+        "level": 2,
+        "z_m": 11.2,
+        "height_m": 6.0
+      },
+      {
+        "role": "roof",
+        "variant_key": "default",
+        "level": 3,
+        "z_m": 17.2,
+        "height_m": 5.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 20.0,
+      "depth_m": 30.0,
+      "wing_depth_m": 30.0,
+      "segments": [
+        {
+          "id": "main",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 20.0,
+          "thickness_m": 30.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": null
+  },
+  "thumbnail": "deco-theater-mainstreet_preview.png",
+  "renders": [
+    "deco-theater-mainstreet_preview.png",
+    "deco-theater-mainstreet_street.png",
+    "deco-theater-mainstreet_front_corner_oblique.png",
+    "deco-theater-mainstreet_rear_corner_oblique.png",
+    "deco-theater-mainstreet_aerial.png",
+    "deco-theater-mainstreet_facade_close.png",
+    "deco-theater-mainstreet_context.png"
+  ]
+}

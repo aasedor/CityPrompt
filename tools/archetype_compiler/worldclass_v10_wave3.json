@@ -1,0 +1,27 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "City Prompt LEGO Wave 3 — Arenas, Monumental Buildings & Civic Landmarks v10",
+  "description": "Ten high-quality families in three clusters: arenas/stadiums, monumental civic buildings, and domes/vaults/marquees. Generate one theater pilot before the remaining bounded batch.",
+  "generation_profile": {
+    "facade_model": "gemini-3.1-flash-image",
+    "facade_sheet_schema": "facade-sheet@5",
+    "facade_sheet_root": "artifacts/wave3/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "city",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json"
+  },
+  "entries": [
+    {"archetype_id": "deco_theater_mainstreet", "variant_id": "deco_theater_movie_palace", "floors": 3, "group": "Domes, vaults and marquees", "pilot": true},
+    {"archetype_id": "monumental_antiquity_arena", "group": "Arenas and stadiums"},
+    {"archetype_id": "high_tech_arena", "group": "Arenas and stadiums"},
+    {"archetype_id": "outdoor_sports_stadium", "group": "Arenas and stadiums"},
+    {"archetype_id": "historic_grand_station", "group": "Classical monumental"},
+    {"archetype_id": "monumental_museum_axis", "group": "Classical monumental"},
+    {"archetype_id": "neoclassical_institutional", "group": "Classical monumental"},
+    {"archetype_id": "parisian_corner_with_dome", "group": "Domes, vaults and marquees"},
+    {"archetype_id": "barcelona_mercat", "group": "Domes, vaults and marquees"},
+    {"archetype_id": "concert_hall_modern", "group": "Domes, vaults and marquees"}
+  ]
+}

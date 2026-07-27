@@ -4460,6 +4460,41 @@
     },
     {
       "id": "deco_theater_mainstreet",
+      "footprintCompatibility": {
+        "preferredProfiles": [
+          "rectangle"
+        ],
+        "minimumPreferredProfiles": 1,
+        "profileRationale": "A movie palace is a single-frontage auditorium with one fixed marquee and entrance; L, U, and courtyard assembly would duplicate its public face.",
+        "recommendedWidth_m": [
+          16,
+          26
+        ],
+        "recommendedDepth_m": [
+          24,
+          38
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [
+              16,
+              26
+            ],
+            "recommendedDepth_m": [
+              24,
+              38
+            ],
+            "recommendedFloors": [
+              2,
+              4
+            ]
+          }
+        }
+      },
     "suggestedWidth_m": 20,
     "suggestedDepth_m": 30,
     "suggestedFloorHeight": 6.0,

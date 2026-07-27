@@ -1,6 +1,7 @@
 import json
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
@@ -795,6 +796,67 @@ async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(
     assert plan["family"] == "nordic-midrise"
     assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
     assert plan["fit"]["segment_count"] == 6
+
+
+@pytest.mark.anyio
+async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
+    client, mock_db, test_user, auth_headers
+):
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / "deco-theater-mainstreet"
+        / "deco-theater-mainstreet_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    library_entries = [
+        SimpleNamespace(
+            id=f"theater-{module['role']}-{module.get('variant_key', 'default')}",
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest, module, validation_status="pass"
+                )
+            },
+        )
+        for module in manifest["modules"]
+    ]
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
+    ])
+
+    in_band = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 20,
+            "target_depth_m": 30,
+            "target_floors": 3,
+            "archetype_id": "deco_theater_mainstreet",
+        },
+    )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 52,
+            "target_depth_m": 30,
+            "target_floors": 3,
+            "archetype_id": "deco_theater_movie_palace",
+        },
+    )
+
+    assert in_band.status_code == 200
+    assert in_band.json()["family"] == "deco-theater-mainstreet"
+    assert oversized.status_code == 200
+    assert oversized.json()["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert oversized.json()["fit"]["segment_count"] >= 2
 
 
 @pytest.mark.anyio

@@ -1,0 +1,489 @@
+{
+  "exportSchema": "archetype-source@1",
+  "exportedAt": "2026-07-27T04:02:41.268Z",
+  "source": {
+    "catalog": "frontend/src/data/buildingArchetypes.json",
+    "derivation": "frontend/src/components/viewer/aestheticCatalog.ts#toAestheticOption"
+  },
+  "archetypeId": "deco_theater_mainstreet",
+  "archetypeLabel": "Deco Theater Mainstreet",
+  "domain": "building",
+  "developmentType": "commercial_light",
+  "buildingSubcategory": "Entertainment / Culture",
+  "aestheticCategoryId": "art_deco",
+  "aestheticCategoryLabel": "Art Deco",
+  "description": "Grand movie palace with ornate marquee, terra cotta facade with Mayan-inspired geometric relief, vertical blade sign, and atmospheric lobby.",
+  "generationTags": [
+    "art_deco",
+    "main_street_entertainment",
+    "deco",
+    "theater",
+    "mainstreet"
+  ],
+  "styleProfile": {
+    "materials": [
+      "polychrome glazed terra cotta panels in geometric",
+      "cream stucco or cast stone on side walls",
+      "neon signage",
+      "membrane roof over auditorium volume"
+    ],
+    "facadeRhythm": "Art Deco facade rhythm",
+    "roofForm": "Art Deco roof expression",
+    "frontageType": "Main Street Entertainment frontage",
+    "windowStyle": "Art Deco window proportioning",
+    "massing": "Main Street Entertainment massing profile",
+    "heightTendency": "Mid to high rise",
+    "streetRelationship": "Clear streetwall and pedestrian interface",
+    "renderingMood": "Photoreal architectural benchmark mood",
+    "articulation": "Legible depth, frame, and entry hierarchy",
+    "publicRealm": "Walkable active edge with planting and seating"
+  },
+  "generationStyleInput": {
+    "domain": "building",
+    "buildingSubcategory": "Entertainment / Culture",
+    "subtype": "Entertainment / Culture",
+    "aestheticCategoryId": "art_deco",
+    "aestheticCategoryLabel": "Art Deco",
+    "archetypeId": "deco_theater_mainstreet_variant_0",
+    "archetypeLabel": "Movie Palace Grand",
+    "archetypeImageUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+    "archetypeImagePath": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+    "archetypeImageIds": [
+      "deco_theater_mainstreet_variant_0",
+      "deco_theater_mainstreet_variant_1",
+      "deco_theater_mainstreet_variant_2",
+      "deco_theater_mainstreet_variant_3"
+    ],
+    "generationTags": [
+      "art_deco",
+      "main_street_entertainment",
+      "deco",
+      "theater",
+      "mainstreet"
+    ],
+    "imagePrompt": {
+      "positive": "Front-facing canonical architectural archetype of Deco Theater Mainstreet. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Front-facing view only. Building centered in frame. Street-level eye height camera. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural rendering style. Grounded cinematic atmosphere. Soft overcast-to-golden-hour lighting range. Consistent urban foreground and street edge. Controlled background clutter. Front Elevation Day with soft daytime lighting. Output 1200x900 (4:3)",
+      "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No extreme perspective distortion. No side-angle hero shots. No fantasy geometry. No dominant crowds obscuring architecture. No logo or watermark text",
+      "compositionRules": [
+        "Front-facing view only",
+        "Building centered in frame",
+        "Street-level eye height camera",
+        "Consistent framing and crop",
+        "No collage layout",
+        "No text overlays inside image"
+      ],
+      "renderingRules": [
+        "Photoreal architectural rendering style",
+        "Grounded cinematic atmosphere",
+        "Soft overcast-to-golden-hour lighting range",
+        "Consistent urban foreground and street edge",
+        "Controlled background clutter",
+        "Front Elevation Day with soft daytime lighting"
+      ],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "materials": [
+        "polychrome glazed terra cotta panels in geometric",
+        "cream stucco or cast stone on side walls",
+        "neon signage",
+        "membrane roof over auditorium volume"
+      ],
+      "facadeRhythm": "Art Deco facade rhythm",
+      "roofForm": "Art Deco roof expression",
+      "frontageType": "Main Street Entertainment frontage",
+      "windowStyle": "Art Deco window proportioning",
+      "massing": "Main Street Entertainment massing profile",
+      "heightTendency": "Mid to high rise",
+      "streetRelationship": "Clear streetwall and pedestrian interface",
+      "renderingMood": "Photoreal architectural benchmark mood",
+      "articulation": "Legible depth, frame, and entry hierarchy",
+      "publicRealm": "Walkable active edge with planting and seating"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "art_deco",
+        "main_street_entertainment",
+        "deco",
+        "theater",
+        "mainstreet"
+      ],
+      "materialDirection": [
+        "polychrome glazed terra cotta panels in geometric",
+        "cream stucco or cast stone on side walls",
+        "neon signage",
+        "membrane roof over auditorium volume"
+      ],
+      "reuseKeys": [
+        "deco_theater_mainstreet",
+        "art_deco",
+        "Entertainment / Culture"
+      ]
+    }
+  },
+  "facadeDetail": {
+    "primaryMaterial": "polychrome glazed terra cotta with Mayan motifs",
+    "secondaryMaterial": "illuminated marquee with chaser lights",
+    "groundFloor": "terrazzo-floored ticket lobby under ornate marquee",
+    "colorScheme": "deep red terra cotta, gold ornament, neon marquee"
+  },
+  "roofDetail": {
+    "form": "decorative parapet with vertical blade sign",
+    "material": "terra cotta parapet with illuminated signage"
+  },
+  "palette": {
+    "primary": "#883907"
+  },
+  "shadeId": "#ad361f",
+  "prompt": {
+    "subject": "Front-facing canonical architectural archetype of Deco Theater Mainstreet",
+    "details": [
+      "Centered subject with restrained perspective",
+      "Facade language, massing, and frontage must be clearly legible",
+      "Premium photoreal architectural rendering style"
+    ],
+    "negative": [
+      "No side-angle hero perspective",
+      "No text inside image",
+      "No fantasy distortions"
+    ]
+  },
+  "renderPrompt": {
+    "mapOverlay": "Replace the colored building block with a photorealistic Art Deco theater on a main street. Keep the exact same building footprint and height. Ornate Deco facade with vertical sign tower, geometric terra cotta ornament, marquee canopy, and polychrome detailing. 2-4 storey entertainment venue. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+    "roofView": "Replace the colored block viewed from above with a flat roof with Art Deco vertical sign tower, decorative parapet, and large auditorium volume behind the facade. Keep surrounding context exactly as-is.",
+    "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+  },
+  "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+  "footprintCompatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "A movie palace is a single-frontage auditorium with one fixed marquee and entrance; L, U, and courtyard assembly would duplicate its public face.",
+    "recommendedWidth_m": [
+      16,
+      26
+    ],
+    "recommendedDepth_m": [
+      24,
+      38
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          16,
+          26
+        ],
+        "recommendedDepth_m": [
+          24,
+          38
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ]
+      }
+    }
+  },
+  "dimensions": {
+    "suggestedWidth_m": 20,
+    "suggestedDepth_m": 30,
+    "minWidth_m": 14,
+    "maxWidth_m": 25,
+    "minDepth_m": 22,
+    "maxDepth_m": 40,
+    "suggestedAreaSqm": 1200,
+    "minFloors": 2,
+    "maxFloors": 4,
+    "suggestedFloorHeight": 5,
+    "aspectRatio": "1:1.5"
+  },
+  "archetypeImages": [
+    {
+      "id": "deco_theater_mainstreet_variant_0",
+      "label": "Front Elevation Day",
+      "description": "Clean daytime front elevation with neutral sky and consistent framing",
+      "camera": "street",
+      "imageUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0_thumb.jpg",
+      "imagePath": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+      "lighting": "soft daytime",
+      "generationTags": [
+        "art_deco",
+        "main_street_entertainment",
+        "deco",
+        "theater",
+        "mainstreet"
+      ],
+      "prompt": {
+        "positive": "Front-facing canonical architectural archetype of Deco Theater Mainstreet. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Front-facing view only. Building centered in frame. Street-level eye height camera. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural rendering style. Grounded cinematic atmosphere. Soft overcast-to-golden-hour lighting range. Consistent urban foreground and street edge. Controlled background clutter. Front Elevation Day with soft daytime lighting. Output 1200x900 (4:3)",
+        "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No extreme perspective distortion. No side-angle hero shots. No fantasy geometry. No dominant crowds obscuring architecture. No logo or watermark text",
+        "compositionRules": [
+          "Front-facing view only",
+          "Building centered in frame",
+          "Street-level eye height camera",
+          "Consistent framing and crop",
+          "No collage layout",
+          "No text overlays inside image"
+        ],
+        "renderingRules": [
+          "Photoreal architectural rendering style",
+          "Grounded cinematic atmosphere",
+          "Soft overcast-to-golden-hour lighting range",
+          "Consistent urban foreground and street edge",
+          "Controlled background clutter",
+          "Front Elevation Day with soft daytime lighting"
+        ],
+        "output": {
+          "width": 1200,
+          "height": 900,
+          "aspectRatio": "4:3"
+        }
+      }
+    },
+    {
+      "id": "deco_theater_mainstreet_variant_1",
+      "label": "Front Golden Hour",
+      "description": "Warm dusk front elevation with subtle interior glow",
+      "camera": "street",
+      "imageUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_1.png",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_1_thumb.jpg",
+      "imagePath": "/archetypes/buildings/deco_theater_mainstreet/variant_1.png",
+      "lighting": "golden hour",
+      "generationTags": [
+        "art_deco",
+        "main_street_entertainment",
+        "deco",
+        "theater",
+        "mainstreet"
+      ],
+      "prompt": {
+        "positive": "Front-facing canonical architectural archetype of Deco Theater Mainstreet. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Front-facing view only. Building centered in frame. Street-level eye height camera. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural rendering style. Grounded cinematic atmosphere. Soft overcast-to-golden-hour lighting range. Consistent urban foreground and street edge. Controlled background clutter. Front Golden Hour with golden hour lighting. Output 1200x900 (4:3)",
+        "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No extreme perspective distortion. No side-angle hero shots. No fantasy geometry. No dominant crowds obscuring architecture. No logo or watermark text",
+        "compositionRules": [
+          "Front-facing view only",
+          "Building centered in frame",
+          "Street-level eye height camera",
+          "Consistent framing and crop",
+          "No collage layout",
+          "No text overlays inside image"
+        ],
+        "renderingRules": [
+          "Photoreal architectural rendering style",
+          "Grounded cinematic atmosphere",
+          "Soft overcast-to-golden-hour lighting range",
+          "Consistent urban foreground and street edge",
+          "Controlled background clutter",
+          "Front Golden Hour with golden hour lighting"
+        ],
+        "output": {
+          "width": 1200,
+          "height": 900,
+          "aspectRatio": "4:3"
+        }
+      }
+    },
+    {
+      "id": "deco_theater_mainstreet_variant_2",
+      "label": "Front Overcast",
+      "description": "Crisp overcast front elevation emphasizing facade texture and massing",
+      "camera": "street",
+      "imageUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_2.png",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_2_thumb.jpg",
+      "imagePath": "/archetypes/buildings/deco_theater_mainstreet/variant_2.png",
+      "lighting": "overcast",
+      "generationTags": [
+        "art_deco",
+        "main_street_entertainment",
+        "deco",
+        "theater",
+        "mainstreet"
+      ],
+      "prompt": {
+        "positive": "Front-facing canonical architectural archetype of Deco Theater Mainstreet. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Front-facing view only. Building centered in frame. Street-level eye height camera. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural rendering style. Grounded cinematic atmosphere. Soft overcast-to-golden-hour lighting range. Consistent urban foreground and street edge. Controlled background clutter. Front Overcast with overcast lighting. Output 1200x900 (4:3)",
+        "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No extreme perspective distortion. No side-angle hero shots. No fantasy geometry. No dominant crowds obscuring architecture. No logo or watermark text",
+        "compositionRules": [
+          "Front-facing view only",
+          "Building centered in frame",
+          "Street-level eye height camera",
+          "Consistent framing and crop",
+          "No collage layout",
+          "No text overlays inside image"
+        ],
+        "renderingRules": [
+          "Photoreal architectural rendering style",
+          "Grounded cinematic atmosphere",
+          "Soft overcast-to-golden-hour lighting range",
+          "Consistent urban foreground and street edge",
+          "Controlled background clutter",
+          "Front Overcast with overcast lighting"
+        ],
+        "output": {
+          "width": 1200,
+          "height": 900,
+          "aspectRatio": "4:3"
+        }
+      }
+    },
+    {
+      "id": "deco_theater_mainstreet_variant_3",
+      "label": "Front Rain Reflection",
+      "description": "Front-facing rainy scene with reflective street surface and atmospheric realism",
+      "camera": "street",
+      "imageUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_3.png",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_3_thumb.jpg",
+      "imagePath": "/archetypes/buildings/deco_theater_mainstreet/variant_3.png",
+      "lighting": "rainy twilight",
+      "generationTags": [
+        "art_deco",
+        "main_street_entertainment",
+        "deco",
+        "theater",
+        "mainstreet"
+      ],
+      "prompt": {
+        "positive": "Front-facing canonical architectural archetype of Deco Theater Mainstreet. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Front-facing view only. Building centered in frame. Street-level eye height camera. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural rendering style. Grounded cinematic atmosphere. Soft overcast-to-golden-hour lighting range. Consistent urban foreground and street edge. Controlled background clutter. Front Rain Reflection with rainy twilight lighting. Output 1200x900 (4:3)",
+        "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No extreme perspective distortion. No side-angle hero shots. No fantasy geometry. No dominant crowds obscuring architecture. No logo or watermark text",
+        "compositionRules": [
+          "Front-facing view only",
+          "Building centered in frame",
+          "Street-level eye height camera",
+          "Consistent framing and crop",
+          "No collage layout",
+          "No text overlays inside image"
+        ],
+        "renderingRules": [
+          "Photoreal architectural rendering style",
+          "Grounded cinematic atmosphere",
+          "Soft overcast-to-golden-hour lighting range",
+          "Consistent urban foreground and street edge",
+          "Controlled background clutter",
+          "Front Rain Reflection with rainy twilight lighting"
+        ],
+        "output": {
+          "width": 1200,
+          "height": 900,
+          "aspectRatio": "4:3"
+        }
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "deco_theater_movie_palace",
+      "label": "Movie Palace Grand",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+      "minFloors": 2,
+      "maxFloors": 4,
+      "suggestedFloorHeight": 5,
+      "suggestedAreaSqm": 1200,
+      "description": "Grand movie palace with ornate marquee, terra cotta facade with Mayan-inspired geometric relief, vertical blade sign, and atmospheric lobby.",
+      "facadeDetail": {
+        "primaryMaterial": "polychrome glazed terra cotta with Mayan motifs",
+        "secondaryMaterial": "illuminated marquee with chaser lights",
+        "groundFloor": "terrazzo-floored ticket lobby under ornate marquee",
+        "colorScheme": "deep red terra cotta, gold ornament, neon marquee"
+      },
+      "roofDetail": {
+        "form": "decorative parapet with vertical blade sign",
+        "material": "terra cotta parapet with illuminated signage"
+      },
+      "shadeId": null,
+      "palette": {
+        "primary": "#883907"
+      }
+    },
+    {
+      "id": "deco_theater_streamline",
+      "label": "Streamline Theater",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_1.png",
+      "description": "Streamline Moderne theater with curved white facade, horizontal neon bands, a sweeping curved glass corner, and a fin-shaped tower element.",
+      "facadeDetail": {
+        "primaryMaterial": "smooth white stucco with horizontal grooves",
+        "secondaryMaterial": "curved glass block panels and neon tube accents",
+        "groundFloor": "curved glass ticket booth under sweeping canopy",
+        "colorScheme": "white stucco, blue and pink neon, curved glass"
+      },
+      "roofDetail": {
+        "form": "aerodynamic fin tower with neon crown",
+        "material": "white stucco with integrated neon lighting"
+      },
+      "shadeId": null,
+      "palette": {
+        "primary": "#E0E0E0"
+      }
+    },
+    {
+      "id": "deco_theater_egyptian_revival",
+      "label": "Egyptian Revival Theater",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_2.png",
+      "description": "Egyptian Revival theater with battered pylons, lotus column entry, winged sun disc ornament, and hieroglyphic-inspired geometric patterns.",
+      "facadeDetail": {
+        "primaryMaterial": "painted concrete in sand and gold tones",
+        "secondaryMaterial": "cast plaster Egyptian ornament â€” lotus columns, scarabs",
+        "groundFloor": "battered pylon entry with lotus-capital columns",
+        "colorScheme": "sand gold, turquoise accents, black and gold ornament"
+      },
+      "roofDetail": {
+        "form": "flat with cavetto cornice and winged sun disc",
+        "material": "painted concrete with Egyptian cavetto molding"
+      },
+      "shadeId": null,
+      "palette": {
+        "primary": "#cade20"
+      }
+    },
+    {
+      "id": "deco_theater_tropical_deco",
+      "label": "Tropical Deco (Miami Beach)",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_3.png",
+      "description": "Miami Beach Tropical Deco theater with pastel colors, nautical porthole windows, etched glass flamingo panels, and palm tree-themed relief.",
+      "facadeDetail": {
+        "primaryMaterial": "smooth stucco in pastel pink and mint",
+        "secondaryMaterial": "etched glass panels with flamingo and palm motifs",
+        "groundFloor": "terrazzo entry with neon flamingo signage",
+        "colorScheme": "pastel pink, mint green, coral, neon accents"
+      },
+      "roofDetail": {
+        "form": "stepped parapet with eyebrow sun shades",
+        "material": "stucco with horizontal eyebrow shade fins"
+      },
+      "shadeId": null,
+      "palette": {
+        "primary": "#a6a0f5"
+      }
+    }
+  ],
+  "selectedVariant": {
+    "id": "deco_theater_movie_palace",
+    "label": "Movie Palace Grand",
+    "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
+    "minFloors": 2,
+    "maxFloors": 4,
+    "suggestedFloorHeight": 5,
+    "suggestedAreaSqm": 1200,
+    "description": "Grand movie palace with ornate marquee, terra cotta facade with Mayan-inspired geometric relief, vertical blade sign, and atmospheric lobby.",
+    "facadeDetail": {
+      "primaryMaterial": "polychrome glazed terra cotta with Mayan motifs",
+      "secondaryMaterial": "illuminated marquee with chaser lights",
+      "groundFloor": "terrazzo-floored ticket lobby under ornate marquee",
+      "colorScheme": "deep red terra cotta, gold ornament, neon marquee"
+    },
+    "roofDetail": {
+      "form": "decorative parapet with vertical blade sign",
+      "material": "terra cotta parapet with illuminated signage"
+    },
+    "shadeId": null,
+    "palette": {
+      "primary": "#883907"
+    }
+  }
+}

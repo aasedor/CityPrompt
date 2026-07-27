@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-scandi-white-plaster-v85`.
+Current executable memory: `2026-07-26-wave3-civic-identity-v86`.
 
 ## The quality target
 
@@ -778,6 +778,26 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - A full canonical rebuild remains necessary after an assembled-only graph
   pilot passes. The pilot can reuse stale generic modules; the promoted family
   must regenerate every LEGO role with the reviewed PBR source and materials.
+
+### Wave 3 civic-family identity, alias and footprint lessons
+
+- Shape matrices must be architecturally honest. A single-frontage theater may
+  declare only `rectangle` when L, U or courtyard assembly would duplicate its
+  marquee and public entrance. Such an exception must set
+  `minimumPreferredProfiles`, explain `profileRationale`, and still prove both
+  an in-band plan and an oversized `streetwall_repeat` plan.
+- Catalogue identity and generation identity are separate contracts. Every
+  selected variant manifest must declare both its parent `archetype_id` and its
+  `variant_id` in `archetype_aliases`; do not alias materially different sibling
+  aesthetics merely to increase match coverage.
+- A stacked theater keeps the marquee, entrance portals and blade sign in the
+  fixed podium, ordinary wall rhythm in repeatable floor variants, and its fly
+  tower in the fixed roof/crown assembly. Repeating any of those public identity
+  elements through middle floors produces a generic or implausible venue.
+- A render-locked civic atlas may exceed the ordinary material warning only
+  through a bounded per-family `material_budget` with a construction rationale.
+  The global waiver ceiling remains enforced; this is not permission to retain
+  accidental duplicate materials.
 
 ## Updating this memory
 

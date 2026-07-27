@@ -1,0 +1,77 @@
+{
+  "schema": "lego-fidelity-spec@1",
+  "archetype_id": "contemporary_midrise",
+  "rubric": {
+    "massing_floors": 25,
+    "material_palette": 25,
+    "facade_rhythm": 25,
+    "signature_features": 25,
+    "release_total": 90,
+    "release_minimums": [24, 22, 22, 20]
+  },
+  "variants": [
+    {
+      "variant_id": "mass_timber_biophilic_tower",
+      "title": "Mass Timber Biophilic Infill",
+      "reference": "frontend/public/archetypes/buildings/contemporary_midrise/variant_0.png",
+      "facade_system": "timber_grid",
+      "target_floors": [7, 9],
+      "features": [
+        "continuous timber post-and-beam facade grid",
+        "full-height curtain-wall glazing",
+        "corner glazing",
+        "alternating planted balcony sequence",
+        "timber-framed ground-floor portal",
+        "upper setback",
+        "planted rooftop crown"
+      ]
+    },
+    {
+      "variant_id": "european_white_render_boutique",
+      "title": "European White Render Boutique",
+      "reference": "frontend/public/archetypes/buildings/contemporary_midrise/variant_1.png",
+      "facade_system": "punched_render",
+      "target_floors": [5, 6],
+      "features": [
+        "asymmetric punched-window sequence",
+        "deep white rendered reveals",
+        "alternating Juliet and full balconies",
+        "slender metal guards",
+        "recessed lobby entry",
+        "two-stage upper setback",
+        "roof planting"
+      ]
+    },
+    {
+      "variant_id": "contextual_dark_brick_classical",
+      "title": "Contextual Dark Brick Classical",
+      "reference": "frontend/public/archetypes/buildings/contemporary_midrise/variant_2.png",
+      "facade_system": "brick_bays",
+      "target_floors": [6, 7],
+      "features": [
+        "deep red-brown brick",
+        "bronze paired tall windows",
+        "multi-floor projecting oriel stacks",
+        "true arched entry portal",
+        "string and soldier courses",
+        "expressed brick parapet and cornice"
+      ]
+    },
+    {
+      "variant_id": "limestone_panel_balcony_infill",
+      "title": "Limestone Panel Contemporary Infill",
+      "reference": "frontend/public/archetypes/buildings/contemporary_midrise/variant_3.png",
+      "facade_system": "stone_frame",
+      "target_floors": [4, 5],
+      "features": [
+        "limestone panel grid",
+        "Corten crown and side-wall wrap",
+        "timber-decked projecting balconies",
+        "perforated metal guards",
+        "formal tripartite entry",
+        "colonnade",
+        "crown material transition"
+      ]
+    }
+  ]
+}

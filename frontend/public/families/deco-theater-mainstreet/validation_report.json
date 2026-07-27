@@ -1,0 +1,285 @@
+{
+  "status": "pass",
+  "family": "deco-theater-mainstreet",
+  "archetype_id": "deco_theater_mainstreet",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "art_deco",
+    "Entertainment / Culture"
+  ],
+  "manifest": "deco-theater-mainstreet_manifest.json",
+  "errors": [],
+  "warnings": [
+    "deco-theater-mainstreet_podium.glb: 19 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_floor_typical_a.glb: 18 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_floor_typical_b.glb: 18 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_floor_typical_c.glb: 18 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_setback_upper.glb: 18 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_crown_crown.glb: 17 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_assembled.glb: 33 materials (many; consider consolidation)",
+    "deco-theater-mainstreet_assembled.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "deco-theater-mainstreet_podium.glb",
+      "status": "ok",
+      "triangles": 12584,
+      "extent_m": {
+        "width_x": 20.24,
+        "height_y": 5.2,
+        "depth_z": 32.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_office_clear_occupied_Podium_Module_podium_FrontGlazing_Glass",
+        "MAT_GlazingInterior_office_clear_occupied_00",
+        "MAT_GlazingInterior_office_clear_occupied_01",
+        "MAT_GlazingInterior_office_clear_occupied_02",
+        "MAT_GlazingInterior_office_clear_occupied_03",
+        "MAT_GlazingInterior_office_clear_occupied_04",
+        "MAT_GlazingInterior_office_clear_occupied_05",
+        "MAT_GlazingInterior_office_clear_occupied_06",
+        "MAT_Interior_Warm",
+        "MAT_Sheet_Near_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_CutStone",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1810592
+    },
+    {
+      "file": "deco-theater-mainstreet_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 24144,
+      "extent_m": {
+        "width_x": 20.377,
+        "height_y": 6.0,
+        "depth_z": 31.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_office_clear_occupied_Floor_Module_floor_FrontGlazing_Glass",
+        "MAT_GlazingFrame_office_clear_occupied.001",
+        "MAT_GlazingInterior_office_clear_occupied_00.001",
+        "MAT_GlazingInterior_office_clear_occupied_01.001",
+        "MAT_GlazingInterior_office_clear_occupied_02.001",
+        "MAT_GlazingInterior_office_clear_occupied_03.001",
+        "MAT_GlazingInterior_office_clear_occupied_04.001",
+        "MAT_GlazingInterior_office_clear_occupied_05.001",
+        "MAT_GlazingInterior_office_clear_occupied_06.001",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 2562316
+    },
+    {
+      "file": "deco-theater-mainstreet_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 23880,
+      "extent_m": {
+        "width_x": 20.377,
+        "height_y": 6.0,
+        "depth_z": 31.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_office_clear_occupied_Floor_alt_Module_floor_alt_FrontGlazing_Glass",
+        "MAT_GlazingFrame_office_clear_occupied.002",
+        "MAT_GlazingInterior_office_clear_occupied_00.002",
+        "MAT_GlazingInterior_office_clear_occupied_01.002",
+        "MAT_GlazingInterior_office_clear_occupied_02.002",
+        "MAT_GlazingInterior_office_clear_occupied_03.002",
+        "MAT_GlazingInterior_office_clear_occupied_04.002",
+        "MAT_GlazingInterior_office_clear_occupied_05.002",
+        "MAT_GlazingInterior_office_clear_occupied_06.002",
+        "MAT_Sheet_Near_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Alt_Left",
+        "MAT_Sheet_Wrapped_Floor_Alt_Rear",
+        "MAT_Sheet_Wrapped_Floor_Alt_Right",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 2532064
+    },
+    {
+      "file": "deco-theater-mainstreet_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 23956,
+      "extent_m": {
+        "width_x": 20.377,
+        "height_y": 6.0,
+        "depth_z": 31.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_office_clear_occupied_Floor_c_Module_floor_c_FrontGlazing_Glass",
+        "MAT_GlazingFrame_office_clear_occupied.003",
+        "MAT_GlazingInterior_office_clear_occupied_00.003",
+        "MAT_GlazingInterior_office_clear_occupied_01.003",
+        "MAT_GlazingInterior_office_clear_occupied_02.003",
+        "MAT_GlazingInterior_office_clear_occupied_03.003",
+        "MAT_GlazingInterior_office_clear_occupied_04.003",
+        "MAT_GlazingInterior_office_clear_occupied_05.003",
+        "MAT_GlazingInterior_office_clear_occupied_06.003",
+        "MAT_Sheet_Near_Floor_c",
+        "MAT_Sheet_Wrapped_Floor_C_Left",
+        "MAT_Sheet_Wrapped_Floor_C_Rear",
+        "MAT_Sheet_Wrapped_Floor_C_Right",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 2530456
+    },
+    {
+      "file": "deco-theater-mainstreet_setback_upper.glb",
+      "status": "ok",
+      "triangles": 21172,
+      "extent_m": {
+        "width_x": 20.0,
+        "height_y": 6.0,
+        "depth_z": 30.189
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_office_clear_occupied_Floor_Module_floor_FrontGlazing_Glass.001",
+        "MAT_GlazingFrame_office_clear_occupied.004",
+        "MAT_GlazingInterior_office_clear_occupied_00.004",
+        "MAT_GlazingInterior_office_clear_occupied_01.004",
+        "MAT_GlazingInterior_office_clear_occupied_02.004",
+        "MAT_GlazingInterior_office_clear_occupied_03.004",
+        "MAT_GlazingInterior_office_clear_occupied_04.004",
+        "MAT_GlazingInterior_office_clear_occupied_05.004",
+        "MAT_GlazingInterior_office_clear_occupied_06.004",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 2357340
+    },
+    {
+      "file": "deco-theater-mainstreet_crown_crown.glb",
+      "status": "ok",
+      "triangles": 23900,
+      "extent_m": {
+        "width_x": 19.977,
+        "height_y": 6.0,
+        "depth_z": 31.469
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_GlassOverlay_office_clear_occupied_Crown_Module_crown_FrontGlazing_Glass",
+        "MAT_GlazingFrame_office_clear_occupied.005",
+        "MAT_GlazingInterior_office_clear_occupied_00.005",
+        "MAT_GlazingInterior_office_clear_occupied_01.005",
+        "MAT_GlazingInterior_office_clear_occupied_02.005",
+        "MAT_GlazingInterior_office_clear_occupied_03.005",
+        "MAT_GlazingInterior_office_clear_occupied_04.005",
+        "MAT_GlazingInterior_office_clear_occupied_05.005",
+        "MAT_GlazingInterior_office_clear_occupied_06.005",
+        "MAT_Sheet_Near_Crown",
+        "MAT_Sheet_Wrapped_Crown_Left",
+        "MAT_Sheet_Wrapped_Crown_Rear",
+        "MAT_Sheet_Wrapped_Crown_Right",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 3919068
+    },
+    {
+      "file": "deco-theater-mainstreet_roof.glb",
+      "status": "ok",
+      "triangles": 3904,
+      "extent_m": {
+        "width_x": 20.08,
+        "height_y": 4.78,
+        "depth_z": 30.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof",
+        "MAT_Signature_CutStone",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 202640
+    },
+    {
+      "file": "deco-theater-mainstreet_assembled.glb",
+      "status": "ok",
+      "triangles": 64532,
+      "extent_m": {
+        "width_x": 20.377,
+        "height_y": 21.98,
+        "depth_z": 32.219
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_GlassOverlay_office_clear_occupied_Crown_Module_crown_FrontGlazing_Glass.001",
+        "MAT_GlassOverlay_office_clear_occupied_Floor_Module_floor_FrontGlazing_Glass.002",
+        "MAT_GlassOverlay_office_clear_occupied_Podium_Module_podium_FrontGlazing_Glass.001",
+        "MAT_GlazingFrame_office_clear_occupied.007",
+        "MAT_GlazingInterior_office_clear_occupied_00.007",
+        "MAT_GlazingInterior_office_clear_occupied_01.007",
+        "MAT_GlazingInterior_office_clear_occupied_02.007",
+        "MAT_GlazingInterior_office_clear_occupied_03.007",
+        "MAT_GlazingInterior_office_clear_occupied_04.007",
+        "MAT_GlazingInterior_office_clear_occupied_05.007",
+        "MAT_GlazingInterior_office_clear_occupied_06.007",
+        "MAT_Interior_Warm",
+        "MAT_Roof",
+        "MAT_Sheet_Near_Crown",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Podium",
+        "MAT_Sheet_Wrapped_Crown_Left.001",
+        "MAT_Sheet_Wrapped_Crown_Rear.001",
+        "MAT_Sheet_Wrapped_Crown_Right.001",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Sheet_Wrapped_Podium_Left.001",
+        "MAT_Sheet_Wrapped_Podium_Rear.001",
+        "MAT_Sheet_Wrapped_Podium_Right.001",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_CutStone",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 8554476,
+      "role": "assembled"
+    }
+  ]
+}
