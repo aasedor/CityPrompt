@@ -144,7 +144,9 @@ def build_atlases(
 
 
 def prepare_arena(family_dir: Path) -> None:
-    source_path = family_dir / "textures" / "source" / "arena_material_source.png"
+    # Version the render-locked source so the earlier skin remains available
+    # for visual regression while Wave 3 converges on the catalogue hero.
+    source_path = family_dir / "textures" / "source" / "arena_material_source_v2.png"
     source = Image.open(source_path).convert("RGB")
     bands = {
         "metal": (0.000, 0.285),

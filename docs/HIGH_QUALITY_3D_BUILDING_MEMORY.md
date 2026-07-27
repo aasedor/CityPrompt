@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-verified-pbr-asset-contract-v89`.
+Current executable memory: `2026-07-27-verified-pbr-asset-contract-v90`.
 
 ## The quality target
 
@@ -828,6 +828,13 @@ The polychrome collegiate family added four rules for resizable hero facades:
   not only inside Blender. Imported image-to-3D hierarchies must be frozen in
   world space, normalized to the declared metric envelope and exported in a
   validator-readable package before promotion.
+- For a camera-locked landmark pilot, register screen-space construction
+  landmarks before judging ornament: silhouette top and base, roof edge,
+  oculus extents, material-band boundaries, entrance crests and media ribbons.
+  Curved shells can make physically level rings drift by dozens of pixels in
+  an elevated view, so the hero-facing assembly may need a deliberate
+  shell-following profile while remaining continuous and plausible from the
+  required oblique and aerial checks.
 
 ## Updating this memory
 

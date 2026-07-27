@@ -1,7 +1,7 @@
 {
   "schema": "wave3-landmark-skin@1",
   "family": "modern-sports-arena",
-  "source": "textures/source/arena_material_source.png",
+  "source": "textures/source/arena_material_source_v2.png",
   "source_model": "gpt-image-2",
   "registration": "four horizontal bands, all runtime channels derived pixel-for-pixel",
   "channels": [

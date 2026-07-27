@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-verified-pbr-asset-contract-v89",
+  "memory_version": "2026-07-27-verified-pbr-asset-contract-v90",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -619,6 +619,11 @@
       "symptom": "An arena, dome or inhabited-arch landmark is technically modular but still reads as a box, or its exported bounds no longer match the authored envelope",
       "cause": "The one-off silhouette was forced into ordinary stacked rectangular roles, or an imported image-to-3D hierarchy was compressed/exported without freezing world transforms and validating the delivered GLB.",
       "correction": "Ship the canonical form as a variant-bound fixed assembled landmark with physical ellipse, dome, arch, portico, oculus and cable-net geometry. Keep a separate conservative six-module fallback for oversized streetwall-repeat planning, freeze imported hierarchies in world space, normalize the metric envelope and validate final on-disk bounds."
+    },
+    {
+      "symptom": "A curved landmark matches in 3D dimensions but its roof edge, entrance crests, material bands or media ribbon still miss the camera-locked archetype by visible screen-space offsets",
+      "cause": "The iteration compared only world dimensions; perspective and shell depth moved supposedly aligned facade features to different image rows.",
+      "correction": "Register silhouette top and base, roof edge, oculus extents, band boundaries, entrance crests and ribbons in the locked hero camera. Adjust continuous shell-following profiles against those landmarks, then confirm the correction remains plausible in front-corner, rear-corner and aerial views."
     }
   ]
 }

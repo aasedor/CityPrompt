@@ -454,7 +454,7 @@ def tapered_ellipse(name: str, rings: list[tuple[float, float, float]],
             polygon.material_index = polygon.index % 2
     zone = str(mat_a.get("skin_zone", ""))
     if zone:
-        cylindrical_uv(obj, {"metal": 10.0, "glass": 4.0, "accent": 8.0}.get(zone, 4.0))
+        cylindrical_uv(obj, {"metal": 6.0, "glass": 4.0, "accent": 8.0}.get(zone, 4.0))
     return obj
 
 
@@ -520,6 +520,7 @@ def sweeping_arch(
     segments: int = 24,
     ellipse: tuple[float, float] | None = None,
     facade_offset: float = 0.0,
+    base_z: float = 0.0,
 ) -> list[bpy.types.Object]:
     points = []
     for index in range(segments + 1):
@@ -529,7 +530,7 @@ def sweeping_arch(
         if ellipse:
             rx, ry = ellipse
             point_y = -ry * math.sqrt(max(0.0, 1.0 - (x / rx) ** 2)) - facade_offset
-        points.append((x, point_y, height * (1.0 - t * t)))
+        points.append((x, point_y, base_z + height * (1.0 - t * t)))
     return [
         beam(f"{name}_{index:02d}", points[index], points[index + 1], radius, mat)
         for index in range(segments)
@@ -542,7 +543,7 @@ def arena_entry_stairs(
     m: dict[str, bpy.types.Material],
 ) -> list[bpy.types.Object]:
     result = []
-    rx, ry = 65.0, 50.0
+    rx, ry = 75.0, 60.0
     facade_y = -ry * math.sqrt(max(0.0, 1.0 - (centre_x / rx) ** 2))
     normal = Vector((centre_x / (rx * rx), facade_y / (ry * ry), 0)).normalized()
     rotation_z = math.atan2(normal.y, normal.x) - math.pi / 2
@@ -575,13 +576,34 @@ def arena_portal_material(
         centre = polygon.center
         if centre.y >= -28.0:
             continue
-        for portal_x in (-35.0, 35.0):
-            t = (centre.x - portal_x) / 22.0
+        for portal_x in (-49.0, 49.0):
+            t = (centre.x - portal_x) / 26.0
             if abs(t) <= 1.0:
-                arch_z = 18.5 * (1.0 - t * t) + 2.5
+                arch_z = 19.5 * (1.0 - t * t) + 2.5
                 if centre.z <= arch_z:
                     polygon.material_index = glass_index
                     break
+
+
+def arena_media_ribbon(
+    name: str,
+    mat: bpy.types.Material,
+    segments: int = 128,
+) -> list[bpy.types.Object]:
+    """Continuous sculptural ribbon whose public face reads level in the hero view."""
+    points = []
+    for index in range(segments + 1):
+        angle = 2 * math.pi * index / segments
+        front_factor = max(0.0, -math.sin(angle))
+        points.append((
+            75.35 * math.cos(angle),
+            60.35 * math.sin(angle),
+            15.5 + 6.5 * front_factor,
+        ))
+    return [
+        beam(f"{name}_{index:03d}", points[index], points[index + 1], 0.30, mat)
+        for index in range(segments)
+    ]
 
 
 def arena_roof_membrane(name: str, mat: bpy.types.Material,
@@ -591,9 +613,9 @@ def arena_roof_membrane(name: str, mat: bpy.types.Material,
     faces: list[tuple[int, ...]] = []
     for ring in range(radial_rings):
         t = ring / (radial_rings - 1)
-        rx = 14.0 + (66.0 - 14.0) * t
-        ry = 10.0 + (52.0 - 10.0) * t
-        z = 40.75 - 6.3 * (t ** 1.45)
+        rx = 28.0 + (66.0 - 28.0) * t
+        ry = 18.0 + (52.0 - 18.0) * t
+        z = 40.75 - 4.75 * (t ** 1.45)
         for i in range(segments):
             a = 2 * math.pi * i / segments
             verts.append((rx * math.cos(a), ry * math.sin(a), z))
@@ -641,75 +663,110 @@ def arch_frame(name: str, x: float, y: float, z: float, width: float, height: fl
 
 def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     objs: list[bpy.types.Object] = []
+    bowl_rings = [
+        (12.0, 75.0, 60.0),
+        (14.0, 75.0, 60.0),
+        (15.5, 75.0, 60.0),
+        (18.0, 75.0, 60.0),
+        (20.0, 75.0, 60.0),
+        (22.0, 75.0, 60.0),
+        (24.0, 75.0, 60.0),
+        (27.0, 75.0, 60.0),
+        (29.5, 75.0, 60.0),
+        (31.5, 75.0, 60.0),
+        (32.3, 75.0, 60.0),
+        (34.0, 72.0, 57.2),
+        (36.0, 67.0, 53.0),
+    ]
     bowl = tapered_ellipse(
         "FIXED_ArenaBowl",
-        [
-            (12, 65, 50),
-            (16, 68.1, 53.1),
-            (20, 71.2, 56.2),
-            (24, 74.2, 59.2),
-            (25, 75, 60),
-            (29.5, 71, 56.5),
-            (34, 67, 53),
-        ],
+        bowl_rings,
         m["metal"], m["metal_alt"], segments=128, cap_bottom=False,
     )
     arena_portal_material(bowl, m["glass"])
     objs.append(bowl)
     objs.append(tapered_ellipse(
         "FIXED_ArenaConcourseGlass",
-        [(0.15, 62, 47), (0.3, 62, 47), (11.5, 65, 50), (12.0, 65, 50)],
+        [(0.15, 75, 60), (0.3, 75, 60), (11.5, 75, 60), (12.0, 75, 60)],
         m["glass"], segments=128,
     ))
-    objs.extend(ellipse_ring("FIXED_ArenaMediaRibbon", 70.2, 55.2, 18.0, 0.34, m["amber_solid"], 128))
-    objs.extend(ellipse_ring("FIXED_ArenaRoofEdge", 66.8, 52.8, 34.2, 0.28, m["dark"], 128))
+    objs.extend(arena_media_ribbon("FIXED_ArenaMediaRibbon", m["amber_solid"]))
+    objs.extend(ellipse_ring("FIXED_ArenaRoofEdge", 66.8, 52.8, 36.0, 0.28, m["dark"], 128))
     # Two integrated sweeping entrance cuts, matching the goal-post elevation.
-    for x in (-35.0, 35.0):
+    for x in (-49.0, 49.0):
         objs.extend(sweeping_arch(
             f"FIXED_ArenaPortalFrame_{x}",
             x,
             -59.0,
-            22.0,
-            18.5,
+            26.0,
+            19.5,
             0.52,
             m["dark"],
             ellipse=(75.0, 60.0),
-            facade_offset=0.72,
+            facade_offset=0.54,
+            base_z=2.5,
         ))
         objs.extend(sweeping_arch(
             f"FIXED_ArenaPortalLight_{x}",
             x,
             -59.45,
-            21.5,
-            18.0,
+            25.65,
+            19.2,
             0.085,
             m["amber_solid"],
             ellipse=(75.0, 60.0),
-            facade_offset=1.05,
+            facade_offset=1.02,
+            base_z=2.72,
         ))
         objs.extend(arena_entry_stairs(f"FIXED_ArenaStair_{x}", x, m))
-    # Facade diagrid: real shadow-casting members on the public half.
-    columns = 20
-    xs = [(-68 + i * 136 / columns) for i in range(columns + 1)]
+    # Shallow, shell-conforming facade joints reinforce the registered normal
+    # map without creating the detached spikes visible in the previous pass.
+    def front_y(x: float, z: float) -> float:
+        lower = max(
+            (ring for ring in bowl_rings if ring[0] <= z),
+            key=lambda ring: ring[0],
+        )
+        upper = min(
+            (ring for ring in bowl_rings if ring[0] >= z),
+            key=lambda ring: ring[0],
+        )
+        span = max(upper[0] - lower[0], 0.001)
+        blend = (z - lower[0]) / span
+        rx = lower[1] + (upper[1] - lower[1]) * blend
+        ry = lower[2] + (upper[2] - lower[2]) * blend
+        return -ry * math.sqrt(max(0.0, 1.0 - (x / rx) ** 2))
+
+    columns = 10
+    xs = [(-60 + i * 120 / columns) for i in range(columns + 1)]
     for i in range(columns):
         x0, x1 = xs[i], xs[i + 1]
-        y0 = -55.0 * math.sqrt(max(0.0, 1 - (x0 / 75) ** 2))
-        y1 = -55.0 * math.sqrt(max(0.0, 1 - (x1 / 75) ** 2))
-        objs.append(beam(f"FIXED_ArenaDiagA{i}", (x0, y0 - 0.45, 13), (x1, y1 - 0.45, 31), 0.14, m["dark"]))
-        objs.append(beam(f"FIXED_ArenaDiagB{i}", (x0, y0 - 0.48, 31), (x1, y1 - 0.48, 13), 0.14, m["dark"]))
+        objs.append(beam(
+            f"FIXED_ArenaDiagA{i}",
+            (x0, front_y(x0, 13) - 0.12, 13),
+            (x1, front_y(x1, 31) - 0.12, 31),
+            0.065,
+            m["dark"],
+        ))
+        objs.append(beam(
+            f"FIXED_ArenaDiagB{i}",
+            (x0, front_y(x0, 31) - 0.12, 31),
+            (x1, front_y(x1, 13) - 0.12, 13),
+            0.065,
+            m["dark"],
+        ))
     # Ribbed shallow roof and open oculus.
     objs.append(arena_roof_membrane("FIXED_ArenaRoofMembrane", m["roof"]))
     roof_segments = 96
     for i in range(roof_segments):
         angle = 2 * math.pi * i / roof_segments
-        inner = (14 * math.cos(angle), 10 * math.sin(angle), 41.0)
-        outer = (66 * math.cos(angle), 52 * math.sin(angle), 34.2)
+        inner = (28 * math.cos(angle), 18 * math.sin(angle), 41.0)
+        outer = (66 * math.cos(angle), 52 * math.sin(angle), 36.0)
         objs.append(beam(f"FIXED_ArenaRoofRib{i:03d}", inner, outer, 0.18, m["metal"]))
-    objs.extend(ellipse_ring("FIXED_ArenaOculus", 14, 10, 41.0, 0.48, m["dark"], 96))
-    objs.extend(ellipse_ring("FIXED_ArenaOculusWarmRing", 13.25, 9.25, 40.55, 0.16, m["amber_solid"], 96))
+    objs.extend(ellipse_ring("FIXED_ArenaOculus", 28, 18, 41.0, 0.48, m["dark"], 96))
+    objs.extend(ellipse_ring("FIXED_ArenaOculusWarmRing", 27.25, 17.25, 40.55, 0.16, m["amber_solid"], 96))
     objs.append(tapered_ellipse(
         "FIXED_ArenaOculusRecess",
-        [(39.55, 13.1, 9.1), (39.64, 13.1, 9.1)],
+        [(39.55, 27.1, 17.1), (39.64, 27.1, 17.1)],
         m["dark"],
         segments=96,
     ))
@@ -1063,8 +1120,20 @@ def render_views(folder: Path, family: str, width: float, depth: float, height: 
         "context": ((width * 1.15, -distance * 1.12, height * 0.82), (0, 0, height * 0.34), 58),
     }
     if family == "modern-sports-arena":
-        views["preview"] = ((0, -distance * 1.36, height * 0.48), (0, 0, height * 0.39), 58)
-        views["facade_close"] = ((0, -distance * 1.42, height * 0.39), (0, 0, height * 0.39), 62)
+        # The catalogue goalpost is a 4:3, elevated, near-orthographic frontal
+        # view. Lock the comparison camera and neutral warm-grey studio here.
+        bpy.context.scene.render.resolution_x = 1024
+        bpy.context.scene.render.resolution_y = 768
+        background = bpy.context.scene.world.node_tree.nodes.get("Background")
+        background.inputs["Color"].default_value = (0.245, 0.24, 0.235, 1)
+        background.inputs["Strength"].default_value = 0.92
+        ground = bpy.data.materials.get("MAT_W3_Ground")
+        if ground:
+            ground.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (
+                0.42, 0.40, 0.38, 1,
+            )
+        views["preview"] = ((0, -distance * 1.36, height * 1.25), (0, 0, height * 0.56), 65)
+        views["facade_close"] = ((0, -distance * 1.42, height * 1.10), (0, 0, height * 0.52), 68)
     elif family == "civic-monumental-neoclassical":
         # Match the catalogue's restrained street-level oblique rather than a
         # high, wide-angle orbit that exaggerates the dome and roof.
@@ -1283,10 +1352,6 @@ def build_family(
         # Curved entrance tubes and diagonal members must seat exactly on the
         # placement plane after the landmark envelope is normalized.
         shift_to_ground(fixed_objects)
-        # Blender's object bound boxes conservatively enclose rotated octagonal
-        # tubes; the exported evaluated mesh sits 0.136 m above that bound.
-        for obj in fixed_objects:
-            obj.location.z -= 0.136
         assembled_path = folder / f"{family}_assembled.glb"
         export_glb(assembled_path, fixed_objects)
         fixed_triangles = triangle_count(fixed_objects)
