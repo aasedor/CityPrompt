@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T14:43:24.733841+00:00",
+  "created_at": "2026-07-27T15:11:17.864074+00:00",
   "family": "modern-sports-arena",
   "archetype_id": "modern_sports_arena",
   "archetype_label": "Modern Sports Arena \u2014 Faceted Indoor Bowl",
@@ -485,7 +485,9 @@
         "glass_mask": "textures/near/arena_atlas_glass_mask.png",
         "opaque_mask": "textures/near/arena_atlas_opaque_mask.png"
       }
-    }
+    },
+    "goalpost_reference": "/archetypes/buildings/modern_sports_arena/hero.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
   },
   "massing_graph": {
     "type": "fixed_landmark",
@@ -539,7 +541,7 @@
         "roof"
       ],
       "ao_baked": true,
-      "size_bytes": 6615248
+      "size_bytes": 4204172
     },
     {
       "role": "floor",
@@ -669,7 +671,7 @@
         "roof"
       ],
       "ao_baked": true,
-      "size_bytes": 4029880
+      "size_bytes": 4029896
     }
   ],
   "assembled": {
@@ -678,7 +680,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 42.0,
-    "triangle_count": 24482,
+    "triangle_count": 31318,
     "stack": [
       {
         "role": "assembled",
@@ -732,6 +734,7 @@
   "source_provenance": {
     "catalogue_archetype_id": "modern_sports_arena",
     "catalogue_variant_id": "sports_arena_indoor",
-    "elevation_source": "/families/modern-sports-arena/elevation.jpg"
+    "elevation_source": "/families/modern-sports-arena/elevation.jpg",
+    "archetype_goalpost": "/archetypes/buildings/modern_sports_arena/hero.png"
   }
 }

@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T14:49:39.377092+00:00",
+  "created_at": "2026-07-27T15:08:02.177926+00:00",
   "family": "civic-monumental-neoclassical",
   "archetype_id": "civic_monumental_institution",
   "archetype_label": "Civic Monumental Institution \u2014 Domed Neoclassical",
@@ -485,7 +485,9 @@
         "glass_mask": "textures/near/civic_atlas_glass_mask.png",
         "opaque_mask": "textures/near/civic_atlas_opaque_mask.png"
       }
-    }
+    },
+    "goalpost_reference": "/archetypes/buildings/civic_monumental_institution/variant_0.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
   },
   "massing_graph": {
     "type": "fixed_landmark",
@@ -678,7 +680,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 43.0,
-    "triangle_count": 26352,
+    "triangle_count": 31820,
     "stack": [
       {
         "role": "assembled",
@@ -732,6 +734,7 @@
   "source_provenance": {
     "catalogue_archetype_id": "civic_monumental_institution",
     "catalogue_variant_id": "civic_monumental_neoclassical",
-    "elevation_source": "/families/civic-monumental-neoclassical/elevation.jpg"
+    "elevation_source": "/families/civic-monumental-neoclassical/elevation.jpg",
+    "archetype_goalpost": "/archetypes/buildings/civic_monumental_institution/variant_0.png"
   }
 }

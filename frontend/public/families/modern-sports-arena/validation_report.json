@@ -11,7 +11,7 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "modern-sports-arena_assembled.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "modern-sports-arena_assembled.glb: 11.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -28,10 +28,10 @@
         "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
-        "MAT_W3_ArenaAccentSkin",
+        "MAT_W3_AmberRibbonSolid",
         "MAT_W3_ArenaGlassSkin"
       ],
-      "size_bytes": 6615248
+      "size_bytes": 4204172
     },
     {
       "file": "modern-sports-arena_floor_typical_a.glb",
@@ -126,28 +126,27 @@
         "MAT_W3_ArenaMetalSkin",
         "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 4029880
+      "size_bytes": 4029896
     },
     {
       "file": "modern-sports-arena_assembled.glb",
       "status": "ok",
-      "triangles": 24674,
+      "triangles": 32854,
       "extent_m": {
         "width_x": 150.0,
-        "height_y": 41.617,
-        "depth_z": 120.0
+        "height_y": 41.667,
+        "depth_z": 119.878
       },
-      "bottom_y": 0.0003,
+      "bottom_y": -0.0003,
       "materials": [
-        "MAT_W3_ArenaAccentSkin",
+        "MAT_W3_AmberRibbonSolid",
         "MAT_W3_ArenaGlassSkin",
-        "MAT_W3_ArenaInteriorSkin",
         "MAT_W3_ArenaMetalSkin",
         "MAT_W3_ArenaMetalSkinAlt",
         "MAT_W3_ArenaRoofSkin",
         "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 13813212,
+      "size_bytes": 12196712,
       "role": "assembled"
     }
   ]

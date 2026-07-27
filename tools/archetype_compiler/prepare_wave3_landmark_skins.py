@@ -31,6 +31,20 @@ def normal_map(luma: np.ndarray, strength: float = 2.4) -> Image.Image:
 
 def derive_channels(albedo: Image.Image, zone: str) -> dict[str, Image.Image]:
     albedo = ImageEnhance.Contrast(albedo.convert("RGB")).enhance(1.04)
+    if zone == "roof":
+        # The arena archetype goal post has a bright silver standing-seam roof.
+        # Keep the registered rib source, but correct the earlier charcoal read.
+        neutral = ImageOps.grayscale(albedo)
+        neutral = ImageEnhance.Contrast(neutral).enhance(1.16)
+        neutral = ImageEnhance.Brightness(neutral).enhance(1.82)
+        albedo = Image.merge(
+            "RGB",
+            (
+                neutral,
+                ImageEnhance.Brightness(neutral).enhance(1.02),
+                ImageEnhance.Brightness(neutral).enhance(1.06),
+            ),
+        )
     luma_image = ImageOps.grayscale(albedo)
     luma = np.asarray(luma_image, dtype=np.uint8)
     smoothed = np.asarray(luma_image.filter(ImageFilter.GaussianBlur(2.0)), dtype=np.float32)

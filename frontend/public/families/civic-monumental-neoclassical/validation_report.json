@@ -11,7 +11,7 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "civic-monumental-neoclassical_assembled.glb: 15.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "civic-monumental-neoclassical_assembled.glb: 15.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -131,13 +131,13 @@
     {
       "file": "civic-monumental-neoclassical_assembled.glb",
       "status": "ok",
-      "triangles": 26640,
+      "triangles": 32108,
       "extent_m": {
         "width_x": 72.0,
         "height_y": 43.0,
         "depth_z": 48.3
       },
-      "bottom_y": 0.0,
+      "bottom_y": -0.0,
       "materials": [
         "MAT_W3_CivicBronzeSkin",
         "MAT_W3_CivicCopperSkin",
@@ -147,7 +147,7 @@
         "MAT_W3_DarkSteel",
         "MAT_W3_PorticoRecess"
       ],
-      "size_bytes": 15854828,
+      "size_bytes": 16324540,
       "role": "assembled"
     }
   ]
