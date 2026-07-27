@@ -1,6 +1,6 @@
 {
   "exportSchema": "archetype-source@1",
-  "exportedAt": "2026-07-27T04:02:41.268Z",
+  "exportedAt": "2026-07-27T04:32:53.029Z",
   "source": {
     "catalog": "frontend/src/data/buildingArchetypes.json",
     "derivation": "frontend/src/components/viewer/aestheticCatalog.ts#toAestheticOption"

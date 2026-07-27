@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T04:03:44.541077+00:00",
+  "created_at": "2026-07-27T04:33:14.891542+00:00",
   "family": "deco-theater-mainstreet",
   "archetype_id": "deco_theater_mainstreet",
   "archetype_label": "Deco Theater Mainstreet",
@@ -158,14 +158,14 @@
   "dimensions": {
     "width_m": 20.0,
     "depth_m": 30.0,
-    "podium_height_m": 5.2,
-    "floor_height_m": 6.0,
-    "setback_height_m": 6.0,
-    "roof_height_m": 5.0,
+    "podium_height_m": 4.4,
+    "floor_height_m": 4.6,
+    "setback_height_m": 4.2,
+    "roof_height_m": 3.4,
     "default_floors": 3,
     "min_floors": 2,
     "max_floors": 4,
-    "crown_height_m": 6.0
+    "crown_height_m": 2.6
   },
   "native_width_m": 20.0,
   "native_depth_m": 30.0,
@@ -185,14 +185,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 5.2,
-      "floor_height_m": 6.0,
+      "height_m": 4.4,
+      "floor_height_m": 4.6,
       "repeatable_z": false,
-      "triangle_count": 12584,
-      "material_count": 19,
+      "allow_inset_footprint": true,
+      "triangle_count": 14940,
+      "material_count": 23,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 1810592
+      "size_bytes": 1935616
     },
     {
       "role": "floor",
@@ -205,14 +206,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 6.0,
-      "floor_height_m": 6.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
       "repeatable_z": true,
-      "triangle_count": 24144,
-      "material_count": 18,
+      "allow_inset_footprint": true,
+      "triangle_count": 9732,
+      "material_count": 9,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 2562316
+      "size_bytes": 584596
     },
     {
       "role": "floor",
@@ -225,14 +227,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 6.0,
-      "floor_height_m": 6.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
       "repeatable_z": true,
-      "triangle_count": 23880,
-      "material_count": 18,
+      "allow_inset_footprint": true,
+      "triangle_count": 9732,
+      "material_count": 9,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 2532064
+      "size_bytes": 584608
     },
     {
       "role": "floor",
@@ -245,14 +248,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 6.0,
-      "floor_height_m": 6.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
       "repeatable_z": true,
-      "triangle_count": 23956,
-      "material_count": 18,
+      "allow_inset_footprint": true,
+      "triangle_count": 9732,
+      "material_count": 9,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 2530456
+      "size_bytes": 584608
     },
     {
       "role": "setback",
@@ -267,15 +271,16 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 6.0,
-      "floor_height_m": 6.0,
+      "height_m": 4.2,
+      "floor_height_m": 4.6,
       "repeatable_z": false,
+      "allow_inset_footprint": true,
       "setback_min_floors": 5,
-      "triangle_count": 21172,
-      "material_count": 18,
+      "triangle_count": 9732,
+      "material_count": 9,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 2357340
+      "size_bytes": 592392
     },
     {
       "role": "crown",
@@ -290,14 +295,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 6.0,
-      "floor_height_m": 6.0,
+      "height_m": 2.6,
+      "floor_height_m": 4.6,
       "repeatable_z": false,
-      "triangle_count": 23900,
-      "material_count": 17,
+      "allow_inset_footprint": true,
+      "triangle_count": 5532,
+      "material_count": 9,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 3919068
+      "size_bytes": 314792
     },
     {
       "role": "roof",
@@ -310,14 +316,15 @@
       "module_family": "deco-theater-mainstreet",
       "width_m": 20.0,
       "depth_m": 30.0,
-      "height_m": 5.0,
-      "floor_height_m": 6.0,
+      "height_m": 3.4,
+      "floor_height_m": 4.6,
       "repeatable_z": false,
-      "triangle_count": 3904,
-      "material_count": 7,
+      "allow_inset_footprint": true,
+      "triangle_count": 3180,
+      "material_count": 5,
       "texture_keys": [],
       "ao_baked": false,
-      "size_bytes": 202640
+      "size_bytes": 183412
     }
   ],
   "assembled": {
@@ -325,36 +332,36 @@
     "floors": 3,
     "uses_setback": false,
     "uses_crown": true,
-    "height_m": 22.2,
-    "triangle_count": 64532,
+    "height_m": 15.0,
+    "triangle_count": 33384,
     "stack": [
       {
         "role": "podium",
         "variant_key": "default",
         "level": 0,
         "z_m": 0.0,
-        "height_m": 5.2
+        "height_m": 4.4
       },
       {
         "role": "floor",
         "variant_key": "typical_a",
         "level": 1,
-        "z_m": 5.2,
-        "height_m": 6.0
+        "z_m": 4.4,
+        "height_m": 4.6
       },
       {
         "role": "crown",
         "variant_key": "crown",
         "level": 2,
-        "z_m": 11.2,
-        "height_m": 6.0
+        "z_m": 9.0,
+        "height_m": 2.6
       },
       {
         "role": "roof",
         "variant_key": "default",
         "level": 3,
-        "z_m": 17.2,
-        "height_m": 5.0
+        "z_m": 11.6,
+        "height_m": 3.4
       }
     ],
     "footprint_profile": "rectangle",

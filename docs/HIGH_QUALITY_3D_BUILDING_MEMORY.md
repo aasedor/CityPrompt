@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-26-wave3-civic-identity-v86`.
+Current executable memory: `2026-07-27-archetype-massing-over-parcel-fill-v87`.
 
 ## The quality target
 
@@ -781,6 +781,13 @@ The polychrome collegiate family added four rules for resizable hero facades:
 
 ### Wave 3 civic-family identity, alias and footprint lessons
 
+- Native width and depth are a placement envelope, not an instruction to fill
+  the parcel with one extrusion. Archetype evidence controls the occupied
+  solids inside that envelope: a theater needs a shallow lobby, deep
+  auditorium, stepped shoulders and raised fly tower even when the planner
+  advertises one nominal rectangular footprint. Use
+  `allow_inset_footprint` for deliberately narrower modules and let empty
+  envelope space preserve the silhouette.
 - Shape matrices must be architecturally honest. A single-frontage theater may
   declare only `rectangle` when L, U or courtyard assembly would duplicate its
   marquee and public entrance. Such an exception must set

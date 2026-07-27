@@ -22,6 +22,7 @@ import argparse
 import json
 import math
 import sys
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -9306,6 +9307,530 @@ def render_presentation_views(
 # Orchestration
 # ---------------------------------------------------------------------------
 
+def _theater_front_grammar(
+    grammar: dict,
+    *,
+    width_m: float,
+    depth_m: float,
+) -> dict:
+    """Return a shallow-frontage grammar inside the nominal theater envelope."""
+    result = deepcopy(grammar)
+    result["dimensions"]["width_m"] = float(width_m)
+    result["dimensions"]["depth_m"] = float(depth_m)
+    return result
+
+
+def _add_theater_auditorium_relief(
+    parts: list[bpy.types.Object],
+    *,
+    body_width: float,
+    body_depth: float,
+    body_centre_y: float,
+    height: float,
+    mats: dict,
+    prefix: str,
+    grade_level: bool,
+    crown_level: bool,
+) -> None:
+    """Construct a blind auditorium as real stepped masonry, not a full parcel box."""
+    body_front = body_centre_y - body_depth / 2
+    body_rear = body_centre_y + body_depth / 2
+    chamfer_m = min(body_width * 0.15, body_depth * 0.10)
+    parts.append(add_chamfered_box(
+        f"{prefix}_AuditoriumBody",
+        (body_width, body_depth, height),
+        (0.0, body_centre_y, height / 2),
+        mats["primary"],
+        chamfer_m,
+        0.14,
+    ))
+    # Keep the side/rear contract explicit without wallpapering the blind hall
+    # with office windows. These are solid-colour wrapped facade materials, so
+    # the runtime always has a visible secondary-elevation surface while the
+    # auditorium remains appropriately windowless.
+    wrapped_left = wrapped_facade_material(
+        mats["primary"], prefix, "left", offset_u=0.17, flip_u=True
+    )
+    wrapped_right = wrapped_facade_material(
+        mats["primary"], prefix, "right", offset_u=0.43
+    )
+    wrapped_rear = wrapped_facade_material(
+        mats["primary"], prefix, "rear", offset_u=0.71, flip_u=True
+    )
+    parts.extend([
+        add_box(
+            f"{prefix}_WrappedLeft",
+            (0.045, body_depth * 0.84, height * 0.86),
+            (-body_width / 2 - 0.0225, body_centre_y, height * 0.50),
+            wrapped_left,
+        ),
+        add_box(
+            f"{prefix}_WrappedRight",
+            (0.045, body_depth * 0.84, height * 0.86),
+            (body_width / 2 + 0.0225, body_centre_y, height * 0.50),
+            wrapped_right,
+        ),
+        add_box(
+            f"{prefix}_WrappedRear",
+            (body_width * 0.78, 0.045, height * 0.86),
+            (0.0, body_rear + 0.0225, height * 0.50),
+            wrapped_rear,
+        ),
+    ])
+    # A recessed lower side datum and paired vertical acoustic piers give the
+    # long windowless hall real depth without inventing office windows.
+    for side_index, side_x in enumerate((-body_width / 2 - 0.12, body_width / 2 + 0.12)):
+        if grade_level:
+            _signature_relief_box(
+                parts,
+                f"{prefix}_SidePlinth{side_index}",
+                (0.30, body_depth * 0.94, min(0.72, height * 0.15)),
+                (side_x, body_centre_y, min(0.36, height * 0.075)),
+                mats["signature_stone"],
+                bevel_m=0.045,
+            )
+        for pier_index, y in enumerate(
+            (
+                body_front + body_depth * 0.18,
+                body_front + body_depth * 0.42,
+                body_front + body_depth * 0.66,
+                body_front + body_depth * 0.86,
+            )
+        ):
+            _signature_relief_box(
+                parts,
+                f"{prefix}_AcousticPier{side_index}_{pier_index}",
+                (0.46, 0.82, height * 0.84),
+                (side_x, y, height * 0.49),
+                mats["signature_warm"] if pier_index in {0, 3} else mats["signature_stone"],
+                bevel_m=0.055,
+            )
+    # Rear service doors and a horizontal cap make the back elevation legible
+    # in orbit without copying the ceremonial front facade.
+    if grade_level:
+        for door_index, door_x in enumerate((-body_width * 0.24, body_width * 0.24)):
+            _signature_relief_box(
+                parts,
+                f"{prefix}_RearStageDoor{door_index}",
+                (body_width * 0.18, 0.30, min(3.4, height * 0.66)),
+                (door_x, body_rear + 0.16, min(1.7, height * 0.33)),
+                mats["accent"],
+                bevel_m=0.045,
+            )
+    else:
+        for panel_index, panel_x in enumerate(
+            (-body_width * 0.27, 0.0, body_width * 0.27)
+        ):
+            _signature_relief_box(
+                parts,
+                f"{prefix}_RearBlindPanel{panel_index}",
+                (body_width * 0.16, 0.14, height * 0.40),
+                (panel_x, body_rear + 0.10, height * 0.50),
+                mats["massing_joint"],
+                bevel_m=0.055,
+            )
+    if crown_level:
+        _signature_relief_box(
+            parts,
+            f"{prefix}_AuditoriumCap",
+            (body_width + 0.34, body_depth + 0.30, 0.24),
+            (0.0, body_centre_y, height - 0.12),
+            mats["signature_stone"],
+            bevel_m=0.055,
+        )
+
+
+def _add_theater_blade_segment(
+    parts: list[bpy.types.Object],
+    *,
+    width: float,
+    street_y: float,
+    height: float,
+    mats: dict,
+    prefix: str,
+    crown: bool = False,
+) -> None:
+    """Add one vertically aligned piece of the movie-palace blade sign."""
+    sign_x = width * 0.12
+    sign_width = min(1.55, width * 0.08)
+    sign_height = height * (0.86 if crown else 0.90)
+    sign_y = street_y - 0.84
+    _signature_relief_box(
+        parts,
+        f"{prefix}_BladeFace",
+        (sign_width, 1.46, sign_height),
+        (sign_x, sign_y, height * 0.50),
+        mats["signature_warm"],
+        bevel_m=0.10,
+    )
+    for edge_index, edge_x in enumerate(
+        (sign_x - sign_width / 2 + 0.08, sign_x + sign_width / 2 - 0.08)
+    ):
+        _signature_relief_box(
+            parts,
+            f"{prefix}_BladeTrim{edge_index}",
+            (0.10, 1.54, sign_height * 0.94),
+            (edge_x, sign_y - 0.02, height * 0.50),
+            mats["signature_metal"],
+            bevel_m=0.028,
+        )
+    if crown:
+        _signature_relief_box(
+            parts,
+            f"{prefix}_BladeCrown",
+            (sign_width * 1.34, 1.58, 0.34),
+            (sign_x, sign_y - 0.02, height * 0.50 + sign_height / 2 - 0.04),
+            mats["signature_metal"],
+            bevel_m=0.06,
+        )
+
+
+def _build_deco_theater_upper_frontage(
+    *,
+    role: str,
+    width: float,
+    depth: float,
+    height: float,
+    mats: dict,
+) -> bpy.types.Object:
+    """Build the low, broad upper face shown by the catalogue movie palace."""
+    front_y = -depth / 2
+    parts: list[bpy.types.Object] = []
+
+    if role == "crown":
+        parapet_height = height * 0.66
+        parts.append(add_beveled_box(
+            "TheaterCrown_Parapet",
+            (width, depth, parapet_height),
+            (0.0, 0.0, parapet_height / 2),
+            mats["primary"],
+            0.09,
+        ))
+        for step_index, (step_width, step_height, step_depth) in enumerate(
+            (
+                (width * 0.54, height * 0.80, depth * 0.82),
+                (width * 0.30, height * 0.94, depth * 0.68),
+                (width * 0.14, height, depth * 0.54),
+            )
+        ):
+            parts.append(add_beveled_box(
+                f"TheaterCrown_CentreStep{step_index}",
+                (step_width, step_depth, step_height),
+                (0.0, -depth * 0.08, step_height / 2),
+                mats["secondary"] if step_index < 2 else mats["signature_warm"],
+                0.08,
+            ))
+        _signature_relief_box(
+            parts,
+            "TheaterCrown_TerraCottaBand",
+            (width * 0.92, 0.24, 0.34),
+            (0.0, front_y - 0.13, parapet_height * 0.52),
+            mats["signature_warm"],
+            bevel_m=0.045,
+        )
+        _add_theater_blade_segment(
+            parts,
+            width=width,
+            street_y=front_y,
+            height=height,
+            mats=mats,
+            prefix="TheaterCrown",
+            crown=True,
+        )
+        return join_as("MOD_TheaterCrownFrontage", parts)
+
+    parts.append(add_beveled_box(
+        f"Theater{role.title()}_FrontWall",
+        (width, depth, height),
+        (0.0, 0.0, height / 2),
+        mats["primary"],
+        0.10,
+    ))
+    # Two oversized arched foyer windows and a narrow central stair bay mirror
+    # the catalogue silhouette. They replace the office-like repeated window
+    # grid that previously made this family read as a commercial mid-rise.
+    window_radius = min(width * 0.105, height * 0.34)
+    window_spring = height * 0.57
+    window_rect_height = max(1.4, window_spring - 0.58)
+    window_width = window_radius * 1.72
+    for window_index, window_x in enumerate((-width * 0.27, width * 0.27)):
+        parts.append(add_box(
+            f"TheaterUpper_ArchGlass{window_index}",
+            (window_width, 0.07, window_rect_height),
+            (window_x, front_y - 0.055, 0.42 + window_rect_height / 2),
+            mats["glass"],
+        ))
+        parts.append(add_arch_ring(
+            f"TheaterUpper_ArchFrame{window_index}",
+            window_x,
+            front_y - 0.18,
+            window_spring,
+            window_radius,
+            0.25,
+            0.28,
+            mats["signature_stone"],
+            22,
+        ))
+        add_frame_bars(
+            parts,
+            f"TheaterUpper_WindowFrame{window_index}",
+            "front",
+            (
+                window_x,
+                front_y - 0.21,
+                0.42 + window_rect_height / 2,
+            ),
+            window_width,
+            window_rect_height,
+            0.12,
+            mats["signature_metal"],
+            profile=0.07,
+            mullions="double",
+        )
+    central_width = width * 0.13
+    _signature_relief_box(
+        parts,
+        "TheaterUpper_CentralRecess",
+        (central_width, 0.10, height * 0.68),
+        (0.0, front_y - 0.025, height * 0.49),
+        mats["massing_joint"],
+        bevel_m=0.022,
+    )
+    _signature_relief_box(
+        parts,
+        "TheaterUpper_CentralGlass",
+        (central_width * 0.88, 0.05, height * 0.62),
+        (0.0, front_y - 0.085, height * 0.49),
+        mats["glass"],
+        bevel_m=0.012,
+    )
+    for pier_index, pier_x in enumerate(
+        (-width * 0.47, -width * 0.14, width * 0.14, width * 0.47)
+    ):
+        _signature_relief_box(
+            parts,
+            f"TheaterUpper_FlutedPier{pier_index}",
+            (0.54, 0.38, height * 0.94),
+            (pier_x, front_y - 0.20, height * 0.50),
+            mats["signature_stone"],
+            bevel_m=0.055,
+        )
+        for flute_index, flute_x in enumerate((-0.13, 0.0, 0.13)):
+            _signature_relief_box(
+                parts,
+                f"TheaterUpper_Flute{pier_index}_{flute_index}",
+                (0.055, 0.07, height * 0.82),
+                (pier_x + flute_x, front_y - 0.415, height * 0.50),
+                mats["signature_metal"],
+                bevel_m=0.012,
+            )
+    _signature_relief_box(
+        parts,
+        "TheaterUpper_GeometricBand",
+        (width * 0.92, 0.25, 0.42),
+        (0.0, front_y - 0.14, height * 0.18),
+        mats["signature_warm"],
+        bevel_m=0.045,
+    )
+    _signature_relief_box(
+        parts,
+        "TheaterUpper_Cornice",
+        (width + 0.26, 0.42, 0.24),
+        (0.0, front_y - 0.20, height - 0.13),
+        mats["signature_stone"],
+        bevel_m=0.055,
+    )
+    _add_theater_blade_segment(
+        parts,
+        width=width,
+        street_y=front_y,
+        height=height,
+        mats=mats,
+        prefix=f"Theater{role.title()}",
+    )
+    return join_as(f"MOD_Theater{role.title()}Frontage", parts)
+
+
+def build_deco_theater_module(
+    role: str,
+    grammar: dict,
+    mats: dict,
+    variant_key: str = "default",
+    interior_seed: int = 0,
+) -> bpy.types.Object:
+    """Build a theater-shaped stack inside, rather than across, its parcel envelope.
+
+    The public facade remains a modular render-locked construction. Behind it,
+    the occupied mass steps into a narrower, deeper blind auditorium and a
+    separately authored roof/fly tower. This preserves planner-native width and
+    depth while avoiding the generic full-depth office-block extrusion.
+    """
+    dims = grammar["dimensions"]
+    nominal_width = float(dims["width_m"])
+    nominal_depth = float(dims["depth_m"])
+
+    if role == "roof":
+        height = float(dims["roof_height_m"])
+        body_width = nominal_width * 0.90
+        body_depth = nominal_depth * 0.82
+        body_centre_y = nominal_depth * 0.06
+        parts: list[bpy.types.Object] = [
+            add_beveled_box(
+                "TheaterRoof_FlatMembraneDeck",
+                (body_width + 0.36, body_depth + 0.36, 0.30),
+                (0.0, body_centre_y, 0.15),
+                mats["roof"],
+                0.06,
+            ),
+        ]
+        # The stage house is a compact rear volume over a quiet flat membrane
+        # roof, matching the movie-palace card instead of inventing a civic
+        # hipped roof.
+        tower_width = nominal_width * 0.43
+        tower_depth = nominal_depth * 0.23
+        tower_height = height - 0.16
+        tower_y = nominal_depth * 0.28
+        parts.append(add_chamfered_box(
+            "TheaterRoof_FlyTower",
+            (tower_width, tower_depth, tower_height),
+            (0.0, tower_y, tower_height / 2),
+            mats["primary"],
+            min(tower_width, tower_depth) * 0.10,
+            0.16,
+        ))
+        _signature_relief_box(
+            parts,
+            "TheaterRoof_FlyTowerCap",
+            (tower_width + 0.42, tower_depth + 0.42, 0.28),
+            (0.0, tower_y, tower_height - 0.14),
+            mats["signature_stone"],
+            bevel_m=0.07,
+        )
+        # A low street parapet preserves the broad horizontal skyline, while a
+        # final blade segment rises above it like the catalogue movie palace.
+        front_y = -nominal_depth / 2 + 0.28
+        _signature_relief_box(
+            parts,
+            "TheaterRoof_StreetParapet",
+            (nominal_width, 0.46, 0.72),
+            (0.0, front_y, 0.36),
+            mats["primary"],
+            bevel_m=0.07,
+        )
+        _signature_relief_box(
+            parts,
+            "TheaterRoof_CentreParapetStep",
+            (nominal_width * 0.38, 0.52, 1.08),
+            (0.0, front_y + 0.03, 0.54),
+            mats["signature_stone"],
+            bevel_m=0.07,
+        )
+        _add_theater_blade_segment(
+            parts,
+            width=nominal_width,
+            street_y=-nominal_depth / 2,
+            height=height,
+            mats=mats,
+            prefix="TheaterRoof",
+            crown=True,
+        )
+        module = join_as("MOD_Roof", parts)
+        return module
+
+    if role == "podium":
+        height = float(dims["podium_height_m"])
+        frontage_width = nominal_width
+        frontage_depth = nominal_depth * 0.18
+        body_width = nominal_width * 0.90
+        body_depth = nominal_depth * 0.82
+        body_centre_y = nominal_depth * 0.06
+        front_grammar = _theater_front_grammar(
+            grammar, width_m=frontage_width, depth_m=frontage_depth
+        )
+        # The custom continuous blade is added below. Remove the generic
+        # podium-only segment so the sign does not double up.
+        front_grammar["architectural_signature"]["kits"] = [
+            kit for kit in _signature_kits(front_grammar)
+            if kit != "vertical_blade_sign"
+        ]
+        front = build_facade_sheet_podium(front_grammar, mats)
+        prefix = "TheaterPodium"
+    else:
+        height = (
+            float(dims["setback_height_m"])
+            if role == "setback"
+            else float(dims.get("crown_height_m", dims["floor_height_m"]))
+            if role == "crown"
+            else float(dims["floor_height_m"])
+        )
+        frontage_width = nominal_width
+        frontage_depth = nominal_depth * 0.16
+        body_width = nominal_width * 0.88
+        body_depth = nominal_depth * 0.82
+        body_centre_y = nominal_depth * 0.06
+        front = _build_deco_theater_upper_frontage(
+            role=role,
+            width=frontage_width,
+            depth=frontage_depth,
+            height=height,
+            mats=mats,
+        )
+        prefix = f"Theater{role.title()}"
+
+    # All frontages share the nominal street datum at -depth/2 while their rear
+    # edges step independently. Empty envelope space is intentional.
+    front_centre_y = -nominal_depth / 2 + frontage_depth / 2
+    front.location.y = front_centre_y
+    # The facade builder already applied construction-edge bevels. Mark it as
+    # externally finished so the final massing join does not subdivide that
+    # dense mesh a second time.
+    front["external_fixed_assembly"] = True
+    parts = [front]
+    if role == "podium":
+        _add_theater_blade_segment(
+            parts,
+            width=frontage_width,
+            street_y=-nominal_depth / 2,
+            height=height,
+            mats=mats,
+            prefix="TheaterPodium",
+        )
+    _add_theater_auditorium_relief(
+        parts,
+        body_width=body_width,
+        body_depth=body_depth,
+        body_centre_y=body_centre_y,
+        height=height,
+        mats=mats,
+        prefix=prefix,
+        grade_level=role == "podium",
+        crown_level=role == "crown",
+    )
+    # A short neck joins the facade tower to the deeper hall without restoring
+    # the discarded full-envelope box.
+    frontage_rear = -nominal_depth / 2 + frontage_depth
+    body_front = body_centre_y - body_depth / 2
+    neck_depth = max(0.40, body_front - frontage_rear)
+    if neck_depth > 0.42:
+        neck_width = min(frontage_width * 0.72, body_width * 0.82)
+        parts.append(add_beveled_box(
+            f"{prefix}_FoyerNeck",
+            (neck_width, neck_depth + 0.10, height * (0.82 if role == "crown" else 0.94)),
+            (0.0, frontage_rear + neck_depth / 2, height * (0.41 if role == "crown" else 0.47)),
+            mats["secondary"],
+            0.11,
+        ))
+    module = join_as(
+        "MOD_Podium" if role == "podium"
+        else "MOD_Setback" if role == "setback"
+        else "MOD_Crown" if role == "crown"
+        else "MOD_Floor",
+        parts,
+    )
+    apply_facade_sheet_uv(module, FACADE_SHEET["manifest"]["span_m"], height)
+    return module
+
+
 def build_module(
     role: str,
     grammar: dict,
@@ -9313,6 +9838,10 @@ def build_module(
     variant_key: str = "default",
     interior_seed: int = 0,
 ) -> bpy.types.Object:
+    if "theater_auditorium_massing" in _signature_kits(grammar):
+        return build_deco_theater_module(
+            role, grammar, mats, variant_key, interior_seed
+        )
     if role == "podium":
         if FACADE_SHEET and "sheet_podium" in mats:
             return build_facade_sheet_podium(grammar, mats)
@@ -9525,6 +10054,9 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "height_m": dims[height_key[role]],
             "floor_height_m": dims["floor_height_m"],
             "repeatable_z": role == "floor" and variant_key.startswith("typical_"),
+            "allow_inset_footprint": (
+                "theater_auditorium_massing" in _signature_kits(grammar)
+            ),
             **({"setback_min_floors": int(grammar["massing"].get("setback_min_floors", 5))}
                if role == "setback" else {}),
             "triangle_count": triangle_count(module),

@@ -102,10 +102,19 @@ def test_wave3_theater_variant_injects_aliases_and_fixed_identity_kits():
         "deco_theater_mainstreet",
         "deco_theater_movie_palace",
     ]
-    assert {"vertical_blade_sign", "fly_tower"} <= set(
+    assert {"vertical_blade_sign", "theater_auditorium_massing", "fly_tower"} <= set(
         result["architectural_signature"]["kits"]
     )
-    assert result["dimensions"]["roof_height_m"] == pytest.approx(5.0)
+    assert result["dimensions"]["podium_height_m"] == pytest.approx(4.4)
+    assert result["dimensions"]["floor_height_m"] == pytest.approx(4.6)
+    assert result["dimensions"]["crown_height_m"] == pytest.approx(2.6)
+    assert result["dimensions"]["roof_height_m"] == pytest.approx(3.4)
+    assert (
+        result["dimensions"]["podium_height_m"]
+        + result["dimensions"]["floor_height_m"]
+        + result["dimensions"]["crown_height_m"]
+        + result["dimensions"]["roof_height_m"]
+    ) == pytest.approx(15.0)
     assert "massing_graph" not in result
 
 

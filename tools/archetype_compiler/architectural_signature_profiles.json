@@ -1106,17 +1106,18 @@
         "sign_frieze",
         "cantilever_canopy",
         "vertical_blade_sign",
+        "theater_auditorium_massing",
         "fly_tower"
       ],
       "archetype_aliases": [
         "deco_theater_mainstreet"
       ],
       "dimension_overrides": {
-        "podium_height_m": 5.2,
-        "floor_height_m": 6.0,
-        "setback_height_m": 6.0,
-        "crown_height_m": 6.0,
-        "roof_height_m": 5.0,
+        "podium_height_m": 4.4,
+        "floor_height_m": 4.6,
+        "setback_height_m": 4.2,
+        "crown_height_m": 2.6,
+        "roof_height_m": 3.4,
         "default_floors": 3,
         "min_floors": 2,
         "max_floors": 4
@@ -1148,6 +1149,7 @@
         "sign_frieze",
         "cantilever_canopy",
         "vertical_blade_sign",
+        "theater_auditorium_massing",
         "fly_tower"
       ],
       "archetype_aliases": [
@@ -1155,11 +1157,11 @@
         "deco_theater_movie_palace"
       ],
       "dimension_overrides": {
-        "podium_height_m": 5.2,
-        "floor_height_m": 6.0,
-        "setback_height_m": 6.0,
-        "crown_height_m": 6.0,
-        "roof_height_m": 5.0,
+        "podium_height_m": 4.4,
+        "floor_height_m": 4.6,
+        "setback_height_m": 4.2,
+        "crown_height_m": 2.6,
+        "roof_height_m": 3.4,
         "default_floors": 3,
         "min_floors": 2,
         "max_floors": 4

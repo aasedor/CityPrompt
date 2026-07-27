@@ -55,7 +55,10 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     principle_ids = {item["id"] for item in memory["non_negotiable_principles"]}
 
     assert memory["schema"] == "high-quality-building-memory@1"
-    assert memory["memory_version"] == "2026-07-26-wave3-civic-identity-v86"
+    assert (
+        memory["memory_version"]
+        == "2026-07-27-archetype-massing-over-parcel-fill-v87"
+    )
     memory_doc = (
         Path(__file__).resolve().parents[3]
         / "docs"
@@ -70,6 +73,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "glass_is_layered",
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",
+        "archetype_envelope_not_parcel_fill",
         "identity_aliases_are_explicit",
     } <= principle_ids
 

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-26-wave3-civic-identity-v86",
+  "memory_version": "2026-07-27-archetype-massing-over-parcel-fill-v87",
   "archetype_id": "deco_theater_mainstreet",
   "family": "deco-theater-mainstreet",
   "status": "pass",
@@ -89,12 +89,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "33 assembled materials; explicit reviewed ceiling 36: The render-locked civic atlas keeps separate podium, floor and crown PBR bands on four elevations plus occupied-room glazing; collapsing those zones would break registration and side-elevation identity."
+        "detail": "32 assembled materials; explicit reviewed ceiling 36: The render-locked civic atlas keeps separate podium, floor and crown PBR bands on four elevations plus occupied-room glazing; collapsing those zones would break registration and side-elevation identity."
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "64532 assembled triangles; budget 12000-180000"
+        "detail": "33384 assembled triangles; budget 12000-180000"
       }
     ]
   }

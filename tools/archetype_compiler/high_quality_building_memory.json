@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-26-wave3-civic-identity-v86",
+  "memory_version": "2026-07-27-archetype-massing-over-parcel-fill-v87",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -51,6 +51,10 @@
     {
       "id": "shape_matrices_are_honest",
       "rule": "Declare only footprint profiles that preserve the building's identity. A family may lower its required preferred-profile count only with an explicit minimumPreferredProfiles value and a non-empty profileRationale, then must prove in-band and oversized streetwall plans."
+    },
+    {
+      "id": "archetype_envelope_not_parcel_fill",
+      "rule": "Manifest native width and depth define a placement and matching envelope, not a requirement to extrude every module across it. Preserve archetype-shaped occupied solids, setbacks, shoulders, voids and roof volumes inside that envelope, and mark deliberately narrower modules allow_inset_footprint."
     },
     {
       "id": "identity_aliases_are_explicit",
@@ -600,6 +604,11 @@
       "symptom": "A stacked theater grows repeated blade signs, marquees or fly towers on ordinary floors",
       "cause": "Fixed civic identity assemblies were authored inside a repeatable middle-floor kit.",
       "correction": "Keep marquee, portal and blade sign in the podium; keep the fly tower in the roof or crown; repeat only the ordinary occupied wall rhythm."
+    },
+    {
+      "symptom": "A civic archetype has detailed textures but still reads as a generic rectangular office block",
+      "cause": "Every vertical module filled the complete nominal parcel envelope, erasing the shallow lobby, deeper hall, stepped shoulders, roof volume and service tower visible in the reference.",
+      "correction": "Treat native dimensions as the matching envelope. Construct role-specific occupied solids inside it, allow inset module extents, and validate the assembled silhouette against front, rear-corner and aerial reference views."
     }
   ]
 }

@@ -26,19 +26,19 @@
       "primary": "#883907"
     },
     "thumbnail_url": "/archetypes/buildings/deco_theater_mainstreet/variant_0.png",
-    "exported_at": "2026-07-27T04:02:41.268Z"
+    "exported_at": "2026-07-27T04:32:53.029Z"
   },
   "dimensions": {
     "width_m": 20.0,
     "depth_m": 30.0,
-    "podium_height_m": 5.2,
-    "floor_height_m": 6.0,
-    "setback_height_m": 6.0,
-    "roof_height_m": 5.0,
+    "podium_height_m": 4.4,
+    "floor_height_m": 4.6,
+    "setback_height_m": 4.2,
+    "roof_height_m": 3.4,
     "default_floors": 3,
     "min_floors": 2,
     "max_floors": 4,
-    "crown_height_m": 6.0
+    "crown_height_m": 2.6
   },
   "facade": {
     "bay_width_m": 3.0,
@@ -449,6 +449,7 @@
       "sign_frieze",
       "cantilever_canopy",
       "vertical_blade_sign",
+      "theater_auditorium_massing",
       "fly_tower"
     ],
     "material_overrides": {
