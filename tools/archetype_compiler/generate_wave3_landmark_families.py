@@ -105,7 +105,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--civic-comparison",
-        choices=("a-dome", "b-portico", "c-base"),
+        choices=("a-dome", "b-portico", "c-base", "d-reference"),
         help="Render one non-destructive civic study without exporting family assets.",
     )
     parser.add_argument(
@@ -149,6 +149,59 @@ def material(name: str, color: tuple[float, float, float, float], roughness: flo
             mat.surface_render_method = "DITHERED"
         except Exception:
             pass
+    return mat
+
+
+def reference_image_material(
+    name: str,
+    path: Path,
+    *,
+    roughness: float = 0.58,
+) -> bpy.types.Material:
+    """Unlit-neutral reference crop used only by bounded comparison studies."""
+    mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Roughness"].default_value = roughness
+    image_node = nodes.new("ShaderNodeTexImage")
+    image_node.image = bpy.data.images.load(str(path), check_existing=True)
+    image_node.extension = "CLIP"
+    links.new(image_node.outputs["Color"], bsdf.inputs["Base Color"])
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+    mat["skin_zone"] = "pediment_reference"
+    return mat
+
+
+def graded_skin_material(
+    source: bpy.types.Material,
+    name: str,
+    *,
+    saturation: float = 1.0,
+    value: float = 1.0,
+) -> bpy.types.Material:
+    """Preserve a PBR skin while tuning its catalogue-reference colour grade."""
+    mat = source.copy()
+    mat.name = name
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    bsdf = next(
+        node for node in nodes
+        if node.bl_idname == "ShaderNodeBsdfPrincipled"
+    )
+    base_color = bsdf.inputs["Base Color"]
+    if base_color.is_linked:
+        source_socket = base_color.links[0].from_socket
+        links.remove(base_color.links[0])
+        grade = nodes.new("ShaderNodeHueSaturation")
+        grade.name = grade.label = "REFERENCE_GRADE"
+        grade.inputs["Saturation"].default_value = saturation
+        grade.inputs["Value"].default_value = value
+        links.new(source_socket, grade.inputs["Color"])
+        links.new(grade.outputs["Color"], base_color)
     return mat
 
 
@@ -1137,16 +1190,137 @@ def civic_fixed(
     m: dict[str, bpy.types.Material],
     comparison_profile: str = "canonical",
 ) -> list[bpy.types.Object]:
+    m = dict(m)
     objs: list[bpy.types.Object] = []
+    dome_study = comparison_profile in {"a-dome", "d-reference"}
+    portico_study = comparison_profile in {"b-portico", "d-reference"}
+    base_study = comparison_profile in {"c-base", "d-reference"}
+    reference_match = comparison_profile == "d-reference"
+    seam_material = m["dark"]
+    flute_material = m["stone"]
+    lantern_glass = m["glass"]
+    portico_recess_material = m["recess"]
+    if reference_match:
+        m["marble"] = graded_skin_material(
+            m["marble"],
+            "MAT_W3_CivicMarbleReferenceGrade",
+            saturation=0.82,
+            value=1.10,
+        )
+        m["stone"] = graded_skin_material(
+            m["stone"],
+            "MAT_W3_CivicReliefReferenceGrade",
+            saturation=0.86,
+            value=1.07,
+        )
+        m["copper"] = graded_skin_material(
+            m["copper"],
+            "MAT_W3_CivicCopperReferenceGrade",
+            saturation=0.78,
+            value=1.24,
+        )
+        seam_material = material(
+            "MAT_W3_CivicCopperSeamStudy",
+            (0.08, 0.20, 0.17, 1),
+            0.34,
+            0.66,
+        )
+        flute_material = material(
+            "MAT_W3_CivicFluteShadowStudy",
+            (0.56, 0.55, 0.52, 1),
+            0.62,
+        )
+        lantern_glass = material(
+            "MAT_W3_CivicLanternGlassStudy",
+            (0.055, 0.095, 0.085, 0.62),
+            0.12,
+            0.05,
+        )
+        portico_recess_material = material(
+            "MAT_W3_CivicPorticoShadowStudy",
+            (0.38, 0.37, 0.345, 1),
+            0.66,
+        )
     objs.append(box("FIXED_CivicMainBody", (70, 34, 17), (0, 2, 8.5), m["marble"], 0.28))
     objs.append(box("FIXED_CivicEntablature", (72, 35, 1.5), (0, 2, 17.25), m["stone"], 0.2))
+    if reference_match:
+        for x in (-24.0, 24.0):
+            objs.append(box(
+                f"FIXED_CivicWingCopperRoof_{x}",
+                (22.5, 29.0, 0.28),
+                (x, 2.0, 18.15),
+                m["copper"],
+                0.10,
+            ))
+        # The photographed rotunda rises from a square central attic, not
+        # directly out of the long wing roof.  This stepped transition is
+        # especially important in oblique views.
+        objs.append(box(
+            "FIXED_CivicCentralAttic",
+            (34.0, 26.0, 3.5),
+            (0, 2.0, 19.25),
+            m["marble"],
+            0.16,
+        ))
+        objs.append(box(
+            "FIXED_CivicCentralAtticCornice",
+            (36.0, 27.0, 0.52),
+            (0, 2.0, 21.10),
+            m["stone"],
+            0.10,
+        ))
     civic_windows(
         objs,
         m,
         -15.15,
-        z0=3.45 if comparison_profile == "c-base" else 2.2,
+        z0=3.45 if base_study else 2.2,
     )
-    if comparison_profile == "c-base":
+    if reference_match:
+        for x in (-29, -23, -17, 17, 23, 29):
+            objs.append(box(
+                f"FIXED_CivicWindowMullion_{x}",
+                (0.13, 0.13, 8.75),
+                (x, -15.48, 8.25),
+                m["bronze"],
+                0.025,
+            ))
+            objs.append(box(
+                f"FIXED_CivicWindowSill_{x}",
+                (4.05, 0.34, 0.24),
+                (x, -15.52, 3.66),
+                flute_material,
+                0.04,
+            ))
+        for x in (-32, -26, -20, -14, 14, 20, 26, 32):
+            objs.append(box(
+                f"FIXED_CivicWingPilaster_{x}",
+                (0.52, 0.30, 10.35),
+                (x, -15.47, 9.20),
+                flute_material,
+                0.035,
+            ))
+            objs.append(box(
+                f"FIXED_CivicWingPilasterCapital_{x}",
+                (0.92, 0.42, 0.58),
+                (x, -15.53, 14.50),
+                flute_material,
+                0.05,
+            ))
+            objs.append(box(
+                f"FIXED_CivicWingPilasterBase_{x}",
+                (0.78, 0.38, 0.34),
+                (x, -15.51, 4.02),
+                flute_material,
+                0.04,
+            ))
+            objs.append(box(
+                f"FIXED_CivicWindowTransom_{x}",
+                (3.10, 0.13, 0.13),
+                (x, -15.48, 8.55),
+                m["bronze"],
+                0.025,
+            ))
+    if base_study:
         # The reference sits on a clearly occupied rusticated basement rather
         # than ending the arched piano-nobile windows at the pavement.
         for level in (0.65, 1.35, 2.05, 2.75):
@@ -1163,6 +1337,14 @@ def civic_fixed(
                 (x, -15.40, 1.45),
                 m["dark"],
             ))
+            if reference_match:
+                for bar_index in (-1, 0, 1):
+                    objs.append(box(
+                        f"FIXED_CivicBasementGrille_{x}_{bar_index}",
+                        (0.08, 0.12, 1.20),
+                        (x + bar_index * 0.62, -15.54, 1.45),
+                        m["bronze"],
+                    ))
     # Rear and side windows keep the landmark inhabited in orbit.
     for x in (-28, -20, -12, 12, 20, 28):
         objs.append(box(f"FIXED_CivicRearWindow_{x}", (3.0, 0.18, 7.5), (x, 19.05, 9), m["glass"]))
@@ -1170,12 +1352,12 @@ def civic_fixed(
         for y in (-8, 0, 8, 15):
             objs.append(box(f"FIXED_CivicSideWindow_{side}_{y}", (0.18, 3.0, 7.2), (side * 35.1, y, 9), m["glass"]))
     # Ceremonial stair.
-    if comparison_profile == "c-base":
+    if base_study:
         step_count = 10
         for i in range(step_count):
             rise = 0.27 * (i + 1)
             depth = 0.62
-            y = -23.0 + i * depth
+            y = (-26.4 if reference_match else -23.0) + i * depth
             objs.append(box(
                 f"FIXED_CivicStep{i}",
                 (23.5, depth + 0.04, 0.27),
@@ -1191,9 +1373,25 @@ def civic_fixed(
                     m["marble"],
                     0.035,
                 ))
+        if reference_match:
+            objs.append(box(
+                "FIXED_CivicPorticoLanding",
+                (25.0, 7.0, 0.40),
+                (0, -17.75, 2.50),
+                m["marble"],
+                0.08,
+            ))
         for side in (-1, 1):
-            rail_start = (side * 11.5, -22.8, 0.85)
-            rail_end = (side * 11.5, -17.5, 3.55)
+            rail_start = (
+                side * 11.5,
+                -26.2 if reference_match else -22.8,
+                0.85,
+            )
+            rail_end = (
+                side * 11.5,
+                -20.9 if reference_match else -17.5,
+                3.55,
+            )
             objs.append(beam(
                 f"FIXED_CivicStairRail_{side}",
                 rail_start,
@@ -1201,6 +1399,15 @@ def civic_fixed(
                 0.075,
                 m["dark"],
             ))
+        if reference_match:
+            for x in (-4.2, 4.2):
+                objs.append(beam(
+                    f"FIXED_CivicStairCentreRail_{x}",
+                    (x, -26.2, 0.72),
+                    (x, -20.9, 3.42),
+                    0.065,
+                    m["dark"],
+                ))
     else:
         for i in range(7):
             objs.append(box(
@@ -1208,28 +1415,41 @@ def civic_fixed(
                 (0, -20.0 - i * 0.4, 0.18 + i * 0.36), m["marble"],
             ))
     # Deep six-column portico with capitals and bronze doors.
-    portico_recess_width = 28.0 if comparison_profile == "b-portico" else 30.0
+    portico_recess_width = 28.0 if portico_study else 30.0
     objs.append(box(
         "FIXED_CivicPorticoRecess",
         (portico_recess_width, 0.5, 13.4),
         (0, -16.35, 9.7),
-        m["recess"],
+        portico_recess_material,
     ))
+    portico_column_y = -21.0 if reference_match else -19.0
     for x in (-12.5, -7.5, -2.5, 2.5, 7.5, 12.5):
-        shaft_radius = 0.73 if comparison_profile == "b-portico" else 0.84
+        shaft_radius = 0.73 if portico_study else 0.84
         objs.append(cylinder(
             f"FIXED_CivicColumn_{x}",
             shaft_radius,
             14.2,
-            (x, -19.0, 9.6),
+            (x, portico_column_y, 9.6),
             m["marble"],
             32,
         ))
+        if reference_match:
+            for flute_index in range(12):
+                angle = 2 * math.pi * flute_index / 12
+                fx = x + 0.735 * math.cos(angle)
+                fy = portico_column_y + 0.735 * math.sin(angle)
+                objs.append(beam(
+                    f"FIXED_CivicColumnFlute_{x}_{flute_index:02d}",
+                    (fx, fy, 3.05),
+                    (fx, fy, 16.25),
+                    0.025,
+                    flute_material,
+                ))
         objs.append(cylinder(
             f"FIXED_CivicBase_{x}",
             0.96,
             0.55,
-            (x, -19.0, 2.75),
+            (x, portico_column_y, 2.75),
             m["marble"],
             32,
         ))
@@ -1237,15 +1457,36 @@ def civic_fixed(
             f"FIXED_CivicCapital_{x}",
             1.12,
             0.62,
-            (x, -19.0, 16.7),
+            (x, portico_column_y, 16.7),
             m["marble"],
             32,
         ))
-        if comparison_profile == "b-portico":
+        if portico_study:
+            if reference_match:
+                objs.append(cylinder(
+                    f"FIXED_CivicCapitalLeafCollar_{x}",
+                    0.92,
+                    0.34,
+                    (x, portico_column_y, 16.34),
+                    m["marble"],
+                    24,
+                ))
+                for ornament_index, (dx, dy) in enumerate(
+                    ((-0.60, -0.48), (-0.60, 0.48), (0.60, -0.48), (0.60, 0.48))
+                ):
+                    objs.append(sphere(
+                        f"FIXED_CivicCapitalVolute_{x}_{ornament_index}",
+                        0.38,
+                        (x + dx, portico_column_y + dy, 16.78),
+                        m["marble"],
+                        (1.15, 0.72, 0.78),
+                        16,
+                        8,
+                    ))
             objs.append(box(
                 f"FIXED_CivicCapitalAbacus_{x}",
                 (2.05, 2.05, 0.24),
-                (x, -19.0, 17.08),
+                (x, portico_column_y, 17.08),
                 m["marble"],
                 0.05,
             ))
@@ -1253,25 +1494,37 @@ def civic_fixed(
                 f"FIXED_CivicBasePlinth_{x}",
                 1.08,
                 0.22,
-                (x, -19.0, 2.43),
+                (x, portico_column_y, 2.43),
                 m["marble"],
                 32,
             ))
-    portico_beam_depth = 4.2 if comparison_profile == "b-portico" else 6.0
+    portico_beam_depth = 6.4 if reference_match else (4.2 if portico_study else 6.0)
+    portico_beam_y = -18.2 if reference_match else (-17.1 if portico_study else -16.2)
     objs.append(box(
         "FIXED_CivicPorticoBeam",
         (31.5, portico_beam_depth, 1.2),
-        (0, -17.1 if comparison_profile == "b-portico" else -16.2, 17.4),
+        (0, portico_beam_y, 17.4),
         m["stone"],
         0.16,
     ))
+    if reference_match:
+        for dentil_index, x in enumerate(
+            -14.5 + index * 1.0 for index in range(30)
+        ):
+            objs.append(box(
+                f"FIXED_CivicPorticoDentil_{dentil_index:02d}",
+                (0.48, 0.34, 0.30),
+                (x, -21.42, 17.72),
+                flute_material,
+                0.03,
+            ))
     # A solid projecting pediment carries the goal-post silhouette; edge
     # profiles and shallow relief remain physical overlays.
-    pediment_height = 4.7 if comparison_profile == "b-portico" else 6.8
+    pediment_height = 4.7 if portico_study else 6.8
     pediment_apex = 18.0 + pediment_height
     pediment_material = m["stone"]
     pediment_relief_material = m["marble"]
-    if comparison_profile == "b-portico":
+    if portico_study:
         pediment_material = material(
             "MAT_W3_CivicPedimentStudyStone",
             (0.84, 0.83, 0.79, 1),
@@ -1286,49 +1539,109 @@ def civic_fixed(
         "FIXED_CivicPedimentTympanum",
         32.4,
         pediment_height,
-        4.4 if comparison_profile != "b-portico" else 3.4,
-        (0, -17.65 if comparison_profile == "b-portico" else -17.2, 18.0),
+        6.2 if reference_match else (3.4 if portico_study else 4.4),
+        (0, -18.25 if reference_match else (-17.65 if portico_study else -17.2), 18.0),
         pediment_material,
     ))
+    pediment_front_y = -21.42 if reference_match else -18.3
     objs.append(beam(
         "FIXED_CivicPedimentLeft",
-        (-16.2, -18.3, 18.0),
-        (0, -18.3, pediment_apex),
-        0.52 if comparison_profile == "b-portico" else 0.7,
+        (-16.2, pediment_front_y, 18.0),
+        (0, pediment_front_y, pediment_apex),
+        0.52 if portico_study else 0.7,
         m["marble"],
     ))
     objs.append(beam(
         "FIXED_CivicPedimentRight",
-        (0, -18.3, pediment_apex),
-        (16.2, -18.3, 18.0),
-        0.52 if comparison_profile == "b-portico" else 0.7,
+        (0, pediment_front_y, pediment_apex),
+        (16.2, pediment_front_y, 18.0),
+        0.52 if portico_study else 0.7,
         m["marble"],
     ))
-    objs.append(box("FIXED_CivicPedimentBase", (33, 1.5, 1.1), (0, -18.3, 18.1), m["marble"]))
-    if comparison_profile == "b-portico":
-        # A restrained physical bas-relief keeps the tympanum inhabited
-        # without mapping a second photographed pediment onto the geometry.
-        for index, x in enumerate(range(-10, 11, 2)):
-            figure_height = 0.70 + 1.15 * (1.0 - abs(x) / 12.0)
-            body_z = 18.65 + figure_height / 2
-            objs.append(box(
-                f"FIXED_CivicPedimentReliefBody_{index:02d}",
-                (0.42, 0.16, figure_height),
-                (x, -19.42, body_z),
-                pediment_relief_material,
-                0.08,
+    objs.append(box(
+        "FIXED_CivicPedimentBase",
+        (33, 1.5, 1.1),
+        (0, pediment_front_y, 18.1),
+        m["marble"],
+    ))
+    if portico_study:
+        if reference_match and m.get("pediment_reference"):
+            objs.append(triangular_prism(
+                "FIXED_CivicPedimentReferenceRelief",
+                26.4,
+                4.0,
+                0.10,
+                (0, -22.22, 18.35),
+                m["pediment_reference"],
             ))
-            objs.append(sphere(
-                f"FIXED_CivicPedimentReliefHead_{index:02d}",
-                0.20,
-                (x, -19.52, 18.72 + figure_height),
+        else:
+            # The isolated portico study uses a schematic relief; the combined
+            # reference study replaces it with a crop from the goalpost sheet.
+            for index, x in enumerate(range(-10, 11, 2)):
+                figure_height = 0.70 + 1.15 * (1.0 - abs(x) / 12.0)
+                body_z = 18.65 + figure_height / 2
+                objs.append(box(
+                    f"FIXED_CivicPedimentReliefBody_{index:02d}",
+                    (0.42, 0.16, figure_height),
+                    (x, -19.42, body_z),
+                    pediment_relief_material,
+                    0.08,
+                ))
+                objs.append(sphere(
+                    f"FIXED_CivicPedimentReliefHead_{index:02d}",
+                    0.20,
+                    (x, -19.52, 18.72 + figure_height),
+                    pediment_relief_material,
+                    (1.0, 0.48, 1.0),
+                    16,
+                    8,
+                ))
+        if reference_match:
+            objs.append(beam(
+                "FIXED_CivicPedimentInnerLeft",
+                (-13.2, -22.18, 18.45),
+                (0, -22.18, 22.05),
+                0.11,
                 pediment_relief_material,
-                (1.0, 0.48, 1.0),
-                16,
-                8,
+            ))
+            objs.append(beam(
+                "FIXED_CivicPedimentInnerRight",
+                (0, -22.18, 22.05),
+                (13.2, -22.18, 18.45),
+                0.11,
+                pediment_relief_material,
+            ))
+            objs.append(beam(
+                "FIXED_CivicPedimentInnerBase",
+                (-13.2, -22.18, 18.45),
+                (13.2, -22.18, 18.45),
+                0.11,
+                pediment_relief_material,
             ))
     for x in (-5, 0, 5):
-        objs.append(box(f"FIXED_CivicDoor_{x}", (3.0, 0.3, 5.7), (x, -17.32, 5.5), m["bronze"]))
+        door_width = 3.6 if reference_match and x == 0 else (2.4 if reference_match else 3.0)
+        objs.append(box(
+            f"FIXED_CivicDoor_{x}",
+            (door_width, 0.3, 5.7),
+            (x, -17.32, 5.5),
+            m["bronze"],
+        ))
+        if reference_match:
+            for side in (-1, 1):
+                objs.append(box(
+                    f"FIXED_CivicDoorJamb_{x}_{side}",
+                    (0.26, 0.32, 6.1),
+                    (x + side * (door_width / 2 + 0.16), -17.53, 5.7),
+                    flute_material,
+                    0.03,
+                ))
+            objs.append(box(
+                f"FIXED_CivicDoorHeader_{x}",
+                (door_width + 0.58, 0.32, 0.30),
+                (x, -17.53, 8.72),
+                flute_material,
+                0.03,
+            ))
     # Smaller centred drum and dome match the catalogue goal post rather than
     # overwhelming the wings. Windows are tangential to the circular drum.
     objs.append(cylinder(
@@ -1338,16 +1651,46 @@ def civic_fixed(
         a = 2 * math.pi * i / 16
         window = box(
             f"FIXED_CivicDrumWindow{i:02d}",
-            (1.55, 0.22, 3.8),
-            (12.0 * math.cos(a), 2.0 + 11.05 * math.sin(a), 21.6),
+            (2.0 if reference_match else 1.55, 0.22, 4.8 if reference_match else 3.8),
+            (12.0 * math.cos(a), 2.0 + 11.05 * math.sin(a), 21.65),
             m["glass"],
         )
         window.rotation_euler.z = a - math.pi / 2
         objs.append(window)
-        if comparison_profile == "a-dome":
+        if reference_match:
+            tangent = Vector((-math.sin(a), math.cos(a), 0))
+            window_centre = Vector((
+                12.0 * math.cos(a),
+                2.0 + 11.05 * math.sin(a),
+                0,
+            ))
+            for side in (-1, 1):
+                jamb_xy = window_centre + tangent * (side * 1.08)
+                objs.append(box(
+                    f"FIXED_CivicDrumWindowJamb_{i:02d}_{side}",
+                    (0.20, 0.20, 5.05),
+                    (jamb_xy.x, jamb_xy.y, 21.65),
+                    flute_material,
+                    0.025,
+                ))
+            for suffix, z in (("Sill", 19.18), ("Header", 24.12)):
+                frame = box(
+                    f"FIXED_CivicDrumWindow{suffix}_{i:02d}",
+                    (2.35, 0.20, 0.22),
+                    (
+                        window_centre.x,
+                        window_centre.y,
+                        z,
+                    ),
+                    flute_material,
+                    0.025,
+                )
+                frame.rotation_euler.z = a - math.pi / 2
+                objs.append(frame)
+        if dome_study:
             pilaster = cylinder(
                 f"FIXED_CivicDrumPilaster{i:02d}",
-                0.20,
+                0.28 if reference_match else 0.20,
                 5.7,
                 (
                     11.75 * math.cos(a + math.pi / 16),
@@ -1358,9 +1701,40 @@ def civic_fixed(
                 16,
             )
             objs.append(pilaster)
-    objs.extend(ellipse_ring("FIXED_CivicDrumBase", 11.9, 10.95, 18.25, 0.22, m["stone"], 96))
-    objs.extend(ellipse_ring("FIXED_CivicDrumCornice", 12.0, 11.05, 24.85, 0.28, m["stone"], 96))
-    dome_height_scale = 0.92 if comparison_profile == "a-dome" else 0.68
+            if reference_match:
+                pilaster_x = 11.75 * math.cos(a + math.pi / 16)
+                pilaster_y = 2.0 + 10.8 * math.sin(a + math.pi / 16)
+                for suffix, z, radius in (
+                    ("Base", 18.78, 0.36),
+                    ("Capital", 24.52, 0.39),
+                ):
+                    objs.append(cylinder(
+                        f"FIXED_CivicDrumPilaster{suffix}_{i:02d}",
+                        radius,
+                        0.24,
+                        (pilaster_x, pilaster_y, z),
+                        flute_material,
+                        16,
+                    ))
+    objs.extend(ellipse_ring(
+        "FIXED_CivicDrumBase",
+        11.9,
+        10.95,
+        18.25,
+        0.13 if reference_match else 0.22,
+        m["stone"],
+        96,
+    ))
+    objs.extend(ellipse_ring(
+        "FIXED_CivicDrumCornice",
+        12.0,
+        11.05,
+        24.85,
+        0.15 if reference_match else 0.28,
+        m["stone"],
+        96,
+    ))
+    dome_height_scale = 0.92 if dome_study else 0.68
     dome = dome_mesh(
         "FIXED_CivicCopperDome",
         12.2,
@@ -1372,7 +1746,7 @@ def civic_fixed(
     )
     dome.location.y = 2.0
     objs.append(dome)
-    dome_rib_count = 32 if comparison_profile == "a-dome" else 24
+    dome_rib_count = 32 if dome_study else 24
     for i in range(dome_rib_count):
         a = 2 * math.pi * i / dome_rib_count
         points = []
@@ -1385,14 +1759,20 @@ def civic_fixed(
                 25.0 + 12.32 * dome_height_scale * math.sin(phi),
             ))
         for j in range(len(points) - 1):
-            objs.append(beam(f"FIXED_CivicDomeRib{i:02d}_{j:02d}", points[j], points[j + 1], 0.10, m["dark"]))
-    if comparison_profile == "a-dome":
+            objs.append(beam(
+                f"FIXED_CivicDomeRib{i:02d}_{j:02d}",
+                points[j],
+                points[j + 1],
+                0.06 if reference_match else 0.10,
+                seam_material,
+            ))
+    if dome_study:
         objs.extend(ellipse_ring(
             "FIXED_CivicDomeSpringRing",
             12.35,
             12.35,
             25.25,
-            0.20,
+            0.11 if reference_match else 0.20,
             m["stone"],
             128,
         ))
@@ -1403,7 +1783,7 @@ def civic_fixed(
         2.45,
         3.8,
         (0, 2.0, 35.55 + lantern_shift),
-        m["glass"],
+        lantern_glass,
         48,
         (1.0, 0.92),
     ))
@@ -1431,7 +1811,7 @@ def civic_fixed(
             f"FIXED_CivicLanternPost{i}",
             (2.45 * math.cos(a), 2 + 2.25 * math.sin(a), 33.8 + lantern_shift),
             (2.45 * math.cos(a), 2 + 2.25 * math.sin(a), 37.5 + lantern_shift),
-            0.16,
+            0.19 if reference_match else 0.16,
             m["marble"],
         ))
     objs.append(sphere(
@@ -1679,6 +2059,7 @@ def render_views(
     depth: float,
     height: float,
     selected_roles: set[str] | None = None,
+    civic_reference_oblique: bool = False,
 ) -> list[str]:
     setup_render()
     distance = max(width, depth) * 1.35
@@ -1715,7 +2096,11 @@ def render_views(
             58,
         )
         views["front_corner_oblique"] = (
-            (width * 0.50, -distance * 1.45, height * 0.48),
+            (
+                width * (0.78 if civic_reference_oblique else 0.50),
+                -distance * (1.25 if civic_reference_oblique else 1.45),
+                height * 0.48,
+            ),
             (0, 0, height * 0.34),
             56,
         )
@@ -1774,6 +2159,14 @@ def render_civic_comparison(
     family = "civic-monumental-neoclassical"
     config = FAMILIES[family]
     mats = palette(output_root / family)
+    pediment_reference = (
+        output_root / family / "comparisons" / "pediment-reference.jpg"
+    )
+    if profile == "d-reference" and pediment_reference.is_file():
+        mats["pediment_reference"] = reference_image_material(
+            "MAT_W3_CivicPedimentReferenceStudy",
+            pediment_reference,
+        )
     objects = civic_fixed(mats, profile)
     normalize_world_bounds(objects, config["dimensions"])
     shift_to_ground(objects)
@@ -1784,6 +2177,7 @@ def render_civic_comparison(
         family,
         *config["dimensions"],
         selected_roles={"preview", "front_corner_oblique", "aerial"},
+        civic_reference_oblique=True,
     )
     print(
         f"[wave3] civic comparison {profile}: "
