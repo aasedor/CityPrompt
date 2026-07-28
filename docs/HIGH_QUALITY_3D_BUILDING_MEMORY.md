@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-landmark-cavity-and-roof-system-v93`.
+Current executable memory: `2026-07-28-multiview-roof-material-hierarchy-v95`.
 
 ## The quality target
 
@@ -855,6 +855,13 @@ The polychrome collegiate family added four rules for resizable hero facades:
   occupied landing. The shell edge, portal cheek, soffit and handrails must
   frame the circulation; a bright solid wedge placed in front of glazing will
   always read as a temporary ramp or another window.
+- A free-form hall is one continuous envelope in both plan and section.
+  Reconstruct its front, rear, sides and roof together from the compatible
+  oblique and aerial evidence; hero-facing ribbons that stop at the corners
+  produce a stage set. Exposed shell tops, edge fascias and acoustic
+  undersides are separate semantic surfaces with real thickness and deliberate
+  materials. In particular, do not let a white exterior shader or a reversed,
+  unlit face turn the entrance canopy into a black void.
 
 ### Monumental glazing + engineered hall roof lessons
 
@@ -873,6 +880,11 @@ The polychrome collegiate family added four rules for resizable hero facades:
   but not one generic shell. Author every visible aisle or vault, ridge,
   valley, clerestory, rib or truss family, purlin run and end fan. The aerial
   and rear-corner views are the acceptance views for this work.
+- Roof material hierarchy is construction evidence. If the aerial references
+  show opaque zinc or tile weathering fields around narrow glazed lanterns,
+  do not make every slope transparent: model the opaque fields, flashing or
+  terracotta bands and clerestory glazing separately, then verify ridge count,
+  opacity and valley continuity from high oblique and roof-plan views.
 - Size fallback-kit arches against their module envelope. A semicircular head
   needs at least half its opening width above the spring line, so its width
   cannot exceed twice the usable module height. If it does, use a segmental

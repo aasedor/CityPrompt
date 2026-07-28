@@ -6,7 +6,10 @@
   "sources": {
     "archetype_goalpost": "textures/source/archetype-goalpost.png",
     "supporting_material_atlas": "textures/source/historic-grand-station_material_source.png",
-    "goalpost_prompt": "textures/source/goalpost-source.json"
+    "goalpost_prompt": "textures/source/goalpost-source.json",
+    "angle_reference": "textures/source/angle-reference-v2.png",
+    "angle_reference_prompt": "textures/source/angle-reference-source-v2.json",
+    "material_source_prompt": "textures/source/material-source-v2.json"
   },
   "registration": "archetype-specific material zones and semantic surfaces locked to the generated catalogue goalpost; all runtime channels share the same source pixels and shape-aware surface UVs",
   "reference_registration": {

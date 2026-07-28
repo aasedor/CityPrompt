@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-27-landmark-cavity-and-roof-system-v93",
+  "memory_version": "2026-07-28-multiview-roof-material-hierarchy-v95",
   "archetype_id": "historic_grand_station",
   "family": "historic-grand-station",
   "status": "pass",
@@ -99,12 +99,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "9 assembled materials; review above 20"
+        "detail": "11 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "122170 assembled triangles; budget 12000-180000"
+        "detail": "160268 assembled triangles; budget 12000-180000"
       }
     ]
   }

@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-28T07:06:01.883755+00:00",
+  "created_at": "2026-07-28T15:28:02.368606+00:00",
   "family": "historic-grand-station",
   "archetype_id": "historic_grand_station",
   "archetype_label": "Historic Grand Station \u2014 Beaux-Arts Terminal",
@@ -345,7 +345,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 213508
+      "size_bytes": 6636132
     },
     {
       "role": "floor",
@@ -371,7 +371,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 893876
+      "size_bytes": 7317412
     },
     {
       "role": "floor",
@@ -397,7 +397,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 765968
+      "size_bytes": 7189332
     },
     {
       "role": "floor",
@@ -423,7 +423,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 1021964
+      "size_bytes": 7445672
     },
     {
       "role": "crown",
@@ -449,7 +449,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 156100
+      "size_bytes": 7361788
     },
     {
       "role": "roof",
@@ -475,7 +475,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 567752
+      "size_bytes": 3768100
     }
   ],
   "assembled": {
@@ -484,7 +484,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 58.0,
-    "triangle_count": 122170,
+    "triangle_count": 160268,
     "stack": [
       {
         "role": "assembled",
@@ -533,7 +533,7 @@
     "historic-grand-station_context.png",
     "elevation.jpg"
   ],
-  "architectural_identity": "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
+  "architectural_identity": "A monumental pale-granite Beaux-Arts terminal with a five-bay ceremonial entrance of deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
   "material_zones": "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
   "glass_profile": "beaux_arts_bronze_and_shed_glass",
   "source_provenance": {
@@ -543,6 +543,10 @@
     "goalpost": "/archetypes/buildings/historic_grand_station/variant_0.png",
     "goalpost_local_source": "textures/source/archetype-goalpost.png",
     "goalpost_prompt": "textures/source/goalpost-source.json",
+    "angle_reference": "textures/source/angle-reference-v2.png",
+    "angle_reference_prompt": "textures/source/angle-reference-source-v2.json",
+    "material_source": "textures/source/historic-grand-station_material_source.png",
+    "material_source_prompt": "textures/source/material-source-v2.json",
     "elevation_source": "/families/historic-grand-station/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"

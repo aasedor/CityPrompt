@@ -10,7 +10,10 @@
   "manifest": "barcelona-mercat_manifest.json",
   "errors": [],
   "warnings": [
-    "no setback module (optional)"
+    "no setback module (optional)",
+    "barcelona-mercat_crown_crown.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "barcelona-mercat_assembled.glb: 93642 triangles (heavy; consider simplification)",
+    "barcelona-mercat_assembled.glb: 22.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -30,7 +33,7 @@
         "MAT_W3X_MercatCeramic",
         "MAT_W3X_MercatIron"
       ],
-      "size_bytes": 315356
+      "size_bytes": 8143944
     },
     {
       "file": "barcelona-mercat_floor_typical_a.glb",
@@ -49,7 +52,7 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 255652
+      "size_bytes": 7777792
     },
     {
       "file": "barcelona-mercat_floor_typical_b.glb",
@@ -68,7 +71,7 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 254172
+      "size_bytes": 7776308
     },
     {
       "file": "barcelona-mercat_floor_typical_c.glb",
@@ -87,7 +90,7 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 258612
+      "size_bytes": 7780760
     },
     {
       "file": "barcelona-mercat_crown_crown.glb",
@@ -106,7 +109,7 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatStainedGlass"
       ],
-      "size_bytes": 543120
+      "size_bytes": 8552472
     },
     {
       "file": "barcelona-mercat_roof.glb",
@@ -125,12 +128,12 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 259848
+      "size_bytes": 7782012
     },
     {
       "file": "barcelona-mercat_assembled.glb",
       "status": "ok",
-      "triangles": 51890,
+      "triangles": 93642,
       "extent_m": {
         "width_x": 65.0,
         "height_y": 24.0,
@@ -138,14 +141,21 @@
       },
       "bottom_y": -0.0,
       "materials": [
+        "MAT_W3X_Bronze",
         "MAT_W3X_CreamStone",
         "MAT_W3X_MercatCeramic",
         "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatOccupiedInterior",
+        "MAT_W3X_MercatProduceGold",
+        "MAT_W3X_MercatProduceGreen",
+        "MAT_W3X_MercatProduceRed",
         "MAT_W3X_MercatRoofGlass",
         "MAT_W3X_MercatStainedGlass",
+        "MAT_W3X_MercatTerracottaRoof",
+        "MAT_W3X_MercatWeatheredZinc",
         "MAT_W3X_WarmInterior"
       ],
-      "size_bytes": 4430680,
+      "size_bytes": 23733460,
       "role": "assembled"
     }
   ]

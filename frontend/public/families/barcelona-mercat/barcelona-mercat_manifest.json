@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-28T07:10:06.479341+00:00",
+  "created_at": "2026-07-28T15:25:20.925541+00:00",
   "family": "barcelona-mercat",
   "archetype_id": "barcelona_mercat",
   "archetype_label": "Barcelona Mercat \u2014 Modernista Market",
@@ -345,7 +345,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 315356
+      "size_bytes": 8143944
     },
     {
       "role": "floor",
@@ -371,7 +371,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 255652
+      "size_bytes": 7777792
     },
     {
       "role": "floor",
@@ -397,7 +397,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 254172
+      "size_bytes": 7776308
     },
     {
       "role": "floor",
@@ -423,7 +423,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 258612
+      "size_bytes": 7780760
     },
     {
       "role": "crown",
@@ -449,7 +449,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 543120
+      "size_bytes": 8552472
     },
     {
       "role": "roof",
@@ -475,7 +475,7 @@
         "stained_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 259848
+      "size_bytes": 7782012
     }
   ],
   "assembled": {
@@ -484,7 +484,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 24.0,
-    "triangle_count": 43154,
+    "triangle_count": 78858,
     "stack": [
       {
         "role": "assembled",
@@ -533,7 +533,7 @@
     "barcelona-mercat_context.png",
     "elevation.jpg"
   ],
-  "architectural_identity": "A five-aisled Barcelona market hall with a real Modernista iron entrance arch, polychrome stained glass, tiled perimeter arcade, open produce hall and ornate ridge cresting.",
+  "architectural_identity": "A five-aisled Barcelona market hall with a real Modernista iron entrance pediment and arch, polychrome stained glass, tiled perimeter arcade, open produce hall and ornate ridge cresting.",
   "material_zones": "dark green-black wrought iron; clear and polychrome glass; terracotta-and-cream glazed ceramic tile; warm stone plinth",
   "glass_profile": "polychrome_heritage_market",
   "source_provenance": {
@@ -543,6 +543,10 @@
     "goalpost": "/archetypes/buildings/barcelona-mercat/variant_0.png",
     "goalpost_local_source": "textures/source/archetype-goalpost.png",
     "goalpost_prompt": "textures/source/goalpost-source.json",
+    "angle_reference": "textures/source/angle-reference-v2.png",
+    "angle_reference_prompt": "textures/source/angle-reference-source-v2.json",
+    "material_source": "textures/source/barcelona-mercat_material_source.png",
+    "material_source_prompt": "textures/source/material-source-v2.json",
     "elevation_source": "/families/barcelona-mercat/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"

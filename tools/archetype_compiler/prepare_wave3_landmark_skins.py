@@ -600,7 +600,10 @@ def _draw_station_source(path: Path) -> tuple[str, ...]:
     return ("granite", "bronze_glass", "iron_glass", "relief")
 
 
-def prepare_expansion_family(family_dir: Path) -> None:
+def prepare_expansion_family(
+    family_dir: Path,
+    material_source_override: Path | None = None,
+) -> None:
     definitions = {
         "concert-hall-modern": {
             "archetype_id": "concert_hall_modern",
@@ -639,7 +642,41 @@ def prepare_expansion_family(family_dir: Path) -> None:
     definition = definitions[family_dir.name]
     source_dir = family_dir / "textures" / "source"
     material_source_path = source_dir / f"{family_dir.name}_material_source.png"
-    zone_order = definition["draw"](material_source_path)
+    if material_source_override is None:
+        zone_order = definition["draw"](material_source_path)
+    else:
+        if not material_source_override.is_file():
+            raise FileNotFoundError(material_source_override)
+        zone_order = tuple(
+            {
+                "concert-hall-modern": (
+                    "aluminum",
+                    "concert_glass",
+                    "timber",
+                    "granite",
+                ),
+                "barcelona-mercat": (
+                    "iron",
+                    "stained_glass",
+                    "ceramic",
+                    "roof_glass",
+                ),
+                "historic-grand-station": (
+                    "granite",
+                    "bronze_glass",
+                    "iron_glass",
+                    "relief",
+                ),
+            }[family_dir.name]
+        )
+        with Image.open(material_source_override) as source:
+            canonical = ImageOps.fit(
+                source.convert("RGB"),
+                (2048, 2048),
+                method=RESAMPLE,
+            )
+            material_source_path.parent.mkdir(parents=True, exist_ok=True)
+            canonical.save(material_source_path, optimize=True)
     with Image.open(material_source_path) as material_source:
         zones = {
             zone: save_zone(
@@ -660,6 +697,15 @@ def prepare_expansion_family(family_dir: Path) -> None:
     prompt_source_path = source_dir / "goalpost-source.json"
     if prompt_source_path.is_file():
         sources["goalpost_prompt"] = prompt_source_path.relative_to(family_dir).as_posix()
+    angle_reference_path = source_dir / "angle-reference-v2.png"
+    if angle_reference_path.is_file():
+        sources["angle_reference"] = angle_reference_path.relative_to(family_dir).as_posix()
+    angle_prompt_path = source_dir / "angle-reference-source-v2.json"
+    if angle_prompt_path.is_file():
+        sources["angle_reference_prompt"] = angle_prompt_path.relative_to(family_dir).as_posix()
+    material_prompt_path = source_dir / "material-source-v2.json"
+    if material_prompt_path.is_file():
+        sources["material_source_prompt"] = material_prompt_path.relative_to(family_dir).as_posix()
     payload = {
         "schema": "wave3-landmark-skin@1",
         "family": family_dir.name,
@@ -698,6 +744,11 @@ def prepare_expansion_family(family_dir: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--family-dir", type=Path, required=True)
+    parser.add_argument(
+        "--material-source",
+        type=Path,
+        help="ImageGen material board to normalize and use instead of the diagrammatic fallback.",
+    )
     return parser.parse_args()
 
 
@@ -713,7 +764,10 @@ def main() -> int:
         "barcelona-mercat",
         "historic-grand-station",
     }:
-        prepare_expansion_family(family_dir)
+        prepare_expansion_family(
+            family_dir,
+            args.material_source.resolve() if args.material_source else None,
+        )
     else:
         raise ValueError(f"unsupported landmark family: {family_dir.name}")
     print(f"[wave3-skins] prepared {family_dir.name}")

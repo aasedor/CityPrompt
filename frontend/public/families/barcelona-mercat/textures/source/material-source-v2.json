@@ -1,0 +1,16 @@
+{
+  "schema": "archetype-material-source@1",
+  "family": "barcelona-mercat",
+  "generator": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-28",
+  "registration": [
+    "iron",
+    "stained_glass",
+    "ceramic",
+    "roof_glass"
+  ],
+  "prompt_summary": "Four equal shadow-neutral, reference-derived material strips: aged green-black cast iron, dense Modernista stained glass, glazed floral ceramic mosaic and smoky occupied roof glass.",
+  "output": "barcelona-mercat_material_source.png",
+  "original_generated_path": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_4psVpVcNl0fBgWJsaySUX2V8.png"
+}

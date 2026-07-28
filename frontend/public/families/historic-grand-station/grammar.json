@@ -23,7 +23,7 @@
     "max_floors": 5
   },
   "architectural_signature": {
-    "identity": "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
+    "identity": "A monumental pale-granite Beaux-Arts terminal with a five-bay ceremonial entrance of deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
     "material_zones": "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
     "glass_profile": "beaux_arts_bronze_and_shed_glass",
     "kits": [

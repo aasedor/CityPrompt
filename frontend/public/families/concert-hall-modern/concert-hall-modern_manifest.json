@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-28T06:39:21.454242+00:00",
+  "created_at": "2026-07-28T15:24:13.213963+00:00",
   "family": "concert-hall-modern",
   "archetype_id": "concert_hall_modern",
   "archetype_label": "Concert Hall (Modern) \u2014 Sculptural Organic",
@@ -345,7 +345,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 197472
+      "size_bytes": 3204292
     },
     {
       "role": "floor",
@@ -371,7 +371,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 197504
+      "size_bytes": 3204324
     },
     {
       "role": "floor",
@@ -397,7 +397,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 197564
+      "size_bytes": 3204384
     },
     {
       "role": "floor",
@@ -423,7 +423,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 197564
+      "size_bytes": 3204384
     },
     {
       "role": "crown",
@@ -449,7 +449,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 172916
+      "size_bytes": 1629080
     },
     {
       "role": "roof",
@@ -475,7 +475,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 181372
+      "size_bytes": 1637536
     }
   ],
   "assembled": {
@@ -484,7 +484,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 48.0,
-    "triangle_count": 21160,
+    "triangle_count": 37316,
     "stack": [
       {
         "role": "assembled",
@@ -543,6 +543,10 @@
     "goalpost": "/archetypes/buildings/concert_hall_modern/variant_0.png",
     "goalpost_local_source": "textures/source/archetype-goalpost.png",
     "goalpost_prompt": "textures/source/goalpost-source.json",
+    "angle_reference": "textures/source/angle-reference-v2.png",
+    "angle_reference_prompt": "textures/source/angle-reference-source-v2.json",
+    "material_source": "textures/source/concert-hall-modern_material_source.png",
+    "material_source_prompt": "textures/source/material-source-v2.json",
     "elevation_source": "/families/concert-hall-modern/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"

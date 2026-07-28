@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-landmark-cavity-and-roof-system-v93",
+  "memory_version": "2026-07-28-multiview-roof-material-hierarchy-v95",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -11,6 +11,10 @@
     {
       "id": "geometry_carries_identity",
       "rule": "Silhouette-changing and shadow-casting features are geometry. A facade photograph must not be asked to hide generic massing."
+    },
+    {
+      "id": "freeform_envelopes_are_continuous_and_sectional",
+      "rule": "A sculptural shell is one continuous plan-and-section envelope across front, sides and rear. Its exposed top, fascia and underside or soffit are separate semantic surfaces with deliberate thickness and materials; disconnected facade ribbons or one material on every face are prohibited."
     },
     {
       "id": "fixed_ends_repeat_middle",
@@ -663,6 +667,16 @@
       "symptom": "A market or station looks convincing from the front but its aerial view collapses into one generic roof shell",
       "cause": "The generator modeled only the outer roof envelope and omitted the repeated aisles, ridges, valleys, clerestories, ribs, purlins and end fans that define the reference engineering system.",
       "correction": "Author each roof aisle or vault as a complete structural bay, continue its ribs and glazing across the full depth, expose valleys and clerestories, and validate both aerial and rear-corner renders."
+    },
+    {
+      "symptom": "An engineered market roof has the right truss count but reads as a generic transparent greenhouse in aerial and oblique views",
+      "cause": "The model assigned glazing to every sloped roof field even though the compatible references separate opaque zinc or tile weathering planes from narrow transparent ridge lanterns.",
+      "correction": "Map roof material hierarchy from the aerial evidence before detailing: build opaque weathering fields, terracotta or flashing bands and transparent clerestories as separate geometry, then verify opacity, ridge count and valley continuity from high oblique and roof-plan views."
+    },
+    {
+      "symptom": "A sculptural concert hall resembles its card image from the front but becomes stacked ribbons, an open-backed stage set or a black canopy from other angles",
+      "cause": "The free-form envelope was assembled from disconnected hero-facing strips, or the same exterior material and normals were used for both sunlit shell tops and deeply shaded undersides.",
+      "correction": "Infer a compatible front, rear, side and aerial envelope from every available reference, build continuous closed shell loops around the plan, and assign fascia and underside or acoustic soffit as explicit semantic surfaces. Validate the hero camera only after rear-corner and aerial silhouette continuity is proven."
     },
     {
       "symptom": "A fallback LEGO module exports below ground after adding an arched opening",

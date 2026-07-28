@@ -5,6 +5,10 @@
   "goalpost": "/archetypes/buildings/historic_grand_station/variant_0.png",
   "goalpost_local_source": "textures/source/archetype-goalpost.png",
   "goalpost_prompt": "textures/source/goalpost-source.json",
+  "angle_reference": "textures/source/angle-reference-v2.png",
+  "angle_reference_prompt": "textures/source/angle-reference-source-v2.json",
+  "material_source": "textures/source/historic-grand-station_material_source.png",
+  "material_source_prompt": "textures/source/material-source-v2.json",
   "elevation_source": "/families/historic-grand-station/elevation.jpg",
   "skin_manifest": "textures/skin_manifest.json",
   "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"

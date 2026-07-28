@@ -427,8 +427,9 @@ def cylinder(name: str, radius: float, depth: float, location: tuple[float, floa
     bpy.ops.mesh.primitive_cylinder_add(vertices=vertices, radius=radius, depth=depth, location=location)
     obj = bpy.context.object
     obj.name = name
-    obj.scale.x, obj.scale.y = scale_xy
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    if scale_xy != (1.0, 1.0):
+        obj.scale.x, obj.scale.y = scale_xy
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     obj.data.materials.append(mat)
     return obj
 
@@ -457,7 +458,10 @@ def beam(name: str, start: tuple[float, float, float], end: tuple[float, float, 
     obj.name = name
     obj.rotation_mode = "QUATERNION"
     obj.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(delta.normalized())
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    # The primitive is created at its final radius and depth, so its scale is
+    # already identity. Calling transform_apply here did no geometric work and
+    # forced a full dependency-graph update after every one of thousands of
+    # truss/rib members.
     obj.data.materials.append(mat)
     return obj
 
@@ -2656,34 +2660,50 @@ def render_views(
         # camera close to pedestrian height so the overlapping shell ribbons
         # and recessed lobby read as architecture instead of an aerial roof.
         background = bpy.context.scene.world.node_tree.nodes.get("Background")
-        bpy.context.scene.view_settings.exposure = 1.26
-        background.inputs["Color"].default_value = (0.25, 0.38, 0.58, 1)
-        background.inputs["Strength"].default_value = 0.82
+        bpy.context.scene.render.resolution_x = 1280
+        bpy.context.scene.render.resolution_y = 960
+        bpy.context.scene.view_settings.exposure = 0.78
+        background.inputs["Color"].default_value = (0.20, 0.31, 0.47, 1)
+        background.inputs["Strength"].default_value = 0.48
+        bpy.ops.object.light_add(
+            type="SUN",
+            location=(-90, -120, 150),
+            rotation=(
+                math.radians(34.0),
+                math.radians(-20.0),
+                math.radians(-42.0),
+            ),
+        )
+        concert_sun = bpy.context.object
+        concert_sun.name = "PRESENTATION_ConcertSun"
+        concert_sun.data.color = (1.0, 0.80, 0.62)
+        concert_sun.data.energy = 2.05
+        concert_sun.data.angle = math.radians(8.0)
         key = bpy.data.objects.get("PRESENTATION_Key")
         if key:
             key.data.color = (1.0, 0.83, 0.68)
-            key.data.energy = 9400
+            key.data.energy = 11200
         fill = bpy.data.objects.get("PRESENTATION_Fill")
         if fill:
             fill.data.color = (0.68, 0.80, 1.0)
-            fill.data.energy = 2600
+            fill.data.energy = 1800
         rim = bpy.data.objects.get("PRESENTATION_Rim")
         if rim:
-            rim.data.energy = 5600
+            rim.data.energy = 4200
         ground = bpy.data.materials.get("MAT_W3_Ground")
         if ground:
             ground.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (
-                0.38, 0.40, 0.42, 1,
+                0.48, 0.48, 0.46, 1,
             )
         views["preview"] = (
-            (width * 0.65, -distance * 1.15, height * 0.51),
-            (0, -1.0, height * 0.36),
-            50,
+            (width * 0.72, -distance * 1.08, height * 0.43),
+            (0, -1.0, height * 0.33),
+            52,
         )
         views["front_corner_oblique"] = (
-            (width * 0.72, -distance * 1.12, height * 0.55),
-            (0, 0, height * 0.36),
-            52,
+            (width * 0.82, -distance * 1.02, height * 0.50),
+            (0, 0, height * 0.34),
+            54,
         )
         views["facade_close"] = (
             (0, -distance * 1.31, height * 0.40),
@@ -2696,14 +2716,30 @@ def render_views(
             58,
         )
     elif family == "barcelona-mercat":
-        bpy.context.scene.view_settings.exposure = 1.16
+        bpy.context.scene.render.resolution_x = 1280
+        bpy.context.scene.render.resolution_y = 960
+        bpy.context.scene.view_settings.exposure = 0.88
         background = bpy.context.scene.world.node_tree.nodes.get("Background")
         background.inputs["Color"].default_value = (0.24, 0.38, 0.52, 1)
-        background.inputs["Strength"].default_value = 0.38
+        background.inputs["Strength"].default_value = 0.54
+        bpy.ops.object.light_add(
+            type="SUN",
+            location=(-85, -115, 145),
+            rotation=(
+                math.radians(30.0),
+                math.radians(-18.0),
+                math.radians(-44.0),
+            ),
+        )
+        mercat_sun = bpy.context.object
+        mercat_sun.name = "PRESENTATION_MercatSun"
+        mercat_sun.data.color = (1.0, 0.77, 0.54)
+        mercat_sun.data.energy = 2.15
+        mercat_sun.data.angle = math.radians(7.5)
         key = bpy.data.objects.get("PRESENTATION_Key")
         if key:
             key.data.color = (1.0, 0.78, 0.56)
-            key.data.energy = 8600
+            key.data.energy = 7400
         fill = bpy.data.objects.get("PRESENTATION_Fill")
         if fill:
             fill.data.color = (0.67, 0.80, 1.0)
@@ -2714,9 +2750,9 @@ def render_views(
                 0.46, 0.42, 0.34, 1,
             )
         views["preview"] = (
-            (width * 0.30, -distance * 1.38, height * 0.42),
-            (0, 0, height * 0.34),
-            58,
+            (width * 0.78, -distance * 1.18, height * 0.52),
+            (0, 0.5, height * 0.37),
+            56,
         )
         views["front_corner_oblique"] = (
             (width * 0.72, -distance * 1.12, height * 0.50),
@@ -2734,7 +2770,9 @@ def render_views(
             56,
         )
     elif family == "historic-grand-station":
-        bpy.context.scene.view_settings.exposure = 1.18
+        bpy.context.scene.render.resolution_x = 1280
+        bpy.context.scene.render.resolution_y = 960
+        bpy.context.scene.view_settings.exposure = 0.76
         background = bpy.context.scene.world.node_tree.nodes.get("Background")
         background.inputs["Color"].default_value = (0.25, 0.36, 0.49, 1)
         background.inputs["Strength"].default_value = 0.58
@@ -2769,14 +2807,14 @@ def render_views(
                 0.43, 0.40, 0.35, 1,
             )
         views["preview"] = (
-            (width * 0.72, -distance * 0.95, height * 0.58),
-            (0, -3.0, height * 0.34),
-            50,
+            (width * 0.97, -distance * 0.92, height * 0.86),
+            (0, -2.0, height * 0.40),
+            58,
         )
         views["front_corner_oblique"] = (
-            (width * 0.90, -distance * 0.85, height * 0.65),
-            (0, -1.0, height * 0.34),
-            50,
+            (width * 1.10, -distance * 0.90, height * 0.90),
+            (0, -1.0, height * 0.44),
+            56,
         )
         views["facade_close"] = (
             (0, -distance * 1.15, height * 0.36),

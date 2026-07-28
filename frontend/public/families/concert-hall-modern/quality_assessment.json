@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-27-landmark-cavity-and-roof-system-v93",
+  "memory_version": "2026-07-28-multiview-roof-material-hierarchy-v95",
   "archetype_id": "concert_hall_modern",
   "family": "concert-hall-modern",
   "status": "pass",
@@ -99,12 +99,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "7 assembled materials; review above 20"
+        "detail": "9 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "21160 assembled triangles; budget 12000-180000"
+        "detail": "37316 assembled triangles; budget 12000-180000"
       }
     ]
   }
