@@ -1,0 +1,550 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_expansion_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-28T07:06:01.883755+00:00",
+  "family": "historic-grand-station",
+  "archetype_id": "historic_grand_station",
+  "archetype_label": "Historic Grand Station \u2014 Beaux-Arts Terminal",
+  "variant_id": "station_beaux_arts",
+  "generation_archetype_id": "station_beaux_arts",
+  "archetype_aliases": [
+    "historic_grand_station",
+    "station_beaux_arts"
+  ],
+  "aesthetic_category_id": "transportation",
+  "development_type": "transit_station",
+  "reuse_keys": [
+    "historic_grand_station",
+    "station_beaux_arts",
+    "Transportation"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette",
+    "custom_pbr_skin",
+    "three_carved_portals",
+    "paired_corinthian_order",
+    "sculpted_clock_attic",
+    "three_barrel_vault_sheds",
+    "integrated_ceremonial_steps"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      120,
+      280
+    ],
+    "recommendedDepth_m": [
+      50,
+      112
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          120,
+          280
+        ],
+        "recommendedDepth_m": [
+          50,
+          112
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/near/station_atlas_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/near/station_atlas_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/near/station_atlas_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/near/station_atlas_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/near/station_atlas_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/near/station_atlas_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/near/station_atlas_glass_mask.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/near/station_atlas_opaque_mask.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/far/station_atlas_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/far/station_atlas_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/far/station_atlas_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/far/station_atlas_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/far/station_atlas_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/far/station_atlas_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/far/station_atlas_glass_mask.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/far/station_atlas_opaque_mask.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/historic-grand-station",
+    "model": "gpt-image-2",
+    "style_reference": "elevation.jpg",
+    "goalpost_reference": "/archetypes/buildings/historic_grand_station/variant_0.png",
+    "goalpost_policy": "The locked catalogue image controls silhouette, proportions, openings, roof hierarchy, entrance geometry and material hierarchy.",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "custom archetype material sources under neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "the landmark silhouette, entrance, corners, crown and roof stay fixed; only the conservative fallback middle band repeats"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and PBR materials",
+      "far_usage": "city-scale baked material reference",
+      "container": "PNG sources embedded into delivery GLBs; KTX2/UASTC at runtime packaging"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "front, left, right, rear and roof are authored as related but distinct construction; no elevation is a generic extrusion",
+      "elevation_coverage": {
+        "front": "primary public entrance with physical openings and glazing",
+        "left": "authored secondary elevation with recessed occupied glazing",
+        "right": "authored secondary elevation with recessed occupied glazing",
+        "rear": "authored service/secondary elevation",
+        "roof": "fully modeled landmark roof construction"
+      },
+      "abutting_policy": "author every elevation; site geometry alone controls occlusion"
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/archetype-goalpost.png",
+      "near": {
+        "albedo": "textures/near/station_atlas_albedo.png",
+        "normal": "textures/near/station_atlas_normal.png",
+        "roughness": "textures/near/station_atlas_roughness.png",
+        "ao": "textures/near/station_atlas_ao.png",
+        "depth": "textures/near/station_atlas_depth.png",
+        "emissive": "textures/near/station_atlas_emissive.png",
+        "glass_mask": "textures/near/station_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/station_atlas_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/station_atlas_albedo.png",
+        "normal": "textures/far/station_atlas_normal.png",
+        "roughness": "textures/far/station_atlas_roughness.png",
+        "ao": "textures/far/station_atlas_ao.png",
+        "depth": "textures/far/station_atlas_depth.png",
+        "emissive": "textures/far/station_atlas_emissive.png",
+        "glass_mask": "textures/far/station_atlas_glass_mask.png",
+        "opaque_mask": "textures/far/station_atlas_opaque_mask.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/near/station_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/station_atlas_opaque_mask.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "historic_grand_station",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "granite_head_house",
+        "recessed_bronze_portal_glazing",
+        "three_barrel_vault_train_sheds",
+        "carved_entablature_and_clock"
+      ],
+      "uv_strategy": "shape_aware_surface_uv",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "historic-grand-station",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/historic_grand_station/variant_0.png"
+  },
+  "material_budget": {
+    "max_assembled_materials": 24,
+    "rationale": "The landmark keeps shell, structure, physical glazing, occupied interior, roof and accent materials separate so construction depth remains legible in the Direct 3D hero range."
+  },
+  "dimensions": {
+    "width_m": 200.0,
+    "depth_m": 80.0,
+    "podium_height_m": 5.8,
+    "floor_height_m": 5.8,
+    "setback_height_m": 5.8,
+    "roof_height_m": 8.0,
+    "crown_height_m": 5.8,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "native_width_m": 200.0,
+  "native_depth_m": 80.0,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 5,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_podium.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 5.8,
+      "floor_height_m": 5.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1551,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 213508
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_floor_typical_a.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 5.8,
+      "floor_height_m": 5.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 9377,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 893876
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_floor_typical_b.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 5.8,
+      "floor_height_m": 5.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 7904,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 765968
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_floor_typical_c.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 5.8,
+      "floor_height_m": 5.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 10850,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 1021964
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_crown_crown.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 5.8,
+      "floor_height_m": 5.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 60,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 156100
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "historic-grand-station_roof.glb",
+      "module_family": "historic-grand-station",
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "height_m": 8.0,
+      "floor_height_m": 5.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 4212,
+      "material_count": 12,
+      "texture_keys": [
+        "bronze_glass",
+        "granite",
+        "iron_glass",
+        "relief"
+      ],
+      "ao_baked": true,
+      "size_bytes": 567752
+    }
+  ],
+  "assembled": {
+    "filename": "historic-grand-station_assembled.glb",
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 58.0,
+    "triangle_count": 122170,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 58.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 200.0,
+      "depth_m": 80.0,
+      "wing_depth_m": 80.0,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 200.0,
+          "thickness_m": 80.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "historic-grand-station"
+    },
+    "texture_keys": [
+      "bronze_glass",
+      "granite",
+      "iron_glass",
+      "relief"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "historic-grand-station_preview.png",
+  "renders": [
+    "historic-grand-station_preview.png",
+    "historic-grand-station_front_corner_oblique.png",
+    "historic-grand-station_rear_corner_oblique.png",
+    "historic-grand-station_facade_close.png",
+    "historic-grand-station_street.png",
+    "historic-grand-station_aerial.png",
+    "historic-grand-station_context.png",
+    "elevation.jpg"
+  ],
+  "architectural_identity": "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
+  "material_zones": "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
+  "glass_profile": "beaux_arts_bronze_and_shed_glass",
+  "source_provenance": {
+    "kind": "imagegen_goalpost_plus_authored_parametric_landmark",
+    "catalogue_archetype_id": "historic_grand_station",
+    "catalogue_variant_id": "station_beaux_arts",
+    "goalpost": "/archetypes/buildings/historic_grand_station/variant_0.png",
+    "goalpost_local_source": "textures/source/archetype-goalpost.png",
+    "goalpost_prompt": "textures/source/goalpost-source.json",
+    "elevation_source": "/families/historic-grand-station/elevation.jpg",
+    "skin_manifest": "textures/skin_manifest.json",
+    "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"
+  }
+}

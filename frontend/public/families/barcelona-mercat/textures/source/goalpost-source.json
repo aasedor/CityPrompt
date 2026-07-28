@@ -1,0 +1,11 @@
+{
+  "schema": "archetype-goalpost-source@1",
+  "family": "barcelona-mercat",
+  "archetype_id": "barcelona_mercat",
+  "variant_id": "mercat_modernista",
+  "generator": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-27",
+  "prompt": "Create a single premium photorealistic architectural catalogue goalpost image for a LEGO building archetype named Barcelona Mercat — Modernista Market. Show one complete historic covered market hall in a restrained front-left three-quarter street-level view, 4:3 landscape composition, entire building visible with generous margins, warm Mediterranean daylight, a few tiny distant market visitors only, no surrounding building obscuring the hall. Architecture: low, broad 65 m by 45 m rectangular market, one monumental double-height level, five parallel iron-and-glass roof aisles clearly visible, a tall central nave and two lower aisles on each side, clerestory ventilation between aisles, dark green-black cast-iron trusses and columns. The front entrance is integral to the building: a large real horseshoe/semicircular wrought-iron portal cut into the central gable, elaborate but structurally plausible Catalan Modernista scrollwork, a famous crest and finial above the ridge, and geometric polychrome stained glass in emerald, cobalt, amber, and ruby filling the arch spandrels. Build physical depth: recessed transparent entrance doors and visible colorful produce stalls inside, terracotta-and-cream glazed ceramic tile piers, warm stone base, open perimeter arcade with repeated cast-iron columns, clear roof glazing with individual panes and roof vents. Side façade continues the real iron bay rhythm and tiled plinth; roof valleys, five ridges, glazed clerestories, truss depth, and cresting are all legible. High-end architectural visualization, accurate heritage iron construction, crisp stained glass and window detail, no generic shed, no concrete box, no text, no signage, no logo, no watermark, no collage, no fantasy distortion.",
+  "output": "archetype-goalpost.png"
+}

@@ -118,6 +118,57 @@ def test_wave3_theater_variant_injects_aliases_and_fixed_identity_kits():
     assert "massing_graph" not in result
 
 
+@pytest.mark.parametrize(
+    ("parent_id", "variant_id", "expected_profile", "expected_kit"),
+    [
+        (
+            "concert_hall_modern",
+            "concert_sculptural_organic",
+            "fixed_sculptural_concert_shell_v1",
+            "flowing_shell_ribbons",
+        ),
+        (
+            "barcelona_mercat",
+            "mercat_modernista",
+            "fixed_five_aisle_modernista_market_v1",
+            "five_aisle_roof",
+        ),
+        (
+            "historic_grand_station",
+            "station_beaux_arts",
+            "fixed_three_shed_beaux_arts_station_v1",
+            "three_barrel_vault_sheds",
+        ),
+    ],
+)
+def test_wave3_expansion_variants_inject_fixed_landmark_contracts(
+    parent_id: str,
+    variant_id: str,
+    expected_profile: str,
+    expected_kit: str,
+):
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": parent_id,
+            "variant_id": variant_id,
+        },
+        "dimensions": {},
+    }
+    result = inject_signature(grammar)
+
+    assert result["archetype_aliases"] == [parent_id, variant_id]
+    assert expected_kit in result["architectural_signature"]["kits"]
+    assert result["massing_graph"]["profile"] == expected_profile
+    assert result["massing_graph"]["reference_dimensions"]["width_m"] == pytest.approx(
+        result["dimensions"]["width_m"]
+    )
+    assert result["massing_graph"]["reference_dimensions"]["depth_m"] == pytest.approx(
+        result["dimensions"]["depth_m"]
+    )
+
+
 def test_modernist_civic_signature_injects_semantic_massing_graph():
     from signature_profiles import inject_signature
 

@@ -873,6 +873,30 @@ async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
             4,
             188.0,
         ),
+        (
+            "concert-hall-modern",
+            "concert_hall_modern",
+            90.0,
+            65.0,
+            5,
+            234.0,
+        ),
+        (
+            "barcelona-mercat",
+            "barcelona_mercat",
+            65.0,
+            45.0,
+            1,
+            169.0,
+        ),
+        (
+            "historic-grand-station",
+            "historic_grand_station",
+            200.0,
+            80.0,
+            3,
+            520.0,
+        ),
     ],
 )
 async def test_wave3_sculpted_landmark_manifests_plan_in_band_and_repeat_oversized(
@@ -942,6 +966,81 @@ async def test_wave3_sculpted_landmark_manifests_plan_in_band_and_repeat_oversiz
     assert oversized.status_code == 200
     assert oversized.json()["fit"]["compatibility_source"] == "streetwall_repeat"
     assert oversized.json()["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("family", "variant_id"),
+    [
+        ("concert-hall-modern", "concert_sculptural_organic"),
+        ("barcelona-mercat", "mercat_modernista"),
+        ("historic-grand-station", "station_beaux_arts"),
+    ],
+)
+async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    family,
+    variant_id,
+):
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assembled = {
+        **manifest["assembled"],
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "width_m": manifest["native_width_m"],
+        "depth_m": manifest["native_depth_m"],
+        "floor_height_m": manifest["dimensions"]["floor_height_m"],
+        "repeatable_z": False,
+        "lod": 0,
+        "allowed_levels": [],
+        "native_floors": manifest["native_floors"],
+    }
+    library_entry = SimpleNamespace(
+        id=f"{family}-assembled-fixed-landmark",
+        name=assembled["filename"],
+        model_url=f"https://example.test/{assembled['filename']}",
+        metadata_={
+            "lego": lego_metadata_from_manifest(
+                manifest,
+                assembled,
+                role="assembled",
+                validation_status="pass",
+            )
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result([library_entry]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": manifest["native_width_m"],
+            "target_depth_m": manifest["native_depth_m"],
+            "target_floors": manifest["native_floors"],
+            "archetype_id": variant_id,
+        },
+    )
+
+    assert response.status_code == 200
+    plan = response.json()
+    assert plan["family"] == family
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["instances"][0]["role"] == "assembled"
+    assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
 
 
 @pytest.mark.anyio

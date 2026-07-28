@@ -1,0 +1,11 @@
+{
+  "kind": "imagegen_goalpost_plus_authored_parametric_landmark",
+  "catalogue_archetype_id": "concert_hall_modern",
+  "catalogue_variant_id": "concert_sculptural_organic",
+  "goalpost": "/archetypes/buildings/concert_hall_modern/variant_0.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "goalpost_prompt": "textures/source/goalpost-source.json",
+  "elevation_source": "/families/concert-hall-modern/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"
+}

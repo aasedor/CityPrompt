@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-archetype-specific-skin-contract-v92",
+  "memory_version": "2026-07-27-landmark-cavity-and-roof-system-v93",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -43,6 +43,14 @@
     {
       "id": "core_respects_facade_cavity",
       "rule": "Every near-range glazing assembly owns an unobstructed service cavity from exterior skin to occupied backplate. Structural massing cores must be inset far enough that panes and room cards never intersect or disappear behind the core."
+    },
+    {
+      "id": "monumental_glazing_has_sectional_depth",
+      "rule": "A full-height lobby, station portal or market entrance is a sectional assembly: shaped opening, deep jambs and soffit, physical pane and frame, recessed dark backplane, and sparse local occupation lighting. A uniformly bright card behind an entire monumental glass field is prohibited because it flattens the cavity into a glowing texture."
+    },
+    {
+      "id": "multi_aisle_roofs_are_complete_systems",
+      "rule": "Markets, stations and halls with multiple roof aisles or vaults must author every visible aisle, ridge, valley, clerestory, rib or truss family, and end fan. A single generic shell may not stand in for the reference roof system."
     },
     {
       "id": "details_wrap",
@@ -139,6 +147,8 @@
         "entrance recess and canopy support logic",
         "roof form, dormers and chimneys",
         "window recesses and stone returns at hero range",
+        "deep monumental portal and lobby cavities with shaped soffits, jambs, panes and recessed occupation layers",
+        "every visible aisle, ridge, valley, clerestory and structural rib in a multi-aisle hall roof",
         "cornice profiles and wrapping balcony slabs",
         "bevels on exposed masonry, metal and timber edges",
         "signature elements that alter silhouette or cast identity-defining shadows"
@@ -643,6 +653,21 @@
       "symptom": "A building declares complete PBR channels but still looks generic, smooth or unrelated to its archetype photos",
       "cause": "A generic material tile or broad style atlas was repeated across the model; the reference-specific elevation was never registered to semantic surfaces, and the declared depth map was not connected to the runtime shader.",
       "correction": "Generate or derive a render-locked source from the exact compatible archetype views, register shared coordinates across each identity surface, bind normal plus depth/displacement in the shader, retain physical shadow-casting geometry, and fail review whenever generic_tiling_allowed is not explicitly false."
+    },
+    {
+      "symptom": "A monumental glass lobby or station portal reads as a flat orange window instead of a carved public interior",
+      "cause": "One uniformly bright emissive backplate filled the entire opening, eliminating the depth hierarchy between exterior pane, structure, occupied rooms and dark void.",
+      "correction": "Build a shaped cavity with deep jambs and soffit, physical mullions and panes, a dark recessed backplane, and only sparse warm ceiling bands or room cards. Verify portal depth in facade-close and front-corner views."
+    },
+    {
+      "symptom": "A market or station looks convincing from the front but its aerial view collapses into one generic roof shell",
+      "cause": "The generator modeled only the outer roof envelope and omitted the repeated aisles, ridges, valleys, clerestories, ribs, purlins and end fans that define the reference engineering system.",
+      "correction": "Author each roof aisle or vault as a complete structural bay, continue its ribs and glazing across the full depth, expose valleys and clerestories, and validate both aerial and rear-corner renders."
+    },
+    {
+      "symptom": "A fallback LEGO module exports below ground after adding an arched opening",
+      "cause": "A semicircular arch was sized wider than twice the usable module height, so the spring line and lower curve could not fit inside the module envelope.",
+      "correction": "For semicircular fallback arches keep opening width at or below twice the usable module height; otherwise use a shallower segmental arch or move the identity-bearing opening into the fixed assembled landmark. Validate on-disk module bounds."
     }
   ]
 }

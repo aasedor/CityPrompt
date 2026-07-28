@@ -1244,6 +1244,75 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "concert_sculptural_organic": {
+      "identity": "A low civic concert hall formed by overlapping pearlescent-white aluminum shell ribbons, three asymmetric acoustic peaks, a full-height recessed glass lobby, and visible ash-timber ribs.",
+      "material_zones": "pearlescent satin aluminum panels; clear low-iron curtain wall; dark bronze mullions; honey ash acoustic ribs; pale granite plinth",
+      "glass_profile": "low_iron_cultural_lobby",
+      "kits": ["flowing_shell_ribbons", "asymmetric_acoustic_peaks", "full_height_lobby", "timber_acoustic_ribs", "integrated_civic_stair"],
+      "archetype_aliases": ["concert_hall_modern", "concert_sculptural_organic"],
+      "dimension_overrides": {
+        "width_m": 90.0,
+        "depth_m": 65.0,
+        "floor_height_m": 6.0,
+        "default_floors": 5,
+        "min_floors": 3,
+        "max_floors": 8
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_sculptural_concert_shell_v1",
+        "description": "Fixed low concert-hall landmark preserving three overlapping shell ribbons, asymmetric acoustic peaks, recessed glazed lobby and timber structure.",
+        "height_m": 48.0,
+        "reference_dimensions": {"width_m": 90.0, "depth_m": 65.0, "floors": 5},
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "aerial", "facade_close", "context"]
+      }
+    },
+    "mercat_modernista": {
+      "identity": "A five-aisled Barcelona market hall whose real Modernista iron entrance arch, polychrome stained-glass fanlight, tiled open arcade, visible produce hall, and ridge cresting form one continuous heritage structure.",
+      "material_zones": "dark green-black wrought iron; clear and polychrome glass; terracotta-and-cream glazed ceramic tile; warm stone plinth",
+      "glass_profile": "polychrome_heritage_market",
+      "kits": ["modernista_entrance_arch", "five_aisle_roof", "cast_iron_arcade", "polychrome_stained_glass", "ridge_cresting"],
+      "archetype_aliases": ["barcelona_mercat", "mercat_modernista"],
+      "dimension_overrides": {
+        "width_m": 65.0,
+        "depth_m": 45.0,
+        "floor_height_m": 7.2,
+        "default_floors": 1,
+        "min_floors": 1,
+        "max_floors": 2
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_five_aisle_modernista_market_v1",
+        "description": "Fixed open market landmark preserving five complete iron-and-glass roof aisles, a polychrome entrance fanlight, tiled arcade and continuous ridge cresting.",
+        "height_m": 24.0,
+        "reference_dimensions": {"width_m": 65.0, "depth_m": 45.0, "floors": 1},
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "aerial", "facade_close", "context"]
+      }
+    },
+    "station_beaux_arts": {
+      "identity": "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a pedimented clock attic, and three immense ribbed iron-and-glass train sheds.",
+      "material_zones": "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
+      "glass_profile": "beaux_arts_bronze_and_shed_glass",
+      "kits": ["three_carved_portals", "paired_corinthian_order", "sculpted_clock_attic", "three_barrel_vault_sheds", "integrated_ceremonial_steps"],
+      "archetype_aliases": ["historic_grand_station", "station_beaux_arts"],
+      "dimension_overrides": {
+        "width_m": 200.0,
+        "depth_m": 80.0,
+        "floor_height_m": 5.8,
+        "default_floors": 3,
+        "min_floors": 2,
+        "max_floors": 5
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "fixed_three_shed_beaux_arts_station_v1",
+        "description": "Fixed railway landmark preserving three carved portal cavities, the paired Corinthian facade order, clock attic and three complete ribbed train-shed vaults.",
+        "height_m": 58.0,
+        "reference_dimensions": {"width_m": 200.0, "depth_m": 80.0, "floors": 3},
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "aerial", "facade_close", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "material_zones": "warm carved stone and stucco; black iron; timber shutters; darker stone base",

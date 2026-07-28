@@ -1,0 +1,156 @@
+{
+  "schema": "wave3-landmark-skin@1",
+  "family": "concert-hall-modern",
+  "source": "textures/source/archetype-goalpost.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "supporting_material_atlas": "textures/source/concert-hall-modern_material_source.png",
+    "goalpost_prompt": "textures/source/goalpost-source.json"
+  },
+  "registration": "archetype-specific material zones and semantic surfaces locked to the generated catalogue goalpost; all runtime channels share the same source pixels and shape-aware surface UVs",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "concert_hall_modern",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "flowing_aluminum_shells",
+      "full_height_lobby_glazing",
+      "ash_timber_acoustic_ribs",
+      "granite_entry_plinth"
+    ],
+    "uv_strategy": "shape_aware_surface_uv",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "zones": {
+    "aluminum": {
+      "near": {
+        "albedo": "textures/near/aluminum/aluminum_albedo.png",
+        "normal": "textures/near/aluminum/aluminum_normal.png",
+        "roughness": "textures/near/aluminum/aluminum_roughness.png",
+        "ao": "textures/near/aluminum/aluminum_ao.png",
+        "depth": "textures/near/aluminum/aluminum_depth.png",
+        "emissive": "textures/near/aluminum/aluminum_emissive.png",
+        "glass_mask": "textures/near/aluminum/aluminum_glass_mask.png",
+        "opaque_mask": "textures/near/aluminum/aluminum_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/aluminum/aluminum_albedo.png",
+        "normal": "textures/far/aluminum/aluminum_normal.png",
+        "roughness": "textures/far/aluminum/aluminum_roughness.png",
+        "ao": "textures/far/aluminum/aluminum_ao.png",
+        "depth": "textures/far/aluminum/aluminum_depth.png",
+        "emissive": "textures/far/aluminum/aluminum_emissive.png",
+        "glass_mask": "textures/far/aluminum/aluminum_glass_mask.png",
+        "opaque_mask": "textures/far/aluminum/aluminum_opaque_mask.png"
+      }
+    },
+    "concert_glass": {
+      "near": {
+        "albedo": "textures/near/concert_glass/concert_glass_albedo.png",
+        "normal": "textures/near/concert_glass/concert_glass_normal.png",
+        "roughness": "textures/near/concert_glass/concert_glass_roughness.png",
+        "ao": "textures/near/concert_glass/concert_glass_ao.png",
+        "depth": "textures/near/concert_glass/concert_glass_depth.png",
+        "emissive": "textures/near/concert_glass/concert_glass_emissive.png",
+        "glass_mask": "textures/near/concert_glass/concert_glass_glass_mask.png",
+        "opaque_mask": "textures/near/concert_glass/concert_glass_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/concert_glass/concert_glass_albedo.png",
+        "normal": "textures/far/concert_glass/concert_glass_normal.png",
+        "roughness": "textures/far/concert_glass/concert_glass_roughness.png",
+        "ao": "textures/far/concert_glass/concert_glass_ao.png",
+        "depth": "textures/far/concert_glass/concert_glass_depth.png",
+        "emissive": "textures/far/concert_glass/concert_glass_emissive.png",
+        "glass_mask": "textures/far/concert_glass/concert_glass_glass_mask.png",
+        "opaque_mask": "textures/far/concert_glass/concert_glass_opaque_mask.png"
+      }
+    },
+    "timber": {
+      "near": {
+        "albedo": "textures/near/timber/timber_albedo.png",
+        "normal": "textures/near/timber/timber_normal.png",
+        "roughness": "textures/near/timber/timber_roughness.png",
+        "ao": "textures/near/timber/timber_ao.png",
+        "depth": "textures/near/timber/timber_depth.png",
+        "emissive": "textures/near/timber/timber_emissive.png",
+        "glass_mask": "textures/near/timber/timber_glass_mask.png",
+        "opaque_mask": "textures/near/timber/timber_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/timber/timber_albedo.png",
+        "normal": "textures/far/timber/timber_normal.png",
+        "roughness": "textures/far/timber/timber_roughness.png",
+        "ao": "textures/far/timber/timber_ao.png",
+        "depth": "textures/far/timber/timber_depth.png",
+        "emissive": "textures/far/timber/timber_emissive.png",
+        "glass_mask": "textures/far/timber/timber_glass_mask.png",
+        "opaque_mask": "textures/far/timber/timber_opaque_mask.png"
+      }
+    },
+    "granite": {
+      "near": {
+        "albedo": "textures/near/granite/granite_albedo.png",
+        "normal": "textures/near/granite/granite_normal.png",
+        "roughness": "textures/near/granite/granite_roughness.png",
+        "ao": "textures/near/granite/granite_ao.png",
+        "depth": "textures/near/granite/granite_depth.png",
+        "emissive": "textures/near/granite/granite_emissive.png",
+        "glass_mask": "textures/near/granite/granite_glass_mask.png",
+        "opaque_mask": "textures/near/granite/granite_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/granite/granite_albedo.png",
+        "normal": "textures/far/granite/granite_normal.png",
+        "roughness": "textures/far/granite/granite_roughness.png",
+        "ao": "textures/far/granite/granite_ao.png",
+        "depth": "textures/far/granite/granite_depth.png",
+        "emissive": "textures/far/granite/granite_emissive.png",
+        "glass_mask": "textures/far/granite/granite_glass_mask.png",
+        "opaque_mask": "textures/far/granite/granite_opaque_mask.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/near/concert_atlas_albedo.png",
+      "normal": "textures/near/concert_atlas_normal.png",
+      "roughness": "textures/near/concert_atlas_roughness.png",
+      "ao": "textures/near/concert_atlas_ao.png",
+      "depth": "textures/near/concert_atlas_depth.png",
+      "emissive": "textures/near/concert_atlas_emissive.png",
+      "glass_mask": "textures/near/concert_atlas_glass_mask.png",
+      "opaque_mask": "textures/near/concert_atlas_opaque_mask.png"
+    },
+    "far": {
+      "albedo": "textures/far/concert_atlas_albedo.png",
+      "normal": "textures/far/concert_atlas_normal.png",
+      "roughness": "textures/far/concert_atlas_roughness.png",
+      "ao": "textures/far/concert_atlas_ao.png",
+      "depth": "textures/far/concert_atlas_depth.png",
+      "emissive": "textures/far/concert_atlas_emissive.png",
+      "glass_mask": "textures/far/concert_atlas_glass_mask.png",
+      "opaque_mask": "textures/far/concert_atlas_opaque_mask.png"
+    }
+  }
+}

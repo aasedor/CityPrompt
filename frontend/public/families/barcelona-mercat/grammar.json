@@ -1,0 +1,82 @@
+{
+  "family_id": "barcelona-mercat",
+  "source": {
+    "archetype_id": "barcelona_mercat",
+    "variant_id": "mercat_modernista",
+    "generation_archetype_id": "mercat_modernista",
+    "reuse_keys": [
+      "barcelona_mercat",
+      "mercat_modernista",
+      "Commercial \u2014 Market / Specialty Retail"
+    ]
+  },
+  "dimensions": {
+    "width_m": 65.0,
+    "depth_m": 45.0,
+    "podium_height_m": 7.2,
+    "floor_height_m": 7.2,
+    "setback_height_m": 7.2,
+    "roof_height_m": 8.0,
+    "crown_height_m": 7.2,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A five-aisled Barcelona market hall with a real Modernista iron entrance arch, polychrome stained glass, tiled perimeter arcade, open produce hall and ornate ridge cresting.",
+    "material_zones": "dark green-black wrought iron; clear and polychrome glass; terracotta-and-cream glazed ceramic tile; warm stone plinth",
+    "glass_profile": "polychrome_heritage_market",
+    "kits": [
+      "modernista_entrance_arch",
+      "five_aisle_roof",
+      "cast_iron_arcade",
+      "polychrome_stained_glass",
+      "ridge_cresting"
+    ]
+  },
+  "archetype_aliases": [
+    "barcelona_mercat",
+    "mercat_modernista"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      45,
+      90
+    ],
+    "recommendedDepth_m": [
+      30,
+      60
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45,
+          90
+        ],
+        "recommendedDepth_m": [
+          30,
+          60
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "barcelona-mercat",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/barcelona-mercat/variant_0.png"
+  }
+}

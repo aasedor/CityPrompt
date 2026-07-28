@@ -1,0 +1,11 @@
+{
+  "schema": "archetype-goalpost-source@1",
+  "family": "concert-hall-modern",
+  "archetype_id": "concert_hall_modern",
+  "variant_id": "concert_sculptural_organic",
+  "generator": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-27",
+  "prompt": "Create a single premium photorealistic architectural catalogue goalpost image for a LEGO building archetype named Sculptural Organic Concert Hall. Show one complete civic concert hall in a restrained front-left three-quarter street-level view, 4:3 landscape composition, entire building visible with generous margins, neutral warm daylight, realistic city plaza but no people close to camera, no neighboring building obscuring it. Architecture: a low broad 90 m by 65 m landmark, three to five major occupied levels, flowing overlapping white satin-aluminum shell ribbons shaped like wind-carved snow dunes, each ribbon physically thick with crisp folded edges and deep shadow gaps; the shells rise into three asymmetric acoustic peaks, highest toward rear right. A deeply recessed, full-height clear low-iron glass lobby cuts through the front center, with slender dark bronze mullions, visible honey-colored ash timber acoustic ribs and warm occupied interior balconies. Ground floor has a real sheltered entry under a sweeping shell cantilever, multiple transparent doors, broad shallow civic steps and accessible ramps integrated into the plinth. Side elevation is not a box: continue the curved shells around it with terraces and narrow clerestory slots, plus a gently rising roofscape. Materials must be legible and construction-realistic: pearlescent white aluminum panels with panel seams, clear reflective glazing, charcoal structural steel, warm ash timber, pale granite plinth. High-end architectural visualization, physically plausible structure, sharp facade and window detail, no generic rectangular office block, no text, no signage, no logo, no watermark, no collage, no orthographic diagram, no fantasy deformation.",
+  "output": "archetype-goalpost.png"
+}

@@ -1,0 +1,550 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_expansion_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-28T07:10:06.479341+00:00",
+  "family": "barcelona-mercat",
+  "archetype_id": "barcelona_mercat",
+  "archetype_label": "Barcelona Mercat \u2014 Modernista Market",
+  "variant_id": "mercat_modernista",
+  "generation_archetype_id": "mercat_modernista",
+  "archetype_aliases": [
+    "barcelona_mercat",
+    "mercat_modernista"
+  ],
+  "aesthetic_category_id": "historical",
+  "development_type": "commercial_retail",
+  "reuse_keys": [
+    "barcelona_mercat",
+    "mercat_modernista",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette",
+    "custom_pbr_skin",
+    "modernista_entrance_arch",
+    "five_aisle_roof",
+    "cast_iron_arcade",
+    "polychrome_stained_glass",
+    "ridge_cresting"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      45,
+      90
+    ],
+    "recommendedDepth_m": [
+      30,
+      60
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45,
+          90
+        ],
+        "recommendedDepth_m": [
+          30,
+          60
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/near/mercat_atlas_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/near/mercat_atlas_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/near/mercat_atlas_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/near/mercat_atlas_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/near/mercat_atlas_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/near/mercat_atlas_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/near/mercat_atlas_glass_mask.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/near/mercat_atlas_opaque_mask.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/far/mercat_atlas_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/far/mercat_atlas_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/far/mercat_atlas_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/far/mercat_atlas_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/far/mercat_atlas_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/far/mercat_atlas_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/far/mercat_atlas_glass_mask.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/far/mercat_atlas_opaque_mask.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/barcelona-mercat",
+    "model": "gpt-image-2",
+    "style_reference": "elevation.jpg",
+    "goalpost_reference": "/archetypes/buildings/barcelona-mercat/variant_0.png",
+    "goalpost_policy": "The locked catalogue image controls silhouette, proportions, openings, roof hierarchy, entrance geometry and material hierarchy.",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "custom archetype material sources under neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "the landmark silhouette, entrance, corners, crown and roof stay fixed; only the conservative fallback middle band repeats"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and PBR materials",
+      "far_usage": "city-scale baked material reference",
+      "container": "PNG sources embedded into delivery GLBs; KTX2/UASTC at runtime packaging"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "front, left, right, rear and roof are authored as related but distinct construction; no elevation is a generic extrusion",
+      "elevation_coverage": {
+        "front": "primary public entrance with physical openings and glazing",
+        "left": "authored secondary elevation with recessed occupied glazing",
+        "right": "authored secondary elevation with recessed occupied glazing",
+        "rear": "authored service/secondary elevation",
+        "roof": "fully modeled landmark roof construction"
+      },
+      "abutting_policy": "author every elevation; site geometry alone controls occlusion"
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/archetype-goalpost.png",
+      "near": {
+        "albedo": "textures/near/mercat_atlas_albedo.png",
+        "normal": "textures/near/mercat_atlas_normal.png",
+        "roughness": "textures/near/mercat_atlas_roughness.png",
+        "ao": "textures/near/mercat_atlas_ao.png",
+        "depth": "textures/near/mercat_atlas_depth.png",
+        "emissive": "textures/near/mercat_atlas_emissive.png",
+        "glass_mask": "textures/near/mercat_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/mercat_atlas_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/mercat_atlas_albedo.png",
+        "normal": "textures/far/mercat_atlas_normal.png",
+        "roughness": "textures/far/mercat_atlas_roughness.png",
+        "ao": "textures/far/mercat_atlas_ao.png",
+        "depth": "textures/far/mercat_atlas_depth.png",
+        "emissive": "textures/far/mercat_atlas_emissive.png",
+        "glass_mask": "textures/far/mercat_atlas_glass_mask.png",
+        "opaque_mask": "textures/far/mercat_atlas_opaque_mask.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/near/mercat_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/mercat_atlas_opaque_mask.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "barcelona_mercat",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "modernista_iron_portal",
+        "polychrome_stained_glass",
+        "ceramic_tile_plinth",
+        "five_aisle_roof_glazing"
+      ],
+      "uv_strategy": "shape_aware_surface_uv",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "barcelona-mercat",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/barcelona-mercat/variant_0.png"
+  },
+  "material_budget": {
+    "max_assembled_materials": 24,
+    "rationale": "The landmark keeps shell, structure, physical glazing, occupied interior, roof and accent materials separate so construction depth remains legible in the Direct 3D hero range."
+  },
+  "dimensions": {
+    "width_m": 65.0,
+    "depth_m": 45.0,
+    "podium_height_m": 7.2,
+    "floor_height_m": 7.2,
+    "setback_height_m": 7.2,
+    "roof_height_m": 8.0,
+    "crown_height_m": 7.2,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "native_width_m": 65.0,
+  "native_depth_m": 45.0,
+  "native_floors": 1,
+  "min_floors": 1,
+  "max_floors": 2,
+  "default_floors": 1,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_podium.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 7.2,
+      "floor_height_m": 7.2,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 732,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 315356
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_floor_typical_a.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 7.2,
+      "floor_height_m": 7.2,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 156,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 255652
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_floor_typical_b.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 7.2,
+      "floor_height_m": 7.2,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 144,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 254172
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_floor_typical_c.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 7.2,
+      "floor_height_m": 7.2,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 180,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 258612
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_crown_crown.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 7.2,
+      "floor_height_m": 7.2,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 545,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 543120
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "barcelona-mercat_roof.glb",
+      "module_family": "barcelona-mercat",
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "height_m": 8.0,
+      "floor_height_m": 7.2,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 196,
+      "material_count": 12,
+      "texture_keys": [
+        "ceramic",
+        "iron",
+        "roof_glass",
+        "stained_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 259848
+    }
+  ],
+  "assembled": {
+    "filename": "barcelona-mercat_assembled.glb",
+    "floors": 1,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 24.0,
+    "triangle_count": 43154,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 24.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 65.0,
+      "depth_m": 45.0,
+      "wing_depth_m": 45.0,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 65.0,
+          "thickness_m": 45.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "barcelona-mercat"
+    },
+    "texture_keys": [
+      "ceramic",
+      "iron",
+      "roof_glass",
+      "stained_glass"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "barcelona-mercat_preview.png",
+  "renders": [
+    "barcelona-mercat_preview.png",
+    "barcelona-mercat_front_corner_oblique.png",
+    "barcelona-mercat_rear_corner_oblique.png",
+    "barcelona-mercat_facade_close.png",
+    "barcelona-mercat_street.png",
+    "barcelona-mercat_aerial.png",
+    "barcelona-mercat_context.png",
+    "elevation.jpg"
+  ],
+  "architectural_identity": "A five-aisled Barcelona market hall with a real Modernista iron entrance arch, polychrome stained glass, tiled perimeter arcade, open produce hall and ornate ridge cresting.",
+  "material_zones": "dark green-black wrought iron; clear and polychrome glass; terracotta-and-cream glazed ceramic tile; warm stone plinth",
+  "glass_profile": "polychrome_heritage_market",
+  "source_provenance": {
+    "kind": "imagegen_goalpost_plus_authored_parametric_landmark",
+    "catalogue_archetype_id": "barcelona_mercat",
+    "catalogue_variant_id": "mercat_modernista",
+    "goalpost": "/archetypes/buildings/barcelona-mercat/variant_0.png",
+    "goalpost_local_source": "textures/source/archetype-goalpost.png",
+    "goalpost_prompt": "textures/source/goalpost-source.json",
+    "elevation_source": "/families/barcelona-mercat/elevation.jpg",
+    "skin_manifest": "textures/skin_manifest.json",
+    "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"
+  }
+}

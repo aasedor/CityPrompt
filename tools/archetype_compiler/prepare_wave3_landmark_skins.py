@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -58,6 +59,16 @@ def derive_channels(albedo: Image.Image, zone: str) -> dict[str, Image.Image]:
         "relief": 176,
         "copper": 118,
         "front_registered": 158,
+        "aluminum": 106,
+        "concert_glass": 38,
+        "timber": 156,
+        "granite": 174,
+        "iron": 116,
+        "stained_glass": 52,
+        "ceramic": 142,
+        "roof_glass": 48,
+        "bronze_glass": 58,
+        "iron_glass": 50,
     }[zone]
     detail = np.abs(luma.astype(np.float32) - smoothed)
     roughness = np.uint8(np.clip(roughness_base + detail * 1.8, 18, 235))
@@ -73,11 +84,20 @@ def derive_channels(albedo: Image.Image, zone: str) -> dict[str, Image.Image]:
         & (rgb[:, :, 1] > rgb[:, :, 2] * 1.05)
     )
     emissive = np.zeros_like(rgb, dtype=np.uint8)
-    if zone in {"glass", "accent"}:
+    glass_zones = {
+        "glass",
+        "accent",
+        "concert_glass",
+        "stained_glass",
+        "roof_glass",
+        "bronze_glass",
+        "iron_glass",
+    }
+    if zone in glass_zones:
         scale = np.clip((rgb[:, :, 0] - 90) / 120, 0, 1)[:, :, None]
         emissive = np.uint8(np.where(warm[:, :, None], rgb * scale, 0))
 
-    glass_value = 255 if zone == "glass" else 0
+    glass_value = 255 if zone in glass_zones else 0
     glass_mask = Image.new("L", albedo.size, glass_value)
     return {
         "albedo": albedo,
@@ -309,6 +329,372 @@ def prepare_civic(family_dir: Path) -> None:
     )
 
 
+def _draw_ashlar(
+    draw: ImageDraw.ImageDraw,
+    bounds: tuple[int, int, int, int],
+    *,
+    fill: str,
+    joint: str,
+    course_h: int = 92,
+    block_w: int = 260,
+) -> None:
+    x0, y0, x1, y1 = bounds
+    draw.rectangle(bounds, fill=fill)
+    for row, y in enumerate(range(y0, y1 + 1, course_h)):
+        draw.line((x0, y, x1, y), fill=joint, width=4)
+        offset = block_w // 2 if row % 2 else 0
+        for x in range(x0 - offset, x1 + block_w, block_w):
+            draw.line((x, y, x, min(y + course_h, y1)), fill=joint, width=3)
+
+
+def _draw_mullion_grid(
+    draw: ImageDraw.ImageDraw,
+    bounds: tuple[int, int, int, int],
+    *,
+    glass: str,
+    frame: str,
+    warm: str | None = None,
+    columns: int = 12,
+    rows: int = 4,
+) -> None:
+    x0, y0, x1, y1 = bounds
+    draw.rectangle(bounds, fill=glass)
+    bay_w = (x1 - x0) / columns
+    bay_h = (y1 - y0) / rows
+    if warm:
+        for row in range(rows):
+            for col in range(columns):
+                if (row * 7 + col * 3) % 7 == 0:
+                    xa = round(x0 + col * bay_w + 8)
+                    ya = round(y0 + row * bay_h + 8)
+                    xb = round(x0 + (col + 1) * bay_w - 8)
+                    yb = round(y0 + (row + 1) * bay_h - 8)
+                    draw.rectangle((xa, ya, xb, yb), fill=warm)
+    for col in range(columns + 1):
+        x = round(x0 + col * bay_w)
+        draw.line((x, y0, x, y1), fill=frame, width=8)
+    for row in range(rows + 1):
+        y = round(y0 + row * bay_h)
+        draw.line((x0, y, x1, y), fill=frame, width=7)
+
+
+def _draw_concert_source(path: Path) -> tuple[str, ...]:
+    size = 2048
+    band = size // 4
+    image = Image.new("RGB", (size, size), "#e7e7e3")
+    draw = ImageDraw.Draw(image)
+
+    # Pearlescent satin-aluminum shell with a non-generic, flowing panel grid.
+    draw.rectangle((0, 0, size, band), fill="#e9e9e5")
+    for y in range(0, band + 1, 104):
+        draw.line((0, y, size, y + 36), fill="#c8c9c8", width=3)
+    for x in range(-band, size + band, 220):
+        draw.line((x, 0, x + 360, band), fill="#d0d1d0", width=3)
+    for x in range(0, size, 520):
+        draw.line((x, 0, x + 70, band), fill="#f8f8f5", width=5)
+
+    _draw_mullion_grid(
+        draw,
+        (0, band, size, band * 2),
+        glass="#405966",
+        frame="#332d29",
+        warm="#a76831",
+        columns=16,
+        rows=4,
+    )
+
+    draw.rectangle((0, band * 2, size, band * 3), fill="#cfa66f")
+    for x in range(0, size + 1, 46):
+        tone = "#9a7044" if (x // 46) % 5 == 0 else "#e0bd87"
+        draw.rectangle((x, band * 2, min(x + 31, size), band * 3), fill=tone)
+        draw.line((x, band * 2, x, band * 3), fill="#765337", width=3)
+    for y in range(band * 2, band * 3, 128):
+        draw.line((0, y, size, y), fill="#b18659", width=2)
+
+    _draw_ashlar(
+        draw,
+        (0, band * 3, size, size),
+        fill="#cbc6ba",
+        joint="#958f84",
+        course_h=86,
+        block_w=235,
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, optimize=True)
+    return ("aluminum", "concert_glass", "timber", "granite")
+
+
+def _draw_mercat_source(path: Path) -> tuple[str, ...]:
+    size = 2048
+    band = size // 4
+    image = Image.new("RGB", (size, size), "#1d2e29")
+    draw = ImageDraw.Draw(image)
+
+    draw.rectangle((0, 0, size, band), fill="#183029")
+    for x in range(0, size + 1, 128):
+        draw.rectangle((x, 0, min(x + 18, size), band), fill="#0b1714")
+        for y in range(42, band, 82):
+            draw.ellipse((x + 4, y, x + 14, y + 10), fill="#a48752")
+    for y in range(0, band + 1, 128):
+        draw.line((0, y, size, y), fill="#526157", width=8)
+
+    # Reference-locked Modernista fanlight: a fine amber/green leaded field,
+    # blue circular medallions and one central floral rosette. Large repeating
+    # diamonds read as a peacock graphic rather than architectural glazing.
+    glass_colors = ("#274f37", "#3f6f43", "#b68c25", "#d0a23a", "#2b6483")
+    glass_top, glass_bottom = band, band * 2
+    draw.rectangle((0, glass_top, size, glass_bottom), fill="#314c35")
+    panel_w = 128
+    for col, x in enumerate(range(0, size, panel_w)):
+        color = glass_colors[(col * 3) % 4]
+        draw.rectangle(
+            (x + 7, glass_top + 7, min(x + panel_w - 7, size), glass_bottom - 7),
+            fill=color,
+        )
+        draw.line(
+            (x + panel_w // 2, glass_top, x + panel_w // 2, glass_bottom),
+            fill="#171b18",
+            width=7,
+        )
+    for y in range(glass_top, glass_bottom + 1, 84):
+        draw.line((0, y, size, y), fill="#171b18", width=7)
+    for x in range(-240, size + 240, 260):
+        draw.line(
+            (x, glass_bottom, x + 300, glass_top),
+            fill="#26231b",
+            width=6,
+        )
+        draw.line(
+            (x + 300, glass_bottom, x, glass_top),
+            fill="#26231b",
+            width=6,
+        )
+
+    medallion_y = glass_top + 112
+    for index, x in enumerate(range(112, size, 228)):
+        radius = 54
+        draw.ellipse(
+            (x - radius - 10, medallion_y - radius - 10, x + radius + 10, medallion_y + radius + 10),
+            fill="#191d19",
+            outline="#b68c45",
+            width=7,
+        )
+        draw.ellipse(
+            (x - radius, medallion_y - radius, x + radius, medallion_y + radius),
+            fill=("#246b91" if index % 2 == 0 else "#397943"),
+            outline="#d0a75b",
+            width=6,
+        )
+        for petal in range(8):
+            angle = math.tau * petal / 8
+            px = x + math.cos(angle) * 30
+            py = medallion_y + math.sin(angle) * 30
+            draw.ellipse(
+                (px - 9, py - 9, px + 9, py + 9),
+                fill="#d6ae49",
+                outline="#17211c",
+                width=2,
+            )
+        draw.ellipse((x - 12, medallion_y - 12, x + 12, medallion_y + 12), fill="#9f3f2f")
+
+    rosette_x, rosette_y = size // 2, glass_top + 345
+    draw.ellipse(
+        (rosette_x - 145, rosette_y - 145, rosette_x + 145, rosette_y + 145),
+        fill="#183128",
+        outline="#d0a75b",
+        width=12,
+    )
+    for petal in range(16):
+        angle = math.tau * petal / 16
+        px = rosette_x + math.cos(angle) * 94
+        py = rosette_y + math.sin(angle) * 94
+        draw.ellipse(
+            (px - 34, py - 22, px + 34, py + 22),
+            fill=glass_colors[petal % len(glass_colors)],
+            outline="#171b18",
+            width=6,
+        )
+    draw.ellipse(
+        (rosette_x - 38, rosette_y - 38, rosette_x + 38, rosette_y + 38),
+        fill="#b84c32",
+        outline="#d8bd72",
+        width=8,
+    )
+
+    tile_colors = ("#efe0bf", "#b75635", "#2f7180", "#d6a646", "#f4ead3")
+    draw.rectangle((0, band * 2, size, band * 3), fill="#efe0bf")
+    tile = 64
+    for row, y in enumerate(range(band * 2, band * 3, tile)):
+        for col, x in enumerate(range(0, size, tile)):
+            color = tile_colors[(row * 5 + col * 3) % len(tile_colors)]
+            draw.rectangle((x + 3, y + 3, x + tile - 3, y + tile - 3), fill=color)
+            if (row + col) % 3 == 0:
+                draw.arc((x + 10, y + 10, x + tile - 10, y + tile - 10), 0, 360, fill="#6f3d2a", width=3)
+
+    _draw_mullion_grid(
+        draw,
+        (0, band * 3, size, size),
+        glass="#829da2",
+        frame="#172823",
+        warm="#ab7433",
+        columns=18,
+        rows=4,
+    )
+    for x in range(-300, size + 300, 256):
+        draw.line((x, band * 3, x + 380, size), fill="#2d433d", width=12)
+        draw.line((x + 380, band * 3, x, size), fill="#2d433d", width=12)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, optimize=True)
+    return ("iron", "stained_glass", "ceramic", "roof_glass")
+
+
+def _draw_station_source(path: Path) -> tuple[str, ...]:
+    size = 2048
+    band = size // 4
+    image = Image.new("RGB", (size, size), "#d8d0c1")
+    draw = ImageDraw.Draw(image)
+
+    _draw_ashlar(
+        draw,
+        (0, 0, size, band),
+        fill="#d7d0c2",
+        joint="#a79d8c",
+        course_h=76,
+        block_w=250,
+    )
+    _draw_mullion_grid(
+        draw,
+        (0, band, size, band * 2),
+        glass="#574634",
+        frame="#3d2a1c",
+        # Monumental portal glass stays reflective and non-emissive. Sparse
+        # occupied ceiling bands are separate recessed geometry behind it.
+        warm=None,
+        columns=14,
+        rows=5,
+    )
+    _draw_mullion_grid(
+        draw,
+        (0, band * 2, size, band * 3),
+        glass="#71848b",
+        frame="#1f282c",
+        warm="#9a672d",
+        columns=18,
+        rows=4,
+    )
+    for x in range(-260, size + 260, 240):
+        draw.line((x, band * 2, x + 330, band * 3), fill="#20272a", width=13)
+        draw.line((x + 330, band * 2, x, band * 3), fill="#20272a", width=13)
+
+    draw.rectangle((0, band * 3, size, size), fill="#c8bdac")
+    for x in range(45, size, 180):
+        for y in range(band * 3 + 42, size, 140):
+            draw.ellipse((x - 34, y - 34, x + 34, y + 34), outline="#8f816e", width=9)
+            draw.ellipse((x - 14, y - 14, x + 14, y + 14), fill="#a99a85")
+            draw.line((x - 65, y, x + 65, y), fill="#9d8f7c", width=6)
+            draw.line((x, y - 65, x, y + 65), fill="#9d8f7c", width=6)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, optimize=True)
+    return ("granite", "bronze_glass", "iron_glass", "relief")
+
+
+def prepare_expansion_family(family_dir: Path) -> None:
+    definitions = {
+        "concert-hall-modern": {
+            "archetype_id": "concert_hall_modern",
+            "prefix": "concert",
+            "draw": _draw_concert_source,
+            "surfaces": [
+                "flowing_aluminum_shells",
+                "full_height_lobby_glazing",
+                "ash_timber_acoustic_ribs",
+                "granite_entry_plinth",
+            ],
+        },
+        "barcelona-mercat": {
+            "archetype_id": "barcelona_mercat",
+            "prefix": "mercat",
+            "draw": _draw_mercat_source,
+            "surfaces": [
+                "modernista_iron_portal",
+                "polychrome_stained_glass",
+                "ceramic_tile_plinth",
+                "five_aisle_roof_glazing",
+            ],
+        },
+        "historic-grand-station": {
+            "archetype_id": "historic_grand_station",
+            "prefix": "station",
+            "draw": _draw_station_source,
+            "surfaces": [
+                "granite_head_house",
+                "recessed_bronze_portal_glazing",
+                "three_barrel_vault_train_sheds",
+                "carved_entablature_and_clock",
+            ],
+        },
+    }
+    definition = definitions[family_dir.name]
+    source_dir = family_dir / "textures" / "source"
+    material_source_path = source_dir / f"{family_dir.name}_material_source.png"
+    zone_order = definition["draw"](material_source_path)
+    with Image.open(material_source_path) as material_source:
+        zones = {
+            zone: save_zone(
+                material_source.convert("RGB"),
+                family_dir,
+                zone,
+                (index / len(zone_order), (index + 1) / len(zone_order)),
+            )
+            for index, zone in enumerate(zone_order)
+        }
+    goalpost_path = source_dir / "archetype-goalpost.png"
+    if not goalpost_path.is_file():
+        raise FileNotFoundError(goalpost_path)
+    sources = {
+        "archetype_goalpost": goalpost_path.relative_to(family_dir).as_posix(),
+        "supporting_material_atlas": material_source_path.relative_to(family_dir).as_posix(),
+    }
+    prompt_source_path = source_dir / "goalpost-source.json"
+    if prompt_source_path.is_file():
+        sources["goalpost_prompt"] = prompt_source_path.relative_to(family_dir).as_posix()
+    payload = {
+        "schema": "wave3-landmark-skin@1",
+        "family": family_dir.name,
+        "source": goalpost_path.relative_to(family_dir).as_posix(),
+        "source_model": "gpt-image-2",
+        "sources": sources,
+        "registration": (
+            "archetype-specific material zones and semantic surfaces locked to "
+            "the generated catalogue goalpost; all runtime channels share the "
+            "same source pixels and shape-aware surface UVs"
+        ),
+        "reference_registration": {
+            "mode": "archetype_specific",
+            "source_archetype_id": definition["archetype_id"],
+            "registered_elevations": ["front", "left", "right", "rear", "roof"],
+            "registered_surfaces": definition["surfaces"],
+            "uv_strategy": "shape_aware_surface_uv",
+            "depth_binding": "shader_bump",
+            "generic_tiling_allowed": False,
+        },
+        "channels": list(CHANNELS),
+        "semantic_masks": ["glass_mask", "opaque_mask"],
+        "zones": zones,
+        "atlases": build_atlases(
+            family_dir,
+            zones,
+            zone_order,
+            definition["prefix"],
+        ),
+    }
+    (family_dir / "textures" / "skin_manifest.json").write_text(
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--family-dir", type=Path, required=True)
@@ -322,6 +708,12 @@ def main() -> int:
         prepare_arena(family_dir)
     elif family_dir.name == "civic-monumental-neoclassical":
         prepare_civic(family_dir)
+    elif family_dir.name in {
+        "concert-hall-modern",
+        "barcelona-mercat",
+        "historic-grand-station",
+    }:
+        prepare_expansion_family(family_dir)
     else:
         raise ValueError(f"unsupported landmark family: {family_dir.name}")
     print(f"[wave3-skins] prepared {family_dir.name}")

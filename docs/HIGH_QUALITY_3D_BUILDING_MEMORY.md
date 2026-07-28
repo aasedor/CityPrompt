@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-archetype-specific-skin-contract-v92`.
+Current executable memory: `2026-07-27-landmark-cavity-and-roof-system-v93`.
 
 ## The quality target
 
@@ -855,6 +855,29 @@ The polychrome collegiate family added four rules for resizable hero facades:
   occupied landing. The shell edge, portal cheek, soffit and handrails must
   frame the circulation; a bright solid wedge placed in front of glazing will
   always read as a temporary ramp or another window.
+
+### Monumental glazing + engineered hall roof lessons
+
+- Treat a full-height concert lobby, station portal or market entrance as a
+  section through the building, not as a facade decal. The opening owns deep
+  jambs and a soffit, a physical pane and frame layer, a recessed dark
+  backplane, and a small number of local warm ceiling bands or occupied room
+  cards. One bright card across the entire glass field flattens the opening and
+  reads as an orange window.
+- Preserve the reference hierarchy inside monumental glass. Exterior
+  reflections remain on the pane; mullions and fanlight spokes sit in front of
+  the cavity; doors and landings occupy the threshold; warm illumination is
+  sparse and spatially separated behind them. Confirm that hierarchy in both a
+  facade close-up and a front-corner oblique.
+- A multi-aisle market or station roof is one connected engineering system,
+  but not one generic shell. Author every visible aisle or vault, ridge,
+  valley, clerestory, rib or truss family, purlin run and end fan. The aerial
+  and rear-corner views are the acceptance views for this work.
+- Size fallback-kit arches against their module envelope. A semicircular head
+  needs at least half its opening width above the spring line, so its width
+  cannot exceed twice the usable module height. If it does, use a segmental
+  arch or keep that opening in the fixed landmark; never accept a module whose
+  delivered bounds extend below ground.
 
 ## Updating this memory
 

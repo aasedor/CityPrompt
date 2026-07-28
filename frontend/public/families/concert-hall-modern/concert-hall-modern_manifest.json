@@ -1,0 +1,550 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave3_expansion_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-28T06:39:21.454242+00:00",
+  "family": "concert-hall-modern",
+  "archetype_id": "concert_hall_modern",
+  "archetype_label": "Concert Hall (Modern) \u2014 Sculptural Organic",
+  "variant_id": "concert_sculptural_organic",
+  "generation_archetype_id": "concert_sculptural_organic",
+  "archetype_aliases": [
+    "concert_hall_modern",
+    "concert_sculptural_organic"
+  ],
+  "aesthetic_category_id": "contemporary_cultural",
+  "development_type": "recreational",
+  "reuse_keys": [
+    "concert_hall_modern",
+    "concert_sculptural_organic",
+    "Entertainment / Culture"
+  ],
+  "generation_tags": [
+    "wave3",
+    "fixed_landmark",
+    "sculpted_silhouette",
+    "custom_pbr_skin",
+    "flowing_shell_ribbons",
+    "asymmetric_acoustic_peaks",
+    "full_height_lobby",
+    "timber_acoustic_ribs",
+    "integrated_civic_stair"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      60,
+      126
+    ],
+    "recommendedDepth_m": [
+      45,
+      91
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          60,
+          126
+        ],
+        "recommendedDepth_m": [
+          45,
+          91
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/near/concert_atlas_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/near/concert_atlas_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/near/concert_atlas_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/near/concert_atlas_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/near/concert_atlas_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/near/concert_atlas_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/near/concert_atlas_glass_mask.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/near/concert_atlas_opaque_mask.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/far/concert_atlas_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/far/concert_atlas_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/far/concert_atlas_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/far/concert_atlas_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/far/concert_atlas_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/far/concert_atlas_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/far/concert_atlas_glass_mask.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/far/concert_atlas_opaque_mask.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/concert-hall-modern",
+    "model": "gpt-image-2",
+    "style_reference": "elevation.jpg",
+    "goalpost_reference": "/archetypes/buildings/concert_hall_modern/variant_0.png",
+    "goalpost_policy": "The locked catalogue image controls silhouette, proportions, openings, roof hierarchy, entrance geometry and material hierarchy.",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "custom archetype material sources under neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "the landmark silhouette, entrance, corners, crown and roof stay fixed; only the conservative fallback middle band repeats"
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and PBR materials",
+      "far_usage": "city-scale baked material reference",
+      "container": "PNG sources embedded into delivery GLBs; KTX2/UASTC at runtime packaging"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "front, left, right, rear and roof are authored as related but distinct construction; no elevation is a generic extrusion",
+      "elevation_coverage": {
+        "front": "primary public entrance with physical openings and glazing",
+        "left": "authored secondary elevation with recessed occupied glazing",
+        "right": "authored secondary elevation with recessed occupied glazing",
+        "rear": "authored service/secondary elevation",
+        "roof": "fully modeled landmark roof construction"
+      },
+      "abutting_policy": "author every elevation; site geometry alone controls occlusion"
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/archetype-goalpost.png",
+      "near": {
+        "albedo": "textures/near/concert_atlas_albedo.png",
+        "normal": "textures/near/concert_atlas_normal.png",
+        "roughness": "textures/near/concert_atlas_roughness.png",
+        "ao": "textures/near/concert_atlas_ao.png",
+        "depth": "textures/near/concert_atlas_depth.png",
+        "emissive": "textures/near/concert_atlas_emissive.png",
+        "glass_mask": "textures/near/concert_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/concert_atlas_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/concert_atlas_albedo.png",
+        "normal": "textures/far/concert_atlas_normal.png",
+        "roughness": "textures/far/concert_atlas_roughness.png",
+        "ao": "textures/far/concert_atlas_ao.png",
+        "depth": "textures/far/concert_atlas_depth.png",
+        "emissive": "textures/far/concert_atlas_emissive.png",
+        "glass_mask": "textures/far/concert_atlas_glass_mask.png",
+        "opaque_mask": "textures/far/concert_atlas_opaque_mask.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/near/concert_atlas_glass_mask.png",
+        "opaque_mask": "textures/near/concert_atlas_opaque_mask.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "concert_hall_modern",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "flowing_aluminum_shells",
+        "full_height_lobby_glazing",
+        "ash_timber_acoustic_ribs",
+        "granite_entry_plinth"
+      ],
+      "uv_strategy": "shape_aware_surface_uv",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "concert-hall-modern",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/concert_hall_modern/variant_0.png"
+  },
+  "material_budget": {
+    "max_assembled_materials": 24,
+    "rationale": "The landmark keeps shell, structure, physical glazing, occupied interior, roof and accent materials separate so construction depth remains legible in the Direct 3D hero range."
+  },
+  "dimensions": {
+    "width_m": 90.0,
+    "depth_m": 65.0,
+    "podium_height_m": 6.0,
+    "floor_height_m": 6.0,
+    "setback_height_m": 6.0,
+    "roof_height_m": 8.0,
+    "crown_height_m": 6.0,
+    "default_floors": 5,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "native_width_m": 90.0,
+  "native_depth_m": 65.0,
+  "native_floors": 5,
+  "min_floors": 3,
+  "max_floors": 8,
+  "default_floors": 5,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_podium.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 428,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 197472
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_floor_typical_a.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 428,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 197504
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_floor_typical_b.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 428,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 197564
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_floor_typical_c.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 428,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 197564
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_crown_crown.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 6.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1332,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 172916
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "concert-hall-modern_roof.glb",
+      "module_family": "concert-hall-modern",
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "height_m": 8.0,
+      "floor_height_m": 6.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1652,
+      "material_count": 12,
+      "texture_keys": [
+        "aluminum",
+        "concert_glass",
+        "granite",
+        "timber"
+      ],
+      "ao_baked": true,
+      "size_bytes": 181372
+    }
+  ],
+  "assembled": {
+    "filename": "concert-hall-modern_assembled.glb",
+    "floors": 5,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 48.0,
+    "triangle_count": 21160,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 48.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 90.0,
+      "depth_m": 65.0,
+      "wing_depth_m": 65.0,
+      "segments": [
+        {
+          "id": "landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 90.0,
+          "thickness_m": 65.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "concert-hall-modern"
+    },
+    "texture_keys": [
+      "aluminum",
+      "concert_glass",
+      "granite",
+      "timber"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "concert-hall-modern_preview.png",
+  "renders": [
+    "concert-hall-modern_preview.png",
+    "concert-hall-modern_front_corner_oblique.png",
+    "concert-hall-modern_rear_corner_oblique.png",
+    "concert-hall-modern_facade_close.png",
+    "concert-hall-modern_street.png",
+    "concert-hall-modern_aerial.png",
+    "concert-hall-modern_context.png",
+    "elevation.jpg"
+  ],
+  "architectural_identity": "A low civic concert hall formed by overlapping pearlescent-white aluminum shell ribbons, three asymmetric acoustic peaks, a full-height recessed glass lobby, and visible ash-timber ribs.",
+  "material_zones": "pearlescent satin aluminum panels; clear low-iron curtain wall; dark bronze mullions; honey ash acoustic ribs; pale granite plinth",
+  "glass_profile": "low_iron_cultural_lobby",
+  "source_provenance": {
+    "kind": "imagegen_goalpost_plus_authored_parametric_landmark",
+    "catalogue_archetype_id": "concert_hall_modern",
+    "catalogue_variant_id": "concert_sculptural_organic",
+    "goalpost": "/archetypes/buildings/concert_hall_modern/variant_0.png",
+    "goalpost_local_source": "textures/source/archetype-goalpost.png",
+    "goalpost_prompt": "textures/source/goalpost-source.json",
+    "elevation_source": "/families/concert-hall-modern/elevation.jpg",
+    "skin_manifest": "textures/skin_manifest.json",
+    "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "status": "pass",
+  "family": "historic-grand-station",
+  "archetype_id": "historic_grand_station",
+  "reuse_keys": [
+    "historic_grand_station",
+    "station_beaux_arts",
+    "Transportation"
+  ],
+  "manifest": "historic-grand-station_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "historic-grand-station_assembled.glb: 128026 triangles (heavy; consider simplification)",
+    "historic-grand-station_assembled.glb: 9.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "historic-grand-station_podium.glb",
+      "status": "ok",
+      "triangles": 1647,
+      "extent_m": {
+        "width_x": 198.0,
+        "height_y": 6.019,
+        "depth_z": 77.375
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W3X_StationBronzeGlass",
+        "MAT_W3X_StationGranite"
+      ],
+      "size_bytes": 213508
+    },
+    {
+      "file": "historic-grand-station_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 9473,
+      "extent_m": {
+        "width_x": 196.0,
+        "height_y": 5.819,
+        "depth_z": 75.445
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W3X_StationBronzeGlass",
+        "MAT_W3X_StationGranite"
+      ],
+      "size_bytes": 893876
+    },
+    {
+      "file": "historic-grand-station_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 8000,
+      "extent_m": {
+        "width_x": 196.0,
+        "height_y": 5.819,
+        "depth_z": 75.445
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W3X_StationBronzeGlass",
+        "MAT_W3X_StationGranite"
+      ],
+      "size_bytes": 765968
+    },
+    {
+      "file": "historic-grand-station_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 10946,
+      "extent_m": {
+        "width_x": 196.0,
+        "height_y": 5.819,
+        "depth_z": 75.445
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W3X_StationBronzeGlass",
+        "MAT_W3X_StationGranite"
+      ],
+      "size_bytes": 1021964
+    },
+    {
+      "file": "historic-grand-station_crown_crown.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 200.4,
+        "height_y": 5.8,
+        "depth_z": 78.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W3X_StationGranite",
+        "MAT_W3X_StationRelief"
+      ],
+      "size_bytes": 156100
+    },
+    {
+      "file": "historic-grand-station_roof.glb",
+      "status": "ok",
+      "triangles": 4212,
+      "extent_m": {
+        "width_x": 194.348,
+        "height_y": 8.18,
+        "depth_z": 75.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W3X_DarkSteel",
+        "MAT_W3X_StationShedGlass"
+      ],
+      "size_bytes": 567752
+    },
+    {
+      "file": "historic-grand-station_assembled.glb",
+      "status": "ok",
+      "triangles": 128026,
+      "extent_m": {
+        "width_x": 200.0,
+        "height_y": 57.849,
+        "depth_z": 80.0
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_W3X_Black",
+        "MAT_W3X_Bronze",
+        "MAT_W3X_CreamStone",
+        "MAT_W3X_DarkSteel",
+        "MAT_W3X_StationBronzeGlass",
+        "MAT_W3X_StationGranite",
+        "MAT_W3X_StationRelief",
+        "MAT_W3X_StationShedGlass",
+        "MAT_W3X_WarmInterior"
+      ],
+      "size_bytes": 10358832,
+      "role": "assembled"
+    }
+  ]
+}

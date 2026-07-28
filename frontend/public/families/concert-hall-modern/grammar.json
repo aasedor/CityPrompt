@@ -1,0 +1,82 @@
+{
+  "family_id": "concert-hall-modern",
+  "source": {
+    "archetype_id": "concert_hall_modern",
+    "variant_id": "concert_sculptural_organic",
+    "generation_archetype_id": "concert_sculptural_organic",
+    "reuse_keys": [
+      "concert_hall_modern",
+      "concert_sculptural_organic",
+      "Entertainment / Culture"
+    ]
+  },
+  "dimensions": {
+    "width_m": 90.0,
+    "depth_m": 65.0,
+    "podium_height_m": 6.0,
+    "floor_height_m": 6.0,
+    "setback_height_m": 6.0,
+    "roof_height_m": 8.0,
+    "crown_height_m": 6.0,
+    "default_floors": 5,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "architectural_signature": {
+    "identity": "A low civic concert hall formed by overlapping pearlescent-white aluminum shell ribbons, three asymmetric acoustic peaks, a full-height recessed glass lobby, and visible ash-timber ribs.",
+    "material_zones": "pearlescent satin aluminum panels; clear low-iron curtain wall; dark bronze mullions; honey ash acoustic ribs; pale granite plinth",
+    "glass_profile": "low_iron_cultural_lobby",
+    "kits": [
+      "flowing_shell_ribbons",
+      "asymmetric_acoustic_peaks",
+      "full_height_lobby",
+      "timber_acoustic_ribs",
+      "integrated_civic_stair"
+    ]
+  },
+  "archetype_aliases": [
+    "concert_hall_modern",
+    "concert_sculptural_organic"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      60,
+      126
+    ],
+    "recommendedDepth_m": [
+      45,
+      91
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          60,
+          126
+        ],
+        "recommendedDepth_m": [
+          45,
+          91
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "concert-hall-modern",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/concert_hall_modern/variant_0.png"
+  }
+}

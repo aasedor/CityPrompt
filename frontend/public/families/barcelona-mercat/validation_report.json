@@ -1,0 +1,152 @@
+{
+  "status": "pass",
+  "family": "barcelona-mercat",
+  "archetype_id": "barcelona_mercat",
+  "reuse_keys": [
+    "barcelona_mercat",
+    "mercat_modernista",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "manifest": "barcelona-mercat_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "barcelona-mercat_podium.glb",
+      "status": "ok",
+      "triangles": 828,
+      "extent_m": {
+        "width_x": 64.0,
+        "height_y": 7.2,
+        "depth_z": 44.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W3X_MercatCeramic",
+        "MAT_W3X_MercatIron"
+      ],
+      "size_bytes": 315356
+    },
+    {
+      "file": "barcelona-mercat_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 156,
+      "extent_m": {
+        "width_x": 61.0,
+        "height_y": 7.2,
+        "depth_z": 42.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatRoofGlass"
+      ],
+      "size_bytes": 255652
+    },
+    {
+      "file": "barcelona-mercat_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 144,
+      "extent_m": {
+        "width_x": 61.0,
+        "height_y": 7.2,
+        "depth_z": 42.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatRoofGlass"
+      ],
+      "size_bytes": 254172
+    },
+    {
+      "file": "barcelona-mercat_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 180,
+      "extent_m": {
+        "width_x": 61.0,
+        "height_y": 7.2,
+        "depth_z": 42.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatRoofGlass"
+      ],
+      "size_bytes": 258612
+    },
+    {
+      "file": "barcelona-mercat_crown_crown.glb",
+      "status": "ok",
+      "triangles": 545,
+      "extent_m": {
+        "width_x": 13.24,
+        "height_y": 7.369,
+        "depth_z": 22.09
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatStainedGlass"
+      ],
+      "size_bytes": 543120
+    },
+    {
+      "file": "barcelona-mercat_roof.glb",
+      "status": "ok",
+      "triangles": 196,
+      "extent_m": {
+        "width_x": 63.0,
+        "height_y": 8.14,
+        "depth_z": 43.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatRoofGlass"
+      ],
+      "size_bytes": 259848
+    },
+    {
+      "file": "barcelona-mercat_assembled.glb",
+      "status": "ok",
+      "triangles": 51890,
+      "extent_m": {
+        "width_x": 65.0,
+        "height_y": 24.0,
+        "depth_z": 45.0
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_W3X_CreamStone",
+        "MAT_W3X_MercatCeramic",
+        "MAT_W3X_MercatIron",
+        "MAT_W3X_MercatRoofGlass",
+        "MAT_W3X_MercatStainedGlass",
+        "MAT_W3X_WarmInterior"
+      ],
+      "size_bytes": 4430680,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "family_id": "historic-grand-station",
+  "source": {
+    "archetype_id": "historic_grand_station",
+    "variant_id": "station_beaux_arts",
+    "generation_archetype_id": "station_beaux_arts",
+    "reuse_keys": [
+      "historic_grand_station",
+      "station_beaux_arts",
+      "Transportation"
+    ]
+  },
+  "dimensions": {
+    "width_m": 200.0,
+    "depth_m": 80.0,
+    "podium_height_m": 5.8,
+    "floor_height_m": 5.8,
+    "setback_height_m": 5.8,
+    "roof_height_m": 8.0,
+    "crown_height_m": 5.8,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",
+    "material_zones": "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
+    "glass_profile": "beaux_arts_bronze_and_shed_glass",
+    "kits": [
+      "three_carved_portals",
+      "paired_corinthian_order",
+      "sculpted_clock_attic",
+      "three_barrel_vault_sheds",
+      "integrated_ceremonial_steps"
+    ]
+  },
+  "archetype_aliases": [
+    "historic_grand_station",
+    "station_beaux_arts"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "recommendedWidth_m": [
+      120,
+      280
+    ],
+    "recommendedDepth_m": [
+      50,
+      112
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          120,
+          280
+        ],
+        "recommendedDepth_m": [
+          50,
+          112
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "historic-grand-station",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/historic_grand_station/variant_0.png"
+  }
+}

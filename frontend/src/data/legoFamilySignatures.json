@@ -312,6 +312,27 @@
                                                        "materialZones":  "red glazed faience base and piers; cream limestone fins and crown; dark bronze frames; emerald-and-gold marquee and spandrel accents",
                                                        "glassProfile":  "office_clear_occupied",
                                                        "elevationUrl":  "/families/deco-theater-mainstreet/elevation.jpg"
-                                                           }
+                                                           },
+                     "concert_hall_modern":  {
+                                                   "archetypeId":  "concert_hall_modern",
+                                                   "identity":  "A low civic concert hall formed by overlapping pearlescent-white aluminum shell ribbons, three asymmetric acoustic peaks, a full-height recessed glass lobby, and visible ash-timber ribs.",
+                                                   "materialZones":  "pearlescent satin aluminum panels; clear low-iron curtain wall; dark bronze mullions; honey ash acoustic ribs; pale granite plinth",
+                                                   "glassProfile":  "low_iron_cultural_lobby",
+                                                   "elevationUrl":  "/families/concert-hall-modern/elevation.jpg"
+                                               },
+                     "barcelona_mercat":  {
+                                                "archetypeId":  "barcelona_mercat",
+                                                "identity":  "A five-aisled Barcelona market hall whose real Modernista iron entrance arch, polychrome stained-glass fanlight, tiled open arcade, visible produce hall, and ridge cresting form one continuous heritage structure.",
+                                                "materialZones":  "dark green-black wrought iron; clear and polychrome glass; terracotta-and-cream glazed ceramic tile; warm stone plinth",
+                                                "glassProfile":  "polychrome_heritage_market",
+                                                "elevationUrl":  "/families/barcelona-mercat/elevation.jpg"
+                                            },
+                     "historic_grand_station":  {
+                                                      "archetypeId":  "historic_grand_station",
+                                                      "identity":  "A monumental pale-granite Beaux-Arts terminal with three deeply carved arched portals, paired Corinthian columns, a pedimented clock attic, and three immense ribbed iron-and-glass train sheds.",
+                                                      "materialZones":  "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
+                                                      "glassProfile":  "beaux_arts_bronze_and_shed_glass",
+                                                      "elevationUrl":  "/families/historic-grand-station/elevation.jpg"
+                                                  }
                  }
 }

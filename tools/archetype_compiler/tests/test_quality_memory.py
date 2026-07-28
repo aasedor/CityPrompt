@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-27-archetype-specific-skin-contract-v92"
+        == "2026-07-27-landmark-cavity-and-roof-system-v93"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -88,6 +88,18 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         and "tacked onto the facade" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "flat orange window" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "generic roof shell" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "exports below ground" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
@@ -100,6 +112,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "shape_matrices_are_honest",
         "archetype_envelope_not_parcel_fill",
         "identity_aliases_are_explicit",
+        "monumental_glazing_has_sectional_depth",
+        "multi_aisle_roofs_are_complete_systems",
     } <= principle_ids
 
 

@@ -1,0 +1,156 @@
+{
+  "schema": "wave3-landmark-skin@1",
+  "family": "historic-grand-station",
+  "source": "textures/source/archetype-goalpost.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "supporting_material_atlas": "textures/source/historic-grand-station_material_source.png",
+    "goalpost_prompt": "textures/source/goalpost-source.json"
+  },
+  "registration": "archetype-specific material zones and semantic surfaces locked to the generated catalogue goalpost; all runtime channels share the same source pixels and shape-aware surface UVs",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "historic_grand_station",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "granite_head_house",
+      "recessed_bronze_portal_glazing",
+      "three_barrel_vault_train_sheds",
+      "carved_entablature_and_clock"
+    ],
+    "uv_strategy": "shape_aware_surface_uv",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "zones": {
+    "granite": {
+      "near": {
+        "albedo": "textures/near/granite/granite_albedo.png",
+        "normal": "textures/near/granite/granite_normal.png",
+        "roughness": "textures/near/granite/granite_roughness.png",
+        "ao": "textures/near/granite/granite_ao.png",
+        "depth": "textures/near/granite/granite_depth.png",
+        "emissive": "textures/near/granite/granite_emissive.png",
+        "glass_mask": "textures/near/granite/granite_glass_mask.png",
+        "opaque_mask": "textures/near/granite/granite_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/granite/granite_albedo.png",
+        "normal": "textures/far/granite/granite_normal.png",
+        "roughness": "textures/far/granite/granite_roughness.png",
+        "ao": "textures/far/granite/granite_ao.png",
+        "depth": "textures/far/granite/granite_depth.png",
+        "emissive": "textures/far/granite/granite_emissive.png",
+        "glass_mask": "textures/far/granite/granite_glass_mask.png",
+        "opaque_mask": "textures/far/granite/granite_opaque_mask.png"
+      }
+    },
+    "bronze_glass": {
+      "near": {
+        "albedo": "textures/near/bronze_glass/bronze_glass_albedo.png",
+        "normal": "textures/near/bronze_glass/bronze_glass_normal.png",
+        "roughness": "textures/near/bronze_glass/bronze_glass_roughness.png",
+        "ao": "textures/near/bronze_glass/bronze_glass_ao.png",
+        "depth": "textures/near/bronze_glass/bronze_glass_depth.png",
+        "emissive": "textures/near/bronze_glass/bronze_glass_emissive.png",
+        "glass_mask": "textures/near/bronze_glass/bronze_glass_glass_mask.png",
+        "opaque_mask": "textures/near/bronze_glass/bronze_glass_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/bronze_glass/bronze_glass_albedo.png",
+        "normal": "textures/far/bronze_glass/bronze_glass_normal.png",
+        "roughness": "textures/far/bronze_glass/bronze_glass_roughness.png",
+        "ao": "textures/far/bronze_glass/bronze_glass_ao.png",
+        "depth": "textures/far/bronze_glass/bronze_glass_depth.png",
+        "emissive": "textures/far/bronze_glass/bronze_glass_emissive.png",
+        "glass_mask": "textures/far/bronze_glass/bronze_glass_glass_mask.png",
+        "opaque_mask": "textures/far/bronze_glass/bronze_glass_opaque_mask.png"
+      }
+    },
+    "iron_glass": {
+      "near": {
+        "albedo": "textures/near/iron_glass/iron_glass_albedo.png",
+        "normal": "textures/near/iron_glass/iron_glass_normal.png",
+        "roughness": "textures/near/iron_glass/iron_glass_roughness.png",
+        "ao": "textures/near/iron_glass/iron_glass_ao.png",
+        "depth": "textures/near/iron_glass/iron_glass_depth.png",
+        "emissive": "textures/near/iron_glass/iron_glass_emissive.png",
+        "glass_mask": "textures/near/iron_glass/iron_glass_glass_mask.png",
+        "opaque_mask": "textures/near/iron_glass/iron_glass_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/iron_glass/iron_glass_albedo.png",
+        "normal": "textures/far/iron_glass/iron_glass_normal.png",
+        "roughness": "textures/far/iron_glass/iron_glass_roughness.png",
+        "ao": "textures/far/iron_glass/iron_glass_ao.png",
+        "depth": "textures/far/iron_glass/iron_glass_depth.png",
+        "emissive": "textures/far/iron_glass/iron_glass_emissive.png",
+        "glass_mask": "textures/far/iron_glass/iron_glass_glass_mask.png",
+        "opaque_mask": "textures/far/iron_glass/iron_glass_opaque_mask.png"
+      }
+    },
+    "relief": {
+      "near": {
+        "albedo": "textures/near/relief/relief_albedo.png",
+        "normal": "textures/near/relief/relief_normal.png",
+        "roughness": "textures/near/relief/relief_roughness.png",
+        "ao": "textures/near/relief/relief_ao.png",
+        "depth": "textures/near/relief/relief_depth.png",
+        "emissive": "textures/near/relief/relief_emissive.png",
+        "glass_mask": "textures/near/relief/relief_glass_mask.png",
+        "opaque_mask": "textures/near/relief/relief_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/relief/relief_albedo.png",
+        "normal": "textures/far/relief/relief_normal.png",
+        "roughness": "textures/far/relief/relief_roughness.png",
+        "ao": "textures/far/relief/relief_ao.png",
+        "depth": "textures/far/relief/relief_depth.png",
+        "emissive": "textures/far/relief/relief_emissive.png",
+        "glass_mask": "textures/far/relief/relief_glass_mask.png",
+        "opaque_mask": "textures/far/relief/relief_opaque_mask.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/near/station_atlas_albedo.png",
+      "normal": "textures/near/station_atlas_normal.png",
+      "roughness": "textures/near/station_atlas_roughness.png",
+      "ao": "textures/near/station_atlas_ao.png",
+      "depth": "textures/near/station_atlas_depth.png",
+      "emissive": "textures/near/station_atlas_emissive.png",
+      "glass_mask": "textures/near/station_atlas_glass_mask.png",
+      "opaque_mask": "textures/near/station_atlas_opaque_mask.png"
+    },
+    "far": {
+      "albedo": "textures/far/station_atlas_albedo.png",
+      "normal": "textures/far/station_atlas_normal.png",
+      "roughness": "textures/far/station_atlas_roughness.png",
+      "ao": "textures/far/station_atlas_ao.png",
+      "depth": "textures/far/station_atlas_depth.png",
+      "emissive": "textures/far/station_atlas_emissive.png",
+      "glass_mask": "textures/far/station_atlas_glass_mask.png",
+      "opaque_mask": "textures/far/station_atlas_opaque_mask.png"
+    }
+  }
+}

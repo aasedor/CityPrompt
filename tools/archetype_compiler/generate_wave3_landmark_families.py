@@ -2651,6 +2651,143 @@ def render_views(
             (0, 0, height * 0.34),
             68,
         )
+    elif family == "concert-hall-modern":
+        # The catalogue goalpost is a bright, low civic-plaza view.  Keep the
+        # camera close to pedestrian height so the overlapping shell ribbons
+        # and recessed lobby read as architecture instead of an aerial roof.
+        background = bpy.context.scene.world.node_tree.nodes.get("Background")
+        bpy.context.scene.view_settings.exposure = 1.26
+        background.inputs["Color"].default_value = (0.25, 0.38, 0.58, 1)
+        background.inputs["Strength"].default_value = 0.82
+        key = bpy.data.objects.get("PRESENTATION_Key")
+        if key:
+            key.data.color = (1.0, 0.83, 0.68)
+            key.data.energy = 9400
+        fill = bpy.data.objects.get("PRESENTATION_Fill")
+        if fill:
+            fill.data.color = (0.68, 0.80, 1.0)
+            fill.data.energy = 2600
+        rim = bpy.data.objects.get("PRESENTATION_Rim")
+        if rim:
+            rim.data.energy = 5600
+        ground = bpy.data.materials.get("MAT_W3_Ground")
+        if ground:
+            ground.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (
+                0.38, 0.40, 0.42, 1,
+            )
+        views["preview"] = (
+            (width * 0.65, -distance * 1.15, height * 0.51),
+            (0, -1.0, height * 0.36),
+            50,
+        )
+        views["front_corner_oblique"] = (
+            (width * 0.72, -distance * 1.12, height * 0.55),
+            (0, 0, height * 0.36),
+            52,
+        )
+        views["facade_close"] = (
+            (0, -distance * 1.31, height * 0.40),
+            (0, -1.0, height * 0.39),
+            66,
+        )
+        views["aerial"] = (
+            (width * 1.02, -depth * 1.48, height * 2.90),
+            (0, 0, height * 0.29),
+            58,
+        )
+    elif family == "barcelona-mercat":
+        bpy.context.scene.view_settings.exposure = 1.16
+        background = bpy.context.scene.world.node_tree.nodes.get("Background")
+        background.inputs["Color"].default_value = (0.24, 0.38, 0.52, 1)
+        background.inputs["Strength"].default_value = 0.38
+        key = bpy.data.objects.get("PRESENTATION_Key")
+        if key:
+            key.data.color = (1.0, 0.78, 0.56)
+            key.data.energy = 8600
+        fill = bpy.data.objects.get("PRESENTATION_Fill")
+        if fill:
+            fill.data.color = (0.67, 0.80, 1.0)
+            fill.data.energy = 2400
+        ground = bpy.data.materials.get("MAT_W3_Ground")
+        if ground:
+            ground.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (
+                0.46, 0.42, 0.34, 1,
+            )
+        views["preview"] = (
+            (width * 0.30, -distance * 1.38, height * 0.42),
+            (0, 0, height * 0.34),
+            58,
+        )
+        views["front_corner_oblique"] = (
+            (width * 0.72, -distance * 1.12, height * 0.50),
+            (0, 0, height * 0.34),
+            54,
+        )
+        views["facade_close"] = (
+            (0, -distance * 1.22, height * 0.36),
+            (0, 0, height * 0.38),
+            64,
+        )
+        views["aerial"] = (
+            (width * 1.02, -depth * 1.55, height * 3.10),
+            (0, 0, height * 0.24),
+            56,
+        )
+    elif family == "historic-grand-station":
+        bpy.context.scene.view_settings.exposure = 1.18
+        background = bpy.context.scene.world.node_tree.nodes.get("Background")
+        background.inputs["Color"].default_value = (0.25, 0.36, 0.49, 1)
+        background.inputs["Strength"].default_value = 0.58
+        bpy.ops.object.light_add(
+            type="SUN",
+            location=(-120, -140, 180),
+            rotation=(
+                math.radians(32.0),
+                math.radians(-18.0),
+                math.radians(-38.0),
+            ),
+        )
+        station_sun = bpy.context.object
+        station_sun.name = "PRESENTATION_StationSun"
+        station_sun.data.color = (1.0, 0.78, 0.56)
+        station_sun.data.energy = 2.35
+        station_sun.data.angle = math.radians(7.0)
+        key = bpy.data.objects.get("PRESENTATION_Key")
+        if key:
+            key.data.color = (1.0, 0.78, 0.57)
+            key.data.energy = 9000
+        fill = bpy.data.objects.get("PRESENTATION_Fill")
+        if fill:
+            fill.data.color = (0.68, 0.78, 1.0)
+            fill.data.energy = 2200
+        rim = bpy.data.objects.get("PRESENTATION_Rim")
+        if rim:
+            rim.data.energy = 5200
+        ground = bpy.data.materials.get("MAT_W3_Ground")
+        if ground:
+            ground.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (
+                0.43, 0.40, 0.35, 1,
+            )
+        views["preview"] = (
+            (width * 0.72, -distance * 0.95, height * 0.58),
+            (0, -3.0, height * 0.34),
+            50,
+        )
+        views["front_corner_oblique"] = (
+            (width * 0.90, -distance * 0.85, height * 0.65),
+            (0, -1.0, height * 0.34),
+            50,
+        )
+        views["facade_close"] = (
+            (0, -distance * 1.15, height * 0.36),
+            (0, -2.0, height * 0.37),
+            66,
+        )
+        views["aerial"] = (
+            (width * 0.94, -depth * 1.52, height * 3.15),
+            (0, 1.0, height * 0.30),
+            60,
+        )
     names = []
     for role, (location, target, lens) in views.items():
         if selected_roles is not None and role not in selected_roles:

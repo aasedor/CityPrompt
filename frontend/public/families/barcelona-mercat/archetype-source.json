@@ -1,0 +1,11 @@
+{
+  "kind": "imagegen_goalpost_plus_authored_parametric_landmark",
+  "catalogue_archetype_id": "barcelona_mercat",
+  "catalogue_variant_id": "mercat_modernista",
+  "goalpost": "/archetypes/buildings/barcelona-mercat/variant_0.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "goalpost_prompt": "textures/source/goalpost-source.json",
+  "elevation_source": "/families/barcelona-mercat/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave3_expansion_families.py"
+}

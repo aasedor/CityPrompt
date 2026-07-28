@@ -1,0 +1,155 @@
+{
+  "status": "pass",
+  "family": "concert-hall-modern",
+  "archetype_id": "concert_hall_modern",
+  "reuse_keys": [
+    "concert_hall_modern",
+    "concert_sculptural_organic",
+    "Entertainment / Culture"
+  ],
+  "manifest": "concert-hall-modern_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "concert-hall-modern_podium.glb",
+      "status": "ok",
+      "triangles": 428,
+      "extent_m": {
+        "width_x": 88.0,
+        "height_y": 6.0,
+        "depth_z": 61.19
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W3X_ConcertAluminum",
+        "MAT_W3X_ConcertGlass",
+        "MAT_W3X_DarkSteel"
+      ],
+      "size_bytes": 197472
+    },
+    {
+      "file": "concert-hall-modern_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 428,
+      "extent_m": {
+        "width_x": 86.0,
+        "height_y": 6.0,
+        "depth_z": 59.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W3X_ConcertAluminum",
+        "MAT_W3X_ConcertGlass",
+        "MAT_W3X_DarkSteel"
+      ],
+      "size_bytes": 197504
+    },
+    {
+      "file": "concert-hall-modern_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 428,
+      "extent_m": {
+        "width_x": 88.4,
+        "height_y": 6.0,
+        "depth_z": 59.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W3X_ConcertAluminum",
+        "MAT_W3X_ConcertGlass",
+        "MAT_W3X_DarkSteel"
+      ],
+      "size_bytes": 197564
+    },
+    {
+      "file": "concert-hall-modern_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 428,
+      "extent_m": {
+        "width_x": 84.6,
+        "height_y": 6.0,
+        "depth_z": 59.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W3X_ConcertAluminum",
+        "MAT_W3X_ConcertGlass",
+        "MAT_W3X_DarkSteel"
+      ],
+      "size_bytes": 197564
+    },
+    {
+      "file": "concert-hall-modern_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1972,
+      "extent_m": {
+        "width_x": 86.0,
+        "height_y": 6.05,
+        "depth_z": 56.1
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W3X_ConcertAluminum"
+      ],
+      "size_bytes": 172916
+    },
+    {
+      "file": "concert-hall-modern_roof.glb",
+      "status": "ok",
+      "triangles": 2356,
+      "extent_m": {
+        "width_x": 88.0,
+        "height_y": 8.05,
+        "depth_z": 58.1
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W3X_ConcertAluminum"
+      ],
+      "size_bytes": 181372
+    },
+    {
+      "file": "concert-hall-modern_assembled.glb",
+      "status": "ok",
+      "triangles": 32856,
+      "extent_m": {
+        "width_x": 90.0,
+        "height_y": 48.0,
+        "depth_z": 65.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W3X_Bronze",
+        "MAT_W3X_ConcertAluminum",
+        "MAT_W3X_ConcertGlass",
+        "MAT_W3X_ConcertGranite",
+        "MAT_W3X_ConcertTimber",
+        "MAT_W3X_DarkSteel",
+        "MAT_W3X_WarmInterior"
+      ],
+      "size_bytes": 1530616,
+      "role": "assembled"
+    }
+  ]
+}
