@@ -112,7 +112,7 @@ def build_front() -> None:
             FAMILY / "civic-monumental-neoclassical_preview.png",
             (815, 980, 1545, 1770),
             "AFTER — CANONICAL CUSTOM SKIN",
-            "Feature-registered facade plus physical depth",
+            "Registered facade with shaped heritage sash geometry",
             "#226a48",
         ),
     ]
@@ -157,7 +157,7 @@ def build_oblique() -> None:
         FAMILY / "civic-monumental-neoclassical_front_corner_oblique.png",
         (815, 155, 1545, 1005),
         "CANONICAL CUSTOM SKIN",
-        "Registered facade on a deep portico and curved drum",
+        "Arched panes, slim bronze sash and wrapped secondary windows",
         "#226a48",
     )
     canvas.save(

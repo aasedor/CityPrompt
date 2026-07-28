@@ -11,7 +11,9 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "civic-monumental-neoclassical_assembled.glb: 22.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "civic-monumental-neoclassical_assembled.glb: 93997 triangles (heavy; consider simplification)",
+    "civic-monumental-neoclassical_assembled.glb: 16 materials (many; consider consolidation)",
+    "civic-monumental-neoclassical_assembled.glb: 24.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -107,7 +109,7 @@
         "MAT_W3_CivicMarbleSkin",
         "MAT_W3_CivicReliefSkin"
       ],
-      "size_bytes": 5673380
+      "size_bytes": 5673384
     },
     {
       "file": "civic-monumental-neoclassical_roof.glb",
@@ -131,7 +133,7 @@
     {
       "file": "civic-monumental-neoclassical_assembled.glb",
       "status": "ok",
-      "triangles": 67017,
+      "triangles": 93997,
       "extent_m": {
         "width_x": 72.0,
         "height_y": 43.0,
@@ -145,15 +147,18 @@
         "MAT_W3_CivicFluteShadowStudy",
         "MAT_W3_CivicFrontRegisteredSkin",
         "MAT_W3_CivicGlassSkin",
+        "MAT_W3_CivicHeritageGlass",
         "MAT_W3_CivicLanternGlassStudy",
         "MAT_W3_CivicMarbleReferenceGrade",
         "MAT_W3_CivicPedimentStudyRelief",
         "MAT_W3_CivicPedimentStudyStone",
         "MAT_W3_CivicPorticoShadowStudy",
         "MAT_W3_CivicReliefReferenceGrade",
+        "MAT_W3_CivicSecondaryGlass",
+        "MAT_W3_CivicWindowFrame",
         "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 23367792,
+      "size_bytes": 25581312,
       "role": "assembled"
     }
   ]

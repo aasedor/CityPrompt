@@ -494,6 +494,73 @@ def registered_facade_panel(
     return obj
 
 
+def arched_panel(
+    name: str,
+    centre_x: float,
+    y: float,
+    sill_z: float,
+    width: float,
+    height: float,
+    mat: bpy.types.Material,
+    segments: int = 20,
+    front_axis: str = "y",
+) -> bpy.types.Object:
+    """Create a facade-facing pane with a true semicircular head."""
+    radius = width / 2
+    spring_z = sill_z + height - radius
+    if front_axis == "y":
+        make_vertex = lambda lateral, z: (lateral, y, z)
+    else:
+        make_vertex = lambda lateral, z: (centre_x, lateral, z)
+    verts = [
+        make_vertex(centre_x - radius if front_axis == "y" else y - radius, sill_z),
+        make_vertex(centre_x + radius if front_axis == "y" else y + radius, sill_z),
+        make_vertex(centre_x + radius if front_axis == "y" else y + radius, spring_z),
+    ]
+    for index in range(1, segments):
+        angle = index * math.pi / segments
+        lateral_centre = centre_x if front_axis == "y" else y
+        verts.append(make_vertex(
+            lateral_centre + radius * math.cos(angle),
+            spring_z + radius * math.sin(angle),
+        ))
+    verts.append(make_vertex(
+        centre_x - radius if front_axis == "y" else y - radius,
+        spring_z,
+    ))
+    faces = [tuple(range(len(verts)))]
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.materials.append(mat)
+    layer = mesh.uv_layers.new(name="UVMap")
+    min_lateral = (centre_x if front_axis == "y" else y) - radius
+    for loop_index, vertex_index in enumerate(mesh.polygons[0].vertices):
+        x, _, z = verts[vertex_index]
+        lateral = x if front_axis == "y" else verts[vertex_index][1]
+        layer.data[loop_index].uv = (
+            (lateral - min_lateral) / width,
+            (z - sill_z) / height,
+        )
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
+def arched_width_at_z(
+    width: float,
+    sill_z: float,
+    height: float,
+    z: float,
+) -> float:
+    """Return the usable sash width at a height inside a semicircular head."""
+    radius = width / 2
+    spring_z = sill_z + height - radius
+    if z <= spring_z:
+        return width
+    dz = min(radius, z - spring_z)
+    return 2 * math.sqrt(max(0.0, radius * radius - dz * dz))
+
+
 def registered_pediment_face(
     name: str,
     width: float,
@@ -1308,24 +1375,92 @@ def civic_windows(
 ) -> None:
     for x in (-29, -23, -17, 17, 23, 29):
         if registered_skin:
+            sill_z = 4.05
+            width = 3.46
+            height = 8.85
+            radius = width / 2
+            spring_z = sill_z + height - radius
+            glass_y = y + 0.06
+            frame_y = y - 0.03
             objs.append(box(
+                f"FIXED_CivicWindowSill_{x}",
+                (4.02, 0.42, 0.25),
+                (x, y - 0.06, sill_z - 0.06),
+                m["marble"],
+                0.035,
+            ))
+            objs.append(arched_panel(
                 f"FIXED_CivicWindowGlass_{x}",
-                (3.08, 0.16, 8.75),
-                (x, y, 9.35),
-                m["glass"],
+                x,
+                glass_y,
+                sill_z,
+                width,
+                height,
+                m["heritage_glass"],
             ))
-            objs.append(box(
-                f"FIXED_CivicWindowMullion_{x}",
-                (0.10, 0.13, 8.55),
-                (x, y - 0.12, 9.20),
-                m["bronze"],
-            ))
-            objs.append(box(
-                f"FIXED_CivicWindowTransom_{x}",
-                (2.90, 0.13, 0.11),
-                (x, y - 0.12, 8.75),
-                m["bronze"],
-            ))
+            # The custom elevation supplies occupied rooms, patina and fine
+            # joinery. These slim physical members follow its exact two-part
+            # heritage sash instead of masking it with one dark rectangle.
+            for side in (-1, 1):
+                objs.append(box(
+                    f"FIXED_CivicWindowJamb_{x}_{side}",
+                    (0.10, 0.24, spring_z - sill_z),
+                    (
+                        x + side * (radius + 0.04),
+                        frame_y,
+                        sill_z + (spring_z - sill_z) / 2,
+                    ),
+                    m["window_frame"],
+                    0.018,
+                ))
+            arch_points = [
+                (
+                    x + radius * math.cos(math.pi * index / 20),
+                    frame_y,
+                    spring_z + radius * math.sin(math.pi * index / 20),
+                )
+                for index in range(21)
+            ]
+            for index in range(20):
+                objs.append(beam(
+                    f"FIXED_CivicWindowArchFrame_{x}_{index:02d}",
+                    arch_points[index],
+                    arch_points[index + 1],
+                    0.045,
+                    m["window_frame"],
+                ))
+            for mullion_index, offset in enumerate((-0.62, 0.0, 0.62)):
+                top_z = spring_z + math.sqrt(max(
+                    0.0,
+                    radius * radius - offset * offset,
+                ))
+                objs.append(box(
+                    f"FIXED_CivicWindowMullion_{x}_{mullion_index}",
+                    (0.038 if offset else 0.052, 0.12, top_z - sill_z - 0.10),
+                    (x + offset, frame_y - 0.015, sill_z + (top_z - sill_z) / 2),
+                    m["window_frame"],
+                    0.012,
+                ))
+            for transom_index, transom_z in enumerate(
+                (8.70, 9.28, 11.45)
+            ):
+                transom_width = arched_width_at_z(
+                    width,
+                    sill_z,
+                    height,
+                    transom_z,
+                ) - 0.16
+                objs.append(box(
+                    f"FIXED_CivicWindowTransom_{x}_{transom_index}",
+                    (
+                        transom_width,
+                        0.13,
+                        0.050 if transom_z == 11.45 else 0.075,
+                    ),
+                    (x, frame_y - 0.02, transom_z),
+                    m["window_frame"],
+                    0.012,
+                ))
         else:
             objs.append(box(
                 f"FIXED_CivicWindowGlass_{x}",
@@ -1343,6 +1478,132 @@ def civic_windows(
                 0.32,
                 m["marble"],
             ))
+
+
+def civic_secondary_window(
+    objs: list[bpy.types.Object],
+    m: dict[str, bpy.types.Material],
+    name: str,
+    plane: float,
+    lateral: float,
+    outward: float,
+    *,
+    front_axis: str,
+    width: float = 3.0,
+    height: float = 7.6,
+    sill_z: float = 4.0,
+) -> None:
+    """Build a quieter but complete arched sash on side and rear elevations."""
+    glass_mat = m.get("secondary_glass", m["glass"])
+    frame_mat = m.get("window_frame", m["bronze"])
+    pane_plane = plane + outward * 0.05
+    reveal_plane = plane + outward * 0.09
+    frame_plane = plane + outward * 0.13
+    if front_axis == "y":
+        objs.append(arched_panel(
+            name + "_Glass",
+            lateral,
+            pane_plane,
+            sill_z,
+            width,
+            height,
+            glass_mat,
+        ))
+        objs.extend(arch_frame(
+            name + "_StoneReveal",
+            lateral,
+            reveal_plane,
+            sill_z - 0.08,
+            width + 0.46,
+            height + 0.34,
+            0.26,
+            m["marble"],
+        ))
+        objs.extend(arch_frame(
+            name + "_Frame",
+            lateral,
+            frame_plane,
+            sill_z,
+            width,
+            height,
+            0.20,
+            frame_mat,
+        ))
+        objs.append(box(
+            name + "_Mullion",
+            (0.05, 0.12, height - 0.16),
+            (lateral, frame_plane + outward * 0.02, sill_z + height / 2),
+            frame_mat,
+            0.012,
+        ))
+        objs.append(box(
+            name + "_Transom",
+            (width - 0.14, 0.12, 0.06),
+            (lateral, frame_plane + outward * 0.02, sill_z + height * 0.58),
+            frame_mat,
+            0.012,
+        ))
+        objs.append(box(
+            name + "_Sill",
+            (width + 0.42, 0.34, 0.20),
+            (lateral, frame_plane, sill_z - 0.06),
+            m["marble"],
+            0.025,
+        ))
+    else:
+        objs.append(arched_panel(
+            name + "_Glass",
+            pane_plane,
+            lateral,
+            sill_z,
+            width,
+            height,
+            glass_mat,
+            front_axis="x",
+        ))
+        objs.extend(arch_frame(
+            name + "_StoneReveal",
+            reveal_plane,
+            lateral,
+            sill_z - 0.08,
+            width + 0.46,
+            height + 0.34,
+            0.26,
+            m["marble"],
+            front_axis="x",
+        ))
+        objs.extend(arch_frame(
+            name + "_Frame",
+            frame_plane,
+            lateral,
+            sill_z,
+            width,
+            height,
+            0.20,
+            frame_mat,
+            front_axis="x",
+        ))
+        objs.append(box(
+            name + "_Mullion",
+            (0.12, 0.05, height - 0.16),
+            (frame_plane + outward * 0.02, lateral, sill_z + height / 2),
+            frame_mat,
+            0.012,
+        ))
+        objs.append(box(
+            name + "_Transom",
+            (0.12, width - 0.14, 0.06),
+            (frame_plane + outward * 0.02, lateral, sill_z + height * 0.58),
+            frame_mat,
+            0.012,
+        ))
+        objs.append(box(
+            name + "_Sill",
+            (0.34, width + 0.42, 0.20),
+            (frame_plane, lateral, sill_z - 0.06),
+            m["marble"],
+            0.025,
+        ))
 
 
 def dome_mesh(
@@ -1435,6 +1696,27 @@ def civic_fixed(
             "MAT_W3_CivicPorticoShadowStudy",
             (0.38, 0.37, 0.345, 1),
             0.66,
+        )
+        # Keep the registered occupied-window source legible through a very
+        # light physical glazing layer. The former opaque PBR box erased the
+        # reference's lower sash, bronze spandrel and arched upper lights.
+        m["heritage_glass"] = material(
+            "MAT_W3_CivicHeritageGlass",
+            (0.16, 0.20, 0.19, 0.07),
+            0.18,
+            0.03,
+        )
+        m["window_frame"] = material(
+            "MAT_W3_CivicWindowFrame",
+            (0.16, 0.095, 0.045, 1),
+            0.38,
+            0.52,
+        )
+        m["secondary_glass"] = material(
+            "MAT_W3_CivicSecondaryGlass",
+            (0.025, 0.035, 0.040, 1),
+            0.24,
+            0.08,
         )
     objs.append(box("FIXED_CivicMainBody", (70, 34, 17), (0, 2, 8.5), m["marble"], 0.28))
     objs.append(box("FIXED_CivicEntablature", (72, 35, 1.5), (0, 2, 17.25), m["stone"], 0.2))
@@ -1563,10 +1845,30 @@ def civic_fixed(
                     ))
     # Rear and side windows keep the landmark inhabited in orbit.
     for x in (-28, -20, -12, 12, 20, 28):
-        objs.append(box(f"FIXED_CivicRearWindow_{x}", (3.0, 0.18, 7.5), (x, 19.05, 9), m["glass"]))
+        civic_secondary_window(
+            objs,
+            m,
+            f"FIXED_CivicRearWindow_{x}",
+            19.0,
+            x,
+            1.0,
+            front_axis="y",
+            width=3.1,
+            height=7.8,
+        )
     for side in (-1, 1):
         for y in (-8, 0, 8, 15):
-            objs.append(box(f"FIXED_CivicSideWindow_{side}_{y}", (0.18, 3.0, 7.2), (side * 35.1, y, 9), m["glass"]))
+            civic_secondary_window(
+                objs,
+                m,
+                f"FIXED_CivicSideWindow_{side}_{y}",
+                side * 35.0,
+                y,
+                float(side),
+                front_axis="x",
+                width=3.0,
+                height=7.5,
+            )
     # Ceremonial stair.
     if base_study:
         step_count = 10
