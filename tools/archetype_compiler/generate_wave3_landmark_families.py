@@ -98,6 +98,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--markthal-fixed", type=Path)
     parser.add_argument("--family", action="append", choices=sorted(FAMILIES))
+    parser.add_argument(
+        "--arena-comparison",
+        choices=("a-roof", "b-facade", "c-glass"),
+        help="Render one non-destructive arena study without exporting family assets.",
+    )
+    parser.add_argument(
+        "--comparison-output",
+        type=Path,
+        help="Output directory for --arena-comparison renders.",
+    )
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     return parser.parse_args(argv)
 
@@ -746,15 +756,21 @@ def arena_media_ribbon(
     ]
 
 
-def arena_roof_membrane(name: str, mat: bpy.types.Material,
-                        radial_rings: int = 48, segments: int = 96) -> bpy.types.Object:
+def arena_roof_membrane(
+    name: str,
+    mat: bpy.types.Material,
+    radial_rings: int = 48,
+    segments: int = 96,
+    inner_rx: float = 28.0,
+    inner_ry: float = 18.0,
+) -> bpy.types.Object:
     """Shallow elliptical annulus: enough real roof topology for aerial light."""
     verts: list[tuple[float, float, float]] = []
     faces: list[tuple[int, ...]] = []
     for ring in range(radial_rings):
         t = ring / (radial_rings - 1)
-        rx = 28.0 + (66.0 - 28.0) * t
-        ry = 18.0 + (52.0 - 18.0) * t
+        rx = inner_rx + (66.0 - inner_rx) * t
+        ry = inner_ry + (52.0 - inner_ry) * t
         z = 40.75 - 4.75 * (t ** 1.45)
         for i in range(segments):
             a = 2 * math.pi * i / segments
@@ -801,7 +817,10 @@ def arch_frame(name: str, x: float, y: float, z: float, width: float, height: fl
     return parts
 
 
-def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
+def arena_fixed(
+    m: dict[str, bpy.types.Material],
+    comparison_profile: str = "canonical",
+) -> list[bpy.types.Object]:
     objs: list[bpy.types.Object] = []
     bowl_rings = [
         (12.0, 75.0, 60.0),
@@ -818,17 +837,51 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         (34.0, 72.0, 57.2),
         (36.0, 67.0, 53.0),
     ]
+    bowl_metal = m["metal"]
+    bowl_metal_alt = m["metal_alt"]
+    if comparison_profile == "b-facade":
+        # Emphasize the reference's sculpted, gently pinched shell and its
+        # large quiet triangular cassettes rather than the registered texture.
+        bowl_rings = [
+            (12.0, 72.0, 57.5),
+            (14.0, 73.2, 58.5),
+            (15.5, 74.2, 59.2),
+            (18.0, 75.2, 60.0),
+            (20.0, 75.8, 60.4),
+            (22.0, 76.2, 60.7),
+            (24.0, 76.2, 60.7),
+            (27.0, 75.8, 60.4),
+            (29.5, 75.0, 59.8),
+            (31.5, 74.0, 59.0),
+            (32.3, 73.4, 58.4),
+            (34.0, 70.8, 56.0),
+            (36.0, 66.0, 52.0),
+        ]
+        bowl_metal = material(
+            "MAT_W3_ArenaFacadeStudySilver",
+            (0.60, 0.64, 0.68, 1),
+            0.30,
+            0.62,
+        )
+        bowl_metal_alt = bowl_metal
     bowl = tapered_ellipse(
         "FIXED_ArenaBowl",
         bowl_rings,
-        m["metal"], m["metal_alt"], segments=128, cap_bottom=False,
+        bowl_metal,
+        bowl_metal_alt,
+        segments=128,
+        cap_bottom=False,
+        cap_top=comparison_profile != "a-roof",
     )
     arena_cut_portals(bowl)
     objs.append(bowl)
+    concourse_glass = m["glass"]
     concourse = tapered_ellipse(
         "FIXED_ArenaConcourseGlass",
         [(0.15, 75, 60), (0.3, 75, 60), (11.5, 75, 60), (12.0, 75, 60)],
-        m["glass"], segments=128,
+        concourse_glass,
+        segments=128,
+        cap_top=comparison_profile != "a-roof",
     )
     arena_cut_portals(concourse)
     objs.append(concourse)
@@ -906,6 +959,9 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         for segment in range(segment_count):
             p0 = a.lerp(b, segment / segment_count)
             p1 = a.lerp(b, (segment + 1) / segment_count)
+            if comparison_profile == "b-facade":
+                p0.y = front_y(p0.x, p0.z) - 0.20
+                p1.y = front_y(p1.x, p1.z) - 0.20
             midpoint = (p0 + p1) * 0.5
             if arena_point_in_portal(midpoint.x, midpoint.z):
                 continue
@@ -913,11 +969,11 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                 f"{name}_{segment:02d}",
                 tuple(p0),
                 tuple(p1),
-                0.065,
+                0.16 if comparison_profile == "b-facade" else 0.065,
                 m["dark"],
             ))
 
-    columns = 10
+    columns = 7 if comparison_profile == "b-facade" else 10
     xs = [(-60 + i * 120 / columns) for i in range(columns + 1)]
     for i in range(columns):
         x0, x1 = xs[i], xs[i + 1]
@@ -931,22 +987,101 @@ def arena_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             (x0, front_y(x0, 31) - 0.12, 31),
             (x1, front_y(x1, 13) - 0.12, 13),
         )
+    if comparison_profile == "c-glass":
+        # Give the transparent base real architectural depth: dark floor
+        # plates and restrained vertical mullions visible through the skin.
+        for level in (3.4, 7.2, 10.9):
+            objs.extend(ellipse_ring(
+                f"FIXED_ArenaConcourseFloor_{level}",
+                74.6,
+                59.6,
+                level,
+                0.12,
+                m["dark"],
+                128,
+            ))
+        for index, angle in enumerate(
+            math.pi + i * math.pi / 24 for i in range(25)
+        ):
+            x = 74.9 * math.cos(angle)
+            y = 59.9 * math.sin(angle) - 0.08
+            if arena_point_in_portal(x, 6.0):
+                continue
+            objs.append(beam(
+                f"FIXED_ArenaConcourseMullion_{index:02d}",
+                (x, y, 0.45),
+                (x, y, 11.65),
+                0.085,
+                m["dark"],
+            ))
+
     # Ribbed shallow roof and open oculus.
-    objs.append(arena_roof_membrane("FIXED_ArenaRoofMembrane", m["roof"]))
+    inner_rx = 32.0 if comparison_profile == "a-roof" else 28.0
+    inner_ry = 22.0 if comparison_profile == "a-roof" else 18.0
+    objs.append(arena_roof_membrane(
+        "FIXED_ArenaRoofMembrane",
+        m["roof"],
+        inner_rx=inner_rx,
+        inner_ry=inner_ry,
+    ))
     roof_segments = 96
     for i in range(roof_segments):
         angle = 2 * math.pi * i / roof_segments
-        inner = (28 * math.cos(angle), 18 * math.sin(angle), 41.0)
+        inner = (inner_rx * math.cos(angle), inner_ry * math.sin(angle), 41.0)
         outer = (66 * math.cos(angle), 52 * math.sin(angle), 36.0)
-        objs.append(beam(f"FIXED_ArenaRoofRib{i:03d}", inner, outer, 0.18, m["metal"]))
-    objs.extend(ellipse_ring("FIXED_ArenaOculus", 28, 18, 41.0, 0.48, m["dark"], 96))
-    objs.extend(ellipse_ring("FIXED_ArenaOculusWarmRing", 27.25, 17.25, 40.55, 0.16, m["amber_solid"], 96))
-    objs.append(tapered_ellipse(
-        "FIXED_ArenaOculusRecess",
-        [(39.55, 27.1, 17.1), (39.64, 27.1, 17.1)],
+        rib_radius = 0.24 if comparison_profile == "a-roof" else 0.18
+        objs.append(beam(f"FIXED_ArenaRoofRib{i:03d}", inner, outer, rib_radius, m["metal"]))
+    objs.extend(ellipse_ring(
+        "FIXED_ArenaOculus",
+        inner_rx,
+        inner_ry,
+        41.0,
+        0.56 if comparison_profile == "a-roof" else 0.48,
         m["dark"],
-        segments=96,
+        96,
     ))
+    objs.extend(ellipse_ring(
+        "FIXED_ArenaOculusWarmRing",
+        inner_rx - 0.75,
+        inner_ry - 0.75,
+        40.55,
+        0.20 if comparison_profile == "a-roof" else 0.16,
+        m["amber_solid"],
+        96,
+    ))
+    if comparison_profile == "a-roof":
+        objs.append(tapered_ellipse(
+            "FIXED_ArenaEventFloor",
+            [(0.42, 25.0, 15.0), (0.50, 25.0, 15.0)],
+            m["dark"],
+            segments=96,
+        ))
+        objs.append(tapered_ellipse(
+            "FIXED_ArenaOculusInnerWall",
+            [(35.4, inner_rx - 1.4, inner_ry - 1.4),
+             (40.45, inner_rx - 0.9, inner_ry - 0.9)],
+            m["warm"],
+            segments=96,
+            cap_bottom=False,
+            cap_top=False,
+        ))
+        for level in (36.4, 38.2, 40.0):
+            objs.extend(ellipse_ring(
+                f"FIXED_ArenaOculusInnerTruss_{level}",
+                inner_rx - 1.15,
+                inner_ry - 1.15,
+                level,
+                0.11,
+                m["dark"],
+                96,
+            ))
+    else:
+        objs.append(tapered_ellipse(
+            "FIXED_ArenaOculusRecess",
+            [(39.55, 27.1, 17.1), (39.64, 27.1, 17.1)],
+            m["dark"],
+            segments=96,
+        ))
     return objs
 
 
@@ -1284,7 +1419,14 @@ def aim_camera(location: tuple[float, float, float], target: tuple[float, float,
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
 
-def render_views(folder: Path, family: str, width: float, depth: float, height: float) -> list[str]:
+def render_views(
+    folder: Path,
+    family: str,
+    width: float,
+    depth: float,
+    height: float,
+    selected_roles: set[str] | None = None,
+) -> list[str]:
     setup_render()
     distance = max(width, depth) * 1.35
     views = {
@@ -1331,12 +1473,42 @@ def render_views(folder: Path, family: str, width: float, depth: float, height: 
         )
     names = []
     for role, (location, target, lens) in views.items():
+        if selected_roles is not None and role not in selected_roles:
+            continue
         aim_camera(location, target, lens)
         name = f"{family}_{role}.png"
         bpy.context.scene.render.filepath = str(folder / name)
         bpy.ops.render.render(write_still=True)
         names.append(name)
     return names
+
+
+def render_arena_comparison(
+    profile: str,
+    output_root: Path,
+    comparison_output: Path,
+) -> None:
+    """Render a bounded arena study without changing canonical deliverables."""
+    clear_scene()
+    family = "modern-sports-arena"
+    config = FAMILIES[family]
+    mats = palette(output_root / family)
+    objects = arena_fixed(mats, profile)
+    normalize_world_bounds(objects, config["dimensions"])
+    shift_to_ground(objects)
+    folder = comparison_output / profile
+    folder.mkdir(parents=True, exist_ok=True)
+    renders = render_views(
+        folder,
+        family,
+        *config["dimensions"],
+        selected_roles={"preview", "front_corner_oblique", "aerial"},
+    )
+    print(
+        f"[wave3] arena comparison {profile}: "
+        f"{triangle_count(objects):,} tris, {len(renders)} renders",
+        flush=True,
+    )
 
 
 def module_payload(family: str, role: str, variant: str, filename: str,
@@ -1693,6 +1865,15 @@ def build_family(
 def main() -> int:
     args = parse_args()
     output_root = args.output_root.resolve()
+    if args.arena_comparison:
+        if args.comparison_output is None:
+            raise ValueError("--comparison-output is required with --arena-comparison")
+        render_arena_comparison(
+            args.arena_comparison,
+            output_root,
+            args.comparison_output.resolve(),
+        )
+        return 0
     markthal_fixed = args.markthal_fixed.resolve() if args.markthal_fixed else None
     selected = args.family or list(FAMILIES)
     for family in selected:
