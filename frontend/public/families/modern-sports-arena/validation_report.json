@@ -11,7 +11,7 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "modern-sports-arena_assembled.glb: 12.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "modern-sports-arena_assembled.glb: 13.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -107,7 +107,7 @@
         "MAT_W3_ArenaMetalSkin",
         "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 3938080
+      "size_bytes": 3938088
     },
     {
       "file": "modern-sports-arena_roof.glb",
@@ -131,23 +131,23 @@
     {
       "file": "modern-sports-arena_assembled.glb",
       "status": "ok",
-      "triangles": 41048,
+      "triangles": 60208,
       "extent_m": {
         "width_x": 149.981,
         "height_y": 41.802,
         "depth_z": 119.988
       },
-      "bottom_y": -0.0,
+      "bottom_y": 0.0,
       "materials": [
         "MAT_W3_AmberRibbonSolid",
+        "MAT_W3_ArenaConcrete",
         "MAT_W3_ArenaGlassSkin",
         "MAT_W3_ArenaMetalSkin",
         "MAT_W3_ArenaMetalSkinAlt",
         "MAT_W3_ArenaRoofSkin",
-        "MAT_W3_DarkSteel",
-        "MAT_W3_Stone"
+        "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 12633776,
+      "size_bytes": 14078056,
       "role": "assembled"
     }
   ]

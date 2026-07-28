@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-27-verified-pbr-asset-contract-v90",
+  "memory_version": "2026-07-27-verified-pbr-asset-contract-v91",
   "archetype_id": "modern_sports_arena",
   "family": "modern-sports-arena",
   "status": "pass",
@@ -99,7 +99,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "37400 assembled triangles; budget 12000-180000"
+        "detail": "40432 assembled triangles; budget 12000-180000"
       }
     ]
   }

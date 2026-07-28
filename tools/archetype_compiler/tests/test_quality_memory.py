@@ -57,7 +57,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-27-verified-pbr-asset-contract-v90"
+        == "2026-07-27-verified-pbr-asset-contract-v91"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -72,6 +72,11 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "camera-locked archetype" in item["symptom"].lower()
         and "screen-space offsets" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "entrance staircase" in item["symptom"].lower()
+        and "tacked onto the facade" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert {

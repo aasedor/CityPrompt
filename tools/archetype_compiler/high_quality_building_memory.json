@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-verified-pbr-asset-contract-v90",
+  "memory_version": "2026-07-27-verified-pbr-asset-contract-v91",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -624,6 +624,11 @@
       "symptom": "A curved landmark matches in 3D dimensions but its roof edge, entrance crests, material bands or media ribbon still miss the camera-locked archetype by visible screen-space offsets",
       "cause": "The iteration compared only world dimensions; perspective and shell depth moved supposedly aligned facade features to different image rows.",
       "correction": "Register silhouette top and base, roof edge, oculus extents, band boundaries, entrance crests and ribbons in the locked hero camera. Adjust continuous shell-following profiles against those landmarks, then confirm the correction remains plausible in front-corner, rear-corner and aerial views."
+    },
+    {
+      "symptom": "A monumental arena entrance staircase reads as another window or as a ramp tacked onto the facade",
+      "cause": "The portal remained a material-swapped facade panel, or the stairs were built as a bright solid wedge projecting outside the shell instead of circulation carved through it.",
+      "correction": "Delete the exterior and concourse faces inside the portal, clip crossing facade structure, place the first riser at the shell plane, climb inward with distinct tread or escalator runs, and terminate at a recessed occupied landing framed by shell-derived cheeks, soffit and handrails."
     }
   ]
 }

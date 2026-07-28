@@ -205,6 +205,7 @@ def skin_material(
 def palette(family_dir: Path) -> dict[str, bpy.types.Material]:
     mats = {
         "stone": material("MAT_W3_Stone", (0.78, 0.76, 0.70, 1), 0.62),
+        "concrete": material("MAT_W3_ArenaConcrete", (0.34, 0.36, 0.38, 1), 0.82),
         "marble": material("MAT_W3_Marble", (0.88, 0.87, 0.82, 1), 0.5),
         "metal": material("MAT_W3_SilverMetal", (0.62, 0.66, 0.70, 1), 0.28, 0.62),
         "metal_alt": material("MAT_W3_SilverFacet", (0.46, 0.51, 0.57, 1), 0.34, 0.58),
@@ -548,63 +549,91 @@ def arena_entry_stairs(
     normal = Vector((centre_x / (rx * rx), facade_y / (ry * ry), 0)).normalized()
     tangent = Vector((-normal.y, normal.x, 0))
     rotation_z = math.atan2(normal.y, normal.x) - math.pi / 2
-    step_count = 18
-    step_run = 1.02
-    riser_height = 0.38
+    step_count = 17
+    step_run = 0.85
+    riser_height = 0.40
     width = 18.5
-    outer_offset = 9.0
+    centre_width = 4.1
+    side_width = 6.4
+    side_offset = centre_width / 2 + 0.8 + side_width / 2
+    flights = (
+        ("L", -side_offset, side_width, m["concrete"]),
+        ("C", 0.0, centre_width, m["dark"]),
+        ("R", side_offset, side_width, m["concrete"]),
+    )
+    # The first riser sits at the shell plane and the flight climbs inward;
+    # it is an entrance carved into the arena, not a ramp placed in front.
+    outer_offset = 0.8
     for index in range(step_count):
         height = riser_height * (index + 1)
         offset = outer_offset - index * step_run
-        stair = box(
-            f"{name}_{index:02d}",
-            (width, step_run + 0.06, height),
-            (
-                centre_x + normal.x * offset,
-                facade_y + normal.y * offset,
-                height / 2,
-            ),
-            m["stone"],
-            0.025,
-        )
-        stair.rotation_euler.z = rotation_z
-        result.append(stair)
+        riser_offset = offset + step_run / 2
         nosing_offset = offset + step_run / 2
-        nosing = box(
-            f"{name}_Nosing_{index:02d}",
-            (width + 0.10, 0.07, 0.055),
-            (
-                centre_x + normal.x * nosing_offset,
-                facade_y + normal.y * nosing_offset,
-                height + 0.025,
-            ),
-            m["dark"],
-        )
-        nosing.rotation_euler.z = rotation_z
-        result.append(nosing)
+        for flight_name, lateral, flight_width, flight_mat in flights:
+            lateral_offset = tangent * lateral
+            stair = box(
+                f"{name}_Tread_{flight_name}_{index:02d}",
+                (flight_width, step_run + 0.06, 0.18),
+                (
+                    centre_x + normal.x * offset + lateral_offset.x,
+                    facade_y + normal.y * offset + lateral_offset.y,
+                    height - 0.09,
+                ),
+                flight_mat,
+                0.025,
+            )
+            stair.rotation_euler.z = rotation_z
+            result.append(stair)
+            riser = box(
+                f"{name}_Riser_{flight_name}_{index:02d}",
+                (flight_width, 0.12, riser_height),
+                (
+                    centre_x + normal.x * riser_offset + lateral_offset.x,
+                    facade_y + normal.y * riser_offset + lateral_offset.y,
+                    height - riser_height / 2,
+                ),
+                flight_mat,
+                0.018,
+            )
+            riser.rotation_euler.z = rotation_z
+            result.append(riser)
+            nosing = box(
+                f"{name}_Nosing_{flight_name}_{index:02d}",
+                (flight_width + 0.10, 0.07, 0.055),
+                (
+                    centre_x + normal.x * nosing_offset + lateral_offset.x,
+                    facade_y + normal.y * nosing_offset + lateral_offset.y,
+                    height + 0.025,
+                ),
+                m["dark"],
+            )
+            nosing.rotation_euler.z = rotation_z
+            result.append(nosing)
 
     inner_offset = outer_offset - (step_count - 1) * step_run
     rail_start_centre = Vector((
-        centre_x + normal.x * (outer_offset + 0.35),
-        facade_y + normal.y * (outer_offset + 0.35),
-        0.62,
+        centre_x + normal.x * (outer_offset + 0.20),
+        facade_y + normal.y * (outer_offset + 0.20),
+        0.76,
     ))
     rail_end_centre = Vector((
         centre_x + normal.x * (inner_offset - 0.35),
         facade_y + normal.y * (inner_offset - 0.35),
         step_count * riser_height + 0.78,
     ))
-    for side in (-1.0, 1.0):
-        offset = tangent * (width / 2 + 0.32) * side
+    rail_offsets = (-width / 2 - 0.32, -centre_width / 2 - 0.40,
+                    centre_width / 2 + 0.40, width / 2 + 0.32)
+    for rail_index, lateral in enumerate(rail_offsets):
+        offset = tangent * lateral
         result.append(beam(
-            f"{name}_Balustrade_{'L' if side < 0 else 'R'}",
+            f"{name}_Balustrade_{rail_index}",
             tuple(rail_start_centre + offset),
             tuple(rail_end_centre + offset),
             0.16,
             m["dark"],
         ))
         result.append(beam(
-            f"{name}_Handrail_{'L' if side < 0 else 'R'}",
+            f"{name}_Handrail_{rail_index}",
             tuple(rail_start_centre + offset + Vector((0, 0, 0.24))),
             tuple(rail_end_centre + offset + Vector((0, 0, 0.24))),
             0.055,
@@ -612,16 +641,16 @@ def arena_entry_stairs(
         ))
 
     # Join the highest tread to a genuine upper concourse landing.
-    landing_offset = inner_offset - 2.0
+    landing_offset = inner_offset - 1.7
     landing = box(
         f"{name}_UpperLanding",
-        (width + 0.8, 4.2, 0.34),
+        (width + 0.8, 3.4, 0.34),
         (
             centre_x + normal.x * landing_offset,
             facade_y + normal.y * landing_offset,
             step_count * riser_height + 0.17,
         ),
-        m["stone"],
+        m["concrete"],
         0.035,
     )
     landing.rotation_euler.z = rotation_z
@@ -662,7 +691,7 @@ def arena_portal_backdrop(
     name: str,
     centre_x: float,
     mat: bpy.types.Material,
-    inset: float = 5.0,
+    inset: float = 17.0,
     segments: int = 32,
 ) -> bpy.types.Object:
     """Recessed arched concourse wall behind a physically open portal."""
@@ -673,8 +702,10 @@ def arena_portal_backdrop(
         t = -1.0 + 2.0 * index / segments
         x = centre_x + half_width * t
         facade_y = -60.0 * math.sqrt(max(0.0, 1.0 - (x / 75.0) ** 2))
-        outward = Vector((x / (75.0 * 75.0), facade_y / (60.0 * 60.0), 0)).normalized()
-        inset_point = Vector((x, facade_y, 0)) - outward * inset
+        # Preserve the portal's full elevation width while moving the inner
+        # concourse straight back. Radial inset also shifts x on an ellipse,
+        # collapsing the glass wall into a small triangular patch.
+        inset_point = Vector((x, facade_y + inset, 0))
         top = 19.0 * (1.0 - t * t) + 1.9
         verts.extend([
             (inset_point.x, inset_point.y, 0.18),

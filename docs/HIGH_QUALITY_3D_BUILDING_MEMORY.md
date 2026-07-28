@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-verified-pbr-asset-contract-v90`.
+Current executable memory: `2026-07-27-verified-pbr-asset-contract-v91`.
 
 ## The quality target
 
@@ -835,6 +835,12 @@ The polychrome collegiate family added four rules for resizable hero facades:
   an elevated view, so the hero-facing assembly may need a deliberate
   shell-following profile while remaining continuous and plausible from the
   required oblique and aerial checks.
+- Monumental entrance stairs belong to a subtractive shell assembly. Cut the
+  opening through the exterior and concourse skins, place the first riser at
+  the facade plane, climb inward beneath the arch, and terminate at a recessed
+  occupied landing. The shell edge, portal cheek, soffit and handrails must
+  frame the circulation; a bright solid wedge placed in front of glazing will
+  always read as a temporary ramp or another window.
 
 ## Updating this memory
 
