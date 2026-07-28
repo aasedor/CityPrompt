@@ -1,9 +1,32 @@
 {
   "schema": "wave3-landmark-skin@1",
   "family": "civic-monumental-neoclassical",
-  "source": "textures/source/civic_material_source.png",
+  "source": "textures/source/civic_reference_elevation_v2.png",
   "source_model": "gpt-image-2",
-  "registration": "four horizontal bands, all runtime channels derived pixel-for-pixel",
+  "sources": {
+    "archetype_registered_front": "textures/source/civic_reference_elevation_v2.png",
+    "supporting_material_atlas": "textures/source/civic_material_source.png"
+  },
+  "registration": "archetype-specific orthographic front elevation registered in one coordinate system across wing, portico, attic, drum, pediment, dome and lantern; supporting tile bands are secondary only",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "civic_monumental_institution",
+    "registered_elevations": [
+      "front"
+    ],
+    "registered_surfaces": [
+      "left_wing",
+      "right_wing",
+      "portico_recess",
+      "central_attic",
+      "drum",
+      "pediment",
+      "dome"
+    ],
+    "uv_strategy": "feature_registered_shared_elevation_coordinates",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
   "channels": [
     "albedo",
     "normal",
@@ -103,6 +126,28 @@
         "emissive": "textures/far/copper/copper_emissive.png",
         "glass_mask": "textures/far/copper/copper_glass_mask.png",
         "opaque_mask": "textures/far/copper/copper_opaque_mask.png"
+      }
+    },
+    "front_registered": {
+      "near": {
+        "albedo": "textures/near/front_registered/front_registered_albedo.png",
+        "normal": "textures/near/front_registered/front_registered_normal.png",
+        "roughness": "textures/near/front_registered/front_registered_roughness.png",
+        "ao": "textures/near/front_registered/front_registered_ao.png",
+        "depth": "textures/near/front_registered/front_registered_depth.png",
+        "emissive": "textures/near/front_registered/front_registered_emissive.png",
+        "glass_mask": "textures/near/front_registered/front_registered_glass_mask.png",
+        "opaque_mask": "textures/near/front_registered/front_registered_opaque_mask.png"
+      },
+      "far": {
+        "albedo": "textures/far/front_registered/front_registered_albedo.png",
+        "normal": "textures/far/front_registered/front_registered_normal.png",
+        "roughness": "textures/far/front_registered/front_registered_roughness.png",
+        "ao": "textures/far/front_registered/front_registered_ao.png",
+        "depth": "textures/far/front_registered/front_registered_depth.png",
+        "emissive": "textures/far/front_registered/front_registered_emissive.png",
+        "glass_mask": "textures/far/front_registered/front_registered_glass_mask.png",
+        "opaque_mask": "textures/far/front_registered/front_registered_opaque_mask.png"
       }
     }
   },

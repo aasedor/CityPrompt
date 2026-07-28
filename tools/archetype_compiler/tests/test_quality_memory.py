@@ -17,6 +17,15 @@ def production_manifest() -> dict:
         "facade_sheet": {
             "pbr_channels": ["albedo", "normal", "roughness", "ao", "depth", "emissive"],
             "shadow_neutral": {"enabled": True},
+            "reference_registration": {
+                "mode": "archetype_specific",
+                "source_archetype_id": "quality_pilot",
+                "registered_elevations": ["front", "left", "right", "rear"],
+                "registered_surfaces": ["podium", "typical", "crown", "roof"],
+                "uv_strategy": "feature_registered_shared_coordinates",
+                "depth_binding": "shader_bump",
+                "generic_tiling_allowed": False,
+            },
             "bay_strategy": {
                 "middle_variants": ["floor", "floor_alt", "floor_c"],
             },
@@ -57,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-27-verified-pbr-asset-contract-v91"
+        == "2026-07-27-archetype-specific-skin-contract-v92"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -85,6 +94,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "fixed_ends_repeat_middle",
         "materials_are_pbr",
         "pbr_assets_are_verified",
+        "skins_are_archetype_specific",
         "glass_is_layered",
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",
@@ -197,9 +207,35 @@ def test_legacy_family_routes_to_review_without_stopping_batch():
     assert assessment["hard_failures"] == []
     assert {item["id"] for item in assessment["review_findings"]} >= {
         "missing_full_pbr_channels",
+        "generic_or_unregistered_skin",
         "albedo_not_shadow_neutral",
         "missing_fixed_assembly_contract",
     }
+
+
+def test_generic_tiled_skin_routes_to_review():
+    from quality_memory import assess_family_quality
+
+    manifest = production_manifest()
+    manifest["facade_sheet"]["reference_registration"] = {
+        "mode": "generic_style_atlas",
+        "source_archetype_id": "quality_pilot",
+        "registered_elevations": [],
+        "registered_surfaces": [],
+        "uv_strategy": "box_projection_repeat",
+        "depth_binding": "declared_file_only",
+        "generic_tiling_allowed": True,
+    }
+
+    assessment = assess_family_quality(
+        manifest,
+        {"status": "pass", "warnings": []},
+    )
+
+    assert assessment["status"] == "review"
+    assert {
+        item["id"] for item in assessment["review_findings"]
+    } == {"generic_or_unregistered_skin"}
 
 
 def test_structurally_invalid_family_fails_import_gate():

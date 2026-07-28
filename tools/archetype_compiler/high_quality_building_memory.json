@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-27-verified-pbr-asset-contract-v91",
+  "memory_version": "2026-07-27-archetype-specific-skin-contract-v92",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -23,6 +23,10 @@
     {
       "id": "pbr_assets_are_verified",
       "rule": "A manifest channel declaration is not evidence of a textured model. The assessor resolves every near/far PBR atlas, semantic mask, render-locked source and skin manifest on disk, verifies declared widths, and the exported GLB must embed the registered materials."
+    },
+    {
+      "id": "skins_are_archetype_specific",
+      "rule": "Generic tiled facade materials are not a production skin. Every new archetype uses its compatible reference views to author a render-locked, archetype-specific source; registers that source by elevation and semantic surface; binds depth or displacement in the runtime shader; and forbids generic tiling as the primary identity treatment."
     },
     {
       "id": "glass_is_layered",
@@ -174,7 +178,11 @@
         "shadow-neutral albedo",
         "seam-safe middle bays",
         "shape-aware semantic glass masks",
-        "separate podium, typical, alternate and crown bands"
+        "separate podium, typical, alternate and crown bands",
+        "archetype-specific render-locked source",
+        "feature-registered UVs for every identity surface",
+        "runtime depth or displacement binding",
+        "generic tiling prohibited as the primary identity treatment"
       ],
       "near_atlas_min_width_px": 2048,
       "preferred_near_atlas_width_px": 4096,
@@ -270,6 +278,7 @@
     "review": [
       "fewer_than_three_middle_variants",
       "missing_full_pbr_channels",
+      "generic_or_unregistered_skin",
       "missing_or_invalid_pbr_assets",
       "albedo_not_shadow_neutral",
       "near_atlas_below_2048",
@@ -629,6 +638,11 @@
       "symptom": "A monumental arena entrance staircase reads as another window or as a ramp tacked onto the facade",
       "cause": "The portal remained a material-swapped facade panel, or the stairs were built as a bright solid wedge projecting outside the shell instead of circulation carved through it.",
       "correction": "Delete the exterior and concourse faces inside the portal, clip crossing facade structure, place the first riser at the shell plane, climb inward with distinct tread or escalator runs, and terminate at a recessed occupied landing framed by shell-derived cheeks, soffit and handrails."
+    },
+    {
+      "symptom": "A building declares complete PBR channels but still looks generic, smooth or unrelated to its archetype photos",
+      "cause": "A generic material tile or broad style atlas was repeated across the model; the reference-specific elevation was never registered to semantic surfaces, and the declared depth map was not connected to the runtime shader.",
+      "correction": "Generate or derive a render-locked source from the exact compatible archetype views, register shared coordinates across each identity surface, bind normal plus depth/displacement in the shader, retain physical shadow-casting geometry, and fail review whenever generic_tiling_allowed is not explicitly false."
     }
   ]
 }

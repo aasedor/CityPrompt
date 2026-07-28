@@ -1,4 +1,4 @@
-"""Build phone-safe comparison sheets for the civic reference-match pilot."""
+"""Build phone-safe comparison sheets for the civic custom-skin pilot."""
 
 from pathlib import Path
 
@@ -21,8 +21,14 @@ FAMILY = (
     / "families"
     / "civic-monumental-neoclassical"
 )
-STUDY = REPO / "artifacts" / "civic-comparisons" / "d-reference"
 OUTPUT = FAMILY / "comparisons"
+PREVIOUS_CONTROL = (
+    REPO
+    / "artifacts"
+    / "civic-comparisons"
+    / "d-reference"
+    / "civic-monumental-neoclassical_preview.png"
+)
 
 
 def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
@@ -33,16 +39,26 @@ def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
 def card(
     canvas: Image.Image,
     draw: ImageDraw.ImageDraw,
-    path: Path,
+    source: Path | Image.Image,
     box: tuple[int, int, int, int],
     label: str,
     note: str,
     accent: str,
 ) -> None:
     x0, y0, x1, y1 = box
-    draw.rounded_rectangle(box, radius=24, fill="#f8f7f3", outline="#c7c5bf", width=2)
+    draw.rounded_rectangle(
+        box,
+        radius=24,
+        fill="#f8f7f3",
+        outline="#c7c5bf",
+        width=2,
+    )
     image_box = (x0 + 18, y0 + 62, x1 - 18, y1 - 96)
-    image = Image.open(path).convert("RGB")
+    image = (
+        source.copy().convert("RGB")
+        if isinstance(source, Image.Image)
+        else Image.open(source).convert("RGB")
+    )
     fitted = ImageOps.contain(
         image,
         (image_box[2] - image_box[0], image_box[3] - image_box[1]),
@@ -60,13 +76,13 @@ def build_front() -> None:
     draw = ImageDraw.Draw(canvas)
     draw.text(
         (60, 36),
-        "CIVIC MONUMENT — REFERENCE MATCH D",
+        "CIVIC MONUMENT — CUSTOM REGISTERED SKIN",
         font=font(42, True),
         fill="#172430",
     )
     draw.text(
         (62, 94),
-        "Goalposts above; current control and geometry-matched candidate below.",
+        "Exact reference source above; previous generic skin and new canonical below.",
         font=font(25),
         fill="#4e5963",
     )
@@ -79,24 +95,24 @@ def build_front() -> None:
             "#8a4b19",
         ),
         (
-            ARCHETYPE / "variant_0.png",
+            FAMILY / "textures" / "source" / "civic_reference_elevation_v2.png",
             (815, 160, 1545, 950),
-            "REFERENCE — PHOTOGRAPH",
-            "Portico depth, stair, central attic, patina",
+            "CUSTOM RENDER-LOCKED SOURCE",
+            "Exact archetype material and carving grammar",
             "#8a4b19",
         ),
         (
-            FAMILY / "civic-monumental-neoclassical_preview.png",
+            PREVIOUS_CONTROL,
             (55, 980, 785, 1770),
-            "CURRENT CONTROL",
-            "Approved family before this reference pass",
+            "BEFORE — GENERIC FOUR-ZONE SKIN",
+            "PBR files existed, but the facade was not registered",
             "#42515e",
         ),
         (
-            STUDY / "civic-monumental-neoclassical_preview.png",
+            FAMILY / "civic-monumental-neoclassical_preview.png",
             (815, 980, 1545, 1770),
-            "D — REFERENCE MATCH",
-            "Deep entrance, occupied base, framed drum",
+            "AFTER — CANONICAL CUSTOM SKIN",
+            "Feature-registered facade plus physical depth",
             "#226a48",
         ),
     ]
@@ -104,7 +120,7 @@ def build_front() -> None:
         card(canvas, draw, *item)
     draw.text(
         (60, 1792),
-        "Candidate study only — canonical GLB remains unchanged pending visual approval.",
+        "Canonical assembled GLB now embeds the archetype-specific registered material.",
         font=font(22, True),
         fill="#4e5963",
     )
@@ -116,13 +132,13 @@ def build_oblique() -> None:
     draw = ImageDraw.Draw(canvas)
     draw.text(
         (60, 36),
-        "PORTICO DEPTH + ROTUNDA TRANSITION",
+        "CUSTOM SKIN + CONSTRUCTION DEPTH",
         font=font(40, True),
         fill="#172430",
     )
     draw.text(
         (62, 92),
-        "The oblique view checks whether the entrance is architecture, not an overlay.",
+        "The oblique check proves the registered skin remains attached to real geometry.",
         font=font(24),
         fill="#4e5963",
     )
@@ -132,16 +148,16 @@ def build_oblique() -> None:
         ARCHETYPE / "variant_0.png",
         (55, 155, 785, 1005),
         "REFERENCE — STREET OBLIQUE",
-        "Projecting portico and stepped drum base",
+        "Carved order, projecting portico, integrated stair",
         "#8a4b19",
     )
     card(
         canvas,
         draw,
-        STUDY / "civic-monumental-neoclassical_front_corner_oblique.png",
+        FAMILY / "civic-monumental-neoclassical_front_corner_oblique.png",
         (815, 155, 1545, 1005),
-        "D — REFERENCE MATCH",
-        "6.4 m portico roof, landing, central attic",
+        "CANONICAL CUSTOM SKIN",
+        "Registered facade on a deep portico and curved drum",
         "#226a48",
     )
     canvas.save(
@@ -155,4 +171,4 @@ if __name__ == "__main__":
     OUTPUT.mkdir(parents=True, exist_ok=True)
     build_front()
     build_oblique()
-    print(f"Wrote civic reference sheets to {OUTPUT}")
+    print(f"Wrote civic custom-skin sheets to {OUTPUT}")

@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageEnhance, ImageFilter, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
 
 RESAMPLE = Image.Resampling.LANCZOS
@@ -57,6 +57,7 @@ def derive_channels(albedo: Image.Image, zone: str) -> dict[str, Image.Image]:
         "marble": 164,
         "relief": 176,
         "copper": 118,
+        "front_registered": 158,
     }[zone]
     detail = np.abs(luma.astype(np.float32) - smoothed)
     roughness = np.uint8(np.clip(roughness_base + detail * 1.8, 18, 235))
@@ -111,6 +112,68 @@ def save_zone(
         output[lod] = {}
         for channel, image in maps.items():
             path = zone_dir / f"{zone}_{channel}.png"
+            image.save(path, optimize=True)
+            output[lod][channel] = path.relative_to(family_dir).as_posix()
+    return output
+
+
+def civic_registered_glass_mask(size: tuple[int, int]) -> Image.Image:
+    """Shape-aware mask for the exact openings in the reference elevation."""
+    width, height = size
+    mask = Image.new("L", size, 0)
+    draw = ImageDraw.Draw(mask)
+
+    def arched_window(cx: float, top: float, bottom: float, span: float) -> None:
+        x0 = round((cx - span / 2) * width)
+        x1 = round((cx + span / 2) * width)
+        y0 = round(top * height)
+        spring = round((top + span * 0.48) * height)
+        y1 = round(bottom * height)
+        draw.ellipse((x0, y0, x1, spring + (spring - y0)), fill=255)
+        draw.rectangle((x0, spring, x1, y1), fill=255)
+
+    for centre in (0.078, 0.161, 0.244, 0.756, 0.839, 0.922):
+        arched_window(centre, 0.620, 0.848, 0.063)
+
+    for centre in (0.385, 0.432, 0.478, 0.524, 0.570, 0.616):
+        draw.rectangle(
+            (
+                round((centre - 0.014) * width),
+                round(0.335 * height),
+                round((centre + 0.014) * width),
+                round(0.422 * height),
+            ),
+            fill=255,
+        )
+    for centre in (0.476, 0.500, 0.524):
+        draw.rectangle(
+            (
+                round((centre - 0.008) * width),
+                round(0.080 * height),
+                round((centre + 0.008) * width),
+                round(0.145 * height),
+            ),
+            fill=255,
+        )
+    return mask
+
+
+def save_registered_civic_front(
+    source: Image.Image,
+    family_dir: Path,
+) -> dict[str, dict[str, str]]:
+    output: dict[str, dict[str, str]] = {}
+    for lod, size in (("near", (2048, 1536)), ("far", (1024, 768))):
+        zone_dir = family_dir / "textures" / lod / "front_registered"
+        zone_dir.mkdir(parents=True, exist_ok=True)
+        fitted = ImageOps.fit(source, size, method=RESAMPLE)
+        maps = derive_channels(fitted, "front_registered")
+        glass_mask = civic_registered_glass_mask(size)
+        maps["glass_mask"] = glass_mask
+        maps["opaque_mask"] = ImageOps.invert(glass_mask)
+        output[lod] = {}
+        for channel, image in maps.items():
+            path = zone_dir / f"front_registered_{channel}.png"
             image.save(path, optimize=True)
             output[lod][channel] = path.relative_to(family_dir).as_posix()
     return output
@@ -177,8 +240,14 @@ def prepare_arena(family_dir: Path) -> None:
 
 
 def prepare_civic(family_dir: Path) -> None:
-    source_path = family_dir / "textures" / "source" / "civic_material_source.png"
-    source = Image.open(source_path).convert("RGB")
+    material_source_path = (
+        family_dir / "textures" / "source" / "civic_material_source.png"
+    )
+    source_path = (
+        family_dir / "textures" / "source" / "civic_reference_elevation_v2.png"
+    )
+    material_source = Image.open(material_source_path).convert("RGB")
+    reference_source = Image.open(source_path).convert("RGB")
     bands = {
         "marble": (0.000, 0.255),
         "relief": (0.255, 0.520),
@@ -186,15 +255,48 @@ def prepare_civic(family_dir: Path) -> None:
         "copper": (0.750, 1.000),
     }
     zones = {
-        zone: save_zone(source, family_dir, zone, bounds)
+        zone: save_zone(material_source, family_dir, zone, bounds)
         for zone, bounds in bands.items()
     }
+    zones["front_registered"] = save_registered_civic_front(
+        reference_source,
+        family_dir,
+    )
     payload = {
         "schema": "wave3-landmark-skin@1",
         "family": family_dir.name,
         "source": source_path.relative_to(family_dir).as_posix(),
         "source_model": "gpt-image-2",
-        "registration": "four horizontal bands, all runtime channels derived pixel-for-pixel",
+        "sources": {
+            "archetype_registered_front": source_path.relative_to(
+                family_dir
+            ).as_posix(),
+            "supporting_material_atlas": material_source_path.relative_to(
+                family_dir
+            ).as_posix(),
+        },
+        "registration": (
+            "archetype-specific orthographic front elevation registered in one "
+            "coordinate system across wing, portico, attic, drum, pediment, "
+            "dome and lantern; supporting tile bands are secondary only"
+        ),
+        "reference_registration": {
+            "mode": "archetype_specific",
+            "source_archetype_id": "civic_monumental_institution",
+            "registered_elevations": ["front"],
+            "registered_surfaces": [
+                "left_wing",
+                "right_wing",
+                "portico_recess",
+                "central_attic",
+                "drum",
+                "pediment",
+                "dome",
+            ],
+            "uv_strategy": "feature_registered_shared_elevation_coordinates",
+            "depth_binding": "shader_bump",
+            "generic_tiling_allowed": False,
+        },
         "channels": list(CHANNELS),
         "semantic_masks": ["glass_mask", "opaque_mask"],
         "zones": zones,

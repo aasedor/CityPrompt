@@ -11,7 +11,7 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "civic-monumental-neoclassical_assembled.glb: 15.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "civic-monumental-neoclassical_assembled.glb: 22.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -31,7 +31,7 @@
         "MAT_W3_CivicMarbleSkin",
         "MAT_W3_CivicReliefSkin"
       ],
-      "size_bytes": 6860732
+      "size_bytes": 5665916
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_a.glb",
@@ -50,7 +50,7 @@
         "MAT_W3_CivicGlassSkin",
         "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 6469668
+      "size_bytes": 5460456
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_b.glb",
@@ -69,7 +69,7 @@
         "MAT_W3_CivicGlassSkin",
         "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 6471152
+      "size_bytes": 5461940
     },
     {
       "file": "civic-monumental-neoclassical_floor_typical_c.glb",
@@ -88,7 +88,7 @@
         "MAT_W3_CivicGlassSkin",
         "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 6468188
+      "size_bytes": 5458976
     },
     {
       "file": "civic-monumental-neoclassical_crown_crown.glb",
@@ -107,7 +107,7 @@
         "MAT_W3_CivicMarbleSkin",
         "MAT_W3_CivicReliefSkin"
       ],
-      "size_bytes": 6868200
+      "size_bytes": 5673380
     },
     {
       "file": "civic-monumental-neoclassical_roof.glb",
@@ -126,12 +126,12 @@
         "MAT_W3_CivicCopperSkin",
         "MAT_W3_CivicMarbleSkin"
       ],
-      "size_bytes": 7093460
+      "size_bytes": 5876892
     },
     {
       "file": "civic-monumental-neoclassical_assembled.glb",
       "status": "ok",
-      "triangles": 32108,
+      "triangles": 67017,
       "extent_m": {
         "width_x": 72.0,
         "height_y": 43.0,
@@ -140,14 +140,20 @@
       "bottom_y": -0.0,
       "materials": [
         "MAT_W3_CivicBronzeSkin",
-        "MAT_W3_CivicCopperSkin",
+        "MAT_W3_CivicCopperReferenceGrade",
+        "MAT_W3_CivicCopperSeamStudy",
+        "MAT_W3_CivicFluteShadowStudy",
+        "MAT_W3_CivicFrontRegisteredSkin",
         "MAT_W3_CivicGlassSkin",
-        "MAT_W3_CivicMarbleSkin",
-        "MAT_W3_CivicReliefSkin",
-        "MAT_W3_DarkSteel",
-        "MAT_W3_PorticoRecess"
+        "MAT_W3_CivicLanternGlassStudy",
+        "MAT_W3_CivicMarbleReferenceGrade",
+        "MAT_W3_CivicPedimentStudyRelief",
+        "MAT_W3_CivicPedimentStudyStone",
+        "MAT_W3_CivicPorticoShadowStudy",
+        "MAT_W3_CivicReliefReferenceGrade",
+        "MAT_W3_DarkSteel"
       ],
-      "size_bytes": 16324540,
+      "size_bytes": 23367792,
       "role": "assembled"
     }
   ]

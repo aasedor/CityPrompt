@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-27-verified-pbr-asset-contract-v89",
+  "memory_version": "2026-07-27-archetype-specific-skin-contract-v92",
   "archetype_id": "civic_monumental_institution",
   "family": "civic-monumental-neoclassical",
   "status": "pass",
@@ -57,6 +57,11 @@
         "detail": "shadow-neutral albedo declared"
       },
       {
+        "id": "generic_or_unregistered_skin",
+        "passed": true,
+        "detail": "archetype-specific source registered to 1 elevation(s) and 7 semantic surface(s); depth binding shader_bump"
+      },
+      {
         "id": "near_atlas_below_2048",
         "passed": true,
         "detail": "near atlas width 2048px; minimum 2048px"
@@ -94,12 +99,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "7 assembled materials; review above 20"
+        "detail": "13 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "31820 assembled triangles; budget 12000-180000"
+        "detail": "51849 assembled triangles; budget 12000-180000"
       }
     ]
   }

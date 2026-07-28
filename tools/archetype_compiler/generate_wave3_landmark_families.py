@@ -256,7 +256,14 @@ def skin_material(
     normal_map_node = nodes.new("ShaderNodeNormalMap")
     normal_map_node.inputs["Strength"].default_value = 0.62
     links.new(normal.outputs["Color"], normal_map_node.inputs["Color"])
-    links.new(normal_map_node.outputs["Normal"], bsdf.inputs["Normal"])
+    depth = image_node("depth", non_color=True)
+    bump = nodes.new("ShaderNodeBump")
+    bump.name = bump.label = "REGISTERED_DEPTH"
+    bump.inputs["Strength"].default_value = 0.24
+    bump.inputs["Distance"].default_value = 0.08
+    links.new(depth.outputs["Color"], bump.inputs["Height"])
+    links.new(normal_map_node.outputs["Normal"], bump.inputs["Normal"])
+    links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
 
     emissive = image_node("emissive")
     if bsdf.inputs.get("Emission Color"):
@@ -346,6 +353,14 @@ def palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                 metallic=0.48,
             ),
         })
+        if "front_registered" in near:
+            mats["front_registered"] = skin_material(
+                "MAT_W3_CivicFrontRegisteredSkin",
+                family_dir,
+                near["front_registered"],
+                "front_registered",
+                metallic=0.02,
+            )
     return mats
 
 
@@ -444,6 +459,147 @@ def beam(name: str, start: tuple[float, float, float], end: tuple[float, float, 
     obj.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(delta.normalized())
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     obj.data.materials.append(mat)
+    return obj
+
+
+def civic_reference_uv(x: float, z: float) -> tuple[float, float]:
+    """Map facade/attic coordinates into the registered elevation."""
+    u = 0.5 + x / 70.0
+    source_v_bottom = 1.0 - 1020.0 / 1086.0
+    wing_v_top = 1.0 - 520.0 / 1086.0
+    v = source_v_bottom + (z / 18.0) * (wing_v_top - source_v_bottom)
+    return (u, v)
+
+
+def registered_facade_panel(
+    name: str,
+    x0: float,
+    x1: float,
+    y: float,
+    z0: float,
+    z1: float,
+    mat: bpy.types.Material,
+) -> bpy.types.Object:
+    """Facade-aligned PBR panel sharing the full reference coordinate frame."""
+    verts = [(x0, y, z0), (x1, y, z0), (x1, y, z1), (x0, y, z1)]
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], [(0, 1, 2, 3)])
+    mesh.materials.append(mat)
+    layer = mesh.uv_layers.new(name="UVMap")
+    for loop_index, vertex_index in enumerate((0, 1, 2, 3)):
+        x, _, vertex_z = verts[vertex_index]
+        layer.data[loop_index].uv = civic_reference_uv(x, vertex_z)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
+def registered_pediment_face(
+    name: str,
+    width: float,
+    height: float,
+    y: float,
+    z: float,
+    mat: bpy.types.Material,
+) -> bpy.types.Object:
+    half = width / 2
+    verts = [(-half, y, z), (half, y, z), (0, y, z + height)]
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], [(0, 1, 2)])
+    mesh.materials.append(mat)
+    layer = mesh.uv_layers.new(name="UVMap")
+    for loop_index, vertex_index in enumerate((0, 1, 2)):
+        x, _, vertex_z = verts[vertex_index]
+        u = 0.5 + x / 68.0
+        v = (1.0 - 570.0 / 1086.0) + (
+            (vertex_z - z) / height
+        ) * ((1.0 - 440.0 / 1086.0) - (1.0 - 570.0 / 1086.0))
+        layer.data[loop_index].uv = (u, v)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
+def registered_drum_shell(
+    name: str,
+    mat: bpy.types.Material,
+    *,
+    segments: int = 48,
+) -> bpy.types.Object:
+    verts: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, int, int, int]] = []
+    uvs: list[tuple[float, float]] = []
+    z0, z1 = 18.28, 24.82
+    for index in range(segments + 1):
+        angle = -math.pi + math.pi * index / segments
+        x = 12.02 * math.cos(angle)
+        y = 2.0 + 11.16 * math.sin(angle)
+        for vertex_z in (z0, z1):
+            verts.append((x, y, vertex_z))
+            u = 0.5 + x / 75.0
+            v = (1.0 - 452.0 / 1086.0) + (
+                (vertex_z - z0) / (z1 - z0)
+            ) * ((1.0 - 330.0 / 1086.0) - (1.0 - 452.0 / 1086.0))
+            uvs.append((u, v))
+    for index in range(segments):
+        a = index * 2
+        faces.append((a, a + 2, a + 3, a + 1))
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.materials.append(mat)
+    layer = mesh.uv_layers.new(name="UVMap")
+    for polygon in mesh.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex_index = mesh.loops[loop_index].vertex_index
+            layer.data[loop_index].uv = uvs[vertex_index]
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
+def registered_dome_shell(
+    name: str,
+    mat: bpy.types.Material,
+    *,
+    radius: float = 12.28,
+    z: float = 25.02,
+    height_scale: float = 0.92,
+    segments: int = 64,
+    rings: int = 24,
+) -> bpy.types.Object:
+    """Front hemisphere carrying the exact reference copper and patina."""
+    verts: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, int, int, int]] = []
+    uvs: list[tuple[float, float]] = []
+    for ring in range(rings + 1):
+        phi = (math.pi / 2) * ring / rings
+        rr = radius * math.cos(phi)
+        vertex_z = z + radius * height_scale * math.sin(phi)
+        for index in range(segments + 1):
+            angle = -math.pi + math.pi * index / segments
+            x = rr * math.cos(angle)
+            y = 2.0 + rr * math.sin(angle)
+            verts.append((x, y, vertex_z))
+            u = 0.5 + x / 60.0
+            v = (1.0 - 347.0 / 1086.0) + (
+                (vertex_z - z) / (radius * height_scale)
+            ) * ((1.0 - 145.0 / 1086.0) - (1.0 - 347.0 / 1086.0))
+            uvs.append((u, v))
+    stride = segments + 1
+    for ring in range(rings):
+        for index in range(segments):
+            a = ring * stride + index
+            faces.append((a, a + 1, a + stride + 1, a + stride))
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.materials.append(mat)
+    layer = mesh.uv_layers.new(name="UVMap")
+    for polygon in mesh.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex_index = mesh.loops[loop_index].vertex_index
+            layer.data[loop_index].uv = uvs[vertex_index]
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
     return obj
 
 
@@ -1143,11 +1299,50 @@ def arena_fixed(
     return objs
 
 
-def civic_windows(objs: list[bpy.types.Object], m: dict[str, bpy.types.Material],
-                  y: float, z0: float = 2.2) -> None:
+def civic_windows(
+    objs: list[bpy.types.Object],
+    m: dict[str, bpy.types.Material],
+    y: float,
+    z0: float = 2.2,
+    registered_skin: bool = False,
+) -> None:
     for x in (-29, -23, -17, 17, 23, 29):
-        objs.append(box(f"FIXED_CivicWindowGlass_{x}", (3.3, 0.20, 9.2), (x, y, z0 + 5.0), m["glass"]))
-        objs.extend(arch_frame(f"FIXED_CivicWindowArch_{x}", x, y - 0.16, z0, 3.7, 10.0, 0.32, m["marble"]))
+        if registered_skin:
+            objs.append(box(
+                f"FIXED_CivicWindowGlass_{x}",
+                (3.08, 0.16, 8.75),
+                (x, y, 9.35),
+                m["glass"],
+            ))
+            objs.append(box(
+                f"FIXED_CivicWindowMullion_{x}",
+                (0.10, 0.13, 8.55),
+                (x, y - 0.12, 9.20),
+                m["bronze"],
+            ))
+            objs.append(box(
+                f"FIXED_CivicWindowTransom_{x}",
+                (2.90, 0.13, 0.11),
+                (x, y - 0.12, 8.75),
+                m["bronze"],
+            ))
+        else:
+            objs.append(box(
+                f"FIXED_CivicWindowGlass_{x}",
+                (3.3, 0.20, 9.2),
+                (x, y, z0 + 5.0),
+                m["glass"],
+            ))
+            objs.extend(arch_frame(
+                f"FIXED_CivicWindowArch_{x}",
+                x,
+                y - 0.16,
+                z0,
+                3.7,
+                10.0,
+                0.32,
+                m["marble"],
+            ))
 
 
 def dome_mesh(
@@ -1243,6 +1438,23 @@ def civic_fixed(
         )
     objs.append(box("FIXED_CivicMainBody", (70, 34, 17), (0, 2, 8.5), m["marble"], 0.28))
     objs.append(box("FIXED_CivicEntablature", (72, 35, 1.5), (0, 2, 17.25), m["stone"], 0.2))
+    if reference_match and m.get("front_registered"):
+        # One archetype-specific elevation coordinate system drives every
+        # exposed hero surface. Physical openings and trim remain in front,
+        # supplying the parallax and shadows a flat sheet cannot.
+        for suffix, x0, x1 in (
+            ("LeftWing", -35.0, -15.5),
+            ("RightWing", 15.5, 35.0),
+        ):
+            objs.append(registered_facade_panel(
+                f"FIXED_CivicRegistered{suffix}",
+                x0,
+                x1,
+                -15.06,
+                0.0,
+                18.0,
+                m["front_registered"],
+            ))
     if reference_match:
         for x in (-24.0, 24.0):
             objs.append(box(
@@ -1269,21 +1481,25 @@ def civic_fixed(
             m["stone"],
             0.10,
         ))
+        if m.get("front_registered"):
+            objs.append(registered_facade_panel(
+                "FIXED_CivicRegisteredCentralAttic",
+                -17.0,
+                17.0,
+                -11.02,
+                17.50,
+                21.0,
+                m["front_registered"],
+            ))
     civic_windows(
         objs,
         m,
         -15.15,
         z0=3.45 if base_study else 2.2,
+        registered_skin=bool(reference_match and m.get("front_registered")),
     )
-    if reference_match:
+    if reference_match and not m.get("front_registered"):
         for x in (-29, -23, -17, 17, 23, 29):
-            objs.append(box(
-                f"FIXED_CivicWindowMullion_{x}",
-                (0.13, 0.13, 8.75),
-                (x, -15.48, 8.25),
-                m["bronze"],
-                0.025,
-            ))
             objs.append(box(
                 f"FIXED_CivicWindowSill_{x}",
                 (4.05, 0.34, 0.24),
@@ -1422,6 +1638,16 @@ def civic_fixed(
         (0, -16.35, 9.7),
         portico_recess_material,
     ))
+    if reference_match and m.get("front_registered"):
+        objs.append(registered_facade_panel(
+            "FIXED_CivicRegisteredPorticoRecess",
+            -14.0,
+            14.0,
+            -16.61,
+            3.0,
+            16.40,
+            m["front_registered"],
+        ))
     portico_column_y = -21.0 if reference_match else -19.0
     for x in (-12.5, -7.5, -2.5, 2.5, 7.5, 12.5):
         shaft_radius = 0.73 if portico_study else 0.84
@@ -1618,6 +1844,15 @@ def civic_fixed(
                 0.11,
                 pediment_relief_material,
             ))
+        if reference_match and m.get("front_registered"):
+            objs.append(registered_pediment_face(
+                "FIXED_CivicRegisteredPediment",
+                30.2,
+                4.25,
+                -22.24,
+                18.35,
+                m["front_registered"],
+            ))
     for x in (-5, 0, 5):
         door_width = 3.6 if reference_match and x == 0 else (2.4 if reference_match else 3.0)
         objs.append(box(
@@ -1647,6 +1882,11 @@ def civic_fixed(
     objs.append(cylinder(
         "FIXED_CivicDrum", 11.8, 7.0, (0, 2.0, 21.5), m["marble"], 96, (1.0, 0.92)
     ))
+    if reference_match and m.get("front_registered"):
+        objs.append(registered_drum_shell(
+            "FIXED_CivicRegisteredDrum",
+            m["front_registered"],
+        ))
     for i in range(16):
         a = 2 * math.pi * i / 16
         window = box(
@@ -2269,6 +2509,8 @@ def facade_contract(
                 "opaque_mask": skin["atlases"]["near"]["opaque_mask"],
             },
         }
+        if skin.get("reference_registration"):
+            contract["reference_registration"] = skin["reference_registration"]
     if goalpost:
         contract["goalpost_reference"] = goalpost
         contract["goalpost_policy"] = (
@@ -2381,7 +2623,10 @@ def build_family(
         fixed_triangles = triangle_count(fixed_objects)
         module_builder = arena_module
     else:
-        fixed_objects = civic_fixed(mats)
+        # The approved canonical civic landmark uses the archetype-specific
+        # reference registration; the legacy generic control remains available
+        # only through the comparison profiles.
+        fixed_objects = civic_fixed(mats, "d-reference")
         normalize_world_bounds(fixed_objects, config["dimensions"])
         assembled_path = folder / f"{family}_assembled.glb"
         export_glb(assembled_path, fixed_objects)

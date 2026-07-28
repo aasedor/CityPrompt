@@ -136,6 +136,27 @@ def assess_family_quality(
         memory.get("construction_memory", {}).get("facade_pbr", {}).get("required_channels") or []
     )
     shadow_neutral = facade.get("shadow_neutral") or {}
+    reference_registration = facade.get("reference_registration") or {}
+    registered_elevations = {
+        str(value).strip()
+        for value in reference_registration.get("registered_elevations") or []
+        if str(value).strip()
+    }
+    registered_surfaces = {
+        str(value).strip()
+        for value in reference_registration.get("registered_surfaces") or []
+        if str(value).strip()
+    }
+    archetype_specific_skin = (
+        reference_registration.get("mode") == "archetype_specific"
+        and bool(str(reference_registration.get("source_archetype_id") or "").strip())
+        and bool(registered_elevations)
+        and bool(registered_surfaces)
+        and bool(str(reference_registration.get("uv_strategy") or "").strip())
+        and reference_registration.get("depth_binding")
+        in {"shader_bump", "shader_displacement", "baked_parallax"}
+        and reference_registration.get("generic_tiling_allowed") is False
+    )
     bay_strategy = facade.get("bay_strategy") or {}
     variants = list(bay_strategy.get("middle_variants") or [])
     delivery = facade.get("delivery") or {}
@@ -242,6 +263,22 @@ def assess_family_quality(
             "shadow-neutral albedo declared"
             if shadow_neutral.get("enabled") is True
             else "shadow-neutral albedo not declared",
+        ),
+        _gate(
+            "generic_or_unregistered_skin",
+            archetype_specific_skin,
+            (
+                f"archetype-specific source registered to "
+                f"{len(registered_elevations)} elevation(s) and "
+                f"{len(registered_surfaces)} semantic surface(s); "
+                f"depth binding {reference_registration.get('depth_binding')}"
+                if archetype_specific_skin
+                else (
+                    "missing archetype-specific source registration, semantic "
+                    "surface UV contract, runtime depth binding, or explicit "
+                    "generic_tiling_allowed=false"
+                )
+            ),
         ),
         _gate(
             "near_atlas_below_2048",

@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-27T15:08:02.177926+00:00",
+  "created_at": "2026-07-28T03:41:42.001819+00:00",
   "family": "civic-monumental-neoclassical",
   "archetype_id": "civic_monumental_institution",
   "archetype_label": "Civic Monumental Institution \u2014 Domed Neoclassical",
@@ -392,6 +392,62 @@
       "lod": "near",
       "zone": "copper",
       "channel": "opaque_mask"
+    },
+    {
+      "key": "near_front_registered_albedo",
+      "path": "textures/near/front_registered/front_registered_albedo.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_front_registered_normal",
+      "path": "textures/near/front_registered/front_registered_normal.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "normal"
+    },
+    {
+      "key": "near_front_registered_roughness",
+      "path": "textures/near/front_registered/front_registered_roughness.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_front_registered_ao",
+      "path": "textures/near/front_registered/front_registered_ao.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "ao"
+    },
+    {
+      "key": "near_front_registered_depth",
+      "path": "textures/near/front_registered/front_registered_depth.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "depth"
+    },
+    {
+      "key": "near_front_registered_emissive",
+      "path": "textures/near/front_registered/front_registered_emissive.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_front_registered_glass_mask",
+      "path": "textures/near/front_registered/front_registered_glass_mask.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_front_registered_opaque_mask",
+      "path": "textures/near/front_registered/front_registered_opaque_mask.png",
+      "lod": "near",
+      "zone": "front_registered",
+      "channel": "opaque_mask"
     }
   ],
   "facade_sheet": {
@@ -460,7 +516,7 @@
     },
     "assets": {
       "skin_manifest": "textures/skin_manifest.json",
-      "source": "textures/source/civic_material_source.png",
+      "source": "textures/source/civic_reference_elevation_v2.png",
       "near": {
         "albedo": "textures/near/civic_atlas_albedo.png",
         "normal": "textures/near/civic_atlas_normal.png",
@@ -485,6 +541,25 @@
         "glass_mask": "textures/near/civic_atlas_glass_mask.png",
         "opaque_mask": "textures/near/civic_atlas_opaque_mask.png"
       }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "civic_monumental_institution",
+      "registered_elevations": [
+        "front"
+      ],
+      "registered_surfaces": [
+        "left_wing",
+        "right_wing",
+        "portico_recess",
+        "central_attic",
+        "drum",
+        "pediment",
+        "dome"
+      ],
+      "uv_strategy": "feature_registered_shared_elevation_coordinates",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
     },
     "goalpost_reference": "/archetypes/buildings/civic_monumental_institution/variant_0.png",
     "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
@@ -536,12 +611,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6860732
+      "size_bytes": 5665916
     },
     {
       "role": "floor",
@@ -562,12 +638,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6469668
+      "size_bytes": 5460456
     },
     {
       "role": "floor",
@@ -588,12 +665,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6471152
+      "size_bytes": 5461940
     },
     {
       "role": "floor",
@@ -614,12 +692,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6468188
+      "size_bytes": 5458976
     },
     {
       "role": "crown",
@@ -640,12 +719,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6868200
+      "size_bytes": 5673380
     },
     {
       "role": "roof",
@@ -666,12 +746,13 @@
       "material_count": 10,
       "texture_keys": [
         "copper",
+        "front_registered",
         "glass",
         "marble",
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 7093460
+      "size_bytes": 5876892
     }
   ],
   "assembled": {
@@ -680,7 +761,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 43.0,
-    "triangle_count": 31820,
+    "triangle_count": 51849,
     "stack": [
       {
         "role": "assembled",
@@ -712,6 +793,7 @@
     },
     "texture_keys": [
       "copper",
+      "front_registered",
       "glass",
       "marble",
       "relief"

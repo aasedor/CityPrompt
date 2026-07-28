@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-27-verified-pbr-asset-contract-v91`.
+Current executable memory: `2026-07-27-archetype-specific-skin-contract-v92`.
 
 ## The quality target
 
@@ -78,6 +78,20 @@ The image provider receives the archetype views as hard design references and ge
 - emissive;
 - semantic glass and opaque masks;
 - podium, typical, alternate and crown bands.
+
+Generic tiled materials are supporting materials only; they are never the
+primary identity skin for a new archetype. Every family must retain an
+archetype-specific render-locked source derived from its compatible reference
+views and register that source to named elevations and semantic surfaces
+(entrance, wing, drum, pediment, dome, tower, roof or equivalent). The skin
+manifest records the source archetype id, registered surfaces, UV strategy,
+runtime depth/displacement binding and `generic_tiling_allowed: false`.
+
+The runtime shader must actually consume the declared normal and depth maps.
+An unused depth file, a generic marble/brick/metal tile, or a style-only atlas
+does not satisfy this contract. Fine reference detail belongs in the registered
+skin; silhouette, openings, returns and identity-defining shadows remain
+physical geometry in front of it.
 
 The close-range atlas is normally 4K and must be at least 2K. A compressed 1K-or-smaller LOD serves city scale. The albedo must not contain directional sunlight or cast shadows; City Prompt owns illumination.
 
