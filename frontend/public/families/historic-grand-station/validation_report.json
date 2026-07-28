@@ -11,8 +11,8 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "historic-grand-station_assembled.glb: 172076 triangles (heavy; consider simplification)",
-    "historic-grand-station_assembled.glb: 25.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "historic-grand-station_assembled.glb: 173900 triangles (heavy; consider simplification)",
+    "historic-grand-station_assembled.glb: 26.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -32,7 +32,7 @@
         "MAT_W3X_StationBronzeGlass",
         "MAT_W3X_StationGranite"
       ],
-      "size_bytes": 6636132
+      "size_bytes": 6636128
     },
     {
       "file": "historic-grand-station_floor_typical_a.glb",
@@ -51,7 +51,7 @@
         "MAT_W3X_StationBronzeGlass",
         "MAT_W3X_StationGranite"
       ],
-      "size_bytes": 7317412
+      "size_bytes": 7317408
     },
     {
       "file": "historic-grand-station_floor_typical_b.glb",
@@ -132,7 +132,7 @@
     {
       "file": "historic-grand-station_assembled.glb",
       "status": "ok",
-      "triangles": 172076,
+      "triangles": 173900,
       "extent_m": {
         "width_x": 200.0,
         "height_y": 57.994,
@@ -152,7 +152,7 @@
         "MAT_W3X_StationShedGlass",
         "MAT_W3X_WarmInterior"
       ],
-      "size_bytes": 27146476,
+      "size_bytes": 27370540,
       "role": "assembled"
     }
   ]

@@ -44,6 +44,11 @@
     ],
     "minimumPreferredProfiles": 1,
     "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.8,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.18
+    },
     "recommendedWidth_m": [
       45,
       90

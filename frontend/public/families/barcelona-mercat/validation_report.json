@@ -12,8 +12,9 @@
   "warnings": [
     "no setback module (optional)",
     "barcelona-mercat_crown_crown.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "barcelona-mercat_assembled.glb: 93642 triangles (heavy; consider simplification)",
-    "barcelona-mercat_assembled.glb: 22.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "barcelona-mercat_assembled.glb: 95710 triangles (heavy; consider simplification)",
+    "barcelona-mercat_assembled.glb: 17 materials (many; consider consolidation)",
+    "barcelona-mercat_assembled.glb: 22.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -133,7 +134,7 @@
     {
       "file": "barcelona-mercat_assembled.glb",
       "status": "ok",
-      "triangles": 93642,
+      "triangles": 95710,
       "extent_m": {
         "width_x": 65.0,
         "height_y": 24.0,
@@ -150,12 +151,16 @@
         "MAT_W3X_MercatProduceGreen",
         "MAT_W3X_MercatProduceRed",
         "MAT_W3X_MercatRoofGlass",
+        "MAT_W3X_MercatStainedBlue",
         "MAT_W3X_MercatStainedGlass",
+        "MAT_W3X_MercatStainedGold",
+        "MAT_W3X_MercatStainedGreen",
+        "MAT_W3X_MercatStainedRed",
         "MAT_W3X_MercatTerracottaRoof",
         "MAT_W3X_MercatWeatheredZinc",
         "MAT_W3X_WarmInterior"
       ],
-      "size_bytes": 23733460,
+      "size_bytes": 23862812,
       "role": "assembled"
     }
   ]

@@ -47,7 +47,7 @@ FAMILIES = (
     {
         "slug": "historic-grand-station",
         "title": "BEAUX-ARTS GRAND STATION",
-        "identity": "Three deep portals, a carved stone headhouse, and three independent train sheds.",
+        "identity": "Five deep portals, a carved stone headhouse, and three independent train sheds.",
         "views": (
             ("REFERENCE GOALPOST", "textures/source/archetype-goalpost.png"),
             ("ANGLE CONSTRAINTS", "textures/source/angle-reference-v2.png", "contain"),

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-28-multiview-roof-material-hierarchy-v95`.
+Current executable memory: `2026-07-28-near-native-landmark-fit-v96`.
 
 ## The quality target
 
@@ -170,6 +170,15 @@ Every archetype records recommended widths, depths, floor counts, bay multiples 
 - one street, oblique, aerial and Google Tiles context view.
 
 Fixed assemblies must remain intact, corners must stay within the extent contract, wings must preserve usable depth, and courtyard openings must remain credible.
+
+A fixed landmark is not an exact-dimension trap. Its manifest must declare a
+conservative `fixedLandmarkScaleBand` containing `scaleMin`, `scaleMax` and
+`maxAxisRatio`. A slightly imperfect user drawing inside that two-axis contract
+keeps the authored whole-building GLB and receives an explicit
+`fixed_landmark_tolerance` fit label. Once either axis leaves the band, or the
+independent axis scales would distort the silhouette beyond `maxAxisRatio`, the
+planner must choose the authored stack/streetwall fallback. Only a final forced
+fit may exceed the contract, and it remains visibly labelled.
 
 ## Catalogue-scale batch strategy
 
@@ -833,6 +842,11 @@ The polychrome collegiate family added four rules for resizable hero facades:
   as an enabled `assembled` landmark with exact variant identity and native
   floors. An ellipse, dome, arch, oculus, drum, portico or cable-net opening is
   authored construction geometry; it is never approximated by a textured box.
+- Fixed landmarks must tolerate ordinary drawing imprecision without silently
+  becoming generic. Declare a conservative per-family near-native scale band
+  and maximum independent-axis ratio; keep the whole GLB inside that contract,
+  and route larger or shape-distorting parcels to the authored stack or
+  streetwall fallback.
 - The fixed landmark and its conservative stack fallback serve different
   targets. The landmark owns native-scale visual identity. Podium, three
   repeatable middle variants, crown and roof keep oversized targets plannable

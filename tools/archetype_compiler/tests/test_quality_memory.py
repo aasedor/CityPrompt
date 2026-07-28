@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-28-multiview-roof-material-hierarchy-v95"
+        == "2026-07-28-near-native-landmark-fit-v96"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -105,11 +105,16 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "exports below ground" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "slightly imperfect footprint" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
         "freeform_envelopes_are_continuous_and_sectional",
         "fixed_ends_repeat_middle",
+        "fixed_landmarks_accept_bounded_drawing_variation",
         "materials_are_pbr",
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
@@ -332,6 +337,36 @@ def test_honest_single_profile_exception_passes_with_rationale():
         if gate["id"] == "fewer_than_three_preferred_footprint_profiles"
     )
     assert profile_gate["passed"] is True
+
+
+def test_fixed_landmark_requires_a_bounded_near_native_scale_contract():
+    from quality_memory import assess_family_quality
+
+    manifest = production_manifest()
+    manifest["massing_graph"] = {"type": "fixed_landmark"}
+    assessment = assess_family_quality(manifest, {"status": "pass", "warnings": []})
+
+    assert assessment["status"] == "review"
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_or_unsafe_fixed_landmark_scale_band"
+    }
+
+    manifest["footprint_compatibility"]["fixedLandmarkScaleBand"] = {
+        "scaleMin": 0.80,
+        "scaleMax": 1.20,
+        "maxAxisRatio": 1.18,
+    }
+    assessment = assess_family_quality(manifest, {"status": "pass", "warnings": []})
+    assert assessment["status"] == "pass"
+
+    manifest["footprint_compatibility"]["fixedLandmarkScaleBand"][
+        "maxAxisRatio"
+    ] = 1.40
+    assessment = assess_family_quality(manifest, {"status": "pass", "warnings": []})
+    assert assessment["status"] == "review"
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_or_unsafe_fixed_landmark_scale_band"
+    }
 
 
 def test_selected_variant_without_parent_alias_routes_to_review():

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-28-multiview-roof-material-hierarchy-v95",
+  "memory_version": "2026-07-28-near-native-landmark-fit-v96",
   "archetype_id": "barcelona_mercat",
   "family": "barcelona-mercat",
   "status": "pass",
@@ -82,6 +82,11 @@
         "detail": "1 preferred profiles; target is 1; exception rationale: This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments."
       },
       {
+        "id": "missing_or_unsafe_fixed_landmark_scale_band",
+        "passed": true,
+        "detail": "scale 0.80-1.20; maximum independent-axis ratio 1.18"
+      },
+      {
         "id": "missing_or_invalid_pbr_assets",
         "passed": true,
         "detail": "all declared near/far PBR atlases, masks, source, and skin manifest resolve on disk"
@@ -99,12 +104,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "13 assembled materials; review above 20"
+        "detail": "17 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "78858 assembled triangles; budget 12000-180000"
+        "detail": "80926 assembled triangles; budget 12000-180000"
       }
     ]
   }

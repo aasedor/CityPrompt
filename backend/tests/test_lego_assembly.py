@@ -116,6 +116,98 @@ def test_exact_variant_uses_fixed_landmark_at_canonical_size_and_floors():
     assert len(plan["instances"]) == 1
     assert plan["instances"][0]["role"] == "assembled"
     assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_native"
+
+
+def test_fixed_landmark_absorbs_near_native_drawing_variation():
+    raw = entry(
+        "assembled",
+        "Sculpted landmark",
+        "assembled",
+        height=48,
+        width=90,
+        depth=65,
+    )
+    raw.metadata_["lego"].update({
+        "archetype_ids": ["sculpted_landmark", "sculpted_landmark_variant"],
+        "native_floors": 5,
+        "source_variant_id": "sculpted_landmark_variant",
+        "footprint_compatibility": {
+            "preferredProfiles": ["rectangle"],
+            "fixedLandmarkScaleBand": {
+                "scaleMin": 0.80,
+                "scaleMax": 1.20,
+                "maxAxisRatio": 1.18,
+            },
+        },
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=82.8,
+            target_depth_m=69.55,
+            target_floors=5,
+            archetype_id="sculpted_landmark_variant",
+        ),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_tolerance"
+    assert plan["instances"][0]["scale"] == [
+        pytest.approx(0.92),
+        pytest.approx(1.07),
+        1.0,
+    ]
+    assert plan["fit"]["axis_ratio"] == pytest.approx(1.16304, abs=1e-5)
+    assert plan["fit"]["scale_band"] == {
+        "min": 0.8,
+        "max": 1.2,
+        "max_axis_ratio": 1.18,
+    }
+
+
+def test_fixed_landmark_rejects_an_unsafe_manifest_scale_band():
+    raw = entry(
+        "assembled",
+        "Unsafe landmark",
+        "assembled",
+        height=48,
+        width=90,
+        depth=65,
+    )
+    raw.metadata_["lego"].update({
+        "archetype_ids": ["unsafe_landmark_variant"],
+        "native_floors": 5,
+        "source_variant_id": "unsafe_landmark_variant",
+        "footprint_compatibility": {
+            "preferredProfiles": ["rectangle"],
+            "fixedLandmarkScaleBand": {
+                "scaleMin": 0.40,
+                "scaleMax": 4.00,
+                "maxAxisRatio": 3.00,
+            },
+        },
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=117,
+            target_depth_m=65,
+            target_floors=5,
+            archetype_id="unsafe_landmark_variant",
+        ),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "forced_fit"
+    assert plan["fit"]["scale_band"] == {
+        "min": 0.8,
+        "max": 1.2,
+        "max_axis_ratio": 1.18,
+    }
 
 
 def test_generation_archetype_id_resolves_to_exact_fixed_landmark():
@@ -1019,9 +1111,27 @@ async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
             )
         },
     )
+    module_entries = [
+        SimpleNamespace(
+            id=f"{family}-{module['role']}-{module.get('variant_key', 'default')}",
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest,
+                    module,
+                    validation_status="pass",
+                )
+            },
+        )
+        for module in manifest["modules"]
+    ]
+    library_entries = [library_entry, *module_entries]
     mock_db.execute = AsyncMock(side_effect=[
         _scalar_result(test_user),
-        _scalars_result([library_entry]),
+        _scalars_result(library_entries),
+        _scalar_result(test_user),
+        _scalars_result(library_entries),
     ])
 
     response = await client.post(
@@ -1034,6 +1144,16 @@ async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
             "archetype_id": variant_id,
         },
     )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": manifest["native_width_m"] * 2.60,
+            "target_depth_m": manifest["native_depth_m"] * 1.07,
+            "target_floors": manifest["native_floors"],
+            "archetype_id": variant_id,
+        },
+    )
 
     assert response.status_code == 200
     plan = response.json()
@@ -1041,6 +1161,92 @@ async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
     assert plan["fit"]["assembly_mode"] == "fixed_landmark"
     assert plan["instances"][0]["role"] == "assembled"
     assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_native"
+    assert oversized.status_code == 200
+    oversized_plan = oversized.json()
+    assert oversized_plan["family"] == family
+    assert oversized_plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert oversized_plan["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("family", "variant_id"),
+    [
+        ("concert-hall-modern", "concert_sculptural_organic"),
+        ("barcelona-mercat", "mercat_modernista"),
+        ("historic-grand-station", "station_beaux_arts"),
+    ],
+)
+async def test_wave3_fixed_landmarks_accept_near_native_drawn_dimensions(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    family,
+    variant_id,
+):
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assembled = {
+        **manifest["assembled"],
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "width_m": manifest["native_width_m"],
+        "depth_m": manifest["native_depth_m"],
+        "floor_height_m": manifest["dimensions"]["floor_height_m"],
+        "repeatable_z": False,
+        "lod": 0,
+        "allowed_levels": [],
+        "native_floors": manifest["native_floors"],
+    }
+    library_entry = SimpleNamespace(
+        id=f"{family}-assembled-fixed-landmark",
+        name=assembled["filename"],
+        model_url=f"https://example.test/{assembled['filename']}",
+        metadata_={
+            "lego": lego_metadata_from_manifest(
+                manifest,
+                assembled,
+                role="assembled",
+                validation_status="pass",
+            )
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalars_result([library_entry]),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": manifest["native_width_m"] * 0.92,
+            "target_depth_m": manifest["native_depth_m"] * 1.07,
+            "target_floors": manifest["native_floors"],
+            "archetype_id": variant_id,
+        },
+    )
+
+    assert response.status_code == 200
+    plan = response.json()
+    assert plan["family"] == family
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_tolerance"
+    assert plan["instances"][0]["role"] == "assembled"
+    assert plan["instances"][0]["scale"] == [
+        pytest.approx(0.92),
+        pytest.approx(1.07),
+        1.0,
+    ]
 
 
 @pytest.mark.anyio

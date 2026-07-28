@@ -81,6 +81,11 @@ FAMILIES = {
             "recommendedDepth_m": [45, 91],
             "recommendedFloors": [3, 8],
         },
+        "fixed_landmark_scale_band": {
+            "scaleMin": 0.80,
+            "scaleMax": 1.20,
+            "maxAxisRatio": 1.18,
+        },
         "identity": (
             "A low civic concert hall formed by overlapping pearlescent-white "
             "aluminum shell ribbons, three asymmetric acoustic peaks, a "
@@ -121,6 +126,11 @@ FAMILIES = {
             "recommendedDepth_m": [30, 60],
             "recommendedFloors": [1, 2],
         },
+        "fixed_landmark_scale_band": {
+            "scaleMin": 0.80,
+            "scaleMax": 1.20,
+            "maxAxisRatio": 1.18,
+        },
         "identity": (
             "A five-aisled Barcelona market hall with a real Modernista iron "
             "entrance pediment and arch, polychrome stained glass, tiled "
@@ -160,6 +170,11 @@ FAMILIES = {
             "recommendedWidth_m": [120, 280],
             "recommendedDepth_m": [50, 112],
             "recommendedFloors": [2, 5],
+        },
+        "fixed_landmark_scale_band": {
+            "scaleMin": 0.80,
+            "scaleMax": 1.20,
+            "maxAxisRatio": 1.18,
         },
         "identity": (
             "A monumental pale-granite Beaux-Arts terminal with a five-bay "
@@ -325,7 +340,7 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                         saturation=0.32,
                         value=0.86,
                     ),
-                    0.42,
+                    0.64,
                 ),
                 "timber": skin_material(
                     "MAT_W3X_ConcertTimber",
@@ -362,11 +377,11 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                 ),
                 "concert_interior": material(
                     "MAT_W3X_ConcertOccupiedInterior",
-                    (0.035, 0.017, 0.008, 1),
+                    (0.075, 0.034, 0.010, 1),
                     0.50,
                     0.04,
-                    emission=(0.24, 0.060, 0.008, 1),
-                    emission_strength=0.08,
+                    emission=(0.62, 0.16, 0.020, 1),
+                    emission_strength=0.32,
                 ),
                 "stone": skin_material(
                     "MAT_W3X_ConcertGranite",
@@ -399,7 +414,7 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                         saturation=0.80,
                         value=1.10,
                     ),
-                    0.62,
+                    0.72,
                 ),
                 "tile": _grade_base(
                     skin_material(
@@ -424,13 +439,45 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                         saturation=0.68,
                         value=0.88,
                     ),
-                    0.44,
+                    0.62,
                 ),
                 "roof_metal": material(
                     "MAT_W3X_MercatWeatheredZinc",
-                    (0.075, 0.092, 0.098, 1),
-                    0.46,
-                    0.68,
+                    (0.20, 0.22, 0.22, 1),
+                    0.58,
+                    0.48,
+                ),
+                "stained_red": material(
+                    "MAT_W3X_MercatStainedRed",
+                    (0.25, 0.012, 0.008, 0.90),
+                    0.30,
+                    0.04,
+                    emission=(0.42, 0.018, 0.010, 1),
+                    emission_strength=0.10,
+                ),
+                "stained_blue": material(
+                    "MAT_W3X_MercatStainedBlue",
+                    (0.012, 0.075, 0.30, 0.90),
+                    0.30,
+                    0.04,
+                    emission=(0.015, 0.10, 0.48, 1),
+                    emission_strength=0.10,
+                ),
+                "stained_gold": material(
+                    "MAT_W3X_MercatStainedGold",
+                    (0.34, 0.11, 0.008, 0.90),
+                    0.32,
+                    0.03,
+                    emission=(0.54, 0.16, 0.010, 1),
+                    emission_strength=0.10,
+                ),
+                "stained_green": material(
+                    "MAT_W3X_MercatStainedGreen",
+                    (0.012, 0.18, 0.045, 0.90),
+                    0.32,
+                    0.03,
+                    emission=(0.018, 0.30, 0.065, 1),
+                    emission_strength=0.09,
                 ),
                 "terracotta": material(
                     "MAT_W3X_MercatTerracottaRoof",
@@ -489,7 +536,7 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                         saturation=0.62,
                         value=0.88,
                     ),
-                    0.62,
+                    0.70,
                 ),
                 "shed_glass": _glazing_treatment(
                     _grade_base(
@@ -504,7 +551,7 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                         saturation=0.60,
                         value=0.72,
                     ),
-                    0.66,
+                    0.72,
                 ),
                 "relief": skin_material(
                     "MAT_W3X_StationRelief",
@@ -859,9 +906,9 @@ def _concert_lobby_top(x: float) -> float:
     # The reference lobby rises into the left acoustic shell and falls toward
     # the right-hand sweep. A symmetric semicircle reads as a generic atrium.
     return (
-        21.5
-        + 11.8 * math.exp(-((x + 17.0) / 17.0) ** 2)
-        + 5.4 * math.exp(-((x - 10.0) / 27.0) ** 2)
+        18.0
+        + 9.0 * math.exp(-((x + 17.0) / 16.0) ** 2)
+        + 3.0 * math.exp(-((x - 6.0) / 27.0) ** 2)
     )
 
 
@@ -898,7 +945,7 @@ def concert_lobby(
             beam(
                 f"CONCERT_LobbyVertical_{index}",
                 (x, y, 1.0),
-                (x, y, _concert_lobby_top(x) + 0.15),
+                (x, y, _concert_lobby_top(x) - 0.18),
                 0.105,
                 mats["bronze"],
             )
@@ -933,7 +980,7 @@ def concert_lobby(
             -27.5,
             27.5,
             lambda u: -24.3 + 3.2 * abs(u - 0.5),
-            lambda u: 29.0 + 5.8 * math.sin(math.pi * u),
+            lambda u: _concert_lobby_top(-27.5 + 55.0 * u) - 1.15,
             mats["interior_timber"],
             thickness=0.18,
             u_steps=20,
@@ -1086,7 +1133,7 @@ def concert_side_glazing(
             theta_a = math.tau * index / segments
             theta_b = math.tau * (index + 1) / segments
             theta_mid = (theta_a + theta_b) * 0.5
-            if angle_distance(theta_mid, front_angle) < 0.72:
+            if angle_distance(theta_mid, front_angle) < 1.48:
                 continue
             xa, ya = radius_x * math.cos(theta_a), radius_y * math.sin(theta_a)
             xb, yb = radius_x * math.cos(theta_b), radius_y * math.sin(theta_b)
@@ -1173,6 +1220,23 @@ def concert_fixed(
         x_fraction = math.cos(theta)
         return front_weight(theta) * math.exp(-((x_fraction + 0.34) / 0.32) ** 2)
 
+    def folded_sail_peak(
+        u: float,
+        v: float,
+        centre_u: float,
+        lean: float,
+        half_width: float,
+        centre_v: float,
+        v_width: float,
+        amplitude: float,
+    ) -> float:
+        """Sharp leaning ridge with broad shell planes on either side."""
+
+        ridge_u = centre_u + lean * v
+        cross_section = max(0.0, 1.0 - abs(u - ridge_u) / half_width) ** 1.18
+        longitudinal = math.exp(-((v - centre_v) / v_width) ** 2)
+        return amplitude * cross_section * longitudinal
+
     # Three continuous shell loops now own the rounded plan silhouette. Their
     # heights change around the building, so front, sides and rear remain one
     # constructed envelope instead of unrelated facade strips.
@@ -1182,12 +1246,17 @@ def concert_fixed(
                 "CONCERT_LowerEnvelopeLoop",
                 44.35,
                 30.15,
-                lambda theta: 3.7 + 1.1 * (1.0 - front_weight(theta)),
                 lambda theta: (
-                    8.0
-                    + 2.2 * front_weight(theta)
+                    3.7
+                    + 3.3 * front_weight(theta)
+                    + 0.35 * math.cos(theta + 0.4)
+                ),
+                lambda theta: (
+                    8.45
+                    + 1.6 * front_weight(theta)
+                    + 2.7 * left_front_peak(theta)
                     + 1.4 * rear_weight(theta)
-                    + 1.0 * math.cos(theta - 0.4)
+                    + 0.75 * math.cos(theta - 0.4)
                 ),
                 mats["shell"],
                 thickness=0.92,
@@ -1197,13 +1266,13 @@ def concert_fixed(
                 43.65,
                 29.50,
                 lambda theta: (
-                    13.2
+                    14.8
                     + 1.6 * rear_weight(theta)
-                    + 0.8 * math.sin(theta + 0.3)
+                    + 0.55 * math.sin(theta + 0.3)
                 ),
                 lambda theta: (
-                    18.3
-                    + 7.0 * left_front_peak(theta)
+                    15.8
+                    + 5.2 * left_front_peak(theta)
                     + 3.1 * rear_weight(theta)
                     + 1.2 * math.cos(theta + 0.5)
                 ),
@@ -1215,14 +1284,14 @@ def concert_fixed(
                 42.55,
                 28.65,
                 lambda theta: (
-                    23.2
-                    + 2.2 * front_weight(theta)
+                    25.0
+                    + 1.1 * front_weight(theta)
                     + 1.2 * math.sin(theta - 0.35)
                 ),
                 lambda theta: (
-                    28.0
-                    + 6.7 * left_front_peak(theta)
-                    + 7.4 * rear_weight(theta)
+                    29.0
+                    + 5.2 * left_front_peak(theta)
+                    + 6.2 * rear_weight(theta)
                     + 1.4 * math.cos(theta - 0.8)
                 ),
                 mats["shell"],
@@ -1305,7 +1374,7 @@ def concert_fixed(
     # bands turn the ground floor into the reference's continuous white ribbon
     # while preserving a genuinely open central lobby.
     for side in (-1, 1):
-        x0, x1 = (-45.0, -11.5) if side < 0 else (11.5, 45.0)
+        x0, x1 = (-45.0, -15.5) if side < 0 else (15.5, 45.0)
         objects.append(
             vertical_ribbon_panel(
                 f"CONCERT_EntryShellSkirt_{side}",
@@ -1328,24 +1397,25 @@ def concert_fixed(
         surface_volume(
             "CONCERT_UpperAcousticShell",
             lambda u, v: (
-                4.0 * (v - 0.5)
-                + (u - 0.5)
+                8.0
+                + 3.0 * (2.0 * v - 1.0)
+                + (2.0 * u - 1.0)
                 * (
-                    25.0
-                    + 65.0 * max(0.0, math.sin(math.pi * v)) ** 0.58
+                    18.0
+                    + 26.0 * max(0.0, math.sin(math.pi * v)) ** 0.72
                 ),
-                -7.0 + 39.0 * v,
-                25.0
-                + 5.0 * math.sin(math.pi * u)
-                + 4.0 * v
-                + 16.0
-                * math.exp(-((u - 0.68) / 0.19) ** 2)
-                * (0.30 + 0.70 * v ** 1.4)
-                - 3.0 * math.exp(-((u - 0.30) / 0.16) ** 2) * v,
+                -5.0 + 46.0 * v,
+                27.0
+                + 2.7 * v
+                + 3.2 * math.sin(math.pi * v)
+                + folded_sail_peak(
+                    u, v, 0.53, 0.20, 0.21, 0.62, 0.34, 20.0
+                )
+                - 2.4 * abs(2.0 * u - 1.0) ** 1.7,
             ),
             mats["shell"],
-            u_steps=42,
-            v_steps=20,
+            u_steps=48,
+            v_steps=24,
             thickness=0.68,
             uv_scale=(4.2, 2.2),
             bottom_mat=mats["soffit"],
@@ -1354,14 +1424,14 @@ def concert_fixed(
     objects.append(
         vertical_ribbon_panel(
             "CONCERT_UpperAcousticShellFascia",
-            -37.0,
-            37.0,
-            lambda u: -7.18 + 0.35 * math.sin(math.pi * u),
-            lambda u: 22.2 + 3.8 * math.sin(math.pi * u),
+            -28.0,
+            44.0,
+            lambda u: -5.18 + 0.30 * math.sin(math.pi * u),
+            lambda u: 24.2 + 1.8 * math.sin(math.pi * u),
             lambda u: (
-                25.0
-                + 5.0 * math.sin(math.pi * u)
-                + 7.0 * math.exp(-((u - 0.68) / 0.19) ** 2)
+                27.0
+                + 1.8 * math.sin(math.pi * u)
+                + 2.2 * math.exp(-((u - 0.68) / 0.19) ** 2)
             ),
             mats["shell"],
             thickness=0.80,
@@ -1375,22 +1445,25 @@ def concert_fixed(
         surface_volume(
             "CONCERT_RearSailShell",
             lambda u, v: (
-                -5.0
-                + 8.0 * (v - 0.5)
-                + (u - 0.5)
+                -8.0
+                + 2.0 * (2.0 * v - 1.0)
+                + (2.0 * u - 1.0)
                 * (
-                    18.0
-                    + 50.0 * max(0.0, math.sin(math.pi * v)) ** 0.62
+                    12.0
+                    + 18.0 * max(0.0, math.sin(math.pi * v)) ** 0.72
                 ),
-                8.0 + v * 25.0,
+                6.0 + v * 32.0,
                 31.0
-                + 8.0 * math.sin(math.pi * u)
-                + 7.0 * v
-                + 5.5 * math.exp(-((u - 0.28) / 0.17) ** 2) * v,
+                + 3.0 * v
+                + 4.0 * math.sin(math.pi * v)
+                + folded_sail_peak(
+                    u, v, 0.14, 0.20, 0.20, 0.66, 0.32, 8.0
+                )
+                - 1.8 * abs(2.0 * u - 1.0) ** 1.6,
             ),
             mats["shell"],
-            u_steps=34,
-            v_steps=16,
+            u_steps=40,
+            v_steps=20,
             thickness=0.62,
             uv_scale=(3.4, 1.7),
             bottom_mat=mats["soffit"],
@@ -1764,8 +1837,8 @@ def mercat_fixed(
     # generic greenhouse and exposed an implausible forest of internal trusses.
     aisle_centres = (-26.0, -13.0, 0.0, 13.0, 26.0)
     aisle_widths = (11.0, 12.0, 14.0, 12.0, 11.0)
-    ridge_heights = (16.0, 17.5, 20.0, 17.5, 16.0)
-    eave_heights = (11.0, 11.5, 12.0, 11.5, 11.0)
+    ridge_heights = (14.4, 15.8, 19.6, 15.8, 14.4)
+    eave_heights = (10.6, 10.9, 11.3, 10.9, 10.6)
     roof_front, roof_rear = -19.8, 21.0
     for aisle, (cx, width, ridge_z, eave_z) in enumerate(
         zip(aisle_centres, aisle_widths, ridge_heights, eave_heights)
@@ -1975,9 +2048,9 @@ def mercat_fixed(
             monitor = triangular_prism(
                 f"MERCAT_SawtoothMonitor_{side}_{monitor_index}",
                 7.5,
-                4.2,
+                3.2,
                 0.18,
-                (monitor_x, y, 13.75),
+                (monitor_x, y, 13.20),
                 mats["roof_metal"],
             )
             monitor.rotation_euler[2] = math.pi / 2
@@ -1987,28 +2060,28 @@ def mercat_fixed(
                     box(
                         f"MERCAT_SawtoothKerb_{side}_{monitor_index}",
                         (1.15, 7.8, 0.38),
-                        (monitor_x, y, 13.90),
+                        (monitor_x, y, 13.32),
                         mats["roof_metal"],
                         0.04,
                     ),
                     beam(
                         f"MERCAT_SawtoothSlopeA_{side}_{monitor_index}",
-                        (outward_x, y - 3.75, 13.98),
-                        (outward_x, y, 17.95),
+                        (outward_x, y - 3.75, 13.40),
+                        (outward_x, y, 16.35),
                         0.14,
                         mats["iron"],
                     ),
                     beam(
                         f"MERCAT_SawtoothSlopeB_{side}_{monitor_index}",
-                        (outward_x, y, 17.95),
-                        (outward_x, y + 3.75, 13.98),
+                        (outward_x, y, 16.35),
+                        (outward_x, y + 3.75, 13.40),
                         0.14,
                         mats["iron"],
                     ),
                     beam(
                         f"MERCAT_SawtoothTie_{side}_{monitor_index}",
-                        (outward_x, y - 3.75, 13.98),
-                        (outward_x, y + 3.75, 13.98),
+                        (outward_x, y - 3.75, 13.40),
+                        (outward_x, y + 3.75, 13.40),
                         0.14,
                         mats["iron"],
                     ),
@@ -2016,10 +2089,10 @@ def mercat_fixed(
             )
             for louver_index, (z, span) in enumerate(
                 (
-                    (14.75, 6.0),
-                    (15.55, 4.8),
-                    (16.35, 3.4),
-                    (17.15, 1.8),
+                    (14.00, 6.0),
+                    (14.65, 4.8),
+                    (15.30, 3.4),
+                    (15.90, 1.8),
                 )
             ):
                 objects.append(
@@ -2094,6 +2167,55 @@ def mercat_fixed(
             mats["stained"],
         )
     )
+    # The real entrance reads as fine polychrome leadwork rather than a clear
+    # greenhouse end.  Keep the generated mosaic as the broad field and use
+    # restrained physical coloured lights only for its rose and perimeter
+    # medallions; oversized flat discs would turn the heritage glass into a
+    # cartoon.
+    stained_palette = (
+        mats["stained_red"],
+        mats["stained_blue"],
+        mats["stained_gold"],
+        mats["stained_green"],
+    )
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=48,
+        radius=0.92,
+        depth=0.16,
+        location=(0.0, portal_y - 0.56, portal_spring + 2.55),
+        rotation=(math.pi / 2, 0, 0),
+    )
+    central_rose = bpy.context.object
+    central_rose.name = "MERCAT_CentralPolychromeRose"
+    central_rose.data.materials.append(mats["stained"])
+    objects.append(central_rose)
+    bpy.ops.mesh.primitive_torus_add(
+        major_radius=1.08,
+        minor_radius=0.10,
+        major_segments=48,
+        minor_segments=10,
+        location=(0.0, portal_y - 0.67, portal_spring + 2.55),
+        rotation=(math.pi / 2, 0, 0),
+    )
+    central_rose_ring = bpy.context.object
+    central_rose_ring.name = "MERCAT_CentralPolychromeRoseRing"
+    central_rose_ring.data.materials.append(mats["bronze"])
+    objects.append(central_rose_ring)
+    for petal in range(10):
+        angle = math.tau * petal / 10
+        x = 1.48 * math.cos(angle)
+        z = portal_spring + 2.55 + 1.48 * math.sin(angle)
+        bpy.ops.mesh.primitive_cylinder_add(
+            vertices=24,
+            radius=0.34,
+            depth=0.14,
+            location=(x, portal_y - 0.57, z),
+            rotation=(math.pi / 2, 0, 0),
+        )
+        rose_petal = bpy.context.object
+        rose_petal.name = f"MERCAT_CentralRosePetal_{petal}"
+        rose_petal.data.materials.append(stained_palette[(petal + 1) % 4])
+        objects.append(rose_petal)
     objects.extend(
         arch_frame(
             "MERCAT_ModernistaOuterArch",
@@ -2143,18 +2265,18 @@ def mercat_fixed(
         z = portal_spring + ornament_radius * math.sin(angle)
         bpy.ops.mesh.primitive_cylinder_add(
             vertices=32,
-            radius=0.46,
+            radius=0.38,
             depth=0.13,
             location=(x, portal_y - 0.62, z),
             rotation=(math.pi / 2, 0, 0),
         )
         medallion = bpy.context.object
         medallion.name = f"MERCAT_StainedMedallion_{index}"
-        medallion.data.materials.append(mats["stained"])
+        medallion.data.materials.append(stained_palette[index % 4])
         objects.append(medallion)
         bpy.ops.mesh.primitive_torus_add(
-            major_radius=0.55,
-            minor_radius=0.075,
+            major_radius=0.48,
+            minor_radius=0.065,
             major_segments=28,
             minor_segments=8,
             location=(x, portal_y - 0.72, z),
@@ -2333,18 +2455,20 @@ def mercat_fixed(
             )
             bpy.ops.mesh.primitive_cylinder_add(
                 vertices=32,
-                radius=0.50,
+                radius=0.42,
                 depth=0.14,
                 location=(x, -22.13, z),
                 rotation=(math.pi / 2, 0, 0),
             )
             gable_medallion = bpy.context.object
             gable_medallion.name = f"MERCAT_GableMedallion_{side}_{division}"
-            gable_medallion.data.materials.append(mats["stained"])
+            gable_medallion.data.materials.append(
+                stained_palette[(division + (0 if side < 0 else 2)) % 4]
+            )
             objects.append(gable_medallion)
             bpy.ops.mesh.primitive_torus_add(
-                major_radius=0.59,
-                minor_radius=0.075,
+                major_radius=0.51,
+                minor_radius=0.065,
                 major_segments=28,
                 minor_segments=8,
                 location=(x, -22.22, z),
@@ -2822,7 +2946,7 @@ def station_fixed(
         *,
         base_z: float = 1.1,
         height: float = 31.8,
-        radius: float = 1.62,
+        radius: float = 1.92,
     ) -> list[bpy.types.Object]:
         parts: list[bpy.types.Object] = []
         shaft_height = height - 4.2
@@ -3017,6 +3141,39 @@ def station_fixed(
                         mats["stone"] if ring != 1 else mats["relief"],
                     )
                 )
+        # A restrained outer course of actual voussoir blocks supplies the
+        # deep carved-stone cadence visible in the reference.  Each block is
+        # tangent to the portal curve rather than painted into the glass.
+        voussoir_radius = radius + 0.88
+        voussoir_count = 23 if width > 26 else 21
+        for voussoir in range(voussoir_count):
+            angle = math.pi * (voussoir + 0.5) / voussoir_count
+            x = centre_x + voussoir_radius * math.cos(angle)
+            z = spring + voussoir_radius * math.sin(angle)
+            block = box(
+                f"{name}_Voussoir_{voussoir}",
+                (
+                    math.pi * voussoir_radius / voussoir_count * 0.96,
+                    1.28,
+                    1.02,
+                ),
+                (x, facade_y - 0.94, z),
+                mats["relief"] if voussoir % 2 else mats["stone"],
+            )
+            block.rotation_euler[1] = -(angle + math.pi / 2)
+            parts.append(block)
+        keystone = box(
+            name + "_Keystone",
+            (1.82 if width > 26 else 1.60, 1.55, 2.35),
+            (
+                centre_x,
+                facade_y - 1.02,
+                spring + voussoir_radius + 0.22,
+            ),
+            mats["relief"],
+            0.10,
+        )
+        parts.append(keystone)
         for coffer in range(0, 33, 4):
             parts.append(
                 beam(
@@ -3469,29 +3626,29 @@ def station_fixed(
         objects.append(
             box(
                 f"STATION_SculpturePedestal_{group_x}",
-                (13.0, 5.2, 1.8),
-                (group_x, -39.8, 42.0),
+                (15.0, 6.2, 2.1),
+                (group_x, -40.5, 42.15),
                 mats["stone"],
                 0.12,
             )
         )
         for figure in range(5):
-            x = group_x + (figure - 2) * 2.0
-            figure_height = 4.0 + (2 - abs(figure - 2)) * 0.65
+            x = group_x + (figure - 2) * 2.25
+            figure_height = 5.0 + (2 - abs(figure - 2)) * 0.78
             objects.extend(
                 [
                     cylinder(
                         f"STATION_FigureBody_{group_x}_{figure}",
-                        0.70,
+                        0.86,
                         figure_height * 0.60,
-                        (x, -41.0, 43.1 + figure_height * 0.30),
+                        (x, -42.0, 43.25 + figure_height * 0.30),
                         mats["relief"],
                         16,
                     ),
                     sphere(
                         f"STATION_FigureHead_{group_x}_{figure}",
-                        0.52,
-                        (x, -41.0, 43.1 + figure_height * 0.68),
+                        0.62,
+                        (x, -42.0, 43.25 + figure_height * 0.68),
                         mats["relief"],
                         (1.0, 0.92, 1.08),
                         16,
@@ -3501,13 +3658,13 @@ def station_fixed(
             )
             bpy.ops.mesh.primitive_cone_add(
                 vertices=20,
-                radius1=1.05,
-                radius2=0.48,
+                radius1=1.30,
+                radius2=0.56,
                 depth=figure_height * 0.52,
                 location=(
                     x,
-                    -41.0,
-                    43.0 + figure_height * 0.26,
+                    -42.0,
+                    43.15 + figure_height * 0.26,
                 ),
             )
             drapery = bpy.context.object
@@ -4304,6 +4461,7 @@ def build_family(
             "This is a one-front landmark whose entrance and roof silhouette "
             "must not be duplicated around L, U or courtyard segments."
         ),
+        "fixedLandmarkScaleBand": config["fixed_landmark_scale_band"],
         **config["profiles"],
         "profiles": {"rectangle": config["profiles"]},
     }

@@ -49,11 +49,14 @@ _VARIANT_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_]{0,49}$")
 STACKABLE_ROLES = ("podium", "floor", "setback", "crown", "roof")
 
 # Exact render-locked landmarks carry their own corners, entrance, crown and
-# roof and are therefore safer to resize as one authored assembly than to fall
-# back to an unrelated generic stack. City Prompt parcels vary widely; allow a
-# useful but bounded range while keeping ordinary repeated modules at ±20%.
-FIXED_LANDMARK_SCALE_MIN = 0.45
-FIXED_LANDMARK_SCALE_MAX = 1.75
+# roof. Preserve that whole-building asset for realistically imprecise parcel
+# drawings, but only inside a near-native band. Large or strongly anisotropic
+# changes belong to the authored LEGO fallback kit. Individual manifests may
+# author a family-specific band inside the assessor's safety ceiling through
+# footprint_compatibility.fixedLandmarkScaleBand.
+FIXED_LANDMARK_SCALE_MIN = 0.80
+FIXED_LANDMARK_SCALE_MAX = 1.20
+FIXED_LANDMARK_MAX_AXIS_RATIO = 1.18
 
 # Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
 SUPPORTED_MANIFEST_SCHEMA = 3
@@ -481,6 +484,45 @@ def _rectangle_orientation(
     return min(candidates, key=fit_key)
 
 
+def _fixed_landmark_scale_contract(
+    module: ModuleDescriptor,
+) -> tuple[float, float, float]:
+    """Return a safe, manifest-authored near-native landmark fit contract."""
+
+    footprint = module.footprint_compatibility or {}
+    declared = footprint.get("fixedLandmarkScaleBand")
+    if not isinstance(declared, dict):
+        return (
+            FIXED_LANDMARK_SCALE_MIN,
+            FIXED_LANDMARK_SCALE_MAX,
+            FIXED_LANDMARK_MAX_AXIS_RATIO,
+        )
+
+    try:
+        scale_min = float(declared.get("scaleMin", FIXED_LANDMARK_SCALE_MIN))
+        scale_max = float(declared.get("scaleMax", FIXED_LANDMARK_SCALE_MAX))
+        max_axis_ratio = float(
+            declared.get("maxAxisRatio", FIXED_LANDMARK_MAX_AXIS_RATIO)
+        )
+    except (TypeError, ValueError):
+        return (
+            FIXED_LANDMARK_SCALE_MIN,
+            FIXED_LANDMARK_SCALE_MAX,
+            FIXED_LANDMARK_MAX_AXIS_RATIO,
+        )
+
+    if not (
+        0.75 <= scale_min <= 1.0 <= scale_max <= 1.25
+        and 1.0 <= max_axis_ratio <= 1.20
+    ):
+        return (
+            FIXED_LANDMARK_SCALE_MIN,
+            FIXED_LANDMARK_SCALE_MAX,
+            FIXED_LANDMARK_MAX_AXIS_RATIO,
+        )
+    return scale_min, scale_max, max_axis_ratio
+
+
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
 # profiles already use — repeated bars keep authored facade proportions, so the
 # strict single-bar production band would be needlessly conservative here.
@@ -659,6 +701,11 @@ def plan_vertical_assembly(
         )
         if assembled:
             (
+                landmark_scale_min,
+                landmark_scale_max,
+                landmark_max_axis_ratio,
+            ) = _fixed_landmark_scale_contract(assembled)
+            (
                 scale_x,
                 scale_y,
                 rectangle_rotation,
@@ -667,13 +714,19 @@ def plan_vertical_assembly(
             ) = _rectangle_orientation(
                 assembled,
                 request,
-                scale_min=FIXED_LANDMARK_SCALE_MIN,
-                scale_max=FIXED_LANDMARK_SCALE_MAX,
+                scale_min=landmark_scale_min,
+                scale_max=landmark_scale_max,
             )
-            if forced or (
-                FIXED_LANDMARK_SCALE_MIN <= scale_x <= FIXED_LANDMARK_SCALE_MAX
-                and FIXED_LANDMARK_SCALE_MIN <= scale_y <= FIXED_LANDMARK_SCALE_MAX
-            ):
+            axis_ratio = max(
+                scale_x / max(scale_y, 1e-9),
+                scale_y / max(scale_x, 1e-9),
+            )
+            near_native_fit = (
+                landmark_scale_min <= scale_x <= landmark_scale_max
+                and landmark_scale_min <= scale_y <= landmark_scale_max
+                and axis_ratio <= landmark_max_axis_ratio
+            )
+            if forced or near_native_fit:
                 family_score = 100.0 + _module_score(assembled, request)
                 if forced:
                     family_score -= 2.0 * (
@@ -713,10 +766,24 @@ def plan_vertical_assembly(
                     "fit": {
                         "scale_x": round(scale_x, 5),
                         "scale_y": round(scale_y, 5),
+                        "axis_ratio": round(axis_ratio, 5),
                         "score": round(family_score, 5),
                         "profile": "rectangle",
                         "segment_count": 1,
                         "assembly_mode": "fixed_landmark",
+                        "compatibility_source": (
+                            "forced_fit"
+                            if forced
+                            else "fixed_landmark_native"
+                            if math.isclose(scale_x, 1.0, abs_tol=1e-6)
+                            and math.isclose(scale_y, 1.0, abs_tol=1e-6)
+                            else "fixed_landmark_tolerance"
+                        ),
+                        "scale_band": {
+                            "min": landmark_scale_min,
+                            "max": landmark_scale_max,
+                            "max_axis_ratio": landmark_max_axis_ratio,
+                        },
                     },
                     "footprint_segments": [{
                         "id": "landmark", "centre_x_m": 0.0, "centre_y_m": 0.0,

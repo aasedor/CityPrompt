@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-28T15:28:02.368606+00:00",
+  "created_at": "2026-07-28T21:17:20.753273+00:00",
   "family": "historic-grand-station",
   "archetype_id": "historic_grand_station",
   "archetype_label": "Historic Grand Station \u2014 Beaux-Arts Terminal",
@@ -41,6 +41,11 @@
     ],
     "minimumPreferredProfiles": 1,
     "profileRationale": "This is a one-front landmark whose entrance and roof silhouette must not be duplicated around L, U or courtyard segments.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.8,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.18
+    },
     "recommendedWidth_m": [
       120,
       280
@@ -345,7 +350,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 6636132
+      "size_bytes": 6636128
     },
     {
       "role": "floor",
@@ -371,7 +376,7 @@
         "relief"
       ],
       "ao_baked": true,
-      "size_bytes": 7317412
+      "size_bytes": 7317408
     },
     {
       "role": "floor",
@@ -484,7 +489,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 58.0,
-    "triangle_count": 160268,
+    "triangle_count": 161612,
     "stack": [
       {
         "role": "assembled",
@@ -524,13 +529,13 @@
   },
   "thumbnail": "historic-grand-station_preview.png",
   "renders": [
-    "historic-grand-station_preview.png",
-    "historic-grand-station_front_corner_oblique.png",
-    "historic-grand-station_rear_corner_oblique.png",
-    "historic-grand-station_facade_close.png",
-    "historic-grand-station_street.png",
     "historic-grand-station_aerial.png",
     "historic-grand-station_context.png",
+    "historic-grand-station_facade_close.png",
+    "historic-grand-station_front_corner_oblique.png",
+    "historic-grand-station_preview.png",
+    "historic-grand-station_rear_corner_oblique.png",
+    "historic-grand-station_street.png",
     "elevation.jpg"
   ],
   "architectural_identity": "A monumental pale-granite Beaux-Arts terminal with a five-bay ceremonial entrance of deeply carved arched portals, paired Corinthian columns, a sculpted clock attic, and three immense iron-and-glass barrel-vault train sheds.",

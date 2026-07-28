@@ -92,6 +92,33 @@ def assess_family_quality(
     assembled = manifest.get("assembled") or {}
     footprint = manifest.get("footprint_compatibility") or {}
     preferred_profiles = list(footprint.get("preferredProfiles") or [])
+    fixed_landmark = (
+        str((manifest.get("massing_graph") or {}).get("type") or "").strip()
+        == "fixed_landmark"
+    )
+    fixed_scale_band = footprint.get("fixedLandmarkScaleBand")
+    fixed_scale_band_valid = not fixed_landmark
+    fixed_scale_band_detail = "not a fixed-landmark massing graph"
+    if fixed_landmark:
+        try:
+            scale_min = float(fixed_scale_band["scaleMin"])
+            scale_max = float(fixed_scale_band["scaleMax"])
+            max_axis_ratio = float(fixed_scale_band["maxAxisRatio"])
+            fixed_scale_band_valid = (
+                0.75 <= scale_min <= 1.0
+                and 1.0 <= scale_max <= 1.25
+                and 1.0 <= max_axis_ratio <= 1.20
+            )
+            fixed_scale_band_detail = (
+                f"scale {scale_min:.2f}-{scale_max:.2f}; "
+                f"maximum independent-axis ratio {max_axis_ratio:.2f}"
+            )
+        except (KeyError, TypeError, ValueError):
+            fixed_scale_band_valid = False
+            fixed_scale_band_detail = (
+                "fixed landmark requires numeric scaleMin, scaleMax, "
+                "and maxAxisRatio"
+            )
     render_roles = _render_roles(manifest)
     required_renders = set(gates.get("required_renders") or [])
 
@@ -306,6 +333,11 @@ def assess_family_quality(
                 if profile_rationale and declared_min_profiles is not None
                 else f"{len(preferred_profiles)} preferred profiles; target is {min_profiles}"
             ),
+        ),
+        _gate(
+            "missing_or_unsafe_fixed_landmark_scale_band",
+            fixed_scale_band_valid,
+            fixed_scale_band_detail,
         ),
         _gate(
             "missing_or_invalid_pbr_assets",

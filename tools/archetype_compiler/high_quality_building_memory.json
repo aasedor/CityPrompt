@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-28-multiview-roof-material-hierarchy-v95",
+  "memory_version": "2026-07-28-near-native-landmark-fit-v96",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -19,6 +19,10 @@
     {
       "id": "fixed_ends_repeat_middle",
       "rule": "Keep corner, entrance, podium, crown and roof assemblies fixed. Repeat or stretch only authored middle bays."
+    },
+    {
+      "id": "fixed_landmarks_accept_bounded_drawing_variation",
+      "rule": "A fixed-landmark manifest declares a conservative fixedLandmarkScaleBand around native width and depth plus a maximum independent-axis ratio. Slight user-drawn footprint variation may scale the whole landmark inside that authored band; larger or shape-distorting targets must use the stack kit, streetwall repetition or explicitly labelled forced fit."
     },
     {
       "id": "materials_are_pbr",
@@ -299,6 +303,7 @@
       "far_atlas_above_1024",
       "missing_fixed_assembly_contract",
       "fewer_than_three_preferred_footprint_profiles",
+      "missing_or_unsafe_fixed_landmark_scale_band",
       "missing_variant_alias_contract",
       "missing_side_elevation_wrap",
       "semantic_mask_shape_mismatch",
@@ -367,6 +372,11 @@
       "symptom": "One rectangle looks good but user polygons fail",
       "cause": "Corners and entrances were stretched with the middle facade.",
       "correction": "Use fixed semantic end conditions and test every declared footprint profile at small and large dimensions."
+    },
+    {
+      "symptom": "A fixed landmark disappears when the user draws a slightly imperfect footprint",
+      "cause": "The planner requires exact native dimensions or applies an undocumented global stretch that can distort the one-off silhouette.",
+      "correction": "Declare and test a conservative per-family fixedLandmarkScaleBand with a bounded independent-axis ratio; retain the whole GLB for near-native drawings and switch oversized targets to the authored stack or streetwall fallback."
     },
     {
       "symptom": "A showcase graph silently falls back to generic balcony modules",
