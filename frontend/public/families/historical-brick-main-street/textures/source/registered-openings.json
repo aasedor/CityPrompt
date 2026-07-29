@@ -1,0 +1,18 @@
+{
+  "schema": "registered-opening-schedule@1",
+  "source": "reference-led orthographic Victorian polychrome main-street elevation",
+  "openings": [
+    {"id": "upper_arch_01", "bbox": [0.094, 0.268, 0.178, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "upper_arch_02", "bbox": [0.210, 0.268, 0.290, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "upper_arch_03", "bbox": [0.336, 0.268, 0.412, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "upper_arch_04", "bbox": [0.563, 0.268, 0.639, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "upper_arch_05", "bbox": [0.703, 0.268, 0.779, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "upper_arch_06", "bbox": [0.810, 0.268, 0.886, 0.490], "shape": "segmental_arch", "rise": 0.075},
+    {"id": "storefront_left_display", "bbox": [0.066, 0.655, 0.228, 0.948], "shape": "rect"},
+    {"id": "storefront_left_door", "bbox": [0.248, 0.690, 0.316, 0.948], "shape": "rect"},
+    {"id": "storefront_centre_left", "bbox": [0.323, 0.655, 0.455, 0.948], "shape": "rect"},
+    {"id": "storefront_centre_right", "bbox": [0.535, 0.655, 0.667, 0.948], "shape": "rect"},
+    {"id": "storefront_right_door", "bbox": [0.704, 0.690, 0.772, 0.948], "shape": "rect"},
+    {"id": "storefront_right_display", "bbox": [0.779, 0.655, 0.932, 0.948], "shape": "rect"}
+  ]
+}

@@ -952,6 +952,88 @@ async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
 
 
 @pytest.mark.anyio
+async def test_wave4_historical_brick_manifest_plans_parent_variant_and_repeat(
+    client, mock_db, test_user, auth_headers
+):
+    family = "historical-brick-main-street"
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    library_entries = [
+        SimpleNamespace(
+            id=f"{family}-{module['role']}-{module.get('variant_key', 'default')}",
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest,
+                    module,
+                    validation_status="pass",
+                )
+            },
+        )
+        for module in manifest["modules"]
+    ]
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
+
+    in_band = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 15.0,
+            "target_depth_m": 22.0,
+            "target_floors": 2,
+            "archetype_id": "historical_brick_main_street",
+        },
+    )
+    hand_drawn_variant = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 17.2,
+            "target_depth_m": 20.5,
+            "target_floors": 3,
+            "archetype_id": "historical_brick_victorian",
+        },
+    )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 46.0,
+            "target_depth_m": 22.0,
+            "target_floors": 3,
+            "archetype_id": "historical_brick_victorian",
+        },
+    )
+
+    assert in_band.status_code == 200
+    assert in_band.json()["family"] == family
+    assert hand_drawn_variant.status_code == 200
+    assert hand_drawn_variant.json()["family"] == family
+    assert oversized.status_code == 200
+    oversized_plan = oversized.json()
+    assert oversized_plan["family"] == family
+    assert oversized_plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert oversized_plan["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("family", "archetype_id", "width", "depth", "floors", "oversized_width"),
     [

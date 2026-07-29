@@ -1,0 +1,226 @@
+{
+  "status": "pass",
+  "family": "historical-brick-main-street",
+  "archetype_id": "historical_brick_main_street",
+  "reuse_keys": [
+    "historical_brick_main_street",
+    "historical_brick_victorian",
+    "Commercial \u2014 Main Street / Heritage Retail"
+  ],
+  "manifest": "historical-brick-main-street_manifest.json",
+  "errors": [],
+  "warnings": [
+    "historical-brick-main-street_podium.glb: 16 materials (many; consider consolidation)",
+    "historical-brick-main-street_assembled.glb: 17 materials (many; consider consolidation)",
+    "historical-brick-main-street_assembled.glb: 19.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "historical-brick-main-street_podium.glb",
+      "status": "ok",
+      "triangles": 20890,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 4.1,
+        "depth_z": 22.35
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W4_AgedBrass",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_ForestGreenShadow",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_HeritageGlassAlt",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_OccupiedInterior",
+        "MAT_W4_OccupiedInteriorAlt",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianPodiumSkin",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 4085028
+    },
+    {
+      "file": "historical-brick-main-street_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 31674,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 3.6,
+        "depth_z": 22.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianFloorA",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 6011412
+    },
+    {
+      "file": "historical-brick-main-street_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 31674,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 3.6,
+        "depth_z": 22.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianFloorB",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 6011560
+    },
+    {
+      "file": "historical-brick-main-street_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 31674,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 3.6,
+        "depth_z": 22.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianFloorC",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 6029412
+    },
+    {
+      "file": "historical-brick-main-street_setback_setback_upper.glb",
+      "status": "ok",
+      "triangles": 31674,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 3.6,
+        "depth_z": 22.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Left",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Rear",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianFloorC",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 6029448
+    },
+    {
+      "file": "historical-brick-main-street_crown_crown.glb",
+      "status": "ok",
+      "triangles": 582,
+      "extent_m": {
+        "width_x": 15.0,
+        "height_y": 1.46,
+        "depth_z": 22.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_VictorianCrownSkin",
+        "MAT_W4_VictorianSideCrownSkin"
+      ],
+      "size_bytes": 1725072
+    },
+    {
+      "file": "historical-brick-main-street_roof.glb",
+      "status": "ok",
+      "triangles": 2004,
+      "extent_m": {
+        "width_x": 14.15,
+        "height_y": 2.4,
+        "depth_z": 20.55
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_RoofEdge",
+        "MAT_W4_VictorianRoofSkin",
+        "MAT_W4_VictorianServiceDeckSkin"
+      ],
+      "size_bytes": 7876540
+    },
+    {
+      "file": "historical-brick-main-street_assembled.glb",
+      "status": "ok",
+      "triangles": 54966,
+      "extent_m": {
+        "width_x": 15.02,
+        "height_y": 11.25,
+        "depth_z": 22.46
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W4_AgedBrass",
+        "MAT_W4_CarvedLimestone",
+        "MAT_W4_CreamStone",
+        "MAT_W4_ForestGreenCastIron",
+        "MAT_W4_ForestGreenShadow",
+        "MAT_W4_HeritageGlass",
+        "MAT_W4_HeritageGlassAlt",
+        "MAT_W4_InteriorCavity",
+        "MAT_W4_OccupiedInterior",
+        "MAT_W4_OccupiedInteriorAlt",
+        "MAT_W4_RedPressedBrick",
+        "MAT_W4_RoofEdge",
+        "MAT_W4_VictorianFacade",
+        "MAT_W4_VictorianRoofSkin",
+        "MAT_W4_VictorianServiceDeckSkin",
+        "MAT_W4_VictorianSideCrownSkin",
+        "MAT_W4_VictorianSideSkin"
+      ],
+      "size_bytes": 20718976,
+      "role": "assembled"
+    }
+  ]
+}

@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-28-near-native-landmark-fit-v96"
+        == "2026-07-28-standard-envelope-integration-v97"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -103,6 +103,16 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     )
     assert any(
         "exports below ground" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "secondary elevations" in item["symptom"].lower()
+        and "enlarged brick mosaics" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "flat service zone" in item["symptom"].lower()
+        and "floating above the corrugation" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

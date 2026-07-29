@@ -1,0 +1,10 @@
+{
+  "schema": "registered-band-schedule@1",
+  "source": "reference-led orthographic Victorian polychrome main-street elevation",
+  "elevation": {"x": [0.008, 0.992], "y": [0.015, 0.985]},
+  "crown": {"x": [0.008, 0.992], "y": [0.015, 0.225]},
+  "floor": {"x": [0.018, 0.982], "y": [0.215, 0.570]},
+  "floor_alt": {"x": [0.018, 0.982], "y": [0.215, 0.570]},
+  "podium": {"x": [0.008, 0.992], "y": [0.550, 0.985]},
+  "side": {"source": "floor", "x": [0.025, 0.180]}
+}

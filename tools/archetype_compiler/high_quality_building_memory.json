@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-28-near-native-landmark-fit-v96",
+  "memory_version": "2026-07-28-standard-envelope-integration-v97",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -692,6 +692,16 @@
       "symptom": "A fallback LEGO module exports below ground after adding an arched opening",
       "cause": "A semicircular arch was sized wider than twice the usable module height, so the spring line and lower curve could not fit inside the module envelope.",
       "correction": "For semicircular fallback arches keep opening width at or below twice the usable module height; otherwise use a shallower segmental arch or move the identity-bearing opening into the fixed assembled landmark. Validate on-disk module bounds."
+    },
+    {
+      "symptom": "A reference-locked front facade is convincing but its long secondary elevations read as smooth slabs, enlarged brick mosaics or stretched front windows",
+      "cause": "The ceremonial front atlas or one narrow crop was stretched across a wall with a different aspect ratio and opening rhythm, while bright physical bands were applied over the result.",
+      "correction": "Author a dedicated true-aspect secondary-elevation PBR source at real masonry course scale, register its own opening schedule and alpha voids, and use physical geometry only for construction-depth returns, sills and sashes. Validate brick scale and course continuity in a front-corner oblique."
+    },
+    {
+      "symptom": "A hipped roof with a flat service zone reads as a dark slab floating above the corrugation or as a wire lattice crossing skylights",
+      "cause": "A complete hip remained beneath a second deck mesh, and physical standing seams continued through the deck, crossed other roof faces or converged repeatedly at one corner.",
+      "correction": "Build the perimeter hip from an explicit inner contour that meets the service deck at one shared elevation. Terminate seams at the inner edge and skylight curbs, distribute necessary ribs without corner clamping, and let registered normal/depth relief carry directions that would otherwise cross. Prove the topology from street-corner and aerial views."
     }
   ]
 }

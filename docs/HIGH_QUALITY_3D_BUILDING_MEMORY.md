@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-28-near-native-landmark-fit-v96`.
+Current executable memory: `2026-07-28-standard-envelope-integration-v97`.
 
 ## The quality target
 
@@ -617,6 +617,16 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Fixed storefront identity includes entrance count as well as display rhythm.
   Keep both recessed entries, the cast-iron pilasters, spandrel/frieze hierarchy
   and six upper arches fixed; only ordinary display or sash bays may repeat.
+- A convincing public elevation does not authorize stretching its crop around
+  the long sides. Author a true-aspect secondary-elevation PBR source at real
+  masonry course scale, register its own opening rhythm and alpha voids, and
+  reserve physical relief for returns, sills and sashes. The front-corner
+  oblique is the acceptance view for brick scale and course continuity.
+- A flat service zone inside a hip is roof topology, not rooftop equipment.
+  Build the sloped perimeter from an explicit inner contour meeting the deck
+  at one shared elevation. Terminate standing seams at that contour and at
+  skylight curbs; let registered normal/depth relief carry any seam direction
+  that would otherwise cross another roof face or form a wire lattice.
 
 ### Original textile mill + variant-graph inheritance lessons
 

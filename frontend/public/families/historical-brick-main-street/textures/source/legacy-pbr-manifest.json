@@ -1,0 +1,686 @@
+{
+  "schema": "facade-sheet@5",
+  "family": "historical-brick-victorian-v1-renderlocked",
+  "archetype_id": "historical_brick_main_street",
+  "created_at": "2026-07-20T11:43:59.414727+00:00",
+  "provider": "openai",
+  "model": "gpt-image-2",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/historical_brick_main_street/variant_0.png",
+  "architectural_signature": {
+    "identity": "Two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, cream-and-red brick striping, a deep forest-green cast-iron double storefront, carved frieze and a tall panelled parapet concealing a low service roof.",
+    "material_zones": "rich red pressed brick; repeated cream-brick bands and carved limestone; forest-green painted cast iron and timber; dark membrane and corrugated roof; warm occupied glazing",
+    "glass_profile": "heritage_leaded_occupied",
+    "material_overrides": {
+      "primary": {
+        "base_color": "#8f4636",
+        "roughness": 0.86,
+        "metallic": 0.0,
+        "texture_key": "red_brick"
+      },
+      "secondary": {
+        "base_color": "#d2bc92",
+        "roughness": 0.8,
+        "metallic": 0.0,
+        "texture_key": "limestone"
+      },
+      "accent": {
+        "base_color": "#315a3f",
+        "roughness": 0.48,
+        "metallic": 0.24,
+        "texture_key": null
+      },
+      "roof": {
+        "base_color": "#777773",
+        "roughness": 0.66,
+        "metallic": 0.3,
+        "texture_key": "standing_seam_metal"
+      }
+    },
+    "signature_material_overrides": {
+      "signature_stone": {
+        "base_color": "#d8c69d",
+        "roughness": 0.79,
+        "metallic": 0.0,
+        "texture_key": "limestone"
+      },
+      "signature_warm": {
+        "base_color": "#53382c",
+        "roughness": 0.61,
+        "metallic": 0.0,
+        "texture_key": "dark_oak"
+      },
+      "signature_metal": {
+        "base_color": "#315a3f",
+        "roughness": 0.47,
+        "metallic": 0.24,
+        "texture_key": null
+      }
+    },
+    "kits": [
+      "cast_iron_storefront",
+      "round_arch_sashes",
+      "polychrome_brick_bands",
+      "carved_sign_frieze",
+      "panelled_parapet",
+      "concealed_service_roof"
+    ]
+  },
+  "span_m": 15.05,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "elevation_source": "elevation_source.jpg",
+  "semantic_glass": {
+    "glass_mask": "far/elevation_glass.png",
+    "opaque_mask": "far/elevation_opaque.png",
+    "glass_regions": [
+      [
+        0.08854,
+        0.2619,
+        0.17448,
+        0.49206
+      ],
+      [
+        0.20573,
+        0.2619,
+        0.28646,
+        0.49206
+      ],
+      [
+        0.33333,
+        0.2619,
+        0.41146,
+        0.49206
+      ],
+      [
+        0.5651,
+        0.2619,
+        0.64323,
+        0.49206
+      ],
+      [
+        0.70573,
+        0.2619,
+        0.78385,
+        0.49206
+      ],
+      [
+        0.8151,
+        0.2619,
+        0.89323,
+        0.49206
+      ],
+      [
+        0.0599,
+        0.65873,
+        0.22396,
+        0.96429
+      ],
+      [
+        0.24479,
+        0.65873,
+        0.45573,
+        0.96429
+      ],
+      [
+        0.53646,
+        0.65873,
+        0.66927,
+        0.96429
+      ],
+      [
+        0.70833,
+        0.65873,
+        0.9401,
+        0.96429
+      ]
+    ],
+    "method": "deterministic-semantic-fallback"
+  },
+  "registered_band_schedule": "registered_bands.json",
+  "bands": {
+    "floor": {
+      "albedo": "far/floor_albedo.png",
+      "roughness": "far/floor_roughness.png",
+      "emissive": "far/floor_emissive.png",
+      "glass_mask": "far/floor_glass.png",
+      "opaque_mask": "far/floor_opaque.png",
+      "glass_regions": [
+        [
+          0.07552,
+          0.1413,
+          0.16406,
+          0.78261
+        ],
+        [
+          0.19792,
+          0.1413,
+          0.28125,
+          0.78261
+        ],
+        [
+          0.32812,
+          0.1413,
+          0.40885,
+          0.78261
+        ],
+        [
+          0.5651,
+          0.1413,
+          0.64583,
+          0.78261
+        ],
+        [
+          0.71094,
+          0.1413,
+          0.79167,
+          0.78261
+        ],
+        [
+          0.82292,
+          0.1413,
+          0.90104,
+          0.78261
+        ]
+      ],
+      "px": [
+        1024,
+        245
+      ],
+      "height_m": 3.6,
+      "normal": "far/floor_normal.png",
+      "ao": "far/floor_ao.png",
+      "depth": "far/floor_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            490
+          ],
+          "albedo": "near/floor_albedo.png",
+          "normal": "near/floor_normal.png",
+          "roughness": "near/floor_roughness.png",
+          "ao": "near/floor_ao.png",
+          "depth": "near/floor_depth.png",
+          "emissive": "near/floor_emissive.png",
+          "glass_mask": "near/floor_glass.png",
+          "opaque_mask": "near/floor_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            245
+          ],
+          "albedo": "far/floor_albedo.png",
+          "normal": "far/floor_normal.png",
+          "roughness": "far/floor_roughness.png",
+          "ao": "far/floor_ao.png",
+          "depth": "far/floor_depth.png",
+          "emissive": "far/floor_emissive.png",
+          "glass_mask": "far/floor_glass.png",
+          "opaque_mask": "far/floor_opaque.png"
+        }
+      },
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    },
+    "floor_alt": {
+      "albedo": "far/floor_alt_albedo.png",
+      "roughness": "far/floor_alt_roughness.png",
+      "emissive": "far/floor_alt_emissive.png",
+      "glass_mask": "far/floor_alt_glass.png",
+      "opaque_mask": "far/floor_alt_opaque.png",
+      "glass_regions": [
+        [
+          0.07552,
+          0.1413,
+          0.16406,
+          0.78261
+        ],
+        [
+          0.19792,
+          0.1413,
+          0.28125,
+          0.78261
+        ],
+        [
+          0.32812,
+          0.1413,
+          0.40885,
+          0.78261
+        ],
+        [
+          0.5651,
+          0.1413,
+          0.64583,
+          0.78261
+        ],
+        [
+          0.71094,
+          0.1413,
+          0.79167,
+          0.78261
+        ],
+        [
+          0.82292,
+          0.1413,
+          0.90104,
+          0.78261
+        ]
+      ],
+      "px": [
+        1024,
+        245
+      ],
+      "height_m": 3.6,
+      "normal": "far/floor_alt_normal.png",
+      "ao": "far/floor_alt_ao.png",
+      "depth": "far/floor_alt_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            490
+          ],
+          "albedo": "near/floor_alt_albedo.png",
+          "normal": "near/floor_alt_normal.png",
+          "roughness": "near/floor_alt_roughness.png",
+          "ao": "near/floor_alt_ao.png",
+          "depth": "near/floor_alt_depth.png",
+          "emissive": "near/floor_alt_emissive.png",
+          "glass_mask": "near/floor_alt_glass.png",
+          "opaque_mask": "near/floor_alt_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            245
+          ],
+          "albedo": "far/floor_alt_albedo.png",
+          "normal": "far/floor_alt_normal.png",
+          "roughness": "far/floor_alt_roughness.png",
+          "ao": "far/floor_alt_ao.png",
+          "depth": "far/floor_alt_depth.png",
+          "emissive": "far/floor_alt_emissive.png",
+          "glass_mask": "far/floor_alt_glass.png",
+          "opaque_mask": "far/floor_alt_opaque.png"
+        }
+      },
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    },
+    "side": {
+      "albedo": "far/side_albedo.png",
+      "roughness": "far/side_roughness.png",
+      "emissive": "far/side_emissive.png",
+      "glass_mask": "far/side_glass.png",
+      "opaque_mask": "far/side_opaque.png",
+      "glass_regions": [
+        [
+          0.03906,
+          0.13805,
+          0.33854,
+          0.7862
+        ],
+        [
+          0.77344,
+          0.1532,
+          0.96094,
+          0.7862
+        ]
+      ],
+      "px": [
+        1024,
+        1583
+      ],
+      "height_m": 3.6,
+      "span_m": 2.33,
+      "normal": "far/side_normal.png",
+      "ao": "far/side_ao.png",
+      "depth": "far/side_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            3166
+          ],
+          "albedo": "near/side_albedo.png",
+          "normal": "near/side_normal.png",
+          "roughness": "near/side_roughness.png",
+          "ao": "near/side_ao.png",
+          "depth": "near/side_depth.png",
+          "emissive": "near/side_emissive.png",
+          "glass_mask": "near/side_glass.png",
+          "opaque_mask": "near/side_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            1583
+          ],
+          "albedo": "far/side_albedo.png",
+          "normal": "far/side_normal.png",
+          "roughness": "far/side_roughness.png",
+          "ao": "far/side_ao.png",
+          "depth": "far/side_depth.png",
+          "emissive": "far/side_emissive.png",
+          "glass_mask": "far/side_glass.png",
+          "opaque_mask": "far/side_opaque.png"
+        }
+      },
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    },
+    "crown": {
+      "albedo": "far/crown_albedo.png",
+      "roughness": "far/crown_roughness.png",
+      "emissive": "far/crown_emissive.png",
+      "glass_mask": "far/crown_glass.png",
+      "opaque_mask": "far/crown_opaque.png",
+      "glass_regions": [],
+      "px": [
+        1024,
+        142
+      ],
+      "height_m": 3.6,
+      "normal": "far/crown_normal.png",
+      "ao": "far/crown_ao.png",
+      "depth": "far/crown_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            284
+          ],
+          "albedo": "near/crown_albedo.png",
+          "normal": "near/crown_normal.png",
+          "roughness": "near/crown_roughness.png",
+          "ao": "near/crown_ao.png",
+          "depth": "near/crown_depth.png",
+          "emissive": "near/crown_emissive.png",
+          "glass_mask": "near/crown_glass.png",
+          "opaque_mask": "near/crown_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            142
+          ],
+          "albedo": "far/crown_albedo.png",
+          "normal": "far/crown_normal.png",
+          "roughness": "far/crown_roughness.png",
+          "ao": "far/crown_ao.png",
+          "depth": "far/crown_depth.png",
+          "emissive": "far/crown_emissive.png",
+          "glass_mask": "far/crown_glass.png",
+          "opaque_mask": "far/crown_opaque.png"
+        }
+      },
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    },
+    "podium": {
+      "albedo": "far/podium_albedo.png",
+      "roughness": "far/podium_roughness.png",
+      "emissive": "far/podium_emissive.png",
+      "glass_mask": "far/podium_glass.png",
+      "opaque_mask": "far/podium_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.23636,
+          0.01302,
+          0.92727
+        ],
+        [
+          0.10677,
+          0.23636,
+          0.24219,
+          0.92727
+        ],
+        [
+          0.27865,
+          0.23636,
+          0.51042,
+          0.92727
+        ],
+        [
+          0.63021,
+          0.23636,
+          0.79688,
+          0.92727
+        ],
+        [
+          0.81771,
+          0.23636,
+          1.0,
+          0.92727
+        ]
+      ],
+      "px": [
+        1024,
+        294
+      ],
+      "height_m": 4.5,
+      "normal": "far/podium_normal.png",
+      "ao": "far/podium_ao.png",
+      "depth": "far/podium_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            588
+          ],
+          "albedo": "near/podium_albedo.png",
+          "normal": "near/podium_normal.png",
+          "roughness": "near/podium_roughness.png",
+          "ao": "near/podium_ao.png",
+          "depth": "near/podium_depth.png",
+          "emissive": "near/podium_emissive.png",
+          "glass_mask": "near/podium_glass.png",
+          "opaque_mask": "near/podium_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            294
+          ],
+          "albedo": "far/podium_albedo.png",
+          "normal": "far/podium_normal.png",
+          "roughness": "far/podium_roughness.png",
+          "ao": "far/podium_ao.png",
+          "depth": "far/podium_depth.png",
+          "emissive": "far/podium_emissive.png",
+          "glass_mask": "far/podium_glass.png",
+          "opaque_mask": "far/podium_opaque.png"
+        }
+      },
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    },
+    "floor_c": {
+      "albedo": "far/floor_c_albedo.png",
+      "roughness": "far/floor_c_roughness.png",
+      "emissive": "far/floor_c_emissive.png",
+      "glass_mask": "far/floor_c_glass.png",
+      "opaque_mask": "far/floor_c_opaque.png",
+      "glass_regions": [
+        [
+          0.07552,
+          0.1413,
+          0.16406,
+          0.78261
+        ],
+        [
+          0.19792,
+          0.1413,
+          0.25,
+          0.78261
+        ],
+        [
+          0.3151,
+          0.1413,
+          0.39323,
+          0.78261
+        ],
+        [
+          0.46094,
+          0.1413,
+          0.53385,
+          0.78261
+        ],
+        [
+          0.58073,
+          0.1413,
+          0.66146,
+          0.78261
+        ],
+        [
+          0.75,
+          0.1413,
+          0.79167,
+          0.78261
+        ],
+        [
+          0.82292,
+          0.1413,
+          0.90104,
+          0.78261
+        ]
+      ],
+      "px": [
+        1024,
+        245
+      ],
+      "height_m": 3.6,
+      "normal": "far/floor_c_normal.png",
+      "ao": "far/floor_c_ao.png",
+      "depth": "far/floor_c_depth.png",
+      "lods": {
+        "near": {
+          "px": [
+            2048,
+            490
+          ],
+          "albedo": "near/floor_c_albedo.png",
+          "normal": "near/floor_c_normal.png",
+          "roughness": "near/floor_c_roughness.png",
+          "ao": "near/floor_c_ao.png",
+          "depth": "near/floor_c_depth.png",
+          "emissive": "near/floor_c_emissive.png",
+          "glass_mask": "near/floor_c_glass.png",
+          "opaque_mask": "near/floor_c_opaque.png"
+        },
+        "far": {
+          "px": [
+            1024,
+            245
+          ],
+          "albedo": "far/floor_c_albedo.png",
+          "normal": "far/floor_c_normal.png",
+          "roughness": "far/floor_c_roughness.png",
+          "ao": "far/floor_c_ao.png",
+          "depth": "far/floor_c_depth.png",
+          "emissive": "far/floor_c_emissive.png",
+          "glass_mask": "far/floor_c_glass.png",
+          "opaque_mask": "far/floor_c_opaque.png"
+        }
+      },
+      "variant_of": "floor_alt",
+      "middle_bay_order": [
+        2,
+        1
+      ],
+      "audited_storey_crop": false,
+      "audited_openings": true,
+      "source_crop_normalized": null
+    }
+  },
+  "detection": {
+    "floor": "registered:registered_bands.json",
+    "floor_alt": [
+      0.215,
+      0.57
+    ],
+    "side": [
+      0.025,
+      0.18
+    ],
+    "crown": [
+      0.0,
+      0.225
+    ],
+    "podium": "registered:registered_bands.json"
+  },
+  "source_manifest_schema": "facade-sheet@4",
+  "reference_guided_source": {
+    "enabled": false,
+    "source_filename": "elevation_identity.jpg",
+    "role": "shadow-neutral orthographic identity atlas"
+  },
+  "audited_layout_source": "built-in",
+  "pbr_lods": {
+    "near": {
+      "px": [
+        2048,
+        1346
+      ],
+      "albedo": "near/elevation_albedo.png",
+      "normal": "near/elevation_normal.png",
+      "roughness": "near/elevation_roughness.png",
+      "ao": "near/elevation_ao.png",
+      "depth": "near/elevation_depth.png",
+      "emissive": "near/elevation_emissive.png",
+      "glass_mask": "near/elevation_glass.png",
+      "opaque_mask": "near/elevation_opaque.png"
+    },
+    "far": {
+      "px": [
+        1024,
+        673
+      ],
+      "albedo": "far/elevation_albedo.png",
+      "normal": "far/elevation_normal.png",
+      "roughness": "far/elevation_roughness.png",
+      "ao": "far/elevation_ao.png",
+      "depth": "far/elevation_depth.png",
+      "emissive": "far/elevation_emissive.png",
+      "glass_mask": "far/elevation_glass.png",
+      "opaque_mask": "far/elevation_opaque.png"
+    }
+  },
+  "bay_strategy": {
+    "sheet_bays": 4,
+    "fixed_end_bays": [
+      0,
+      3
+    ],
+    "repeatable_middle_bays": [
+      1,
+      2
+    ],
+    "middle_variants": [
+      "floor",
+      "floor_alt",
+      "floor_c"
+    ],
+    "rule": "entrance, corner, crown and roof remain fixed; only middle floor bays repeat"
+  },
+  "shadow_neutral": {
+    "enabled": true,
+    "method": "multiscale-linear-delighting plus audited storey crops",
+    "lighting_authority": "City Prompt environment and sun"
+  },
+  "delivery": {
+    "near_atlas_width_px": 2048,
+    "far_atlas_width_px": 1024,
+    "near_usage": "close-range physical glazing and PBR facade",
+    "far_usage": "city-scale baked facade",
+    "container": "PNG source; KTX2/UASTC packaged at GLB delivery"
+  }
+}

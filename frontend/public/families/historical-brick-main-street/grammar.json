@@ -1,0 +1,144 @@
+{
+  "family_id": "historical-brick-main-street",
+  "source": {
+    "archetype_id": "historical_brick_main_street",
+    "variant_id": "historical_brick_victorian",
+    "generation_archetype_id": "historical_brick_victorian",
+    "reuse_keys": [
+      "historical_brick_main_street",
+      "historical_brick_victorian",
+      "Commercial \u2014 Main Street / Heritage Retail"
+    ]
+  },
+  "dimensions": {
+    "width_m": 15.0,
+    "depth_m": 22.0,
+    "podium_height_m": 3.8,
+    "floor_height_m": 3.6,
+    "setback_height_m": 3.6,
+    "roof_height_m": 2.4,
+    "crown_height_m": 1.45,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, red-and-cream brick banding, a deep forest-green cast-iron double storefront, carved frieze and panelled parapet around a concealed corrugated service roof.",
+    "material_zones": "rich red pressed brick; cream brick and carved limestone; forest-green painted cast iron and timber; weathered corrugated metal; clear occupied heritage glazing",
+    "glass_profile": "heritage_leaded_occupied",
+    "kits": [
+      "cast_iron_double_storefront",
+      "round_arch_sashes",
+      "polychrome_brick_bands",
+      "carved_floral_frieze",
+      "panelled_parapet",
+      "concealed_service_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "historical_brick_main_street",
+    "historical_brick_victorian"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The fixed public storefront occupies the first streetwall segment; ordinary upper sash/display bays and quiet secondary elevations may continue around an L or U without changing floor or cornice datums.",
+    "recommendedWidth_m": [
+      8,
+      30
+    ],
+    "recommendedDepth_m": [
+      14,
+      30
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "wingDepth_m": [
+      7,
+      11
+    ],
+    "preferredBayMultiple_m": 2.1,
+    "minimumCourtyard_m": 8,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          8,
+          30
+        ],
+        "recommendedDepth_m": [
+          14,
+          27
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          16,
+          36
+        ],
+        "recommendedDepth_m": [
+          16,
+          34
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "wingDepth_m": [
+          7,
+          11
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          24,
+          44
+        ],
+        "recommendedDepth_m": [
+          18,
+          36
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "wingDepth_m": [
+          7,
+          11
+        ],
+        "minimumCourtyard_m": 8
+      }
+    },
+    "notes": [
+      "Keep the two recessed storefront entries, end piers and panelled parapet fixed.",
+      "Vary width in whole 2.10 metre bays and height in whole 3.60 metre upper floors.",
+      "Use authored secondary-elevation bands on returns; never wrap the public entrance atlas."
+    ]
+  },
+  "massing_graph": {
+    "type": "modular_streetwall",
+    "profile": "victorian_polychrome_main_street_v2",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/historical_brick_main_street/variant_0.png",
+    "fixed": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable": [
+      "typical_a",
+      "typical_b",
+      "typical_c"
+    ]
+  }
+}
