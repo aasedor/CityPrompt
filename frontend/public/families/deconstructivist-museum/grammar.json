@@ -1,0 +1,88 @@
+{
+  "family_id": "deconstructivist-museum",
+  "source": {
+    "archetype_id": "monumental_museum_axis",
+    "variant_id": "museum_contemporary_deconstructivist",
+    "generation_archetype_id": "museum_contemporary_deconstructivist",
+    "reuse_keys": [
+      "monumental_museum_axis",
+      "museum_contemporary_deconstructivist",
+      "Museum / Gallery",
+      "Civic / Institutional"
+    ]
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 40.7,
+    "podium_height_m": 6.0,
+    "floor_height_m": 6.0,
+    "setback_height_m": 6.0,
+    "roof_height_m": 1.0,
+    "crown_height_m": 6.0,
+    "default_floors": 5,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "Fractured champagne-silver gallery towers frame a tall widening, inward-leaning low-iron atrium, with serrated parapets, deep cantilever notches and a carved triangular public entry.",
+    "material_zones": "champagne-silver titanium panel rainscreen; charcoal structural steel; low-iron faceted atrium glass; warm timber public interiors; dark membrane roofs; pale concrete public plinth",
+    "glass_profile": "museum_atrium_low_iron",
+    "kits": [
+      "fractured_gallery_towers",
+      "faceted_atrium",
+      "serrated_parapets",
+      "subtractive_entry"
+    ]
+  },
+  "archetype_aliases": [
+    "monumental_museum_axis",
+    "museum_contemporary_deconstructivist"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The family has one authored public front and landmark silhouette. Mild rectangular drawing variation uses independent landmark scaling; larger targets repeat the stack along the long streetwall axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.8,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      45,
+      100
+    ],
+    "recommendedDepth_m": [
+      25,
+      50
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45,
+          100
+        ],
+        "recommendedDepth_m": [
+          25,
+          50
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "deconstructivist-museum",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/monumental_museum_axis/variant_1.png",
+    "fallback": "family_specific_modular_streetwall"
+  }
+}

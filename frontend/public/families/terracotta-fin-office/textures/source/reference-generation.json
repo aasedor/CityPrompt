@@ -1,0 +1,14 @@
+{
+  "schema": "imagegen-reference-package@1",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate from hard catalogue reference",
+  "catalogueReference": "/archetypes/buildings/modern_glass_office_institutional/variant_1.png",
+  "outputs": {
+    "angle-reference-60.png": "High front-right survey view preserving the double-height lobby, alternating glass and terracotta bands, two planted setbacks and occupied crown.",
+    "angle-reference-90.png": "Roof/return evidence for wrapped fins, planted terraces, dark membrane roof, screened core and pergola.",
+    "elevation-source.png": "Shadow-neutral orthographic front elevation with physical low-e glass, floor plates, ribbed terracotta fins and planted setbacks.",
+    "material-source.png": "Shadow-neutral true-scale ribbed fired-terracotta baguette and rail source for PBR derivation."
+  },
+  "promptPolicy": "Treat the selected catalogue variant as a hard architectural goalpost; keep floor count, setback hierarchy, glazing depth and ceramic fin cadence; prohibit blue painted windows, generic cladding, neighbors, text and cartoon styling."
+}

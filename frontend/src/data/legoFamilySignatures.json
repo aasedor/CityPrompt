@@ -38,7 +38,8 @@
                                                           "archetypeId":  "glass_office_terracotta_fins",
                                                           "identity":  "Stepped low-iron glass office wrapped in warm terracotta fins, with a transparent double-height lobby, planted setback bands and an occupied glazed crown.",
                                                           "materialZones":  "clear low-iron glass; ribbed terracotta fins; charcoal-bronze mullions; pale concrete slab edges; integrated planting",
-                                                          "glassProfile":  "low_iron_clear"
+                                                          "glassProfile":  "terracotta_office_low_e",
+                                                          "elevationUrl":  "/families/terracotta-fin-office/elevation.jpg"
                                                       },
                      "victorian_heritage_second_empire":  {
                                                               "archetypeId":  "victorian_heritage_second_empire",
@@ -249,16 +250,24 @@
                                                       },
                      "modernist_civic_block":  {
                                                    "archetypeId":  "modernist_civic_block",
-                                                   "identity":  "Monumental modernist civic block with a floating upper volume, pilotis, deep brise-soleil, ceremonial cantilever canopy and exposed concrete frame.",
-                                                   "materialZones":  "board-marked concrete; dark bronze frames; clear glass; warm soffit",
-                                                   "elevationUrl":  "/families/modernist-civic-block/elevation.jpg"
+                                                   "identity":  "Floating board-formed concrete gallery boxes stand on monumental pilotis beneath one broad roof plane, cut by deep horizontal window slits and a recessed civic lobby.",
+                                                   "materialZones":  "board-formed exposed concrete; deep smoked low-e ribbon glazing; charcoal bronze frames; warm public lobby; dark membrane roof; bush-hammered public plinth",
+                                                   "glassProfile":  "civic_recessed_smoked",
+                                                   "elevationUrl":  "/families/brutalist-civic-block/elevation.jpg"
                                                },
+                     "modernist_civic_concrete_brutalist":  {
+                                                                   "archetypeId":  "modernist_civic_concrete_brutalist",
+                                                                   "identity":  "Floating board-formed concrete gallery boxes stand on monumental pilotis beneath one broad roof plane, cut by deep horizontal window slits and a recessed civic lobby.",
+                                                                   "materialZones":  "board-formed exposed concrete; deep smoked low-e ribbon glazing; charcoal bronze frames; warm public lobby; dark membrane roof; bush-hammered public plinth",
+                                                                   "glassProfile":  "civic_recessed_smoked",
+                                                                   "elevationUrl":  "/families/brutalist-civic-block/elevation.jpg"
+                                                               },
                      "modern_glass_office_institutional":  {
                                                                "archetypeId":  "modern_glass_office_institutional",
-                                                               "identity":  "Compact institutional office with continuous low-iron blue curtain wall, slim silver transoms, dark expressed corner mullions, transparent double-height lobby and a restrained parapet roofline.",
-                                                               "materialZones":  "low-iron blue glass; charcoal corner mullions; silver aluminum transoms and spandrels; pale stone lobby base",
-                                                               "glassProfile":  "reflective_curtain_wall",
-                                                               "elevationUrl":  "/families/modern-glass-office-institutional/elevation.jpg"
+                                                               "identity":  "Stepped low-iron office bands alternate with ribbed terracotta fin fields, two planted setback terraces, a transparent double-height lobby and an occupied glazed crown.",
+                                                               "materialZones":  "low-iron neutral low-e curtain wall; ribbed red terracotta baguettes; dark bronze mullions; warm occupied offices; planted concrete terraces; charcoal membrane roof and pergola",
+                                                               "glassProfile":  "terracotta_office_low_e",
+                                                               "elevationUrl":  "/families/terracotta-fin-office/elevation.jpg"
                                                            },
                      "glass_office_dark_frame":  {
                                                      "archetypeId":  "glass_office_dark_frame",
@@ -352,6 +361,20 @@
                                                       "materialZones":  "pale warm granite ashlar; carved stone relief; weathered bronze doors and fanlights; charcoal iron ribs; clear smoky shed glass",
                                                       "glassProfile":  "beaux_arts_bronze_and_shed_glass",
                                                       "elevationUrl":  "/families/historic-grand-station/elevation.jpg"
-                                                  }
+                                                  },
+                     "monumental_museum_axis":  {
+                                                        "archetypeId":  "monumental_museum_axis",
+                                                        "identity":  "Fractured champagne-silver gallery towers frame a tall widening, inward-leaning low-iron atrium, with serrated parapets, deep cantilever notches and a carved triangular public entry.",
+                                                        "materialZones":  "champagne-silver titanium panel rainscreen; charcoal structural steel; low-iron faceted atrium glass; warm timber public interiors; dark membrane roofs; pale concrete public plinth",
+                                                        "glassProfile":  "museum_atrium_low_iron",
+                                                        "elevationUrl":  "/families/deconstructivist-museum/elevation.jpg"
+                                                    },
+                     "museum_contemporary_deconstructivist":  {
+                                                                     "archetypeId":  "museum_contemporary_deconstructivist",
+                                                                     "identity":  "Fractured champagne-silver gallery towers frame a tall widening, inward-leaning low-iron atrium, with serrated parapets, deep cantilever notches and a carved triangular public entry.",
+                                                                     "materialZones":  "champagne-silver titanium panel rainscreen; charcoal structural steel; low-iron faceted atrium glass; warm timber public interiors; dark membrane roofs; pale concrete public plinth",
+                                                                     "glassProfile":  "museum_atrium_low_iron",
+                                                                     "elevationUrl":  "/families/deconstructivist-museum/elevation.jpg"
+                                                                 }
                  }
 }

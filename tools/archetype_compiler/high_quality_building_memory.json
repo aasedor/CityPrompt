@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-29-reference-specific-window-materiality-v99",
+  "memory_version": "2026-07-29-nonresidential-glazing-enclosure-v100",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -228,7 +228,10 @@
         "bronze_recessed_occupied",
         "heritage_sash_occupied",
         "industrial_crittall_occupied",
-        "nordic_clear_occupied"
+        "nordic_clear_occupied",
+        "museum_atrium_low_iron",
+        "terracotta_office_low_e",
+        "civic_recessed_smoked"
       ],
       "near": "physical transmission, shape-matched recessed pane, semantic opening returns, slim registered mullions/transoms, projecting sill and occupied interior backplate",
       "far": "baked facade glass with semantic mask",
@@ -735,6 +738,11 @@
       "symptom": "A residential balcony stack looks like repeated opaque boxes or shows ghost balconies behind the modeled rails",
       "cause": "An emissive pane was mistaken for an occupied room, or the reference elevation already contained rendered balconies that were duplicated by misaligned physical slabs and railings.",
       "correction": "Use a clean reference-palette wall PBR beneath the stack, recess a darker layered door or room card, and construct each balcony once with a thin slab, timber or masonry returns, open end rails, regularly spaced pickets and consistent floor-datum anchoring."
+    },
+    {
+      "symptom": "A monumental atrium looks acceptable head-on but becomes an open glass card with exposed floor plates or an opaque rooftop box in oblique views",
+      "cause": "Only the front curtain wall was constructed, while return facets and the glass roof were omitted or occupied backplates extended beyond the glazing envelope.",
+      "correction": "Build front, both faceted returns and roof as one closed transparent section; keep every plate, brace and occupied room card inside those boundaries; and validate front-corner plus aerial views before accepting the optical profile."
     }
   ]
 }

@@ -1,0 +1,160 @@
+{
+  "status": "pass",
+  "family": "brutalist-civic-block",
+  "archetype_id": "modernist_civic_block",
+  "reuse_keys": [
+    "modernist_civic_block",
+    "modernist_civic_concrete_brutalist",
+    "Civic / Institutional"
+  ],
+  "manifest": "brutalist-civic-block_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "brutalist-civic-block_podium.glb: 15.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_floor_typical_a.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_floor_typical_b.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_floor_typical_c.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_crown_crown.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_roof.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "brutalist-civic-block_assembled.glb: 37.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "brutalist-civic-block_podium.glb",
+      "status": "ok",
+      "triangles": 536,
+      "extent_m": {
+        "width_x": 54.1,
+        "height_y": 4.4,
+        "depth_z": 10.015
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_Metal",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 16715948
+    },
+    {
+      "file": "brutalist-civic-block_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 156,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.4,
+        "depth_z": 33.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 12945100
+    },
+    {
+      "file": "brutalist-civic-block_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 156,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.4,
+        "depth_z": 33.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 12945100
+    },
+    {
+      "file": "brutalist-civic-block_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 156,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.4,
+        "depth_z": 33.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 12945100
+    },
+    {
+      "file": "brutalist-civic-block_crown_crown.glb",
+      "status": "ok",
+      "triangles": 156,
+      "extent_m": {
+        "width_x": 56.7,
+        "height_y": 4.4,
+        "depth_z": 33.05
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 12945160
+    },
+    {
+      "file": "brutalist-civic-block_roof.glb",
+      "status": "ok",
+      "triangles": 144,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 1.0,
+        "depth_z": 34.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell"
+      ],
+      "size_bytes": 12942448
+    },
+    {
+      "file": "brutalist-civic-block_assembled.glb",
+      "status": "ok",
+      "triangles": 17716,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 20.0,
+        "depth_z": 34.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_Metal",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_OccupiedDepth",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_PhysicalGlass",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_ReferenceShell",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_Roof",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_SideConstruction",
+        "MAT_W6_BRUTALIST_CIVIC_BLOCK_Trim"
+      ],
+      "size_bytes": 39768464,
+      "role": "assembled"
+    }
+  ]
+}

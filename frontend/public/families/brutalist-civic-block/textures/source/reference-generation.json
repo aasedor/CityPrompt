@@ -1,0 +1,14 @@
+{
+  "schema": "imagegen-reference-package@1",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate from hard catalogue reference",
+  "catalogueReference": "/archetypes/buildings/modernist_civic_block/variant_0.png",
+  "outputs": {
+    "angle-reference-60.png": "High front-right survey view preserving floating concrete galleries, monumental pilotis, deep slit windows, clerestory and broad roof.",
+    "angle-reference-90.png": "Roof/return evidence for wrapped board-form joints, recessed glazing, membrane roof and one compact mechanical penthouse.",
+    "elevation-source.png": "Shadow-neutral orthographic front elevation locking cantilever hierarchy, lobby voids, slit depths and roof overhang.",
+    "material-source.png": "Shadow-neutral true-scale board-formed concrete source with pour joints and restrained tie holes for PBR derivation."
+  },
+  "promptPolicy": "Treat the selected catalogue variant as a hard architectural goalpost; keep floating load path, real opening cavities and board-form materiality; prohibit painted black window stripes, generic office grids, ornament, text and cartoon styling."
+}

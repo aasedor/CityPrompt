@@ -711,6 +711,9 @@ def test_reusable_glass_profiles_are_physically_plausible():
         "industrial_crittall_occupied",
         "nordic_clear_occupied",
         "heritage_leaded_occupied",
+        "museum_atrium_low_iron",
+        "terracotta_office_low_e",
+        "civic_recessed_smoked",
     }
     for name in GLASS_PROFILES:
         profile = glass_profile(name)

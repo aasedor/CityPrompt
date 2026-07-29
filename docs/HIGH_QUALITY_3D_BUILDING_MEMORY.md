@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-29-reference-specific-window-materiality-v99`.
+Current executable memory: `2026-07-29-nonresidential-glazing-enclosure-v100`.
 
 ## The quality target
 
@@ -964,6 +964,29 @@ The polychrome collegiate family added four rules for resizable hero facades:
   Entrances, passages, balcony stacks, crowns and roofs stay fixed semantic
   modules while complete ordinary bays and whole floors absorb clean in-band
   variation; oversized requests must remain eligible for streetwall repetition.
+
+### Wave 6 non-residential enclosure + material-system lessons
+
+- A monumental atrium is a complete transparent enclosure, not one front
+  curtain-wall card. Construct the public facade, both faceted returns and the
+  glass roof around one shared section so floor plates, braces and occupied
+  room depth remain inside the weather envelope in every oblique.
+- Bound occupied backplates to the glazing volume. A room card extending above
+  the atrium crest or beyond a return reads as an opaque rooftop box and
+  destroys the intended transparency even when the front camera looks correct.
+- Different non-residential windows still need different optical systems:
+  high-transmission low-iron museum atria, neutral low-e office curtain walls
+  behind solar fins, and deep smoked civic slit windows cannot share one blue
+  fallback material. Preserve their profile identifiers and construction depth
+  through Blender export and every Three.js viewer.
+- Solar screens and recessed slits are geometry. Terracotta fins need real
+  projection, rails and corner returns in front of physical glass; civic slit
+  windows need open concrete cavities, deep sills and soffits, panes and
+  occupied backing rather than black bands painted onto solid walls.
+- A fixed non-residential landmark may still accept ordinary drawing error.
+  Keep the reviewed whole-building GLB inside a conservative independent-axis
+  scale band, then use family-specific podium/middle/crown/roof modules for
+  oversized streetwall repetition without repeating its canonical silhouette.
 
 ## Updating this memory
 

@@ -1,0 +1,87 @@
+{
+  "family_id": "terracotta-fin-office",
+  "source": {
+    "archetype_id": "modern_glass_office_institutional",
+    "variant_id": "glass_office_terracotta_fins",
+    "generation_archetype_id": "glass_office_terracotta_fins",
+    "reuse_keys": [
+      "modern_glass_office_institutional",
+      "glass_office_terracotta_fins",
+      "Office / Commercial"
+    ]
+  },
+  "dimensions": {
+    "width_m": 43.5,
+    "depth_m": 29.52,
+    "podium_height_m": 3.8,
+    "floor_height_m": 3.8,
+    "setback_height_m": 3.8,
+    "roof_height_m": 1.0,
+    "crown_height_m": 3.8,
+    "default_floors": 8,
+    "min_floors": 5,
+    "max_floors": 20
+  },
+  "architectural_signature": {
+    "identity": "Stepped low-iron office bands alternate with ribbed terracotta fin fields, two planted setback terraces, a transparent double-height lobby and an occupied glazed crown.",
+    "material_zones": "low-iron neutral low-e curtain wall; ribbed red terracotta baguettes; dark bronze mullions; warm occupied offices; planted concrete terraces; charcoal membrane roof and pergola",
+    "glass_profile": "terracotta_office_low_e",
+    "kits": [
+      "terracotta_solar_fins",
+      "physical_curtain_wall",
+      "planted_setbacks",
+      "double_height_lobby"
+    ]
+  },
+  "archetype_aliases": [
+    "modern_glass_office_institutional",
+    "glass_office_terracotta_fins"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The family has one authored public front and landmark silhouette. Mild rectangular drawing variation uses independent landmark scaling; larger targets repeat the stack along the long streetwall axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.82,
+      "scaleMax": 1.18,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      24,
+      60
+    ],
+    "recommendedDepth_m": [
+      18,
+      40
+    ],
+    "recommendedFloors": [
+      6,
+      16
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          24,
+          60
+        ],
+        "recommendedDepth_m": [
+          18,
+          40
+        ],
+        "recommendedFloors": [
+          6,
+          16
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "terracotta-fin-office",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/modern_glass_office_institutional/variant_1.png",
+    "fallback": "family_specific_modular_streetwall"
+  }
+}

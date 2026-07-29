@@ -1,0 +1,16 @@
+{
+  "kind": "catalogue_goalpost_plus_imagegen_reference_package_and_authored_geometry",
+  "catalogue_archetype_id": "modern_glass_office_institutional",
+  "catalogue_variant_id": "glass_office_terracotta_fins",
+  "goalpost": "/archetypes/buildings/modern_glass_office_institutional/variant_1.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "angle_reference": "textures/source/angle-reference-60.png",
+  "roof_reference": "textures/source/angle-reference-90.png",
+  "orthographic_elevation": "textures/source/elevation-source.png",
+  "material_source": "textures/source/material-source.png",
+  "reference_generation": "textures/source/reference-generation.json",
+  "elevation_source": "/families/terracotta-fin-office/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave6_nonresidential_families.py",
+  "reference_method": "hard-reference multi-view completion followed by physical construction and custom PBR derivation"
+}

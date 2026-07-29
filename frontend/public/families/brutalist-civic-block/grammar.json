@@ -1,0 +1,87 @@
+{
+  "family_id": "brutalist-civic-block",
+  "source": {
+    "archetype_id": "modernist_civic_block",
+    "variant_id": "modernist_civic_concrete_brutalist",
+    "generation_archetype_id": "modernist_civic_concrete_brutalist",
+    "reuse_keys": [
+      "modernist_civic_block",
+      "modernist_civic_concrete_brutalist",
+      "Civic / Institutional"
+    ]
+  },
+  "dimensions": {
+    "width_m": 58.0,
+    "depth_m": 34.0,
+    "podium_height_m": 4.4,
+    "floor_height_m": 4.4,
+    "setback_height_m": 4.4,
+    "roof_height_m": 1.0,
+    "crown_height_m": 4.4,
+    "default_floors": 4,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "Floating board-formed concrete gallery boxes stand on monumental pilotis beneath one broad roof plane, cut by deep horizontal window slits and a recessed civic lobby.",
+    "material_zones": "board-formed exposed concrete; deep smoked low-e ribbon glazing; charcoal bronze frames; warm public lobby; dark membrane roof; bush-hammered public plinth",
+    "glass_profile": "civic_recessed_smoked",
+    "kits": [
+      "floating_concrete_galleries",
+      "monumental_pilotis",
+      "deep_window_slits",
+      "broad_roof_plane"
+    ]
+  },
+  "archetype_aliases": [
+    "modernist_civic_block",
+    "modernist_civic_concrete_brutalist"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The family has one authored public front and landmark silhouette. Mild rectangular drawing variation uses independent landmark scaling; larger targets repeat the stack along the long streetwall axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.8,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      36,
+      70
+    ],
+    "recommendedDepth_m": [
+      22,
+      42
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          36,
+          70
+        ],
+        "recommendedDepth_m": [
+          22,
+          42
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "brutalist-civic-block",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/modernist_civic_block/variant_0.png",
+    "fallback": "family_specific_modular_streetwall"
+  }
+}

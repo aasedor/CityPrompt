@@ -1,0 +1,14 @@
+{
+  "schema": "imagegen-reference-package@1",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate from hard catalogue reference",
+  "catalogueReference": "/archetypes/buildings/monumental_museum_axis/variant_1.png",
+  "outputs": {
+    "angle-reference-60.png": "High front-corner survey view preserving the fractured metal towers, faceted atrium, carved entry and serrated parapets.",
+    "angle-reference-90.png": "High roof survey view completing the atrium roof, gallery roofs and conservative rear service geometry.",
+    "elevation-source.png": "Shadow-neutral orthographic front elevation locking the tower hierarchy, widening atrium and triangular entry.",
+    "material-source.png": "Shadow-neutral champagne-silver horizontal titanium rainscreen panel source for PBR derivation."
+  },
+  "promptPolicy": "Treat the catalogue image as a hard architectural goalpost; complete only hidden returns and roof; preserve silhouette, floor hierarchy, public entry, physical glass and material identity; prohibit text, context clutter, generic boxes and illustration styling."
+}

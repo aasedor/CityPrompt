@@ -170,6 +170,27 @@ describe('prepareArchitecturalClone', () => {
       ior: 1.50,
       clearcoat: 0.44,
     },
+    {
+      profile: 'museum_atrium_low_iron',
+      transmission: 0.68,
+      environment: 1.15,
+      ior: 1.52,
+      clearcoat: 0.62,
+    },
+    {
+      profile: 'terracotta_office_low_e',
+      transmission: 0.54,
+      environment: 1.02,
+      ior: 1.51,
+      clearcoat: 0.54,
+    },
+    {
+      profile: 'civic_recessed_smoked',
+      transmission: 0.42,
+      environment: 0.88,
+      ior: 1.50,
+      clearcoat: 0.46,
+    },
   ])('preserves $profile as reflective non-emissive glass', ({
     profile,
     transmission,

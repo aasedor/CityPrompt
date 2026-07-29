@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-29-reference-specific-window-materiality-v99"
+        == "2026-07-29-nonresidential-glazing-enclosure-v100"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -134,6 +134,11 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "slightly imperfect footprint" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "monumental atrium" in item["symptom"].lower()
+        and "closed transparent section" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
@@ -160,6 +165,9 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "heritage_sash_occupied",
         "industrial_crittall_occupied",
         "nordic_clear_occupied",
+        "museum_atrium_low_iron",
+        "terracotta_office_low_e",
+        "civic_recessed_smoked",
     } <= set(glazing["profiles"])
     assert "nearly non-emissive" in glazing["materiality_rule"]
     assert "glTF extras" in glazing["export_contract"]

@@ -1,0 +1,164 @@
+{
+  "status": "pass",
+  "family": "deconstructivist-museum",
+  "archetype_id": "monumental_museum_axis",
+  "reuse_keys": [
+    "monumental_museum_axis",
+    "museum_contemporary_deconstructivist",
+    "Museum / Gallery",
+    "Civic / Institutional"
+  ],
+  "manifest": "deconstructivist-museum_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "deconstructivist-museum_podium.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_a.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_b.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_c.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_crown_crown.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_assembled.glb: 26.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "deconstructivist-museum_podium.glb",
+      "status": "ok",
+      "triangles": 358,
+      "extent_m": {
+        "width_x": 64.75,
+        "height_y": 6.0,
+        "depth_z": 40.505
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
+      ],
+      "size_bytes": 10737456
+    },
+    {
+      "file": "deconstructivist-museum_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 358,
+      "extent_m": {
+        "width_x": 64.75,
+        "height_y": 6.0,
+        "depth_z": 40.505
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
+      ],
+      "size_bytes": 10737488
+    },
+    {
+      "file": "deconstructivist-museum_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 358,
+      "extent_m": {
+        "width_x": 64.75,
+        "height_y": 6.0,
+        "depth_z": 40.505
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
+      ],
+      "size_bytes": 10737488
+    },
+    {
+      "file": "deconstructivist-museum_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 358,
+      "extent_m": {
+        "width_x": 64.75,
+        "height_y": 6.0,
+        "depth_z": 40.505
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
+      ],
+      "size_bytes": 10737488
+    },
+    {
+      "file": "deconstructivist-museum_crown_crown.glb",
+      "status": "ok",
+      "triangles": 358,
+      "extent_m": {
+        "width_x": 63.45,
+        "height_y": 6.0,
+        "depth_z": 39.855
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
+      ],
+      "size_bytes": 10738192
+    },
+    {
+      "file": "deconstructivist-museum_roof.glb",
+      "status": "ok",
+      "triangles": 144,
+      "extent_m": {
+        "width_x": 66.0,
+        "height_y": 1.0,
+        "depth_z": 36.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Roof"
+      ],
+      "size_bytes": 4674556
+    },
+    {
+      "file": "deconstructivist-museum_assembled.glb",
+      "status": "ok",
+      "triangles": 28014,
+      "extent_m": {
+        "width_x": 70.545,
+        "height_y": 34.0,
+        "depth_z": 40.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_OccupiedDepth",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Roof",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_SideConstruction",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Trim"
+      ],
+      "size_bytes": 28052024,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "terracotta-fin-office",
+  "archetype_id": "modern_glass_office_institutional",
+  "reuse_keys": [
+    "modern_glass_office_institutional",
+    "glass_office_terracotta_fins",
+    "Office / Commercial"
+  ],
+  "manifest": "terracotta-fin-office_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "terracotta-fin-office_floor_typical_a.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "terracotta-fin-office_floor_typical_b.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "terracotta-fin-office_floor_typical_c.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "terracotta-fin-office_crown_crown.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "terracotta-fin-office_assembled.glb: 39.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "terracotta-fin-office_podium.glb",
+      "status": "ok",
+      "triangles": 348,
+      "extent_m": {
+        "width_x": 42.58,
+        "height_y": 3.8,
+        "depth_z": 29.208
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass"
+      ],
+      "size_bytes": 3776276
+    },
+    {
+      "file": "terracotta-fin-office_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 4236,
+      "extent_m": {
+        "width_x": 42.58,
+        "height_y": 3.8,
+        "depth_z": 29.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell"
+      ],
+      "size_bytes": 14972908
+    },
+    {
+      "file": "terracotta-fin-office_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 4236,
+      "extent_m": {
+        "width_x": 42.58,
+        "height_y": 3.8,
+        "depth_z": 29.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell"
+      ],
+      "size_bytes": 14972908
+    },
+    {
+      "file": "terracotta-fin-office_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 4236,
+      "extent_m": {
+        "width_x": 42.58,
+        "height_y": 3.8,
+        "depth_z": 29.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell"
+      ],
+      "size_bytes": 14972908
+    },
+    {
+      "file": "terracotta-fin-office_crown_crown.glb",
+      "status": "ok",
+      "triangles": 4236,
+      "extent_m": {
+        "width_x": 42.58,
+        "height_y": 3.8,
+        "depth_z": 28.57
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell"
+      ],
+      "size_bytes": 14972604
+    },
+    {
+      "file": "terracotta-fin-office_roof.glb",
+      "status": "ok",
+      "triangles": 144,
+      "extent_m": {
+        "width_x": 41.5,
+        "height_y": 1.0,
+        "depth_z": 27.52
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Roof"
+      ],
+      "size_bytes": 4674144
+    },
+    {
+      "file": "terracotta-fin-office_assembled.glb",
+      "status": "ok",
+      "triangles": 35110,
+      "extent_m": {
+        "width_x": 43.5,
+        "height_y": 34.198,
+        "depth_z": 29.511
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Metal",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_OccupiedDepth",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_PlantTrunk",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Planting",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Roof",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_SideConstruction",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_Trim"
+      ],
+      "size_bytes": 41722264,
+      "role": "assembled"
+    }
+  ]
+}
