@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import struct
 from pathlib import Path
 
 import pytest
@@ -48,6 +49,14 @@ FAMILIES = {
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_glb_json(path: Path) -> dict:
+    payload = path.read_bytes()
+    assert payload[:4] == b"glTF"
+    json_chunk_length = struct.unpack_from("<I", payload, 12)[0]
+    json_chunk = payload[20 : 20 + json_chunk_length]
+    return json.loads(json_chunk.decode("utf-8").rstrip(" \x00"))
 
 
 @pytest.mark.parametrize(("family", "expected"), FAMILIES.items())
@@ -201,3 +210,52 @@ def test_wave4_batch_catalogue_and_signature_assets_are_wired(
         assert signature["identity"]
         assert signature["materialZones"]
         assert signature["glassProfile"]
+
+
+def test_contemporary_window_pilot_uses_registered_physical_glazing_profile():
+    from glass_profiles import glass_profile
+
+    family = "contemporary-midrise-residential"
+    manifest = load_json(FAMILY_ROOT / family / f"{family}_manifest.json")
+    assert manifest["glass_profile"] == "bronze_recessed_occupied"
+
+    profile = glass_profile(manifest["glass_profile"])
+    assert profile["label"] == "Bronze-framed recessed occupied low-e glazing"
+    assert profile["transmission"] >= 0.15
+    assert profile["roughness"] <= 0.10
+    assert profile["glass_emission_strength"] <= 0.01
+    assert profile["interior_depth_m"] > profile["pane_recess_m"]
+
+
+def test_contemporary_window_pilot_exports_physical_glazing_metadata():
+    family = "contemporary-midrise-residential"
+    glb = load_glb_json(FAMILY_ROOT / family / f"{family}_assembled.glb")
+    materials = [
+        material
+        for material in glb["materials"]
+        if "glassbronzelowe" in material.get("name", "").lower()
+    ]
+
+    assert len(materials) == 2
+    assert {
+        "KHR_materials_clearcoat",
+        "KHR_materials_specular",
+        "KHR_materials_transmission",
+    } <= set(glb["extensionsUsed"])
+
+    for material in materials:
+        assert material["extras"]["glazing_profile"] == "bronze_recessed_occupied"
+        assert material["extras"]["glazing_lod"] == "always"
+        assert material["extras"]["alpha_strategy"] == (
+            "opaque_physical_transmission"
+        )
+        assert material["extras"]["interior_depth_m"] > (
+            material["extras"]["pane_recess_m"]
+        )
+        assert material["extensions"]["KHR_materials_clearcoat"][
+            "clearcoatFactor"
+        ] >= 0.60
+        assert 0.10 <= material["extensions"]["KHR_materials_transmission"][
+            "transmissionFactor"
+        ] <= 0.20
+        assert material["pbrMetallicRoughness"]["metallicFactor"] == 0

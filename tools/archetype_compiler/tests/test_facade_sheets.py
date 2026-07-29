@@ -706,6 +706,7 @@ def test_reusable_glass_profiles_are_physically_plausible():
         "reflective_curtain_wall",
         "industrial_sash",
         "residential_low_e",
+        "bronze_recessed_occupied",
         "heritage_leaded_occupied",
     }
     for name in GLASS_PROFILES:

@@ -47,6 +47,7 @@ from generate_wave4_standard_families import (  # noqa: E402
     slim_arch_frame,
     texture_inventory,
 )
+from glass_profiles import glass_profile  # noqa: E402
 
 
 FAMILIES: dict[str, dict] = {
@@ -356,6 +357,71 @@ def clear_scene() -> None:
                 block.remove(item)
 
 
+def _hex_rgba(value: str) -> tuple[float, float, float, float]:
+    """Convert one registry colour to Blender's normalized RGBA tuple."""
+    token = value.removeprefix("#")
+    if len(token) != 6:
+        raise ValueError(f"expected six-digit hex colour, got {value!r}")
+    return tuple(int(token[index : index + 2], 16) / 255 for index in (0, 2, 4)) + (1.0,)
+
+
+def profiled_glass_material(
+    name: str,
+    profile_name: str,
+    *,
+    tint: str | None = None,
+    roughness_scale: float = 1.0,
+    transmission_scale: float = 1.0,
+) -> bpy.types.Material:
+    """Create an opaque-depth physical pane from the shared glazing registry."""
+    profile = glass_profile(profile_name)
+    colour = _hex_rgba(str(tint or profile["tint"]))
+    roughness = min(0.28, float(profile["roughness"]) * roughness_scale)
+    transmission = min(0.98, float(profile["transmission"]) * transmission_scale)
+    mat = material(name, colour, roughness, metallic=0.0)
+    bsdf = _principled(mat)
+    bsdf.inputs["Base Color"].default_value = colour
+    bsdf.inputs["Metallic"].default_value = 0.0
+    bsdf.inputs["Roughness"].default_value = roughness
+    if bsdf.inputs.get("Transmission Weight"):
+        bsdf.inputs["Transmission Weight"].default_value = transmission
+    if bsdf.inputs.get("IOR"):
+        bsdf.inputs["IOR"].default_value = float(profile["ior"])
+    if bsdf.inputs.get("Coat Weight"):
+        bsdf.inputs["Coat Weight"].default_value = float(profile["clearcoat"])
+    if bsdf.inputs.get("Coat Roughness"):
+        bsdf.inputs["Coat Roughness"].default_value = float(
+            profile["clearcoat_roughness"]
+        )
+    if bsdf.inputs.get("Specular IOR Level"):
+        bsdf.inputs["Specular IOR Level"].default_value = float(
+            profile["specular_ior_level"]
+        )
+    if bsdf.inputs.get("Emission Color"):
+        bsdf.inputs["Emission Color"].default_value = _hex_rgba(
+            str(profile["interior_light_color"])
+        )
+    if bsdf.inputs.get("Emission Strength"):
+        bsdf.inputs["Emission Strength"].default_value = float(
+            profile["glass_emission_strength"]
+        )
+    mat.diffuse_color = colour
+    mat["glazing_profile"] = profile_name
+    # Wave 4 uses clean wall substrates rather than paired baked window
+    # sheets, so its physical panes remain visible at both city and near LOD.
+    mat["glazing_lod"] = "always"
+    mat["environment_intensity"] = float(profile["environment_intensity"])
+    mat["alpha_strategy"] = "opaque_physical_transmission"
+    mat["interior_depth_m"] = float(profile["interior_depth_m"])
+    mat["pane_recess_m"] = float(profile["pane_recess_m"])
+    try:
+        mat.use_screen_refraction = True
+        mat.refraction_depth = 0.026
+    except AttributeError:
+        pass
+    return mat
+
+
 def palette(
     family: str,
     family_dir: Path,
@@ -611,7 +677,49 @@ def palette(
             0.42,
             metallic=0.18,
         )
+        # This pilot uses a real coated dielectric pane rather than the shared
+        # dark-emissive placeholder. Slightly warmer alternate IGUs and two
+        # room-card materials create the occupied variation visible in the
+        # selected reference without making the glass itself glow.
+        profile_name = str(FAMILIES[family]["glass_profile"])
+        mats["glass"] = profiled_glass_material(
+            f"MAT_W4_{prefix}_GlassBronzeLowE",
+            profile_name,
+        )
+        mats["glass_alt"] = profiled_glass_material(
+            f"MAT_W4_{prefix}_GlassBronzeLowEWarm",
+            profile_name,
+            tint="#3f3932",
+            roughness_scale=1.45,
+            transmission_scale=0.75,
+        )
+        mats["interior"] = material(
+            f"MAT_W4_{prefix}_Interior_Shadow_Cool",
+            (0.028, 0.040, 0.048, 1.0),
+            0.90,
+            emission=(0.13, 0.19, 0.22, 1.0),
+            emission_strength=0.075,
+        )
+        mats["interior_alt"] = material(
+            f"MAT_W4_{prefix}_Interior_Shadow_Warm",
+            (0.055, 0.040, 0.027, 1.0),
+            0.88,
+            emission=(0.76, 0.33, 0.095, 1.0),
+            emission_strength=0.17,
+        )
+        mats["blind"] = material(
+            f"MAT_W4_{prefix}_InteriorSolarShade",
+            (0.36, 0.31, 0.25, 1.0),
+            0.82,
+        )
+        for interior_key in ("interior", "interior_alt", "blind"):
+            mats[interior_key]["glazing_profile"] = profile_name
+            mats[interior_key]["environment_intensity"] = 0.20
     for key in ("glass", "glass_alt"):
+        if mats[key].get("glazing_profile"):
+            # Profiled materials have already received their complete optical
+            # contract, including an intentionally near-zero glass emission.
+            continue
         bsdf = _principled(mats[key])
         if bsdf.inputs.get("Transmission Weight"):
             if family == "brownstone-rowhouse-frontage":
@@ -771,9 +879,25 @@ def rectangular_window(
     bar_mat = mats[bar_material or "metal"]
     centre_z = sill_z + height / 2
     inward = 1.0 if axis in {"front", "left"} else -1.0
-    cavity_plane = plane + inward * max(0.10, reveal)
-    glass_plane = plane + inward * max(0.055, reveal * 0.68)
-    frame_plane = plane - inward * 0.010
+    profile_name = str(glass.get("glazing_profile") or "")
+    optical_profile = glass_profile(profile_name) if profile_name else None
+    if optical_profile:
+        pane_recess = max(0.045, float(optical_profile["pane_recess_m"]))
+        interior_depth = max(
+            pane_recess + 0.055,
+            min(float(optical_profile["interior_depth_m"]), reveal * 1.35),
+        )
+        glass_plane = plane + inward * pane_recess
+        cavity_plane = plane + inward * interior_depth
+        frame_plane = glass_plane - inward * 0.012
+    else:
+        cavity_plane = plane + inward * max(0.10, reveal)
+        glass_plane = plane + inward * max(0.055, reveal * 0.68)
+        frame_plane = plane - inward * 0.010
+    interior_mat = mats.get(
+        "interior_alt" if alt_glass else "interior",
+        mats["interior"],
+    )
     objects = [
         _oriented_box(
             f"{name}_Cavity",
@@ -781,24 +905,80 @@ def rectangular_window(
             lateral,
             cavity_plane,
             centre_z,
-            width + 0.22,
-            0.08,
-            height + 0.20,
-            mats["interior"],
-        ),
-        _oriented_box(
-            f"{name}_Glass",
-            axis,
-            lateral,
-            glass_plane,
-            centre_z,
-            width,
-            0.055,
-            height,
-            glass,
-            bevel=0.025,
+            width + (0.14 if optical_profile else 0.22),
+            0.032 if optical_profile else 0.08,
+            height + (0.14 if optical_profile else 0.20),
+            interior_mat,
         ),
     ]
+    if optical_profile:
+        # Each IGU is an individual dielectric surface. A single large glass
+        # backing panel made the bronze grid look painted onto one dark card;
+        # independent panes catch subtly different sky/interior values.
+        column_count = mullions + 1
+        row_count = transoms + 1
+        pane_width = width / column_count
+        pane_height = height / row_count
+        for column in range(column_count):
+            pane_lateral = (
+                lateral - width / 2 + pane_width * (column + 0.5)
+            )
+            for row in range(row_count):
+                pane_z = sill_z + pane_height * (row + 0.5)
+                pane_mat = (
+                    mats["glass_alt"]
+                    if (column + row + int(alt_glass)) % 4 == 0
+                    else mats["glass"]
+                )
+                objects.append(
+                    _oriented_box(
+                        f"{name}_GlassPane_{column}_{row}",
+                        axis,
+                        pane_lateral,
+                        glass_plane,
+                        pane_z,
+                        max(0.08, pane_width - 0.032),
+                        0.026,
+                        max(0.08, pane_height - 0.032),
+                        pane_mat,
+                        bevel=0.010,
+                    )
+                )
+                # A restrained subset of room cards includes a recessed solar
+                # shade. It sits behind the pane, never on the glass surface.
+                if (
+                    "blind" in mats
+                    and (column * 3 + row + int(alt_glass)) % 5 == 0
+                ):
+                    shade_height = pane_height * 0.30
+                    objects.append(
+                        _oriented_box(
+                            f"{name}_SolarShade_{column}_{row}",
+                            axis,
+                            pane_lateral,
+                            glass_plane + inward * 0.040,
+                            pane_z + pane_height * 0.31,
+                            max(0.06, pane_width - 0.12),
+                            0.018,
+                            shade_height,
+                            mats["blind"],
+                        )
+                    )
+    else:
+        objects.append(
+            _oriented_box(
+                f"{name}_Glass",
+                axis,
+                lateral,
+                glass_plane,
+                centre_z,
+                width,
+                0.055,
+                height,
+                glass,
+                bevel=0.025,
+            )
+        )
     # An audited atlas already owns its ornamental perimeter. Keep only a
     # construction-scale sash at the pane plane; do not draw a second picture
     # frame over the photographed lintel and sill.
@@ -1192,9 +1372,12 @@ def add_secondary_windows(
         0,
         depth * 0.30,
     )
+    facade_offset = (
+        0.18 if family == "contemporary-midrise-residential" else 0.08
+    )
     for side, axis, plane in (
-        ("L", "left", -width / 2 - 0.08),
-        ("R", "right", width / 2 + 0.08),
+        ("L", "left", -width / 2 - facade_offset),
+        ("R", "right", width / 2 + facade_offset),
     ):
         for index, y in enumerate(side_positions):
             objects.extend(
@@ -1223,7 +1406,7 @@ def add_secondary_windows(
                 f"{family}_RearWindow_{index}",
                 axis="rear",
                 lateral=x,
-                plane=depth / 2 + 0.08,
+                plane=depth / 2 + facade_offset,
                 sill_z=sill,
                 width=1.05 if sparse else 1.35,
                 height=window_height,
@@ -1698,7 +1881,11 @@ def add_contemporary_details(
     height: float,
 ) -> list[bpy.types.Object]:
     width, depth = FAMILIES["contemporary-midrise-residential"]["dimensions"]
-    front = -depth / 2 - 0.10
+    # Hold the bronze/window assembly far enough ahead of the structural core
+    # for the registered 160 mm occupied-glazing stack: outer frame, recessed
+    # IGU, solar shade and dark room card. This is a construction reveal, not
+    # a pasted facade layer.
+    front = -depth / 2 - 0.18
     objects: list[bpy.types.Object] = []
     bays = (-10.35, -6.20, -2.05, 2.05, 6.20, 10.35)
     if role == "podium":
@@ -2968,6 +3155,14 @@ def setup_standard_render() -> None:
     scene.render.resolution_x = 1280
     scene.render.resolution_y = 960
     scene.view_settings.exposure = 0.50
+    if hasattr(scene, "eevee"):
+        # Screen-traced coated glass can see the occupied room card behind it.
+        # Without this, Eevee resolves transmission against the bright world
+        # and every physically clear pane washes toward a flat sky rectangle.
+        scene.eevee.use_raytracing = True
+        scene.eevee.ray_tracing_method = "SCREEN"
+        scene.eevee.ray_tracing_options.screen_trace_quality = 0.75
+        scene.eevee.taa_render_samples = 48
     world_nodes = scene.world.node_tree.nodes
     world_links = scene.world.node_tree.links
     background = world_nodes.get("Background")

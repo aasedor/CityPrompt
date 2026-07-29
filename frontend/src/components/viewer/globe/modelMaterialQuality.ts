@@ -9,6 +9,10 @@ const FACADE_GLASS_ENV_INTENSITY = 0.28;
 const FACADE_GLASS_MAX_TRANSMISSION = 0.08;
 const FACADE_GLASS_TINT = new THREE.Color('#6d675e');
 const FACADE_ENV_INTENSITY = 0.32;
+const BRONZE_LOW_E_PROFILE = 'bronze_recessed_occupied';
+const BRONZE_LOW_E_ENV_INTENSITY = 0.95;
+const BRONZE_LOW_E_MAX_TRANSMISSION = 0.58;
+const BRONZE_LOW_E_ATTENUATION = new THREE.Color('#d5e2df');
 const FALLBACK_CLAY = new THREE.Color('#d8cfc0');
 
 export type ArchitecturalGlazingLod = 'near' | 'far';
@@ -100,7 +104,31 @@ function tuneMaterial(
       physical.ior = 1.48;
       physical.clearcoat = Math.max(physical.clearcoat, 0.3);
       physical.clearcoatRoughness = Math.min(physical.clearcoatRoughness, 0.12);
-      if (materialName.includes('glassoverlay')) {
+      const glazingProfile = String(
+        standard.userData?.glazing_profile ?? '',
+      ).toLowerCase();
+      if (glazingProfile === BRONZE_LOW_E_PROFILE) {
+        // The brick-and-bronze pilot exports independent IGUs in front of
+        // occupied room cards. Preserve that authored construction: a coated
+        // dielectric reflects the sky while still revealing the dark room,
+        // and any warmth originates behind the pane rather than from it.
+        standard.roughness = Math.max(0.055, Math.min(standard.roughness, 0.12));
+        physical.ior = 1.50;
+        physical.clearcoat = Math.max(physical.clearcoat, 0.46);
+        physical.clearcoatRoughness = Math.min(physical.clearcoatRoughness, 0.06);
+        physical.transmission = Math.min(
+          physical.transmission,
+          BRONZE_LOW_E_MAX_TRANSMISSION,
+        );
+        physical.envMapIntensity = Math.min(
+          physical.envMapIntensity,
+          BRONZE_LOW_E_ENV_INTENSITY,
+        );
+        physical.thickness = Math.max(physical.thickness, 0.026);
+        physical.attenuationDistance = 2.4;
+        physical.attenuationColor.copy(BRONZE_LOW_E_ATTENUATION);
+        physical.emissiveIntensity = Math.min(physical.emissiveIntensity, 0.025);
+      } else if (materialName.includes('glassoverlay')) {
         // A high-transmission façade card samples the bright globe background
         // and washes the authored window atlas to white. Retain a real coated
         // dielectric response, but let the registered glazing texture and the

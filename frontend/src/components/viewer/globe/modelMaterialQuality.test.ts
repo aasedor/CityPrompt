@@ -141,6 +141,30 @@ describe('prepareArchitecturalClone', () => {
     expect(tuned.emissiveIntensity).toBe(0.42);
   });
 
+  it('preserves the bronze low-e pilot as reflective non-emissive glass', () => {
+    const source = new THREE.Group();
+    const glass = new THREE.MeshPhysicalMaterial({
+      color: '#b7c3c3',
+      roughness: 0.072,
+      transmission: 0.68,
+      emissiveIntensity: 0.12,
+    });
+    glass.name = 'MAT_W4_Contemporary_GlassBronzeLowE';
+    glass.userData.glazing_profile = 'bronze_recessed_occupied';
+    glass.userData.environment_intensity = 1.28;
+    source.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.026, 1), glass));
+
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150 });
+    const tuned = (clone.children[0] as THREE.Mesh).material as THREE.MeshPhysicalMaterial;
+
+    expect(tuned.transmission).toBe(0.58);
+    expect(tuned.envMapIntensity).toBe(0.95);
+    expect(tuned.ior).toBe(1.50);
+    expect(tuned.clearcoat).toBeGreaterThanOrEqual(0.46);
+    expect(tuned.thickness).toBeGreaterThanOrEqual(0.026);
+    expect(tuned.emissiveIntensity).toBeLessThanOrEqual(0.025);
+  });
+
   it('switches complementary physical and baked glazing with distance hysteresis', () => {
     const root = new THREE.Group();
     const far = new THREE.MeshStandardMaterial();

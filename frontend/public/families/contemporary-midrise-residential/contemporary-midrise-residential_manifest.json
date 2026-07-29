@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T09:58:33.707586+00:00",
+  "created_at": "2026-07-29T17:27:27.679730+00:00",
   "family": "contemporary-midrise-residential",
   "archetype_id": "contemporary_midrise_residential",
   "archetype_label": "Contemporary Mid-Rise Residential \u2014 Brick and Bronze",
@@ -1542,8 +1542,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 10637,
-      "material_count": 16,
+      "triangle_count": 16205,
+      "material_count": 18,
       "texture_keys": [
         "crown",
         "facade",
@@ -1558,7 +1558,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10134368
+      "size_bytes": 10546640
     },
     {
       "role": "floor",
@@ -1575,8 +1575,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 10832,
-      "material_count": 14,
+      "triangle_count": 15332,
+      "material_count": 16,
       "texture_keys": [
         "crown",
         "facade",
@@ -1591,7 +1591,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5653916
+      "size_bytes": 5990832
     },
     {
       "role": "floor",
@@ -1608,8 +1608,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 10832,
-      "material_count": 14,
+      "triangle_count": 15332,
+      "material_count": 16,
       "texture_keys": [
         "crown",
         "facade",
@@ -1624,7 +1624,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5653940
+      "size_bytes": 5990832
     },
     {
       "role": "floor",
@@ -1641,8 +1641,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 10832,
-      "material_count": 14,
+      "triangle_count": 15332,
+      "material_count": 16,
       "texture_keys": [
         "crown",
         "facade",
@@ -1657,7 +1657,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5653856
+      "size_bytes": 5990884
     },
     {
       "role": "setback",
@@ -1674,8 +1674,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 10832,
-      "material_count": 14,
+      "triangle_count": 15332,
+      "material_count": 16,
       "texture_keys": [
         "crown",
         "facade",
@@ -1690,7 +1690,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5654208
+      "size_bytes": 5991152
     },
     {
       "role": "crown",
@@ -1723,7 +1723,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5614304
+      "size_bytes": 5615720
     },
     {
       "role": "roof",
@@ -1756,7 +1756,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9645252
+      "size_bytes": 9646224
     }
   ],
   "assembled": {
@@ -1765,8 +1765,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 20.5,
-    "triangle_count": 66761,
-    "material_count": 17,
+    "triangle_count": 94829,
+    "material_count": 19,
     "stack": [
       {
         "role": "podium",
@@ -1862,13 +1862,13 @@
   },
   "thumbnail": "contemporary-midrise-residential_preview.png",
   "renders": [
-    "contemporary-midrise-residential_preview.png",
-    "contemporary-midrise-residential_front_corner_oblique.png",
-    "contemporary-midrise-residential_rear_corner_oblique.png",
-    "contemporary-midrise-residential_facade_close.png",
-    "contemporary-midrise-residential_street.png",
     "contemporary-midrise-residential_aerial.png",
     "contemporary-midrise-residential_context.png",
+    "contemporary-midrise-residential_facade_close.png",
+    "contemporary-midrise-residential_front_corner_oblique.png",
+    "contemporary-midrise-residential_preview.png",
+    "contemporary-midrise-residential_rear_corner_oblique.png",
+    "contemporary-midrise-residential_street.png",
     "elevation.jpg"
   ],
   "architectural_identity": "A six-storey urban residential block with a pale limestone base, one deeply recessed arched entrance and a disciplined wide/narrow window cadence held by brick piers and bronze spandrel frames.",

@@ -183,7 +183,27 @@ export function normalizeLegoModuleMaterials(root: THREE.Object3D): void {
           physical.ior = 1.48;
           physical.clearcoat = Math.max(physical.clearcoat, 0.3);
           physical.clearcoatRoughness = Math.min(physical.clearcoatRoughness, 0.12);
-          if (materialName.includes('glassoverlay')) {
+          const glazingProfile = String(
+            standard.userData?.glazing_profile ?? '',
+          ).toLowerCase();
+          if (glazingProfile === 'bronze_recessed_occupied') {
+            standard.roughness = Math.max(0.055, Math.min(standard.roughness, 0.12));
+            physical.ior = 1.50;
+            physical.clearcoat = Math.max(physical.clearcoat, 0.46);
+            physical.clearcoatRoughness = Math.min(
+              physical.clearcoatRoughness,
+              0.06,
+            );
+            physical.transmission = Math.min(physical.transmission, 0.58);
+            physical.envMapIntensity = Math.min(physical.envMapIntensity, 0.95);
+            physical.thickness = Math.max(physical.thickness, 0.026);
+            physical.attenuationDistance = 2.4;
+            physical.attenuationColor.copy(new THREE.Color('#d5e2df'));
+            physical.emissiveIntensity = Math.min(
+              physical.emissiveIntensity,
+              0.025,
+            );
+          } else if (materialName.includes('glassoverlay')) {
             physical.transmission = Math.min(physical.transmission, 0.08);
             physical.envMapIntensity = Math.min(physical.envMapIntensity, 0.28);
             physical.color.multiply(new THREE.Color('#6d675e'));

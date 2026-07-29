@@ -2485,6 +2485,10 @@ def export_glb(path: Path, objects: list[bpy.types.Object]) -> None:
         use_selection=True,
         export_yup=True,
         export_apply=True,
+        # Material/object semantic properties (glazing_profile, glazing_lod,
+        # environment_intensity, skin zones) are runtime contracts, not
+        # Blender-only notes. CityPrompt reads them from glTF extras.
+        export_extras=True,
         # The app's Python contract validator must be able to inspect exact
         # bounds without an optional Draco decoder. Git LFS carries the larger
         # binary payloads, while runtime packaging can add compression later.
