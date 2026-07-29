@@ -7,6 +7,7 @@
     "archetype_goalpost": "textures/source/archetype-goalpost.png",
     "orthographic_elevation": "textures/source/elevation-source.png",
     "material_source": "textures/source/material-source.png",
+    "reference_underlay": "textures/source/atrium-underlay-source-v2.png",
     "angle_reference": "textures/source/angle-reference-60.png",
     "roof_reference": "textures/source/angle-reference-90.png",
     "registered_openings": "textures/source/registered-openings.json",
@@ -33,7 +34,7 @@
       "triangular_entry_canopy",
       "conservative_service_roofs_and_rear"
     ],
-    "uv_strategy": "render-locked facade bands plus reference-derived true-scale construction materials on authored physical envelopes",
+    "uv_strategy": "render-locked facade bands and occupied-depth underlay cards behind physical glazing, plus reference-derived true-scale construction materials on authored physical envelopes",
     "depth_binding": "shader_bump",
     "generic_tiling_allowed": false
   },

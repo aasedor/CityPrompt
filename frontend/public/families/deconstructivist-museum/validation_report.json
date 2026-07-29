@@ -12,12 +12,12 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "deconstructivist-museum_podium.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "deconstructivist-museum_floor_typical_a.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "deconstructivist-museum_floor_typical_b.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "deconstructivist-museum_floor_typical_c.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "deconstructivist-museum_crown_crown.glb: 10.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "deconstructivist-museum_assembled.glb: 26.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "deconstructivist-museum_podium.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_a.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_b.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_floor_typical_c.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_crown_crown.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "deconstructivist-museum_assembled.glb: 33.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -38,7 +38,7 @@
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
       ],
-      "size_bytes": 10737456
+      "size_bytes": 9898352
     },
     {
       "file": "deconstructivist-museum_floor_typical_a.glb",
@@ -58,7 +58,7 @@
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
       ],
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "file": "deconstructivist-museum_floor_typical_b.glb",
@@ -78,7 +78,7 @@
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
       ],
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "file": "deconstructivist-museum_floor_typical_c.glb",
@@ -98,7 +98,7 @@
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
       ],
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "file": "deconstructivist-museum_crown_crown.glb",
@@ -118,7 +118,7 @@
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell"
       ],
-      "size_bytes": 10738192
+      "size_bytes": 9899080
     },
     {
       "file": "deconstructivist-museum_roof.glb",
@@ -136,28 +136,30 @@
         "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Roof"
       ],
-      "size_bytes": 4674556
+      "size_bytes": 4674560
     },
     {
       "file": "deconstructivist-museum_assembled.glb",
       "status": "ok",
-      "triangles": 28014,
+      "triangles": 28916,
       "extent_m": {
-        "width_x": 70.545,
+        "width_x": 71.036,
         "height_y": 34.0,
-        "depth_z": 40.7
+        "depth_z": 40.85
       },
       "bottom_y": 0.0,
       "materials": [
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Metal",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_OccupiedDepth",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_PhysicalGlass",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceInteriorUnderlay",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_ReferenceShell",
+        "MAT_W6_DECONSTRUCTIVIST_MUSEUM_RegisteredFacade",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Roof",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_SideConstruction",
         "MAT_W6_DECONSTRUCTIVIST_MUSEUM_Trim"
       ],
-      "size_bytes": 28052024,
+      "size_bytes": 35335756,
       "role": "assembled"
     }
   ]

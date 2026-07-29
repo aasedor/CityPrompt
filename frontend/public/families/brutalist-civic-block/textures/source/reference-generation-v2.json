@@ -1,0 +1,15 @@
+{
+  "schema": "imagegen-reference-package@1",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "precise-object-edit from render-locked elevation",
+  "input": "elevation-source.png",
+  "output": "glazing-underlay-source-v2.png",
+  "role": "smoked recessed-window, clerestory and public-lobby depth behind physical concrete",
+  "invariants": [
+    "orthographic canvas and civic-hall envelope",
+    "slit, clerestory, vertical-recess and lobby positions",
+    "restrained warm occupied interior depth"
+  ],
+  "edit": "Remove concrete masses, roof, pilotis, canopies and backdrop; retain only the exact recessed glazing and occupied depth on a matte charcoal field."
+}

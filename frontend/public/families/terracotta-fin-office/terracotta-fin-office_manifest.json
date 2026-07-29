@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T19:44:02.624162+00:00",
+  "created_at": "2026-07-29T22:48:11.936739+00:00",
   "family": "terracotta-fin-office",
   "archetype_id": "modern_glass_office_institutional",
   "archetype_label": "Modern Glass Office \u2014 Terracotta Fins",
@@ -1636,6 +1636,7 @@
         "archetype_goalpost": "textures/source/archetype-goalpost.png",
         "orthographic_elevation": "textures/source/elevation-source.png",
         "material_source": "textures/source/material-source.png",
+        "reference_underlay": "textures/source/glazing-underlay-source-v2.png",
         "angle_reference": "textures/source/angle-reference-60.png",
         "roof_reference": "textures/source/angle-reference-90.png",
         "registered_openings": "textures/source/registered-openings.json",
@@ -1662,7 +1663,7 @@
         "occupied_glazed_crown",
         "roof_pergola_and_planting"
       ],
-      "uv_strategy": "render-locked facade bands plus reference-derived true-scale construction materials on authored physical envelopes",
+      "uv_strategy": "render-locked facade bands and occupied-depth underlay cards behind physical glazing, plus reference-derived true-scale construction materials on authored physical envelopes",
       "depth_binding": "shader_bump",
       "generic_tiling_allowed": false
     }
@@ -1914,8 +1915,8 @@
     "uses_setback": true,
     "uses_crown": true,
     "height_m": 34.2,
-    "triangle_count": 18310,
-    "material_count": 9,
+    "triangle_count": 21782,
+    "material_count": 10,
     "stack": [
       {
         "role": "assembled",
@@ -1987,6 +1988,8 @@
     "orthographic_elevation": "textures/source/elevation-source.png",
     "material_source": "textures/source/material-source.png",
     "reference_generation": "textures/source/reference-generation.json",
+    "reference_underlay": "textures/source/glazing-underlay-source-v2.png",
+    "reference_underlay_generation": "textures/source/reference-generation-v2.json",
     "elevation_source": "/families/terracotta-fin-office/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave6_nonresidential_families.py",

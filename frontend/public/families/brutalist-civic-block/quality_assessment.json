@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-29-nonresidential-glazing-enclosure-v100",
+  "memory_version": "2026-07-29-reference-underlay-registration-v101",
   "archetype_id": "modernist_civic_block",
   "family": "brutalist-civic-block",
   "status": "pass",
@@ -109,7 +109,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "16468 assembled triangles; budget 12000-180000"
+        "detail": "19758 assembled triangles; budget 12000-180000"
       }
     ]
   }

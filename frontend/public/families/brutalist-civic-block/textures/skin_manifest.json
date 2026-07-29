@@ -7,6 +7,7 @@
     "archetype_goalpost": "textures/source/archetype-goalpost.png",
     "orthographic_elevation": "textures/source/elevation-source.png",
     "material_source": "textures/source/material-source.png",
+    "reference_underlay": "textures/source/glazing-underlay-source-v2.png",
     "angle_reference": "textures/source/angle-reference-60.png",
     "roof_reference": "textures/source/angle-reference-90.png",
     "registered_openings": "textures/source/registered-openings.json",
@@ -27,13 +28,13 @@
     "registered_surfaces": [
       "floating_board_formed_concrete_volume",
       "deep_horizontal_window_slits",
-      "three_monumental_pilotis",
+      "two_outer_monumental_pilotis",
       "recessed_public_lobby",
       "offset_cantilevered_gallery_boxes",
       "continuous_overhanging_roof_plane",
       "quiet_service_rear"
     ],
-    "uv_strategy": "render-locked facade bands plus reference-derived true-scale construction materials on authored physical envelopes",
+    "uv_strategy": "render-locked facade bands and occupied-depth underlay cards behind physical glazing, plus reference-derived true-scale construction materials on authored physical envelopes",
     "depth_binding": "shader_bump",
     "generic_tiling_allowed": false
   },

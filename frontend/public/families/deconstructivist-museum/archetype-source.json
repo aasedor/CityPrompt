@@ -9,6 +9,8 @@
   "orthographic_elevation": "textures/source/elevation-source.png",
   "material_source": "textures/source/material-source.png",
   "reference_generation": "textures/source/reference-generation.json",
+  "reference_underlay": "textures/source/atrium-underlay-source-v2.png",
+  "reference_underlay_generation": "textures/source/reference-generation-v2.json",
   "elevation_source": "/families/deconstructivist-museum/elevation.jpg",
   "skin_manifest": "textures/skin_manifest.json",
   "generator": "tools/archetype_compiler/generate_wave6_nonresidential_families.py",

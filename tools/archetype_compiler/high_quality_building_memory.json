@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-29-nonresidential-glazing-enclosure-v100",
+  "memory_version": "2026-07-29-reference-underlay-registration-v101",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -43,6 +43,10 @@
     {
       "id": "skins_are_archetype_specific",
       "rule": "Generic tiled facade materials are not a production skin. Every new archetype uses its compatible reference views to author a render-locked, archetype-specific source; registers that source by elevation and semantic surface; binds depth or displacement in the runtime shader; and forbids generic tiling as the primary identity treatment."
+    },
+    {
+      "id": "render_locked_sources_are_geometry_bound",
+      "rule": "A generated elevation, material study or occupied-depth source counts only when exported geometry actually references it. Coordinate-register the source to audited model datums, keep exterior screens and mullions as separate physical construction, and place reference-derived occupied depth immediately behind the matching physical glazing."
     },
     {
       "id": "glass_is_layered",
@@ -743,6 +747,11 @@
       "symptom": "A monumental atrium looks acceptable head-on but becomes an open glass card with exposed floor plates or an opaque rooftop box in oblique views",
       "cause": "Only the front curtain wall was constructed, while return facets and the glass roof were omitted or occupied backplates extended beyond the glazing envelope.",
       "correction": "Build front, both faceted returns and roof as one closed transparent section; keep every plate, brace and occupied room card inside those boundaries; and validate front-corner plus aerial views before accepting the optical profile."
+    },
+    {
+      "symptom": "A family ships a custom elevation and complete PBR package but its windows and facade still look generic in the delivered GLB",
+      "cause": "The render-locked source was declared in metadata but no exported material consumed it, while physical glass looked onto a uniform room card and discarded the reference-specific floor, bay and occupation cadence.",
+      "correction": "Audit the GLB material graph, not only the source folder. Bind the exterior source to its authored semantic surfaces and coordinate-register a reference-derived occupied-depth underlay behind the matching physical glazing; keep fins, mullions and other screens in separate geometry and prove the registration from front and oblique cameras."
     }
   ]
 }

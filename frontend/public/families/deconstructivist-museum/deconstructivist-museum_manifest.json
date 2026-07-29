@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T19:45:25.697170+00:00",
+  "created_at": "2026-07-29T22:53:46.699917+00:00",
   "family": "deconstructivist-museum",
   "archetype_id": "monumental_museum_axis",
   "archetype_label": "Monumental Museum \u2014 Deconstructivist Titanium",
@@ -1637,6 +1637,7 @@
         "archetype_goalpost": "textures/source/archetype-goalpost.png",
         "orthographic_elevation": "textures/source/elevation-source.png",
         "material_source": "textures/source/material-source.png",
+        "reference_underlay": "textures/source/atrium-underlay-source-v2.png",
         "angle_reference": "textures/source/angle-reference-60.png",
         "roof_reference": "textures/source/angle-reference-90.png",
         "registered_openings": "textures/source/registered-openings.json",
@@ -1663,7 +1664,7 @@
         "triangular_entry_canopy",
         "conservative_service_roofs_and_rear"
       ],
-      "uv_strategy": "render-locked facade bands plus reference-derived true-scale construction materials on authored physical envelopes",
+      "uv_strategy": "render-locked facade bands and occupied-depth underlay cards behind physical glazing, plus reference-derived true-scale construction materials on authored physical envelopes",
       "depth_binding": "shader_bump",
       "generic_tiling_allowed": false
     }
@@ -1731,7 +1732,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10737456
+      "size_bytes": 9898352
     },
     {
       "role": "floor",
@@ -1766,7 +1767,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "role": "floor",
@@ -1801,7 +1802,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "role": "floor",
@@ -1836,7 +1837,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10737488
+      "size_bytes": 9898376
     },
     {
       "role": "crown",
@@ -1871,7 +1872,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10738192
+      "size_bytes": 9899080
     },
     {
       "role": "roof",
@@ -1906,7 +1907,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 4674556
+      "size_bytes": 4674560
     }
   ],
   "assembled": {
@@ -1915,8 +1916,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 34.0,
-    "triangle_count": 27246,
-    "material_count": 7,
+    "triangle_count": 28148,
+    "material_count": 9,
     "stack": [
       {
         "role": "assembled",
@@ -1988,6 +1989,8 @@
     "orthographic_elevation": "textures/source/elevation-source.png",
     "material_source": "textures/source/material-source.png",
     "reference_generation": "textures/source/reference-generation.json",
+    "reference_underlay": "textures/source/atrium-underlay-source-v2.png",
+    "reference_underlay_generation": "textures/source/reference-generation-v2.json",
     "elevation_source": "/families/deconstructivist-museum/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave6_nonresidential_families.py",

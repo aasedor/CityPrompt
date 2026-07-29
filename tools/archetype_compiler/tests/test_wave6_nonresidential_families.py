@@ -10,39 +10,46 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[3]
 FAMILY_ROOT = REPO / "frontend" / "public" / "families"
-MEMORY_VERSION = "2026-07-29-nonresidential-glazing-enclosure-v100"
+MEMORY_VERSION = "2026-07-29-reference-underlay-registration-v101"
 FAMILIES = {
     "deconstructivist-museum": {
         "archetype": "monumental_museum_axis",
         "variant": "museum_contemporary_deconstructivist",
         "glass": "museum_atrium_low_iron",
+        "underlay": "atrium-underlay-source-v2.png",
         "identity_objects": {
             "MUSEUM_MainLeftGalleryMass",
             "MUSEUM_Atrium_Pane_0_0",
             "MUSEUM_EntryStructuralWedge",
             "MUSEUM_MainParapetTooth_0",
+            "MUSEUM_RenderLockedAtriumInteriorUnderlay",
+            "MUSEUM_MainLeftRenderLockedFrontSkin",
         },
     },
     "terracotta-fin-office": {
         "archetype": "modern_glass_office_institutional",
         "variant": "glass_office_terracotta_fins",
         "glass": "terracotta_office_low_e",
+        "underlay": "glazing-underlay-source-v2.png",
         "identity_objects": {
             "OFFICE_Lobby_Pane_0_0",
             "OFFICE_TerracottaFin_0_0",
             "OFFICE_LowerTerraceSlab",
             "OFFICE_RoofTreeCrownA_-17.6",
+            "OFFICE_LobbyRenderLockedInteriorUnderlay",
         },
     },
     "brutalist-civic-block": {
         "archetype": "modernist_civic_block",
         "variant": "modernist_civic_concrete_brutalist",
         "glass": "civic_recessed_smoked",
+        "underlay": "glazing-underlay-source-v2.png",
         "identity_objects": {
             "CIVIC_MonumentalPilotis_0",
             "CIVIC_LeftGallery_RecessedSlit_Pane_0_0",
             "CIVIC_BroadRoofPlane",
             "CIVIC_RecessedLobby_Pane_0_0",
+            "CIVIC_RenderLockedRecessAndLobbyUnderlay",
         },
     },
 }
@@ -112,7 +119,13 @@ def test_wave6_delivers_custom_pbr_multiview_evidence_and_geometry(family: str):
     skin = load_json(root / "textures" / "skin_manifest.json")
 
     assert skin["source_model"] == "gpt-image-2"
+    assert skin["sources"]["reference_underlay"] == (
+        f"textures/source/{expected['underlay']}"
+    )
     assert skin["reference_registration"]["generic_tiling_allowed"] is False
+    assert "occupied-depth underlay" in (
+        skin["reference_registration"]["uv_strategy"]
+    )
     assert {"front", "left", "right", "rear", "roof"} <= set(
         skin["reference_registration"]["registered_elevations"]
     )
@@ -149,6 +162,15 @@ def test_wave6_delivers_custom_pbr_multiview_evidence_and_geometry(family: str):
     provenance = load_json(root / "textures" / "source" / "reference-generation.json")
     assert provenance["mode"] == "generate from hard catalogue reference"
     assert len(provenance["outputs"]) == 4
+    underlay_provenance = load_json(
+        root / "textures" / "source" / "reference-generation-v2.json"
+    )
+    assert underlay_provenance["tool"] == "OpenAI built-in ImageGen"
+    assert underlay_provenance["model"] == "gpt-image-2"
+    assert underlay_provenance["mode"] == (
+        "precise-object-edit from render-locked elevation"
+    )
+    assert underlay_provenance["output"] == expected["underlay"]
     for name in (
         "archetype-goalpost.png",
         "angle-reference-60.png",
@@ -167,6 +189,12 @@ def test_wave6_delivers_custom_pbr_multiview_evidence_and_geometry(family: str):
     ]
     assert any(
         extras.get("glazing_profile") == expected["glass"]
+        for extras in material_extras
+    )
+    assert any(
+        extras.get("reference_locked") is True
+        and extras.get("underlay_role")
+        == "occupied_depth_behind_physical_glazing"
         for extras in material_extras
     )
 

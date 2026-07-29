@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-29-nonresidential-glazing-enclosure-v100`.
+Current executable memory: `2026-07-29-reference-underlay-registration-v101`.
 
 ## The quality target
 
@@ -967,6 +967,17 @@ The polychrome collegiate family added four rules for resizable hero facades:
 
 ### Wave 6 non-residential enclosure + material-system lessons
 
+- A reference source is not a skin merely because it exists beside the GLB or
+  appears in a manifest. Inspect the exported material graph and prove that
+  authored geometry actually consumes it. Coordinate-register full elevations
+  to audited model datums; do not silently fall back to a generic tile after
+  generating an archetype-specific sheet.
+- Preserve the reference's floor, bay and occupation cadence behind physical
+  glazing. Generate a clean occupied-depth plate from the render-locked
+  elevation, place it immediately behind the matching pane, and keep exterior
+  fins, mullions and rails as separate shadow-casting construction. A uniform
+  warm room card cannot substitute for an atrium, office or civic lobby whose
+  interior hierarchy is visible in the archetype.
 - A monumental atrium is a complete transparent enclosure, not one front
   curtain-wall card. Construct the public facade, both faceted returns and the
   glass roof around one shared section so floor plates, braces and occupied

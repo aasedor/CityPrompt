@@ -58,6 +58,11 @@ FAMILIES: dict[str, dict[str, Any]] = {
             "shell": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
             "side": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
         },
+        "roughness_ranges": {
+            "shell": (0.20, 0.46),
+            "side": (0.24, 0.52),
+        },
+        "underlay_source": "atrium-underlay-source-v2.png",
         "support": {
             "trim": ((190, 184, 177), "metal"),
             "metal": ((43, 48, 50), "metal"),
@@ -97,6 +102,7 @@ FAMILIES: dict[str, dict[str, Any]] = {
             "shell": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
             "side": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
         },
+        "underlay_source": "glazing-underlay-source-v2.png",
         "support": {
             "trim": ((191, 190, 184), "stone"),
             "metal": ((55, 52, 48), "metal"),
@@ -135,6 +141,7 @@ FAMILIES: dict[str, dict[str, Any]] = {
             "shell": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
             "side": ("material-source.png", (0.0, 0.0, 1.0, 1.0)),
         },
+        "underlay_source": "glazing-underlay-source-v2.png",
         "support": {
             "trim": ((166, 164, 157), "stone"),
             "metal": ((48, 45, 41), "metal"),
@@ -144,7 +151,7 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "registered_surfaces": [
             "floating_board_formed_concrete_volume",
             "deep_horizontal_window_slits",
-            "three_monumental_pilotis",
+            "two_outer_monumental_pilotis",
             "recessed_public_lobby",
             "offset_cantilevered_gallery_boxes",
             "continuous_overhanging_roof_plane",
@@ -168,6 +175,22 @@ def parse_args() -> argparse.Namespace:
         help="Prepare only one family; repeat for several. Defaults to all three.",
     )
     return parser.parse_args()
+
+
+def remap_roughness(
+    path: Path,
+    minimum: float,
+    maximum: float,
+) -> None:
+    """Calibrate a derived greyscale map to the audited material response."""
+    if not 0.0 <= minimum < maximum <= 1.0:
+        raise ValueError(f"invalid roughness range: {(minimum, maximum)}")
+    roughness = Image.open(path).convert("L")
+    low = round(minimum * 255)
+    span = round((maximum - minimum) * 255)
+    roughness.point(
+        [low + round((value / 255) * span) for value in range(256)]
+    ).save(path, optimize=True)
 
 
 def prepare_family(slug: str, config: dict[str, Any]) -> None:
@@ -240,6 +263,14 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
                 material_kind=kind,
                 seed=config["seed"] + 401 + offset * 103,
             )
+        for zone, (minimum, maximum) in config.get(
+            "roughness_ranges", {}
+        ).items():
+            remap_roughness(
+                destination / f"{prefixes[zone]}_roughness.png",
+                minimum,
+                maximum,
+            )
 
     zones = {
         zone: {
@@ -279,6 +310,9 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
             "archetype_goalpost": "textures/source/archetype-goalpost.png",
             "orthographic_elevation": "textures/source/elevation-source.png",
             "material_source": "textures/source/material-source.png",
+            "reference_underlay": (
+                f"textures/source/{config['underlay_source']}"
+            ),
             "angle_reference": "textures/source/angle-reference-60.png",
             "roof_reference": "textures/source/angle-reference-90.png",
             "registered_openings": "textures/source/registered-openings.json",
@@ -292,7 +326,8 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
             "registered_elevations": ["front", "left", "right", "rear", "roof"],
             "registered_surfaces": config["registered_surfaces"],
             "uv_strategy": (
-                "render-locked facade bands plus reference-derived true-scale "
+                "render-locked facade bands and occupied-depth underlay cards "
+                "behind physical glazing, plus reference-derived true-scale "
                 "construction materials on authored physical envelopes"
             ),
             "depth_binding": "shader_bump",

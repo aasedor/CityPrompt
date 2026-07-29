@@ -185,6 +185,23 @@ FAMILIES: dict[str, dict] = {
     },
 }
 
+REFERENCE_UNDERLAYS = {
+    "deconstructivist-museum": {
+        "path": "textures/source/atrium-underlay-source-v2.png",
+        "emission_strength": 0.22,
+    },
+    "terracotta-fin-office": {
+        "path": "textures/source/glazing-underlay-source-v2.png",
+        "emission_strength": 0.055,
+    },
+    "brutalist-civic-block": {
+        "path": "textures/source/glazing-underlay-source-v2.png",
+        "emission_strength": 0.14,
+    },
+}
+
+FAST_PILOT_MODE = False
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -197,6 +214,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--view-set", choices=("pilot", "all"), default="all")
     parser.add_argument("--skip-renders", action="store_true")
     parser.add_argument("--skip-modules", action="store_true")
+    parser.add_argument(
+        "--skip-assembled-export",
+        action="store_true",
+        help=(
+            "Render a constructed pilot without replacing its GLB. "
+            "Only valid with --skip-modules."
+        ),
+    )
     parser.add_argument(
         "--modules-only",
         action="store_true",
@@ -272,6 +297,88 @@ def mesh_object(
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
     return obj
+
+
+def mapped_reference_panel(
+    name: str,
+    points: tuple[
+        tuple[float, float, float],
+        tuple[float, float, float],
+        tuple[float, float, float],
+        tuple[float, float, float],
+    ],
+    mat: bpy.types.Material,
+    *,
+    model_x_bounds: tuple[float, float],
+    model_z_bounds: tuple[float, float],
+    source_uv_bounds: tuple[float, float, float, float],
+) -> bpy.types.Object:
+    """Project one render-locked source over authored facade coordinates."""
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(list(points), [], [(0, 1, 2, 3)])
+    mesh.update()
+    mesh.materials.append(mat)
+    uv = mesh.uv_layers.new(name="UVMap")
+    x0, x1 = model_x_bounds
+    z0, z1 = model_z_bounds
+    u0, v0, u1, v1 = source_uv_bounds
+
+    def project(value: float, low: float, high: float, out0: float, out1: float) -> float:
+        if abs(high - low) < 1e-6:
+            return out0
+        return out0 + (value - low) / (high - low) * (out1 - out0)
+
+    for polygon in mesh.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            uv.data[loop_index].uv = (
+                project(vertex.x, x0, x1, u0, u1),
+                project(vertex.z, z0, z1, v0, v1),
+            )
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
+def reference_image_material(
+    name: str,
+    folder: Path,
+    relative_path: str,
+    *,
+    emission_strength: float,
+) -> bpy.types.Material:
+    """Keep an authored occupied-depth plate legible behind physical glazing."""
+    mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    texture = nodes.new("ShaderNodeTexImage")
+    texture.name = texture.label = "REFERENCE_LOCKED_INTERIOR_UNDERLAY"
+    texture.image = bpy.data.images.load(
+        str(folder / relative_path),
+        check_existing=True,
+    )
+    texture.extension = "CLIP"
+    grade = nodes.new("ShaderNodeHueSaturation")
+    grade.name = grade.label = "REFERENCE_UNDERLAY_GRADE"
+    grade.inputs["Saturation"].default_value = 0.94
+    grade.inputs["Value"].default_value = 0.82
+    links.new(texture.outputs["Color"], grade.inputs["Color"])
+    links.new(grade.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Metallic"].default_value = 0.0
+    bsdf.inputs["Roughness"].default_value = 0.78
+    if bsdf.inputs.get("Emission Color"):
+        links.new(grade.outputs["Color"], bsdf.inputs["Emission Color"])
+        bsdf.inputs["Emission Strength"].default_value = emission_strength
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+    mat["skin_zone"] = "reference_underlay"
+    mat["reference_locked"] = True
+    mat["source"] = relative_path
+    mat["underlay_role"] = "occupied_depth_behind_physical_glazing"
+    return mat
 
 
 def tapered_prism(
@@ -378,6 +485,8 @@ def optimize_fixed_objects(
     objects: list[bpy.types.Object],
 ) -> list[bpy.types.Object]:
     """Merge disconnected panes/details without flattening semantic masses."""
+    if FAST_PILOT_MODE:
+        return objects
     protected = {
         "deconstructivist-museum": {
             "MUSEUM_Atrium_Pane_0_0",
@@ -546,6 +655,11 @@ def load_palette(
     near = {zone: values["near"] for zone, values in skin["zones"].items()}
     cfg = FAMILIES[family]
     prefix = family.replace("-", "_").upper()
+    shell_grade = {
+        "deconstructivist-museum": (0.92, 1.04),
+        "terracotta-fin-office": (1.16, 1.16),
+        "brutalist-civic-block": (0.96, 0.92),
+    }[family]
     mats = {
         "shell": pbr_material(
             f"MAT_W6_{prefix}_ReferenceShell",
@@ -553,8 +667,8 @@ def load_palette(
             near["shell"],
             "shell",
             metallic=0.58 if family == "deconstructivist-museum" else 0.0,
-            saturation=0.92 if family == "deconstructivist-museum" else 1.0,
-            value=1.04,
+            saturation=shell_grade[0],
+            value=shell_grade[1],
         ),
         "facade": pbr_material(
             f"MAT_W6_{prefix}_RegisteredFacade",
@@ -569,7 +683,8 @@ def load_palette(
             near["side"],
             "side",
             metallic=0.52 if family == "deconstructivist-museum" else 0.0,
-            value=0.98,
+            saturation=shell_grade[0],
+            value=shell_grade[1] - 0.06,
         ),
         "roof": pbr_material(
             f"MAT_W6_{prefix}_Roof",
@@ -619,6 +734,12 @@ def load_palette(
             (0.12, 0.070, 0.032, 1.0),
             0.86,
         ),
+        "underlay": reference_image_material(
+            f"MAT_W6_{prefix}_ReferenceInteriorUnderlay",
+            folder,
+            REFERENCE_UNDERLAYS[family]["path"],
+            emission_strength=REFERENCE_UNDERLAYS[family]["emission_strength"],
+        ),
     }
     occupied_specs = {
         "deconstructivist-museum": (
@@ -654,12 +775,18 @@ def load_palette(
 
 def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     objects: list[bpy.types.Object] = [
-        box("MUSEUM_PublicPlinth", (69.0, 39.0, 0.45), (0, 0, 0.225), m["trim"], 0.08)
+        box(
+            "MUSEUM_PublicPlinth",
+            (69.0, 40.7, 0.45),
+            (0, 0, 0.225),
+            m["trim"],
+            0.08,
+        )
     ]
     tower_specs = [
         ("OuterLeft", (-28.0, 0.5), (-27.3, 1.2), (11.5, 34.0), (10.0, 29.0), 0.45, 25.5),
         ("MainLeft", (-11.5, 0.5), (-12.2, 2.0), (20.0, 38.0), (18.0, 31.5), 0.45, 33.1),
-        ("Right", (28.0, 1.0), (29.0, 2.0), (14.0, 34.0), (11.5, 29.0), 0.45, 24.0),
+        ("Right", (26.0, 1.0), (26.5, 2.0), (18.0, 34.0), (18.0, 29.0), 0.45, 24.0),
     ]
     for name, bottom, top, bsize, tsize, z0, z1 in tower_specs:
         objects.append(
@@ -672,6 +799,40 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                 z0=z0,
                 z1=z1,
                 mat=m["shell"],
+            )
+        )
+        # The material sample supplies true-scale metal response; this thin
+        # coordinate-registered layer supplies the exact panel-tone cadence
+        # from the approved elevation instead of discarding that source.
+        objects.append(
+            mapped_reference_panel(
+                f"MUSEUM_{name}RenderLockedFrontSkin",
+                (
+                    (
+                        bottom[0] - bsize[0] / 2,
+                        bottom[1] - bsize[1] / 2 - 0.045,
+                        z0,
+                    ),
+                    (
+                        bottom[0] + bsize[0] / 2,
+                        bottom[1] - bsize[1] / 2 - 0.045,
+                        z0,
+                    ),
+                    (
+                        top[0] + tsize[0] / 2,
+                        top[1] - tsize[1] / 2 - 0.045,
+                        z1,
+                    ),
+                    (
+                        top[0] - tsize[0] / 2,
+                        top[1] - tsize[1] / 2 - 0.045,
+                        z1,
+                    ),
+                ),
+                m["facade"],
+                model_x_bounds=(-35.0, 35.0),
+                model_z_bounds=(0.45, 34.0),
+                source_uv_bounds=(0.0, 0.0, 1.0, 1.0),
             )
         )
         # Horizontal rainscreen joints are real shadow-casting reveals, not a
@@ -764,12 +925,42 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                 "MUSEUM_LeftNotchSoffit",
                 x0=-34.0,
                 x1=-19.0,
-                y0=-18.9,
-                y1=-12.0,
+                y0=-13.92,
+                y1=-11.8,
                 base_z=10.1,
                 peak_x=-26.0,
-                peak_z=15.2,
-                mat=m["side"],
+                peak_z=14.2,
+                mat=m["metal"],
+            ),
+        ]
+    )
+    objects.extend(
+        [
+            mapped_reference_panel(
+                "MUSEUM_LeftCantileverUpperRenderLockedFrontSkin",
+                (
+                    (-35.5, -14.045, 17.8),
+                    (-11.5, -14.045, 17.8),
+                    (-10.5, -14.045, 24.2),
+                    (-33.5, -14.045, 24.2),
+                ),
+                m["facade"],
+                model_x_bounds=(-35.0, 35.0),
+                model_z_bounds=(0.45, 34.0),
+                source_uv_bounds=(0.0, 0.0, 1.0, 1.0),
+            ),
+            mapped_reference_panel(
+                "MUSEUM_LeftCantileverLowerRenderLockedFrontSkin",
+                (
+                    (-34.5, -13.245, 10.0),
+                    (-19.5, -13.245, 10.0),
+                    (-17.5, -13.345, 15.0),
+                    (-34.5, -13.345, 15.0),
+                ),
+                m["facade"],
+                model_x_bounds=(-35.0, 35.0),
+                model_z_bounds=(0.45, 34.0),
+                source_uv_bounds=(0.0, 0.0, 1.0, 1.0),
             ),
         ]
     )
@@ -777,9 +968,24 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     # Main atrium: separate panes, structural frame and occupied plates.  The
     # top widens while the facade leans inward, matching the locked elevation.
     atrium_bl = (-1.5, -19.05, 7.1)
-    atrium_br = (14.2, -19.05, 7.1)
-    atrium_tr = (21.2, -15.20, 29.7)
+    atrium_br = (13.7, -19.05, 7.1)
+    atrium_tr = (18.0, -15.20, 29.7)
     atrium_tl = (-2.2, -15.20, 29.7)
+    objects.append(
+        mapped_reference_panel(
+            "MUSEUM_RenderLockedAtriumInteriorUnderlay",
+            (
+                (atrium_bl[0], atrium_bl[1] + 1.15, atrium_bl[2]),
+                (atrium_br[0], atrium_br[1] + 1.15, atrium_br[2]),
+                (atrium_tr[0], atrium_tr[1] + 1.15, atrium_tr[2]),
+                (atrium_tl[0], atrium_tl[1] + 1.15, atrium_tl[2]),
+            ),
+            m["underlay"],
+            model_x_bounds=(-2.2, 18.0),
+            model_z_bounds=(7.1, 29.7),
+            source_uv_bounds=(0.36, 0.24, 0.75, 0.95),
+        )
+    )
     objects.extend(
         facade_grid(
             "MUSEUM_Atrium",
@@ -797,9 +1003,9 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     # Side and roof facets complete the atrium as an enclosed piece of
     # architecture; the public floor plates remain behind glass in obliques.
     atrium_rear_left_bottom = (-0.2, -1.4, 7.1)
-    atrium_rear_right_bottom = (15.5, -1.0, 7.1)
+    atrium_rear_right_bottom = (15.0, -1.0, 7.1)
     atrium_rear_left_top = (-4.5, 0.8, 29.7)
-    atrium_rear_right_top = (18.0, 0.8, 29.7)
+    atrium_rear_right_top = (16.0, 0.8, 29.7)
     objects.extend(
         facade_grid(
             "MUSEUM_AtriumLeftReturn",
@@ -869,13 +1075,13 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             rectangular_beam(
                 "MUSEUM_AtriumBraceA",
                 (-1.2, -18.7, 8.0),
-                (18.9, -15.1, 28.7),
+                (16.3, -15.1, 28.7),
                 0.16,
                 m["metal"],
             ),
             rectangular_beam(
                 "MUSEUM_AtriumBraceB",
-                (13.5, -18.7, 8.0),
+                (12.9, -18.7, 8.0),
                 (0.0, -15.1, 27.0),
                 0.14,
                 m["metal"],
@@ -889,8 +1095,8 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         facade_grid(
             "MUSEUM_EntryGlazing",
             bottom_left=(-1.2, -19.35, 0.50),
-            bottom_right=(14.8, -19.35, 0.50),
-            top_right=(14.8, -19.35, 6.65),
+            bottom_right=(13.8, -19.35, 0.50),
+            top_right=(13.8, -19.35, 6.65),
             top_left=(-1.2, -19.35, 6.65),
             columns=5,
             rows=2,
@@ -899,23 +1105,38 @@ def museum_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             frame_width=0.14,
         )
     )
+    objects.append(
+        mapped_reference_panel(
+            "MUSEUM_RenderLockedEntryInteriorUnderlay",
+            (
+                (-1.2, -18.05, 0.50),
+                (13.8, -18.05, 0.50),
+                (13.8, -18.05, 6.65),
+                (-1.2, -18.05, 6.65),
+            ),
+            m["underlay"],
+            model_x_bounds=(-1.2, 13.8),
+            model_z_bounds=(0.50, 6.65),
+            source_uv_bounds=(0.37, 0.07, 0.72, 0.25),
+        )
+    )
     objects.extend(
         [
             triangular_prism(
                 "MUSEUM_EntryCanopy",
                 x0=-3.0,
-                x1=15.5,
-                y0=-21.2,
+                x1=14.5,
+                y0=-20.5,
                 y1=-18.4,
                 base_z=6.2,
-                peak_x=8.5,
-                peak_z=8.0,
+                peak_x=7.5,
+                peak_z=7.3,
                 mat=m["side"],
             ),
             triangular_prism(
                 "MUSEUM_EntryStructuralWedge",
-                x0=11.8,
-                x1=17.2,
+                x0=11.2,
+                x1=16.0,
                 y0=-19.0,
                 y1=-12.5,
                 base_z=0.45,
@@ -1023,29 +1244,54 @@ def office_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                     m["interior"],
                 )
             )
+        objects.append(
+            mapped_reference_panel(
+                f"OFFICE_{label}RenderLockedInteriorUnderlay",
+                (
+                    (-width / 2, y + 0.72, z0),
+                    (width / 2, y + 0.72, z0),
+                    (width / 2, y + 0.72, z1),
+                    (-width / 2, y + 0.72, z1),
+                ),
+                m["underlay"],
+                model_x_bounds=(-21.0, 21.0),
+                model_z_bounds=(0.45, 31.15),
+                source_uv_bounds=(0.05, 0.12, 0.91, 0.825),
+            )
+        )
 
     # Terracotta baguettes occur only on the two reference-locked fin fields.
     for band_index, (y, z0, z1, width, phase) in enumerate(
         [
-            (-14.35, 8.15, 15.35, 42.0, 0.0),
-            (-11.60, 15.85, 26.65, 38.0, 0.55),
+            (-14.35, 8.15, 11.65, 42.0, 0.0),
+            (-11.60, 15.85, 23.10, 38.0, 0.45),
         ]
     ):
-        x = -width / 2 + 0.65 + phase
         index = 0
-        while x < width / 2 - 0.35:
-            fin_depth = 0.82 if index % 4 else 1.15
-            objects.append(
-                box(
-                    f"OFFICE_TerracottaFin_{band_index}_{index}",
-                    (0.24, fin_depth, z1 - z0),
-                    (x, y - fin_depth / 2, (z0 + z1) / 2),
-                    m["shell"],
-                    0.035,
+        bay_count = max(6, round(width / 4.65))
+        bay_width = width / bay_count
+        for bay in range(bay_count):
+            # The upper screen has one planted outdoor room near the right,
+            # visible in both the catalogue card and completed oblique.
+            if band_index == 1 and bay == bay_count - 2:
+                continue
+            bay_left = -width / 2 + bay * bay_width
+            for slot, fraction in enumerate(
+                (0.09, 0.17, 0.25, 0.34, 0.76, 0.84)
+            ):
+                x = bay_left + bay_width * fraction
+                x += phase * (0.08 if (bay + slot) % 2 else -0.05)
+                fin_depth = 1.12 if slot == 0 and bay % 2 == 0 else 0.82
+                objects.append(
+                    box(
+                        f"OFFICE_TerracottaFin_{band_index}_{index}",
+                        (0.17, fin_depth, z1 - z0),
+                        (x, y - fin_depth / 2, (z0 + z1) / 2),
+                        m["shell"],
+                        0.035,
+                    )
                 )
-            )
-            x += 1.18
-            index += 1
+                index += 1
         objects.extend(
             [
                 box(
@@ -1109,8 +1355,8 @@ def office_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     # returns instead of ending as a hero-facing stage set.
     for band_index, (half_width, y0, y1, z0, z1) in enumerate(
         [
-            (21.0, -13.6, 13.6, 8.15, 15.35),
-            (19.0, -10.9, 13.3, 15.85, 26.65),
+            (21.0, -13.6, 13.6, 8.15, 11.65),
+            (19.0, -10.9, 13.3, 15.85, 23.10),
         ]
     ):
         for side in (-1, 1):
@@ -1170,53 +1416,99 @@ def office_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                 ),
             ]
         )
-        for planter_index, planter_x in enumerate(
-            frange(-width / 2 + 2.4, width / 2 - 1.6, 7.0)
-        ):
-            crown_y = y - depth / 2 + 0.45
-            objects.extend(
-                [
-                    cylinder(
-                        f"OFFICE_{name}TreeTrunk_{planter_x:.1f}",
-                        0.075,
-                        0.96,
-                        (planter_x, crown_y, z + 1.28),
-                        m["timber"],
-                        10,
-                    ),
-                    sphere(
-                        f"OFFICE_{name}TreeCrownA_{planter_x:.1f}",
-                        0.55,
-                        (planter_x - 0.18, crown_y, z + 1.95),
-                        m["planting"],
-                        (1.15, 0.78, 0.92),
-                        16,
-                        8,
-                    ),
-                    sphere(
-                        f"OFFICE_{name}TreeCrownB_{planter_x:.1f}",
-                        0.48,
-                        (
-                            planter_x + 0.22,
-                            crown_y + (0.10 if planter_index % 2 else -0.08),
-                            z + 2.10,
+        crown_y = y - depth / 2 + 0.45
+        if name == "Roof":
+            for planter_index, planter_x in enumerate(
+                frange(-width / 2 + 2.4, width / 2 - 1.6, 7.0)
+            ):
+                objects.extend(
+                    [
+                        cylinder(
+                            f"OFFICE_{name}TreeTrunk_{planter_x:.1f}",
+                            0.075,
+                            0.96,
+                            (planter_x, crown_y, z + 1.28),
+                            m["timber"],
+                            10,
                         ),
-                        m["planting"],
-                        (0.88, 1.05, 1.18),
-                        16,
-                        8,
-                    ),
-                    sphere(
-                        f"OFFICE_{name}TreeCrownC_{planter_x:.1f}",
-                        0.40,
-                        (planter_x + 0.05, crown_y - 0.10, z + 2.38),
-                        m["planting"],
-                        (0.92, 0.78, 0.92),
-                        16,
-                        8,
-                    ),
-                ]
-            )
+                        sphere(
+                            f"OFFICE_{name}TreeCrownA_{planter_x:.1f}",
+                            0.55,
+                            (planter_x - 0.18, crown_y, z + 1.95),
+                            m["planting"],
+                            (1.15, 0.78, 0.92),
+                            16,
+                            8,
+                        ),
+                        sphere(
+                            f"OFFICE_{name}TreeCrownB_{planter_x:.1f}",
+                            0.48,
+                            (
+                                planter_x + 0.22,
+                                crown_y
+                                + (0.10 if planter_index % 2 else -0.08),
+                                z + 2.10,
+                            ),
+                            m["planting"],
+                            (0.88, 1.05, 1.18),
+                            16,
+                            8,
+                        ),
+                        sphere(
+                            f"OFFICE_{name}TreeCrownC_{planter_x:.1f}",
+                            0.40,
+                            (planter_x + 0.05, crown_y - 0.10, z + 2.38),
+                            m["planting"],
+                            (0.92, 0.78, 0.92),
+                            16,
+                            8,
+                        ),
+                    ]
+                )
+        else:
+            # The references show dense trailing shrubs at the occupied
+            # setbacks, not a row of identical topiary lollipops.
+            for shrub_index, shrub_x in enumerate(
+                frange(-width / 2 + 1.2, width / 2 - 0.8, 1.35)
+            ):
+                objects.extend(
+                    [
+                        sphere(
+                            f"OFFICE_{name}TrailingShrub_{shrub_index}",
+                            0.38,
+                            (
+                                shrub_x,
+                                crown_y - 0.08 * (shrub_index % 3),
+                                z + 1.00 + 0.07 * (shrub_index % 2),
+                            ),
+                            m["planting"],
+                            (
+                                1.35 + 0.15 * (shrub_index % 2),
+                                0.78,
+                                0.58 + 0.08 * (shrub_index % 3),
+                            ),
+                            12,
+                            6,
+                        ),
+                        sphere(
+                            f"OFFICE_{name}TrailingShrubAccent_{shrub_index}",
+                            0.29,
+                            (
+                                shrub_x + 0.24,
+                                crown_y - 0.18,
+                                z + 0.86 + 0.06 * (shrub_index % 3),
+                            ),
+                            m["planting"],
+                            (
+                                0.90,
+                                0.72,
+                                0.72 + 0.08 * (shrub_index % 2),
+                            ),
+                            10,
+                            5,
+                        ),
+                    ]
+                )
     objects.extend(
         [
             box("OFFICE_RearCore", (13.0, 4.0, 27.0), (0, 11.5, 13.85), m["side"], 0.10),
@@ -1286,11 +1578,34 @@ def civic_gallery_box(
         )
     )
     objects.append(
-        box(
-            f"{prefix}_OccupiedBacking",
-            (width - 1.5, 0.16, slit_z1 - slit_z0 - 0.25),
-            (centre_x, front_y + 1.55, (slit_z0 + slit_z1) / 2),
-            m["interior"],
+        mapped_reference_panel(
+            f"{prefix}_RenderLockedSlitUnderlay",
+            (
+                (
+                    centre_x - width / 2 + 0.55,
+                    front_y + 1.42,
+                    slit_z0,
+                ),
+                (
+                    centre_x + width / 2 - 0.55,
+                    front_y + 1.42,
+                    slit_z0,
+                ),
+                (
+                    centre_x + width / 2 - 0.55,
+                    front_y + 1.42,
+                    slit_z1,
+                ),
+                (
+                    centre_x - width / 2 + 0.55,
+                    front_y + 1.42,
+                    slit_z1,
+                ),
+            ),
+            m["underlay"],
+            model_x_bounds=(-29.0, 29.0),
+            model_z_bounds=(0.50, 18.35),
+            source_uv_bounds=(0.06, 0.16, 0.90, 0.75),
         )
     )
     return objects
@@ -1302,13 +1617,11 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     ]
     # Monumental columns carry the gallery masses; open air remains between
     # them and the transparent public lobby is set well behind.
-    for index, (x, y) in enumerate(
-        [(-21.0, -8.8), (-6.5, -8.8), (8.0, -8.8), (21.5, -8.8)]
-    ):
+    for index, (x, y) in enumerate([(-16.0, -8.8), (19.0, -8.0)]):
         objects.append(
             box(
                 f"CIVIC_MonumentalPilotis_{index}",
-                (3.3, 3.3, 8.0),
+                (3.8, 3.8, 8.0),
                 (x, y, 4.35),
                 m["shell"],
                 0.18,
@@ -1317,11 +1630,11 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
     objects.extend(
         facade_grid(
             "CIVIC_RecessedLobby",
-            bottom_left=(-20.0, -7.0, 0.55),
-            bottom_right=(23.5, -7.0, 0.55),
-            top_right=(23.5, -7.0, 7.85),
-            top_left=(-20.0, -7.0, 7.85),
-            columns=12,
+            bottom_left=(-12.0, -7.0, 0.55),
+            bottom_right=(17.0, -7.0, 0.55),
+            top_right=(17.0, -7.0, 7.60),
+            top_left=(-12.0, -7.0, 7.60),
+            columns=8,
             rows=2,
             glass=m["glass"],
             frame=m["metal"],
@@ -1329,49 +1642,108 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
         )
     )
     objects.append(
-        box(
-            "CIVIC_LobbyOccupiedBacking",
-            (41.0, 0.20, 6.1),
-            (1.5, -5.6, 4.2),
-            m["interior"],
+        mapped_reference_panel(
+            "CIVIC_RenderLockedRecessAndLobbyUnderlay",
+            (
+                (-12.0, -5.85, 0.55),
+                (17.0, -5.85, 0.55),
+                (17.0, -5.85, 7.60),
+                (-12.0, -5.85, 7.60),
+            ),
+            m["underlay"],
+            model_x_bounds=(-29.0, 29.0),
+            model_z_bounds=(0.50, 18.35),
+            source_uv_bounds=(0.06, 0.16, 0.90, 0.75),
         )
     )
 
-    # The two gallery boxes overlap in plan but retain separate shadow joints
-    # and slit locations, producing the reference's offset cantilevers.
+    # Three gallery boxes retain separate shadow joints and slit locations,
+    # producing the reference's offset cantilever hierarchy.
     objects.extend(
         civic_gallery_box(
             "CIVIC_LeftGallery",
-            centre_x=-10.0,
-            width=36.0,
+            centre_x=-15.0,
+            width=24.0,
             depth=27.0,
-            z0=8.0,
+            z0=7.0,
             z1=16.2,
             front_y=-15.7,
-            slit_z0=12.35,
-            slit_z1=13.35,
+            slit_z0=10.70,
+            slit_z1=11.55,
+            m=m,
+        )
+    )
+    objects.extend(
+        civic_gallery_box(
+            "CIVIC_CentreGallery",
+            centre_x=3.5,
+            width=10.5,
+            depth=22.0,
+            z0=7.8,
+            z1=17.0,
+            front_y=-13.9,
+            slit_z0=12.45,
+            slit_z1=13.30,
             m=m,
         )
     )
     objects.extend(
         civic_gallery_box(
             "CIVIC_RightGallery",
-            centre_x=20.0,
+            centre_x=18.5,
             width=17.0,
-            depth=25.0,
-            z0=8.7,
-            z1=16.7,
-            front_y=-13.2,
-            slit_z0=11.0,
-            slit_z1=12.15,
+            depth=24.0,
+            z0=8.2,
+            z1=15.4,
+            front_y=-12.3,
+            slit_z0=11.10,
+            slit_z1=11.95,
             m=m,
         )
     )
-    # Vertical circulation core reaches grade and visually pins the right mass.
+    # Narrow full-height glazing slots keep the three heavy gallery masses
+    # visibly separate, as in the reference rather than one long concrete bar.
+    for slot_index, (x0, x1, y) in enumerate(
+        [(-3.0, -1.75, -13.20), (8.75, 10.0, -11.65)]
+    ):
+        objects.extend(
+            facade_grid(
+                f"CIVIC_VerticalAtriumSlot_{slot_index}",
+                bottom_left=(x0, y, 8.15),
+                bottom_right=(x1, y, 8.15),
+                top_right=(x1, y, 16.10),
+                top_left=(x0, y, 16.10),
+                columns=1,
+                rows=3,
+                glass=m["glass"],
+                frame=m["metal"],
+                frame_width=0.10,
+            )
+        )
+        objects.append(
+            mapped_reference_panel(
+                f"CIVIC_VerticalAtriumSlot_{slot_index}Underlay",
+                (
+                    (x0, y + 0.42, 8.15),
+                    (x1, y + 0.42, 8.15),
+                    (x1, y + 0.42, 16.10),
+                    (x0, y + 0.42, 16.10),
+                ),
+                m["underlay"],
+                model_x_bounds=(-29.0, 29.0),
+                model_z_bounds=(0.50, 18.35),
+                source_uv_bounds=(0.06, 0.16, 0.90, 0.75),
+            )
+        )
     objects.extend(
         [
-            box("CIVIC_RightCore", (9.0, 26.0, 15.7), (23.0, 1.5, 7.85), m["side"], 0.08),
-            box("CIVIC_CarvedEntryCanopy", (14.0, 5.5, 0.55), (13.0, -13.0, 7.15), m["shell"], 0.05),
+            box(
+                "CIVIC_CarvedEntryCanopy",
+                (14.5, 5.5, 0.55),
+                (2.5, -10.3, 6.95),
+                m["shell"],
+                0.05,
+            ),
         ]
     )
 
@@ -1391,6 +1763,21 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             frame_width=0.10,
         )
     )
+    objects.append(
+        mapped_reference_panel(
+            "CIVIC_ClerestoryRenderLockedUnderlay",
+            (
+                (-25.5, -12.55, 16.15),
+                (25.5, -12.55, 16.15),
+                (25.5, -12.55, 18.35),
+                (-25.5, -12.55, 18.35),
+            ),
+            m["underlay"],
+            model_x_bounds=(-29.0, 29.0),
+            model_z_bounds=(0.50, 18.35),
+            source_uv_bounds=(0.06, 0.16, 0.90, 0.75),
+        )
+    )
     objects.extend(
         [
             box("CIVIC_BroadRoofPlane", (58.0, 34.0, 1.05), (0, 0, 19.475), m["shell"], 0.08),
@@ -1398,27 +1785,35 @@ def civic_fixed(m: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             box("CIVIC_RoofServicePenthouse", (16.0, 8.0, 1.15), (6.0, 5.0, 18.55), m["side"], 0.06),
         ]
     )
-    # Board-form tie holes remain restrained but physical at hero range.
-    for row, z in enumerate((9.2, 11.4, 14.7, 16.0)):
-        for column, x in enumerate(frange(-26.0, 25.5, 4.5)):
-            objects.append(
-                cylinder(
-                    f"CIVIC_FormTie_{row}_{column}",
-                    0.075,
-                    0.05,
-                    (x, -15.74, z),
-                    m["metal"],
-                    16,
-                    (1.0, 1.0),
+    # Board-form tie holes remain restrained and stay on their actual staggered
+    # gallery faces instead of floating along one imaginary front plane.
+    gallery_specs = (
+        ("Left", -15.0, 24.0, -15.7, 27.0, 7.0, 16.2),
+        ("Centre", 3.5, 10.5, -13.9, 22.0, 7.8, 17.0),
+        ("Right", 18.5, 17.0, -12.3, 24.0, 8.2, 15.4),
+    )
+    for gallery, centre_x, width, front_y, _depth, z0, z1 in gallery_specs:
+        for row, z in enumerate((9.2, 11.4, 14.7, 16.0)):
+            if z < z0 + 0.35 or z > z1 - 0.20:
+                continue
+            for column, x in enumerate(
+                frange(centre_x - width / 2 + 1.4, centre_x + width / 2, 3.8)
+            ):
+                objects.append(
+                    cylinder(
+                        f"CIVIC_{gallery}FrontFormTie_{row}_{column}",
+                        0.075,
+                        0.05,
+                        (x, front_y - 0.04, z),
+                        m["metal"],
+                        16,
+                        (1.0, 1.0),
+                    )
                 )
-            )
-            objects[-1].rotation_euler.x = math.pi / 2
+                objects[-1].rotation_euler.x = math.pi / 2
     # Continue the restrained tie schedule around returns and rear walls. This
     # supplies real close-range board-form depth without adding facade ornament.
-    for gallery, centre_x, width, front_y, depth in (
-        ("Left", -10.0, 36.0, -15.7, 27.0),
-        ("Right", 20.0, 17.0, -13.2, 25.0),
-    ):
+    for gallery, centre_x, width, front_y, depth, _z0, _z1 in gallery_specs:
         rear_y = front_y + depth
         left_x = centre_x - width / 2
         right_x = centre_x + width / 2
@@ -1596,15 +1991,85 @@ def render_views(
         if view_set == "pilot"
         else set(views)
     )
-    rendered: list[str] = []
-    for role, (location, target, lens) in views.items():
-        if role not in selected:
+    # City Prompt and standards-compliant glTF viewers resolve the exported
+    # opaque KHR transmission against the underlay. Eevee's raster proof does
+    # not, so temporarily approximate that same coated-glass result with a
+    # dithered surface. Restore every value before fallback modules export.
+    proof_alpha = {
+        "deconstructivist-museum": 0.22,
+        "terracotta-fin-office": 0.18,
+        "brutalist-civic-block": 0.48,
+    }[family]
+    glass_snapshots: list[
+        tuple[
+            bpy.types.Material,
+            bpy.types.Node,
+            tuple[float, float, float, float],
+            float,
+            float,
+            str | None,
+        ]
+    ] = []
+    for mat in bpy.data.materials:
+        if not mat.get("glazing_profile") or not mat.use_nodes:
             continue
-        aim_camera(location, target, lens)
-        filename = f"{family}_{role}.png"
-        scene.render.filepath = str(folder / filename)
-        bpy.ops.render.render(write_still=True)
-        rendered.append(filename)
+        bsdf = next(
+            (
+                node
+                for node in mat.node_tree.nodes
+                if node.bl_idname == "ShaderNodeBsdfPrincipled"
+            ),
+            None,
+        )
+        if bsdf is None or not bsdf.inputs.get("Alpha"):
+            continue
+        transmission = bsdf.inputs.get("Transmission Weight")
+        glass_snapshots.append(
+            (
+                mat,
+                bsdf,
+                tuple(mat.diffuse_color),
+                float(bsdf.inputs["Alpha"].default_value),
+                (
+                    float(transmission.default_value)
+                    if transmission is not None
+                    else 0.0
+                ),
+                getattr(mat, "surface_render_method", None),
+            )
+        )
+        mat.diffuse_color = (*tuple(mat.diffuse_color)[:3], proof_alpha)
+        bsdf.inputs["Alpha"].default_value = proof_alpha
+        if transmission is not None:
+            transmission.default_value = 0.0
+        if hasattr(mat, "surface_render_method"):
+            mat.surface_render_method = "BLENDED"
+    rendered: list[str] = []
+    try:
+        for role, (location, target, lens) in views.items():
+            if role not in selected:
+                continue
+            aim_camera(location, target, lens)
+            filename = f"{family}_{role}.png"
+            scene.render.filepath = str(folder / filename)
+            bpy.ops.render.render(write_still=True)
+            rendered.append(filename)
+    finally:
+        for (
+            mat,
+            bsdf,
+            diffuse,
+            alpha,
+            transmission_value,
+            render_method,
+        ) in glass_snapshots:
+            mat.diffuse_color = diffuse
+            bsdf.inputs["Alpha"].default_value = alpha
+            transmission = bsdf.inputs.get("Transmission Weight")
+            if transmission is not None:
+                transmission.default_value = transmission_value
+            if render_method is not None:
+                mat.surface_render_method = render_method
     delete_objects(
         [obj for obj in list(bpy.data.objects) if obj.name.startswith("PRESENTATION_")]
     )
@@ -1757,6 +2222,10 @@ def source_provenance(family: str) -> dict:
         "orthographic_elevation": "textures/source/elevation-source.png",
         "material_source": "textures/source/material-source.png",
         "reference_generation": "textures/source/reference-generation.json",
+        "reference_underlay": REFERENCE_UNDERLAYS[family]["path"],
+        "reference_underlay_generation": (
+            "textures/source/reference-generation-v2.json"
+        ),
         "elevation_source": f"/families/{family}/elevation.jpg",
         "skin_manifest": "textures/skin_manifest.json",
         "generator": (
@@ -1776,8 +2245,10 @@ def build_family(
     view_set: str,
     skip_renders: bool,
     skip_modules: bool,
+    skip_assembled_export: bool,
     modules_only: bool,
 ) -> None:
+    global FAST_PILOT_MODE
     clear_scene()
     cfg = FAMILIES[family]
     folder = output_root / family
@@ -1800,8 +2271,13 @@ def build_family(
         fixed_materials = int(old_manifest["assembled"].get("material_count") or 0)
         renders = list(old_manifest.get("renders") or [])
     else:
-        fixed_objects = builders[family](mats)
-        export_glb(assembled_path, fixed_objects)
+        FAST_PILOT_MODE = skip_assembled_export
+        try:
+            fixed_objects = builders[family](mats)
+        finally:
+            FAST_PILOT_MODE = False
+        if not skip_assembled_export:
+            export_glb(assembled_path, fixed_objects)
         fixed_triangles = triangle_count(fixed_objects)
         fixed_materials = len(
             {
@@ -2050,6 +2526,8 @@ def render_existing(family: str, output_root: Path, view_set: str) -> None:
 
 def main() -> int:
     args = parse_args()
+    if args.skip_assembled_export and not args.skip_modules:
+        raise ValueError("--skip-assembled-export requires --skip-modules")
     output_root = args.output_root.resolve()
     selected = args.family or list(FAMILIES)
     for family in selected:
@@ -2062,6 +2540,7 @@ def main() -> int:
                 view_set=args.view_set,
                 skip_renders=args.skip_renders,
                 skip_modules=args.skip_modules,
+                skip_assembled_export=args.skip_assembled_export,
                 modules_only=args.modules_only,
             )
     return 0

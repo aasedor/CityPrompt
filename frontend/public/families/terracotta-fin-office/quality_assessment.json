@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-29-nonresidential-glazing-enclosure-v100",
+  "memory_version": "2026-07-29-reference-underlay-registration-v101",
   "archetype_id": "modern_glass_office_institutional",
   "family": "terracotta-fin-office",
   "status": "pass",
@@ -104,12 +104,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "9 assembled materials; review above 20"
+        "detail": "10 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "18310 assembled triangles; budget 12000-180000"
+        "detail": "21782 assembled triangles; budget 12000-180000"
       }
     ]
   }

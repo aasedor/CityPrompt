@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-29-nonresidential-glazing-enclosure-v100"
+        == "2026-07-29-reference-underlay-registration-v101"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -139,6 +139,12 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         and "closed transparent section" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "custom elevation" in item["symptom"].lower()
+        and "no exported material consumed it" in item["cause"].lower()
+        and "occupied-depth underlay" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
@@ -151,6 +157,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "glazing_materiality_matches_reference",
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
+        "render_locked_sources_are_geometry_bound",
         "glass_is_layered",
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",

@@ -15,7 +15,7 @@
     "terracotta-fin-office_floor_typical_b.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
     "terracotta-fin-office_floor_typical_c.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
     "terracotta-fin-office_crown_crown.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "terracotta-fin-office_assembled.glb: 39.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "terracotta-fin-office_assembled.glb: 42.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -143,11 +143,11 @@
     {
       "file": "terracotta-fin-office_assembled.glb",
       "status": "ok",
-      "triangles": 35110,
+      "triangles": 41462,
       "extent_m": {
         "width_x": 43.5,
         "height_y": 34.198,
-        "depth_z": 29.511
+        "depth_z": 29.481
       },
       "bottom_y": 0.0,
       "materials": [
@@ -156,12 +156,13 @@
         "MAT_W6_TERRACOTTA_FIN_OFFICE_PhysicalGlass",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_PlantTrunk",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_Planting",
+        "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceInteriorUnderlay",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_ReferenceShell",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_Roof",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_SideConstruction",
         "MAT_W6_TERRACOTTA_FIN_OFFICE_Trim"
       ],
-      "size_bytes": 41722264,
+      "size_bytes": 44040956,
       "role": "assembled"
     }
   ]

@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T19:43:49.804999+00:00",
+  "created_at": "2026-07-29T22:48:23.112868+00:00",
   "family": "brutalist-civic-block",
   "archetype_id": "modernist_civic_block",
   "archetype_label": "Modernist Civic Block \u2014 Board-Formed Concrete",
@@ -1636,6 +1636,7 @@
         "archetype_goalpost": "textures/source/archetype-goalpost.png",
         "orthographic_elevation": "textures/source/elevation-source.png",
         "material_source": "textures/source/material-source.png",
+        "reference_underlay": "textures/source/glazing-underlay-source-v2.png",
         "angle_reference": "textures/source/angle-reference-60.png",
         "roof_reference": "textures/source/angle-reference-90.png",
         "registered_openings": "textures/source/registered-openings.json",
@@ -1656,13 +1657,13 @@
       "registered_surfaces": [
         "floating_board_formed_concrete_volume",
         "deep_horizontal_window_slits",
-        "three_monumental_pilotis",
+        "two_outer_monumental_pilotis",
         "recessed_public_lobby",
         "offset_cantilevered_gallery_boxes",
         "continuous_overhanging_roof_plane",
         "quiet_service_rear"
       ],
-      "uv_strategy": "render-locked facade bands plus reference-derived true-scale construction materials on authored physical envelopes",
+      "uv_strategy": "render-locked facade bands and occupied-depth underlay cards behind physical glazing, plus reference-derived true-scale construction materials on authored physical envelopes",
       "depth_binding": "shader_bump",
       "generic_tiling_allowed": false
     }
@@ -1914,7 +1915,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 20.0,
-    "triangle_count": 16468,
+    "triangle_count": 19758,
     "material_count": 7,
     "stack": [
       {
@@ -1964,17 +1965,13 @@
   },
   "thumbnail": "brutalist-civic-block_preview.png",
   "renders": [
-    "brutalist-civic-block_aerial.png",
-    "brutalist-civic-block_context.png",
-    "brutalist-civic-block_facade_close.png",
-    "brutalist-civic-block_front.png",
-    "brutalist-civic-block_front_corner_oblique.png",
-    "brutalist-civic-block_front_left.png",
-    "brutalist-civic-block_front_right.png",
     "brutalist-civic-block_preview.png",
-    "brutalist-civic-block_rear.png",
-    "brutalist-civic-block_rear_corner_oblique.png",
     "brutalist-civic-block_street.png",
+    "brutalist-civic-block_front_corner_oblique.png",
+    "brutalist-civic-block_rear_corner_oblique.png",
+    "brutalist-civic-block_aerial.png",
+    "brutalist-civic-block_facade_close.png",
+    "brutalist-civic-block_context.png",
     "elevation.jpg"
   ],
   "architectural_identity": "Floating board-formed concrete gallery boxes stand on monumental pilotis beneath one broad roof plane, cut by deep horizontal window slits and a recessed civic lobby.",
@@ -1991,6 +1988,8 @@
     "orthographic_elevation": "textures/source/elevation-source.png",
     "material_source": "textures/source/material-source.png",
     "reference_generation": "textures/source/reference-generation.json",
+    "reference_underlay": "textures/source/glazing-underlay-source-v2.png",
+    "reference_underlay_generation": "textures/source/reference-generation-v2.json",
     "elevation_source": "/families/brutalist-civic-block/elevation.jpg",
     "skin_manifest": "textures/skin_manifest.json",
     "generator": "tools/archetype_compiler/generate_wave6_nonresidential_families.py",
