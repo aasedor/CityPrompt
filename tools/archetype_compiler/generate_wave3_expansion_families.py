@@ -246,14 +246,20 @@ def _principled(mat: bpy.types.Material) -> bpy.types.Node:
     )
 
 
-def _glazing_treatment(mat: bpy.types.Material, alpha: float = 0.76) -> bpy.types.Material:
+def _glazing_treatment(
+    mat: bpy.types.Material,
+    alpha: float = 0.76,
+    *,
+    transmission: float = 0.20,
+    coat: float = 0.42,
+) -> bpy.types.Material:
     bsdf = _principled(mat)
     if bsdf.inputs.get("Alpha"):
         bsdf.inputs["Alpha"].default_value = alpha
     if bsdf.inputs.get("Transmission Weight"):
-        bsdf.inputs["Transmission Weight"].default_value = 0.20
+        bsdf.inputs["Transmission Weight"].default_value = transmission
     if bsdf.inputs.get("Coat Weight"):
-        bsdf.inputs["Coat Weight"].default_value = 0.42
+        bsdf.inputs["Coat Weight"].default_value = coat
     try:
         mat.surface_render_method = "DITHERED"
     except Exception:
@@ -337,10 +343,12 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                             transmission=0.18,
                             emission_strength=0.18,
                         ),
-                        saturation=0.32,
-                        value=0.86,
+                        saturation=0.48,
+                        value=1.10,
                     ),
-                    0.64,
+                    0.44,
+                    transmission=0.44,
+                    coat=0.20,
                 ),
                 "timber": skin_material(
                     "MAT_W3X_ConcertTimber",
@@ -377,11 +385,11 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                 ),
                 "concert_interior": material(
                     "MAT_W3X_ConcertOccupiedInterior",
-                    (0.075, 0.034, 0.010, 1),
+                    (0.035, 0.014, 0.004, 1),
                     0.50,
                     0.04,
-                    emission=(0.62, 0.16, 0.020, 1),
-                    emission_strength=0.32,
+                    emission=(0.46, 0.090, 0.006, 1),
+                    emission_strength=0.16,
                 ),
                 "stone": skin_material(
                     "MAT_W3X_ConcertGranite",
@@ -436,62 +444,70 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                             transmission=0.28,
                             emission_strength=0.20,
                         ),
-                        saturation=0.68,
-                        value=0.88,
+                        saturation=0.62,
+                        value=1.00,
                     ),
-                    0.62,
+                    0.54,
+                    transmission=0.34,
+                    coat=0.30,
                 ),
                 "roof_metal": material(
                     "MAT_W3X_MercatWeatheredZinc",
-                    (0.20, 0.22, 0.22, 1),
-                    0.58,
-                    0.48,
+                    (0.36, 0.39, 0.39, 1),
+                    0.52,
+                    0.42,
                 ),
                 "stained_red": material(
                     "MAT_W3X_MercatStainedRed",
-                    (0.25, 0.012, 0.008, 0.90),
-                    0.30,
+                    (0.16, 0.010, 0.007, 0.88),
+                    0.38,
                     0.04,
-                    emission=(0.42, 0.018, 0.010, 1),
-                    emission_strength=0.10,
+                    emission=(0.28, 0.014, 0.008, 1),
+                    emission_strength=0.04,
                 ),
                 "stained_blue": material(
                     "MAT_W3X_MercatStainedBlue",
-                    (0.012, 0.075, 0.30, 0.90),
-                    0.30,
+                    (0.010, 0.050, 0.19, 0.88),
+                    0.38,
                     0.04,
-                    emission=(0.015, 0.10, 0.48, 1),
-                    emission_strength=0.10,
+                    emission=(0.012, 0.070, 0.30, 1),
+                    emission_strength=0.04,
                 ),
                 "stained_gold": material(
                     "MAT_W3X_MercatStainedGold",
-                    (0.34, 0.11, 0.008, 0.90),
-                    0.32,
+                    (0.22, 0.075, 0.008, 0.88),
+                    0.40,
                     0.03,
-                    emission=(0.54, 0.16, 0.010, 1),
-                    emission_strength=0.10,
+                    emission=(0.34, 0.11, 0.009, 1),
+                    emission_strength=0.04,
                 ),
                 "stained_green": material(
                     "MAT_W3X_MercatStainedGreen",
-                    (0.012, 0.18, 0.045, 0.90),
-                    0.32,
+                    (0.010, 0.115, 0.032, 0.88),
+                    0.40,
                     0.03,
-                    emission=(0.018, 0.30, 0.065, 1),
-                    emission_strength=0.09,
+                    emission=(0.014, 0.19, 0.045, 1),
+                    emission_strength=0.04,
                 ),
                 "terracotta": material(
                     "MAT_W3X_MercatTerracottaRoof",
-                    (0.26, 0.072, 0.026, 1),
+                    (0.36, 0.095, 0.032, 1),
                     0.72,
                     0.02,
                 ),
                 "market_interior": material(
                     "MAT_W3X_MercatOccupiedInterior",
-                    (0.16, 0.065, 0.018, 1),
+                    (0.065, 0.022, 0.006, 1),
                     0.55,
                     0.02,
-                    emission=(0.78, 0.20, 0.025, 1),
-                    emission_strength=0.24,
+                    emission=(0.48, 0.11, 0.010, 1),
+                    emission_strength=0.14,
+                ),
+                "market_counter": material(
+                    "MAT_W3X_MercatCounterTimber",
+                    (0.075, 0.028, 0.010, 1),
+                    0.68,
+                    0.02,
                 ),
                 "produce_red": material(
                     "MAT_W3X_MercatProduceRed",
@@ -533,10 +549,12 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                             transmission=0.12,
                             emission_strength=0.30,
                         ),
-                        saturation=0.62,
-                        value=0.88,
+                        saturation=0.66,
+                        value=1.02,
                     ),
-                    0.70,
+                    0.56,
+                    transmission=0.32,
+                    coat=0.28,
                 ),
                 "shed_glass": _glazing_treatment(
                     _grade_base(
@@ -548,10 +566,12 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                             transmission=0.20,
                             emission_strength=0.12,
                         ),
-                        saturation=0.60,
-                        value=0.72,
+                        saturation=0.52,
+                        value=0.90,
                     ),
-                    0.72,
+                    0.60,
+                    transmission=0.34,
+                    coat=0.25,
                 ),
                 "relief": skin_material(
                     "MAT_W3X_StationRelief",
@@ -564,8 +584,8 @@ def family_palette(family_dir: Path) -> dict[str, bpy.types.Material]:
                     (0.035, 0.016, 0.008, 1),
                     0.50,
                     0.08,
-                    emission=(0.22, 0.040, 0.004, 1),
-                    emission_strength=0.06,
+                    emission=(0.38, 0.070, 0.006, 1),
+                    emission_strength=0.13,
                 ),
                 "coffer": material(
                     "MAT_W3X_StationCofferedStone",
@@ -899,16 +919,18 @@ def quad_panel(
 
 
 def _concert_front_y(x: float) -> float:
-    return -29.8 + 4.4 * (abs(x) / 33.0) ** 1.7
+    # Recess the glazing behind the public shell and bias the curved lobby
+    # toward the left-hand entrance prow visible in the reference.
+    return -28.1 + 3.7 * (abs(x + 5.0) / 35.0) ** 1.75
 
 
 def _concert_lobby_top(x: float) -> float:
     # The reference lobby rises into the left acoustic shell and falls toward
     # the right-hand sweep. A symmetric semicircle reads as a generic atrium.
     return (
-        18.0
-        + 9.0 * math.exp(-((x + 17.0) / 16.0) ** 2)
-        + 3.0 * math.exp(-((x - 6.0) / 27.0) ** 2)
+        17.0
+        + 11.5 * math.exp(-((x + 18.0) / 15.0) ** 2)
+        + 2.5 * math.exp(-((x - 5.0) / 25.0) ** 2)
     )
 
 
@@ -916,8 +938,8 @@ def concert_lobby(
     mats: dict[str, bpy.types.Material],
 ) -> list[bpy.types.Object]:
     objects: list[bpy.types.Object] = []
-    columns, rows = 18, 5
-    x_values = [-29.0 + 58.0 * i / columns for i in range(columns + 1)]
+    columns, rows = 20, 5
+    x_values = [-35.0 + 61.0 * i / columns for i in range(columns + 1)]
     for col in range(columns):
         xa, xb = x_values[col], x_values[col + 1]
         ya, yb = _concert_front_y(xa), _concert_front_y(xb)
@@ -977,22 +999,23 @@ def concert_lobby(
     objects.append(
         vertical_shell_panel(
             "CONCERT_OccupiedLobbyBackplate",
-            -27.5,
-            27.5,
-            lambda u: -24.3 + 3.2 * abs(u - 0.5),
-            lambda u: _concert_lobby_top(-27.5 + 55.0 * u) - 1.15,
-            mats["interior_timber"],
+            -33.5,
+            24.5,
+            lambda u: -22.7 + 3.0 * abs(u - 0.42),
+            lambda u: _concert_lobby_top(-33.5 + 58.0 * u) - 1.15,
+            mats["concert_interior"],
             thickness=0.18,
             u_steps=20,
             v_steps=5,
         )
     )
     for level in (7.0, 12.5, 18.0, 23.2):
+        balcony_centre_x = -5.5
         objects.append(
             box(
                 f"CONCERT_LobbyBalcony_{level}",
                 (38.0 - level * 0.30, 3.0, 0.32),
-                (0, -24.4 + level * 0.025, level),
+                (balcony_centre_x, -23.7 + level * 0.025, level),
                 mats["timber"],
                 0.08,
             )
@@ -1001,7 +1024,7 @@ def concert_lobby(
             box(
                 f"CONCERT_LobbyWarmCeiling_{level}",
                 (20.0, 0.22, 0.16),
-                (0, -24.9, level + 0.42),
+                (balcony_centre_x, -24.2, level + 0.42),
                 mats["warm"],
             )
         )
@@ -1009,11 +1032,23 @@ def concert_lobby(
             box(
                 f"CONCERT_LobbyBalustrade_{level}",
                 (37.0 - level * 0.30, 0.09, 1.05),
-                (0, -28.0 + level * 0.025, level + 0.62),
+                (balcony_centre_x, -27.1 + level * 0.025, level + 0.62),
                 mats["glass"],
             )
         )
-    for index, x in enumerate((-24, -17, -10, 0, 10, 17, 24)):
+        for card_index, card_x in enumerate((-22.0, -10.0, 2.0, 14.0)):
+            if level + 1.8 >= _concert_lobby_top(card_x):
+                continue
+            objects.append(
+                box(
+                    f"CONCERT_OccupiedRoomCard_{level}_{card_index}",
+                    (4.8, 0.12, 2.0),
+                    (card_x, -22.55, level + 1.25),
+                    mats["warm"],
+                    0.035,
+                )
+            )
+    for index, x in enumerate((-31, -24, -17, -9, -1, 7, 15, 22)):
         y0 = _concert_front_y(x) + 1.0
         top = _concert_lobby_top(x) - 1.2
         mid = (y0 + 5.4, top * 0.60)
@@ -1039,12 +1074,12 @@ def concert_lobby(
     # Seven physically recessed entrance door leaves and bronze frames.
     door_width = 3.0
     for index in range(7):
-        x = (index - 3) * 3.35
+        x = -7.0 + (index - 3) * 3.35
         objects.append(
             box(
                 f"CONCERT_EntryDoorPane_{index}",
                 (door_width, 0.12, 4.2),
-                (x, -30.12, 3.30),
+                (x, -28.72, 3.30),
                 mats["glass"],
             )
         )
@@ -1053,7 +1088,7 @@ def concert_lobby(
                 box(
                     f"CONCERT_EntryDoorJamb_{index}_{edge}",
                     (0.08, 0.22, 4.35),
-                    (x + edge, -30.22, 3.30),
+                    (x + edge, -28.82, 3.30),
                     mats["bronze"],
                 )
             )
@@ -1061,9 +1096,45 @@ def concert_lobby(
         box(
             "CONCERT_EntryHeader",
             (24.2, 0.26, 0.16),
-            (0, -30.22, 5.48),
+            (-7.0, -28.82, 5.48),
             mats["bronze"],
         )
+    )
+    # A visible diagonal promenade and its warm soffit make the lobby read as
+    # an occupied sectional volume rather than a tinted facade card.
+    objects.extend(
+        [
+            beam(
+                "CONCERT_LobbyPromenade",
+                (-24.0, -25.3, 7.2),
+                (12.0, -23.9, 17.8),
+                0.48,
+                mats["timber"],
+            ),
+            beam(
+                "CONCERT_LobbyPromenadeRail",
+                (-24.0, -26.0, 8.25),
+                (12.0, -24.6, 18.85),
+                0.10,
+                mats["bronze"],
+            ),
+            surface_volume(
+                "CONCERT_RecessedEntranceCanopy",
+                lambda u, v: (
+                    -31.0 + 53.0 * u,
+                    -31.2 + 3.8 * v,
+                    6.4
+                    + 3.5 * math.sin(math.pi * u) ** 1.28
+                    + 0.45 * v,
+                ),
+                mats["shell"],
+                u_steps=32,
+                v_steps=5,
+                thickness=0.60,
+                uv_scale=(2.8, 0.6),
+                bottom_mat=mats["soffit"],
+            ),
+        ]
     )
     return objects
 
@@ -1220,7 +1291,7 @@ def concert_fixed(
         x_fraction = math.cos(theta)
         return front_weight(theta) * math.exp(-((x_fraction + 0.34) / 0.32) ** 2)
 
-    def folded_sail_peak(
+    def flowing_sail_peak(
         u: float,
         v: float,
         centre_u: float,
@@ -1230,11 +1301,14 @@ def concert_fixed(
         v_width: float,
         amplitude: float,
     ) -> float:
-        """Sharp leaning ridge with broad shell planes on either side."""
+        """Broad leaning lift with a soft compound-curved shell section."""
 
         ridge_u = centre_u + lean * v
-        cross_section = max(0.0, 1.0 - abs(u - ridge_u) / half_width) ** 1.18
-        longitudinal = math.exp(-((v - centre_v) / v_width) ** 2)
+        offset = abs(u - ridge_u) / half_width
+        rounded_plane = math.exp(-(offset ** 2.35))
+        folded_ridge = max(0.0, 1.0 - offset / 1.35) ** 1.20
+        cross_section = 0.80 * rounded_plane + 0.20 * folded_ridge
+        longitudinal = math.exp(-abs((v - centre_v) / v_width) ** 2.15)
         return amplitude * cross_section * longitudinal
 
     # Three continuous shell loops now own the rounded plan silhouette. Their
@@ -1355,9 +1429,9 @@ def concert_fixed(
             45.5,
             lambda u: -29.22 + 0.55 * math.sin(math.pi * u),
             lambda u: (
-                10.8
-                + 6.2 * math.sin(math.pi * u) ** 1.35
-                + 5.4 * math.exp(-((u - 0.29) / 0.17) ** 2)
+                13.7
+                + 6.9 * math.sin(math.pi * u) ** 1.35
+                + 6.2 * math.exp(-((u - 0.29) / 0.17) ** 2)
             ),
             lambda u: (
                 15.4
@@ -1374,7 +1448,7 @@ def concert_fixed(
     # bands turn the ground floor into the reference's continuous white ribbon
     # while preserving a genuinely open central lobby.
     for side in (-1, 1):
-        x0, x1 = (-45.0, -15.5) if side < 0 else (15.5, 45.0)
+        x0, x1 = (-45.0, -25.0) if side < 0 else (17.0, 45.0)
         objects.append(
             vertical_ribbon_panel(
                 f"CONCERT_EntryShellSkirt_{side}",
@@ -1393,26 +1467,32 @@ def concert_fixed(
     # The upper acoustic volume is genuinely non-prismatic: the rear-right
     # saddle grows into the goalpost's highest peak while the front-left edge
     # stays low enough to preserve the glazed lobby.
+    def upper_acoustic_point(
+        u: float,
+        v: float,
+    ) -> tuple[float, float, float]:
+        return (
+            7.0
+            + 4.5 * (2.0 * v - 1.0)
+            + (2.0 * u - 1.0)
+            * (
+                16.0
+                + 19.0 * max(0.0, math.sin(math.pi * v)) ** 0.82
+            ),
+            -8.0 + 47.0 * v,
+            26.8
+            + 2.3 * v
+            + 3.8 * math.sin(math.pi * v)
+            + flowing_sail_peak(
+                u, v, 0.60, 0.10, 0.20, 0.62, 0.29, 22.0
+            )
+            - 1.7 * abs(2.0 * u - 1.0) ** 1.8,
+        )
+
     objects.append(
         surface_volume(
             "CONCERT_UpperAcousticShell",
-            lambda u, v: (
-                8.0
-                + 3.0 * (2.0 * v - 1.0)
-                + (2.0 * u - 1.0)
-                * (
-                    18.0
-                    + 26.0 * max(0.0, math.sin(math.pi * v)) ** 0.72
-                ),
-                -5.0 + 46.0 * v,
-                27.0
-                + 2.7 * v
-                + 3.2 * math.sin(math.pi * v)
-                + folded_sail_peak(
-                    u, v, 0.53, 0.20, 0.21, 0.62, 0.34, 20.0
-                )
-                - 2.4 * abs(2.0 * u - 1.0) ** 1.7,
-            ),
+            upper_acoustic_point,
             mats["shell"],
             u_steps=48,
             v_steps=24,
@@ -1421,17 +1501,33 @@ def concert_fixed(
             bottom_mat=mats["soffit"],
         )
     )
+    upper_rear_edge = [
+        upper_acoustic_point(index / 48, 1.0)
+        for index in range(49)
+    ]
+    for index in range(48):
+        start = upper_rear_edge[index]
+        end = upper_rear_edge[index + 1]
+        objects.append(
+            beam(
+                f"CONCERT_UpperRearRolledEdge_{index}",
+                (start[0], start[1] + 0.06, start[2] - 0.68),
+                (end[0], end[1] + 0.06, end[2] - 0.68),
+                0.34,
+                mats["shell"],
+            )
+        )
     objects.append(
         vertical_ribbon_panel(
             "CONCERT_UpperAcousticShellFascia",
             -28.0,
             44.0,
-            lambda u: -5.18 + 0.30 * math.sin(math.pi * u),
-            lambda u: 24.2 + 1.8 * math.sin(math.pi * u),
+            lambda u: -8.18 + 0.45 * math.sin(math.pi * u),
+            lambda u: 23.8 + 2.1 * math.sin(math.pi * u),
             lambda u: (
-                27.0
-                + 1.8 * math.sin(math.pi * u)
-                + 2.2 * math.exp(-((u - 0.68) / 0.19) ** 2)
+                26.8
+                + 2.4 * math.sin(math.pi * u)
+                + 3.6 * math.exp(-((u - 0.70) / 0.20) ** 2)
             ),
             mats["shell"],
             thickness=0.80,
@@ -1441,26 +1537,32 @@ def concert_fixed(
     )
     # A narrower overlapping rear sail supplies the third peak and the deep
     # shadow seam seen in the catalogue goalpost.
+    def rear_sail_point(
+        u: float,
+        v: float,
+    ) -> tuple[float, float, float]:
+        return (
+            -10.0
+            + 2.0 * (2.0 * v - 1.0)
+            + (2.0 * u - 1.0)
+            * (
+                13.0
+                + 17.0 * max(0.0, math.sin(math.pi * v)) ** 0.80
+            ),
+            9.0 + v * 29.0,
+            29.2
+            + 2.5 * v
+            + 3.2 * math.sin(math.pi * v)
+            + flowing_sail_peak(
+                u, v, 0.24, 0.14, 0.31, 0.64, 0.30, 6.2
+            )
+            - 1.2 * abs(2.0 * u - 1.0) ** 1.7,
+        )
+
     objects.append(
         surface_volume(
             "CONCERT_RearSailShell",
-            lambda u, v: (
-                -8.0
-                + 2.0 * (2.0 * v - 1.0)
-                + (2.0 * u - 1.0)
-                * (
-                    12.0
-                    + 18.0 * max(0.0, math.sin(math.pi * v)) ** 0.72
-                ),
-                6.0 + v * 32.0,
-                31.0
-                + 3.0 * v
-                + 4.0 * math.sin(math.pi * v)
-                + folded_sail_peak(
-                    u, v, 0.14, 0.20, 0.20, 0.66, 0.32, 8.0
-                )
-                - 1.8 * abs(2.0 * u - 1.0) ** 1.6,
-            ),
+            rear_sail_point,
             mats["shell"],
             u_steps=40,
             v_steps=20,
@@ -1469,7 +1571,22 @@ def concert_fixed(
             bottom_mat=mats["soffit"],
         )
     )
-
+    rear_sail_edge = [
+        rear_sail_point(index / 40, 1.0)
+        for index in range(41)
+    ]
+    for index in range(40):
+        start = rear_sail_edge[index]
+        end = rear_sail_edge[index + 1]
+        objects.append(
+            beam(
+                f"CONCERT_RearSailRolledEdge_{index}",
+                (start[0], start[1] + 0.06, start[2] - 0.62),
+                (end[0], end[1] + 0.06, end[2] - 0.62),
+                0.30,
+                mats["shell"],
+            )
+        )
     # A quiet rear service elevation remains fully authored.
     objects.append(
         box(
@@ -1708,7 +1825,7 @@ def mercat_fixed(
                 box(
                     f"MERCAT_SideOccupiedBacking_{side}_{index}",
                     (0.08, span - 0.72, 5.15),
-                    (side * 30.92, y, 6.35),
+                    (side * 28.85, y, 6.35),
                     mats["market_interior"],
                 )
             )
@@ -1791,7 +1908,7 @@ def mercat_fixed(
                 box(
                     f"MERCAT_FrontOccupiedBacking_{side}_{index}",
                     (3.70, 0.10, 5.20),
-                    (x, -21.18, 6.35),
+                    (x, -18.45, 6.35),
                     mats["market_interior"],
                 )
             )
@@ -2107,7 +2224,7 @@ def mercat_fixed(
     # Integral Modernista portal: an arched stained-glass field, two iron
     # rings, radial fanlight structure, tiled piers and recessed doors.
     portal_y = -22.05
-    portal_width, portal_height, portal_sill = 28.0, 17.2, 1.1
+    portal_width, portal_height, portal_sill = 25.0, 19.4, 1.1
     portal_radius = portal_width / 2
     portal_spring = portal_sill + portal_height - portal_radius
     objects.append(
@@ -2214,6 +2331,8 @@ def mercat_fixed(
         )
         rose_petal = bpy.context.object
         rose_petal.name = f"MERCAT_CentralRosePetal_{petal}"
+        rose_petal.scale = (0.62, 1.0, 0.42)
+        rose_petal.rotation_euler[1] = -angle
         rose_petal.data.materials.append(stained_palette[(petal + 1) % 4])
         objects.append(rose_petal)
     objects.extend(
@@ -2255,74 +2374,87 @@ def mercat_fixed(
     # The ornament is constructed as a real radial iron-and-glass spandrel,
     # not painted onto the portal.  From oblique views the medallions, rings,
     # and lace sit at distinct depths.
-    ornament_radius = portal_radius + 1.15
-    medallion_angles = [
-        math.radians(12.0 + index * 13.0)
-        for index in range(13)
+    # A continuous annular band of individual coloured cells replaces the
+    # earlier bead-like medallions. Every cell is physically leaded and sits
+    # proud of the broad stained atlas, matching the botanical arch border in
+    # the reference without reading as coloured lights.
+    cell_count = 16
+    inner_ornament_radius = portal_radius + 0.28
+    outer_ornament_radius = portal_radius + 1.45
+    ornament_angles = [
+        math.radians(6.0 + 168.0 * index / cell_count)
+        for index in range(cell_count + 1)
     ]
-    for index, angle in enumerate(medallion_angles):
-        x = ornament_radius * math.cos(angle)
-        z = portal_spring + ornament_radius * math.sin(angle)
-        bpy.ops.mesh.primitive_cylinder_add(
-            vertices=32,
-            radius=0.38,
-            depth=0.13,
-            location=(x, portal_y - 0.62, z),
-            rotation=(math.pi / 2, 0, 0),
+    for index in range(cell_count):
+        angle_a = ornament_angles[index]
+        angle_b = ornament_angles[index + 1]
+        cell_vertices = [
+            (
+                outer_ornament_radius * math.cos(angle_a),
+                portal_y - 0.60,
+                portal_spring + outer_ornament_radius * math.sin(angle_a),
+            ),
+            (
+                outer_ornament_radius * math.cos(angle_b),
+                portal_y - 0.60,
+                portal_spring + outer_ornament_radius * math.sin(angle_b),
+            ),
+            (
+                inner_ornament_radius * math.cos(angle_b),
+                portal_y - 0.60,
+                portal_spring + inner_ornament_radius * math.sin(angle_b),
+            ),
+            (
+                inner_ornament_radius * math.cos(angle_a),
+                portal_y - 0.60,
+                portal_spring + inner_ornament_radius * math.sin(angle_a),
+            ),
+        ]
+        objects.append(
+            mesh_object(
+                f"MERCAT_BotanicalGlassCell_{index}",
+                cell_vertices,
+                [(0, 1, 2, 3)],
+                mats["stained"],
+                [(0, 1), (1, 1), (1, 0), (0, 0)],
+            )
         )
-        medallion = bpy.context.object
-        medallion.name = f"MERCAT_StainedMedallion_{index}"
-        medallion.data.materials.append(stained_palette[index % 4])
-        objects.append(medallion)
-        bpy.ops.mesh.primitive_torus_add(
-            major_radius=0.48,
-            minor_radius=0.065,
-            major_segments=28,
-            minor_segments=8,
-            location=(x, portal_y - 0.72, z),
-            rotation=(math.pi / 2, 0, 0),
-        )
-        ring = bpy.context.object
-        ring.name = f"MERCAT_MedallionIronRing_{index}"
-        ring.data.materials.append(mats["iron"])
-        objects.append(ring)
-        inner = portal_radius + 0.12
         objects.append(
             beam(
-                f"MERCAT_SpandrelRadial_{index}",
-                (
-                    inner * math.cos(angle),
-                    portal_y - 0.54,
-                    portal_spring + inner * math.sin(angle),
-                ),
-                (
-                    (ornament_radius - 0.80) * math.cos(angle),
-                    portal_y - 0.54,
-                    portal_spring + (ornament_radius - 0.80) * math.sin(angle),
-                ),
+                f"MERCAT_BotanicalLeadRadial_{index}",
+                cell_vertices[3],
+                cell_vertices[0],
                 0.075,
                 mats["iron"],
             )
         )
-        if index:
-            previous_angle = medallion_angles[index - 1]
-            objects.append(
-                beam(
-                    f"MERCAT_SpandrelLace_{index}",
-                    (
-                        ornament_radius * math.cos(previous_angle),
-                        portal_y - 0.52,
-                        portal_spring + ornament_radius * math.sin(previous_angle),
-                    ),
-                    (
-                        ornament_radius * math.cos(angle),
-                        portal_y - 0.52,
-                        portal_spring + ornament_radius * math.sin(angle),
-                    ),
-                    0.065,
-                    mats["bronze"],
-                )
+        objects.append(
+            beam(
+                f"MERCAT_BotanicalLeadOuter_{index}",
+                cell_vertices[0],
+                cell_vertices[1],
+                0.065,
+                mats["bronze"],
             )
+        )
+    last_angle = ornament_angles[-1]
+    objects.append(
+        beam(
+            "MERCAT_BotanicalLeadRadial_End",
+            (
+                inner_ornament_radius * math.cos(last_angle),
+                portal_y - 0.60,
+                portal_spring + inner_ornament_radius * math.sin(last_angle),
+            ),
+            (
+                outer_ornament_radius * math.cos(last_angle),
+                portal_y - 0.60,
+                portal_spring + outer_ornament_radius * math.sin(last_angle),
+            ),
+            0.075,
+            mats["iron"],
+        )
+    )
     for index in range(13):
         angle = math.pi * index / 12
         end = (
@@ -2339,12 +2471,12 @@ def mercat_fixed(
                 mats["iron"],
             )
         )
-    for x in (-16.3, 16.3):
+    for x in (-14.6, 14.6):
         objects.append(
             box(
                 f"MERCAT_PortalStonePier_{x}",
-                (3.6, 2.1, 8.6),
-                (x, -21.4, 4.8),
+                (4.4, 2.7, 10.6),
+                (x, -21.25, 5.8),
                 mats["cream"],
                 0.18,
             )
@@ -2352,8 +2484,8 @@ def mercat_fixed(
         objects.append(
             box(
                 f"MERCAT_PortalTileInset_{x}",
-                (2.35, 0.14, 4.6),
-                (x, -22.50, 4.2),
+                (2.80, 0.14, 5.8),
+                (x, -22.67, 4.9),
                 mats["tile"],
                 0.05,
             )
@@ -2363,12 +2495,12 @@ def mercat_fixed(
                 box(
                     f"MERCAT_PortalInsetJamb_{x}_{edge_x}",
                     (0.16, 0.28, 5.10),
-                    (x + edge_x, -22.60, 4.20),
+                    (x + edge_x, -22.77, 4.90),
                     mats["bronze"],
                     0.025,
                 )
             )
-        for edge_z in (1.63, 6.77):
+        for edge_z in (1.78, 8.02):
             objects.append(
                 box(
                     f"MERCAT_PortalInsetRail_{x}_{edge_z}",
@@ -2378,17 +2510,17 @@ def mercat_fixed(
                     0.025,
                 )
             )
-        for course, z in enumerate((1.25, 3.0, 5.0, 7.0, 8.9)):
+        for course, z in enumerate((1.25, 3.2, 5.5, 7.8, 10.7)):
             objects.append(
                 box(
                     f"MERCAT_PortalPierCourse_{x}_{course}",
-                    (3.95 if course in {0, 4} else 3.72, 2.28, 0.24),
-                    (x, -21.4, z),
+                    (4.75 if course in {0, 4} else 4.52, 2.88, 0.24),
+                    (x, -21.25, z),
                     mats["cream"],
                     0.04,
                 )
             )
-        objects.extend(iron_column(f"MERCAT_PortalColumn_{x}", (x, -22.1, 0.8), 13.8))
+        objects.extend(iron_column(f"MERCAT_PortalColumn_{x}", (x, -22.35, 0.8), 15.6))
 
     for door in range(5):
         x = (door - 2) * 3.6
@@ -2418,22 +2550,22 @@ def mercat_fixed(
         [
             beam(
                 "MERCAT_GableLeft",
-                (-18.0, -21.9, 11.0),
-                (0.0, -21.9, 22.0),
+                (-18.0, -21.9, 10.8),
+                (0.0, -21.9, 22.8),
                 0.48,
                 mats["iron"],
             ),
             beam(
                 "MERCAT_GableRight",
-                (0.0, -21.9, 22.0),
-                (18.0, -21.9, 11.0),
+                (0.0, -21.9, 22.8),
+                (18.0, -21.9, 10.8),
                 0.48,
                 mats["iron"],
             ),
             beam(
                 "MERCAT_GableTie",
-                (-18.0, -21.9, 11.0),
-                (18.0, -21.9, 11.0),
+                (-18.0, -21.9, 10.8),
+                (18.0, -21.9, 10.8),
                 0.38,
                 mats["iron"],
             ),
@@ -2443,7 +2575,7 @@ def mercat_fixed(
         for division in range(1, 7):
             fraction = division / 7.0
             x = side * 18.0 * (1.0 - fraction)
-            z = 11.0 + 11.0 * fraction
+            z = 10.8 + 12.0 * fraction
             objects.append(
                 beam(
                     f"MERCAT_GableLace_{side}_{division}",
@@ -2455,7 +2587,7 @@ def mercat_fixed(
             )
             bpy.ops.mesh.primitive_cylinder_add(
                 vertices=32,
-                radius=0.42,
+                radius=0.32,
                 depth=0.14,
                 location=(x, -22.13, z),
                 rotation=(math.pi / 2, 0, 0),
@@ -2463,11 +2595,11 @@ def mercat_fixed(
             gable_medallion = bpy.context.object
             gable_medallion.name = f"MERCAT_GableMedallion_{side}_{division}"
             gable_medallion.data.materials.append(
-                stained_palette[(division + (0 if side < 0 else 2)) % 4]
+                mats["stained"]
             )
             objects.append(gable_medallion)
             bpy.ops.mesh.primitive_torus_add(
-                major_radius=0.51,
+                major_radius=0.41,
                 minor_radius=0.065,
                 major_segments=28,
                 minor_segments=8,
@@ -2613,8 +2745,17 @@ def mercat_fixed(
                     f"MERCAT_ProduceStall_{row}_{bay}",
                     (6.5, 4.5, 2.1),
                     (x, y, 2.0),
-                    mats["warm"] if (row + bay) % 2 else mats["tile"],
+                    mats["market_counter"],
                     0.10,
+                )
+            )
+            objects.append(
+                box(
+                    f"MERCAT_ProduceCountertop_{row}_{bay}",
+                    (6.7, 4.7, 0.20),
+                    (x, y, 3.08),
+                    mats["cream"],
+                    0.035,
                 )
             )
             objects.append(
@@ -2623,6 +2764,14 @@ def mercat_fixed(
                     (7.0, 5.0, 0.18),
                     (x, y, 3.25),
                     mats["iron"],
+                )
+            )
+            objects.append(
+                box(
+                    f"MERCAT_StallWarmLight_{row}_{bay}",
+                    (4.8, 0.16, 0.10),
+                    (x, y - 1.7, 4.02),
+                    mats["warm"],
                 )
             )
     # The entrance sightline terminates on real produce displays so the
@@ -2694,6 +2843,73 @@ def mercat_fixed(
             mats["iron"],
         )
     )
+    # Close the rear elevation with the same occupied iron-and-glass arcade
+    # used at the front. The central service gable alone left six transparent
+    # flanking bays reading as an unfinished cutaway from rear obliques.
+    rear_y = 21.55
+    rear_column_x = (-29.0, -24.5, -20.0, -15.5, 15.5, 20.0, 24.5, 29.0)
+    for index, x in enumerate(rear_column_x):
+        objects.extend(
+            iron_column(
+                f"MERCAT_RearColumn_{index}",
+                (x, rear_y, 0.8),
+            )
+        )
+    for side, centres in (
+        (-1, (-26.75, -22.25, -17.75)),
+        (1, (17.75, 22.25, 26.75)),
+    ):
+        for index, x in enumerate(centres):
+            objects.extend(
+                [
+                    box(
+                        f"MERCAT_RearTilePlinth_{side}_{index}",
+                        (4.25, 0.72, 1.45),
+                        (x, rear_y + 0.35, 1.48),
+                        mats["tile"],
+                        0.05,
+                    ),
+                    box(
+                        f"MERCAT_RearOccupiedBacking_{side}_{index}",
+                        (3.70, 0.10, 5.20),
+                        (x, rear_y - 3.0, 6.35),
+                        mats["market_interior"],
+                    ),
+                    box(
+                        f"MERCAT_RearGlass_{side}_{index}",
+                        (4.0, 0.12, 5.6),
+                        (x, rear_y + 0.30, 6.35),
+                        mats["roof_glass"],
+                    ),
+                    box(
+                        f"MERCAT_RearMullion_{side}_{index}",
+                        (0.10, 0.18, 5.50),
+                        (x, rear_y + 0.39, 6.35),
+                        mats["iron"],
+                    ),
+                ]
+            )
+            objects.extend(
+                arch_frame(
+                    f"MERCAT_RearArcade_{side}_{index}",
+                    x,
+                    rear_y,
+                    2.0,
+                    4.25,
+                    8.0,
+                    0.28,
+                    mats["iron"],
+                )
+            )
+            for transom_index, z in enumerate((4.35, 6.35, 8.25)):
+                objects.append(
+                    box(
+                        f"MERCAT_RearTransom_{side}_{index}_{transom_index}",
+                        (3.85, 0.18, 0.10),
+                        (x, rear_y + 0.39, z),
+                        mats["iron"],
+                    )
+                )
     return objects
 
 
@@ -2893,6 +3109,34 @@ def station_fixed(
             0.18,
         )
     )
+    # The ceremonial centre is not a flat slice of the long facade. Two
+    # stepped entablature projections pull the central and inner portal groups
+    # forward as nested Beaux-Arts pavilions.
+    objects.extend(
+        [
+            box(
+                "STATION_CentralEntablatureProjection",
+                (48.0, 7.0, 5.6),
+                (0.0, -39.15, 35.25),
+                mats["relief"],
+                0.18,
+            ),
+            box(
+                "STATION_InnerLeftEntablatureProjection",
+                (38.0, 4.8, 5.5),
+                (-34.0, -39.05, 35.20),
+                mats["relief"],
+                0.16,
+            ),
+            box(
+                "STATION_InnerRightEntablatureProjection",
+                (38.0, 4.8, 5.5),
+                (34.0, -39.05, 35.20),
+                mats["relief"],
+                0.16,
+            ),
+        ]
+    )
     objects.extend(
         [
             box(
@@ -2945,8 +3189,8 @@ def station_fixed(
         y: float,
         *,
         base_z: float = 1.1,
-        height: float = 31.8,
-        radius: float = 1.92,
+        height: float = 32.6,
+        radius: float = 2.06,
     ) -> list[bpy.types.Object]:
         parts: list[bpy.types.Object] = []
         shaft_height = height - 4.2
@@ -3050,12 +3294,13 @@ def station_fixed(
         height: float,
         *,
         stair_width: float,
+        projection: float = 0.0,
     ) -> list[bpy.types.Object]:
         parts: list[bpy.types.Object] = []
         sill = 2.55
         radius = width / 2
         spring = sill + height - radius
-        facade_y = -40.15
+        facade_y = -40.15 - projection
         parts.append(
             arched_panel(
                 name + "_Glass",
@@ -3072,7 +3317,7 @@ def station_fixed(
             arched_panel(
                 name + "_OccupiedBackplate",
                 centre_x,
-                -35.25,
+                facade_y + 4.90,
                 sill + 0.35,
                 width - 3.3,
                 height - 2.4,
@@ -3098,7 +3343,7 @@ def station_fixed(
                 box(
                     f"{name}_WarmInteriorBand_{light_index}",
                     (usable_width * 0.78, 0.20, 0.30),
-                    (centre_x, -35.55, light_z),
+                    (centre_x, facade_y + 4.60, light_z),
                     mats["warm"],
                 )
             )
@@ -3109,7 +3354,7 @@ def station_fixed(
                     (2.15, 5.4, spring - sill + 0.9),
                     (
                         centre_x + side * (radius - 0.4),
-                        -37.55,
+                        facade_y + 2.60,
                         sill + (spring - sill + 0.9) / 2,
                     ),
                     mats["stone"],
@@ -3118,7 +3363,11 @@ def station_fixed(
             )
         # Three concentric stone arches and radial coffers make the portal a
         # carved void rather than another window pasted onto a wall.
-        arch_depths = (-40.65, -38.25, -35.9)
+        arch_depths = (
+            facade_y - 0.50,
+            facade_y + 1.90,
+            facade_y + 4.25,
+        )
         arch_radii = (1.05, 0.72, 0.52)
         arch_points: list[list[tuple[float, float, float]]] = []
         for ring, (y, beam_radius) in enumerate(zip(arch_depths, arch_radii)):
@@ -3254,11 +3503,11 @@ def station_fixed(
                 ),
                 triangular_prism(
                     name + "_DoorPediment",
-                    door_group_width + 1.8,
-                    2.15,
-                    0.85,
+                    door_group_width + 1.2,
+                    1.10,
+                    0.62,
                     (centre_x, facade_y - 0.76, 8.72),
-                    mats["coffer"],
+                    mats["bronze"],
                 ),
             ]
         )
@@ -3269,7 +3518,7 @@ def station_fixed(
             box(
                 name + "_ThresholdLanding",
                 (stair_width, 2.4, sill),
-                (centre_x, -40.2, sill / 2),
+                (centre_x, facade_y - 0.05, sill / 2),
                 mats["stone"],
                 0.04,
             )
@@ -3284,7 +3533,7 @@ def station_fixed(
                     (stair_width + step * 0.35, depth, rise),
                     (
                         centre_x,
-                        -41.55 - step * depth,
+                        facade_y - 1.40 - step * depth,
                         rise / 2 + level * rise,
                     ),
                     mats["stone"],
@@ -3297,7 +3546,7 @@ def station_fixed(
                     (stair_width + step * 0.35 + 0.05, 0.09, 0.10),
                     (
                         centre_x,
-                        -41.55 - step * depth - depth / 2,
+                        facade_y - 1.40 - step * depth - depth / 2,
                         level * rise + 0.10,
                     ),
                     mats["relief"],
@@ -3306,13 +3555,20 @@ def station_fixed(
         return parts
 
     portal_specs = (
-        ("OuterLeft", -68.0, 22.0, 24.5, 24.0),
-        ("InnerLeft", -34.0, 24.0, 27.5, 26.0),
-        ("Central", 0.0, 30.0, 31.0, 32.0),
-        ("InnerRight", 34.0, 24.0, 27.5, 26.0),
-        ("OuterRight", 68.0, 22.0, 24.5, 24.0),
+        ("OuterLeft", -68.0, 22.0, 24.5, 24.0, 0.30),
+        ("InnerLeft", -34.0, 24.0, 27.5, 26.0, 1.00),
+        ("Central", 0.0, 30.0, 31.0, 32.0, 2.00),
+        ("InnerRight", 34.0, 24.0, 27.5, 26.0, 1.00),
+        ("OuterRight", 68.0, 22.0, 24.5, 24.0, 0.30),
     )
-    for label, centre_x, portal_width, portal_height, stair_width in portal_specs:
+    for (
+        label,
+        centre_x,
+        portal_width,
+        portal_height,
+        stair_width,
+        projection,
+    ) in portal_specs:
         objects.extend(
             station_portal(
                 f"STATION_{label}Portal",
@@ -3320,16 +3576,21 @@ def station_fixed(
                 portal_width,
                 portal_height,
                 stair_width=stair_width,
+                projection=projection,
             )
         )
-    for _, centre_x, _, _, stair_width in portal_specs:
+    for _, centre_x, _, _, stair_width, projection in portal_specs:
         for side in (-1, 1):
             rail_x = centre_x + side * (stair_width / 2 + 0.65)
             objects.append(
                 beam(
                     f"STATION_StairCheek_{centre_x}_{side}",
-                    (rail_x + side * 1.35, -48.8, 0.65),
-                    (rail_x, -40.2, 3.25),
+                    (
+                        rail_x + side * 1.35,
+                        -48.8 - projection,
+                        0.65,
+                    ),
+                    (rail_x, -40.2 - projection, 3.25),
                     0.48,
                     mats["stone"],
                 )
@@ -3339,7 +3600,11 @@ def station_fixed(
                     box(
                         f"STATION_StairSculpturePedestal_{centre_x}_{side}",
                         (3.0, 3.0, 2.2),
-                        (rail_x + side * 1.15, -48.1, 1.1),
+                        (
+                            rail_x + side * 1.15,
+                            -48.1 - projection,
+                            1.1,
+                        ),
                         mats["stone"],
                         0.10,
                     )
@@ -3350,14 +3615,22 @@ def station_fixed(
                             f"STATION_StairFigureBody_{centre_x}_{side}",
                             0.58,
                             2.3,
-                            (rail_x + side * 1.15, -48.1, 3.25),
+                            (
+                                rail_x + side * 1.15,
+                                -48.1 - projection,
+                                3.25,
+                            ),
                             mats["relief"],
                             18,
                         ),
                         sphere(
                             f"STATION_StairFigureHead_{centre_x}_{side}",
                             0.48,
-                            (rail_x + side * 1.15, -48.1, 4.75),
+                            (
+                                rail_x + side * 1.15,
+                                -48.1 - projection,
+                                4.75,
+                            ),
                             mats["relief"],
                             (1.0, 0.92, 1.08),
                             18,
@@ -3370,7 +3643,21 @@ def station_fixed(
     # Beaux-Arts structural rhythm across the head house.
     column_positions = (-80.2, -57.8, -45.2, -22.8, -14.2, 14.2, 22.8, 45.2, 57.8, 80.2)
     for index, x in enumerate(column_positions):
-        objects.extend(station_column(f"STATION_Corinthian_{index}", x, -41.2))
+        absolute_x = abs(x)
+        column_y = (
+            -43.10
+            if absolute_x < 18.0
+            else -42.15
+            if absolute_x < 50.0
+            else -41.45
+        )
+        objects.extend(
+            station_column(
+                f"STATION_Corinthian_{index}",
+                x,
+                column_y,
+            )
+        )
 
     # Outer wings use true recessed arched windows with separate room cards,
     # returns and mullions instead of a flat repetitive image.
@@ -3449,15 +3736,15 @@ def station_fixed(
         [
             box(
                 "STATION_ClockAttic",
-                (23.0, 12.0, 8.5),
-                (0, -31.2, 42.7),
+                (31.0, 14.0, 9.2),
+                (0, -35.4, 42.9),
                 mats["stone"],
                 0.22,
             ),
             box(
                 "STATION_ClockPediment",
-                (27.0, 13.0, 0.86),
-                (0, -31.2, 47.3),
+                (35.0, 15.0, 0.92),
+                (0, -35.4, 47.8),
                 mats["relief"],
                 0.15,
             ),
@@ -3466,10 +3753,10 @@ def station_fixed(
     objects.append(
         triangular_prism(
             "STATION_ClockPedimentRoof",
-            25.0,
-            5.2,
-            3.5,
-            (0, -36.2, 47.4),
+            32.0,
+            5.6,
+            4.2,
+            (0, -40.15, 47.8),
             mats["stone"],
         )
     )
@@ -3477,15 +3764,15 @@ def station_fixed(
         [
             beam(
                 "STATION_ClockPedimentLeftCornice",
-                (-12.5, -38.05, 47.5),
-                (0.0, -38.05, 52.7),
+                (-16.0, -42.35, 47.9),
+                (0.0, -42.35, 53.5),
                 0.36,
                 mats["relief"],
             ),
             beam(
                 "STATION_ClockPedimentRightCornice",
-                (0.0, -38.05, 52.7),
-                (12.5, -38.05, 47.5),
+                (0.0, -42.35, 53.5),
+                (16.0, -42.35, 47.9),
                 0.36,
                 mats["relief"],
             ),
@@ -3493,18 +3780,18 @@ def station_fixed(
     )
     clock_face = front_disc(
         "STATION_ClockFace",
-        3.35,
+        4.10,
         0.42,
-        (0, -38.0, 42.7),
+        (0, -42.45, 43.0),
         mats["cream"],
     )
     objects.append(clock_face)
     bpy.ops.mesh.primitive_torus_add(
-        major_radius=3.62,
+        major_radius=4.42,
         minor_radius=0.34,
         major_segments=64,
         minor_segments=12,
-        location=(0, -38.25, 42.7),
+        location=(0, -42.70, 43.0),
         rotation=(math.pi / 2, 0, 0),
     )
     clock_ring = bpy.context.object
@@ -3515,11 +3802,11 @@ def station_fixed(
         objects.extend(
             station_column(
                 f"STATION_ClockPilaster_{side}",
-                side * 5.6,
-                -38.0,
+                side * 7.0,
+                -42.25,
                 base_z=38.2,
                 height=8.8,
-                radius=0.52,
+                radius=0.62,
             )
         )
         bpy.ops.mesh.primitive_torus_add(
@@ -3527,7 +3814,7 @@ def station_fixed(
             minor_radius=0.20,
             major_segments=32,
             minor_segments=10,
-            location=(side * 8.1, -38.15, 43.7),
+            location=(side * 10.2, -42.45, 44.0),
             rotation=(math.pi / 2, 0, 0),
         )
         volute = bpy.context.object
@@ -3537,8 +3824,8 @@ def station_fixed(
         objects.append(
             beam(
                 f"STATION_ClockGarland_{side}",
-                (side * 3.9, -38.38, 40.1),
-                (side * 8.1, -38.38, 43.7),
+                (side * 4.9, -42.72, 40.3),
+                (side * 10.2, -42.72, 44.0),
                 0.24,
                 mats["relief"],
             )
@@ -3547,16 +3834,16 @@ def station_fixed(
         [
             cylinder(
                 "STATION_ClockApexFigureBody",
-                0.56,
-                2.5,
-                (0.0, -38.0, 54.0),
+                0.68,
+                2.7,
+                (0.0, -42.35, 54.7),
                 mats["relief"],
                 18,
             ),
             sphere(
                 "STATION_ClockApexFigureHead",
-                0.46,
-                (0.0, -38.0, 55.6),
+                0.54,
+                (0.0, -42.35, 56.4),
                 mats["relief"],
                 (1.0, 0.92, 1.08),
                 18,
@@ -3568,15 +3855,15 @@ def station_fixed(
         [
             beam(
                 "STATION_ClockMinuteHand",
-                (0, -38.48, 42.7),
-                (0.0, -38.48, 45.2),
+                (0, -42.95, 43.0),
+                (0.0, -42.95, 46.1),
                 0.13,
                 mats["black"],
             ),
             beam(
                 "STATION_ClockHourHand",
-                (0, -38.50, 42.7),
-                (-1.7, -38.50, 43.7),
+                (0, -42.97, 43.0),
+                (-2.1, -42.97, 44.25),
                 0.16,
                 mats["black"],
             ),
@@ -3590,9 +3877,9 @@ def station_fixed(
                 0.11,
                 0.12,
                 (
-                    2.72 * math.sin(angle),
-                    -38.50,
-                    42.7 + 2.72 * math.cos(angle),
+                    3.35 * math.sin(angle),
+                    -43.00,
+                    43.0 + 3.35 * math.cos(angle),
                 ),
                 mats["black"],
                 16,
@@ -3602,8 +3889,8 @@ def station_fixed(
     # Balustrade runs remain quiet enough not to compete with the portals.
     objects.extend(
         [
-            box("STATION_BalustradeBase", (194.0, 1.2, 0.42), (0, -39.6, 39.2), mats["stone"]),
-            box("STATION_BalustradeRail", (194.0, 1.2, 0.42), (0, -39.6, 41.5), mats["stone"]),
+            box("STATION_BalustradeBase", (194.0, 1.2, 0.42), (0, -40.7, 39.2), mats["stone"]),
+            box("STATION_BalustradeRail", (194.0, 1.2, 0.42), (0, -40.7, 41.5), mats["stone"]),
         ]
     )
     for index, x in enumerate(range(-94, 95, 3)):
@@ -3614,7 +3901,7 @@ def station_fixed(
                 f"STATION_Baluster_{index}",
                 0.20,
                 2.2,
-                (x, -39.6, 40.35),
+                (x, -40.7, 40.35),
                 mats["stone"],
                 16,
             )
@@ -3622,33 +3909,73 @@ def station_fixed(
 
     # Stylised stone groups occupy the reference's skyline positions.  These
     # are low-poly sculpture masses, not billboard decoration.
-    for group_x in (-49.0, 49.0):
+    for group_x in (-43.0, 43.0):
         objects.append(
             box(
                 f"STATION_SculpturePedestal_{group_x}",
-                (15.0, 6.2, 2.1),
-                (group_x, -40.5, 42.15),
+                (17.0, 6.6, 2.3),
+                (group_x, -41.0, 42.25),
                 mats["stone"],
                 0.12,
             )
         )
+        # Compose each group as a central standing allegory, two seated
+        # attendants and two reclining figures. Repeating five upright
+        # cylinders read as rooftop urns at city distance.
         for figure in range(5):
-            x = group_x + (figure - 2) * 2.25
-            figure_height = 5.0 + (2 - abs(figure - 2)) * 0.78
+            x = group_x + (figure - 2) * 2.75
+            if figure in {0, 4}:
+                direction = 1.0 if figure == 0 else -1.0
+                objects.extend(
+                    [
+                        beam(
+                            f"STATION_RecliningFigureBody_{group_x}_{figure}",
+                            (x, -43.0, 44.35),
+                            (
+                                x + direction * 2.25,
+                                -43.0,
+                                45.10,
+                            ),
+                            0.82,
+                            mats["relief"],
+                        ),
+                        sphere(
+                            f"STATION_RecliningFigureHead_{group_x}_{figure}",
+                            0.68,
+                            (
+                                x - direction * 0.38,
+                                -43.0,
+                                44.75,
+                            ),
+                            mats["relief"],
+                            (1.0, 0.92, 1.08),
+                            16,
+                            8,
+                        ),
+                    ]
+                )
+                continue
+
+            figure_height = 7.4 if figure == 2 else 5.1
+            body_z = 43.35 + figure_height * 0.30
             objects.extend(
                 [
                     cylinder(
                         f"STATION_FigureBody_{group_x}_{figure}",
-                        0.86,
-                        figure_height * 0.60,
-                        (x, -42.0, 43.25 + figure_height * 0.30),
+                        0.94 if figure == 2 else 0.82,
+                        figure_height * 0.58,
+                        (x, -43.0, body_z),
                         mats["relief"],
                         16,
                     ),
                     sphere(
                         f"STATION_FigureHead_{group_x}_{figure}",
-                        0.62,
-                        (x, -42.0, 43.25 + figure_height * 0.68),
+                        0.72 if figure == 2 else 0.62,
+                        (
+                            x,
+                            -43.0,
+                            43.35 + figure_height * 0.67,
+                        ),
                         mats["relief"],
                         (1.0, 0.92, 1.08),
                         16,
@@ -3658,14 +3985,10 @@ def station_fixed(
             )
             bpy.ops.mesh.primitive_cone_add(
                 vertices=20,
-                radius1=1.30,
-                radius2=0.56,
-                depth=figure_height * 0.52,
-                location=(
-                    x,
-                    -42.0,
-                    43.15 + figure_height * 0.26,
-                ),
+                radius1=1.50 if figure == 2 else 1.30,
+                radius2=0.62,
+                depth=figure_height * 0.50,
+                location=(x, -43.0, 43.25 + figure_height * 0.25),
             )
             drapery = bpy.context.object
             drapery.name = f"STATION_FigureDrapery_{group_x}_{figure}"
@@ -3678,7 +4001,7 @@ def station_fixed(
         width: float,
         spring_z: float,
         *,
-        y_front: float = -18.0,
+        y_front: float = -13.5,
         y_rear: float = 38.5,
         segments: int = 24,
         bays: int = 14,

@@ -12,9 +12,9 @@
   "warnings": [
     "no setback module (optional)",
     "barcelona-mercat_crown_crown.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "barcelona-mercat_assembled.glb: 95710 triangles (heavy; consider simplification)",
-    "barcelona-mercat_assembled.glb: 17 materials (many; consider consolidation)",
-    "barcelona-mercat_assembled.glb: 22.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "barcelona-mercat_assembled.glb: 98410 triangles (heavy; consider simplification)",
+    "barcelona-mercat_assembled.glb: 18 materials (many; consider consolidation)",
+    "barcelona-mercat_assembled.glb: 23.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -91,7 +91,7 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 7780760
+      "size_bytes": 7780756
     },
     {
       "file": "barcelona-mercat_crown_crown.glb",
@@ -129,12 +129,12 @@
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatRoofGlass"
       ],
-      "size_bytes": 7782012
+      "size_bytes": 7782008
     },
     {
       "file": "barcelona-mercat_assembled.glb",
       "status": "ok",
-      "triangles": 95710,
+      "triangles": 98410,
       "extent_m": {
         "width_x": 65.0,
         "height_y": 24.0,
@@ -145,6 +145,7 @@
         "MAT_W3X_Bronze",
         "MAT_W3X_CreamStone",
         "MAT_W3X_MercatCeramic",
+        "MAT_W3X_MercatCounterTimber",
         "MAT_W3X_MercatIron",
         "MAT_W3X_MercatOccupiedInterior",
         "MAT_W3X_MercatProduceGold",
@@ -160,7 +161,7 @@
         "MAT_W3X_MercatWeatheredZinc",
         "MAT_W3X_WarmInterior"
       ],
-      "size_bytes": 23862812,
+      "size_bytes": 24190912,
       "role": "assembled"
     }
   ]

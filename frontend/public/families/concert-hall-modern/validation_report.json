@@ -11,7 +11,7 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "concert-hall-modern_assembled.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "concert-hall-modern_assembled.glb: 11.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -133,25 +133,24 @@
     {
       "file": "concert-hall-modern_assembled.glb",
       "status": "ok",
-      "triangles": 51024,
+      "triangles": 56044,
       "extent_m": {
         "width_x": 90.0,
         "height_y": 48.0,
         "depth_z": 65.0
       },
-      "bottom_y": 0.0,
+      "bottom_y": -0.0,
       "materials": [
         "MAT_W3X_ConcertAluminum",
         "MAT_W3X_ConcertBronze",
         "MAT_W3X_ConcertGlass",
         "MAT_W3X_ConcertGranite",
-        "MAT_W3X_ConcertInteriorTimber",
         "MAT_W3X_ConcertOccupiedInterior",
         "MAT_W3X_ConcertShellUnderside",
         "MAT_W3X_ConcertTimber",
         "MAT_W3X_WarmInterior"
       ],
-      "size_bytes": 11359352,
+      "size_bytes": 11739284,
       "role": "assembled"
     }
   ]

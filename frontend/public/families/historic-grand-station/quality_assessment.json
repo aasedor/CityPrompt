@@ -109,7 +109,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "161612 assembled triangles; budget 12000-180000"
+        "detail": "161216 assembled triangles; budget 12000-180000"
       }
     ]
   }
