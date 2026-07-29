@@ -104,12 +104,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "15 assembled materials; review above 20"
+        "detail": "11 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "95163 assembled triangles; budget 12000-180000"
+        "detail": "97560 assembled triangles; budget 12000-180000"
       }
     ]
   }

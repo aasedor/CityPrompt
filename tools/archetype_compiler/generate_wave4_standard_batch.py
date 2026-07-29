@@ -193,9 +193,9 @@ FAMILIES: dict[str, dict] = {
         "canonical_floor_variants": [
             "typical_a",
             "typical_b",
-            "typical_c",
             "typical_a",
             "typical_b",
+            "typical_c",
         ],
         "crown_height_m": 0.80,
         "roof_height_m": 0.80,
@@ -366,46 +366,71 @@ def palette(
     )
     near = {zone: values["near"] for zone, values in skin["zones"].items()}
     prefix = family.replace("-", "_")
+    facade_saturation, facade_value = {
+        "brownstone-rowhouse-frontage": (1.02, 0.90),
+        "industrial-brick-mixed-use": (1.02, 0.88),
+        "contemporary-midrise-residential": (1.00, 0.90),
+        "scandinavian-urban-residential": (0.96, 0.96),
+    }[family]
+    trim_value = {
+        "brownstone-rowhouse-frontage": 0.83,
+        "industrial-brick-mixed-use": 0.95,
+        "contemporary-midrise-residential": 0.98,
+        "scandinavian-urban-residential": 0.92,
+    }[family]
+    secondary_saturation = {
+        "industrial-brick-mixed-use": 0.86,
+        "contemporary-midrise-residential": 0.82,
+    }.get(family, 1.0)
+    secondary_value = {
+        "industrial-brick-mixed-use": 0.92,
+        "contemporary-midrise-residential": 1.16,
+    }.get(family, 1.0)
     mats: dict[str, bpy.types.Material] = {
         "facade": pbr_material(
             f"MAT_W4_{prefix}_Facade",
             family_dir,
             near["facade"],
             "facade",
-            alpha_mask=True,
             emission_strength=0.16,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "podium": pbr_material(
             f"MAT_W4_{prefix}_Podium",
             family_dir,
             near["podium"],
             "podium",
-            alpha_mask=True,
             emission_strength=0.12,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "floor_a": pbr_material(
             f"MAT_W4_{prefix}_FloorA",
             family_dir,
             near["floor_a"],
             "floor_a",
-            alpha_mask=True,
             emission_strength=0.14,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "floor_b": pbr_material(
             f"MAT_W4_{prefix}_FloorB",
             family_dir,
             near["floor_b"],
             "floor_b",
-            alpha_mask=True,
             emission_strength=0.14,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "floor_c": pbr_material(
             f"MAT_W4_{prefix}_FloorC",
             family_dir,
             near["floor_c"],
             "floor_c",
-            alpha_mask=True,
             emission_strength=0.14,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "crown": pbr_material(
             f"MAT_W4_{prefix}_Crown",
@@ -413,6 +438,8 @@ def palette(
             near["crown"],
             "crown",
             emission_strength=0.06,
+            saturation=facade_saturation,
+            value=facade_value,
         ),
         "roof_skin": pbr_material(
             f"MAT_W4_{prefix}_RoofSkin",
@@ -431,33 +458,97 @@ def palette(
             near["side"],
             "side",
             emission_strength=0.04,
+            saturation=secondary_saturation,
+            value=secondary_value,
         )
-    if family == "scandinavian-urban-residential":
+    if family in {
+        "contemporary-midrise-residential",
+        "industrial-brick-mixed-use",
+        "scandinavian-urban-residential",
+    }:
+        front_label = {
+            "contemporary-midrise-residential": "ReferenceBrickFront",
+            "industrial-brick-mixed-use": "ReferenceMillBrickFront",
+            "scandinavian-urban-residential": "ReferencePlasterFront",
+        }[family]
+        front_saturation = {
+            "contemporary-midrise-residential": 0.82,
+            "industrial-brick-mixed-use": 0.86,
+            "scandinavian-urban-residential": 0.92,
+        }[family]
+        front_value = {
+            "contemporary-midrise-residential": 1.16,
+            "industrial-brick-mixed-use": 0.92,
+            "scandinavian-urban-residential": 1.08,
+        }[family]
         mats["front_clean"] = pbr_material(
-            f"MAT_W4_{prefix}_ReferencePlasterFront",
+            f"MAT_W4_{prefix}_{front_label}",
             family_dir,
             near["side"],
             "side",
             emission_strength=0.02,
+            saturation=front_saturation,
+            value=front_value,
+        )
+    if family == "contemporary-midrise-residential":
+        mats["front_podium_clean"] = pbr_material(
+            f"MAT_W4_{prefix}_ReferenceLimestonePodium",
+            family_dir,
+            near["trim"],
+            "trim",
+            emission_strength=0.01,
+            saturation=0.92,
+            value=1.08,
         )
     colours = cfg["palette"]
     mats.update(
         {
-            "body": material(
+            "body": pbr_material(
                 f"MAT_W4_{prefix}_Body",
-                colours["body"],
-                0.76,
+                family_dir,
+                near["side"],
+                "body",
+                saturation={
+                    "contemporary-midrise-residential": 0.82,
+                    "industrial-brick-mixed-use": 0.86,
+                }.get(family, 0.98),
+                value={
+                    "contemporary-midrise-residential": 1.14,
+                    "industrial-brick-mixed-use": 0.92,
+                }.get(family, 0.96),
             ),
-            "trim": material(
+            "trim": pbr_material(
                 f"MAT_W4_{prefix}_Trim",
-                colours["trim"],
-                0.62,
+                family_dir,
+                near["trim"],
+                "trim",
+                saturation=0.96,
+                value=trim_value,
             ),
-            "metal": material(
+            "metal": pbr_material(
                 f"MAT_W4_{prefix}_Metal",
-                colours["metal"],
-                0.32,
-                metallic=0.62,
+                family_dir,
+                near["metal"],
+                "metal",
+                metallic=0.44 if family == "contemporary-midrise-residential" else 0.68,
+                saturation=0.90 if family == "contemporary-midrise-residential" else 0.82,
+                value=1.35 if family == "contemporary-midrise-residential" else 0.84,
+            ),
+            "timber": pbr_material(
+                f"MAT_W4_{prefix}_Timber",
+                family_dir,
+                near["timber"],
+                "timber",
+                saturation=0.96,
+                value=0.90,
+            ),
+            "stoop": pbr_material(
+                f"MAT_W4_{prefix}_StoopStone",
+                family_dir,
+                near["trim"],
+                "stoop",
+                saturation=1.02,
+                value=0.54 if family == "brownstone-rowhouse-frontage" else trim_value,
             ),
             "glass": material(
                 f"MAT_W4_{prefix}_Glass",
@@ -469,27 +560,27 @@ def palette(
             ),
             "glass_alt": material(
                 f"MAT_W4_{prefix}_GlassAlt",
-                (
-                    colours["glass"][0] * 0.72,
-                    colours["glass"][1] * 0.78,
-                    colours["glass"][2] * 0.85,
-                    1,
-                ),
+                (0.070, 0.048, 0.032, 1),
                 0.24,
                 emission=(
-                    colours["interior"][0] * 0.48,
-                    colours["interior"][1] * 0.48,
-                    colours["interior"][2] * 0.48,
+                    colours["interior"][0] * 0.62,
+                    colours["interior"][1] * 0.54,
+                    colours["interior"][2] * 0.42,
                     1,
                 ),
                 emission_strength=0.12,
             ),
             "interior": material(
                 f"MAT_W4_{prefix}_Interior",
-                (0.055, 0.026, 0.014, 1),
-                0.88,
+                (0.105, 0.115, 0.115, 1),
+                0.74,
                 emission=colours["interior"],
-                emission_strength=0.16,
+                emission_strength=0.10,
+            ),
+            "deep_shadow": material(
+                f"MAT_W4_{prefix}_DeepShadow",
+                (0.018, 0.014, 0.012, 1),
+                0.92,
             ),
             "roof": material(
                 f"MAT_W4_{prefix}_Roof",
@@ -504,16 +595,100 @@ def palette(
             ),
         }
     )
+    if family == "contemporary-midrise-residential":
+        # The reference uses warm satin bronze as a legible second material,
+        # not nearly-black generic metal.  Keep this separate from service-roof
+        # steel so the window/spandrel stacks retain their authored identity.
+        mats["bronze_frame"] = material(
+            f"MAT_W4_{prefix}_BronzeFrame",
+            (0.19, 0.080, 0.025, 1.0),
+            0.34,
+            metallic=0.34,
+        )
+        mats["bronze_panel"] = material(
+            f"MAT_W4_{prefix}_BronzeSpandrel",
+            (0.34, 0.205, 0.105, 1.0),
+            0.42,
+            metallic=0.18,
+        )
     for key in ("glass", "glass_alt"):
         bsdf = _principled(mats[key])
         if bsdf.inputs.get("Transmission Weight"):
-            bsdf.inputs["Transmission Weight"].default_value = 0.20
+            if family == "brownstone-rowhouse-frontage":
+                bsdf.inputs["Transmission Weight"].default_value = (
+                    0.20 if key == "glass" else 0.14
+                )
+            elif family == "contemporary-midrise-residential":
+                bsdf.inputs["Transmission Weight"].default_value = (
+                    0.28 if key == "glass" else 0.20
+                )
+            else:
+                bsdf.inputs["Transmission Weight"].default_value = (
+                    0.52 if key == "glass" else 0.38
+                )
         if bsdf.inputs.get("Coat Weight"):
-            bsdf.inputs["Coat Weight"].default_value = 0.18
+            bsdf.inputs["Coat Weight"].default_value = 0.38
+        if bsdf.inputs.get("Coat Roughness"):
+            bsdf.inputs["Coat Roughness"].default_value = 0.12
+        if bsdf.inputs.get("IOR"):
+            bsdf.inputs["IOR"].default_value = 1.46
+        if bsdf.inputs.get("Base Color"):
+            if family == "brownstone-rowhouse-frontage" and key == "glass":
+                bsdf.inputs["Base Color"].default_value = (
+                    0.145,
+                    0.185,
+                    0.195,
+                    1.0,
+                )
+            elif family == "brownstone-rowhouse-frontage":
+                bsdf.inputs["Base Color"].default_value = (
+                    0.150,
+                    0.105,
+                    0.070,
+                    1.0,
+                )
+            elif family == "contemporary-midrise-residential" and key == "glass":
+                bsdf.inputs["Base Color"].default_value = (
+                    0.155,
+                    0.205,
+                    0.225,
+                    1.0,
+                )
+            elif family == "contemporary-midrise-residential":
+                bsdf.inputs["Base Color"].default_value = (
+                    0.145,
+                    0.125,
+                    0.095,
+                    1.0,
+                )
+            elif key == "glass":
+                base = colours["glass"]
+                bsdf.inputs["Base Color"].default_value = (
+                    min(0.18, base[0] * 1.45 + 0.025),
+                    min(0.22, base[1] * 1.45 + 0.025),
+                    min(0.24, base[2] * 1.45 + 0.025),
+                    1.0,
+                )
+            else:
+                bsdf.inputs["Base Color"].default_value = (
+                    0.105,
+                    0.070,
+                    0.042,
+                    1.0,
+                )
         if bsdf.inputs.get("Emission Strength"):
-            bsdf.inputs["Emission Strength"].default_value = (
-                0.04 if key == "glass" else 0.12
-            )
+            if family == "brownstone-rowhouse-frontage":
+                bsdf.inputs["Emission Strength"].default_value = (
+                    0.035 if key == "glass" else 0.050
+                )
+            elif family == "contemporary-midrise-residential":
+                bsdf.inputs["Emission Strength"].default_value = (
+                    0.028 if key == "glass" else 0.040
+                )
+            else:
+                bsdf.inputs["Emission Strength"].default_value = (
+                    0.018 if key == "glass" else 0.045
+                )
     return mats, skin
 
 
@@ -583,21 +758,28 @@ def rectangular_window(
     height: float,
     mats: dict[str, bpy.types.Material],
     trim: str = "metal",
+    bar_material: str | None = None,
     mullions: int = 1,
     transoms: int = 1,
     reveal: float = 0.12,
     alt_glass: bool = False,
     heavy_surround: bool = False,
+    atlas_owned: bool = False,
 ) -> list[bpy.types.Object]:
-    """Make a recessed occupied opening, frame, sill and true muntin grid."""
+    """Make a recessed occupied opening, slim frame and true muntin grid."""
     glass = mats["glass_alt" if alt_glass else "glass"]
+    bar_mat = mats[bar_material or "metal"]
     centre_z = sill_z + height / 2
+    inward = 1.0 if axis in {"front", "left"} else -1.0
+    cavity_plane = plane + inward * max(0.10, reveal)
+    glass_plane = plane + inward * max(0.055, reveal * 0.68)
+    frame_plane = plane - inward * 0.010
     objects = [
         _oriented_box(
             f"{name}_Cavity",
             axis,
             lateral,
-            plane + (reveal if axis in {"front", "left"} else -reveal),
+            cavity_plane,
             centre_z,
             width + 0.22,
             0.08,
@@ -608,7 +790,7 @@ def rectangular_window(
             f"{name}_Glass",
             axis,
             lateral,
-            plane,
+            glass_plane,
             centre_z,
             width,
             0.055,
@@ -617,21 +799,24 @@ def rectangular_window(
             bevel=0.025,
         ),
     ]
-    frame = 0.065 if not heavy_surround else 0.105
-    surround = 0.11 if not heavy_surround else 0.20
+    # An audited atlas already owns its ornamental perimeter. Keep only a
+    # construction-scale sash at the pane plane; do not draw a second picture
+    # frame over the photographed lintel and sill.
+    frame = 0.045 if atlas_owned else (0.052 if not heavy_surround else 0.075)
+    surround = 0.050 if atlas_owned else (0.075 if not heavy_surround else 0.115)
     for side in (-1, 1):
         objects.append(
             _oriented_box(
                 f"{name}_Jamb_{side:+d}",
                 axis,
                 lateral + side * (width / 2 + surround / 2),
-                plane - 0.025,
+                frame_plane,
                 centre_z,
                 surround,
-                0.10,
-                height + surround * 1.5,
+                0.065 if atlas_owned else 0.085,
+                height + surround * 1.25,
                 mats[trim],
-                bevel=0.025,
+                bevel=0.012,
             )
         )
     for top in (0, 1):
@@ -640,13 +825,13 @@ def rectangular_window(
                 f"{name}_{'Lintel' if top else 'Sill'}",
                 axis,
                 lateral,
-                plane - 0.035,
+                frame_plane,
                 sill_z + (height if top else 0) + (surround / 2 if top else -surround / 2),
                 width + surround * 2,
-                0.14 if heavy_surround else 0.10,
+                0.070 if atlas_owned else (0.095 if not heavy_surround else 0.12),
                 surround,
                 mats[trim],
-                bevel=0.025,
+                bevel=0.012,
             )
         )
     for index in range(1, mullions + 1):
@@ -656,12 +841,12 @@ def rectangular_window(
                 f"{name}_Mullion_{index}",
                 axis,
                 lateral + offset,
-                plane - 0.045,
+                frame_plane - inward * 0.008,
                 centre_z,
                 frame,
-                0.075,
+                0.055,
                 height,
-                mats["metal"],
+                bar_mat,
             )
         )
     for index in range(1, transoms + 1):
@@ -671,12 +856,12 @@ def rectangular_window(
                 f"{name}_Transom_{index}",
                 axis,
                 lateral,
-                plane - 0.045,
+                frame_plane - inward * 0.008,
                 z,
                 width,
-                0.075,
+                0.055,
                 frame,
-                mats["metal"],
+                bar_mat,
             )
         )
     return objects
@@ -742,17 +927,34 @@ def segmental_arch_window(
     rise: float,
     mats: dict[str, bpy.types.Material],
     alt_glass: bool = False,
+    arch_material: str = "body",
+    sill_material: str = "trim",
 ) -> list[bpy.types.Object]:
     glass = mats["glass_alt" if alt_glass else "glass"]
+    inward = 1.0 if axis in {"front", "left"} else -1.0
+    glass_plane = plane + inward * 0.075
+    cavity_plane = plane + inward * 0.145
+    frame_plane = plane - inward * 0.012
     spring = sill_z + height - rise
     radius = width * width / (8 * rise) + rise / 2
     centre_z = spring + rise - radius
     objects = [
         segmental_arch_panel(
+            f"{name}_Cavity",
+            axis=axis,
+            lateral=lateral,
+            plane=cavity_plane,
+            sill_z=sill_z - 0.05,
+            width=width + 0.16,
+            height=height + 0.10,
+            rise=rise,
+            mat=mats["interior"],
+        ),
+        segmental_arch_panel(
             f"{name}_Glass",
             axis=axis,
             lateral=lateral,
-            plane=plane,
+            plane=glass_plane,
             sill_z=sill_z,
             width=width,
             height=height,
@@ -766,13 +968,13 @@ def segmental_arch_window(
                 f"{name}_Jamb_{side:+d}",
                 axis,
                 lateral + side * width / 2,
-                plane - 0.03,
+                frame_plane,
                 sill_z + (height - rise) / 2,
-                0.14,
-                0.14,
+                0.10,
+                0.10,
                 height - rise,
-                mats["trim"],
-                bevel=0.025,
+                mats[arch_material],
+                bevel=0.018,
             )
         )
     curve_points = []
@@ -780,17 +982,17 @@ def segmental_arch_window(
         x = -width / 2 + width * index / 24
         z = centre_z + math.sqrt(max(0.0, radius * radius - x * x))
         if axis in {"front", "rear"}:
-            curve_points.append((lateral + x, plane - 0.035, z))
+            curve_points.append((lateral + x, frame_plane, z))
         else:
-            curve_points.append((plane - 0.035, lateral + x, z))
+            curve_points.append((frame_plane, lateral + x, z))
     for index in range(len(curve_points) - 1):
         objects.append(
             beam(
                 f"{name}_Arch_{index:02d}",
                 curve_points[index],
                 curve_points[index + 1],
-                0.075,
-                mats["trim"],
+                0.050,
+                mats[arch_material],
             )
         )
     objects.append(
@@ -798,12 +1000,12 @@ def segmental_arch_window(
             f"{name}_Sill",
             axis,
             lateral,
-            plane - 0.04,
+            frame_plane,
             sill_z - 0.08,
             width + 0.28,
-            0.20,
             0.16,
-            mats["trim"],
+            0.16,
+            mats[sill_material],
             bevel=0.02,
         )
     )
@@ -814,10 +1016,10 @@ def segmental_arch_window(
                 f"{name}_Mullion_{column:+.2f}",
                 axis,
                 lateral + column * width,
-                plane - 0.045,
+                frame_plane - inward * 0.008,
                 sill_z + (height - rise) / 2,
                 0.045,
-                0.07,
+                0.055,
                 height - rise,
                 mats["metal"],
             )
@@ -828,10 +1030,10 @@ def segmental_arch_window(
                 f"{name}_Transom_{row:.2f}",
                 axis,
                 lateral,
-                plane - 0.045,
+                frame_plane - inward * 0.008,
                 sill_z + row * (height - rise),
                 width,
-                0.07,
+                0.055,
                 0.045,
                 mats["metal"],
             )
@@ -1044,8 +1246,8 @@ def add_industrial_secondary_windows(
     """Continue the mill's segmental structural rhythm around every elevation."""
     width, depth = FAMILIES["industrial-brick-mixed-use"]["dimensions"]
     objects: list[bpy.types.Object] = []
-    sill = base_z + (0.58 if role == "podium" else 0.46)
-    opening_h = min(2.82, height - 0.78)
+    sill = base_z + (0.68 if role == "podium" else 0.60)
+    opening_h = min(2.58, height - 1.02)
     for side, axis, plane in (
         ("L", "left", -width / 2 - 0.10),
         ("R", "right", width / 2 + 0.10),
@@ -1058,7 +1260,7 @@ def add_industrial_secondary_windows(
                     lateral=y,
                     plane=plane,
                     sill_z=sill,
-                    width=3.18,
+                    width=3.02,
                     height=opening_h,
                     rise=0.38,
                     mats=mats,
@@ -1073,7 +1275,7 @@ def add_industrial_secondary_windows(
                 lateral=x,
                 plane=depth / 2 + 0.10,
                 sill_z=sill,
-                width=3.30,
+                width=3.02,
                 height=opening_h,
                 rise=0.40,
                 mats=mats,
@@ -1094,7 +1296,8 @@ def add_brownstone_details(
     width, depth = FAMILIES["brownstone-rowhouse-frontage"]["dimensions"]
     front = -depth / 2 - 0.10
     objects: list[bpy.types.Object] = []
-    bays = (-3.20, -1.60, 0.0, 1.60, 3.20)
+    # Calibrated from the rectified 1201 px facade crop: 1.53 m centres.
+    bays = (-3.06, -1.53, 0.0, 1.53, 3.06)
     if role == "podium":
         for index, x in enumerate(bays):
             if index == 2:
@@ -1104,7 +1307,7 @@ def add_brownstone_details(
                         "BrownstoneEntranceCavity",
                         (1.18, 0.18, 2.18),
                         (x, front + 0.12, 2.28),
-                        mats["interior"],
+                        mats["deep_shadow"],
                         bevel=0.04,
                     )
                 )
@@ -1118,18 +1321,18 @@ def add_brownstone_details(
                         width=0.92,
                         height=2.52,
                         mats=mats,
-                        trim="trim",
+                        trim="metal",
                         mullions=0,
                         transoms=1,
-                        heavy_surround=True,
+                        atlas_owned=True,
                     )
                 )
                 objects.append(
                     box(
                         "BrownstoneDarkTimberDoorLeaf",
-                        (0.82, 0.09, 2.28),
+                        (0.88, 0.09, 2.28),
                         (0, front - 0.085, 2.83),
-                        mats["interior"],
+                        mats["timber"],
                         bevel=0.035,
                     )
                 )
@@ -1139,7 +1342,7 @@ def add_brownstone_details(
                             f"BrownstoneDoorPanelRail_{panel_index}",
                             (0.66, 0.06, 0.055),
                             (0, front - 0.145, panel_z),
-                            mats["trim"],
+                            mats["timber"],
                         )
                     )
                 objects.append(
@@ -1147,7 +1350,7 @@ def add_brownstone_details(
                         "BrownstoneDoorCentreStile",
                         (0.045, 0.06, 1.82),
                         (0, front - 0.145, 2.70),
-                        mats["trim"],
+                        mats["timber"],
                     )
                 )
             else:
@@ -1158,15 +1361,15 @@ def add_brownstone_details(
                         axis="front",
                         lateral=x,
                         plane=front,
-                        sill_z=2.02,
-                        width=0.88,
-                        height=2.18,
+                        sill_z=2.34,
+                        width=0.70,
+                        height=2.06,
                         mats=mats,
-                        trim="trim",
-                        mullions=1,
+                        trim="metal",
+                        mullions=0,
                         transoms=1,
                         alt_glass=index % 3 == 0,
-                        heavy_surround=True,
+                        atlas_owned=True,
                     )
                 )
                 objects.extend(
@@ -1175,17 +1378,20 @@ def add_brownstone_details(
                         axis="front",
                         lateral=x,
                         plane=front,
-                        sill_z=0.30,
-                        width=0.78,
-                        height=1.02,
+                        sill_z=0.86,
+                        width=0.66,
+                        height=0.62,
                         mats=mats,
-                        trim="trim",
-                        mullions=1,
+                        trim="metal",
+                        mullions=3,
                         transoms=1,
                         alt_glass=index % 2 == 0,
+                        atlas_owned=True,
                     )
                 )
         # Seven real step blocks rise into one integrated sandstone landing.
+        # The sides stay open: in the reference, slender ironwork follows the
+        # stair pitch instead of a pair of heavy pasted-on masonry cheeks.
         steps = 7
         for index in range(steps):
             step_height = 0.22 * (index + 1)
@@ -1193,36 +1399,27 @@ def add_brownstone_details(
             objects.append(
                 box(
                     f"BrownstoneStoopStep_{index:02d}",
-                    (2.24, 0.42, step_height),
+                    (2.06, 0.42, step_height),
                     (0, y, step_height / 2),
-                    mats["trim"],
-                    bevel=0.045,
+                    mats["stoop"],
+                    bevel=0.035,
                 )
             )
         objects.append(
             box(
                 "BrownstoneStoopLanding",
-                (2.34, 1.18, 0.22),
+                (2.16, 1.18, 0.20),
                 (0, front - 0.42, 1.65),
-                mats["trim"],
-                bevel=0.05,
+                mats["stoop"],
+                bevel=0.035,
             )
         )
         for side in (-1, 1):
-            objects.append(
-                box(
-                    f"BrownstoneStoopCheek_{side:+d}",
-                    (0.22, 2.75, 0.54),
-                    (side * 1.16, front - 1.30, 1.30),
-                    mats["trim"],
-                    bevel=0.05,
-                )
-            )
             rail_points = [
                 (
-                    side * 1.17,
-                    front - 2.35 + index * 0.38,
-                    0.82 + index * 0.25,
+                    side * 1.06,
+                    front - 2.43 + index * 0.34,
+                    0.92 + index * 0.235,
                 )
                 for index in range(7)
             ]
@@ -1237,12 +1434,62 @@ def add_brownstone_details(
                     )
                 )
             for index, point in enumerate(rail_points):
+                foot_z = 0.22 * (index + 1) + 0.04
                 objects.append(
                     beam(
                         f"BrownstoneRailPost_{side:+d}_{index}",
-                        (point[0], point[1], max(0.05, point[2] - 0.75)),
+                        (point[0], point[1], foot_z),
                         point,
-                        0.024,
+                        0.020,
+                        mats["metal"],
+                    )
+                )
+            # Refined stone newels root the railing in the stair itself.
+            for suffix, y, centre_z, post_height in (
+                ("Lower", front - 2.45, 0.38, 0.62),
+                ("Upper", front - 0.39, 1.88, 0.52),
+            ):
+                objects.extend(
+                    [
+                        cylinder(
+                            f"Brownstone{suffix}Newel_{side:+d}",
+                            0.105,
+                            post_height,
+                            (side * 1.06, y, centre_z),
+                            mats["stoop"],
+                            vertices=20,
+                        ),
+                        cylinder(
+                            f"Brownstone{suffix}NewelCap_{side:+d}",
+                            0.145,
+                            0.11,
+                            (
+                                side * 1.06,
+                                y,
+                                centre_z + post_height / 2 + 0.035,
+                            ),
+                            mats["stoop"],
+                            vertices=20,
+                        ),
+                    ]
+                )
+            # A short landing guard completes the continuous entrance rail.
+            objects.append(
+                beam(
+                    f"BrownstoneLandingRail_{side:+d}",
+                    (side * 1.06, front - 0.40, 2.14),
+                    (side * 1.06, front + 0.03, 2.14),
+                    0.028,
+                    mats["metal"],
+                )
+            )
+            for guard_index, y in enumerate((front - 0.39, front - 0.18, front + 0.02)):
+                objects.append(
+                    beam(
+                        f"BrownstoneLandingPost_{side:+d}_{guard_index}",
+                        (side * 1.06, y, 1.72),
+                        (side * 1.06, y, 2.14),
+                        0.020,
                         mats["metal"],
                     )
                 )
@@ -1254,25 +1501,25 @@ def add_brownstone_details(
                     axis="front",
                     lateral=x,
                     plane=front,
-                    sill_z=base_z + 0.58,
-                    width=0.88,
-                    height=1.92,
+                    sill_z=base_z + 0.54,
+                    width=0.70,
+                    height=1.72,
                     mats=mats,
-                    trim="trim",
-                    mullions=1,
+                    trim="metal",
+                    mullions=0,
                     transoms=1,
                     alt_glass=(index + (variant == "typical_b")) % 3 == 0,
-                    heavy_surround=True,
+                    atlas_owned=True,
                 )
             )
         # A sandstone string course makes the stacked modules read as masonry.
         objects.append(
             box(
                 f"BrownstoneStringCourse_{variant}",
-                (width + 0.18, 0.18, 0.16),
-                (0, front - 0.03, base_z + 0.15),
-                mats["trim"],
-                bevel=0.025,
+                (width + 0.02, 0.04, 0.025),
+                (0, front + 0.01, base_z + 0.055),
+                mats["body"],
+                bevel=0.006,
             )
         )
     elif role == "crown":
@@ -1280,17 +1527,24 @@ def add_brownstone_details(
             [
                 box(
                     "BrownstoneCorniceLower",
-                    (width + 0.30, 0.34, 0.18),
-                    (0, front - 0.09, base_z + 0.18),
-                    mats["metal"],
-                    bevel=0.035,
+                    (width + 0.20, 0.22, 0.11),
+                    (0, front - 0.04, base_z + 0.11),
+                    mats["trim"],
+                    bevel=0.022,
+                ),
+                box(
+                    "BrownstoneCorniceMiddle",
+                    (width + 0.34, 0.32, 0.12),
+                    (0, front - 0.085, base_z + 0.43),
+                    mats["trim"],
+                    bevel=0.025,
                 ),
                 box(
                     "BrownstoneCorniceUpper",
-                    (width + 0.52, 0.46, 0.18),
-                    (0, front - 0.14, base_z + 0.66),
-                    mats["metal"],
-                    bevel=0.035,
+                    (width + 0.48, 0.40, 0.15),
+                    (0, front - 0.125, base_z + 0.68),
+                    mats["trim"],
+                    bevel=0.028,
                 ),
             ]
         )
@@ -1300,10 +1554,10 @@ def add_brownstone_details(
             objects.append(
                 box(
                     f"BrownstoneCorniceBracket_{index:02d}",
-                    (0.18, 0.38, 0.40),
-                    (x, front - 0.12, base_z + 0.40),
-                    mats["metal"],
-                    bevel=0.03,
+                    (0.14, 0.28, 0.30),
+                    (x, front - 0.095, base_z + 0.31),
+                    mats["trim"],
+                    bevel=0.022,
                 )
             )
     return objects
@@ -1322,25 +1576,49 @@ def add_industrial_details(
     objects: list[bpy.types.Object] = []
     bays = (-12.5, -7.5, -2.5, 2.5, 7.5, 12.5)
     if role in {"podium", "floor", "setback"}:
-        sill = base_z + (0.62 if role == "podium" else 0.48)
-        opening_h = min(2.86, height - 0.82)
+        # Preserve the heavy brick spandrels and piers visible in the original
+        # mill.  Oversize glass makes this read as a contemporary curtain wall.
+        sill = base_z + (0.70 if role == "podium" else 0.62)
+        opening_h = min(2.58, height - 1.02)
         for index, x in enumerate(bays):
             if role == "podium" and index == 2:
                 objects.extend(
-                    rectangular_window(
+                    segmental_arch_window(
                         "MillRecessedEntrance",
                         axis="front",
                         lateral=x,
                         plane=front,
                         sill_z=base_z + 0.22,
-                        width=2.70,
+                        width=3.02,
                         height=2.85,
+                        rise=0.42,
                         mats=mats,
-                        trim="metal",
-                        mullions=2,
-                        transoms=2,
-                        heavy_surround=True,
+                        alt_glass=False,
                     )
+                )
+                objects.extend(
+                    [
+                        box(
+                            "MillEntranceCentreMullion",
+                            (0.065, 0.08, 2.42),
+                            (x, front - 0.04, base_z + 1.43),
+                            mats["metal"],
+                        ),
+                        box(
+                            "MillEntranceHandleLeft",
+                            (0.030, 0.11, 0.52),
+                            (x - 0.11, front - 0.08, base_z + 1.30),
+                            mats["trim"],
+                            bevel=0.008,
+                        ),
+                        box(
+                            "MillEntranceHandleRight",
+                            (0.030, 0.11, 0.52),
+                            (x + 0.11, front - 0.08, base_z + 1.30),
+                            mats["trim"],
+                            bevel=0.008,
+                        ),
+                    ]
                 )
             else:
                 objects.extend(
@@ -1350,7 +1628,7 @@ def add_industrial_details(
                         lateral=x,
                         plane=front,
                         sill_z=sill,
-                        width=3.45,
+                        width=3.02,
                         height=opening_h,
                         rise=0.42,
                         mats=mats,
@@ -1361,25 +1639,25 @@ def add_industrial_details(
             objects.append(
                 box(
                     f"MillStructuralPier_{role}_{index}",
-                    (0.48, 0.30, height),
-                    (x, front - 0.06, base_z + height / 2),
+                    (0.52, 0.12, height),
+                    (x, front - 0.015, base_z + height / 2),
                     mats["body"],
-                    bevel=0.035,
+                    bevel=0.022,
                 )
             )
         objects.extend(
             [
                 box(
                     f"MillSillCourse_{role}",
-                    (width + 0.28, 0.20, 0.15),
-                    (0, front - 0.035, base_z + 0.22),
-                    mats["trim"],
+                    (width + 0.12, 0.07, 0.06),
+                    (0, front - 0.010, base_z + 0.17),
+                    mats["body"],
                 ),
                 box(
                     f"MillHeadCourse_{role}",
-                    (width + 0.22, 0.18, 0.13),
-                    (0, front - 0.025, base_z + height - 0.20),
-                    mats["trim"],
+                    (width + 0.10, 0.06, 0.05),
+                    (0, front - 0.008, base_z + height - 0.08),
+                    mats["body"],
                 ),
             ]
         )
@@ -1427,10 +1705,10 @@ def add_contemporary_details(
         objects.append(
             box(
                 "ContemporaryLimestonePlinth",
-                (width + 0.18, 0.32, 1.05),
-                (0, front - 0.06, base_z + 0.525),
+                (width + 0.18, 0.22, 0.42),
+                (0, front - 0.025, base_z + 0.21),
                 mats["trim"],
-                bevel=0.055,
+                bevel=0.035,
             )
         )
         for index, x in enumerate((-9.0, -4.7, 4.7, 9.0)):
@@ -1444,10 +1722,12 @@ def add_contemporary_details(
                     width=3.20,
                     height=2.62,
                     mats=mats,
-                    trim="metal",
+                    trim="bronze_frame",
+                    bar_material="bronze_frame",
                     mullions=2,
                     transoms=1,
                     alt_glass=index % 3 == 0,
+                    atlas_owned=True,
                 )
             )
         # A genuine dark recess and stone arch form the entrance threshold.
@@ -1459,7 +1739,7 @@ def add_contemporary_details(
                 base_z + 0.12,
                 3.45,
                 3.40,
-                mats["interior"],
+                mats["deep_shadow"],
                 segments=32,
             )
         )
@@ -1477,6 +1757,23 @@ def add_contemporary_details(
                 mat=mats["trim"],
             )
         )
+        # The selected entrance is a brick-lined reveal cut through the pale
+        # limestone podium.  A second inset arch makes that construction depth
+        # visible instead of leaving a generic white outline around black glass.
+        objects.extend(
+            slim_arch_frame(
+                "ContemporaryBrickLinedEntrance",
+                axis="front",
+                lateral=0,
+                plane=front - 0.055,
+                sill_z=base_z + 0.16,
+                width=3.10,
+                height=3.16,
+                depth=0.14,
+                rail_radius=0.16,
+                mat=mats["body"],
+            )
+        )
         objects.extend(
             [
                 box(
@@ -1491,45 +1788,90 @@ def add_contemporary_details(
                     (0.72, front - 0.11, base_z + 1.35),
                     mats["glass"],
                 ),
+                box(
+                    "ContemporaryEntranceDoorMullion",
+                    (0.075, 0.10, 2.45),
+                    (0, front - 0.165, base_z + 1.35),
+                    mats["bronze_frame"],
+                    bevel=0.012,
+                ),
+                box(
+                    "ContemporaryEntranceDoorHead",
+                    (2.78, 0.10, 0.075),
+                    (0, front - 0.165, base_z + 2.58),
+                    mats["bronze_frame"],
+                    bevel=0.012,
+                ),
+                box(
+                    "ContemporaryEntranceHandleLeft",
+                    (0.035, 0.13, 0.62),
+                    (-0.12, front - 0.18, base_z + 1.28),
+                    mats["bronze_panel"],
+                    bevel=0.010,
+                ),
+                box(
+                    "ContemporaryEntranceHandleRight",
+                    (0.035, 0.13, 0.62),
+                    (0.12, front - 0.18, base_z + 1.28),
+                    mats["bronze_panel"],
+                    bevel=0.010,
+                ),
             ]
         )
     elif role in {"floor", "setback"}:
         for index, x in enumerate(bays):
-            wide = (index + (variant == "typical_b")) % 2 == 0
+            # The selected facade has two broad outer stacks framing four
+            # narrow central stacks; variants never swap that structural grid.
+            wide = index in {0, len(bays) - 1}
+            window_width = 2.38 if wide else 1.08
+            top_floor = variant == "typical_c"
             objects.extend(
                 rectangular_window(
                     f"ContemporaryWindow_{variant}_{index}",
                     axis="front",
                     lateral=x,
                     plane=front,
-                    sill_z=base_z + 0.48,
-                    width=2.38 if wide else 1.08,
-                    height=2.10,
+                    sill_z=base_z + (0.68 if top_floor else 0.34),
+                    width=window_width,
+                    height=1.55 if top_floor else 2.20,
                     mats=mats,
-                    trim="metal",
+                    trim="bronze_frame",
+                    bar_material="bronze_frame",
                     mullions=1 if wide else 0,
                     transoms=1,
                     alt_glass=(index + len(variant)) % 3 == 0,
+                    atlas_owned=True,
                 )
             )
-        # Bronze spandrel lines and brick pilasters produce the reference cadence.
+            # Each vertical window bay has its own bronze opaque spandrel. This
+            # is the goalpost's defining wide/narrow cadence, not a generic
+            # continuous belt course.
+            objects.append(
+                box(
+                    f"ContemporaryBronzeSpandrel_{variant}_{index}",
+                    (window_width + 0.04, 0.10, 0.44),
+                    (x, front - 0.018, base_z + height - 0.22),
+                    mats["bronze_panel"],
+                    bevel=0.012,
+                )
+            )
         objects.append(
             box(
-                f"ContemporaryBronzeSpandrel_{variant}",
-                (width + 0.08, 0.15, 0.14),
-                (0, front - 0.035, base_z + height - 0.20),
-                mats["metal"],
-                bevel=0.02,
+                f"ContemporaryBronzeHeadRail_{variant}",
+                (width + 0.04, 0.08, 0.055),
+                (0, front - 0.010, base_z + height - 0.06),
+                mats["bronze_frame"],
+                bevel=0.012,
             )
         )
         for index, x in enumerate((-12.5, -8.3, -4.15, 0, 4.15, 8.3, 12.5)):
             objects.append(
                 box(
                     f"ContemporaryBrickPier_{variant}_{index}",
-                    (0.32, 0.25, height),
-                    (x, front - 0.035, base_z + height / 2),
+                    (0.38, 0.11, height),
+                    (x, front - 0.010, base_z + height / 2),
                     mats["body"],
-                    bevel=0.025,
+                    bevel=0.015,
                 )
             )
     elif role == "crown":
@@ -1539,7 +1881,7 @@ def add_contemporary_details(
                     "ContemporaryCrownBronze",
                     (width + 0.18, 0.24, 0.16),
                     (0, front - 0.05, base_z + 0.18),
-                    mats["metal"],
+                    mats["bronze_panel"],
                 ),
                 box(
                     "ContemporaryParapetCap",
@@ -1563,56 +1905,53 @@ def balcony_stack_floor(
 ) -> list[bpy.types.Object]:
     objects: list[bpy.types.Object] = [
         box(
-            f"{name}_TimberRecess",
-            (3.30, 0.22, 2.42),
-            (x, front + 0.10, base_z + 1.55),
-            mats["trim"],
-            bevel=0.045,
-        ),
-        box(
-            f"{name}_DoorGlass",
-            (1.62, 0.10, 2.10),
-            (x, front - 0.055, base_z + 1.52),
-            mats["glass"],
+            f"{name}_DoorCavity",
+            (1.92, 0.10, 2.34),
+            (x, front + 0.10, base_z + 1.48),
+            mats["deep_shadow"],
             bevel=0.025,
         ),
         box(
+            f"{name}_DoorGlass",
+            (1.72, 0.07, 2.16),
+            (x, front + 0.035, base_z + 1.46),
+            mats["glass"],
+            bevel=0.018,
+        ),
+        box(
+            f"{name}_DoorMullion",
+            (0.045, 0.055, 2.16),
+            (x, front - 0.005, base_z + 1.46),
+            mats["metal"],
+        ),
+        box(
             f"{name}_Slab",
-            (3.48, 1.48, 0.18),
-            (x, front - 0.72, base_z + 0.34),
-            mats["trim"],
-            bevel=0.055,
+            (4.08, 1.52, 0.17),
+            (x, front - 0.74, base_z + 0.29),
+            mats["timber"],
+            bevel=0.030,
         ),
     ]
-    for side in (-1, 1):
-        objects.append(
-            box(
-                f"{name}_TimberReturn_{side:+d}",
-                (0.18, 1.28, 2.42),
-                (x + side * 1.56, front - 0.48, base_z + 1.55),
-                mats["trim"],
-                bevel=0.035,
-            )
-        )
-    rail_y = front - 1.42
-    rail_z = base_z + 1.18
+    half_width = 1.98
+    rail_y = front - 1.47
+    rail_z = base_z + 1.15
     objects.append(
         beam(
             f"{name}_TopRail",
-            (x - 1.62, rail_y, rail_z),
-            (x + 1.62, rail_y, rail_z),
-            0.045,
+            (x - half_width, rail_y, rail_z),
+            (x + half_width, rail_y, rail_z),
+            0.027,
             mats["metal"],
         )
     )
-    for index in range(10):
-        px = x - 1.55 + index * 3.10 / 9
+    for index in range(19):
+        px = x - 1.92 + index * 3.84 / 18
         objects.append(
             beam(
                 f"{name}_Baluster_{index:02d}",
-                (px, rail_y, base_z + 0.43),
+                (px, rail_y, base_z + 0.38),
                 (px, rail_y, rail_z),
-                0.021,
+                0.014,
                 mats["metal"],
             )
         )
@@ -1620,12 +1959,23 @@ def balcony_stack_floor(
         objects.append(
             beam(
                 f"{name}_SideRail_{side:+d}",
-                (x + side * 1.62, front - 0.05, rail_z),
-                (x + side * 1.62, rail_y, rail_z),
-                0.040,
+                (x + side * half_width, front - 0.06, rail_z),
+                (x + side * half_width, rail_y, rail_z),
+                0.025,
                 mats["metal"],
             )
         )
+        for index in range(6):
+            py = front - 0.16 - index * 1.26 / 5
+            objects.append(
+                beam(
+                    f"{name}_SideBaluster_{side:+d}_{index:02d}",
+                    (x + side * half_width, py, base_z + 0.38),
+                    (x + side * half_width, py, rail_z),
+                    0.014,
+                    mats["metal"],
+                )
+            )
     return objects
 
 
@@ -1673,9 +2023,9 @@ def add_scandi_details(
                     height=1.95,
                     mats=mats,
                     trim="metal",
-                    mullions=0,
-                    transoms=1,
-                    alt_glass=index % 3 == 0,
+                    mullions=1,
+                    transoms=0,
+                    alt_glass=False,
                 )
             )
     elif role in {"floor", "setback"}:
@@ -1703,9 +2053,9 @@ def add_scandi_details(
                     height=1.92,
                     mats=mats,
                     trim="metal",
-                    mullions=0,
-                    transoms=1,
-                    alt_glass=(index + len(variant)) % 4 == 0,
+                    mullions=1,
+                    transoms=0,
+                    alt_glass=False,
                 )
             )
     elif role == "crown":
@@ -1763,6 +2113,16 @@ def build_band_module(
         # The physical windows, balcony niches and carved passage already carry
         # the registered composition. A reference-palette plaster PBR prevents
         # the orthographic source from leaving a second "ghost" balcony layer.
+        front_mat = mats["front_clean"]
+    elif family == "contemporary-midrise-residential":
+        # The registered physical cadence owns the windows and spandrels. Using
+        # the photographed elevation here would draw a second set underneath.
+        front_mat = (
+            mats["front_podium_clean"] if role == "podium" else mats["front_clean"]
+        )
+    elif family == "industrial-brick-mixed-use":
+        # Physical segmental arches and Crittall grids own the mill openings.
+        # A clean family-specific brick PBR prevents ghost windows underneath.
         front_mat = mats["front_clean"]
     passage = (
         4.60
@@ -1868,6 +2228,23 @@ def gable_roof_shell(
     bpy.ops.uv.smart_project(angle_limit=math.radians(66), island_margin=0.02)
     bpy.ops.object.mode_set(mode="OBJECT")
     obj.select_set(False)
+    if gable_mat is not None and mesh.uv_layers.active is not None:
+        # Smart projection is appropriate for the two roof slopes, but it can
+        # rotate a shallow end gable and turn horizontal brick courses into
+        # vertical stripes. Register both end walls explicitly in side-
+        # elevation space (long Y dimension across U, rise across V).
+        uv_data = mesh.uv_layers.active.data
+        for polygon_index in (5, 6):
+            polygon = mesh.polygons[polygon_index]
+            mirror_u = polygon_index == 6
+            for loop_index in polygon.loop_indices:
+                vertex_index = mesh.loops[loop_index].vertex_index
+                coordinate = mesh.vertices[vertex_index].co
+                u = (coordinate.y + half_d) / depth
+                if mirror_u:
+                    u = 1.0 - u
+                v = (coordinate.z - base_z) / height
+                uv_data[loop_index].uv = (u, v)
     return obj
 
 
@@ -2000,43 +2377,107 @@ def build_flat_roof(
             ]
         )
     else:
-        # Brick plant courts, roof lights and planting follow the selected
-        # contemporary reference instead of a generic equipment scatter.
+        # Brick courts, planted edges, rooflight and service enclosure follow
+        # the selected contemporary aerial rather than an equipment scatter.
         objects.extend(
             [
                 box(
-                    "ContemporaryPlantCourt",
-                    (7.0, 4.4, 0.58),
-                    (4.7, 2.4, base_z + 0.29),
+                    "ContemporaryCourtFrontWall",
+                    (7.20, 0.34, 0.66),
+                    (4.70, 0.15, base_z + 0.33),
                     mats["body"],
-                    bevel=0.06,
+                    bevel=0.035,
+                ),
+                box(
+                    "ContemporaryCourtRearWall",
+                    (7.20, 0.34, 0.66),
+                    (4.70, 4.65, base_z + 0.33),
+                    mats["body"],
+                    bevel=0.035,
+                ),
+                box(
+                    "ContemporaryCourtLeftWall",
+                    (0.34, 4.84, 0.66),
+                    (1.27, 2.40, base_z + 0.33),
+                    mats["body"],
+                    bevel=0.035,
+                ),
+                box(
+                    "ContemporaryCourtRightWall",
+                    (0.34, 4.84, 0.66),
+                    (8.13, 2.40, base_z + 0.33),
+                    mats["body"],
+                    bevel=0.035,
+                ),
+                box(
+                    "ContemporaryCourtDeck",
+                    (6.50, 4.12, 0.10),
+                    (4.70, 2.40, base_z + 0.10),
+                    mats["roof"],
+                    bevel=0.025,
                 ),
                 box(
                     "ContemporaryLiftOverrun",
-                    (3.6, 3.2, 0.72),
-                    (-5.0, 2.6, base_z + 0.36),
+                    (3.80, 3.35, 0.92),
+                    (-5.20, 2.65, base_z + 0.46),
+                    mats["body"],
+                    bevel=0.045,
+                ),
+                box(
+                    "ContemporaryLiftOverrunCap",
+                    (4.05, 3.60, 0.14),
+                    (-5.20, 2.65, base_z + 0.98),
                     mats["metal"],
-                    bevel=0.08,
+                    bevel=0.035,
                 ),
                 box(
                     "ContemporaryRoofLight",
-                    (4.4, 2.4, 0.28),
-                    (0, -2.8, base_z + 0.28),
+                    (3.35, 1.85, 0.22),
+                    (-0.35, -2.65, base_z + 0.23),
                     mats["glass"],
-                    bevel=0.08,
+                    bevel=0.065,
                 ),
             ]
         )
-        for index, x in enumerate((-8.5, -4.5, 4.5, 8.5)):
-            objects.append(
+        objects.extend(
+            [
                 box(
-                    f"ContemporaryPlanter_{index}",
-                    (2.2, 0.9, 0.42),
-                    (x, -5.4, base_z + 0.25),
+                    "ContemporaryCourtPlanterLong",
+                    (5.45, 0.55, 0.24),
+                    (4.70, 0.60, base_z + 0.22),
                     mats["green"],
-                    bevel=0.10,
-                )
-            )
+                    bevel=0.08,
+                ),
+                box(
+                    "ContemporaryCourtPlanterReturn",
+                    (0.55, 2.30, 0.24),
+                    (7.52, 1.72, base_z + 0.22),
+                    mats["green"],
+                    bevel=0.08,
+                ),
+                box(
+                    "ContemporaryServicePlanter",
+                    (3.10, 0.52, 0.22),
+                    (-5.20, 0.72, base_z + 0.20),
+                    mats["green"],
+                    bevel=0.08,
+                ),
+                box(
+                    "ContemporaryMechanicalUnitA",
+                    (0.95, 0.72, 0.34),
+                    (-5.75, 2.65, base_z + 1.18),
+                    mats["metal"],
+                    bevel=0.045,
+                ),
+                box(
+                    "ContemporaryMechanicalUnitB",
+                    (0.95, 0.72, 0.34),
+                    (-4.65, 2.65, base_z + 1.18),
+                    mats["metal"],
+                    bevel=0.045,
+                ),
+            ]
+        )
     return objects
 
 
@@ -2140,6 +2581,7 @@ def build_scandi_roof(
             height=height - 0.20,
             base_z=base_z,
             mat=mats["roof_skin"],
+            gable_mat=mats["front_clean"],
         )
     ]
     objects.extend(
@@ -2159,10 +2601,10 @@ def build_scandi_roof(
         objects.append(
             box(
                 f"ScandiDormerBody_{index}",
-                (3.00, 3.10, 2.28),
-                (x, dormer_y + 1.10, dormer_base + 1.14),
-                mats["body"],
-                bevel=0.045,
+                (2.80, 2.30, 1.85),
+                (x, dormer_y + 0.65, dormer_base + 0.925),
+                mats["front_clean"],
+                bevel=0.030,
             )
         )
         objects.extend(
@@ -2170,44 +2612,61 @@ def build_scandi_roof(
                 f"ScandiDormerWindow_{index}",
                 axis="front",
                 lateral=x,
-                plane=dormer_y - 0.48,
-                sill_z=dormer_base + 0.36,
-                width=1.45,
-                height=1.42,
+                plane=dormer_y - 0.53,
+                sill_z=dormer_base + 0.27,
+                width=1.38,
+                height=1.36,
                 mats=mats,
-                trim="trim",
+                trim="timber",
                 mullions=1,
                 transoms=0,
-                alt_glass=index % 2 == 0,
-                heavy_surround=True,
+                alt_glass=False,
             )
         )
-        # Small timber-edged dormer gables read clearly in aerial and street views.
-        objects.extend(
-            [
-                beam(
-                    f"ScandiDormerRoofLeft_{index}",
-                    (x - 1.65, dormer_y - 0.62, dormer_base + 2.18),
-                    (x, dormer_y - 0.62, dormer_base + 3.00),
-                    0.10,
-                    mats["trim"],
-                ),
-                beam(
-                    f"ScandiDormerRoofRight_{index}",
-                    (x, dormer_y - 0.62, dormer_base + 3.00),
-                    (x + 1.65, dormer_y - 0.62, dormer_base + 2.18),
-                    0.10,
-                    mats["trim"],
-                ),
-                box(
-                    f"ScandiDormerCap_{index}",
-                    (3.45, 3.45, 0.14),
-                    (x, dormer_y + 1.00, dormer_base + 2.35),
-                    mats["roof"],
-                    bevel=0.035,
-                ),
-            ]
+        # The references use shallow standing-seam shed dormers integrated into
+        # the main roof, not little triangular houses perched on top.
+        cap = box(
+            f"ScandiDormerShedRoof_{index}",
+            (3.18, 2.80, 0.15),
+            (x, dormer_y + 0.65, dormer_base + 2.245),
+            mats["roof_skin"],
+            bevel=0.025,
         )
+        cap.rotation_euler[0] = math.radians(11.5)
+        objects.append(cap)
+        for seam_index, seam_x in enumerate((x - 1.02, x, x + 1.02)):
+            objects.append(
+                beam(
+                    f"ScandiDormerSeam_{index}_{seam_index}",
+                    (seam_x, dormer_y - 0.75, dormer_base + 1.96),
+                    (seam_x, dormer_y + 2.05, dormer_base + 2.53),
+                    0.022,
+                    mats["metal"],
+                )
+            )
+    # Real plaster gable ends carry small occupied windows in the oblique view.
+    for side, axis, plane in (
+        ("Left", "left", -width / 2 - 0.26),
+        ("Right", "right", width / 2 + 0.26),
+    ):
+        for window_index, y in enumerate((-2.20, 2.20)):
+            objects.extend(
+                rectangular_window(
+                    f"Scandi{side}GableWindow_{window_index}",
+                    axis=axis,
+                    lateral=y,
+                    plane=plane,
+                    sill_z=base_z + 0.88,
+                    width=1.02,
+                    height=1.30,
+                    mats=mats,
+                    trim="metal",
+                    mullions=0,
+                    transoms=0,
+                    alt_glass=False,
+                    atlas_owned=True,
+                )
+            )
     # Downpipes belong to the facade/roof system rather than floating details.
     for side, x in enumerate((-18.55, 18.55)):
         pipe_height = base_z + 0.20
@@ -2508,13 +2967,17 @@ def setup_standard_render() -> None:
     scene = bpy.context.scene
     scene.render.resolution_x = 1280
     scene.render.resolution_y = 960
-    scene.view_settings.exposure = 0.62
-    background = scene.world.node_tree.nodes.get("Background")
-    background.inputs["Color"].default_value = (0.22, 0.30, 0.38, 1)
-    background.inputs["Strength"].default_value = 0.58
+    scene.view_settings.exposure = 0.50
+    world_nodes = scene.world.node_tree.nodes
+    world_links = scene.world.node_tree.links
+    background = world_nodes.get("Background")
+    for link in list(background.inputs["Color"].links):
+        world_links.remove(link)
+    background.inputs["Color"].default_value = (0.19, 0.25, 0.31, 1)
+    background.inputs["Strength"].default_value = 0.64
     ground = bpy.data.materials.get("MAT_W3_Ground")
     if ground:
-        _principled(ground).inputs["Base Color"].default_value = (0.40, 0.38, 0.34, 1)
+        _principled(ground).inputs["Base Color"].default_value = (0.31, 0.30, 0.28, 1)
     bpy.ops.object.light_add(
         type="SUN",
         location=(-35, -45, 60),
@@ -2523,16 +2986,16 @@ def setup_standard_render() -> None:
     sun = bpy.context.object
     sun.name = "PRESENTATION_Wave4BatchSun"
     sun.data.color = (1.0, 0.80, 0.62)
-    sun.data.energy = 2.05
-    sun.data.angle = math.radians(7)
+    sun.data.energy = 1.70
+    sun.data.angle = math.radians(5)
     key = bpy.data.objects.get("PRESENTATION_Key")
     if key:
         key.data.color = (1.0, 0.82, 0.66)
-        key.data.energy = 5900
+        key.data.energy = 4800
     fill = bpy.data.objects.get("PRESENTATION_Fill")
     if fill:
         fill.data.color = (0.70, 0.84, 1.0)
-        fill.data.energy = 2200
+        fill.data.energy = 1500
 
 
 def render_views(
@@ -2616,9 +3079,13 @@ def build_family(
     mats, skin = palette(family, family_dir)
     canonical, stack = build_canonical(family, mats)
     assembled_path = family_dir / f"{family}_assembled.glb"
-    export_glb(assembled_path, canonical)
-    assembled_tris = evaluated_triangle_count(canonical)
-    assembled_materials = material_count(canonical)
+    assembled_tris = 0 if skip_modules else evaluated_triangle_count(canonical)
+    assembled_materials = 0 if skip_modules else material_count(canonical)
+    # A visual pilot should iterate on the in-memory canonical model without
+    # spending minutes embedding every texture into a temporary GLB.  The final
+    # reviewed run still exports the assembled building and all LEGO modules.
+    if not skip_modules:
+        export_glb(assembled_path, canonical)
     if skip_renders:
         renders = sorted(path.name for path in family_dir.glob(f"{family}_*.png"))
     else:

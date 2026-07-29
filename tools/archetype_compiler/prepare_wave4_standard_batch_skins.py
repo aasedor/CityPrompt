@@ -20,6 +20,8 @@ from typing import Any
 import numpy as np
 from PIL import Image, ImageFilter, ImageOps
 
+from upgrade_facade_pbr import delight_image
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FAMILY_ROOT = REPO_ROOT / "frontend" / "public" / "families"
@@ -33,8 +35,12 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "variant_id": "brownstone_rowhouse_red_sandstone",
         "seed": 5101,
         "surface": "brick",
+        "wall_aspect": 3.6,
         "brick_rgb": (143, 72, 52),
-        "mortar_rgb": (153, 126, 103),
+        "mortar_rgb": (118, 99, 84),
+        "trim_rgb": (173, 139, 101),
+        "metal_rgb": (38, 34, 31),
+        "timber_rgb": (72, 39, 23),
         "roof": "membrane",
         "bands": {
             # The render-locked source has a deliberate neutral studio gutter;
@@ -66,8 +72,12 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "variant_id": "industrial_brick_original_mill",
         "seed": 5201,
         "surface": "brick",
+        "wall_aspect": 7.2,
         "brick_rgb": (139, 66, 45),
-        "mortar_rgb": (151, 126, 105),
+        "mortar_rgb": (106, 91, 80),
+        "trim_rgb": (151, 137, 117),
+        "metal_rgb": (39, 43, 44),
+        "timber_rgb": (91, 60, 37),
         "roof": "slate",
         "bands": {
             "facade": (0.055, 0.035, 0.945, 0.940),
@@ -97,8 +107,15 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "variant_id": "contemporary_midrise_variant_brick_bronze",
         "seed": 5301,
         "surface": "brick",
-        "brick_rgb": (128, 65, 47),
-        "mortar_rgb": (144, 118, 96),
+        "wall_aspect": 7.2,
+        # Match the selected goalpost's sun-warmed red-brown stock brick.  The
+        # previous oxblood base rendered several values too dark once the PBR
+        # maps and city lighting were applied.
+        "brick_rgb": (151, 84, 57),
+        "mortar_rgb": (121, 99, 82),
+        "trim_rgb": (204, 198, 184),
+        "metal_rgb": (91, 65, 42),
+        "timber_rgb": (79, 51, 31),
         "roof": "terrace",
         "bands": {
             "facade": (0.060, 0.015, 0.940, 0.985),
@@ -128,8 +145,12 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "variant_id": "scandi_urban_white_plaster",
         "seed": 5401,
         "surface": "plaster",
+        "wall_aspect": 1.667752,
         "brick_rgb": (225, 222, 211),
         "mortar_rgb": (213, 211, 203),
+        "trim_rgb": (169, 115, 65),
+        "metal_rgb": (42, 45, 45),
+        "timber_rgb": (169, 115, 65),
         "roof": "standing_seam",
         "bands": {
             "facade": (0.045, 0.035, 0.955, 0.920),
@@ -222,12 +243,19 @@ def derive_pbr(
     seed: int,
 ) -> None:
     image = _resize_width(source.convert("RGB"), width)
-    rgb = np.asarray(image).astype(np.float32)
+    # The generated orthographic sheet is a design source, not finished
+    # albedo. Remove its broad studio illumination before deriving material
+    # channels so City Prompt remains the only lighting authority.
+    albedo_image = delight_image(image, strength=0.86)
+    rgb = np.asarray(albedo_image).astype(np.float32)
+    source_rgb = np.asarray(image).astype(np.float32)
     rng = np.random.default_rng(seed + width)
     luma = (
         rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722
     )
-    glass = _glass_mask(rgb)
+    # Detect openings from the unmodified source: delighting can raise a dark
+    # occupied pane enough to weaken an otherwise correct semantic mask.
+    glass = _glass_mask(source_rgb)
     blur = np.asarray(
         Image.fromarray(luma.astype(np.uint8), "L").filter(
             ImageFilter.GaussianBlur(max(1.2, width / 900.0))
@@ -263,6 +291,74 @@ def derive_pbr(
     _save_l(destination / f"{prefix}_opaque.png", opaque)
 
 
+def procedural_support_material(
+    destination: Path,
+    prefix: str,
+    width: int,
+    *,
+    base_rgb: tuple[int, int, int],
+    material_kind: str,
+    seed: int,
+) -> None:
+    """Create quiet true-material PBR for physical relief and frame geometry."""
+    height = max(256, width // 2)
+    rng = np.random.default_rng(seed + width)
+    yy, xx = np.mgrid[0:height, 0:width]
+    fine = rng.normal(0.0, 1.0, (height, width)).astype(np.float32)
+    broad = (
+        np.sin(xx / max(36.0, width / 17.0))
+        + np.cos(yy / max(31.0, height / 11.0))
+    ).astype(np.float32)
+    base = np.asarray(base_rgb, dtype=np.float32)
+
+    if material_kind == "metal":
+        brushed = np.sin(yy / max(2.0, height / 180.0)).astype(np.float32)
+        albedo = base + fine[..., None] * 1.4 + brushed[..., None] * 1.1
+        depth = 128.0 + brushed * 3.0 + fine * 0.8
+        roughness = 92.0 + fine * 4.0 + np.abs(brushed) * 5.0
+    elif material_kind == "timber":
+        grain = (
+            np.sin(xx / max(4.5, width / 130.0) + broad * 0.8)
+            + np.sin(xx / max(13.0, width / 48.0))
+        ).astype(np.float32)
+        albedo = base + grain[..., None] * np.array((8.0, 5.0, 2.5))
+        albedo += fine[..., None] * 1.7
+        depth = 132.0 + grain * 8.0 + fine * 1.2
+        roughness = 166.0 + fine * 5.0 - grain * 3.0
+    else:
+        speckle = rng.normal(0.0, 1.0, (height, width)).astype(np.float32)
+        albedo = base + fine[..., None] * 2.0 + broad[..., None] * 1.5
+        albedo += speckle[..., None] * 1.2
+        depth = 132.0 + fine * 3.0 + broad * 2.0
+        roughness = 194.0 + fine * 5.0 + np.abs(broad) * 3.0
+
+    dx = np.gradient(depth, axis=1)
+    dy = np.gradient(depth, axis=0)
+    normal = np.empty_like(albedo)
+    normal[..., 0] = np.clip(128.0 - dx * 1.15, 0.0, 255.0)
+    normal[..., 1] = np.clip(128.0 + dy * 1.15, 0.0, 255.0)
+    normal[..., 2] = np.clip(
+        247.0 - (np.abs(dx) + np.abs(dy)) * 0.12,
+        205.0,
+        255.0,
+    )
+    ao = np.clip(
+        246.0 - np.maximum(0.0, np.abs(dx) + np.abs(dy)) * 0.50,
+        208.0,
+        250.0,
+    )
+    zero_rgb = np.zeros_like(albedo)
+    zero_l = np.zeros((height, width), dtype=np.uint8)
+    _save_rgb(destination / f"{prefix}_albedo.png", albedo)
+    _save_rgb(destination / f"{prefix}_normal.png", normal)
+    _save_l(destination / f"{prefix}_roughness.png", roughness)
+    _save_l(destination / f"{prefix}_ao.png", ao)
+    _save_l(destination / f"{prefix}_depth.png", depth)
+    _save_rgb(destination / f"{prefix}_emissive.png", zero_rgb)
+    _save_l(destination / f"{prefix}_glass.png", zero_l)
+    _save_l(destination / f"{prefix}_opaque.png", np.full_like(zero_l, 255))
+
+
 def procedural_wall(
     destination: Path,
     prefix: str,
@@ -271,11 +367,32 @@ def procedural_wall(
     surface: str,
     face_rgb: tuple[int, int, int],
     mortar_rgb: tuple[int, int, int],
+    aspect_ratio: float,
     seed: int,
 ) -> None:
-    height = max(256, width * 3 // 5)
+    # The image is mapped once over each LEGO band.  Match its aspect to the
+    # family's real facade band so a 3:1 brick remains roughly 3:1 in world
+    # space instead of stretching into metre-long horizontal stripes.
+    height = max(128, int(round(width / aspect_ratio)))
     rng = np.random.default_rng(seed + width)
     noise = rng.normal(0.0, 1.0, (height, width)).astype(np.float32)
+    coarse_small = rng.normal(
+        0.0,
+        1.0,
+        (max(8, height // 96), max(8, width // 96)),
+    ).astype(np.float32)
+    coarse_scaled = np.clip(128.0 + coarse_small * 36.0, 0.0, 255.0).astype(
+        np.uint8
+    )
+    coarse = (
+        np.asarray(
+            Image.fromarray(coarse_scaled, "L").resize(
+                (width, height),
+                Image.Resampling.BICUBIC,
+            )
+        ).astype(np.float32)
+        - 128.0
+    ) / 36.0
     albedo = np.empty((height, width, 3), dtype=np.float32)
     depth = np.full((height, width), 132.0, dtype=np.float32)
     roughness = np.full((height, width), 218.0, dtype=np.float32)
@@ -300,23 +417,45 @@ def procedural_wall(
         brick_w = course_h * 3.0
         mortar = max(1, width // 1200)
         for row in range(courses):
-            y0 = int(round(row * course_h)) + mortar
-            y1 = int(round((row + 1) * course_h)) - mortar
+            row_jitter = int(rng.integers(-1, 2))
+            y0 = int(round(row * course_h)) + mortar + row_jitter
+            y1 = int(round((row + 1) * course_h)) - mortar + row_jitter
+            y0 = max(0, y0)
+            y1 = min(height, y1)
             start = -(brick_w / 2 if row % 2 else 0.0)
             column = 0
             while start < width:
+                local_width = brick_w * rng.uniform(0.96, 1.04)
                 x0 = max(0, int(round(start)) + mortar)
-                x1 = min(width, int(round(start + brick_w)) - mortar)
+                x1 = min(width, int(round(start + local_width)) - mortar)
                 if x1 > x0 and y1 > y0:
                     jitter = rng.normal(0.0, (8.0, 5.0, 3.5))
-                    albedo[y0:y1, x0:x1] = np.asarray(face_rgb) + jitter
+                    brick_noise = noise[y0:y1, x0:x1, None] * 1.8
+                    weathering = coarse[y0:y1, x0:x1, None] * np.array(
+                        (4.2, 3.0, 2.2),
+                        dtype=np.float32,
+                    )
+                    albedo[y0:y1, x0:x1] = (
+                        np.asarray(face_rgb) + jitter + brick_noise + weathering
+                    )
                     if (row + column) % 7 == 0:
                         albedo[y0:y1, x0:x1] *= 0.94
-                    depth[y0:y1, x0:x1] = 158.0 + rng.normal(0.0, 3.0)
-                    roughness[y0:y1, x0:x1] = 205.0 + rng.normal(0.0, 4.0)
+                    depth[y0:y1, x0:x1] = (
+                        158.0
+                        + rng.normal(0.0, 3.0)
+                        + noise[y0:y1, x0:x1] * 1.4
+                    )
+                    roughness[y0:y1, x0:x1] = (
+                        205.0
+                        + rng.normal(0.0, 4.0)
+                        + noise[y0:y1, x0:x1] * 1.8
+                    )
                     ao[y0:y1, x0:x1] = 247.0
-                start += brick_w
+                start += local_width
                 column += 1
+        # Mortar and brick share restrained dirt variation so the wall reads as
+        # one weathered material rather than a perfect red-and-white grid.
+        albedo += noise[..., None] * 0.7 + coarse[..., None] * 0.9
 
     dx = np.gradient(depth, axis=1)
     dy = np.gradient(depth, axis=0)
@@ -427,6 +566,9 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
         "crown": "crown",
         "side": "side",
         "roof": "roof",
+        "trim": "trim",
+        "metal": "metal",
+        "timber": "timber",
     }
     for lod, width in (("near", 2048), ("far", 1024)):
         destination = family_dir / "textures" / "pbr" / lod
@@ -445,6 +587,7 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
             surface=config["surface"],
             face_rgb=config["brick_rgb"],
             mortar_rgb=config["mortar_rgb"],
+            aspect_ratio=config["wall_aspect"],
             seed=config["seed"] + 211,
         )
         procedural_roof(
@@ -453,6 +596,34 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
             width,
             roof_type=config["roof"],
             seed=config["seed"] + 307,
+        )
+        procedural_support_material(
+            destination,
+            "trim",
+            width,
+            base_rgb=config["trim_rgb"],
+            material_kind=(
+                "timber"
+                if slug == "scandinavian-urban-residential"
+                else "stone"
+            ),
+            seed=config["seed"] + 401,
+        )
+        procedural_support_material(
+            destination,
+            "metal",
+            width,
+            base_rgb=config["metal_rgb"],
+            material_kind="metal",
+            seed=config["seed"] + 503,
+        )
+        procedural_support_material(
+            destination,
+            "timber",
+            width,
+            base_rgb=config["timber_rgb"],
+            material_kind="timber",
+            seed=config["seed"] + 607,
         )
 
     zones = {
@@ -503,11 +674,16 @@ def prepare_family(slug: str, config: dict[str, Any]) -> None:
                 "registered full front plus semantic LEGO bands and "
                 "reference-authored true-scale secondary materials"
             ),
+            "wall_band_aspect": config["wall_aspect"],
             "depth_binding": "shader_bump",
             "generic_tiling_allowed": False,
         },
         "channels": list(CHANNELS),
         "semantic_masks": list(MASKS),
+        "shadow_neutral": {
+            "passed": True,
+            "method": "multiscale-linear-delighting-before-pbr-derivation",
+        },
         "zones": zones,
         "atlases": {
             "near": zone_assets("elevation", "near"),

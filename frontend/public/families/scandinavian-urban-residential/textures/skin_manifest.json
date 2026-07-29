@@ -33,6 +33,7 @@
       "quiet_gable_and_rear_elevations"
     ],
     "uv_strategy": "registered full front plus semantic LEGO bands and reference-authored true-scale secondary materials",
+    "wall_band_aspect": 1.667752,
     "depth_binding": "shader_bump",
     "generic_tiling_allowed": false
   },
@@ -48,6 +49,10 @@
     "glass_mask",
     "opaque_mask"
   ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
   "zones": {
     "facade": {
       "near": {
@@ -223,6 +228,72 @@
         "emissive": "textures/pbr/far/roof_emissive.png",
         "glass_mask": "textures/pbr/far/roof_glass.png",
         "opaque_mask": "textures/pbr/far/roof_opaque.png"
+      }
+    },
+    "trim": {
+      "near": {
+        "albedo": "textures/pbr/near/trim_albedo.png",
+        "normal": "textures/pbr/near/trim_normal.png",
+        "roughness": "textures/pbr/near/trim_roughness.png",
+        "ao": "textures/pbr/near/trim_ao.png",
+        "depth": "textures/pbr/near/trim_depth.png",
+        "emissive": "textures/pbr/near/trim_emissive.png",
+        "glass_mask": "textures/pbr/near/trim_glass.png",
+        "opaque_mask": "textures/pbr/near/trim_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/trim_albedo.png",
+        "normal": "textures/pbr/far/trim_normal.png",
+        "roughness": "textures/pbr/far/trim_roughness.png",
+        "ao": "textures/pbr/far/trim_ao.png",
+        "depth": "textures/pbr/far/trim_depth.png",
+        "emissive": "textures/pbr/far/trim_emissive.png",
+        "glass_mask": "textures/pbr/far/trim_glass.png",
+        "opaque_mask": "textures/pbr/far/trim_opaque.png"
+      }
+    },
+    "metal": {
+      "near": {
+        "albedo": "textures/pbr/near/metal_albedo.png",
+        "normal": "textures/pbr/near/metal_normal.png",
+        "roughness": "textures/pbr/near/metal_roughness.png",
+        "ao": "textures/pbr/near/metal_ao.png",
+        "depth": "textures/pbr/near/metal_depth.png",
+        "emissive": "textures/pbr/near/metal_emissive.png",
+        "glass_mask": "textures/pbr/near/metal_glass.png",
+        "opaque_mask": "textures/pbr/near/metal_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/metal_albedo.png",
+        "normal": "textures/pbr/far/metal_normal.png",
+        "roughness": "textures/pbr/far/metal_roughness.png",
+        "ao": "textures/pbr/far/metal_ao.png",
+        "depth": "textures/pbr/far/metal_depth.png",
+        "emissive": "textures/pbr/far/metal_emissive.png",
+        "glass_mask": "textures/pbr/far/metal_glass.png",
+        "opaque_mask": "textures/pbr/far/metal_opaque.png"
+      }
+    },
+    "timber": {
+      "near": {
+        "albedo": "textures/pbr/near/timber_albedo.png",
+        "normal": "textures/pbr/near/timber_normal.png",
+        "roughness": "textures/pbr/near/timber_roughness.png",
+        "ao": "textures/pbr/near/timber_ao.png",
+        "depth": "textures/pbr/near/timber_depth.png",
+        "emissive": "textures/pbr/near/timber_emissive.png",
+        "glass_mask": "textures/pbr/near/timber_glass.png",
+        "opaque_mask": "textures/pbr/near/timber_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/timber_albedo.png",
+        "normal": "textures/pbr/far/timber_normal.png",
+        "roughness": "textures/pbr/far/timber_roughness.png",
+        "ao": "textures/pbr/far/timber_ao.png",
+        "depth": "textures/pbr/far/timber_depth.png",
+        "emissive": "textures/pbr/far/timber_emissive.png",
+        "glass_mask": "textures/pbr/far/timber_glass.png",
+        "opaque_mask": "textures/pbr/far/timber_opaque.png"
       }
     }
   },

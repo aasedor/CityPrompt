@@ -118,6 +118,7 @@ def test_wave4_batch_has_custom_skin_all_elevations_and_green_assessment(
     assert registration["source_archetype_id"] == expected["archetype"]
     assert registration["source_variant_id"] == expected["variant"]
     assert registration["generic_tiling_allowed"] is False
+    assert registration["wall_band_aspect"] > 0
     assert set(registration["registered_elevations"]) == {
         "front",
         "left",
@@ -134,6 +135,9 @@ def test_wave4_batch_has_custom_skin_all_elevations_and_green_assessment(
         "crown",
         "side",
         "roof",
+        "trim",
+        "metal",
+        "timber",
     } == set(skin["zones"])
 
     required = {
