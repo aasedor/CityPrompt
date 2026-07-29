@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-28-standard-building-voids-and-balconies-v98"
+        == "2026-07-29-reference-specific-window-materiality-v99"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -90,6 +90,11 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     )
     assert any(
         "flat orange window" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "checkerboard-like" in item["symptom"].lower()
+        and "family optical profile" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(
@@ -138,6 +143,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "balcony_stacks_are_constructed_once",
         "fixed_landmarks_accept_bounded_drawing_variation",
         "materials_are_pbr",
+        "glazing_materiality_matches_reference",
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
         "glass_is_layered",
@@ -148,6 +154,16 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "monumental_glazing_has_sectional_depth",
         "multi_aisle_roofs_are_complete_systems",
     } <= principle_ids
+    glazing = memory["construction_memory"]["glazing"]
+    assert {
+        "bronze_recessed_occupied",
+        "heritage_sash_occupied",
+        "industrial_crittall_occupied",
+        "nordic_clear_occupied",
+    } <= set(glazing["profiles"])
+    assert "nearly non-emissive" in glazing["materiality_rule"]
+    assert "glTF extras" in glazing["export_contract"]
+    assert "KHR clearcoat" in glazing["export_contract"]
 
 
 def test_complete_family_passes_executable_quality_memory():

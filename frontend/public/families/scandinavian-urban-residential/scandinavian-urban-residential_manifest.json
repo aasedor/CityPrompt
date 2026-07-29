@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T10:08:17.320033+00:00",
+  "created_at": "2026-07-29T18:14:37.925438+00:00",
   "family": "scandinavian-urban-residential",
   "archetype_id": "scandinavian_urban_residential",
   "archetype_label": "Scandinavian Urban Residential \u2014 White Plaster",
@@ -1542,8 +1542,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 9636,
-      "material_count": 13,
+      "triangle_count": 13704,
+      "material_count": 15,
       "texture_keys": [
         "crown",
         "facade",
@@ -1558,7 +1558,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 14334152
+      "size_bytes": 14639928
     },
     {
       "role": "floor",
@@ -1575,8 +1575,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 14288,
-      "material_count": 14,
+      "triangle_count": 19952,
+      "material_count": 15,
       "texture_keys": [
         "crown",
         "facade",
@@ -1591,7 +1591,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 14702808
+      "size_bytes": 15127372
     },
     {
       "role": "floor",
@@ -1608,8 +1608,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 14288,
-      "material_count": 14,
+      "triangle_count": 19952,
+      "material_count": 15,
       "texture_keys": [
         "crown",
         "facade",
@@ -1624,7 +1624,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 14702884
+      "size_bytes": 15127332
     },
     {
       "role": "floor",
@@ -1641,8 +1641,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 14288,
-      "material_count": 14,
+      "triangle_count": 19952,
+      "material_count": 15,
       "texture_keys": [
         "crown",
         "facade",
@@ -1657,7 +1657,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 14702884
+      "size_bytes": 15127332
     },
     {
       "role": "setback",
@@ -1674,8 +1674,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 14288,
-      "material_count": 14,
+      "triangle_count": 19940,
+      "material_count": 15,
       "texture_keys": [
         "crown",
         "facade",
@@ -1690,7 +1690,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 14703600
+      "size_bytes": 15126604
     },
     {
       "role": "crown",
@@ -1723,7 +1723,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9913368
+      "size_bytes": 9914784
     },
     {
       "role": "roof",
@@ -1740,8 +1740,8 @@
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 8296,
-      "material_count": 9,
+      "triangle_count": 8932,
+      "material_count": 12,
       "texture_keys": [
         "crown",
         "facade",
@@ -1756,7 +1756,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 18556408
+      "size_bytes": 18610456
     }
   ],
   "assembled": {
@@ -1765,8 +1765,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 20.5,
-    "triangle_count": 75200,
-    "material_count": 13,
+    "triangle_count": 102560,
+    "material_count": 14,
     "stack": [
       {
         "role": "podium",

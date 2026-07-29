@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
+  "memory_version": "2026-07-29-reference-specific-window-materiality-v99",
   "archetype_id": "contemporary_midrise_residential",
   "family": "contemporary-midrise-residential",
   "status": "pass",

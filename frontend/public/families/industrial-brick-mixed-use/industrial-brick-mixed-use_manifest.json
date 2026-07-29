@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T10:13:51.036573+00:00",
+  "created_at": "2026-07-29T18:23:54.678601+00:00",
   "family": "industrial-brick-mixed-use",
   "archetype_id": "industrial_brick_mixed_use",
   "archetype_label": "Industrial Brick Mixed Use \u2014 Original Mill",
@@ -1542,8 +1542,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 23360,
-      "material_count": 13,
+      "triangle_count": 23900,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1558,7 +1558,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11264620
+      "size_bytes": 11304692
     },
     {
       "role": "floor",
@@ -1575,8 +1575,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 23132,
-      "material_count": 13,
+      "triangle_count": 23672,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1591,7 +1591,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "role": "floor",
@@ -1608,8 +1608,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 23132,
-      "material_count": 13,
+      "triangle_count": 23672,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1624,7 +1624,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "role": "floor",
@@ -1641,8 +1641,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 23132,
-      "material_count": 13,
+      "triangle_count": 23672,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1657,7 +1657,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "role": "setback",
@@ -1674,8 +1674,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 23132,
-      "material_count": 13,
+      "triangle_count": 23672,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1690,7 +1690,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11248228
+      "size_bytes": 11288264
     },
     {
       "role": "crown",
@@ -1723,7 +1723,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 5858816
+      "size_bytes": 5860232
     },
     {
       "role": "roof",
@@ -1740,8 +1740,8 @@
       "floor_height_m": 3.5,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 1304,
-      "material_count": 8,
+      "triangle_count": 2408,
+      "material_count": 10,
       "texture_keys": [
         "crown",
         "facade",
@@ -1756,7 +1756,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 10095128
+      "size_bytes": 10177492
     }
   ],
   "assembled": {
@@ -1765,8 +1765,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 19.5,
-    "triangle_count": 97560,
-    "material_count": 11,
+    "triangle_count": 100824,
+    "material_count": 12,
     "stack": [
       {
         "role": "podium",

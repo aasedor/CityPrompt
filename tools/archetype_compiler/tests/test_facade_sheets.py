@@ -707,6 +707,9 @@ def test_reusable_glass_profiles_are_physically_plausible():
         "industrial_sash",
         "residential_low_e",
         "bronze_recessed_occupied",
+        "heritage_sash_occupied",
+        "industrial_crittall_occupied",
+        "nordic_clear_occupied",
         "heritage_leaded_occupied",
     }
     for name in GLASS_PROFILES:

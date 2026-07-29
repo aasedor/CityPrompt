@@ -9,11 +9,99 @@ const FACADE_GLASS_ENV_INTENSITY = 0.28;
 const FACADE_GLASS_MAX_TRANSMISSION = 0.08;
 const FACADE_GLASS_TINT = new THREE.Color('#6d675e');
 const FACADE_ENV_INTENSITY = 0.32;
-const BRONZE_LOW_E_PROFILE = 'bronze_recessed_occupied';
-const BRONZE_LOW_E_ENV_INTENSITY = 0.95;
-const BRONZE_LOW_E_MAX_TRANSMISSION = 0.58;
-const BRONZE_LOW_E_ATTENUATION = new THREE.Color('#d5e2df');
 const FALLBACK_CLAY = new THREE.Color('#d8cfc0');
+
+interface LayeredGlazingProfile {
+  roughnessMin: number;
+  roughnessMax: number;
+  ior: number;
+  clearcoatMin: number;
+  clearcoatRoughnessMax: number;
+  transmissionMax: number;
+  environmentMax: number;
+  attenuationDistance: number;
+  attenuationColor: string;
+}
+
+const LAYERED_GLAZING_PROFILES: Record<string, LayeredGlazingProfile> = {
+  bronze_recessed_occupied: {
+    roughnessMin: 0.055,
+    roughnessMax: 0.12,
+    ior: 1.50,
+    clearcoatMin: 0.46,
+    clearcoatRoughnessMax: 0.06,
+    transmissionMax: 0.58,
+    environmentMax: 0.95,
+    attenuationDistance: 2.4,
+    attenuationColor: '#d5e2df',
+  },
+  heritage_sash_occupied: {
+    roughnessMin: 0.080,
+    roughnessMax: 0.14,
+    ior: 1.49,
+    clearcoatMin: 0.38,
+    clearcoatRoughnessMax: 0.10,
+    transmissionMax: 0.46,
+    environmentMax: 0.78,
+    attenuationDistance: 2.0,
+    attenuationColor: '#e6d7c6',
+  },
+  industrial_crittall_occupied: {
+    roughnessMin: 0.075,
+    roughnessMax: 0.13,
+    ior: 1.48,
+    clearcoatMin: 0.35,
+    clearcoatRoughnessMax: 0.09,
+    transmissionMax: 0.50,
+    environmentMax: 0.84,
+    attenuationDistance: 2.2,
+    attenuationColor: '#d3d9d5',
+  },
+  nordic_clear_occupied: {
+    roughnessMin: 0.055,
+    roughnessMax: 0.11,
+    ior: 1.50,
+    clearcoatMin: 0.44,
+    clearcoatRoughnessMax: 0.065,
+    transmissionMax: 0.52,
+    environmentMax: 0.90,
+    attenuationDistance: 2.3,
+    attenuationColor: '#dbe5e3',
+  },
+};
+
+/** Preserve a compiler-authored archetype glazing system in every viewer. */
+export function applyLayeredGlazingProfile(
+  physical: THREE.MeshPhysicalMaterial,
+  profileName: string,
+): boolean {
+  const profile = LAYERED_GLAZING_PROFILES[profileName.toLowerCase()];
+  if (!profile) return false;
+
+  physical.roughness = Math.max(
+    profile.roughnessMin,
+    Math.min(physical.roughness, profile.roughnessMax),
+  );
+  physical.ior = profile.ior;
+  physical.clearcoat = Math.max(physical.clearcoat, profile.clearcoatMin);
+  physical.clearcoatRoughness = Math.min(
+    physical.clearcoatRoughness,
+    profile.clearcoatRoughnessMax,
+  );
+  physical.transmission = Math.min(
+    physical.transmission,
+    profile.transmissionMax,
+  );
+  physical.envMapIntensity = Math.min(
+    physical.envMapIntensity,
+    profile.environmentMax,
+  );
+  physical.thickness = Math.max(physical.thickness, 0.026);
+  physical.attenuationDistance = profile.attenuationDistance;
+  physical.attenuationColor.set(profile.attenuationColor);
+  physical.emissiveIntensity = Math.min(physical.emissiveIntensity, 0.025);
+  return true;
+}
 
 export type ArchitecturalGlazingLod = 'near' | 'far';
 
@@ -107,27 +195,10 @@ function tuneMaterial(
       const glazingProfile = String(
         standard.userData?.glazing_profile ?? '',
       ).toLowerCase();
-      if (glazingProfile === BRONZE_LOW_E_PROFILE) {
-        // The brick-and-bronze pilot exports independent IGUs in front of
-        // occupied room cards. Preserve that authored construction: a coated
-        // dielectric reflects the sky while still revealing the dark room,
-        // and any warmth originates behind the pane rather than from it.
-        standard.roughness = Math.max(0.055, Math.min(standard.roughness, 0.12));
-        physical.ior = 1.50;
-        physical.clearcoat = Math.max(physical.clearcoat, 0.46);
-        physical.clearcoatRoughness = Math.min(physical.clearcoatRoughness, 0.06);
-        physical.transmission = Math.min(
-          physical.transmission,
-          BRONZE_LOW_E_MAX_TRANSMISSION,
-        );
-        physical.envMapIntensity = Math.min(
-          physical.envMapIntensity,
-          BRONZE_LOW_E_ENV_INTENSITY,
-        );
-        physical.thickness = Math.max(physical.thickness, 0.026);
-        physical.attenuationDistance = 2.4;
-        physical.attenuationColor.copy(BRONZE_LOW_E_ATTENUATION);
-        physical.emissiveIntensity = Math.min(physical.emissiveIntensity, 0.025);
+      if (applyLayeredGlazingProfile(physical, glazingProfile)) {
+        // These profiles export independent panes in front of occupied room
+        // cards. The family-specific coated dielectric reflects the sky while
+        // warmth remains behind the pane instead of glowing from the glass.
       } else if (materialName.includes('glassoverlay')) {
         // A high-transmission façade card samples the bright globe background
         // and washes the authored window atlas to white. Retain a real coated
@@ -160,8 +231,14 @@ function tuneMaterial(
         physical.emissiveIntensity = Math.max(physical.emissiveIntensity, 0.08);
       }
     }
-  } else if (materialName.includes('interior_shadow')) {
-    standard.roughness = 0.92;
+  } else if (
+    materialName.includes('interior_shadow')
+    || (
+      standard.userData?.glazing_profile
+      && materialName.includes('interiorsolarshade')
+    )
+  ) {
+    standard.roughness = Math.max(standard.roughness, 0.82);
     standard.envMapIntensity = 0.2;
   } else {
     standard.envMapIntensity = DEFAULT_ENV_INTENSITY;

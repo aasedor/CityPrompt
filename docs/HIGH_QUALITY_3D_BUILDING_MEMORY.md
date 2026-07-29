@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-28-standard-building-voids-and-balconies-v98`.
+Current executable memory: `2026-07-29-reference-specific-window-materiality-v99`.
 
 ## The quality target
 
@@ -115,6 +115,19 @@ At close range, a window is not a blue plane. It contains:
 5. a warm interior backplate or shallow room card;
 6. restrained reflection from the environment.
 
+The layered construction is shared, but its optical material is not generic.
+Match tint, roughness, coating strength, transmission, frame depth and
+occupation pattern to the archetype references. Heritage sash, steel Crittall,
+bronze low-e and neutral Nordic glazing are distinct material systems. Keep the
+glass itself nearly non-emissive; warm light belongs on the recessed room card.
+Use coherent tint across one sash or window wall and vary occupation by room or
+floor so a facade does not become a blue/beige checkerboard.
+
+Multi-lite openings use separate pane faces behind real mullions and transoms.
+For shaped openings, those faces follow the architectural head: segmental
+Crittall panes reach the curved arch, rather than hiding one rectangular glass
+card behind a decorative brick outline.
+
 For close City Prompt views, the semantic opening bounds also register a slim
 physical sash at the pane plane. Mullions and transoms must be real geometry
 when they establish the archetype's construction rhythm (especially industrial
@@ -124,6 +137,12 @@ and weathering while narrow physical bars, returns and sills supply parallax,
 contact shadow and grazing-angle depth.
 
 At city distance, the semantic glass mask and baked facade replace most of that geometry. Visible windows default to subtly occupied warm interiors; uniform dark-blue glass is avoided.
+
+The delivery GLB preserves the glazing profile and construction metadata in
+glTF extras and exports physical clearcoat, transmission and specular
+extensions. Both the globe and standalone LEGO viewers honor that same profile;
+runtime normalization must not collapse family-specific glazing back to a
+shared facade tint.
 
 Runtime LOD switching is fail-safe per joined facade mesh and semantic band.
 Only a matching near/far pair may replace one another. A far sheet on an

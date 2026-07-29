@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-29T09:57:22.374741+00:00",
+  "created_at": "2026-07-29T18:25:09.730922+00:00",
   "family": "brownstone-rowhouse-frontage",
   "archetype_id": "brownstone_rowhouse_frontage",
   "archetype_label": "Brownstone Rowhouse Frontage \u2014 Red Brick and Sandstone",
@@ -1542,8 +1542,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 11516,
-      "material_count": 15,
+      "triangle_count": 17228,
+      "material_count": 17,
       "texture_keys": [
         "crown",
         "facade",
@@ -1558,7 +1558,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 21555832
+      "size_bytes": 21979940
     },
     {
       "role": "floor",
@@ -1575,8 +1575,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 6536,
-      "material_count": 12,
+      "triangle_count": 9128,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1591,7 +1591,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9391960
+      "size_bytes": 9586944
     },
     {
       "role": "floor",
@@ -1608,8 +1608,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 6536,
-      "material_count": 12,
+      "triangle_count": 9140,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1624,7 +1624,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9966232
+      "size_bytes": 10162848
     },
     {
       "role": "floor",
@@ -1641,8 +1641,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 6536,
-      "material_count": 12,
+      "triangle_count": 9128,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1657,7 +1657,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9966224
+      "size_bytes": 10161252
     },
     {
       "role": "setback",
@@ -1674,8 +1674,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 6536,
-      "material_count": 12,
+      "triangle_count": 9128,
+      "material_count": 14,
       "texture_keys": [
         "crown",
         "facade",
@@ -1690,7 +1690,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 9966404
+      "size_bytes": 10161504
     },
     {
       "role": "crown",
@@ -1723,7 +1723,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 8463052
+      "size_bytes": 8464488
     },
     {
       "role": "roof",
@@ -1740,8 +1740,8 @@
       "floor_height_m": 3.2,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 1008,
-      "material_count": 8,
+      "triangle_count": 1116,
+      "material_count": 9,
       "texture_keys": [
         "crown",
         "facade",
@@ -1756,7 +1756,7 @@
         "trim"
       ],
       "ao_baked": true,
-      "size_bytes": 11691292
+      "size_bytes": 11701436
     }
   ],
   "assembled": {
@@ -1765,8 +1765,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 10.200000000000001,
-    "triangle_count": 20580,
-    "material_count": 16,
+    "triangle_count": 29004,
+    "material_count": 18,
     "stack": [
       {
         "role": "podium",

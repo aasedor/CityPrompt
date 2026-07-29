@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
+  "memory_version": "2026-07-29-reference-specific-window-materiality-v99",
   "archetype_id": "scandinavian_urban_residential",
   "family": "scandinavian-urban-residential",
   "status": "pass",
@@ -104,12 +104,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "13 assembled materials; review above 20"
+        "detail": "14 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "75200 assembled triangles; budget 12000-180000"
+        "detail": "102560 assembled triangles; budget 12000-180000"
       }
     ]
   }

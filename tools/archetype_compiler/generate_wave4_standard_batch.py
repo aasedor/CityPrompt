@@ -319,6 +319,65 @@ FAMILIES: dict[str, dict] = {
     },
 }
 
+WINDOW_SYSTEMS: dict[str, dict] = {
+    "brownstone-rowhouse-frontage": {
+        "glass_label": "GlassHeritageSash",
+        "alternate_label": "GlassHeritageSashWarm",
+        "alternate_tint": "#4b392d",
+        "alternate_roughness_scale": 1.24,
+        "alternate_transmission_scale": 0.72,
+        "interior_cool": (0.045, 0.043, 0.040, 1.0),
+        "interior_cool_emission": (0.28, 0.23, 0.18, 1.0),
+        "interior_cool_strength": 0.060,
+        "interior_warm": (0.075, 0.050, 0.030, 1.0),
+        "interior_warm_emission": (0.72, 0.35, 0.12, 1.0),
+        "interior_warm_strength": 0.145,
+        "shade": (0.48, 0.45, 0.39, 1.0),
+    },
+    "industrial-brick-mixed-use": {
+        "glass_label": "GlassCrittall",
+        "alternate_label": "GlassCrittallWarm",
+        "alternate_tint": "#3b3a36",
+        "alternate_roughness_scale": 1.15,
+        "alternate_transmission_scale": 0.85,
+        "interior_cool": (0.032, 0.038, 0.038, 1.0),
+        "interior_cool_emission": (0.18, 0.20, 0.18, 1.0),
+        "interior_cool_strength": 0.055,
+        "interior_warm": (0.070, 0.046, 0.026, 1.0),
+        "interior_warm_emission": (0.80, 0.39, 0.11, 1.0),
+        "interior_warm_strength": 0.160,
+        "shade": None,
+    },
+    "contemporary-midrise-residential": {
+        "glass_label": "GlassBronzeLowE",
+        "alternate_label": "GlassBronzeLowEWarm",
+        "alternate_tint": "#3f3932",
+        "alternate_roughness_scale": 1.45,
+        "alternate_transmission_scale": 0.75,
+        "interior_cool": (0.028, 0.040, 0.048, 1.0),
+        "interior_cool_emission": (0.13, 0.19, 0.22, 1.0),
+        "interior_cool_strength": 0.075,
+        "interior_warm": (0.055, 0.040, 0.027, 1.0),
+        "interior_warm_emission": (0.76, 0.33, 0.095, 1.0),
+        "interior_warm_strength": 0.170,
+        "shade": (0.36, 0.31, 0.25, 1.0),
+    },
+    "scandinavian-urban-residential": {
+        "glass_label": "GlassNordicClear",
+        "alternate_label": "GlassNordicClearWarm",
+        "alternate_tint": "#3d3731",
+        "alternate_roughness_scale": 1.30,
+        "alternate_transmission_scale": 0.74,
+        "interior_cool": (0.030, 0.037, 0.039, 1.0),
+        "interior_cool_emission": (0.17, 0.20, 0.20, 1.0),
+        "interior_cool_strength": 0.050,
+        "interior_warm": (0.060, 0.043, 0.029, 1.0),
+        "interior_warm_emission": (0.72, 0.38, 0.15, 1.0),
+        "interior_warm_strength": 0.135,
+        "shade": (0.50, 0.49, 0.44, 1.0),
+    },
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -355,6 +414,11 @@ def clear_scene() -> None:
         for item in list(block):
             if item.users == 0:
                 block.remove(item)
+
+
+def stable_token_seed(value: str) -> int:
+    """Small deterministic seed for floor-to-floor occupancy variation."""
+    return sum((index + 1) * ord(character) for index, character in enumerate(value))
 
 
 def _hex_rgba(value: str) -> tuple[float, float, float, float]:
@@ -420,6 +484,52 @@ def profiled_glass_material(
     except AttributeError:
         pass
     return mat
+
+
+def apply_profiled_window_system(
+    family: str,
+    prefix: str,
+    mats: dict[str, bpy.types.Material],
+) -> None:
+    """Install the family-specific pane, room-card and shade construction."""
+    spec = WINDOW_SYSTEMS[family]
+    profile_name = str(FAMILIES[family]["glass_profile"])
+    mats["glass"] = profiled_glass_material(
+        f"MAT_W4_{prefix}_{spec['glass_label']}",
+        profile_name,
+    )
+    mats["glass_alt"] = profiled_glass_material(
+        f"MAT_W4_{prefix}_{spec['alternate_label']}",
+        profile_name,
+        tint=str(spec["alternate_tint"]),
+        roughness_scale=float(spec["alternate_roughness_scale"]),
+        transmission_scale=float(spec["alternate_transmission_scale"]),
+    )
+    mats["interior"] = material(
+        f"MAT_W4_{prefix}_Interior_Shadow_Cool",
+        spec["interior_cool"],
+        0.90,
+        emission=spec["interior_cool_emission"],
+        emission_strength=float(spec["interior_cool_strength"]),
+    )
+    mats["interior_alt"] = material(
+        f"MAT_W4_{prefix}_Interior_Shadow_Warm",
+        spec["interior_warm"],
+        0.88,
+        emission=spec["interior_warm_emission"],
+        emission_strength=float(spec["interior_warm_strength"]),
+    )
+    if spec["shade"] is not None:
+        mats["blind"] = material(
+            f"MAT_W4_{prefix}_InteriorSolarShade",
+            spec["shade"],
+            0.82,
+        )
+    for interior_key in ("interior", "interior_alt", "blind"):
+        if interior_key not in mats:
+            continue
+        mats[interior_key]["glazing_profile"] = profile_name
+        mats[interior_key]["environment_intensity"] = 0.20
 
 
 def palette(
@@ -677,44 +787,10 @@ def palette(
             0.42,
             metallic=0.18,
         )
-        # This pilot uses a real coated dielectric pane rather than the shared
-        # dark-emissive placeholder. Slightly warmer alternate IGUs and two
-        # room-card materials create the occupied variation visible in the
-        # selected reference without making the glass itself glow.
-        profile_name = str(FAMILIES[family]["glass_profile"])
-        mats["glass"] = profiled_glass_material(
-            f"MAT_W4_{prefix}_GlassBronzeLowE",
-            profile_name,
-        )
-        mats["glass_alt"] = profiled_glass_material(
-            f"MAT_W4_{prefix}_GlassBronzeLowEWarm",
-            profile_name,
-            tint="#3f3932",
-            roughness_scale=1.45,
-            transmission_scale=0.75,
-        )
-        mats["interior"] = material(
-            f"MAT_W4_{prefix}_Interior_Shadow_Cool",
-            (0.028, 0.040, 0.048, 1.0),
-            0.90,
-            emission=(0.13, 0.19, 0.22, 1.0),
-            emission_strength=0.075,
-        )
-        mats["interior_alt"] = material(
-            f"MAT_W4_{prefix}_Interior_Shadow_Warm",
-            (0.055, 0.040, 0.027, 1.0),
-            0.88,
-            emission=(0.76, 0.33, 0.095, 1.0),
-            emission_strength=0.17,
-        )
-        mats["blind"] = material(
-            f"MAT_W4_{prefix}_InteriorSolarShade",
-            (0.36, 0.31, 0.25, 1.0),
-            0.82,
-        )
-        for interior_key in ("interior", "interior_alt", "blind"):
-            mats[interior_key]["glazing_profile"] = profile_name
-            mats[interior_key]["environment_intensity"] = 0.20
+    # Every Wave 4 family now owns an optical system tuned to its references.
+    # Shared construction logic is allowed; a shared generic blue material is
+    # not. The glass remains nearly non-emissive and warmth lives behind it.
+    apply_profiled_window_system(family, prefix, mats)
     for key in ("glass", "glass_alt"):
         if mats[key].get("glazing_profile"):
             # Profiled materials have already received their complete optical
@@ -914,22 +990,31 @@ def rectangular_window(
     if optical_profile:
         # Each IGU is an individual dielectric surface. A single large glass
         # backing panel made the bronze grid look painted onto one dark card;
-        # independent panes catch subtly different sky/interior values.
+        # independent panes preserve real muntin relief and the room-card
+        # variation behind them. Heritage, industrial and Nordic profiles keep
+        # one coherent sky tint across a complete sash; the approved bronze
+        # pilot retains its deliberately finer pane variation.
         column_count = mullions + 1
         row_count = transoms + 1
         pane_width = width / column_count
         pane_height = height / row_count
+        variation_mode = str(
+            optical_profile.get("pane_variation_mode") or "individual"
+        )
         for column in range(column_count):
             pane_lateral = (
                 lateral - width / 2 + pane_width * (column + 0.5)
             )
             for row in range(row_count):
                 pane_z = sill_z + pane_height * (row + 0.5)
-                pane_mat = (
-                    mats["glass_alt"]
-                    if (column + row + int(alt_glass)) % 4 == 0
-                    else mats["glass"]
-                )
+                if variation_mode == "window":
+                    pane_mat = glass
+                else:
+                    pane_mat = (
+                        mats["glass_alt"]
+                        if (column + row + int(alt_glass)) % 4 == 0
+                        else mats["glass"]
+                    )
                 objects.append(
                     _oriented_box(
                         f"{name}_GlassPane_{column}_{row}",
@@ -1095,6 +1180,92 @@ def segmental_arch_panel(
     return obj
 
 
+def segmental_arch_grid_panel(
+    name: str,
+    *,
+    axis: str,
+    lateral: float,
+    plane: float,
+    sill_z: float,
+    width: float,
+    height: float,
+    rise: float,
+    mat: bpy.types.Material,
+) -> bpy.types.Object:
+    """Create one efficient mesh containing sixteen true Crittall pane faces."""
+
+    def vertex(value: float, z: float) -> tuple[float, float, float]:
+        if axis in {"front", "rear"}:
+            return (value, plane, z)
+        return (plane, value, z)
+
+    spring = sill_z + height - rise
+    radius = width * width / (8 * rise) + rise / 2
+    centre_z = spring + rise - radius
+    column_edges = [
+        lateral + width * fraction
+        for fraction in (-0.5, -0.25, 0.0, 0.25, 0.5)
+    ]
+    row_edges = [
+        sill_z,
+        sill_z + 0.28 * (height - rise),
+        sill_z + 0.55 * (height - rise),
+        sill_z + 0.80 * (height - rise),
+    ]
+    vertices: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+
+    def add_cell(bottom_z: float, top_points: list[tuple[float, float]]) -> None:
+        left = top_points[0][0]
+        right = top_points[-1][0]
+        points = [
+            vertex(left, bottom_z),
+            vertex(right, bottom_z),
+            *(vertex(value, z) for value, z in reversed(top_points)),
+        ]
+        start = len(vertices)
+        vertices.extend(points)
+        faces.append(tuple(range(start, start + len(points))))
+
+    for row in range(3):
+        for column in range(4):
+            left = column_edges[column]
+            right = column_edges[column + 1]
+            add_cell(
+                row_edges[row],
+                [
+                    (left, row_edges[row + 1]),
+                    (right, row_edges[row + 1]),
+                ],
+            )
+    top_bottom = row_edges[-1]
+    for column in range(4):
+        left = column_edges[column]
+        right = column_edges[column + 1]
+        top_points: list[tuple[float, float]] = []
+        for sample in range(6):
+            value = left + (right - left) * sample / 5
+            x = value - lateral
+            z = centre_z + math.sqrt(max(0.0, radius * radius - x * x))
+            top_points.append((value, z))
+        add_cell(top_bottom, top_points)
+
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(vertices, [], faces)
+    mesh.materials.append(mat)
+    uv = mesh.uv_layers.new(name="UVMap")
+    for loop_index, loop in enumerate(mesh.loops):
+        co = mesh.vertices[loop.vertex_index].co
+        value = co[0] if axis in {"front", "rear"} else co[1]
+        uv.data[loop_index].uv = (
+            (value - (lateral - width / 2)) / width,
+            (co[2] - sill_z) / height,
+        )
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+
 def segmental_arch_window(
     name: str,
     *,
@@ -1112,12 +1283,28 @@ def segmental_arch_window(
 ) -> list[bpy.types.Object]:
     glass = mats["glass_alt" if alt_glass else "glass"]
     inward = 1.0 if axis in {"front", "left"} else -1.0
-    glass_plane = plane + inward * 0.075
-    cavity_plane = plane + inward * 0.145
-    frame_plane = plane - inward * 0.012
+    profile_name = str(glass.get("glazing_profile") or "")
+    optical_profile = glass_profile(profile_name) if profile_name else None
+    if optical_profile:
+        pane_recess = max(0.045, float(optical_profile["pane_recess_m"]))
+        interior_depth = max(
+            pane_recess + 0.055,
+            min(float(optical_profile["interior_depth_m"]), 0.18),
+        )
+        glass_plane = plane + inward * pane_recess
+        cavity_plane = plane + inward * interior_depth
+        frame_plane = glass_plane - inward * 0.012
+    else:
+        glass_plane = plane + inward * 0.075
+        cavity_plane = plane + inward * 0.145
+        frame_plane = plane - inward * 0.012
     spring = sill_z + height - rise
     radius = width * width / (8 * rise) + rise / 2
     centre_z = spring + rise - radius
+    interior_mat = mats.get(
+        "interior_alt" if alt_glass else "interior",
+        mats["interior"],
+    )
     objects = [
         segmental_arch_panel(
             f"{name}_Cavity",
@@ -1128,20 +1315,40 @@ def segmental_arch_window(
             width=width + 0.16,
             height=height + 0.10,
             rise=rise,
-            mat=mats["interior"],
+            mat=interior_mat,
         ),
-        segmental_arch_panel(
-            f"{name}_Glass",
-            axis=axis,
-            lateral=lateral,
-            plane=glass_plane,
-            sill_z=sill_z,
-            width=width,
-            height=height,
-            rise=rise,
-            mat=glass,
-        )
     ]
+    if optical_profile:
+        # Sixteen disconnected pane faces live in one efficient mesh. The top
+        # four follow the true segmental curve instead of hiding a rectangular
+        # pane behind a decorative arch.
+        objects.append(
+            segmental_arch_grid_panel(
+                f"{name}_GlassPanes",
+                axis=axis,
+                lateral=lateral,
+                plane=glass_plane,
+                sill_z=sill_z,
+                width=width,
+                height=height,
+                rise=rise,
+                mat=glass,
+            )
+        )
+    else:
+        objects.append(
+            segmental_arch_panel(
+                f"{name}_Glass",
+                axis=axis,
+                lateral=lateral,
+                plane=glass_plane,
+                sill_z=sill_z,
+                width=width,
+                height=height,
+                rise=rise,
+                mat=glass,
+            )
+        )
     for side in (-1, 1):
         objects.append(
             _oriented_box(
@@ -1191,16 +1398,20 @@ def segmental_arch_window(
     )
     # Fine Crittall grid remains genuinely physical at close range.
     for column in (-0.25, 0.0, 0.25):
+        column_x = column * width
+        column_top = centre_z + math.sqrt(
+            max(0.0, radius * radius - column_x * column_x)
+        )
         objects.append(
             _oriented_box(
                 f"{name}_Mullion_{column:+.2f}",
                 axis,
-                lateral + column * width,
+                lateral + column_x,
                 frame_plane - inward * 0.008,
-                sill_z + (height - rise) / 2,
+                sill_z + (column_top - sill_z) / 2,
                 0.045,
                 0.055,
-                height - rise,
+                column_top - sill_z,
                 mats["metal"],
             )
         )
@@ -1372,9 +1583,10 @@ def add_secondary_windows(
         0,
         depth * 0.30,
     )
-    facade_offset = (
-        0.18 if family == "contemporary-midrise-residential" else 0.08
-    )
+    # Every profiled window owns a 160 mm room-card cavity. Hold the complete
+    # stack ahead of the structural envelope so no family loses its interiors
+    # inside the massing core at an oblique camera angle.
+    facade_offset = 0.18
     for side, axis, plane in (
         ("L", "left", -width / 2 - facade_offset),
         ("R", "right", width / 2 + facade_offset),
@@ -1425,15 +1637,17 @@ def add_industrial_secondary_windows(
     base_z: float,
     height: float,
     role: str,
+    variant: str,
 ) -> list[bpy.types.Object]:
     """Continue the mill's segmental structural rhythm around every elevation."""
     width, depth = FAMILIES["industrial-brick-mixed-use"]["dimensions"]
     objects: list[bpy.types.Object] = []
+    variation_seed = stable_token_seed(f"{role}:{variant}")
     sill = base_z + (0.68 if role == "podium" else 0.60)
     opening_h = min(2.58, height - 1.02)
     for side, axis, plane in (
-        ("L", "left", -width / 2 - 0.10),
-        ("R", "right", width / 2 + 0.10),
+        ("L", "left", -width / 2 - 0.18),
+        ("R", "right", width / 2 + 0.18),
     ):
         for index, y in enumerate((-7.35, -2.45, 2.45, 7.35)):
             objects.extend(
@@ -1447,7 +1661,7 @@ def add_industrial_secondary_windows(
                     height=opening_h,
                     rise=0.38,
                     mats=mats,
-                    alt_glass=(index + (role == "podium")) % 3 == 0,
+                    alt_glass=(index + variation_seed) % 5 == 0,
                 )
             )
     for index, x in enumerate((-12.5, -7.5, -2.5, 2.5, 7.5, 12.5)):
@@ -1456,13 +1670,13 @@ def add_industrial_secondary_windows(
                 f"MillRearCrittall_{role}_{index}",
                 axis="rear",
                 lateral=x,
-                plane=depth / 2 + 0.10,
+                plane=depth / 2 + 0.18,
                 sill_z=sill,
                 width=3.02,
                 height=opening_h,
                 rise=0.40,
                 mats=mats,
-                alt_glass=index % 4 == 0,
+                alt_glass=(index + variation_seed) % 6 == 0,
             )
         )
     return objects
@@ -1477,7 +1691,7 @@ def add_brownstone_details(
     height: float,
 ) -> list[bpy.types.Object]:
     width, depth = FAMILIES["brownstone-rowhouse-frontage"]["dimensions"]
-    front = -depth / 2 - 0.10
+    front = -depth / 2 - 0.18
     objects: list[bpy.types.Object] = []
     # Calibrated from the rectified 1201 px facade crop: 1.53 m centres.
     bays = (-3.06, -1.53, 0.0, 1.53, 3.06)
@@ -1755,9 +1969,10 @@ def add_industrial_details(
     height: float,
 ) -> list[bpy.types.Object]:
     width, depth = FAMILIES["industrial-brick-mixed-use"]["dimensions"]
-    front = -depth / 2 - 0.10
+    front = -depth / 2 - 0.18
     objects: list[bpy.types.Object] = []
     bays = (-12.5, -7.5, -2.5, 2.5, 7.5, 12.5)
+    variation_seed = stable_token_seed(f"{role}:{variant}")
     if role in {"podium", "floor", "setback"}:
         # Preserve the heavy brick spandrels and piers visible in the original
         # mill.  Oversize glass makes this read as a contemporary curtain wall.
@@ -1815,7 +2030,7 @@ def add_industrial_details(
                         height=opening_h,
                         rise=0.42,
                         mats=mats,
-                        alt_glass=(index + len(variant)) % 3 == 0,
+                        alt_glass=(index + variation_seed) % 5 == 0,
                     )
                 )
         for index, x in enumerate((-15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0)):
@@ -2089,28 +2304,9 @@ def balcony_stack_floor(
     front: float,
     base_z: float,
     mats: dict[str, bpy.types.Material],
+    alt_glass: bool = False,
 ) -> list[bpy.types.Object]:
     objects: list[bpy.types.Object] = [
-        box(
-            f"{name}_DoorCavity",
-            (1.92, 0.10, 2.34),
-            (x, front + 0.10, base_z + 1.48),
-            mats["deep_shadow"],
-            bevel=0.025,
-        ),
-        box(
-            f"{name}_DoorGlass",
-            (1.72, 0.07, 2.16),
-            (x, front + 0.035, base_z + 1.46),
-            mats["glass"],
-            bevel=0.018,
-        ),
-        box(
-            f"{name}_DoorMullion",
-            (0.045, 0.055, 2.16),
-            (x, front - 0.005, base_z + 1.46),
-            mats["metal"],
-        ),
         box(
             f"{name}_Slab",
             (4.08, 1.52, 0.17),
@@ -2119,6 +2315,23 @@ def balcony_stack_floor(
             bevel=0.030,
         ),
     ]
+    objects.extend(
+        rectangular_window(
+            f"{name}_BalconyDoor",
+            axis="front",
+            lateral=x,
+            plane=front,
+            sill_z=base_z + 0.38,
+            width=1.72,
+            height=2.16,
+            mats=mats,
+            trim="metal",
+            mullions=1,
+            transoms=0,
+            alt_glass=alt_glass,
+            atlas_owned=True,
+        )
+    )
     half_width = 1.98
     rail_y = front - 1.47
     rail_z = base_z + 1.15
@@ -2175,7 +2388,7 @@ def add_scandi_details(
     height: float,
 ) -> list[bpy.types.Object]:
     width, depth = FAMILIES["scandinavian-urban-residential"]["dimensions"]
-    front = -depth / 2 - 0.10
+    front = -depth / 2 - 0.18
     objects: list[bpy.types.Object] = []
     if role == "podium":
         # Stone/metal portal lining makes the through-passage read as a cut.
@@ -2212,7 +2425,9 @@ def add_scandi_details(
                     trim="metal",
                     mullions=1,
                     transoms=0,
-                    alt_glass=False,
+                    alt_glass=(
+                        index + stable_token_seed(variant)
+                    ) % 6 == 0,
                 )
             )
     elif role in {"floor", "setback"}:
@@ -2225,6 +2440,9 @@ def add_scandi_details(
                     front=front,
                     base_z=base_z,
                     mats=mats,
+                    alt_glass=(
+                        index + stable_token_seed(variant)
+                    ) % 5 == 0,
                 )
             )
         window_x = (-17.0, -15.0, -8.2, -6.2, 6.2, 8.2, 15.0, 17.0)
@@ -2242,7 +2460,9 @@ def add_scandi_details(
                     trim="metal",
                     mullions=1,
                     transoms=0,
-                    alt_glass=False,
+                    alt_glass=(
+                        index + stable_token_seed(variant)
+                    ) % 7 == 0,
                 )
             )
     elif role == "crown":
@@ -2345,6 +2565,7 @@ def build_band_module(
                 base_z=base_z,
                 height=height,
                 role=role,
+                variant=variant,
             )
         )
     elif role != "crown":
@@ -2541,6 +2762,13 @@ def build_flat_roof(
                     bevel=0.06,
                 ),
                 box(
+                    "BrownstoneRoofSkylightInterior",
+                    (1.88, 2.88, 0.035),
+                    (0, 1.5, base_z + 0.355),
+                    mats["interior"],
+                    bevel=0.04,
+                ),
+                box(
                     "BrownstoneRoofSkylightGlass",
                     (1.9, 2.9, 0.10),
                     (0, 1.5, base_z + 0.42),
@@ -2703,18 +2931,16 @@ def build_industrial_roof(
     objects.extend(
         [
             box(
-                "MillMonitorFrontGlass",
-                (19.0, 0.16, 1.10),
-                (0, -1.48, monitor_z),
-                mats["glass"],
-                bevel=0.035,
+                "MillMonitorFrontInterior",
+                (19.0, 0.055, 1.12),
+                (0, -1.30, monitor_z),
+                mats["interior"],
             ),
             box(
-                "MillMonitorRearGlass",
-                (19.0, 0.16, 1.10),
-                (0, 1.48, monitor_z),
-                mats["glass_alt"],
-                bevel=0.035,
+                "MillMonitorRearInterior",
+                (19.0, 0.055, 1.12),
+                (0, 1.30, monitor_z),
+                mats["interior_alt"],
             ),
             box(
                 "MillMonitorRoof",
@@ -2732,7 +2958,31 @@ def build_industrial_roof(
             ),
         ]
     )
-    for index, x in enumerate((-8.0, -4.0, 0.0, 4.0, 8.0)):
+    monitor_pane_width = 19.0 / 6
+    for index in range(6):
+        x = -9.5 + monitor_pane_width * (index + 0.5)
+        objects.extend(
+            [
+                box(
+                    f"MillMonitorFrontGlassPane_{index}",
+                    (monitor_pane_width - 0.08, 0.026, 1.10),
+                    (x, -1.48, monitor_z),
+                    mats["glass_alt" if index == 4 else "glass"],
+                    bevel=0.018,
+                ),
+                box(
+                    f"MillMonitorRearGlassPane_{index}",
+                    (monitor_pane_width - 0.08, 0.026, 1.10),
+                    (x, 1.48, monitor_z),
+                    mats["glass_alt" if index in {1, 5} else "glass"],
+                    bevel=0.018,
+                ),
+            ]
+        )
+    for index, x in enumerate(
+        (-2 * monitor_pane_width, -monitor_pane_width, 0.0,
+         monitor_pane_width, 2 * monitor_pane_width)
+    ):
         objects.extend(
             [
                 box(
@@ -2807,7 +3057,7 @@ def build_scandi_roof(
                 trim="timber",
                 mullions=1,
                 transoms=0,
-                alt_glass=False,
+                alt_glass=index == 3,
             )
         )
         # The references use shallow standing-seam shed dormers integrated into
@@ -3162,7 +3412,7 @@ def setup_standard_render() -> None:
         scene.eevee.use_raytracing = True
         scene.eevee.ray_tracing_method = "SCREEN"
         scene.eevee.ray_tracing_options.screen_trace_quality = 0.75
-        scene.eevee.taa_render_samples = 48
+        scene.eevee.taa_render_samples = 96
     world_nodes = scene.world.node_tree.nodes
     world_links = scene.world.node_tree.links
     background = world_nodes.get("Background")

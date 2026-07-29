@@ -141,7 +141,42 @@ describe('prepareArchitecturalClone', () => {
     expect(tuned.emissiveIntensity).toBe(0.42);
   });
 
-  it('preserves the bronze low-e pilot as reflective non-emissive glass', () => {
+  it.each([
+    {
+      profile: 'bronze_recessed_occupied',
+      transmission: 0.58,
+      environment: 0.95,
+      ior: 1.50,
+      clearcoat: 0.46,
+    },
+    {
+      profile: 'heritage_sash_occupied',
+      transmission: 0.46,
+      environment: 0.78,
+      ior: 1.49,
+      clearcoat: 0.38,
+    },
+    {
+      profile: 'industrial_crittall_occupied',
+      transmission: 0.50,
+      environment: 0.84,
+      ior: 1.48,
+      clearcoat: 0.35,
+    },
+    {
+      profile: 'nordic_clear_occupied',
+      transmission: 0.52,
+      environment: 0.90,
+      ior: 1.50,
+      clearcoat: 0.44,
+    },
+  ])('preserves $profile as reflective non-emissive glass', ({
+    profile,
+    transmission,
+    environment,
+    ior,
+    clearcoat,
+  }) => {
     const source = new THREE.Group();
     const glass = new THREE.MeshPhysicalMaterial({
       color: '#b7c3c3',
@@ -149,18 +184,18 @@ describe('prepareArchitecturalClone', () => {
       transmission: 0.68,
       emissiveIntensity: 0.12,
     });
-    glass.name = 'MAT_W4_Contemporary_GlassBronzeLowE';
-    glass.userData.glazing_profile = 'bronze_recessed_occupied';
+    glass.name = `MAT_W4_${profile}_Glass`;
+    glass.userData.glazing_profile = profile;
     glass.userData.environment_intensity = 1.28;
     source.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.026, 1), glass));
 
     const clone = prepareArchitecturalClone(source, { renderOrder: 150 });
     const tuned = (clone.children[0] as THREE.Mesh).material as THREE.MeshPhysicalMaterial;
 
-    expect(tuned.transmission).toBe(0.58);
-    expect(tuned.envMapIntensity).toBe(0.95);
-    expect(tuned.ior).toBe(1.50);
-    expect(tuned.clearcoat).toBeGreaterThanOrEqual(0.46);
+    expect(tuned.transmission).toBe(transmission);
+    expect(tuned.envMapIntensity).toBe(environment);
+    expect(tuned.ior).toBe(ior);
+    expect(tuned.clearcoat).toBeGreaterThanOrEqual(clearcoat);
     expect(tuned.thickness).toBeGreaterThanOrEqual(0.026);
     expect(tuned.emissiveIntensity).toBeLessThanOrEqual(0.025);
   });

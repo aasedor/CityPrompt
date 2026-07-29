@@ -10,24 +10,24 @@
   "manifest": "industrial-brick-mixed-use_manifest.json",
   "errors": [],
   "warnings": [
-    "industrial-brick-mixed-use_podium.glb: 10.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_floor_typical_a.glb: 10.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_floor_typical_b.glb: 10.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_floor_typical_c.glb: 10.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_setback_setback_upper.glb: 10.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_roof.glb: 9.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "industrial-brick-mixed-use_assembled.glb: 97560 triangles (heavy; consider simplification)",
-    "industrial-brick-mixed-use_assembled.glb: 21.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "industrial-brick-mixed-use_podium.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_floor_typical_a.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_floor_typical_b.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_floor_typical_c.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_setback_setback_upper.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_roof.glb: 9.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "industrial-brick-mixed-use_assembled.glb: 100824 triangles (heavy; consider simplification)",
+    "industrial-brick-mixed-use_assembled.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
       "file": "industrial-brick-mixed-use_podium.glb",
       "status": "ok",
-      "triangles": 23360,
+      "triangles": 23900,
       "extent_m": {
         "width_x": 30.52,
         "height_y": 4.0,
-        "depth_z": 20.427
+        "depth_z": 20.517
       },
       "bottom_y": 0.0,
       "materials": [
@@ -38,23 +38,24 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 11264620
+      "size_bytes": 11304692
     },
     {
       "file": "industrial-brick-mixed-use_floor_typical_a.glb",
       "status": "ok",
-      "triangles": 23132,
+      "triangles": 23672,
       "extent_m": {
         "width_x": 30.52,
         "height_y": 3.5,
-        "depth_z": 20.384
+        "depth_z": 20.457
       },
       "bottom_y": 0.0,
       "materials": [
@@ -65,23 +66,24 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "file": "industrial-brick-mixed-use_floor_typical_b.glb",
       "status": "ok",
-      "triangles": 23132,
+      "triangles": 23672,
       "extent_m": {
         "width_x": 30.52,
         "height_y": 3.5,
-        "depth_z": 20.384
+        "depth_z": 20.457
       },
       "bottom_y": 0.0,
       "materials": [
@@ -92,23 +94,24 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "file": "industrial-brick-mixed-use_floor_typical_c.glb",
       "status": "ok",
-      "triangles": 23132,
+      "triangles": 23672,
       "extent_m": {
         "width_x": 30.52,
         "height_y": 3.5,
-        "depth_z": 20.384
+        "depth_z": 20.457
       },
       "bottom_y": 0.0,
       "materials": [
@@ -119,23 +122,24 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 11246412
+      "size_bytes": 11286436
     },
     {
       "file": "industrial-brick-mixed-use_setback_setback_upper.glb",
       "status": "ok",
-      "triangles": 23132,
+      "triangles": 23672,
       "extent_m": {
         "width_x": 30.52,
         "height_y": 3.5,
-        "depth_z": 20.384
+        "depth_z": 20.457
       },
       "bottom_y": 0.0,
       "materials": [
@@ -146,14 +150,15 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 11248228
+      "size_bytes": 11288264
     },
     {
       "file": "industrial-brick-mixed-use_crown_crown.glb",
@@ -162,7 +167,7 @@
       "extent_m": {
         "width_x": 30.54,
         "height_y": 1.0,
-        "depth_z": 20.392
+        "depth_z": 20.472
       },
       "bottom_y": 0.0,
       "materials": [
@@ -176,12 +181,12 @@
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 5858816
+      "size_bytes": 5860232
     },
     {
       "file": "industrial-brick-mixed-use_roof.glb",
       "status": "ok",
-      "triangles": 1304,
+      "triangles": 2408,
       "extent_m": {
         "width_x": 30.74,
         "height_y": 4.0,
@@ -193,21 +198,23 @@
         "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
         "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_RoofSkin"
       ],
-      "size_bytes": 10095128
+      "size_bytes": 10177492
     },
     {
       "file": "industrial-brick-mixed-use_assembled.glb",
       "status": "ok",
-      "triangles": 97560,
+      "triangles": 100824,
       "extent_m": {
         "width_x": 30.74,
         "height_y": 19.5,
-        "depth_z": 20.656
+        "depth_z": 20.736
       },
       "bottom_y": 0.0,
       "materials": [
@@ -215,15 +222,16 @@
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Rear",
         "MAT_Sheet_Wrapped_industrial_brick_mixed_use_Right",
         "MAT_W4_industrial_brick_mixed_use_Body",
-        "MAT_W4_industrial_brick_mixed_use_Glass",
-        "MAT_W4_industrial_brick_mixed_use_GlassAlt",
-        "MAT_W4_industrial_brick_mixed_use_Interior",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittall",
+        "MAT_W4_industrial_brick_mixed_use_GlassCrittallWarm",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Cool",
+        "MAT_W4_industrial_brick_mixed_use_Interior_Shadow_Warm",
         "MAT_W4_industrial_brick_mixed_use_Metal",
         "MAT_W4_industrial_brick_mixed_use_ReferenceMillBrickFront",
         "MAT_W4_industrial_brick_mixed_use_RoofSkin",
         "MAT_W4_industrial_brick_mixed_use_Trim"
       ],
-      "size_bytes": 22552492,
+      "size_bytes": 22783168,
       "role": "assembled"
     }
   ]

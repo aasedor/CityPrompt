@@ -8,6 +8,7 @@ import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import type { SiteZoneProperties } from '@/types';
 import { BUILDING_AESTHETIC_OPTIONS_V2, type AestheticOption } from '@/components/viewer/aestheticCatalog';
 import {
+  applyLayeredGlazingProfile,
   disposeArchitecturalCloneMaterials,
   setArchitecturalGlazingLod,
 } from '@/components/viewer/globe/modelMaterialQuality';
@@ -186,23 +187,9 @@ export function normalizeLegoModuleMaterials(root: THREE.Object3D): void {
           const glazingProfile = String(
             standard.userData?.glazing_profile ?? '',
           ).toLowerCase();
-          if (glazingProfile === 'bronze_recessed_occupied') {
-            standard.roughness = Math.max(0.055, Math.min(standard.roughness, 0.12));
-            physical.ior = 1.50;
-            physical.clearcoat = Math.max(physical.clearcoat, 0.46);
-            physical.clearcoatRoughness = Math.min(
-              physical.clearcoatRoughness,
-              0.06,
-            );
-            physical.transmission = Math.min(physical.transmission, 0.58);
-            physical.envMapIntensity = Math.min(physical.envMapIntensity, 0.95);
-            physical.thickness = Math.max(physical.thickness, 0.026);
-            physical.attenuationDistance = 2.4;
-            physical.attenuationColor.copy(new THREE.Color('#d5e2df'));
-            physical.emissiveIntensity = Math.min(
-              physical.emissiveIntensity,
-              0.025,
-            );
+          if (applyLayeredGlazingProfile(physical, glazingProfile)) {
+            // The shared profile applies the same reference-specific coating
+            // in the globe and standalone LEGO viewers.
           } else if (materialName.includes('glassoverlay')) {
             physical.transmission = Math.min(physical.transmission, 0.08);
             physical.envMapIntensity = Math.min(physical.envMapIntensity, 0.28);
@@ -215,6 +202,15 @@ export function normalizeLegoModuleMaterials(root: THREE.Object3D): void {
             physical.emissiveIntensity = Math.max(physical.emissiveIntensity, 0.08);
           }
         }
+      } else if (
+        materialName.includes('interior_shadow')
+        || (
+          standard.userData?.glazing_profile
+          && materialName.includes('interiorsolarshade')
+        )
+      ) {
+        standard.roughness = Math.max(standard.roughness, 0.82);
+        standard.envMapIntensity = 0.2;
       } else {
         standard.envMapIntensity = 0.9;
       }

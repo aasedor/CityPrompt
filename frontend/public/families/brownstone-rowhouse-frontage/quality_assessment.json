@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
+  "memory_version": "2026-07-29-reference-specific-window-materiality-v99",
   "archetype_id": "brownstone_rowhouse_frontage",
   "family": "brownstone-rowhouse-frontage",
   "status": "pass",
@@ -104,12 +104,12 @@
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "16 assembled materials; review above 20"
+        "detail": "18 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "20580 assembled triangles; budget 12000-180000"
+        "detail": "29004 assembled triangles; budget 12000-180000"
       }
     ]
   }

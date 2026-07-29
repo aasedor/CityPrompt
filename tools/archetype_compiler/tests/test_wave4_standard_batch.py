@@ -10,7 +10,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[3]
 FAMILY_ROOT = REPO / "frontend" / "public" / "families"
-MEMORY_VERSION = "2026-07-28-standard-building-voids-and-balconies-v98"
+MEMORY_VERSION = "2026-07-29-reference-specific-window-materiality-v99"
 FAMILIES = {
     "brownstone-rowhouse-frontage": {
         "archetype": "brownstone_rowhouse_frontage",
@@ -19,6 +19,8 @@ FAMILIES = {
         "bay": 1.60,
         "catalogue_dir": "brownstone_rowhouse_frontage",
         "identity_tag": "integrated_sandstone_stoop",
+        "glass_profile": "heritage_sash_occupied",
+        "glass_material": "glassheritagesash",
     },
     "industrial-brick-mixed-use": {
         "archetype": "industrial_brick_mixed_use",
@@ -27,6 +29,8 @@ FAMILIES = {
         "bay": 5.00,
         "catalogue_dir": "industrial_brick_mixed_use",
         "identity_tag": "segmental_arch_crittall_windows",
+        "glass_profile": "industrial_crittall_occupied",
+        "glass_material": "glasscrittall",
     },
     "contemporary-midrise-residential": {
         "archetype": "contemporary_midrise_residential",
@@ -35,6 +39,8 @@ FAMILIES = {
         "bay": 4.15,
         "catalogue_dir": "contemporary_mid_rise_residential",
         "identity_tag": "subtractive_arched_entrance",
+        "glass_profile": "bronze_recessed_occupied",
+        "glass_material": "glassbronzelowe",
     },
     "scandinavian-urban-residential": {
         "archetype": "scandinavian_urban_residential",
@@ -43,6 +49,8 @@ FAMILIES = {
         "bay": 4.50,
         "catalogue_dir": "scandinavian_urban_residential",
         "identity_tag": "through_courtyard_passage",
+        "glass_profile": "nordic_clear_occupied",
+        "glass_material": "glassnordicclear",
     },
 }
 
@@ -212,28 +220,34 @@ def test_wave4_batch_catalogue_and_signature_assets_are_wired(
         assert signature["glassProfile"]
 
 
-def test_contemporary_window_pilot_uses_registered_physical_glazing_profile():
+@pytest.mark.parametrize(("family", "expected"), FAMILIES.items())
+def test_wave4_window_system_uses_registered_physical_glazing_profile(
+    family: str,
+    expected: dict,
+):
     from glass_profiles import glass_profile
 
-    family = "contemporary-midrise-residential"
     manifest = load_json(FAMILY_ROOT / family / f"{family}_manifest.json")
-    assert manifest["glass_profile"] == "bronze_recessed_occupied"
+    assert manifest["glass_profile"] == expected["glass_profile"]
 
     profile = glass_profile(manifest["glass_profile"])
-    assert profile["label"] == "Bronze-framed recessed occupied low-e glazing"
-    assert profile["transmission"] >= 0.15
+    assert profile["label"]
+    assert 0.15 <= profile["transmission"] <= 0.22
     assert profile["roughness"] <= 0.10
     assert profile["glass_emission_strength"] <= 0.01
     assert profile["interior_depth_m"] > profile["pane_recess_m"]
 
 
-def test_contemporary_window_pilot_exports_physical_glazing_metadata():
-    family = "contemporary-midrise-residential"
+@pytest.mark.parametrize(("family", "expected"), FAMILIES.items())
+def test_wave4_window_system_exports_physical_glazing_metadata(
+    family: str,
+    expected: dict,
+):
     glb = load_glb_json(FAMILY_ROOT / family / f"{family}_assembled.glb")
     materials = [
         material
         for material in glb["materials"]
-        if "glassbronzelowe" in material.get("name", "").lower()
+        if expected["glass_material"] in material.get("name", "").lower()
     ]
 
     assert len(materials) == 2
@@ -244,7 +258,7 @@ def test_contemporary_window_pilot_exports_physical_glazing_metadata():
     } <= set(glb["extensionsUsed"])
 
     for material in materials:
-        assert material["extras"]["glazing_profile"] == "bronze_recessed_occupied"
+        assert material["extras"]["glazing_profile"] == expected["glass_profile"]
         assert material["extras"]["glazing_lod"] == "always"
         assert material["extras"]["alpha_strategy"] == (
             "opaque_physical_transmission"
@@ -254,8 +268,8 @@ def test_contemporary_window_pilot_exports_physical_glazing_metadata():
         )
         assert material["extensions"]["KHR_materials_clearcoat"][
             "clearcoatFactor"
-        ] >= 0.60
+        ] >= 0.40
         assert 0.10 <= material["extensions"]["KHR_materials_transmission"][
             "transmissionFactor"
-        ] <= 0.20
+        ] <= 0.22
         assert material["pbrMetallicRoughness"]["metallicFactor"] == 0

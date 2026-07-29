@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
+  "memory_version": "2026-07-29-reference-specific-window-materiality-v99",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -47,6 +47,10 @@
     {
       "id": "glass_is_layered",
       "rule": "Use recessed panes, frame depth, registered physical mullions/transoms, interior backplates and occupied warm interiors. Use physical transmission near and baked facade glass far; an audited atlas may supply fine sash colour but not all close-range construction depth."
+    },
+    {
+      "id": "glazing_materiality_matches_reference",
+      "rule": "Share layered window construction, not one generic optical material. Match tint, roughness, coating, transmission, frame depth and occupation pattern to each archetype; keep panes nearly non-emissive, put warmth on recessed room cards, and avoid repeated blue/warm checkerboards."
     },
     {
       "id": "special_glazing_is_two_layer",
@@ -220,11 +224,17 @@
         "clear_occupied",
         "residential_low_e",
         "industrial_sash",
-        "reflective_curtain_wall"
+        "reflective_curtain_wall",
+        "bronze_recessed_occupied",
+        "heritage_sash_occupied",
+        "industrial_crittall_occupied",
+        "nordic_clear_occupied"
       ],
       "near": "physical transmission, shape-matched recessed pane, semantic opening returns, slim registered mullions/transoms, projecting sill and occupied interior backplate",
       "far": "baked facade glass with semantic mask",
-      "occupancy_rule": "Default visible windows to subtle warm occupied interiors; avoid uniform dark-blue panes."
+      "occupancy_rule": "Default visible windows to subtle warm occupied interiors; vary rooms or floors without creating a repeated cool/warm checkerboard.",
+      "materiality_rule": "Choose a reference-specific optical profile for tint, roughness, coating, transmission and frame depth; the glass stays nearly non-emissive and room cards own interior warmth.",
+      "export_contract": "Every physical pane exports glazing_profile, glazing_lod, environment intensity and cavity depth in glTF extras plus KHR clearcoat, transmission and specular material extensions; every City Prompt viewer preserves that profile."
     },
     "variation": {
       "minimum_middle_bay_variants": 3,
@@ -360,6 +370,11 @@
       "symptom": "Dead dark-blue windows",
       "cause": "Tinted alpha-blended planes without interiors or reflections.",
       "correction": "Use physical transmission near and subtle warm occupied backplates; bake semantic glass far."
+    },
+    {
+      "symptom": "Windows are transparent but still look painted, frosted or checkerboard-like",
+      "cause": "One generic glass shader, emissive panes, whole-facade colour alternation or a rectangular backing card ignores the reference-specific sash and opening construction.",
+      "correction": "Author a family optical profile, keep glass nearly non-emissive, place varied occupation on recessed room cards, use coherent tint per sash and make multi-lite or curved openings real pane faces."
     },
     {
       "symptom": "Front facade works but orbit view fails",
