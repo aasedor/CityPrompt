@@ -1,0 +1,144 @@
+{
+  "family_id": "industrial-brick-mixed-use",
+  "source": {
+    "archetype_id": "industrial_brick_mixed_use",
+    "variant_id": "industrial_brick_original_mill",
+    "generation_archetype_id": "industrial_brick_original_mill",
+    "reuse_keys": [
+      "industrial_brick_mixed_use",
+      "industrial_brick_original_mill",
+      "Mixed Use \u2014 Industrial Brick / Adaptive Reuse"
+    ]
+  },
+  "dimensions": {
+    "width_m": 30.0,
+    "depth_m": 20.0,
+    "podium_height_m": 4.0,
+    "floor_height_m": 3.5,
+    "setback_height_m": 3.5,
+    "roof_height_m": 4.0,
+    "crown_height_m": 1.0,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "A four-storey Victorian brick mill with six complete structural bays, shallow segmental-arched Crittall windows, expressed piers, corbelled eaves, gabled end walls and a long glazed roof monitor.",
+    "material_zones": "weathered red common brick; dark steel Crittall frames; buff stone sills; slate roof; blackened metal monitor; occupied workshop glazing",
+    "glass_profile": "industrial_crittall_occupied",
+    "kits": [
+      "six_structural_bays",
+      "segmental_arch_crittall_windows",
+      "expressed_brick_piers",
+      "corbelled_eaves",
+      "shallow_slate_gable",
+      "glazed_roof_monitor_and_chimney"
+    ]
+  },
+  "archetype_aliases": [
+    "industrial_brick_mixed_use",
+    "industrial_brick_original_mill"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The reference-locked entrance, corner returns, crown and roof remain fixed semantic modules; ordinary registered bays repeat along the long streetwall axis and turn corners with authored secondary elevations.",
+    "recommendedWidth_m": [
+      24,
+      50
+    ],
+    "recommendedDepth_m": [
+      16,
+      32
+    ],
+    "recommendedFloors": [
+      3,
+      6
+    ],
+    "wingDepth_m": [
+      8,
+      13
+    ],
+    "preferredBayMultiple_m": 5.0,
+    "minimumCourtyard_m": 10,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          24,
+          50
+        ],
+        "recommendedDepth_m": [
+          16,
+          32
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          48,
+          77.5
+        ],
+        "recommendedDepth_m": [
+          16,
+          43.2
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          57.599999999999994,
+          95.0
+        ],
+        "recommendedDepth_m": [
+          18,
+          48.0
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ],
+        "minimumCourtyard_m": 10
+      }
+    },
+    "notes": [
+      "Preserve the selected entrance and full roof identity as fixed semantic pieces.",
+      "Vary width in whole 5.00 metre bays and height in whole floor modules.",
+      "Use authored left/right/rear bands on returns; never wrap the public front."
+    ]
+  },
+  "massing_graph": {
+    "type": "modular_streetwall",
+    "profile": "victorian_original_mill_v98",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+    "fixed": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable": [
+      "typical_a",
+      "typical_b",
+      "typical_c"
+    ]
+  }
+}

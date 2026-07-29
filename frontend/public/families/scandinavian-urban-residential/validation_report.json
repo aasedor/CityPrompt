@@ -1,0 +1,227 @@
+{
+  "status": "pass",
+  "family": "scandinavian-urban-residential",
+  "archetype_id": "scandinavian_urban_residential",
+  "reuse_keys": [
+    "scandinavian_urban_residential",
+    "scandi_urban_white_plaster",
+    "Residential \u2014 Scandinavian Urban Block"
+  ],
+  "manifest": "scandinavian-urban-residential_manifest.json",
+  "errors": [],
+  "warnings": [
+    "scandinavian-urban-residential_assembled.glb: 13.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "scandinavian-urban-residential_podium.glb",
+      "status": "ok",
+      "triangles": 9636,
+      "extent_m": {
+        "width_x": 38.272,
+        "height_y": 3.3,
+        "depth_z": 22.293
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 5668280
+    },
+    {
+      "file": "scandinavian-urban-residential_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 13136,
+      "extent_m": {
+        "width_x": 38.272,
+        "height_y": 3.0,
+        "depth_z": 23.673
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 5932204
+    },
+    {
+      "file": "scandinavian-urban-residential_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 13136,
+      "extent_m": {
+        "width_x": 38.272,
+        "height_y": 3.0,
+        "depth_z": 23.673
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 5932292
+    },
+    {
+      "file": "scandinavian-urban-residential_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 13136,
+      "extent_m": {
+        "width_x": 38.272,
+        "height_y": 3.0,
+        "depth_z": 23.673
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 5932292
+    },
+    {
+      "file": "scandinavian-urban-residential_setback_setback_upper.glb",
+      "status": "ok",
+      "triangles": 13136,
+      "extent_m": {
+        "width_x": 38.272,
+        "height_y": 3.0,
+        "depth_z": 23.673
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Left",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Rear",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 5932768
+    },
+    {
+      "file": "scandinavian-urban-residential_crown_crown.glb",
+      "status": "ok",
+      "triangles": 368,
+      "extent_m": {
+        "width_x": 38.2,
+        "height_y": 0.4,
+        "depth_z": 22.54
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 4974984
+    },
+    {
+      "file": "scandinavian-urban-residential_roof.glb",
+      "status": "ok",
+      "triangles": 5948,
+      "extent_m": {
+        "width_x": 38.69,
+        "height_y": 5.29,
+        "depth_z": 22.508
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_Roof",
+        "MAT_W4_scandinavian_urban_residential_RoofSkin",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 4781192
+    },
+    {
+      "file": "scandinavian-urban-residential_assembled.glb",
+      "status": "ok",
+      "triangles": 68244,
+      "extent_m": {
+        "width_x": 38.69,
+        "height_y": 20.99,
+        "depth_z": 23.835
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Left",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Rear",
+        "MAT_Sheet_Wrapped_scandinavian_urban_residential_Right",
+        "MAT_W4_scandinavian_urban_residential_Body",
+        "MAT_W4_scandinavian_urban_residential_Glass",
+        "MAT_W4_scandinavian_urban_residential_GlassAlt",
+        "MAT_W4_scandinavian_urban_residential_Interior",
+        "MAT_W4_scandinavian_urban_residential_Metal",
+        "MAT_W4_scandinavian_urban_residential_ReferencePlasterFront",
+        "MAT_W4_scandinavian_urban_residential_Roof",
+        "MAT_W4_scandinavian_urban_residential_RoofSkin",
+        "MAT_W4_scandinavian_urban_residential_Trim"
+      ],
+      "size_bytes": 14396648,
+      "role": "assembled"
+    }
+  ]
+}

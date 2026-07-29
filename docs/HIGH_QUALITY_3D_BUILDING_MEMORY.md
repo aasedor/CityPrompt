@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-28-standard-envelope-integration-v97`.
+Current executable memory: `2026-07-28-standard-building-voids-and-balconies-v98`.
 
 ## The quality target
 
@@ -914,6 +914,37 @@ The polychrome collegiate family added four rules for resizable hero facades:
   cannot exceed twice the usable module height. If it does, use a segmental
   arch or keep that opening in the fixed landmark; never accept a module whose
   delivered bounds extend below ground.
+
+### Wave 4 standard-building void + balcony lessons
+
+- Standard buildings need the same sectional discipline as landmarks. A
+  rowhouse stoop, arched residential lobby or courtyard passage is a fixed void
+  through the podium envelope, not another glass bay. Split or cut the wall and
+  front/rear skin, keep the circulation path unobstructed, then construct the
+  jambs, soffit or ceiling, threshold, landing and stairs as one assembly.
+- Floor semantics come from the reference section, not from counting visible
+  horizontal bands mechanically. A raised rowhouse garden level and piano
+  nobile may belong to one tall fixed podium; adding both as ordinary repeatable
+  floors creates an extra window row and breaks the approved proportions.
+- A render-locked elevation may carry ornament and masonry identity while
+  physical geometry supplies depth, but their schedules must agree. Crop out
+  neutral studio gutters, register one complete bay cadence, and do not overlay
+  a second window, door or balcony pattern at a different scale.
+- Balcony and loggia stacks are constructed once. Use a thin slab, recessed
+  dark door or occupied room card, side returns, open end rails, regularly
+  spaced pickets and consistent floor-datum anchors. When the source image
+  already depicts balconies, use a clean reference-palette wall PBR beneath the
+  physical stack so photographed and modeled balconies cannot ghost through
+  each other.
+- Ordinary roofs remain identity geometry. The mill monitor must rise above the
+  gable rather than disappear inside it; Scandinavian dormers and seams must
+  follow the actual ridge direction; flat residential roofs need the reference
+  parapet, plant court, roof lights and service hierarchy rather than a bare
+  dark slab.
+- Keep these identity assemblies compatible with imperfect user drawings.
+  Entrances, passages, balcony stacks, crowns and roofs stay fixed semantic
+  modules while complete ordinary bays and whole floors absorb clean in-band
+  variation; oversized requests must remain eligible for streetwall repetition.
 
 ## Updating this memory
 

@@ -1,0 +1,14 @@
+{
+  "kind": "reviewed_render_locked_elevation_plus_authored_modular_geometry",
+  "catalogue_archetype_id": "brownstone_rowhouse_frontage",
+  "catalogue_variant_id": "brownstone_rowhouse_red_sandstone",
+  "goalpost": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "angle_reference": "textures/source/angle-reference-60.jpg",
+  "roof_reference": "textures/source/angle-reference-90.jpg",
+  "orthographic_elevation": "textures/source/elevation-source.png",
+  "registered_openings": "textures/source/registered-openings.json",
+  "registered_bands": "textures/source/registered-bands.json",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave4_standard_batch.py"
+}

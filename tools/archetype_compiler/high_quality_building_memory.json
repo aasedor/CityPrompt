@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-28-standard-envelope-integration-v97",
+  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -19,6 +19,14 @@
     {
       "id": "fixed_ends_repeat_middle",
       "rule": "Keep corner, entrance, podium, crown and roof assemblies fixed. Repeat or stretch only authored middle bays."
+    },
+    {
+      "id": "entrances_and_passages_are_subtractive",
+      "rule": "A stoop entrance, arched lobby or courtyard passage is a sectional void through the podium envelope, not a window image or bright object attached to the facade. Split or cut the wall and skin at the opening, preserve an unobstructed path, and construct jambs, soffit or ceiling, threshold, landing and circulation as one fixed assembly."
+    },
+    {
+      "id": "balcony_stacks_are_constructed_once",
+      "rule": "Reference-defining balcony and loggia stacks use one coordinated representation: physical slab, recessed back wall or opening, side returns, open rails and believable supports aligned to floor datums. Do not leave a second photographed balcony layer in the facade atlas beneath the physical assembly."
     },
     {
       "id": "fixed_landmarks_accept_bounded_drawing_variation",
@@ -702,6 +710,16 @@
       "symptom": "A hipped roof with a flat service zone reads as a dark slab floating above the corrugation or as a wire lattice crossing skylights",
       "cause": "A complete hip remained beneath a second deck mesh, and physical standing seams continued through the deck, crossed other roof faces or converged repeatedly at one corner.",
       "correction": "Build the perimeter hip from an explicit inner contour that meets the service deck at one shared elevation. Terminate seams at the inner edge and skylight curbs, distribute necessary ribs without corner clamping, and let registered normal/depth relief carry directions that would otherwise cross. Prove the topology from street-corner and aerial views."
+    },
+    {
+      "symptom": "A standard-building stoop entrance or courtyard passage still reads as another window, a painted dark rectangle or an object tacked onto the facade",
+      "cause": "The full podium core and registered facade card remained behind the opening while stairs, an arch frame or a passage lining were added only in front.",
+      "correction": "Treat the feature as a subtractive fixed podium assembly: split or cut the envelope and front/rear skin, preserve the full circulation path, begin stairs at the facade plane, and terminate them at a recessed door or occupied landing framed by real jambs, soffit or ceiling and threshold geometry."
+    },
+    {
+      "symptom": "A residential balcony stack looks like repeated opaque boxes or shows ghost balconies behind the modeled rails",
+      "cause": "An emissive pane was mistaken for an occupied room, or the reference elevation already contained rendered balconies that were duplicated by misaligned physical slabs and railings.",
+      "correction": "Use a clean reference-palette wall PBR beneath the stack, recess a darker layered door or room card, and construct each balcony once with a thin slab, timber or masonry returns, open end rails, regularly spaced pickets and consistent floor-datum anchoring."
     }
   ]
 }

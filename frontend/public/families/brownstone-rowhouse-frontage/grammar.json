@@ -1,0 +1,144 @@
+{
+  "family_id": "brownstone-rowhouse-frontage",
+  "source": {
+    "archetype_id": "brownstone_rowhouse_frontage",
+    "variant_id": "brownstone_rowhouse_red_sandstone",
+    "generation_archetype_id": "brownstone_rowhouse_red_sandstone",
+    "reuse_keys": [
+      "brownstone_rowhouse_frontage",
+      "brownstone_rowhouse_red_sandstone",
+      "Residential \u2014 Brownstone / Rowhouse"
+    ]
+  },
+  "dimensions": {
+    "width_m": 8.0,
+    "depth_m": 15.0,
+    "podium_height_m": 5.7,
+    "floor_height_m": 3.2,
+    "setback_height_m": 3.2,
+    "roof_height_m": 0.5,
+    "crown_height_m": 0.8,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A narrow five-bay red-brick rowhouse with carved sandstone lintels, deep paired sash reveals, a shadowed garden level and a central sandstone stoop physically integrated into the entrance.",
+    "material_zones": "warm red pressed brick; buff carved sandstone; charcoal painted sash frames and railings; dark membrane roof; occupied warm glazing",
+    "glass_profile": "heritage_sash_occupied",
+    "kits": [
+      "integrated_sandstone_stoop",
+      "five_bay_sash_rhythm",
+      "carved_lintels_and_sills",
+      "bracketed_metal_cornice",
+      "garden_level_areaways",
+      "membrane_roof_skylight_chimneys"
+    ]
+  },
+  "archetype_aliases": [
+    "brownstone_rowhouse_frontage",
+    "brownstone_rowhouse_red_sandstone"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The reference-locked entrance, corner returns, crown and roof remain fixed semantic modules; ordinary registered bays repeat along the long streetwall axis and turn corners with authored secondary elevations.",
+    "recommendedWidth_m": [
+      5,
+      30
+    ],
+    "recommendedDepth_m": [
+      12,
+      24
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "wingDepth_m": [
+      5,
+      8
+    ],
+    "preferredBayMultiple_m": 1.6,
+    "minimumCourtyard_m": 6,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          5,
+          30
+        ],
+        "recommendedDepth_m": [
+          12,
+          24
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          13,
+          46.5
+        ],
+        "recommendedDepth_m": [
+          16,
+          32.400000000000006
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "wingDepth_m": [
+          5,
+          8
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          24,
+          57.0
+        ],
+        "recommendedDepth_m": [
+          18,
+          36.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "wingDepth_m": [
+          5,
+          8
+        ],
+        "minimumCourtyard_m": 6
+      }
+    },
+    "notes": [
+      "Preserve the selected entrance and full roof identity as fixed semantic pieces.",
+      "Vary width in whole 1.60 metre bays and height in whole floor modules.",
+      "Use authored left/right/rear bands on returns; never wrap the public front."
+    ]
+  },
+  "massing_graph": {
+    "type": "modular_streetwall",
+    "profile": "red_brick_sandstone_rowhouse_v98",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png",
+    "fixed": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable": [
+      "typical_a",
+      "typical_b",
+      "typical_c"
+    ]
+  }
+}

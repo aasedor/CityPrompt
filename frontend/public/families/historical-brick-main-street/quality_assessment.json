@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-28-standard-envelope-integration-v97",
+  "memory_version": "2026-07-28-standard-building-voids-and-balconies-v98",
   "archetype_id": "historical_brick_main_street",
   "family": "historical-brick-main-street",
   "status": "pass",

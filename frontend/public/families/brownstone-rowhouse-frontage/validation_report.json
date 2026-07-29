@@ -1,0 +1,225 @@
+{
+  "status": "pass",
+  "family": "brownstone-rowhouse-frontage",
+  "archetype_id": "brownstone_rowhouse_frontage",
+  "reuse_keys": [
+    "brownstone_rowhouse_frontage",
+    "brownstone_rowhouse_red_sandstone",
+    "Residential \u2014 Brownstone / Rowhouse"
+  ],
+  "manifest": "brownstone-rowhouse-frontage_manifest.json",
+  "errors": [],
+  "warnings": [
+    "brownstone-rowhouse-frontage_assembled.glb: 16.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "brownstone-rowhouse-frontage_podium.glb",
+      "status": "ok",
+      "triangles": 10852,
+      "extent_m": {
+        "width_x": 8.272,
+        "height_y": 5.7,
+        "depth_z": 17.882
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Podium",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 6804652
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 6596,
+      "extent_m": {
+        "width_x": 8.272,
+        "height_y": 3.2,
+        "depth_z": 15.328
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_FloorA",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 3683712
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 6596,
+      "extent_m": {
+        "width_x": 8.272,
+        "height_y": 3.2,
+        "depth_z": 15.328
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_FloorB",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 4343208
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 6596,
+      "extent_m": {
+        "width_x": 8.272,
+        "height_y": 3.2,
+        "depth_z": 15.328
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_FloorC",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 4343200
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_setback_setback_upper.glb",
+      "status": "ok",
+      "triangles": 6596,
+      "extent_m": {
+        "width_x": 8.272,
+        "height_y": 3.2,
+        "depth_z": 15.328
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Left",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Rear",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_FloorC",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 4343400
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1556,
+      "extent_m": {
+        "width_x": 8.52,
+        "height_y": 0.8,
+        "depth_z": 15.482
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_Crown",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal"
+      ],
+      "size_bytes": 1556492
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_roof.glb",
+      "status": "ok",
+      "triangles": 1008,
+      "extent_m": {
+        "width_x": 8.18,
+        "height_y": 0.5,
+        "depth_z": 15.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_RoofSkin",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 4818580
+    },
+    {
+      "file": "brownstone-rowhouse-frontage_assembled.glb",
+      "status": "ok",
+      "triangles": 19868,
+      "extent_m": {
+        "width_x": 8.52,
+        "height_y": 10.2,
+        "depth_z": 17.882
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Left",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Rear",
+        "MAT_Sheet_Wrapped_brownstone_rowhouse_frontage_Right",
+        "MAT_W4_brownstone_rowhouse_frontage_Body",
+        "MAT_W4_brownstone_rowhouse_frontage_Crown",
+        "MAT_W4_brownstone_rowhouse_frontage_FloorB",
+        "MAT_W4_brownstone_rowhouse_frontage_Glass",
+        "MAT_W4_brownstone_rowhouse_frontage_GlassAlt",
+        "MAT_W4_brownstone_rowhouse_frontage_Interior",
+        "MAT_W4_brownstone_rowhouse_frontage_Metal",
+        "MAT_W4_brownstone_rowhouse_frontage_Podium",
+        "MAT_W4_brownstone_rowhouse_frontage_RoofSkin",
+        "MAT_W4_brownstone_rowhouse_frontage_Trim"
+      ],
+      "size_bytes": 17253732,
+      "role": "assembled"
+    }
+  ]
+}

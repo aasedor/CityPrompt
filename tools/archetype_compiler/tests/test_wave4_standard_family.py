@@ -97,7 +97,7 @@ def test_historical_brick_skin_authors_every_orbit_visible_material_system():
 
     assessment = load_json(FAMILY_ROOT / "quality_assessment.json")
     assert assessment["memory_version"] == (
-        "2026-07-28-standard-envelope-integration-v97"
+        "2026-07-28-standard-building-voids-and-balconies-v98"
     )
     assert assessment["status"] == "pass"
     assert assessment["high_quality_ready"] is True

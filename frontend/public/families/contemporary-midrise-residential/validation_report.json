@@ -1,0 +1,226 @@
+{
+  "status": "pass",
+  "family": "contemporary-midrise-residential",
+  "archetype_id": "contemporary_midrise_residential",
+  "reuse_keys": [
+    "contemporary_midrise_residential",
+    "contemporary_midrise_variant_brick_bronze",
+    "Residential \u2014 Contemporary Mid-Rise"
+  ],
+  "manifest": "contemporary-midrise-residential_manifest.json",
+  "errors": [],
+  "warnings": [
+    "contemporary-midrise-residential_assembled.glb: 16 materials (many; consider consolidation)",
+    "contemporary-midrise-residential_assembled.glb: 17.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "contemporary-midrise-residential_podium.glb",
+      "status": "ok",
+      "triangles": 9317,
+      "extent_m": {
+        "width_x": 25.272,
+        "height_y": 3.9,
+        "depth_z": 18.437
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal",
+        "MAT_W4_contemporary_midrise_residential_Podium",
+        "MAT_W4_contemporary_midrise_residential_Trim"
+      ],
+      "size_bytes": 2993368
+    },
+    {
+      "file": "contemporary-midrise-residential_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 10196,
+      "extent_m": {
+        "width_x": 25.325,
+        "height_y": 3.0,
+        "depth_z": 18.368
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_FloorA",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal"
+      ],
+      "size_bytes": 2692544
+    },
+    {
+      "file": "contemporary-midrise-residential_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 10196,
+      "extent_m": {
+        "width_x": 25.325,
+        "height_y": 3.0,
+        "depth_z": 18.368
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_FloorB",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal"
+      ],
+      "size_bytes": 2703148
+    },
+    {
+      "file": "contemporary-midrise-residential_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 10196,
+      "extent_m": {
+        "width_x": 25.325,
+        "height_y": 3.0,
+        "depth_z": 18.368
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_FloorC",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal"
+      ],
+      "size_bytes": 2796848
+    },
+    {
+      "file": "contemporary-midrise-residential_setback_setback_upper.glb",
+      "status": "ok",
+      "triangles": 10196,
+      "extent_m": {
+        "width_x": 25.325,
+        "height_y": 3.0,
+        "depth_z": 18.368
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Left",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Rear",
+        "MAT_Sheet_Wrapped_Wave3_setback_setback_upper_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_FloorC",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal"
+      ],
+      "size_bytes": 2797096
+    },
+    {
+      "file": "contemporary-midrise-residential_crown_crown.glb",
+      "status": "ok",
+      "triangles": 272,
+      "extent_m": {
+        "width_x": 25.34,
+        "height_y": 0.8,
+        "depth_z": 18.41
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_Crown",
+        "MAT_W4_contemporary_midrise_residential_Metal",
+        "MAT_W4_contemporary_midrise_residential_Trim"
+      ],
+      "size_bytes": 1314384
+    },
+    {
+      "file": "contemporary-midrise-residential_roof.glb",
+      "status": "ok",
+      "triangles": 1332,
+      "extent_m": {
+        "width_x": 25.18,
+        "height_y": 0.8,
+        "depth_z": 18.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_Metal",
+        "MAT_W4_contemporary_midrise_residential_Planting",
+        "MAT_W4_contemporary_midrise_residential_RoofSkin"
+      ],
+      "size_bytes": 4760336
+    },
+    {
+      "file": "contemporary-midrise-residential_assembled.glb",
+      "status": "ok",
+      "triangles": 61613,
+      "extent_m": {
+        "width_x": 25.34,
+        "height_y": 20.42,
+        "depth_z": 18.47
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Left",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Rear",
+        "MAT_Sheet_Wrapped_contemporary_midrise_residential_Right",
+        "MAT_W4_contemporary_midrise_residential_Body",
+        "MAT_W4_contemporary_midrise_residential_Crown",
+        "MAT_W4_contemporary_midrise_residential_FloorA",
+        "MAT_W4_contemporary_midrise_residential_FloorB",
+        "MAT_W4_contemporary_midrise_residential_FloorC",
+        "MAT_W4_contemporary_midrise_residential_Glass",
+        "MAT_W4_contemporary_midrise_residential_GlassAlt",
+        "MAT_W4_contemporary_midrise_residential_Interior",
+        "MAT_W4_contemporary_midrise_residential_Metal",
+        "MAT_W4_contemporary_midrise_residential_Planting",
+        "MAT_W4_contemporary_midrise_residential_Podium",
+        "MAT_W4_contemporary_midrise_residential_RoofSkin",
+        "MAT_W4_contemporary_midrise_residential_Trim"
+      ],
+      "size_bytes": 18416832,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source.png",
+  "method": "semantic dark-glazing extraction plus physical frame registration",
+  "physical_geometry_required": true
+}

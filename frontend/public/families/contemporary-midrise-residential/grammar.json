@@ -1,0 +1,144 @@
+{
+  "family_id": "contemporary-midrise-residential",
+  "source": {
+    "archetype_id": "contemporary_midrise_residential",
+    "variant_id": "contemporary_midrise_variant_brick_bronze",
+    "generation_archetype_id": "contemporary_midrise_variant_brick_bronze",
+    "reuse_keys": [
+      "contemporary_midrise_residential",
+      "contemporary_midrise_variant_brick_bronze",
+      "Residential \u2014 Contemporary Mid-Rise"
+    ]
+  },
+  "dimensions": {
+    "width_m": 25.0,
+    "depth_m": 18.0,
+    "podium_height_m": 3.9,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 0.8,
+    "crown_height_m": 0.8,
+    "default_floors": 6,
+    "min_floors": 4,
+    "max_floors": 8
+  },
+  "architectural_signature": {
+    "identity": "A six-storey urban residential block with a pale limestone base, one deeply recessed arched entrance and a disciplined wide/narrow window cadence held by brick piers and bronze spandrel frames.",
+    "material_zones": "deep umber brick; pale honed limestone; warm bronze frames and spandrels; clear occupied glazing; planted dark membrane service roof",
+    "glass_profile": "bronze_recessed_occupied",
+    "kits": [
+      "limestone_podium",
+      "subtractive_arched_entrance",
+      "wide_narrow_six_bay_cadence",
+      "bronze_spandrel_frames",
+      "brick_pilaster_grid",
+      "planted_service_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "contemporary_midrise_residential",
+    "contemporary_midrise_variant_brick_bronze"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The reference-locked entrance, corner returns, crown and roof remain fixed semantic modules; ordinary registered bays repeat along the long streetwall axis and turn corners with authored secondary elevations.",
+    "recommendedWidth_m": [
+      15,
+      42
+    ],
+    "recommendedDepth_m": [
+      14,
+      30
+    ],
+    "recommendedFloors": [
+      4,
+      8
+    ],
+    "wingDepth_m": [
+      8,
+      13
+    ],
+    "preferredBayMultiple_m": 4.15,
+    "minimumCourtyard_m": 10,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          15,
+          42
+        ],
+        "recommendedDepth_m": [
+          14,
+          30
+        ],
+        "recommendedFloors": [
+          4,
+          8
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          30,
+          65.10000000000001
+        ],
+        "recommendedDepth_m": [
+          16,
+          40.5
+        ],
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          36.0,
+          79.8
+        ],
+        "recommendedDepth_m": [
+          18,
+          45.0
+        ],
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ],
+        "minimumCourtyard_m": 10
+      }
+    },
+    "notes": [
+      "Preserve the selected entrance and full roof identity as fixed semantic pieces.",
+      "Vary width in whole 4.15 metre bays and height in whole floor modules.",
+      "Use authored left/right/rear bands on returns; never wrap the public front."
+    ]
+  },
+  "massing_graph": {
+    "type": "modular_streetwall",
+    "profile": "brick_bronze_midrise_v98",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/contemporary_mid_rise_residential/variant_2.png",
+    "fixed": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable": [
+      "typical_a",
+      "typical_b",
+      "typical_c"
+    ]
+  }
+}

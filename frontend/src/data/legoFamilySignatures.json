@@ -24,8 +24,16 @@
                                                                        "archetypeId":  "contemporary_midrise_variant_brick_bronze",
                                                                        "identity":  "Contemporary urban mid-rise with deep red-brown brick pilasters, bronze-anodized window reveals, one fixed arched entrance and a quiet parapet crown.",
                                                                        "materialZones":  "red-brown pressed brick; bronze window frames and spandrels; pale stone base; warm occupied glazing",
-                                                                       "glassProfile":  "residential_low_e"
+                                                                       "glassProfile":  "residential_low_e",
+                                                                       "elevationUrl":  "/families/contemporary-midrise-residential/elevation.jpg"
                                                                    },
+                     "contemporary_midrise_residential":  {
+                                                              "archetypeId":  "contemporary_midrise_residential",
+                                                              "identity":  "Six-storey brick-and-bronze residential block with a pale limestone podium, one deeply recessed arched entrance and a disciplined wide/narrow opening cadence held by expressed brick piers.",
+                                                              "materialZones":  "deep umber brick; pale honed limestone; warm bronze frames and spandrels; dark occupied glazing; planted service roof",
+                                                              "glassProfile":  "residential_low_e",
+                                                              "elevationUrl":  "/families/contemporary-midrise-residential/elevation.jpg"
+                                                          },
                      "glass_office_terracotta_fins":  {
                                                           "archetypeId":  "glass_office_terracotta_fins",
                                                           "identity":  "Stepped low-iron glass office wrapped in warm terracotta fins, with a transparent double-height lobby, planted setback bands and an occupied glazed crown.",
@@ -109,8 +117,16 @@
                                                                "archetypeId":  "brownstone_rowhouse_red_sandstone",
                                                                "identity":  "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
                                                                "materialZones":  "warm variegated red-brown brick; carved buff sandstone base, lintels, sills and stoop; black wrought iron; dark stained timber door; softly occupied clear sash; grey membrane roof",
-                                                               "glassProfile":  "residential_low_e"
+                                                               "glassProfile":  "residential_low_e",
+                                                               "elevationUrl":  "/families/brownstone-rowhouse-frontage/elevation.jpg"
                                                            },
+                     "brownstone_rowhouse_frontage":  {
+                                                           "archetypeId":  "brownstone_rowhouse_frontage",
+                                                           "identity":  "Five-bay red-brick rowhouse frontage with carved sandstone sash surrounds, a shadowed garden level, a central stoop physically integrated into the entrance and a deep bracketed cornice.",
+                                                           "materialZones":  "warm variegated red-brown brick; carved buff sandstone; black wrought iron; dark stained timber; softly occupied clear sash; grey membrane roof",
+                                                           "glassProfile":  "residential_low_e",
+                                                           "elevationUrl":  "/families/brownstone-rowhouse-frontage/elevation.jpg"
+                                                       },
                      "historical_brick_main_street":  {
                                                           "archetypeId":  "historical_brick_main_street",
                                                           "identity":  "Two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, cream-and-red brick striping, a deep forest-green cast-iron double storefront, carved frieze and a tall panelled parapet concealing a low service roof.",
@@ -122,7 +138,8 @@
                                                             "archetypeId":  "industrial_brick_original_mill",
                                                             "identity":  "Converted Victorian textile mill with tall segmental-arched multi-pane iron sash, deep brick reveals, arched loading-bay shopfronts, corbelled eaves, a restored chimney and a restrained contemporary glass roof monitor.",
                                                             "materialZones":  "aged red load-bearing brick and lime mortar; blackened cast-iron sash; dark slate and folded metal; clear softly occupied glass",
-                                                            "glassProfile":  "industrial_sash"
+                                                            "glassProfile":  "industrial_sash",
+                                                            "elevationUrl":  "/families/industrial-brick-mixed-use/elevation.jpg"
                                                         },
                      "industrial_brick_brewery":  {
                                                       "archetypeId":  "industrial_brick_brewery",
@@ -196,13 +213,15 @@
                                                             "archetypeId":  "scandinavian_urban_residential",
                                                             "identity":  "Quiet Scandinavian apartment building with pale masonry field, deep timber-lined loggias, projecting window frames, subtle asymmetry and a crisp pitched roof edge.",
                                                             "materialZones":  "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
+                                                            "glassProfile":  "residential_low_e",
                                                             "elevationUrl":  "/families/scandinavian-urban-residential/elevation.jpg"
                                                         },
                      "scandi_urban_white_plaster":  {
                                                         "archetypeId":  "scandi_urban_white_plaster",
                                                         "identity":  "Long white-plaster Scandinavian perimeter block with asymmetric warm-timber balconies, a planted garden passage and five box dormers in a dark standing-seam gable roof.",
                                                         "materialZones":  "warm-white mineral plaster; charcoal windows and rails; oiled-larch balcony decks and passage lining; dark grey standing-seam metal roof",
-                                                        "glassProfile":  "residential_low_e"
+                                                        "glassProfile":  "residential_low_e",
+                                                        "elevationUrl":  "/families/scandinavian-urban-residential/elevation.jpg"
                                                     },
                      "mediterranean_arcade_mixed_use":  {
                                                             "archetypeId":  "mediterranean_arcade_mixed_use",

@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-28-standard-envelope-integration-v97"
+        == "2026-07-28-standard-building-voids-and-balconies-v98"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -116,6 +116,16 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         for item in memory["known_failure_patterns"]
     )
     assert any(
+        "stoop entrance or courtyard passage" in item["symptom"].lower()
+        and "tacked onto the facade" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "balcony stack" in item["symptom"].lower()
+        and "ghost balconies" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
         "slightly imperfect footprint" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
@@ -124,6 +134,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "geometry_carries_identity",
         "freeform_envelopes_are_continuous_and_sectional",
         "fixed_ends_repeat_middle",
+        "entrances_and_passages_are_subtractive",
+        "balcony_stacks_are_constructed_once",
         "fixed_landmarks_accept_bounded_drawing_variation",
         "materials_are_pbr",
         "pbr_assets_are_verified",

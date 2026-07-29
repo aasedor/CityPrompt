@@ -1,0 +1,144 @@
+{
+  "family_id": "scandinavian-urban-residential",
+  "source": {
+    "archetype_id": "scandinavian_urban_residential",
+    "variant_id": "scandi_urban_white_plaster",
+    "generation_archetype_id": "scandi_urban_white_plaster",
+    "reuse_keys": [
+      "scandinavian_urban_residential",
+      "scandi_urban_white_plaster",
+      "Residential \u2014 Scandinavian Urban Block"
+    ]
+  },
+  "dimensions": {
+    "width_m": 38.0,
+    "depth_m": 22.0,
+    "podium_height_m": 3.3,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 4.8,
+    "crown_height_m": 0.4,
+    "default_floors": 6,
+    "min_floors": 4,
+    "max_floors": 7
+  },
+  "architectural_signature": {
+    "identity": "A long white-plaster perimeter block with a real central courtyard passage, three vertically integrated timber balcony stacks and a dark standing-seam pitched roof punctuated by five aligned dormers.",
+    "material_zones": "warm white mineral plaster; honey-toned timber balcony linings; black steel rails and window frames; standing-seam metal; clear glazing",
+    "glass_profile": "nordic_clear_occupied",
+    "kits": [
+      "through_courtyard_passage",
+      "three_timber_balcony_stacks",
+      "restrained_black_window_grid",
+      "standing_seam_gable_roof",
+      "five_timber_trimmed_dormers",
+      "integrated_downpipes"
+    ]
+  },
+  "archetype_aliases": [
+    "scandinavian_urban_residential",
+    "scandi_urban_white_plaster"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The reference-locked entrance, corner returns, crown and roof remain fixed semantic modules; ordinary registered bays repeat along the long streetwall axis and turn corners with authored secondary elevations.",
+    "recommendedWidth_m": [
+      18,
+      48
+    ],
+    "recommendedDepth_m": [
+      14,
+      32
+    ],
+    "recommendedFloors": [
+      4,
+      7
+    ],
+    "wingDepth_m": [
+      8,
+      13
+    ],
+    "preferredBayMultiple_m": 4.5,
+    "minimumCourtyard_m": 10,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          18,
+          48
+        ],
+        "recommendedDepth_m": [
+          14,
+          32
+        ],
+        "recommendedFloors": [
+          4,
+          7
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          36,
+          74.4
+        ],
+        "recommendedDepth_m": [
+          16,
+          43.2
+        ],
+        "recommendedFloors": [
+          4,
+          7
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          43.199999999999996,
+          91.19999999999999
+        ],
+        "recommendedDepth_m": [
+          18,
+          48.0
+        ],
+        "recommendedFloors": [
+          4,
+          7
+        ],
+        "wingDepth_m": [
+          8,
+          13
+        ],
+        "minimumCourtyard_m": 10
+      }
+    },
+    "notes": [
+      "Preserve the selected entrance and full roof identity as fixed semantic pieces.",
+      "Vary width in whole 4.50 metre bays and height in whole floor modules.",
+      "Use authored left/right/rear bands on returns; never wrap the public front."
+    ]
+  },
+  "massing_graph": {
+    "type": "modular_streetwall",
+    "profile": "white_plaster_dormer_block_v98",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/scandinavian_urban_residential/variant_0.png",
+    "fixed": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable": [
+      "typical_a",
+      "typical_b",
+      "typical_c"
+    ]
+  }
+}
