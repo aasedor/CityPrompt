@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-29-unitized-panel-topology-v102",
+  "memory_version": "2026-07-29-registered-source-construction-zones-v103",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -47,6 +47,10 @@
     {
       "id": "render_locked_sources_are_geometry_bound",
       "rule": "A generated elevation, material study or occupied-depth source counts only when exported geometry actually references it. Coordinate-register the source to audited model datums, keep exterior screens and mullions as separate physical construction, and place reference-derived occupied depth immediately behind the matching physical glazing."
+    },
+    {
+      "id": "registered_reference_and_tile_safe_zones_are_separate",
+      "rule": "Keep the full render-locked elevation as the identity and registration authority, but do not stretch its photographed openings, shadows or perspective over long beams, curved shells, arch soffits or domes. Those physical solids use shadow-neutral tile-safe construction zones derived from the same reference palette; reference-specific occupation is clipped and coordinate-registered per real opening behind physical glazing."
     },
     {
       "id": "unitized_enclosures_are_panel_topologies",
@@ -762,6 +766,11 @@
       "symptom": "A crystalline civic facade reads as an oversized triangular quilt or a generic honeycomb unrelated to the reference enclosure",
       "cause": "A rectangular curtain-wall grid was split decoratively, or one uniform hexagon was repeated without using the documented panel count, clipped shape families, material ratio and curved opening boundary.",
       "correction": "Reconstruct a wrapped unitized panel topology at evidence-based scale; mix the authored four-, five- and six-sided families, preserve the opaque-to-glazed schedule, clip panels to subtractive openings, and keep pressure-cap seams visible between every neighbouring unit."
+    },
+    {
+      "symptom": "A curved shell, long timber member or deep stone arcade shows stretched windows, baked shadows or giant facade fragments even though a custom elevation exists",
+      "cause": "The complete render-locked elevation was reused as a generic tiling material on nonlinear or elongated construction surfaces instead of remaining a coordinate-registered identity source.",
+      "correction": "Separate reference registration from construction materialization. Use tile-safe shadow-neutral shell, timber, stone and dome zones derived from the goalpost palette on physical solids; keep silhouette openings in geometry; and clip the reference-derived occupied-depth plate to each matching real pane or arch."
     }
   ]
 }

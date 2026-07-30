@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source.png",
+  "method": "The generator's structural bay schedule fixes panes and louver-only cells. Only registered clear cells receive physical glass.",
+  "physical_geometry_required": true
+}

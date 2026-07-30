@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-29-unitized-panel-topology-v102"
+        == "2026-07-29-registered-source-construction-zones-v103"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -163,6 +163,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
         "render_locked_sources_are_geometry_bound",
+        "registered_reference_and_tile_safe_zones_are_separate",
         "unitized_enclosures_are_panel_topologies",
         "glass_is_layered",
         "validate_shapes_not_one_box",
@@ -172,6 +173,13 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "monumental_glazing_has_sectional_depth",
         "multi_aisle_roofs_are_complete_systems",
     } <= principle_ids
+    assert any(
+        "curved shell, long timber member or deep stone arcade"
+        in item["symptom"].lower()
+        and "tile-safe shadow-neutral" in item["correction"].lower()
+        and "occupied-depth plate" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     glazing = memory["construction_memory"]["glazing"]
     assert {
         "bronze_recessed_occupied",

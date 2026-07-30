@@ -1,0 +1,36 @@
+{
+  "schema": "reference-generation@2",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate and precise-object-edit from hard catalogue goalpost",
+  "generated_at": "2026-07-29",
+  "catalogue_reference": "/archetypes/buildings/parametric_future_hub/variant_0.png",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_2VZ6eWiysgdmJNbzenfyCxKi.png",
+      "use_case": "stylized-concept",
+      "role": "render-locked orthographic facade elevation",
+      "prompt_summary": "Create a precise photorealistic rectified front elevation of the same asymmetrical hourglass-shaped pearl-white hub: five occupied levels, a sweeping concave lower waist, a broad flaring crown, six organic glazed openings, perforated panel zones and one deeply carved entrance on a neutral shadow-free studio field.",
+      "invariants": [
+        "same asymmetrical hourglass and flared roof silhouette",
+        "exactly five occupied levels",
+        "six organic openings remain in their goalpost arrangement",
+        "no perspective, context, landscaping, signage or text"
+      ]
+    },
+    {
+      "file": "occupied-depth-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_BAXfK09bCEZz0WADjJGkP2Ph.png",
+      "use_case": "precise-object-edit",
+      "role": "registered occupied-depth plate behind physical organic glazing",
+      "input": "elevation-source.png",
+      "prompt_summary": "Remove the exterior shell on a black field while retaining only the registered five-level interior visible through the original organic openings, with localized warm rooms, slabs, columns and circulation.",
+      "invariants": [
+        "preserve the elevation canvas and opening registration",
+        "exactly five occupied levels",
+        "no exterior shell, perforated panels, context or uniform orange glow"
+      ]
+    }
+  ]
+}

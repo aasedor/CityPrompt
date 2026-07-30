@@ -389,6 +389,48 @@
                                                         "materialZones":  "iridescent silver-white aluminum unitized panels; clear and graduated-frit low-iron triple glazing; pale pressure caps; western red cedar soffit; warm occupied library; board-formed concrete transit bridge; faceted silver roof",
                                                         "glassProfile":  "calgary_library_low_iron_fritted",
                                                         "elevationUrl":  "/families/calgary-central-library/elevation.jpg"
-                                                                 }
+                                                                 },
+                     "parametric_future_hub":  {
+                                                    "archetypeId":  "parametric_future_hub",
+                                                    "identity":  "A five-level pearl-white hourglass shell flares into one continuous roof, pinched by a concave lower waist and carved with six deep asymmetrical organic openings exposing warm occupied interiors.",
+                                                    "materialZones":  "pearl-white perforated composite shell; curved low-iron glazing; pale metal frames and reveals; warm occupied interiors; continuous silver-white roof",
+                                                    "glassProfile":  "fluid_hub_low_iron_curved",
+                                                    "elevationUrl":  "/families/parametric-fluid-hub/elevation.jpg"
+                                                },
+                     "parametric_fluid_organic":  {
+                                                       "archetypeId":  "parametric_fluid_organic",
+                                                       "identity":  "A five-level pearl-white hourglass shell flares into one continuous roof, pinched by a concave lower waist and carved with six deep asymmetrical organic openings exposing warm occupied interiors.",
+                                                       "materialZones":  "pearl-white perforated composite shell; curved low-iron glazing; pale metal frames and reveals; warm occupied interiors; continuous silver-white roof",
+                                                       "glassProfile":  "fluid_hub_low_iron_curved",
+                                                       "elevationUrl":  "/families/parametric-fluid-hub/elevation.jpg"
+                                                   },
+                     "transit_oriented_station_block":  {
+                                                              "archetypeId":  "transit_oriented_station_block",
+                                                              "identity":  "A five-level honey-glulam station block rises above a transparent public concourse, alternating deep timber louvers with occupied glazing beneath one oversized tree-column canopy.",
+                                                              "materialZones":  "honey glulam frame; warm CLT panels; dark timber louvers; neutral low-e glass; translucent ETFE membrane; planted roof terrace; pale concrete concourse",
+                                                              "glassProfile":  "timber_station_neutral_low_e",
+                                                              "elevationUrl":  "/families/timber-transit-station/elevation.jpg"
+                                                          },
+                     "transit_station_timber_sustainable":  {
+                                                                 "archetypeId":  "transit_station_timber_sustainable",
+                                                                 "identity":  "A five-level honey-glulam station block rises above a transparent public concourse, alternating deep timber louvers with occupied glazing beneath one oversized tree-column canopy.",
+                                                                 "materialZones":  "honey glulam frame; warm CLT panels; dark timber louvers; neutral low-e glass; translucent ETFE membrane; planted roof terrace; pale concrete concourse",
+                                                                 "glassProfile":  "timber_station_neutral_low_e",
+                                                                 "elevationUrl":  "/families/timber-transit-station/elevation.jpg"
+                                                             },
+                     "traditional_vernacular_market_street":  {
+                                                                   "archetypeId":  "traditional_vernacular_market_street",
+                                                                   "identity":  "A long honey-limestone souk is cut by seven genuinely deep pointed arches, each pairing carved mashrabiya, a recessed market shop and a hanging bronze lantern beneath seven aligned domes.",
+                                                                   "materialZones":  "honey cut-limestone ashlar; pale dome stone; carved dark walnut mashrabiya and shopfronts; recessed amber glazing; aged bronze lanterns",
+                                                                   "glassProfile":  "souk_recessed_amber_glass",
+                                                                   "elevationUrl":  "/families/covered-souk-market/elevation.jpg"
+                                                               },
+                     "vernacular_market_souk_bazaar":  {
+                                                            "archetypeId":  "vernacular_market_souk_bazaar",
+                                                            "identity":  "A long honey-limestone souk is cut by seven genuinely deep pointed arches, each pairing carved mashrabiya, a recessed market shop and a hanging bronze lantern beneath seven aligned domes.",
+                                                            "materialZones":  "honey cut-limestone ashlar; pale dome stone; carved dark walnut mashrabiya and shopfronts; recessed amber glazing; aged bronze lanterns",
+                                                            "glassProfile":  "souk_recessed_amber_glass",
+                                                            "elevationUrl":  "/families/covered-souk-market/elevation.jpg"
+                                                        }
                  }
 }

@@ -1,0 +1,161 @@
+{
+  "status": "pass",
+  "family": "parametric-fluid-hub",
+  "archetype_id": "parametric_future_hub",
+  "reuse_keys": [
+    "parametric_future_hub",
+    "parametric_fluid_organic",
+    "Office / Commercial",
+    "Innovation Hub"
+  ],
+  "manifest": "parametric-fluid-hub_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "parametric-fluid-hub_podium.glb: 9.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-fluid-hub_floor_typical_a.glb: 9.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-fluid-hub_floor_typical_b.glb: 10.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-fluid-hub_floor_typical_c.glb: 9.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-fluid-hub_crown_crown.glb: 9.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-fluid-hub_assembled.glb: 31.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "parametric-fluid-hub_podium.glb",
+      "status": "ok",
+      "triangles": 284,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 5.0,
+        "depth_z": 34.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_RegisteredShell"
+      ],
+      "size_bytes": 10195292
+    },
+    {
+      "file": "parametric-fluid-hub_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 608,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 5.0,
+        "depth_z": 34.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_RegisteredShell"
+      ],
+      "size_bytes": 10218376
+    },
+    {
+      "file": "parametric-fluid-hub_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 608,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 5.0,
+        "depth_z": 34.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_WrappedShell"
+      ],
+      "size_bytes": 10954956
+    },
+    {
+      "file": "parametric-fluid-hub_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 608,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 5.0,
+        "depth_z": 34.11
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_RegisteredShell"
+      ],
+      "size_bytes": 10218376
+    },
+    {
+      "file": "parametric-fluid-hub_crown_crown.glb",
+      "status": "ok",
+      "triangles": 608,
+      "extent_m": {
+        "width_x": 43.6,
+        "height_y": 5.0,
+        "depth_z": 31.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_RegisteredShell"
+      ],
+      "size_bytes": 10218392
+    },
+    {
+      "file": "parametric-fluid-hub_roof.glb",
+      "status": "ok",
+      "triangles": 300,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 3.0,
+        "depth_z": 34.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_ContinuousRoof",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass"
+      ],
+      "size_bytes": 4496836
+    },
+    {
+      "file": "parametric-fluid-hub_assembled.glb",
+      "status": "ok",
+      "triangles": 19850,
+      "extent_m": {
+        "width_x": 46.0,
+        "height_y": 27.98,
+        "depth_z": 34.034
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W8_PARAMETRIC_FLUID_HUB_ContinuousRoof",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PaleConcrete",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PaleMetal",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_PhysicalGlass",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_ReferenceOccupiedDepth",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_RegisteredShell",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_WarmInterior",
+        "MAT_W8_PARAMETRIC_FLUID_HUB_WrappedShell"
+      ],
+      "size_bytes": 32462644,
+      "role": "assembled"
+    }
+  ]
+}

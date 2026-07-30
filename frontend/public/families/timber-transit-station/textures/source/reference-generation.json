@@ -1,0 +1,36 @@
+{
+  "schema": "reference-generation@2",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate and precise-object-edit from hard catalogue goalpost",
+  "generated_at": "2026-07-29",
+  "catalogue_reference": "/archetypes/buildings/transit_oriented_station_block/variant_2.png",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_osdpYoIjo6g5bGTKQxOCX2DB.png",
+      "use_case": "stylized-concept",
+      "role": "render-locked orthographic facade elevation",
+      "prompt_summary": "Create a precise rectified front elevation of the same five-level mass-timber transit station: transparent public concourse, expressed glulam grid, alternating louver and glass bays, and one oversized tree-column canopy with translucent ETFE while preserving the reference structural hierarchy.",
+      "invariants": [
+        "exactly four upper occupied rows over one open concourse",
+        "alternating louver, CLT and clear-window bay schedule",
+        "oversized tree-column canopy remains one integrated structure",
+        "no perspective, context, vehicles, people, signage or text"
+      ]
+    },
+    {
+      "file": "occupied-depth-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_u9HidbPRdZJP6JfkDlsyzEHc.png",
+      "use_case": "precise-object-edit",
+      "role": "registered occupied-depth plate behind physical station glazing",
+      "input": "elevation-source.png",
+      "prompt_summary": "Remove the exterior glulam frame, louvers and canopy on a black field while retaining only registered occupied offices and the transparent transit concourse with restrained warm depth.",
+      "invariants": [
+        "preserve canvas, floor datums and glazing registration",
+        "retain four upper rows and the open concourse",
+        "no exterior frame, louvers, canopy, context or uniform glow"
+      ]
+    }
+  ]
+}

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-29-unitized-panel-topology-v102`.
+Current executable memory: `2026-07-29-registered-source-construction-zones-v103`.
 
 ## The quality target
 
@@ -1016,6 +1016,26 @@ The polychrome collegiate family added four rules for resizable hero facades:
   should not become a few oversized triangles or thousands of generic windows.
   Validate panel density, material ratio and joint continuity from street,
   front-corner and aerial cameras.
+
+### Wave 8 registered-source + construction-zone lessons
+
+- Keep the complete render-locked elevation as the identity and coordinate
+  authority, but do not stretch that picture over a nonlinear shell, a long
+  glulam beam, a deep arch soffit or a roof dome. Photographed openings and
+  baked perspective become ghost windows and giant facade fragments on those
+  solids.
+- Give physical construction its own tile-safe, shadow-neutral PBR zones
+  derived from the exact goalpost palette: perforated composite shell, glulam,
+  louvers, honey limestone and dome stone. These are supporting materials, not
+  a substitute for the registered elevation.
+- Preserve reference-specific occupation separately. Clip a clean
+  occupied-depth source to each real organic pane, station bay or pointed-arch
+  opening, place it immediately behind physical glazing, and keep mullions,
+  screens, reveals and masonry returns as independent shadow-casting geometry.
+- Validate the separation from three cameras. Head-on proves opening and floor
+  registration, a grazing close view proves material scale and real depth, and
+  an aerial view proves that the shell, canopy or domes remain complete
+  architecture rather than a hero-facing card.
 
 ## Updating this memory
 

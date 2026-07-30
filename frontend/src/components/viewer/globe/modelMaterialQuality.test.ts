@@ -185,6 +185,27 @@ describe('prepareArchitecturalClone', () => {
       clearcoat: 0.60,
     },
     {
+      profile: 'fluid_hub_low_iron_curved',
+      transmission: 0.64,
+      environment: 1.12,
+      ior: 1.52,
+      clearcoat: 0.62,
+    },
+    {
+      profile: 'timber_station_neutral_low_e',
+      transmission: 0.52,
+      environment: 1.00,
+      ior: 1.51,
+      clearcoat: 0.52,
+    },
+    {
+      profile: 'souk_recessed_amber_glass',
+      transmission: 0.32,
+      environment: 0.78,
+      ior: 1.49,
+      clearcoat: 0.40,
+    },
+    {
       profile: 'terracotta_office_low_e',
       transmission: 0.54,
       environment: 1.02,

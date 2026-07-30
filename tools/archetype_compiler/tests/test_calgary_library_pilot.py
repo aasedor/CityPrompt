@@ -9,7 +9,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 FAMILY = "calgary-central-library"
 ROOT = REPO / "frontend" / "public" / "families" / FAMILY
-MEMORY_VERSION = "2026-07-29-unitized-panel-topology-v102"
+MEMORY_VERSION = "2026-07-29-registered-source-construction-zones-v103"
 
 
 def load_json(path: Path) -> dict:

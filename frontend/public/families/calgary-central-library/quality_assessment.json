@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-29-unitized-panel-topology-v102",
+  "memory_version": "2026-07-29-registered-source-construction-zones-v103",
   "archetype_id": "calgary_new_central_library",
   "family": "calgary-central-library",
   "status": "pass",

@@ -1,0 +1,163 @@
+{
+  "status": "pass",
+  "family": "covered-souk-market",
+  "archetype_id": "traditional_vernacular_market_street",
+  "reuse_keys": [
+    "traditional_vernacular_market_street",
+    "vernacular_market_souk_bazaar",
+    "Market Hall",
+    "Commercial / Retail"
+  ],
+  "manifest": "covered-souk-market_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "covered-souk-market_floor_typical_a.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "covered-souk-market_floor_typical_b.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "covered-souk-market_floor_typical_c.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "covered-souk-market_crown_crown.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "covered-souk-market_roof.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "covered-souk-market_assembled.glb: 20.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "covered-souk-market_podium.glb",
+      "status": "ok",
+      "triangles": 1068,
+      "extent_m": {
+        "width_x": 49.5,
+        "height_y": 5.0,
+        "depth_z": 24.51
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone",
+        "MAT_W8_COVERED_SOUK_MARKET_PhysicalGlass"
+      ],
+      "size_bytes": 4563132
+    },
+    {
+      "file": "covered-souk-market_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 900,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 5.0,
+        "depth_z": 24.13
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CarvedWalnut",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone"
+      ],
+      "size_bytes": 9016568
+    },
+    {
+      "file": "covered-souk-market_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 900,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 5.0,
+        "depth_z": 24.13
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CarvedWalnut",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone"
+      ],
+      "size_bytes": 9016568
+    },
+    {
+      "file": "covered-souk-market_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 900,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 5.0,
+        "depth_z": 24.13
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CarvedWalnut",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone"
+      ],
+      "size_bytes": 9016568
+    },
+    {
+      "file": "covered-souk-market_crown_crown.glb",
+      "status": "ok",
+      "triangles": 900,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 5.0,
+        "depth_z": 24.13
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CarvedWalnut",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone"
+      ],
+      "size_bytes": 9016512
+    },
+    {
+      "file": "covered-souk-market_roof.glb",
+      "status": "ok",
+      "triangles": 4064,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 4.5,
+        "depth_z": 24.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone",
+        "MAT_W8_COVERED_SOUK_MARKET_DomeStone"
+      ],
+      "size_bytes": 9051736
+    },
+    {
+      "file": "covered-souk-market_assembled.glb",
+      "status": "ok",
+      "triangles": 48038,
+      "extent_m": {
+        "width_x": 49.0,
+        "height_y": 14.5,
+        "depth_z": 24.005
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W8_COVERED_SOUK_MARKET_AgedBronze",
+        "MAT_W8_COVERED_SOUK_MARKET_CarvedWalnut",
+        "MAT_W8_COVERED_SOUK_MARKET_CutStone",
+        "MAT_W8_COVERED_SOUK_MARKET_DeepCavity",
+        "MAT_W8_COVERED_SOUK_MARKET_DomeStone",
+        "MAT_W8_COVERED_SOUK_MARKET_LanternGlow",
+        "MAT_W8_COVERED_SOUK_MARKET_PaleConcrete",
+        "MAT_W8_COVERED_SOUK_MARKET_PhysicalGlass",
+        "MAT_W8_COVERED_SOUK_MARKET_RecessedMortarJoint",
+        "MAT_W8_COVERED_SOUK_MARKET_ReferenceOccupiedDepth"
+      ],
+      "size_bytes": 21085260,
+      "role": "assembled"
+    }
+  ]
+}

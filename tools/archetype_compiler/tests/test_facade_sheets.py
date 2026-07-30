@@ -715,6 +715,9 @@ def test_reusable_glass_profiles_are_physically_plausible():
         "calgary_library_low_iron_fritted",
         "terracotta_office_low_e",
         "civic_recessed_smoked",
+        "fluid_hub_low_iron_curved",
+        "timber_station_neutral_low_e",
+        "souk_recessed_amber_glass",
     }
     for name in GLASS_PROFILES:
         profile = glass_profile(name)

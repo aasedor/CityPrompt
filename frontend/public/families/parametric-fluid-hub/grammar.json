@@ -1,0 +1,89 @@
+{
+  "family_id": "parametric-fluid-hub",
+  "source": {
+    "archetype_id": "parametric_future_hub",
+    "variant_id": "parametric_fluid_organic",
+    "generation_archetype_id": "parametric_fluid_organic",
+    "reuse_keys": [
+      "parametric_future_hub",
+      "parametric_fluid_organic",
+      "Office / Commercial",
+      "Innovation Hub"
+    ]
+  },
+  "dimensions": {
+    "width_m": 46.0,
+    "depth_m": 34.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 3.0,
+    "crown_height_m": 5.0,
+    "default_floors": 5,
+    "min_floors": 4,
+    "max_floors": 7
+  },
+  "architectural_signature": {
+    "identity": "A five-level pearl-white hourglass shell flares into one continuous roof, pinched by a concave lower waist and carved with six deep asymmetrical organic openings exposing warm occupied interiors.",
+    "material_zones": "pearl-white perforated GFRC/composite shell panels; fine pale-metal joints; curved low-iron glazing; warm timber public interiors; restrained stainless frames; pale terrazzo public plinth",
+    "glass_profile": "fluid_hub_low_iron_curved",
+    "kits": [
+      "double_curved_flared_shell",
+      "subtractive_organic_openings",
+      "deep_shell_reveals",
+      "curved_low_iron_glazing",
+      "continuous_shell_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "parametric_future_hub",
+    "parametric_fluid_organic"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The free-form shell is authored inside an approximate rectangular placement envelope. Mild independent scaling preserves the landmark; larger parcels switch to a related curved-panel stack.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.86,
+      "scaleMax": 1.14,
+      "maxAxisRatio": 1.12
+    },
+    "recommendedWidth_m": [
+      38,
+      54
+    ],
+    "recommendedDepth_m": [
+      28,
+      40
+    ],
+    "recommendedFloors": [
+      4,
+      7
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          38,
+          54
+        ],
+        "recommendedDepth_m": [
+          28,
+          40
+        ],
+        "recommendedFloors": [
+          4,
+          7
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "double_curved_hourglass_shell",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/parametric_future_hub/variant_0.png",
+    "fallback": "family_shaped_modular_streetwall"
+  }
+}

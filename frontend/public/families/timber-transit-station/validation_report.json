@@ -1,0 +1,176 @@
+{
+  "status": "pass",
+  "family": "timber-transit-station",
+  "archetype_id": "transit_oriented_station_block",
+  "reuse_keys": [
+    "transit_oriented_station_block",
+    "transit_station_timber_sustainable",
+    "Transit Station",
+    "Mass Timber"
+  ],
+  "manifest": "timber-transit-station_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "timber-transit-station_floor_typical_a.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-transit-station_floor_typical_b.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-transit-station_floor_typical_c.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-transit-station_crown_crown.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-transit-station_roof.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-transit-station_assembled.glb: 19.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "timber-transit-station_podium.glb",
+      "status": "ok",
+      "triangles": 1104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 4.2,
+        "depth_z": 32.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber"
+      ],
+      "size_bytes": 4564088
+    },
+    {
+      "file": "timber-transit-station_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 1104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 4.2,
+        "depth_z": 32.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_RegisteredFacade",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TimberLouvers"
+      ],
+      "size_bytes": 13920972
+    },
+    {
+      "file": "timber-transit-station_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 1104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 4.2,
+        "depth_z": 32.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_RegisteredFacade",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TimberLouvers"
+      ],
+      "size_bytes": 13920972
+    },
+    {
+      "file": "timber-transit-station_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 1104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 4.2,
+        "depth_z": 32.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_RegisteredFacade",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TimberLouvers"
+      ],
+      "size_bytes": 13920972
+    },
+    {
+      "file": "timber-transit-station_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 4.2,
+        "depth_z": 32.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_RegisteredFacade",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TimberLouvers"
+      ],
+      "size_bytes": 13920884
+    },
+    {
+      "file": "timber-transit-station_roof.glb",
+      "status": "ok",
+      "triangles": 432,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 7.5,
+        "depth_z": 32.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W8_TIMBER_TRANSIT_STATION_CanopyTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TranslucentMembrane"
+      ],
+      "size_bytes": 8995628
+    },
+    {
+      "file": "timber-transit-station_assembled.glb",
+      "status": "ok",
+      "triangles": 14254,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 29.0,
+        "depth_z": 32.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W8_TIMBER_TRANSIT_STATION_CanopyTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_DeepCavity",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PaleConcrete",
+        "MAT_W8_TIMBER_TRANSIT_STATION_PhysicalGlass",
+        "MAT_W8_TIMBER_TRANSIT_STATION_Planting",
+        "MAT_W8_TIMBER_TRANSIT_STATION_ReferenceOccupiedDepth",
+        "MAT_W8_TIMBER_TRANSIT_STATION_StructuralTimber",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TimberLouvers",
+        "MAT_W8_TIMBER_TRANSIT_STATION_TranslucentMembrane"
+      ],
+      "size_bytes": 20055492,
+      "role": "assembled"
+    }
+  ]
+}

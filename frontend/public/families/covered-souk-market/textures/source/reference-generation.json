@@ -1,0 +1,36 @@
+{
+  "schema": "reference-generation@2",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate and precise-object-edit from hard catalogue goalpost",
+  "generated_at": "2026-07-29",
+  "catalogue_reference": "/archetypes/buildings/traditional_vernacular_market_street/variant_2.png",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_QQBwaPXoxZJuea5c7fT3o0AR.png",
+      "use_case": "stylized-concept",
+      "role": "render-locked orthographic facade elevation",
+      "prompt_summary": "Create a precise rectified front elevation of the same covered souk with exactly seven equal pointed-arch bays, deep recessed shops, carved mashrabiya screens, exactly seven aligned domes, warm honey cut stone and true masonry thickness on a shadow-neutral field.",
+      "invariants": [
+        "exactly seven equal pointed arches and seven aligned domes",
+        "upper carved screens and lower recessed shops remain separate registers",
+        "warm honey limestone and walnut identity",
+        "no perspective, context, trees, people, signage or text"
+      ]
+    },
+    {
+      "file": "occupied-depth-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_5uABXYZgTPSWPsWQMJFRW0UE.png",
+      "use_case": "precise-object-edit",
+      "role": "registered occupied-depth plate behind physical arches and glazing",
+      "input": "elevation-source.png",
+      "prompt_summary": "Remove the exterior stone and roof domes on a black field while retaining seven registered recessed shop interiors, timber screens, doors and warm hanging lanterns.",
+      "invariants": [
+        "preserve the seven-bay registration and canvas",
+        "retain deep shop and screen depth rather than a flat facade",
+        "no exterior ashlar, domes, context or uniform glow"
+      ]
+    }
+  ]
+}
