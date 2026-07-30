@@ -213,8 +213,13 @@ def prepare_family(
 ) -> None:
     root = FAMILY_ROOT / family
     source_root = root / "textures" / "source"
-    elevation_path = source_root / "elevation-source.png"
-    interior_path = source_root / "occupied-depth-source.png"
+    elevation_source = config.get("elevation_source", "elevation-source.png")
+    occupied_depth_source = config.get(
+        "occupied_depth_source",
+        "occupied-depth-source.png",
+    )
+    elevation_path = source_root / elevation_source
+    interior_path = source_root / occupied_depth_source
     goalpost_path = source_root / "archetype-goalpost.png"
     elevation = _load_rgb(elevation_path)
     interior = _load_rgb(interior_path)
@@ -268,7 +273,7 @@ def prepare_family(
     }
     registered_bands = {
         "schema": "registered-facade-bands@1",
-        "source": "elevation-source.png",
+        "source": elevation_source,
         "bands": config["bands"],
         "notes": (
             "The fixed landmark consumes the complete registered elevation. "
@@ -282,7 +287,7 @@ def prepare_family(
     )
     registered_openings = {
         "schema": "registered-openings@1",
-        "source": "elevation-source.png",
+        "source": elevation_source,
         "method": config["opening_method"],
         "physical_geometry_required": True,
     }
@@ -293,12 +298,12 @@ def prepare_family(
     manifest = {
         "schema": config["skin_schema"],
         "family": family,
-        "source": "textures/source/elevation-source.png",
+        "source": f"textures/source/{elevation_source}",
         "source_model": "gpt-image-2",
         "sources": {
             "archetype_goalpost": "textures/source/archetype-goalpost.png",
-            "orthographic_elevation": "textures/source/elevation-source.png",
-            "reference_underlay": "textures/source/occupied-depth-source.png",
+            "orthographic_elevation": f"textures/source/{elevation_source}",
+            "reference_underlay": f"textures/source/{occupied_depth_source}",
             "reference_generation": "textures/source/reference-generation.json",
             "registered_openings": "textures/source/registered-openings.json",
             "registered_bands": "textures/source/registered-bands.json",

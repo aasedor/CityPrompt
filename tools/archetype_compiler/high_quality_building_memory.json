@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-30-detached-house-compositions-v104",
+  "memory_version": "2026-07-30-screen-gap-and-repair-depth-v105",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -784,6 +784,11 @@
       "symptom": "A detached house has plausible wall materials but still reads as a generic miniature apartment block or loses its identity when the user draws a slightly different footprint",
       "cause": "The generator treated the house as interchangeable stacked boxes, reduced the roof and threshold to caps, or stretched individual windows, porches, screens and balconies instead of preserving their composition.",
       "correction": "Author a fixed whole-house landmark whose roof silhouette, entrance, porch or balcony, privacy screen, chimney or tower and residential window cavities form one reviewed composition. Permit bounded whole-building scaling, then route larger targets to a fallback kit that repeats complete residential bays while keeping the entrance, ends and roof fixed."
+    },
+    {
+      "symptom": "A detailed detached-house screen fuses into a pale solid wall, or exposed historic masonry reads as brick stickers applied over clean stucco",
+      "cause": "Fine battens were sized without proving screen-space gaps and recessed occupation in the locked corner camera, while regular brick grids were projected proud of the finish without a mortar recess or chipped plaster boundary.",
+      "correction": "Calibrate batten width, spacing, projection and a meaningful air gap against the corner view; recess glass and varied dark occupied rooms behind it. Treat exposed masonry as loss of finish: keep brick nearly flush or recessed over a shadowed mortar bed and author ragged, irregular plaster edges."
     }
   ]
 }

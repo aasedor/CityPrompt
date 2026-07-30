@@ -123,7 +123,7 @@ FAMILIES: dict[str, dict] = {
         "variant_id": "japanese_lane_timber_screen",
         "generation_archetype_id": "japanese_lane_timber_screen",
         "label": "Japanese Contemporary Lanehouse — Timber Screen",
-        "dimensions": (5.0, 12.0, 10.2),
+        "dimensions": (12.0, 5.0, 10.2),
         "floors": (1, 3, 3),
         "floor_height_m": 3.0,
         "roof_height_m": 1.2,
@@ -142,10 +142,10 @@ FAMILIES: dict[str, dict] = {
             "Lanehouse",
         ],
         "identity": (
-            "A narrow three-level Japanese lanehouse wraps two occupied upper "
-            "floors in one continuous honey-cedar privacy screen, held by fine "
-            "charcoal rails above a deeply recessed entrance and bench, with a "
-            "shallow rooftop clerestory."
+            "A long street-facing three-level Japanese lanehouse wraps two "
+            "occupied upper floors in one continuous honey-cedar privacy screen, "
+            "held by fine charcoal rails above a deeply recessed entrance and "
+            "bench, with a shallow rooftop clerestory."
         ),
         "materials": (
             "fine-grained honey cedar battens and panels; charcoal-bronze support "
@@ -162,8 +162,8 @@ FAMILIES: dict[str, dict] = {
             "rooftop_clerestory",
         ],
         "footprint": {
-            "recommendedWidth_m": [4.2, 6.3],
-            "recommendedDepth_m": [9.5, 15.5],
+            "recommendedWidth_m": [9.5, 15.5],
+            "recommendedDepth_m": [4.2, 6.3],
             "recommendedFloors": [1, 3],
         },
         "fixed_band": {
@@ -174,14 +174,14 @@ FAMILIES: dict[str, dict] = {
         "goalpost": (
             "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png"
         ),
-        "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory",
+        "silhouette": "long_street_facing_cedar_screen_with_rooftop_clerestory",
         "profile_rationale": (
-            "The narrow screen is a complete privacy facade, so mild independent "
-            "scaling is safe. Larger drawings repeat complete screen bays and "
-            "their occupied rooms rather than widening individual battens."
+            "The long street-facing screen is a complete privacy facade, so mild "
+            "independent scaling is safe. Larger drawings repeat complete screen "
+            "bays and their occupied rooms rather than widening battens."
         ),
-        "close_target": (0.0, -6.2, 5.0),
-        "front_y": -6.0,
+        "close_target": (0.8, -2.7, 5.0),
+        "front_y": -2.5,
     },
     "spanish-colonial-villa": {
         "archetype_id": "mediterranean_villa_estate",
@@ -310,7 +310,10 @@ def load_palette(
         "underlay": reference_image_material(
             f"MAT_W9_{token}_RegisteredOccupiedDepth",
             folder,
-            "textures/source/occupied-depth-source.png",
+            skin.get("sources", {}).get(
+                "reference_underlay",
+                "textures/source/occupied-depth-source.png",
+            ),
             emission_strength=0.085,
         ),
         "deep": material(
@@ -372,8 +375,8 @@ def load_palette(
                     folder,
                     near["timber"],
                     "timber_side",
-                    value=0.26,
-                    saturation=1.10,
+                    value=0.72,
+                    saturation=1.02,
                 ),
                 "carved": pbr_material(
                     f"MAT_W9_{token}_CarvedTimber",
@@ -417,8 +420,8 @@ def load_palette(
                     folder,
                     near["cedar"],
                     "cedar",
-                    value=0.82,
-                    saturation=1.04,
+                    value=0.69,
+                    saturation=1.08,
                 ),
                 "metal": pbr_material(
                     f"MAT_W9_{token}_CharcoalBronze",
@@ -457,24 +460,24 @@ def load_palette(
                     folder,
                     near["stucco"],
                     "stucco",
-                    value=0.76,
-                    saturation=1.06,
+                    value=0.61,
+                    saturation=1.12,
                 ),
                 "brick": pbr_material(
                     f"MAT_W9_{token}_ExposedBrick",
                     folder,
                     near["brick"],
                     "brick",
-                    value=0.70,
-                    saturation=1.14,
+                    value=0.56,
+                    saturation=1.22,
                 ),
                 "roof": pbr_material(
                     f"MAT_W9_{token}_TerracottaBarrelTile",
                     folder,
                     near["roof"],
                     "roof",
-                    value=0.72,
-                    saturation=1.04,
+                    value=0.64,
+                    saturation=1.10,
                 ),
                 "stone": pbr_material(
                     f"MAT_W9_{token}_WarmLimestone",
@@ -607,6 +610,32 @@ def tiled_vertical_panel(
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
     return obj
+
+
+def round_beam(
+    name: str,
+    start: tuple[float, float, float],
+    end: tuple[float, float, float],
+    radius: float,
+    mat: bpy.types.Material,
+    *,
+    vertices: int = 12,
+) -> bpy.types.Object:
+    """Create a cylindrical construction member between two world points."""
+    start_vector = Vector(start)
+    end_vector = Vector(end)
+    delta = end_vector - start_vector
+    member = cylinder(
+        name,
+        radius,
+        delta.length,
+        tuple((start_vector + end_vector) * 0.5),
+        mat,
+        vertices=vertices,
+    )
+    member.rotation_mode = "QUATERNION"
+    member.rotation_quaternion = delta.to_track_quat("Z", "Y")
+    return member
 
 
 def rectangles_around_openings(
@@ -1587,6 +1616,20 @@ def chalet_fixed(mats: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             flowers=True,
         )
     )
+    # The reference's lower gallery reads as one continuous load-bearing
+    # timber datum. Bridge the two balcony bays instead of leaving an
+    # apartment-like gap between unrelated railings.
+    objects.extend(
+        add_balcony(
+            name="CHALET_IntegratedLowerGalleryConnector",
+            centre_x=-0.28,
+            width=1.64,
+            slab_z=3.40,
+            front_y=front_y,
+            mats=mats,
+            flowers=True,
+        )
+    )
     objects.extend(
         add_balcony(
             name="CHALET_RightLowerBalcony",
@@ -1673,7 +1716,7 @@ def chalet_fixed(mats: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             name="CHALET_LeftCrossGable",
             centre_x=-4.20,
             width=6.20,
-            depth=12.15,
+            depth=13.10,
             base_z=9.22,
             rise=3.22,
             mats=mats,
@@ -1684,7 +1727,7 @@ def chalet_fixed(mats: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
             name="CHALET_PrimaryCrossGable",
             centre_x=2.15,
             width=10.25,
-            depth=12.85,
+            depth=13.85,
             base_z=9.24,
             rise=3.88,
             mats=mats,
@@ -1774,6 +1817,59 @@ def chalet_fixed(mats: dict[str, bpy.types.Material]) -> list[bpy.types.Object]:
                 ),
             ]
         )
+        # Horizontal log courses and structural corner posts continue the
+        # chalet construction around both long returns. They intentionally
+        # sit proud of the PBR wall so the side elevation cannot collapse into
+        # a smooth pale slab in grazing views.
+        for course in range(22):
+            z = 3.30 + course * 0.275
+            segments = [(-5.39, 5.43)]
+            for sill in (4.15, 7.20):
+                if sill - 0.10 <= z <= sill + 1.48:
+                    for lateral in (-2.65, 0.15, 2.95):
+                        opening = (lateral - 0.68, lateral + 0.68)
+                        clipped: list[tuple[float, float]] = []
+                        for start, end in segments:
+                            if opening[1] <= start or opening[0] >= end:
+                                clipped.append((start, end))
+                                continue
+                            if opening[0] - start > 0.08:
+                                clipped.append((start, opening[0]))
+                            if end - opening[1] > 0.08:
+                                clipped.append((opening[1], end))
+                        segments = clipped
+            for segment_index, (start, end) in enumerate(segments):
+                suffix = (
+                    ""
+                    if len(segments) == 1
+                    else f"_Segment_{segment_index}"
+                )
+                objects.append(
+                    box(
+                        (
+                            f"CHALET_SidePhysicalLogCourse_{side:+d}_{course}"
+                            f"{suffix}"
+                        ),
+                        (0.105, end - start, 0.115),
+                        (
+                            x + side * 0.075,
+                            (start + end) * 0.5,
+                            z,
+                        ),
+                        mats["carved"],
+                        0.018,
+                    )
+                )
+        for y in (-5.28, 5.28):
+            objects.append(
+                box(
+                    f"CHALET_SideCornerPost_{side:+d}_{y:+.2f}",
+                    (0.22, 0.30, 6.25),
+                    (x + side * 0.13, y, 6.25),
+                    mats["carved"],
+                    0.025,
+                )
+            )
         for storey, sill in enumerate((0.85, 4.15, 7.20)):
             for bay, lateral in enumerate((-2.65, 0.15, 2.95)):
                 objects.extend(
@@ -1937,11 +2033,13 @@ def add_lane_screen_front(
         x = -width / 2 + 0.10 + (width - 0.20) * index / max(
             1, slat_count - 1
         )
+        batten_width = (0.064, 0.076, 0.084)[index % 3]
+        projection = (0.12, 0.15, 0.135)[index % 3]
         objects.append(
             box(
                 f"{name}_VerticalCedarBatten_{index}",
-                (0.080, 0.17, z1 - z0),
-                (x, front_y - 0.16, (z0 + z1) * 0.5),
+                (batten_width, projection, z1 - z0),
+                (x, front_y - 0.17, (z0 + z1) * 0.5),
                 mats["cedar"],
                 0.018,
             )
@@ -1984,11 +2082,13 @@ def add_lane_screen_side(
     slat_count = max(24, int((y1 - y0) / 0.19))
     for index in range(slat_count):
         y = y0 + (y1 - y0) * index / max(1, slat_count - 1)
+        batten_width = (0.064, 0.076, 0.086)[index % 3]
+        projection = (0.12, 0.15, 0.135)[index % 3]
         objects.append(
             box(
                 f"{name}_SideCedarBatten_{side:+d}_{index}",
-                (0.17, 0.080, z1 - z0),
-                (x + side * 0.16, y, (z0 + z1) * 0.5),
+                (projection, batten_width, z1 - z0),
+                (x + side * 0.17, y, (z0 + z1) * 0.5),
                 mats["cedar"],
                 0.018,
             )
@@ -2015,7 +2115,7 @@ def add_lane_clerestory(
     mats: dict[str, bpy.types.Material],
 ) -> list[bpy.types.Object]:
     objects: list[bpy.types.Object] = []
-    height = 0.92
+    height = 0.64
     front_y = -depth / 2
     objects.extend(
         [
@@ -2079,29 +2179,43 @@ def lanehouse_fixed(
         [
             box(
                 "LANE_GroundCedarStructuralCore",
-                (4.62, 10.70, 3.00),
-                (0.0, 0.42, 1.50),
+                (5.165, 4.62, 3.00),
+                (-3.1925, 0.12, 1.50),
                 mats["cedar"],
                 0.035,
             ),
             box(
+                "LANE_GroundCedarStructuralCore_Right",
+                (3.665, 4.62, 3.00),
+                (3.9425, 0.12, 1.50),
+                mats["cedar"],
+                0.035,
+            ),
+            box(
+                "LANE_EntranceStructuralHeader",
+                (2.72, 4.62, 0.20),
+                (0.75, 0.12, 2.90),
+                mats["cedar"],
+                0.025,
+            ),
+            box(
                 "LANE_ShadowedUpperStructuralCore",
-                (4.62, 10.70, 5.92),
-                (0.0, 0.42, 6.00),
+                (11.55, 4.62, 5.92),
+                (0.0, 0.12, 6.00),
                 mats["deep"],
                 0.035,
             ),
             box(
                 "LANE_FlatRoofPlate",
-                (4.92, 11.15, 0.18),
-                (0.0, 0.25, 9.02),
+                (11.92, 4.92, 0.18),
+                (0.0, 0.02, 9.02),
                 mats["roof"],
                 0.025,
             ),
             box(
                 "LANE_UpperOccupiedGlassVolume",
-                (4.62, 0.050, 5.72),
-                (0.0, front_y + 0.48, 6.04),
+                (11.55, 0.050, 5.72),
+                (0.0, front_y + 0.46, 6.04),
                 mats["glass"],
                 0.012,
             ),
@@ -2110,13 +2224,13 @@ def lanehouse_fixed(
     objects.append(
         registered_panel(
             "LANE_RegisteredOccupiedDepth",
-            x0=-2.5,
-            x1=2.5,
+            x0=-6.0,
+            x1=6.0,
             y=front_y + 0.56,
             z0=0.0,
             z1=10.2,
             mat=mats["underlay"],
-            model_x_bounds=(-2.5, 2.5),
+            model_x_bounds=(-6.0, 6.0),
             model_z_bounds=(0.0, 10.2),
             source_uv_bounds=(0.130, 0.108, 0.865, 0.895),
         )
@@ -2126,13 +2240,13 @@ def lanehouse_fixed(
         objects.append(
             box(
                 f"LANE_OccupiedFloorDatum_{z:.2f}",
-                (4.72, 0.58, 0.12),
+                (11.68, 0.58, 0.12),
                 (0.0, front_y + 0.65, z),
                 mats["metal"],
                 0.012,
             )
         )
-    for x in (-1.22, 1.10):
+    for x in (-4.45, -1.48, 1.48, 4.45):
         objects.append(
             box(
                 f"LANE_RoomDivider_{x:+.2f}",
@@ -2145,7 +2259,7 @@ def lanehouse_fixed(
     for floor, (sill, room_height) in enumerate(
         ((3.42, 2.18), (6.42, 2.18))
     ):
-        for bay, centre_x in enumerate((-1.18, 1.18)):
+        for bay, centre_x in enumerate((-4.45, -1.48, 1.48, 4.45)):
             room_mat = (
                 mats["room_warm"]
                 if (floor + bay) % 3
@@ -2154,7 +2268,7 @@ def lanehouse_fixed(
             objects.append(
                 box(
                     f"LANE_ExplicitOccupiedRoom_{floor}_{bay}",
-                    (1.42, 0.028, room_height),
+                    (2.05, 0.028, room_height),
                     (
                         centre_x,
                         front_y + 0.60,
@@ -2167,21 +2281,55 @@ def lanehouse_fixed(
     objects.extend(
         add_lane_screen_front(
             name="LANE_ContinuousPrivacyScreen",
-            width=4.92,
+            width=11.92,
             front_y=front_y,
             z0=3.04,
             z1=9.02,
             mats=mats,
+            slat_count=69,
         )
     )
     for side in (-1, 1):
+        # A recessed continuous glass plane and localized occupied rooms make
+        # the screen gaps read as real depth instead of a pale solid side wall.
+        objects.append(
+            box(
+                f"LANE_SideOccupiedGlass_{side:+d}",
+                (0.035, 4.22, 5.66),
+                (side * 5.835, 0.02, 6.03),
+                mats["glass"],
+                0.010,
+            )
+        )
+        for floor, (sill, room_height) in enumerate(
+            ((3.40, 2.16), (6.40, 2.16))
+        ):
+            for bay, room_y in enumerate((-1.35, 1.05)):
+                room_mat = (
+                    mats["room_warm"]
+                    if (floor + bay + (0 if side < 0 else 1)) % 3
+                    else mats["room_dim"]
+                )
+                objects.append(
+                    box(
+                        f"LANE_SideOccupiedRoom_{side:+d}_{floor}_{bay}",
+                        (0.026, 1.62, room_height),
+                        (
+                            side * 5.812,
+                            room_y,
+                            sill + room_height * 0.5,
+                        ),
+                        room_mat,
+                        0.008,
+                    )
+                )
         objects.extend(
             add_lane_screen_side(
                 name="LANE_WrappedPrivacyScreen",
                 side=side,
-                x=side * 2.40,
-                y0=-5.88,
-                y1=5.45,
+                x=side * 5.88,
+                y0=-2.38,
+                y1=2.18,
                 z0=3.04,
                 z1=9.02,
                 mats=mats,
@@ -2191,8 +2339,8 @@ def lanehouse_fixed(
     # Ground level is genuinely recessed beneath the screen, with two solid
     # slat wings, a framed vestibule and an integrated bench.
     for side, centre_x, panel_width in (
-        (-1, -1.55, 1.84),
-        (1, 1.92, 1.06),
+        (-1, -3.15, 5.55),
+        (1, 4.52, 2.88),
     ):
         objects.append(
             box(
@@ -2217,68 +2365,117 @@ def lanehouse_fixed(
                     0.010,
                 )
             )
-    entrance_x = 0.48
+    entrance_x = 0.75
     objects.extend(
         [
             box(
                 "LANE_RecessedEntranceCavity",
-                (1.62, 0.62, 2.62),
-                (entrance_x, front_y + 0.48, 1.40),
+                (2.72, 0.035, 2.62),
+                (entrance_x, front_y + 0.83, 1.40),
                 mats["deep"],
                 0.018,
             ),
             box(
+                "LANE_EntranceLeftReveal",
+                (0.12, 0.82, 2.62),
+                (entrance_x - 1.30, front_y + 0.42, 1.40),
+                mats["cedar"],
+                0.018,
+            ),
+            box(
+                "LANE_EntranceRightReveal",
+                (0.12, 0.82, 2.62),
+                (entrance_x + 1.30, front_y + 0.42, 1.40),
+                mats["cedar"],
+                0.018,
+            ),
+            box(
                 "LANE_RecessedEntranceGlassDoor",
-                (0.86, 0.035, 2.34),
-                (entrance_x - 0.25, front_y + 0.20, 1.40),
+                (1.18, 0.035, 2.34),
+                (entrance_x - 0.54, front_y + 0.72, 1.40),
                 mats["glass"],
                 0.012,
             ),
             box(
+                "LANE_GlassDoorLeftFrame",
+                (0.075, 0.075, 2.40),
+                (entrance_x - 1.13, front_y + 0.68, 1.40),
+                mats["cedar"],
+                0.012,
+            ),
+            box(
+                "LANE_GlassDoorRightFrame",
+                (0.075, 0.075, 2.40),
+                (entrance_x + 0.05, front_y + 0.68, 1.40),
+                mats["cedar"],
+                0.012,
+            ),
+            box(
+                "LANE_GlassDoorHeadFrame",
+                (1.25, 0.075, 0.075),
+                (entrance_x - 0.54, front_y + 0.68, 2.60),
+                mats["cedar"],
+                0.012,
+            ),
+            box(
+                "LANE_GlassDoorCentreMullion",
+                (0.060, 0.070, 2.30),
+                (entrance_x - 0.54, front_y + 0.67, 1.40),
+                mats["cedar"],
+                0.010,
+            ),
+            box(
+                "LANE_GlassDoorHandle",
+                (0.035, 0.060, 0.42),
+                (entrance_x - 0.36, front_y + 0.62, 1.38),
+                mats["metal"],
+                0.008,
+            ),
+            box(
                 "LANE_EntranceLeftStile",
                 (0.09, 0.10, 2.52),
-                (entrance_x - 0.72, front_y + 0.16, 1.40),
+                (entrance_x - 1.27, front_y + 0.16, 1.40),
                 mats["cedar"],
                 0.015,
             ),
             box(
                 "LANE_EntranceRightStile",
                 (0.09, 0.10, 2.52),
-                (entrance_x + 0.72, front_y + 0.16, 1.40),
+                (entrance_x + 1.27, front_y + 0.16, 1.40),
                 mats["cedar"],
                 0.015,
             ),
             box(
                 "LANE_EntranceHead",
-                (1.54, 0.10, 0.10),
+                (2.62, 0.10, 0.10),
                 (entrance_x, front_y + 0.16, 2.66),
                 mats["cedar"],
                 0.015,
             ),
             box(
                 "LANE_IntegratedBenchSeat",
-                (0.66, 0.45, 0.11),
-                (1.05, front_y + 0.04, 0.72),
+                (1.02, 0.45, 0.11),
+                (1.56, front_y + 0.24, 0.72),
                 mats["cedar"],
                 0.035,
             ),
             box(
                 "LANE_IntegratedBenchBack",
-                (0.66, 0.10, 0.72),
-                (1.05, front_y + 0.23, 1.05),
+                (1.02, 0.10, 0.72),
+                (1.56, front_y + 0.40, 1.05),
                 mats["cedar"],
                 0.025,
             ),
             box(
                 "LANE_ConcreteThreshold",
-                (1.86, 0.92, 0.18),
+                (2.92, 0.92, 0.18),
                 (entrance_x, front_y - 0.02, 0.09),
                 mats["concrete"],
                 0.025,
             ),
             box(
                 "LANE_ContinuousDarkBase",
-                (5.0, 0.24, 0.17),
+                (12.0, 0.24, 0.17),
                 (0.0, front_y + 0.10, 0.085),
                 mats["metal"],
                 0.020,
@@ -2292,7 +2489,7 @@ def lanehouse_fixed(
                 f"LANE_BenchBackSlat_{index}",
                 (0.58, 0.045, 0.040),
                 (
-                    1.05,
+                    1.56,
                     front_y + 0.165,
                     0.82 + index * 0.12,
                 ),
@@ -2303,7 +2500,7 @@ def lanehouse_fixed(
     objects.append(
         box(
             "LANE_EntranceRecessSoffit",
-            (1.70, 0.82, 0.11),
+            (2.78, 0.82, 0.11),
             (entrance_x, front_y + 0.37, 2.76),
             mats["cedar"],
             0.018,
@@ -2313,20 +2510,20 @@ def lanehouse_fixed(
     objects.extend(
         add_lane_clerestory(
             name="LANE_RooftopClerestory",
-            width=3.68,
-            depth=6.70,
+            width=10.20,
+            depth=3.35,
             base_z=9.03,
             mats=mats,
         )
     )
     # Quieter occupied rear openings; the long side screen remains dominant.
     for floor, sill in enumerate((0.72, 3.72, 6.72)):
-        for bay, x in enumerate((-1.18, 1.18)):
+        for bay, x in enumerate((-4.45, -1.48, 1.48, 4.45)):
             objects.extend(
                 add_secondary_opening(
                     name=f"LANE_RearSash_{floor}_{bay}",
                     axis="y",
-                    fixed_coordinate=5.78,
+                    fixed_coordinate=2.43,
                     lateral=x,
                     sill_z=sill,
                     width=1.12,
@@ -2344,7 +2541,7 @@ def lanehouse_fallback_module(
     height: float,
     mats: dict[str, bpy.types.Material],
 ) -> list[bpy.types.Object]:
-    width, depth = 5.0, 12.0
+    width, depth = 12.0, 5.0
     front_y = -depth / 2
     objects: list[bpy.types.Object] = []
     if role == "roof":
@@ -2359,8 +2556,8 @@ def lanehouse_fallback_module(
                 ),
                 *add_lane_clerestory(
                     name=f"LANEKIT_{role}_{variant}_Clerestory",
-                    width=3.6,
-                    depth=6.4,
+                    width=10.2,
+                    depth=3.3,
                     base_z=0.16,
                     mats=mats,
                 ),
@@ -2370,8 +2567,8 @@ def lanehouse_fallback_module(
     objects.append(
         box(
             f"LANEKIT_{role}_{variant}_Core",
-            (4.70, 11.50, height),
-            (0.0, 0.20, height / 2),
+            (11.70, 4.70, height),
+            (0.0, 0.08, height / 2),
             mats["cedar"],
             0.028,
         )
@@ -2381,32 +2578,32 @@ def lanehouse_fallback_module(
             [
                 box(
                     f"LANEKIT_{role}_{variant}_Recess",
-                    (1.70, 0.62, height * 0.82),
-                    (0.35, front_y + 0.48, height * 0.45),
+                    (2.70, 0.62, height * 0.82),
+                    (0.75, front_y + 0.48, height * 0.45),
                     mats["deep"],
                     0.018,
                 ),
                 box(
                     f"LANEKIT_{role}_{variant}_Door",
-                    (0.82, 0.035, height * 0.72),
-                    (0.08, front_y + 0.17, height * 0.45),
+                    (1.18, 0.035, height * 0.72),
+                    (0.20, front_y + 0.17, height * 0.45),
                     mats["glass"],
                     0.012,
                 ),
                 box(
                     f"LANEKIT_{role}_{variant}_Bench",
-                    (0.68, 0.42, 0.12),
-                    (0.92, front_y + 0.02, 0.65),
+                    (1.02, 0.42, 0.12),
+                    (1.58, front_y + 0.02, 0.65),
                     mats["cedar"],
                     0.025,
                 ),
             ]
         )
-        for side, x in ((-1, -1.45), (1, 1.85)):
+        for side, x in ((-1, -3.15), (1, 4.52)):
             objects.append(
                 box(
                     f"LANEKIT_{role}_{variant}_GroundWing_{side:+d}",
-                    (1.85 if side < 0 else 1.10, 0.24, height - 0.10),
+                    (5.55 if side < 0 else 2.88, 0.24, height - 0.10),
                     (x, front_y + 0.12, height / 2),
                     mats["cedar"],
                     0.022,
@@ -2416,22 +2613,22 @@ def lanehouse_fallback_module(
         objects.append(
             box(
                 f"LANEKIT_{role}_{variant}_OccupiedGlass",
-                (4.66, 0.035, height - 0.16),
+                (11.66, 0.035, height - 0.16),
                 (0.0, front_y + 0.42, height / 2),
                 mats["glass"],
                 0.012,
             )
         )
         slat_count = {
-            "typical_a": 31,
-            "typical_b": 27,
-            "typical_c": 35,
-            "crown": 31,
+            "typical_a": 69,
+            "typical_b": 61,
+            "typical_c": 75,
+            "crown": 69,
         }[variant]
         objects.extend(
             add_lane_screen_front(
                 name=f"LANEKIT_{role}_{variant}_Screen",
-                width=4.92,
+                width=11.92,
                 front_y=front_y,
                 z0=0.05,
                 z1=height - 0.05,
@@ -2546,6 +2743,37 @@ def add_villa_window(
                 0.012,
             )
         )
+    if dense_grille:
+        # Security grilles in the reference are shallow cages, not flat bar
+        # decals. Tie the outer rail plane back into the stucco reveal.
+        grille_y = front_y - 0.31
+        for side in (-1, 1):
+            x = centre_x + side * (width * 0.5 + 0.04)
+            for index, z in enumerate(
+                (z0 + 0.13, z0 + height * 0.52, z1 - 0.11)
+            ):
+                objects.append(
+                    rectangular_beam(
+                        f"{name}_CageReturn_{side:+d}_{index}",
+                        (x, front_y + 0.02, z),
+                        (x, grille_y, z),
+                        0.030,
+                        mats["iron"],
+                        depth=0.032,
+                    )
+                )
+        for index in range(bar_count):
+            x = x0 + width * (index + 1) / (bar_count + 1)
+            objects.append(
+                cylinder(
+                    f"{name}_ProjectedForgedVerticalBar_{index}",
+                    0.018,
+                    height + 0.08,
+                    (x, grille_y, (z0 + z1) * 0.5),
+                    mats["iron"],
+                    vertices=10,
+                )
+            )
     if juliet:
         projection = 0.34
         objects.extend(
@@ -2776,33 +3004,65 @@ def add_brick_patch(
     front_y: float,
     mats: dict[str, bpy.types.Material],
 ) -> list[bpy.types.Object]:
-    """Irregular flush brick exposure with physically authored ragged edges."""
-    objects: list[bpy.types.Object] = []
-    brick_width = 0.34
-    brick_height = 0.17
+    """Recessed brick repair with a ragged, chipped plaster boundary."""
+    objects: list[bpy.types.Object] = [
+        box(
+            f"{name}_RecessedMortarBed",
+            (
+                columns * 0.31 * 0.88,
+                0.020,
+                rows * 0.145 * 0.88,
+            ),
+            (centre_x, front_y - 0.008, centre_z),
+            mats["stone"],
+            0.010,
+        )
+    ]
+    brick_width = 0.31
+    brick_height = 0.145
     for row in range(rows):
         edge_loss = abs(row - (rows - 1) / 2) / max(1.0, rows / 2)
-        row_columns = max(2, columns - int(edge_loss * columns * 0.45))
+        irregular_loss = 1 if (row * 5 + columns) % 4 == 0 else 0
+        row_columns = max(
+            2,
+            columns - int(edge_loss * columns * 0.42) - irregular_loss,
+        )
         offset = brick_width * 0.5 if row % 2 else 0.0
         for column in range(row_columns):
             if (row * 7 + column * 5) % 13 == 0:
                 continue
+            if (
+                column in {0, row_columns - 1}
+                and (row * 3 + column * 7 + columns) % 5 in {0, 1}
+            ):
+                continue
+            if row in {0, rows - 1} and column % 3 == 0:
+                continue
+            jitter = math.sin((row + 1) * 11.0 + (column + 2) * 7.0)
             x = (
                 centre_x
                 - row_columns * brick_width * 0.5
                 + brick_width * (column + 0.5)
                 + offset * 0.45
+                + jitter * 0.018
             )
-            z = centre_z - rows * brick_height * 0.5 + brick_height * (
-                row + 0.5
+            z = (
+                centre_z
+                - rows * brick_height * 0.5
+                + brick_height * (row + 0.5)
+                + math.cos((row + 3) * 5.0 + column * 3.0) * 0.010
             )
             objects.append(
                 box(
                     f"{name}_ExposedBrick_{row}_{column}",
-                    (brick_width - 0.018, 0.055, brick_height - 0.018),
-                    (x, front_y - 0.035, z),
+                    (
+                        brick_width - 0.026 - abs(jitter) * 0.015,
+                        0.028,
+                        brick_height - 0.022,
+                    ),
+                    (x, front_y - 0.020, z),
                     mats["brick"],
-                    0.012,
+                    0.008,
                 )
             )
     return objects
@@ -3123,6 +3383,33 @@ def villa_fixed(
         )
         tile.rotation_euler.x = math.radians(90)
         objects.append(tile)
+    # Continuous convex tile runners establish real barrel relief across both
+    # roof pitches; the image-derived PBR supplies the smaller overlapping
+    # courses. This keeps the aerial silhouette from reading as a flat orange
+    # texture card.
+    for index in range(35):
+        x = -8.32 + 16.64 * index / 34
+        for side in (-1, 1):
+            objects.append(
+                round_beam(
+                    f"VILLA_PhysicalBarrelRoofRunner_{side:+d}_{index}",
+                    (x, side * 6.88, 9.10),
+                    (x, 0.0, 10.30),
+                    0.050,
+                    mats["roof"],
+                    vertices=12,
+                )
+            )
+    objects.append(
+        round_beam(
+            "VILLA_PhysicalRidgeCap",
+            (-8.55, 0.0, 10.34),
+            (8.55, 0.0, 10.34),
+            0.115,
+            mats["roof"],
+            vertices=16,
+        )
+    )
     objects.extend(
         [
             box(
@@ -3419,12 +3706,12 @@ def render_views(
     if family == "timber-screen-lanehouse":
         views["street"] = (
             (0.0, -29.0, height * 0.43),
-            (0.0, -5.5, height * 0.49),
+            (0.0, -2.1, height * 0.49),
             43,
         )
         views["front_corner_oblique"] = (
             (-width * 0.94, -24.5, height * 0.78),
-            (0.0, -1.0, height * 0.45),
+            (0.0, -0.35, height * 0.45),
             46,
         )
     elif family == "spanish-colonial-villa":

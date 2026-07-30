@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-30T13:55:13.455051+00:00",
+  "created_at": "2026-07-30T15:03:07.554003+00:00",
   "family": "spanish-colonial-villa",
   "archetype_id": "mediterranean_villa_estate",
   "archetype_label": "Mediterranean Villa Estate \u2014 Spanish Colonial",
@@ -1840,7 +1840,7 @@
       "floor_height_m": 3.05,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 7453,
+      "triangle_count": 8461,
       "material_count": 10,
       "texture_keys": [
         "brick",
@@ -1859,7 +1859,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 37918492
+      "size_bytes": 36635488
     },
     {
       "role": "floor",
@@ -1876,7 +1876,7 @@
       "floor_height_m": 3.05,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 9372,
+      "triangle_count": 10632,
       "material_count": 10,
       "texture_keys": [
         "brick",
@@ -1895,7 +1895,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 38056600
+      "size_bytes": 36798312
     },
     {
       "role": "floor",
@@ -1912,7 +1912,7 @@
       "floor_height_m": 3.05,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 6048,
+      "triangle_count": 7056,
       "material_count": 10,
       "texture_keys": [
         "brick",
@@ -1931,7 +1931,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 37800308
+      "size_bytes": 36517308
     },
     {
       "role": "floor",
@@ -1948,7 +1948,7 @@
       "floor_height_m": 3.05,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 9000,
+      "triangle_count": 10512,
       "material_count": 10,
       "texture_keys": [
         "brick",
@@ -1967,7 +1967,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 38012720
+      "size_bytes": 36776788
     },
     {
       "role": "crown",
@@ -2003,7 +2003,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 37916536
+      "size_bytes": 36539660
     },
     {
       "role": "roof",
@@ -2039,7 +2039,7 @@
         "timber"
       ],
       "ao_baked": true,
-      "size_bytes": 27963120
+      "size_bytes": 26586180
     }
   ],
   "assembled": {
@@ -2048,7 +2048,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 12.8,
-    "triangle_count": 66025,
+    "triangle_count": 68373,
     "material_count": 12,
     "stack": [
       {

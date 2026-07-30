@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-30-detached-house-compositions-v104",
+  "memory_version": "2026-07-30-screen-gap-and-repair-depth-v105",
   "archetype_id": "mountain_alpine_chalet",
   "family": "swiss-chalet-residence",
   "status": "pass",
@@ -109,7 +109,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "95889 assembled triangles; budget 12000-180000"
+        "detail": "111221 assembled triangles; budget 12000-180000"
       }
     ]
   }

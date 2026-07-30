@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-30-detached-house-compositions-v104"
+        == "2026-07-30-screen-gap-and-repair-depth-v105"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -148,6 +148,11 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "triangular quilt" in item["symptom"].lower()
         and "unitized panel topology" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "screen fuses into a pale solid wall" in item["symptom"].lower()
+        and "shadowed mortar bed" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert {

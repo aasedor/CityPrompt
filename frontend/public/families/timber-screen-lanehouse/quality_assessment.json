@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-30-detached-house-compositions-v104",
+  "memory_version": "2026-07-30-screen-gap-and-repair-depth-v105",
   "archetype_id": "japanese_contemporary_lanehouse",
   "family": "timber-screen-lanehouse",
   "status": "pass",
@@ -79,7 +79,7 @@
       {
         "id": "fewer_than_three_preferred_footprint_profiles",
         "passed": true,
-        "detail": "1 preferred profiles; target is 1; exception rationale: The narrow screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening individual battens."
+        "detail": "1 preferred profiles; target is 1; exception rationale: The long street-facing screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening battens."
       },
       {
         "id": "missing_or_unsafe_fixed_landmark_scale_band",
@@ -109,7 +109,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "27974 assembled triangles; budget 12000-180000"
+        "detail": "35102 assembled triangles; budget 12000-180000"
       }
     ]
   }

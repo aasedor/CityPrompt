@@ -1,6 +1,6 @@
 {
   "schema": "registered-facade-bands@1",
-  "source": "elevation-source.png",
+  "source": "elevation-source-v2.png",
   "bands": {
     "facade": [
       0.13,

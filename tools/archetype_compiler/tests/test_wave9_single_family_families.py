@@ -10,7 +10,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[3]
 FAMILY_ROOT = REPO / "frontend" / "public" / "families"
-MEMORY_VERSION = "2026-07-30-detached-house-compositions-v104"
+MEMORY_VERSION = "2026-07-30-screen-gap-and-repair-depth-v105"
 REQUIRED_CHANNELS = {
     "albedo",
     "normal",
@@ -56,6 +56,7 @@ FAMILIES = {
             "CHALET_PrimaryCrossGable_SolidGableRoof",
             "CHALET_MasonryChimney_0",
             "CHALET_SideTimberReturn_-1",
+            "CHALET_SidePhysicalLogCourse_-1_0",
         },
     },
     "timber-screen-lanehouse": {
@@ -64,7 +65,7 @@ FAMILIES = {
         "glass": "lanehouse_screened_low_e",
         "floors": (1, 3, 3),
         "band": (0.82, 1.20, 1.18),
-        "provenance_outputs": 3,
+        "provenance_outputs": 5,
         "catalogue_thumbnail": (
             "/archetypes/buildings/japanese_contemporary_lanehouse/hero.png"
         ),
@@ -87,6 +88,7 @@ FAMILIES = {
             "LANE_UpperOccupiedGlassVolume",
             "LANE_RegisteredOccupiedDepth",
             "LANE_IntegratedBenchSeat",
+            "LANE_GlassDoorCentreMullion",
             "LANE_RooftopClerestory_OccupiedClerestoryGlass",
         },
     },
@@ -96,7 +98,7 @@ FAMILIES = {
         "glass": "villa_recessed_iron_glass",
         "floors": (1, 3, 3),
         "band": (0.84, 1.18, 1.16),
-        "provenance_outputs": 6,
+        "provenance_outputs": 7,
         "catalogue_thumbnail": (
             "/archetypes/buildings/mediterranean_villa_estate/hero.png"
         ),
@@ -125,6 +127,7 @@ FAMILIES = {
             "VILLA_LeftBellTowerBody",
             "VILLA_PhysicalBronzeBell",
             "VILLA_ExposedBrickPatch_LeftLarge_ExposedBrick_0_1",
+            "VILLA_PhysicalRidgeCap",
         },
     },
 }
@@ -158,6 +161,11 @@ def test_manifest_binds_house_aliases_scale_band_and_flexible_stack(family: str)
         expected["variant"],
     }
     assert manifest["glass_profile"] == expected["glass"]
+    if family == "timber-screen-lanehouse":
+        assert (manifest["native_width_m"], manifest["native_depth_m"]) == (
+            12.0,
+            5.0,
+        )
     assert (
         manifest["min_floors"],
         manifest["max_floors"],
@@ -234,6 +242,10 @@ def test_fixed_glb_contains_house_geometry_and_reference_glazing(family: str):
                 )
             ]
         ) >= 30
+        assert {
+            "LANE_SideOccupiedGlass_-1",
+            "LANE_SideOccupiedGlass_+1",
+        } <= node_names
     if family == "spanish-colonial-villa":
         assert len(
             [
@@ -242,6 +254,14 @@ def test_fixed_glb_contains_house_geometry_and_reference_glazing(family: str):
                 if name and name.startswith("VILLA_ExposedBrickPatch_")
             ]
         ) >= 100
+        assert len(
+            [
+                name
+                for name in node_names
+                if name
+                and name.startswith("VILLA_PhysicalBarrelRoofRunner_")
+            ]
+        ) >= 60
 
     material_extras = [
         material.get("extras", {}) for material in payload.get("materials", [])

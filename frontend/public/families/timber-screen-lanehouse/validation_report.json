@@ -14,11 +14,11 @@
   "warnings": [
     "no setback module (optional)",
     "timber-screen-lanehouse_podium.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "timber-screen-lanehouse_floor_typical_a.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "timber-screen-lanehouse_floor_typical_b.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "timber-screen-lanehouse_floor_typical_c.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "timber-screen-lanehouse_crown_crown.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "timber-screen-lanehouse_assembled.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "timber-screen-lanehouse_floor_typical_a.glb: 13.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_floor_typical_b.glb: 13.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_floor_typical_c.glb: 13.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_crown_crown.glb: 13.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_assembled.glb: 23.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -26,9 +26,9 @@
       "status": "ok",
       "triangles": 684,
       "extent_m": {
-        "width_x": 4.775,
+        "width_x": 11.885,
         "height_y": 3.0,
-        "depth_z": 12.14
+        "depth_z": 5.12
       },
       "bottom_y": 0.0,
       "materials": [
@@ -39,16 +39,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 9900376
+      "size_bytes": 9900392
     },
     {
       "file": "timber-screen-lanehouse_floor_typical_a.glb",
       "status": "ok",
-      "triangles": 4140,
+      "triangles": 8244,
       "extent_m": {
-        "width_x": 5.08,
+        "width_x": 12.08,
         "height_y": 3.02,
-        "depth_z": 12.195
+        "depth_z": 5.175
       },
       "bottom_y": -0.01,
       "materials": [
@@ -59,16 +59,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 13873908
+      "size_bytes": 14166932
     },
     {
       "file": "timber-screen-lanehouse_floor_typical_b.glb",
       "status": "ok",
-      "triangles": 3708,
+      "triangles": 7380,
       "extent_m": {
-        "width_x": 5.08,
+        "width_x": 12.08,
         "height_y": 3.02,
-        "depth_z": 12.195
+        "depth_z": 5.175
       },
       "bottom_y": -0.01,
       "materials": [
@@ -79,16 +79,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 13843072
+      "size_bytes": 14105244
     },
     {
       "file": "timber-screen-lanehouse_floor_typical_c.glb",
       "status": "ok",
-      "triangles": 4572,
+      "triangles": 8892,
       "extent_m": {
-        "width_x": 5.08,
+        "width_x": 12.08,
         "height_y": 3.02,
-        "depth_z": 12.195
+        "depth_z": 5.175
       },
       "bottom_y": -0.01,
       "materials": [
@@ -99,16 +99,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 13904736
+      "size_bytes": 14213180
     },
     {
       "file": "timber-screen-lanehouse_crown_crown.glb",
       "status": "ok",
-      "triangles": 4140,
+      "triangles": 8244,
       "extent_m": {
-        "width_x": 5.08,
+        "width_x": 12.08,
         "height_y": 3.02,
-        "depth_z": 12.195
+        "depth_z": 5.175
       },
       "bottom_y": -0.01,
       "materials": [
@@ -119,16 +119,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 13873732
+      "size_bytes": 14166604
     },
     {
       "file": "timber-screen-lanehouse_roof.glb",
       "status": "ok",
       "triangles": 1656,
       "extent_m": {
-        "width_x": 5.0,
-        "height_y": 1.22,
-        "depth_z": 12.0
+        "width_x": 12.0,
+        "height_y": 1.2,
+        "depth_z": 5.0
       },
       "bottom_y": 0.0,
       "materials": [
@@ -139,16 +139,16 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_DarkRoof",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
       ],
-      "size_bytes": 7580704
+      "size_bytes": 7579100
     },
     {
       "file": "timber-screen-lanehouse_assembled.glb",
       "status": "ok",
-      "triangles": 27974,
+      "triangles": 35102,
       "extent_m": {
-        "width_x": 5.29,
+        "width_x": 12.25,
         "height_y": 10.2,
-        "depth_z": 12.405
+        "depth_z": 5.555
       },
       "bottom_y": 0.0,
       "materials": [
@@ -162,7 +162,7 @@
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_RegisteredOccupiedDepth",
         "MAT_W9_TIMBER_SCREEN_LANEHOUSE_ThresholdConcrete"
       ],
-      "size_bytes": 24301000,
+      "size_bytes": 24769104,
       "role": "assembled"
     }
   ]

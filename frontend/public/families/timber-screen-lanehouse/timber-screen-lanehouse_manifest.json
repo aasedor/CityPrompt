@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-07-30T13:28:56.831118+00:00",
+  "created_at": "2026-07-30T15:04:41.095186+00:00",
   "family": "timber-screen-lanehouse",
   "archetype_id": "japanese_contemporary_lanehouse",
   "archetype_label": "Japanese Contemporary Lanehouse \u2014 Timber Screen",
@@ -46,19 +46,19 @@
       "rectangle"
     ],
     "minimumPreferredProfiles": 1,
-    "profileRationale": "The narrow screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening individual battens.",
+    "profileRationale": "The long street-facing screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening battens.",
     "fixedLandmarkScaleBand": {
       "scaleMin": 0.82,
       "scaleMax": 1.2,
       "maxAxisRatio": 1.18
     },
     "recommendedWidth_m": [
-      4.2,
-      6.3
-    ],
-    "recommendedDepth_m": [
       9.5,
       15.5
+    ],
+    "recommendedDepth_m": [
+      4.2,
+      6.3
     ],
     "recommendedFloors": [
       1,
@@ -67,12 +67,12 @@
     "profiles": {
       "rectangle": {
         "recommendedWidth_m": [
-          4.2,
-          6.3
-        ],
-        "recommendedDepth_m": [
           9.5,
           15.5
+        ],
+        "recommendedDepth_m": [
+          4.2,
+          6.3
         ],
         "recommendedFloors": [
           1,
@@ -1391,17 +1391,17 @@
       ],
       "side_elevations": "Floor datums, material transitions, sash scale, eave and roof logic wrap every elevation; the ceremonial entrance stays fixed.",
       "elevation_coverage": {
-        "front": "A narrow three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
+        "front": "A long street-facing three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
         "left": "related occupied residential return with true sash depth",
         "right": "related occupied residential return with true sash depth",
         "rear": "quieter occupied garden/service elevation",
-        "roof": "narrow_full_height_cedar_screen_with_rooftop_clerestory"
+        "roof": "long_street_facing_cedar_screen_with_rooftop_clerestory"
       },
       "variation_policy": "Mild X/Y scaling keeps the whole house. Larger or distorted drawings use the family-shaped modular streetwall fallback."
     },
     "assets": {
       "skin_manifest": "textures/skin_manifest.json",
-      "source": "textures/source/elevation-source.png",
+      "source": "textures/source/elevation-source-v2.png",
       "near": {
         "albedo": "textures/pbr/near/elevation_albedo.png",
         "normal": "textures/pbr/near/elevation_normal.png",
@@ -1424,8 +1424,8 @@
       },
       "sources": {
         "archetype_goalpost": "textures/source/archetype-goalpost.png",
-        "orthographic_elevation": "textures/source/elevation-source.png",
-        "reference_underlay": "textures/source/occupied-depth-source.png",
+        "orthographic_elevation": "textures/source/elevation-source-v2.png",
+        "reference_underlay": "textures/source/occupied-depth-source-v2.png",
         "reference_generation": "textures/source/reference-generation.json",
         "registered_openings": "textures/source/registered-openings.json",
         "registered_bands": "textures/source/registered-bands.json"
@@ -1443,7 +1443,7 @@
         "roof"
       ],
       "registered_surfaces": [
-        "three_level_narrow_lanehouse",
+        "three_level_long_streetfront_lanehouse",
         "continuous_vertical_cedar_privacy_screen",
         "screen_support_rail_datums",
         "occupied_glazing_behind_screen",
@@ -1458,7 +1458,7 @@
   },
   "massing_graph": {
     "type": "fixed_landmark",
-    "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory",
+    "silhouette": "long_street_facing_cedar_screen_with_rooftop_clerestory",
     "render_locked": true,
     "goalpost": "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png",
     "fallback": "family_shaped_modular_streetwall"
@@ -1468,8 +1468,8 @@
     "rationale": "Registered facade, construction materials, physical glazing, occupied depth and small identity accents remain semantic."
   },
   "dimensions": {
-    "width_m": 5.0,
-    "depth_m": 12.0,
+    "width_m": 12.0,
+    "depth_m": 5.0,
     "podium_height_m": 3.0,
     "floor_height_m": 3.0,
     "setback_height_m": 3.0,
@@ -1479,8 +1479,8 @@
     "min_floors": 1,
     "max_floors": 3
   },
-  "native_width_m": 5.0,
-  "native_depth_m": 12.0,
+  "native_width_m": 12.0,
+  "native_depth_m": 5.0,
   "native_floors": 3,
   "min_floors": 1,
   "max_floors": 3,
@@ -1495,8 +1495,8 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_podium.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 3.0,
       "floor_height_m": 3.0,
       "repeatable_z": false,
@@ -1517,7 +1517,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 9900376
+      "size_bytes": 9900392
     },
     {
       "role": "floor",
@@ -1528,13 +1528,13 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_floor_typical_a.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 3.0,
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 4140,
+      "triangle_count": 8244,
       "material_count": 6,
       "texture_keys": [
         "cedar",
@@ -1550,7 +1550,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 13873908
+      "size_bytes": 14166932
     },
     {
       "role": "floor",
@@ -1561,13 +1561,13 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_floor_typical_b.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 3.0,
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 3708,
+      "triangle_count": 7380,
       "material_count": 6,
       "texture_keys": [
         "cedar",
@@ -1583,7 +1583,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 13843072
+      "size_bytes": 14105244
     },
     {
       "role": "floor",
@@ -1594,13 +1594,13 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_floor_typical_c.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 3.0,
       "floor_height_m": 3.0,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 4572,
+      "triangle_count": 8892,
       "material_count": 6,
       "texture_keys": [
         "cedar",
@@ -1616,7 +1616,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 13904736
+      "size_bytes": 14213180
     },
     {
       "role": "crown",
@@ -1627,13 +1627,13 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_crown_crown.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 3.0,
       "floor_height_m": 3.0,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 4140,
+      "triangle_count": 8244,
       "material_count": 6,
       "texture_keys": [
         "cedar",
@@ -1649,7 +1649,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 13873732
+      "size_bytes": 14166604
     },
     {
       "role": "roof",
@@ -1660,8 +1660,8 @@
       "allowed_levels": [],
       "filename": "timber-screen-lanehouse_roof.glb",
       "module_family": "timber-screen-lanehouse",
-      "width_m": 5.0,
-      "depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
       "height_m": 1.2,
       "floor_height_m": 3.0,
       "repeatable_z": false,
@@ -1682,7 +1682,7 @@
         "side"
       ],
       "ao_baked": true,
-      "size_bytes": 7580704
+      "size_bytes": 7579100
     }
   ],
   "assembled": {
@@ -1691,7 +1691,7 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 10.2,
-    "triangle_count": 27974,
+    "triangle_count": 35102,
     "material_count": 9,
     "stack": [
       {
@@ -1704,23 +1704,23 @@
     ],
     "footprint_profile": "rectangle",
     "footprint_target": {
-      "width_m": 5.0,
-      "depth_m": 12.0,
-      "wing_depth_m": 12.0,
+      "width_m": 12.0,
+      "depth_m": 5.0,
+      "wing_depth_m": 5.0,
       "segments": [
         {
           "id": "detached_house",
           "centre_x_m": 0.0,
           "centre_y_m": 0.0,
-          "length_m": 5.0,
-          "thickness_m": 12.0,
+          "length_m": 12.0,
+          "thickness_m": 5.0,
           "rotation_degrees": 0.0
         }
       ]
     },
     "massing_graph": {
       "type": "fixed_landmark",
-      "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory"
+      "silhouette": "long_street_facing_cedar_screen_with_rooftop_clerestory"
     },
     "texture_keys": [
       "cedar",
@@ -1749,7 +1749,7 @@
     "timber-screen-lanehouse_context.png",
     "elevation.jpg"
   ],
-  "architectural_identity": "A narrow three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
+  "architectural_identity": "A long street-facing three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
   "material_zones": "fine-grained honey cedar battens and panels; charcoal-bronze support rails; dark low-e occupied glazing behind the screen; pale concrete threshold; restrained dark-metal roof and clerestory framing",
   "glass_profile": "lanehouse_screened_low_e",
   "source_provenance": {

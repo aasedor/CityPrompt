@@ -13,19 +13,19 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "spanish-colonial-villa_podium.glb: 36.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_floor_typical_a.glb: 36.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_floor_typical_b.glb: 36.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_floor_typical_c.glb: 36.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_crown_crown.glb: 36.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_roof.glb: 26.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "spanish-colonial-villa_assembled.glb: 70.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "spanish-colonial-villa_podium.glb: 34.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_a.glb: 35.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_b.glb: 34.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_c.glb: 35.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_crown_crown.glb: 34.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_roof.glb: 25.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_assembled.glb: 69.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
       "file": "spanish-colonial-villa_podium.glb",
       "status": "ok",
-      "triangles": 7453,
+      "triangles": 8461,
       "extent_m": {
         "width_x": 18.0,
         "height_y": 3.33,
@@ -44,12 +44,12 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 37918492
+      "size_bytes": 36635488
     },
     {
       "file": "spanish-colonial-villa_floor_typical_a.glb",
       "status": "ok",
-      "triangles": 9372,
+      "triangles": 10632,
       "extent_m": {
         "width_x": 18.0,
         "height_y": 3.05,
@@ -68,12 +68,12 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 38056600
+      "size_bytes": 36798312
     },
     {
       "file": "spanish-colonial-villa_floor_typical_b.glb",
       "status": "ok",
-      "triangles": 6048,
+      "triangles": 7056,
       "extent_m": {
         "width_x": 18.0,
         "height_y": 3.05,
@@ -92,12 +92,12 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 37800308
+      "size_bytes": 36517308
     },
     {
       "file": "spanish-colonial-villa_floor_typical_c.glb",
       "status": "ok",
-      "triangles": 9000,
+      "triangles": 10512,
       "extent_m": {
         "width_x": 18.0,
         "height_y": 3.05,
@@ -116,7 +116,7 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 38012720
+      "size_bytes": 36776788
     },
     {
       "file": "spanish-colonial-villa_crown_crown.glb",
@@ -140,7 +140,7 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 37916536
+      "size_bytes": 36539660
     },
     {
       "file": "spanish-colonial-villa_roof.glb",
@@ -159,12 +159,12 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
         "MAT_W9_SPANISH_COLONIAL_VILLA_TerracottaBarrelTile"
       ],
-      "size_bytes": 27963120
+      "size_bytes": 26586180
     },
     {
       "file": "spanish-colonial-villa_assembled.glb",
       "status": "ok",
-      "triangles": 66025,
+      "triangles": 68373,
       "extent_m": {
         "width_x": 18.31,
         "height_y": 13.192,
@@ -185,7 +185,7 @@
         "MAT_W9_SPANISH_COLONIAL_VILLA_TerracottaBarrelTile",
         "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
       ],
-      "size_bytes": 74012036,
+      "size_bytes": 72844716,
       "role": "assembled"
     }
   ]

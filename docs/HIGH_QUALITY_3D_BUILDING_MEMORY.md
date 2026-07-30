@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-30-detached-house-compositions-v104`.
+Current executable memory: `2026-07-30-screen-gap-and-repair-depth-v105`.
 
 ## The quality target
 
@@ -1063,6 +1063,14 @@ The polychrome collegiate family added four rules for resizable hero facades:
   privacy-screen and balcony depth, and from high oblique for every roof
   junction. A convincing front with blank side walls or an unresolved roof is
   not a finished family.
+- Fine privacy screens must preserve screen-space gaps in the locked corner
+  view. Recess occupied glazing and varied dark room depth behind individually
+  modeled battens, retain a meaningful air gap, and avoid a density or albedo
+  that optically fuses the screen into a pale solid wall.
+- Exposed historic masonry is loss of finish, not ornament applied on top.
+  Keep brick faces nearly flush or slightly recessed, build a shadowed mortar
+  bed, break the perimeter and courses irregularly, and match the surrounding
+  plaster age so the repair reads as construction revealed through stucco.
 
 ## Updating this memory
 

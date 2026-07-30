@@ -13,8 +13,8 @@
     ]
   },
   "dimensions": {
-    "width_m": 5.0,
-    "depth_m": 12.0,
+    "width_m": 12.0,
+    "depth_m": 5.0,
     "podium_height_m": 3.0,
     "floor_height_m": 3.0,
     "setback_height_m": 3.0,
@@ -25,7 +25,7 @@
     "max_floors": 3
   },
   "architectural_signature": {
-    "identity": "A narrow three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
+    "identity": "A long street-facing three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
     "material_zones": "fine-grained honey cedar battens and panels; charcoal-bronze support rails; dark low-e occupied glazing behind the screen; pale concrete threshold; restrained dark-metal roof and clerestory framing",
     "glass_profile": "lanehouse_screened_low_e",
     "kits": [
@@ -47,19 +47,19 @@
       "rectangle"
     ],
     "minimumPreferredProfiles": 1,
-    "profileRationale": "The narrow screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening individual battens.",
+    "profileRationale": "The long street-facing screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening battens.",
     "fixedLandmarkScaleBand": {
       "scaleMin": 0.82,
       "scaleMax": 1.2,
       "maxAxisRatio": 1.18
     },
     "recommendedWidth_m": [
-      4.2,
-      6.3
-    ],
-    "recommendedDepth_m": [
       9.5,
       15.5
+    ],
+    "recommendedDepth_m": [
+      4.2,
+      6.3
     ],
     "recommendedFloors": [
       1,
@@ -68,12 +68,12 @@
     "profiles": {
       "rectangle": {
         "recommendedWidth_m": [
-          4.2,
-          6.3
-        ],
-        "recommendedDepth_m": [
           9.5,
           15.5
+        ],
+        "recommendedDepth_m": [
+          4.2,
+          6.3
         ],
         "recommendedFloors": [
           1,
@@ -84,7 +84,7 @@
   },
   "massing_graph": {
     "type": "fixed_landmark",
-    "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory",
+    "silhouette": "long_street_facing_cedar_screen_with_rooftop_clerestory",
     "render_locked": true,
     "goalpost": "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png",
     "fallback": "family_shaped_modular_streetwall"

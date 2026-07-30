@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-30-detached-house-compositions-v104",
+  "memory_version": "2026-07-30-screen-gap-and-repair-depth-v105",
   "archetype_id": "mediterranean_villa_estate",
   "family": "spanish-colonial-villa",
   "status": "pass",
@@ -109,7 +109,7 @@
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "66025 assembled triangles; budget 12000-180000"
+        "detail": "68373 assembled triangles; budget 12000-180000"
       }
     ]
   }

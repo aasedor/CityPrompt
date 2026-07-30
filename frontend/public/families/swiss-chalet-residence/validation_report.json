@@ -19,9 +19,9 @@
     "swiss-chalet-residence_floor_typical_c.glb: 18.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
     "swiss-chalet-residence_crown_crown.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
     "swiss-chalet-residence_roof.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "swiss-chalet-residence_assembled.glb: 95889 triangles (heavy; consider simplification)",
+    "swiss-chalet-residence_assembled.glb: 111221 triangles (heavy; consider simplification)",
     "swiss-chalet-residence_assembled.glb: 15 materials (many; consider consolidation)",
-    "swiss-chalet-residence_assembled.glb: 58.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "swiss-chalet-residence_assembled.glb: 59.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -49,7 +49,7 @@
         "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
         "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
       ],
-      "size_bytes": 37182564
+      "size_bytes": 37182324
     },
     {
       "file": "swiss-chalet-residence_floor_typical_a.glb",
@@ -74,7 +74,7 @@
         "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
         "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
       ],
-      "size_bytes": 19335812
+      "size_bytes": 19336472
     },
     {
       "file": "swiss-chalet-residence_floor_typical_b.glb",
@@ -99,7 +99,7 @@
         "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
         "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
       ],
-      "size_bytes": 18573244
+      "size_bytes": 18574784
     },
     {
       "file": "swiss-chalet-residence_floor_typical_c.glb",
@@ -124,7 +124,7 @@
         "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
         "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
       ],
-      "size_bytes": 19213284
+      "size_bytes": 19214540
     },
     {
       "file": "swiss-chalet-residence_crown_crown.glb",
@@ -172,11 +172,11 @@
     {
       "file": "swiss-chalet-residence_assembled.glb",
       "status": "ok",
-      "triangles": 95889,
+      "triangles": 111221,
       "extent_m": {
         "width_x": 14.7,
         "height_y": 13.25,
-        "depth_z": 13.365
+        "depth_z": 14.04
       },
       "bottom_y": 0.0,
       "materials": [
@@ -196,7 +196,7 @@
         "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage",
         "MAT_W9_SWISS_CHALET_RESIDENCE_WeatheredShingles"
       ],
-      "size_bytes": 61084020,
+      "size_bytes": 62197520,
       "role": "assembled"
     }
   ]

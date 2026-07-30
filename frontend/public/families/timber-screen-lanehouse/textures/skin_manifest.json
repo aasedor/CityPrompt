@@ -1,17 +1,17 @@
 {
   "schema": "timber-screen-lanehouse-skin@1",
   "family": "timber-screen-lanehouse",
-  "source": "textures/source/elevation-source.png",
+  "source": "textures/source/elevation-source-v2.png",
   "source_model": "gpt-image-2",
   "sources": {
     "archetype_goalpost": "textures/source/archetype-goalpost.png",
-    "orthographic_elevation": "textures/source/elevation-source.png",
-    "reference_underlay": "textures/source/occupied-depth-source.png",
+    "orthographic_elevation": "textures/source/elevation-source-v2.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v2.png",
     "reference_generation": "textures/source/reference-generation.json",
     "registered_openings": "textures/source/registered-openings.json",
     "registered_bands": "textures/source/registered-bands.json"
   },
-  "registration": "The selected catalogue card fixes the narrow three-level mass, one continuous vertical cedar screen over both upper levels and side return, deep ground entrance/bench recess, dark rails and shallow rooftop clerestory.",
+  "registration": "The selected catalogue card fixes the long street-facing three-level mass, one continuous vertical cedar screen over both upper levels and short side returns, a deep ground entrance/bench recess, dark rails and a shallow rooftop clerestory.",
   "reference_registration": {
     "mode": "archetype_specific",
     "source_archetype_id": "japanese_contemporary_lanehouse",
@@ -24,7 +24,7 @@
       "roof"
     ],
     "registered_surfaces": [
-      "three_level_narrow_lanehouse",
+      "three_level_long_streetfront_lanehouse",
       "continuous_vertical_cedar_privacy_screen",
       "screen_support_rail_datums",
       "occupied_glazing_behind_screen",

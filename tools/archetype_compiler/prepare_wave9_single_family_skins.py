@@ -83,6 +83,8 @@ FAMILIES = {
         "archetype_id": "japanese_contemporary_lanehouse",
         "variant_id": "japanese_lane_timber_screen",
         "skin_schema": "timber-screen-lanehouse-skin@1",
+        "elevation_source": "elevation-source-v2.png",
+        "occupied_depth_source": "occupied-depth-source-v2.png",
         "bands": {
             "facade": (0.130, 0.105, 0.865, 0.892),
             "podium": (0.130, 0.655, 0.865, 0.892),
@@ -114,7 +116,7 @@ FAMILIES = {
             "cedar": "cedar-material-source.png",
         },
         "registered_surfaces": [
-            "three_level_narrow_lanehouse",
+            "three_level_long_streetfront_lanehouse",
             "continuous_vertical_cedar_privacy_screen",
             "screen_support_rail_datums",
             "occupied_glazing_behind_screen",
@@ -123,10 +125,10 @@ FAMILIES = {
             "rooftop_clerestory_light_monitor",
         ],
         "registration": (
-            "The selected catalogue card fixes the narrow three-level mass, one "
-            "continuous vertical cedar screen over both upper levels and side "
-            "return, deep ground entrance/bench recess, dark rails and shallow "
-            "rooftop clerestory."
+            "The selected catalogue card fixes the long street-facing three-level "
+            "mass, one continuous vertical cedar screen over both upper levels "
+            "and short side returns, a deep ground entrance/bench recess, dark "
+            "rails and a shallow rooftop clerestory."
         ),
         "opening_method": (
             "The generator's full-height upper glazing and clerestory panes sit "
@@ -173,7 +175,7 @@ FAMILIES = {
             "bronze": ((94, 67, 43), "metal", 9361),
         },
         "support_sources": {
-            "stucco": "stucco-material-source.png",
+            "stucco": "stucco-material-source-v2.png",
             "brick": "brick-material-source.png",
             "roof": "roof-material-source.png",
             "stone": "stone-material-source.png",
