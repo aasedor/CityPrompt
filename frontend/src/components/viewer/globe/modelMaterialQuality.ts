@@ -79,6 +79,17 @@ const LAYERED_GLAZING_PROFILES: Record<string, LayeredGlazingProfile> = {
     attenuationDistance: 4.2,
     attenuationColor: '#dce6e3',
   },
+  calgary_library_low_iron_fritted: {
+    roughnessMin: 0.045,
+    roughnessMax: 0.10,
+    ior: 1.52,
+    clearcoatMin: 0.60,
+    clearcoatRoughnessMax: 0.055,
+    transmissionMax: 0.66,
+    environmentMax: 1.12,
+    attenuationDistance: 4.0,
+    attenuationColor: '#d6e2e1',
+  },
   terracotta_office_low_e: {
     roughnessMin: 0.05,
     roughnessMax: 0.105,

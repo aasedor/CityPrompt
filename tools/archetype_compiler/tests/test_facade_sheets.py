@@ -712,6 +712,7 @@ def test_reusable_glass_profiles_are_physically_plausible():
         "nordic_clear_occupied",
         "heritage_leaded_occupied",
         "museum_atrium_low_iron",
+        "calgary_library_low_iron_fritted",
         "terracotta_office_low_e",
         "civic_recessed_smoked",
     }

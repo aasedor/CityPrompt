@@ -1,0 +1,91 @@
+{
+  "family_id": "calgary-central-library",
+  "source": {
+    "archetype_id": "calgary_new_central_library",
+    "variant_id": "library_original_snohetta",
+    "generation_archetype_id": "library_original_snohetta",
+    "reuse_keys": [
+      "calgary_new_central_library",
+      "library_original_snohetta",
+      "Civic / Institutional",
+      "Library"
+    ]
+  },
+  "dimensions": {
+    "width_m": 82.3,
+    "depth_m": 58.0,
+    "podium_height_m": 5.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 1.0,
+    "crown_height_m": 5.0,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "A four-level faceted crystalline almond bridges the CTrain, with a sixty-forty field of iridescent aluminum and low-iron fritted glass carved away into a continuous double-curved western-red-cedar Chinook arch and transparent public library.",
+    "material_zones": "iridescent silver-white aluminum unitized panels; clear and graduated-frit low-iron triple glazing; pale aluminum pressure caps; western red cedar batten soffit; warm occupied library interiors; board-formed concrete transit bridge and public plinth; silver membrane roof",
+    "glass_profile": "calgary_library_low_iron_fritted",
+    "kits": [
+      "faceted_almond_envelope",
+      "five_family_unitized_panel_schedule",
+      "subtractive_chinook_arch",
+      "double_curved_cedar_soffit",
+      "occupied_low_iron_glazing",
+      "transit_bridge",
+      "faceted_atrium_roof"
+    ]
+  },
+  "archetype_aliases": [
+    "calgary_new_central_library",
+    "library_original_snohetta"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The native almond shell is authored inside the user's approximate rectangular envelope. Independent landmark scaling covers ordinary hand-drawn variation; larger targets repeat the related stack.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.84,
+      "scaleMax": 1.16,
+      "maxAxisRatio": 1.14
+    },
+    "recommendedWidth_m": [
+      65,
+      85
+    ],
+    "recommendedDepth_m": [
+      50,
+      70
+    ],
+    "recommendedFloors": [
+      3,
+      5
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          65,
+          85
+        ],
+        "recommendedDepth_m": [
+          50,
+          70
+        ],
+        "recommendedFloors": [
+          3,
+          5
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "faceted_almond_over_transit",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/calgary-new-central-library/variant_0.png",
+    "fallback": "family_shaped_modular_streetwall"
+  }
+}

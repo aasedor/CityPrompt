@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-29-reference-underlay-registration-v101`.
+Current executable memory: `2026-07-29-unitized-panel-topology-v102`.
 
 ## The quality target
 
@@ -998,6 +998,24 @@ The polychrome collegiate family added four rules for resizable hero facades:
   Keep the reviewed whole-building GLB inside a conservative independent-axis
   scale band, then use family-specific podium/middle/crown/roof modules for
   oversized streetwall repetition without repeating its canonical silhouette.
+
+### Wave 7 unitized-envelope + curved-void lessons
+
+- A crystalline, diagrid or polygonal enclosure is a panel topology, not a
+  rectangular curtain wall with a pattern painted or triangulated over it.
+  Reconstruct the documented panel family, scale and opaque-to-glazed ratio;
+  wrap that graph continuously around the actual plan; and expose pressure-cap
+  seams between opaque neighbours as well as around glass.
+- Where a unitized shell meets a curved public void, clip boundary panels to
+  the authored opening curve. Omitting coarse rectangular cells leaves teeth
+  hanging into the entrance; adding a timber strip in front leaves the feature
+  reading as an attached canopy. The reveal, soffit and surface-following
+  battens must form one continuous subtractive assembly.
+- Use the enclosure supplier's counts and shape families as scale evidence.
+  A façade documented as hundreds of unique four-, five- and six-sided units
+  should not become a few oversized triangles or thousands of generic windows.
+  Validate panel density, material ratio and joint continuity from street,
+  front-corner and aerial cameras.
 
 ## Updating this memory
 

@@ -1,0 +1,166 @@
+{
+  "status": "pass",
+  "family": "calgary-central-library",
+  "archetype_id": "calgary_new_central_library",
+  "reuse_keys": [
+    "calgary_new_central_library",
+    "library_original_snohetta",
+    "Civic / Institutional",
+    "Library"
+  ],
+  "manifest": "calgary-central-library_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "calgary-central-library_podium.glb: 13.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "calgary-central-library_assembled.glb: 27.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "calgary-central-library_podium.glb",
+      "status": "ok",
+      "triangles": 344,
+      "extent_m": {
+        "width_x": 82.3,
+        "height_y": 5.0,
+        "depth_z": 58.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_IridescentAluminum",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_CALGARY_WesternRedCedar",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right"
+      ],
+      "size_bytes": 14451156
+    },
+    {
+      "file": "calgary-central-library_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 1316,
+      "extent_m": {
+        "width_x": 82.3,
+        "height_y": 5.0,
+        "depth_z": 58.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_CALGARY_IridescentAluminum",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right"
+      ],
+      "size_bytes": 3826412
+    },
+    {
+      "file": "calgary-central-library_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 1316,
+      "extent_m": {
+        "width_x": 82.3,
+        "height_y": 5.0,
+        "depth_z": 58.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_CALGARY_IridescentAluminumCool",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right"
+      ],
+      "size_bytes": 3826424
+    },
+    {
+      "file": "calgary-central-library_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 1316,
+      "extent_m": {
+        "width_x": 82.3,
+        "height_y": 5.0,
+        "depth_z": 58.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_CALGARY_IridescentAluminum",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right"
+      ],
+      "size_bytes": 3826412
+    },
+    {
+      "file": "calgary-central-library_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1316,
+      "extent_m": {
+        "width_x": 79.9,
+        "height_y": 5.0,
+        "depth_z": 55.78
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_CALGARY_IridescentAluminum",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right"
+      ],
+      "size_bytes": 3826388
+    },
+    {
+      "file": "calgary-central-library_roof.glb",
+      "status": "ok",
+      "triangles": 220,
+      "extent_m": {
+        "width_x": 80.3,
+        "height_y": 1.05,
+        "depth_z": 56.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_FacetedRoof",
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right"
+      ],
+      "size_bytes": 3746944
+    },
+    {
+      "file": "calgary-central-library_assembled.glb",
+      "status": "ok",
+      "triangles": 30329,
+      "extent_m": {
+        "width_x": 82.266,
+        "height_y": 24.98,
+        "depth_z": 58.003
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_CALGARY_BoardFormConcrete",
+        "MAT_CALGARY_FacetedRoof",
+        "MAT_CALGARY_GraduatedCeramicFrit",
+        "MAT_CALGARY_IridescentAluminum",
+        "MAT_CALGARY_IridescentAluminumCool",
+        "MAT_CALGARY_LowIronClear",
+        "MAT_CALGARY_OccupiedLibrary",
+        "MAT_CALGARY_PalePressureCaps",
+        "MAT_CALGARY_RenderLockedOccupiedDepth",
+        "MAT_CALGARY_ShadowSteel",
+        "MAT_CALGARY_WarmReadingRooms",
+        "MAT_CALGARY_WesternRedCedar"
+      ],
+      "size_bytes": 28814236,
+      "role": "assembled"
+    }
+  ]
+}

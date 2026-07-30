@@ -375,6 +375,20 @@
                                                                      "materialZones":  "champagne-silver titanium panel rainscreen; charcoal structural steel; low-iron faceted atrium glass; warm timber public interiors; dark membrane roofs; pale concrete public plinth",
                                                                      "glassProfile":  "museum_atrium_low_iron",
                                                                      "elevationUrl":  "/families/deconstructivist-museum/elevation.jpg"
+                                                                 },
+                     "calgary_new_central_library":  {
+                                                           "archetypeId":  "calgary_new_central_library",
+                                                           "identity":  "A four-level faceted crystalline almond bridges the CTrain, its low-iron and iridescent unitized panel field carved into one continuous western-red-cedar Chinook arch and transparent public library.",
+                                                           "materialZones":  "iridescent silver-white aluminum unitized panels; clear and graduated-frit low-iron triple glazing; pale pressure caps; western red cedar soffit; warm occupied library; board-formed concrete transit bridge; faceted silver roof",
+                                                           "glassProfile":  "calgary_library_low_iron_fritted",
+                                                           "elevationUrl":  "/families/calgary-central-library/elevation.jpg"
+                                                       },
+                     "library_original_snohetta":  {
+                                                        "archetypeId":  "library_original_snohetta",
+                                                        "identity":  "A four-level faceted crystalline almond bridges the CTrain, its low-iron and iridescent unitized panel field carved into one continuous western-red-cedar Chinook arch and transparent public library.",
+                                                        "materialZones":  "iridescent silver-white aluminum unitized panels; clear and graduated-frit low-iron triple glazing; pale pressure caps; western red cedar soffit; warm occupied library; board-formed concrete transit bridge; faceted silver roof",
+                                                        "glassProfile":  "calgary_library_low_iron_fritted",
+                                                        "elevationUrl":  "/families/calgary-central-library/elevation.jpg"
                                                                  }
                  }
 }

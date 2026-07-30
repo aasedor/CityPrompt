@@ -1,0 +1,54 @@
+{
+  "schema": "reference-generation@2",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "mode": "generate and precise-object-edit from authoritative multi-view references",
+  "generated_at": "2026-07-29",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_lGMg4wRhD5DfldOSIPap4pF2.png",
+      "use_case": "stylized-concept",
+      "role": "render-locked orthographic facade elevation",
+      "inputs": [
+        "ArchDaily/Snohetta photograph 201311_NY_N148",
+        "ArchDaily/Snohetta photograph 201311_NY_N147",
+        "ArchDaily/Snohetta photograph 201311_NY_N151"
+      ],
+      "prompt_summary": "Rectified, shadow-neutral front elevation preserving the four-level faceted oval, 60/40 aluminum-to-glass enclosure, occupied library openings and deeply carved western-red-cedar Chinook arch.",
+      "invariants": [
+        "exactly four occupied levels",
+        "no perspective or surrounding context",
+        "monumental cedar arch remains a carved void",
+        "irregular open-book and snowflake panel language remains visible"
+      ]
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_8DaVEyJYAKPW1oJn5MNhasnv.png",
+      "use_case": "precise-object-edit",
+      "role": "occupied-depth plate behind physical glazing",
+      "input": "elevation-source.png",
+      "prompt_summary": "Remove the exterior enclosure and reconstruct a restrained four-level library interior with floor plates, concrete columns, bookshelves, reading tables, stairs and localized warm cedar surfaces against a black exterior field.",
+      "invariants": [
+        "preserve the elevation canvas, silhouette and floor datums",
+        "exactly four occupied library levels",
+        "no exterior panels, reflections, arch, concrete plinth or context",
+        "subtle 3000K occupation rather than a uniform orange glow"
+      ]
+    },
+    {
+      "file": "cedar-material-source.png",
+      "default_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_gROuZKisCQoJZml7dMV46lUU.png",
+      "use_case": "stylized-concept",
+      "role": "shadow-neutral western-red-cedar batten source",
+      "input": "ArchDaily/Snohetta photograph 201311_NY_N151",
+      "prompt_summary": "Seamless orthographic source of narrow contemporary western-red-cedar battens with honey, amber and cinnamon grain variation and no baked lighting.",
+      "invariants": [
+        "narrow architectural battens at believable scale",
+        "flat orthographic capture",
+        "no perspective, scene context, shadows, metal, glass or concrete"
+      ]
+    }
+  ]
+}

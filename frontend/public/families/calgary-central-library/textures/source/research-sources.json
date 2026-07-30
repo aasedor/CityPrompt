@@ -1,0 +1,73 @@
+{
+  "schema": "architectural-reference-dossier@1",
+  "archetype_id": "calgary_new_central_library",
+  "variant_id": "library_original_snohetta",
+  "primary_sources": [
+    {
+      "publisher": "Snøhetta",
+      "url": "https://www.snohetta.com/projects/calgary-central-library",
+      "evidence": [
+        "four-level civic program",
+        "faceted crystalline envelope",
+        "modular hexagonal panel language",
+        "carved Chinook arch and occupied public interior"
+      ]
+    },
+    {
+      "publisher": "DIALOG",
+      "url": "https://dialogdesign.ca/projects/calgary-central-library-2/",
+      "evidence": [
+        "clear and fritted facade distribution",
+        "terraced topography and transit bridge",
+        "program transition from public lower levels to quiet upper levels"
+      ]
+    },
+    {
+      "publisher": "StructureCraft",
+      "url": "https://structurecraft.com/projects/calgary-central-library",
+      "evidence": [
+        "doubly curved freeform western-red-cedar soffit",
+        "geodesic batten paths",
+        "prefabricated ribbed backing panels"
+      ]
+    },
+    {
+      "publisher": "Vitro Architectural Glass",
+      "url": "https://projects.vitroglazings.com/calgary-central-library?lang=en",
+      "evidence": [
+        "60 percent insulating metal and 40 percent triple-pane glazing",
+        "Solarban 60, Solarban 72 and Starphire low-iron glass",
+        "clear, glazed and ceramic-fritted panel families",
+        "neutral, low-reflectivity glass response"
+      ]
+    },
+    {
+      "publisher": "Calgary Municipal Land Corporation",
+      "url": "https://www.calgarymlc.ca/articles/new-central-library-curtain-wall-installation-begins",
+      "evidence": [
+        "five primary panel shapes",
+        "approximately 485 uniquely fitted unitized panels",
+        "panel sizes from approximately 1.2 by 3.7 metres to 2.7 by 9.1 metres",
+        "maximum glazed area of approximately 40 percent"
+      ]
+    }
+  ],
+  "drawing_sources": [
+    {
+      "publisher": "ArchDaily project gallery",
+      "url": "https://www.archdaily.com/905263/calgary-central-library-snohetta",
+      "use": "published plans, longitudinal and transverse sections, exterior obliques and close material views"
+    },
+    {
+      "publisher": "Sanga Architecture and Design",
+      "url": "https://www.sanga.design/projects/new-calgary-central-library",
+      "use": "site plan and sectional organization by a project designer"
+    }
+  ],
+  "camera_registration": {
+    "hero_reference": "201311_NY_N148",
+    "oblique_reference": "201311_NY_N147",
+    "material_reference": "201311_NY_N151",
+    "method": "vanishing-line and visible-datum alignment against the fixed proof cameras"
+  }
+}

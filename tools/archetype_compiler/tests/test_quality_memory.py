@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-29-reference-underlay-registration-v101"
+        == "2026-07-29-unitized-panel-topology-v102"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -145,6 +145,11 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         and "occupied-depth underlay" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "triangular quilt" in item["symptom"].lower()
+        and "unitized panel topology" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
@@ -158,6 +163,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
         "render_locked_sources_are_geometry_bound",
+        "unitized_enclosures_are_panel_topologies",
         "glass_is_layered",
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",

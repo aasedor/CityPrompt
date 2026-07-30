@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-29-reference-underlay-registration-v101",
+  "memory_version": "2026-07-29-unitized-panel-topology-v102",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -47,6 +47,10 @@
     {
       "id": "render_locked_sources_are_geometry_bound",
       "rule": "A generated elevation, material study or occupied-depth source counts only when exported geometry actually references it. Coordinate-register the source to audited model datums, keep exterior screens and mullions as separate physical construction, and place reference-derived occupied depth immediately behind the matching physical glazing."
+    },
+    {
+      "id": "unitized_enclosures_are_panel_topologies",
+      "rule": "A crystalline, diagrid or polygonal facade must reconstruct the reference panel graph, documented shape families, physical scale and opaque-to-glazed ratio on the actual envelope. Clip boundary panels to curved voids and expose construction joints between opaque neighbours; a rectangular grid split into decorative triangles is not equivalent."
     },
     {
       "id": "glass_is_layered",
@@ -234,6 +238,7 @@
         "industrial_crittall_occupied",
         "nordic_clear_occupied",
         "museum_atrium_low_iron",
+        "calgary_library_low_iron_fritted",
         "terracotta_office_low_e",
         "civic_recessed_smoked"
       ],
@@ -752,6 +757,11 @@
       "symptom": "A family ships a custom elevation and complete PBR package but its windows and facade still look generic in the delivered GLB",
       "cause": "The render-locked source was declared in metadata but no exported material consumed it, while physical glass looked onto a uniform room card and discarded the reference-specific floor, bay and occupation cadence.",
       "correction": "Audit the GLB material graph, not only the source folder. Bind the exterior source to its authored semantic surfaces and coordinate-register a reference-derived occupied-depth underlay behind the matching physical glazing; keep fins, mullions and other screens in separate geometry and prove the registration from front and oblique cameras."
+    },
+    {
+      "symptom": "A crystalline civic facade reads as an oversized triangular quilt or a generic honeycomb unrelated to the reference enclosure",
+      "cause": "A rectangular curtain-wall grid was split decoratively, or one uniform hexagon was repeated without using the documented panel count, clipped shape families, material ratio and curved opening boundary.",
+      "correction": "Reconstruct a wrapped unitized panel topology at evidence-based scale; mix the authored four-, five- and six-sided families, preserve the opaque-to-glazed schedule, clip panels to subtractive openings, and keep pressure-cap seams visible between every neighbouring unit."
     }
   ]
 }

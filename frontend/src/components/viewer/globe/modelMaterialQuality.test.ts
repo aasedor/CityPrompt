@@ -178,6 +178,13 @@ describe('prepareArchitecturalClone', () => {
       clearcoat: 0.62,
     },
     {
+      profile: 'calgary_library_low_iron_fritted',
+      transmission: 0.66,
+      environment: 1.12,
+      ior: 1.52,
+      clearcoat: 0.60,
+    },
+    {
       profile: 'terracotta_office_low_e',
       transmission: 0.54,
       environment: 1.02,

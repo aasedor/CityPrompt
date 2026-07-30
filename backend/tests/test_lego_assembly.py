@@ -1461,9 +1461,13 @@ async def test_wave3_fixed_landmarks_accept_near_native_drawn_dimensions(
             "brutalist-civic-block",
             "modernist_civic_concrete_brutalist",
         ),
+        (
+            "calgary-central-library",
+            "library_original_snohetta",
+        ),
     ],
 )
-async def test_wave6_nonresidential_api_plans_drawn_landmark_and_oversized_repeat(
+async def test_nonresidential_api_plans_drawn_landmark_and_oversized_repeat(
     client,
     mock_db,
     test_user,

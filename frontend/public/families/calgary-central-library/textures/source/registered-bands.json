@@ -1,0 +1,55 @@
+{
+  "schema": "registered-facade-bands@1",
+  "source": "elevation-source.png",
+  "bands": {
+    "facade": [
+      0.028,
+      0.052,
+      0.988,
+      0.958
+    ],
+    "podium": [
+      0.028,
+      0.598,
+      0.988,
+      0.958
+    ],
+    "floor_a": [
+      0.028,
+      0.448,
+      0.988,
+      0.635
+    ],
+    "floor_b": [
+      0.028,
+      0.292,
+      0.988,
+      0.482
+    ],
+    "floor_c": [
+      0.028,
+      0.142,
+      0.988,
+      0.33
+    ],
+    "crown": [
+      0.028,
+      0.052,
+      0.988,
+      0.18
+    ],
+    "shell": [
+      0.028,
+      0.052,
+      0.988,
+      0.72
+    ],
+    "side": [
+      0.028,
+      0.052,
+      0.988,
+      0.72
+    ]
+  },
+  "notes": "The fixed landmark consumes the complete elevation. The fallback stack consumes only the audited podium, three floor and crown bands."
+}
