@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source.png",
+  "method": "The generator's full-height upper glazing and clerestory panes sit behind individually modeled cedar battens. The registered occupied-depth source supplies room variation only behind those layers.",
+  "physical_geometry_required": true
+}

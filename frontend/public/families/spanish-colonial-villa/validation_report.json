@@ -1,0 +1,192 @@
+{
+  "status": "pass",
+  "family": "spanish-colonial-villa",
+  "archetype_id": "mediterranean_villa_estate",
+  "reuse_keys": [
+    "mediterranean_villa_estate",
+    "med_villa_spanish_colonial",
+    "Detached House",
+    "Single-Family Residential",
+    "Spanish Colonial Villa"
+  ],
+  "manifest": "spanish-colonial-villa_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "spanish-colonial-villa_podium.glb: 36.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_a.glb: 36.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_b.glb: 36.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_floor_typical_c.glb: 36.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_crown_crown.glb: 36.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_roof.glb: 26.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "spanish-colonial-villa_assembled.glb: 70.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "spanish-colonial-villa_podium.glb",
+      "status": "ok",
+      "triangles": 7453,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 3.33,
+        "depth_z": 14.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 37918492
+    },
+    {
+      "file": "spanish-colonial-villa_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 9372,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 3.05,
+        "depth_z": 14.856
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 38056600
+    },
+    {
+      "file": "spanish-colonial-villa_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 6048,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 3.05,
+        "depth_z": 14.34
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 37800308
+    },
+    {
+      "file": "spanish-colonial-villa_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 9000,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 3.05,
+        "depth_z": 14.34
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 38012720
+    },
+    {
+      "file": "spanish-colonial-villa_crown_crown.glb",
+      "status": "ok",
+      "triangles": 7704,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 3.05,
+        "depth_z": 14.34
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 37916536
+    },
+    {
+      "file": "spanish-colonial-villa_roof.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 1.55,
+        "depth_z": 14.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_TerracottaBarrelTile"
+      ],
+      "size_bytes": 27963120
+    },
+    {
+      "file": "spanish-colonial-villa_assembled.glb",
+      "status": "ok",
+      "triangles": 66025,
+      "extent_m": {
+        "width_x": 18.31,
+        "height_y": 13.192,
+        "depth_z": 14.821
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedBronze",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_AgedLimeStucco",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DarkTimber",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_DeepResidentialCavity",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ExposedBrick",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_ForgedIron",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomDim",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_OccupiedRoomWarm",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_PhysicalGlass",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_RegisteredOccupiedDepth",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_TerracottaBarrelTile",
+        "MAT_W9_SPANISH_COLONIAL_VILLA_WarmLimestone"
+      ],
+      "size_bytes": 74012036,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "status": "pass",
+  "family": "swiss-chalet-residence",
+  "archetype_id": "mountain_alpine_chalet",
+  "reuse_keys": [
+    "mountain_alpine_chalet",
+    "alpine_swiss_traditional",
+    "Detached House",
+    "Single-Family Residential",
+    "Swiss Chalet"
+  ],
+  "manifest": "swiss-chalet-residence_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "swiss-chalet-residence_podium.glb: 35.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_floor_typical_a.glb: 18.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_floor_typical_b.glb: 17.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_floor_typical_c.glb: 18.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_crown_crown.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_roof.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "swiss-chalet-residence_assembled.glb: 95889 triangles (heavy; consider simplification)",
+    "swiss-chalet-residence_assembled.glb: 15 materials (many; consider consolidation)",
+    "swiss-chalet-residence_assembled.glb: 58.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "swiss-chalet-residence_podium.glb",
+      "status": "ok",
+      "triangles": 7681,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 3.15,
+        "depth_z": 12.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_DarkMetal",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_Fieldstone",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_FlowerAccent",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
+      ],
+      "size_bytes": 37182564
+    },
+    {
+      "file": "swiss-chalet-residence_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 19568,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 3.15,
+        "depth_z": 13.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_FlowerAccent",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
+      ],
+      "size_bytes": 19335812
+    },
+    {
+      "file": "swiss-chalet-residence_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 9808,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 3.15,
+        "depth_z": 12.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_FlowerAccent",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
+      ],
+      "size_bytes": 18573244
+    },
+    {
+      "file": "swiss-chalet-residence_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 18008,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 3.15,
+        "depth_z": 13.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_FlowerAccent",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage"
+      ],
+      "size_bytes": 19213284
+    },
+    {
+      "file": "swiss-chalet-residence_crown_crown.glb",
+      "status": "ok",
+      "triangles": 7272,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 3.15,
+        "depth_z": 12.122
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass"
+      ],
+      "size_bytes": 13891048
+    },
+    {
+      "file": "swiss-chalet-residence_roof.glb",
+      "status": "ok",
+      "triangles": 1108,
+      "extent_m": {
+        "width_x": 14.883,
+        "height_y": 3.82,
+        "depth_z": 12.99
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_WeatheredShingles"
+      ],
+      "size_bytes": 22779380
+    },
+    {
+      "file": "swiss-chalet-residence_assembled.glb",
+      "status": "ok",
+      "triangles": 95889,
+      "extent_m": {
+        "width_x": 14.7,
+        "height_y": 13.25,
+        "depth_z": 13.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_AgedTimberShadowReturn",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_CarvedTimber",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_DarkMetal",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_DeepResidentialCavity",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_Fieldstone",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_FlowerAccent",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_LinenCurtain",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomDim",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_OccupiedRoomWarm",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_PhysicalGlass",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RegisteredFacade",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RegisteredOccupiedDepth",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_RestrainedFoliage",
+        "MAT_W9_SWISS_CHALET_RESIDENCE_WeatheredShingles"
+      ],
+      "size_bytes": 61084020,
+      "role": "assembled"
+    }
+  ]
+}

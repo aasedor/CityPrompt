@@ -1,0 +1,1771 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave9_single_family_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-30T13:28:56.831118+00:00",
+  "family": "timber-screen-lanehouse",
+  "archetype_id": "japanese_contemporary_lanehouse",
+  "archetype_label": "Japanese Contemporary Lanehouse \u2014 Timber Screen",
+  "variant_id": "japanese_lane_timber_screen",
+  "generation_archetype_id": "japanese_lane_timber_screen",
+  "archetype_aliases": [
+    "japanese_contemporary_lanehouse",
+    "japanese_lane_timber_screen"
+  ],
+  "aesthetic_category_id": "japanese_contemporary",
+  "development_type": "residential_single_family",
+  "reuse_keys": [
+    "japanese_contemporary_lanehouse",
+    "japanese_lane_timber_screen",
+    "Detached House",
+    "Single-Family Residential",
+    "Lanehouse"
+  ],
+  "generation_tags": [
+    "wave9_single_family_batch",
+    "fixed_landmark",
+    "custom_pbr_skin",
+    "physical_residential_glazing",
+    "reference_locked",
+    "detached_house",
+    "continuous_vertical_cedar_screen",
+    "screen_support_rail_datums",
+    "occupied_glazing_behind_screen",
+    "deep_recessed_entrance",
+    "integrated_timber_bench",
+    "wrapped_side_screen",
+    "rooftop_clerestory"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The narrow screen is a complete privacy facade, so mild independent scaling is safe. Larger drawings repeat complete screen bays and their occupied rooms rather than widening individual battens.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.82,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      4.2,
+      6.3
+    ],
+    "recommendedDepth_m": [
+      9.5,
+      15.5
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          4.2,
+          6.3
+        ],
+        "recommendedDepth_m": [
+          9.5,
+          15.5
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "facade_near_albedo",
+      "path": "textures/pbr/near/elevation_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_normal",
+      "path": "textures/pbr/near/elevation_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_roughness",
+      "path": "textures/pbr/near/elevation_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_ao",
+      "path": "textures/pbr/near/elevation_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_depth",
+      "path": "textures/pbr/near/elevation_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_emissive",
+      "path": "textures/pbr/near/elevation_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_glass_mask",
+      "path": "textures/pbr/near/elevation_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_opaque_mask",
+      "path": "textures/pbr/near/elevation_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_albedo",
+      "path": "textures/pbr/far/elevation_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_normal",
+      "path": "textures/pbr/far/elevation_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_roughness",
+      "path": "textures/pbr/far/elevation_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_ao",
+      "path": "textures/pbr/far/elevation_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_depth",
+      "path": "textures/pbr/far/elevation_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_emissive",
+      "path": "textures/pbr/far/elevation_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_glass_mask",
+      "path": "textures/pbr/far/elevation_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_opaque_mask",
+      "path": "textures/pbr/far/elevation_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "podium_near_albedo",
+      "path": "textures/pbr/near/podium_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_normal",
+      "path": "textures/pbr/near/podium_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_roughness",
+      "path": "textures/pbr/near/podium_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_ao",
+      "path": "textures/pbr/near/podium_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_depth",
+      "path": "textures/pbr/near/podium_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_emissive",
+      "path": "textures/pbr/near/podium_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_glass_mask",
+      "path": "textures/pbr/near/podium_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_opaque_mask",
+      "path": "textures/pbr/near/podium_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_albedo",
+      "path": "textures/pbr/far/podium_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_normal",
+      "path": "textures/pbr/far/podium_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_roughness",
+      "path": "textures/pbr/far/podium_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_ao",
+      "path": "textures/pbr/far/podium_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_depth",
+      "path": "textures/pbr/far/podium_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_emissive",
+      "path": "textures/pbr/far/podium_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_glass_mask",
+      "path": "textures/pbr/far/podium_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_opaque_mask",
+      "path": "textures/pbr/far/podium_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "floor_a_near_albedo",
+      "path": "textures/pbr/near/floor_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_normal",
+      "path": "textures/pbr/near/floor_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_roughness",
+      "path": "textures/pbr/near/floor_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_ao",
+      "path": "textures/pbr/near/floor_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_depth",
+      "path": "textures/pbr/near/floor_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_emissive",
+      "path": "textures/pbr/near/floor_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_glass_mask",
+      "path": "textures/pbr/near/floor_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_opaque_mask",
+      "path": "textures/pbr/near/floor_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_albedo",
+      "path": "textures/pbr/far/floor_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_normal",
+      "path": "textures/pbr/far/floor_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_roughness",
+      "path": "textures/pbr/far/floor_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_ao",
+      "path": "textures/pbr/far/floor_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_depth",
+      "path": "textures/pbr/far/floor_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_emissive",
+      "path": "textures/pbr/far/floor_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_glass_mask",
+      "path": "textures/pbr/far/floor_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_opaque_mask",
+      "path": "textures/pbr/far/floor_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_b_near_albedo",
+      "path": "textures/pbr/near/floor_alt_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_normal",
+      "path": "textures/pbr/near/floor_alt_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_roughness",
+      "path": "textures/pbr/near/floor_alt_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_ao",
+      "path": "textures/pbr/near/floor_alt_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_depth",
+      "path": "textures/pbr/near/floor_alt_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_emissive",
+      "path": "textures/pbr/near/floor_alt_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_glass_mask",
+      "path": "textures/pbr/near/floor_alt_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_opaque_mask",
+      "path": "textures/pbr/near/floor_alt_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_albedo",
+      "path": "textures/pbr/far/floor_alt_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_normal",
+      "path": "textures/pbr/far/floor_alt_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_roughness",
+      "path": "textures/pbr/far/floor_alt_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_ao",
+      "path": "textures/pbr/far/floor_alt_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_depth",
+      "path": "textures/pbr/far/floor_alt_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_emissive",
+      "path": "textures/pbr/far/floor_alt_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_glass_mask",
+      "path": "textures/pbr/far/floor_alt_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_opaque_mask",
+      "path": "textures/pbr/far/floor_alt_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "crown_near_albedo",
+      "path": "textures/pbr/near/crown_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_normal",
+      "path": "textures/pbr/near/crown_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_roughness",
+      "path": "textures/pbr/near/crown_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_ao",
+      "path": "textures/pbr/near/crown_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_depth",
+      "path": "textures/pbr/near/crown_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_emissive",
+      "path": "textures/pbr/near/crown_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_glass_mask",
+      "path": "textures/pbr/near/crown_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_opaque_mask",
+      "path": "textures/pbr/near/crown_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_albedo",
+      "path": "textures/pbr/far/crown_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_normal",
+      "path": "textures/pbr/far/crown_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_roughness",
+      "path": "textures/pbr/far/crown_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_ao",
+      "path": "textures/pbr/far/crown_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_depth",
+      "path": "textures/pbr/far/crown_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_emissive",
+      "path": "textures/pbr/far/crown_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_glass_mask",
+      "path": "textures/pbr/far/crown_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_opaque_mask",
+      "path": "textures/pbr/far/crown_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "side_near_albedo",
+      "path": "textures/pbr/near/side_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_normal",
+      "path": "textures/pbr/near/side_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_roughness",
+      "path": "textures/pbr/near/side_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_ao",
+      "path": "textures/pbr/near/side_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_depth",
+      "path": "textures/pbr/near/side_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_emissive",
+      "path": "textures/pbr/near/side_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_glass_mask",
+      "path": "textures/pbr/near/side_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_opaque_mask",
+      "path": "textures/pbr/near/side_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_albedo",
+      "path": "textures/pbr/far/side_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_normal",
+      "path": "textures/pbr/far/side_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_roughness",
+      "path": "textures/pbr/far/side_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_ao",
+      "path": "textures/pbr/far/side_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_depth",
+      "path": "textures/pbr/far/side_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_emissive",
+      "path": "textures/pbr/far/side_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_glass_mask",
+      "path": "textures/pbr/far/side_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_opaque_mask",
+      "path": "textures/pbr/far/side_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "side"
+    },
+    {
+      "key": "interior_near_albedo",
+      "path": "textures/pbr/near/interior_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_normal",
+      "path": "textures/pbr/near/interior_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_roughness",
+      "path": "textures/pbr/near/interior_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_ao",
+      "path": "textures/pbr/near/interior_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_depth",
+      "path": "textures/pbr/near/interior_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_emissive",
+      "path": "textures/pbr/near/interior_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_glass_mask",
+      "path": "textures/pbr/near/interior_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_opaque_mask",
+      "path": "textures/pbr/near/interior_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_albedo",
+      "path": "textures/pbr/far/interior_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_normal",
+      "path": "textures/pbr/far/interior_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_roughness",
+      "path": "textures/pbr/far/interior_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_ao",
+      "path": "textures/pbr/far/interior_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_depth",
+      "path": "textures/pbr/far/interior_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_emissive",
+      "path": "textures/pbr/far/interior_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_glass_mask",
+      "path": "textures/pbr/far/interior_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_opaque_mask",
+      "path": "textures/pbr/far/interior_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "cedar_near_albedo",
+      "path": "textures/pbr/near/cedar_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_normal",
+      "path": "textures/pbr/near/cedar_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_roughness",
+      "path": "textures/pbr/near/cedar_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_ao",
+      "path": "textures/pbr/near/cedar_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_depth",
+      "path": "textures/pbr/near/cedar_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_emissive",
+      "path": "textures/pbr/near/cedar_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_glass_mask",
+      "path": "textures/pbr/near/cedar_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_near_opaque_mask",
+      "path": "textures/pbr/near/cedar_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_albedo",
+      "path": "textures/pbr/far/cedar_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_normal",
+      "path": "textures/pbr/far/cedar_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_roughness",
+      "path": "textures/pbr/far/cedar_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_ao",
+      "path": "textures/pbr/far/cedar_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_depth",
+      "path": "textures/pbr/far/cedar_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_emissive",
+      "path": "textures/pbr/far/cedar_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_glass_mask",
+      "path": "textures/pbr/far/cedar_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "cedar"
+    },
+    {
+      "key": "cedar_far_opaque_mask",
+      "path": "textures/pbr/far/cedar_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "cedar"
+    },
+    {
+      "key": "metal_near_albedo",
+      "path": "textures/pbr/near/metal_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_normal",
+      "path": "textures/pbr/near/metal_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_roughness",
+      "path": "textures/pbr/near/metal_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_ao",
+      "path": "textures/pbr/near/metal_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_depth",
+      "path": "textures/pbr/near/metal_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_emissive",
+      "path": "textures/pbr/near/metal_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_glass_mask",
+      "path": "textures/pbr/near/metal_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_near_opaque_mask",
+      "path": "textures/pbr/near/metal_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_albedo",
+      "path": "textures/pbr/far/metal_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_normal",
+      "path": "textures/pbr/far/metal_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_roughness",
+      "path": "textures/pbr/far/metal_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_ao",
+      "path": "textures/pbr/far/metal_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_depth",
+      "path": "textures/pbr/far/metal_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_emissive",
+      "path": "textures/pbr/far/metal_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_glass_mask",
+      "path": "textures/pbr/far/metal_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "metal"
+    },
+    {
+      "key": "metal_far_opaque_mask",
+      "path": "textures/pbr/far/metal_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "metal"
+    },
+    {
+      "key": "concrete_near_albedo",
+      "path": "textures/pbr/near/concrete_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_normal",
+      "path": "textures/pbr/near/concrete_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_roughness",
+      "path": "textures/pbr/near/concrete_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_ao",
+      "path": "textures/pbr/near/concrete_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_depth",
+      "path": "textures/pbr/near/concrete_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_emissive",
+      "path": "textures/pbr/near/concrete_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_glass_mask",
+      "path": "textures/pbr/near/concrete_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_opaque_mask",
+      "path": "textures/pbr/near/concrete_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_albedo",
+      "path": "textures/pbr/far/concrete_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_normal",
+      "path": "textures/pbr/far/concrete_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_roughness",
+      "path": "textures/pbr/far/concrete_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_ao",
+      "path": "textures/pbr/far/concrete_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_depth",
+      "path": "textures/pbr/far/concrete_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_emissive",
+      "path": "textures/pbr/far/concrete_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_glass_mask",
+      "path": "textures/pbr/far/concrete_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_opaque_mask",
+      "path": "textures/pbr/far/concrete_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "roof_near_albedo",
+      "path": "textures/pbr/near/roof_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_normal",
+      "path": "textures/pbr/near/roof_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_roughness",
+      "path": "textures/pbr/near/roof_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_ao",
+      "path": "textures/pbr/near/roof_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_depth",
+      "path": "textures/pbr/near/roof_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_emissive",
+      "path": "textures/pbr/near/roof_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_glass_mask",
+      "path": "textures/pbr/near/roof_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_near_opaque_mask",
+      "path": "textures/pbr/near/roof_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_albedo",
+      "path": "textures/pbr/far/roof_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_normal",
+      "path": "textures/pbr/far/roof_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_roughness",
+      "path": "textures/pbr/far/roof_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_ao",
+      "path": "textures/pbr/far/roof_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_depth",
+      "path": "textures/pbr/far/roof_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_emissive",
+      "path": "textures/pbr/far/roof_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_glass_mask",
+      "path": "textures/pbr/far/roof_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "roof"
+    },
+    {
+      "key": "roof_far_opaque_mask",
+      "path": "textures/pbr/far/roof_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "roof"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/timber-screen-lanehouse",
+    "model": "gpt-image-2",
+    "style_reference": "elevation.jpg",
+    "goalpost_reference": "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png",
+    "goalpost_policy": "The catalogue card fixes occupied levels, roof/threshold silhouette, opening scale, construction hierarchy and material identity.",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "passed": true,
+      "method": "multiscale-linear-delighting-before-pbr-derivation"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        0,
+        3
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "The whole detached house remains fixed in-band. Larger parcels repeat complete residential bays in the family-shaped fallback."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "registered skin plus physical windows, threshold, balconies, eaves, roof construction and occupied room depth",
+      "far_usage": "city-scale render-locked archetype material reference"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "stone threshold",
+        "residential windows",
+        "balconies/porches",
+        "crown",
+        "roof",
+        "continuous_vertical_cedar_screen",
+        "screen_support_rail_datums",
+        "occupied_glazing_behind_screen",
+        "deep_recessed_entrance",
+        "integrated_timber_bench",
+        "wrapped_side_screen",
+        "rooftop_clerestory"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "Floor datums, material transitions, sash scale, eave and roof logic wrap every elevation; the ceremonial entrance stays fixed.",
+      "elevation_coverage": {
+        "front": "A narrow three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
+        "left": "related occupied residential return with true sash depth",
+        "right": "related occupied residential return with true sash depth",
+        "rear": "quieter occupied garden/service elevation",
+        "roof": "narrow_full_height_cedar_screen_with_rooftop_clerestory"
+      },
+      "variation_policy": "Mild X/Y scaling keeps the whole house. Larger or distorted drawings use the family-shaped modular streetwall fallback."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/elevation-source.png",
+      "near": {
+        "albedo": "textures/pbr/near/elevation_albedo.png",
+        "normal": "textures/pbr/near/elevation_normal.png",
+        "roughness": "textures/pbr/near/elevation_roughness.png",
+        "ao": "textures/pbr/near/elevation_ao.png",
+        "depth": "textures/pbr/near/elevation_depth.png",
+        "emissive": "textures/pbr/near/elevation_emissive.png",
+        "glass_mask": "textures/pbr/near/elevation_glass.png",
+        "opaque_mask": "textures/pbr/near/elevation_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/elevation_albedo.png",
+        "normal": "textures/pbr/far/elevation_normal.png",
+        "roughness": "textures/pbr/far/elevation_roughness.png",
+        "ao": "textures/pbr/far/elevation_ao.png",
+        "depth": "textures/pbr/far/elevation_depth.png",
+        "emissive": "textures/pbr/far/elevation_emissive.png",
+        "glass_mask": "textures/pbr/far/elevation_glass.png",
+        "opaque_mask": "textures/pbr/far/elevation_opaque.png"
+      },
+      "sources": {
+        "archetype_goalpost": "textures/source/archetype-goalpost.png",
+        "orthographic_elevation": "textures/source/elevation-source.png",
+        "reference_underlay": "textures/source/occupied-depth-source.png",
+        "reference_generation": "textures/source/reference-generation.json",
+        "registered_openings": "textures/source/registered-openings.json",
+        "registered_bands": "textures/source/registered-bands.json"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "japanese_contemporary_lanehouse",
+      "source_variant_id": "japanese_lane_timber_screen",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "three_level_narrow_lanehouse",
+        "continuous_vertical_cedar_privacy_screen",
+        "screen_support_rail_datums",
+        "occupied_glazing_behind_screen",
+        "deeply_recessed_entrance_and_bench",
+        "wrapped_side_screen",
+        "rooftop_clerestory_light_monitor"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png",
+    "fallback": "family_shaped_modular_streetwall"
+  },
+  "material_budget": {
+    "max_assembled_materials": 20,
+    "rationale": "Registered facade, construction materials, physical glazing, occupied depth and small identity accents remain semantic."
+  },
+  "dimensions": {
+    "width_m": 5.0,
+    "depth_m": 12.0,
+    "podium_height_m": 3.0,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 1.2,
+    "crown_height_m": 3.0,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "native_width_m": 5.0,
+  "native_depth_m": 12.0,
+  "native_floors": 3,
+  "min_floors": 1,
+  "max_floors": 3,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_podium.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 684,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 9900376
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_floor_typical_a.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 4140,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13873908
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_floor_typical_b.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 3708,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13843072
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_floor_typical_c.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 4572,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13904736
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_crown_crown.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 4140,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13873732
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "timber-screen-lanehouse_roof.glb",
+      "module_family": "timber-screen-lanehouse",
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "height_m": 1.2,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1656,
+      "material_count": 6,
+      "texture_keys": [
+        "cedar",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "metal",
+        "podium",
+        "roof",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 7580704
+    }
+  ],
+  "assembled": {
+    "filename": "timber-screen-lanehouse_assembled.glb",
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 10.2,
+    "triangle_count": 27974,
+    "material_count": 9,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 10.2
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 5.0,
+      "depth_m": 12.0,
+      "wing_depth_m": 12.0,
+      "segments": [
+        {
+          "id": "detached_house",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 5.0,
+          "thickness_m": 12.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "narrow_full_height_cedar_screen_with_rooftop_clerestory"
+    },
+    "texture_keys": [
+      "cedar",
+      "concrete",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "interior",
+      "metal",
+      "podium",
+      "roof",
+      "side"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "timber-screen-lanehouse_preview.png",
+  "renders": [
+    "timber-screen-lanehouse_preview.png",
+    "timber-screen-lanehouse_street.png",
+    "timber-screen-lanehouse_front_corner_oblique.png",
+    "timber-screen-lanehouse_rear_corner_oblique.png",
+    "timber-screen-lanehouse_aerial.png",
+    "timber-screen-lanehouse_facade_close.png",
+    "timber-screen-lanehouse_identity_close.png",
+    "timber-screen-lanehouse_context.png",
+    "elevation.jpg"
+  ],
+  "architectural_identity": "A narrow three-level Japanese lanehouse wraps two occupied upper floors in one continuous honey-cedar privacy screen, held by fine charcoal rails above a deeply recessed entrance and bench, with a shallow rooftop clerestory.",
+  "material_zones": "fine-grained honey cedar battens and panels; charcoal-bronze support rails; dark low-e occupied glazing behind the screen; pale concrete threshold; restrained dark-metal roof and clerestory framing",
+  "glass_profile": "lanehouse_screened_low_e",
+  "source_provenance": {
+    "kind": "catalogue_goalpost_plus_imagegen_reference_package_and_authored_residential_construction",
+    "catalogue_archetype_id": "japanese_contemporary_lanehouse",
+    "catalogue_variant_id": "japanese_lane_timber_screen",
+    "goalpost": "/archetypes/buildings/japanese_contemporary_lanehouse/variant_1.png",
+    "goalpost_local_source": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/elevation-source.png",
+    "reference_underlay": "textures/source/occupied-depth-source.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json",
+    "elevation_source": "/families/timber-screen-lanehouse/elevation.jpg",
+    "skin_manifest": "textures/skin_manifest.json",
+    "generator": "tools/archetype_compiler/generate_wave9_single_family_families.py",
+    "reference_method": "hard catalogue goalpost, rectified registered elevation, physical residential openings and construction, occupied-depth underlay, and finite street/oblique/aerial comparison"
+  }
+}

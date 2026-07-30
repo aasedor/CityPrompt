@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-29-registered-source-construction-zones-v103`.
+Current executable memory: `2026-07-30-detached-house-compositions-v104`.
 
 ## The quality target
 
@@ -1036,6 +1036,33 @@ The polychrome collegiate family added four rules for resizable hero facades:
   registration, a grazing close view proves material scale and real depth, and
   an aerial view proves that the shell, canopy or domes remain complete
   architecture rather than a hero-facing card.
+
+### Wave 9 detached-house composition lessons
+
+- A detached house is not a reduced apartment stack. Treat the reviewed
+  whole-house GLB as a fixed residential landmark whose roof silhouette,
+  threshold, entrance or porch, balconies or privacy screens, chimneys or
+  towers and occupied window cavities form one composition.
+- Roof and threshold usually carry more identity than extra facade ornament at
+  this scale. Model cross gables, deep eaves, shingles or barrel tiles,
+  clerestories, stone portals, benches and door recesses as connected
+  construction with real returns and attachment logic.
+- Residential windows must survive a close street view. Each opening needs a
+  sill, frame or sash, physically shaded pane, curtain or privacy layer and
+  recessed room depth; grilles, shutters and cedar screens remain separate
+  shadow-casting geometry in front of that cavity.
+- Use the render-locked elevation for exact front registration and
+  reference-derived tile-safe materials for long sides, roof fields and
+  construction solids. Do not stretch photographed windows, flowers, brick
+  patches or lighting over secondary elevations.
+- Accept ordinary hand-drawn footprint error by scaling the complete fixed
+  house inside a conservative independent-axis band. For oversized targets,
+  repeat complete ordinary residential bays in the fallback kit while the
+  entrance, ends, cross gables, tower, chimney and roof logic remain fixed.
+- Review detached houses head-on for opening alignment, from a front corner for
+  privacy-screen and balcony depth, and from high oblique for every roof
+  junction. A convincing front with blank side walls or an unresolved roof is
+  not a finished family.
 
 ## Updating this memory
 

@@ -1,0 +1,93 @@
+{
+  "family_id": "spanish-colonial-villa",
+  "source": {
+    "archetype_id": "mediterranean_villa_estate",
+    "variant_id": "med_villa_spanish_colonial",
+    "generation_archetype_id": "med_villa_spanish_colonial",
+    "reuse_keys": [
+      "mediterranean_villa_estate",
+      "med_villa_spanish_colonial",
+      "Detached House",
+      "Single-Family Residential",
+      "Spanish Colonial Villa"
+    ]
+  },
+  "dimensions": {
+    "width_m": 18.0,
+    "depth_m": 14.0,
+    "podium_height_m": 3.05,
+    "floor_height_m": 3.05,
+    "setback_height_m": 3.05,
+    "roof_height_m": 1.55,
+    "crown_height_m": 3.05,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A three-level aged-stucco Spanish Colonial villa is anchored by a deep central stone portal and asymmetrical left bell tower, with barred recessed sash, wrought-iron balconies, exposed brick patches and a low weathered terracotta roof.",
+    "material_zones": "warm hand-trowelled lime stucco; localized historic red-clay brick; pale warm limestone; dark timber sash and entrance doors; black forged iron grilles and balconies; weathered terracotta barrel tile; aged bronze bell",
+    "glass_profile": "villa_recessed_iron_glass",
+    "kits": [
+      "aged_stucco_three_level_body",
+      "asymmetrical_bell_tower",
+      "deep_central_stone_portal",
+      "recessed_barred_sash",
+      "forged_iron_balconies",
+      "physical_exposed_brick_patches",
+      "terracotta_barrel_tile_roof",
+      "physical_bell_and_tower_arches"
+    ]
+  },
+  "archetype_aliases": [
+    "mediterranean_villa_estate",
+    "med_villa_spanish_colonial"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The portal, tower and roof are one low-rise landmark composition. Mild scaling preserves it; oversized parcels repeat complete stucco window bays through the family stack.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.84,
+      "scaleMax": 1.18,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      15,
+      23
+    ],
+    "recommendedDepth_m": [
+      11,
+      18
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          15,
+          23
+        ],
+        "recommendedDepth_m": [
+          11,
+          18
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "long_low_terracotta_villa_with_left_bell_tower",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/mediterranean_villa_estate/variant_2.png",
+    "fallback": "family_shaped_modular_streetwall"
+  }
+}

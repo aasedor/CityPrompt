@@ -1,0 +1,16 @@
+{
+  "kind": "catalogue_goalpost_plus_imagegen_reference_package_and_authored_residential_construction",
+  "catalogue_archetype_id": "mediterranean_villa_estate",
+  "catalogue_variant_id": "med_villa_spanish_colonial",
+  "goalpost": "/archetypes/buildings/mediterranean_villa_estate/variant_2.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "orthographic_elevation": "textures/source/elevation-source.png",
+  "reference_underlay": "textures/source/occupied-depth-source.png",
+  "reference_generation": "textures/source/reference-generation.json",
+  "registered_openings": "textures/source/registered-openings.json",
+  "registered_bands": "textures/source/registered-bands.json",
+  "elevation_source": "/families/spanish-colonial-villa/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave9_single_family_families.py",
+  "reference_method": "hard catalogue goalpost, rectified registered elevation, physical residential openings and construction, occupied-depth underlay, and finite street/oblique/aerial comparison"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source.png",
+  "method": "The generator's residential-scale sash schedule and carved arched door are physical openings. The occupied-depth source is registered behind those cavities only.",
+  "physical_geometry_required": true
+}

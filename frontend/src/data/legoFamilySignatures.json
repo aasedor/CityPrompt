@@ -431,6 +431,48 @@
                                                             "materialZones":  "honey cut-limestone ashlar; pale dome stone; carved dark walnut mashrabiya and shopfronts; recessed amber glazing; aged bronze lanterns",
                                                             "glassProfile":  "souk_recessed_amber_glass",
                                                             "elevationUrl":  "/families/covered-souk-market/elevation.jpg"
+                                                        },
+                     "mountain_alpine_chalet":  {
+                                                      "archetypeId":  "mountain_alpine_chalet",
+                                                      "identity":  "A three-level Swiss chalet rises from a heavy fieldstone base into two aged-timber balcony levels beneath paired projecting cross gables, deep shingled eaves and masonry chimneys.",
+                                                      "materialZones":  "pale coursed fieldstone; deeply grained aged spruce; carved balcony timber; painted folk-art panels; weathered timber shingles; warm recessed sash glazing",
+                                                      "glassProfile":  "chalet_warm_low_e",
+                                                      "elevationUrl":  "/families/swiss-chalet-residence/elevation.jpg"
+                                                  },
+                     "alpine_swiss_traditional":  {
+                                                        "archetypeId":  "alpine_swiss_traditional",
+                                                        "identity":  "A three-level Swiss chalet rises from a heavy fieldstone base into two aged-timber balcony levels beneath paired projecting cross gables, deep shingled eaves and masonry chimneys.",
+                                                        "materialZones":  "pale coursed fieldstone; deeply grained aged spruce; carved balcony timber; painted folk-art panels; weathered timber shingles; warm recessed sash glazing",
+                                                        "glassProfile":  "chalet_warm_low_e",
+                                                        "elevationUrl":  "/families/swiss-chalet-residence/elevation.jpg"
+                                                    },
+                     "japanese_contemporary_lanehouse":  {
+                                                              "archetypeId":  "japanese_contemporary_lanehouse",
+                                                              "identity":  "A five-metre-wide Japanese lanehouse conceals two occupied upper levels behind one continuous cedar privacy screen above a recessed entrance, integrated bench and rooftop clerestory.",
+                                                              "materialZones":  "natural honey cedar battens and panels; charcoal-bronze support rails; dark low-e glazing; localized warm occupied rooms; pale concrete threshold",
+                                                              "glassProfile":  "lanehouse_screened_low_e",
+                                                              "elevationUrl":  "/families/timber-screen-lanehouse/elevation.jpg"
+                                                          },
+                     "japanese_lane_timber_screen":  {
+                                                          "archetypeId":  "japanese_lane_timber_screen",
+                                                          "identity":  "A five-metre-wide Japanese lanehouse conceals two occupied upper levels behind one continuous cedar privacy screen above a recessed entrance, integrated bench and rooftop clerestory.",
+                                                          "materialZones":  "natural honey cedar battens and panels; charcoal-bronze support rails; dark low-e glazing; localized warm occupied rooms; pale concrete threshold",
+                                                          "glassProfile":  "lanehouse_screened_low_e",
+                                                          "elevationUrl":  "/families/timber-screen-lanehouse/elevation.jpg"
+                                                      },
+                     "mediterranean_villa_estate":  {
+                                                         "archetypeId":  "mediterranean_villa_estate",
+                                                         "identity":  "A long three-level Spanish Colonial villa pairs an asymmetrical bell tower and low terracotta roof with a deep stone portal, central iron balcony and rhythm of barred recessed sash windows.",
+                                                         "materialZones":  "aged ochre lime stucco; exposed red-clay brick; pale rough limestone; weathered terracotta barrel tiles; dark timber sash; forged black iron; bronze bell",
+                                                         "glassProfile":  "villa_recessed_iron_glass",
+                                                         "elevationUrl":  "/families/spanish-colonial-villa/elevation.jpg"
+                                                     },
+                     "med_villa_spanish_colonial":  {
+                                                          "archetypeId":  "med_villa_spanish_colonial",
+                                                          "identity":  "A long three-level Spanish Colonial villa pairs an asymmetrical bell tower and low terracotta roof with a deep stone portal, central iron balcony and rhythm of barred recessed sash windows.",
+                                                          "materialZones":  "aged ochre lime stucco; exposed red-clay brick; pale rough limestone; weathered terracotta barrel tiles; dark timber sash; forged black iron; bronze bell",
+                                                          "glassProfile":  "villa_recessed_iron_glass",
+                                                          "elevationUrl":  "/families/spanish-colonial-villa/elevation.jpg"
                                                         }
                  }
 }

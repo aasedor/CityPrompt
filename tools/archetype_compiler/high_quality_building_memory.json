@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-29-registered-source-construction-zones-v103",
+  "memory_version": "2026-07-30-detached-house-compositions-v104",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -83,6 +83,10 @@
     {
       "id": "multi_aisle_roofs_are_complete_systems",
       "rule": "Markets, stations and halls with multiple roof aisles or vaults must author every visible aisle, ridge, valley, clerestory, rib or truss family, and end fan. A single generic shell may not stand in for the reference roof system."
+    },
+    {
+      "id": "detached_houses_are_complete_compositions",
+      "rule": "A detached house is a complete roof, threshold, privacy and occupation composition rather than a small generic stack. Its fixed whole-house assembly owns roof silhouette, entrance or porch, balconies or screens, chimneys or towers and residential-scale window construction; its repeatable fallback varies complete ordinary bays without duplicating those identity anchors."
     },
     {
       "id": "details_wrap",
@@ -179,6 +183,7 @@
         "entrance recess and canopy support logic",
         "roof form, dormers and chimneys",
         "window recesses and stone returns at hero range",
+        "residential-scale sills, frames, curtain or privacy layers, eave junctions and occupied depth",
         "deep monumental portal and lobby cavities with shaped soffits, jambs, panes and recessed occupation layers",
         "every visible aisle, ridge, valley, clerestory and structural rib in a multi-aisle hall roof",
         "cornice profiles and wrapping balcony slabs",
@@ -244,7 +249,10 @@
         "museum_atrium_low_iron",
         "calgary_library_low_iron_fritted",
         "terracotta_office_low_e",
-        "civic_recessed_smoked"
+        "civic_recessed_smoked",
+        "chalet_warm_low_e",
+        "lanehouse_screened_low_e",
+        "villa_recessed_iron_glass"
       ],
       "near": "physical transmission, shape-matched recessed pane, semantic opening returns, slim registered mullions/transoms, projecting sill and occupied interior backplate",
       "far": "baked facade glass with semantic mask",
@@ -771,6 +779,11 @@
       "symptom": "A curved shell, long timber member or deep stone arcade shows stretched windows, baked shadows or giant facade fragments even though a custom elevation exists",
       "cause": "The complete render-locked elevation was reused as a generic tiling material on nonlinear or elongated construction surfaces instead of remaining a coordinate-registered identity source.",
       "correction": "Separate reference registration from construction materialization. Use tile-safe shadow-neutral shell, timber, stone and dome zones derived from the goalpost palette on physical solids; keep silhouette openings in geometry; and clip the reference-derived occupied-depth plate to each matching real pane or arch."
+    },
+    {
+      "symptom": "A detached house has plausible wall materials but still reads as a generic miniature apartment block or loses its identity when the user draws a slightly different footprint",
+      "cause": "The generator treated the house as interchangeable stacked boxes, reduced the roof and threshold to caps, or stretched individual windows, porches, screens and balconies instead of preserving their composition.",
+      "correction": "Author a fixed whole-house landmark whose roof silhouette, entrance, porch or balcony, privacy screen, chimney or tower and residential window cavities form one reviewed composition. Permit bounded whole-building scaling, then route larger targets to a fallback kit that repeats complete residential bays while keeping the entrance, ends and roof fixed."
     }
   ]
 }

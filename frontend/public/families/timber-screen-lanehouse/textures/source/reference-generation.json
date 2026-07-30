@@ -1,0 +1,30 @@
+{
+  "schema": "reference-generation@1",
+  "family": "timber-screen-lanehouse",
+  "source_archetype_id": "japanese_contemporary_lanehouse",
+  "source_variant_id": "japanese_lane_timber_screen",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_K7nPlrcv4F4njAABCffrrGXI.png",
+      "role": "rectified_reference_elevation"
+    },
+    {
+      "file": "occupied-depth-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_EcdmXnGAaRyQYz1V3Hu4BSKY.png",
+      "role": "registered_occupied_depth"
+    },
+    {
+      "file": "cedar-material-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_E0Iw8b1m3viAppMH6HhRLXlM.png",
+      "role": "shadow_neutral_tileable_cedar"
+    }
+  ],
+  "elevation_prompt": "Use case: stylized-concept\nAsset type: render-locked architectural facade source for a LEGO-compatible 3D detached-house family\nInput image: the attached catalogue image is the hard identity and construction reference. Do not redesign the house.\nPrimary request: Create a precise, photorealistic, rectified orthographic FRONT ELEVATION of the exact same Japanese contemporary timber-screen lanehouse. Preserve exactly three occupied levels: a deeply recessed ground level and two upper residential levels concealed by one continuous vertical cedar privacy screen. Preserve the very narrow five-metre frontage, full-height warm cedar battens, fine dark horizontal support rails, a shadowed central-right entrance with glass door, integrated timber bench, solid lower slat panels, dark base datum, and the shallow rooftop clerestory/light-monitor above the flat roof. Show the full house from ground line through clerestory with both side edges visible.\nScene/backdrop: isolated on a neutral warm-grey studio field, no ground plane beyond a thin datum line.\nStyle/medium: highly detailed architectural material reference, photorealistic but shadow-neutral.\nComposition/framing: true straight-on orthographic elevation, centered, generous margin, no perspective convergence, no three-quarter view.\nLighting/mood: broad diffuse overcast studio illumination; no directional sunlight, cast shadows, scenery reflections, or haze.\nMaterials/textures: natural honey cedar with fine vertical grain and restrained board variation; charcoal-bronze steel rails and base; dark low-e glazing with localized warm occupied rooms behind the screen; pale concrete threshold.\nConstraints: exactly three occupied levels; the screen must remain a physically plausible continuous layer with narrow regular battens and aligned rails; preserve the reference's entrance/bench/clerestory hierarchy; no text or signage.\nAvoid: generic box without screen, extra floors, horizontal cladding, opaque upper wall, oversized windows in front of the screen, pitched roof, balconies, garage, trees, people, vehicles, street, neighbouring buildings, perspective, dramatic shadows, watermark.",
+  "occupied_depth_prompt": "Use case: precise-object-edit\nAsset type: registered occupied-depth plate for physical glazing behind a cedar privacy screen\nInput image: the attached rectified lanehouse elevation is the exact canvas and coordinate authority.\nOn the exact same canvas, remove every exterior material and silhouette element: all cedar battens and panels, dark rails, parapet, clerestory frames, threshold, entrance frame, bench, facade edges, and background. Retain ONLY localized interior content that would be visible behind the existing screened upper windows, clerestory glazing, and recessed ground entrance: dark room depth, restrained warm rooms, curtains, furniture silhouettes, shallow floor slabs, and the dark entrance vestibule. Keep every retained region precisely inside its original opening position and size.\nBackdrop: perfectly uniform black everywhere outside the registered interior regions.\nLighting: realistic residential variation; some rooms dim, some softly warm, never a uniform orange glow.\nConstraints: preserve exact pixel dimensions, canvas, three occupied levels, clerestory, opening registration, widths, heights, and floor alignment. Do not move, resize, add, merge, or delete interior regions.\nAvoid: any exterior cedar, battens, screen, rails, wall, roof, bench, threshold, scenery, reflections, text, perspective change, extra windows, luminous facade, watermark.",
+  "material_prompts": {
+    "cedar-material-source.png": "Use case: architectural material creation. Create a seamless, shadow-neutral, orthographic PBR albedo source matching only the reference lanehouse's natural honey cedar, with fine vertical grain, restrained board variation and no facade elements."
+  }
+}

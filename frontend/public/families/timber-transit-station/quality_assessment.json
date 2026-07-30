@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-07-29-registered-source-construction-zones-v103",
+  "memory_version": "2026-07-30-detached-house-compositions-v104",
   "archetype_id": "transit_oriented_station_block",
   "family": "timber-transit-station",
   "status": "pass",

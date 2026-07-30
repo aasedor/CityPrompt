@@ -1,0 +1,50 @@
+{
+  "schema": "reference-generation@1",
+  "family": "swiss-chalet-residence",
+  "source_archetype_id": "mountain_alpine_chalet",
+  "source_variant_id": "alpine_swiss_traditional",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "gpt-image-2",
+  "outputs": [
+    {
+      "file": "elevation-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_y7rGOuYR2loKcQCXSPglBxwI.png",
+      "role": "rectified_reference_elevation"
+    },
+    {
+      "file": "occupied-depth-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_yUCnemiWsJYUDXkuG0gI0tlp.png",
+      "role": "registered_occupied_depth"
+    },
+    {
+      "file": "timber-material-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_ZG5r3O4CtgadGzu75CSzf4Yl.png",
+      "role": "shadow_neutral_tileable_aged_timber"
+    },
+    {
+      "file": "stone-material-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_XmDMGBWD8jPLCjp6KxJbrfXk.png",
+      "role": "shadow_neutral_tileable_fieldstone"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_24wlDhmWPav3bRr88qWLxPiu.png",
+      "role": "shadow_neutral_tileable_timber_shingle"
+    }
+  ],
+  "provenance": {
+    "goalpost": "/archetypes/buildings/mountain_alpine_chalet/variant_0.png",
+    "elevation_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_y7rGOuYR2loKcQCXSPglBxwI.png",
+    "occupied_depth_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_yUCnemiWsJYUDXkuG0gI0tlp.png",
+    "timber_material_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_ZG5r3O4CtgadGzu75CSzf4Yl.png",
+    "stone_material_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_XmDMGBWD8jPLCjp6KxJbrfXk.png",
+    "roof_material_output": "C:/Users/andre/.codex/generated_images/019fa18b-655c-7093-8728-e8864758c2a9/call_24wlDhmWPav3bRr88qWLxPiu.png"
+  },
+  "elevation_prompt": "Use case: stylized-concept\nAsset type: render-locked architectural facade source for a LEGO-compatible 3D building family\nInput image: the attached catalogue image is the hard identity and construction reference. Do not redesign the building.\nPrimary request: Create a precise, photorealistic, rectified orthographic FRONT ELEVATION of the exact same Swiss Traditional Chalet shown in the reference. Preserve exactly three occupied wall levels: one heavy pale-grey fieldstone ground level and two dark aged-timber upper levels. Preserve the reference's paired projecting front gables, deep shingled eaves, exposed rafters and carved brackets, central arched carved-timber entrance in the stone base, stacked timber balconies and window boxes, irregular but balanced sash-window rhythm, painted folk-art panels, stone corner piers, and two masonry chimneys. Show the full building from ground line through every roof ridge with both end edges visible.\nScene/backdrop: isolated on a neutral warm-grey studio field, no ground plane beyond a thin datum line.\nStyle/medium: highly detailed architectural material reference, photorealistic but shadow-neutral.\nComposition/framing: true straight-on orthographic elevation, centered, generous margin, no perspective convergence, no three-quarter view.\nLighting/mood: broad diffuse overcast studio illumination; no directional sunlight, cast shadows, reflections of scenery, or atmospheric haze.\nMaterials/textures: rough pale fieldstone with readable coursing; deeply grained aged spruce logs; carved dark timber balustrades and brackets; weathered grey-brown timber shingles; restrained warm occupied glazing; red flower boxes only as small localized details.\nConstraints: exactly three occupied levels; maintain the same front bay/gable/balcony/window/door hierarchy and roof proportions; every opening must remain architecturally aligned; no text or signage.\nAvoid: generic box, invented extra storeys, modern reinterpretation, extra wings, duplicated entrances, flat roof, oversized flowers, trees, people, vehicles, street, neighbouring buildings, mountains, perspective, dramatic shadows, watermark.",
+  "occupied_depth_prompt": "Use case: precise-object-edit\nAsset type: registered occupied-depth plate for physical glazing in a LEGO-compatible 3D chalet\nInput image: the attached rectified chalet elevation is the edit target and coordinate authority.\nPrimary request: On the exact same canvas, remove every exterior material and silhouette element—the stone wall, timber wall, roof, eaves, balconies, flower boxes, murals, brackets, chimneys, exterior frames, entrance door leaf, and all background. Retain ONLY the interior content that would be visible behind the existing window and entrance openings: localized warm rooms, curtains, dark room edges, shallow floor slabs, and restrained interior depth. Each retained room must stay precisely inside its original opening position and size. Keep the arched entrance cavity dark and spatial, not a glowing panel.\nScene/backdrop: perfectly uniform black everywhere outside the registered interior opening regions.\nStyle/medium: photorealistic architectural occupied-depth render plate.\nLighting/mood: restrained warm residential occupation with room-by-room variation; some rooms dim, some softly lit; no uniform orange glow.\nConstraints: preserve the exact pixel dimensions, canvas, facade registration, three occupied levels, window positions, widths, heights, mullion alignment, and arched entrance outline from the input. Do not move, resize, add, or delete openings.\nAvoid: exterior wall material, stone, logs, roof, balconies, flowers, folk-art panels, scenery, reflections, text, perspective change, extra windows, merged luminous facade, watermark."
+, "material_prompts": {
+    "timber-material-source.png": "Seamless shadow-neutral orthographic PBR albedo source matching only the reference chalet's deeply grained aged dark spruce logs and siding.",
+    "stone-material-source.png": "Seamless shadow-neutral orthographic PBR albedo source matching only the reference chalet's pale-grey rough coursed fieldstone and mortar.",
+    "roof-material-source.png": "Seamless shadow-neutral orthographic PBR albedo source matching only the reference chalet's weathered grey-brown timber roof shingles."
+  }
+}

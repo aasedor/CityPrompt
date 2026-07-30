@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-29-registered-source-construction-zones-v103"
+        == "2026-07-30-detached-house-compositions-v104"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -172,6 +172,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "identity_aliases_are_explicit",
         "monumental_glazing_has_sectional_depth",
         "multi_aisle_roofs_are_complete_systems",
+        "detached_houses_are_complete_compositions",
     } <= principle_ids
     assert any(
         "curved shell, long timber member or deep stone arcade"
@@ -189,7 +190,15 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "museum_atrium_low_iron",
         "terracotta_office_low_e",
         "civic_recessed_smoked",
+        "chalet_warm_low_e",
+        "lanehouse_screened_low_e",
+        "villa_recessed_iron_glass",
     } <= set(glazing["profiles"])
+    assert any(
+        "detached house" in item["symptom"].lower()
+        and "fixed whole-house landmark" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert "nearly non-emissive" in glazing["materiality_rule"]
     assert "glTF extras" in glazing["export_contract"]
     assert "KHR clearcoat" in glazing["export_contract"]

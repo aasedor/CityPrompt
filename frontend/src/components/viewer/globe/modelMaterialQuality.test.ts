@@ -206,6 +206,27 @@ describe('prepareArchitecturalClone', () => {
       clearcoat: 0.40,
     },
     {
+      profile: 'chalet_warm_low_e',
+      transmission: 0.46,
+      environment: 0.82,
+      ior: 1.49,
+      clearcoat: 0.36,
+    },
+    {
+      profile: 'lanehouse_screened_low_e',
+      transmission: 0.34,
+      environment: 0.86,
+      ior: 1.50,
+      clearcoat: 0.50,
+    },
+    {
+      profile: 'villa_recessed_iron_glass',
+      transmission: 0.40,
+      environment: 0.80,
+      ior: 1.49,
+      clearcoat: 0.38,
+    },
+    {
       profile: 'terracotta_office_low_e',
       transmission: 0.54,
       environment: 1.02,

@@ -205,7 +205,12 @@ def _load_rgb(path: Path) -> Image.Image:
     return image
 
 
-def prepare_family(family: str, config: dict) -> None:
+def prepare_family(
+    family: str,
+    config: dict,
+    *,
+    batch_label: str = "wave8",
+) -> None:
     root = FAMILY_ROOT / family
     source_root = root / "textures" / "source"
     elevation_path = source_root / "elevation-source.png"
@@ -233,15 +238,26 @@ def prepare_family(family: str, config: dict) -> None:
             width,
             seed=8101 + len(family) * 29,
         )
+        support_sources = config.get("support_sources", {})
         for zone, (rgb, kind, seed) in config["support"].items():
-            procedural_support_material(
-                destination,
-                config["prefixes"][zone],
-                width,
-                base_rgb=rgb,
-                material_kind=kind,
-                seed=seed,
-            )
+            source_name = support_sources.get(zone)
+            if source_name:
+                derive_pbr(
+                    _load_rgb(source_root / source_name),
+                    destination,
+                    config["prefixes"][zone],
+                    width,
+                    seed=seed,
+                )
+            else:
+                procedural_support_material(
+                    destination,
+                    config["prefixes"][zone],
+                    width,
+                    base_rgb=rgb,
+                    material_kind=kind,
+                    seed=seed,
+                )
 
     zones = {
         zone: {
@@ -319,7 +335,7 @@ def prepare_family(family: str, config: dict) -> None:
         json.dumps(manifest, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"[wave8-skin] {family}: {len(zones)} custom zones")
+    print(f"[{batch_label}-skin] {family}: {len(zones)} custom zones")
 
 
 def main() -> int:

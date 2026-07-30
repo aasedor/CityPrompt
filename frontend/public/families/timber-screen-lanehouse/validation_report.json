@@ -1,0 +1,169 @@
+{
+  "status": "pass",
+  "family": "timber-screen-lanehouse",
+  "archetype_id": "japanese_contemporary_lanehouse",
+  "reuse_keys": [
+    "japanese_contemporary_lanehouse",
+    "japanese_lane_timber_screen",
+    "Detached House",
+    "Single-Family Residential",
+    "Lanehouse"
+  ],
+  "manifest": "timber-screen-lanehouse_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "timber-screen-lanehouse_podium.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_floor_typical_a.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_floor_typical_b.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_floor_typical_c.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_crown_crown.glb: 13.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-screen-lanehouse_assembled.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "timber-screen-lanehouse_podium.glb",
+      "status": "ok",
+      "triangles": 684,
+      "extent_m": {
+        "width_x": 4.775,
+        "height_y": 3.0,
+        "depth_z": 12.14
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_DeepResidentialCavity",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 9900376
+    },
+    {
+      "file": "timber-screen-lanehouse_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 4140,
+      "extent_m": {
+        "width_x": 5.08,
+        "height_y": 3.02,
+        "depth_z": 12.195
+      },
+      "bottom_y": -0.01,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 13873908
+    },
+    {
+      "file": "timber-screen-lanehouse_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 3708,
+      "extent_m": {
+        "width_x": 5.08,
+        "height_y": 3.02,
+        "depth_z": 12.195
+      },
+      "bottom_y": -0.01,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 13843072
+    },
+    {
+      "file": "timber-screen-lanehouse_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 4572,
+      "extent_m": {
+        "width_x": 5.08,
+        "height_y": 3.02,
+        "depth_z": 12.195
+      },
+      "bottom_y": -0.01,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 13904736
+    },
+    {
+      "file": "timber-screen-lanehouse_crown_crown.glb",
+      "status": "ok",
+      "triangles": 4140,
+      "extent_m": {
+        "width_x": 5.08,
+        "height_y": 3.02,
+        "depth_z": 12.195
+      },
+      "bottom_y": -0.01,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 13873732
+    },
+    {
+      "file": "timber-screen-lanehouse_roof.glb",
+      "status": "ok",
+      "triangles": 1656,
+      "extent_m": {
+        "width_x": 5.0,
+        "height_y": 1.22,
+        "depth_z": 12.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_DarkRoof",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass"
+      ],
+      "size_bytes": 7580704
+    },
+    {
+      "file": "timber-screen-lanehouse_assembled.glb",
+      "status": "ok",
+      "triangles": 27974,
+      "extent_m": {
+        "width_x": 5.29,
+        "height_y": 10.2,
+        "depth_z": 12.405
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_CharcoalBronze",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_DarkRoof",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_DeepResidentialCavity",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_HoneyCedar",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_OccupiedRoomDim",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_OccupiedRoomWarm",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_PhysicalGlass",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_RegisteredOccupiedDepth",
+        "MAT_W9_TIMBER_SCREEN_LANEHOUSE_ThresholdConcrete"
+      ],
+      "size_bytes": 24301000,
+      "role": "assembled"
+    }
+  ]
+}
