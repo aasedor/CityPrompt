@@ -497,6 +497,20 @@
                                                               "materialZones":  "matte charcoal fine-corrugated steel; natural vertical honey cedar; warm-grey concrete stoops and base; black powder-coated frames, canopies, guards, copings and garage doors; neutral residential low-e glass; restrained occupied depth; dark roof membrane",
                                                               "glassProfile":  "residential_low_e",
                                                               "elevationUrl":  "/families/rndsqr-cedar-black-townhomes/elevation.jpg"
+                                                        },
+                     "ecole_republicaine":  {
+                                                  "archetypeId":  "ecole_republicaine",
+                                                  "identity":  "A sober two-storey French Third Republic school reads as one forty-metre civic monument through symmetrical red-brick classroom wings, three deeply recessed arched entrances, tall occupied heritage sashes, a slate hipped roof and a raised central clock pavilion.",
+                                                  "materialZones":  "aged red-brown Flemish-bond brick; warm cream limestone quoins, strings, archivolts, sills and dentils; rough meuliere base; natural grey slate; aged zinc; dark-green painted timber; occupied heritage low-e glass",
+                                                  "glassProfile":  "heritage_sash_occupied",
+                                                  "elevationUrl":  "/families/ecole-republicaine-third-republic/elevation.jpg"
+                                              },
+                     "ecole-republicaine-third-republic-original":  {
+                                                                         "archetypeId":  "ecole-republicaine-third-republic-original",
+                                                                         "identity":  "A sober two-storey French Third Republic school reads as one forty-metre civic monument through symmetrical red-brick classroom wings, three deeply recessed arched entrances, tall occupied heritage sashes, a slate hipped roof and a raised central clock pavilion.",
+                                                                         "materialZones":  "aged red-brown Flemish-bond brick; warm cream limestone quoins, strings, archivolts, sills and dentils; rough meuliere base; natural grey slate; aged zinc; dark-green painted timber; occupied heritage low-e glass",
+                                                                         "glassProfile":  "heritage_sash_occupied",
+                                                                         "elevationUrl":  "/families/ecole-republicaine-third-republic/elevation.jpg"
                                                         }
                  }
 }

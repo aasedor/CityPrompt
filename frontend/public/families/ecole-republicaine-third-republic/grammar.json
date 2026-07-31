@@ -1,0 +1,151 @@
+{
+  "family_id": "ecole-republicaine-third-republic",
+  "source": {
+    "archetype_id": "ecole_republicaine",
+    "variant_id": "ecole-republicaine-third-republic-original",
+    "generation_archetype_id": "ecole-republicaine-third-republic-original",
+    "reuse_keys": [
+      "ecole_republicaine",
+      "ecole-republicaine-third-republic-original",
+      "Ecole Republicaine",
+      "École Républicaine",
+      "Third Republic Original",
+      "Jules Ferry School",
+      "French Municipal School"
+    ]
+  },
+  "dimensions": {
+    "width_m": 40.0,
+    "depth_m": 15.0,
+    "wing_depth_m": 15.0,
+    "podium_height_m": 3.8,
+    "floor_height_m": 3.8,
+    "setback_height_m": 3.8,
+    "roof_height_m": 6.85,
+    "crown_height_m": 0.55,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A sober two-storey French Third Republic school reads as one forty-metre symmetrical civic monument through long red-brick classroom wings, cream limestone quoins and bands, three deeply recessed arched entrances, tall occupied dark-green timber sashes, a rough meuliere base, slate hips, four dormers, chimney pairs and a raised central clock pavilion.",
+    "material_zones": "aged red-brown pressed brick in Flemish bond; porous warm cream limestone quoins, strings, archivolts, sills, dentils and inscription panel; rough tan-grey meuliere plinth; blue-grey natural slate; aged zinc ridges, gutters and canopies; dark-green painted timber; heritage low-e glass with pale curtains and occupied classroom depth; grey paving",
+    "glass_profile": "heritage_sash_occupied",
+    "kits": [
+      "symmetrical_third_republic_school",
+      "three_deep_civic_portals",
+      "ecole_communale_relief",
+      "tall_arched_classroom_windows",
+      "red_brick_and_limestone_polychromy",
+      "meuliere_base",
+      "central_clock_pavilion",
+      "natural_slate_hip_roof",
+      "zinc_dormers_and_drainage",
+      "rear_stair_pavilion"
+    ]
+  },
+  "archetype_aliases": [
+    "ecole_republicaine",
+    "ecole-republicaine-third-republic-original"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a shallow civic classroom bar with one fixed entrance pavilion. Rectangle preserves the canonical school; L- and U-shaped user drawings turn complete classroom bars around schoolyards while the primary bar keeps its three entrances, clock centre and unscaled arched-window bays.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.75,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.35
+    },
+    "recommendedWidth_m": [
+      30,
+      60
+    ],
+    "recommendedDepth_m": [
+      12,
+      20
+    ],
+    "recommendedFloors": [
+      2,
+      3
+    ],
+    "wingDepth_m": [
+      10,
+      20
+    ],
+    "preferredBayMultiple_m": 4.4,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          30,
+          60
+        ],
+        "recommendedDepth_m": [
+          12,
+          20
+        ],
+        "recommendedFloors": [
+          2,
+          3
+        ]
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          32,
+          64
+        ],
+        "recommendedDepth_m": [
+          18,
+          42
+        ],
+        "recommendedFloors": [
+          2,
+          3
+        ],
+        "wingDepth_m": [
+          10,
+          20
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          34,
+          70
+        ],
+        "recommendedDepth_m": [
+          22,
+          46
+        ],
+        "recommendedFloors": [
+          2,
+          3
+        ],
+        "wingDepth_m": [
+          10,
+          20
+        ],
+        "minimumCourtyard_m": 10.0
+      }
+    },
+    "notes": [
+      "Keep the three arched civic entrances and inscription on one primary bar.",
+      "Keep the clock pavilion, slate roof, dormers and chimneys as the fixed roof role.",
+      "Repeat complete 4.4 metre classroom bays; never stretch an arch or sash.",
+      "Use family-shaped streetwall repeat for oversized targets."
+    ]
+  },
+  "massing_graph": {
+    "type": "symmetrical_third_republic_school_bar",
+    "silhouette": "two_storey_horizontal_brick_school_with_raised_clock_centre_and_long_slate_hip",
+    "render_locked": true,
+    "goalpost": "/families/ecole-republicaine-third-republic/textures/source/archetype-goalpost.png",
+    "fallback": "complete_classroom_bay_modular_streetwall",
+    "classroom_wings": 2,
+    "public_entrances": 3,
+    "clock_pavilion": true
+  }
+}

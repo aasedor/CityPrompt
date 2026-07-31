@@ -1,0 +1,20 @@
+{
+  "kind": "catalogue_brief_plus_authoritative_heritage_research_and_imagegen_multiview_reference_locked_authored_construction",
+  "catalogue_archetype_id": "ecole_republicaine",
+  "catalogue_variant_id": "ecole-republicaine-third-republic-original",
+  "goalpost": "/families/ecole-republicaine-third-republic/textures/source/archetype-goalpost.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "orthographic_elevation": "textures/source/elevation-source-v1.png",
+  "aerial_reference": "textures/source/aerial-source-v1.png",
+  "rear_reference": "textures/source/rear-elevation-source-v1.png",
+  "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+  "material_source": "textures/source/masonry-material-source-v1.png",
+  "detail_source": "textures/source/clock-cornice-detail-source-v1.png",
+  "reference_generation": "textures/source/reference-generation.json",
+  "registered_openings": "textures/source/registered-openings.json",
+  "registered_bands": "textures/source/registered-bands.json",
+  "elevation_source": "/families/ecole-republicaine-third-republic/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave10_school_family.py",
+  "reference_method": "catalogue identity brief, authoritative French heritage precedents, canonical street goalpost, rectified front and rear elevations, aerial roof proof, material/detail sources, physical opening cavities, custom true-scale PBR, occupied-depth underlay and finite street/oblique/aerial/detail comparison"
+}

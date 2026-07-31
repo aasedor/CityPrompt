@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source-v1.png",
+  "method": "Every classroom window, stair window and entrance is cut into authored wall strips. Modeled jambs, curved heads, sills, timber frames, mullions, transoms and separate low-e panes establish real depth; the occupied source appears only on cards behind that physical glazing.",
+  "physical_geometry_required": true
+}

@@ -18311,12 +18311,37 @@
                 "features": "brick chimney stacks, zinc dormers, central clock or bell tower, decorative zinc ridge cresting",
                 "aerialAppearance": "grey slate hip roof with symmetrical wings, central pavilion rising slightly, brick chimney clusters at gable ends"
           },
-          "thumbnailUrl": "/archetypes/buildings/ecole-republicaine/hero.png",
+          "footprintCompatibility": {
+                "preferredProfiles": [
+                      "rectangle",
+                      "l_shape",
+                      "u_shape"
+                ],
+                "recommendedWidth_m": [
+                      30,
+                      60
+                ],
+                "recommendedDepth_m": [
+                      12,
+                      20
+                ],
+                "recommendedFloors": [
+                      2,
+                      3
+                ],
+                "preferredBayMultiple_m": 4.4,
+                "fixedLandmarkScaleBand": {
+                      "scaleMin": 0.75,
+                      "scaleMax": 1.32,
+                      "maxAxisRatio": 1.35
+                }
+          },
+          "thumbnailUrl": "/archetypes/buildings/ecole-republicaine-third-republic/hero.png",
           "variants": [
                 {
                       "id": "ecole-republicaine-third-republic-original",
                       "label": "Third Republic Original",
-                      "thumbnailUrl": "/archetypes/buildings/ecole-republicaine/variant_0.png",
+                      "thumbnailUrl": "/archetypes/buildings/ecole-republicaine-third-republic/hero.png",
                       "description": "Classic Jules Ferry-era school with red-brown brick in Flemish bond, cream stone banding, symmetrical wings with separate boys' and girls' entrances, tall arched classroom windows, and central clock tower. The definitive Republican school type.",
                       "facadeDetail": {
                             "primaryMaterial": "red-brown brick in Flemish bond with horizontal stone string courses",
