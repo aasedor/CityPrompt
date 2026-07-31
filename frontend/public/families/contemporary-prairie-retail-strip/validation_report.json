@@ -1,0 +1,210 @@
+{
+  "status": "pass",
+  "family": "contemporary-prairie-retail-strip",
+  "archetype_id": "commercial_strip_mall",
+  "reuse_keys": [
+    "commercial_strip_mall",
+    "strip_contemporary_retail",
+    "contemporary_retail_strip",
+    "prairie_neighbourhood_retail",
+    "Commercial Strip Mall",
+    "Contemporary Retail",
+    "Neighbourhood Retail Plaza",
+    "Prairie Storefront Bar"
+  ],
+  "manifest": "contemporary-prairie-retail-strip_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "contemporary-prairie-retail-strip_podium.glb: 9.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_floor_typical_a.glb: 30.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_floor_typical_b.glb: 30.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_floor_typical_c.glb: 30.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_crown_crown.glb: 15 materials (many; consider consolidation)",
+    "contemporary-prairie-retail-strip_crown_crown.glb: 22.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_roof.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "contemporary-prairie-retail-strip_assembled.glb: 127312 triangles (heavy; consider simplification)",
+    "contemporary-prairie-retail-strip_assembled.glb: 30 materials (many; consider consolidation)",
+    "contemporary-prairie-retail-strip_assembled.glb: 58.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "contemporary-prairie-retail-strip_podium.glb",
+      "status": "ok",
+      "triangles": 372,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 0.38,
+        "depth_z": 26.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_RETAIL_BroomFinishConcrete"
+      ],
+      "size_bytes": 10403220
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 2544,
+      "extent_m": {
+        "width_x": 60.6,
+        "height_y": 4.15,
+        "depth_z": 18.215
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_BroomFinishConcrete",
+        "MAT_W10_RETAIL_OccupiedRetailDepth",
+        "MAT_W10_RETAIL_PhysicalNeutralLowEStorefront",
+        "MAT_W10_RETAIL_RearServiceMetal",
+        "MAT_W10_RETAIL_RussetModularBrick"
+      ],
+      "size_bytes": 32415972
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 2544,
+      "extent_m": {
+        "width_x": 60.6,
+        "height_y": 4.15,
+        "depth_z": 18.215
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_BroomFinishConcrete",
+        "MAT_W10_RETAIL_OccupiedRetailDepth",
+        "MAT_W10_RETAIL_PhysicalNeutralLowEStorefront",
+        "MAT_W10_RETAIL_RearServiceMetal",
+        "MAT_W10_RETAIL_RussetModularBrick"
+      ],
+      "size_bytes": 32416032
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 2544,
+      "extent_m": {
+        "width_x": 60.6,
+        "height_y": 4.15,
+        "depth_z": 18.215
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_BroomFinishConcrete",
+        "MAT_W10_RETAIL_OccupiedRetailDepth",
+        "MAT_W10_RETAIL_PhysicalNeutralLowEStorefront",
+        "MAT_W10_RETAIL_RearServiceMetal",
+        "MAT_W10_RETAIL_RussetModularBrick"
+      ],
+      "size_bytes": 32416032
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1308,
+      "extent_m": {
+        "width_x": 66.845,
+        "height_y": 2.7,
+        "depth_z": 20.8
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_RETAIL_AbstractSign_0",
+        "MAT_W10_RETAIL_AbstractSign_1",
+        "MAT_W10_RETAIL_AbstractSign_2",
+        "MAT_W10_RETAIL_AbstractSign_3",
+        "MAT_W10_RETAIL_AbstractSign_4",
+        "MAT_W10_RETAIL_AbstractSign_5",
+        "MAT_W10_RETAIL_AbstractSign_6",
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_CharcoalMicroRibMetal",
+        "MAT_W10_RETAIL_PatioTimber",
+        "MAT_W10_RETAIL_RussetModularBrick",
+        "MAT_W10_RETAIL_WarmCedarSoffit"
+      ],
+      "size_bytes": 23931988
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_roof.glb",
+      "status": "ok",
+      "triangles": 1132,
+      "extent_m": {
+        "width_x": 59.2,
+        "height_y": 1.37,
+        "depth_z": 17.2
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_HVACGalvanizedMetal",
+        "MAT_W10_RETAIL_PaleSinglePlyRoof"
+      ],
+      "size_bytes": 15027220
+    },
+    {
+      "file": "contemporary-prairie-retail-strip_assembled.glb",
+      "status": "ok",
+      "triangles": 127312,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 7.205,
+        "depth_z": 26.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_RETAIL_AbstractSign_0",
+        "MAT_W10_RETAIL_AbstractSign_1",
+        "MAT_W10_RETAIL_AbstractSign_2",
+        "MAT_W10_RETAIL_AbstractSign_3",
+        "MAT_W10_RETAIL_AbstractSign_4",
+        "MAT_W10_RETAIL_AbstractSign_5",
+        "MAT_W10_RETAIL_AbstractSign_6",
+        "MAT_W10_RETAIL_BlackSteelAndFrames",
+        "MAT_W10_RETAIL_BroomFinishConcrete",
+        "MAT_W10_RETAIL_CharcoalMicroRibMetal",
+        "MAT_W10_RETAIL_CleanWhiteInterior",
+        "MAT_W10_RETAIL_CoolDisplayLight",
+        "MAT_W10_RETAIL_HVACGalvanizedMetal",
+        "MAT_W10_RETAIL_InteriorDisplayWood",
+        "MAT_W10_RETAIL_MerchandiseCool",
+        "MAT_W10_RETAIL_MerchandiseOchre",
+        "MAT_W10_RETAIL_MerchandiseWarm",
+        "MAT_W10_RETAIL_MeterBankMetal",
+        "MAT_W10_RETAIL_OccupiedRetailDepth",
+        "MAT_W10_RETAIL_PaleSinglePlyRoof",
+        "MAT_W10_RETAIL_PatioRail",
+        "MAT_W10_RETAIL_PatioTimber",
+        "MAT_W10_RETAIL_PhysicalNeutralLowEStorefront",
+        "MAT_W10_RETAIL_PrairiePlanting",
+        "MAT_W10_RETAIL_RearServiceMetal",
+        "MAT_W10_RETAIL_RussetModularBrick",
+        "MAT_W10_RETAIL_SignPanelBacking",
+        "MAT_W10_RETAIL_StainlessHardware",
+        "MAT_W10_RETAIL_WarmCedarSoffit",
+        "MAT_W10_RETAIL_WarmLED"
+      ],
+      "size_bytes": 61212388,
+      "role": "assembled"
+    }
+  ]
+}

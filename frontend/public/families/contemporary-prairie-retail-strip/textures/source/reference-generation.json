@@ -1,0 +1,84 @@
+{
+  "schema": "reference-generation@1",
+  "family": "contemporary-prairie-retail-strip",
+  "archetype_id": "commercial_strip_mall",
+  "variant_id": "strip_contemporary_retail",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-30",
+  "status": "source-pack-complete",
+  "design_lock": {
+    "native_building_dimensions_m": [
+      60.0,
+      18.0,
+      7.2
+    ],
+    "tenant_modules": 7,
+    "anchor_position": "left",
+    "restaurant_patio_position": "right",
+    "roof_hvac_count": 7,
+    "restaurant_exhaust_count": 2,
+    "frontage_rule": "one continuous black steel canopy with cedar soffit",
+    "opening_rule": "physical transparent storefronts with occupied modeled depth"
+  },
+  "research": [
+    {
+      "title": "Lower East Side Retail Storefront",
+      "url": "https://www.architectmagazine.com/project-gallery/lower-east-side-retail-storefront",
+      "lesson": "A continuous canopy can unify distinct ground-floor tenants while acting as a clear facade datum."
+    },
+    {
+      "title": "Strip Mall Maestro",
+      "url": "https://www.architectmagazine.com/practice/strip-mall-maestro_o",
+      "lesson": "Careful material continuity, recessed door rhythm, signage visibility and screened service functions can turn ordinary retail typology into coherent architecture."
+    },
+    {
+      "title": "Supreme Store / Neil Logan Architect",
+      "url": "https://www.archdaily.com/895209/supreme-store-neil-logan-architect",
+      "lesson": "A deep horizontal storefront incision in brick makes glazing read as constructed depth rather than a surface graphic."
+    }
+  ],
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "call_Xih9CVsoBHAdiH39zBqWozwW",
+      "role": "canonical_front_left_oblique",
+      "prompt_summary": "Photoreal 60 m contemporary prairie retail strip with one raised left brick anchor, six smaller tenant bays, continuous black-and-cedar canopy, transparent occupied storefronts and integrated right restaurant patio."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "call_B3CVXMdBMRWIkVlafiqWK584",
+      "role": "shadow_neutral_front_elevation",
+      "prompt_summary": "Straight-on architectural elevation preserving exact massing, seven-bay rhythm, sign panels, canopy and occupied glazing."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "call_8a7c5UT9J1gGiBZlm6TlptJe",
+      "role": "roof_and_drainage_goalpost",
+      "prompt_summary": "High-oblique roof view with pale membrane, exactly seven HVAC units, two restaurant exhausts, roof curbs, drains, scuppers and complete canopy."
+    },
+    {
+      "file": "rear-service-source-v1.png",
+      "source_id": "call_YAwoAQWci6ALfZv8XG5CefhQ",
+      "role": "rear_service_goalpost",
+      "prompt_summary": "Rear-right service elevation with seven aligned service zones, doors, meter banks, lights, drains and one screened two-bin enclosure."
+    },
+    {
+      "file": "storefront-detail-source-v1.png",
+      "source_id": "call_lzuXVL8NUapz5pBFXDm7iIbw",
+      "role": "storefront_materiality_and_occupied_depth",
+      "prompt_summary": "Two-bay close-up locking low-E glass, thermally broken frames, recessed entrances, door hardware, brick mortar, cedar soffit and occupied retail depth."
+    },
+    {
+      "file": "restaurant-patio-source-v1.png",
+      "source_id": "call_TgyH8fyOSOSUMtBn4vEO3U3K",
+      "role": "restaurant_end_cap_and_patio_goalpost",
+      "prompt_summary": "Integrated right corner restaurant with wrapped glazing, aligned timber pergola, black rail, tables, planters and occupied interior."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "call_21fIGtpMWVgiFd3ZeCInVhfD",
+      "role": "six_zone_pbr_material_plate",
+      "prompt_summary": "Orthographic 3x2 plate of russet brick, charcoal micro-ribbed metal, cedar soffit, low-E storefront, concrete and roof membrane."
+    }
+  ]
+}

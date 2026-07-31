@@ -36937,6 +36937,45 @@
     },
     {
       "id": "commercial_strip_mall",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "minimumPreferredProfiles": 3,
+        "profileRationale": "The identity is a shallow bar of complete tenant modules. A rectangle preserves the canonical seven-bay frontage; L- and U-shaped drawings turn complete occupied bars at corners while keeping storefront, canopy, rear-service and roof-unit datums.",
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.72,
+          "scaleMax": 1.32,
+          "maxAxisRatio": 1.28
+        },
+        "recommendedWidth_m": [32, 100],
+        "recommendedDepth_m": [14, 30],
+        "recommendedFloors": [1, 2],
+        "wingDepth_m": [14, 24],
+        "preferredBayMultiple_m": 8.4,
+        "minimumCourtyard_m": 18,
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [32, 100],
+            "recommendedDepth_m": [14, 30],
+            "recommendedFloors": [1, 2],
+            "preferredBayMultiple_m": 8.4
+          },
+          "l_shape": {
+            "recommendedWidth_m": [50, 126],
+            "recommendedDepth_m": [28, 70],
+            "recommendedFloors": [1, 2],
+            "wingDepth_m": [14, 24],
+            "preferredBayMultiple_m": 8.4
+          },
+          "u_shape": {
+            "recommendedWidth_m": [62, 142],
+            "recommendedDepth_m": [34, 82],
+            "recommendedFloors": [1, 2],
+            "wingDepth_m": [14, 24],
+            "minimumCourtyard_m": 18,
+            "preferredBayMultiple_m": 8.4
+          }
+        }
+      },
       "suggestedWidth_m": 60,
       "suggestedDepth_m": 18,
       "suggestedFloorHeight": 4.5,
@@ -37023,7 +37062,7 @@
         "features": "rows of rooftop HVAC units, exhaust fans over the restaurant bay, parapet-mounted signs",
         "aerialAppearance": "a long flat membrane roof studded with mechanical units, a taller anchor box at one end, parking apron in front"
       },
-      "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+      "thumbnailUrl": "/archetypes/buildings/contemporary-prairie-retail-strip/hero.png",
       "variants": [
         {
           "id": "strip_single_storey_classic",
@@ -37074,7 +37113,7 @@
         {
           "id": "strip_contemporary_retail",
           "label": "Contemporary Retail",
-          "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_2.png",
+          "thumbnailUrl": "/archetypes/buildings/contemporary-prairie-retail-strip/hero.png",
           "description": "An updated contemporary strip: warm brick and dark corrugated metal with a wood-look soffit under a clean canopy, full-height glazing, crisp channel-letter signage, and a restaurant end-cap with an outdoor patio. The current, design-forward look of new suburban retail.",
           "facadeDetail": {
             "primaryMaterial": "warm brick veneer with dark corrugated metal panel zones",

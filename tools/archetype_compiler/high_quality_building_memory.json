@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-30-reference-image-recipe-v107",
+  "memory_version": "2026-07-30-reference-image-recipe-v108",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -55,6 +55,22 @@
     {
       "id": "registered_reference_and_tile_safe_zones_are_separate",
       "rule": "Keep the full render-locked elevation as the identity and registration authority, but do not stretch its photographed openings, shadows or perspective over long beams, curved shells, arch soffits or domes. Those physical solids use shadow-neutral tile-safe construction zones derived from the same reference palette; reference-specific occupation is clipped and coordinate-registered per real opening behind physical glazing."
+    },
+    {
+      "id": "construction_skins_are_projection_clean",
+      "rule": "Never repeat an oblique photograph crop across brick, ribbed metal, timber, concrete, roof, railing or service solids. Repeating construction skins come from orthographic shadow-neutral plates derived from the approved reference palette; perspective sources remain coordinate-registered elevations, special enclosures or occupied-depth cards."
+    },
+    {
+      "id": "visually_open_assemblies_are_open_geometry",
+      "rule": "Reference railings, pergolas and lightweight furniture are constructed from real posts, rails, balusters, beams, fins, seats, backs and legs. An opaque photograph-wrapped slab is not an acceptable substitute for a visually open assembly."
+    },
+    {
+      "id": "semantic_materials_deduplicate_images",
+      "rule": "Preserve named semantic material zones while reusing identical approved construction-image paths and far LODs for secondary equipment. Delivery optimization may deduplicate embedded images but may not replace custom skins, drop required channels or collapse distinct optical and construction metadata."
+    },
+    {
+      "id": "proof_glass_does_not_redefine_delivery_glass",
+      "rule": "The exported GLB keeps its authored physical transmission profile. A renderer-specific alpha-only glazing override is allowed only after export for locked-camera proof images, must be restored afterward, and may never alter the delivered optical material."
     },
     {
       "id": "unitized_enclosures_are_panel_topologies",
@@ -195,7 +211,9 @@
       "pbr_derivation": [
         "Derive semantic near/far albedo, normal, roughness, AO, depth, emissive, glass and opaque channels from approved keeper sources.",
         "Derive tile-safe construction zones from the same goalpost palette for long or nonlinear solids without replacing the registered identity source.",
-        "Register elevations and occupied-depth plates to audited datums and real openings while physical walls, recesses, panes, frames, screens, returns and roof junctions remain geometry."
+        "Register elevations and occupied-depth plates to audited datums and real openings while physical walls, recesses, panes, frames, screens, returns and roof junctions remain geometry.",
+        "Reject perspective, reflection or surrounding-object artifacts before a source can become a repeating construction material; use an orthographic shadow-neutral plate instead.",
+        "Preserve semantic zone names while deduplicating identical construction-image paths and using far LODs for secondary equipment."
       ],
       "keeper_loop": [
         "Render unchanged live cameras for front or street, corner, aerial or roof, and interior, courtyard or rear evidence as applicable.",
@@ -240,7 +258,8 @@
         "every visible aisle, ridge, valley, clerestory and structural rib in a multi-aisle hall roof",
         "cornice profiles and wrapping balcony slabs",
         "bevels on exposed masonry, metal and timber edges",
-        "signature elements that alter silhouette or cast identity-defining shadows"
+        "signature elements that alter silhouette or cast identity-defining shadows",
+        "visually open railings, pergolas and lightweight furniture as real posts, rails, balusters, beams, fins, seats, backs and legs"
       ],
       "may_bake": [
         "fine masonry joints",
@@ -310,7 +329,7 @@
       "far": "baked facade glass with semantic mask",
       "occupancy_rule": "Default visible windows to subtle warm occupied interiors; vary rooms or floors without creating a repeated cool/warm checkerboard.",
       "materiality_rule": "Choose a reference-specific optical profile for tint, roughness, coating, transmission and frame depth; the glass stays nearly non-emissive and room cards own interior warmth.",
-      "export_contract": "Every physical pane exports glazing_profile, glazing_lod, environment intensity and cavity depth in glTF extras plus KHR clearcoat, transmission and specular material extensions; every City Prompt viewer preserves that profile."
+      "export_contract": "Every physical pane exports glazing_profile, glazing_lod, environment intensity and cavity depth in glTF extras plus KHR clearcoat, transmission and specular material extensions; every City Prompt viewer preserves that profile. A proof renderer may temporarily disable transmission and lower alpha only after export, must restore the authored values, and may not change the delivery GLB."
     },
     "variation": {
       "minimum_middle_bay_variants": 3,
@@ -851,6 +870,16 @@
       "symptom": "A courtyard ring roof has the right four strips in plan but reads as crossed gables, triangular fins or smooth pyramids at its corners",
       "cause": "Independent gabled strips retained their end-cap faces inside perpendicular intersections, while diagonal beams or unregistered corner fillers were mistaken for one connected roof topology.",
       "correction": "Stop each straight roof at the corner bay, remove internal gable end caps and bridge every junction with a four-plane hip sharing the strip ridge and eave elevations. Model the inner valley and exterior hip lines separately, apply true-scale roof UVs to the corner planes, and prove the uninterrupted open void from street-corner and aerial cameras."
+    },
+    {
+      "symptom": "A custom-skinned rear wall, pergola or railing shows warped buildings, reflections or furniture printed across its surface",
+      "cause": "An oblique reference photograph was cropped and repeated as a construction material instead of being limited to a registered view-dependent source.",
+      "correction": "Replace the repeating crop with an orthographic shadow-neutral construction plate derived from the same reference palette. Keep perspective evidence on coordinate-registered elevation or occupied-depth cards, and rebuild visually open railings and pergolas as real members."
+    },
+    {
+      "symptom": "A high-quality custom-skinned GLB becomes too large for reliable mobile loading even though many material zones share the same brick, metal or timber source",
+      "cause": "Every semantic zone embedded a separate copy of identical high-resolution image channels and secondary equipment consumed hero-range atlases.",
+      "correction": "Keep distinct semantic materials and complete near/far source packages, but point related exported materials at the same approved construction-image paths and use far LODs for secondary equipment. Verify the delivered GLB still retains required custom textures and optical metadata."
     },
     {
       "symptom": "A procedural roof or truss renders correctly but the exported GLB reports an impossible vertical extent equal to one long beam length",

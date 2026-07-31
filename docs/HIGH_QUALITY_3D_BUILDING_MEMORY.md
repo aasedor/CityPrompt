@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-30-reference-image-recipe-v107`.
+Current executable memory: `2026-07-30-reference-image-recipe-v108`.
 
 ## The quality target
 
@@ -150,6 +150,42 @@ Use this finite sequence:
 The approved comparison sheet, raw source package and provenance record ship
 with the family. This makes the visual methodology reviewable, repeatable and
 portable across future waves.
+
+### 4B. Keep construction skins projection-clean and runtime-practical
+
+A perspective reference is evidence for shape, material and occupation, but it
+is not automatically a repeating construction texture. Never crop a whole
+wall, railing, pergola or service yard from an oblique photograph and wrap it
+around a physical solid. That bakes perspective, reflections and neighboring
+objects into the material and makes the model read like a photograph pasted
+onto a box.
+
+Use these rules:
+
+1. Derive repeating brick, ribbed metal, timber, concrete and roof materials
+   from an orthographic shadow-neutral construction plate made from the same
+   approved reference palette.
+2. Reserve perspective sources for coordinate-registered elevation panels,
+   special enclosures and occupied-depth cards where their camera relationship
+   is deliberate and cannot repeat.
+3. Build visually open assemblies as open geometry. Railings need top and
+   bottom rails, posts and balusters; pergolas need posts, beams and fins;
+   furniture needs thin seats, backs and legs. An opaque textured slab cannot
+   substitute for any of them.
+4. Export the real optical glass profile with physical transmission. If
+   Blender's proof renderer makes a thin pane appear like a thick tinted
+   solid, a temporary alpha-only proof override may be applied *after* GLB
+   export, then restored. The comparison image must never silently redefine
+   the delivery material.
+5. Keep semantic material zones in the manifest while deduplicating identical
+   embedded source images. Related zones may reference the same approved
+   construction plate, and secondary equipment may consume the far LOD. This
+   reduces GLB weight without replacing custom skins or erasing material
+   semantics.
+
+Close-up review must explicitly inspect glass, open railings, exposed timber,
+rear service walls and roof equipment for photographic projection artifacts,
+incorrect metallic response, fake solidity and duplicate-image bloat.
 
 ### 5. Build glazing as a layered assembly
 

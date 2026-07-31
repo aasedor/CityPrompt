@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "commercial_strip_mall",
+  "catalogue_variant_id": "strip_contemporary_retail",
+  "catalogue_alias_ids": [
+    "contemporary_retail_strip",
+    "prairie_neighbourhood_retail"
+  ],
+  "elevation_source": "/families/contemporary-prairie-retail-strip/elevation.jpg",
+  "goalpost": "/families/contemporary-prairie-retail-strip/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/contemporary-prairie-retail-strip/textures/source/reference-generation.json",
+  "method": "reference-locked multi-angle ImageGen source pack, six-zone construction plate, deterministic seven-bay metric geometry, physical low-E storefronts, modeled occupied depth, integrated restaurant patio, and complete roof/rear service schedules"
+}

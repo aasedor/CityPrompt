@@ -1,0 +1,151 @@
+{
+  "family_id": "contemporary-prairie-retail-strip",
+  "source": {
+    "archetype_id": "commercial_strip_mall",
+    "variant_id": "strip_contemporary_retail",
+    "generation_archetype_id": "strip_contemporary_retail",
+    "reuse_keys": [
+      "commercial_strip_mall",
+      "strip_contemporary_retail",
+      "contemporary_retail_strip",
+      "prairie_neighbourhood_retail",
+      "Commercial Strip Mall",
+      "Contemporary Retail",
+      "Neighbourhood Retail Plaza",
+      "Prairie Storefront Bar"
+    ]
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 26.0,
+    "podium_height_m": 0.35,
+    "floor_height_m": 4.15,
+    "setback_height_m": 4.15,
+    "roof_height_m": 1.45,
+    "crown_height_m": 2.7,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A raised russet-brick anchor and six smaller occupied tenant bays sit beneath one thin black canopy with warm cedar soffit, ending in a glazed restaurant corner and structurally integrated patio.",
+    "material_zones": "warm russet modular brick; charcoal-black narrow micro-ribbed metal; warm cedar linear soffit and pergola; black thermally broken aluminum; physical neutral low-E glazing with occupied retail depth; light broom-finished concrete; pale single-ply roof membrane; galvanized roof plant; dark rear service metal and restrained illuminated signs",
+    "glass_profile": "low_iron_neutral",
+    "kits": [
+      "reference_locked_assembled_bar",
+      "seven_physical_tenant_storefronts",
+      "integrated_restaurant_patio",
+      "complete_rear_service_and_roof",
+      "flexible_semantic_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "commercial_strip_mall",
+    "strip_contemporary_retail",
+    "contemporary_retail_strip",
+    "prairie_neighbourhood_retail"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a shallow bar of complete tenant modules. A rectangle preserves the canonical seven-bay frontage; L- and U-shaped drawings turn complete occupied bars at corners while keeping storefront, canopy, rear-service and roof-unit datums.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.28
+    },
+    "recommendedWidth_m": [
+      32.0,
+      100.0
+    ],
+    "recommendedDepth_m": [
+      14.0,
+      30.0
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "wingDepth_m": [
+      14.0,
+      24.0
+    ],
+    "preferredBayMultiple_m": 8.4,
+    "minimumCourtyard_m": 18.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          32.0,
+          100.0
+        ],
+        "recommendedDepth_m": [
+          14.0,
+          30.0
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "preferredBayMultiple_m": 8.4
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          50.0,
+          126.0
+        ],
+        "recommendedDepth_m": [
+          28.0,
+          70.0
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "wingDepth_m": [
+          14.0,
+          24.0
+        ],
+        "preferredBayMultiple_m": 8.4
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          62.0,
+          142.0
+        ],
+        "recommendedDepth_m": [
+          34.0,
+          82.0
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "wingDepth_m": [
+          14.0,
+          24.0
+        ],
+        "minimumCourtyard_m": 18.0,
+        "preferredBayMultiple_m": 8.4
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "modular_retail_bar",
+    "silhouette": "one_storey_long_bar_with_raised_left_anchor",
+    "tenant_modules": 7,
+    "raised_anchor_modules": 1,
+    "repeatable_inline_modules": 5,
+    "restaurant_end_cap_modules": 1,
+    "canopy_structural_columns": 8,
+    "occupied_storefront_modules": 7,
+    "rear_service_zones": 7,
+    "rooftop_hvac_units": 7,
+    "restaurant_exhaust_fans": 2,
+    "patio_pergola_posts": 6,
+    "screened_refuse_bins": 2
+  }
+}

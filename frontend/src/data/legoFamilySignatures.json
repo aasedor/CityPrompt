@@ -602,6 +602,34 @@
                                               "materialZones": "warm buff modular brick; charcoal micro-ribbed metal and black thermal-break frames; satin-white folded canopy aluminium with one burnt-orange identity band; honey linear-timber soffit; physical neutral low-e glass and modeled occupied retail depth; clean powder-coated dispensers with inset display glass; stainless protection; broom-finished concrete and dark roof membrane",
                                               "glassProfile": "low_iron_clear",
                                               "elevationUrl": "/families/prairie-modern-fuel-bar/elevation.jpg"
-                                          }
+                                          },
+                     "commercial_strip_mall": {
+                                                  "archetypeId": "commercial_strip_mall",
+                                                  "identity": "A sixty-metre prairie retail bar binds one raised russet-brick anchor, five repeatable inline shops and one glazed restaurant end-cap beneath a continuous black-and-cedar canopy terminating in an integrated timber-pergola patio.",
+                                                  "materialZones": "russet modular brick; charcoal micro-ribbed metal; warm linear cedar soffit and pergola; black thermally broken storefront frames and open patio rail; physical neutral low-e glass with modeled occupied retail and restaurant depth; pale single-ply roof; tenant-aligned HVAC and rear service metal",
+                                                  "glassProfile": "low_iron_neutral",
+                                                  "elevationUrl": "/families/contemporary-prairie-retail-strip/elevation.jpg"
+                                              },
+                     "strip_contemporary_retail": {
+                                                        "archetypeId": "strip_contemporary_retail",
+                                                        "identity": "A sixty-metre prairie retail bar binds one raised russet-brick anchor, five repeatable inline shops and one glazed restaurant end-cap beneath a continuous black-and-cedar canopy terminating in an integrated timber-pergola patio.",
+                                                        "materialZones": "russet modular brick; charcoal micro-ribbed metal; warm linear cedar soffit and pergola; black thermally broken storefront frames and open patio rail; physical neutral low-e glass with modeled occupied retail and restaurant depth; pale single-ply roof; tenant-aligned HVAC and rear service metal",
+                                                        "glassProfile": "low_iron_neutral",
+                                                        "elevationUrl": "/families/contemporary-prairie-retail-strip/elevation.jpg"
+                                                    },
+                     "contemporary_retail_strip": {
+                                                       "archetypeId": "contemporary_retail_strip",
+                                                       "identity": "A sixty-metre prairie retail bar binds one raised russet-brick anchor, five repeatable inline shops and one glazed restaurant end-cap beneath a continuous black-and-cedar canopy terminating in an integrated timber-pergola patio.",
+                                                       "materialZones": "russet modular brick; charcoal micro-ribbed metal; warm linear cedar soffit and pergola; black thermally broken storefront frames and open patio rail; physical neutral low-e glass with modeled occupied retail and restaurant depth; pale single-ply roof; tenant-aligned HVAC and rear service metal",
+                                                       "glassProfile": "low_iron_neutral",
+                                                       "elevationUrl": "/families/contemporary-prairie-retail-strip/elevation.jpg"
+                                                   },
+                     "prairie_neighbourhood_retail": {
+                                                           "archetypeId": "prairie_neighbourhood_retail",
+                                                           "identity": "A sixty-metre prairie retail bar binds one raised russet-brick anchor, five repeatable inline shops and one glazed restaurant end-cap beneath a continuous black-and-cedar canopy terminating in an integrated timber-pergola patio.",
+                                                           "materialZones": "russet modular brick; charcoal micro-ribbed metal; warm linear cedar soffit and pergola; black thermally broken storefront frames and open patio rail; physical neutral low-e glass with modeled occupied retail and restaurant depth; pale single-ply roof; tenant-aligned HVAC and rear service metal",
+                                                           "glassProfile": "low_iron_neutral",
+                                                           "elevationUrl": "/families/contemporary-prairie-retail-strip/elevation.jpg"
+                                                       }
                  }
 }

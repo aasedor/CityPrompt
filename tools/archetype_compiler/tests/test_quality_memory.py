@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-30-reference-image-recipe-v107"
+        == "2026-07-30-reference-image-recipe-v108"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -182,6 +182,10 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "image_generation_recipe_is_reproducible",
         "render_locked_sources_are_geometry_bound",
         "registered_reference_and_tile_safe_zones_are_separate",
+        "construction_skins_are_projection_clean",
+        "visually_open_assemblies_are_open_geometry",
+        "semantic_materials_deduplicate_images",
+        "proof_glass_does_not_redefine_delivery_glass",
         "unitized_enclosures_are_panel_topologies",
         "glass_is_layered",
         "validate_shapes_not_one_box",
@@ -229,6 +233,24 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         and "occupied-depth plate" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
+    assert any(
+        "warped buildings, reflections or furniture printed" in item["symptom"].lower()
+        and "orthographic shadow-neutral construction plate"
+        in item["correction"].lower()
+        and "real members" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "too large for reliable mobile loading" in item["symptom"].lower()
+        and "same approved construction-image paths"
+        in item["correction"].lower()
+        and "far lods" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "reject perspective" in rule.lower()
+        for rule in image_generation["pbr_derivation"]
+    )
     glazing = memory["construction_memory"]["glazing"]
     assert {
         "bronze_recessed_occupied",
@@ -250,6 +272,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert "nearly non-emissive" in glazing["materiality_rule"]
     assert "glTF extras" in glazing["export_contract"]
     assert "KHR clearcoat" in glazing["export_contract"]
+    assert "proof renderer" in glazing["export_contract"]
+    assert "must restore" in glazing["export_contract"]
 
 
 def test_complete_family_passes_executable_quality_memory():
