@@ -1,0 +1,184 @@
+{
+  "status": "pass",
+  "family": "rndsqr-cedar-black-townhomes",
+  "archetype_id": "rndsqr_missing_middle_townhomes",
+  "reuse_keys": [
+    "rndsqr_missing_middle_townhomes",
+    "rndsqr_townhome_dark_wood_metal",
+    "RNDSQR Missing Middle Townhomes",
+    "Cedar & Black-Metal Row",
+    "Ground-Oriented Missing Middle",
+    "Calgary Infill Townhomes"
+  ],
+  "manifest": "rndsqr-cedar-black-townhomes_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "rndsqr-cedar-black-townhomes_podium.glb: 22.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_floor_typical_a.glb: 17.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_floor_typical_b.glb: 17.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_floor_typical_c.glb: 17.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_crown_crown.glb: 15.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_roof.glb: 11.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "rndsqr-cedar-black-townhomes_assembled.glb: 29.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "rndsqr-cedar-black-townhomes_podium.glb",
+      "status": "ok",
+      "triangles": 11248,
+      "extent_m": {
+        "width_x": 28.04,
+        "height_y": 3.0,
+        "depth_z": 13.925
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_DeepConstructionCavity",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_LinenCurtain",
+        "MAT_W10_TOWN_MatteBlackDoor",
+        "MAT_W10_TOWN_PhysicalResidentialLowE",
+        "MAT_W10_TOWN_RegisteredOccupiedDepth",
+        "MAT_W10_TOWN_WarmGreyConcrete"
+      ],
+      "size_bytes": 23161848
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 11996,
+      "extent_m": {
+        "width_x": 28.04,
+        "height_y": 3.0,
+        "depth_z": 13.195
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_DeepConstructionCavity",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_LinenCurtain",
+        "MAT_W10_TOWN_PhysicalResidentialLowE",
+        "MAT_W10_TOWN_RegisteredOccupiedDepth"
+      ],
+      "size_bytes": 18757056
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 10324,
+      "extent_m": {
+        "width_x": 28.04,
+        "height_y": 3.0,
+        "depth_z": 13.19
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_DeepConstructionCavity",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_LinenCurtain",
+        "MAT_W10_TOWN_PhysicalResidentialLowE",
+        "MAT_W10_TOWN_RegisteredOccupiedDepth"
+      ],
+      "size_bytes": 18611608
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 9620,
+      "extent_m": {
+        "width_x": 28.04,
+        "height_y": 3.0,
+        "depth_z": 13.007
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_DeepConstructionCavity",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_LinenCurtain",
+        "MAT_W10_TOWN_PhysicalResidentialLowE",
+        "MAT_W10_TOWN_RegisteredOccupiedDepth"
+      ],
+      "size_bytes": 18548700
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1180,
+      "extent_m": {
+        "width_x": 28.14,
+        "height_y": 0.4,
+        "depth_z": 13.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal"
+      ],
+      "size_bytes": 16058108
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_roof.glb",
+      "status": "ok",
+      "triangles": 15884,
+      "extent_m": {
+        "width_x": 28.115,
+        "height_y": 2.495,
+        "depth_z": 13.015
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_TOWN_CharcoalTerraceMembrane",
+        "MAT_W10_TOWN_DarkMembraneRoof",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_MatteBlackDoor",
+        "MAT_W10_TOWN_PhysicalResidentialLowE"
+      ],
+      "size_bytes": 12114908
+    },
+    {
+      "file": "rndsqr-cedar-black-townhomes_assembled.glb",
+      "status": "ok",
+      "triangles": 50488,
+      "extent_m": {
+        "width_x": 28.14,
+        "height_y": 11.895,
+        "depth_z": 14.113
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_TOWN_CedarRainscreen",
+        "MAT_W10_TOWN_CharcoalTerraceMembrane",
+        "MAT_W10_TOWN_DarkMembraneRoof",
+        "MAT_W10_TOWN_DeepConstructionCavity",
+        "MAT_W10_TOWN_FineCharcoalCorrugatedMetal",
+        "MAT_W10_TOWN_LinenCurtain",
+        "MAT_W10_TOWN_MatteBlackDoor",
+        "MAT_W10_TOWN_PhysicalResidentialLowE",
+        "MAT_W10_TOWN_RegisteredOccupiedDepth",
+        "MAT_W10_TOWN_WarmGreyConcrete"
+      ],
+      "size_bytes": 31079284,
+      "role": "assembled"
+    }
+  ]
+}

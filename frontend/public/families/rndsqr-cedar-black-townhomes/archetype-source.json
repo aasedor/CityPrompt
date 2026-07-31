@@ -1,0 +1,19 @@
+{
+  "kind": "catalogue_brief_plus_original_imagegen_multiview_package_and_authored_four_dwelling_construction",
+  "catalogue_archetype_id": "rndsqr_missing_middle_townhomes",
+  "catalogue_variant_id": "rndsqr_townhome_dark_wood_metal",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "orthographic_elevation": "textures/source/elevation-source-v1.png",
+  "aerial_reference": "textures/source/aerial-source-v1.png",
+  "rear_elevation_reference": "textures/source/rear-elevation-source-v1.png",
+  "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+  "cedar_material_source": "textures/source/cedar-material-source-v1.png",
+  "metal_material_source": "textures/source/charcoal-metal-material-source-v1.png",
+  "reference_generation": "textures/source/reference-generation.json",
+  "registered_openings": "textures/source/registered-openings.json",
+  "registered_bands": "textures/source/registered-bands.json",
+  "elevation_source": "/families/rndsqr-cedar-black-townhomes/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave10_townhome_family.py",
+  "reference_method": "catalogue design brief, original goalpost, rectified public and rear elevations, aerial roof proof, physical cavity schedules, custom true-scale cedar and corrugated-metal PBR, occupied-depth underlay, and finite multiscale comparison"
+}

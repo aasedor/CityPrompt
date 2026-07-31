@@ -1,0 +1,157 @@
+{
+  "family_id": "rndsqr-cedar-black-townhomes",
+  "source": {
+    "archetype_id": "rndsqr_missing_middle_townhomes",
+    "variant_id": "rndsqr_townhome_dark_wood_metal",
+    "generation_archetype_id": "rndsqr_townhome_dark_wood_metal",
+    "reuse_keys": [
+      "rndsqr_missing_middle_townhomes",
+      "rndsqr_townhome_dark_wood_metal",
+      "RNDSQR Missing Middle Townhomes",
+      "Cedar & Black-Metal Row",
+      "Ground-Oriented Missing Middle",
+      "Calgary Infill Townhomes"
+    ]
+  },
+  "dimensions": {
+    "width_m": 28.0,
+    "depth_m": 14.0,
+    "wing_depth_m": 14.0,
+    "podium_height_m": 3.0,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 2.45,
+    "crown_height_m": 0.4,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "Exactly four three-level Calgary missing-middle homes read as separate seven-metre vertical bays through alternating charcoal corrugated metal and honey cedar, shallow front offsets, four deep street entries, large room-scale low-e windows, rear lane garages, and four private rooftop terraces with compact stair bulkheads.",
+    "material_zones": "matte charcoal fine-corrugated steel; natural vertical honey cedar; warm-grey concrete stoops and base; black powder-coated frames, canopies, guards, copings and garage doors; neutral residential low-e glass; restrained occupied depth; dark roof membrane; grey terrace paving",
+    "glass_profile": "residential_low_e",
+    "kits": [
+      "four_complete_dwelling_bays",
+      "alternating_cedar_and_corrugated_metal",
+      "four_deep_individual_entries",
+      "room_scale_picture_windows",
+      "four_lane_loaded_garages",
+      "cedar_privacy_fins",
+      "four_private_roof_terraces",
+      "four_stair_bulkheads"
+    ]
+  },
+  "archetype_aliases": [
+    "rndsqr_missing_middle_townhomes",
+    "rndsqr_townhome_dark_wood_metal"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a shallow attached row of complete seven-metre ground-oriented homes. A straight rectangle preserves it directly; L- and U-shaped drawings turn complete occupied row bars at corners without stretching windows, entries, garages, or terrace access.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.24
+    },
+    "recommendedWidth_m": [
+      16,
+      60
+    ],
+    "recommendedDepth_m": [
+      10,
+      20
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "wingDepth_m": [
+      10,
+      16
+    ],
+    "preferredBayMultiple_m": 7.0,
+    "minimumCourtyard_m": 0.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          16,
+          60
+        ],
+        "recommendedDepth_m": [
+          10,
+          20
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "preferredBayMultiple_m": 7.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          21,
+          70
+        ],
+        "recommendedDepth_m": [
+          18,
+          40
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "preferredBayMultiple_m": 7.0,
+        "wingDepth_m": [
+          10,
+          16
+        ]
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          28,
+          84
+        ],
+        "recommendedDepth_m": [
+          20,
+          42
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "preferredBayMultiple_m": 7.0,
+        "wingDepth_m": [
+          10,
+          16
+        ]
+      }
+    },
+    "notes": [
+      "Repeat complete seven-metre dwelling bays along the long axis.",
+      "Keep individual public entries and rear lane garages one-to-one.",
+      "Keep roof terraces and stair bulkheads aligned to dwelling party walls.",
+      "Use streetwall_repeat for oversized targets; never stretch a window bay."
+    ]
+  },
+  "massing_graph": {
+    "type": "four_attached_dwelling_row",
+    "silhouette": "three_level_alternating_cedar_charcoal_row_with_four_roof_bulkheads",
+    "render_locked": true,
+    "goalpost": "/families/rndsqr-cedar-black-townhomes/textures/source/archetype-goalpost.png",
+    "fallback": "whole_dwelling_modular_streetwall",
+    "dwelling_count": 4,
+    "dwelling_width_m": 7.0,
+    "front_offsets_m": [
+      0.0,
+      0.45,
+      0.0,
+      0.45
+    ],
+    "rear_lane_service": true
+  }
+}

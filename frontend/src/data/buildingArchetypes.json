@@ -36001,6 +36001,39 @@
     },
     {
         "id": "rndsqr_missing_middle_townhomes",
+        "footprintCompatibility": {
+            "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+            "minimumPreferredProfiles": 3,
+            "profileRationale": "The identity is a shallow attached row of complete seven-metre ground-oriented homes. A straight rectangle preserves it directly; L- and U-shaped drawings turn complete occupied row bars at corners without stretching windows, entries, garages, or terrace access.",
+            "recommendedWidth_m": [16, 60],
+            "recommendedDepth_m": [10, 20],
+            "recommendedFloors": [2, 4],
+            "wingDepth_m": [10, 16],
+            "preferredBayMultiple_m": 7,
+            "minimumCourtyard_m": 0,
+            "profiles": {
+                "rectangle": {
+                    "recommendedWidth_m": [16, 60],
+                    "recommendedDepth_m": [10, 20],
+                    "recommendedFloors": [2, 4],
+                    "preferredBayMultiple_m": 7
+                },
+                "l_shape": {
+                    "recommendedWidth_m": [21, 70],
+                    "recommendedDepth_m": [18, 40],
+                    "recommendedFloors": [2, 4],
+                    "preferredBayMultiple_m": 7,
+                    "wingDepth_m": [10, 16]
+                },
+                "u_shape": {
+                    "recommendedWidth_m": [28, 84],
+                    "recommendedDepth_m": [20, 42],
+                    "recommendedFloors": [2, 4],
+                    "preferredBayMultiple_m": 7,
+                    "wingDepth_m": [10, 16]
+                }
+            }
+        },
         "suggestedWidth_m": 28,
         "suggestedDepth_m": 14,
         "suggestedFloorHeight": 3.0,
@@ -36095,12 +36128,12 @@
             "features": "rooftop patios with glass or black-metal railings, stair-access bulkheads, solar-ready flat areas",
             "aerialAppearance": "row of small offset roof rectangles alternating flat and sloped, rooftop patios and bulkheads, rear-lane garages and narrow private yards"
         },
-        "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_0.png",
+        "thumbnailUrl": "/archetypes/buildings/rndsqr-cedar-black-townhomes/hero.png",
         "variants": [
             {
                 "id": "rndsqr_townhome_dark_wood_metal",
                 "label": "Cedar & Black-Metal Row",
-                "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_0.png",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-cedar-black-townhomes/hero.png",
                 "description": "The signature RNDSQR dark-and-warm townhome — a three-storey row clad in charcoal-black metal panel warmed by vertical cedar at the entries and top floor, in the spirit of the GROW and Killarney rowhouses. Each unit is a distinct articulated bay with a large black-framed picture window, a recessed front door under a black steel canopy, and a private rooftop patio above. Lane-loaded garages keep the street face all front doors and landscaping.",
                 "facadeDetail": {
                     "primaryMaterial": "charcoal-black flat metal panel as the dominant cladding",

@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source-v1.png",
+  "method": "Every public and rear window, entry door, and garage is a physical recess with modeled jambs, heads, sills, frames, panes, room cards, and construction-depth shadow. Clean cedar and metal PBR are applied only to solid wall geometry; occupied depth is clipped behind separate neutral low-e glazing.",
+  "physical_geometry_required": true
+}

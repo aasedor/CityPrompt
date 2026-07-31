@@ -483,6 +483,20 @@
                                                             "materialZones":  "fine golden-buff running-bond brick; darker brick soldier courses and passage soffits; charcoal powder-coated window frames, Juliet guards, gutters and downpipes; neutral low-e residential glass; muted occupied-room depth; dark grey concrete roof tile; grey unit paving",
                                                             "glassProfile":  "residential_low_e",
                                                             "elevationUrl":  "/families/courtyard-family-brick-mews/elevation.jpg"
+                                                        },
+                     "rndsqr_missing_middle_townhomes":  {
+                                                              "archetypeId":  "rndsqr_missing_middle_townhomes",
+                                                              "identity":  "Exactly four three-level Calgary missing-middle homes read as separate seven-metre bays through alternating charcoal corrugated metal and honey cedar, individual recessed entries, lane garages and private rooftop terraces.",
+                                                              "materialZones":  "matte charcoal fine-corrugated steel; natural vertical honey cedar; warm-grey concrete stoops and base; black powder-coated frames, canopies, guards, copings and garage doors; neutral residential low-e glass; restrained occupied depth; dark roof membrane",
+                                                              "glassProfile":  "residential_low_e",
+                                                              "elevationUrl":  "/families/rndsqr-cedar-black-townhomes/elevation.jpg"
+                                                          },
+                     "rndsqr_townhome_dark_wood_metal":  {
+                                                              "archetypeId":  "rndsqr_townhome_dark_wood_metal",
+                                                              "identity":  "Exactly four three-level Calgary missing-middle homes read as separate seven-metre bays through alternating charcoal corrugated metal and honey cedar, individual recessed entries, lane garages and private rooftop terraces.",
+                                                              "materialZones":  "matte charcoal fine-corrugated steel; natural vertical honey cedar; warm-grey concrete stoops and base; black powder-coated frames, canopies, guards, copings and garage doors; neutral residential low-e glass; restrained occupied depth; dark roof membrane",
+                                                              "glassProfile":  "residential_low_e",
+                                                              "elevationUrl":  "/families/rndsqr-cedar-black-townhomes/elevation.jpg"
                                                         }
                  }
 }
