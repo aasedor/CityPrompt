@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-30-courtyard-ring-hip-junction-v106",
+  "memory_version": "2026-07-30-reference-image-recipe-v107",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -43,6 +43,10 @@
     {
       "id": "skins_are_archetype_specific",
       "rule": "Generic tiled facade materials are not a production skin. Every new archetype uses its compatible reference views to author a render-locked, archetype-specific source; registers that source by elevation and semantic surface; binds depth or displacement in the runtime shader; and forbids generic tiling as the primary identity treatment."
+    },
+    {
+      "id": "image_generation_recipe_is_reproducible",
+      "rule": "Treat image generation as a reproducible design-source stage. Retain compatible inputs, a labelled goalpost, immutable keeper outputs, exact prompts, provider and model, output roles and geometry-registration targets in the family source package so no approved method depends on chat history or temporary files."
     },
     {
       "id": "render_locked_sources_are_geometry_bound",
@@ -150,6 +154,54 @@
         "Reject or quarantine reference views that depict a different variant.",
         "Record invariant cues shared by the views before writing geometry.",
         "For one-view archetypes, lower confidence and require visual review."
+      ]
+    },
+    "image_generation": {
+      "purpose": "Create reproducible, render-locked design sources that preserve the selected archetype while supplying registered identity, material and occupied-depth evidence for the physical LEGO model.",
+      "required_source_roles": [
+        "labelled_archetype_goalpost",
+        "rectified_front_elevation",
+        "shadow_neutral_material_study",
+        "occupied_depth_plate"
+      ],
+      "conditional_source_roles": [
+        "roof_or_aerial",
+        "courtyard_or_secondary_elevation",
+        "special_enclosure_or_ornament"
+      ],
+      "prompt_contract": [
+        "Name the exact catalogue archetype and selected variant and use only compatible saved inputs.",
+        "Declare one output role and its camera or projection; do not ask one perspective render to serve every elevation and material zone.",
+        "Lock footprint, massing, floor count, roof silhouette, bay and opening cadence, entrance position and material zoning.",
+        "Request rectified registration, neutral illumination and shadow-neutral surfaces where the role is a material or elevation source.",
+        "Forbid redesign, extra floors, invented wings, moved openings, baked entourage, directional sunlight and cast shadows.",
+        "Generate occupied depth as a separate clean layer for placement behind matching physical glazing."
+      ],
+      "provenance_contract": {
+        "canonical_path": "textures/source/reference-generation.json",
+        "required_fields": [
+          "provider",
+          "model",
+          "generated_at",
+          "input_paths",
+          "saved_output_path",
+          "output_role",
+          "registered_surfaces",
+          "prompt_fields"
+        ],
+        "prompt_storage_rule": "prompt_fields maps each semantic output role to the JSON field containing its complete, unmodified exact prompt; every mapped field must be retained in the same provenance record.",
+        "retention_rule": "Keep raw keeper outputs and the labelled goalpost under textures/source; a temporary download or conversation attachment is not an archival source."
+      },
+      "pbr_derivation": [
+        "Derive semantic near/far albedo, normal, roughness, AO, depth, emissive, glass and opaque channels from approved keeper sources.",
+        "Derive tile-safe construction zones from the same goalpost palette for long or nonlinear solids without replacing the registered identity source.",
+        "Register elevations and occupied-depth plates to audited datums and real openings while physical walls, recesses, panes, frames, screens, returns and roof junctions remain geometry."
+      ],
+      "keeper_loop": [
+        "Render unchanged live cameras for front or street, corner, aerial or roof, and interior, courtyard or rear evidence as applicable.",
+        "Rank deltas in silhouette, opening cadence, material scale, glazing, construction depth and roof or corner continuity.",
+        "Correct the largest visible deltas, regenerate only the affected source or geometry and rerender the same cameras.",
+        "Promote a finite reviewed keeper batch and ship its comparison sheet before scaling another family."
       ]
     },
     "semantic_decomposition": {
@@ -789,6 +841,11 @@
       "symptom": "A detailed detached-house screen fuses into a pale solid wall, or exposed historic masonry reads as brick stickers applied over clean stucco",
       "cause": "Fine battens were sized without proving screen-space gaps and recessed occupation in the locked corner camera, while regular brick grids were projected proud of the finish without a mortar recess or chipped plaster boundary.",
       "correction": "Calibrate batten width, spacing, projection and a meaningful air gap against the corner view; recess glass and varied dark occupied rooms behind it. Treat exposed masonry as loss of finish: keep brick nearly flush or recessed over a shadowed mortar bed and author ragged, irregular plaster edges."
+    },
+    {
+      "symptom": "A later family regresses to generic skins because an earlier successful image-generation method cannot be reproduced",
+      "cause": "The exact prompt, compatible inputs, provider and model, keeper role or registered surfaces existed only in chat history, temporary downloads or an unlabelled beauty render.",
+      "correction": "Archive the labelled goalpost and immutable semantic keeper sources under textures/source, record exact prompts and required provenance in reference-generation.json, derive registered near/far PBR and occupied-depth channels, and ship the locked-camera comparison sheet with the family."
     },
     {
       "symptom": "A courtyard ring roof has the right four strips in plan but reads as crossed gables, triangular fins or smooth pyramids at its corners",

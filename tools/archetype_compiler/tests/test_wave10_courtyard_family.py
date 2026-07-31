@@ -11,7 +11,7 @@ FAMILY = "courtyard-family-brick-mews"
 PARENT = "courtyard_family_housing"
 VARIANT = "courtyard_family_brick_modern"
 ROOT = REPO / "frontend" / "public" / "families" / FAMILY
-MEMORY_VERSION = "2026-07-30-courtyard-ring-hip-junction-v106"
+MEMORY_VERSION = "2026-07-30-reference-image-recipe-v107"
 REQUIRED_CHANNELS = {
     "albedo",
     "normal",
@@ -205,8 +205,28 @@ def test_custom_skin_and_reference_provenance_are_complete():
     provenance = load_json(
         ROOT / "textures" / "source" / "reference-generation.json"
     )
-    assert provenance["tool"] == "OpenAI built-in ImageGen"
+    assert provenance["schema"] == "reference-generation@2"
+    assert provenance["provider"] == "OpenAI built-in ImageGen"
     assert provenance["model"] == "gpt-image-2"
+    assert provenance["generated_at"] == "2026-07-30"
+    assert provenance["saved_output_path"] == "textures/source"
+    assert provenance["output_role"] == "render_locked_source_package"
+    assert {
+        "front",
+        "left",
+        "right",
+        "rear",
+        "courtyard",
+        "roof",
+        "glazing_occupied_depth",
+    } <= set(provenance["registered_surfaces"])
+    assert {
+        "rectified_front_elevation",
+        "roof_or_aerial",
+        "courtyard_or_secondary_elevation",
+        "shadow_neutral_material_study",
+        "occupied_depth_plate",
+    } == set(provenance["prompt_fields"])
     assert len(provenance["outputs"]) == 5
     assert {
         "elevation-source-v1.png",

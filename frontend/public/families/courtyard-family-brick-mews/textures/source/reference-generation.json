@@ -1,9 +1,34 @@
 {
-  "schema": "reference-generation@1",
-  "tool": "OpenAI built-in ImageGen",
+  "schema": "reference-generation@2",
+  "provider": "OpenAI built-in ImageGen",
   "model": "gpt-image-2",
-  "date": "2026-07-30",
+  "generated_at": "2026-07-30",
   "catalogue_goalpost": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+  "input_paths": [
+    "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+    "textures/source/archetype-goalpost.png"
+  ],
+  "saved_output_path": "textures/source",
+  "output_role": "render_locked_source_package",
+  "registered_surfaces": [
+    "front",
+    "left",
+    "right",
+    "rear",
+    "courtyard",
+    "roof",
+    "brick",
+    "paving",
+    "soffit",
+    "glazing_occupied_depth"
+  ],
+  "prompt_fields": {
+    "rectified_front_elevation": "elevation_prompt",
+    "roof_or_aerial": "aerial_prompt",
+    "courtyard_or_secondary_elevation": "courtyard_prompt",
+    "shadow_neutral_material_study": "material_prompts.brick",
+    "occupied_depth_plate": "occupied_depth_prompt"
+  },
   "policy": "The catalogue card is the hard identity goalpost. Generated references clarify construction, roof topology, courtyard continuity, materials, and occupied depth without changing the architecture.",
   "outputs": [
     {

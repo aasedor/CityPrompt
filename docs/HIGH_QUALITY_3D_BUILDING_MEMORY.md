@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-30-courtyard-ring-hip-junction-v106`.
+Current executable memory: `2026-07-30-reference-image-recipe-v107`.
 
 ## The quality target
 
@@ -103,6 +103,53 @@ GLB must embed the same registered materials; an empty texture inventory is a
 contract defect even when the channel names are correct.
 
 Gemini and GPT Image are interchangeable source providers. Provider choice is recorded as provenance, while rectification, PBR derivation, assembly and validation remain identical.
+
+### 4A. Preserve the reference-locked image-generation recipe
+
+Image generation is a reproducible design-source stage, not an ephemeral
+conversation or a one-off beauty-render step. Every family retains the exact
+inputs, prompts, raw keeper outputs and intended geometry registrations that
+produced its approved skin. A future generator must be able to reproduce the
+same source package without relying on chat history or temporary files.
+
+Use this finite sequence:
+
+1. **Lock the evidence.** Save the compatible archetype views and one labelled
+   goalpost composite. Record the exact catalogue and variant ids; reject
+   sibling aesthetics before prompting.
+2. **Generate by semantic role.** Author a rectified front elevation, a
+   shadow-neutral material study and an occupied-depth plate. Add an aerial or
+   roof source, courtyard or secondary elevation, and special-enclosure study
+   whenever those surfaces carry identity. These are separate jobs because one
+   perspective render cannot be stretched into all of them.
+3. **Constrain every prompt.** State the source archetype, output role and
+   camera; lock footprint, massing, floor count, roof silhouette, bay and
+   opening cadence, entrance position and material zoning; request neutral
+   illumination and clean registration; explicitly forbid redesign, extra
+   floors, invented wings, moved openings, baked entourage and cast shadows.
+4. **Keep immutable provenance.** Store raw keeper outputs under
+   `textures/source/` and record provider, model, generation date, exact prompt,
+   input paths, saved output path, intended role and registered surfaces in
+   `textures/source/reference-generation.json` (or the same schema under an
+   equivalent source directory). Never make a temporary download the only copy.
+5. **Derive, do not substitute.** Convert the keepers into semantic near/far
+   albedo, normal, roughness, AO, depth, emissive, glass and opaque channels.
+   Derive tile-safe construction zones from the same palette for long or
+   nonlinear solids; do not replace the registered identity source with a
+   generic brick, glass, metal or stone tile.
+6. **Bind sources to construction.** Register each elevation and occupied-depth
+   plate to audited model datums and real openings. Physical walls, recesses,
+   panes, frames, screens, returns and roof junctions remain geometry.
+7. **Run a locked-camera keeper loop.** Compare the unchanged live model with
+   the goalposts from front/street, corner, aerial/roof and interior or rear
+   cameras. Rank silhouette, opening cadence, material scale, glazing,
+   construction depth and roof/corner continuity; correct the largest visible
+   deltas, regenerate only the affected source or geometry, and render again.
+   Promote a finite reviewed keeper batch before starting another family.
+
+The approved comparison sheet, raw source package and provenance record ship
+with the family. This makes the visual methodology reviewable, repeatable and
+portable across future waves.
 
 ### 5. Build glazing as a layered assembly
 

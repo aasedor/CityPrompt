@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-30-courtyard-ring-hip-junction-v106"
+        == "2026-07-30-reference-image-recipe-v107"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -179,6 +179,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "glazing_materiality_matches_reference",
         "pbr_assets_are_verified",
         "skins_are_archetype_specific",
+        "image_generation_recipe_is_reproducible",
         "render_locked_sources_are_geometry_bound",
         "registered_reference_and_tile_safe_zones_are_separate",
         "unitized_enclosures_are_panel_topologies",
@@ -191,6 +192,36 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "multi_aisle_roofs_are_complete_systems",
         "detached_houses_are_complete_compositions",
     } <= principle_ids
+    image_generation = memory["construction_memory"]["image_generation"]
+    assert {
+        "labelled_archetype_goalpost",
+        "rectified_front_elevation",
+        "shadow_neutral_material_study",
+        "occupied_depth_plate",
+    } <= set(image_generation["required_source_roles"])
+    assert {
+        "provider",
+        "model",
+        "generated_at",
+        "input_paths",
+        "saved_output_path",
+        "output_role",
+        "registered_surfaces",
+        "prompt_fields",
+    } <= set(image_generation["provenance_contract"]["required_fields"])
+    assert (
+        "complete, unmodified exact prompt"
+        in image_generation["provenance_contract"]["prompt_storage_rule"]
+    )
+    assert image_generation["provenance_contract"]["canonical_path"].endswith(
+        "textures/source/reference-generation.json"
+    )
+    assert any(
+        "generic skins" in item["symptom"].lower()
+        and "chat history" in item["cause"].lower()
+        and "locked-camera comparison sheet" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert any(
         "curved shell, long timber member or deep stone arcade"
         in item["symptom"].lower()
