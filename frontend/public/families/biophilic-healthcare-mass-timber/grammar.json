@@ -1,0 +1,185 @@
+{
+  "family_id": "biophilic-healthcare-mass-timber",
+  "source": {
+    "archetype_id": "biophilic_healthcare",
+    "variant_id": "healthcare_mass_timber",
+    "generation_archetype_id": "healthcare_mass_timber",
+    "reuse_keys": [
+      "biophilic_healthcare",
+      "healthcare_mass_timber",
+      "regional_hospital_biophilic_wellness",
+      "Biophilic Modern Healthcare",
+      "Mass Timber Modern Hospital",
+      "Mass Timber Hospital",
+      "Regional Biophilic Wellness Hospital",
+      "CLT Healthcare Centre"
+    ]
+  },
+  "dimensions": {
+    "width_m": 71.2,
+    "depth_m": 51.2,
+    "wing_depth_m": 17.0,
+    "courtyard_width_m": 36.0,
+    "courtyard_depth_m": 35.0,
+    "podium_height_m": 4.8,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "crown_height_m": 0.45,
+    "roof_height_m": 4.2,
+    "total_height_m": 21.45,
+    "native_floors": 4,
+    "min_floors": 2,
+    "max_floors": 6,
+    "default_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A four-storey U-shaped mass-timber hospital frames an open healing courtyard between two deep patient-room wings, joined by an integrated triple-height glulam atrium and entry canopy, with a separate two-bay ambulance arrival below meadow roofs and a photovoltaic terrace canopy.",
+    "material_zones": "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public/service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
+    "glass_profile": "timber_station_neutral_low_e",
+    "kits": [
+      "u_shaped_patient_wings",
+      "open_landscaped_healing_courtyard",
+      "integrated_triple_height_glass_glulam_atrium",
+      "broad_integrated_public_entry_canopy",
+      "deep_paired_patient_room_windows",
+      "physical_low_e_glazing_and_occupied_care_rooms",
+      "living_wall_strips_and_planter_ledges",
+      "charred_public_and_service_plinth",
+      "separate_two_bay_ambulance_arrival",
+      "meadow_roofs_and_gravel_breaks",
+      "two_screened_mechanical_penthouses",
+      "large_photovoltaic_healing_terrace_canopy"
+    ]
+  },
+  "archetype_aliases": [
+    "biophilic_healthcare",
+    "healthcare_mass_timber",
+    "regional_hospital_biophilic_wellness"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "u_shape",
+      "courtyard",
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The clinical identity is a pair of complete patient-room bars framing a therapeutic court, with one fixed public atrium and one rear clinical/service bar. U and courtyard drawings preserve the canonical plan directly; rectangle and L drawings repeat complete patient-room bars without stretching windows, atrium or ambulance bays.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.24
+    },
+    "recommendedWidth_m": [
+      52,
+      92
+    ],
+    "recommendedDepth_m": [
+      38,
+      72
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "wingDepth_m": [
+      14,
+      25
+    ],
+    "preferredBayMultiple_m": 4.25,
+    "profiles": {
+      "u_shape": {
+        "recommendedWidth_m": [
+          52,
+          96
+        ],
+        "recommendedDepth_m": [
+          40,
+          76
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "minimumCourtyard_m": 22.0,
+        "preferredBayMultiple_m": 4.25
+      },
+      "courtyard": {
+        "recommendedWidth_m": [
+          58,
+          104
+        ],
+        "recommendedDepth_m": [
+          44,
+          82
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "minimumCourtyard_m": 22.0,
+        "preferredBayMultiple_m": 4.25
+      },
+      "rectangle": {
+        "recommendedWidth_m": [
+          48,
+          94
+        ],
+        "recommendedDepth_m": [
+          34,
+          66
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "preferredBayMultiple_m": 4.25
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          52,
+          98
+        ],
+        "recommendedDepth_m": [
+          38,
+          74
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "preferredBayMultiple_m": 4.25
+      }
+    },
+    "notes": [
+      "Keep the public atrium, entry canopy and courtyard threshold together.",
+      "Repeat complete paired patient-room bays; never stretch one window.",
+      "Keep the ambulance arrival separate from the public forecourt.",
+      "Preserve the open healing court on U and courtyard profiles.",
+      "Keep meadow roofs, screened plant and the PV canopy in the roof role."
+    ]
+  },
+  "massing_graph": {
+    "type": "u_shaped_mass_timber_biophilic_hospital",
+    "silhouette": "two_four_storey_timber_patient_wings_frame_open_courtyard_around_integrated_glass_glulam_atrium_below_pv_canopy",
+    "render_locked": true,
+    "goalpost": "/families/biophilic-healthcare-mass-timber/textures/source/archetype-goalpost.png",
+    "fallback": "complete_patient_bay_clinical_bar_streetwall",
+    "patient_wings": 2,
+    "open_healing_courtyard": true,
+    "integrated_public_atrium": true,
+    "ambulance_bays": 2
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "status": "pass",
+  "family": "biophilic-healthcare-mass-timber",
+  "archetype_id": "biophilic_healthcare",
+  "reuse_keys": [
+    "biophilic_healthcare",
+    "healthcare_mass_timber",
+    "regional_hospital_biophilic_wellness",
+    "Biophilic Modern Healthcare",
+    "Mass Timber Modern Hospital",
+    "Mass Timber Hospital",
+    "Regional Biophilic Wellness Hospital",
+    "CLT Healthcare Centre"
+  ],
+  "manifest": "biophilic-healthcare-mass-timber_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "biophilic-healthcare-mass-timber_podium.glb: 21 materials (many; consider consolidation)",
+    "biophilic-healthcare-mass-timber_podium.glb: 56.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_floor_typical_a.glb: 16 materials (many; consider consolidation)",
+    "biophilic-healthcare-mass-timber_floor_typical_a.glb: 49.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_floor_typical_b.glb: 16 materials (many; consider consolidation)",
+    "biophilic-healthcare-mass-timber_floor_typical_b.glb: 49.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_floor_typical_c.glb: 16 materials (many; consider consolidation)",
+    "biophilic-healthcare-mass-timber_floor_typical_c.glb: 49.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_crown_crown.glb: 30.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_roof.glb: 37.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "biophilic-healthcare-mass-timber_assembled.glb: 163318 triangles (heavy; consider simplification)",
+    "biophilic-healthcare-mass-timber_assembled.glb: 23 materials (many; consider consolidation)",
+    "biophilic-healthcare-mass-timber_assembled.glb: 83.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "biophilic-healthcare-mass-timber_podium.glb",
+      "status": "ok",
+      "triangles": 28672,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 4.972,
+        "depth_z": 50.44
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_HOSP_AmbulanceRed",
+        "MAT_W10_HOSP_AmbulanceWhite",
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_CalmForecourtPaving",
+        "MAT_W10_HOSP_ClinicalNeutralLowE",
+        "MAT_W10_HOSP_DeepClinicalCavity",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_IntegratedLivingWall",
+        "MAT_W10_HOSP_PaleMineralPlinth",
+        "MAT_W10_HOSP_PhotovoltaicAndScreenMetal",
+        "MAT_W10_HOSP_PlanterSoil",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_RainGardenWater",
+        "MAT_W10_HOSP_RegisteredAtriumDepth",
+        "MAT_W10_HOSP_ShouSugiBanClinicalPlinth"
+      ],
+      "size_bytes": 59026088
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 40014,
+      "extent_m": {
+        "width_x": 71.16,
+        "height_y": 4.147,
+        "depth_z": 51.16
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_ClinicalNeutralLowE",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_HoneyVerticalTimberRainscreen",
+        "MAT_W10_HOSP_IntegratedLivingWall",
+        "MAT_W10_HOSP_PaleClinicalCurtain",
+        "MAT_W10_HOSP_PlanterSoil",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_RegisteredAtriumDepth",
+        "MAT_W10_HOSP_RegisteredPatientRoomDepth"
+      ],
+      "size_bytes": 52340224
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 40102,
+      "extent_m": {
+        "width_x": 71.16,
+        "height_y": 4.147,
+        "depth_z": 51.16
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_ClinicalNeutralLowE",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_HoneyVerticalTimberRainscreen",
+        "MAT_W10_HOSP_IntegratedLivingWall",
+        "MAT_W10_HOSP_PaleClinicalCurtain",
+        "MAT_W10_HOSP_PlanterSoil",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_RegisteredAtriumDepth",
+        "MAT_W10_HOSP_RegisteredPatientRoomDepth"
+      ],
+      "size_bytes": 52348024
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 40102,
+      "extent_m": {
+        "width_x": 71.16,
+        "height_y": 4.147,
+        "depth_z": 51.16
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_ClinicalNeutralLowE",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_HoneyVerticalTimberRainscreen",
+        "MAT_W10_HOSP_IntegratedLivingWall",
+        "MAT_W10_HOSP_PaleClinicalCurtain",
+        "MAT_W10_HOSP_PlanterSoil",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_RegisteredAtriumDepth",
+        "MAT_W10_HOSP_RegisteredPatientRoomDepth"
+      ],
+      "size_bytes": 52348020
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_crown_crown.glb",
+      "status": "ok",
+      "triangles": 388,
+      "extent_m": {
+        "width_x": 70.4,
+        "height_y": 0.45,
+        "depth_z": 50.2
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_PhotovoltaicAndScreenMetal"
+      ],
+      "size_bytes": 31898724
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_roof.glb",
+      "status": "ok",
+      "triangles": 14220,
+      "extent_m": {
+        "width_x": 69.4,
+        "height_y": 3.565,
+        "depth_z": 49.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_CalmForecourtPaving",
+        "MAT_W10_HOSP_DeepClinicalCavity",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_MeadowRoof",
+        "MAT_W10_HOSP_PhotovoltaicAndScreenMetal",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_ServiceMetal"
+      ],
+      "size_bytes": 39035072
+    },
+    {
+      "file": "biophilic-healthcare-mass-timber_assembled.glb",
+      "status": "ok",
+      "triangles": 163318,
+      "extent_m": {
+        "width_x": 71.16,
+        "height_y": 20.877,
+        "depth_z": 51.16
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_HOSP_AmbulanceRed",
+        "MAT_W10_HOSP_AmbulanceWhite",
+        "MAT_W10_HOSP_BlackThermalBreakFrame",
+        "MAT_W10_HOSP_CalmForecourtPaving",
+        "MAT_W10_HOSP_ClinicalNeutralLowE",
+        "MAT_W10_HOSP_DeepClinicalCavity",
+        "MAT_W10_HOSP_ExposedHoneyGlulam",
+        "MAT_W10_HOSP_FoliageDark",
+        "MAT_W10_HOSP_FoliageLight",
+        "MAT_W10_HOSP_FoliageMid",
+        "MAT_W10_HOSP_HoneyVerticalTimberRainscreen",
+        "MAT_W10_HOSP_IntegratedLivingWall",
+        "MAT_W10_HOSP_MeadowRoof",
+        "MAT_W10_HOSP_PaleClinicalCurtain",
+        "MAT_W10_HOSP_PaleMineralPlinth",
+        "MAT_W10_HOSP_PhotovoltaicAndScreenMetal",
+        "MAT_W10_HOSP_PlanterSoil",
+        "MAT_W10_HOSP_PublicAtriumLowIron",
+        "MAT_W10_HOSP_RainGardenWater",
+        "MAT_W10_HOSP_RegisteredAtriumDepth",
+        "MAT_W10_HOSP_RegisteredPatientRoomDepth",
+        "MAT_W10_HOSP_ServiceMetal",
+        "MAT_W10_HOSP_ShouSugiBanClinicalPlinth"
+      ],
+      "size_bytes": 87095128,
+      "role": "assembled"
+    }
+  ]
+}

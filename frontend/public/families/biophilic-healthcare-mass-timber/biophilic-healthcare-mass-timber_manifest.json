@@ -1,0 +1,2533 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave10_hospital_family.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-31T10:28:34.755264+00:00",
+  "family": "biophilic-healthcare-mass-timber",
+  "archetype_id": "biophilic_healthcare",
+  "archetype_label": "Biophilic Modern Healthcare — Mass Timber Modern",
+  "variant_id": "healthcare_mass_timber",
+  "generation_archetype_id": "healthcare_mass_timber",
+  "archetype_aliases": [
+    "biophilic_healthcare",
+    "healthcare_mass_timber",
+    "regional_hospital_biophilic_wellness"
+  ],
+  "aesthetic_category_id": "biophilic_healthcare",
+  "development_type": "institutional_health",
+  "reuse_keys": [
+    "biophilic_healthcare",
+    "healthcare_mass_timber",
+    "regional_hospital_biophilic_wellness",
+    "Biophilic Modern Healthcare",
+    "Mass Timber Modern Hospital",
+    "Mass Timber Hospital",
+    "Regional Biophilic Wellness Hospital",
+    "CLT Healthcare Centre"
+  ],
+  "generation_tags": [
+    "wave10_essential_family",
+    "institutional_health",
+    "hospital",
+    "mass_timber",
+    "biophilic",
+    "custom_pbr_skin",
+    "physical_clinical_glazing",
+    "reference_locked",
+    "u_shaped_healing_courtyard",
+    "integrated_glulam_atrium",
+    "deep_patient_room_windows",
+    "occupied_care_room_depth",
+    "separate_ambulance_arrival",
+    "living_wall_strips",
+    "meadow_green_roof",
+    "photovoltaic_healing_terrace"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "u_shape",
+      "courtyard",
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The clinical identity is a pair of complete patient-room bars framing a therapeutic court, with one fixed public atrium and one rear clinical/service bar. U and courtyard drawings preserve the canonical plan directly; rectangle and L drawings repeat complete patient-room bars without stretching windows, atrium or ambulance bays.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.24
+    },
+    "recommendedWidth_m": [
+      52,
+      92
+    ],
+    "recommendedDepth_m": [
+      38,
+      72
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "wingDepth_m": [
+      14,
+      25
+    ],
+    "preferredBayMultiple_m": 4.25,
+    "profiles": {
+      "u_shape": {
+        "recommendedWidth_m": [
+          52,
+          96
+        ],
+        "recommendedDepth_m": [
+          40,
+          76
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "minimumCourtyard_m": 22.0,
+        "preferredBayMultiple_m": 4.25
+      },
+      "courtyard": {
+        "recommendedWidth_m": [
+          58,
+          104
+        ],
+        "recommendedDepth_m": [
+          44,
+          82
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "minimumCourtyard_m": 22.0,
+        "preferredBayMultiple_m": 4.25
+      },
+      "rectangle": {
+        "recommendedWidth_m": [
+          48,
+          94
+        ],
+        "recommendedDepth_m": [
+          34,
+          66
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "preferredBayMultiple_m": 4.25
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          52,
+          98
+        ],
+        "recommendedDepth_m": [
+          38,
+          74
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "preferredBayMultiple_m": 4.25
+      }
+    },
+    "notes": [
+      "Keep the public atrium, entry canopy and courtyard threshold together.",
+      "Repeat complete paired patient-room bays; never stretch one window.",
+      "Keep the ambulance arrival separate from the public forecourt.",
+      "Preserve the open healing court on U and courtyard profiles.",
+      "Keep meadow roofs, screened plant and the PV canopy in the roof role."
+    ]
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "facade_near_albedo",
+      "path": "textures/pbr/near/elevation_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_normal",
+      "path": "textures/pbr/near/elevation_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_roughness",
+      "path": "textures/pbr/near/elevation_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_ao",
+      "path": "textures/pbr/near/elevation_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_depth",
+      "path": "textures/pbr/near/elevation_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_emissive",
+      "path": "textures/pbr/near/elevation_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_glass_mask",
+      "path": "textures/pbr/near/elevation_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_near_opaque_mask",
+      "path": "textures/pbr/near/elevation_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_albedo",
+      "path": "textures/pbr/far/elevation_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_normal",
+      "path": "textures/pbr/far/elevation_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_roughness",
+      "path": "textures/pbr/far/elevation_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_ao",
+      "path": "textures/pbr/far/elevation_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_depth",
+      "path": "textures/pbr/far/elevation_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_emissive",
+      "path": "textures/pbr/far/elevation_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_glass_mask",
+      "path": "textures/pbr/far/elevation_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "facade_far_opaque_mask",
+      "path": "textures/pbr/far/elevation_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "facade"
+    },
+    {
+      "key": "podium_near_albedo",
+      "path": "textures/pbr/near/podium_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_normal",
+      "path": "textures/pbr/near/podium_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_roughness",
+      "path": "textures/pbr/near/podium_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_ao",
+      "path": "textures/pbr/near/podium_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_depth",
+      "path": "textures/pbr/near/podium_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_emissive",
+      "path": "textures/pbr/near/podium_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_glass_mask",
+      "path": "textures/pbr/near/podium_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_near_opaque_mask",
+      "path": "textures/pbr/near/podium_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_albedo",
+      "path": "textures/pbr/far/podium_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_normal",
+      "path": "textures/pbr/far/podium_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_roughness",
+      "path": "textures/pbr/far/podium_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_ao",
+      "path": "textures/pbr/far/podium_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_depth",
+      "path": "textures/pbr/far/podium_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_emissive",
+      "path": "textures/pbr/far/podium_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_glass_mask",
+      "path": "textures/pbr/far/podium_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "podium_far_opaque_mask",
+      "path": "textures/pbr/far/podium_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "podium"
+    },
+    {
+      "key": "floor_a_near_albedo",
+      "path": "textures/pbr/near/floor_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_normal",
+      "path": "textures/pbr/near/floor_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_roughness",
+      "path": "textures/pbr/near/floor_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_ao",
+      "path": "textures/pbr/near/floor_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_depth",
+      "path": "textures/pbr/near/floor_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_emissive",
+      "path": "textures/pbr/near/floor_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_glass_mask",
+      "path": "textures/pbr/near/floor_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_near_opaque_mask",
+      "path": "textures/pbr/near/floor_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_albedo",
+      "path": "textures/pbr/far/floor_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_normal",
+      "path": "textures/pbr/far/floor_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_roughness",
+      "path": "textures/pbr/far/floor_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_ao",
+      "path": "textures/pbr/far/floor_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_depth",
+      "path": "textures/pbr/far/floor_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_emissive",
+      "path": "textures/pbr/far/floor_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_glass_mask",
+      "path": "textures/pbr/far/floor_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_a_far_opaque_mask",
+      "path": "textures/pbr/far/floor_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "floor_a"
+    },
+    {
+      "key": "floor_b_near_albedo",
+      "path": "textures/pbr/near/floor_alt_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_normal",
+      "path": "textures/pbr/near/floor_alt_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_roughness",
+      "path": "textures/pbr/near/floor_alt_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_ao",
+      "path": "textures/pbr/near/floor_alt_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_depth",
+      "path": "textures/pbr/near/floor_alt_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_emissive",
+      "path": "textures/pbr/near/floor_alt_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_glass_mask",
+      "path": "textures/pbr/near/floor_alt_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_near_opaque_mask",
+      "path": "textures/pbr/near/floor_alt_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_albedo",
+      "path": "textures/pbr/far/floor_alt_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_normal",
+      "path": "textures/pbr/far/floor_alt_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_roughness",
+      "path": "textures/pbr/far/floor_alt_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_ao",
+      "path": "textures/pbr/far/floor_alt_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_depth",
+      "path": "textures/pbr/far/floor_alt_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_emissive",
+      "path": "textures/pbr/far/floor_alt_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_glass_mask",
+      "path": "textures/pbr/far/floor_alt_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "floor_b_far_opaque_mask",
+      "path": "textures/pbr/far/floor_alt_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "floor_b"
+    },
+    {
+      "key": "crown_near_albedo",
+      "path": "textures/pbr/near/crown_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_normal",
+      "path": "textures/pbr/near/crown_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_roughness",
+      "path": "textures/pbr/near/crown_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_ao",
+      "path": "textures/pbr/near/crown_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_depth",
+      "path": "textures/pbr/near/crown_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_emissive",
+      "path": "textures/pbr/near/crown_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_glass_mask",
+      "path": "textures/pbr/near/crown_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_near_opaque_mask",
+      "path": "textures/pbr/near/crown_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_albedo",
+      "path": "textures/pbr/far/crown_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_normal",
+      "path": "textures/pbr/far/crown_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_roughness",
+      "path": "textures/pbr/far/crown_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_ao",
+      "path": "textures/pbr/far/crown_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_depth",
+      "path": "textures/pbr/far/crown_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_emissive",
+      "path": "textures/pbr/far/crown_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_glass_mask",
+      "path": "textures/pbr/far/crown_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "crown_far_opaque_mask",
+      "path": "textures/pbr/far/crown_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "crown"
+    },
+    {
+      "key": "side_near_albedo",
+      "path": "textures/pbr/near/side_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_normal",
+      "path": "textures/pbr/near/side_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_roughness",
+      "path": "textures/pbr/near/side_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_ao",
+      "path": "textures/pbr/near/side_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_depth",
+      "path": "textures/pbr/near/side_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_emissive",
+      "path": "textures/pbr/near/side_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_glass_mask",
+      "path": "textures/pbr/near/side_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_near_opaque_mask",
+      "path": "textures/pbr/near/side_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_albedo",
+      "path": "textures/pbr/far/side_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_normal",
+      "path": "textures/pbr/far/side_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_roughness",
+      "path": "textures/pbr/far/side_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_ao",
+      "path": "textures/pbr/far/side_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_depth",
+      "path": "textures/pbr/far/side_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_emissive",
+      "path": "textures/pbr/far/side_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_glass_mask",
+      "path": "textures/pbr/far/side_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "side"
+    },
+    {
+      "key": "side_far_opaque_mask",
+      "path": "textures/pbr/far/side_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "side"
+    },
+    {
+      "key": "interior_near_albedo",
+      "path": "textures/pbr/near/patient_interior_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_normal",
+      "path": "textures/pbr/near/patient_interior_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_roughness",
+      "path": "textures/pbr/near/patient_interior_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_ao",
+      "path": "textures/pbr/near/patient_interior_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_depth",
+      "path": "textures/pbr/near/patient_interior_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_emissive",
+      "path": "textures/pbr/near/patient_interior_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_glass_mask",
+      "path": "textures/pbr/near/patient_interior_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_near_opaque_mask",
+      "path": "textures/pbr/near/patient_interior_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_albedo",
+      "path": "textures/pbr/far/patient_interior_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_normal",
+      "path": "textures/pbr/far/patient_interior_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_roughness",
+      "path": "textures/pbr/far/patient_interior_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_ao",
+      "path": "textures/pbr/far/patient_interior_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_depth",
+      "path": "textures/pbr/far/patient_interior_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_emissive",
+      "path": "textures/pbr/far/patient_interior_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_glass_mask",
+      "path": "textures/pbr/far/patient_interior_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "interior_far_opaque_mask",
+      "path": "textures/pbr/far/patient_interior_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "interior"
+    },
+    {
+      "key": "atrium_near_albedo",
+      "path": "textures/pbr/near/atrium_interior_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_normal",
+      "path": "textures/pbr/near/atrium_interior_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_roughness",
+      "path": "textures/pbr/near/atrium_interior_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_ao",
+      "path": "textures/pbr/near/atrium_interior_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_depth",
+      "path": "textures/pbr/near/atrium_interior_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_emissive",
+      "path": "textures/pbr/near/atrium_interior_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_glass_mask",
+      "path": "textures/pbr/near/atrium_interior_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_near_opaque_mask",
+      "path": "textures/pbr/near/atrium_interior_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_albedo",
+      "path": "textures/pbr/far/atrium_interior_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_normal",
+      "path": "textures/pbr/far/atrium_interior_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_roughness",
+      "path": "textures/pbr/far/atrium_interior_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_ao",
+      "path": "textures/pbr/far/atrium_interior_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_depth",
+      "path": "textures/pbr/far/atrium_interior_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_emissive",
+      "path": "textures/pbr/far/atrium_interior_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_glass_mask",
+      "path": "textures/pbr/far/atrium_interior_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "atrium"
+    },
+    {
+      "key": "atrium_far_opaque_mask",
+      "path": "textures/pbr/far/atrium_interior_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "atrium"
+    },
+    {
+      "key": "honey_timber_near_albedo",
+      "path": "textures/pbr/near/honey_timber_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_normal",
+      "path": "textures/pbr/near/honey_timber_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_roughness",
+      "path": "textures/pbr/near/honey_timber_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_ao",
+      "path": "textures/pbr/near/honey_timber_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_depth",
+      "path": "textures/pbr/near/honey_timber_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_emissive",
+      "path": "textures/pbr/near/honey_timber_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_glass_mask",
+      "path": "textures/pbr/near/honey_timber_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_near_opaque_mask",
+      "path": "textures/pbr/near/honey_timber_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_albedo",
+      "path": "textures/pbr/far/honey_timber_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_normal",
+      "path": "textures/pbr/far/honey_timber_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_roughness",
+      "path": "textures/pbr/far/honey_timber_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_ao",
+      "path": "textures/pbr/far/honey_timber_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_depth",
+      "path": "textures/pbr/far/honey_timber_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_emissive",
+      "path": "textures/pbr/far/honey_timber_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_glass_mask",
+      "path": "textures/pbr/far/honey_timber_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "honey_timber_far_opaque_mask",
+      "path": "textures/pbr/far/honey_timber_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "honey_timber"
+    },
+    {
+      "key": "glulam_near_albedo",
+      "path": "textures/pbr/near/glulam_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_normal",
+      "path": "textures/pbr/near/glulam_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_roughness",
+      "path": "textures/pbr/near/glulam_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_ao",
+      "path": "textures/pbr/near/glulam_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_depth",
+      "path": "textures/pbr/near/glulam_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_emissive",
+      "path": "textures/pbr/near/glulam_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_glass_mask",
+      "path": "textures/pbr/near/glulam_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_near_opaque_mask",
+      "path": "textures/pbr/near/glulam_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_albedo",
+      "path": "textures/pbr/far/glulam_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_normal",
+      "path": "textures/pbr/far/glulam_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_roughness",
+      "path": "textures/pbr/far/glulam_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_ao",
+      "path": "textures/pbr/far/glulam_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_depth",
+      "path": "textures/pbr/far/glulam_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_emissive",
+      "path": "textures/pbr/far/glulam_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_glass_mask",
+      "path": "textures/pbr/far/glulam_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "glulam"
+    },
+    {
+      "key": "glulam_far_opaque_mask",
+      "path": "textures/pbr/far/glulam_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "glulam"
+    },
+    {
+      "key": "charred_timber_near_albedo",
+      "path": "textures/pbr/near/charred_timber_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_normal",
+      "path": "textures/pbr/near/charred_timber_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_roughness",
+      "path": "textures/pbr/near/charred_timber_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_ao",
+      "path": "textures/pbr/near/charred_timber_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_depth",
+      "path": "textures/pbr/near/charred_timber_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_emissive",
+      "path": "textures/pbr/near/charred_timber_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_glass_mask",
+      "path": "textures/pbr/near/charred_timber_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_near_opaque_mask",
+      "path": "textures/pbr/near/charred_timber_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_albedo",
+      "path": "textures/pbr/far/charred_timber_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_normal",
+      "path": "textures/pbr/far/charred_timber_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_roughness",
+      "path": "textures/pbr/far/charred_timber_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_ao",
+      "path": "textures/pbr/far/charred_timber_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_depth",
+      "path": "textures/pbr/far/charred_timber_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_emissive",
+      "path": "textures/pbr/far/charred_timber_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_glass_mask",
+      "path": "textures/pbr/far/charred_timber_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "charred_timber_far_opaque_mask",
+      "path": "textures/pbr/far/charred_timber_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "charred_timber"
+    },
+    {
+      "key": "concrete_near_albedo",
+      "path": "textures/pbr/near/concrete_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_normal",
+      "path": "textures/pbr/near/concrete_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_roughness",
+      "path": "textures/pbr/near/concrete_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_ao",
+      "path": "textures/pbr/near/concrete_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_depth",
+      "path": "textures/pbr/near/concrete_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_emissive",
+      "path": "textures/pbr/near/concrete_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_glass_mask",
+      "path": "textures/pbr/near/concrete_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_near_opaque_mask",
+      "path": "textures/pbr/near/concrete_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_albedo",
+      "path": "textures/pbr/far/concrete_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_normal",
+      "path": "textures/pbr/far/concrete_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_roughness",
+      "path": "textures/pbr/far/concrete_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_ao",
+      "path": "textures/pbr/far/concrete_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_depth",
+      "path": "textures/pbr/far/concrete_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_emissive",
+      "path": "textures/pbr/far/concrete_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_glass_mask",
+      "path": "textures/pbr/far/concrete_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "concrete_far_opaque_mask",
+      "path": "textures/pbr/far/concrete_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "concrete"
+    },
+    {
+      "key": "living_wall_near_albedo",
+      "path": "textures/pbr/near/living_wall_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_normal",
+      "path": "textures/pbr/near/living_wall_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_roughness",
+      "path": "textures/pbr/near/living_wall_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_ao",
+      "path": "textures/pbr/near/living_wall_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_depth",
+      "path": "textures/pbr/near/living_wall_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_emissive",
+      "path": "textures/pbr/near/living_wall_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_glass_mask",
+      "path": "textures/pbr/near/living_wall_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_near_opaque_mask",
+      "path": "textures/pbr/near/living_wall_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_albedo",
+      "path": "textures/pbr/far/living_wall_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_normal",
+      "path": "textures/pbr/far/living_wall_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_roughness",
+      "path": "textures/pbr/far/living_wall_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_ao",
+      "path": "textures/pbr/far/living_wall_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_depth",
+      "path": "textures/pbr/far/living_wall_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_emissive",
+      "path": "textures/pbr/far/living_wall_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_glass_mask",
+      "path": "textures/pbr/far/living_wall_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "living_wall"
+    },
+    {
+      "key": "living_wall_far_opaque_mask",
+      "path": "textures/pbr/far/living_wall_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "living_wall"
+    },
+    {
+      "key": "green_roof_near_albedo",
+      "path": "textures/pbr/near/green_roof_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_normal",
+      "path": "textures/pbr/near/green_roof_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_roughness",
+      "path": "textures/pbr/near/green_roof_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_ao",
+      "path": "textures/pbr/near/green_roof_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_depth",
+      "path": "textures/pbr/near/green_roof_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_emissive",
+      "path": "textures/pbr/near/green_roof_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_glass_mask",
+      "path": "textures/pbr/near/green_roof_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_near_opaque_mask",
+      "path": "textures/pbr/near/green_roof_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_albedo",
+      "path": "textures/pbr/far/green_roof_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_normal",
+      "path": "textures/pbr/far/green_roof_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_roughness",
+      "path": "textures/pbr/far/green_roof_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_ao",
+      "path": "textures/pbr/far/green_roof_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_depth",
+      "path": "textures/pbr/far/green_roof_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_emissive",
+      "path": "textures/pbr/far/green_roof_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_glass_mask",
+      "path": "textures/pbr/far/green_roof_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "green_roof"
+    },
+    {
+      "key": "green_roof_far_opaque_mask",
+      "path": "textures/pbr/far/green_roof_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "green_roof"
+    },
+    {
+      "key": "solar_metal_near_albedo",
+      "path": "textures/pbr/near/solar_metal_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_normal",
+      "path": "textures/pbr/near/solar_metal_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_roughness",
+      "path": "textures/pbr/near/solar_metal_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_ao",
+      "path": "textures/pbr/near/solar_metal_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_depth",
+      "path": "textures/pbr/near/solar_metal_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_emissive",
+      "path": "textures/pbr/near/solar_metal_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_glass_mask",
+      "path": "textures/pbr/near/solar_metal_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_near_opaque_mask",
+      "path": "textures/pbr/near/solar_metal_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_albedo",
+      "path": "textures/pbr/far/solar_metal_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_normal",
+      "path": "textures/pbr/far/solar_metal_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_roughness",
+      "path": "textures/pbr/far/solar_metal_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_ao",
+      "path": "textures/pbr/far/solar_metal_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_depth",
+      "path": "textures/pbr/far/solar_metal_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_emissive",
+      "path": "textures/pbr/far/solar_metal_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_glass_mask",
+      "path": "textures/pbr/far/solar_metal_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "solar_metal_far_opaque_mask",
+      "path": "textures/pbr/far/solar_metal_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "solar_metal"
+    },
+    {
+      "key": "paving_near_albedo",
+      "path": "textures/pbr/near/paving_albedo.png",
+      "lod": "near",
+      "channel": "albedo",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_normal",
+      "path": "textures/pbr/near/paving_normal.png",
+      "lod": "near",
+      "channel": "normal",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_roughness",
+      "path": "textures/pbr/near/paving_roughness.png",
+      "lod": "near",
+      "channel": "roughness",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_ao",
+      "path": "textures/pbr/near/paving_ao.png",
+      "lod": "near",
+      "channel": "ao",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_depth",
+      "path": "textures/pbr/near/paving_depth.png",
+      "lod": "near",
+      "channel": "depth",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_emissive",
+      "path": "textures/pbr/near/paving_emissive.png",
+      "lod": "near",
+      "channel": "emissive",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_glass_mask",
+      "path": "textures/pbr/near/paving_glass.png",
+      "lod": "near",
+      "channel": "glass_mask",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_near_opaque_mask",
+      "path": "textures/pbr/near/paving_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_albedo",
+      "path": "textures/pbr/far/paving_albedo.png",
+      "lod": "far",
+      "channel": "albedo",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_normal",
+      "path": "textures/pbr/far/paving_normal.png",
+      "lod": "far",
+      "channel": "normal",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_roughness",
+      "path": "textures/pbr/far/paving_roughness.png",
+      "lod": "far",
+      "channel": "roughness",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_ao",
+      "path": "textures/pbr/far/paving_ao.png",
+      "lod": "far",
+      "channel": "ao",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_depth",
+      "path": "textures/pbr/far/paving_depth.png",
+      "lod": "far",
+      "channel": "depth",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_emissive",
+      "path": "textures/pbr/far/paving_emissive.png",
+      "lod": "far",
+      "channel": "emissive",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_glass_mask",
+      "path": "textures/pbr/far/paving_glass.png",
+      "lod": "far",
+      "channel": "glass_mask",
+      "zone": "paving"
+    },
+    {
+      "key": "paving_far_opaque_mask",
+      "path": "textures/pbr/far/paving_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask",
+      "zone": "paving"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/biophilic-healthcare-mass-timber",
+    "model": "gpt-image-2",
+    "style_reference": "elevation.jpg",
+    "goalpost_reference": "/families/biophilic-healthcare-mass-timber/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "The source pack fixes one four-storey U-shaped hospital with two patient wings, an open healing courtyard, an integrated glulam atrium and entry canopy, a separate two-bay ambulance arrival, living-wall strips, meadow roofs, screened plant and a PV canopy.",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "passed": true,
+      "method": "multiscale-linear-delighting-before-pbr-derivation"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "public_atrium_and_entry",
+        "courtyard_ends",
+        "ambulance_service_arrival"
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2,
+        3
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat complete paired patient-room bays and complete clinical floors. Never deform the atrium, public canopy, one patient window, living-wall junction or ambulance door."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "true-scale timber, glulam, charred wood, concrete, living walls, meadow and metal plus physical panes, rooms and structure",
+      "far_usage": "city-scale render-locked archetype material reference"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "courtyard threshold and landscape",
+        "integrated glulam atrium",
+        "public entry canopy",
+        "two-bay ambulance arrival",
+        "corner returns",
+        "crown",
+        "roof",
+        "meadow roof",
+        "screened plant",
+        "photovoltaic canopy"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "Honey timber frames, paired occupied patient windows, planter ledges, living-wall strips, charred base, deep returns and roof flashings continue around both outer and courtyard elevations.",
+      "elevation_coverage": {
+        "front": "two patient wings, integrated atrium, broad timber entry canopy, charred public podium and living-wall junctions",
+        "left": "complete occupied patient bays and planted timber frame",
+        "right": "complete occupied patient bays plus separated emergency return",
+        "rear": "rear clinical bar, exactly two ambulance bays, staff/service arrival and screened mechanical functions",
+        "roof": "meadow roofs, gravel breaks, skylights, atrium roof, two screened penthouses and large photovoltaic canopy"
+      },
+      "variation_policy": "Two to six levels use semantic stack bands. Mild full-envelope scaling is safe; larger drawings repeat complete clinical bars."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/honey_timber_albedo.png",
+        "normal": "textures/pbr/near/honey_timber_normal.png",
+        "roughness": "textures/pbr/near/honey_timber_roughness.png",
+        "ao": "textures/pbr/near/honey_timber_ao.png",
+        "depth": "textures/pbr/near/honey_timber_depth.png",
+        "emissive": "textures/pbr/near/honey_timber_emissive.png",
+        "glass_mask": "textures/pbr/near/honey_timber_glass.png",
+        "opaque_mask": "textures/pbr/near/honey_timber_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/honey_timber_albedo.png",
+        "normal": "textures/pbr/far/honey_timber_normal.png",
+        "roughness": "textures/pbr/far/honey_timber_roughness.png",
+        "ao": "textures/pbr/far/honey_timber_ao.png",
+        "depth": "textures/pbr/far/honey_timber_depth.png",
+        "emissive": "textures/pbr/far/honey_timber_emissive.png",
+        "glass_mask": "textures/pbr/far/honey_timber_glass.png",
+        "opaque_mask": "textures/pbr/far/honey_timber_opaque.png"
+      },
+      "sources": {
+        "archetype_goalpost": "textures/source/archetype-goalpost.png",
+        "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+        "reference_underlay": "textures/source/patient-interior-source-v1.png",
+        "reference_generation": "textures/source/reference-generation.json",
+        "registered_openings": "textures/source/registered-openings.json",
+        "registered_bands": "textures/source/registered-bands.json"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "biophilic_healthcare",
+      "source_variant_id": "healthcare_mass_timber",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "seventy_by_fifty_metre_four_storey_u_shaped_hospital",
+        "two_patient_room_wings_and_rear_clinical_bar",
+        "open_landscaped_healing_courtyard",
+        "integrated_triple_height_glass_and_glulam_atrium",
+        "deep_honey_glulam_public_entry_canopy",
+        "three_rows_of_deep_paired_patient_room_windows",
+        "physical_low_e_glazing_curtains_and_occupied_care_room_depth",
+        "honey_timber_rainscreen_fins_and_clt_slab_edges",
+        "charred_timber_public_and_service_plinth",
+        "living_wall_strips_and_integrated_planter_ledges",
+        "separate_two_bay_ambulance_and_service_arrival",
+        "extensive_meadow_roof_gravel_breaks_and_skylights",
+        "two_screened_mechanical_penthouses",
+        "large_photovoltaic_healing_terrace_canopy"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    }
+  },
+  "massing_graph": {
+    "type": "u_shaped_mass_timber_biophilic_hospital",
+    "silhouette": "two_four_storey_timber_patient_wings_frame_open_courtyard_around_integrated_glass_glulam_atrium_below_pv_canopy",
+    "render_locked": true,
+    "goalpost": "/families/biophilic-healthcare-mass-timber/textures/source/archetype-goalpost.png",
+    "fallback": "complete_patient_bay_clinical_bar_streetwall",
+    "patient_wings": 2,
+    "open_healing_courtyard": true,
+    "integrated_public_atrium": true,
+    "ambulance_bays": 2
+  },
+  "material_budget": {
+    "max_assembled_materials": 26,
+    "rationale": "Custom timber, glulam, charred wood, mineral, living-wall, roof and photovoltaic PBR remain separate from physical patient/atrium glazing, occupied depth, planting and service objects."
+  },
+  "dimensions": {
+    "width_m": 71.2,
+    "depth_m": 51.2,
+    "wing_depth_m": 17.0,
+    "courtyard_width_m": 36.0,
+    "courtyard_depth_m": 35.0,
+    "podium_height_m": 4.8,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "crown_height_m": 0.45,
+    "roof_height_m": 4.2,
+    "total_height_m": 21.45,
+    "native_floors": 4,
+    "min_floors": 2,
+    "max_floors": 6,
+    "default_floors": 4
+  },
+  "native_width_m": 71.2,
+  "native_depth_m": 51.2,
+  "native_floors": 4,
+  "min_floors": 2,
+  "max_floors": 6,
+  "default_floors": 4,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_podium.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 4.8,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 28672,
+      "material_count": 21,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 59026088
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_floor_typical_a.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 40014,
+      "material_count": 16,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52340224
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_floor_typical_b.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 40102,
+      "material_count": 16,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52348024
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_floor_typical_c.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 40102,
+      "material_count": 16,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52348020
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_crown_crown.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 0.45,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 388,
+      "material_count": 5,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 31898724
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "biophilic-healthcare-mass-timber_roof.glb",
+      "module_family": "biophilic-healthcare-mass-timber",
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "height_m": 4.2,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 14220,
+      "material_count": 11,
+      "texture_keys": [
+        "atrium",
+        "charred_timber",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glulam",
+        "green_roof",
+        "honey_timber",
+        "interior",
+        "living_wall",
+        "paving",
+        "podium",
+        "side",
+        "solar_metal"
+      ],
+      "ao_baked": true,
+      "size_bytes": 39035072
+    }
+  ],
+  "assembled": {
+    "filename": "biophilic-healthcare-mass-timber_assembled.glb",
+    "floors": 4,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 21.45,
+    "triangle_count": 163318,
+    "material_count": 23,
+    "stack": [
+      {
+        "role": "podium",
+        "variant_key": "default",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 4.8
+      },
+      {
+        "role": "floor",
+        "variant_key": "typical_a",
+        "level": 1,
+        "z_m": 4.8,
+        "height_m": 4.0
+      },
+      {
+        "role": "floor",
+        "variant_key": "typical_b",
+        "level": 2,
+        "z_m": 8.8,
+        "height_m": 4.0
+      },
+      {
+        "role": "floor",
+        "variant_key": "typical_c",
+        "level": 3,
+        "z_m": 12.8,
+        "height_m": 4.0
+      },
+      {
+        "role": "crown",
+        "variant_key": "crown",
+        "level": 4,
+        "z_m": 16.8,
+        "height_m": 0.45
+      },
+      {
+        "role": "roof",
+        "variant_key": "default",
+        "level": 5,
+        "z_m": 17.25,
+        "height_m": 4.2
+      }
+    ],
+    "footprint_profile": "u_shape",
+    "source_variant_id": "healthcare_mass_timber",
+    "generation_archetype_id": "healthcare_mass_timber",
+    "footprint_target": {
+      "width_m": 71.2,
+      "depth_m": 51.2,
+      "wing_depth_m": 17.0,
+      "courtyard_width_m": 36.0,
+      "courtyard_depth_m": 35.0,
+      "segments": [
+        {
+          "id": "left_patient_wing",
+          "centre_x_m": -26.5,
+          "centre_y_m": 0.0,
+          "length_m": 50.0,
+          "thickness_m": 17.0,
+          "rotation_degrees": 90.0
+        },
+        {
+          "id": "right_patient_wing",
+          "centre_x_m": 26.5,
+          "centre_y_m": 0.0,
+          "length_m": 50.0,
+          "thickness_m": 17.0,
+          "rotation_degrees": 90.0
+        },
+        {
+          "id": "rear_clinical_bar",
+          "centre_x_m": 0.0,
+          "centre_y_m": 17.5,
+          "length_m": 36.0,
+          "thickness_m": 15.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "u_shaped_mass_timber_biophilic_hospital",
+      "patient_wings": 2,
+      "open_healing_courtyard": true,
+      "integrated_public_atrium": true,
+      "ambulance_bays": 2,
+      "occupied_patient_room_rows": 3,
+      "living_wall_strips": 4,
+      "screened_mechanical_penthouses": 2,
+      "photovoltaic_canopies": 1
+    },
+    "texture_keys": [
+      "atrium",
+      "charred_timber",
+      "concrete",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "glulam",
+      "green_roof",
+      "honey_timber",
+      "interior",
+      "living_wall",
+      "paving",
+      "podium",
+      "side",
+      "solar_metal"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "biophilic-healthcare-mass-timber_preview.png",
+  "renders": [
+    "biophilic-healthcare-mass-timber_preview.png",
+    "biophilic-healthcare-mass-timber_street.png",
+    "biophilic-healthcare-mass-timber_front_corner_oblique.png",
+    "biophilic-healthcare-mass-timber_rear_corner_oblique.png",
+    "biophilic-healthcare-mass-timber_aerial.png",
+    "biophilic-healthcare-mass-timber_facade_close.png",
+    "biophilic-healthcare-mass-timber_atrium_close.png",
+    "biophilic-healthcare-mass-timber_patient_window_close.png",
+    "biophilic-healthcare-mass-timber_courtyard.png",
+    "biophilic-healthcare-mass-timber_ambulance_close.png",
+    "biophilic-healthcare-mass-timber_roof_close.png",
+    "biophilic-healthcare-mass-timber_side_close.png",
+    "biophilic-healthcare-mass-timber_context.png",
+    "elevation.jpg"
+  ],
+  "architectural_identity": "A four-storey U-shaped mass-timber hospital frames an open healing courtyard between two deep patient-room wings, joined by an integrated triple-height glulam atrium and entry canopy, with a separate two-bay ambulance arrival below meadow roofs and a photovoltaic terrace canopy.",
+  "material_zones": "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public/service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
+  "glass_profile": "timber_station_neutral_low_e",
+  "source_provenance": {
+    "kind": "catalogue_brief_plus_built_precedent_research_and_original_imagegen_multiview_package",
+    "catalogue_archetype_id": "biophilic_healthcare",
+    "catalogue_variant_id": "healthcare_mass_timber",
+    "regional_variant_alias": "regional_hospital_biophilic_wellness",
+    "goalpost_local_source": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "aerial_reference": "textures/source/aerial-roof-source-v1.png",
+    "rear_reference": "textures/source/rear-service-source-v1.png",
+    "material_reference": "textures/source/material-construction-source-v1.png",
+    "glazing_reference": "textures/source/glazing-occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json",
+    "elevation_source": "/families/biophilic-healthcare-mass-timber/elevation.jpg",
+    "skin_manifest": "textures/skin_manifest.json",
+    "generator": "tools/archetype_compiler/generate_wave10_hospital_family.py",
+    "reference_method": "built-healthcare and mass-timber research, one canonical goalpost, rectified front registration, aerial courtyard/roof proof, rear emergency-service source, dedicated material construction sheet, layered patient/atrium glazing source and finite multiscale comparison"
+  }
+}

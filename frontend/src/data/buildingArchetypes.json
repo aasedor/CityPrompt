@@ -9939,7 +9939,114 @@
         "features": "rooftop garden paths, patient seating areas, rainwater collection",
         "aerialAppearance": "lush green rooftop garden with winding paths and patient seating areas"
       },
-      "thumbnailUrl": "/archetypes/buildings/biophilic_healthcare/hero.png",
+      "footprintCompatibility": {
+        "preferredProfiles": [
+          "u_shape",
+          "courtyard",
+          "rectangle",
+          "l_shape"
+        ],
+        "minimumPreferredProfiles": 3,
+        "recommendedWidth_m": [
+          52,
+          92
+        ],
+        "recommendedDepth_m": [
+          38,
+          72
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          14,
+          25
+        ],
+        "preferredBayMultiple_m": 4.25,
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.78,
+          "scaleMax": 1.28,
+          "maxAxisRatio": 1.24
+        },
+        "profiles": {
+          "u_shape": {
+            "recommendedWidth_m": [
+              52,
+              96
+            ],
+            "recommendedDepth_m": [
+              40,
+              76
+            ],
+            "recommendedFloors": [
+              2,
+              6
+            ],
+            "wingDepth_m": [
+              14,
+              25
+            ],
+            "minimumCourtyard_m": 22,
+            "preferredBayMultiple_m": 4.25
+          },
+          "courtyard": {
+            "recommendedWidth_m": [
+              58,
+              104
+            ],
+            "recommendedDepth_m": [
+              44,
+              82
+            ],
+            "recommendedFloors": [
+              2,
+              6
+            ],
+            "wingDepth_m": [
+              14,
+              25
+            ],
+            "minimumCourtyard_m": 22,
+            "preferredBayMultiple_m": 4.25
+          },
+          "rectangle": {
+            "recommendedWidth_m": [
+              48,
+              94
+            ],
+            "recommendedDepth_m": [
+              34,
+              66
+            ],
+            "recommendedFloors": [
+              2,
+              6
+            ],
+            "preferredBayMultiple_m": 4.25
+          },
+          "l_shape": {
+            "recommendedWidth_m": [
+              52,
+              98
+            ],
+            "recommendedDepth_m": [
+              38,
+              74
+            ],
+            "recommendedFloors": [
+              2,
+              6
+            ],
+            "wingDepth_m": [
+              14,
+              25
+            ],
+            "preferredBayMultiple_m": 4.25
+          }
+        }
+      },
+      "thumbnailUrl": "/archetypes/buildings/biophilic-healthcare-mass-timber/hero.png",
       "variants": [
         {
           "id": "healthcare_eco_tech",
@@ -10004,7 +10111,7 @@
         {
           "id": "healthcare_mass_timber",
           "label": "Mass Timber Modern",
-          "thumbnailUrl": "/archetypes/buildings/biophilic_healthcare/variant_3.png",
+          "thumbnailUrl": "/archetypes/buildings/biophilic-healthcare-mass-timber/hero.png",
           "description": "Contemporary mass timber hospital showcasing exposed cross-laminated timber structure, biophilic wood interiors, and carbon-negative construction.",
           "facadeDetail": {
             "primaryMaterial": "exposed CLT and glulam timber structure, honey-colored",
@@ -34265,7 +34372,7 @@
                 "id": "regional_hospital_biophilic_wellness",
                 "label": "Biophilic Wellness Hospital",
                 "description": "A sustainable wellness-focused hospital expressing a new healthcare philosophy: exposed cross-laminated timber structure, extensive living green walls climbing all four facades, a photovoltaic canopy roof shading upper terraces, and a transparent ground-floor clinic visible from the street. Warm, calm, plant-filled — designed to lower patient stress.",
-                "thumbnailUrl": "/archetypes/buildings/regional-hospital-medical-center/variant_2.png",
+                "thumbnailUrl": "/archetypes/buildings/biophilic-healthcare-mass-timber/hero.png",
                 "color": "#7A9A50",
                 "minFloors": 4,
                 "maxFloors": 6,

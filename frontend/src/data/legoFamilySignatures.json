@@ -525,6 +525,27 @@
                                                 "materialZones":  "honey-toned vertical timber rainscreen; exposed glulam columns and beams; board-formed concrete apparatus frame and stair tower; shou sugi ban service spine; black thermally broken frames; neutral low-e and translucent channel glass; modeled occupied interiors and red apparatus; native meadow roof; photovoltaic metal",
                                                 "glassProfile":  "timber_station_neutral_low_e",
                                                 "elevationUrl":  "/families/modern-fire-station-mass-timber/elevation.jpg"
+                                            },
+                     "biophilic_healthcare":  {
+                                                   "archetypeId":  "biophilic_healthcare",
+                                                   "identity":  "A four-storey U-shaped mass-timber hospital frames an open healing courtyard between two deep patient-room wings, joined by an integrated triple-height glulam atrium and entry canopy, with a separate two-bay ambulance arrival below meadow roofs and a photovoltaic terrace canopy.",
+                                                   "materialZones":  "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public and service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
+                                                   "glassProfile":  "timber_station_neutral_low_e",
+                                                   "elevationUrl":  "/families/biophilic-healthcare-mass-timber/elevation.jpg"
+                                               },
+                     "healthcare_mass_timber":  {
+                                                     "archetypeId":  "healthcare_mass_timber",
+                                                     "identity":  "A four-storey U-shaped mass-timber hospital frames an open healing courtyard between two deep patient-room wings, joined by an integrated triple-height glulam atrium and entry canopy, with a separate two-bay ambulance arrival below meadow roofs and a photovoltaic terrace canopy.",
+                                                     "materialZones":  "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public and service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
+                                                     "glassProfile":  "timber_station_neutral_low_e",
+                                                     "elevationUrl":  "/families/biophilic-healthcare-mass-timber/elevation.jpg"
+                                                 },
+                     "regional_hospital_biophilic_wellness":  {
+                                                                  "archetypeId":  "regional_hospital_biophilic_wellness",
+                                                                  "identity":  "A four-storey U-shaped mass-timber hospital frames an open healing courtyard between two deep patient-room wings, joined by an integrated triple-height glulam atrium and entry canopy, with a separate two-bay ambulance arrival below meadow roofs and a photovoltaic terrace canopy.",
+                                                                  "materialZones":  "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public and service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
+                                                                  "glassProfile":  "timber_station_neutral_low_e",
+                                                                  "elevationUrl":  "/families/biophilic-healthcare-mass-timber/elevation.jpg"
                                             }
                  }
 }
