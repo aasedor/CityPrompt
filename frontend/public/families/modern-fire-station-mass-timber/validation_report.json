@@ -1,0 +1,229 @@
+{
+  "status": "pass",
+  "family": "modern-fire-station-mass-timber",
+  "archetype_id": "modern_fire_station",
+  "reuse_keys": [
+    "modern_fire_station",
+    "fire_mass_timber",
+    "Modern Fire Station",
+    "Mass Timber Fire Station",
+    "Mass Timber Fire Hall",
+    "CLT Fire Hall",
+    "Emergency Services Station"
+  ],
+  "manifest": "modern-fire-station-mass-timber_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "modern-fire-station-mass-timber_podium.glb: 19 materials (many; consider consolidation)",
+    "modern-fire-station-mass-timber_podium.glb: 33.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_floor_typical_a.glb: 27.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_floor_typical_b.glb: 27.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_floor_typical_c.glb: 27.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_crown_crown.glb: 24.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_roof.glb: 28.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-fire-station-mass-timber_assembled.glb: 21 materials (many; consider consolidation)",
+    "modern-fire-station-mass-timber_assembled.glb: 40.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "modern-fire-station-mass-timber_podium.glb",
+      "status": "ok",
+      "triangles": 24676,
+      "extent_m": {
+        "width_x": 40.041,
+        "height_y": 5.53,
+        "depth_z": 36.281
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_FIRE_ApparatusSafetyYellow",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_EngineChrome",
+        "MAT_W10_FIRE_EngineRed",
+        "MAT_W10_FIRE_EngineRubber",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_PaleLinenCurtain",
+        "MAT_W10_FIRE_PhotovoltaicAndBlackMetal",
+        "MAT_W10_FIRE_PhysicalNeutralLowE",
+        "MAT_W10_FIRE_RegisteredApparatusDepth",
+        "MAT_W10_FIRE_RegisteredOccupiedCrewDepth",
+        "MAT_W10_FIRE_ShouSugiBanCharredTimber",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_WarmInteriorLight"
+      ],
+      "size_bytes": 35310036
+    },
+    {
+      "file": "modern-fire-station-mass-timber_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 39020,
+      "extent_m": {
+        "width_x": 40.041,
+        "height_y": 4.93,
+        "depth_z": 35.391
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_DarkNativeGrass",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_PaleLinenCurtain",
+        "MAT_W10_FIRE_PhysicalNeutralLowE",
+        "MAT_W10_FIRE_RegisteredOccupiedCrewDepth",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_WarmInteriorLight"
+      ],
+      "size_bytes": 28606292
+    },
+    {
+      "file": "modern-fire-station-mass-timber_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 38976,
+      "extent_m": {
+        "width_x": 40.041,
+        "height_y": 4.93,
+        "depth_z": 35.391
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_DarkNativeGrass",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_PaleLinenCurtain",
+        "MAT_W10_FIRE_PhysicalNeutralLowE",
+        "MAT_W10_FIRE_RegisteredOccupiedCrewDepth",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_WarmInteriorLight"
+      ],
+      "size_bytes": 28599044
+    },
+    {
+      "file": "modern-fire-station-mass-timber_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 39020,
+      "extent_m": {
+        "width_x": 40.041,
+        "height_y": 4.93,
+        "depth_z": 35.391
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_DarkNativeGrass",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_PaleLinenCurtain",
+        "MAT_W10_FIRE_PhysicalNeutralLowE",
+        "MAT_W10_FIRE_RegisteredOccupiedCrewDepth",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_WarmInteriorLight"
+      ],
+      "size_bytes": 28602936
+    },
+    {
+      "file": "modern-fire-station-mass-timber_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1224,
+      "extent_m": {
+        "width_x": 40.08,
+        "height_y": 0.45,
+        "depth_z": 35.16
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_PhotovoltaicAndBlackMetal",
+        "MAT_W10_FIRE_TranslucentChannelGlass"
+      ],
+      "size_bytes": 25826684
+    },
+    {
+      "file": "modern-fire-station-mass-timber_roof.glb",
+      "status": "ok",
+      "triangles": 9452,
+      "extent_m": {
+        "width_x": 40.0,
+        "height_y": 4.14,
+        "depth_z": 35.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_DarkNativeGrass",
+        "MAT_W10_FIRE_EngineRed",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_LightRoofGravel",
+        "MAT_W10_FIRE_NativeMeadowGreenRoof",
+        "MAT_W10_FIRE_PhotovoltaicAndBlackMetal",
+        "MAT_W10_FIRE_PurpleWildflower",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_YellowWildflower"
+      ],
+      "size_bytes": 29359644
+    },
+    {
+      "file": "modern-fire-station-mass-timber_assembled.glb",
+      "status": "ok",
+      "triangles": 74264,
+      "extent_m": {
+        "width_x": 40.08,
+        "height_y": 13.39,
+        "depth_z": 36.32
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_FIRE_ApparatusSafetyYellow",
+        "MAT_W10_FIRE_BlackThermalBreakFrame",
+        "MAT_W10_FIRE_BoardFormedConcrete",
+        "MAT_W10_FIRE_DarkNativeGrass",
+        "MAT_W10_FIRE_EngineChrome",
+        "MAT_W10_FIRE_EngineRed",
+        "MAT_W10_FIRE_EngineRubber",
+        "MAT_W10_FIRE_ExposedHoneyGlulam",
+        "MAT_W10_FIRE_HoneyVerticalTimberRainscreen",
+        "MAT_W10_FIRE_LightRoofGravel",
+        "MAT_W10_FIRE_NativeMeadowGreenRoof",
+        "MAT_W10_FIRE_PaleLinenCurtain",
+        "MAT_W10_FIRE_PhotovoltaicAndBlackMetal",
+        "MAT_W10_FIRE_PhysicalNeutralLowE",
+        "MAT_W10_FIRE_PurpleWildflower",
+        "MAT_W10_FIRE_RegisteredApparatusDepth",
+        "MAT_W10_FIRE_RegisteredOccupiedCrewDepth",
+        "MAT_W10_FIRE_ShouSugiBanCharredTimber",
+        "MAT_W10_FIRE_TranslucentChannelGlass",
+        "MAT_W10_FIRE_WarmInteriorLight",
+        "MAT_W10_FIRE_YellowWildflower"
+      ],
+      "size_bytes": 42442584,
+      "role": "assembled"
+    }
+  ]
+}

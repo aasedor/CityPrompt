@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "front-elevation-source-v1.png",
+  "method": "Every apparatus door, crew window, public door, service door and channel-glass tower slot is authored as a wall void with modeled jambs, heads, sills, thermally broken frames, mullions and separate physical panes. Apparatus and occupied-dayroom plates sit several metres or at least half a metre behind the glass; the tower contains real stair flights and landings behind translucent channel glazing.",
+  "physical_geometry_required": true
+}

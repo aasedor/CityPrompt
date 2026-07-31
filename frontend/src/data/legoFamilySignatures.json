@@ -511,6 +511,20 @@
                                                                          "materialZones":  "aged red-brown Flemish-bond brick; warm cream limestone quoins, strings, archivolts, sills and dentils; rough meuliere base; natural grey slate; aged zinc; dark-green painted timber; occupied heritage low-e glass",
                                                                          "glassProfile":  "heritage_sash_occupied",
                                                                          "elevationUrl":  "/families/ecole-republicaine-third-republic/elevation.jpg"
-                                                        }
+                                                        },
+                     "modern_fire_station":  {
+                                                  "archetypeId":  "modern_fire_station",
+                                                  "identity":  "A two-storey mass-timber fire station binds exactly three drive-through glazed apparatus bays to an integrated channel-glass stair tower, a recessed occupied glulam crew gallery, a charred service spine and a planted photovoltaic roof.",
+                                                  "materialZones":  "honey-toned vertical timber rainscreen; exposed glulam columns and beams; board-formed concrete apparatus frame and stair tower; shou sugi ban service spine; black thermally broken frames; neutral low-e and translucent channel glass; modeled occupied interiors and red apparatus; native meadow roof; photovoltaic metal",
+                                                  "glassProfile":  "timber_station_neutral_low_e",
+                                                  "elevationUrl":  "/families/modern-fire-station-mass-timber/elevation.jpg"
+                                              },
+                     "fire_mass_timber":  {
+                                                "archetypeId":  "fire_mass_timber",
+                                                "identity":  "A two-storey mass-timber fire station binds exactly three drive-through glazed apparatus bays to an integrated channel-glass stair tower, a recessed occupied glulam crew gallery, a charred service spine and a planted photovoltaic roof.",
+                                                "materialZones":  "honey-toned vertical timber rainscreen; exposed glulam columns and beams; board-formed concrete apparatus frame and stair tower; shou sugi ban service spine; black thermally broken frames; neutral low-e and translucent channel glass; modeled occupied interiors and red apparatus; native meadow roof; photovoltaic metal",
+                                                "glassProfile":  "timber_station_neutral_low_e",
+                                                "elevationUrl":  "/families/modern-fire-station-mass-timber/elevation.jpg"
+                                            }
                  }
 }

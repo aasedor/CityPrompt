@@ -1,0 +1,159 @@
+{
+  "family_id": "modern-fire-station-mass-timber",
+  "source": {
+    "archetype_id": "modern_fire_station",
+    "variant_id": "fire_mass_timber",
+    "generation_archetype_id": "fire_mass_timber",
+    "reuse_keys": [
+      "modern_fire_station",
+      "fire_mass_timber",
+      "Modern Fire Station",
+      "Mass Timber Fire Station",
+      "Mass Timber Fire Hall",
+      "CLT Fire Hall",
+      "Emergency Services Station"
+    ]
+  },
+  "dimensions": {
+    "width_m": 40.0,
+    "depth_m": 35.0,
+    "wing_depth_m": 35.0,
+    "podium_height_m": 4.7,
+    "floor_height_m": 4.1,
+    "setback_height_m": 4.1,
+    "crown_height_m": 0.45,
+    "roof_height_m": 4.1,
+    "total_height_m": 13.35,
+    "native_floors": 2,
+    "min_floors": 1,
+    "max_floors": 3,
+    "default_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A welcoming two-storey mass-timber fire station reads as one civic working building through three transparent drive-through apparatus bays, a honey-toned glulam crew wing, a charred service spine, an inhabited channel-glass training tower and a planted photovoltaic roof.",
+    "material_zones": "warm honey vertical timber rainscreen and exposed glulam; tactile charred shou sugi ban; pale board-formed concrete; black thermally broken frames; physical neutral low-e and translucent channel glass; red apparatus; native meadow roof, gravel breaks and dark photovoltaics",
+    "glass_profile": "timber_station_neutral_low_e",
+    "kits": [
+      "three_drive_through_apparatus_lanes",
+      "three_front_and_three_rear_four_fold_glass_doors",
+      "three_physical_red_engines",
+      "integrated_training_tower",
+      "real_stair_flights_and_landings",
+      "recessed_public_glulam_entry",
+      "occupied_honey_timber_crew_gallery",
+      "charred_service_spine",
+      "board_formed_concrete_piers",
+      "native_meadow_green_roof",
+      "two_photovoltaic_arrays",
+      "rear_decontamination_service"
+    ]
+  },
+  "archetype_aliases": [
+    "modern_fire_station",
+    "fire_mass_timber"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The operational identity is one three-lane apparatus bar with an integrated tower and crew wing. A rectangle preserves the canonical station; L- and U-shaped user drawings turn complete station bars around service/training yards while each primary bar keeps its three unscaled doors, real lane depth and public entrance.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.7,
+      "scaleMax": 1.35,
+      "maxAxisRatio": 1.34
+    },
+    "recommendedWidth_m": [
+      28,
+      58
+    ],
+    "recommendedDepth_m": [
+      25,
+      50
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "wingDepth_m": [
+      24,
+      38
+    ],
+    "preferredBayMultiple_m": 7.5,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          28,
+          58
+        ],
+        "recommendedDepth_m": [
+          25,
+          50
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "preferredBayMultiple_m": 7.5
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          34,
+          74
+        ],
+        "recommendedDepth_m": [
+          30,
+          62
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          24,
+          38
+        ],
+        "preferredBayMultiple_m": 7.5
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          40,
+          84
+        ],
+        "recommendedDepth_m": [
+          34,
+          68
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          24,
+          38
+        ],
+        "minimumCourtyard_m": 16.0,
+        "preferredBayMultiple_m": 7.5
+      }
+    },
+    "notes": [
+      "Keep exactly three apparatus openings on every primary station bar.",
+      "Keep the public entry and integrated training tower together.",
+      "Repeat complete station bars for oversized targets; never stretch one door.",
+      "Preserve real drive-through depth and align front/rear lane doors.",
+      "Keep meadow roof, photovoltaic arrays and tower cap in the roof role."
+    ]
+  },
+  "massing_graph": {
+    "type": "three_lane_mass_timber_fire_station",
+    "silhouette": "horizontal_two_storey_timber_crew_bar_over_three_glazed_bays_with_integrated_left_training_tower_and_meadow_roof",
+    "render_locked": true,
+    "goalpost": "/families/modern-fire-station-mass-timber/textures/source/archetype-goalpost.png",
+    "fallback": "complete_three_lane_station_bar_streetwall",
+    "apparatus_lanes": 3,
+    "drive_through": true,
+    "integrated_training_tower": true
+  }
+}
