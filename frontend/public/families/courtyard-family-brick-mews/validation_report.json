@@ -1,0 +1,184 @@
+{
+  "status": "pass",
+  "family": "courtyard-family-brick-mews",
+  "archetype_id": "courtyard_family_housing",
+  "reuse_keys": [
+    "courtyard_family_housing",
+    "courtyard_family_brick_modern",
+    "Courtyard Housing",
+    "Family Housing",
+    "Modern Brick Mews",
+    "Low-Rise Residential"
+  ],
+  "manifest": "courtyard-family-brick-mews_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "courtyard-family-brick-mews_podium.glb: 27.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "courtyard-family-brick-mews_floor_typical_a.glb: 23.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "courtyard-family-brick-mews_floor_typical_b.glb: 23.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "courtyard-family-brick-mews_floor_typical_c.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "courtyard-family-brick-mews_crown_crown.glb: 16.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "courtyard-family-brick-mews_assembled.glb: 116405 triangles (heavy; consider simplification)",
+    "courtyard-family-brick-mews_assembled.glb: 40.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "courtyard-family-brick-mews_podium.glb",
+      "status": "ok",
+      "triangles": 11329,
+      "extent_m": {
+        "width_x": 28.06,
+        "height_y": 3.25,
+        "depth_z": 7.2
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_DeepCavity",
+        "MAT_W10_MEWS_GoldenBuffBrick",
+        "MAT_W10_MEWS_GreyUnitPaving",
+        "MAT_W10_MEWS_MutedLinenCurtain",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass",
+        "MAT_W10_MEWS_RegisteredOccupiedDepth",
+        "MAT_W10_MEWS_ShadowedBrickSoffit"
+      ],
+      "size_bytes": 28624408
+    },
+    {
+      "file": "courtyard-family-brick-mews_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 14292,
+      "extent_m": {
+        "width_x": 28.06,
+        "height_y": 3.2,
+        "depth_z": 5.96
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_GoldenBuffBrick",
+        "MAT_W10_MEWS_MutedLinenCurtain",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass",
+        "MAT_W10_MEWS_RegisteredOccupiedDepth",
+        "MAT_W10_MEWS_ShadowedBrickSoffit"
+      ],
+      "size_bytes": 24530992
+    },
+    {
+      "file": "courtyard-family-brick-mews_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 14336,
+      "extent_m": {
+        "width_x": 28.06,
+        "height_y": 3.2,
+        "depth_z": 5.96
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_GoldenBuffBrick",
+        "MAT_W10_MEWS_MutedLinenCurtain",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass",
+        "MAT_W10_MEWS_RegisteredOccupiedDepth",
+        "MAT_W10_MEWS_ShadowedBrickSoffit"
+      ],
+      "size_bytes": 24534924
+    },
+    {
+      "file": "courtyard-family-brick-mews_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 11872,
+      "extent_m": {
+        "width_x": 28.06,
+        "height_y": 3.2,
+        "depth_z": 5.69
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_GoldenBuffBrick",
+        "MAT_W10_MEWS_MutedLinenCurtain",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass",
+        "MAT_W10_MEWS_RegisteredOccupiedDepth",
+        "MAT_W10_MEWS_ShadowedBrickSoffit"
+      ],
+      "size_bytes": 24315244
+    },
+    {
+      "file": "courtyard-family-brick-mews_crown_crown.glb",
+      "status": "ok",
+      "triangles": 300,
+      "extent_m": {
+        "width_x": 28.18,
+        "height_y": 0.45,
+        "depth_z": 5.47
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_GoldenBuffBrick"
+      ],
+      "size_bytes": 17368020
+    },
+    {
+      "file": "courtyard-family-brick-mews_roof.glb",
+      "status": "ok",
+      "triangles": 896,
+      "extent_m": {
+        "width_x": 28.46,
+        "height_y": 2.755,
+        "depth_z": 5.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_DarkConcreteRoofTile",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass"
+      ],
+      "size_bytes": 8282080
+    },
+    {
+      "file": "courtyard-family-brick-mews_assembled.glb",
+      "status": "ok",
+      "triangles": 116405,
+      "extent_m": {
+        "width_x": 29.8,
+        "height_y": 12.735,
+        "depth_z": 26.735
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_MEWS_CharcoalMetal",
+        "MAT_W10_MEWS_DarkConcreteRoofTile",
+        "MAT_W10_MEWS_DeepCavity",
+        "MAT_W10_MEWS_GoldenBuffBrick",
+        "MAT_W10_MEWS_GreyUnitPaving",
+        "MAT_W10_MEWS_MutedLinenCurtain",
+        "MAT_W10_MEWS_PhysicalResidentialLowEGlass",
+        "MAT_W10_MEWS_RegisteredOccupiedDepth",
+        "MAT_W10_MEWS_ShadowedBrickSoffit"
+      ],
+      "size_bytes": 42404964,
+      "role": "assembled"
+    }
+  ]
+}

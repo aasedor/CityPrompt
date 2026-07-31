@@ -1609,14 +1609,46 @@
     },
     {
       "id": "courtyard_family_housing",
-    "suggestedWidth_m": 14,
-    "suggestedDepth_m": 14,
+      "footprintCompatibility": {
+        "preferredProfiles": ["courtyard", "u_shape", "rectangle"],
+        "minimumPreferredProfiles": 3,
+        "profileRationale": "A complete four-wing mews is the canonical form, while authored occupied streetwall bars turn corners and repeat as U-shaped or rectangular alternatives without stretching individual windows, arches, balconies, or roof construction.",
+        "recommendedWidth_m": [24, 42],
+        "recommendedDepth_m": [18, 36],
+        "recommendedFloors": [2, 6],
+        "wingDepth_m": [4.6, 7],
+        "preferredBayMultiple_m": 3.5,
+        "minimumCourtyard_m": 8,
+        "profiles": {
+          "courtyard": {
+            "recommendedWidth_m": [24, 42],
+            "recommendedDepth_m": [20, 36],
+            "recommendedFloors": [2, 6],
+            "wingDepth_m": [4.6, 7],
+            "minimumCourtyard_m": 8
+          },
+          "u_shape": {
+            "recommendedWidth_m": [22, 42],
+            "recommendedDepth_m": [16, 36],
+            "recommendedFloors": [2, 6],
+            "wingDepth_m": [4.6, 7],
+            "minimumCourtyard_m": 8
+          },
+          "rectangle": {
+            "recommendedWidth_m": [22, 42],
+            "recommendedDepth_m": [8, 30],
+            "recommendedFloors": [2, 6]
+          }
+        }
+      },
+    "suggestedWidth_m": 28,
+    "suggestedDepth_m": 24,
     "suggestedFloorHeight": 3.2,
-    "minWidth_m": 10,
-    "maxWidth_m": 20,
-    "minDepth_m": 10,
-    "maxDepth_m": 20,
-    "aspectRatio": "1:1",
+    "minWidth_m": 22,
+    "maxWidth_m": 42,
+    "minDepth_m": 16,
+    "maxDepth_m": 36,
+    "aspectRatio": "7:6",
       "shadeId": "#ab8f21",
       "title": "Courtyard Family Housing",
       "aestheticCategory": "contemporary_urban",

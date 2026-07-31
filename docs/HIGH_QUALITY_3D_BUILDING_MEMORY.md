@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-30-screen-gap-and-repair-depth-v105`.
+Current executable memory: `2026-07-30-courtyard-ring-hip-junction-v106`.
 
 ## The quality target
 
@@ -1071,6 +1071,31 @@ The polychrome collegiate family added four rules for resizable hero facades:
   Keep brick faces nearly flush or slightly recessed, build a shadowed mortar
   bed, break the perimeter and courses irregularly, and match the surrounding
   plaster age so the repair reads as construction revealed through stucco.
+
+### Courtyard-ring roof junction + delivery-budget lessons
+
+- Four perpendicular gabled bars do not become one courtyard roof merely by
+  overlapping them or drawing diagonal valley beams. End-cap triangles remain
+  visible as fins and the intersections read as crossed sheds.
+- Stop each straight roof at its corner bay, omit the internal gable end caps,
+  and close the junction with a real four-plane hip whose apex shares the
+  adjoining ridge elevations. Keep the concave inner valley and convex exterior
+  hip as separate construction lines while preserving the open courtyard void.
+- Corner roof planes need the same true-scale tile or seam coordinates as the
+  straight fields. Normalized filler UVs make otherwise correct hips read as
+  smooth dark pyramids.
+- Thousands of narrow reveals, frames, guards and wall strips can retain a
+  visible one-segment construction chamfer. Spending a second bevel segment on
+  every micro-part can exceed the city triangle budget without improving the
+  locked street or aerial silhouette.
+- Blender may defer the evaluated matrix after assigning a quaternion to the
+  last procedural cylinder in a wing. Flush the view-layer dependency graph
+  before composing wing transforms, or that final roof course or truss member
+  can export vertically even when the rendered scene looks correct. Validate
+  final on-disk bounds and the physical radius of gutters at the module origin.
+- Recheck the street corner, aerial roof proof and interior courtyard together
+  after every junction change. A roof correction is not accepted if it caps
+  the open void, exposes a gable fin or removes the through-passage.
 
 ## Updating this memory
 

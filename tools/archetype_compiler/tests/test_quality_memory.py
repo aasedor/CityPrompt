@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-30-screen-gap-and-repair-depth-v105"
+        == "2026-07-30-courtyard-ring-hip-junction-v106"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -113,6 +113,18 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "secondary elevations" in item["symptom"].lower()
         and "enlarged brick mosaics" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "courtyard ring roof" in item["symptom"].lower()
+        and "internal gable end caps" in item["correction"].lower()
+        and "true-scale roof uvs" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "impossible vertical extent" in item["symptom"].lower()
+        and "dependency graph" in item["correction"].lower()
+        and "on-disk glb bounds" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

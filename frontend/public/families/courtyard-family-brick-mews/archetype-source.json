@@ -1,0 +1,19 @@
+{
+  "kind": "catalogue_goalpost_plus_imagegen_multiview_package_and_authored_courtyard_construction",
+  "catalogue_archetype_id": "courtyard_family_housing",
+  "catalogue_variant_id": "courtyard_family_brick_modern",
+  "goalpost": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+  "goalpost_local_source": "textures/source/archetype-goalpost.png",
+  "orthographic_elevation": "textures/source/elevation-source-v1.png",
+  "aerial_reference": "textures/source/aerial-source-v1.png",
+  "courtyard_reference": "textures/source/courtyard-source-v1.png",
+  "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+  "brick_material_source": "textures/source/buff-brick-material-source-v1.png",
+  "reference_generation": "textures/source/reference-generation.json",
+  "registered_openings": "textures/source/registered-openings.json",
+  "registered_bands": "textures/source/registered-bands.json",
+  "elevation_source": "/families/courtyard-family-brick-mews/elevation.jpg",
+  "skin_manifest": "textures/skin_manifest.json",
+  "generator": "tools/archetype_compiler/generate_wave10_courtyard_family.py",
+  "reference_method": "hard catalogue goalpost, rectified public elevation, generated aerial and courtyard construction views, physical cavity schedule, custom true-scale PBR, occupied-depth underlay, and finite street/oblique/aerial/courtyard comparison"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source-v1.png",
+  "method": "Every window, door, storage arch and carriage passage is a physical cavity with modeled brick reveals. The clean buff-brick PBR is applied to construction geometry; registered occupied depth is clipped behind separate low-e panes only.",
+  "physical_geometry_required": true
+}

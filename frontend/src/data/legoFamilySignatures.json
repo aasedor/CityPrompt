@@ -295,7 +295,10 @@
                                                           },
                      "courtyard_family_housing":  {
                                                       "archetypeId":  "courtyard_family_housing",
-                                                      "elevationUrl":  "/families/courtyard-family-housing/elevation.jpg"
+                                                      "identity":  "A three-level golden-buff-brick mews forms four occupied wings around one open paved court, entered through a deep segmental-arched carriage passage beneath aligned soldier courses and a connected dark pitched roof.",
+                                                      "materialZones":  "fine golden-buff running-bond brick; darker brick soldier courses and passage soffits; charcoal powder-coated window frames, Juliet guards, gutters and downpipes; neutral low-e residential glass; muted occupied-room depth; dark grey concrete roof tile; grey unit paving",
+                                                      "glassProfile":  "residential_low_e",
+                                                      "elevationUrl":  "/families/courtyard-family-brick-mews/elevation.jpg"
                                                   },
                      "london_heritage_mansion_portland_stone":  {
                                                                     "archetypeId":  "london_heritage_mansion_portland_stone",
@@ -473,6 +476,13 @@
                                                           "materialZones":  "aged ochre lime stucco; exposed red-clay brick; pale rough limestone; weathered terracotta barrel tiles; dark timber sash; forged black iron; bronze bell",
                                                           "glassProfile":  "villa_recessed_iron_glass",
                                                           "elevationUrl":  "/families/spanish-colonial-villa/elevation.jpg"
+                                                        },
+                     "courtyard_family_brick_modern":  {
+                                                            "archetypeId":  "courtyard_family_brick_modern",
+                                                            "identity":  "A three-level golden-buff-brick mews forms four occupied wings around one open paved court, entered through a deep segmental-arched carriage passage beneath aligned soldier courses and a connected dark pitched roof.",
+                                                            "materialZones":  "fine golden-buff running-bond brick; darker brick soldier courses and passage soffits; charcoal powder-coated window frames, Juliet guards, gutters and downpipes; neutral low-e residential glass; muted occupied-room depth; dark grey concrete roof tile; grey unit paving",
+                                                            "glassProfile":  "residential_low_e",
+                                                            "elevationUrl":  "/families/courtyard-family-brick-mews/elevation.jpg"
                                                         }
                  }
 }

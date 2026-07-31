@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-30-screen-gap-and-repair-depth-v105",
+  "memory_version": "2026-07-30-courtyard-ring-hip-junction-v106",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -789,6 +789,16 @@
       "symptom": "A detailed detached-house screen fuses into a pale solid wall, or exposed historic masonry reads as brick stickers applied over clean stucco",
       "cause": "Fine battens were sized without proving screen-space gaps and recessed occupation in the locked corner camera, while regular brick grids were projected proud of the finish without a mortar recess or chipped plaster boundary.",
       "correction": "Calibrate batten width, spacing, projection and a meaningful air gap against the corner view; recess glass and varied dark occupied rooms behind it. Treat exposed masonry as loss of finish: keep brick nearly flush or recessed over a shadowed mortar bed and author ragged, irregular plaster edges."
+    },
+    {
+      "symptom": "A courtyard ring roof has the right four strips in plan but reads as crossed gables, triangular fins or smooth pyramids at its corners",
+      "cause": "Independent gabled strips retained their end-cap faces inside perpendicular intersections, while diagonal beams or unregistered corner fillers were mistaken for one connected roof topology.",
+      "correction": "Stop each straight roof at the corner bay, remove internal gable end caps and bridge every junction with a four-plane hip sharing the strip ridge and eave elevations. Model the inner valley and exterior hip lines separately, apply true-scale roof UVs to the corner planes, and prove the uninterrupted open void from street-corner and aerial cameras."
+    },
+    {
+      "symptom": "A procedural roof or truss renders correctly but the exported GLB reports an impossible vertical extent equal to one long beam length",
+      "cause": "The final generated cylinder received a quaternion and was immediately composed into a rotated wing through its still-stale matrix_world; creating the next object had incidentally flushed every earlier member.",
+      "correction": "Flush Blender's view-layer dependency graph after assigning procedural member quaternions and before composing parent or wing transforms. Apply the intended origin offset to physical gutters and caps, then validate the final on-disk GLB bounds rather than trusting the Blender render."
     }
   ]
 }

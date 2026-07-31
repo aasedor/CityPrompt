@@ -1,0 +1,152 @@
+{
+  "family_id": "courtyard-family-brick-mews",
+  "source": {
+    "archetype_id": "courtyard_family_housing",
+    "variant_id": "courtyard_family_brick_modern",
+    "generation_archetype_id": "courtyard_family_brick_modern",
+    "reuse_keys": [
+      "courtyard_family_housing",
+      "courtyard_family_brick_modern",
+      "Courtyard Housing",
+      "Family Housing",
+      "Modern Brick Mews",
+      "Low-Rise Residential"
+    ]
+  },
+  "dimensions": {
+    "width_m": 28.0,
+    "depth_m": 24.0,
+    "wing_depth_m": 5.0,
+    "courtyard_width_m": 18.0,
+    "courtyard_depth_m": 14.0,
+    "podium_height_m": 3.2,
+    "floor_height_m": 3.2,
+    "setback_height_m": 3.2,
+    "roof_height_m": 2.75,
+    "crown_height_m": 0.45,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "A three-level golden-buff-brick mews forms four occupied wings around one open paved court, entered through a deep brick carriage passage within four grouped arches and detailed by room-scale black windows, Juliet guards, aligned soldier courses, bicycle recesses, and a connected dark pitched-tile roof ring.",
+    "material_zones": "fine golden-buff running-bond brick and pale mortar; darker soldier courses and passage soffits; charcoal powder-coated window frames, Juliet guards, gutters and downpipes; neutral residential low-e glass; muted occupied-room depth; dark grey concrete roof tile; grey unit paving",
+    "glass_profile": "residential_low_e",
+    "kits": [
+      "four_wing_open_courtyard",
+      "deep_through_carriage_passage",
+      "grouped_ground_arches",
+      "integrated_bicycle_storage",
+      "room_scale_black_windows",
+      "black_steel_juliet_balconies",
+      "soldier_course_datums",
+      "connected_pitched_roof_ring"
+    ]
+  },
+  "archetype_aliases": [
+    "courtyard_family_housing",
+    "courtyard_family_brick_modern"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "courtyard",
+      "u_shape",
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The canonical family is a four-wing open court, while each LEGO unit is one occupied five-metre-deep bar. Whole bars turn corners and repeat along long axes, preserving room-scale windows, arches, soldier courses and roof pitch as user drawings vary.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.84,
+      "scaleMax": 1.16,
+      "maxAxisRatio": 1.15
+    },
+    "recommendedWidth_m": [
+      24,
+      42
+    ],
+    "recommendedDepth_m": [
+      18,
+      36
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "wingDepth_m": [
+      4.6,
+      7.0
+    ],
+    "preferredBayMultiple_m": 3.5,
+    "minimumCourtyard_m": 8.0,
+    "profiles": {
+      "courtyard": {
+        "recommendedWidth_m": [
+          24,
+          42
+        ],
+        "recommendedDepth_m": [
+          20,
+          36
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          4.6,
+          7.0
+        ],
+        "minimumCourtyard_m": 8.0
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          22,
+          42
+        ],
+        "recommendedDepth_m": [
+          16,
+          36
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "wingDepth_m": [
+          4.6,
+          7.0
+        ],
+        "minimumCourtyard_m": 8.0
+      },
+      "rectangle": {
+        "recommendedWidth_m": [
+          22,
+          42
+        ],
+        "recommendedDepth_m": [
+          8,
+          30
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ]
+      }
+    },
+    "notes": [
+      "Keep the public through-passage and grouped arches on the entrance bar.",
+      "Keep the courtyard open through podium, floor, crown, and roof roles.",
+      "Repeat whole 3.5 metre residential bays; never stretch individual windows.",
+      "Use the family-shaped streetwall repeat for oversized targets."
+    ]
+  },
+  "massing_graph": {
+    "type": "open_courtyard_perimeter",
+    "silhouette": "three_level_buff_brick_ring_beneath_connected_pitched_roofs",
+    "render_locked": true,
+    "goalpost": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+    "fallback": "family_shaped_modular_streetwall",
+    "court_width_m": 18.0,
+    "court_depth_m": 14.0,
+    "roof_void_preserved": true
+  }
+}
