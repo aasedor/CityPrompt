@@ -36788,12 +36788,60 @@
         "features": "rooftop HVAC units on the store, canopy-edge lighting, branded fascia",
         "aerialAppearance": "a large light rectangular canopy roof over pump-island rows beside a smaller flat store roof, paved apron around"
       },
-      "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_0.png",
+      "footprintCompatibility": {
+        "preferredProfiles": [
+          "rectangle"
+        ],
+        "minimumPreferredProfiles": 1,
+        "profileRationale": "The store, six-column canopy, exactly three pump islands and roadside pylon operate as one fixed site. Mildly imperfect hand-drawn rectangles scale cleanly; larger sites repeat a complete station rather than stretching pump clearances.",
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.78,
+          "scaleMax": 1.22,
+          "maxAxisRatio": 1.2
+        },
+        "preferredBayMultiple_m": 4.0,
+        "recommendedWidth_m": [
+          27.3,
+          42.7
+        ],
+        "recommendedDepth_m": [
+          23.4,
+          36.6
+        ],
+        "recommendedFloors": [
+          1,
+          1
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.2,
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [
+              27.3,
+              42.7
+            ],
+            "recommendedDepth_m": [
+              23.4,
+              36.6
+            ],
+            "recommendedFloors": [
+              1,
+              1
+            ],
+            "scaleMin": 0.78,
+            "scaleMax": 1.22,
+            "maxAxisRatio": 1.2,
+            "preferredBayMultiple_m": 4.0
+          }
+        }
+      },
+      "thumbnailUrl": "/archetypes/buildings/prairie-modern-fuel-bar/hero.png",
       "variants": [
         {
           "id": "gas_modern_fuel_bar",
           "label": "Modern Fuel Bar",
-          "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_0.png",
+          "thumbnailUrl": "/archetypes/buildings/prairie-modern-fuel-bar/hero.png",
           "description": "A contemporary fuel bar with a large bright-branded steel canopy over four to six pump islands, a glassy convenience store with a small QSR counter inside, LED price pylon, and a clean paved forecourt. The crisp current look of a Petro-Canada / Esso / Co-op style station.",
           "facadeDetail": {
             "primaryMaterial": "white composite metal panel store with a bold colour fascia band",

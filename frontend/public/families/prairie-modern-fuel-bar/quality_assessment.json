@@ -1,0 +1,116 @@
+{
+  "schema": "high-quality-building-assessment@1",
+  "memory_version": "2026-07-30-reference-image-recipe-v107",
+  "archetype_id": "rural_gas_station",
+  "family": "prairie-modern-fuel-bar",
+  "status": "pass",
+  "high_quality_ready": true,
+  "hard_failures": [],
+  "review_findings": [],
+  "gates": {
+    "hard": [
+      {
+        "id": "validation_report_not_pass",
+        "passed": true,
+        "detail": "validation status is 'pass'"
+      },
+      {
+        "id": "missing_assembled_glb",
+        "passed": true,
+        "detail": "assembled filename is present"
+      },
+      {
+        "id": "missing_fixed_semantic_module",
+        "passed": true,
+        "detail": "3 fixed semantic modules"
+      },
+      {
+        "id": "missing_repeatable_middle_module",
+        "passed": true,
+        "detail": "3 repeatable middle modules"
+      },
+      {
+        "id": "missing_footprint_compatibility",
+        "passed": true,
+        "detail": "1 preferred footprint profiles"
+      },
+      {
+        "id": "missing_required_render",
+        "passed": true,
+        "detail": "all required renders declared"
+      }
+    ],
+    "review": [
+      {
+        "id": "fewer_than_three_middle_variants",
+        "passed": true,
+        "detail": "3 middle variants; target is 3"
+      },
+      {
+        "id": "missing_full_pbr_channels",
+        "passed": true,
+        "detail": "full PBR channel set declared"
+      },
+      {
+        "id": "albedo_not_shadow_neutral",
+        "passed": true,
+        "detail": "shadow-neutral albedo declared"
+      },
+      {
+        "id": "generic_or_unregistered_skin",
+        "passed": true,
+        "detail": "archetype-specific source registered to 5 elevation(s) and 15 semantic surface(s); depth binding shader_bump"
+      },
+      {
+        "id": "near_atlas_below_2048",
+        "passed": true,
+        "detail": "near atlas width 2048px; minimum 2048px"
+      },
+      {
+        "id": "far_atlas_above_1024",
+        "passed": true,
+        "detail": "far atlas width 1024px; maximum 1024px"
+      },
+      {
+        "id": "missing_fixed_assembly_contract",
+        "passed": true,
+        "detail": "fixed entrance, corner, crown and roof declared"
+      },
+      {
+        "id": "fewer_than_three_preferred_footprint_profiles",
+        "passed": true,
+        "detail": "1 preferred profiles; target is 1; exception rationale: The store, six-column canopy, exactly three pump islands and roadside pylon operate as one fixed site. Mildly imperfect hand-drawn rectangles scale cleanly; larger sites repeat a complete station rather than stretching pump clearances."
+      },
+      {
+        "id": "missing_or_unsafe_fixed_landmark_scale_band",
+        "passed": true,
+        "detail": "scale 0.78-1.22; maximum independent-axis ratio 1.20"
+      },
+      {
+        "id": "missing_or_invalid_pbr_assets",
+        "passed": true,
+        "detail": "all declared near/far PBR atlases, masks, source, and skin manifest resolve on disk"
+      },
+      {
+        "id": "missing_variant_alias_contract",
+        "passed": true,
+        "detail": "parent and selected variant aliases declared"
+      },
+      {
+        "id": "missing_side_elevation_wrap",
+        "passed": true,
+        "detail": "The occupied front curtain wall turns into buff-brick end piers and a charcoal micro-ribbed service envelope with real doors, grilles, utilities, propane cage and roof drainage."
+      },
+      {
+        "id": "material_count_warning",
+        "passed": true,
+        "detail": "24 assembled materials; explicit reviewed ceiling 26: Brick, charcoal metal, white canopy aluminium, orange band, timber soffit, concrete, physical glazing, occupied depth, pump body, display glass, identity powder coat, stainless protection and site markings remain separate because their real material response is the identity."
+      },
+      {
+        "id": "city_triangle_budget",
+        "passed": true,
+        "detail": "66048 assembled triangles; budget 12000-180000"
+      }
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "family_id": "prairie-modern-fuel-bar",
+  "source": {
+    "archetype_id": "rural_gas_station",
+    "variant_id": "gas_modern_fuel_bar",
+    "generation_archetype_id": "gas_modern_fuel_bar",
+    "reuse_keys": [
+      "rural_gas_station",
+      "gas_modern_fuel_bar",
+      "modern_fuel_bar",
+      "prairie_fuel_bar",
+      "gas station",
+      "fuel station",
+      "convenience store",
+      "roadside commercial"
+    ]
+  },
+  "dimensions": {
+    "width_m": 35.0,
+    "depth_m": 30.0,
+    "podium_height_m": 0.45,
+    "floor_height_m": 4.05,
+    "setback_height_m": 4.05,
+    "roof_height_m": 0.6,
+    "crown_height_m": 1.0,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 1
+  },
+  "architectural_signature": {
+    "identity": "A thin white-and-burnt-orange six-column canopy shelters exactly three physical pump islands in front of an occupied buff-brick, charcoal-metal and honey-soffit prairie convenience store.",
+    "material_zones": "warm buff modular brick and pale honed concrete plinth; charcoal micro-ribbed metal and black thermal-break frames; satin white canopy aluminium with one burnt-orange band; honey linear soffit; physical neutral low-E storefront; stainless pump protection; broom-finished forecourt and dark roof membrane",
+    "glass_profile": "low_iron_clear",
+    "kits": [
+      "fixed_landmark",
+      "six_column_canopy",
+      "three_physical_pump_islands",
+      "occupied_retail_storefront",
+      "flexible_fallback_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "rural_gas_station",
+    "gas_modern_fuel_bar",
+    "modern_fuel_bar",
+    "prairie_fuel_bar"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The store, six-column canopy, exactly three pump islands and roadside pylon operate as one fixed site. Mildly imperfect hand-drawn rectangles scale cleanly; larger sites repeat a complete station rather than stretching pump clearances.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.22,
+      "maxAxisRatio": 1.2
+    },
+    "preferredBayMultiple_m": 4.0,
+    "recommendedWidth_m": [
+      27.3,
+      42.7
+    ],
+    "recommendedDepth_m": [
+      23.4,
+      36.6
+    ],
+    "recommendedFloors": [
+      1,
+      1
+    ],
+    "scaleMin": 0.78,
+    "scaleMax": 1.22,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          27.3,
+          42.7
+        ],
+        "recommendedDepth_m": [
+          23.4,
+          36.6
+        ],
+        "recommendedFloors": [
+          1,
+          1
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 4.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "low_store_and_broad_detached_flat_canopy",
+    "canopy_structural_columns": 6,
+    "pump_islands": 3,
+    "double_sided_pump_dispensers": 3,
+    "occupied_storefront_bays": 7,
+    "automatic_entry_door_leaves": 2,
+    "roadside_price_pylons": 1,
+    "rooftop_hvac_units": 2,
+    "propane_cages": 1
+  }
+}

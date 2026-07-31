@@ -1,0 +1,194 @@
+{
+  "status": "pass",
+  "family": "prairie-modern-fuel-bar",
+  "archetype_id": "rural_gas_station",
+  "reuse_keys": [
+    "rural_gas_station",
+    "gas_modern_fuel_bar",
+    "modern_fuel_bar",
+    "prairie_fuel_bar",
+    "gas station",
+    "fuel station",
+    "convenience store",
+    "roadside commercial"
+  ],
+  "manifest": "prairie-modern-fuel-bar_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "prairie-modern-fuel-bar_floor_typical_a.glb: 28.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-modern-fuel-bar_floor_typical_b.glb: 28.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-modern-fuel-bar_floor_typical_c.glb: 28.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-modern-fuel-bar_crown_crown.glb: 11.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-modern-fuel-bar_assembled.glb: 24 materials (many; consider consolidation)",
+    "prairie-modern-fuel-bar_assembled.glb: 46.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "prairie-modern-fuel-bar_podium.glb",
+      "status": "ok",
+      "triangles": 480,
+      "extent_m": {
+        "width_x": 35.0,
+        "height_y": 0.45,
+        "depth_z": 30.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_FUELBAR_BroomFinishForecourt"
+      ],
+      "size_bytes": 8072092
+    },
+    {
+      "file": "prairie-modern-fuel-bar_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 2028,
+      "extent_m": {
+        "width_x": 24.0,
+        "height_y": 5.11,
+        "depth_z": 14.515
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_FUELBAR_BlackThermalBreakAndTrim",
+        "MAT_W10_FUELBAR_BroomFinishForecourt",
+        "MAT_W10_FUELBAR_BuffModularBrick",
+        "MAT_W10_FUELBAR_CharcoalMicroRibMetal",
+        "MAT_W10_FUELBAR_DarkRoofMembrane",
+        "MAT_W10_FUELBAR_HoneyLinearSoffit",
+        "MAT_W10_FUELBAR_PhysicalLowEStorefront"
+      ],
+      "size_bytes": 30171296
+    },
+    {
+      "file": "prairie-modern-fuel-bar_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 2052,
+      "extent_m": {
+        "width_x": 24.0,
+        "height_y": 5.11,
+        "depth_z": 14.515
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_FUELBAR_BlackThermalBreakAndTrim",
+        "MAT_W10_FUELBAR_BroomFinishForecourt",
+        "MAT_W10_FUELBAR_BuffModularBrick",
+        "MAT_W10_FUELBAR_CharcoalMicroRibMetal",
+        "MAT_W10_FUELBAR_DarkRoofMembrane",
+        "MAT_W10_FUELBAR_HoneyLinearSoffit",
+        "MAT_W10_FUELBAR_PhysicalLowEStorefront"
+      ],
+      "size_bytes": 30174772
+    },
+    {
+      "file": "prairie-modern-fuel-bar_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 2028,
+      "extent_m": {
+        "width_x": 24.0,
+        "height_y": 5.11,
+        "depth_z": 14.515
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_FUELBAR_BlackThermalBreakAndTrim",
+        "MAT_W10_FUELBAR_BroomFinishForecourt",
+        "MAT_W10_FUELBAR_BuffModularBrick",
+        "MAT_W10_FUELBAR_CharcoalMicroRibMetal",
+        "MAT_W10_FUELBAR_DarkRoofMembrane",
+        "MAT_W10_FUELBAR_HoneyLinearSoffit",
+        "MAT_W10_FUELBAR_PhysicalLowEStorefront"
+      ],
+      "size_bytes": 30171344
+    },
+    {
+      "file": "prairie-modern-fuel-bar_crown_crown.glb",
+      "status": "ok",
+      "triangles": 492,
+      "extent_m": {
+        "width_x": 28.02,
+        "height_y": 1.0,
+        "depth_z": 27.205
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_FUELBAR_BurntOrangeIdentity",
+        "MAT_W10_FUELBAR_CharcoalMicroRibMetal",
+        "MAT_W10_FUELBAR_HoneyLinearSoffit",
+        "MAT_W10_FUELBAR_WhiteSatinCanopyAluminium"
+      ],
+      "size_bytes": 11837836
+    },
+    {
+      "file": "prairie-modern-fuel-bar_roof.glb",
+      "status": "ok",
+      "triangles": 216,
+      "extent_m": {
+        "width_x": 28.0,
+        "height_y": 0.355,
+        "depth_z": 27.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_FUELBAR_DarkRoofMembrane",
+        "MAT_W10_FUELBAR_WhiteSatinCanopyAluminium"
+      ],
+      "size_bytes": 4492416
+    },
+    {
+      "file": "prairie-modern-fuel-bar_assembled.glb",
+      "status": "ok",
+      "triangles": 67456,
+      "extent_m": {
+        "width_x": 35.0,
+        "height_y": 9.48,
+        "depth_z": 30.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_FUELBAR_BlackThermalBreakAndTrim",
+        "MAT_W10_FUELBAR_BroomFinishForecourt",
+        "MAT_W10_FUELBAR_BuffModularBrick",
+        "MAT_W10_FUELBAR_BurntOrangeIdentity",
+        "MAT_W10_FUELBAR_CharcoalMicroRibMetal",
+        "MAT_W10_FUELBAR_CoolInteriorLight",
+        "MAT_W10_FUELBAR_CoolerCabinetDepth",
+        "MAT_W10_FUELBAR_DarkRoofMembrane",
+        "MAT_W10_FUELBAR_GreenNozzle",
+        "MAT_W10_FUELBAR_HoneyLinearSoffit",
+        "MAT_W10_FUELBAR_OccupiedStoreDepth",
+        "MAT_W10_FUELBAR_PavementMarking",
+        "MAT_W10_FUELBAR_PhysicalLowEStorefront",
+        "MAT_W10_FUELBAR_ProductCool",
+        "MAT_W10_FUELBAR_ProductWarm",
+        "MAT_W10_FUELBAR_PropaneSilver",
+        "MAT_W10_FUELBAR_PumpBurntOrangePowderCoat",
+        "MAT_W10_FUELBAR_PumpDisplayGlass",
+        "MAT_W10_FUELBAR_PumpPowderCoat",
+        "MAT_W10_FUELBAR_RedNozzle",
+        "MAT_W10_FUELBAR_StainlessProtection",
+        "MAT_W10_FUELBAR_WarmLED",
+        "MAT_W10_FUELBAR_WarmOccupiedStore",
+        "MAT_W10_FUELBAR_WhiteSatinCanopyAluminium"
+      ],
+      "size_bytes": 49186672,
+      "role": "assembled"
+    }
+  ]
+}

@@ -574,6 +574,34 @@
                                                    "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
                                                    "glassProfile": "aquatic_low_iron_pool_clear",
                                                    "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
-                                               }
+                                               },
+                     "rural_gas_station": {
+                                               "archetypeId": "rural_gas_station",
+                                               "identity": "A thin satin-white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three detailed double-sided pump islands, in front of an occupied buff-brick and charcoal prairie convenience store with a honey soffit and separate blank roadside pylon.",
+                                               "materialZones": "warm buff modular brick; charcoal micro-ribbed metal and black thermal-break frames; satin-white folded canopy aluminium with one burnt-orange identity band; honey linear-timber soffit; physical neutral low-e glass and modeled occupied retail depth; clean powder-coated dispensers with inset display glass; stainless protection; broom-finished concrete and dark roof membrane",
+                                               "glassProfile": "low_iron_clear",
+                                               "elevationUrl": "/families/prairie-modern-fuel-bar/elevation.jpg"
+                                           },
+                     "gas_modern_fuel_bar": {
+                                                   "archetypeId": "gas_modern_fuel_bar",
+                                                   "identity": "A thin satin-white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three detailed double-sided pump islands, in front of an occupied buff-brick and charcoal prairie convenience store with a honey soffit and separate blank roadside pylon.",
+                                                   "materialZones": "warm buff modular brick; charcoal micro-ribbed metal and black thermal-break frames; satin-white folded canopy aluminium with one burnt-orange identity band; honey linear-timber soffit; physical neutral low-e glass and modeled occupied retail depth; clean powder-coated dispensers with inset display glass; stainless protection; broom-finished concrete and dark roof membrane",
+                                                   "glassProfile": "low_iron_clear",
+                                                   "elevationUrl": "/families/prairie-modern-fuel-bar/elevation.jpg"
+                                               },
+                     "modern_fuel_bar": {
+                                             "archetypeId": "modern_fuel_bar",
+                                             "identity": "A thin satin-white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three detailed double-sided pump islands, in front of an occupied buff-brick and charcoal prairie convenience store with a honey soffit and separate blank roadside pylon.",
+                                             "materialZones": "warm buff modular brick; charcoal micro-ribbed metal and black thermal-break frames; satin-white folded canopy aluminium with one burnt-orange identity band; honey linear-timber soffit; physical neutral low-e glass and modeled occupied retail depth; clean powder-coated dispensers with inset display glass; stainless protection; broom-finished concrete and dark roof membrane",
+                                             "glassProfile": "low_iron_clear",
+                                             "elevationUrl": "/families/prairie-modern-fuel-bar/elevation.jpg"
+                                         },
+                     "prairie_fuel_bar": {
+                                              "archetypeId": "prairie_fuel_bar",
+                                              "identity": "A thin satin-white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three detailed double-sided pump islands, in front of an occupied buff-brick and charcoal prairie convenience store with a honey soffit and separate blank roadside pylon.",
+                                              "materialZones": "warm buff modular brick; charcoal micro-ribbed metal and black thermal-break frames; satin-white folded canopy aluminium with one burnt-orange identity band; honey linear-timber soffit; physical neutral low-e glass and modeled occupied retail depth; clean powder-coated dispensers with inset display glass; stainless protection; broom-finished concrete and dark roof membrane",
+                                              "glassProfile": "low_iron_clear",
+                                              "elevationUrl": "/families/prairie-modern-fuel-bar/elevation.jpg"
+                                          }
                  }
 }

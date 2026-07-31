@@ -1,0 +1,122 @@
+{
+  "schema": "reference-generation-provenance@2",
+  "family": "prairie-modern-fuel-bar",
+  "archetype_id": "rural_gas_station",
+  "variant_id": "gas_modern_fuel_bar",
+  "variant_aliases": [
+    "modern_fuel_bar",
+    "prairie_fuel_bar"
+  ],
+  "status": "family-complete",
+  "generated_at": "2026-07-31T00:00:00Z",
+  "method": "fuel-retail precedent research, reference-locked multi-view ImageGen design-source pack, clean construction/material plates, and deterministic metric Blender geometry with physically modeled dispensers and occupied glazing",
+  "binding_identity": "A thin white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three double-sided pump islands, in front of an occupied buff-brick and charcoal convenience store with a honey soffit and a separate blank roadside pylon.",
+  "design_lock": {
+    "native_width_m": 35.0,
+    "native_depth_m": 30.0,
+    "native_floors": 1,
+    "maximum_height_m": 9.5,
+    "identity": "A contemporary prairie fuel bar whose broad, thin six-column canopy and three detailed pump islands remain visually distinct from the low occupied convenience store behind.",
+    "non_negotiable_features": [
+      "The complete 35 m by 30 m forecourt, store, canopy, pylon and service zone are one fixed-landmark assembly.",
+      "The 28 m by 14 m canopy is thin, satin white, carries one burnt-orange band and exposes a honey linear soffit.",
+      "Exactly six slender charcoal structural columns support the canopy.",
+      "Exactly three separate raised islands each carry one double-sided dispenser with physical screens, readers, hoses, nozzles, bollards and waste equipment.",
+      "The 24 m-wide store has buff-brick bookends, a charcoal parapet, a recessed honey soffit and a full occupied low-E storefront.",
+      "The roadside pylon is physically separate, blank and unbranded.",
+      "The service side includes propane storage, screened refuse, utilities and exactly two rooftop HVAC units."
+    ],
+    "lego_contract": {
+      "delivery": "fixed-landmark assembled GLB plus a podium/floor/crown/roof fallback kit",
+      "native_envelope_m": [
+        35.0,
+        30.0,
+        9.5
+      ],
+      "fixed_landmark_scale_band": {
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.2
+      },
+      "preferred_bay_multiple_m": 4.0,
+      "preferred_profiles": [
+        "rectangle"
+      ],
+      "sizing_intent": "Imperfect hand-drawn rectangles inside the scale band preserve the complete station; oversized sites repeat complete fuel-bar sites along the long axis instead of returning family_incompatible."
+    }
+  },
+  "research": [
+    {
+      "title": "The Evolution of Gas Stations: From Roadside Stops to Architectural Landmarks",
+      "url": "https://www.archdaily.com/1028278/the-evolution-of-gas-stations-from-roadside-stops-to-architectural-landmarks",
+      "role": "Treat the canopy as both the functional shelter and the primary architectural identity."
+    },
+    {
+      "title": "Renovation of No.1 Sinopec Gas Station",
+      "url": "https://www.archdaily.com/957458/renovation-of-n-sinopec-gas-station-tjad-original-design-studio",
+      "role": "Keep circulation legible and make the convenience-store interior visibly transparent."
+    },
+    {
+      "title": "Retail Fuel and Automotive Design Services",
+      "url": "https://ctmdesign.ca/retail-fuel-and-automotive/",
+      "role": "Coordinate canopy columns, pump islands, store merchandising and site equipment as one credible system."
+    },
+    {
+      "title": "Palisades Shell",
+      "url": "https://ctmdesign.ca/work/palisades-shell/",
+      "role": "Use a realistic Canadian retail-fuel programme with weather canopy and convenience store."
+    },
+    {
+      "title": "Gas Station and Convenience Store Design Guidelines",
+      "url": "https://ww2.scottsdaleaz.gov/Assets/ScottsdaleAZ/Design/Gas%2BStation%2Band%2BConvenience%2BStore%2BDesign%2BGuidelines.pdf",
+      "role": "Resolve canopy, pump islands, site edges, store and ancillary service elements as architecture rather than loose props."
+    },
+    {
+      "title": "Montebello Rest Area",
+      "url": "https://www.mraa.ca/projects/montebello-rest-area",
+      "role": "Let structure, material warmth and interior visibility give roadside infrastructure a civic-quality presence."
+    }
+  ],
+  "assets": [
+    {
+      "file": "archetype-goalpost.png",
+      "generator_file": "call_GABeO1afnnq2JNvtnyQ1PRsW.png",
+      "purpose": "canonical front three-quarter fuel-bar goalpost",
+      "prompt": "Create an original premium photoreal architectural reference for a contemporary unbranded prairie Canadian fuel bar on a complete 35 m by 30 m site. Use a restrained front three-quarter view. A very thin 28 m by 14 m satin-white flat canopy with one burnt-orange identity band and a honey linear-timber soffit rests on exactly six slender charcoal steel columns. Beneath it are exactly three separate raised pump islands, each with one detailed double-sided dispenser, black hoses, red and green nozzles, stainless bollards, waste bin and squeegee. Behind is a low 24 m-wide occupied convenience store with warm buff modular-brick bookends, charcoal micro-ribbed metal parapet and service spine, a recessed honey soffit, black thermally broken mullions, automatic doors and clear low-E glazing revealing stocked shelves and coolers. Include a physically separate blank roadside pylon, propane cage, two screened rooftop HVAC units, broom-finished concrete with drainage and sparse prairie planting. Bright natural daylight, true construction thicknesses and real material response. No logos, readable text, cartoon rendering, fantasy forms, extra pumps, extra columns, wet-plastic concrete, dense city or generic white box."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "generator_file": "call_35P2eLbeC0bhCwtjKvutdaor.png",
+      "purpose": "front elevation, count and storefront registration lock",
+      "prompt": "Using the canonical prairie fuel-bar image as the immutable design source, create a rectified premium architectural front elevation of the exact same unbranded building and site. Preserve the thin white canopy with one burnt-orange band, honey soffit, exactly six charcoal columns, exactly three separate double-sided pump islands, occupied buff-brick and charcoal store, seven-bay low-E storefront, centered automatic entry, blank separate pylon, propane cage and two roof HVAC units. Keep physical hoses, nozzles, bollards, drains, curb edges and expansion joints legible. Level camera, minimal perspective, neutral daylight. No labels, logos, readable prices, vehicles blocking the building, extra columns, extra dispensers, generic facade, warped canopy or cartoon rendering."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "generator_file": "call_B5q43h2XWDU8o6E2GwCxMjqA.png",
+      "purpose": "roof, forecourt and complete-site topology lock",
+      "prompt": "Use the canonical prairie fuel bar as the exact same building and create a high front-left oblique aerial architectural reference. Preserve the 35 m by 30 m site, thin 28 m by 14 m canopy, exactly six columns, exactly three separate pump islands, 24 m store, detached pylon, service zone and prairie edges. Reveal white canopy roof panels, seams, gutters, exactly four drains, downpipes, store membrane roof, exactly two screened HVAC units, roof curb and service access; show concrete saw cuts, two trench drains, fill covers and parking markings without changing the design. Premium photoreal construction visualization, no text, branding, added buildings, extra pumps, impossible cantilevers, wet-plastic paving or cartoon appearance."
+    },
+    {
+      "file": "rear-service-source-v1.png",
+      "generator_file": "call_jWQQPiBEMKcNRYAkfi6l9UPA.png",
+      "purpose": "rear and service-elevation construction lock",
+      "prompt": "Using the aerial image as the immutable design source, create a rear-right service-side reference of the same prairie modern fuel bar. Preserve the low buff-brick and charcoal store, thin canopy edge, exact six-column structure, two rooftop HVAC units and the complete concrete site. Show a credible loading/service door, louvers, meters, conduits, roof drainage, a screened refuse enclosure and a galvanized propane cage with individual tanks, all integrated with the architecture. Keep the pylon and pumps subordinate in the distance. Neutral daylight, premium architectural photography, no logos, text, trucks, extra floors, generic warehouse wall, random props or cartoon rendering."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "generator_file": "call_cK6mPs0YDMgfPQd4QwqcvF23.png",
+      "purpose": "clean six-cell material and junction source",
+      "prompt": "Create a clean straight-on 3-column by 2-row architectural material/construction source plate for the same prairie fuel bar. Equal isolated cells show warm buff modular brick with pale mortar, charcoal micro-ribbed metal, satin white canopy aluminium with crisp folded seams, honey linear timber soffit, matte broom-finished pale concrete and dark roof membrane. Use neutral gutters, flat diffuse illumination, realistic consistent scale and tile-safe surfaces. No labels, text, perspective scenes, objects, people, pumps, dramatic shadows, stains, glossy plastic, repeated AI motifs or cartoon rendering."
+    },
+    {
+      "file": "storefront-pump-detail-source-v1.png",
+      "generator_file": "call_ecvc7y0l2Cjwgx2b7T2jZuSd.png",
+      "purpose": "physical glazing, occupied depth and dispenser-detail lock",
+      "prompt": "Create a premium close architectural reference of the same prairie fuel bar, framing one pump island and the occupied store beyond. Show a real unbranded double-sided dispenser with clean powder-coated white, charcoal and burnt-orange components, inset cool display glass, card reader, keypad, receipt slot, nozzle cradles, black hanging hoses, green and red nozzles, raised concrete island, stainless bollards, waste bin and squeegee. Behind it show physical neutral low-E storefront glass with black mullions, automatic door leaves, stocked gondolas, colorful cooler merchandise, service counter and warm interior depth beneath the honey soffit. Preserve construction scale and subtle reflections. No readable text, logos, floating equipment, opaque mirror glass, facade-photo stickers, toy proportions or cartoon rendering."
+    }
+  ],
+  "workflow": {
+    "method": "research -> canonical goalpost -> locked elevation/aerial/service views -> clean material and detail plates -> deterministic metric geometry -> comparison loop",
+    "next_gate": "Run compiler validation, the current quality-memory assessor, narrow family/API tests and visual comparison review before checkpointing this family and starting the strip-mall pilot."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "rural_gas_station",
+  "catalogue_variant_id": "gas_modern_fuel_bar",
+  "catalogue_alias_ids": [
+    "modern_fuel_bar",
+    "prairie_fuel_bar"
+  ],
+  "elevation_source": "/families/prairie-modern-fuel-bar/elevation.jpg",
+  "goalpost": "/families/prairie-modern-fuel-bar/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/prairie-modern-fuel-bar/textures/source/reference-generation.json",
+  "method": "reference-locked multi-angle ImageGen source pack, clean six-cell PBR plate, deterministic metric geometry, physical pump equipment and occupied low-E storefront depth"
+}
