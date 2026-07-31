@@ -1,6 +1,7 @@
 frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/families/**/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/families/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+frontend/public/families/*-comparison.jpg filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/courtyard_family_housing/hero.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/rndsqr-cedar-black-townhomes/hero.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/ecole-republicaine-third-republic/hero.png filter=lfs diff=lfs merge=lfs -text
@@ -10,5 +11,6 @@ frontend/public/archetypes/buildings/parametric-wave-shell-aquatic-centre/hero.p
 frontend/public/archetypes/buildings/prairie-modern-fuel-bar/hero.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/contemporary-prairie-retail-strip/hero.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/prairie-courtyard-motor-inn/hero.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/buildings/historic-daylight-factory/hero.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/textures_worldclass_v7/**/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/textures_worldclass_v7/**/*.jpg filter=lfs diff=lfs merge=lfs -text

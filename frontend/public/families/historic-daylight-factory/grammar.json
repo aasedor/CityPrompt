@@ -1,0 +1,153 @@
+{
+  "family_id": "historic-daylight-factory",
+  "source": {
+    "archetype_id": "daylight_factory",
+    "variant_id": "factory_sawtooth_roof",
+    "generation_archetype_id": "factory_sawtooth_roof",
+    "reuse_keys": [
+      "daylight_factory",
+      "factory_sawtooth_roof",
+      "historic_daylight_factory",
+      "brick_northlight_factory",
+      "Daylight Factory",
+      "Sawtooth Roof Factory",
+      "Historic Brick Northlight Works",
+      "Steel-Sash Industrial Hall"
+    ]
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 50.0,
+    "podium_height_m": 0.35,
+    "floor_height_m": 5.8,
+    "setback_height_m": 5.8,
+    "roof_height_m": 3.5,
+    "crown_height_m": 0.5,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
+    "material_zones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
+    "glass_profile": "industrial_low_iron_neutral",
+    "kits": [
+      "reference_locked_seven_tooth_factory_hall",
+      "physical_segmental_arch_steel_sash_bays",
+      "northlight_clerestory_and_truss_assemblies",
+      "projecting_administration_entry",
+      "complete_loading_court_and_drainage",
+      "flexible_semantic_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "daylight_factory",
+    "factory_sawtooth_roof",
+    "historic_daylight_factory",
+    "brick_northlight_factory"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a repeatable 8.57 metre northlight structural bay. Rectangles preserve the complete seven-tooth hall; L and U drawings turn whole hall bars at brick service corners while retaining roof teeth, steel-sash openings and loading datums.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.7,
+      "scaleMax": 1.36,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      40.0,
+      118.0
+    ],
+    "recommendedDepth_m": [
+      28.0,
+      78.0
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "wingDepth_m": [
+      18.0,
+      32.0
+    ],
+    "preferredBayMultiple_m": 8.571428571428571,
+    "minimumCourtyard_m": 16.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          40.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          28.0,
+          55.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "preferredBayMultiple_m": 8.571428571428571
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          54.0,
+          118.0
+        ],
+        "recommendedDepth_m": [
+          40.0,
+          78.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          18.0,
+          32.0
+        ],
+        "preferredBayMultiple_m": 8.571428571428571,
+        "minimumCourtyard_m": 16.0
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          66.0,
+          136.0
+        ],
+        "recommendedDepth_m": [
+          46.0,
+          88.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          18.0,
+          32.0
+        ],
+        "preferredBayMultiple_m": 8.571428571428571,
+        "minimumCourtyard_m": 18.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "modular_northlight_factory_hall",
+    "silhouette": "seven_repeating_asymmetric_sawtooth_roof_bays",
+    "northlight_roof_teeth": 7,
+    "physical_clerestory_assemblies": 7,
+    "front_steel_sash_window_openings": 10,
+    "side_steel_sash_window_openings": 10,
+    "projecting_administration_entries": 1,
+    "recessed_loading_docks": 3,
+    "integrated_loading_stair_runs": 2,
+    "interior_column_rows": 5,
+    "roof_truss_frames": 7,
+    "rainwater_downpipes": 10,
+    "factory_exhaust_stacks": 1
+  }
+}

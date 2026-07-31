@@ -1,0 +1,77 @@
+{
+  "schema": "reference-generation@1",
+  "family": "historic-daylight-factory",
+  "archetype_id": "daylight_factory",
+  "variant_id": "factory_sawtooth_roof",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "design_lock": {
+    "native_building_dimensions_m": [
+      60.0,
+      38.0,
+      10.15
+    ],
+    "northlight_roof_teeth": 7,
+    "front_window_openings": 10,
+    "primary_material": "red-brown fired common brick",
+    "window_rule": "deep physical segmental-arched black steel sash",
+    "front_entry": "one projecting brick administration vestibule",
+    "rear_service": "three recessed working loading docks"
+  },
+  "research": [
+    {
+      "title": "The Legacy of the Sawtooth Roof",
+      "url": "https://www.archdaily.com/1012186/the-legacy-of-the-sawtooth-roof-an-icon-of-industrial-architecture",
+      "lesson": "The steep glazed faces should turn away from direct sun and repeat as a complete structural daylighting system across a deep industrial plan."
+    },
+    {
+      "title": "Preservation Brief 13: Repair and Thermal Upgrading of Historic Steel Windows",
+      "url": "https://www.nps.gov/orgs/1739/upload/preservation-brief-13-steel-windows.pdf",
+      "lesson": "Historic rolled-steel sash relies on very slender frames, many small panes, expressed perimeter putty lines and real wall depth rather than dark window decals."
+    },
+    {
+      "title": "Heritage Steel Windows",
+      "url": "https://www.portamet.com/heritage-steel-windows",
+      "lesson": "Contemporary heritage-compatible assemblies can keep the thin industrial profile while using thermally broken frames and physically plausible insulated glazing."
+    }
+  ],
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "call_ztjdW2Ylj0c4YiteaBj0LqAm",
+      "role": "canonical_four_view_reference_board",
+      "prompt_summary": "One coherent red-brick daylight factory in front, rear, aerial and elevation views with seven northlight teeth."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "call_ztjdW2Ylj0c4YiteaBj0LqAm:front-elevation-crop",
+      "role": "shadow_neutral_front_elevation",
+      "prompt_summary": "Straight-on facade authority for brick piers, segmental steel sash, corbel course and the projecting entry."
+    },
+    {
+      "file": "loading-court-source-v1.png",
+      "source_id": "call_ztjdW2Ylj0c4YiteaBj0LqAm:loading-court-crop",
+      "role": "rear_loading_goalpost",
+      "prompt_summary": "Rear service authority for three recessed loading doors, dock platforms, stairs, canopies and exhaust stack."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "call_ztjdW2Ylj0c4YiteaBj0LqAm:aerial-roof-crop",
+      "role": "roof_geometry_and_drainage_goalpost",
+      "prompt_summary": "High aerial authority for exactly seven zinc-and-glass northlight teeth, valleys, gutters and roof penetrations."
+    },
+    {
+      "file": "occupied-workshop-source-v1.png",
+      "source_id": "call_ztjdW2Ylj0c4YiteaBj0LqAm:occupied-depth-crop",
+      "role": "window_materiality_and_occupied_depth",
+      "prompt_summary": "Hero crop locking blue-grey glass, thin steel subdivisions, visible trusses, benches and warm workshop depth."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "call_nV6NGwlLlCGDJOhtECMUm2V7",
+      "role": "six_zone_pbr_material_plate",
+      "prompt_summary": "Orthographic plate of fired brick, oxidized zinc, black steel, industrial glass, limestone and concrete."
+    }
+  ]
+}

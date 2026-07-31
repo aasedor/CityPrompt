@@ -658,6 +658,34 @@
                                                                   "materialZones": "warm ivory mineral stucco; russet modular brick base and end pylons; charcoal asphalt shingles and powder-coated gallery steel; linear cedar soffits, lobby piers and cabana; physical neutral low-e guest and lobby glass with curtains and modeled occupied depth; pale concrete walks and pool deck; gravel, drought-tolerant prairie planting and service metal",
                                                                   "glassProfile": "low_iron_neutral",
                                                                   "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
-                                                              }
+                                                              },
+                     "daylight_factory": {
+                                               "archetypeId": "daylight_factory",
+                                               "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, ten deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
+                                               "materialZones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
+                                               "glassProfile": "industrial_low_iron_neutral",
+                                               "elevationUrl": "/families/historic-daylight-factory/elevation.jpg"
+                                           },
+                     "factory_sawtooth_roof": {
+                                                     "archetypeId": "factory_sawtooth_roof",
+                                                     "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, ten deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
+                                                     "materialZones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
+                                                     "glassProfile": "industrial_low_iron_neutral",
+                                                     "elevationUrl": "/families/historic-daylight-factory/elevation.jpg"
+                                                 },
+                     "historic_daylight_factory": {
+                                                        "archetypeId": "historic_daylight_factory",
+                                                        "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, ten deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
+                                                        "materialZones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
+                                                        "glassProfile": "industrial_low_iron_neutral",
+                                                        "elevationUrl": "/families/historic-daylight-factory/elevation.jpg"
+                                                    },
+                     "brick_northlight_factory": {
+                                                       "archetypeId": "brick_northlight_factory",
+                                                       "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, ten deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
+                                                       "materialZones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
+                                                       "glassProfile": "industrial_low_iron_neutral",
+                                                       "elevationUrl": "/families/historic-daylight-factory/elevation.jpg"
+                                                   }
                  }
 }

@@ -1,0 +1,192 @@
+{
+  "status": "pass",
+  "family": "historic-daylight-factory",
+  "archetype_id": "daylight_factory",
+  "reuse_keys": [
+    "daylight_factory",
+    "factory_sawtooth_roof",
+    "historic_daylight_factory",
+    "brick_northlight_factory",
+    "Daylight Factory",
+    "Sawtooth Roof Factory",
+    "Historic Brick Northlight Works",
+    "Steel-Sash Industrial Hall"
+  ],
+  "manifest": "historic-daylight-factory_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "historic-daylight-factory_podium.glb: 15.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-daylight-factory_floor_typical_a.glb: 52.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-daylight-factory_floor_typical_b.glb: 52.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-daylight-factory_floor_typical_c.glb: 52.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-daylight-factory_roof.glb: 15.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-daylight-factory_assembled.glb: 15 materials (many; consider consolidation)",
+    "historic-daylight-factory_assembled.glb: 71.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "historic-daylight-factory_podium.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 0.51,
+        "depth_z": 50.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_DAYLIGHT_AgedFactoryAsphalt",
+        "MAT_W10_DAYLIGHT_BroomFinishConcrete"
+      ],
+      "size_bytes": 15818948
+    },
+    {
+      "file": "historic-daylight-factory_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 31106,
+      "extent_m": {
+        "width_x": 60.58,
+        "height_y": 6.15,
+        "depth_z": 44.905
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_DAYLIGHT_BlackenedPaintedSteel",
+        "MAT_W10_DAYLIGHT_BroomFinishConcrete",
+        "MAT_W10_DAYLIGHT_DarkGreenLoadingDoors",
+        "MAT_W10_DAYLIGHT_DockRubber",
+        "MAT_W10_DAYLIGHT_OxidizedStandingSeamZinc",
+        "MAT_W10_DAYLIGHT_PaleCutLimestone",
+        "MAT_W10_DAYLIGHT_PhysicalIndustrialLowEGlass",
+        "MAT_W10_DAYLIGHT_RedBrownFiredBrick"
+      ],
+      "size_bytes": 54987612
+    },
+    {
+      "file": "historic-daylight-factory_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 31386,
+      "extent_m": {
+        "width_x": 60.58,
+        "height_y": 6.15,
+        "depth_z": 44.905
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_DAYLIGHT_BlackenedPaintedSteel",
+        "MAT_W10_DAYLIGHT_BroomFinishConcrete",
+        "MAT_W10_DAYLIGHT_DarkGreenLoadingDoors",
+        "MAT_W10_DAYLIGHT_DockRubber",
+        "MAT_W10_DAYLIGHT_OxidizedStandingSeamZinc",
+        "MAT_W10_DAYLIGHT_PaleCutLimestone",
+        "MAT_W10_DAYLIGHT_PhysicalIndustrialLowEGlass",
+        "MAT_W10_DAYLIGHT_RedBrownFiredBrick"
+      ],
+      "size_bytes": 55013416
+    },
+    {
+      "file": "historic-daylight-factory_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 31666,
+      "extent_m": {
+        "width_x": 60.58,
+        "height_y": 6.15,
+        "depth_z": 44.905
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_DAYLIGHT_BlackenedPaintedSteel",
+        "MAT_W10_DAYLIGHT_BroomFinishConcrete",
+        "MAT_W10_DAYLIGHT_DarkGreenLoadingDoors",
+        "MAT_W10_DAYLIGHT_DockRubber",
+        "MAT_W10_DAYLIGHT_OxidizedStandingSeamZinc",
+        "MAT_W10_DAYLIGHT_PaleCutLimestone",
+        "MAT_W10_DAYLIGHT_PhysicalIndustrialLowEGlass",
+        "MAT_W10_DAYLIGHT_RedBrownFiredBrick"
+      ],
+      "size_bytes": 55039020
+    },
+    {
+      "file": "historic-daylight-factory_crown_crown.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 60.62,
+        "height_y": 0.5,
+        "depth_z": 38.7
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_DAYLIGHT_RedBrownFiredBrick"
+      ],
+      "size_bytes": 8047084
+    },
+    {
+      "file": "historic-daylight-factory_roof.glb",
+      "status": "ok",
+      "triangles": 2164,
+      "extent_m": {
+        "width_x": 60.19,
+        "height_y": 3.775,
+        "depth_z": 37.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W10_DAYLIGHT_BlackenedPaintedSteel",
+        "MAT_W10_DAYLIGHT_GalvanizedHardware",
+        "MAT_W10_DAYLIGHT_OxidizedStandingSeamZinc",
+        "MAT_W10_DAYLIGHT_PhysicalIndustrialLowEGlass"
+      ],
+      "size_bytes": 15941516
+    },
+    {
+      "file": "historic-daylight-factory_assembled.glb",
+      "status": "ok",
+      "triangles": 75262,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 13.45,
+        "depth_z": 50.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_DAYLIGHT_AdministrationInterior",
+        "MAT_W10_DAYLIGHT_AgedFactoryAsphalt",
+        "MAT_W10_DAYLIGHT_BlackenedPaintedSteel",
+        "MAT_W10_DAYLIGHT_BroomFinishConcrete",
+        "MAT_W10_DAYLIGHT_DarkGreenLoadingDoors",
+        "MAT_W10_DAYLIGHT_DockRubber",
+        "MAT_W10_DAYLIGHT_GalvanizedHardware",
+        "MAT_W10_DAYLIGHT_OccupiedWorkshopDepth",
+        "MAT_W10_DAYLIGHT_OxidizedStandingSeamZinc",
+        "MAT_W10_DAYLIGHT_PaleCutLimestone",
+        "MAT_W10_DAYLIGHT_PhysicalIndustrialLowEGlass",
+        "MAT_W10_DAYLIGHT_RedBrownFiredBrick",
+        "MAT_W10_DAYLIGHT_RestrainedPlanting",
+        "MAT_W10_DAYLIGHT_WarmWorkshopLight",
+        "MAT_W10_DAYLIGHT_WorkshopTimber"
+      ],
+      "size_bytes": 74582792,
+      "role": "assembled"
+    }
+  ]
+}

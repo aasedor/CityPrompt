@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "front-elevation-source-v1.png",
+  "method": "Every public window, clerestory and loading opening is physical geometry. Brick walls are assembled around voids; panes sit behind deep jambs and steel mullions, with workshop structure and fixtures placed behind the glass for real parallax.",
+  "physical_geometry_required": true
+}

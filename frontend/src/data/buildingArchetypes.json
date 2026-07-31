@@ -10189,6 +10189,46 @@
     },
     {
       "id": "daylight_factory",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "minimumPreferredProfiles": 3,
+        "profileRationale": "The identity is a repeatable 8.57 metre northlight structural bay. Rectangles preserve the complete seven-tooth hall; L- and U-shaped drawings turn whole hall bars at brick service corners while retaining roof teeth, steel-sash openings and loading datums.",
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.70,
+          "scaleMax": 1.36,
+          "maxAxisRatio": 1.3
+        },
+        "recommendedWidth_m": [40, 118],
+        "recommendedDepth_m": [28, 78],
+        "recommendedFloors": [1, 3],
+        "wingDepth_m": [18, 32],
+        "preferredBayMultiple_m": 8.571428571428571,
+        "minimumCourtyard_m": 16,
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [40, 90],
+            "recommendedDepth_m": [28, 55],
+            "recommendedFloors": [1, 3],
+            "preferredBayMultiple_m": 8.571428571428571
+          },
+          "l_shape": {
+            "recommendedWidth_m": [54, 118],
+            "recommendedDepth_m": [40, 78],
+            "recommendedFloors": [1, 3],
+            "wingDepth_m": [18, 32],
+            "preferredBayMultiple_m": 8.571428571428571,
+            "minimumCourtyard_m": 16
+          },
+          "u_shape": {
+            "recommendedWidth_m": [66, 136],
+            "recommendedDepth_m": [46, 88],
+            "recommendedFloors": [1, 3],
+            "wingDepth_m": [18, 32],
+            "preferredBayMultiple_m": 8.571428571428571,
+            "minimumCourtyard_m": 18
+          }
+        }
+      },
     "suggestedWidth_m": 60,
     "suggestedDepth_m": 40,
     "suggestedFloorHeight": 5.0,
@@ -10238,12 +10278,12 @@
         "features": "sawtooth profile visible from street, roof ventilators",
         "aerialAppearance": "distinctive sawtooth or monitor roof profile with glass panels"
       },
-      "thumbnailUrl": "/archetypes/buildings/daylight_factory/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/historic-daylight-factory/hero.png",
       "variants": [
         {
           "id": "factory_sawtooth_roof",
           "label": "Sawtooth Roof",
-          "thumbnailUrl": "/archetypes/buildings/daylight_factory/variant_0.png",
+          "thumbnailUrl": "/archetypes/buildings/historic-daylight-factory/hero.png",
           "minFloors": 1,
           "maxFloors": 1,
           "suggestedFloorHeight": 6.0,

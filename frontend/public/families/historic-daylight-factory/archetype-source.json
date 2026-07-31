@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "daylight_factory",
+  "catalogue_variant_id": "factory_sawtooth_roof",
+  "catalogue_alias_ids": [
+    "historic_daylight_factory",
+    "brick_northlight_factory"
+  ],
+  "elevation_source": "/families/historic-daylight-factory/elevation.jpg",
+  "goalpost": "/families/historic-daylight-factory/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/historic-daylight-factory/textures/source/reference-generation.json",
+  "method": "reference-locked four-view ImageGen source board, six-zone orthographic construction plate, deterministic metric brick wall construction around physical openings, separate northlight roof slopes and clerestories, modeled occupied depth, complete loading-court hardware, roof structure and drainage"
+}
