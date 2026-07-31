@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-30-reference-image-recipe-v108`.
+Current executable memory: `2026-07-31-wave11-optical-curve-v109`.
 
 ## The quality target
 
@@ -1179,6 +1179,36 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Recheck the street corner, aerial roof proof and interior courtyard together
   after every junction change. A roof correction is not accepted if it caps
   the open void, exposes a gable fin or removes the through-passage.
+
+### Wave 11 continuous-curve + optical-layer lessons
+
+- A curved opening can have the correct control points and still read as a
+  staircase when its frame is assembled from many short beam chords. Build the
+  stucco spandrel as one continuous face and the visible arch frame as one
+  continuous ribbon with enough segments for the locked close view. Separate
+  chord objects catch separate highlights and are not an acceptable final
+  representation of a smooth architectural head.
+- Curtain-wall materiality is a layered optical system. A vision-glass source
+  may contribute subtle tint, roughness, normals and reflection variation, but
+  it must not bake a second mullion grid or complete occupied scene onto every
+  pane. Wash the outer base colour toward the approved neutral glass tint while
+  retaining its custom non-colour PBR channels; place a separately registered,
+  warmer occupied-depth source behind the pane and keep caps, spandrels and
+  slabs as real geometry.
+- A fixed landmark's native metric height includes every identity-bearing
+  crown, roof lantern, photovoltaic rack, screen and mast. Compute and record
+  bounds from the complete delivered assembly, not only the occupied shaft;
+  camera proofs must include those same extents without clipping them.
+- Thousands of repeated curtain-wall panes, caps and slab edges do not require
+  thousands of context-dependent Blender operator calls. Directly construct
+  their metric mesh vertices, faces and UVs, then preserve the same physical
+  geometry, materials, semantics and close-view proof. Tooling overhead is not
+  visual quality, and eliminating it keeps iterative comparison practical.
+- A coherent multi-angle board must lock topology before skinning. For a tower
+  cluster, preserve exact tower count, relative heights, bridge locations and
+  crowns in every view; for a research campus, preserve wing count, open court,
+  connectors, canopy plates, photovoltaics and service screens. Do not average
+  incompatible views into a generic glass box.
 
 ## Updating this memory
 

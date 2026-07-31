@@ -1,0 +1,184 @@
+{
+  "status": "pass",
+  "family": "skyline-glass-office-cluster",
+  "archetype_id": "skyline_glass_office_cluster",
+  "reuse_keys": [
+    "skyline_glass_office_cluster",
+    "skyline_cluster_staggered",
+    "staggered_glass_office_cluster",
+    "three_tower_skybridge_cluster",
+    "Skyline Glass Office Cluster",
+    "Staggered Office Towers",
+    "Three Tower Office Complex",
+    "Skybridge Office Campus"
+  ],
+  "manifest": "skyline-glass-office-cluster_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "skyline-glass-office-cluster_podium.glb: 23.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_floor_typical_a.glb: 32.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_floor_typical_b.glb: 32.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_floor_typical_c.glb: 32.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_crown_crown.glb: 10.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_roof.glb: 32.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "skyline-glass-office-cluster_assembled.glb: 112176 triangles (heavy; consider simplification)",
+    "skyline-glass-office-cluster_assembled.glb: 69.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "skyline-glass-office-cluster_podium.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 61.6,
+        "height_y": 1.0,
+        "depth_z": 30.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W11_SKYLINE_CivicPlazaPaving",
+        "MAT_W11_SKYLINE_PalePodiumStone"
+      ],
+      "size_bytes": 24912652
+    },
+    {
+      "file": "skyline-glass-office-cluster_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 9168,
+      "extent_m": {
+        "width_x": 56.264,
+        "height_y": 3.745,
+        "depth_z": 25.064
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W11_SKYLINE_CharcoalGlassSpandrel",
+        "MAT_W11_SKYLINE_LowSlopeRoof",
+        "MAT_W11_SKYLINE_NeutralLowEVisionGlass",
+        "MAT_W11_SKYLINE_OccupiedOfficeDepth",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum",
+        "MAT_W11_SKYLINE_WarmCore"
+      ],
+      "size_bytes": 34148572
+    },
+    {
+      "file": "skyline-glass-office-cluster_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 9168,
+      "extent_m": {
+        "width_x": 56.264,
+        "height_y": 3.745,
+        "depth_z": 25.064
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W11_SKYLINE_CharcoalGlassSpandrel",
+        "MAT_W11_SKYLINE_LowSlopeRoof",
+        "MAT_W11_SKYLINE_NeutralLowEVisionGlass",
+        "MAT_W11_SKYLINE_OccupiedOfficeDepth",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum",
+        "MAT_W11_SKYLINE_WarmCore"
+      ],
+      "size_bytes": 34148572
+    },
+    {
+      "file": "skyline-glass-office-cluster_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 8040,
+      "extent_m": {
+        "width_x": 56.264,
+        "height_y": 3.745,
+        "depth_z": 25.064
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W11_SKYLINE_CharcoalGlassSpandrel",
+        "MAT_W11_SKYLINE_LowSlopeRoof",
+        "MAT_W11_SKYLINE_NeutralLowEVisionGlass",
+        "MAT_W11_SKYLINE_OccupiedOfficeDepth",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum",
+        "MAT_W11_SKYLINE_WarmCore"
+      ],
+      "size_bytes": 34040036
+    },
+    {
+      "file": "skyline-glass-office-cluster_crown_crown.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 57.6,
+        "height_y": 1.2,
+        "depth_z": 25.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum"
+      ],
+      "size_bytes": 11104572
+    },
+    {
+      "file": "skyline-glass-office-cluster_roof.glb",
+      "status": "ok",
+      "triangles": 4432,
+      "extent_m": {
+        "width_x": 57.4,
+        "height_y": 3.0,
+        "depth_z": 24.8
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W11_SKYLINE_CharcoalGlassSpandrel",
+        "MAT_W11_SKYLINE_LowSlopeRoof",
+        "MAT_W11_SKYLINE_NeutralLowEVisionGlass",
+        "MAT_W11_SKYLINE_OccupiedOfficeDepth",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum"
+      ],
+      "size_bytes": 33687996
+    },
+    {
+      "file": "skyline-glass-office-cluster_assembled.glb",
+      "status": "ok",
+      "triangles": 112176,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 76.02,
+        "depth_z": 40.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W11_SKYLINE_CharcoalGlassSpandrel",
+        "MAT_W11_SKYLINE_CivicPlazaPaving",
+        "MAT_W11_SKYLINE_GraphiteStructuralSteel",
+        "MAT_W11_SKYLINE_LowSlopeRoof",
+        "MAT_W11_SKYLINE_NeutralLowEVisionGlass",
+        "MAT_W11_SKYLINE_OccupiedOfficeDepth",
+        "MAT_W11_SKYLINE_PalePodiumStone",
+        "MAT_W11_SKYLINE_PlanterGreen",
+        "MAT_W11_SKYLINE_SilverAnodizedAluminum",
+        "MAT_W11_SKYLINE_TreeTrunk",
+        "MAT_W11_SKYLINE_WarmCore"
+      ],
+      "size_bytes": 73306432,
+      "role": "assembled"
+    }
+  ]
+}

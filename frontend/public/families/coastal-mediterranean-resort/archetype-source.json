@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "coastal_resort_terrace_block",
+  "catalogue_variant_id": "coastal_resort_white_mediterranean",
+  "catalogue_alias_ids": [
+    "coastal_mediterranean_resort",
+    "white_mediterranean_resort_block"
+  ],
+  "elevation_source": "/families/coastal-mediterranean-resort/elevation.jpg",
+  "goalpost": "/families/coastal-mediterranean-resort/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/coastal-mediterranean-resort/textures/source/reference-generation.json",
+  "method": "reference-locked four-view ImageGen source board, six-zone shadow-neutral construction plate, deterministic metric walls split around physical French-door voids, layered glazing and occupied depth, open shutters/guards/pergolas, complete pool section, cascading terraces, wrapped secondary elevations and roof"
+}

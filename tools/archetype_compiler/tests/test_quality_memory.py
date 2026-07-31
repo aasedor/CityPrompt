@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-30-reference-image-recipe-v108"
+        == "2026-07-31-wave11-optical-curve-v109"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -245,6 +245,27 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         and "same approved construction-image paths"
         in item["correction"].lower()
         and "far lods" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "visible head reads as a staircase" in item["symptom"].lower()
+        and "one continuous ribbon" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "one dark repeated image" in item["symptom"].lower()
+        and "wash its base colour" in item["correction"].lower()
+        and "occupied-depth source" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "mast, roof lantern, photovoltaic rack or screen" in item["symptom"].lower()
+        and "complete assembled bounds" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "context-dependent blender operators" in item["cause"].lower()
+        and "metric vertices" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

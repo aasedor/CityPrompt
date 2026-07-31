@@ -1,0 +1,189 @@
+{
+  "status": "pass",
+  "family": "coastal-mediterranean-resort",
+  "archetype_id": "coastal_resort_terrace_block",
+  "reuse_keys": [
+    "coastal_resort_terrace_block",
+    "coastal_resort_white_mediterranean",
+    "coastal_mediterranean_resort",
+    "white_mediterranean_resort_block",
+    "Coastal Resort Terrace Block",
+    "White Mediterranean Resort",
+    "Boutique Coastal Hotel",
+    "Terraced Resort"
+  ],
+  "manifest": "coastal-mediterranean-resort_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "coastal-mediterranean-resort_podium.glb: 18.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_floor_typical_a.glb: 36.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_floor_typical_b.glb: 43.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_floor_typical_c.glb: 35.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_crown_crown.glb: 8.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_roof.glb: 16.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "coastal-mediterranean-resort_assembled.glb: 127085 triangles (heavy; consider simplification)",
+    "coastal-mediterranean-resort_assembled.glb: 17 materials (many; consider consolidation)",
+    "coastal-mediterranean-resort_assembled.glb: 68.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "coastal-mediterranean-resort_podium.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 34.0,
+        "height_y": 0.45,
+        "depth_z": 18.1
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W11_COASTAL_HonedPoolLimestone",
+        "MAT_W11_COASTAL_PaleRubbleLimestone"
+      ],
+      "size_bytes": 19402248
+    },
+    {
+      "file": "coastal-mediterranean-resort_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 27252,
+      "extent_m": {
+        "width_x": 34.67,
+        "height_y": 3.8,
+        "depth_z": 16.638
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W11_COASTAL_HandTrowelledLimeStucco",
+        "MAT_W11_COASTAL_HonedPoolLimestone",
+        "MAT_W11_COASTAL_NeutralLowIronResidentialGlass",
+        "MAT_W11_COASTAL_OccupiedResortRoom",
+        "MAT_W11_COASTAL_WarmWhitePaintedWindowFrame",
+        "MAT_W11_COASTAL_WeatheredAegeanBlueTimber"
+      ],
+      "size_bytes": 38069840
+    },
+    {
+      "file": "coastal-mediterranean-resort_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 36057,
+      "extent_m": {
+        "width_x": 34.67,
+        "height_y": 3.8,
+        "depth_z": 17.513
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W11_COASTAL_BlackWroughtIron",
+        "MAT_W11_COASTAL_HandTrowelledLimeStucco",
+        "MAT_W11_COASTAL_HonedPoolLimestone",
+        "MAT_W11_COASTAL_NeutralLowIronResidentialGlass",
+        "MAT_W11_COASTAL_OccupiedResortRoom",
+        "MAT_W11_COASTAL_WarmWhitePaintedWindowFrame",
+        "MAT_W11_COASTAL_WeatheredAegeanBlueTimber"
+      ],
+      "size_bytes": 45496044
+    },
+    {
+      "file": "coastal-mediterranean-resort_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 21636,
+      "extent_m": {
+        "width_x": 34.67,
+        "height_y": 3.8,
+        "depth_z": 16.638
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W11_COASTAL_HandTrowelledLimeStucco",
+        "MAT_W11_COASTAL_HonedPoolLimestone",
+        "MAT_W11_COASTAL_NeutralLowIronResidentialGlass",
+        "MAT_W11_COASTAL_OccupiedResortRoom",
+        "MAT_W11_COASTAL_WarmWhitePaintedWindowFrame",
+        "MAT_W11_COASTAL_WeatheredAegeanBlueTimber"
+      ],
+      "size_bytes": 37657172
+    },
+    {
+      "file": "coastal-mediterranean-resort_crown_crown.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 34.38,
+        "height_y": 0.95,
+        "depth_z": 16.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W11_COASTAL_HandTrowelledLimeStucco"
+      ],
+      "size_bytes": 9181024
+    },
+    {
+      "file": "coastal-mediterranean-resort_roof.glb",
+      "status": "ok",
+      "triangles": 2196,
+      "extent_m": {
+        "width_x": 33.3,
+        "height_y": 1.78,
+        "depth_z": 15.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W11_COASTAL_PaleFlatRoofMembrane",
+        "MAT_W11_COASTAL_WeatheredAegeanBlueTimber"
+      ],
+      "size_bytes": 16871216
+    },
+    {
+      "file": "coastal-mediterranean-resort_assembled.glb",
+      "status": "ok",
+      "triangles": 127085,
+      "extent_m": {
+        "width_x": 40.0,
+        "height_y": 13.41,
+        "depth_z": 28.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W11_COASTAL_BlackWroughtIron",
+        "MAT_W11_COASTAL_Bougainvillea",
+        "MAT_W11_COASTAL_BougainvilleaLeaves",
+        "MAT_W11_COASTAL_BougainvilleaLight",
+        "MAT_W11_COASTAL_HandTrowelledLimeStucco",
+        "MAT_W11_COASTAL_HonedPoolLimestone",
+        "MAT_W11_COASTAL_InfinityPoolWater",
+        "MAT_W11_COASTAL_NeutralLowIronResidentialGlass",
+        "MAT_W11_COASTAL_OccupiedResortRoom",
+        "MAT_W11_COASTAL_OliveLeaves",
+        "MAT_W11_COASTAL_OliveLeavesSilver",
+        "MAT_W11_COASTAL_OliveWood",
+        "MAT_W11_COASTAL_PaleFlatRoofMembrane",
+        "MAT_W11_COASTAL_PaleRubbleLimestone",
+        "MAT_W11_COASTAL_PlanterSoil",
+        "MAT_W11_COASTAL_WarmWhitePaintedWindowFrame",
+        "MAT_W11_COASTAL_WeatheredAegeanBlueTimber"
+      ],
+      "size_bytes": 71877008,
+      "role": "assembled"
+    }
+  ]
+}

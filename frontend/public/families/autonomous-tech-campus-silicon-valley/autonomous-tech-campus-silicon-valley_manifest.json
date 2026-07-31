@@ -1,0 +1,1569 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave11_modern_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-31T21:40:36.400453+00:00",
+  "family": "autonomous-tech-campus-silicon-valley",
+  "archetype_id": "autonomous_tech_campus",
+  "archetype_label": "Autonomous Tech Campus - Silicon Valley Pavilion",
+  "variant_id": "tech_campus_silicon_valley",
+  "generation_archetype_id": "tech_campus_silicon_valley",
+  "archetype_aliases": [
+    "autonomous_tech_campus",
+    "tech_campus_silicon_valley",
+    "silicon_valley_research_campus",
+    "white_steel_technology_pavilions"
+  ],
+  "aesthetic_category_id": "contemporary_research",
+  "development_type": "research_and_development",
+  "reuse_keys": [
+    "autonomous_tech_campus",
+    "tech_campus_silicon_valley",
+    "silicon_valley_research_campus",
+    "white_steel_technology_pavilions",
+    "Autonomous Tech Campus",
+    "Silicon Valley Research Pavilion",
+    "Low Rise Technology Campus",
+    "White Steel Laboratory Campus"
+  ],
+  "generation_tags": [
+    "wave11",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "three_pavilions",
+    "open_courtyard",
+    "expressed_white_frame",
+    "photovoltaic_roofs"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a set of complete occupied research pavilion bars around outdoor space. Rectangle, L and U drawings turn or repeat whole 3.4 metre laboratory bays while preserving the primary entry, external frame, real glazing and courtyard; openings and photovoltaic panels are never stretched.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.26,
+      "maxAxisRatio": 1.2
+    },
+    "recommendedWidth_m": [
+      56.0,
+      100.0
+    ],
+    "recommendedDepth_m": [
+      38.0,
+      76.0
+    ],
+    "recommendedFloors": [
+      2,
+      7
+    ],
+    "preferredBayMultiple_m": 3.4,
+    "scaleMin": 0.76,
+    "scaleMax": 1.26,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          56.0,
+          100.0
+        ],
+        "recommendedDepth_m": [
+          38.0,
+          76.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.26,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 3.4
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          54.0,
+          105.0
+        ],
+        "recommendedDepth_m": [
+          36.0,
+          82.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.4
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          58.0,
+          110.0
+        ],
+        "recommendedDepth_m": [
+          42.0,
+          88.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.4
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/three_pavilion_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/three_pavilion_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/three_pavilion_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/three_pavilion_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/three_pavilion_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/three_pavilion_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/three_pavilion_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/three_pavilion_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/three_pavilion_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/three_pavilion_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/three_pavilion_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/three_pavilion_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/three_pavilion_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/three_pavilion_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/three_pavilion_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/three_pavilion_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/three_pavilion_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/three_pavilion_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/three_pavilion_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/three_pavilion_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/three_pavilion_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/three_pavilion_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/three_pavilion_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/three_pavilion_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/landscaped_courtyard_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/occupied_research_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/occupied_research_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/occupied_research_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/occupied_research_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/occupied_research_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/occupied_research_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/occupied_research_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/occupied_research_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/occupied_research_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/occupied_research_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/occupied_research_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/occupied_research_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/occupied_research_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/occupied_research_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/occupied_research_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/occupied_research_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/cantilevered_canopy_and_pv_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/wrapped_glass_pavilion_return_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/warm_occupied_laboratory_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_low_iron_research_glass_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_white_steel_albedo",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_albedo.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_white_steel_normal",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_normal.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "normal"
+    },
+    {
+      "key": "near_white_steel_roughness",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_roughness.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_white_steel_ao",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_ao.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "ao"
+    },
+    {
+      "key": "near_white_steel_depth",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_depth.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "depth"
+    },
+    {
+      "key": "near_white_steel_emissive",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_emissive.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_white_steel_glass_mask",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_glass.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_white_steel_opaque_mask",
+      "path": "textures/pbr/near/warm_white_powder_coated_steel_opaque.png",
+      "lod": "near",
+      "zone": "white_steel",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_precast_albedo",
+      "path": "textures/pbr/near/pale_architectural_precast_albedo.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_precast_normal",
+      "path": "textures/pbr/near/pale_architectural_precast_normal.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "normal"
+    },
+    {
+      "key": "near_precast_roughness",
+      "path": "textures/pbr/near/pale_architectural_precast_roughness.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_precast_ao",
+      "path": "textures/pbr/near/pale_architectural_precast_ao.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "ao"
+    },
+    {
+      "key": "near_precast_depth",
+      "path": "textures/pbr/near/pale_architectural_precast_depth.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "depth"
+    },
+    {
+      "key": "near_precast_emissive",
+      "path": "textures/pbr/near/pale_architectural_precast_emissive.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_precast_glass_mask",
+      "path": "textures/pbr/near/pale_architectural_precast_glass.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_precast_opaque_mask",
+      "path": "textures/pbr/near/pale_architectural_precast_opaque.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_photovoltaic_albedo",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_albedo.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_photovoltaic_normal",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_normal.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "normal"
+    },
+    {
+      "key": "near_photovoltaic_roughness",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_roughness.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_photovoltaic_ao",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_ao.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "ao"
+    },
+    {
+      "key": "near_photovoltaic_depth",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_depth.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "depth"
+    },
+    {
+      "key": "near_photovoltaic_emissive",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_emissive.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_photovoltaic_glass_mask",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_glass.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_photovoltaic_opaque_mask",
+      "path": "textures/pbr/near/blue_black_photovoltaic_cells_opaque.png",
+      "lod": "near",
+      "zone": "photovoltaic",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_paving_albedo",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_albedo.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_paving_normal",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_normal.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "normal"
+    },
+    {
+      "key": "near_paving_roughness",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_roughness.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_paving_ao",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_ao.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "ao"
+    },
+    {
+      "key": "near_paving_depth",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_depth.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "depth"
+    },
+    {
+      "key": "near_paving_emissive",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_emissive.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_paving_glass_mask",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_glass.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_paving_opaque_mask",
+      "path": "textures/pbr/near/pale_concrete_campus_pavers_opaque.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/light_grey_cool_roof_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_landscape_albedo",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_albedo.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_landscape_normal",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_normal.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "normal"
+    },
+    {
+      "key": "near_landscape_roughness",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_roughness.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_landscape_ao",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_ao.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "ao"
+    },
+    {
+      "key": "near_landscape_depth",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_depth.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "depth"
+    },
+    {
+      "key": "near_landscape_emissive",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_emissive.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_landscape_glass_mask",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_glass.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_landscape_opaque_mask",
+      "path": "textures/pbr/near/bioswale_grass_and_shrub_foliage_opaque.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/autonomous-tech-campus-silicon-valley",
+    "model": "gpt-image-2",
+    "style_reference": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "courtyard_arrival",
+        "three_pavilion_junctions",
+        "screened_mechanical_penthouse"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat or turn complete 3.4 metre occupied research bays, including pane, frame, slab, interior and optional brace."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "open U-shaped courtyard",
+        "three pavilion junctions",
+        "arrival canopy",
+        "penthouse and PV fields"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "occupied external-frame research pavilion with photovoltaic roof; occupied external-frame research pavilion with photovoltaic roof",
+      "elevation_coverage": {
+        "front": "two courtyard-facing pavilion ends, open arrival axis and cantilevered canopy",
+        "left": "occupied external-frame research pavilion with photovoltaic roof",
+        "right": "occupied external-frame research pavilion with photovoltaic roof",
+        "rear": "two-storey connecting pavilion and screened mechanical penthouse",
+        "roof": "three broad canopy plates, three photovoltaic fields and one penthouse"
+      },
+      "variation_policy": "Use the fixed landmark inside its authored independent-axis scale band. Oversized or differently proportioned targets use long-axis streetwall repeat of complete occupied semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/three_pavilion_registered_front_albedo.png",
+        "normal": "textures/pbr/near/three_pavilion_registered_front_normal.png",
+        "roughness": "textures/pbr/near/three_pavilion_registered_front_roughness.png",
+        "ao": "textures/pbr/near/three_pavilion_registered_front_ao.png",
+        "depth": "textures/pbr/near/three_pavilion_registered_front_depth.png",
+        "emissive": "textures/pbr/near/three_pavilion_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/three_pavilion_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/three_pavilion_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/three_pavilion_registered_front_albedo.png",
+        "normal": "textures/pbr/far/three_pavilion_registered_front_normal.png",
+        "roughness": "textures/pbr/far/three_pavilion_registered_front_roughness.png",
+        "ao": "textures/pbr/far/three_pavilion_registered_front_ao.png",
+        "depth": "textures/pbr/far/three_pavilion_registered_front_depth.png",
+        "emissive": "textures/pbr/far/three_pavilion_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/three_pavilion_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/three_pavilion_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/three_pavilion_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/three_pavilion_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "autonomous_tech_campus",
+      "source_variant_id": "tech_campus_silicon_valley",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "three_connected_low_rise_pavilions",
+        "landscaped_central_research_courtyard",
+        "expressed_external_white_steel_frame",
+        "separate_low_iron_glass_and_occupied_lab_depth",
+        "broad_cantilevered_roof_canopies",
+        "roof_photovoltaic_arrays_and_screened_penthouse"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/autonomous-tech-campus-silicon-valley/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_u_shaped_research_campus_with_repeatable_pavilion_bays",
+    "pavilion_wings": 3,
+    "open_landscaped_courtyard": true,
+    "occupied_storeys": [
+      3,
+      3,
+      2
+    ],
+    "glazed_connectors": 2,
+    "external_white_steel_frame": true,
+    "cantilevered_canopy_roofs": 3,
+    "photovoltaic_fields": 3,
+    "screened_mechanical_penthouses": 1,
+    "physical_curtain_wall_layers": [
+      "low_iron_pane",
+      "external_frame",
+      "slab",
+      "occupied_lab_depth"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Vision glass, occupied depth, frame, opaque skin, roofs and ground retain distinct physically based responses because their material contrast carries the archetype identity."
+  },
+  "dimensions": {
+    "width_m": 74.0,
+    "depth_m": 54.0,
+    "podium_height_m": 0.2,
+    "floor_height_m": 4.1,
+    "setback_height_m": 4.1,
+    "roof_height_m": 3.1,
+    "crown_height_m": 1.2,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 7
+  },
+  "native_width_m": 74.0,
+  "native_depth_m": 54.0,
+  "native_height_m": 13.4,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 7,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_podium.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 1.0,
+      "floor_height_m": 4.1,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 252,
+      "material_count": 5,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 25891268
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_floor_typical_a.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 4.1,
+      "floor_height_m": 4.1,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 9720,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52266032
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_floor_typical_b.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 4.1,
+      "floor_height_m": 4.1,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 9776,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52271608
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_floor_typical_c.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 4.1,
+      "floor_height_m": 4.1,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 8592,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 52160232
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_crown_crown.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 1.2,
+      "floor_height_m": 4.1,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 468,
+      "material_count": 4,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 12594872
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "autonomous-tech-campus-silicon-valley_roof.glb",
+      "module_family": "autonomous-tech-campus-silicon-valley",
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "height_m": 2.1,
+      "floor_height_m": 4.1,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 17424,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "landscape",
+        "paving",
+        "photovoltaic",
+        "podium",
+        "precast",
+        "roof",
+        "side",
+        "white_steel"
+      ],
+      "ao_baked": true,
+      "size_bytes": 33890696
+    }
+  ],
+  "assembled": {
+    "filename": "autonomous-tech-campus-silicon-valley_assembled.glb",
+    "module_family": "autonomous-tech-campus-silicon-valley",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "tech_campus_silicon_valley",
+    "generation_archetype_id": "tech_campus_silicon_valley",
+    "width_m": 74.0,
+    "depth_m": 54.0,
+    "floors": 3,
+    "uses_setback": true,
+    "uses_crown": true,
+    "height_m": 13.4,
+    "triangle_count": 75844,
+    "material_count": 12,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 13.4
+      }
+    ],
+    "footprint_profile": "u_shape",
+    "footprint_target": {
+      "width_m": 74.0,
+      "depth_m": 54.0,
+      "wing_depth_m": 15.0,
+      "segments": [
+        {
+          "id": "west_pavilion",
+          "centre_x_m": -22.0,
+          "centre_y_m": 0.5,
+          "length_m": 41.0,
+          "thickness_m": 15.0,
+          "rotation_degrees": 90.0
+        },
+        {
+          "id": "east_pavilion",
+          "centre_x_m": 22.0,
+          "centre_y_m": 0.5,
+          "length_m": 41.0,
+          "thickness_m": 15.0,
+          "rotation_degrees": 90.0
+        },
+        {
+          "id": "rear_pavilion",
+          "centre_x_m": 0.0,
+          "centre_y_m": 14.0,
+          "length_m": 29.0,
+          "thickness_m": 14.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_u_shaped_research_campus_with_repeatable_pavilion_bays",
+      "pavilion_wings": 3,
+      "open_landscaped_courtyard": true,
+      "occupied_storeys": [
+        3,
+        3,
+        2
+      ],
+      "glazed_connectors": 2,
+      "external_white_steel_frame": true,
+      "cantilevered_canopy_roofs": 3,
+      "photovoltaic_fields": 3,
+      "screened_mechanical_penthouses": 1,
+      "physical_curtain_wall_layers": [
+        "low_iron_pane",
+        "external_frame",
+        "slab",
+        "occupied_lab_depth"
+      ]
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "glass",
+      "interior",
+      "landscape",
+      "paving",
+      "photovoltaic",
+      "podium",
+      "precast",
+      "roof",
+      "side",
+      "white_steel"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "autonomous-tech-campus-silicon-valley_preview.png",
+  "renders": [
+    "autonomous-tech-campus-silicon-valley_preview.png",
+    "autonomous-tech-campus-silicon-valley_front_corner_oblique.png",
+    "autonomous-tech-campus-silicon-valley_front_elevation.png",
+    "autonomous-tech-campus-silicon-valley_rear_corner_oblique.png",
+    "autonomous-tech-campus-silicon-valley_aerial.png",
+    "autonomous-tech-campus-silicon-valley_facade_close.png",
+    "autonomous-tech-campus-silicon-valley_courtyard_close.png",
+    "autonomous-tech-campus-silicon-valley_street.png",
+    "autonomous-tech-campus-silicon-valley_context.png"
+  ],
+  "architectural_identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+  "material_zones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+  "glass_profile": "low_iron_research_pavilion",
+  "source_provenance": {
+    "catalogue_archetype_id": "autonomous_tech_campus",
+    "catalogue_variant_id": "tech_campus_silicon_valley",
+    "catalogue_alias_ids": [
+      "silicon_valley_research_campus",
+      "white_steel_technology_pavilions"
+    ],
+    "elevation_source": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg",
+    "goalpost": "/families/autonomous-tech-campus-silicon-valley/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/autonomous-tech-campus-silicon-valley/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

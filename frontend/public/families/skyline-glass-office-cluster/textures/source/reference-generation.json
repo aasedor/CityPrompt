@@ -1,0 +1,102 @@
+{
+  "schema": "reference-generation@1",
+  "family": "skyline-glass-office-cluster",
+  "archetype_id": "skyline_glass_office_cluster",
+  "variant_id": "skyline_cluster_staggered",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/skyline_glass_office_cluster/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      64.0,
+      30.0,
+      70.0
+    ],
+    "native_envelope_dimensions_m": [
+      70.0,
+      40.0,
+      76.1
+    ],
+    "occupied_storeys": 17,
+    "primary_material": "neutral blue-grey low-e glass in a silver aluminum curtain wall",
+    "window_rule": "separate vision panes, charcoal spandrels and physical aluminum caps with occupied depth",
+    "front_identity": "exactly three staggered towers joined by two enclosed bridges over one transparent podium",
+    "roof_rule": "three stepped glazed lantern crowns, with the tallest mast on the centre tower"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-9a882913-bb61-4b3a-9e08-ad2c0a8c50db",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Create one render-locked 2x2 survey board of the same skyline glass office complex: exactly three staggered curtain-wall towers on one transparent podium, tallest in the centre, two enclosed skybridges at different heights, stepped glazed roof lanterns, an occupied lobby and a paved civic plaza. Show front oblique, rectified front, rear oblique and aerial. Preserve tower count, bay cadence, bridge positions and crown geometry in every view; neutral overcast realism, no text or redesign.",
+      "registered_surfaces": [
+        "exact_three_tower_staggered_silhouette",
+        "two_enclosed_glazed_skybridges",
+        "shared_transparent_civic_podium",
+        "physical_vision_spandrel_and_aluminum_curtain_wall",
+        "stepped_glazed_roof_lanterns",
+        "warm_occupied_office_depth"
+      ]
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-9a882913-bb61-4b3a-9e08-ad2c0a8c50db:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-9a882913-bb61-4b3a-9e08-ad2c0a8c50db:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-9a882913-bb61-4b3a-9e08-ad2c0a8c50db:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-9a882913-bb61-4b3a-9e08-ad2c0a8c50db:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Create one rectified 3x2 construction plate with six separate shadow-neutral sources: low-e vision glass, silver anodized aluminum, charcoal glass spandrel, pale podium stone, warm occupied office depth and graphite structural steel. Keep cells orthographic, facade-ready and physically plausible; no labels, objects spanning cells or baked sunlight."
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "aluminum-material-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:aluminum-material-source-v1",
+      "role": "registered_material_crop:aluminum-material-source-v1"
+    },
+    {
+      "file": "spandrel-material-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:spandrel-material-source-v1",
+      "role": "registered_material_crop:spandrel-material-source-v1"
+    },
+    {
+      "file": "podium-stone-material-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:podium-stone-material-source-v1",
+      "role": "registered_material_crop:podium-stone-material-source-v1"
+    },
+    {
+      "file": "occupied-office-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:occupied-office-source-v1",
+      "role": "registered_material_crop:occupied-office-source-v1"
+    },
+    {
+      "file": "structural-steel-material-source-v1.png",
+      "source_id": "exec-f5355841-d9fc-464c-9e4c-79b8a2f9b2dc:structural-steel-material-source-v1",
+      "role": "registered_material_crop:structural-steel-material-source-v1"
+    }
+  ]
+}

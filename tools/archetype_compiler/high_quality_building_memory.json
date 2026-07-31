@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-30-reference-image-recipe-v108",
+  "memory_version": "2026-07-31-wave11-optical-curve-v109",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -885,6 +885,26 @@
       "symptom": "A procedural roof or truss renders correctly but the exported GLB reports an impossible vertical extent equal to one long beam length",
       "cause": "The final generated cylinder received a quaternion and was immediately composed into a rotated wing through its still-stale matrix_world; creating the next object had incidentally flushed every earlier member.",
       "correction": "Flush Blender's view-layer dependency graph after assigning procedural member quaternions and before composing parent or wing transforms. Apply the intended origin offset to physical gutters and caps, then validate the final on-disk GLB bounds rather than trusting the Blender render."
+    },
+    {
+      "symptom": "A segmental or semicircular window has the correct outline but its visible head reads as a staircase in the close render",
+      "cause": "The curved frame or spandrel was assembled from many separate beam chords or vertical filler strips, so every joint caught its own highlight.",
+      "correction": "Build the spandrel as one continuous face and the visible arch frame as one continuous ribbon with sufficient curve segments for the locked close camera. Keep jambs, threshold, mullions and recessed glazing independent."
+    },
+    {
+      "symptom": "A custom-skinned office or laboratory curtain wall still reads as one dark repeated image rather than transparent glass with occupied depth",
+      "cause": "The outer glass albedo baked reflections, mullions and an interior scene while a second occupied card repeated behind it, merging both optical layers into a dense texture.",
+      "correction": "Retain the approved glass source for roughness, normal and restrained reflection variation, wash its base colour toward the registered neutral tint, and place a separately registered warm occupied-depth source behind each physical pane. Keep pressure caps, spandrels and slabs as geometry."
+    },
+    {
+      "symptom": "A fixed landmark fits its documented shaft height but the mast, roof lantern, photovoltaic rack or screen clips the camera or exceeds the manifest envelope",
+      "cause": "Native dimensions were recorded before identity-bearing roof and crown assemblies were included in the delivered bounds.",
+      "correction": "Compute the complete assembled bounds after every crown and roof element is built, store that full metric height in the manifest and design lock, and prove the entire extent in hero, elevation and aerial renders."
+    },
+    {
+      "symptom": "A dense physical curtain wall takes many minutes to regenerate even though its panes, caps and slab edges are simple cuboids",
+      "cause": "Every repeated primitive invoked context-dependent Blender operators and transform application, making tooling overhead dominate visual iteration.",
+      "correction": "Create the metric vertices, faces, material slot and UVs directly for repeated simple meshes. Preserve bevels, semantic extras and separate optical layers, then verify that the optimized generator exports the same physical facade and close-view result."
     }
   ]
 }

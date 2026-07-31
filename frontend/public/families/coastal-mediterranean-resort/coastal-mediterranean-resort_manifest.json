@@ -1,0 +1,1690 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave11_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-31T21:36:15.286362+00:00",
+  "family": "coastal-mediterranean-resort",
+  "archetype_id": "coastal_resort_terrace_block",
+  "archetype_label": "Coastal Resort Terrace Block — White Mediterranean",
+  "variant_id": "coastal_resort_white_mediterranean",
+  "generation_archetype_id": "coastal_resort_white_mediterranean",
+  "archetype_aliases": [
+    "coastal_resort_terrace_block",
+    "coastal_resort_white_mediterranean",
+    "coastal_mediterranean_resort",
+    "white_mediterranean_resort_block"
+  ],
+  "aesthetic_category_id": "coastal_mediterranean",
+  "development_type": "hotel",
+  "reuse_keys": [
+    "coastal_resort_terrace_block",
+    "coastal_resort_white_mediterranean",
+    "coastal_mediterranean_resort",
+    "white_mediterranean_resort_block",
+    "Coastal Resort Terrace Block",
+    "White Mediterranean Resort",
+    "Boutique Coastal Hotel",
+    "Terraced Resort"
+  ],
+  "generation_tags": [
+    "wave11",
+    "hospitality",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "cascading_terraces",
+    "physical_infinity_pool",
+    "real_french_door_openings",
+    "physical_operable_shutters",
+    "open_wrought_iron_guards",
+    "open_timber_pergolas",
+    "occupied_residential_glazing"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The selected coastal resort is one frontage-led composition: its pool, stair, three cascading terraces and public pergolas cannot be turned into L/U/courtyard bars without duplicating the entrance. Near-native rectangles preserve the fixed landmark; larger drawings repeat complete ordinary shuttered room bays along the long axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.82,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      32.0,
+      48.0
+    ],
+    "recommendedDepth_m": [
+      22.0,
+      34.0
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "preferredBayMultiple_m": 6.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          32.0,
+          48.0
+        ],
+        "recommendedDepth_m": [
+          22.0,
+          34.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "preferredBayMultiple_m": 6.2
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/white_mediterranean_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/white_mediterranean_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/white_mediterranean_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/white_mediterranean_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/white_mediterranean_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/white_mediterranean_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/white_mediterranean_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/white_mediterranean_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/white_mediterranean_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/white_mediterranean_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/white_mediterranean_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/white_mediterranean_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/white_mediterranean_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/white_mediterranean_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/white_mediterranean_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/white_mediterranean_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/white_mediterranean_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/white_mediterranean_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/white_mediterranean_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/white_mediterranean_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/white_mediterranean_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/white_mediterranean_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/white_mediterranean_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/white_mediterranean_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/pool_terrace_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/pool_terrace_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/pool_terrace_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/pool_terrace_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/pool_terrace_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/pool_terrace_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/pool_terrace_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/pool_terrace_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/arched_balcony_storey_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/arched_balcony_storey_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/arched_balcony_storey_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/arched_balcony_storey_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/arched_balcony_storey_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/arched_balcony_storey_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/arched_balcony_storey_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/arched_balcony_storey_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/setback_roof_storey_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/setback_roof_storey_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/setback_roof_storey_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/setback_roof_storey_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/setback_roof_storey_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/setback_roof_storey_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/setback_roof_storey_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/setback_roof_storey_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/parapet_pergola_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/parapet_pergola_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/parapet_pergola_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/parapet_pergola_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/parapet_pergola_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/parapet_pergola_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/parapet_pergola_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/parapet_pergola_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/quiet_stucco_return_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/quiet_stucco_return_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/quiet_stucco_return_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/quiet_stucco_return_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/quiet_stucco_return_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/quiet_stucco_return_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/quiet_stucco_return_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/quiet_stucco_return_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_resort_room_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_resort_room_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_resort_room_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_resort_room_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_resort_room_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_resort_room_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_resort_room_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_resort_room_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_stucco_albedo",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_albedo.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_stucco_normal",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_normal.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "normal"
+    },
+    {
+      "key": "near_stucco_roughness",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_roughness.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_stucco_ao",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_ao.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "ao"
+    },
+    {
+      "key": "near_stucco_depth",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_depth.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "depth"
+    },
+    {
+      "key": "near_stucco_emissive",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_emissive.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_stucco_glass_mask",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_glass.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_stucco_opaque_mask",
+      "path": "textures/pbr/near/hand_trowelled_lime_stucco_opaque.png",
+      "lod": "near",
+      "zone": "stucco",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_stone_albedo",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_albedo.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_stone_normal",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_normal.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "normal"
+    },
+    {
+      "key": "near_stone_roughness",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_roughness.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_stone_ao",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_ao.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "ao"
+    },
+    {
+      "key": "near_stone_depth",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_depth.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "depth"
+    },
+    {
+      "key": "near_stone_emissive",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_emissive.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_stone_glass_mask",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_glass.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_stone_opaque_mask",
+      "path": "textures/pbr/near/pale_local_rubble_limestone_opaque.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_blue_timber_albedo",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_albedo.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_blue_timber_normal",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_normal.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "normal"
+    },
+    {
+      "key": "near_blue_timber_roughness",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_roughness.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_blue_timber_ao",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_ao.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "ao"
+    },
+    {
+      "key": "near_blue_timber_depth",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_depth.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "depth"
+    },
+    {
+      "key": "near_blue_timber_emissive",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_emissive.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_blue_timber_glass_mask",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_glass.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_blue_timber_opaque_mask",
+      "path": "textures/pbr/near/aegean_blue_painted_timber_opaque.png",
+      "lod": "near",
+      "zone": "blue_timber",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_wrought_iron_albedo",
+      "path": "textures/pbr/near/black_wrought_iron_albedo.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_wrought_iron_normal",
+      "path": "textures/pbr/near/black_wrought_iron_normal.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "normal"
+    },
+    {
+      "key": "near_wrought_iron_roughness",
+      "path": "textures/pbr/near/black_wrought_iron_roughness.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_wrought_iron_ao",
+      "path": "textures/pbr/near/black_wrought_iron_ao.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "ao"
+    },
+    {
+      "key": "near_wrought_iron_depth",
+      "path": "textures/pbr/near/black_wrought_iron_depth.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "depth"
+    },
+    {
+      "key": "near_wrought_iron_emissive",
+      "path": "textures/pbr/near/black_wrought_iron_emissive.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_wrought_iron_glass_mask",
+      "path": "textures/pbr/near/black_wrought_iron_glass.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_wrought_iron_opaque_mask",
+      "path": "textures/pbr/near/black_wrought_iron_opaque.png",
+      "lod": "near",
+      "zone": "wrought_iron",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_paving_albedo",
+      "path": "textures/pbr/near/honed_pool_limestone_albedo.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_paving_normal",
+      "path": "textures/pbr/near/honed_pool_limestone_normal.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "normal"
+    },
+    {
+      "key": "near_paving_roughness",
+      "path": "textures/pbr/near/honed_pool_limestone_roughness.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_paving_ao",
+      "path": "textures/pbr/near/honed_pool_limestone_ao.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "ao"
+    },
+    {
+      "key": "near_paving_depth",
+      "path": "textures/pbr/near/honed_pool_limestone_depth.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "depth"
+    },
+    {
+      "key": "near_paving_emissive",
+      "path": "textures/pbr/near/honed_pool_limestone_emissive.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_paving_glass_mask",
+      "path": "textures/pbr/near/honed_pool_limestone_glass.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_paving_opaque_mask",
+      "path": "textures/pbr/near/honed_pool_limestone_opaque.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_water_albedo",
+      "path": "textures/pbr/near/infinity_pool_water_albedo.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_water_normal",
+      "path": "textures/pbr/near/infinity_pool_water_normal.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "normal"
+    },
+    {
+      "key": "near_water_roughness",
+      "path": "textures/pbr/near/infinity_pool_water_roughness.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_water_ao",
+      "path": "textures/pbr/near/infinity_pool_water_ao.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "ao"
+    },
+    {
+      "key": "near_water_depth",
+      "path": "textures/pbr/near/infinity_pool_water_depth.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "depth"
+    },
+    {
+      "key": "near_water_emissive",
+      "path": "textures/pbr/near/infinity_pool_water_emissive.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_water_glass_mask",
+      "path": "textures/pbr/near/infinity_pool_water_glass.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_water_opaque_mask",
+      "path": "textures/pbr/near/infinity_pool_water_opaque.png",
+      "lod": "near",
+      "zone": "water",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/pale_flat_roof_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_vegetation_albedo",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_albedo.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_vegetation_normal",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_normal.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "normal"
+    },
+    {
+      "key": "near_vegetation_roughness",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_roughness.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_vegetation_ao",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_ao.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "ao"
+    },
+    {
+      "key": "near_vegetation_depth",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_depth.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "depth"
+    },
+    {
+      "key": "near_vegetation_emissive",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_emissive.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_vegetation_glass_mask",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_glass.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_vegetation_opaque_mask",
+      "path": "textures/pbr/near/mediterranean_olive_foliage_opaque.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_bougainvillea_albedo",
+      "path": "textures/pbr/near/magenta_bougainvillea_albedo.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_bougainvillea_normal",
+      "path": "textures/pbr/near/magenta_bougainvillea_normal.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "normal"
+    },
+    {
+      "key": "near_bougainvillea_roughness",
+      "path": "textures/pbr/near/magenta_bougainvillea_roughness.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_bougainvillea_ao",
+      "path": "textures/pbr/near/magenta_bougainvillea_ao.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "ao"
+    },
+    {
+      "key": "near_bougainvillea_depth",
+      "path": "textures/pbr/near/magenta_bougainvillea_depth.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "depth"
+    },
+    {
+      "key": "near_bougainvillea_emissive",
+      "path": "textures/pbr/near/magenta_bougainvillea_emissive.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_bougainvillea_glass_mask",
+      "path": "textures/pbr/near/magenta_bougainvillea_glass.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_bougainvillea_opaque_mask",
+      "path": "textures/pbr/near/magenta_bougainvillea_opaque.png",
+      "lod": "near",
+      "zone": "bougainvillea",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/coastal-mediterranean-resort",
+    "model": "gpt-image-2",
+    "style_reference": "/families/coastal-mediterranean-resort/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "infinity_pool_and_entry_stair",
+        "cascading_terrace_ends",
+        "roof_pergola_and_chimney"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat complete 6.2 metre occupied room bays, including the wall pier, French-door cavity, blue shutters, glazing, room depth and optional iron balcony. Never stretch shutters, door leaves or guards."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "pool podium and stair",
+        "cascading end terraces",
+        "roof parapets",
+        "open pergolas",
+        "chimney and planted roof assemblies"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "The public front uses deeply recessed shuttered French doors and open iron balconies; side returns use quieter blue-framed windows; the rear sits on a pale rubble-stone service base.",
+      "elevation_coverage": {
+        "front": "three stepped levels of shuttered occupied French doors, balconies and pergolas",
+        "left": "quiet stucco return with blue-framed occupied openings",
+        "right": "quiet stucco return with blue-framed occupied openings and stone wall",
+        "rear": "rubble-stone service base, stucco upper walls and roof terraces",
+        "roof": "open pergola, parapets, planted terraces and single chimney"
+      },
+      "variation_policy": "Scale the complete landmark only inside 0.82-1.20 with an independent-axis ratio no greater than 1.16. Larger targets use long-axis streetwall repeat of complete room bays."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/white_mediterranean_front_albedo.png",
+        "normal": "textures/pbr/near/white_mediterranean_front_normal.png",
+        "roughness": "textures/pbr/near/white_mediterranean_front_roughness.png",
+        "ao": "textures/pbr/near/white_mediterranean_front_ao.png",
+        "depth": "textures/pbr/near/white_mediterranean_front_depth.png",
+        "emissive": "textures/pbr/near/white_mediterranean_front_emissive.png",
+        "glass_mask": "textures/pbr/near/white_mediterranean_front_glass.png",
+        "opaque_mask": "textures/pbr/near/white_mediterranean_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/white_mediterranean_front_albedo.png",
+        "normal": "textures/pbr/far/white_mediterranean_front_normal.png",
+        "roughness": "textures/pbr/far/white_mediterranean_front_roughness.png",
+        "ao": "textures/pbr/far/white_mediterranean_front_ao.png",
+        "depth": "textures/pbr/far/white_mediterranean_front_depth.png",
+        "emissive": "textures/pbr/far/white_mediterranean_front_emissive.png",
+        "glass_mask": "textures/pbr/far/white_mediterranean_front_glass.png",
+        "opaque_mask": "textures/pbr/far/white_mediterranean_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/white_mediterranean_front_glass.png",
+        "opaque_mask": "textures/pbr/near/white_mediterranean_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "coastal_resort_terrace_block",
+      "source_variant_id": "coastal_resort_white_mediterranean",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "three_level_cascading_white_stucco_resort_mass",
+        "real_front_infinity_pool_basin_coping_and_stair",
+        "arched_french_door_balcony_openings_with_deep_returns",
+        "weathered_aegean_blue_operable_timber_shutters",
+        "slender_open_wrought_iron_balcony_guards",
+        "three_open_blue_timber_pergola_assemblies",
+        "pale_rubble_stone_rear_service_and_retaining_walls",
+        "occupied_neutral_low_iron_residential_glazing",
+        "flat_parapeted_roof_terraces_with_one_chimney",
+        "integrated_olive_and_bougainvillea_planting"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/coastal-mediterranean-resort/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_cascading_coastal_resort_with_repeatable_room_bays",
+    "silhouette": "three_cascading_flat_roof_terraces_behind_front_infinity_pool",
+    "occupied_storeys": 3,
+    "principal_french_door_openings": 12,
+    "segmental_arched_balcony_openings": 3,
+    "physical_blue_shutter_leaves": 24,
+    "open_wrought_iron_balcony_guards": 4,
+    "open_blue_timber_pergolas": 3,
+    "infinity_pool_basins": 1,
+    "integrated_entry_stair_runs": 1,
+    "flat_roof_terraces": 5,
+    "white_roof_chimneys": 1,
+    "rubble_stone_service_elevations": 1
+  },
+  "material_budget": {
+    "max_assembled_materials": 22,
+    "rationale": "Reference-specific lime stucco, rubble limestone, painted blue timber, wrought iron, honed pool stone, physical low-iron glass, occupied room depth, pool water and restrained planting retain distinct PBR responses because those differences carry the resort identity."
+  },
+  "dimensions": {
+    "width_m": 40.0,
+    "depth_m": 28.0,
+    "podium_height_m": 0.45,
+    "floor_height_m": 3.8,
+    "setback_height_m": 3.8,
+    "roof_height_m": 1.7,
+    "crown_height_m": 0.95,
+    "default_floors": 3,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "native_width_m": 40.0,
+  "native_depth_m": 28.0,
+  "native_height_m": 13.4,
+  "native_floors": 3,
+  "min_floors": 3,
+  "max_floors": 8,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_podium.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 0.45,
+      "floor_height_m": 3.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 252,
+      "material_count": 5,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 19402248
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_floor_typical_a.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 3.8,
+      "floor_height_m": 3.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 27252,
+      "material_count": 9,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 38069840
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_floor_typical_b.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 3.8,
+      "floor_height_m": 3.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 36057,
+      "material_count": 10,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 45496044
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_floor_typical_c.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 3.8,
+      "floor_height_m": 3.8,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 21636,
+      "material_count": 9,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 37657172
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_crown_crown.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 0.95,
+      "floor_height_m": 3.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 468,
+      "material_count": 4,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 9181024
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "coastal-mediterranean-resort_roof.glb",
+      "module_family": "coastal-mediterranean-resort",
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "height_m": 1.7,
+      "floor_height_m": 3.8,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 2196,
+      "material_count": 5,
+      "texture_keys": [
+        "blue_timber",
+        "bougainvillea",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "glass",
+        "interior",
+        "paving",
+        "podium",
+        "roof",
+        "side",
+        "stone",
+        "stucco",
+        "vegetation",
+        "water",
+        "wrought_iron"
+      ],
+      "ao_baked": true,
+      "size_bytes": 16871216
+    }
+  ],
+  "assembled": {
+    "filename": "coastal-mediterranean-resort_assembled.glb",
+    "module_family": "coastal-mediterranean-resort",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "coastal_resort_white_mediterranean",
+    "generation_archetype_id": "coastal_resort_white_mediterranean",
+    "width_m": 40.0,
+    "depth_m": 28.0,
+    "floors": 3,
+    "uses_setback": true,
+    "uses_crown": true,
+    "height_m": 13.4,
+    "triangle_count": 127085,
+    "material_count": 17,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 13.4
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 40.0,
+      "depth_m": 28.0,
+      "wing_depth_m": 14.8,
+      "segments": [
+        {
+          "id": "three_level_resort_body",
+          "centre_x_m": 0.0,
+          "centre_y_m": 1.6,
+          "length_m": 34.0,
+          "thickness_m": 14.8,
+          "rotation_degrees": 0.0
+        },
+        {
+          "id": "front_infinity_pool_terrace",
+          "centre_x_m": 0.0,
+          "centre_y_m": -9.7,
+          "length_m": 23.0,
+          "thickness_m": 5.2,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_cascading_coastal_resort_with_repeatable_room_bays",
+      "silhouette": "three_cascading_flat_roof_terraces_behind_front_infinity_pool",
+      "occupied_storeys": 3,
+      "principal_french_door_openings": 12,
+      "segmental_arched_balcony_openings": 3,
+      "physical_blue_shutter_leaves": 24,
+      "open_wrought_iron_balcony_guards": 4,
+      "open_blue_timber_pergolas": 3,
+      "infinity_pool_basins": 1,
+      "integrated_entry_stair_runs": 1,
+      "flat_roof_terraces": 5,
+      "white_roof_chimneys": 1,
+      "rubble_stone_service_elevations": 1
+    },
+    "texture_keys": [
+      "blue_timber",
+      "bougainvillea",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "glass",
+      "interior",
+      "paving",
+      "podium",
+      "roof",
+      "side",
+      "stone",
+      "stucco",
+      "vegetation",
+      "water",
+      "wrought_iron"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "coastal-mediterranean-resort_preview.png",
+  "renders": [
+    "coastal-mediterranean-resort_preview.png",
+    "coastal-mediterranean-resort_front_corner_oblique.png",
+    "coastal-mediterranean-resort_front_elevation.png",
+    "coastal-mediterranean-resort_rear_corner_oblique.png",
+    "coastal-mediterranean-resort_aerial.png",
+    "coastal-mediterranean-resort_pool_close.png",
+    "coastal-mediterranean-resort_window_close.png",
+    "coastal-mediterranean-resort_street.png",
+    "coastal-mediterranean-resort_context.png",
+    "coastal-mediterranean-resort_facade_close.png"
+  ],
+  "architectural_identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+  "material_zones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone and recessed mortar; weathered Aegean-blue painted timber; nearly black wrought iron; honed pale pool limestone; physical neutral low-iron residential glazing; warm occupied room depth; shallow blue-green pool water; olive foliage and restrained magenta bougainvillea",
+  "glass_profile": "coastal_residential_low_iron",
+  "source_provenance": {
+    "catalogue_archetype_id": "coastal_resort_terrace_block",
+    "catalogue_variant_id": "coastal_resort_white_mediterranean",
+    "catalogue_alias_ids": [
+      "coastal_mediterranean_resort",
+      "white_mediterranean_resort_block"
+    ],
+    "elevation_source": "/families/coastal-mediterranean-resort/elevation.jpg",
+    "goalpost": "/families/coastal-mediterranean-resort/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/coastal-mediterranean-resort/textures/source/reference-generation.json",
+    "method": "reference-locked four-view ImageGen source board, six-zone shadow-neutral construction plate, deterministic metric walls split around physical French-door voids, layered glazing and occupied depth, open shutters/guards/pergolas, complete pool section, cascading terraces, wrapped secondary elevations and roof"
+  }
+}

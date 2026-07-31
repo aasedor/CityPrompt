@@ -1,0 +1,179 @@
+{
+  "status": "pass",
+  "family": "autonomous-tech-campus-silicon-valley",
+  "archetype_id": "autonomous_tech_campus",
+  "reuse_keys": [
+    "autonomous_tech_campus",
+    "tech_campus_silicon_valley",
+    "silicon_valley_research_campus",
+    "white_steel_technology_pavilions",
+    "Autonomous Tech Campus",
+    "Silicon Valley Research Pavilion",
+    "Low Rise Technology Campus",
+    "White Steel Laboratory Campus"
+  ],
+  "manifest": "autonomous-tech-campus-silicon-valley_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "autonomous-tech-campus-silicon-valley_podium.glb: 24.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_floor_typical_a.glb: 49.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_floor_typical_b.glb: 49.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_floor_typical_c.glb: 49.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_crown_crown.glb: 12.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_roof.glb: 32.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "autonomous-tech-campus-silicon-valley_assembled.glb: 74.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "autonomous-tech-campus-silicon-valley_podium.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 65.12,
+        "height_y": 1.0,
+        "depth_z": 40.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W11_CAMPUS_PaleArchitecturalPrecast",
+        "MAT_W11_CAMPUS_PaleConcretePavers"
+      ],
+      "size_bytes": 25891268
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 9720,
+      "extent_m": {
+        "width_x": 57.984,
+        "height_y": 4.195,
+        "depth_z": 31.584
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W11_CAMPUS_CoolRoofMembrane",
+        "MAT_W11_CAMPUS_NeutralLowIronGlass",
+        "MAT_W11_CAMPUS_OccupiedLaboratoryDepth",
+        "MAT_W11_CAMPUS_PaleArchitecturalPrecast",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 52266032
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 9776,
+      "extent_m": {
+        "width_x": 57.984,
+        "height_y": 4.195,
+        "depth_z": 31.632
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W11_CAMPUS_CoolRoofMembrane",
+        "MAT_W11_CAMPUS_NeutralLowIronGlass",
+        "MAT_W11_CAMPUS_OccupiedLaboratoryDepth",
+        "MAT_W11_CAMPUS_PaleArchitecturalPrecast",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 52271608
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 8592,
+      "extent_m": {
+        "width_x": 57.984,
+        "height_y": 4.195,
+        "depth_z": 31.584
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W11_CAMPUS_CoolRoofMembrane",
+        "MAT_W11_CAMPUS_NeutralLowIronGlass",
+        "MAT_W11_CAMPUS_OccupiedLaboratoryDepth",
+        "MAT_W11_CAMPUS_PaleArchitecturalPrecast",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 52160232
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_crown_crown.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 60.88,
+        "height_y": 1.2,
+        "depth_z": 33.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 12594872
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_roof.glb",
+      "status": "ok",
+      "triangles": 17424,
+      "extent_m": {
+        "width_x": 60.68,
+        "height_y": 2.1,
+        "depth_z": 33.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W11_CAMPUS_BlueBlackPhotovoltaicCells",
+        "MAT_W11_CAMPUS_CoolRoofMembrane",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 33890696
+    },
+    {
+      "file": "autonomous-tech-campus-silicon-valley_assembled.glb",
+      "status": "ok",
+      "triangles": 75844,
+      "extent_m": {
+        "width_x": 74.0,
+        "height_y": 13.219,
+        "depth_z": 54.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W11_CAMPUS_BlueBlackPhotovoltaicCells",
+        "MAT_W11_CAMPUS_CoolRoofMembrane",
+        "MAT_W11_CAMPUS_Foliage",
+        "MAT_W11_CAMPUS_FoliageSilver",
+        "MAT_W11_CAMPUS_GraphiteScreen",
+        "MAT_W11_CAMPUS_LayeredBioswaleGroundcover",
+        "MAT_W11_CAMPUS_NeutralLowIronGlass",
+        "MAT_W11_CAMPUS_OccupiedLaboratoryDepth",
+        "MAT_W11_CAMPUS_PaleArchitecturalPrecast",
+        "MAT_W11_CAMPUS_PaleConcretePavers",
+        "MAT_W11_CAMPUS_TreeTrunk",
+        "MAT_W11_CAMPUS_WarmWhitePowderCoatedSteel"
+      ],
+      "size_bytes": 78009568,
+      "role": "assembled"
+    }
+  ]
+}

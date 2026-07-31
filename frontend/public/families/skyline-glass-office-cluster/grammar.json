@@ -1,0 +1,116 @@
+{
+  "family_id": "skyline-glass-office-cluster",
+  "source": {
+    "archetype_id": "skyline_glass_office_cluster",
+    "variant_id": "skyline_cluster_staggered",
+    "generation_archetype_id": "skyline_cluster_staggered",
+    "reuse_keys": [
+      "skyline_glass_office_cluster",
+      "skyline_cluster_staggered",
+      "staggered_glass_office_cluster",
+      "three_tower_skybridge_cluster",
+      "Skyline Glass Office Cluster",
+      "Staggered Office Towers",
+      "Three Tower Office Complex",
+      "Skybridge Office Campus"
+    ]
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 40.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 3.65,
+    "setback_height_m": 3.65,
+    "roof_height_m": 3.0,
+    "crown_height_m": 2.6,
+    "default_floors": 17,
+    "min_floors": 8,
+    "max_floors": 30
+  },
+  "architectural_signature": {
+    "identity": "Exactly three staggered silver-blue curtain-wall office towers rise from one transparent civic podium, linked by two enclosed glazed skybridges and finished with stepped glass lantern crowns.",
+    "material_zones": "neutral blue-grey low-e vision glass; physical silver anodized aluminum pressure caps; charcoal glass spandrels; pale honed podium stone and plaza paving; graphite bridge trusses; warm occupied office depth; dark low-slope roofs",
+    "glass_profile": "neutral_low_e_office_curtain_wall",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_curtain_wall",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "skyline_glass_office_cluster",
+    "skyline_cluster_staggered",
+    "staggered_glass_office_cluster",
+    "three_tower_skybridge_cluster"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The exact three-tower count, one podium and two bridge connections form one landmark composition. The rectangle matrix accepts ordinary hand-drawn variation from 55-100 by 30-58 metres; larger targets repeat complete curtain-wall office bars rather than stretching bridges or towers.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.24,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      55.0,
+      100.0
+    ],
+    "recommendedDepth_m": [
+      30.0,
+      58.0
+    ],
+    "recommendedFloors": [
+      8,
+      30
+    ],
+    "preferredBayMultiple_m": 3.1,
+    "scaleMin": 0.78,
+    "scaleMax": 1.24,
+    "maxAxisRatio": 1.18,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          55.0,
+          100.0
+        ],
+        "recommendedDepth_m": [
+          30.0,
+          58.0
+        ],
+        "recommendedFloors": [
+          8,
+          30
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.24,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 3.1
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_three_tower_skybridge_landmark_with_repeatable_office_bays",
+    "tower_count": 3,
+    "tower_floor_counts": [
+      14,
+      17,
+      13
+    ],
+    "enclosed_skybridges": 2,
+    "shared_transparent_podium": true,
+    "stepped_glazed_crowns": 3,
+    "centre_antenna_masts": 1,
+    "physical_curtain_wall_layers": [
+      "vision",
+      "spandrel",
+      "aluminum_caps",
+      "slab",
+      "occupied_depth"
+    ]
+  }
+}

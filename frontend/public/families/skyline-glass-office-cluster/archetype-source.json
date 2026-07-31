@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "skyline_glass_office_cluster",
+  "catalogue_variant_id": "skyline_cluster_staggered",
+  "catalogue_alias_ids": [
+    "staggered_glass_office_cluster",
+    "three_tower_skybridge_cluster"
+  ],
+  "elevation_source": "/families/skyline-glass-office-cluster/elevation.jpg",
+  "goalpost": "/families/skyline-glass-office-cluster/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/skyline-glass-office-cluster/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

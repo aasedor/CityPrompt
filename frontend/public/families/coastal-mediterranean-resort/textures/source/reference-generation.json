@@ -1,0 +1,102 @@
+{
+  "schema": "reference-generation@1",
+  "family": "coastal-mediterranean-resort",
+  "archetype_id": "coastal_resort_terrace_block",
+  "variant_id": "coastal_resort_white_mediterranean",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/coastal_resort_terrace_block/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      34.0,
+      19.0,
+      12.6
+    ],
+    "native_envelope_dimensions_m": [
+      40.0,
+      28.0,
+      13.4
+    ],
+    "occupied_storeys": 3,
+    "primary_material": "imperfect warm-white hand-trowelled lime stucco",
+    "window_rule": "deep recessed French doors with blue shutters and occupied neutral glazing",
+    "front_identity": "long infinity pool, side stair and layered open pergolas",
+    "roof_rule": "cascading flat roof terraces with open iron guards and one white chimney"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-b69b625a-3937-4123-a533-2c95f464d16f",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked architectural construction goalpost for a metric LEGO 3D family\nInput images: Image 1 is the sole hard design reference for Coastal / Resort Terrace Block variant coastal_resort_white_mediterranean. Preserve this exact building identity; do not borrow any sibling variant.\nPrimary request: create one clean 2x2 architectural reference board showing the SAME coherent white Mediterranean coastal resort block in four views: front street oblique, straight-on orthographic front elevation, rear corner oblique, and high aerial roof view.\nSubject: exactly three occupied levels arranged as cascading stepped terraces; irregular hand-trowelled white lime-stucco masses; pale local rubble-stone retaining walls and right-hand service wing; blue timber shutters; tall recessed French doors; thin black wrought-iron balcony rails; blue-grey open timber pergolas; restrained bougainvillea; a long rectangular infinity pool on the front terrace; flat parapeted roofs with planted roof terraces and one small white chimney.\nComposition/framing: 2x2 equal panels with generous separation and the complete building visible in every panel. No labels or text.\nLighting/mood: neutral bright overcast architectural survey light, soft contact shadows only, consistent white balance in all panels.\nMaterials/textures: tactile imperfect lime stucco, pale rough-cut stone, painted blue timber, physically transparent neutral glass with visible warm interior depth, slender ironwork, water with subtle reflection.\nConstraints: preserve the same footprint, floor count, terrace steps, opening cadence, pool location, stair location, shutters, pergolas, rooflines and material zoning across all four panels. The front elevation must be rectified and shadow-neutral. The aerial must clearly prove the setbacks and roof terraces. No redesign, no extra floors, no tower, no pitched or thatched roof, no contemporary all-glass replacement, no cliff cave, no neighboring buildings touching the subject, no people blocking facade geometry, no vehicles, no signage, no logos, no watermark.",
+      "registered_surfaces": [
+        "three_level_cascading_white_stucco_resort_mass",
+        "real_front_infinity_pool_basin_coping_and_stair",
+        "arched_french_door_balcony_openings_with_deep_returns",
+        "weathered_aegean_blue_operable_timber_shutters",
+        "slender_open_wrought_iron_balcony_guards",
+        "three_open_blue_timber_pergola_assemblies",
+        "pale_rubble_stone_rear_service_and_retaining_walls",
+        "occupied_neutral_low_iron_residential_glazing",
+        "flat_parapeted_roof_terraces_with_one_chimney",
+        "integrated_olive_and_bougainvillea_planting"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-b69b625a-3937-4123-a533-2c95f464d16f:front-elevation-crop",
+      "role": "shadow_neutral_front_elevation",
+      "registered_surfaces": [
+        "front_stucco_piers",
+        "french_door_opening_cadence",
+        "balconies_shutters_and_pergolas"
+      ]
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-b69b625a-3937-4123-a533-2c95f464d16f:rear-corner-crop",
+      "role": "rear_and_side_goalpost",
+      "registered_surfaces": [
+        "rubble_stone_service_base",
+        "quiet_rear_shuttered_openings",
+        "roof_terrace_parapets"
+      ]
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-b69b625a-3937-4123-a533-2c95f464d16f:aerial-roof-crop",
+      "role": "setback_roof_and_pool_goalpost",
+      "registered_surfaces": [
+        "three_cascading_setback_tiers",
+        "open_pergolas",
+        "pool_and_roof_terraces"
+      ]
+    },
+    {
+      "file": "occupied-residential-source-v1.png",
+      "source_id": "exec-66f79ae5-02d9-410b-8f85-4bfebc3adce1:occupied-depth-cell",
+      "role": "window_materiality_and_occupied_depth",
+      "registered_surfaces": [
+        "all_principal_french_door_panes"
+      ]
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-66f79ae5-02d9-410b-8f85-4bfebc3adce1",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: stylized-concept\nAsset type: shadow-neutral construction material source plate for a physically based architectural model\nInput images: Image 1 is the approved render-locked four-view goalpost for coastal_resort_white_mediterranean and is the sole palette/material authority.\nPrimary request: create a clean 3-column by 2-row orthographic material reference plate containing exactly six large seamless-looking square swatches, with no labels and narrow neutral gutters.\nSwatches, left-to-right top row then bottom row: (1) imperfect warm-white hand-trowelled lime stucco with subtle aggregate and hairline variation; (2) pale cream local rubble limestone with small irregular blocks and recessed warm-grey mortar; (3) weathered muted Aegean blue painted timber with fine grain; (4) nearly black slender wrought iron with softly worn painted finish; (5) pale limestone pool coping and honed exterior paving; (6) neutral low-iron residential glass plus a shallow warm occupied interior study, shown frontally without perspective.\nComposition/framing: each swatch fills its cell edge-to-edge; orthographic and rectified; consistent real-world material scale; no objects, doors, windows, railings, plants, furniture, sky, floor horizon, text, symbols, or labels.\nLighting/mood: perfectly even diffuse studio illumination, no cast shadows, no highlights indicating a light direction, neutral white balance.\nConstraints: derive all hues and weathering from Image 1; construction-source realism, not a beauty render; no baked sun, no perspective distortion, no vignette, no borders other than narrow neutral gutters, no logos, no watermark.",
+      "registered_surfaces": [
+        "stucco",
+        "rubble_stone",
+        "blue_timber",
+        "wrought_iron",
+        "pool_limestone",
+        "occupied_glass"
+      ]
+    }
+  ]
+}

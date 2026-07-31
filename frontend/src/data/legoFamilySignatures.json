@@ -714,6 +714,90 @@
                                                        "materialZones": "varied red-brown fired common brick and recessed lime mortar; pale cut-limestone plinth and sills; oxidized blue-grey standing-seam zinc roof slopes; blackened rolled-steel sash and roof trusses; physical blue-grey low-iron industrial glazing; occupied workshop depth and warm task lighting; dark-green sectional loading doors; broom-finish concrete; aged asphalt; galvanized drainage and stairs",
                                                        "glassProfile": "industrial_low_iron_neutral",
                                                        "elevationUrl": "/families/historic-daylight-factory/elevation.jpg"
+                                                   },
+                     "coastal_resort_terrace_block": {
+                                                       "archetypeId": "coastal_resort_terrace_block",
+                                                       "identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+                                                       "materialZones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone; weathered Aegean-blue timber; black wrought iron; honed pool limestone; physical neutral low-iron glazing; warm occupied rooms; blue-green pool water; restrained olive and bougainvillea planting",
+                                                       "glassProfile": "coastal_residential_low_iron",
+                                                       "elevationUrl": "/families/coastal-mediterranean-resort/elevation.jpg"
+                                                   },
+                     "coastal_resort_white_mediterranean": {
+                                                                  "archetypeId": "coastal_resort_white_mediterranean",
+                                                                  "identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+                                                                  "materialZones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone; weathered Aegean-blue timber; black wrought iron; honed pool limestone; physical neutral low-iron glazing; warm occupied rooms; blue-green pool water; restrained olive and bougainvillea planting",
+                                                                  "glassProfile": "coastal_residential_low_iron",
+                                                                  "elevationUrl": "/families/coastal-mediterranean-resort/elevation.jpg"
+                                                              },
+                     "coastal_mediterranean_resort": {
+                                                               "archetypeId": "coastal_mediterranean_resort",
+                                                               "identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+                                                               "materialZones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone; weathered Aegean-blue timber; black wrought iron; honed pool limestone; physical neutral low-iron glazing; warm occupied rooms; blue-green pool water; restrained olive and bougainvillea planting",
+                                                               "glassProfile": "coastal_residential_low_iron",
+                                                               "elevationUrl": "/families/coastal-mediterranean-resort/elevation.jpg"
+                                                           },
+                     "white_mediterranean_resort_block": {
+                                                                  "archetypeId": "white_mediterranean_resort_block",
+                                                                  "identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+                                                                  "materialZones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone; weathered Aegean-blue timber; black wrought iron; honed pool limestone; physical neutral low-iron glazing; warm occupied rooms; blue-green pool water; restrained olive and bougainvillea planting",
+                                                                  "glassProfile": "coastal_residential_low_iron",
+                                                                  "elevationUrl": "/families/coastal-mediterranean-resort/elevation.jpg"
+                                                              },
+                     "skyline_glass_office_cluster": {
+                                                               "archetypeId": "skyline_glass_office_cluster",
+                                                               "identity": "Exactly three staggered silver-blue curtain-wall office towers rise from one transparent civic podium, linked by two enclosed glazed skybridges and finished with stepped glass lantern crowns.",
+                                                               "materialZones": "neutral blue-grey low-e vision glass; physical silver anodized aluminum pressure caps; charcoal glass spandrels; pale honed podium stone and plaza paving; graphite bridge trusses; warm occupied office depth; dark low-slope roofs",
+                                                               "glassProfile": "neutral_low_e_office_curtain_wall",
+                                                               "elevationUrl": "/families/skyline-glass-office-cluster/elevation.jpg"
+                                                           },
+                     "skyline_cluster_staggered": {
+                                                           "archetypeId": "skyline_cluster_staggered",
+                                                           "identity": "Exactly three staggered silver-blue curtain-wall office towers rise from one transparent civic podium, linked by two enclosed glazed skybridges and finished with stepped glass lantern crowns.",
+                                                           "materialZones": "neutral blue-grey low-e vision glass; physical silver anodized aluminum pressure caps; charcoal glass spandrels; pale honed podium stone and plaza paving; graphite bridge trusses; warm occupied office depth; dark low-slope roofs",
+                                                           "glassProfile": "neutral_low_e_office_curtain_wall",
+                                                           "elevationUrl": "/families/skyline-glass-office-cluster/elevation.jpg"
+                                                       },
+                     "staggered_glass_office_cluster": {
+                                                                 "archetypeId": "staggered_glass_office_cluster",
+                                                                 "identity": "Exactly three staggered silver-blue curtain-wall office towers rise from one transparent civic podium, linked by two enclosed glazed skybridges and finished with stepped glass lantern crowns.",
+                                                                 "materialZones": "neutral blue-grey low-e vision glass; physical silver anodized aluminum pressure caps; charcoal glass spandrels; pale honed podium stone and plaza paving; graphite bridge trusses; warm occupied office depth; dark low-slope roofs",
+                                                                 "glassProfile": "neutral_low_e_office_curtain_wall",
+                                                                 "elevationUrl": "/families/skyline-glass-office-cluster/elevation.jpg"
+                                                             },
+                     "three_tower_skybridge_cluster": {
+                                                                "archetypeId": "three_tower_skybridge_cluster",
+                                                                "identity": "Exactly three staggered silver-blue curtain-wall office towers rise from one transparent civic podium, linked by two enclosed glazed skybridges and finished with stepped glass lantern crowns.",
+                                                                "materialZones": "neutral blue-grey low-e vision glass; physical silver anodized aluminum pressure caps; charcoal glass spandrels; pale honed podium stone and plaza paving; graphite bridge trusses; warm occupied office depth; dark low-slope roofs",
+                                                                "glassProfile": "neutral_low_e_office_curtain_wall",
+                                                                "elevationUrl": "/families/skyline-glass-office-cluster/elevation.jpg"
+                                                            },
+                     "autonomous_tech_campus": {
+                                                       "archetypeId": "autonomous_tech_campus",
+                                                       "identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+                                                       "materialZones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+                                                       "glassProfile": "low_iron_research_pavilion",
+                                                       "elevationUrl": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg"
+                                                   },
+                     "tech_campus_silicon_valley": {
+                                                            "archetypeId": "tech_campus_silicon_valley",
+                                                            "identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+                                                            "materialZones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+                                                            "glassProfile": "low_iron_research_pavilion",
+                                                            "elevationUrl": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg"
+                                                        },
+                     "silicon_valley_research_campus": {
+                                                                "archetypeId": "silicon_valley_research_campus",
+                                                                "identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+                                                                "materialZones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+                                                                "glassProfile": "low_iron_research_pavilion",
+                                                                "elevationUrl": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg"
+                                                            },
+                     "white_steel_technology_pavilions": {
+                                                                   "archetypeId": "white_steel_technology_pavilions",
+                                                                   "identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+                                                                   "materialZones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+                                                                   "glassProfile": "low_iron_research_pavilion",
+                                                                   "elevationUrl": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg"
                                                    }
                  }
 }

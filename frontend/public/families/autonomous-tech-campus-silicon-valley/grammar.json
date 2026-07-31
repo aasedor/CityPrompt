@@ -1,0 +1,155 @@
+{
+  "family_id": "autonomous-tech-campus-silicon-valley",
+  "source": {
+    "archetype_id": "autonomous_tech_campus",
+    "variant_id": "tech_campus_silicon_valley",
+    "generation_archetype_id": "tech_campus_silicon_valley",
+    "reuse_keys": [
+      "autonomous_tech_campus",
+      "tech_campus_silicon_valley",
+      "silicon_valley_research_campus",
+      "white_steel_technology_pavilions",
+      "Autonomous Tech Campus",
+      "Silicon Valley Research Pavilion",
+      "Low Rise Technology Campus",
+      "White Steel Laboratory Campus"
+    ]
+  },
+  "dimensions": {
+    "width_m": 74.0,
+    "depth_m": 54.0,
+    "podium_height_m": 0.2,
+    "floor_height_m": 4.1,
+    "setback_height_m": 4.1,
+    "roof_height_m": 3.1,
+    "crown_height_m": 1.2,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 7
+  },
+  "architectural_signature": {
+    "identity": "Three connected low-rise research pavilions form a planted U-shaped courtyard behind a warm-white external steel frame, full-height occupied glass, broad canopy roofs and photovoltaic arrays.",
+    "material_zones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
+    "glass_profile": "low_iron_research_pavilion",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_curtain_wall",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "autonomous_tech_campus",
+    "tech_campus_silicon_valley",
+    "silicon_valley_research_campus",
+    "white_steel_technology_pavilions"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a set of complete occupied research pavilion bars around outdoor space. Rectangle, L and U drawings turn or repeat whole 3.4 metre laboratory bays while preserving the primary entry, external frame, real glazing and courtyard; openings and photovoltaic panels are never stretched.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.26,
+      "maxAxisRatio": 1.2
+    },
+    "recommendedWidth_m": [
+      56.0,
+      100.0
+    ],
+    "recommendedDepth_m": [
+      38.0,
+      76.0
+    ],
+    "recommendedFloors": [
+      2,
+      7
+    ],
+    "preferredBayMultiple_m": 3.4,
+    "scaleMin": 0.76,
+    "scaleMax": 1.26,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          56.0,
+          100.0
+        ],
+        "recommendedDepth_m": [
+          38.0,
+          76.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.26,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 3.4
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          54.0,
+          105.0
+        ],
+        "recommendedDepth_m": [
+          36.0,
+          82.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.4
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          58.0,
+          110.0
+        ],
+        "recommendedDepth_m": [
+          42.0,
+          88.0
+        ],
+        "recommendedFloors": [
+          2,
+          7
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.4
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_u_shaped_research_campus_with_repeatable_pavilion_bays",
+    "pavilion_wings": 3,
+    "open_landscaped_courtyard": true,
+    "occupied_storeys": [
+      3,
+      3,
+      2
+    ],
+    "glazed_connectors": 2,
+    "external_white_steel_frame": true,
+    "cantilevered_canopy_roofs": 3,
+    "photovoltaic_fields": 3,
+    "screened_mechanical_penthouses": 1,
+    "physical_curtain_wall_layers": [
+      "low_iron_pane",
+      "external_frame",
+      "slab",
+      "occupied_lab_depth"
+    ]
+  }
+}

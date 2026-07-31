@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "autonomous_tech_campus",
+  "catalogue_variant_id": "tech_campus_silicon_valley",
+  "catalogue_alias_ids": [
+    "silicon_valley_research_campus",
+    "white_steel_technology_pavilions"
+  ],
+  "elevation_source": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg",
+  "goalpost": "/families/autonomous-tech-campus-silicon-valley/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/autonomous-tech-campus-silicon-valley/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

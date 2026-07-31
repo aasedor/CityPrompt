@@ -1,0 +1,102 @@
+{
+  "schema": "reference-generation@1",
+  "family": "autonomous-tech-campus-silicon-valley",
+  "archetype_id": "autonomous_tech_campus",
+  "variant_id": "tech_campus_silicon_valley",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/autonomous_tech_campus/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      68.0,
+      48.0,
+      15.0
+    ],
+    "native_envelope_dimensions_m": [
+      74.0,
+      54.0,
+      13.4
+    ],
+    "occupied_storeys": 3,
+    "primary_material": "neutral low-iron glass behind a warm-white expressed steel frame",
+    "window_rule": "full-height separate panes with occupied laboratory depth and external white posts/beams",
+    "front_identity": "three low-rise pavilion wings frame one landscaped research courtyard",
+    "roof_rule": "broad cantilevered canopy plates, photovoltaic arrays and one screened mechanical penthouse"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-cb1dd5a6-f86c-4414-a77d-5042e4a56ba1",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Create one render-locked 2x2 survey board of the same low-rise Silicon Valley research campus: three connected two- to three-storey glass-and-white-steel pavilion wings around one landscaped courtyard, expressed external frame, broad cantilevered roof plates, glazed connectors, warm laboratories, photovoltaic arrays and a screened penthouse. Show arrival oblique, rectified front, courtyard rear and aerial. Preserve wing layout, floor counts, frame cadence and roof equipment in every view; no text or redesign.",
+      "registered_surfaces": [
+        "three_connected_low_rise_pavilions",
+        "landscaped_central_research_courtyard",
+        "expressed_external_white_steel_frame",
+        "separate_low_iron_glass_and_occupied_lab_depth",
+        "broad_cantilevered_roof_canopies",
+        "roof_photovoltaic_arrays_and_screened_penthouse"
+      ]
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-cb1dd5a6-f86c-4414-a77d-5042e4a56ba1:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-cb1dd5a6-f86c-4414-a77d-5042e4a56ba1:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "courtyard-source-v1.png",
+      "source_id": "exec-cb1dd5a6-f86c-4414-a77d-5042e4a56ba1:courtyard-source-v1",
+      "role": "registered_goalpost_crop:courtyard-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-cb1dd5a6-f86c-4414-a77d-5042e4a56ba1:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Create one rectified 3x2 construction plate with six separate shadow-neutral sources: low-iron occupied glass, warm-white powder-coated steel, pale precast concrete, warm occupied laboratory depth, blue-black photovoltaic panels and pale concrete pavers. Keep cells orthographic, facade-ready and physically plausible; no labels, objects spanning cells or baked sunlight."
+    },
+    {
+      "file": "low-iron-glass-material-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:low-iron-glass-material-source-v1",
+      "role": "registered_material_crop:low-iron-glass-material-source-v1"
+    },
+    {
+      "file": "white-steel-material-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:white-steel-material-source-v1",
+      "role": "registered_material_crop:white-steel-material-source-v1"
+    },
+    {
+      "file": "precast-material-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:precast-material-source-v1",
+      "role": "registered_material_crop:precast-material-source-v1"
+    },
+    {
+      "file": "occupied-lab-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:occupied-lab-source-v1",
+      "role": "registered_material_crop:occupied-lab-source-v1"
+    },
+    {
+      "file": "photovoltaic-material-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:photovoltaic-material-source-v1",
+      "role": "registered_material_crop:photovoltaic-material-source-v1"
+    },
+    {
+      "file": "paver-material-source-v1.png",
+      "source_id": "exec-46ef1cc8-8a03-400f-826a-46a777757873:paver-material-source-v1",
+      "role": "registered_material_crop:paver-material-source-v1"
+    }
+  ]
+}

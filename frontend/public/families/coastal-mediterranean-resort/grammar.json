@@ -1,0 +1,106 @@
+{
+  "family_id": "coastal-mediterranean-resort",
+  "source": {
+    "archetype_id": "coastal_resort_terrace_block",
+    "variant_id": "coastal_resort_white_mediterranean",
+    "generation_archetype_id": "coastal_resort_white_mediterranean",
+    "reuse_keys": [
+      "coastal_resort_terrace_block",
+      "coastal_resort_white_mediterranean",
+      "coastal_mediterranean_resort",
+      "white_mediterranean_resort_block",
+      "Coastal Resort Terrace Block",
+      "White Mediterranean Resort",
+      "Boutique Coastal Hotel",
+      "Terraced Resort"
+    ]
+  },
+  "dimensions": {
+    "width_m": 40.0,
+    "depth_m": 28.0,
+    "podium_height_m": 0.45,
+    "floor_height_m": 3.8,
+    "setback_height_m": 3.8,
+    "roof_height_m": 1.7,
+    "crown_height_m": 0.95,
+    "default_floors": 3,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "architectural_signature": {
+    "identity": "A three-level white Mediterranean resort cascades toward one long front infinity pool through irregular lime-stucco terraces, deep blue-shuttered French doors, open iron balconies and pergolas, with a quieter pale-stone service rear and planted flat roof terraces.",
+    "material_zones": "imperfect warm-white hand-trowelled lime stucco; pale local rubble limestone and recessed mortar; weathered Aegean-blue painted timber; nearly black wrought iron; honed pale pool limestone; physical neutral low-iron residential glazing; warm occupied room depth; shallow blue-green pool water; olive foliage and restrained magenta bougainvillea",
+    "glass_profile": "coastal_residential_low_iron",
+    "kits": [
+      "reference_locked_cascading_resort_landmark",
+      "physical_shuttered_french_door_bays",
+      "open_wrought_iron_balcony_system",
+      "open_blue_timber_pergolas",
+      "infinity_pool_and_entry_stair",
+      "flexible_semantic_room_bay_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "coastal_resort_terrace_block",
+    "coastal_resort_white_mediterranean",
+    "coastal_mediterranean_resort",
+    "white_mediterranean_resort_block"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The selected coastal resort is one frontage-led composition: its pool, stair, three cascading terraces and public pergolas cannot be turned into L/U/courtyard bars without duplicating the entrance. Near-native rectangles preserve the fixed landmark; larger drawings repeat complete ordinary shuttered room bays along the long axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.82,
+      "scaleMax": 1.2,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      32.0,
+      48.0
+    ],
+    "recommendedDepth_m": [
+      22.0,
+      34.0
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "preferredBayMultiple_m": 6.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          32.0,
+          48.0
+        ],
+        "recommendedDepth_m": [
+          22.0,
+          34.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "preferredBayMultiple_m": 6.2
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_cascading_coastal_resort_with_repeatable_room_bays",
+    "silhouette": "three_cascading_flat_roof_terraces_behind_front_infinity_pool",
+    "occupied_storeys": 3,
+    "principal_french_door_openings": 12,
+    "segmental_arched_balcony_openings": 3,
+    "physical_blue_shutter_leaves": 24,
+    "open_wrought_iron_balcony_guards": 4,
+    "open_blue_timber_pergolas": 3,
+    "infinity_pool_basins": 1,
+    "integrated_entry_stair_runs": 1,
+    "flat_roof_terraces": 5,
+    "white_roof_chimneys": 1,
+    "rubble_stone_service_elevations": 1
+  }
+}
