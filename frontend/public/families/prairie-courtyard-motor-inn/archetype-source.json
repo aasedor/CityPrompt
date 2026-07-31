@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "highway_motor_hotel",
+  "catalogue_variant_id": "hotel_two_storey_motor_inn",
+  "catalogue_alias_ids": [
+    "prairie_courtyard_motor_inn",
+    "two_storey_exterior_corridor_motel"
+  ],
+  "elevation_source": "/families/prairie-courtyard-motor-inn/elevation.jpg",
+  "goalpost": "/families/prairie-courtyard-motor-inn/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/prairie-courtyard-motor-inn/textures/source/reference-generation.json",
+  "method": "reference-locked eight-view ImageGen source pack, nine-zone orthographic construction plate, deterministic L-shaped metric geometry, physical room/lobby openings, modeled occupied depth, structurally continuous stairs/gallery, coherent hip roofs, pool court and complete rear service schedule"
+}

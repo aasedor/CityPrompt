@@ -1,0 +1,103 @@
+{
+  "schema": "reference-generation@1",
+  "family": "prairie-courtyard-motor-inn",
+  "archetype_id": "highway_motor_hotel",
+  "variant_id": "hotel_two_storey_motor_inn",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-30",
+  "status": "source-pack-complete",
+  "design_lock": {
+    "native_site_dimensions_m": [
+      64.0,
+      36.0,
+      9.25
+    ],
+    "main_guest_wing_m": [
+      56.0,
+      11.0
+    ],
+    "return_guest_wing_m": [
+      30.0,
+      11.0
+    ],
+    "native_floors": 2,
+    "room_bay_width_m": 4.2,
+    "exterior_gallery_depth_m": 1.8,
+    "stair_assemblies": 2,
+    "plan_rule": "L-shaped guest wings face a landscaped parking-and-pool courtyard",
+    "entry_rule": "a brick-and-glass lobby resolves the inside corner beneath a cedar-lined porte-cochere",
+    "opening_rule": "every room receives a physical recessed door and paired low-E window with modeled occupied depth"
+  },
+  "research": [
+    {
+      "title": "Skyview Motel Landscape",
+      "url": "https://www.tenoverstudio.com/skyview-motel-landscape",
+      "lesson": "Treat the courtyard as a sequence of outdoor rooms tied to guest-room use, pool deck, planting, and the building rather than as leftover parking."
+    },
+    {
+      "title": "Modern Hotel and Bar",
+      "url": "https://www.troutarchitects.com/project/modern-hotel-and-bar/",
+      "lesson": "Machined metal rail, deliberate lighting, warm timber screens, and an occupied courtyard can transform the long exterior-corridor datum without erasing the motel typology."
+    },
+    {
+      "title": "The Isla",
+      "url": "https://thosearchitects.com.au/projects/the-isla/",
+      "lesson": "Repeat colour at entry openings, distinguish circulation surfaces, and use porous edge elements to make room access legible while breaking down an overlong facade."
+    },
+    {
+      "title": "Stairs at Zollenspieker Hotel",
+      "url": "https://www.metallart.com/global/projects/zollenspieker-hamburg/",
+      "lesson": "Exterior stair credibility depends on continuous structural stringers, box treads, supported landings, connected walkways, precise posts and integrated lighting."
+    }
+  ],
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "call_LLp4TDyOD8ZCM3eUSTIrDZPr",
+      "role": "canonical_courtyard_oblique",
+      "prompt_summary": "Photoreal L-shaped two-storey prairie motor inn with exterior gallery, integrated stairs, glazed lobby, porte-cochere, pool court and deep-eaved hip roofs."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "call_OBrldbLrG6oCNxiZbiYPjbpi",
+      "role": "plan_roof_and_site_goalpost",
+      "prompt_summary": "High oblique view locking the L plan, coherent hip-roof valleys, courtyard, pool, parking, rear service lane and two gallery-connected stairs."
+    },
+    {
+      "file": "courtyard-elevation-source-v1.png",
+      "source_id": "call_tlcxfr9tyuDFh9dLJfYUYtLV",
+      "role": "shadow_neutral_courtyard_elevation",
+      "prompt_summary": "Straight-on elevation fixing the repeated guest-room bay, gallery, roof, stair and lobby datums."
+    },
+    {
+      "file": "integrated-stair-source-v1.png",
+      "source_id": "call_tCvdtbEaWDzMNq4OnboWOE8A",
+      "role": "stair_and_gallery_construction",
+      "prompt_summary": "Close construction view of plate stringers, open pan treads, base plates, continuous landing, guardrails, gallery slab and support columns."
+    },
+    {
+      "file": "lobby-entry-source-v1.png",
+      "source_id": "call_z3kWsGzzp34MfXsJgMDt7uVy",
+      "role": "integrated_lobby_and_porte_cochere",
+      "prompt_summary": "Inside-corner brick-and-glass lobby with modeled occupied depth, real vestibule, cedar soffit and structurally supported arrival canopy."
+    },
+    {
+      "file": "rear-service-source-v1.png",
+      "source_id": "call_e0fVOPPpyAzLErNQsgVuzBWG",
+      "role": "rear_service_goalpost",
+      "prompt_summary": "Quiet operational rear elevation with deeply inset windows, ventilation, condensers, meters, service door, refuse screen, drainage and downspouts."
+    },
+    {
+      "file": "guest-window-source-v1.png",
+      "source_id": "call_O0gkHdShxT5hiJ4oNuFV9PmP",
+      "role": "guest_opening_materiality_and_depth",
+      "prompt_summary": "Two-bay close-up locking thermally broken frames, low-E panes, screens, curtains, occupied room depth, recessed doors, hardware and gallery attachments."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "call_SvjA0M2aRjZYqyMsdGwlKVMb",
+      "role": "nine_zone_pbr_material_plate",
+      "prompt_summary": "Orthographic 3x3 plate of ivory stucco, russet brick, charcoal shingles, cedar, kelp-green metal, black steel, low-E glass, concrete and pool water."
+    }
+  ]
+}

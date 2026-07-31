@@ -2746,6 +2746,130 @@ async def test_wave10_retail_strip_api_plans_parent_aliases_and_streetwall(
 
 
 @pytest.mark.anyio
+async def test_wave10_motor_inn_api_plans_parent_aliases_and_streetwall(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+):
+    family = "prairie-courtyard-motor-inn"
+    variant_id = "hotel_two_storey_motor_inn"
+    alias_id = "prairie_courtyard_motor_inn"
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assembled = {
+        **manifest["assembled"],
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "width_m": manifest["native_width_m"],
+        "depth_m": manifest["native_depth_m"],
+        "floor_height_m": manifest["dimensions"]["floor_height_m"],
+        "repeatable_z": False,
+        "lod": 0,
+        "allowed_levels": [],
+        "native_floors": manifest["native_floors"],
+    }
+    deliverables = [assembled, *manifest["modules"]]
+    library_entries = [
+        SimpleNamespace(
+            id=(
+                f"{family}-{module['role']}-"
+                f"{module.get('variant_key', 'default')}"
+            ),
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest,
+                    module,
+                    role=module["role"],
+                    validation_status="pass",
+                )
+            },
+        )
+        for module in deliverables
+    ]
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
+
+    in_band = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 70.0,
+            "target_depth_m": 40.0,
+            "target_floors": 2,
+            "archetype_id": manifest["archetype_id"],
+            "footprint_profile": "l_shape",
+        },
+    )
+    hand_drawn_variant = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 59.0,
+            "target_depth_m": 33.0,
+            "target_floors": 2,
+            "archetype_id": variant_id,
+            "footprint_profile": "l_shape",
+        },
+    )
+    alias = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 78.0,
+            "target_depth_m": 43.0,
+            "target_floors": 2,
+            "archetype_id": alias_id,
+            "footprint_profile": "u_shape",
+        },
+    )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 180.0,
+            "target_depth_m": 40.0,
+            "target_floors": 2,
+            "archetype_id": manifest["archetype_id"],
+            "footprint_profile": "rectangle",
+        },
+    )
+
+    assert in_band.status_code == 200, in_band.text
+    assert in_band.json()["family"] == family
+    assert hand_drawn_variant.status_code == 200, hand_drawn_variant.text
+    assert hand_drawn_variant.json()["family"] == family
+    assert alias.status_code == 200, alias.text
+    assert alias.json()["family"] == family
+    assert oversized.status_code == 200, oversized.text
+    oversized_plan = oversized.json()
+    assert oversized_plan["family"] == family
+    assert oversized_plan["fit"]["compatibility_source"] == (
+        "streetwall_repeat"
+    )
+    assert oversized_plan["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
 async def test_plan_api_returns_structured_family_incompatible_error(
     client, mock_db, test_user, auth_headers
 ):

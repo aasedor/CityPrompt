@@ -630,6 +630,34 @@
                                                            "materialZones": "russet modular brick; charcoal micro-ribbed metal; warm linear cedar soffit and pergola; black thermally broken storefront frames and open patio rail; physical neutral low-e glass with modeled occupied retail and restaurant depth; pale single-ply roof; tenant-aligned HVAC and rear service metal",
                                                            "glassProfile": "low_iron_neutral",
                                                            "elevationUrl": "/families/contemporary-prairie-retail-strip/elevation.jpg"
-                                                       }
+                                                       },
+                     "highway_motor_hotel": {
+                                                  "archetypeId": "highway_motor_hotel",
+                                                  "identity": "A two-storey L-shaped prairie motor inn binds fourteen complete occupied guest-room bays to continuous exterior galleries, two integrated open stairs, a projecting glazed lobby and porte-cochere, deep charcoal hip roofs, a fenced pool court and an organized rear service edge.",
+                                                  "materialZones": "warm ivory mineral stucco; russet modular brick base and end pylons; charcoal asphalt shingles and powder-coated gallery steel; linear cedar soffits, lobby piers and cabana; physical neutral low-e guest and lobby glass with curtains and modeled occupied depth; pale concrete walks and pool deck; gravel, drought-tolerant prairie planting and service metal",
+                                                  "glassProfile": "low_iron_neutral",
+                                                  "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
+                                              },
+                     "hotel_two_storey_motor_inn": {
+                                                           "archetypeId": "hotel_two_storey_motor_inn",
+                                                           "identity": "A two-storey L-shaped prairie motor inn binds fourteen complete occupied guest-room bays to continuous exterior galleries, two integrated open stairs, a projecting glazed lobby and porte-cochere, deep charcoal hip roofs, a fenced pool court and an organized rear service edge.",
+                                                           "materialZones": "warm ivory mineral stucco; russet modular brick base and end pylons; charcoal asphalt shingles and powder-coated gallery steel; linear cedar soffits, lobby piers and cabana; physical neutral low-e guest and lobby glass with curtains and modeled occupied depth; pale concrete walks and pool deck; gravel, drought-tolerant prairie planting and service metal",
+                                                           "glassProfile": "low_iron_neutral",
+                                                           "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
+                                                       },
+                     "prairie_courtyard_motor_inn": {
+                                                            "archetypeId": "prairie_courtyard_motor_inn",
+                                                            "identity": "A two-storey L-shaped prairie motor inn binds fourteen complete occupied guest-room bays to continuous exterior galleries, two integrated open stairs, a projecting glazed lobby and porte-cochere, deep charcoal hip roofs, a fenced pool court and an organized rear service edge.",
+                                                            "materialZones": "warm ivory mineral stucco; russet modular brick base and end pylons; charcoal asphalt shingles and powder-coated gallery steel; linear cedar soffits, lobby piers and cabana; physical neutral low-e guest and lobby glass with curtains and modeled occupied depth; pale concrete walks and pool deck; gravel, drought-tolerant prairie planting and service metal",
+                                                            "glassProfile": "low_iron_neutral",
+                                                            "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
+                                                        },
+                     "two_storey_exterior_corridor_motel": {
+                                                                  "archetypeId": "two_storey_exterior_corridor_motel",
+                                                                  "identity": "A two-storey L-shaped prairie motor inn binds fourteen complete occupied guest-room bays to continuous exterior galleries, two integrated open stairs, a projecting glazed lobby and porte-cochere, deep charcoal hip roofs, a fenced pool court and an organized rear service edge.",
+                                                                  "materialZones": "warm ivory mineral stucco; russet modular brick base and end pylons; charcoal asphalt shingles and powder-coated gallery steel; linear cedar soffits, lobby piers and cabana; physical neutral low-e guest and lobby glass with curtains and modeled occupied depth; pale concrete walks and pool deck; gravel, drought-tolerant prairie planting and service metal",
+                                                                  "glassProfile": "low_iron_neutral",
+                                                                  "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
+                                                              }
                  }
 }

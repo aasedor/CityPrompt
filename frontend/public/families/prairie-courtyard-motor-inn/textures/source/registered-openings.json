@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "courtyard-elevation-source-v1.png",
+  "method": "Each room bay receives a physical recessed door and a separate paired low-E glazing assembly with modeled frame, deep stucco return, head flashing, sill, pane, screen, sheer, blackout curtain and occupied room depth. Lobby panes use full-depth mullions, vestibule thresholds and modeled reception/breakfast space.",
+  "physical_geometry_required": true
+}

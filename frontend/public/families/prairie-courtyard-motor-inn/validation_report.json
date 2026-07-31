@@ -1,0 +1,216 @@
+{
+  "status": "pass",
+  "family": "prairie-courtyard-motor-inn",
+  "archetype_id": "highway_motor_hotel",
+  "reuse_keys": [
+    "highway_motor_hotel",
+    "hotel_two_storey_motor_inn",
+    "prairie_courtyard_motor_inn",
+    "two_storey_exterior_corridor_motel",
+    "Highway Motor Hotel",
+    "Two-Storey Motor Inn",
+    "Prairie Courtyard Motel",
+    "Exterior Corridor Hotel"
+  ],
+  "manifest": "prairie-courtyard-motor-inn_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "prairie-courtyard-motor-inn_podium.glb: 13.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-courtyard-motor-inn_floor_typical_a.glb: 17 materials (many; consider consolidation)",
+    "prairie-courtyard-motor-inn_floor_typical_a.glb: 57.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-courtyard-motor-inn_floor_typical_b.glb: 17 materials (many; consider consolidation)",
+    "prairie-courtyard-motor-inn_floor_typical_b.glb: 57.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-courtyard-motor-inn_floor_typical_c.glb: 17 materials (many; consider consolidation)",
+    "prairie-courtyard-motor-inn_floor_typical_c.glb: 57.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-courtyard-motor-inn_crown_crown.glb: 10.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "prairie-courtyard-motor-inn_assembled.glb: 23 materials (many; consider consolidation)",
+    "prairie-courtyard-motor-inn_assembled.glb: 95.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "prairie-courtyard-motor-inn_podium.glb",
+      "status": "ok",
+      "triangles": 252,
+      "extent_m": {
+        "width_x": 64.0,
+        "height_y": 0.45,
+        "depth_z": 36.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_MOTOR_INN_Asphalt",
+        "MAT_W10_MOTOR_INN_PaleConcrete"
+      ],
+      "size_bytes": 13643472
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 19572,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 3.28,
+        "depth_z": 12.54
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_MOTOR_INN_BlackSteel",
+        "MAT_W10_MOTOR_INN_BlackoutCurtain",
+        "MAT_W10_MOTOR_INN_GalvanizedTread",
+        "MAT_W10_MOTOR_INN_GuestRoomLowEGlass",
+        "MAT_W10_MOTOR_INN_InteriorWood",
+        "MAT_W10_MOTOR_INN_IvoryStucco",
+        "MAT_W10_MOTOR_INN_KelpDoor",
+        "MAT_W10_MOTOR_INN_OccupiedGuestDepth",
+        "MAT_W10_MOTOR_INN_PaleConcrete",
+        "MAT_W10_MOTOR_INN_RoomCurtain",
+        "MAT_W10_MOTOR_INN_RussetBrick",
+        "MAT_W10_MOTOR_INN_ServiceMetal",
+        "MAT_W10_MOTOR_INN_WarmBedding",
+        "MAT_W10_MOTOR_INN_WarmLight"
+      ],
+      "size_bytes": 60355220
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 19572,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 3.28,
+        "depth_z": 12.54
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_MOTOR_INN_BlackSteel",
+        "MAT_W10_MOTOR_INN_BlackoutCurtain",
+        "MAT_W10_MOTOR_INN_GalvanizedTread",
+        "MAT_W10_MOTOR_INN_GuestRoomLowEGlass",
+        "MAT_W10_MOTOR_INN_InteriorWood",
+        "MAT_W10_MOTOR_INN_IvoryStucco",
+        "MAT_W10_MOTOR_INN_KelpDoor",
+        "MAT_W10_MOTOR_INN_OccupiedGuestDepth",
+        "MAT_W10_MOTOR_INN_PaleConcrete",
+        "MAT_W10_MOTOR_INN_RoomCurtain",
+        "MAT_W10_MOTOR_INN_RussetBrick",
+        "MAT_W10_MOTOR_INN_ServiceMetal",
+        "MAT_W10_MOTOR_INN_WarmBedding",
+        "MAT_W10_MOTOR_INN_WarmLight"
+      ],
+      "size_bytes": 60355220
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 19572,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 3.28,
+        "depth_z": 12.54
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_MOTOR_INN_BlackSteel",
+        "MAT_W10_MOTOR_INN_BlackoutCurtain",
+        "MAT_W10_MOTOR_INN_GalvanizedTread",
+        "MAT_W10_MOTOR_INN_GuestRoomLowEGlass",
+        "MAT_W10_MOTOR_INN_InteriorWood",
+        "MAT_W10_MOTOR_INN_IvoryStucco",
+        "MAT_W10_MOTOR_INN_KelpDoor",
+        "MAT_W10_MOTOR_INN_OccupiedGuestDepth",
+        "MAT_W10_MOTOR_INN_PaleConcrete",
+        "MAT_W10_MOTOR_INN_RoomCurtain",
+        "MAT_W10_MOTOR_INN_RussetBrick",
+        "MAT_W10_MOTOR_INN_ServiceMetal",
+        "MAT_W10_MOTOR_INN_WarmBedding",
+        "MAT_W10_MOTOR_INN_WarmLight"
+      ],
+      "size_bytes": 60355220
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_crown_crown.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 57.2,
+        "height_y": 0.72,
+        "depth_z": 12.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_MOTOR_INN_BlackSteel",
+        "MAT_W10_MOTOR_INN_CedarSoffit"
+      ],
+      "size_bytes": 11068156
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_roof.glb",
+      "status": "ok",
+      "triangles": 132,
+      "extent_m": {
+        "width_x": 57.389,
+        "height_y": 2.08,
+        "depth_z": 12.589
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_MOTOR_INN_CharcoalShingle"
+      ],
+      "size_bytes": 5823060
+    },
+    {
+      "file": "prairie-courtyard-motor-inn_assembled.glb",
+      "status": "ok",
+      "triangles": 73268,
+      "extent_m": {
+        "width_x": 64.0,
+        "height_y": 9.195,
+        "depth_z": 36.975
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_MOTOR_INN_Asphalt",
+        "MAT_W10_MOTOR_INN_BlackSteel",
+        "MAT_W10_MOTOR_INN_BlackoutCurtain",
+        "MAT_W10_MOTOR_INN_CedarSoffit",
+        "MAT_W10_MOTOR_INN_CharcoalShingle",
+        "MAT_W10_MOTOR_INN_GalvanizedTread",
+        "MAT_W10_MOTOR_INN_GuestRoomLowEGlass",
+        "MAT_W10_MOTOR_INN_InteriorShadow",
+        "MAT_W10_MOTOR_INN_InteriorWood",
+        "MAT_W10_MOTOR_INN_IvoryStucco",
+        "MAT_W10_MOTOR_INN_KelpDoor",
+        "MAT_W10_MOTOR_INN_LandscapeGravel",
+        "MAT_W10_MOTOR_INN_LobbyLowEGlass",
+        "MAT_W10_MOTOR_INN_OccupiedGuestDepth",
+        "MAT_W10_MOTOR_INN_PaleConcrete",
+        "MAT_W10_MOTOR_INN_ParkingMarking",
+        "MAT_W10_MOTOR_INN_PoolWater",
+        "MAT_W10_MOTOR_INN_PrairiePlanting",
+        "MAT_W10_MOTOR_INN_RoomCurtain",
+        "MAT_W10_MOTOR_INN_RussetBrick",
+        "MAT_W10_MOTOR_INN_ServiceMetal",
+        "MAT_W10_MOTOR_INN_WarmBedding",
+        "MAT_W10_MOTOR_INN_WarmLight"
+      ],
+      "size_bytes": 100327920,
+      "role": "assembled"
+    }
+  ]
+}

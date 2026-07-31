@@ -1,0 +1,154 @@
+{
+  "family_id": "prairie-courtyard-motor-inn",
+  "source": {
+    "archetype_id": "highway_motor_hotel",
+    "variant_id": "hotel_two_storey_motor_inn",
+    "generation_archetype_id": "hotel_two_storey_motor_inn",
+    "reuse_keys": [
+      "highway_motor_hotel",
+      "hotel_two_storey_motor_inn",
+      "prairie_courtyard_motor_inn",
+      "two_storey_exterior_corridor_motel",
+      "Highway Motor Hotel",
+      "Two-Storey Motor Inn",
+      "Prairie Courtyard Motel",
+      "Exterior Corridor Hotel"
+    ]
+  },
+  "dimensions": {
+    "width_m": 64.0,
+    "depth_m": 36.0,
+    "podium_height_m": 0.3,
+    "floor_height_m": 3.2,
+    "setback_height_m": 3.2,
+    "roof_height_m": 2.1,
+    "crown_height_m": 0.72,
+    "default_floors": 2,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "Two deep-eaved hip-roof guest wings form an L-shaped motor court around a landscaped pool, with repeated occupied room openings, a continuous black-steel gallery, two integrated open-tread stairs and a taller brick-and-glass inside-corner lobby.",
+    "material_zones": "warm ivory fine-grain stucco; dark russet running-bond brick base and pylons; charcoal dimensional asphalt shingles; warm cedar tongue-and-groove soffits; muted kelp-green metal room doors; bronze-black gallery steel; galvanized stair treads; physical neutral low-E guest and lobby glazing; sheer and blackout curtains; occupied room and lobby depth; pale concrete; asphalt; pool water; prairie planting; organized rear service metal",
+    "glass_profile": "low_iron_neutral",
+    "kits": [
+      "reference_locked_L_shaped_motor_inn",
+      "physical_guest_room_opening_bays",
+      "integrated_gallery_and_stair_assemblies",
+      "inside_corner_lobby_and_porte_cochere",
+      "complete_pool_roof_and_rear_service",
+      "flexible_semantic_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "highway_motor_hotel",
+    "hotel_two_storey_motor_inn",
+    "prairie_courtyard_motor_inn",
+    "two_storey_exterior_corridor_motel"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The identity is a sequence of complete 4.2 metre guest-room bays served by a continuous exterior gallery. Rectangles preserve one roadside bar; L and U drawings turn whole bars at gallery-connected corners while keeping room openings, stairs, eaves and service datums intact.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.34,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      32.0,
+      108.0
+    ],
+    "recommendedDepth_m": [
+      14.0,
+      60.0
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "wingDepth_m": [
+      10.0,
+      17.0
+    ],
+    "preferredBayMultiple_m": 4.2,
+    "minimumCourtyard_m": 14.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          32.0,
+          92.0
+        ],
+        "recommendedDepth_m": [
+          14.0,
+          32.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "preferredBayMultiple_m": 4.2
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          46.0,
+          108.0
+        ],
+        "recommendedDepth_m": [
+          26.0,
+          60.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          10.0,
+          17.0
+        ],
+        "preferredBayMultiple_m": 4.2,
+        "minimumCourtyard_m": 14.0
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          56.0,
+          126.0
+        ],
+        "recommendedDepth_m": [
+          32.0,
+          74.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "wingDepth_m": [
+          10.0,
+          17.0
+        ],
+        "preferredBayMultiple_m": 4.2,
+        "minimumCourtyard_m": 16.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "modular_exterior_corridor_motor_inn",
+    "silhouette": "two_storey_L_wings_with_deep_hip_roofs_and_raised_lobby",
+    "main_guest_wing_bays": 10,
+    "return_guest_wing_bays": 4,
+    "guest_room_levels": 2,
+    "occupied_guest_room_modules": 28,
+    "exterior_gallery_depth_m": 1.8,
+    "integrated_stair_assemblies": 2,
+    "inside_corner_glazed_lobby": 1,
+    "porte_cochere_structural_columns": 2,
+    "pool_basins": 1,
+    "pool_cabana_modules": 1,
+    "rear_condenser_units": 5,
+    "screened_refuse_bins": 2
+  }
+}

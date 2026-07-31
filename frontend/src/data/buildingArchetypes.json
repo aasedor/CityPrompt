@@ -37164,6 +37164,46 @@
     },
     {
       "id": "highway_motor_hotel",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "minimumPreferredProfiles": 3,
+        "profileRationale": "The identity is a sequence of complete 4.2 metre guest-room bays served by a continuous exterior gallery. Rectangles preserve one roadside bar; L- and U-shaped drawings turn whole bars at gallery-connected corners while keeping room openings, stairs, eaves and service datums intact.",
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.72,
+          "scaleMax": 1.34,
+          "maxAxisRatio": 1.3
+        },
+        "recommendedWidth_m": [32, 108],
+        "recommendedDepth_m": [14, 60],
+        "recommendedFloors": [1, 3],
+        "wingDepth_m": [10, 17],
+        "preferredBayMultiple_m": 4.2,
+        "minimumCourtyard_m": 14,
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [32, 92],
+            "recommendedDepth_m": [14, 32],
+            "recommendedFloors": [1, 3],
+            "preferredBayMultiple_m": 4.2
+          },
+          "l_shape": {
+            "recommendedWidth_m": [46, 108],
+            "recommendedDepth_m": [26, 60],
+            "recommendedFloors": [1, 3],
+            "wingDepth_m": [10, 17],
+            "preferredBayMultiple_m": 4.2,
+            "minimumCourtyard_m": 14
+          },
+          "u_shape": {
+            "recommendedWidth_m": [56, 126],
+            "recommendedDepth_m": [32, 74],
+            "recommendedFloors": [1, 3],
+            "wingDepth_m": [10, 17],
+            "preferredBayMultiple_m": 4.2,
+            "minimumCourtyard_m": 16
+          }
+        }
+      },
       "suggestedWidth_m": 45,
       "suggestedDepth_m": 18,
       "suggestedFloorHeight": 3.2,
@@ -37250,7 +37290,7 @@
         "features": "ridge vents and dormers on lodge formats, rooftop units and a pool enclosure on the modern hotel",
         "aerialAppearance": "long wings with grey shingle gables or a flat membrane roof, arranged around a parking court"
       },
-      "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
+      "thumbnailUrl": "/archetypes/buildings/prairie-courtyard-motor-inn/hero.png",
       "variants": [
         {
           "id": "hotel_roadside_motel",
@@ -37278,7 +37318,7 @@
         {
           "id": "hotel_two_storey_motor_inn",
           "label": "Two-Storey Motor Inn",
-          "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_1.png",
+          "thumbnailUrl": "/archetypes/buildings/prairie-courtyard-motor-inn/hero.png",
           "description": "A two-storey L-shaped motor inn with an exterior walkway and balcony along the upper rooms, external stair towers, a central lobby with a breakfast room, and a modest entrance canopy. The workhorse 1980s-2000s highway inn format.",
           "facadeDetail": {
             "primaryMaterial": "beige EIFS/stucco wall fields with a brick or stone base",
