@@ -1,0 +1,1561 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave10_corten_library_family.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-31T17:29:48.848145+00:00",
+  "family": "corten-arch-university-library",
+  "archetype_id": "university_library",
+  "archetype_label": "University Library — Contemporary Corten Arch",
+  "variant_id": "contemporary_corten_arch",
+  "generation_archetype_id": "contemporary_corten_arch",
+  "archetype_aliases": [
+    "university_library",
+    "contemporary_corten_arch",
+    "corten_arch_university_library",
+    "sculptural_campus_library"
+  ],
+  "aesthetic_category_id": "institutional_civic",
+  "development_type": "institutional",
+  "reuse_keys": [
+    "university_library",
+    "contemporary_corten_arch",
+    "corten_arch_university_library",
+    "sculptural_campus_library",
+    "university library",
+    "campus library",
+    "civic library",
+    "corten arch"
+  ],
+  "generation_tags": [
+    "wave10",
+    "fixed_landmark",
+    "corten_arch_library",
+    "physical_curtain_wall",
+    "occupied_reading_depth",
+    "flexible_fallback_stack"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The continuous barrel shell and one ceremonial stair form a singular landmark. The authored rectangle matrix deliberately accepts ordinary hand-drawn variation from 44–90 by 34–70 metres; larger targets repeat complete library halls instead of bending or clipping the arch.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.2
+    },
+    "preferredBayMultiple_m": 6.0,
+    "recommendedWidth_m": [
+      44.0,
+      90.0
+    ],
+    "recommendedDepth_m": [
+      34.0,
+      70.0
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "scaleMin": 0.76,
+    "scaleMax": 1.28,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          44.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          34.0,
+          70.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 6.0
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/arched_corten_portal_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/arched_corten_portal_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/arched_corten_portal_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/arched_corten_portal_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/arched_corten_portal_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/arched_corten_portal_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/arched_corten_portal_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/arched_corten_portal_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/arched_corten_portal_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/arched_corten_portal_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/arched_corten_portal_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/arched_corten_portal_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/arched_corten_portal_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/arched_corten_portal_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/arched_corten_portal_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/arched_corten_portal_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/arched_corten_portal_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/arched_corten_portal_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/arched_corten_portal_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/arched_corten_portal_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/arched_corten_portal_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/arched_corten_portal_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/arched_corten_portal_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/arched_corten_portal_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/ceremonial_concrete_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/lower_honeycomb_glazing_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/upper_honeycomb_glazing_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/barrel_arch_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/barrel_arch_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/barrel_arch_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/barrel_arch_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/barrel_arch_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/barrel_arch_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/barrel_arch_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/barrel_arch_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/corten_shell_return_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/corten_shell_return_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/corten_shell_return_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/corten_shell_return_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/corten_shell_return_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/corten_shell_return_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/corten_shell_return_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/corten_shell_return_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_library_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_library_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_library_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_library_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_library_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_library_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_library_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_library_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_corten_albedo",
+      "path": "textures/pbr/near/weathering_steel_albedo.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_corten_normal",
+      "path": "textures/pbr/near/weathering_steel_normal.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "normal"
+    },
+    {
+      "key": "near_corten_roughness",
+      "path": "textures/pbr/near/weathering_steel_roughness.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_corten_ao",
+      "path": "textures/pbr/near/weathering_steel_ao.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "ao"
+    },
+    {
+      "key": "near_corten_depth",
+      "path": "textures/pbr/near/weathering_steel_depth.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "depth"
+    },
+    {
+      "key": "near_corten_emissive",
+      "path": "textures/pbr/near/weathering_steel_emissive.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_corten_glass_mask",
+      "path": "textures/pbr/near/weathering_steel_glass.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_corten_opaque_mask",
+      "path": "textures/pbr/near/weathering_steel_opaque.png",
+      "lod": "near",
+      "zone": "corten",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_board_concrete_albedo",
+      "path": "textures/pbr/near/board_formed_concrete_albedo.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_board_concrete_normal",
+      "path": "textures/pbr/near/board_formed_concrete_normal.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "normal"
+    },
+    {
+      "key": "near_board_concrete_roughness",
+      "path": "textures/pbr/near/board_formed_concrete_roughness.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_board_concrete_ao",
+      "path": "textures/pbr/near/board_formed_concrete_ao.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "ao"
+    },
+    {
+      "key": "near_board_concrete_depth",
+      "path": "textures/pbr/near/board_formed_concrete_depth.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "depth"
+    },
+    {
+      "key": "near_board_concrete_emissive",
+      "path": "textures/pbr/near/board_formed_concrete_emissive.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_board_concrete_glass_mask",
+      "path": "textures/pbr/near/board_formed_concrete_glass.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_board_concrete_opaque_mask",
+      "path": "textures/pbr/near/board_formed_concrete_opaque.png",
+      "lod": "near",
+      "zone": "board_concrete",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_bronze_steel_albedo",
+      "path": "textures/pbr/near/dark_bronze_steel_albedo.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_bronze_steel_normal",
+      "path": "textures/pbr/near/dark_bronze_steel_normal.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "normal"
+    },
+    {
+      "key": "near_bronze_steel_roughness",
+      "path": "textures/pbr/near/dark_bronze_steel_roughness.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_bronze_steel_ao",
+      "path": "textures/pbr/near/dark_bronze_steel_ao.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "ao"
+    },
+    {
+      "key": "near_bronze_steel_depth",
+      "path": "textures/pbr/near/dark_bronze_steel_depth.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "depth"
+    },
+    {
+      "key": "near_bronze_steel_emissive",
+      "path": "textures/pbr/near/dark_bronze_steel_emissive.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_bronze_steel_glass_mask",
+      "path": "textures/pbr/near/dark_bronze_steel_glass.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_bronze_steel_opaque_mask",
+      "path": "textures/pbr/near/dark_bronze_steel_opaque.png",
+      "lod": "near",
+      "zone": "bronze_steel",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_low_iron_glass_albedo",
+      "path": "textures/pbr/near/neutral_low_iron_glass_albedo.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_low_iron_glass_normal",
+      "path": "textures/pbr/near/neutral_low_iron_glass_normal.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_low_iron_glass_roughness",
+      "path": "textures/pbr/near/neutral_low_iron_glass_roughness.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_low_iron_glass_ao",
+      "path": "textures/pbr/near/neutral_low_iron_glass_ao.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_low_iron_glass_depth",
+      "path": "textures/pbr/near/neutral_low_iron_glass_depth.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_low_iron_glass_emissive",
+      "path": "textures/pbr/near/neutral_low_iron_glass_emissive.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_low_iron_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_low_iron_glass_glass.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_low_iron_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_low_iron_glass_opaque.png",
+      "lod": "near",
+      "zone": "low_iron_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_oak_albedo",
+      "path": "textures/pbr/near/honey_oak_albedo.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_oak_normal",
+      "path": "textures/pbr/near/honey_oak_normal.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "normal"
+    },
+    {
+      "key": "near_oak_roughness",
+      "path": "textures/pbr/near/honey_oak_roughness.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_oak_ao",
+      "path": "textures/pbr/near/honey_oak_ao.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "ao"
+    },
+    {
+      "key": "near_oak_depth",
+      "path": "textures/pbr/near/honey_oak_depth.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "depth"
+    },
+    {
+      "key": "near_oak_emissive",
+      "path": "textures/pbr/near/honey_oak_emissive.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_oak_glass_mask",
+      "path": "textures/pbr/near/honey_oak_glass.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_oak_opaque_mask",
+      "path": "textures/pbr/near/honey_oak_opaque.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_precast_albedo",
+      "path": "textures/pbr/near/honed_precast_albedo.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_precast_normal",
+      "path": "textures/pbr/near/honed_precast_normal.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "normal"
+    },
+    {
+      "key": "near_precast_roughness",
+      "path": "textures/pbr/near/honed_precast_roughness.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_precast_ao",
+      "path": "textures/pbr/near/honed_precast_ao.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "ao"
+    },
+    {
+      "key": "near_precast_depth",
+      "path": "textures/pbr/near/honed_precast_depth.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "depth"
+    },
+    {
+      "key": "near_precast_emissive",
+      "path": "textures/pbr/near/honed_precast_emissive.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_precast_glass_mask",
+      "path": "textures/pbr/near/honed_precast_glass.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_precast_opaque_mask",
+      "path": "textures/pbr/near/honed_precast_opaque.png",
+      "lod": "near",
+      "zone": "precast",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_membrane_albedo",
+      "path": "textures/pbr/near/dark_roof_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_membrane_normal",
+      "path": "textures/pbr/near/dark_roof_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_membrane_roughness",
+      "path": "textures/pbr/near/dark_roof_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_membrane_ao",
+      "path": "textures/pbr/near/dark_roof_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_membrane_depth",
+      "path": "textures/pbr/near/dark_roof_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_membrane_emissive",
+      "path": "textures/pbr/near/dark_roof_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_membrane_glass_mask",
+      "path": "textures/pbr/near/dark_roof_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_membrane_opaque_mask",
+      "path": "textures/pbr/near/dark_roof_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof_membrane",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_vegetation_albedo",
+      "path": "textures/pbr/near/campus_native_planting_albedo.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_vegetation_normal",
+      "path": "textures/pbr/near/campus_native_planting_normal.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "normal"
+    },
+    {
+      "key": "near_vegetation_roughness",
+      "path": "textures/pbr/near/campus_native_planting_roughness.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_vegetation_ao",
+      "path": "textures/pbr/near/campus_native_planting_ao.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "ao"
+    },
+    {
+      "key": "near_vegetation_depth",
+      "path": "textures/pbr/near/campus_native_planting_depth.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "depth"
+    },
+    {
+      "key": "near_vegetation_emissive",
+      "path": "textures/pbr/near/campus_native_planting_emissive.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_vegetation_glass_mask",
+      "path": "textures/pbr/near/campus_native_planting_glass.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_vegetation_opaque_mask",
+      "path": "textures/pbr/near/campus_native_planting_opaque.png",
+      "lod": "near",
+      "zone": "vegetation",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_asphalt_albedo",
+      "path": "textures/pbr/near/campus_asphalt_albedo.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_asphalt_normal",
+      "path": "textures/pbr/near/campus_asphalt_normal.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "normal"
+    },
+    {
+      "key": "near_asphalt_roughness",
+      "path": "textures/pbr/near/campus_asphalt_roughness.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_asphalt_ao",
+      "path": "textures/pbr/near/campus_asphalt_ao.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "ao"
+    },
+    {
+      "key": "near_asphalt_depth",
+      "path": "textures/pbr/near/campus_asphalt_depth.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "depth"
+    },
+    {
+      "key": "near_asphalt_emissive",
+      "path": "textures/pbr/near/campus_asphalt_emissive.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_asphalt_glass_mask",
+      "path": "textures/pbr/near/campus_asphalt_glass.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_asphalt_opaque_mask",
+      "path": "textures/pbr/near/campus_asphalt_opaque.png",
+      "lod": "near",
+      "zone": "asphalt",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/corten-arch-university-library",
+    "model": "gpt-image-2",
+    "style_reference": "/families/corten-arch-university-library/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "front_corten_arch_ring_and_ceremonial_stair",
+        "rear_corten_arch_ring_and_reading_wall"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat complete six-metre shell and reading-floor bays only. Keep corten panel, inner AESS rib, side glazing and floor edge aligned; never stretch one arch panel or triangular curtain-wall cell."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "The front and rear are physically recessed arch curtain walls; both shell returns carry real two-tier reading windows; the roof is a continuously panelled weathering-steel barrel with skylight.",
+      "elevation_coverage": {
+        "front": "corten arch ring, honeycomb glass, five doors and stair",
+        "left": "curved shell return and ten physical reading panes",
+        "right": "curved shell return and ten physical reading panes",
+        "rear": "recessed reading curtain wall and complete arch ring",
+        "roof": "corten panels, seams, inner ribs, skylight and drainage"
+      },
+      "variation_policy": "Scale the complete fixed library from 0.76–1.28 with an independent axis ratio no greater than 1.20. Oversized sites use long-axis streetwall repetition of complete library halls."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/arched_corten_portal_albedo.png",
+        "normal": "textures/pbr/near/arched_corten_portal_normal.png",
+        "roughness": "textures/pbr/near/arched_corten_portal_roughness.png",
+        "ao": "textures/pbr/near/arched_corten_portal_ao.png",
+        "depth": "textures/pbr/near/arched_corten_portal_depth.png",
+        "emissive": "textures/pbr/near/arched_corten_portal_emissive.png",
+        "glass_mask": "textures/pbr/near/arched_corten_portal_glass.png",
+        "opaque_mask": "textures/pbr/near/arched_corten_portal_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/arched_corten_portal_albedo.png",
+        "normal": "textures/pbr/far/arched_corten_portal_normal.png",
+        "roughness": "textures/pbr/far/arched_corten_portal_roughness.png",
+        "ao": "textures/pbr/far/arched_corten_portal_ao.png",
+        "depth": "textures/pbr/far/arched_corten_portal_depth.png",
+        "emissive": "textures/pbr/far/arched_corten_portal_emissive.png",
+        "glass_mask": "textures/pbr/far/arched_corten_portal_glass.png",
+        "opaque_mask": "textures/pbr/far/arched_corten_portal_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/arched_corten_portal_glass.png",
+        "opaque_mask": "textures/pbr/near/arched_corten_portal_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "university_library",
+      "source_variant_id": "contemporary_corten_arch",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "one_continuous_symmetric_weathering_steel_barrel_arch_shell",
+        "thick_corten_springing_walls_and_recessed_front_glazing",
+        "physical_hexagonal_dark_bronze_curtain_wall_lattice",
+        "four_visible_occupied_library_floor_plates",
+        "double_height_central_reading_hall",
+        "broad_concrete_ceremonial_stair_with_real_landings",
+        "integrated_accessible_side_ramps_and_continuous_handrails",
+        "expressed_corten_panel_seams_flashings_and_crown_skylight",
+        "fully_designed_side_reading_windows_and_rear_facade",
+        "book_stacks_tables_balustrades_and_warm_linear_lighting"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/corten-arch-university-library/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 56.0,
+    "podium_height_m": 2.0,
+    "floor_height_m": 4.6,
+    "setback_height_m": 4.6,
+    "roof_height_m": 5.4,
+    "crown_height_m": 1.0
+  },
+  "native_width_m": 70.0,
+  "native_depth_m": 56.0,
+  "native_height_m": 25.0,
+  "native_floors": 4,
+  "min_floors": 2,
+  "max_floors": 6,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_podium.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 2.0,
+      "floor_height_m": 4.6,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 120,
+      "material_count": 6,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 19862056
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_floor_typical_a.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2748,
+      "material_count": 8,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 23018012
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_floor_typical_b.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2748,
+      "material_count": 8,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 23019188
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_floor_typical_c.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 4.6,
+      "floor_height_m": 4.6,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2748,
+      "material_count": 8,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 23018400
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_crown_crown.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 1.0,
+      "floor_height_m": 4.6,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 5781016
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "corten-arch-university-library_roof.glb",
+      "module_family": "corten-arch-university-library",
+      "width_m": 70.0,
+      "depth_m": 56.0,
+      "height_m": 5.4,
+      "floor_height_m": 4.6,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 360,
+      "material_count": 6,
+      "texture_keys": [
+        "asphalt",
+        "board_concrete",
+        "bronze_steel",
+        "corten",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "low_iron_glass",
+        "oak",
+        "podium",
+        "precast",
+        "roof_membrane",
+        "side",
+        "vegetation"
+      ],
+      "ao_baked": true,
+      "size_bytes": 7947096
+    }
+  ],
+  "assembled": {
+    "filename": "corten-arch-university-library_assembled.glb",
+    "floors": 4,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 25.0,
+    "triangle_count": 52914,
+    "material_count": 16,
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 70.0,
+      "depth_m": 56.0
+    },
+    "source_variant_id": "contemporary_corten_arch",
+    "generation_archetype_id": "contemporary_corten_arch",
+    "assembly_class": "fixed_landmark",
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "height_m": 25.0,
+        "filename": "corten-arch-university-library_assembled.glb"
+      }
+    ],
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "one_continuous_symmetric_corten_barrel_arch",
+      "continuous_barrel_arch_shells": 1,
+      "front_corten_portal_rings": 1,
+      "rear_corten_portal_rings": 1,
+      "occupied_reading_storeys": 4,
+      "front_triangular_lattice": true,
+      "recessed_public_entrance": 1,
+      "public_entry_doors": 5,
+      "ceremonial_stair_risers": 12,
+      "accessible_side_ramps": 2,
+      "linear_crown_skylights": 1,
+      "side_reading_window_panes": 20,
+      "shell_drainage_downpipes": 4
+    }
+  },
+  "package_profile": "fixed_landmark_with_flexible_lego_stack",
+  "thumbnail": "corten-arch-university-library_preview.png",
+  "renders": [
+    "corten-arch-university-library_preview.png",
+    "corten-arch-university-library_street.png",
+    "corten-arch-university-library_front_elevation.png",
+    "corten-arch-university-library_rear_corner.png",
+    "corten-arch-university-library_aerial.png",
+    "corten-arch-university-library_shell_close.png",
+    "corten-arch-university-library_curtainwall_close.png",
+    "corten-arch-university-library_entrance_close.png",
+    "corten-arch-university-library_front_corner_oblique.png",
+    "corten-arch-university-library_rear_corner_oblique.png",
+    "corten-arch-university-library_facade_close.png",
+    "corten-arch-university-library_context.png"
+  ],
+  "architectural_identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+  "material_zones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+  "glass_profile": "library_neutral_low_iron_clear",
+  "source_provenance": {
+    "catalogue_archetype_id": "university_library",
+    "catalogue_variant_id": "contemporary_corten_arch",
+    "catalogue_alias_ids": [
+      "corten_arch_university_library",
+      "sculptural_campus_library"
+    ],
+    "elevation_source": "/families/corten-arch-university-library/elevation.jpg",
+    "goalpost": "/families/corten-arch-university-library/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/corten-arch-university-library/textures/source/reference-generation.json",
+    "method": "official material and envelope research, locked four-view ImageGen goalpost, six-zone construction plate, deterministic metric arch panels, physical glazing and populated depth"
+  }
+}

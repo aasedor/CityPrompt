@@ -1,0 +1,112 @@
+{
+  "family_id": "corten-arch-university-library",
+  "source": {
+    "archetype_id": "university_library",
+    "variant_id": "contemporary_corten_arch",
+    "generation_archetype_id": "contemporary_corten_arch",
+    "reuse_keys": [
+      "university_library",
+      "contemporary_corten_arch",
+      "corten_arch_university_library",
+      "sculptural_campus_library",
+      "university library",
+      "campus library",
+      "civic library",
+      "corten arch"
+    ]
+  },
+  "dimensions": {
+    "width_m": 70.0,
+    "depth_m": 56.0,
+    "podium_height_m": 2.0,
+    "floor_height_m": 4.6,
+    "setback_height_m": 4.6,
+    "roof_height_m": 5.4,
+    "crown_height_m": 1.0,
+    "default_floors": 4,
+    "min_floors": 2,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+    "material_zones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+    "glass_profile": "library_neutral_low_iron_clear",
+    "kits": [
+      "fixed_landmark",
+      "continuous_corten_barrel_shell",
+      "physical_triangular_curtain_wall",
+      "ceremonial_stair",
+      "flexible_fallback_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "university_library",
+    "contemporary_corten_arch",
+    "corten_arch_university_library",
+    "sculptural_campus_library"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The continuous barrel shell and one ceremonial stair form a singular landmark. The authored rectangle matrix deliberately accepts ordinary hand-drawn variation from 44–90 by 34–70 metres; larger targets repeat complete library halls instead of bending or clipping the arch.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.2
+    },
+    "preferredBayMultiple_m": 6.0,
+    "recommendedWidth_m": [
+      44.0,
+      90.0
+    ],
+    "recommendedDepth_m": [
+      34.0,
+      70.0
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "scaleMin": 0.76,
+    "scaleMax": 1.28,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          44.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          34.0,
+          70.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 6.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "one_continuous_symmetric_corten_barrel_arch",
+    "continuous_barrel_arch_shells": 1,
+    "front_corten_portal_rings": 1,
+    "rear_corten_portal_rings": 1,
+    "occupied_reading_storeys": 4,
+    "front_triangular_lattice": true,
+    "recessed_public_entrance": 1,
+    "public_entry_doors": 5,
+    "ceremonial_stair_risers": 12,
+    "accessible_side_ramps": 2,
+    "linear_crown_skylights": 1,
+    "side_reading_window_panes": 20,
+    "shell_drainage_downpipes": 4
+  }
+}

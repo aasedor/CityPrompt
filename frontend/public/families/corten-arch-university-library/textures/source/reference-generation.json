@@ -1,0 +1,87 @@
+{
+  "schema": "reference-generation@1",
+  "family": "corten-arch-university-library",
+  "archetype_id": "university_library",
+  "variant_id": "contemporary_corten_arch",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "design_lock": {
+    "native_building_dimensions_m": [
+      58.0,
+      42.0,
+      25.0
+    ],
+    "barrel_arch_shells": 1,
+    "occupied_storeys": 4,
+    "primary_material": "variegated weathering-steel plate",
+    "window_rule": "recessed low-iron curtain wall with triangular lattice",
+    "front_entry": "broad real stair to recessed central glazed doors",
+    "roof_rule": "continuous corten barrel with linear crown skylight"
+  },
+  "research": [
+    {
+      "title": "SSAB COR-TEN A for facades",
+      "url": "https://www.ssab.com/en/brands-and-products/ssab-cor-ten/product-offer/ssab-cor-ten-a-for-facades",
+      "lesson": "Architectural weathering steel should read as thin facade plate with expressed joints and naturally varied patina, not as orange-painted concrete."
+    },
+    {
+      "title": "UFGS 08 44 00 Curtain Wall and Glazed Assemblies",
+      "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2008%2044%2000.pdf",
+      "lesson": "Curtain walls require distinct frames, infill panes, anchors and intermediate structure; the model therefore separates glazing from its bronze lattice and floor edges."
+    },
+    {
+      "title": "Pilkington Optiwhite low-iron glass",
+      "url": "https://www.pilkington.com/en/gbl/architectural-and-technical-glass/product-categories/enhanced-visibility/pilkington-optiwhite",
+      "lesson": "Low-iron glass is nearly colour-neutral and highly transmissive, so the skin preserves interior visibility instead of using opaque blue window decals."
+    },
+    {
+      "title": "AISC Architecturally Exposed Structural Steel",
+      "url": "https://www.aisc.org/architecture-center/architecturally-exposed-structural-steel/",
+      "lesson": "The visible lattice, edge beams, braces, base plates and connections are modeled as one legible structural system."
+    },
+    {
+      "title": "U.S. Access Board guide to stairways",
+      "url": "https://www.access-board.gov/ada/guides/chapter-5-stairways/",
+      "lesson": "The ceremonial stair uses uniform closed risers, landings and continuous handrails, with an adjacent accessible route."
+    }
+  ],
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "call_F1o7KQQNOMSnV8WedfsOUY5F",
+      "role": "canonical_four_view_reference_board",
+      "prompt_summary": "One coherent four-storey corten barrel-arch library in front, rear, aerial and elevation views."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "call_F1o7KQQNOMSnV8WedfsOUY5F:front-elevation-crop",
+      "role": "shadow_neutral_front_elevation",
+      "prompt_summary": "Straight-on authority for arch curvature, honeycomb curtain wall, stair, handrails and entrance registration."
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "call_F1o7KQQNOMSnV8WedfsOUY5F:rear-corner-crop",
+      "role": "rear_and_side_goalpost",
+      "prompt_summary": "Rear oblique authority for the continuous shell, quieter reading facade, podium and side landscape."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "call_F1o7KQQNOMSnV8WedfsOUY5F:aerial-roof-crop",
+      "role": "roof_geometry_and_drainage_goalpost",
+      "prompt_summary": "High aerial authority for the barrel shell, crown skylight, panel seams and rectangular footprint."
+    },
+    {
+      "file": "occupied-library-source-v1.png",
+      "source_id": "call_F1o7KQQNOMSnV8WedfsOUY5F:occupied-depth-crop",
+      "role": "window_materiality_and_occupied_depth",
+      "prompt_summary": "Hero crop locking neutral low-iron glass, triangular mullions, floor plates, stacks and warm reading depth."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "call_ptjkO7k3DawpCwvYniL071II",
+      "role": "six_zone_pbr_material_plate",
+      "prompt_summary": "Orthographic construction plate of weathering steel, board concrete, bronze steel, glass, oak and precast."
+    }
+  ]
+}

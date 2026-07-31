@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "university_library",
+  "catalogue_variant_id": "contemporary_corten_arch",
+  "catalogue_alias_ids": [
+    "corten_arch_university_library",
+    "sculptural_campus_library"
+  ],
+  "elevation_source": "/families/corten-arch-university-library/elevation.jpg",
+  "goalpost": "/families/corten-arch-university-library/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/corten-arch-university-library/textures/source/reference-generation.json",
+  "method": "official technical research, locked multi-angle ImageGen source pack, clean PBR cells, deterministic metric arch construction and physical occupied curtain-wall glazing"
+}

@@ -1,0 +1,183 @@
+{
+  "status": "pass",
+  "family": "corten-arch-university-library",
+  "archetype_id": "university_library",
+  "reuse_keys": [
+    "university_library",
+    "contemporary_corten_arch",
+    "corten_arch_university_library",
+    "sculptural_campus_library",
+    "university library",
+    "campus library",
+    "civic library",
+    "corten arch"
+  ],
+  "manifest": "corten-arch-university-library_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "corten-arch-university-library_podium.glb: 18.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "corten-arch-university-library_floor_typical_a.glb: 22.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "corten-arch-university-library_floor_typical_b.glb: 22.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "corten-arch-university-library_floor_typical_c.glb: 22.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "corten-arch-university-library_assembled.glb: 16 materials (many; consider consolidation)",
+    "corten-arch-university-library_assembled.glb: 41.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "corten-arch-university-library_podium.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 2.0,
+        "depth_z": 56.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_LIBRARY_BoardFormedConcrete",
+        "MAT_W10_LIBRARY_HonedPrecastStair",
+        "MAT_W10_LIBRARY_NativeCampusPlanting"
+      ],
+      "size_bytes": 19862056
+    },
+    {
+      "file": "corten-arch-university-library_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 2748,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.6,
+        "depth_z": 42.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_LIBRARY_BoardFormedConcrete",
+        "MAT_W10_LIBRARY_DarkBronzeAESS",
+        "MAT_W10_LIBRARY_OccupiedReadingDepth",
+        "MAT_W10_LIBRARY_PhysicalNeutralLowIronGlass",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel"
+      ],
+      "size_bytes": 23018012
+    },
+    {
+      "file": "corten-arch-university-library_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 2748,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.6,
+        "depth_z": 42.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_LIBRARY_BoardFormedConcrete",
+        "MAT_W10_LIBRARY_DarkBronzeAESS",
+        "MAT_W10_LIBRARY_OccupiedReadingDepth",
+        "MAT_W10_LIBRARY_PhysicalNeutralLowIronGlass",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel"
+      ],
+      "size_bytes": 23019188
+    },
+    {
+      "file": "corten-arch-university-library_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 2748,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 4.6,
+        "depth_z": 42.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_LIBRARY_BoardFormedConcrete",
+        "MAT_W10_LIBRARY_DarkBronzeAESS",
+        "MAT_W10_LIBRARY_OccupiedReadingDepth",
+        "MAT_W10_LIBRARY_PhysicalNeutralLowIronGlass",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel"
+      ],
+      "size_bytes": 23018400
+    },
+    {
+      "file": "corten-arch-university-library_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 1.0,
+        "depth_z": 42.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel"
+      ],
+      "size_bytes": 5781016
+    },
+    {
+      "file": "corten-arch-university-library_roof.glb",
+      "status": "ok",
+      "triangles": 360,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 5.51,
+        "depth_z": 42.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W10_LIBRARY_DarkBronzeAESS",
+        "MAT_W10_LIBRARY_PhysicalNeutralLowIronGlass",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel"
+      ],
+      "size_bytes": 7947096
+    },
+    {
+      "file": "corten-arch-university-library_assembled.glb",
+      "status": "ok",
+      "triangles": 52914,
+      "extent_m": {
+        "width_x": 70.0,
+        "height_y": 25.18,
+        "depth_z": 56.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_LIBRARY_BlackThermalBreak",
+        "MAT_W10_LIBRARY_BoardFormedConcrete",
+        "MAT_W10_LIBRARY_BookBlue",
+        "MAT_W10_LIBRARY_BookCream",
+        "MAT_W10_LIBRARY_BookGreen",
+        "MAT_W10_LIBRARY_BookRust",
+        "MAT_W10_LIBRARY_CortenInnerReveal",
+        "MAT_W10_LIBRARY_DarkBronzeAESS",
+        "MAT_W10_LIBRARY_HonedPrecastStair",
+        "MAT_W10_LIBRARY_HoneyOakInterior",
+        "MAT_W10_LIBRARY_NativeCampusPlanting",
+        "MAT_W10_LIBRARY_OccupiedReadingDepth",
+        "MAT_W10_LIBRARY_PhysicalNeutralLowIronGlass",
+        "MAT_W10_LIBRARY_TreeBark",
+        "MAT_W10_LIBRARY_VariegatedWeatheringSteel",
+        "MAT_W10_LIBRARY_WarmReadingLight"
+      ],
+      "size_bytes": 43156924,
+      "role": "assembled"
+    }
+  ]
+}

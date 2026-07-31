@@ -35856,6 +35856,34 @@
     },
     {
         "id": "university_library",
+        "footprintCompatibility": {
+            "preferredProfiles": ["rectangle"],
+            "minimumPreferredProfiles": 1,
+            "profileRationale": "The continuous barrel shell and one ceremonial stair form a singular landmark. The authored rectangle matrix deliberately accepts ordinary hand-drawn variation from 44-90 by 34-70 metres; larger targets repeat complete library halls instead of bending or clipping the arch.",
+            "fixedLandmarkScaleBand": {
+                "scaleMin": 0.76,
+                "scaleMax": 1.28,
+                "maxAxisRatio": 1.2
+            },
+            "preferredBayMultiple_m": 6.0,
+            "recommendedWidth_m": [44, 90],
+            "recommendedDepth_m": [34, 70],
+            "recommendedFloors": [2, 6],
+            "scaleMin": 0.76,
+            "scaleMax": 1.28,
+            "maxAxisRatio": 1.2,
+            "profiles": {
+                "rectangle": {
+                    "recommendedWidth_m": [44, 90],
+                    "recommendedDepth_m": [34, 70],
+                    "recommendedFloors": [2, 6],
+                    "scaleMin": 0.76,
+                    "scaleMax": 1.28,
+                    "maxAxisRatio": 1.2,
+                    "preferredBayMultiple_m": 6.0
+                }
+            }
+        },
         "title": "University Library",
         "buildingSubcategory": "Civic / Institutional",
         "developmentType": "institutional",
@@ -35912,13 +35940,13 @@
         "aspectRatio": "11:8",
         "minFloors": 3,
         "maxFloors": 6,
-        "thumbnailUrl": "/archetypes/buildings/university-library/hero.png",
+        "thumbnailUrl": "/archetypes/buildings/corten-arch-university-library/hero.png",
         "variants": [
             {
                 "id": "contemporary_corten_arch",
                 "label": "Contemporary Corten Arch Pavilion",
                 "description": "A boldly sculptural 4-storey library wrapped in a sweeping corten steel arch that curves from ground to roof, paired with a honeycomb-patterned glass curtainwall facade and a concrete podium base with wide timber-edged entry stairs.",
-                "thumbnailUrl": "/archetypes/buildings/university-library/variant_0.png",
+                "thumbnailUrl": "/archetypes/buildings/corten-arch-university-library/hero.png",
                 "color": "#B5622A",
                 "minFloors": 3,
                 "maxFloors": 4,

@@ -659,6 +659,34 @@
                                                                   "glassProfile": "low_iron_neutral",
                                                                   "elevationUrl": "/families/prairie-courtyard-motor-inn/elevation.jpg"
                                                               },
+                     "university_library": {
+                                               "archetypeId": "university_library",
+                                               "identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+                                               "materialZones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+                                               "glassProfile": "library_neutral_low_iron_clear",
+                                               "elevationUrl": "/families/corten-arch-university-library/elevation.jpg"
+                                           },
+                     "contemporary_corten_arch": {
+                                                        "archetypeId": "contemporary_corten_arch",
+                                                        "identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+                                                        "materialZones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+                                                        "glassProfile": "library_neutral_low_iron_clear",
+                                                        "elevationUrl": "/families/corten-arch-university-library/elevation.jpg"
+                                                    },
+                     "corten_arch_university_library": {
+                                                            "archetypeId": "corten_arch_university_library",
+                                                            "identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+                                                            "materialZones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+                                                            "glassProfile": "library_neutral_low_iron_clear",
+                                                            "elevationUrl": "/families/corten-arch-university-library/elevation.jpg"
+                                                        },
+                     "sculptural_campus_library": {
+                                                        "archetypeId": "sculptural_campus_library",
+                                                        "identity": "One continuous weathering-steel barrel arch rises from grade to enclose a physically recessed triangular-lattice curtain wall, four occupied reading levels and a broad concrete civic stair.",
+                                                        "materialZones": "variegated burnt-sienna weathering-steel panels; pale board-formed concrete; honed precast stairs; dark-bronze AESS ribs and mullions; neutral low-iron glass; honey-oak stacks and furniture; warm occupied reading depth; native campus planting",
+                                                        "glassProfile": "library_neutral_low_iron_clear",
+                                                        "elevationUrl": "/families/corten-arch-university-library/elevation.jpg"
+                                                    },
                      "daylight_factory": {
                                                "archetypeId": "daylight_factory",
                                                "identity": "A long red-brown brick industrial hall is defined by exactly seven asymmetric zinc-and-glass northlight roof teeth, ten deep segmental-arched steel-sash windows, a modest projecting administration vestibule and a complete three-bay rear loading court.",
