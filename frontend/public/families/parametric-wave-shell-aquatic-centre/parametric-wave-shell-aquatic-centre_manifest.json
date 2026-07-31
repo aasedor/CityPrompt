@@ -1,0 +1,1645 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave10_aquatic_family.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-07-31T11:07:14.706606+00:00",
+  "family": "parametric-wave-shell-aquatic-centre",
+  "archetype_id": "community_recreation_centre",
+  "archetype_label": "Community Recreation Centre — Parametric Wave-Shell Aquatic Centre",
+  "variant_id": "rec_centre_aquatic",
+  "generation_archetype_id": "rec_centre_aquatic",
+  "archetype_aliases": [
+    "community_recreation_centre",
+    "rec_centre_aquatic",
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell"
+  ],
+  "aesthetic_category_id": "institutional_civic_sports",
+  "development_type": "civic_recreation",
+  "reuse_keys": [
+    "community_recreation_centre",
+    "rec_centre_aquatic",
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell",
+    "aquatic_centre",
+    "natatorium",
+    "community recreation"
+  ],
+  "generation_tags": [
+    "wave10",
+    "fixed_landmark",
+    "parametric_wave_shell",
+    "large_span_aquatic",
+    "physical_pool_glazing"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The unequal double-wave shell, two masts and one public entrance form a singular long-span landmark. Mildly imperfect hand-drawn rectangles scale cleanly; non-rectangular sites must preserve the complete hall rather than bend or duplicate one crest.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.22,
+      "maxAxisRatio": 1.18
+    },
+    "preferredBayMultiple_m": 5.0,
+    "recommendedWidth_m": [
+      62.0,
+      98.0
+    ],
+    "recommendedDepth_m": [
+      43.0,
+      67.0
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "scaleMin": 0.78,
+    "scaleMax": 1.22,
+    "maxAxisRatio": 1.18,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          62.0,
+          98.0
+        ],
+        "recommendedDepth_m": [
+          43.0,
+          67.0
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 5.0
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/elevation_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/elevation_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/elevation_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/elevation_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/elevation_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/elevation_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/elevation_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/elevation_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/elevation_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/elevation_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/elevation_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/elevation_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/elevation_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/elevation_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/elevation_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/elevation_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/elevation_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/elevation_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/elevation_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/elevation_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/elevation_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/elevation_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/elevation_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/elevation_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/pool_glazing_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/pool_glazing_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/pool_glazing_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/pool_glazing_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/pool_glazing_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/pool_glazing_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/pool_glazing_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/pool_glazing_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/roof_edge_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/roof_edge_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/roof_edge_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/roof_edge_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/roof_edge_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/roof_edge_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/roof_edge_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/roof_edge_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/wave_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/wave_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/wave_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/wave_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/wave_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/wave_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/wave_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/wave_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/service_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/service_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/service_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/service_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/service_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/service_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/service_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/service_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/pool_interior_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/pool_interior_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/pool_interior_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/pool_interior_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/pool_interior_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/pool_interior_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/pool_interior_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/pool_interior_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_metal_albedo",
+      "path": "textures/pbr/near/roof_metal_albedo.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_metal_normal",
+      "path": "textures/pbr/near/roof_metal_normal.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_metal_roughness",
+      "path": "textures/pbr/near/roof_metal_roughness.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_metal_ao",
+      "path": "textures/pbr/near/roof_metal_ao.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_metal_depth",
+      "path": "textures/pbr/near/roof_metal_depth.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_metal_emissive",
+      "path": "textures/pbr/near/roof_metal_emissive.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_metal_glass_mask",
+      "path": "textures/pbr/near/roof_metal_glass.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_metal_opaque_mask",
+      "path": "textures/pbr/near/roof_metal_opaque.png",
+      "lod": "near",
+      "zone": "roof_metal",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_timber_albedo",
+      "path": "textures/pbr/near/timber_albedo.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_timber_normal",
+      "path": "textures/pbr/near/timber_normal.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "normal"
+    },
+    {
+      "key": "near_timber_roughness",
+      "path": "textures/pbr/near/timber_roughness.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_timber_ao",
+      "path": "textures/pbr/near/timber_ao.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "ao"
+    },
+    {
+      "key": "near_timber_depth",
+      "path": "textures/pbr/near/timber_depth.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "depth"
+    },
+    {
+      "key": "near_timber_emissive",
+      "path": "textures/pbr/near/timber_emissive.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_timber_glass_mask",
+      "path": "textures/pbr/near/timber_glass.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_timber_opaque_mask",
+      "path": "textures/pbr/near/timber_opaque.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_concrete_albedo",
+      "path": "textures/pbr/near/concrete_albedo.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_concrete_normal",
+      "path": "textures/pbr/near/concrete_normal.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "normal"
+    },
+    {
+      "key": "near_concrete_roughness",
+      "path": "textures/pbr/near/concrete_roughness.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_concrete_ao",
+      "path": "textures/pbr/near/concrete_ao.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "ao"
+    },
+    {
+      "key": "near_concrete_depth",
+      "path": "textures/pbr/near/concrete_depth.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "depth"
+    },
+    {
+      "key": "near_concrete_emissive",
+      "path": "textures/pbr/near/concrete_emissive.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_concrete_glass_mask",
+      "path": "textures/pbr/near/concrete_glass.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_concrete_opaque_mask",
+      "path": "textures/pbr/near/concrete_opaque.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_polycarbonate_albedo",
+      "path": "textures/pbr/near/polycarbonate_albedo.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_polycarbonate_normal",
+      "path": "textures/pbr/near/polycarbonate_normal.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "normal"
+    },
+    {
+      "key": "near_polycarbonate_roughness",
+      "path": "textures/pbr/near/polycarbonate_roughness.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_polycarbonate_ao",
+      "path": "textures/pbr/near/polycarbonate_ao.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "ao"
+    },
+    {
+      "key": "near_polycarbonate_depth",
+      "path": "textures/pbr/near/polycarbonate_depth.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "depth"
+    },
+    {
+      "key": "near_polycarbonate_emissive",
+      "path": "textures/pbr/near/polycarbonate_emissive.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_polycarbonate_glass_mask",
+      "path": "textures/pbr/near/polycarbonate_glass.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_polycarbonate_opaque_mask",
+      "path": "textures/pbr/near/polycarbonate_opaque.png",
+      "lod": "near",
+      "zone": "polycarbonate",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_cobalt_panel_albedo",
+      "path": "textures/pbr/near/cobalt_panel_albedo.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_cobalt_panel_normal",
+      "path": "textures/pbr/near/cobalt_panel_normal.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "normal"
+    },
+    {
+      "key": "near_cobalt_panel_roughness",
+      "path": "textures/pbr/near/cobalt_panel_roughness.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_cobalt_panel_ao",
+      "path": "textures/pbr/near/cobalt_panel_ao.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "ao"
+    },
+    {
+      "key": "near_cobalt_panel_depth",
+      "path": "textures/pbr/near/cobalt_panel_depth.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "depth"
+    },
+    {
+      "key": "near_cobalt_panel_emissive",
+      "path": "textures/pbr/near/cobalt_panel_emissive.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_cobalt_panel_glass_mask",
+      "path": "textures/pbr/near/cobalt_panel_glass.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_cobalt_panel_opaque_mask",
+      "path": "textures/pbr/near/cobalt_panel_opaque.png",
+      "lod": "near",
+      "zone": "cobalt_panel",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_plinth_albedo",
+      "path": "textures/pbr/near/plinth_albedo.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_plinth_normal",
+      "path": "textures/pbr/near/plinth_normal.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "normal"
+    },
+    {
+      "key": "near_plinth_roughness",
+      "path": "textures/pbr/near/plinth_roughness.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_plinth_ao",
+      "path": "textures/pbr/near/plinth_ao.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "ao"
+    },
+    {
+      "key": "near_plinth_depth",
+      "path": "textures/pbr/near/plinth_depth.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "depth"
+    },
+    {
+      "key": "near_plinth_emissive",
+      "path": "textures/pbr/near/plinth_emissive.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_plinth_glass_mask",
+      "path": "textures/pbr/near/plinth_glass.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_plinth_opaque_mask",
+      "path": "textures/pbr/near/plinth_opaque.png",
+      "lod": "near",
+      "zone": "plinth",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_pool_water_albedo",
+      "path": "textures/pbr/near/pool_water_albedo.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_pool_water_normal",
+      "path": "textures/pbr/near/pool_water_normal.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "normal"
+    },
+    {
+      "key": "near_pool_water_roughness",
+      "path": "textures/pbr/near/pool_water_roughness.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_pool_water_ao",
+      "path": "textures/pbr/near/pool_water_ao.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "ao"
+    },
+    {
+      "key": "near_pool_water_depth",
+      "path": "textures/pbr/near/pool_water_depth.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "depth"
+    },
+    {
+      "key": "near_pool_water_emissive",
+      "path": "textures/pbr/near/pool_water_emissive.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_pool_water_glass_mask",
+      "path": "textures/pbr/near/pool_water_glass.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_pool_water_opaque_mask",
+      "path": "textures/pbr/near/pool_water_opaque.png",
+      "lod": "near",
+      "zone": "pool_water",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_wet_deck_albedo",
+      "path": "textures/pbr/near/wet_deck_albedo.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_wet_deck_normal",
+      "path": "textures/pbr/near/wet_deck_normal.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "normal"
+    },
+    {
+      "key": "near_wet_deck_roughness",
+      "path": "textures/pbr/near/wet_deck_roughness.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_wet_deck_ao",
+      "path": "textures/pbr/near/wet_deck_ao.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "ao"
+    },
+    {
+      "key": "near_wet_deck_depth",
+      "path": "textures/pbr/near/wet_deck_depth.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "depth"
+    },
+    {
+      "key": "near_wet_deck_emissive",
+      "path": "textures/pbr/near/wet_deck_emissive.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_wet_deck_glass_mask",
+      "path": "textures/pbr/near/wet_deck_glass.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_wet_deck_opaque_mask",
+      "path": "textures/pbr/near/wet_deck_opaque.png",
+      "lod": "near",
+      "zone": "wet_deck",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_white_structure_albedo",
+      "path": "textures/pbr/near/white_structure_albedo.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_white_structure_normal",
+      "path": "textures/pbr/near/white_structure_normal.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "normal"
+    },
+    {
+      "key": "near_white_structure_roughness",
+      "path": "textures/pbr/near/white_structure_roughness.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_white_structure_ao",
+      "path": "textures/pbr/near/white_structure_ao.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "ao"
+    },
+    {
+      "key": "near_white_structure_depth",
+      "path": "textures/pbr/near/white_structure_depth.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "depth"
+    },
+    {
+      "key": "near_white_structure_emissive",
+      "path": "textures/pbr/near/white_structure_emissive.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_white_structure_glass_mask",
+      "path": "textures/pbr/near/white_structure_glass.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_white_structure_opaque_mask",
+      "path": "textures/pbr/near/white_structure_opaque.png",
+      "lod": "near",
+      "zone": "white_structure",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_landscape_albedo",
+      "path": "textures/pbr/near/landscape_albedo.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_landscape_normal",
+      "path": "textures/pbr/near/landscape_normal.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "normal"
+    },
+    {
+      "key": "near_landscape_roughness",
+      "path": "textures/pbr/near/landscape_roughness.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_landscape_ao",
+      "path": "textures/pbr/near/landscape_ao.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "ao"
+    },
+    {
+      "key": "near_landscape_depth",
+      "path": "textures/pbr/near/landscape_depth.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "depth"
+    },
+    {
+      "key": "near_landscape_emissive",
+      "path": "textures/pbr/near/landscape_emissive.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_landscape_glass_mask",
+      "path": "textures/pbr/near/landscape_glass.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_landscape_opaque_mask",
+      "path": "textures/pbr/near/landscape_opaque.png",
+      "lod": "near",
+      "zone": "landscape",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/parametric-wave-shell-aquatic-centre",
+    "model": "gpt-image-2",
+    "style_reference": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "competition_crest",
+        "saddle_entry",
+        "leisure_crest",
+        "two_cable_masts"
+      ],
+      "repeatable_middle_bays": [
+        1,
+        2,
+        3
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "The assembled landmark always preserves both unequal crests, the saddle, two masts, eight integrated supports and one entry. Only the out-of-band fallback kit repeats complete 5 m bays."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "competition and leisure pool halls",
+        "two cable-stay masts",
+        "eight integrated concrete supports",
+        "crown",
+        "roof"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "Full-height clear pool glazing turns into translucent ribbed polycarbonate above a cobalt service plinth; black frames, roof fascia and timber soffit continue around both sides and rear.",
+      "elevation_coverage": {
+        "front": "double-wave pool curtain wall, branch supports and entry",
+        "left": "clear pool glazing, cobalt base and shell landing",
+        "right": "clear-to-translucent programme bays and cobalt base",
+        "rear": "polycarbonate service bays, doors and recessed louvers",
+        "roof": "continuous shell, standing seams, valley skylights, masts and cables"
+      },
+      "variation_policy": "Scale the whole fixed landmark only inside 0.78–1.22 with an independent-axis ratio no greater than 1.18. Larger sites repeat complete halls through streetwall planning."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/elevation_albedo.png",
+        "normal": "textures/pbr/near/elevation_normal.png",
+        "roughness": "textures/pbr/near/elevation_roughness.png",
+        "ao": "textures/pbr/near/elevation_ao.png",
+        "depth": "textures/pbr/near/elevation_depth.png",
+        "emissive": "textures/pbr/near/elevation_emissive.png",
+        "glass_mask": "textures/pbr/near/elevation_glass.png",
+        "opaque_mask": "textures/pbr/near/elevation_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/elevation_albedo.png",
+        "normal": "textures/pbr/far/elevation_normal.png",
+        "roughness": "textures/pbr/far/elevation_roughness.png",
+        "ao": "textures/pbr/far/elevation_ao.png",
+        "depth": "textures/pbr/far/elevation_depth.png",
+        "emissive": "textures/pbr/far/elevation_emissive.png",
+        "glass_mask": "textures/pbr/far/elevation_glass.png",
+        "opaque_mask": "textures/pbr/far/elevation_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/elevation_glass.png",
+        "opaque_mask": "textures/pbr/near/elevation_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "community_recreation_centre",
+      "source_variant_id": "rec_centre_aquatic",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "eighty_by_fifty_five_metre_single_volume_natatorium",
+        "continuous_asymmetrical_double_wave_shell",
+        "larger_competition_crest_and_smaller_leisure_crest",
+        "deep_glazed_saddle_valley",
+        "exactly_two_cable_stay_masts_and_tension_rods",
+        "pale_board_formed_diagonal_concrete_branch_supports",
+        "standing_seam_platinum_aluminium_roof_skin",
+        "deep_honey_timber_soffit_glulam_ribs_and_acoustic_baffles",
+        "full_height_low_iron_pool_curtain_wall",
+        "fifty_metre_lap_pool_diving_tower_and_spectator_depth",
+        "recessed_double_height_public_entry_at_right_third",
+        "translucent_ribbed_polycarbonate_service_bays",
+        "charcoal_honed_concrete_plinth",
+        "restrained_cobalt_microperforated_wet_service_panels",
+        "bioswale_forecourt_and_cycle_arrival"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/parametric-wave-shell-aquatic-centre/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "continuous_asymmetrical_double_wave_shell",
+    "competition_crest": 1,
+    "leisure_crest": 1,
+    "glazed_saddle_valley": true,
+    "cable_stay_masts": 2,
+    "concrete_branch_support_assemblies": 8,
+    "recessed_public_entrance": 1,
+    "competition_pool_length_m": 50
+  },
+  "material_budget": {
+    "max_assembled_materials": 24,
+    "rationale": "Roof metal, timber, concrete, polycarbonate, cobalt, plinth, physical glazing, occupied depth, pool water and civic interior materials remain separate to preserve construction."
+  },
+  "dimensions": {
+    "width_m": 80.0,
+    "depth_m": 55.0,
+    "podium_height_m": 4.5,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 11.5,
+    "crown_height_m": 1.0,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "native_width_m": 80.0,
+  "native_depth_m": 55.0,
+  "native_floors": 1,
+  "min_floors": 1,
+  "max_floors": 2,
+  "default_floors": 1,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_podium.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 4.5,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 576,
+      "material_count": 7,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 20507712
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_floor_typical_a.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2088,
+      "material_count": 6,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 5824944
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_floor_typical_b.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2088,
+      "material_count": 5,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 5824164
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_floor_typical_c.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 3.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2088,
+      "material_count": 6,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13997744
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_crown_crown.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 1.0,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 468,
+      "material_count": 4,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 7436416
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "parametric-wave-shell-aquatic-centre_roof.glb",
+      "module_family": "parametric-wave-shell-aquatic-centre",
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "height_m": 11.5,
+      "floor_height_m": 3.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 6648,
+      "material_count": 5,
+      "texture_keys": [
+        "cobalt_panel",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "landscape",
+        "plinth",
+        "podium",
+        "polycarbonate",
+        "pool_water",
+        "roof_metal",
+        "side",
+        "timber",
+        "wet_deck",
+        "white_structure"
+      ],
+      "ao_baked": true,
+      "size_bytes": 16042980
+    }
+  ],
+  "assembled": {
+    "filename": "parametric-wave-shell-aquatic-centre_assembled.glb",
+    "floors": 1,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 20.0,
+    "triangle_count": 39440,
+    "material_count": 17,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "fixed_landmark",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 20.0
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "wing_depth_m": 55.0,
+      "segments": [
+        {
+          "id": "complete_natatorium",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 80.0,
+          "thickness_m": 55.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_landmark",
+      "silhouette": "continuous_asymmetrical_double_wave_shell",
+      "competition_crest": 1,
+      "leisure_crest": 1,
+      "glazed_saddle_valley": true,
+      "cable_stay_masts": 2,
+      "concrete_branch_support_assemblies": 8,
+      "recessed_public_entrance": 1,
+      "competition_pool_length_m": 50
+    },
+    "texture_keys": [
+      "cobalt_panel",
+      "concrete",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "interior",
+      "landscape",
+      "plinth",
+      "podium",
+      "polycarbonate",
+      "pool_water",
+      "roof_metal",
+      "side",
+      "timber",
+      "wet_deck",
+      "white_structure"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "parametric-wave-shell-aquatic-centre_preview.png",
+  "renders": [
+    "parametric-wave-shell-aquatic-centre_preview.png",
+    "parametric-wave-shell-aquatic-centre_street.png",
+    "parametric-wave-shell-aquatic-centre_front_corner_oblique.png",
+    "parametric-wave-shell-aquatic-centre_rear_corner_oblique.png",
+    "parametric-wave-shell-aquatic-centre_aerial.png",
+    "parametric-wave-shell-aquatic-centre_facade_close.png",
+    "parametric-wave-shell-aquatic-centre_entry_close.png",
+    "parametric-wave-shell-aquatic-centre_glazing_close.png",
+    "parametric-wave-shell-aquatic-centre_pool_close.png",
+    "parametric-wave-shell-aquatic-centre_roof_close.png",
+    "parametric-wave-shell-aquatic-centre_side_close.png",
+    "parametric-wave-shell-aquatic-centre_structure_close.png",
+    "parametric-wave-shell-aquatic-centre_context.png"
+  ],
+  "architectural_identity": "A transparent civic natatorium beneath one continuous unequal double-wave silver shell, held by two cable masts and pale concrete branch supports above warm timber pool-hall depth.",
+  "material_zones": "platinum standing-seam shell; honey glulam and soffit; pale board-formed branch supports; low-iron pool glass; milky ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue competition and leisure pool water",
+  "glass_profile": "aquatic_low_iron_pool_clear",
+  "source_provenance": {
+    "catalogue_archetype_id": "community_recreation_centre",
+    "catalogue_variant_id": "rec_centre_aquatic",
+    "catalogue_alias_ids": [
+      "aquatic_natatorium_complex",
+      "parametric_wave_shell"
+    ],
+    "elevation_source": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg",
+    "goalpost": "/families/parametric-wave-shell-aquatic-centre/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/parametric-wave-shell-aquatic-centre/textures/source/reference-generation.json",
+    "method": "official built-precedent research, locked multi-angle ImageGen source pack, clean PBR cells, deterministic metric geometry and physical pool glazing"
+  }
+}

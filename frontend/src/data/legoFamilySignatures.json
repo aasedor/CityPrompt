@@ -546,6 +546,34 @@
                                                                   "materialZones":  "honey vertical timber rainscreen and exposed glulam/CLT; charred shou sugi ban public and service plinth; pale mineral concrete and paving; black thermally broken frames; physical neutral low-e patient glazing and low-iron atrium glass; occupied care rooms and public atrium; living walls and planted ledges; meadow roofs, gravel breaks and photovoltaics",
                                                                   "glassProfile":  "timber_station_neutral_low_e",
                                                                   "elevationUrl":  "/families/biophilic-healthcare-mass-timber/elevation.jpg"
-                                            }
+                                            },
+                     "community_recreation_centre": {
+                                                       "archetypeId": "community_recreation_centre",
+                                                       "identity": "A transparent civic natatorium sits beneath one continuous unequal double-wave platinum shell, held by exactly two cable-stay masts and eight integrated pale concrete supports above a support-free recessed entrance and warm occupied timber pool halls.",
+                                                       "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
+                                                       "glassProfile": "aquatic_low_iron_pool_clear",
+                                                       "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
+                                                   },
+                     "rec_centre_aquatic": {
+                                                "archetypeId": "rec_centre_aquatic",
+                                                "identity": "A transparent civic natatorium sits beneath one continuous unequal double-wave platinum shell, held by exactly two cable-stay masts and eight integrated pale concrete supports above a support-free recessed entrance and warm occupied timber pool halls.",
+                                                "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
+                                                "glassProfile": "aquatic_low_iron_pool_clear",
+                                                "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
+                                            },
+                     "aquatic_natatorium_complex": {
+                                                       "archetypeId": "aquatic_natatorium_complex",
+                                                       "identity": "A transparent civic natatorium sits beneath one continuous unequal double-wave platinum shell, held by exactly two cable-stay masts and eight integrated pale concrete supports above a support-free recessed entrance and warm occupied timber pool halls.",
+                                                       "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
+                                                       "glassProfile": "aquatic_low_iron_pool_clear",
+                                                       "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
+                                                   },
+                     "parametric_wave_shell": {
+                                                   "archetypeId": "parametric_wave_shell",
+                                                   "identity": "A transparent civic natatorium sits beneath one continuous unequal double-wave platinum shell, held by exactly two cable-stay masts and eight integrated pale concrete supports above a support-free recessed entrance and warm occupied timber pool halls.",
+                                                   "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
+                                                   "glassProfile": "aquatic_low_iron_pool_clear",
+                                                   "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
+                                               }
                  }
 }

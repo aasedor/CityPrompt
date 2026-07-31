@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "community_recreation_centre",
+  "catalogue_variant_id": "rec_centre_aquatic",
+  "catalogue_alias_ids": [
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell"
+  ],
+  "elevation_source": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg",
+  "goalpost": "/families/parametric-wave-shell-aquatic-centre/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/parametric-wave-shell-aquatic-centre/textures/source/reference-generation.json",
+  "method": "official built-precedent research, locked multi-angle ImageGen source pack, clean PBR cells, deterministic metric geometry and physical pool glazing"
+}

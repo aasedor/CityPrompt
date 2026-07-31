@@ -1,0 +1,106 @@
+{
+  "family_id": "parametric-wave-shell-aquatic-centre",
+  "source": {
+    "archetype_id": "community_recreation_centre",
+    "variant_id": "rec_centre_aquatic",
+    "generation_archetype_id": "rec_centre_aquatic",
+    "reuse_keys": [
+      "community_recreation_centre",
+      "rec_centre_aquatic",
+      "aquatic_natatorium_complex",
+      "parametric_wave_shell",
+      "aquatic_centre",
+      "natatorium",
+      "community recreation"
+    ]
+  },
+  "dimensions": {
+    "width_m": 80.0,
+    "depth_m": 55.0,
+    "podium_height_m": 4.5,
+    "floor_height_m": 3.0,
+    "setback_height_m": 3.0,
+    "roof_height_m": 11.5,
+    "crown_height_m": 1.0,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A transparent civic natatorium beneath one continuous unequal double-wave silver shell, held by two cable masts and pale concrete branch supports above warm timber pool-hall depth.",
+    "material_zones": "platinum standing-seam shell; honey glulam and soffit; pale board-formed branch supports; low-iron pool glass; milky ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue competition and leisure pool water",
+    "glass_profile": "aquatic_low_iron_pool_clear",
+    "kits": [
+      "fixed_landmark",
+      "continuous_double_wave_shell",
+      "cable_stay_masts",
+      "physical_pool_glazing",
+      "flexible_fallback_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "community_recreation_centre",
+    "rec_centre_aquatic",
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The unequal double-wave shell, two masts and one public entrance form a singular long-span landmark. Mildly imperfect hand-drawn rectangles scale cleanly; non-rectangular sites must preserve the complete hall rather than bend or duplicate one crest.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.22,
+      "maxAxisRatio": 1.18
+    },
+    "preferredBayMultiple_m": 5.0,
+    "recommendedWidth_m": [
+      62.0,
+      98.0
+    ],
+    "recommendedDepth_m": [
+      43.0,
+      67.0
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "scaleMin": 0.78,
+    "scaleMax": 1.22,
+    "maxAxisRatio": 1.18,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          62.0,
+          98.0
+        ],
+        "recommendedDepth_m": [
+          43.0,
+          67.0
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 5.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_landmark",
+    "silhouette": "continuous_asymmetrical_double_wave_shell",
+    "competition_crest": 1,
+    "leisure_crest": 1,
+    "glazed_saddle_valley": true,
+    "cable_stay_masts": 2,
+    "concrete_branch_support_assemblies": 8,
+    "recessed_public_entrance": 1,
+    "competition_pool_length_m": 50
+  }
+}

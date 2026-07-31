@@ -1,0 +1,461 @@
+{
+  "schema": "parametric-wave-shell-aquatic-centre-skin@1",
+  "family": "parametric-wave-shell-aquatic-centre",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/pool-occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The canonical, front, aerial and rear sources lock one transparent single-volume natatorium beneath a continuous unequal double-wave shell. The competition crest is larger than the leisure crest; their glazed saddle valley contains the recessed public entry. Exactly two cable masts, pale diagonal concrete supports, the roof seams, warm timber underside and the translucent cobalt service elevation remain consistent on every view.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "community_recreation_centre",
+    "source_variant_id": "rec_centre_aquatic",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "eighty_by_fifty_five_metre_single_volume_natatorium",
+      "continuous_asymmetrical_double_wave_shell",
+      "larger_competition_crest_and_smaller_leisure_crest",
+      "deep_glazed_saddle_valley",
+      "exactly_two_cable_stay_masts_and_tension_rods",
+      "pale_board_formed_diagonal_concrete_branch_supports",
+      "standing_seam_platinum_aluminium_roof_skin",
+      "deep_honey_timber_soffit_glulam_ribs_and_acoustic_baffles",
+      "full_height_low_iron_pool_curtain_wall",
+      "fifty_metre_lap_pool_diving_tower_and_spectator_depth",
+      "recessed_double_height_public_entry_at_right_third",
+      "translucent_ribbed_polycarbonate_service_bays",
+      "charcoal_honed_concrete_plinth",
+      "restrained_cobalt_microperforated_wet_service_panels",
+      "bioswale_forecourt_and_cycle_arrival"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/elevation_albedo.png",
+        "normal": "textures/pbr/near/elevation_normal.png",
+        "roughness": "textures/pbr/near/elevation_roughness.png",
+        "ao": "textures/pbr/near/elevation_ao.png",
+        "depth": "textures/pbr/near/elevation_depth.png",
+        "emissive": "textures/pbr/near/elevation_emissive.png",
+        "glass_mask": "textures/pbr/near/elevation_glass.png",
+        "opaque_mask": "textures/pbr/near/elevation_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/elevation_albedo.png",
+        "normal": "textures/pbr/far/elevation_normal.png",
+        "roughness": "textures/pbr/far/elevation_roughness.png",
+        "ao": "textures/pbr/far/elevation_ao.png",
+        "depth": "textures/pbr/far/elevation_depth.png",
+        "emissive": "textures/pbr/far/elevation_emissive.png",
+        "glass_mask": "textures/pbr/far/elevation_glass.png",
+        "opaque_mask": "textures/pbr/far/elevation_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/podium_albedo.png",
+        "normal": "textures/pbr/near/podium_normal.png",
+        "roughness": "textures/pbr/near/podium_roughness.png",
+        "ao": "textures/pbr/near/podium_ao.png",
+        "depth": "textures/pbr/near/podium_depth.png",
+        "emissive": "textures/pbr/near/podium_emissive.png",
+        "glass_mask": "textures/pbr/near/podium_glass.png",
+        "opaque_mask": "textures/pbr/near/podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/podium_albedo.png",
+        "normal": "textures/pbr/far/podium_normal.png",
+        "roughness": "textures/pbr/far/podium_roughness.png",
+        "ao": "textures/pbr/far/podium_ao.png",
+        "depth": "textures/pbr/far/podium_depth.png",
+        "emissive": "textures/pbr/far/podium_emissive.png",
+        "glass_mask": "textures/pbr/far/podium_glass.png",
+        "opaque_mask": "textures/pbr/far/podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/pool_glazing_albedo.png",
+        "normal": "textures/pbr/near/pool_glazing_normal.png",
+        "roughness": "textures/pbr/near/pool_glazing_roughness.png",
+        "ao": "textures/pbr/near/pool_glazing_ao.png",
+        "depth": "textures/pbr/near/pool_glazing_depth.png",
+        "emissive": "textures/pbr/near/pool_glazing_emissive.png",
+        "glass_mask": "textures/pbr/near/pool_glazing_glass.png",
+        "opaque_mask": "textures/pbr/near/pool_glazing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pool_glazing_albedo.png",
+        "normal": "textures/pbr/far/pool_glazing_normal.png",
+        "roughness": "textures/pbr/far/pool_glazing_roughness.png",
+        "ao": "textures/pbr/far/pool_glazing_ao.png",
+        "depth": "textures/pbr/far/pool_glazing_depth.png",
+        "emissive": "textures/pbr/far/pool_glazing_emissive.png",
+        "glass_mask": "textures/pbr/far/pool_glazing_glass.png",
+        "opaque_mask": "textures/pbr/far/pool_glazing_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/roof_edge_albedo.png",
+        "normal": "textures/pbr/near/roof_edge_normal.png",
+        "roughness": "textures/pbr/near/roof_edge_roughness.png",
+        "ao": "textures/pbr/near/roof_edge_ao.png",
+        "depth": "textures/pbr/near/roof_edge_depth.png",
+        "emissive": "textures/pbr/near/roof_edge_emissive.png",
+        "glass_mask": "textures/pbr/near/roof_edge_glass.png",
+        "opaque_mask": "textures/pbr/near/roof_edge_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/roof_edge_albedo.png",
+        "normal": "textures/pbr/far/roof_edge_normal.png",
+        "roughness": "textures/pbr/far/roof_edge_roughness.png",
+        "ao": "textures/pbr/far/roof_edge_ao.png",
+        "depth": "textures/pbr/far/roof_edge_depth.png",
+        "emissive": "textures/pbr/far/roof_edge_emissive.png",
+        "glass_mask": "textures/pbr/far/roof_edge_glass.png",
+        "opaque_mask": "textures/pbr/far/roof_edge_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/wave_crown_albedo.png",
+        "normal": "textures/pbr/near/wave_crown_normal.png",
+        "roughness": "textures/pbr/near/wave_crown_roughness.png",
+        "ao": "textures/pbr/near/wave_crown_ao.png",
+        "depth": "textures/pbr/near/wave_crown_depth.png",
+        "emissive": "textures/pbr/near/wave_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/wave_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/wave_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/wave_crown_albedo.png",
+        "normal": "textures/pbr/far/wave_crown_normal.png",
+        "roughness": "textures/pbr/far/wave_crown_roughness.png",
+        "ao": "textures/pbr/far/wave_crown_ao.png",
+        "depth": "textures/pbr/far/wave_crown_depth.png",
+        "emissive": "textures/pbr/far/wave_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/wave_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/wave_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/service_side_albedo.png",
+        "normal": "textures/pbr/near/service_side_normal.png",
+        "roughness": "textures/pbr/near/service_side_roughness.png",
+        "ao": "textures/pbr/near/service_side_ao.png",
+        "depth": "textures/pbr/near/service_side_depth.png",
+        "emissive": "textures/pbr/near/service_side_emissive.png",
+        "glass_mask": "textures/pbr/near/service_side_glass.png",
+        "opaque_mask": "textures/pbr/near/service_side_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/service_side_albedo.png",
+        "normal": "textures/pbr/far/service_side_normal.png",
+        "roughness": "textures/pbr/far/service_side_roughness.png",
+        "ao": "textures/pbr/far/service_side_ao.png",
+        "depth": "textures/pbr/far/service_side_depth.png",
+        "emissive": "textures/pbr/far/service_side_emissive.png",
+        "glass_mask": "textures/pbr/far/service_side_glass.png",
+        "opaque_mask": "textures/pbr/far/service_side_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/pool_interior_albedo.png",
+        "normal": "textures/pbr/near/pool_interior_normal.png",
+        "roughness": "textures/pbr/near/pool_interior_roughness.png",
+        "ao": "textures/pbr/near/pool_interior_ao.png",
+        "depth": "textures/pbr/near/pool_interior_depth.png",
+        "emissive": "textures/pbr/near/pool_interior_emissive.png",
+        "glass_mask": "textures/pbr/near/pool_interior_glass.png",
+        "opaque_mask": "textures/pbr/near/pool_interior_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pool_interior_albedo.png",
+        "normal": "textures/pbr/far/pool_interior_normal.png",
+        "roughness": "textures/pbr/far/pool_interior_roughness.png",
+        "ao": "textures/pbr/far/pool_interior_ao.png",
+        "depth": "textures/pbr/far/pool_interior_depth.png",
+        "emissive": "textures/pbr/far/pool_interior_emissive.png",
+        "glass_mask": "textures/pbr/far/pool_interior_glass.png",
+        "opaque_mask": "textures/pbr/far/pool_interior_opaque.png"
+      }
+    },
+    "roof_metal": {
+      "near": {
+        "albedo": "textures/pbr/near/roof_metal_albedo.png",
+        "normal": "textures/pbr/near/roof_metal_normal.png",
+        "roughness": "textures/pbr/near/roof_metal_roughness.png",
+        "ao": "textures/pbr/near/roof_metal_ao.png",
+        "depth": "textures/pbr/near/roof_metal_depth.png",
+        "emissive": "textures/pbr/near/roof_metal_emissive.png",
+        "glass_mask": "textures/pbr/near/roof_metal_glass.png",
+        "opaque_mask": "textures/pbr/near/roof_metal_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/roof_metal_albedo.png",
+        "normal": "textures/pbr/far/roof_metal_normal.png",
+        "roughness": "textures/pbr/far/roof_metal_roughness.png",
+        "ao": "textures/pbr/far/roof_metal_ao.png",
+        "depth": "textures/pbr/far/roof_metal_depth.png",
+        "emissive": "textures/pbr/far/roof_metal_emissive.png",
+        "glass_mask": "textures/pbr/far/roof_metal_glass.png",
+        "opaque_mask": "textures/pbr/far/roof_metal_opaque.png"
+      }
+    },
+    "timber": {
+      "near": {
+        "albedo": "textures/pbr/near/timber_albedo.png",
+        "normal": "textures/pbr/near/timber_normal.png",
+        "roughness": "textures/pbr/near/timber_roughness.png",
+        "ao": "textures/pbr/near/timber_ao.png",
+        "depth": "textures/pbr/near/timber_depth.png",
+        "emissive": "textures/pbr/near/timber_emissive.png",
+        "glass_mask": "textures/pbr/near/timber_glass.png",
+        "opaque_mask": "textures/pbr/near/timber_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/timber_albedo.png",
+        "normal": "textures/pbr/far/timber_normal.png",
+        "roughness": "textures/pbr/far/timber_roughness.png",
+        "ao": "textures/pbr/far/timber_ao.png",
+        "depth": "textures/pbr/far/timber_depth.png",
+        "emissive": "textures/pbr/far/timber_emissive.png",
+        "glass_mask": "textures/pbr/far/timber_glass.png",
+        "opaque_mask": "textures/pbr/far/timber_opaque.png"
+      }
+    },
+    "concrete": {
+      "near": {
+        "albedo": "textures/pbr/near/concrete_albedo.png",
+        "normal": "textures/pbr/near/concrete_normal.png",
+        "roughness": "textures/pbr/near/concrete_roughness.png",
+        "ao": "textures/pbr/near/concrete_ao.png",
+        "depth": "textures/pbr/near/concrete_depth.png",
+        "emissive": "textures/pbr/near/concrete_emissive.png",
+        "glass_mask": "textures/pbr/near/concrete_glass.png",
+        "opaque_mask": "textures/pbr/near/concrete_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/concrete_albedo.png",
+        "normal": "textures/pbr/far/concrete_normal.png",
+        "roughness": "textures/pbr/far/concrete_roughness.png",
+        "ao": "textures/pbr/far/concrete_ao.png",
+        "depth": "textures/pbr/far/concrete_depth.png",
+        "emissive": "textures/pbr/far/concrete_emissive.png",
+        "glass_mask": "textures/pbr/far/concrete_glass.png",
+        "opaque_mask": "textures/pbr/far/concrete_opaque.png"
+      }
+    },
+    "polycarbonate": {
+      "near": {
+        "albedo": "textures/pbr/near/polycarbonate_albedo.png",
+        "normal": "textures/pbr/near/polycarbonate_normal.png",
+        "roughness": "textures/pbr/near/polycarbonate_roughness.png",
+        "ao": "textures/pbr/near/polycarbonate_ao.png",
+        "depth": "textures/pbr/near/polycarbonate_depth.png",
+        "emissive": "textures/pbr/near/polycarbonate_emissive.png",
+        "glass_mask": "textures/pbr/near/polycarbonate_glass.png",
+        "opaque_mask": "textures/pbr/near/polycarbonate_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/polycarbonate_albedo.png",
+        "normal": "textures/pbr/far/polycarbonate_normal.png",
+        "roughness": "textures/pbr/far/polycarbonate_roughness.png",
+        "ao": "textures/pbr/far/polycarbonate_ao.png",
+        "depth": "textures/pbr/far/polycarbonate_depth.png",
+        "emissive": "textures/pbr/far/polycarbonate_emissive.png",
+        "glass_mask": "textures/pbr/far/polycarbonate_glass.png",
+        "opaque_mask": "textures/pbr/far/polycarbonate_opaque.png"
+      }
+    },
+    "cobalt_panel": {
+      "near": {
+        "albedo": "textures/pbr/near/cobalt_panel_albedo.png",
+        "normal": "textures/pbr/near/cobalt_panel_normal.png",
+        "roughness": "textures/pbr/near/cobalt_panel_roughness.png",
+        "ao": "textures/pbr/near/cobalt_panel_ao.png",
+        "depth": "textures/pbr/near/cobalt_panel_depth.png",
+        "emissive": "textures/pbr/near/cobalt_panel_emissive.png",
+        "glass_mask": "textures/pbr/near/cobalt_panel_glass.png",
+        "opaque_mask": "textures/pbr/near/cobalt_panel_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/cobalt_panel_albedo.png",
+        "normal": "textures/pbr/far/cobalt_panel_normal.png",
+        "roughness": "textures/pbr/far/cobalt_panel_roughness.png",
+        "ao": "textures/pbr/far/cobalt_panel_ao.png",
+        "depth": "textures/pbr/far/cobalt_panel_depth.png",
+        "emissive": "textures/pbr/far/cobalt_panel_emissive.png",
+        "glass_mask": "textures/pbr/far/cobalt_panel_glass.png",
+        "opaque_mask": "textures/pbr/far/cobalt_panel_opaque.png"
+      }
+    },
+    "plinth": {
+      "near": {
+        "albedo": "textures/pbr/near/plinth_albedo.png",
+        "normal": "textures/pbr/near/plinth_normal.png",
+        "roughness": "textures/pbr/near/plinth_roughness.png",
+        "ao": "textures/pbr/near/plinth_ao.png",
+        "depth": "textures/pbr/near/plinth_depth.png",
+        "emissive": "textures/pbr/near/plinth_emissive.png",
+        "glass_mask": "textures/pbr/near/plinth_glass.png",
+        "opaque_mask": "textures/pbr/near/plinth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plinth_albedo.png",
+        "normal": "textures/pbr/far/plinth_normal.png",
+        "roughness": "textures/pbr/far/plinth_roughness.png",
+        "ao": "textures/pbr/far/plinth_ao.png",
+        "depth": "textures/pbr/far/plinth_depth.png",
+        "emissive": "textures/pbr/far/plinth_emissive.png",
+        "glass_mask": "textures/pbr/far/plinth_glass.png",
+        "opaque_mask": "textures/pbr/far/plinth_opaque.png"
+      }
+    },
+    "pool_water": {
+      "near": {
+        "albedo": "textures/pbr/near/pool_water_albedo.png",
+        "normal": "textures/pbr/near/pool_water_normal.png",
+        "roughness": "textures/pbr/near/pool_water_roughness.png",
+        "ao": "textures/pbr/near/pool_water_ao.png",
+        "depth": "textures/pbr/near/pool_water_depth.png",
+        "emissive": "textures/pbr/near/pool_water_emissive.png",
+        "glass_mask": "textures/pbr/near/pool_water_glass.png",
+        "opaque_mask": "textures/pbr/near/pool_water_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pool_water_albedo.png",
+        "normal": "textures/pbr/far/pool_water_normal.png",
+        "roughness": "textures/pbr/far/pool_water_roughness.png",
+        "ao": "textures/pbr/far/pool_water_ao.png",
+        "depth": "textures/pbr/far/pool_water_depth.png",
+        "emissive": "textures/pbr/far/pool_water_emissive.png",
+        "glass_mask": "textures/pbr/far/pool_water_glass.png",
+        "opaque_mask": "textures/pbr/far/pool_water_opaque.png"
+      }
+    },
+    "wet_deck": {
+      "near": {
+        "albedo": "textures/pbr/near/wet_deck_albedo.png",
+        "normal": "textures/pbr/near/wet_deck_normal.png",
+        "roughness": "textures/pbr/near/wet_deck_roughness.png",
+        "ao": "textures/pbr/near/wet_deck_ao.png",
+        "depth": "textures/pbr/near/wet_deck_depth.png",
+        "emissive": "textures/pbr/near/wet_deck_emissive.png",
+        "glass_mask": "textures/pbr/near/wet_deck_glass.png",
+        "opaque_mask": "textures/pbr/near/wet_deck_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/wet_deck_albedo.png",
+        "normal": "textures/pbr/far/wet_deck_normal.png",
+        "roughness": "textures/pbr/far/wet_deck_roughness.png",
+        "ao": "textures/pbr/far/wet_deck_ao.png",
+        "depth": "textures/pbr/far/wet_deck_depth.png",
+        "emissive": "textures/pbr/far/wet_deck_emissive.png",
+        "glass_mask": "textures/pbr/far/wet_deck_glass.png",
+        "opaque_mask": "textures/pbr/far/wet_deck_opaque.png"
+      }
+    },
+    "white_structure": {
+      "near": {
+        "albedo": "textures/pbr/near/white_structure_albedo.png",
+        "normal": "textures/pbr/near/white_structure_normal.png",
+        "roughness": "textures/pbr/near/white_structure_roughness.png",
+        "ao": "textures/pbr/near/white_structure_ao.png",
+        "depth": "textures/pbr/near/white_structure_depth.png",
+        "emissive": "textures/pbr/near/white_structure_emissive.png",
+        "glass_mask": "textures/pbr/near/white_structure_glass.png",
+        "opaque_mask": "textures/pbr/near/white_structure_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/white_structure_albedo.png",
+        "normal": "textures/pbr/far/white_structure_normal.png",
+        "roughness": "textures/pbr/far/white_structure_roughness.png",
+        "ao": "textures/pbr/far/white_structure_ao.png",
+        "depth": "textures/pbr/far/white_structure_depth.png",
+        "emissive": "textures/pbr/far/white_structure_emissive.png",
+        "glass_mask": "textures/pbr/far/white_structure_glass.png",
+        "opaque_mask": "textures/pbr/far/white_structure_opaque.png"
+      }
+    },
+    "landscape": {
+      "near": {
+        "albedo": "textures/pbr/near/landscape_albedo.png",
+        "normal": "textures/pbr/near/landscape_normal.png",
+        "roughness": "textures/pbr/near/landscape_roughness.png",
+        "ao": "textures/pbr/near/landscape_ao.png",
+        "depth": "textures/pbr/near/landscape_depth.png",
+        "emissive": "textures/pbr/near/landscape_emissive.png",
+        "glass_mask": "textures/pbr/near/landscape_glass.png",
+        "opaque_mask": "textures/pbr/near/landscape_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/landscape_albedo.png",
+        "normal": "textures/pbr/far/landscape_normal.png",
+        "roughness": "textures/pbr/far/landscape_roughness.png",
+        "ao": "textures/pbr/far/landscape_ao.png",
+        "depth": "textures/pbr/far/landscape_depth.png",
+        "emissive": "textures/pbr/far/landscape_emissive.png",
+        "glass_mask": "textures/pbr/far/landscape_glass.png",
+        "opaque_mask": "textures/pbr/far/landscape_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/elevation_albedo.png",
+      "normal": "textures/pbr/near/elevation_normal.png",
+      "roughness": "textures/pbr/near/elevation_roughness.png",
+      "ao": "textures/pbr/near/elevation_ao.png",
+      "depth": "textures/pbr/near/elevation_depth.png",
+      "emissive": "textures/pbr/near/elevation_emissive.png",
+      "glass_mask": "textures/pbr/near/elevation_glass.png",
+      "opaque_mask": "textures/pbr/near/elevation_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/elevation_albedo.png",
+      "normal": "textures/pbr/far/elevation_normal.png",
+      "roughness": "textures/pbr/far/elevation_roughness.png",
+      "ao": "textures/pbr/far/elevation_ao.png",
+      "depth": "textures/pbr/far/elevation_depth.png",
+      "emissive": "textures/pbr/far/elevation_emissive.png",
+      "glass_mask": "textures/pbr/far/elevation_glass.png",
+      "opaque_mask": "textures/pbr/far/elevation_opaque.png"
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "status": "pass",
+  "family": "parametric-wave-shell-aquatic-centre",
+  "archetype_id": "community_recreation_centre",
+  "reuse_keys": [
+    "community_recreation_centre",
+    "rec_centre_aquatic",
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell",
+    "aquatic_centre",
+    "natatorium",
+    "community recreation"
+  ],
+  "manifest": "parametric-wave-shell-aquatic-centre_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "parametric-wave-shell-aquatic-centre_podium.glb: 19.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-shell-aquatic-centre_floor_typical_c.glb: 13.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-shell-aquatic-centre_roof.glb: 15.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-shell-aquatic-centre_assembled.glb: 17 materials (many; consider consolidation)",
+    "parametric-wave-shell-aquatic-centre_assembled.glb: 54.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "parametric-wave-shell-aquatic-centre_podium.glb",
+      "status": "ok",
+      "triangles": 576,
+      "extent_m": {
+        "width_x": 79.24,
+        "height_y": 4.5,
+        "depth_z": 54.21
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W10_AQUA_CharcoalHonedPlinth",
+        "MAT_W10_AQUA_CobaltMicroperforatedPanel",
+        "MAT_W10_AQUA_LowIronPoolCurtainWall",
+        "MAT_W10_AQUA_RegisteredCompetitionPoolDepth"
+      ],
+      "size_bytes": 20507712
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 2088,
+      "extent_m": {
+        "width_x": 79.2,
+        "height_y": 3.0,
+        "depth_z": 54.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W10_AQUA_BlackThermalBreakAndCable",
+        "MAT_W10_AQUA_LowIronPoolCurtainWall",
+        "MAT_W10_AQUA_TranslucentRibbedPolycarbonate"
+      ],
+      "size_bytes": 5824944
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 2088,
+      "extent_m": {
+        "width_x": 79.2,
+        "height_y": 3.0,
+        "depth_z": 54.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W10_AQUA_BlackThermalBreakAndCable",
+        "MAT_W10_AQUA_TranslucentRibbedPolycarbonate"
+      ],
+      "size_bytes": 5824164
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 2088,
+      "extent_m": {
+        "width_x": 79.2,
+        "height_y": 3.0,
+        "depth_z": 54.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W10_AQUA_BlackThermalBreakAndCable",
+        "MAT_W10_AQUA_CobaltMicroperforatedPanel",
+        "MAT_W10_AQUA_TranslucentRibbedPolycarbonate"
+      ],
+      "size_bytes": 13997744
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_crown_crown.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 80.0,
+        "height_y": 1.0,
+        "depth_z": 55.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W10_AQUA_PlatinumStandingSeamRoof"
+      ],
+      "size_bytes": 7436416
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_roof.glb",
+      "status": "ok",
+      "triangles": 6648,
+      "extent_m": {
+        "width_x": 80.0,
+        "height_y": 12.066,
+        "depth_z": 55.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_AQUA_BlackThermalBreakAndCable",
+        "MAT_W10_AQUA_HoneyGlulamAndSoffit",
+        "MAT_W10_AQUA_PlatinumStandingSeamRoof",
+        "MAT_W10_AQUA_SaddleValleySkylight",
+        "MAT_W10_AQUA_WhiteDivingStructure"
+      ],
+      "size_bytes": 16042980
+    },
+    {
+      "file": "parametric-wave-shell-aquatic-centre_assembled.glb",
+      "status": "ok",
+      "triangles": 39440,
+      "extent_m": {
+        "width_x": 80.12,
+        "height_y": 20.0,
+        "depth_z": 55.275
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W10_AQUA_BlackThermalBreakAndCable",
+        "MAT_W10_AQUA_CharcoalHonedPlinth",
+        "MAT_W10_AQUA_CobaltMicroperforatedPanel",
+        "MAT_W10_AQUA_CompetitionPoolWater",
+        "MAT_W10_AQUA_HoneyGlulamAndSoffit",
+        "MAT_W10_AQUA_IntegratedWarmLinearLight",
+        "MAT_W10_AQUA_LaneBlue",
+        "MAT_W10_AQUA_LaneWhite",
+        "MAT_W10_AQUA_LowIronPoolCurtainWall",
+        "MAT_W10_AQUA_PaleBoardFormedConcrete",
+        "MAT_W10_AQUA_PaleWetDeck",
+        "MAT_W10_AQUA_PlatinumStandingSeamRoof",
+        "MAT_W10_AQUA_RegisteredCompetitionPoolDepth",
+        "MAT_W10_AQUA_SaddleValleySkylight",
+        "MAT_W10_AQUA_TranslucentRibbedPolycarbonate",
+        "MAT_W10_AQUA_WarmOccupiedLobbyDepth",
+        "MAT_W10_AQUA_WhiteDivingStructure"
+      ],
+      "size_bytes": 57469224,
+      "role": "assembled"
+    }
+  ]
+}

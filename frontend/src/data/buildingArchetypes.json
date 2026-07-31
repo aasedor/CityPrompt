@@ -8627,14 +8627,14 @@
     },
     {
       "id": "community_recreation_centre",
-    "suggestedWidth_m": 60,
-    "suggestedDepth_m": 40,
-    "suggestedFloorHeight": 6.5,
-    "minWidth_m": 40,
-    "maxWidth_m": 80,
-    "minDepth_m": 30,
-    "maxDepth_m": 55,
-    "aspectRatio": "1.5:1",
+    "suggestedWidth_m": 80,
+    "suggestedDepth_m": 55,
+    "suggestedFloorHeight": 12.0,
+    "minWidth_m": 62,
+    "maxWidth_m": 98,
+    "minDepth_m": 43,
+    "maxDepth_m": 67,
+    "aspectRatio": "1.45:1",
       "shadeId": "#2E8B57",
       "title": "Community Recreation Centre",
       "aestheticCategory": "modernist",
@@ -8710,26 +8710,74 @@
         "features": "clerestory skylights along fold lines, rooftop PV array on south face, green roof at low wings, screened mechanical plant",
         "aerialAppearance": "sweeping curved silver roof with linear skylights, solar panels on south slope, green roof patches at flanking wings"
       },
-      "thumbnailUrl": "/archetypes/buildings/community_recreation_centre/hero.png",
+      "footprintCompatibility": {
+        "preferredProfiles": [
+          "rectangle"
+        ],
+        "minimumPreferredProfiles": 1,
+        "profileRationale": "The unequal double-wave shell, two masts and recessed public entrance form one complete long-span landmark. Mildly imperfect hand-drawn rectangles scale cleanly; larger sites repeat the complete hall rather than stretching one crest.",
+        "fixedLandmarkScaleBand": {
+          "scaleMin": 0.78,
+          "scaleMax": 1.22,
+          "maxAxisRatio": 1.18
+        },
+        "preferredBayMultiple_m": 5.0,
+        "recommendedWidth_m": [
+          62,
+          98
+        ],
+        "recommendedDepth_m": [
+          43,
+          67
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.18,
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [
+              62,
+              98
+            ],
+            "recommendedDepth_m": [
+              43,
+              67
+            ],
+            "recommendedFloors": [
+              1,
+              2
+            ],
+            "scaleMin": 0.78,
+            "scaleMax": 1.22,
+            "maxAxisRatio": 1.18,
+            "preferredBayMultiple_m": 5.0
+          }
+        }
+      },
+      "thumbnailUrl": "/archetypes/buildings/parametric-wave-shell-aquatic-centre/hero.png",
       "variants": [
         {
           "id": "rec_centre_aquatic",
           "label": "Aquatic Centre",
-          "thumbnailUrl": "/archetypes/buildings/community_recreation_centre/variant_0.png",
+          "thumbnailUrl": "/archetypes/buildings/parametric-wave-shell-aquatic-centre/hero.png",
           "minFloors": 1,
           "maxFloors": 2,
           "suggestedFloorHeight": 8.0,
           "suggestedAreaSqm": 5000,
-          "description": "Olympic-standard aquatic centre with wave-form roof, full-height poolside glazing, and blue accent panels reflecting the water programme.",
+          "description": "Competition and leisure natatorium beneath one continuous unequal double-wave standing-seam shell, held by two cable-stay masts and integrated pale concrete supports above a recessed public entry.",
           "facadeDetail": {
-            "primaryMaterial": "curved steel structure with glass curtain wall",
-            "secondaryMaterial": "blue-tinted glass and white aluminium spandrel panels",
-            "groundFloor": "full-height poolside glazing with views to lap pool and diving platform",
-            "colorScheme": "white steel structure, aqua-blue glass, silver aluminium, blue accent panels"
+            "primaryMaterial": "low-iron physical pool glazing beneath honey-toned glulam ribs",
+            "secondaryMaterial": "pale board-formed concrete supports, translucent ribbed polycarbonate, cobalt microperforated service panels",
+            "groundFloor": "support-free recessed entry beneath a timber-soffit canopy with occupied lobby, visible competition pool and diving platform",
+            "colorScheme": "platinum standing-seam metal, honey timber, pale concrete, low-iron aqua glass, cobalt service panels"
           },
           "roofDetail": {
-            "form": "undulating wave-form roof inspired by water movement",
-            "material": "ETFE cushion roof with steel cable net structure"
+            "form": "one continuous asymmetrical double-wave shell with a deep glazed saddle between unequal competition and leisure crests",
+            "material": "platinum standing-seam metal over warm timber soffit, two linear saddle skylights and exactly two cable-stay masts"
           },
           "shadeId": null,
           "palette": {

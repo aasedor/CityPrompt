@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "front-elevation-source-v1.png",
+  "method": "The competition hall, leisure hall, entry and observation windows are physical openings with modeled thermally broken mullions, transoms, perimeter pressure caps, recessed returns and separate low-iron panes. The rectified occupied-depth source sits behind the competition curtain wall; the pools, diving tower, wet deck, timber ribs, spectator gallery and lighting also exist as physical depth.",
+  "physical_geometry_required": true
+}

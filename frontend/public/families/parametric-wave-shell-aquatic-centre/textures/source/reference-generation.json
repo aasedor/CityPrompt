@@ -1,0 +1,128 @@
+{
+  "schema": "reference-generation-provenance@2",
+  "family": "parametric-wave-shell-aquatic-centre",
+  "archetype_id": "community_recreation_centre",
+  "variant_id": "rec_centre_aquatic",
+  "variant_aliases": [
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell"
+  ],
+  "status": "family-complete",
+  "generated_at": "2026-07-31T00:00:00Z",
+  "method": "built-precedent research, reference-locked multi-view ImageGen design-source pack, clean six-zone material plate, occupied pool-depth source, and deterministic metric Blender geometry",
+  "binding_identity": "A transparent civic natatorium is unified by one continuous asymmetrical double-wave silver shell, two cable-stay masts, pale diagonal concrete branch supports and warm timber pool-hall depth, with the competition crest visibly larger than the leisure crest.",
+  "design_lock": {
+    "native_width_m": 80.0,
+    "native_depth_m": 55.0,
+    "native_floors": 1,
+    "roof_crest_height_m": 14.0,
+    "identity": "A transparent civic natatorium unified by one continuous asymmetrical double-wave silver shell, two cable-stay masts, pale diagonal concrete branch supports, and warm timber pool-hall depth.",
+    "non_negotiable_features": [
+      "The competition-pool crest is visibly larger and taller than the leisure-pool crest.",
+      "The two roof crests form one continuous shell with a deep glazed saddle valley.",
+      "Exactly two slender cable-stay masts and credible tension rods reinforce the long-span roof.",
+      "Pale board-formed diagonal concrete branch supports are integrated with the glazed facade.",
+      "The front is full-height low-iron pool glazing with visible lap-pool and timber-structure depth.",
+      "The recessed double-height public entrance sits at the valley/right-third position.",
+      "The service elevation combines translucent ribbed polycarbonate, a dark plinth, and restrained cobalt panels."
+    ],
+    "lego_contract": {
+      "delivery": "fixed-landmark assembled GLB plus a podium/floor/crown/roof fallback kit",
+      "native_envelope_m": [
+        80.0,
+        55.0,
+        14.0
+      ],
+      "fixed_landmark_scale_band": {
+        "scaleMin": 0.78,
+        "scaleMax": 1.22,
+        "maxAxisRatio": 1.18
+      },
+      "preferred_bay_multiple_m": 5.0,
+      "preferred_profiles": [
+        "rectangle"
+      ],
+      "sizing_intent": "Hand-drawn rectangles inside the scale band preserve one continuous roof; oversized sites use streetwall repeat rather than family_incompatible."
+    }
+  },
+  "research": [
+    {
+      "title": "Grandview Heights Aquatic Centre",
+      "url": "https://hcma.ca/project/grandview-heights-aquatic-centre/",
+      "role": "Use a legible long-span timber catenary roof and street-facing pool glazing."
+    },
+    {
+      "title": "UBC Aquatic Centre",
+      "url": "https://www.actonostry.ca/work/community/ubc-aquatic-centre",
+      "role": "Combine angular structural expression, full-height glazing, branching columns, and a continuous skylight."
+    },
+    {
+      "title": "Vancouver Aquatic Centre",
+      "url": "https://www.mjma.ca/community/vancouver-aquatic-centre",
+      "role": "Treat the canted roof, skylights, glulam and CLT as one coherent public-room identity."
+    },
+    {
+      "title": "Lake Country Co-op Leisure Centre",
+      "url": "https://www.mjma.ca/community/lake-country-coop-leisure-centre",
+      "role": "Use a dynamic roof and an entrance court to make the aquatic programme readable from the street."
+    },
+    {
+      "title": "Pam McConnell Aquatic Centre",
+      "url": "https://www.mjma.ca/aquatics/pam-mcconnell-aquatic-centre",
+      "role": "Preserve a transparent pavilion base, dorsal daylight and park-like landscape edges."
+    },
+    {
+      "title": "Minoru Centre for Active Living",
+      "url": "https://hcma.ca/project/minoru-centre-for-active-living/",
+      "role": "Let a flowing hybrid wood-and-steel roof organize the whole civic complex."
+    }
+  ],
+  "assets": [
+    {
+      "file": "archetype-goalpost.png",
+      "generator_file": "call_0EYjFrdxrJ7Hoqa9c3UmLvYa.png",
+      "purpose": "canonical front three-quarter goalpost",
+      "prompt": "Create an original premium photoreal architectural reference of an 80 m by 55 m, one-tall-storey, 14 m crest parametric wave-shell aquatic centre. Use a restrained front three-quarter view. One continuous asymmetrical double-wave silver and polycarbonate roof forms a larger competition-pool crest, a glazed valley and a smaller leisure-pool crest. Integrate six pale board-formed concrete diagonal branch supports, exactly two cable-stay masts with realistic tension rods, full-height low-iron pool glazing with warm timber baffles, visible lap-pool and diving-platform depth, a real recessed double-height entrance at the right third, a dark plinth, restrained cobalt fritted wet-service panels, a translucent side wall, and a bioswale forecourt. True material response and buildable details. No text, cartoon rendering, fantasy structure, generic rectangular roof, or facade-blocking context."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "generator_file": "call_G7UCGnhJ2rHoTGV8piDis5WA.png",
+      "purpose": "front elevation and silhouette lock",
+      "prompt": "Using the canonical image as the exact same architectural design, create a photoreal orthographic-style front elevation. Preserve the 80 m building, asymmetrical continuous double-wave roof, large competition crest, saddle valley, smaller leisure crest, pale diagonal branch supports, two cable masts, full-height pool glazing with warm timber baffles and occupied pool depth, the recessed right-third entrance, dark plinth, cobalt panels and bioswale forecourt. Centered level camera, neutral overcast daylight, no labels, text, logos, fantasy curves, generic roof or perspective exaggeration."
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "generator_file": "call_rsmGI05iu6cybH92242GWifj.png",
+      "purpose": "roof topology, structure and footprint lock",
+      "prompt": "Use the front elevation as the immutable design source and create a high oblique front-left aerial of the same building. Preserve two unequal continuous silver roof crests, a glazed saddle valley, two cable masts, concrete branch supports, timber soffit and baffles, full-height pool glazing, dark plinth, recessed entrance and cobalt service panels. Reveal a genuinely continuous double-curved standing-seam shell, narrow linear valley skylights, credible drainage, concealed mechanical zones, the 50 m lap pool, diving platforms, leisure pool, 80 m by 55 m footprint and bioswale landscape. No labels, extra floors, generic box, cartoon look or warped perspective."
+    },
+    {
+      "file": "rear-service-source-v1.png",
+      "generator_file": "call_vs6wJepKOKyEEA0QNrzG9XBu.png",
+      "purpose": "rear and service-elevation construction lock",
+      "prompt": "Using the aerial image as the exact same building, create a rear-right service-side architectural reference. Preserve the one-storey double-wave natatorium, two cable masts, concrete diagonal supports, timber soffit, low-iron glazing, dark plinth and cobalt panels. Show how the curved roof lands at the rear with translucent polycarbonate bays, clear observation windows, recessed louvers, understated service doors, a loading apron, screened pool plant and roof drainage. Neutral daylight, premium photography, no text, trucks, extra floors, generic warehouse, fantasy curves or cartoon look."
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "generator_file": "call_HQ5JdpmA1CbDtUDQMXjubguk.png",
+      "purpose": "render-locked PBR material and junction source",
+      "prompt": "Create a close architectural material and construction view of the same aquatic centre. Frame the meeting of the silver standing-seam roof, laminated-timber soffit and baffles, board-formed concrete branch support, black curtain-wall mullions, low-iron pool glass, translucent ribbed polycarbonate, charcoal plinth and cobalt fritted panel. Show physical thicknesses, seams, gutters, concrete and timber grain, subtle reflection, occupied pool depth and integrated warm light. Clean tile-safe information, neutral light, no labels, text, people baked into textures, generic facade, grime, cartoon render or impossible junctions."
+    },
+    {
+      "file": "pbr-material-source-v1.png",
+      "generator_file": "call_vuzTlv5XVo8fDghIwVypZ3up.png",
+      "purpose": "clean tile-safe six-zone PBR source plate",
+      "prompt": "Derive a clean straight-on 3-column by 2-row PBR material source plate from the aquatic-centre reference. Cells are platinum standing-seam aluminium, honey Douglas-fir/glulam, pale board-formed concrete, translucent milky ribbed polycarbonate, cobalt microperforated metal and charcoal honed concrete. Use equal cells, neutral gutters, flat illumination, realistic consistent scale and no perspective, labels, objects, people, plants, dramatic shadows, vignette or cartoon/plastic rendering."
+    },
+    {
+      "file": "pool-occupied-depth-source-v1.png",
+      "generator_file": "call_2oqfYmgWMaeqzY9pGWpflqw6.png",
+      "purpose": "competition-pool occupied-depth source behind physical glass",
+      "prompt": "Create a rectified wide interior source behind the competition-pool curtain wall, omitting exterior mullions so they can be modeled separately. Show a 50 m lap pool, blue lane lines, starting blocks, one white diving tower, pale wet deck, honey glulam roof ribs and baffles, a modest spectator gallery, small naturally scaled occupants and warm indirect light. Use physically plausible daylight, pool reflections and deep interior perspective. No exterior trees, text, signs, oversized people, duplicated towers, fantasy water, dark mirror glass, theatrical neon or cartoon rendering."
+    }
+  ],
+  "workflow": {
+    "method": "research -> canonical goalpost -> locked orthogonal/oblique views -> clean material zones -> deterministic geometry -> comparison loop",
+    "next_gate": "Run compiler validation, the current quality-memory assessor, narrow family/API tests and visual comparison review before checkpointing this family and starting the next pilot."
+  }
+}
