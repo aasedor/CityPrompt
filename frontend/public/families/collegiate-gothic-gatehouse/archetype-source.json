@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "collegiate_gothic_education",
+  "catalogue_variant_id": "collegiate_gothic_tudor",
+  "catalogue_alias_ids": [
+    "tudor_gothic_quadrangle",
+    "limestone_college_gatehouse"
+  ],
+  "elevation_source": "/families/collegiate-gothic-gatehouse/elevation.jpg",
+  "goalpost": "/families/collegiate-gothic-gatehouse/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/collegiate-gothic-gatehouse/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

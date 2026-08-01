@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "airport_terminal_building",
+  "catalogue_variant_id": "cable_stayed_steel_truss_terminal",
+  "catalogue_alias_ids": [
+    "high_tech_airport_terminal",
+    "branching_column_departure_hall"
+  ],
+  "elevation_source": "/families/cable-stayed-airport-terminal/elevation.jpg",
+  "goalpost": "/families/cable-stayed-airport-terminal/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/cable-stayed-airport-terminal/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

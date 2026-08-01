@@ -1,0 +1,1653 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave12_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T02:31:26.792597+00:00",
+  "family": "vertical-forest-residential",
+  "archetype_id": "vertical_forest_residential",
+  "archetype_label": "Vertical Forest Residential - Bosco",
+  "variant_id": "vertical_forest_bosco",
+  "generation_archetype_id": "vertical_forest_bosco",
+  "archetype_aliases": [
+    "vertical_forest_residential",
+    "vertical_forest_bosco",
+    "bosco_verticale_residential",
+    "planted_concrete_balcony_tower"
+  ],
+  "aesthetic_category_id": "eco_urban_green_architecture",
+  "development_type": "residential_highrise",
+  "reuse_keys": [
+    "vertical_forest_residential",
+    "vertical_forest_bosco",
+    "bosco_verticale_residential",
+    "planted_concrete_balcony_tower",
+    "Vertical Forest Residential",
+    "Bosco Verticale Residential",
+    "Planted Balcony Tower",
+    "Living Concrete High Rise"
+  ],
+  "generation_tags": [
+    "wave12",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "real_planter_volumes",
+    "three_dimensional_supported_trees",
+    "deep_balcony_trays"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "courtyard"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The fixed planted tower accepts ordinary near-square drawing error. Larger rectangles or courtyard drawings repeat complete 5.5 metre occupied balcony bays with their slab, pane, planter and vegetation, never a stretched tree or window.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.3,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      21.0,
+      40.0
+    ],
+    "recommendedDepth_m": [
+      21.0,
+      40.0
+    ],
+    "recommendedFloors": [
+      10,
+      30
+    ],
+    "preferredBayMultiple_m": 5.5,
+    "scaleMin": 0.72,
+    "scaleMax": 1.3,
+    "maxAxisRatio": 1.16,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          21.0,
+          40.0
+        ],
+        "recommendedDepth_m": [
+          21.0,
+          40.0
+        ],
+        "recommendedFloors": [
+          10,
+          30
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.16,
+        "preferredBayMultiple_m": 5.5
+      },
+      "courtyard": {
+        "recommendedWidth_m": [
+          28.0,
+          48.0
+        ],
+        "recommendedDepth_m": [
+          28.0,
+          48.0
+        ],
+        "recommendedFloors": [
+          10,
+          26
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 5.5,
+        "minimumCourtyard_m": 8.0
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/bosco_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/bosco_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/bosco_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/bosco_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/bosco_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/bosco_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/bosco_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/bosco_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/bosco_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/bosco_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/bosco_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/bosco_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/bosco_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/bosco_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/bosco_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/bosco_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/bosco_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/bosco_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/bosco_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/bosco_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/bosco_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/bosco_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/bosco_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/bosco_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/planted_transparent_lobby_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/planted_transparent_lobby_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/planted_transparent_lobby_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/planted_transparent_lobby_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/planted_transparent_lobby_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/planted_transparent_lobby_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/planted_transparent_lobby_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/planted_transparent_lobby_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/deep_planted_balcony_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/intensive_rooftop_garden_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/wrapped_planted_secondary_elevation_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_residential_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_residential_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_residential_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_residential_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_residential_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_residential_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_residential_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_residential_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_concrete_albedo",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_albedo.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_concrete_normal",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_normal.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "normal"
+    },
+    {
+      "key": "near_concrete_roughness",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_roughness.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_concrete_ao",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_ao.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "ao"
+    },
+    {
+      "key": "near_concrete_depth",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_depth.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "depth"
+    },
+    {
+      "key": "near_concrete_emissive",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_emissive.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_concrete_glass_mask",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_glass.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_concrete_opaque_mask",
+      "path": "textures/pbr/near/board_formed_off_white_concrete_opaque.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_bronze_frame_albedo",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_albedo.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_bronze_frame_normal",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_normal.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_bronze_frame_roughness",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_roughness.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_bronze_frame_ao",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_ao.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_bronze_frame_depth",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_depth.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_bronze_frame_emissive",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_emissive.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_bronze_frame_glass_mask",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_glass.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_bronze_frame_opaque_mask",
+      "path": "textures/pbr/near/dark_bronze_anodized_frame_opaque.png",
+      "lod": "near",
+      "zone": "bronze_frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_vision_glass_albedo",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_albedo.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_vision_glass_normal",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_normal.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_vision_glass_roughness",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_roughness.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_vision_glass_ao",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_ao.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_vision_glass_depth",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_depth.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_vision_glass_emissive",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_emissive.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_vision_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_glass.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_vision_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_low_iron_residential_glass_opaque.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_foliage_albedo",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_albedo.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_foliage_normal",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_normal.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "normal"
+    },
+    {
+      "key": "near_foliage_roughness",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_roughness.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_foliage_ao",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_ao.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "ao"
+    },
+    {
+      "key": "near_foliage_depth",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_depth.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "depth"
+    },
+    {
+      "key": "near_foliage_emissive",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_emissive.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_foliage_glass_mask",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_glass.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_foliage_opaque_mask",
+      "path": "textures/pbr/near/temperate_deciduous_foliage_opaque.png",
+      "lod": "near",
+      "zone": "foliage",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_soil_albedo",
+      "path": "textures/pbr/near/dark_planter_soil_albedo.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_soil_normal",
+      "path": "textures/pbr/near/dark_planter_soil_normal.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "normal"
+    },
+    {
+      "key": "near_soil_roughness",
+      "path": "textures/pbr/near/dark_planter_soil_roughness.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_soil_ao",
+      "path": "textures/pbr/near/dark_planter_soil_ao.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "ao"
+    },
+    {
+      "key": "near_soil_depth",
+      "path": "textures/pbr/near/dark_planter_soil_depth.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "depth"
+    },
+    {
+      "key": "near_soil_emissive",
+      "path": "textures/pbr/near/dark_planter_soil_emissive.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_soil_glass_mask",
+      "path": "textures/pbr/near/dark_planter_soil_glass.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_soil_opaque_mask",
+      "path": "textures/pbr/near/dark_planter_soil_opaque.png",
+      "lod": "near",
+      "zone": "soil",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_planter_albedo",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_albedo.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_planter_normal",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_normal.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "normal"
+    },
+    {
+      "key": "near_planter_roughness",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_roughness.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_planter_ao",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_ao.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "ao"
+    },
+    {
+      "key": "near_planter_depth",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_depth.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "depth"
+    },
+    {
+      "key": "near_planter_emissive",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_emissive.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_planter_glass_mask",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_glass.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_planter_opaque_mask",
+      "path": "textures/pbr/near/charcoal_waterproof_planter_opaque.png",
+      "lod": "near",
+      "zone": "planter",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_trunk_albedo",
+      "path": "textures/pbr/near/natural_tree_bark_albedo.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_trunk_normal",
+      "path": "textures/pbr/near/natural_tree_bark_normal.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "normal"
+    },
+    {
+      "key": "near_trunk_roughness",
+      "path": "textures/pbr/near/natural_tree_bark_roughness.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_trunk_ao",
+      "path": "textures/pbr/near/natural_tree_bark_ao.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "ao"
+    },
+    {
+      "key": "near_trunk_depth",
+      "path": "textures/pbr/near/natural_tree_bark_depth.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "depth"
+    },
+    {
+      "key": "near_trunk_emissive",
+      "path": "textures/pbr/near/natural_tree_bark_emissive.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_trunk_glass_mask",
+      "path": "textures/pbr/near/natural_tree_bark_glass.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_trunk_opaque_mask",
+      "path": "textures/pbr/near/natural_tree_bark_opaque.png",
+      "lod": "near",
+      "zone": "trunk",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/intensive_green_roof_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_paving_albedo",
+      "path": "textures/pbr/near/warm_grey_studio_paving_albedo.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_paving_normal",
+      "path": "textures/pbr/near/warm_grey_studio_paving_normal.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "normal"
+    },
+    {
+      "key": "near_paving_roughness",
+      "path": "textures/pbr/near/warm_grey_studio_paving_roughness.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_paving_ao",
+      "path": "textures/pbr/near/warm_grey_studio_paving_ao.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "ao"
+    },
+    {
+      "key": "near_paving_depth",
+      "path": "textures/pbr/near/warm_grey_studio_paving_depth.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "depth"
+    },
+    {
+      "key": "near_paving_emissive",
+      "path": "textures/pbr/near/warm_grey_studio_paving_emissive.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_paving_glass_mask",
+      "path": "textures/pbr/near/warm_grey_studio_paving_glass.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_paving_opaque_mask",
+      "path": "textures/pbr/near/warm_grey_studio_paving_opaque.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/vertical-forest-residential",
+    "model": "gpt-image-2",
+    "style_reference": "/families/vertical-forest-residential/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "transparent_planted_lobby",
+        "continuous_perimeter_frame",
+        "intensive_rooftop_garden"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat complete planted residential storeys: slab, pane, frame, planter, soil, support and tree remain one semantic bay."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "planted transparent lobby",
+        "continuous frame",
+        "corner balcony returns",
+        "roof garden",
+        "service core"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "wrapped planted balcony construction; wrapped planted balcony construction",
+      "elevation_coverage": {
+        "front": "continuous concrete frame, irregular deep planters and occupied recessed glass",
+        "left": "wrapped planted balcony construction",
+        "right": "wrapped planted balcony construction",
+        "rear": "complete occupied secondary elevation with real planters",
+        "roof": "intensive roof garden around screened service core"
+      },
+      "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized or differently proportioned targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/bosco_registered_front_albedo.png",
+        "normal": "textures/pbr/near/bosco_registered_front_normal.png",
+        "roughness": "textures/pbr/near/bosco_registered_front_roughness.png",
+        "ao": "textures/pbr/near/bosco_registered_front_ao.png",
+        "depth": "textures/pbr/near/bosco_registered_front_depth.png",
+        "emissive": "textures/pbr/near/bosco_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/bosco_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/bosco_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/bosco_registered_front_albedo.png",
+        "normal": "textures/pbr/far/bosco_registered_front_normal.png",
+        "roughness": "textures/pbr/far/bosco_registered_front_roughness.png",
+        "ao": "textures/pbr/far/bosco_registered_front_ao.png",
+        "depth": "textures/pbr/far/bosco_registered_front_depth.png",
+        "emissive": "textures/pbr/far/bosco_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/bosco_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/bosco_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/bosco_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/bosco_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "vertical_forest_residential",
+      "source_variant_id": "vertical_forest_bosco",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "eighteen_storey_dark_glazed_residential_core",
+        "continuous_off_white_perimeter_concrete_frame",
+        "deep_cantilevered_balcony_trays_with_visible_soffits",
+        "integral_soil_planters_and_structurally_supported_trees",
+        "physical_recessed_glass_with_occupied_residential_depth",
+        "transparent_planted_ground_floor_lobby",
+        "complete_wrapped_secondary_elevations",
+        "intensive_rooftop_garden_with_service_core"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/vertical-forest-residential/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_vertical_forest_tower_with_repeatable_complete_balcony_storeys",
+    "occupied_storeys": 18,
+    "continuous_perimeter_frame": true,
+    "deep_balcony_trays": 18,
+    "integral_planter_volumes": true,
+    "three_dimensional_supported_trees": true,
+    "intensive_rooftop_garden": true,
+    "physical_window_layers": [
+      "occupied_depth",
+      "neutral_low_iron_pane",
+      "bronze_frame",
+      "slab_edge",
+      "external_concrete_frame"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Opaque construction, physical glazing, occupied depth, structure, roof and landscape retain distinct physically based responses because their contrast carries each archetype identity."
+  },
+  "dimensions": {
+    "width_m": 31.537,
+    "depth_m": 31.514,
+    "podium_height_m": 4.2,
+    "floor_height_m": 3.35,
+    "setback_height_m": 3.35,
+    "roof_height_m": 4.0,
+    "crown_height_m": 1.2,
+    "default_floors": 18,
+    "min_floors": 10,
+    "max_floors": 30
+  },
+  "native_width_m": 31.537,
+  "native_depth_m": 31.514,
+  "native_height_m": 66.97,
+  "native_floors": 18,
+  "min_floors": 10,
+  "max_floors": 30,
+  "default_floors": 18,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_podium.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 30.901,
+      "depth_m": 31.02,
+      "height_m": 5.6,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 5940,
+      "material_count": 13,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 51309280
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_floor_typical_a.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 31.081,
+      "depth_m": 31.224,
+      "height_m": 5.725,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 5928,
+      "material_count": 13,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 51308176
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_floor_typical_b.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 31.042,
+      "depth_m": 30.785,
+      "height_m": 5.721,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 5928,
+      "material_count": 13,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 51308196
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_floor_typical_c.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 30.65,
+      "depth_m": 31.217,
+      "height_m": 5.791,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 6432,
+      "material_count": 13,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 51318468
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_crown_crown.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 28.0,
+      "depth_m": 28.0,
+      "height_m": 1.572,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 720,
+      "material_count": 7,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 29211832
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "vertical-forest-residential_roof.glb",
+      "module_family": "vertical-forest-residential",
+      "width_m": 28.0,
+      "depth_m": 28.0,
+      "height_m": 4.0,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 60,
+      "material_count": 5,
+      "texture_keys": [
+        "bronze_frame",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "foliage",
+        "interior",
+        "paving",
+        "planter",
+        "podium",
+        "roof",
+        "side",
+        "soil",
+        "trunk",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 9928408
+    }
+  ],
+  "assembled": {
+    "filename": "vertical-forest-residential_assembled.glb",
+    "module_family": "vertical-forest-residential",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "vertical_forest_bosco",
+    "generation_archetype_id": "vertical_forest_bosco",
+    "width_m": 31.537,
+    "depth_m": 31.514,
+    "floors": 18,
+    "uses_setback": true,
+    "uses_crown": true,
+    "height_m": 66.97,
+    "triangle_count": 112404,
+    "material_count": 11,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 66.97
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 31.537,
+      "depth_m": 31.514,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 31.537,
+          "thickness_m": 31.514,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_vertical_forest_tower_with_repeatable_complete_balcony_storeys",
+      "occupied_storeys": 18,
+      "continuous_perimeter_frame": true,
+      "deep_balcony_trays": 18,
+      "integral_planter_volumes": true,
+      "three_dimensional_supported_trees": true,
+      "intensive_rooftop_garden": true,
+      "physical_window_layers": [
+        "occupied_depth",
+        "neutral_low_iron_pane",
+        "bronze_frame",
+        "slab_edge",
+        "external_concrete_frame"
+      ]
+    },
+    "texture_keys": [
+      "bronze_frame",
+      "concrete",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "foliage",
+      "interior",
+      "paving",
+      "planter",
+      "podium",
+      "roof",
+      "side",
+      "soil",
+      "trunk",
+      "vision_glass"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "vertical-forest-residential_preview.png",
+  "renders": [
+    "vertical-forest-residential_preview.png",
+    "vertical-forest-residential_front_corner_oblique.png",
+    "vertical-forest-residential_front_elevation.png",
+    "vertical-forest-residential_rear_corner_oblique.png",
+    "vertical-forest-residential_aerial.png",
+    "vertical-forest-residential_facade_close.png",
+    "vertical-forest-residential_identity_close.png",
+    "vertical-forest-residential_street.png",
+    "vertical-forest-residential_context.png"
+  ],
+  "architectural_identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+  "material_zones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+  "glass_profile": "neutral_low_iron_residential_occupied",
+  "source_provenance": {
+    "catalogue_archetype_id": "vertical_forest_residential",
+    "catalogue_variant_id": "vertical_forest_bosco",
+    "catalogue_alias_ids": [
+      "bosco_verticale_residential",
+      "planted_concrete_balcony_tower"
+    ],
+    "elevation_source": "/families/vertical-forest-residential/elevation.jpg",
+    "goalpost": "/families/vertical-forest-residential/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/vertical-forest-residential/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

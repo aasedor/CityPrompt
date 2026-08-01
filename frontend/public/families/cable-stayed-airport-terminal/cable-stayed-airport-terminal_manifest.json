@@ -1,0 +1,1531 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave12_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T02:30:52.571239+00:00",
+  "family": "cable-stayed-airport-terminal",
+  "archetype_id": "airport_terminal_building",
+  "archetype_label": "Airport Terminal - Cable-Stayed Steel Truss",
+  "variant_id": "cable_stayed_steel_truss_terminal",
+  "generation_archetype_id": "cable_stayed_steel_truss_terminal",
+  "archetype_aliases": [
+    "airport_terminal_building",
+    "cable_stayed_steel_truss_terminal",
+    "high_tech_airport_terminal",
+    "branching_column_departure_hall"
+  ],
+  "aesthetic_category_id": "high_tech_civic_infrastructure",
+  "development_type": "transportation_terminal",
+  "reuse_keys": [
+    "airport_terminal_building",
+    "cable_stayed_steel_truss_terminal",
+    "high_tech_airport_terminal",
+    "branching_column_departure_hall",
+    "Airport Terminal Building",
+    "Cable Stayed Steel Truss Terminal",
+    "High Tech Departure Hall",
+    "Branching Column Airport"
+  ],
+  "generation_tags": [
+    "wave12",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "sweeping_space_frame",
+    "branching_tree_columns",
+    "radiating_stay_cables",
+    "complete_gate_bridges"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The reviewed mast, cable fan, tree columns and canopy remain one fixed landmark inside a broad transport scale band. Oversized rectangles or L-shaped concourses repeat complete 6.83 metre glazed structural bays and gate bridges along the long axis.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.7,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.24
+    },
+    "recommendedWidth_m": [
+      62.0,
+      135.0
+    ],
+    "recommendedDepth_m": [
+      42.0,
+      92.0
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "preferredBayMultiple_m": 6.83,
+    "scaleMin": 0.7,
+    "scaleMax": 1.32,
+    "maxAxisRatio": 1.24,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          62.0,
+          135.0
+        ],
+        "recommendedDepth_m": [
+          42.0,
+          92.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.7,
+        "scaleMax": 1.32,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 6.83
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          68.0,
+          150.0
+        ],
+        "recommendedDepth_m": [
+          44.0,
+          105.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.68,
+        "scaleMax": 1.34,
+        "maxAxisRatio": 1.26,
+        "preferredBayMultiple_m": 6.83,
+        "wingDepth_m": [
+          22.0,
+          38.0
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/cable_stayed_terminal_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/cable_stayed_terminal_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/integrated_departure_entry_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/space_frame_cable_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/space_frame_cable_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/space_frame_cable_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/space_frame_cable_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/space_frame_cable_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/space_frame_cable_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/space_frame_cable_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/space_frame_cable_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/diamond_braced_terminal_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_terminal_concourse_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_steel_albedo",
+      "path": "textures/pbr/near/satin_silver_structural_steel_albedo.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_steel_normal",
+      "path": "textures/pbr/near/satin_silver_structural_steel_normal.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "normal"
+    },
+    {
+      "key": "near_steel_roughness",
+      "path": "textures/pbr/near/satin_silver_structural_steel_roughness.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_steel_ao",
+      "path": "textures/pbr/near/satin_silver_structural_steel_ao.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "ao"
+    },
+    {
+      "key": "near_steel_depth",
+      "path": "textures/pbr/near/satin_silver_structural_steel_depth.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "depth"
+    },
+    {
+      "key": "near_steel_emissive",
+      "path": "textures/pbr/near/satin_silver_structural_steel_emissive.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_steel_glass_mask",
+      "path": "textures/pbr/near/satin_silver_structural_steel_glass.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_steel_opaque_mask",
+      "path": "textures/pbr/near/satin_silver_structural_steel_opaque.png",
+      "lod": "near",
+      "zone": "steel",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_graphite_albedo",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_albedo.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_graphite_normal",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_normal.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "normal"
+    },
+    {
+      "key": "near_graphite_roughness",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_roughness.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_graphite_ao",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_ao.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "ao"
+    },
+    {
+      "key": "near_graphite_depth",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_depth.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "depth"
+    },
+    {
+      "key": "near_graphite_emissive",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_emissive.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_graphite_glass_mask",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_glass.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_graphite_opaque_mask",
+      "path": "textures/pbr/near/dark_graphite_structural_steel_opaque.png",
+      "lod": "near",
+      "zone": "graphite",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_aluminum_albedo",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_albedo.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_aluminum_normal",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_normal.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "normal"
+    },
+    {
+      "key": "near_aluminum_roughness",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_roughness.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_aluminum_ao",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_ao.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "ao"
+    },
+    {
+      "key": "near_aluminum_depth",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_depth.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "depth"
+    },
+    {
+      "key": "near_aluminum_emissive",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_emissive.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_aluminum_glass_mask",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_glass.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_aluminum_opaque_mask",
+      "path": "textures/pbr/near/champagne_anodized_aluminum_opaque.png",
+      "lod": "near",
+      "zone": "aluminum",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_terminal_glass_albedo",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_albedo.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_terminal_glass_normal",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_normal.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_terminal_glass_roughness",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_roughness.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_terminal_glass_ao",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_ao.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_terminal_glass_depth",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_depth.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_terminal_glass_emissive",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_emissive.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_terminal_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_glass.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_terminal_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_high_transmission_terminal_glass_opaque.png",
+      "lod": "near",
+      "zone": "terminal_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_infill_albedo",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_albedo.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_infill_normal",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_normal.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_infill_roughness",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_roughness.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_infill_ao",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_ao.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_infill_depth",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_depth.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_infill_emissive",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_emissive.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_infill_glass_mask",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_glass.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_infill_opaque_mask",
+      "path": "textures/pbr/near/translucent_pearl_roof_infill_opaque.png",
+      "lod": "near",
+      "zone": "roof_infill",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_concrete_albedo",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_albedo.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_concrete_normal",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_normal.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "normal"
+    },
+    {
+      "key": "near_concrete_roughness",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_roughness.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_concrete_ao",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_ao.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "ao"
+    },
+    {
+      "key": "near_concrete_depth",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_depth.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "depth"
+    },
+    {
+      "key": "near_concrete_emissive",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_emissive.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_concrete_glass_mask",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_glass.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_concrete_opaque_mask",
+      "path": "textures/pbr/near/pale_airport_apron_concrete_opaque.png",
+      "lod": "near",
+      "zone": "concrete",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/dark_terminal_service_roof_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/dark_terminal_service_roof_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/dark_terminal_service_roof_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/dark_terminal_service_roof_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/dark_terminal_service_roof_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/dark_terminal_service_roof_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/dark_terminal_service_roof_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/dark_terminal_service_roof_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/cable-stayed-airport-terminal",
+    "model": "gpt-image-2",
+    "style_reference": "/families/cable-stayed-airport-terminal/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "central_mast",
+        "radiating_stays",
+        "branching_tree_columns",
+        "three_gate_bridges"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat complete 6.83 metre terminal structural bays, including pane, cap, occupied depth, slab and optional diagonal brace."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "central mast",
+        "stay cable fan",
+        "branching columns",
+        "arrival canopy",
+        "side enclosure returns",
+        "sweeping roof",
+        "three gate bridges"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "diamond-braced occupied terminal enclosure; diamond-braced occupied terminal enclosure",
+      "elevation_coverage": {
+        "front": "transparent departure hall, integrated drop-off canopy and branching columns",
+        "left": "diamond-braced occupied terminal enclosure",
+        "right": "diamond-braced occupied terminal enclosure",
+        "rear": "complete airside curtain wall and three gate bridges",
+        "roof": "sweeping translucent space frame, central mast, cables and service roof"
+      },
+      "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized or differently proportioned targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/cable_stayed_terminal_registered_front_albedo.png",
+        "normal": "textures/pbr/near/cable_stayed_terminal_registered_front_normal.png",
+        "roughness": "textures/pbr/near/cable_stayed_terminal_registered_front_roughness.png",
+        "ao": "textures/pbr/near/cable_stayed_terminal_registered_front_ao.png",
+        "depth": "textures/pbr/near/cable_stayed_terminal_registered_front_depth.png",
+        "emissive": "textures/pbr/near/cable_stayed_terminal_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/cable_stayed_terminal_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/cable_stayed_terminal_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/cable_stayed_terminal_registered_front_albedo.png",
+        "normal": "textures/pbr/far/cable_stayed_terminal_registered_front_normal.png",
+        "roughness": "textures/pbr/far/cable_stayed_terminal_registered_front_roughness.png",
+        "ao": "textures/pbr/far/cable_stayed_terminal_registered_front_ao.png",
+        "depth": "textures/pbr/far/cable_stayed_terminal_registered_front_depth.png",
+        "emissive": "textures/pbr/far/cable_stayed_terminal_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/cable_stayed_terminal_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/cable_stayed_terminal_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/cable_stayed_terminal_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/cable_stayed_terminal_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "airport_terminal_building",
+      "source_variant_id": "cable_stayed_steel_truss_terminal",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "wide_transparent_two_level_departure_hall",
+        "complete_shallow_sweeping_space_frame_canopy",
+        "six_branching_graphite_tree_columns",
+        "single_central_mast_with_ten_radiating_stays",
+        "occupied_glass_behind_diamond_braced_side_walls",
+        "integrated_dropoff_canopy_and_six_glazed_doors",
+        "three_complete_airside_gate_bridges",
+        "complete_roof_grid_anchor_points_and_service_roof"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/cable-stayed-airport-terminal/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_cable_stayed_terminal_with_repeatable_structural_concourse_bays",
+    "transparent_departure_halls": 2,
+    "branching_tree_columns": 6,
+    "central_stay_masts": 1,
+    "radiating_stay_cables": 10,
+    "sweeping_space_frame_canopies": 1,
+    "diamond_braced_side_walls": 2,
+    "complete_airside_gate_bridges": 3,
+    "physical_window_layers": [
+      "occupied_terminal_depth",
+      "high_transmission_pane",
+      "pressure_cap",
+      "mezzanine",
+      "external_structure"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Opaque construction, physical glazing, occupied depth, structure, roof and landscape retain distinct physically based responses because their contrast carries each archetype identity."
+  },
+  "dimensions": {
+    "width_m": 88.32,
+    "depth_m": 72.6,
+    "podium_height_m": 5.4,
+    "floor_height_m": 5.4,
+    "setback_height_m": 5.4,
+    "roof_height_m": 13.0,
+    "crown_height_m": 2.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 6
+  },
+  "native_width_m": 88.32,
+  "native_depth_m": 72.6,
+  "native_height_m": 27.275,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 6,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_podium.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 88.0,
+      "depth_m": 60.25,
+      "height_m": 5.4,
+      "floor_height_m": 5.4,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 636,
+      "material_count": 7,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26277208
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_floor_typical_a.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 84.18,
+      "depth_m": 56.25,
+      "height_m": 5.4,
+      "floor_height_m": 5.4,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 636,
+      "material_count": 7,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26277088
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_floor_typical_b.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 84.18,
+      "depth_m": 56.45,
+      "height_m": 5.4,
+      "floor_height_m": 5.4,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 776,
+      "material_count": 7,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26281952
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_floor_typical_c.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 84.18,
+      "depth_m": 56.45,
+      "height_m": 5.4,
+      "floor_height_m": 5.4,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 776,
+      "material_count": 7,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26281952
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_crown_crown.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 80.3,
+      "depth_m": 60.008,
+      "height_m": 2.0,
+      "floor_height_m": 5.4,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 344,
+      "material_count": 4,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 8258520
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "cable-stayed-airport-terminal_roof.glb",
+      "module_family": "cable-stayed-airport-terminal",
+      "width_m": 88.32,
+      "depth_m": 60.28,
+      "height_m": 13.0,
+      "floor_height_m": 5.4,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 9060,
+      "material_count": 6,
+      "texture_keys": [
+        "aluminum",
+        "concrete",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "graphite",
+        "interior",
+        "podium",
+        "roof",
+        "roof_infill",
+        "side",
+        "steel",
+        "terminal_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 24023220
+    }
+  ],
+  "assembled": {
+    "filename": "cable-stayed-airport-terminal_assembled.glb",
+    "module_family": "cable-stayed-airport-terminal",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "cable_stayed_steel_truss_terminal",
+    "generation_archetype_id": "cable_stayed_steel_truss_terminal",
+    "width_m": 88.32,
+    "depth_m": 72.6,
+    "floors": 3,
+    "uses_setback": true,
+    "uses_crown": true,
+    "height_m": 27.275,
+    "triangle_count": 12960,
+    "material_count": 8,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 27.275
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 88.32,
+      "depth_m": 72.6,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 88.32,
+          "thickness_m": 72.6,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_cable_stayed_terminal_with_repeatable_structural_concourse_bays",
+      "transparent_departure_halls": 2,
+      "branching_tree_columns": 6,
+      "central_stay_masts": 1,
+      "radiating_stay_cables": 10,
+      "sweeping_space_frame_canopies": 1,
+      "diamond_braced_side_walls": 2,
+      "complete_airside_gate_bridges": 3,
+      "physical_window_layers": [
+        "occupied_terminal_depth",
+        "high_transmission_pane",
+        "pressure_cap",
+        "mezzanine",
+        "external_structure"
+      ]
+    },
+    "texture_keys": [
+      "aluminum",
+      "concrete",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "graphite",
+      "interior",
+      "podium",
+      "roof",
+      "roof_infill",
+      "side",
+      "steel",
+      "terminal_glass"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "cable-stayed-airport-terminal_preview.png",
+  "renders": [
+    "cable-stayed-airport-terminal_preview.png",
+    "cable-stayed-airport-terminal_front_corner_oblique.png",
+    "cable-stayed-airport-terminal_front_elevation.png",
+    "cable-stayed-airport-terminal_rear_corner_oblique.png",
+    "cable-stayed-airport-terminal_aerial.png",
+    "cable-stayed-airport-terminal_facade_close.png",
+    "cable-stayed-airport-terminal_identity_close.png",
+    "cable-stayed-airport-terminal_street.png",
+    "cable-stayed-airport-terminal_context.png"
+  ],
+  "architectural_identity": "A transparent two-level departure hall is sheltered by one sweeping steel space-frame canopy, supported on branching tree columns and radiating stay cables from a central mast, with diamond-braced side walls and three complete airside gate bridges.",
+  "material_zones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
+  "glass_profile": "high_transmission_terminal_curtain_wall",
+  "source_provenance": {
+    "catalogue_archetype_id": "airport_terminal_building",
+    "catalogue_variant_id": "cable_stayed_steel_truss_terminal",
+    "catalogue_alias_ids": [
+      "high_tech_airport_terminal",
+      "branching_column_departure_hall"
+    ],
+    "elevation_source": "/families/cable-stayed-airport-terminal/elevation.jpg",
+    "goalpost": "/families/cable-stayed-airport-terminal/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/cable-stayed-airport-terminal/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

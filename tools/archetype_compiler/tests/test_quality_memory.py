@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-31-wave11-optical-curve-v109"
+        == "2026-07-31-wave12-vegetation-loadpath-v110"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -266,6 +266,29 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "context-dependent blender operators" in item["cause"].lower()
         and "metric vertices" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "dark rectangular cards" in item["symptom"].lower()
+        and "explicit alpha mix shader" in item["correction"].lower()
+        and "crossed vertical crown planes" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "cannot show the court beyond" in item["symptom"].lower()
+        and "split every intersecting mass" in item["correction"].lower()
+        and "uninterrupted sightline" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "decorative lines floating near a glass box" in item["symptom"].lower()
+        and "one load-path function" in item["correction"].lower()
+        and "outside the glazing" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "giant masonry blocks" in item["symptom"].lower()
+        and "physical-scale coordinates" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-31-wave11-optical-curve-v109",
+  "memory_version": "2026-07-31-wave12-vegetation-loadpath-v110",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -905,6 +905,26 @@
       "symptom": "A dense physical curtain wall takes many minutes to regenerate even though its panes, caps and slab edges are simple cuboids",
       "cause": "Every repeated primitive invoked context-dependent Blender operators and transform application, making tooling overhead dominate visual iteration.",
       "correction": "Create the metric vertices, faces, material slot and UVs directly for repeated simple meshes. Preserve bevels, semantic extras and separate optical layers, then verify that the optimized generator exports the same physical facade and close-view result."
+    },
+    {
+      "symptom": "A planted tower has real planters and trunks but still reads as sparse plastic landscaping or turns into dark rectangular cards in the exported GLB",
+      "cause": "Foliage identity was reduced to low-poly spheres, or chroma-key crown cards relied on viewport alpha without an explicit transparent shader, blend mode and multi-camera proof.",
+      "correction": "Combine real soil, planter, trunk and branching skeleton geometry with a labelled photoreal foliage cutout. Drive transparency through an explicit alpha mix shader and glTF blend mode, use only crossed vertical crown planes, and verify street, corner, aerial and mobile views for black quads or grazing horizontal cards."
+    },
+    {
+      "symptom": "A gateway, arcade or entrance looks dark and recessed from the front but remains a solid wall in plan or cannot show the court beyond",
+      "cause": "A tunnel-coloured box and portal frame were placed in front of one unbroken mass instead of splitting the building envelope around a continuous circulation void.",
+      "correction": "Split every intersecting mass, facade skin and floor strip around the full passage. Model only jambs, spandrels, ceiling ribs, returns, paving and folded doors, then prove an uninterrupted sightline and walking volume from both sides."
+    },
+    {
+      "symptom": "A cable-stayed canopy contains a mast, cables and branching columns but they read as decorative lines floating near a glass box",
+      "cause": "Trunks were buried behind the curtain wall, branches missed the roof nodes, stay endpoints used a different roof equation, or the mast stopped at an unrelated slab.",
+      "correction": "Author one load-path function shared by roof nodes, tree-column branches and stay endpoints. Keep primary trunks outside the glazing, connect every branch and cable to visible canopy nodes, carry the mast to a credible base, and prove the network in front elevation, roof aerial and structural close views."
+    },
+    {
+      "symptom": "A tall wall, tower pier or long roof member displays giant masonry blocks or stretched construction imagery even though the source texture is tile-safe",
+      "cause": "One normalized UV island was stretched across the full physical object while repeated instances shared a unit mesh that ignored architectural texture scale.",
+      "correction": "Preserve true construction scale by splitting identity-bearing masses into coursed lifts or by assigning physical-scale coordinates before export. Keep shared metric mesh instances for genuinely repeated parts, and reject any hero or close view where the material scale changes with object dimensions."
     }
   ]
 }

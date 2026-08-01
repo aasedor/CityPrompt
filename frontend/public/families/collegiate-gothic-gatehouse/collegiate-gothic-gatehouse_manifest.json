@@ -1,0 +1,1552 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave12_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T02:31:23.405399+00:00",
+  "family": "collegiate-gothic-gatehouse",
+  "archetype_id": "collegiate_gothic_education",
+  "archetype_label": "Collegiate Gothic - Tudor Gatehouse Quadrangle",
+  "variant_id": "collegiate_gothic_tudor",
+  "generation_archetype_id": "collegiate_gothic_tudor",
+  "archetype_aliases": [
+    "collegiate_gothic_education",
+    "collegiate_gothic_tudor",
+    "tudor_gothic_quadrangle",
+    "limestone_college_gatehouse"
+  ],
+  "aesthetic_category_id": "collegiate_gothic",
+  "development_type": "institutional_education",
+  "reuse_keys": [
+    "collegiate_gothic_education",
+    "collegiate_gothic_tudor",
+    "tudor_gothic_quadrangle",
+    "limestone_college_gatehouse",
+    "Collegiate Gothic",
+    "Tudor Gothic Quadrangle",
+    "University Gatehouse Court",
+    "Honey Limestone College"
+  ],
+  "generation_tags": [
+    "wave12",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "real_gate_passage",
+    "carved_pointed_tracery",
+    "steep_slate_roofs"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "u_shape",
+      "courtyard"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "The gate tower, real passage, corner returns and roof terminals remain fixed while complete 5.45 metre academic bays repeat along rectangle, U-shaped or courtyard wings. Tracery and buttresses are never stretched across openings.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.74,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.22
+    },
+    "recommendedWidth_m": [
+      45.0,
+      82.0
+    ],
+    "recommendedDepth_m": [
+      22.0,
+      48.0
+    ],
+    "recommendedFloors": [
+      2,
+      6
+    ],
+    "preferredBayMultiple_m": 5.45,
+    "scaleMin": 0.74,
+    "scaleMax": 1.28,
+    "maxAxisRatio": 1.22,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          45.0,
+          82.0
+        ],
+        "recommendedDepth_m": [
+          22.0,
+          48.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 5.45
+      },
+      "u_shape": {
+        "recommendedWidth_m": [
+          48.0,
+          86.0
+        ],
+        "recommendedDepth_m": [
+          30.0,
+          55.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 5.45,
+        "wingDepth_m": [
+          8.0,
+          14.0
+        ]
+      },
+      "courtyard": {
+        "recommendedWidth_m": [
+          52.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          34.0,
+          60.0
+        ],
+        "recommendedFloors": [
+          2,
+          6
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 5.45,
+        "wingDepth_m": [
+          8.0,
+          14.0
+        ],
+        "minimumCourtyard_m": 12.0
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/tudor_college_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/tudor_college_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/tudor_college_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/tudor_college_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/tudor_college_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/tudor_college_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/tudor_college_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/tudor_college_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/tudor_college_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/tudor_college_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/tudor_college_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/tudor_college_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/tudor_college_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/tudor_college_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/tudor_college_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/tudor_college_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/tudor_college_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/tudor_college_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/tudor_college_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/tudor_college_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/tudor_college_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/tudor_college_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/tudor_college_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/tudor_college_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/real_gate_passage_and_stair_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/pointed_academic_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/pointed_academic_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/pointed_academic_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/pointed_academic_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/pointed_academic_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/pointed_academic_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/pointed_academic_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/pointed_academic_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/pointed_academic_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/pointed_academic_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/pointed_academic_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/pointed_academic_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/pointed_academic_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/pointed_academic_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/pointed_academic_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/pointed_academic_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/crenellated_gatehouse_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/wrapped_gothic_academic_wing_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_academic_room_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_academic_room_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_academic_room_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_academic_room_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_academic_room_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_academic_room_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_academic_room_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_academic_room_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_limestone_albedo",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_albedo.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_limestone_normal",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_normal.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "normal"
+    },
+    {
+      "key": "near_limestone_roughness",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_roughness.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_limestone_ao",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_ao.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "ao"
+    },
+    {
+      "key": "near_limestone_depth",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_depth.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "depth"
+    },
+    {
+      "key": "near_limestone_emissive",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_emissive.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_limestone_glass_mask",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_glass.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_limestone_opaque_mask",
+      "path": "textures/pbr/near/honey_cotswold_limestone_ashlar_opaque.png",
+      "lod": "near",
+      "zone": "limestone",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_carved_stone_albedo",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_albedo.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_carved_stone_normal",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_normal.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "normal"
+    },
+    {
+      "key": "near_carved_stone_roughness",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_roughness.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_carved_stone_ao",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_ao.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "ao"
+    },
+    {
+      "key": "near_carved_stone_depth",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_depth.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "depth"
+    },
+    {
+      "key": "near_carved_stone_emissive",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_emissive.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_carved_stone_glass_mask",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_glass.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_carved_stone_opaque_mask",
+      "path": "textures/pbr/near/carved_honey_limestone_tracery_opaque.png",
+      "lod": "near",
+      "zone": "carved_stone",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_slate_albedo",
+      "path": "textures/pbr/near/dark_welsh_slate_albedo.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_slate_normal",
+      "path": "textures/pbr/near/dark_welsh_slate_normal.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "normal"
+    },
+    {
+      "key": "near_slate_roughness",
+      "path": "textures/pbr/near/dark_welsh_slate_roughness.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_slate_ao",
+      "path": "textures/pbr/near/dark_welsh_slate_ao.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "ao"
+    },
+    {
+      "key": "near_slate_depth",
+      "path": "textures/pbr/near/dark_welsh_slate_depth.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "depth"
+    },
+    {
+      "key": "near_slate_emissive",
+      "path": "textures/pbr/near/dark_welsh_slate_emissive.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_slate_glass_mask",
+      "path": "textures/pbr/near/dark_welsh_slate_glass.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_slate_opaque_mask",
+      "path": "textures/pbr/near/dark_welsh_slate_opaque.png",
+      "lod": "near",
+      "zone": "slate",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_leaded_glass_albedo",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_albedo.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_leaded_glass_normal",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_normal.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_leaded_glass_roughness",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_roughness.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_leaded_glass_ao",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_ao.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_leaded_glass_depth",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_depth.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_leaded_glass_emissive",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_emissive.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_leaded_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_glass.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_leaded_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_lead_came_heritage_glass_opaque.png",
+      "lod": "near",
+      "zone": "leaded_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_oak_albedo",
+      "path": "textures/pbr/near/aged_dark_english_oak_albedo.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_oak_normal",
+      "path": "textures/pbr/near/aged_dark_english_oak_normal.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "normal"
+    },
+    {
+      "key": "near_oak_roughness",
+      "path": "textures/pbr/near/aged_dark_english_oak_roughness.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_oak_ao",
+      "path": "textures/pbr/near/aged_dark_english_oak_ao.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "ao"
+    },
+    {
+      "key": "near_oak_depth",
+      "path": "textures/pbr/near/aged_dark_english_oak_depth.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "depth"
+    },
+    {
+      "key": "near_oak_emissive",
+      "path": "textures/pbr/near/aged_dark_english_oak_emissive.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_oak_glass_mask",
+      "path": "textures/pbr/near/aged_dark_english_oak_glass.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_oak_opaque_mask",
+      "path": "textures/pbr/near/aged_dark_english_oak_opaque.png",
+      "lod": "near",
+      "zone": "oak",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_iron_albedo",
+      "path": "textures/pbr/near/black_forged_iron_albedo.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_iron_normal",
+      "path": "textures/pbr/near/black_forged_iron_normal.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "normal"
+    },
+    {
+      "key": "near_iron_roughness",
+      "path": "textures/pbr/near/black_forged_iron_roughness.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_iron_ao",
+      "path": "textures/pbr/near/black_forged_iron_ao.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "ao"
+    },
+    {
+      "key": "near_iron_depth",
+      "path": "textures/pbr/near/black_forged_iron_depth.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "depth"
+    },
+    {
+      "key": "near_iron_emissive",
+      "path": "textures/pbr/near/black_forged_iron_emissive.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_iron_glass_mask",
+      "path": "textures/pbr/near/black_forged_iron_glass.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_iron_opaque_mask",
+      "path": "textures/pbr/near/black_forged_iron_opaque.png",
+      "lod": "near",
+      "zone": "iron",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_paving_albedo",
+      "path": "textures/pbr/near/honey_limestone_college_paving_albedo.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_paving_normal",
+      "path": "textures/pbr/near/honey_limestone_college_paving_normal.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "normal"
+    },
+    {
+      "key": "near_paving_roughness",
+      "path": "textures/pbr/near/honey_limestone_college_paving_roughness.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_paving_ao",
+      "path": "textures/pbr/near/honey_limestone_college_paving_ao.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "ao"
+    },
+    {
+      "key": "near_paving_depth",
+      "path": "textures/pbr/near/honey_limestone_college_paving_depth.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "depth"
+    },
+    {
+      "key": "near_paving_emissive",
+      "path": "textures/pbr/near/honey_limestone_college_paving_emissive.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_paving_glass_mask",
+      "path": "textures/pbr/near/honey_limestone_college_paving_glass.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_paving_opaque_mask",
+      "path": "textures/pbr/near/honey_limestone_college_paving_opaque.png",
+      "lod": "near",
+      "zone": "paving",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/collegiate-gothic-gatehouse",
+    "model": "gpt-image-2",
+    "style_reference": "/families/collegiate-gothic-gatehouse/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "real_gate_passage",
+        "gate_tower",
+        "corner_buttresses",
+        "roof_terminals"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat whole 5.45 metre academic bays with pier, deep pointed opening, leaded pane, tracery and buttress datum."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "gate passage",
+        "gate tower",
+        "ceremonial stair",
+        "corner buttresses",
+        "slate roof fields",
+        "pinnacles and chimneys"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete academic wing with pointed glazing and slate gable; complete academic wing with pointed glazing and slate gable",
+      "elevation_coverage": {
+        "front": "real carved gate passage beneath traceried crenellated tower",
+        "left": "complete academic wing with pointed glazing and slate gable",
+        "right": "complete academic wing with pointed glazing and slate gable",
+        "rear": "occupied fourth wing and clustered chimneys",
+        "roof": "four connected slate gable fields, tower parapet, pinnacles and chimneys"
+      },
+      "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized or differently proportioned targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/tudor_college_registered_front_albedo.png",
+        "normal": "textures/pbr/near/tudor_college_registered_front_normal.png",
+        "roughness": "textures/pbr/near/tudor_college_registered_front_roughness.png",
+        "ao": "textures/pbr/near/tudor_college_registered_front_ao.png",
+        "depth": "textures/pbr/near/tudor_college_registered_front_depth.png",
+        "emissive": "textures/pbr/near/tudor_college_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/tudor_college_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/tudor_college_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/tudor_college_registered_front_albedo.png",
+        "normal": "textures/pbr/far/tudor_college_registered_front_normal.png",
+        "roughness": "textures/pbr/far/tudor_college_registered_front_roughness.png",
+        "ao": "textures/pbr/far/tudor_college_registered_front_ao.png",
+        "depth": "textures/pbr/far/tudor_college_registered_front_depth.png",
+        "emissive": "textures/pbr/far/tudor_college_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/tudor_college_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/tudor_college_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/tudor_college_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/tudor_college_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "collegiate_gothic_education",
+      "source_variant_id": "collegiate_gothic_tudor",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "complete_four_wing_open_college_quadrangle",
+        "projecting_central_gatehouse_tower",
+        "real_four_centred_through_passage_with_deep_returns",
+        "integrated_ceremonial_stone_gate_stair",
+        "deep_pointed_mullioned_and_transomed_leaded_windows",
+        "load_bearing_limestone_piers_and_buttresses",
+        "four_connected_steep_welsh_slate_gable_fields",
+        "crenellations_pinnacles_and_clustered_chimneys"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/collegiate-gothic-gatehouse/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_tudor_college_quadrangle_with_repeatable_academic_bays",
+    "open_quadrangle": true,
+    "gate_towers": 1,
+    "real_through_passages": 1,
+    "academic_wings": 4,
+    "steep_slate_gable_fields": 4,
+    "pointed_traceried_window_bays": 38,
+    "clustered_chimney_stacks": 4,
+    "physical_window_layers": [
+      "occupied_depth",
+      "leaded_pane",
+      "stone_tracery",
+      "deep_reveal",
+      "buttress"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Opaque construction, physical glazing, occupied depth, structure, roof and landscape retain distinct physically based responses because their contrast carries each archetype identity."
+  },
+  "dimensions": {
+    "width_m": 61.767,
+    "depth_m": 51.155,
+    "podium_height_m": 4.8,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "roof_height_m": 5.2,
+    "crown_height_m": 2.2,
+    "default_floors": 4,
+    "min_floors": 2,
+    "max_floors": 6
+  },
+  "native_width_m": 61.767,
+  "native_depth_m": 51.155,
+  "native_height_m": 31.22,
+  "native_floors": 4,
+  "min_floors": 2,
+  "max_floors": 6,
+  "default_floors": 4,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_podium.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 60.0,
+      "depth_m": 25.58,
+      "height_m": 4.8,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 128,
+      "material_count": 6,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 32031572
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_floor_typical_a.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 61.05,
+      "depth_m": 26.255,
+      "height_m": 4.42,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2187,
+      "material_count": 8,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 36366132
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_floor_typical_b.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 61.05,
+      "depth_m": 26.255,
+      "height_m": 4.42,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2187,
+      "material_count": 8,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 36366132
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_floor_typical_c.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 61.05,
+      "depth_m": 26.255,
+      "height_m": 4.42,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2187,
+      "material_count": 8,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 36366132
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_crown_crown.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 60.92,
+      "depth_m": 25.92,
+      "height_m": 2.2,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 996,
+      "material_count": 5,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 21073632
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "collegiate-gothic-gatehouse_roof.glb",
+      "module_family": "collegiate-gothic-gatehouse",
+      "width_m": 60.0,
+      "depth_m": 25.0,
+      "height_m": 5.2,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 42,
+      "material_count": 4,
+      "texture_keys": [
+        "carved_stone",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "interior",
+        "iron",
+        "leaded_glass",
+        "limestone",
+        "oak",
+        "paving",
+        "podium",
+        "side",
+        "slate"
+      ],
+      "ao_baked": true,
+      "size_bytes": 6520312
+    }
+  ],
+  "assembled": {
+    "filename": "collegiate-gothic-gatehouse_assembled.glb",
+    "module_family": "collegiate-gothic-gatehouse",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "collegiate_gothic_tudor",
+    "generation_archetype_id": "collegiate_gothic_tudor",
+    "width_m": 61.767,
+    "depth_m": 51.155,
+    "floors": 4,
+    "uses_setback": true,
+    "uses_crown": true,
+    "height_m": 31.22,
+    "triangle_count": 33944,
+    "material_count": 9,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 31.22
+      }
+    ],
+    "footprint_profile": "courtyard",
+    "footprint_target": {
+      "width_m": 61.767,
+      "depth_m": 51.155,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 61.767,
+          "thickness_m": 51.155,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_tudor_college_quadrangle_with_repeatable_academic_bays",
+      "open_quadrangle": true,
+      "gate_towers": 1,
+      "real_through_passages": 1,
+      "academic_wings": 4,
+      "steep_slate_gable_fields": 4,
+      "pointed_traceried_window_bays": 38,
+      "clustered_chimney_stacks": 4,
+      "physical_window_layers": [
+        "occupied_depth",
+        "leaded_pane",
+        "stone_tracery",
+        "deep_reveal",
+        "buttress"
+      ]
+    },
+    "texture_keys": [
+      "carved_stone",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "interior",
+      "iron",
+      "leaded_glass",
+      "limestone",
+      "oak",
+      "paving",
+      "podium",
+      "side",
+      "slate"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "collegiate-gothic-gatehouse_preview.png",
+  "renders": [
+    "collegiate-gothic-gatehouse_preview.png",
+    "collegiate-gothic-gatehouse_front_corner_oblique.png",
+    "collegiate-gothic-gatehouse_front_elevation.png",
+    "collegiate-gothic-gatehouse_rear_corner_oblique.png",
+    "collegiate-gothic-gatehouse_aerial.png",
+    "collegiate-gothic-gatehouse_facade_close.png",
+    "collegiate-gothic-gatehouse_identity_close.png",
+    "collegiate-gothic-gatehouse_street.png",
+    "collegiate-gothic-gatehouse_context.png"
+  ],
+  "architectural_identity": "A honey-limestone collegiate quadrangle is centred on a real deep pointed gate passage beneath a crenellated tower, with deep lead-glazed traceried windows, buttresses, slate gables, clustered chimneys and pinnacled parapets.",
+  "material_zones": "warm honey Cotswold limestone ashlar; deeper carved limestone tracery and buttresses; dark Welsh slate; lead-grey heritage glass; warm occupied academic rooms; dark oak gate doors; black ironwork",
+  "glass_profile": "heritage_leaded_occupied",
+  "source_provenance": {
+    "catalogue_archetype_id": "collegiate_gothic_education",
+    "catalogue_variant_id": "collegiate_gothic_tudor",
+    "catalogue_alias_ids": [
+      "tudor_gothic_quadrangle",
+      "limestone_college_gatehouse"
+    ],
+    "elevation_source": "/families/collegiate-gothic-gatehouse/elevation.jpg",
+    "goalpost": "/families/collegiate-gothic-gatehouse/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/collegiate-gothic-gatehouse/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "status": "pass",
+  "family": "cable-stayed-airport-terminal",
+  "archetype_id": "airport_terminal_building",
+  "reuse_keys": [
+    "airport_terminal_building",
+    "cable_stayed_steel_truss_terminal",
+    "high_tech_airport_terminal",
+    "branching_column_departure_hall",
+    "Airport Terminal Building",
+    "Cable Stayed Steel Truss Terminal",
+    "High Tech Departure Hall",
+    "Branching Column Airport"
+  ],
+  "manifest": "cable-stayed-airport-terminal_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "cable-stayed-airport-terminal_podium.glb: 25.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "cable-stayed-airport-terminal_floor_typical_a.glb: 25.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "cable-stayed-airport-terminal_floor_typical_b.glb: 25.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "cable-stayed-airport-terminal_floor_typical_c.glb: 25.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "cable-stayed-airport-terminal_roof.glb: 22.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "cable-stayed-airport-terminal_assembled.glb: 54.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "cable-stayed-airport-terminal_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 88.0,
+        "height_y": 5.4,
+        "depth_z": 60.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W12_TERMINAL_HighTransmissionGlass",
+        "MAT_W12_TERMINAL_OccupiedTerminalDepth",
+        "MAT_W12_TERMINAL_PaleApronConcrete",
+        "MAT_W12_TERMINAL_SilverStructuralSteel"
+      ],
+      "size_bytes": 26277208
+    },
+    {
+      "file": "cable-stayed-airport-terminal_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 84.18,
+        "height_y": 5.4,
+        "depth_z": 56.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W12_TERMINAL_HighTransmissionGlass",
+        "MAT_W12_TERMINAL_OccupiedTerminalDepth",
+        "MAT_W12_TERMINAL_PaleApronConcrete",
+        "MAT_W12_TERMINAL_SilverStructuralSteel"
+      ],
+      "size_bytes": 26277088
+    },
+    {
+      "file": "cable-stayed-airport-terminal_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 112,
+      "extent_m": {
+        "width_x": 84.18,
+        "height_y": 5.4,
+        "depth_z": 56.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W12_TERMINAL_HighTransmissionGlass",
+        "MAT_W12_TERMINAL_OccupiedTerminalDepth",
+        "MAT_W12_TERMINAL_PaleApronConcrete",
+        "MAT_W12_TERMINAL_SilverStructuralSteel"
+      ],
+      "size_bytes": 26281952
+    },
+    {
+      "file": "cable-stayed-airport-terminal_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 112,
+      "extent_m": {
+        "width_x": 84.18,
+        "height_y": 5.4,
+        "depth_z": 56.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W12_TERMINAL_HighTransmissionGlass",
+        "MAT_W12_TERMINAL_OccupiedTerminalDepth",
+        "MAT_W12_TERMINAL_PaleApronConcrete",
+        "MAT_W12_TERMINAL_SilverStructuralSteel"
+      ],
+      "size_bytes": 26281952
+    },
+    {
+      "file": "cable-stayed-airport-terminal_crown_crown.glb",
+      "status": "ok",
+      "triangles": 64,
+      "extent_m": {
+        "width_x": 80.3,
+        "height_y": 2.0,
+        "depth_z": 60.008
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W12_TERMINAL_SilverStructuralSteel"
+      ],
+      "size_bytes": 8258520
+    },
+    {
+      "file": "cable-stayed-airport-terminal_roof.glb",
+      "status": "ok",
+      "triangles": 324,
+      "extent_m": {
+        "width_x": 88.32,
+        "height_y": 13.0,
+        "depth_z": 60.28
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W12_TERMINAL_GraphiteSteel",
+        "MAT_W12_TERMINAL_SilverStructuralSteel",
+        "MAT_W12_TERMINAL_TranslucentRoofInfill"
+      ],
+      "size_bytes": 24023220
+    },
+    {
+      "file": "cable-stayed-airport-terminal_assembled.glb",
+      "status": "ok",
+      "triangles": 436,
+      "extent_m": {
+        "width_x": 88.32,
+        "height_y": 27.253,
+        "depth_z": 72.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W12_TERMINAL_ChampagneAluminum",
+        "MAT_W12_TERMINAL_DarkServiceRoof",
+        "MAT_W12_TERMINAL_GraphiteSteel",
+        "MAT_W12_TERMINAL_HighTransmissionGlass",
+        "MAT_W12_TERMINAL_OccupiedTerminalDepth",
+        "MAT_W12_TERMINAL_PaleApronConcrete",
+        "MAT_W12_TERMINAL_SilverStructuralSteel",
+        "MAT_W12_TERMINAL_TranslucentRoofInfill"
+      ],
+      "size_bytes": 56916676,
+      "role": "assembled"
+    }
+  ]
+}

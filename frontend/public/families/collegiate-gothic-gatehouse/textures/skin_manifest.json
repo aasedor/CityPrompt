@@ -1,0 +1,388 @@
+{
+  "schema": "collegiate-gothic-gatehouse-skin@1",
+  "family": "collegiate-gothic-gatehouse",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-academic-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The four-view board locks one complete honey-limestone Tudor college quadrangle: four occupied academic wings surround an open court and centre on a real gate passage below a traceried, crenellated gatehouse tower.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "collegiate_gothic_education",
+    "source_variant_id": "collegiate_gothic_tudor",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "complete_four_wing_open_college_quadrangle",
+      "projecting_central_gatehouse_tower",
+      "real_four_centred_through_passage_with_deep_returns",
+      "integrated_ceremonial_stone_gate_stair",
+      "deep_pointed_mullioned_and_transomed_leaded_windows",
+      "load_bearing_limestone_piers_and_buttresses",
+      "four_connected_steep_welsh_slate_gable_fields",
+      "crenellations_pinnacles_and_clustered_chimneys"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/tudor_college_registered_front_albedo.png",
+        "normal": "textures/pbr/near/tudor_college_registered_front_normal.png",
+        "roughness": "textures/pbr/near/tudor_college_registered_front_roughness.png",
+        "ao": "textures/pbr/near/tudor_college_registered_front_ao.png",
+        "depth": "textures/pbr/near/tudor_college_registered_front_depth.png",
+        "emissive": "textures/pbr/near/tudor_college_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/tudor_college_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/tudor_college_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/tudor_college_registered_front_albedo.png",
+        "normal": "textures/pbr/far/tudor_college_registered_front_normal.png",
+        "roughness": "textures/pbr/far/tudor_college_registered_front_roughness.png",
+        "ao": "textures/pbr/far/tudor_college_registered_front_ao.png",
+        "depth": "textures/pbr/far/tudor_college_registered_front_depth.png",
+        "emissive": "textures/pbr/far/tudor_college_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/tudor_college_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/tudor_college_registered_front_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/real_gate_passage_and_stair_podium_albedo.png",
+        "normal": "textures/pbr/near/real_gate_passage_and_stair_podium_normal.png",
+        "roughness": "textures/pbr/near/real_gate_passage_and_stair_podium_roughness.png",
+        "ao": "textures/pbr/near/real_gate_passage_and_stair_podium_ao.png",
+        "depth": "textures/pbr/near/real_gate_passage_and_stair_podium_depth.png",
+        "emissive": "textures/pbr/near/real_gate_passage_and_stair_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/real_gate_passage_and_stair_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/real_gate_passage_and_stair_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/real_gate_passage_and_stair_podium_albedo.png",
+        "normal": "textures/pbr/far/real_gate_passage_and_stair_podium_normal.png",
+        "roughness": "textures/pbr/far/real_gate_passage_and_stair_podium_roughness.png",
+        "ao": "textures/pbr/far/real_gate_passage_and_stair_podium_ao.png",
+        "depth": "textures/pbr/far/real_gate_passage_and_stair_podium_depth.png",
+        "emissive": "textures/pbr/far/real_gate_passage_and_stair_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/real_gate_passage_and_stair_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/real_gate_passage_and_stair_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/pointed_academic_floor_a_albedo.png",
+        "normal": "textures/pbr/near/pointed_academic_floor_a_normal.png",
+        "roughness": "textures/pbr/near/pointed_academic_floor_a_roughness.png",
+        "ao": "textures/pbr/near/pointed_academic_floor_a_ao.png",
+        "depth": "textures/pbr/near/pointed_academic_floor_a_depth.png",
+        "emissive": "textures/pbr/near/pointed_academic_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/pointed_academic_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/pointed_academic_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pointed_academic_floor_a_albedo.png",
+        "normal": "textures/pbr/far/pointed_academic_floor_a_normal.png",
+        "roughness": "textures/pbr/far/pointed_academic_floor_a_roughness.png",
+        "ao": "textures/pbr/far/pointed_academic_floor_a_ao.png",
+        "depth": "textures/pbr/far/pointed_academic_floor_a_depth.png",
+        "emissive": "textures/pbr/far/pointed_academic_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/pointed_academic_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/pointed_academic_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/pointed_academic_floor_b_albedo.png",
+        "normal": "textures/pbr/near/pointed_academic_floor_b_normal.png",
+        "roughness": "textures/pbr/near/pointed_academic_floor_b_roughness.png",
+        "ao": "textures/pbr/near/pointed_academic_floor_b_ao.png",
+        "depth": "textures/pbr/near/pointed_academic_floor_b_depth.png",
+        "emissive": "textures/pbr/near/pointed_academic_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/pointed_academic_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/pointed_academic_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pointed_academic_floor_b_albedo.png",
+        "normal": "textures/pbr/far/pointed_academic_floor_b_normal.png",
+        "roughness": "textures/pbr/far/pointed_academic_floor_b_roughness.png",
+        "ao": "textures/pbr/far/pointed_academic_floor_b_ao.png",
+        "depth": "textures/pbr/far/pointed_academic_floor_b_depth.png",
+        "emissive": "textures/pbr/far/pointed_academic_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/pointed_academic_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/pointed_academic_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/crenellated_gatehouse_crown_albedo.png",
+        "normal": "textures/pbr/near/crenellated_gatehouse_crown_normal.png",
+        "roughness": "textures/pbr/near/crenellated_gatehouse_crown_roughness.png",
+        "ao": "textures/pbr/near/crenellated_gatehouse_crown_ao.png",
+        "depth": "textures/pbr/near/crenellated_gatehouse_crown_depth.png",
+        "emissive": "textures/pbr/near/crenellated_gatehouse_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/crenellated_gatehouse_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/crenellated_gatehouse_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/crenellated_gatehouse_crown_albedo.png",
+        "normal": "textures/pbr/far/crenellated_gatehouse_crown_normal.png",
+        "roughness": "textures/pbr/far/crenellated_gatehouse_crown_roughness.png",
+        "ao": "textures/pbr/far/crenellated_gatehouse_crown_ao.png",
+        "depth": "textures/pbr/far/crenellated_gatehouse_crown_depth.png",
+        "emissive": "textures/pbr/far/crenellated_gatehouse_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/crenellated_gatehouse_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/crenellated_gatehouse_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/wrapped_gothic_academic_wing_albedo.png",
+        "normal": "textures/pbr/near/wrapped_gothic_academic_wing_normal.png",
+        "roughness": "textures/pbr/near/wrapped_gothic_academic_wing_roughness.png",
+        "ao": "textures/pbr/near/wrapped_gothic_academic_wing_ao.png",
+        "depth": "textures/pbr/near/wrapped_gothic_academic_wing_depth.png",
+        "emissive": "textures/pbr/near/wrapped_gothic_academic_wing_emissive.png",
+        "glass_mask": "textures/pbr/near/wrapped_gothic_academic_wing_glass.png",
+        "opaque_mask": "textures/pbr/near/wrapped_gothic_academic_wing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/wrapped_gothic_academic_wing_albedo.png",
+        "normal": "textures/pbr/far/wrapped_gothic_academic_wing_normal.png",
+        "roughness": "textures/pbr/far/wrapped_gothic_academic_wing_roughness.png",
+        "ao": "textures/pbr/far/wrapped_gothic_academic_wing_ao.png",
+        "depth": "textures/pbr/far/wrapped_gothic_academic_wing_depth.png",
+        "emissive": "textures/pbr/far/wrapped_gothic_academic_wing_emissive.png",
+        "glass_mask": "textures/pbr/far/wrapped_gothic_academic_wing_glass.png",
+        "opaque_mask": "textures/pbr/far/wrapped_gothic_academic_wing_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/occupied_academic_room_depth_albedo.png",
+        "normal": "textures/pbr/near/occupied_academic_room_depth_normal.png",
+        "roughness": "textures/pbr/near/occupied_academic_room_depth_roughness.png",
+        "ao": "textures/pbr/near/occupied_academic_room_depth_ao.png",
+        "depth": "textures/pbr/near/occupied_academic_room_depth_depth.png",
+        "emissive": "textures/pbr/near/occupied_academic_room_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/occupied_academic_room_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/occupied_academic_room_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/occupied_academic_room_depth_albedo.png",
+        "normal": "textures/pbr/far/occupied_academic_room_depth_normal.png",
+        "roughness": "textures/pbr/far/occupied_academic_room_depth_roughness.png",
+        "ao": "textures/pbr/far/occupied_academic_room_depth_ao.png",
+        "depth": "textures/pbr/far/occupied_academic_room_depth_depth.png",
+        "emissive": "textures/pbr/far/occupied_academic_room_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/occupied_academic_room_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/occupied_academic_room_depth_opaque.png"
+      }
+    },
+    "limestone": {
+      "near": {
+        "albedo": "textures/pbr/near/honey_cotswold_limestone_ashlar_albedo.png",
+        "normal": "textures/pbr/near/honey_cotswold_limestone_ashlar_normal.png",
+        "roughness": "textures/pbr/near/honey_cotswold_limestone_ashlar_roughness.png",
+        "ao": "textures/pbr/near/honey_cotswold_limestone_ashlar_ao.png",
+        "depth": "textures/pbr/near/honey_cotswold_limestone_ashlar_depth.png",
+        "emissive": "textures/pbr/near/honey_cotswold_limestone_ashlar_emissive.png",
+        "glass_mask": "textures/pbr/near/honey_cotswold_limestone_ashlar_glass.png",
+        "opaque_mask": "textures/pbr/near/honey_cotswold_limestone_ashlar_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/honey_cotswold_limestone_ashlar_albedo.png",
+        "normal": "textures/pbr/far/honey_cotswold_limestone_ashlar_normal.png",
+        "roughness": "textures/pbr/far/honey_cotswold_limestone_ashlar_roughness.png",
+        "ao": "textures/pbr/far/honey_cotswold_limestone_ashlar_ao.png",
+        "depth": "textures/pbr/far/honey_cotswold_limestone_ashlar_depth.png",
+        "emissive": "textures/pbr/far/honey_cotswold_limestone_ashlar_emissive.png",
+        "glass_mask": "textures/pbr/far/honey_cotswold_limestone_ashlar_glass.png",
+        "opaque_mask": "textures/pbr/far/honey_cotswold_limestone_ashlar_opaque.png"
+      }
+    },
+    "carved_stone": {
+      "near": {
+        "albedo": "textures/pbr/near/carved_honey_limestone_tracery_albedo.png",
+        "normal": "textures/pbr/near/carved_honey_limestone_tracery_normal.png",
+        "roughness": "textures/pbr/near/carved_honey_limestone_tracery_roughness.png",
+        "ao": "textures/pbr/near/carved_honey_limestone_tracery_ao.png",
+        "depth": "textures/pbr/near/carved_honey_limestone_tracery_depth.png",
+        "emissive": "textures/pbr/near/carved_honey_limestone_tracery_emissive.png",
+        "glass_mask": "textures/pbr/near/carved_honey_limestone_tracery_glass.png",
+        "opaque_mask": "textures/pbr/near/carved_honey_limestone_tracery_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/carved_honey_limestone_tracery_albedo.png",
+        "normal": "textures/pbr/far/carved_honey_limestone_tracery_normal.png",
+        "roughness": "textures/pbr/far/carved_honey_limestone_tracery_roughness.png",
+        "ao": "textures/pbr/far/carved_honey_limestone_tracery_ao.png",
+        "depth": "textures/pbr/far/carved_honey_limestone_tracery_depth.png",
+        "emissive": "textures/pbr/far/carved_honey_limestone_tracery_emissive.png",
+        "glass_mask": "textures/pbr/far/carved_honey_limestone_tracery_glass.png",
+        "opaque_mask": "textures/pbr/far/carved_honey_limestone_tracery_opaque.png"
+      }
+    },
+    "slate": {
+      "near": {
+        "albedo": "textures/pbr/near/dark_welsh_slate_albedo.png",
+        "normal": "textures/pbr/near/dark_welsh_slate_normal.png",
+        "roughness": "textures/pbr/near/dark_welsh_slate_roughness.png",
+        "ao": "textures/pbr/near/dark_welsh_slate_ao.png",
+        "depth": "textures/pbr/near/dark_welsh_slate_depth.png",
+        "emissive": "textures/pbr/near/dark_welsh_slate_emissive.png",
+        "glass_mask": "textures/pbr/near/dark_welsh_slate_glass.png",
+        "opaque_mask": "textures/pbr/near/dark_welsh_slate_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/dark_welsh_slate_albedo.png",
+        "normal": "textures/pbr/far/dark_welsh_slate_normal.png",
+        "roughness": "textures/pbr/far/dark_welsh_slate_roughness.png",
+        "ao": "textures/pbr/far/dark_welsh_slate_ao.png",
+        "depth": "textures/pbr/far/dark_welsh_slate_depth.png",
+        "emissive": "textures/pbr/far/dark_welsh_slate_emissive.png",
+        "glass_mask": "textures/pbr/far/dark_welsh_slate_glass.png",
+        "opaque_mask": "textures/pbr/far/dark_welsh_slate_opaque.png"
+      }
+    },
+    "leaded_glass": {
+      "near": {
+        "albedo": "textures/pbr/near/neutral_lead_came_heritage_glass_albedo.png",
+        "normal": "textures/pbr/near/neutral_lead_came_heritage_glass_normal.png",
+        "roughness": "textures/pbr/near/neutral_lead_came_heritage_glass_roughness.png",
+        "ao": "textures/pbr/near/neutral_lead_came_heritage_glass_ao.png",
+        "depth": "textures/pbr/near/neutral_lead_came_heritage_glass_depth.png",
+        "emissive": "textures/pbr/near/neutral_lead_came_heritage_glass_emissive.png",
+        "glass_mask": "textures/pbr/near/neutral_lead_came_heritage_glass_glass.png",
+        "opaque_mask": "textures/pbr/near/neutral_lead_came_heritage_glass_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/neutral_lead_came_heritage_glass_albedo.png",
+        "normal": "textures/pbr/far/neutral_lead_came_heritage_glass_normal.png",
+        "roughness": "textures/pbr/far/neutral_lead_came_heritage_glass_roughness.png",
+        "ao": "textures/pbr/far/neutral_lead_came_heritage_glass_ao.png",
+        "depth": "textures/pbr/far/neutral_lead_came_heritage_glass_depth.png",
+        "emissive": "textures/pbr/far/neutral_lead_came_heritage_glass_emissive.png",
+        "glass_mask": "textures/pbr/far/neutral_lead_came_heritage_glass_glass.png",
+        "opaque_mask": "textures/pbr/far/neutral_lead_came_heritage_glass_opaque.png"
+      }
+    },
+    "oak": {
+      "near": {
+        "albedo": "textures/pbr/near/aged_dark_english_oak_albedo.png",
+        "normal": "textures/pbr/near/aged_dark_english_oak_normal.png",
+        "roughness": "textures/pbr/near/aged_dark_english_oak_roughness.png",
+        "ao": "textures/pbr/near/aged_dark_english_oak_ao.png",
+        "depth": "textures/pbr/near/aged_dark_english_oak_depth.png",
+        "emissive": "textures/pbr/near/aged_dark_english_oak_emissive.png",
+        "glass_mask": "textures/pbr/near/aged_dark_english_oak_glass.png",
+        "opaque_mask": "textures/pbr/near/aged_dark_english_oak_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/aged_dark_english_oak_albedo.png",
+        "normal": "textures/pbr/far/aged_dark_english_oak_normal.png",
+        "roughness": "textures/pbr/far/aged_dark_english_oak_roughness.png",
+        "ao": "textures/pbr/far/aged_dark_english_oak_ao.png",
+        "depth": "textures/pbr/far/aged_dark_english_oak_depth.png",
+        "emissive": "textures/pbr/far/aged_dark_english_oak_emissive.png",
+        "glass_mask": "textures/pbr/far/aged_dark_english_oak_glass.png",
+        "opaque_mask": "textures/pbr/far/aged_dark_english_oak_opaque.png"
+      }
+    },
+    "iron": {
+      "near": {
+        "albedo": "textures/pbr/near/black_forged_iron_albedo.png",
+        "normal": "textures/pbr/near/black_forged_iron_normal.png",
+        "roughness": "textures/pbr/near/black_forged_iron_roughness.png",
+        "ao": "textures/pbr/near/black_forged_iron_ao.png",
+        "depth": "textures/pbr/near/black_forged_iron_depth.png",
+        "emissive": "textures/pbr/near/black_forged_iron_emissive.png",
+        "glass_mask": "textures/pbr/near/black_forged_iron_glass.png",
+        "opaque_mask": "textures/pbr/near/black_forged_iron_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/black_forged_iron_albedo.png",
+        "normal": "textures/pbr/far/black_forged_iron_normal.png",
+        "roughness": "textures/pbr/far/black_forged_iron_roughness.png",
+        "ao": "textures/pbr/far/black_forged_iron_ao.png",
+        "depth": "textures/pbr/far/black_forged_iron_depth.png",
+        "emissive": "textures/pbr/far/black_forged_iron_emissive.png",
+        "glass_mask": "textures/pbr/far/black_forged_iron_glass.png",
+        "opaque_mask": "textures/pbr/far/black_forged_iron_opaque.png"
+      }
+    },
+    "paving": {
+      "near": {
+        "albedo": "textures/pbr/near/honey_limestone_college_paving_albedo.png",
+        "normal": "textures/pbr/near/honey_limestone_college_paving_normal.png",
+        "roughness": "textures/pbr/near/honey_limestone_college_paving_roughness.png",
+        "ao": "textures/pbr/near/honey_limestone_college_paving_ao.png",
+        "depth": "textures/pbr/near/honey_limestone_college_paving_depth.png",
+        "emissive": "textures/pbr/near/honey_limestone_college_paving_emissive.png",
+        "glass_mask": "textures/pbr/near/honey_limestone_college_paving_glass.png",
+        "opaque_mask": "textures/pbr/near/honey_limestone_college_paving_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/honey_limestone_college_paving_albedo.png",
+        "normal": "textures/pbr/far/honey_limestone_college_paving_normal.png",
+        "roughness": "textures/pbr/far/honey_limestone_college_paving_roughness.png",
+        "ao": "textures/pbr/far/honey_limestone_college_paving_ao.png",
+        "depth": "textures/pbr/far/honey_limestone_college_paving_depth.png",
+        "emissive": "textures/pbr/far/honey_limestone_college_paving_emissive.png",
+        "glass_mask": "textures/pbr/far/honey_limestone_college_paving_glass.png",
+        "opaque_mask": "textures/pbr/far/honey_limestone_college_paving_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/tudor_college_registered_front_albedo.png",
+      "normal": "textures/pbr/near/tudor_college_registered_front_normal.png",
+      "roughness": "textures/pbr/near/tudor_college_registered_front_roughness.png",
+      "ao": "textures/pbr/near/tudor_college_registered_front_ao.png",
+      "depth": "textures/pbr/near/tudor_college_registered_front_depth.png",
+      "emissive": "textures/pbr/near/tudor_college_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/near/tudor_college_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/near/tudor_college_registered_front_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/tudor_college_registered_front_albedo.png",
+      "normal": "textures/pbr/far/tudor_college_registered_front_normal.png",
+      "roughness": "textures/pbr/far/tudor_college_registered_front_roughness.png",
+      "ao": "textures/pbr/far/tudor_college_registered_front_ao.png",
+      "depth": "textures/pbr/far/tudor_college_registered_front_depth.png",
+      "emissive": "textures/pbr/far/tudor_college_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/far/tudor_college_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/far/tudor_college_registered_front_opaque.png"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "reference-generation@1",
+  "family": "cable-stayed-airport-terminal",
+  "archetype_id": "airport_terminal_building",
+  "variant_id": "cable_stayed_steel_truss_terminal",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      90.0,
+      68.0,
+      27.2
+    ],
+    "native_envelope_dimensions_m": [
+      92.0,
+      70.0,
+      28.0
+    ],
+    "occupied_storeys": 3,
+    "primary_material": "neutral high-transmission glass within a silver and graphite long-span structure",
+    "window_rule": "physical terminal panes with real caps, slabs and warm occupied concourse depth",
+    "front_identity": "six branching columns below one mast and ten connected stay cables",
+    "roof_rule": "one shallow translucent space-frame canopy with visible complete grid and anchor points"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-c5216855-e804-4aac-a172-eef7a3c759d0",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic architectural reference board\nAsset type: render-locked multi-angle construction goalpost for a metric LEGO 3D building family\nPrimary request: Create one coherent four-view architectural reference board of the exact same cable-stayed high-tech airport terminal, suitable for true-metric 3D reconstruction.\nScene/backdrop: a clean pale concrete airport apron and landside drop-off plaza under a bright overcast sky; no aircraft blocking the building; no brands, airline logos, text, cars, or crowds.\nSubject: a wide low three-level terminal approximately 90 m wide by 68 m deep. A transparent two-level departure hall is enclosed by high-transmission neutral glass and real silver pressure caps. One shallow sweeping translucent space-frame canopy spans the whole building and projects deeply over the landside frontage. Six dark graphite branching steel tree-columns rise inside and in front of the glass to support the roof. A single tapered central mast rises above the canopy near the landside center, with ten clearly visible slender stay cables fanning to the front and rear roof edges. Both side elevations are wrapped by occupied glass behind champagne-silver diamond diagonal bracing. A broad integrated entry canopy and six glazed automatic doors mark the center. The rear airside elevation has exactly three complete glazed gate bridges projecting from the building. Pale concrete floor plates and two warm occupied concourse levels remain visible through the glass.\nComposition/framing: precise 2x2 board with equal panels showing (1) rectified orthographic-like landside front elevation, (2) front-right oblique proving canopy depth, branching columns, mast and cable fan, (3) rear-left airside oblique proving all three gate bridges and wrapped side enclosure, and (4) high aerial oblique proving the complete sweeping roof grid, central mast, cable anchor points, service roof and building depth. Entire terminal visible with generous margin in every panel. Thin neutral gutters only, no labels.\nStyle/medium: premium photoreal architectural photography / visualization, physically plausible long-span engineering, fine curtain-wall detail, no concept-art fantasy.\nLighting/mood: consistent neutral bright overcast survey light, soft contact shadows, restrained reflections.\nMaterials/textures: graphite and silver structural steel; champagne-silver aluminium panels; neutral low-iron terminal glass; translucent pearl roof infill; pale apron concrete; warm occupied depth.\nConstraints: exact same width, depth, floor count, bay rhythm, roof curve, mast location, stay count, tree-column positions, diamond bracing, three rear bridges, entrances, and material zones in every panel; front facade faces viewer in panel 1; cables and branching supports must connect structurally; no text; no logos; no watermark.\nAvoid: airport control tower, aircraft-shaped building, multiple random masts, tent roof, opaque shed, blue mirrored glass, missing rear bridges, exposed fantasy cantilevers, changed topology between views, cartoon rendering.",
+      "registered_surfaces": [
+        "wide_transparent_two_level_departure_hall",
+        "complete_shallow_sweeping_space_frame_canopy",
+        "six_branching_graphite_tree_columns",
+        "single_central_mast_with_ten_radiating_stays",
+        "occupied_glass_behind_diamond_braced_side_walls",
+        "integrated_dropoff_canopy_and_six_glazed_doors",
+        "three_complete_airside_gate_bridges",
+        "complete_roof_grid_anchor_points_and_service_roof"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-c5216855-e804-4aac-a172-eef7a3c759d0:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-c5216855-e804-4aac-a172-eef7a3c759d0:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-c5216855-e804-4aac-a172-eef7a3c759d0:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-c5216855-e804-4aac-a172-eef7a3c759d0:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic architectural material reference\nAsset type: shadow-neutral 3x2 construction and occupied-depth board for the exact cable-stayed terminal in Image 1\nInput images: Image 1 is the approved engineering, scale, and palette authority.\nPrimary request: Create six equal square, straight-on, orthographic material samples separated by thin neutral gutters, with no labels: top-left satin silver structural steel with fine rolled grain and subtle outdoor oxidation; top-center dark graphite painted structural steel with restrained coating texture; top-right warm champagne-silver anodized aluminium composite panel with fine directional grain; bottom-left neutral high-transmission low-iron terminal glass with subtle grey-green reflection variation but no mullion grid; bottom-center a clean warm occupied airport concourse depth plate seen through glass, showing floor-plate edges, ceiling lights, distant retail-like room depth and people-scale silhouettes but absolutely no signage or text and no exterior frame; bottom-right translucent pearl polycarbonate or fritted-glass roof infill with a fine diffuse dot texture, suitable for a sweeping canopy, with no structural grid baked into it.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal high-tech construction texture reference, fine micro-detail and real-world scale.\nLighting/mood: diffuse neutral overcast capture, no baked directional shadow, no sun hotspot, no perspective.\nConstraints: exact 3 columns by 2 rows; each sample fills its cell edge-to-edge; no text; no labels; no logos; no watermark; no complete facade; no truss or mullion pattern spanning a material cell.\nAvoid: blue mirrored glass, brushed kitchen steel, rusty ruin, opaque roof, cartoon metal, baked building perspective, decorative border, vignette."
+    },
+    {
+      "file": "silver-steel-material-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:silver-steel-material-source-v1",
+      "role": "registered_material_crop:silver-steel-material-source-v1"
+    },
+    {
+      "file": "graphite-steel-material-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:graphite-steel-material-source-v1",
+      "role": "registered_material_crop:graphite-steel-material-source-v1"
+    },
+    {
+      "file": "aluminum-material-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:aluminum-material-source-v1",
+      "role": "registered_material_crop:aluminum-material-source-v1"
+    },
+    {
+      "file": "terminal-glass-material-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:terminal-glass-material-source-v1",
+      "role": "registered_material_crop:terminal-glass-material-source-v1"
+    },
+    {
+      "file": "occupied-terminal-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:occupied-terminal-source-v1",
+      "role": "registered_material_crop:occupied-terminal-source-v1"
+    },
+    {
+      "file": "roof-infill-material-source-v1.png",
+      "source_id": "exec-123cc800-3fe4-410d-bc88-bf0ed127c537:roof-infill-material-source-v1",
+      "role": "registered_material_crop:roof-infill-material-source-v1"
+    }
+  ]
+}

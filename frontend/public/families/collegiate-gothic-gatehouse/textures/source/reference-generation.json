@@ -1,0 +1,102 @@
+{
+  "schema": "reference-generation@1",
+  "family": "collegiate-gothic-gatehouse",
+  "archetype_id": "collegiate_gothic_education",
+  "variant_id": "collegiate_gothic_tudor",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      64.0,
+      44.0,
+      30.0
+    ],
+    "native_envelope_dimensions_m": [
+      66.0,
+      49.0,
+      31.0
+    ],
+    "occupied_storeys": 4,
+    "primary_material": "weathered honey Cotswold limestone ashlar",
+    "window_rule": "deep pointed leaded openings with carved tracery and occupied academic depth",
+    "front_identity": "real gate passage, integrated stair and traceried crenellated gatehouse tower",
+    "roof_rule": "four steep connected Welsh-slate gable fields with chimneys and pinnacles"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-902efcd2-dc05-441a-9874-cc981cb0d326",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic architectural reference board\nAsset type: render-locked multi-angle construction goalpost for a metric LEGO 3D building family\nPrimary request: Create one coherent four-view architectural reference board of the exact same Tudor Collegiate Gothic gatehouse quadrangle, suitable for true-metric 3D reconstruction.\nScene/backdrop: quiet neutral stone civic plaza and clipped lawn court under a clean pale overcast sky; no neighboring buildings touching the subject; no cars; only a few tiny scale figures far from facade openings.\nSubject: a four-storey university college arranged as a complete open rectangular quadrangle, approximately 64 m wide by 44 m deep. Four connected academic wings in warm honey Cotswold limestone surround a clearly open central court. The formal front wing is centered on one projecting square gatehouse tower with a real tall four-centred pointed through-passage, deep carved portal returns, heavy dark oak doors held open inside the passage, a broad integrated stone approach stair, three tall traceried tower windows, crenellated parapet, and four slender pinnacles. Wings have an eleven-bay rhythm of real deep pointed mullioned-and-transomed leaded windows between load-bearing stone piers and buttresses. Steep dark Welsh-slate gable roofs, clustered octagonal chimneys, stone string courses, and restrained heraldic shields complete the silhouette.\nComposition/framing: precise 2x2 board with equal panels showing (1) rectified orthographic-like front elevation, (2) front-right street corner view proving gate depth and side wing, (3) rear-left court-side view proving the open quadrangle and all four wings, and (4) high aerial oblique proving the open court, connected slate roof fields, tower, chimneys, and passage. Entire building visible with generous margin in every panel. Thin neutral gutters only, no labels.\nStyle/medium: premium photoreal architectural photography / visualization, physically plausible historic masonry construction, fine carved detail, no illustration or theme-park look.\nLighting/mood: consistent bright overcast survey daylight, soft contact shadows, neutral white balance.\nMaterials/textures: lightly weathered honey limestone ashlar with recessed warm mortar; deeper carved limestone tracery; dark blue-grey slate; lead-grey glazing with subtle warm occupied academic room depth; dark oak; black iron.\nConstraints: exact same topology, bay count, floor count, tower, passage, quadrangle, roof ridges, chimneys, opening cadence, and material zoning in all four panels; front facade faces viewer in panel 1; the gate and courtyard must be real visible voids, not black painted arches; no text; no logos; no watermark.\nAvoid: cathedral nave, church-only massing, fantasy castle, oversized random towers, blocked gate, filled courtyard, flat roof, red brick, modern glass box, cartoon saturation, changed design between panels.",
+      "registered_surfaces": [
+        "complete_four_wing_open_college_quadrangle",
+        "projecting_central_gatehouse_tower",
+        "real_four_centred_through_passage_with_deep_returns",
+        "integrated_ceremonial_stone_gate_stair",
+        "deep_pointed_mullioned_and_transomed_leaded_windows",
+        "load_bearing_limestone_piers_and_buttresses",
+        "four_connected_steep_welsh_slate_gable_fields",
+        "crenellations_pinnacles_and_clustered_chimneys"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-902efcd2-dc05-441a-9874-cc981cb0d326:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-902efcd2-dc05-441a-9874-cc981cb0d326:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-902efcd2-dc05-441a-9874-cc981cb0d326:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-902efcd2-dc05-441a-9874-cc981cb0d326:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic architectural material reference\nAsset type: shadow-neutral 3x2 construction and occupied-depth board for the exact Tudor collegiate quadrangle in Image 1\nInput images: Image 1 is the approved topology, age, scale, and palette authority.\nPrimary request: Create six equal square, straight-on, orthographic material samples separated by thin neutral gutters, with no labels: top-left warm honey Cotswold limestone ashlar in regular collegiate courses with fine pores and recessed warm-grey lime mortar; top-center deeper finely carved honey limestone showing rectilinear Gothic tracery mouldings and subtle tool marks but no complete window; top-right dark blue-grey hand-cut Welsh slate in small regular roof courses with restrained mineral variation; bottom-left neutral lead-grey heritage glazing with a subtle diamond lead-came pattern and realistic low reflectivity but no surrounding stone frame; bottom-center a clean warm occupied academic-room depth plate seen through glazing, with timber shelves, ceiling edge, lamps and room darkness but no exterior mullion; bottom-right aged dark English oak with vertical grain, iron-stud marks, and restrained wear suitable for a heavy gate door.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal historic construction texture reference, fine micro-detail and real-world scale.\nLighting/mood: diffuse neutral overcast capture, no baked directional shadow, no sun hotspot, no perspective.\nConstraints: exact 3 columns by 2 rows; each sample fills its cell edge-to-edge; no text; no labels; no logos; no watermark; no complete facade; no objects spanning cells.\nAvoid: fantasy runes, cathedral scene, plastic stone, orange sandstone, bright blue glass, cartoon mortar, baked architecture perspective, decorative border, vignette."
+    },
+    {
+      "file": "limestone-material-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:limestone-material-source-v1",
+      "role": "registered_material_crop:limestone-material-source-v1"
+    },
+    {
+      "file": "carved-stone-material-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:carved-stone-material-source-v1",
+      "role": "registered_material_crop:carved-stone-material-source-v1"
+    },
+    {
+      "file": "slate-material-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:slate-material-source-v1",
+      "role": "registered_material_crop:slate-material-source-v1"
+    },
+    {
+      "file": "leaded-glass-material-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:leaded-glass-material-source-v1",
+      "role": "registered_material_crop:leaded-glass-material-source-v1"
+    },
+    {
+      "file": "occupied-academic-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:occupied-academic-source-v1",
+      "role": "registered_material_crop:occupied-academic-source-v1"
+    },
+    {
+      "file": "oak-material-source-v1.png",
+      "source_id": "exec-01f40bf4-0a18-4bb0-889f-2461c7db68e9:oak-material-source-v1",
+      "role": "registered_material_crop:oak-material-source-v1"
+    }
+  ]
+}

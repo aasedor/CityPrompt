@@ -1,0 +1,116 @@
+{
+  "schema": "reference-generation@1",
+  "family": "vertical-forest-residential",
+  "archetype_id": "vertical_forest_residential",
+  "variant_id": "vertical_forest_bosco",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-07-31",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/vertical_forest_residential/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      28.0,
+      28.0,
+      65.6
+    ],
+    "native_envelope_dimensions_m": [
+      31.0,
+      31.0,
+      69.0
+    ],
+    "occupied_storeys": 18,
+    "primary_material": "lightly weathered off-white board-formed concrete",
+    "window_rule": "recessed neutral glass in dark bronze frames with warm occupied depth",
+    "front_identity": "continuous structural grid in front of irregular deep planted balconies",
+    "roof_rule": "intensive rooftop garden around a compact screened service core"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-70cd6565-109b-4455-b606-aaad45ae550a",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic architectural reference board\nAsset type: render-locked multi-angle construction goalpost for a metric LEGO 3D building family\nInput images: Image 1 is the catalogue identity and material reference for the Bosco-style vertical forest tower.\nPrimary request: Create one coherent four-view architectural reference board of the exact same single vertical-forest residential tower, suitable for reconstructing as a true-metric 3D model.\nScene/backdrop: quiet neutral architectural studio plaza with pale warm-grey paving and a clean light-grey sky; no neighboring buildings; no cars; no people.\nSubject: an 18-storey, approximately 28 m by 28 m rectangular residential tower with the same topology in every panel: a dark glazed residential core, a clearly expressed off-white concrete perimeter frame, very deep cantilevered concrete balcony trays, integral dark soil planters, mature deciduous trees and varied shrubs on every level, a transparent planted lobby at grade, and an intensive rooftop garden. The frame, floor count, bay count, balcony projections, major tree positions, roof edge, and entrance stay identical in all four views. Make the balconies physically thick with visible soffits and slab edges; glass sits recessed behind the frame with believable reflections and warm occupied depth.\nComposition/framing: a precise 2x2 board with equal panels showing (1) orthographic-like front elevation, (2) front-right street corner three-quarter view, (3) rear-left three-quarter view proving wrapped secondary elevations, and (4) high aerial oblique proving roof and balcony depth. Entire building visible with generous margin in every panel. Thin neutral gutters only, no labels.\nStyle/medium: premium photoreal architectural photography / visualization, physically plausible construction and materials, fine facade detail, no illustration or game-art look.\nLighting/mood: consistent bright overcast daylight in all panels, shadow-neutral enough to read material color and construction depth.\nMaterials/textures: lightly weathered board-formed white concrete; dark bronze thermally broken window frames; low-iron neutral grey vision glass with distinct reflectivity; dark planter soil; seasonally varied real foliage with individual trunks and branches, not green blobs.\nConstraints: topology locked across all four views; exactly 18 occupied floors plus rooftop garden; front facade faces the viewer in panel 1; no perspective distortion in the front elevation; no text; no logos; no watermark; no fantasy forms.\nAvoid: generic glass box, flat green texture, plants painted onto walls, oversized foliage hiding all construction, inconsistent floor count, changed balconies between views, duplicated buildings, blue opaque windows, cartoonish saturation.",
+      "registered_surfaces": [
+        "eighteen_storey_dark_glazed_residential_core",
+        "continuous_off_white_perimeter_concrete_frame",
+        "deep_cantilevered_balcony_trays_with_visible_soffits",
+        "integral_soil_planters_and_structurally_supported_trees",
+        "physical_recessed_glass_with_occupied_residential_depth",
+        "transparent_planted_ground_floor_lobby",
+        "complete_wrapped_secondary_elevations",
+        "intensive_rooftop_garden_with_service_core"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-70cd6565-109b-4455-b606-aaad45ae550a:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-70cd6565-109b-4455-b606-aaad45ae550a:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-70cd6565-109b-4455-b606-aaad45ae550a:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-70cd6565-109b-4455-b606-aaad45ae550a:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic architectural material reference\nAsset type: shadow-neutral 3x2 construction and occupied-depth board for the exact vertical-forest tower in Image 1\nInput images: Image 1 is the approved topology and palette authority.\nPrimary request: Create six equal square, straight-on, orthographic material samples separated by thin neutral gutters, with no labels: top-left lightly weathered off-white board-formed architectural concrete with subtle pores and horizontal formwork grain; top-center dark bronze anodized thermally broken aluminium window-frame material; top-right neutral low-iron residential vision glass with subtle grey-green reflection variation but no mullion grid; bottom-left a clean warm occupied-apartment depth plate seen through glass, showing believable curtains, ceiling edge, warm interior darkness and varied room depth but no exterior frame; bottom-center dense temperate deciduous foliage from the approved palette, with individually legible leaves, fine twigs, olive-green and restrained burgundy seasonal variation, no sky; bottom-right dark rich planter soil with a narrow charcoal waterproof planter lining and small groundcover.\nScene/backdrop: flat, evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural texture reference, high micro-detail, realistic scale.\nLighting/mood: diffuse neutral overcast capture, no baked directional shadows, no sun hotspots, no perspective.\nConstraints: exact 3 columns by 2 rows; each sample fills its cell edge-to-edge; no text; no labels; no logos; no watermark; no photographed complete facade; no repeating window grid.\nAvoid: cartoon foliage, plastic concrete, saturated emerald green, blue glass, baked building perspective, decorative borders, heavy vignette."
+    },
+    {
+      "file": "concrete-material-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:concrete-material-source-v1",
+      "role": "registered_material_crop:concrete-material-source-v1"
+    },
+    {
+      "file": "bronze-frame-material-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:bronze-frame-material-source-v1",
+      "role": "registered_material_crop:bronze-frame-material-source-v1"
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "occupied-residential-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:occupied-residential-source-v1",
+      "role": "registered_material_crop:occupied-residential-source-v1"
+    },
+    {
+      "file": "foliage-material-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:foliage-material-source-v1",
+      "role": "registered_material_crop:foliage-material-source-v1"
+    },
+    {
+      "file": "planter-soil-material-source-v1.png",
+      "source_id": "exec-1ceec380-b199-4a4f-b7ff-fd3c596ba8b0:planter-soil-material-source-v1",
+      "role": "registered_material_crop:planter-soil-material-source-v1"
+    },
+    {
+      "file": "foliage-card-source-v1.png",
+      "source_id": "exec-1872f1fc-3fd9-4ed8-b165-4bed3ddd8b55",
+      "role": "family_specific_chroma_keyed_foliage_source",
+      "prompt": "Use case: photorealistic architectural vegetation asset\nAsset type: isolated temperate deciduous tree-canopy cutout for crossed 3D foliage cards\nInput images: Image 1 is the approved vertical-forest palette and botanical density authority.\nPrimary request: Create one single dense but naturally irregular temperate deciduous tree crown, viewed straight-on, with individually legible olive-green leaves, fine twigs, small branch forks, subtle yellow-green variation, and a few restrained burgundy leaves. The crown must feel like a mature balcony tree in the approved architecture, not a clipped topiary. Include no trunk below the crown; fine internal branches may show through natural gaps.\nScene/backdrop: perfectly flat, uniform solid #ff00ff chroma-key background.\nComposition/framing: one crown centered, filling about 82 percent of a square canvas, generous clear padding on every side, no cropped leaves, no floor, no horizon.\nStyle/medium: premium photoreal botanical asset, natural leaf translucency and fine silhouette, architectural visualization quality.\nLighting/mood: diffuse neutral overcast illumination with no cast shadow and no directional hotspot.\nConstraints: background must be exactly one uniform #ff00ff with no gradient, texture, shadow, reflection, floor plane, or lighting variation; crisp detailed foliage boundary; no magenta anywhere in the foliage; no text; no logo; no watermark.\nAvoid: spherical topiary, low-poly foliage, cartoon leaves, blurred green blob, entire tree trunk, pot, planter, sky, building, multiple disconnected crowns."
+    },
+    {
+      "file": "foliage-card-v1.png",
+      "source_id": "exec-1872f1fc-3fd9-4ed8-b165-4bed3ddd8b55:soft-matte-despill",
+      "role": "transparent_crossed_foliage_card",
+      "postprocess": "remove_chroma_key.py --auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill"
+    }
+  ]
+}

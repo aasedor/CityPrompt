@@ -1,0 +1,175 @@
+{
+  "status": "pass",
+  "family": "collegiate-gothic-gatehouse",
+  "archetype_id": "collegiate_gothic_education",
+  "reuse_keys": [
+    "collegiate_gothic_education",
+    "collegiate_gothic_tudor",
+    "tudor_gothic_quadrangle",
+    "limestone_college_gatehouse",
+    "Collegiate Gothic",
+    "Tudor Gothic Quadrangle",
+    "University Gatehouse Court",
+    "Honey Limestone College"
+  ],
+  "manifest": "collegiate-gothic-gatehouse_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "collegiate-gothic-gatehouse_podium.glb: 30.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "collegiate-gothic-gatehouse_floor_typical_a.glb: 34.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "collegiate-gothic-gatehouse_floor_typical_b.glb: 34.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "collegiate-gothic-gatehouse_floor_typical_c.glb: 34.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "collegiate-gothic-gatehouse_crown_crown.glb: 20.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "collegiate-gothic-gatehouse_assembled.glb: 58.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "collegiate-gothic-gatehouse_podium.glb",
+      "status": "ok",
+      "triangles": 88,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 4.8,
+        "depth_z": 25.58
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_HoneyLimestone",
+        "MAT_W12_GOTHIC_StoneCourtPaving"
+      ],
+      "size_bytes": 32031572
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 135,
+      "extent_m": {
+        "width_x": 61.05,
+        "height_y": 4.42,
+        "depth_z": 26.255
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W12_GOTHIC_BlackIron",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_HoneyLimestone",
+        "MAT_W12_GOTHIC_LeadedGlass",
+        "MAT_W12_GOTHIC_OccupiedAcademicDepth"
+      ],
+      "size_bytes": 36366132
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 135,
+      "extent_m": {
+        "width_x": 61.05,
+        "height_y": 4.42,
+        "depth_z": 26.255
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W12_GOTHIC_BlackIron",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_HoneyLimestone",
+        "MAT_W12_GOTHIC_LeadedGlass",
+        "MAT_W12_GOTHIC_OccupiedAcademicDepth"
+      ],
+      "size_bytes": 36366132
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 135,
+      "extent_m": {
+        "width_x": 61.05,
+        "height_y": 4.42,
+        "depth_z": 26.255
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W12_GOTHIC_BlackIron",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_HoneyLimestone",
+        "MAT_W12_GOTHIC_LeadedGlass",
+        "MAT_W12_GOTHIC_OccupiedAcademicDepth"
+      ],
+      "size_bytes": 36366132
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 60.92,
+        "height_y": 2.2,
+        "depth_z": 25.92
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_HoneyLimestone"
+      ],
+      "size_bytes": 21073632
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_roof.glb",
+      "status": "ok",
+      "triangles": 42,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.2,
+        "depth_z": 25.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W12_GOTHIC_DarkWelshSlate"
+      ],
+      "size_bytes": 6520312
+    },
+    {
+      "file": "collegiate-gothic-gatehouse_assembled.glb",
+      "status": "ok",
+      "triangles": 480,
+      "extent_m": {
+        "width_x": 61.767,
+        "height_y": 31.22,
+        "depth_z": 51.155
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W12_GOTHIC_BlackIron",
+        "MAT_W12_GOTHIC_CarvedLimestone",
+        "MAT_W12_GOTHIC_DarkOak",
+        "MAT_W12_GOTHIC_DarkWelshSlate",
+        "MAT_W12_GOTHIC_HoneyLimestone",
+        "MAT_W12_GOTHIC_LeadedGlass",
+        "MAT_W12_GOTHIC_OccupiedAcademicDepth",
+        "MAT_W12_GOTHIC_QuadrangleLawn",
+        "MAT_W12_GOTHIC_StoneCourtPaving"
+      ],
+      "size_bytes": 61329584,
+      "role": "assembled"
+    }
+  ]
+}

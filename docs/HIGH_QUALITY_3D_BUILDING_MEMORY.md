@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-31-wave11-optical-curve-v109`.
+Current executable memory: `2026-07-31-wave12-vegetation-loadpath-v110`.
 
 ## The quality target
 
@@ -1209,6 +1209,38 @@ The polychrome collegiate family added four rules for resizable hero facades:
   crowns in every view; for a research campus, preserve wing count, open court,
   connectors, canopy plates, photovoltaics and service screens. Do not average
   incompatible views into a generic glass box.
+
+### Wave 12 vegetation + real-void + load-path lessons
+
+- A convincing planted building needs two coordinated representations. Soil,
+  planter walls, trunks and branching structure remain physical geometry;
+  labelled photoreal foliage cutouts can supply the fine crown silhouette that
+  low-poly spheres cannot. Drive their transparency through an explicit alpha
+  mix shader and glTF blend mode, use crossed vertical planes without a
+  horizontal card, and inspect street, corner, aerial and mobile views for
+  black rectangles or edge-on foliage loss.
+- A portal is not an inset colour. Split every intersecting wing, facade skin
+  and floor strip around the complete circulation volume. Build only the real
+  jambs, curved spandrels, ceiling ribs, returns, passage paving and doors; the
+  acceptance proof is an uninterrupted view and walkable path from the public
+  forecourt into the court behind.
+- Long-span identity is a connected load path, not a collection of nearby
+  motifs. Derive roof nodes, tree-column branch endpoints and cable-stay
+  endpoints from the same surface equation. Keep trunks outside the curtain
+  wall, join each branch and stay to a visible canopy node, and carry the mast
+  to a credible base. Prove the network head-on, from above and in a close
+  structural view.
+- Shared direct meshes make dense iteration practical, but a single normalized
+  UV island must not stretch one ashlar course across a full tower pier. Split
+  identity-bearing masses into coursed lifts or author physical-scale
+  coordinates before export. Retain shared metric mesh instances for genuinely
+  repeated parts and reject any close view where material scale follows object
+  dimensions.
+- Fixed landmarks and LEGO fallback kits can coexist. The complete landmark
+  preserves the tower-and-court, planted-frame or mast-and-canopy composition;
+  its bounded independent-axis scale band absorbs ordinary sketch error. A
+  larger target repeats complete semantic bays through the normal planner path
+  while keeping the entrance, ends, roof, crown and structural identity fixed.
 
 ## Updating this memory
 

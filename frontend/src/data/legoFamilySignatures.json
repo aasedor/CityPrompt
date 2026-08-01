@@ -798,6 +798,90 @@
                                                                    "materialZones": "neutral low-iron research glass; warm-white powder-coated external steel; pale architectural precast; warm occupied laboratory depth; blue-black photovoltaic cells; cool pale roof membrane and concrete pavers; restrained bioswale planting",
                                                                    "glassProfile": "low_iron_research_pavilion",
                                                                    "elevationUrl": "/families/autonomous-tech-campus-silicon-valley/elevation.jpg"
+                                                   },
+                     "vertical_forest_residential": {
+                                                       "archetypeId": "vertical_forest_residential",
+                                                       "identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+                                                       "materialZones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+                                                       "glassProfile": "neutral_low_iron_residential_occupied",
+                                                       "elevationUrl": "/families/vertical-forest-residential/elevation.jpg"
+                                                   },
+                     "vertical_forest_bosco": {
+                                                  "archetypeId": "vertical_forest_bosco",
+                                                  "identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+                                                  "materialZones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+                                                  "glassProfile": "neutral_low_iron_residential_occupied",
+                                                  "elevationUrl": "/families/vertical-forest-residential/elevation.jpg"
+                                              },
+                     "bosco_verticale_residential": {
+                                                         "archetypeId": "bosco_verticale_residential",
+                                                         "identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+                                                         "materialZones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+                                                         "glassProfile": "neutral_low_iron_residential_occupied",
+                                                         "elevationUrl": "/families/vertical-forest-residential/elevation.jpg"
+                                                     },
+                     "planted_concrete_balcony_tower": {
+                                                              "archetypeId": "planted_concrete_balcony_tower",
+                                                              "identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+                                                              "materialZones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+                                                              "glassProfile": "neutral_low_iron_residential_occupied",
+                                                              "elevationUrl": "/families/vertical-forest-residential/elevation.jpg"
+                                                          },
+                     "collegiate_gothic_education": {
+                                                          "archetypeId": "collegiate_gothic_education",
+                                                          "identity": "A honey-limestone collegiate quadrangle is centred on a real deep pointed gate passage beneath a crenellated tower, with lead-glazed traceried windows, buttresses, slate gables, clustered chimneys and pinnacled parapets.",
+                                                          "materialZones": "warm honey Cotswold limestone ashlar; deeper carved limestone tracery and buttresses; dark Welsh slate; lead-grey heritage glass; warm occupied academic rooms; dark oak gate doors; black ironwork",
+                                                          "glassProfile": "heritage_leaded_occupied",
+                                                          "elevationUrl": "/families/collegiate-gothic-gatehouse/elevation.jpg"
+                                                      },
+                     "collegiate_gothic_tudor": {
+                                                      "archetypeId": "collegiate_gothic_tudor",
+                                                      "identity": "A honey-limestone collegiate quadrangle is centred on a real deep pointed gate passage beneath a crenellated tower, with lead-glazed traceried windows, buttresses, slate gables, clustered chimneys and pinnacled parapets.",
+                                                      "materialZones": "warm honey Cotswold limestone ashlar; deeper carved limestone tracery and buttresses; dark Welsh slate; lead-grey heritage glass; warm occupied academic rooms; dark oak gate doors; black ironwork",
+                                                      "glassProfile": "heritage_leaded_occupied",
+                                                      "elevationUrl": "/families/collegiate-gothic-gatehouse/elevation.jpg"
+                                                  },
+                     "tudor_gothic_quadrangle": {
+                                                     "archetypeId": "tudor_gothic_quadrangle",
+                                                     "identity": "A honey-limestone collegiate quadrangle is centred on a real deep pointed gate passage beneath a crenellated tower, with lead-glazed traceried windows, buttresses, slate gables, clustered chimneys and pinnacled parapets.",
+                                                     "materialZones": "warm honey Cotswold limestone ashlar; deeper carved limestone tracery and buttresses; dark Welsh slate; lead-grey heritage glass; warm occupied academic rooms; dark oak gate doors; black ironwork",
+                                                     "glassProfile": "heritage_leaded_occupied",
+                                                     "elevationUrl": "/families/collegiate-gothic-gatehouse/elevation.jpg"
+                                                 },
+                     "limestone_college_gatehouse": {
+                                                        "archetypeId": "limestone_college_gatehouse",
+                                                        "identity": "A honey-limestone collegiate quadrangle is centred on a real deep pointed gate passage beneath a crenellated tower, with lead-glazed traceried windows, buttresses, slate gables, clustered chimneys and pinnacled parapets.",
+                                                        "materialZones": "warm honey Cotswold limestone ashlar; deeper carved limestone tracery and buttresses; dark Welsh slate; lead-grey heritage glass; warm occupied academic rooms; dark oak gate doors; black ironwork",
+                                                        "glassProfile": "heritage_leaded_occupied",
+                                                        "elevationUrl": "/families/collegiate-gothic-gatehouse/elevation.jpg"
+                                                    },
+                     "airport_terminal_building": {
+                                                    "archetypeId": "airport_terminal_building",
+                                                    "identity": "A transparent two-level departure hall is sheltered by one sweeping steel space-frame canopy, supported on branching tree columns and radiating stay cables from a central mast, with diamond-braced side walls and three complete airside gate bridges.",
+                                                    "materialZones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
+                                                    "glassProfile": "high_transmission_terminal_curtain_wall",
+                                                    "elevationUrl": "/families/cable-stayed-airport-terminal/elevation.jpg"
+                                                },
+                     "cable_stayed_steel_truss_terminal": {
+                                                              "archetypeId": "cable_stayed_steel_truss_terminal",
+                                                              "identity": "A transparent two-level departure hall is sheltered by one sweeping steel space-frame canopy, supported on branching tree columns and radiating stay cables from a central mast, with diamond-braced side walls and three complete airside gate bridges.",
+                                                              "materialZones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
+                                                              "glassProfile": "high_transmission_terminal_curtain_wall",
+                                                              "elevationUrl": "/families/cable-stayed-airport-terminal/elevation.jpg"
+                                                          },
+                     "high_tech_airport_terminal": {
+                                                       "archetypeId": "high_tech_airport_terminal",
+                                                       "identity": "A transparent two-level departure hall is sheltered by one sweeping steel space-frame canopy, supported on branching tree columns and radiating stay cables from a central mast, with diamond-braced side walls and three complete airside gate bridges.",
+                                                       "materialZones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
+                                                       "glassProfile": "high_transmission_terminal_curtain_wall",
+                                                       "elevationUrl": "/families/cable-stayed-airport-terminal/elevation.jpg"
+                                                   },
+                     "branching_column_departure_hall": {
+                                                             "archetypeId": "branching_column_departure_hall",
+                                                             "identity": "A transparent two-level departure hall is sheltered by one sweeping steel space-frame canopy, supported on branching tree columns and radiating stay cables from a central mast, with diamond-braced side walls and three complete airside gate bridges.",
+                                                             "materialZones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
+                                                             "glassProfile": "high_transmission_terminal_curtain_wall",
+                                                             "elevationUrl": "/families/cable-stayed-airport-terminal/elevation.jpg"
                                                    }
                  }
 }

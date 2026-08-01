@@ -1,0 +1,203 @@
+{
+  "status": "pass",
+  "family": "vertical-forest-residential",
+  "archetype_id": "vertical_forest_residential",
+  "reuse_keys": [
+    "vertical_forest_residential",
+    "vertical_forest_bosco",
+    "bosco_verticale_residential",
+    "planted_concrete_balcony_tower",
+    "Vertical Forest Residential",
+    "Bosco Verticale Residential",
+    "Planted Balcony Tower",
+    "Living Concrete High Rise"
+  ],
+  "manifest": "vertical-forest-residential_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "vertical-forest-residential_podium.glb: 48.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_floor_typical_a.glb: 48.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_floor_typical_b.glb: 48.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_floor_typical_c.glb: 48.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_crown_crown.glb: 27.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_roof.glb: 9.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "vertical-forest-residential_assembled.glb: 61.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "vertical-forest-residential_podium.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 30.901,
+        "height_y": 5.6,
+        "depth_z": 31.02
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_BurgundyFoliage",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_NaturalTreeBark",
+        "MAT_W12_FOREST_NeutralVisionGlass",
+        "MAT_W12_FOREST_OccupiedApartmentDepth",
+        "MAT_W12_FOREST_PhotorealFoliageCard",
+        "MAT_W12_FOREST_TemperateFoliage"
+      ],
+      "size_bytes": 51309280
+    },
+    {
+      "file": "vertical-forest-residential_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 31.081,
+        "height_y": 5.725,
+        "depth_z": 31.224
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_BurgundyFoliage",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_NaturalTreeBark",
+        "MAT_W12_FOREST_NeutralVisionGlass",
+        "MAT_W12_FOREST_OccupiedApartmentDepth",
+        "MAT_W12_FOREST_PhotorealFoliageCard",
+        "MAT_W12_FOREST_TemperateFoliage"
+      ],
+      "size_bytes": 51308176
+    },
+    {
+      "file": "vertical-forest-residential_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 468,
+      "extent_m": {
+        "width_x": 31.042,
+        "height_y": 5.721,
+        "depth_z": 30.785
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_BurgundyFoliage",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_NaturalTreeBark",
+        "MAT_W12_FOREST_NeutralVisionGlass",
+        "MAT_W12_FOREST_OccupiedApartmentDepth",
+        "MAT_W12_FOREST_PhotorealFoliageCard",
+        "MAT_W12_FOREST_TemperateFoliage"
+      ],
+      "size_bytes": 51308196
+    },
+    {
+      "file": "vertical-forest-residential_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 476,
+      "extent_m": {
+        "width_x": 30.65,
+        "height_y": 5.791,
+        "depth_z": 31.217
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_BurgundyFoliage",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_NaturalTreeBark",
+        "MAT_W12_FOREST_NeutralVisionGlass",
+        "MAT_W12_FOREST_OccupiedApartmentDepth",
+        "MAT_W12_FOREST_PhotorealFoliageCard",
+        "MAT_W12_FOREST_TemperateFoliage"
+      ],
+      "size_bytes": 51318468
+    },
+    {
+      "file": "vertical-forest-residential_crown_crown.glb",
+      "status": "ok",
+      "triangles": 172,
+      "extent_m": {
+        "width_x": 28.0,
+        "height_y": 1.572,
+        "depth_z": 28.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_TemperateFoliage"
+      ],
+      "size_bytes": 29211832
+    },
+    {
+      "file": "vertical-forest-residential_roof.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 28.0,
+        "height_y": 4.0,
+        "depth_z": 28.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_GreenRoof"
+      ],
+      "size_bytes": 9928408
+    },
+    {
+      "file": "vertical-forest-residential_assembled.glb",
+      "status": "ok",
+      "triangles": 1764,
+      "extent_m": {
+        "width_x": 31.537,
+        "height_y": 66.97,
+        "depth_z": 31.514
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W12_FOREST_BoardFormedConcrete",
+        "MAT_W12_FOREST_BurgundyFoliage",
+        "MAT_W12_FOREST_CharcoalPlanter",
+        "MAT_W12_FOREST_DarkBronzeFrame",
+        "MAT_W12_FOREST_DarkPlanterSoil",
+        "MAT_W12_FOREST_NaturalTreeBark",
+        "MAT_W12_FOREST_NeutralVisionGlass",
+        "MAT_W12_FOREST_OccupiedApartmentDepth",
+        "MAT_W12_FOREST_PhotorealFoliageCard",
+        "MAT_W12_FOREST_TemperateFoliage",
+        "MAT_W12_FOREST_WarmGreyPaving"
+      ],
+      "size_bytes": 64023736,
+      "role": "assembled"
+    }
+  ]
+}

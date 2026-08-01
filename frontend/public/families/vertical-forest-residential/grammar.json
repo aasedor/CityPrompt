@@ -1,0 +1,132 @@
+{
+  "family_id": "vertical-forest-residential",
+  "source": {
+    "archetype_id": "vertical_forest_residential",
+    "variant_id": "vertical_forest_bosco",
+    "generation_archetype_id": "vertical_forest_bosco",
+    "reuse_keys": [
+      "vertical_forest_residential",
+      "vertical_forest_bosco",
+      "bosco_verticale_residential",
+      "planted_concrete_balcony_tower",
+      "Vertical Forest Residential",
+      "Bosco Verticale Residential",
+      "Planted Balcony Tower",
+      "Living Concrete High Rise"
+    ]
+  },
+  "dimensions": {
+    "width_m": 31.537,
+    "depth_m": 31.514,
+    "podium_height_m": 4.2,
+    "floor_height_m": 3.35,
+    "setback_height_m": 3.35,
+    "roof_height_m": 4.0,
+    "crown_height_m": 1.2,
+    "default_floors": 18,
+    "min_floors": 10,
+    "max_floors": 30
+  },
+  "architectural_signature": {
+    "identity": "An eighteen-storey dark glazed residential core sits behind a continuous off-white concrete frame, deep cantilevered balcony trays and real soil planters carrying mature trees on every side.",
+    "material_zones": "lightly weathered board-formed off-white concrete; dark bronze thermally broken frames; neutral low-iron residential glass; warm occupied apartment depth; charcoal planter liners and dark soil; temperate olive and restrained burgundy foliage; natural tree bark",
+    "glass_profile": "neutral_low_iron_residential_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "vertical_forest_residential",
+    "vertical_forest_bosco",
+    "bosco_verticale_residential",
+    "planted_concrete_balcony_tower"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "courtyard"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The fixed planted tower accepts ordinary near-square drawing error. Larger rectangles or courtyard drawings repeat complete 5.5 metre occupied balcony bays with their slab, pane, planter and vegetation, never a stretched tree or window.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.3,
+      "maxAxisRatio": 1.16
+    },
+    "recommendedWidth_m": [
+      21.0,
+      40.0
+    ],
+    "recommendedDepth_m": [
+      21.0,
+      40.0
+    ],
+    "recommendedFloors": [
+      10,
+      30
+    ],
+    "preferredBayMultiple_m": 5.5,
+    "scaleMin": 0.72,
+    "scaleMax": 1.3,
+    "maxAxisRatio": 1.16,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          21.0,
+          40.0
+        ],
+        "recommendedDepth_m": [
+          21.0,
+          40.0
+        ],
+        "recommendedFloors": [
+          10,
+          30
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.16,
+        "preferredBayMultiple_m": 5.5
+      },
+      "courtyard": {
+        "recommendedWidth_m": [
+          28.0,
+          48.0
+        ],
+        "recommendedDepth_m": [
+          28.0,
+          48.0
+        ],
+        "recommendedFloors": [
+          10,
+          26
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 5.5,
+        "minimumCourtyard_m": 8.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_vertical_forest_tower_with_repeatable_complete_balcony_storeys",
+    "occupied_storeys": 18,
+    "continuous_perimeter_frame": true,
+    "deep_balcony_trays": 18,
+    "integral_planter_volumes": true,
+    "three_dimensional_supported_trees": true,
+    "intensive_rooftop_garden": true,
+    "physical_window_layers": [
+      "occupied_depth",
+      "neutral_low_iron_pane",
+      "bronze_frame",
+      "slab_edge",
+      "external_concrete_frame"
+    ]
+  }
+}

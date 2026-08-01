@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "vertical_forest_residential",
+  "catalogue_variant_id": "vertical_forest_bosco",
+  "catalogue_alias_ids": [
+    "bosco_verticale_residential",
+    "planted_concrete_balcony_tower"
+  ],
+  "elevation_source": "/families/vertical-forest-residential/elevation.jpg",
+  "goalpost": "/families/vertical-forest-residential/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/vertical-forest-residential/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic metric envelope, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}
