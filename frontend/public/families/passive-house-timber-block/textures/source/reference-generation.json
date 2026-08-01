@@ -6,7 +6,7 @@
   "provider": "OpenAI built-in image generation",
   "model": "gpt-image-2",
   "generated_at": "2026-08-01",
-  "status": "source-pack-complete",
+  "status": "source-pack-refined",
   "input_paths": [
     "/archetypes/buildings/eco_urban_bioclimatic_block/variant_0.png"
   ],
@@ -35,10 +35,10 @@
       "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, passive-building construction, proportion, and palette authority.\nPrimary request: Reconstruct the exact same passive-house timber urban block from Image 1 as one coherent true-metric four-storey building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, facade parallel to camera, complete dual-pitch roof and ground entrances visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving larch rainscreen, deep window reveals, ventilation louvers, service doors, downpipes and garden-side facade wrap the whole building.\nPanel 4: high aerial roof-plan oblique proving the asymmetrical dual mono-pitch/gable roof, south photovoltaic field, north sedum strip, roof windows, gutters and end-wall PV panels.\nBuilding lock: approximately 36 m wide by 20 m deep by 17 m high; exactly four occupied levels; a simple long rectangular urban block in natural vertical larch rainscreen; six strong front bays of deeply recessed triple-glazed openings; real timber-aluminum frames, dark insulated reveals, mixed clear panes and pale balcony/vent panels, and external horizontal sun blinds on selected middle windows; a deeply recessed central timber entrance and secondary ground openings; a steep asymmetrical roof whose sun-facing plane carries one continuous dark photovoltaic field while the other plane carries an extensive green-roof strip and several rooflights; crisp timber-clad gable ends with smaller punched windows and a vertical bank of facade PV panels. Preserve identical bay positions, roof pitches and environmental features in every view.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no street trees, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible passive-house construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: naturally weathering honey-brown vertical larch; dark bronze/charcoal timber-aluminum frames; neutral high-performance triple glazing with sparse warm occupied depth; pale translucent insulated balcony panels; black external blinds; dark-blue photovoltaic glass; dense green sedum; zinc gutters and flashings.\nConstraints: exact same topology, four levels, six-bay cadence, floor datums, deep reveals, entrance, roof geometry, PV and green-roof fields in every panel; panels separated only by thin neutral gutters; complete building inside every frame; no labels; no text; no signs; no logos; no watermark.\nAvoid: generic timber box, chalet, extra floors, shallow painted windows, orange plastic siding, blue mirrored glazing, arbitrary balconies, flat roof, missing photovoltaics, blank rear, changed bay grid, entourage, dramatic sunset.",
       "registered_surfaces": [
         "four_level_six_bay_vertical_larch_envelope",
-        "deep_real_triple_glazed_window_reveals",
+        "deep_real_triple_glazed_window_reveals_with_separate_room_depth",
         "mixed_clear_panes_insulated_panels_and_external_blinds",
         "deeply_recessed_central_timber_entrance",
-        "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+        "asymmetric_dual_pitch_roof_with_individually_framed_pv_modules_and_sedum_fields",
         "rooflights_zinc_gutters_and_downpipes",
         "gable_end_punched_windows_and_vertical_facade_pv_bank"
       ]
@@ -103,6 +103,42 @@
       "file": "green-roof-material-source-v1.png",
       "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:green-roof-material-source-v1",
       "role": "registered_material_crop:green-roof-material-source-v1"
+    },
+    {
+      "file": "optical-pv-construction-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7",
+      "role": "reviewed_optical_and_construction_refinement_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral photovoltaic and window construction source board for the exact passive-house timber block\nInput images: Image 1 is the approved passive-house roof, photovoltaic module, glazing, blind, and occupation authority. Image 2 is the prior construction plate and exact larch/frame palette authority.\nPrimary request: Create six equal square, straight-on orthographic samples in a precise 3-column by 2-row grid, separated only by thin neutral-grey gutters and with no labels.\nTop-left: one complete contemporary dark-blue monocrystalline photovoltaic module viewed perfectly straight-on, realistic silver-black perimeter frame, visible dark inter-cell gaps, fine white busbars, six columns by ten rows of individual cells, uniform overcast reflection, generous narrow margin around the module, no roof or surrounding scene.\nTop-center: neutral high-performance triple glazing viewed straight-on, restrained grey daylight reflection, a faint green edge cast and subtle optical depth, no blue mirror tint, no frame, mullions, room, or facade.\nTop-right: dark bronze-charcoal timber-aluminum passive-house frame and deep insulated reveal finish with fine matte grain, shown as material strips only, no whole window.\nBottom-left: bright daytime occupied passive-house room depth viewed dead-on from outside, pale timber floor and ceiling, sheer linen curtain partly drawn, quiet furniture silhouettes and garden-toned daylight beyond, at least three metres of visual depth, no exterior glass, frame, mullion, facade, or skewed perspective.\nBottom-center: softly occupied evening passive-house room depth viewed dead-on from outside, same pale timber interior with one restrained warm lamp and darker recesses, warm but not orange, no exterior glass, frame, mullion, facade, or skewed perspective.\nBottom-right: black exterior venetian blind construction at real scale, separate fine horizontal metal blades with genuine dark gaps, two slim guide cables and a compact headbox, straight-on, no complete window or wall.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: premium physically based photoreal architectural construction texture reference.\nLighting/mood: diffuse neutral overcast capture; no baked sunlight, cast shadows, vignette, or dramatic contrast.\nConstraints: exact 3 by 2 grid; each cell cleanly registered; no labels; no text; no logos; no watermark; no full facade. Photovoltaic cells must be countable and module-scale. Glass and occupied room depth must remain separate optical layers.\nAvoid: one giant solar roof texture, diagonal PV perspective, amorphous blue sheet, blue mirrored windows, opaque window pictures, flat black blind texture, cartoon materials, decorative borders."
+    },
+    {
+      "file": "pv-module-material-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:pv-module-material-source-v2",
+      "role": "registered_refinement_crop:pv-module-material-source-v2"
+    },
+    {
+      "file": "vision-glass-material-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:vision-glass-material-source-v2",
+      "role": "registered_refinement_crop:vision-glass-material-source-v2"
+    },
+    {
+      "file": "frame-material-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:frame-material-source-v2",
+      "role": "registered_refinement_crop:frame-material-source-v2"
+    },
+    {
+      "file": "occupied-day-depth-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:occupied-day-depth-source-v2",
+      "role": "registered_refinement_crop:occupied-day-depth-source-v2"
+    },
+    {
+      "file": "occupied-evening-depth-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:occupied-evening-depth-source-v2",
+      "role": "registered_refinement_crop:occupied-evening-depth-source-v2"
+    },
+    {
+      "file": "blind-material-source-v2.png",
+      "source_id": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7:blind-material-source-v2",
+      "role": "registered_refinement_crop:blind-material-source-v2"
     }
   ]
 }

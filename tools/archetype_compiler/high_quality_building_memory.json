@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-01-wave13-diverse-structural-grammar-v111",
+  "memory_version": "2026-08-01-wave13-optical-pv-refinement-v112",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -171,6 +171,18 @@
     {
       "id": "environmental_systems_are_architecture",
       "rule": "When photovoltaics, sedum, rooflights, exterior blinds or planted roofs define the reference, construct their coverage, support, drainage edge and attachment relationship at true metric scale and preserve them in assembled and modular roof contracts."
+    },
+    {
+      "id": "transparent_interiors_are_coherent_volumes",
+      "rule": "A highly transparent curtain wall reveals one coherent interior volume across adjacent panes. Keep glass, pressure caps, floor and ceiling returns physical and use sparse modeled occupation; never repeat the same opaque room card immediately behind every pane."
+    },
+    {
+      "id": "passive_windows_are_sectional_envelopes",
+      "rule": "A passive-house window is recessed behind the insulation line with complete jamb, head and sill returns, separate low-E glazing, external blind hardware and varied deep room shadow or occupation. A shallow pane or repeated room photograph is not equivalent."
+    },
+    {
+      "id": "photovoltaic_fields_are_discrete_modules",
+      "rule": "A reference-defining photovoltaic field consists of standard-scale modules with one complete countable cell topology per module, individual perimeter frames, real inter-module gaps, mounting rails and roof-edge clearance; one stretched PV texture across a roof is prohibited."
     }
   ],
   "construction_memory": {
@@ -961,6 +973,21 @@
       "symptom": "Photovoltaics, planted roofs or rooflights appear as decorative stickers that do not follow the roof construction or survive modular assembly",
       "cause": "Environmental systems were treated as texture motifs without true coverage, supports, edge clearances, drainage relationships or a fixed roof-module contract.",
       "correction": "Construct each environmental system at metric scale with separate carrier, support or frame geometry and roof-edge clearance. Preserve the system in the fixed assembled landmark and the semantic crown or roof module, then compare street and aerial proofs."
+    },
+    {
+      "symptom": "A transparent pavilion looks like a stack of cubicles or floating posters even though its glass shader is physically transparent",
+      "cause": "The same opaque occupied-depth image was placed close behind every pane, breaking one open gallery into repeated two-dimensional room cards.",
+      "correction": "Remove per-pane occupation cards. Continue floor and ceiling returns into one coherent interior, model sparse partitions, furniture and lights at real depth, and let the physical low-iron glass reveal that shared volume."
+    },
+    {
+      "symptom": "A passive-house facade repeats the same bright living-room photograph in every window and its blinds appear tacked onto shallow glazing",
+      "cause": "Occupied-depth imagery was uniform and too close to the pane, while the pane, insulated returns and blind hardware were not authored as a layered wall section.",
+      "correction": "Recess split low-E panes behind complete jamb, head and sill returns; place real blind blades, headbox and guides in front; then vary deep room shadow, selective occupied depth and physical curtain layers behind the glass."
+    },
+    {
+      "symptom": "A solar roof reads as one stretched blue sheet or its cell pattern changes scale with the building",
+      "cause": "One photovoltaic image was mapped across the whole roof field instead of being registered once per standard module with physical racking.",
+      "correction": "Build individual framed modules at true metric scale, map one complete countable cell topology to each module, preserve real gaps and mounting rails, and prove the array in an aerial close view."
     }
   ]
 }

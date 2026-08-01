@@ -125,10 +125,16 @@
     "pale_travertine_service_cores": 1,
     "floating_knife_edge_roofs": 1,
     "roof_overhang_axes": 2,
+    "occupied_depth_variants": [
+      "daylight_gallery",
+      "evening_gallery"
+    ],
+    "minimum_room_depth_m": 1.4,
     "physical_window_layers": [
-      "warm_gallery_depth",
-      "neutral_low_iron_pane",
-      "fine_mullion",
+      "day_or_evening_gallery_depth",
+      "physical_floor_and_ceiling_returns",
+      "crystal_low_iron_pane",
+      "fine_pressure_cap_and_mullion",
       "black_steel_column",
       "concrete_slab_edge"
     ]

@@ -122,19 +122,26 @@
     "front_bays": 6,
     "deep_insulated_reveals": true,
     "physical_triple_glazing": true,
+    "split_panes_per_opening": 2,
+    "occupied_depth_variants": [
+      "daylight_room",
+      "evening_room"
+    ],
     "real_external_blind_sets": 8,
     "deep_recessed_entries": 1,
     "asymmetric_roof_planes": 2,
-    "continuous_pv_fields": 1,
+    "individually_framed_roof_pv_modules": 90,
+    "pv_cell_topology": "6_columns_x_10_rows",
+    "continuous_pv_mounting_rails": 3,
     "sedum_roof_fields": 1,
     "physical_rooflights": 3,
     "vertical_gable_pv_panels": 4,
     "physical_window_layers": [
-      "warm_occupied_depth",
-      "neutral_triple_pane",
-      "dark_frame",
-      "deep_insulated_reveal",
-      "real_external_blind",
+      "day_or_evening_occupied_depth",
+      "split_neutral_triple_panes",
+      "slim_dark_frame",
+      "physical_larch_head_sill_and_jamb_returns",
+      "real_blind_blades_headbox_and_guides",
       "vertical_larch_rainscreen"
     ]
   }

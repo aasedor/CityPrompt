@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-08-01T14:52:18.399577+00:00",
+  "created_at": "2026-08-01T17:32:38.516288+00:00",
   "family": "passive-house-timber-block",
   "archetype_id": "eco_urban_bioclimatic_block",
   "archetype_label": "Bioclimatic Block - Passive House Timber",
@@ -556,58 +556,114 @@
     },
     {
       "key": "near_interior_albedo",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_albedo.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_albedo.png",
       "lod": "near",
       "zone": "interior",
       "channel": "albedo"
     },
     {
       "key": "near_interior_normal",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_normal.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_normal.png",
       "lod": "near",
       "zone": "interior",
       "channel": "normal"
     },
     {
       "key": "near_interior_roughness",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_roughness.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_roughness.png",
       "lod": "near",
       "zone": "interior",
       "channel": "roughness"
     },
     {
       "key": "near_interior_ao",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_ao.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_ao.png",
       "lod": "near",
       "zone": "interior",
       "channel": "ao"
     },
     {
       "key": "near_interior_depth",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_depth.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_depth.png",
       "lod": "near",
       "zone": "interior",
       "channel": "depth"
     },
     {
       "key": "near_interior_emissive",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_emissive.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_emissive.png",
       "lod": "near",
       "zone": "interior",
       "channel": "emissive"
     },
     {
       "key": "near_interior_glass_mask",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_glass.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_glass.png",
       "lod": "near",
       "zone": "interior",
       "channel": "glass_mask"
     },
     {
       "key": "near_interior_opaque_mask",
-      "path": "textures/pbr/near/occupied_passive_house_room_depth_opaque.png",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_day_opaque.png",
       "lod": "near",
       "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_evening_albedo",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_albedo.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_evening_normal",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_normal.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_evening_roughness",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_roughness.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_evening_ao",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_ao.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_evening_depth",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_depth.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_evening_emissive",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_emissive.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_evening_glass_mask",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_glass.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_evening_opaque_mask",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_evening_opaque.png",
+      "lod": "near",
+      "zone": "interior_evening",
       "channel": "opaque_mask"
     },
     {
@@ -1043,7 +1099,7 @@
         "typical_b",
         "typical_c"
       ],
-      "rule": "Repeat one complete six metre passive bay with larch piers, deep insulated reveal, triple pane, occupied depth and optional real blind or insulated panel."
+      "rule": "Repeat one complete six metre passive bay with larch piers, physical insulated returns, split triple panes, alternating occupied depth and optional in-reveal blind or insulated panel."
     },
     "delivery": {
       "near_atlas_width_px": 2048,
@@ -1060,23 +1116,23 @@
         "roof",
         "deep central entry",
         "larch gable ends",
-        "continuous PV field",
+        "ninety-module photovoltaic array",
         "sedum roof",
         "rooflights",
-        "vertical PV bank"
+        "four-module vertical PV bank"
       ],
       "repeatable": [
         "typical_a",
         "typical_b",
         "typical_c"
       ],
-      "side_elevations": "complete larch gable with small punched windows; complete larch gable with small openings and vertical PV bank",
+      "side_elevations": "complete larch gable with small punched windows; complete larch gable with small openings and four individually framed vertical PV modules",
       "elevation_coverage": {
-        "front": "six deep triple-glazed larch bays, real external blinds, pale panels and recessed timber entrance",
+        "front": "six deep split-triple-glazed larch bays, alternating day/evening room depth, in-reveal external blinds, pale panels and recessed timber entrance",
         "left": "complete larch gable with small punched windows",
-        "right": "complete larch gable with small openings and vertical PV bank",
+        "right": "complete larch gable with small openings and four individually framed vertical PV modules",
         "rear": "complete occupied secondary facade with mixed deep openings, service doors and drainage",
-        "roof": "asymmetric front PV and rear sedum planes, three rooflights, zinc ridge, gutters and downpipes"
+        "roof": "ninety individually framed 6x10-cell PV modules on three physical mounting rails above the upper slope, sedum lower field, three rooflights, zinc ridge, gutters and downpipes"
       },
       "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
     },
@@ -1121,10 +1177,10 @@
       ],
       "registered_surfaces": [
         "four_level_six_bay_vertical_larch_envelope",
-        "deep_real_triple_glazed_window_reveals",
+        "deep_real_triple_glazed_window_reveals_with_separate_room_depth",
         "mixed_clear_panes_insulated_panels_and_external_blinds",
         "deeply_recessed_central_timber_entrance",
-        "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+        "asymmetric_dual_pitch_roof_with_individually_framed_pv_modules_and_sedum_fields",
         "rooflights_zinc_gutters_and_downpipes",
         "gable_end_punched_windows_and_vertical_facade_pv_bank"
       ],
@@ -1141,19 +1197,26 @@
     "front_bays": 6,
     "deep_insulated_reveals": true,
     "physical_triple_glazing": true,
+    "split_panes_per_opening": 2,
+    "occupied_depth_variants": [
+      "daylight_room",
+      "evening_room"
+    ],
     "real_external_blind_sets": 8,
     "deep_recessed_entries": 1,
     "asymmetric_roof_planes": 2,
-    "continuous_pv_fields": 1,
+    "individually_framed_roof_pv_modules": 90,
+    "pv_cell_topology": "6_columns_x_10_rows",
+    "continuous_pv_mounting_rails": 3,
     "sedum_roof_fields": 1,
     "physical_rooflights": 3,
     "vertical_gable_pv_panels": 4,
     "physical_window_layers": [
-      "warm_occupied_depth",
-      "neutral_triple_pane",
-      "dark_frame",
-      "deep_insulated_reveal",
-      "real_external_blind",
+      "day_or_evening_occupied_depth",
+      "split_neutral_triple_panes",
+      "slim_dark_frame",
+      "physical_larch_head_sill_and_jamb_returns",
+      "real_blind_blades_headbox_and_guides",
       "vertical_larch_rainscreen"
     ]
   },
@@ -1194,14 +1257,14 @@
       ],
       "filename": "passive-house-timber-block_podium.glb",
       "module_family": "passive-house-timber-block",
-      "width_m": 37.05,
+      "width_m": 36.88,
       "depth_m": 20.675,
       "height_m": 3.25,
       "floor_height_m": 3.25,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 2400,
-      "material_count": 9,
+      "triangle_count": 3072,
+      "material_count": 12,
       "texture_keys": [
         "blind",
         "crown",
@@ -1211,6 +1274,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1219,7 +1283,7 @@
         "zinc"
       ],
       "ao_baked": true,
-      "size_bytes": 26663332
+      "size_bytes": 40332332
     },
     {
       "role": "floor",
@@ -1234,14 +1298,14 @@
       ],
       "filename": "passive-house-timber-block_floor_typical_a.glb",
       "module_family": "passive-house-timber-block",
-      "width_m": 37.05,
+      "width_m": 36.88,
       "depth_m": 20.675,
       "height_m": 3.25,
       "floor_height_m": 3.25,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2988,
-      "material_count": 10,
+      "triangle_count": 4108,
+      "material_count": 13,
       "texture_keys": [
         "blind",
         "crown",
@@ -1251,6 +1315,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1259,7 +1324,7 @@
         "zinc"
       ],
       "ao_baked": true,
-      "size_bytes": 28964964
+      "size_bytes": 43310824
     },
     {
       "role": "floor",
@@ -1274,14 +1339,14 @@
       ],
       "filename": "passive-house-timber-block_floor_typical_b.glb",
       "module_family": "passive-house-timber-block",
-      "width_m": 37.05,
+      "width_m": 36.88,
       "depth_m": 20.675,
       "height_m": 3.25,
       "floor_height_m": 3.25,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2988,
-      "material_count": 10,
+      "triangle_count": 4108,
+      "material_count": 12,
       "texture_keys": [
         "blind",
         "crown",
@@ -1291,6 +1356,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1299,7 +1365,7 @@
         "zinc"
       ],
       "ao_baked": true,
-      "size_bytes": 28704300
+      "size_bytes": 39012232
     },
     {
       "role": "floor",
@@ -1314,14 +1380,14 @@
       ],
       "filename": "passive-house-timber-block_floor_typical_c.glb",
       "module_family": "passive-house-timber-block",
-      "width_m": 37.05,
+      "width_m": 36.88,
       "depth_m": 20.675,
       "height_m": 3.25,
       "floor_height_m": 3.25,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2604,
-      "material_count": 10,
+      "triangle_count": 3420,
+      "material_count": 13,
       "texture_keys": [
         "blind",
         "crown",
@@ -1331,6 +1397,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1339,7 +1406,7 @@
         "zinc"
       ],
       "ao_baked": true,
-      "size_bytes": 26932408
+      "size_bytes": 40607480
     },
     {
       "role": "crown",
@@ -1371,6 +1438,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1400,8 +1468,8 @@
       "floor_height_m": 3.25,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 350,
-      "material_count": 8,
+      "triangle_count": 5774,
+      "material_count": 9,
       "texture_keys": [
         "blind",
         "crown",
@@ -1411,6 +1479,7 @@
         "frame",
         "green_roof",
         "interior",
+        "interior_evening",
         "larch",
         "podium",
         "pv",
@@ -1419,7 +1488,7 @@
         "zinc"
       ],
       "ao_baked": true,
-      "size_bytes": 31740420
+      "size_bytes": 32066352
     }
   ],
   "assembled": {
@@ -1436,8 +1505,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 17.8,
-    "triangle_count": 12206,
-    "material_count": 12,
+    "triangle_count": 21550,
+    "material_count": 16,
     "stack": [
       {
         "role": "assembled",
@@ -1468,19 +1537,26 @@
       "front_bays": 6,
       "deep_insulated_reveals": true,
       "physical_triple_glazing": true,
+      "split_panes_per_opening": 2,
+      "occupied_depth_variants": [
+        "daylight_room",
+        "evening_room"
+      ],
       "real_external_blind_sets": 8,
       "deep_recessed_entries": 1,
       "asymmetric_roof_planes": 2,
-      "continuous_pv_fields": 1,
+      "individually_framed_roof_pv_modules": 90,
+      "pv_cell_topology": "6_columns_x_10_rows",
+      "continuous_pv_mounting_rails": 3,
       "sedum_roof_fields": 1,
       "physical_rooflights": 3,
       "vertical_gable_pv_panels": 4,
       "physical_window_layers": [
-        "warm_occupied_depth",
-        "neutral_triple_pane",
-        "dark_frame",
-        "deep_insulated_reveal",
-        "real_external_blind",
+        "day_or_evening_occupied_depth",
+        "split_neutral_triple_panes",
+        "slim_dark_frame",
+        "physical_larch_head_sill_and_jamb_returns",
+        "real_blind_blades_headbox_and_guides",
         "vertical_larch_rainscreen"
       ]
     },
@@ -1493,6 +1569,7 @@
       "frame",
       "green_roof",
       "interior",
+      "interior_evening",
       "larch",
       "podium",
       "pv",

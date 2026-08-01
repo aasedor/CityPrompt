@@ -16,17 +16,17 @@
   "errors": [],
   "warnings": [
     "no setback module (optional)",
-    "mid-century-glass-steel-pavilion_podium.glb: 30.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "mid-century-glass-steel-pavilion_floor_typical_a.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "mid-century-glass-steel-pavilion_floor_typical_b.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "mid-century-glass-steel-pavilion_floor_typical_c.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
-    "mid-century-glass-steel-pavilion_assembled.glb: 41.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+    "mid-century-glass-steel-pavilion_podium.glb: 43.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_a.glb: 35.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_b.glb: 35.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_c.glb: 35.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_assembled.glb: 59.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
       "file": "mid-century-glass-steel-pavilion_podium.glb",
       "status": "ok",
-      "triangles": 96,
+      "triangles": 108,
       "extent_m": {
         "width_x": 25.0,
         "height_y": 3.65,
@@ -37,76 +37,80 @@
         "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
         "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W13_PAVILION_CrystalLowIronGlass",
         "MAT_W13_PAVILION_HonedTravertine",
         "MAT_W13_PAVILION_MatteBlackSteel",
-        "MAT_W13_PAVILION_NeutralLowIronGlass",
-        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_PaleAcousticCeiling",
+        "MAT_W13_PAVILION_PaleHonedGalleryFloor",
         "MAT_W13_PAVILION_SmoothConcrete"
       ],
-      "size_bytes": 31823120
+      "size_bytes": 45923484
     },
     {
       "file": "mid-century-glass-steel-pavilion_floor_typical_a.glb",
       "status": "ok",
-      "triangles": 84,
+      "triangles": 96,
       "extent_m": {
-        "width_x": 24.43,
+        "width_x": 24.39,
         "height_y": 3.65,
-        "depth_z": 16.93
+        "depth_z": 16.89
       },
       "bottom_y": 0.0,
       "materials": [
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W13_PAVILION_CrystalLowIronGlass",
         "MAT_W13_PAVILION_MatteBlackSteel",
-        "MAT_W13_PAVILION_NeutralLowIronGlass",
-        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_PaleAcousticCeiling",
+        "MAT_W13_PAVILION_PaleHonedGalleryFloor",
         "MAT_W13_PAVILION_SmoothConcrete"
       ],
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "file": "mid-century-glass-steel-pavilion_floor_typical_b.glb",
       "status": "ok",
-      "triangles": 84,
+      "triangles": 96,
       "extent_m": {
-        "width_x": 24.43,
+        "width_x": 24.39,
         "height_y": 3.65,
-        "depth_z": 16.93
+        "depth_z": 16.89
       },
       "bottom_y": 0.0,
       "materials": [
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W13_PAVILION_CrystalLowIronGlass",
         "MAT_W13_PAVILION_MatteBlackSteel",
-        "MAT_W13_PAVILION_NeutralLowIronGlass",
-        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_PaleAcousticCeiling",
+        "MAT_W13_PAVILION_PaleHonedGalleryFloor",
         "MAT_W13_PAVILION_SmoothConcrete"
       ],
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "file": "mid-century-glass-steel-pavilion_floor_typical_c.glb",
       "status": "ok",
-      "triangles": 84,
+      "triangles": 96,
       "extent_m": {
-        "width_x": 24.43,
+        "width_x": 24.39,
         "height_y": 3.65,
-        "depth_z": 16.93
+        "depth_z": 16.89
       },
       "bottom_y": 0.0,
       "materials": [
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
         "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W13_PAVILION_CrystalLowIronGlass",
         "MAT_W13_PAVILION_MatteBlackSteel",
-        "MAT_W13_PAVILION_NeutralLowIronGlass",
-        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_PaleAcousticCeiling",
+        "MAT_W13_PAVILION_PaleHonedGalleryFloor",
         "MAT_W13_PAVILION_SmoothConcrete"
       ],
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "file": "mid-century-glass-steel-pavilion_crown_crown.glb",
@@ -147,7 +151,7 @@
     {
       "file": "mid-century-glass-steel-pavilion_assembled.glb",
       "status": "ok",
-      "triangles": 172,
+      "triangles": 208,
       "extent_m": {
         "width_x": 29.28,
         "height_y": 11.63,
@@ -155,15 +159,19 @@
       },
       "bottom_y": 0.0,
       "materials": [
+        "MAT_W13_PAVILION_CrystalLowIronGlass",
+        "MAT_W13_PAVILION_EveningGalleryDepth",
         "MAT_W13_PAVILION_HonedTravertine",
         "MAT_W13_PAVILION_KnifeEdgeRoof",
         "MAT_W13_PAVILION_MatteBlackSteel",
-        "MAT_W13_PAVILION_NeutralLowIronGlass",
-        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_OiledOakFurniture",
+        "MAT_W13_PAVILION_PaleAcousticCeiling",
+        "MAT_W13_PAVILION_PaleHonedGalleryFloor",
         "MAT_W13_PAVILION_RibbedAluminumSoffit",
-        "MAT_W13_PAVILION_SmoothConcrete"
+        "MAT_W13_PAVILION_SmoothConcrete",
+        "MAT_W13_PAVILION_WarmWhiteGalleryWall"
       ],
-      "size_bytes": 43866512,
+      "size_bytes": 62324756,
       "role": "assembled"
     }
   ]

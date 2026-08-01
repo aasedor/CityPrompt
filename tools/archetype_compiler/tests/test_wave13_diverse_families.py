@@ -10,7 +10,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[3]
 FAMILIES_ROOT = REPO / "frontend" / "public" / "families"
-MEMORY_VERSION = "2026-08-01-wave13-diverse-structural-grammar-v111"
+MEMORY_VERSION = "2026-08-01-wave13-optical-pv-refinement-v112"
 REQUIRED_CHANNELS = {
     "albedo",
     "normal",
@@ -81,7 +81,8 @@ SPECS = {
         "floor_range": (1, 5),
         "profiles": ["rectangle", "l_shape"],
         "glass": "neutral_low_iron_gallery_occupied",
-        "zone_count": 13,
+        "zone_count": 16,
+        "refinement_source": "optical-construction-source-v2.png",
         "hero_folder": "mid_century_modern_pavilion_block",
         "identity_nodes": {
             "PAVILION_TravertineServiceCore",
@@ -127,11 +128,13 @@ SPECS = {
         "floor_range": (3, 8),
         "profiles": ["rectangle", "l_shape"],
         "glass": "neutral_triple_glazed_deep_reveal_occupied",
-        "zone_count": 14,
+        "zone_count": 15,
+        "refinement_source": "optical-pv-construction-source-v2.png",
         "hero_folder": "eco_urban_bioclimatic_block",
         "identity_nodes": {
             "PASSIVE_CentralEntryRecess",
-            "PASSIVE_ContinuousSouthPVField",
+            "PASSIVE_RoofPVModule_0_0_CellLaminate",
+            "PASSIVE_PVContinuousMountingRail_0",
             "PASSIVE_PublicSedumRoofBand",
             "PASSIVE_SedumRooflight_0",
         },
@@ -246,6 +249,15 @@ def test_wave13_custom_skin_provenance_and_pbr_are_complete(family: str):
     }
     assert set(generated) == {"archetype-goalpost.png", "material-construction-source-v1.png"}
     assert all(item.get("prompt") for item in generated.values())
+    if refinement_source := spec.get("refinement_source"):
+        refined = next(
+            item for item in provenance["sources"]
+            if item["file"] == refinement_source
+        )
+        assert provenance["status"] == "source-pack-refined"
+        assert refined["role"] == "reviewed_optical_and_construction_refinement_plate"
+        assert refined.get("prompt")
+        assert (source_root / refinement_source).is_file()
 
 
 @pytest.mark.parametrize("family", SPECS)
@@ -262,6 +274,19 @@ def test_wave13_glb_contains_family_identity_and_physical_optical_layers(family:
         for item in material_extras
     )
     assert any(item.get("occupied_depth_layer") is True for item in material_extras)
+    if family == "mid-century-glass-steel-pavilion":
+        assert "PAVILION_FrontSlabFascia_0" in names
+        assert not any(name.endswith("_OccupiedDepth") for name in names)
+        assert sum(name.startswith("PAVILION_GalleryBench_") for name in names) >= 9
+    if family == "passive-house-timber-block":
+        assert sum(
+            name.startswith("PASSIVE_RoofPVModule_")
+            and name.endswith("_CellLaminate")
+            for name in names
+        ) == 90
+        assert sum(name.startswith("PASSIVE_PVContinuousMountingRail_") for name in names) == 3
+        assert any(item.get("photovoltaic_module") is True for item in material_extras)
+        assert any(item.get("cell_topology") == "6_columns_x_10_rows" for item in material_extras)
 
 
 @pytest.mark.parametrize("family", SPECS)

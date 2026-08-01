@@ -7,7 +7,7 @@
     "blender_version": "5.1.2",
     "render_engine": "BLENDER_EEVEE"
   },
-  "created_at": "2026-08-01T14:51:58.493550+00:00",
+  "created_at": "2026-08-01T17:27:09.352200+00:00",
   "family": "mid-century-glass-steel-pavilion",
   "archetype_id": "mid_century_modern_pavilion_block",
   "archetype_label": "Mid-Century Pavilion - Glass and Steel",
@@ -556,58 +556,114 @@
     },
     {
       "key": "near_interior_albedo",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_albedo.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_albedo.png",
       "lod": "near",
       "zone": "interior",
       "channel": "albedo"
     },
     {
       "key": "near_interior_normal",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_normal.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_normal.png",
       "lod": "near",
       "zone": "interior",
       "channel": "normal"
     },
     {
       "key": "near_interior_roughness",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_roughness.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_roughness.png",
       "lod": "near",
       "zone": "interior",
       "channel": "roughness"
     },
     {
       "key": "near_interior_ao",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_ao.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_ao.png",
       "lod": "near",
       "zone": "interior",
       "channel": "ao"
     },
     {
       "key": "near_interior_depth",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_depth.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_depth.png",
       "lod": "near",
       "zone": "interior",
       "channel": "depth"
     },
     {
       "key": "near_interior_emissive",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_emissive.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_emissive.png",
       "lod": "near",
       "zone": "interior",
       "channel": "emissive"
     },
     {
       "key": "near_interior_glass_mask",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_glass.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_glass.png",
       "lod": "near",
       "zone": "interior",
       "channel": "glass_mask"
     },
     {
       "key": "near_interior_opaque_mask",
-      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_opaque.png",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_day_opaque.png",
       "lod": "near",
       "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_evening_albedo",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_albedo.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_evening_normal",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_normal.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_evening_roughness",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_roughness.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_evening_ao",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_ao.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_evening_depth",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_depth.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_evening_emissive",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_emissive.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_evening_glass_mask",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_glass.png",
+      "lod": "near",
+      "zone": "interior_evening",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_evening_opaque_mask",
+      "path": "textures/pbr/near/occupied_pavilion_gallery_depth_evening_opaque.png",
+      "lod": "near",
+      "zone": "interior_evening",
       "channel": "opaque_mask"
     },
     {
@@ -835,6 +891,118 @@
       "channel": "opaque_mask"
     },
     {
+      "key": "near_ceiling_albedo",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_albedo.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_ceiling_normal",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_normal.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "normal"
+    },
+    {
+      "key": "near_ceiling_roughness",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_roughness.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_ceiling_ao",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_ao.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "ao"
+    },
+    {
+      "key": "near_ceiling_depth",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_depth.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "depth"
+    },
+    {
+      "key": "near_ceiling_emissive",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_emissive.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_ceiling_glass_mask",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_glass.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_ceiling_opaque_mask",
+      "path": "textures/pbr/near/pale_acoustic_gallery_ceiling_opaque.png",
+      "lod": "near",
+      "zone": "ceiling",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_gallery_floor_albedo",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_albedo.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_gallery_floor_normal",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_normal.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "normal"
+    },
+    {
+      "key": "near_gallery_floor_roughness",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_roughness.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_gallery_floor_ao",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_ao.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "ao"
+    },
+    {
+      "key": "near_gallery_floor_depth",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_depth.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "depth"
+    },
+    {
+      "key": "near_gallery_floor_emissive",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_emissive.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_gallery_floor_glass_mask",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_glass.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_gallery_floor_opaque_mask",
+      "path": "textures/pbr/near/pale_honed_gallery_floor_opaque.png",
+      "lod": "near",
+      "zone": "gallery_floor",
+      "channel": "opaque_mask"
+    },
+    {
       "key": "near_soffit_albedo",
       "path": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_albedo.png",
       "lod": "near",
@@ -1012,12 +1180,12 @@
         "typical_b",
         "typical_c"
       ],
-      "side_elevations": "wrapped clear curtain wall and deep roof overhang; pale travertine service core beside complete glazed structural bays",
+      "side_elevations": "wrapped clear curtain wall with physical floor and ceiling returns beneath the deep roof overhang; pale travertine service core beside complete transparent structural bays",
       "elevation_coverage": {
-        "front": "three transparent occupied levels and a recessed double entry below the floating roof",
-        "left": "wrapped clear curtain wall and deep roof overhang",
-        "right": "pale travertine service core beside complete glazed structural bays",
-        "rear": "complete occupied rear curtain wall, service door and continuous steel frame",
+        "front": "three transparent occupied levels with crystal low-iron panes, fine pressure caps, deep day/evening gallery cavities and a recessed double entry below the floating roof",
+        "left": "wrapped clear curtain wall with physical floor and ceiling returns beneath the deep roof overhang",
+        "right": "pale travertine service core beside complete transparent structural bays",
+        "rear": "complete day/evening occupied rear curtain wall, service door and continuous steel frame",
         "roof": "one exceptionally thin warm-white roof plane with deep two-axis cantilever and crisp fascia"
       },
       "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
@@ -1064,7 +1232,8 @@
       "registered_surfaces": [
         "three_transparent_occupied_levels",
         "slender_black_steel_post_and_beam_frame",
-        "physical_low_iron_curtain_wall_and_warm_depth",
+        "physical_low_iron_curtain_wall_with_separate_day_and_evening_depth",
+        "deep_gallery_floor_ceiling_and_partition_returns",
         "visible_concrete_floor_plates",
         "pale_travertine_plinth_and_solid_service_core",
         "exceptionally_thin_floating_roof_with_deep_asymmetric_cantilever",
@@ -1086,10 +1255,16 @@
     "pale_travertine_service_cores": 1,
     "floating_knife_edge_roofs": 1,
     "roof_overhang_axes": 2,
+    "occupied_depth_variants": [
+      "daylight_gallery",
+      "evening_gallery"
+    ],
+    "minimum_room_depth_m": 1.4,
     "physical_window_layers": [
-      "warm_gallery_depth",
-      "neutral_low_iron_pane",
-      "fine_mullion",
+      "day_or_evening_gallery_depth",
+      "physical_floor_and_ceiling_returns",
+      "crystal_low_iron_pane",
+      "fine_pressure_cap_and_mullion",
       "black_steel_column",
       "concrete_slab_edge"
     ]
@@ -1137,15 +1312,18 @@
       "floor_height_m": 3.65,
       "repeatable_z": false,
       "allow_inset_footprint": true,
-      "triangle_count": 2244,
-      "material_count": 8,
+      "triangle_count": 2700,
+      "material_count": 9,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1155,7 +1333,7 @@
         "vision_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 31823120
+      "size_bytes": 45923484
     },
     {
       "role": "floor",
@@ -1170,21 +1348,24 @@
       ],
       "filename": "mid-century-glass-steel-pavilion_floor_typical_a.glb",
       "module_family": "mid-century-glass-steel-pavilion",
-      "width_m": 24.43,
-      "depth_m": 16.93,
+      "width_m": 24.39,
+      "depth_m": 16.89,
       "height_m": 3.65,
       "floor_height_m": 3.65,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2232,
-      "material_count": 7,
+      "triangle_count": 2688,
+      "material_count": 8,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1194,7 +1375,7 @@
         "vision_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "role": "floor",
@@ -1209,21 +1390,24 @@
       ],
       "filename": "mid-century-glass-steel-pavilion_floor_typical_b.glb",
       "module_family": "mid-century-glass-steel-pavilion",
-      "width_m": 24.43,
-      "depth_m": 16.93,
+      "width_m": 24.39,
+      "depth_m": 16.89,
       "height_m": 3.65,
       "floor_height_m": 3.65,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2232,
-      "material_count": 7,
+      "triangle_count": 2688,
+      "material_count": 8,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1233,7 +1417,7 @@
         "vision_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "role": "floor",
@@ -1248,21 +1432,24 @@
       ],
       "filename": "mid-century-glass-steel-pavilion_floor_typical_c.glb",
       "module_family": "mid-century-glass-steel-pavilion",
-      "width_m": 24.43,
-      "depth_m": 16.93,
+      "width_m": 24.39,
+      "depth_m": 16.89,
       "height_m": 3.65,
       "floor_height_m": 3.65,
       "repeatable_z": true,
       "allow_inset_footprint": true,
-      "triangle_count": 2232,
-      "material_count": 7,
+      "triangle_count": 2688,
+      "material_count": 8,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1272,7 +1459,7 @@
         "vision_glass"
       ],
       "ao_baked": true,
-      "size_bytes": 22742884
+      "size_bytes": 36841556
     },
     {
       "role": "crown",
@@ -1296,12 +1483,15 @@
       "triangle_count": 48,
       "material_count": 4,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1335,12 +1525,15 @@
       "triangle_count": 48,
       "material_count": 4,
       "texture_keys": [
+        "ceiling",
         "concrete",
         "crown",
         "facade",
         "floor_a",
         "floor_b",
+        "gallery_floor",
         "interior",
+        "interior_evening",
         "podium",
         "roof",
         "side",
@@ -1367,8 +1560,8 @@
     "uses_setback": false,
     "uses_crown": true,
     "height_m": 11.63,
-    "triangle_count": 12192,
-    "material_count": 7,
+    "triangle_count": 14064,
+    "material_count": 11,
     "stack": [
       {
         "role": "assembled",
@@ -1402,21 +1595,30 @@
       "pale_travertine_service_cores": 1,
       "floating_knife_edge_roofs": 1,
       "roof_overhang_axes": 2,
+      "occupied_depth_variants": [
+        "daylight_gallery",
+        "evening_gallery"
+      ],
+      "minimum_room_depth_m": 1.4,
       "physical_window_layers": [
-        "warm_gallery_depth",
-        "neutral_low_iron_pane",
-        "fine_mullion",
+        "day_or_evening_gallery_depth",
+        "physical_floor_and_ceiling_returns",
+        "crystal_low_iron_pane",
+        "fine_pressure_cap_and_mullion",
         "black_steel_column",
         "concrete_slab_edge"
       ]
     },
     "texture_keys": [
+      "ceiling",
       "concrete",
       "crown",
       "facade",
       "floor_a",
       "floor_b",
+      "gallery_floor",
       "interior",
+      "interior_evening",
       "podium",
       "roof",
       "side",

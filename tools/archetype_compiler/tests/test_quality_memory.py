@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-01-wave13-diverse-structural-grammar-v111"
+        == "2026-08-01-wave13-optical-pv-refinement-v112"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -97,7 +97,25 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "roof_orientation_and_fields_are_goalpost_locked",
         "screens_preserve_real_cavities",
         "environmental_systems_are_architecture",
+        "transparent_interiors_are_coherent_volumes",
+        "passive_windows_are_sectional_envelopes",
+        "photovoltaic_fields_are_discrete_modules",
     } <= principle_ids
+    assert any(
+        "stack of cubicles" in item["symptom"].lower()
+        and "per-pane occupation cards" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "same bright living-room photograph" in item["symptom"].lower()
+        and "blind blades" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "one stretched blue sheet" in item["symptom"].lower()
+        and "countable cell topology" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert any(
         "same generic box" in item["symptom"].lower()
         and "structural grammar" in item["correction"].lower()

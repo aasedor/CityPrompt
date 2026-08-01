@@ -1,12 +1,12 @@
 {
-  "schema": "passive-house-timber-block-skin@1",
+  "schema": "passive-house-timber-block-skin@2",
   "family": "passive-house-timber-block",
   "source": "textures/source/front-elevation-source-v1.png",
   "source_model": "gpt-image-2",
   "sources": {
     "archetype_goalpost": "textures/source/archetype-goalpost.png",
     "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
-    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_underlay": "textures/source/occupied-day-depth-source-v2.png",
     "reference_generation": "textures/source/reference-generation.json",
     "registered_openings": "textures/source/registered-openings.json",
     "registered_bands": "textures/source/registered-bands.json"
@@ -25,10 +25,10 @@
     ],
     "registered_surfaces": [
       "four_level_six_bay_vertical_larch_envelope",
-      "deep_real_triple_glazed_window_reveals",
+      "deep_real_triple_glazed_window_reveals_with_separate_room_depth",
       "mixed_clear_panes_insulated_panels_and_external_blinds",
       "deeply_recessed_central_timber_entrance",
-      "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+      "asymmetric_dual_pitch_roof_with_individually_framed_pv_modules_and_sedum_fields",
       "rooflights_zinc_gutters_and_downpipes",
       "gable_end_punched_windows_and_vertical_facade_pv_bank"
     ],
@@ -187,24 +187,46 @@
     },
     "interior": {
       "near": {
-        "albedo": "textures/pbr/near/occupied_passive_house_room_depth_albedo.png",
-        "normal": "textures/pbr/near/occupied_passive_house_room_depth_normal.png",
-        "roughness": "textures/pbr/near/occupied_passive_house_room_depth_roughness.png",
-        "ao": "textures/pbr/near/occupied_passive_house_room_depth_ao.png",
-        "depth": "textures/pbr/near/occupied_passive_house_room_depth_depth.png",
-        "emissive": "textures/pbr/near/occupied_passive_house_room_depth_emissive.png",
-        "glass_mask": "textures/pbr/near/occupied_passive_house_room_depth_glass.png",
-        "opaque_mask": "textures/pbr/near/occupied_passive_house_room_depth_opaque.png"
+        "albedo": "textures/pbr/near/occupied_passive_house_room_depth_day_albedo.png",
+        "normal": "textures/pbr/near/occupied_passive_house_room_depth_day_normal.png",
+        "roughness": "textures/pbr/near/occupied_passive_house_room_depth_day_roughness.png",
+        "ao": "textures/pbr/near/occupied_passive_house_room_depth_day_ao.png",
+        "depth": "textures/pbr/near/occupied_passive_house_room_depth_day_depth.png",
+        "emissive": "textures/pbr/near/occupied_passive_house_room_depth_day_emissive.png",
+        "glass_mask": "textures/pbr/near/occupied_passive_house_room_depth_day_glass.png",
+        "opaque_mask": "textures/pbr/near/occupied_passive_house_room_depth_day_opaque.png"
       },
       "far": {
-        "albedo": "textures/pbr/far/occupied_passive_house_room_depth_albedo.png",
-        "normal": "textures/pbr/far/occupied_passive_house_room_depth_normal.png",
-        "roughness": "textures/pbr/far/occupied_passive_house_room_depth_roughness.png",
-        "ao": "textures/pbr/far/occupied_passive_house_room_depth_ao.png",
-        "depth": "textures/pbr/far/occupied_passive_house_room_depth_depth.png",
-        "emissive": "textures/pbr/far/occupied_passive_house_room_depth_emissive.png",
-        "glass_mask": "textures/pbr/far/occupied_passive_house_room_depth_glass.png",
-        "opaque_mask": "textures/pbr/far/occupied_passive_house_room_depth_opaque.png"
+        "albedo": "textures/pbr/far/occupied_passive_house_room_depth_day_albedo.png",
+        "normal": "textures/pbr/far/occupied_passive_house_room_depth_day_normal.png",
+        "roughness": "textures/pbr/far/occupied_passive_house_room_depth_day_roughness.png",
+        "ao": "textures/pbr/far/occupied_passive_house_room_depth_day_ao.png",
+        "depth": "textures/pbr/far/occupied_passive_house_room_depth_day_depth.png",
+        "emissive": "textures/pbr/far/occupied_passive_house_room_depth_day_emissive.png",
+        "glass_mask": "textures/pbr/far/occupied_passive_house_room_depth_day_glass.png",
+        "opaque_mask": "textures/pbr/far/occupied_passive_house_room_depth_day_opaque.png"
+      }
+    },
+    "interior_evening": {
+      "near": {
+        "albedo": "textures/pbr/near/occupied_passive_house_room_depth_evening_albedo.png",
+        "normal": "textures/pbr/near/occupied_passive_house_room_depth_evening_normal.png",
+        "roughness": "textures/pbr/near/occupied_passive_house_room_depth_evening_roughness.png",
+        "ao": "textures/pbr/near/occupied_passive_house_room_depth_evening_ao.png",
+        "depth": "textures/pbr/near/occupied_passive_house_room_depth_evening_depth.png",
+        "emissive": "textures/pbr/near/occupied_passive_house_room_depth_evening_emissive.png",
+        "glass_mask": "textures/pbr/near/occupied_passive_house_room_depth_evening_glass.png",
+        "opaque_mask": "textures/pbr/near/occupied_passive_house_room_depth_evening_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/occupied_passive_house_room_depth_evening_albedo.png",
+        "normal": "textures/pbr/far/occupied_passive_house_room_depth_evening_normal.png",
+        "roughness": "textures/pbr/far/occupied_passive_house_room_depth_evening_roughness.png",
+        "ao": "textures/pbr/far/occupied_passive_house_room_depth_evening_ao.png",
+        "depth": "textures/pbr/far/occupied_passive_house_room_depth_evening_depth.png",
+        "emissive": "textures/pbr/far/occupied_passive_house_room_depth_evening_emissive.png",
+        "glass_mask": "textures/pbr/far/occupied_passive_house_room_depth_evening_glass.png",
+        "opaque_mask": "textures/pbr/far/occupied_passive_house_room_depth_evening_opaque.png"
       }
     },
     "larch": {

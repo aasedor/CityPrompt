@@ -6,7 +6,7 @@
   "provider": "OpenAI built-in image generation",
   "model": "gpt-image-2",
   "generated_at": "2026-08-01",
-  "status": "source-pack-complete",
+  "status": "source-pack-refined",
   "input_paths": [
     "/archetypes/buildings/mid_century_modern_pavilion_block/variant_0.png"
   ],
@@ -36,7 +36,8 @@
       "registered_surfaces": [
         "three_transparent_occupied_levels",
         "slender_black_steel_post_and_beam_frame",
-        "physical_low_iron_curtain_wall_and_warm_depth",
+        "physical_low_iron_curtain_wall_with_separate_day_and_evening_depth",
+        "deep_gallery_floor_ceiling_and_partition_returns",
         "visible_concrete_floor_plates",
         "pale_travertine_plinth_and_solid_service_core",
         "exceptionally_thin_floating_roof_with_deep_asymmetric_cantilever",
@@ -98,6 +99,42 @@
       "file": "soffit-material-source-v1.png",
       "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:soffit-material-source-v1",
       "role": "registered_material_crop:soffit-material-source-v1"
+    },
+    {
+      "file": "optical-construction-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee",
+      "role": "reviewed_optical_and_construction_refinement_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral optical construction source board for the exact mid-century glass-and-steel pavilion\nInput images: Image 1 is the approved pavilion glazing, structure, palette, transparency, and occupation authority. Image 2 is the prior construction plate; retain its realistic material scale but improve the optical separation.\nPrimary request: Create six equal square, straight-on orthographic samples in a precise 3-column by 2-row grid, separated only by thin neutral-grey gutters and with no labels.\nTop-left: crystal-clear neutral low-iron architectural glass, faint soft grey exterior-sky reflection variation and an extremely subtle green edge cast, no blue mirror tint, no room, no mullions, no frame, no facade.\nTop-center: bright daytime occupied gallery depth seen dead-on from outside, pale ceiling and floor receding at least three metres, one quiet partition and restrained furniture silhouettes, neutral daylight, no exterior glass, frame, mullion, facade, or directional perspective skew.\nTop-right: softly occupied evening gallery depth seen dead-on from outside, the same pale ceiling and floor, sparse warm downlights and dark recesses, warm but not brown or orange, no exterior glass, frame, mullion, facade, or directional perspective skew.\nBottom-left: pale acoustic ceiling material with small recessed downlight apertures at real architectural scale, evenly lit, no room perspective.\nBottom-center: pale honed gallery floor with fine construction joints at real scale, evenly lit, no room perspective.\nBottom-right: fine matte-black powder-coated steel pressure-cap finish with restrained rolled-metal grain, no beam, frame, grid, or silhouette.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: premium physically based photoreal architectural construction texture reference.\nLighting/mood: diffuse neutral overcast capture; no baked sunlight, cast shadow, vignette, or dramatic contrast.\nConstraints: exact 3 by 2 grid; each sample fills its cell edge-to-edge; clean orthographic registration; no labels; no text; no logos; no watermark; no whole windows or facades. Preserve the low-iron, highly transparent optical character and pale occupied interiors of Image 1.\nAvoid: smoked brown glass, blue mirror glass, repeated bottle-like lights, opaque room cards, complete window grids, cartoon materials, decorative borders."
+    },
+    {
+      "file": "vision-glass-material-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:vision-glass-material-source-v2",
+      "role": "registered_refinement_crop:vision-glass-material-source-v2"
+    },
+    {
+      "file": "occupied-day-depth-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:occupied-day-depth-source-v2",
+      "role": "registered_refinement_crop:occupied-day-depth-source-v2"
+    },
+    {
+      "file": "occupied-evening-depth-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:occupied-evening-depth-source-v2",
+      "role": "registered_refinement_crop:occupied-evening-depth-source-v2"
+    },
+    {
+      "file": "ceiling-material-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:ceiling-material-source-v2",
+      "role": "registered_refinement_crop:ceiling-material-source-v2"
+    },
+    {
+      "file": "gallery-floor-material-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:gallery-floor-material-source-v2",
+      "role": "registered_refinement_crop:gallery-floor-material-source-v2"
+    },
+    {
+      "file": "steel-material-source-v2.png",
+      "source_id": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee:steel-material-source-v2",
+      "role": "registered_refinement_crop:steel-material-source-v2"
     }
   ]
 }

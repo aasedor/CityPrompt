@@ -51,6 +51,7 @@ from generate_wave12_diverse_families import (  # noqa: E402
     add_layered_window_y,
     add_sphere,
     bounds_dimensions,
+    bsdf_for,
     configure_glass,
     configure_occupied,
     create_gable_roof,
@@ -341,6 +342,29 @@ def _pbr_material(
     return result
 
 
+def configure_photovoltaic(
+    mat: bpy.types.Material,
+    cfg: dict,
+) -> bpy.types.Material:
+    """Keep the authored cell grid readable beneath a restrained glass coat."""
+    bsdf = bsdf_for(mat)
+    bsdf.inputs["Roughness"].default_value = 0.16
+    if bsdf.inputs.get("Metallic"):
+        bsdf.inputs["Metallic"].default_value = 0.12
+    if bsdf.inputs.get("Coat Weight"):
+        bsdf.inputs["Coat Weight"].default_value = 0.42
+    if bsdf.inputs.get("Coat Roughness"):
+        bsdf.inputs["Coat Roughness"].default_value = 0.055
+    if bsdf.inputs.get("IOR"):
+        bsdf.inputs["IOR"].default_value = 1.48
+    mat.diffuse_color = (0.025, 0.045, 0.085, 1.0)
+    mat["photovoltaic_module"] = True
+    mat["cell_topology"] = "6_columns_x_10_rows"
+    mat["source_variant_id"] = cfg["variant_id"]
+    mat["generation_archetype_id"] = cfg["variant_id"]
+    return mat
+
+
 def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material], dict]:
     skin = load_skin_manifest(folder)
     if not skin:
@@ -374,10 +398,13 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
     if family == "mid-century-glass-steel-pavilion":
         mats = {
             "steel": wash_material(pbr("steel", "MAT_W13_PAVILION_MatteBlackSteel", metallic=0.44, saturation=0.20, value=0.50, normal=0.22), tint=(0.035, 0.038, 0.038), factor=0.48, roughness=0.42),
-            "glass": configure_glass(pbr("vision_glass", "MAT_W13_PAVILION_NeutralLowIronGlass", transmission=0.64, saturation=0.18, value=0.94, normal=0.04), cfg, tint=(0.48, 0.53, 0.52), transmission=0.88, alpha=0.25),
-            "interior": configure_occupied(pbr("interior", "MAT_W13_PAVILION_OccupiedGalleryDepth", saturation=0.62, value=0.78, normal=0.06), warmth=(0.30, 0.18, 0.08), emission=0.17),
+            "glass": configure_glass(pbr("vision_glass", "MAT_W13_PAVILION_CrystalLowIronGlass", transmission=0.70, saturation=0.10, value=0.88, normal=0.018), cfg, tint=(0.38, 0.42, 0.40), transmission=0.86, alpha=0.30),
+            "interior": configure_occupied(pbr("interior", "MAT_W13_PAVILION_DaylightGalleryDepth", saturation=0.30, value=1.04, normal=0.045), warmth=(0.08, 0.055, 0.025), emission=0.035),
+            "interior_evening": configure_occupied(pbr("interior_evening", "MAT_W13_PAVILION_EveningGalleryDepth", saturation=0.50, value=0.86, normal=0.045), warmth=(0.20, 0.11, 0.045), emission=0.10),
             "travertine": wash_material(pbr("travertine", "MAT_W13_PAVILION_HonedTravertine", saturation=0.54, value=0.98, normal=0.40), tint=(0.76, 0.72, 0.64), factor=0.20, roughness=0.62),
             "concrete": pbr("concrete", "MAT_W13_PAVILION_SmoothConcrete", saturation=0.24, value=0.92, normal=0.30),
+            "ceiling": pbr("ceiling", "MAT_W13_PAVILION_PaleAcousticCeiling", saturation=0.20, value=1.02, normal=0.16),
+            "gallery_floor": pbr("gallery_floor", "MAT_W13_PAVILION_PaleHonedGalleryFloor", saturation=0.22, value=0.98, normal=0.24),
             "soffit": pbr("soffit", "MAT_W13_PAVILION_RibbedAluminumSoffit", metallic=0.22, saturation=0.30, value=1.02, normal=0.32),
             "roof": pbr("roof", "MAT_W13_PAVILION_KnifeEdgeRoof", metallic=0.16, saturation=0.20, value=1.00, normal=0.18),
             "facade_skin": pbr("facade", "MAT_W13_PAVILION_RegisteredFacadeUnderlay", saturation=0.48, value=0.86, normal=0.08),
@@ -387,6 +414,8 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
             "crown_skin": pbr("crown", "MAT_W13_PAVILION_RegisteredRoofUnderlay", saturation=0.34, value=0.94, normal=0.08),
             "side_skin": pbr("side", "MAT_W13_PAVILION_RegisteredSideUnderlay", saturation=0.46, value=0.84, normal=0.08),
         }
+        mats["gallery_wall"] = material("MAT_W13_PAVILION_WarmWhiteGalleryWall", (0.78, 0.76, 0.70, 1.0), 0.72)
+        mats["gallery_wood"] = material("MAT_W13_PAVILION_OiledOakFurniture", (0.34, 0.20, 0.095, 1.0), 0.58)
         mats["frame"] = mats["steel"]
         return mats, skin
     if family == "timber-glass-transit-station-block":
@@ -413,10 +442,11 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
         mats = {
             "larch": wash_material(pbr("larch", "MAT_W13_PASSIVE_VerticalLarch", saturation=0.80, value=0.92, normal=0.48), tint=(0.58, 0.36, 0.16), factor=0.27, roughness=0.62),
             "frame": wash_material(pbr("frame", "MAT_W13_PASSIVE_DarkTimberAluminumFrame", metallic=0.20, saturation=0.24, value=0.48, normal=0.22), tint=(0.055, 0.05, 0.042), factor=0.46, roughness=0.44),
-            "glass": configure_glass(pbr("vision_glass", "MAT_W13_PASSIVE_NeutralTripleGlass", transmission=0.60, saturation=0.18, value=0.90, normal=0.04), cfg, tint=(0.37, 0.42, 0.41), transmission=0.82, alpha=0.30),
+            "glass": configure_glass(pbr("vision_glass", "MAT_W13_PASSIVE_HighPerformanceTripleGlass", transmission=0.66, saturation=0.10, value=0.84, normal=0.018), cfg, tint=(0.25, 0.28, 0.26), transmission=0.80, alpha=0.31),
             "blind": wash_material(pbr("blind", "MAT_W13_PASSIVE_ExteriorBlind", metallic=0.34, saturation=0.12, value=0.40, normal=0.18), tint=(0.025, 0.027, 0.028), factor=0.52, roughness=0.40),
-            "interior": configure_occupied(pbr("interior", "MAT_W13_PASSIVE_OccupiedRoomDepth", saturation=0.64, value=0.70, normal=0.06), warmth=(0.29, 0.17, 0.07), emission=0.14),
-            "pv": configure_glass(pbr("pv", "MAT_W13_PASSIVE_PhotovoltaicGlass", transmission=0.03, saturation=0.58, value=0.62, normal=0.14), cfg, tint=(0.035, 0.065, 0.12), transmission=0.03, alpha=1.0),
+            "interior": configure_occupied(pbr("interior", "MAT_W13_PASSIVE_DaylightRoomDepth", saturation=0.38, value=1.00, normal=0.045), warmth=(0.09, 0.055, 0.025), emission=0.025),
+            "interior_evening": configure_occupied(pbr("interior_evening", "MAT_W13_PASSIVE_EveningRoomDepth", saturation=0.52, value=0.82, normal=0.045), warmth=(0.22, 0.12, 0.045), emission=0.095),
+            "pv": configure_photovoltaic(pbr("pv", "MAT_W13_PASSIVE_MonocrystallinePVModule", metallic=0.10, saturation=0.76, value=0.72, normal=0.07), cfg),
             "green_roof": wash_material(pbr("green_roof", "MAT_W13_PASSIVE_SedumRoof", saturation=0.72, value=0.66, normal=0.60), tint=(0.24, 0.27, 0.095), factor=0.28, roughness=0.86),
             "zinc": pbr("zinc", "MAT_W13_PASSIVE_ZincEdges", metallic=0.62, saturation=0.12, value=0.68, normal=0.20),
             "facade_skin": pbr("facade", "MAT_W13_PASSIVE_RegisteredFacadeUnderlay", saturation=0.66, value=0.84, normal=0.10),
@@ -428,6 +458,9 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
         }
         mats["panel"] = material("MAT_W13_PASSIVE_PaleInsulatedPanel", (0.70, 0.70, 0.66, 1.0), 0.56)
         mats["larch_plain"] = material("MAT_W13_PASSIVE_LarchGableField", (0.58, 0.38, 0.19, 1.0), 0.64)
+        mats["room_shadow"] = material("MAT_W13_PASSIVE_DeepWarmRoomShadow", (0.095, 0.078, 0.060, 1.0), 0.84)
+        mats["curtain"] = material("MAT_W13_PASSIVE_NaturalLinenCurtain", (0.67, 0.64, 0.56, 1.0), 0.82)
+        mats["pv_frame"] = material("MAT_W13_PASSIVE_DarkAnodizedPVFrame", (0.055, 0.060, 0.065, 1.0), 0.27, 0.58)
         mats["roof"] = mats["zinc"]
         return mats, skin
 
@@ -1061,6 +1094,73 @@ def build_machiya(mats: dict, cfg: dict) -> list[bpy.types.Object]:
     return objects
 
 
+def add_pavilion_window_y(
+    objects: list[bpy.types.Object],
+    *,
+    prefix: str,
+    centre_x: float,
+    facade_y: float,
+    centre_z: float,
+    width: float,
+    height: float,
+    outward_sign: float,
+    mats: dict,
+    cfg: dict,
+    role: str,
+    phase: int,
+) -> None:
+    """Build a clear pane in front of a genuinely deep gallery section."""
+    pane_y = facade_y - outward_sign * 0.10
+    frame_y = facade_y + outward_sign * 0.025
+    interior_y = facade_y - outward_sign * 2.65
+    cavity_mid_y = (pane_y + interior_y) / 2
+    cavity_depth = abs(interior_y - pane_y)
+    add_box(objects, prefix + "_LowIronPane", (width - 0.10, 0.055, height - 0.08), (centre_x, pane_y, centre_z), mats["glass"], cfg, "high_transmission_low_iron_pane", role=role)
+    for edge, z, mat in (
+        ("Floor", centre_z - height / 2 + 0.035, mats["gallery_floor"]),
+        ("Ceiling", centre_z + height / 2 - 0.035, mats["ceiling"]),
+    ):
+        add_box(objects, prefix + f"_{edge}Return", (width - 0.08, cavity_depth, 0.055), (centre_x, cavity_mid_y, z), mat, cfg, "physical_gallery_floor_or_ceiling_return", role=role)
+    for x in (centre_x - width / 2, centre_x + width / 2):
+        add_box(objects, prefix + f"_PressureCap_{x:.2f}", (0.055, 0.105, height), (x, frame_y, centre_z), mats["steel"], cfg, "slender_pavilion_pressure_cap", role=role)
+    for z in (centre_z - height / 2, centre_z + height / 2):
+        add_box(objects, prefix + f"_Rail_{z:.2f}", (width, 0.105, 0.055), (centre_x, frame_y, z), mats["steel"], cfg, "slender_pavilion_pressure_cap", role=role)
+    add_box(objects, prefix + "_FineMullion", (0.045, 0.095, height - 0.08), (centre_x, frame_y, centre_z), mats["steel"], cfg, "fine_pavilion_mullion", role=role)
+
+
+def add_pavilion_window_x(
+    objects: list[bpy.types.Object],
+    *,
+    prefix: str,
+    centre_y: float,
+    facade_x: float,
+    centre_z: float,
+    width: float,
+    height: float,
+    outward_sign: float,
+    mats: dict,
+    cfg: dict,
+    role: str,
+    phase: int,
+) -> None:
+    pane_x = facade_x - outward_sign * 0.10
+    frame_x = facade_x + outward_sign * 0.025
+    interior_x = facade_x - outward_sign * 2.65
+    cavity_mid_x = (pane_x + interior_x) / 2
+    cavity_depth = abs(interior_x - pane_x)
+    add_box(objects, prefix + "_LowIronPane", (0.055, width - 0.10, height - 0.08), (pane_x, centre_y, centre_z), mats["glass"], cfg, "high_transmission_low_iron_pane", role=role)
+    for edge, z, mat in (
+        ("Floor", centre_z - height / 2 + 0.035, mats["gallery_floor"]),
+        ("Ceiling", centre_z + height / 2 - 0.035, mats["ceiling"]),
+    ):
+        add_box(objects, prefix + f"_{edge}Return", (cavity_depth, width - 0.08, 0.055), (cavity_mid_x, centre_y, z), mat, cfg, "physical_gallery_floor_or_ceiling_return", role=role)
+    for y in (centre_y - width / 2, centre_y + width / 2):
+        add_box(objects, prefix + f"_PressureCap_{y:.2f}", (0.105, 0.055, height), (frame_x, y, centre_z), mats["steel"], cfg, "slender_pavilion_pressure_cap", role=role)
+    for z in (centre_z - height / 2, centre_z + height / 2):
+        add_box(objects, prefix + f"_Rail_{z:.2f}", (0.105, width, 0.055), (frame_x, centre_y, z), mats["steel"], cfg, "slender_pavilion_pressure_cap", role=role)
+    add_box(objects, prefix + "_FineMullion", (0.095, 0.045, height - 0.08), (frame_x, centre_y, centre_z), mats["steel"], cfg, "fine_pavilion_mullion", role=role)
+
+
 def add_curtain_storey(
     objects: list[bpy.types.Object],
     *,
@@ -1076,24 +1176,31 @@ def add_curtain_storey(
     role: str = "assembled",
     structure_semantic: str = "complete_curtain_wall_structural_bay",
 ) -> None:
-    slab = 0.24
+    pavilion = cfg["family"] == "mid-century-glass-steel-pavilion"
+    slab = 0.20 if pavilion else 0.24
     add_box(objects, prefix + "_FloorPlate", (width, depth, slab), (0.0, 0.0, base_z + slab / 2), mats["concrete"], cfg, "visible_concrete_floor_plate", role=role)
     panel_height = height - 0.48
     centre_z = base_z + slab + panel_height / 2
     for face, y, sign in (("Front", -depth / 2, -1.0), ("Rear", depth / 2, 1.0)):
         pitch = width / front_bays
         for bay in range(front_bays):
-            _add_window_y_compact(objects, prefix=f"{prefix}_{face}_{bay}", centre_x=-width / 2 + pitch * (bay + 0.5), facade_y=y, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, centre_mullion=False)
+            if pavilion:
+                add_pavilion_window_y(objects, prefix=f"{prefix}_{face}_{bay}", centre_x=-width / 2 + pitch * (bay + 0.5), facade_y=y, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, phase=bay + sum(ord(char) for char in prefix))
+            else:
+                _add_window_y_compact(objects, prefix=f"{prefix}_{face}_{bay}", centre_x=-width / 2 + pitch * (bay + 0.5), facade_y=y, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, centre_mullion=False)
         for index in range(front_bays + 1):
             x = -width / 2 + pitch * index
-            add_box(objects, f"{prefix}_{face}_Structure_{index}", (0.17, 0.25, height), (x, y + sign * 0.09, base_z + height / 2), mats["steel"], cfg, structure_semantic, role=role)
+            add_box(objects, f"{prefix}_{face}_Structure_{index}", (0.14 if pavilion else 0.17, 0.21 if pavilion else 0.25, height), (x, y + sign * 0.09, base_z + height / 2), mats["steel"], cfg, structure_semantic, role=role)
     for face, x, sign in (("Left", -width / 2, -1.0), ("Right", width / 2, 1.0)):
         pitch = depth / side_bays
         for bay in range(side_bays):
-            _add_window_x_compact(objects, prefix=f"{prefix}_{face}_{bay}", centre_y=-depth / 2 + pitch * (bay + 0.5), facade_x=x, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role)
+            if pavilion:
+                add_pavilion_window_x(objects, prefix=f"{prefix}_{face}_{bay}", centre_y=-depth / 2 + pitch * (bay + 0.5), facade_x=x, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, phase=bay + sum(ord(char) for char in prefix))
+            else:
+                _add_window_x_compact(objects, prefix=f"{prefix}_{face}_{bay}", centre_y=-depth / 2 + pitch * (bay + 0.5), facade_x=x, centre_z=centre_z, width=pitch - 0.16, height=panel_height, outward_sign=sign, mats=mats, cfg=cfg, role=role)
         for index in range(side_bays + 1):
             y = -depth / 2 + pitch * index
-            add_box(objects, f"{prefix}_{face}_Structure_{index}", (0.25, 0.17, height), (x + sign * 0.09, y, base_z + height / 2), mats["steel"], cfg, structure_semantic, role=role)
+            add_box(objects, f"{prefix}_{face}_Structure_{index}", (0.21 if pavilion else 0.25, 0.14 if pavilion else 0.17, height), (x + sign * 0.09, y, base_z + height / 2), mats["steel"], cfg, structure_semantic, role=role)
 
 
 def build_pavilion(mats: dict, cfg: dict) -> list[bpy.types.Object]:
@@ -1102,6 +1209,13 @@ def build_pavilion(mats: dict, cfg: dict) -> list[bpy.types.Object]:
     add_box(objects, "PAVILION_TravertinePlinth", (25.0, 17.4, 0.46), (0.0, 0.0, 0.23), mats["travertine"], cfg, "fixed_honed_travertine_plinth")
     for floor in range(3):
         add_curtain_storey(objects, prefix=f"PAVILION_Floor_{floor}", width=width, depth=depth, base_z=0.35 + floor * storey, height=storey, front_bays=7, side_bays=5, mats=mats, cfg=cfg)
+        # A dark perimeter fascia hides the pale slab edge and creates the
+        # strong horizontal steel datum visible in the reference elevations.
+        slab_z = 0.35 + floor * storey + 0.13
+        for face, y in (("Front", -depth / 2 - 0.12), ("Rear", depth / 2 + 0.12)):
+            add_box(objects, f"PAVILION_{face}SlabFascia_{floor}", (width + 0.24, 0.16, 0.30), (0.0, y, slab_z), mats["steel"], cfg, "continuous_black_steel_slab_edge_fascia")
+        for face, x in (("Left", -width / 2 - 0.12), ("Right", width / 2 + 0.12)):
+            add_box(objects, f"PAVILION_{face}SlabFascia_{floor}", (0.16, depth + 0.24, 0.30), (x, 0.0, slab_z), mats["steel"], cfg, "continuous_black_steel_slab_edge_fascia")
         # Two-piece recessed downlights give the transparent pavilion real
         # occupied ceiling depth.  Their repeated circular trims are visible
         # through the low-iron glass without baking lights into every pane.
@@ -1109,11 +1223,19 @@ def build_pavilion(mats: dict, cfg: dict) -> list[bpy.types.Object]:
         for ix, x in enumerate((-8.0, -4.0, 0.0, 4.0, 8.0)):
             for iy, y in enumerate((-5.5, -1.85, 1.85, 5.5)):
                 add_cylinder(objects, f"PAVILION_CeilingLightTrim_{floor}_{ix}_{iy}", 0.12, 0.055, (x, y, ceiling_z), mats["steel"], cfg, "physical_recessed_gallery_downlight_trim", vertices=12)
-                add_cylinder(objects, f"PAVILION_CeilingLightLens_{floor}_{ix}_{iy}", 0.078, 0.060, (x, y, ceiling_z - 0.038), mats["interior"], cfg, "warm_recessed_gallery_downlight_lens", vertices=12)
+                add_cylinder(objects, f"PAVILION_CeilingLightLens_{floor}_{ix}_{iy}", 0.078, 0.060, (x, y, ceiling_z - 0.038), mats["interior_evening"], cfg, "warm_recessed_gallery_downlight_lens", vertices=12)
+        # Sparse real furniture and partitions make the transparent envelope
+        # spatial without turning each pane into the same opaque room picture.
+        occupied_z = 0.35 + floor * storey + 0.55
+        for item, (x, y) in enumerate(((-6.2 + floor, 2.8), (2.8, -2.5 + floor), (7.0 - floor, 4.3))):
+            add_box(objects, f"PAVILION_GalleryBench_{floor}_{item}", (2.2, 0.62, 0.13), (x, y, occupied_z + 0.42), mats["gallery_wood"], cfg, "sparse_physical_gallery_bench", role="assembled")
+            for leg in (-0.78, 0.78):
+                add_box(objects, f"PAVILION_GalleryBenchLeg_{floor}_{item}_{leg}", (0.07, 0.48, 0.42), (x + leg, y, occupied_z + 0.20), mats["steel"], cfg, "sparse_physical_gallery_bench_leg", role="assembled")
+        add_box(objects, f"PAVILION_GalleryPartition_{floor}", (0.10, 3.4, 2.45), (5.1 - floor * 1.8, 1.0, occupied_z + 1.25), mats["gallery_wall"], cfg, "restrained_gallery_partition_depth", role="assembled")
     # Continuous columns bind the modular storeys into one freestanding frame.
     for x in (-12.0, -8.57, -5.14, -1.71, 1.71, 5.14, 8.57, 12.0):
         for y in (-8.34, 8.34):
-            add_box(objects, f"PAVILION_ContinuousColumn_{x}_{y}", (0.22, 0.25, 11.15), (x, y, 5.75), mats["steel"], cfg, "continuous_freestanding_black_steel_column")
+            add_box(objects, f"PAVILION_ContinuousColumn_{x}_{y}", (0.18, 0.21, 11.15), (x, y, 5.75), mats["steel"], cfg, "continuous_freestanding_black_steel_column")
     # The service core is a genuine solid counterweight to the transparent box.
     add_box(objects, "PAVILION_TravertineServiceCore", (6.3, 7.0, 7.45), (-8.75, -4.65, 3.90), mats["travertine"], cfg, "fixed_pale_travertine_service_core")
     add_box(objects, "PAVILION_CoreDoor", (1.25, 0.12, 2.65), (-8.75, -8.22, 1.76), mats["steel"], cfg, "recessed_service_core_door")
@@ -1257,6 +1379,53 @@ def build_transit(mats: dict, cfg: dict) -> list[bpy.types.Object]:
     return objects
 
 
+def add_passive_window_y(
+    objects: list[bpy.types.Object],
+    *,
+    prefix: str,
+    centre_x: float,
+    facade_y: float,
+    centre_z: float,
+    width: float,
+    height: float,
+    outward_sign: float,
+    mats: dict,
+    cfg: dict,
+    role: str,
+    phase: int,
+) -> None:
+    """Recess split triple panes behind a complete insulated reveal."""
+    pane_y = facade_y - outward_sign * 0.34
+    frame_y = pane_y + outward_sign * 0.018
+    interior_y = facade_y - outward_sign * 1.52
+    reveal_mid_y = (facade_y + pane_y) / 2
+    reveal_depth = abs(pane_y - facade_y) + 0.05
+    # A deep warm room backing prevents the clear panes from looking empty.
+    # Only a minority of bays carry an authored occupied-room card; otherwise
+    # the facade would repeat the same photograph behind every window.
+    add_box(objects, prefix + "_RoomShadow", (width - 0.30, 0.055, height - 0.34), (centre_x, interior_y, centre_z), mats["room_shadow"], cfg, "deep_warm_passive_room_shadow", role=role)
+    if phase % 6 in {0, 5}:
+        occupied = mats["interior_evening"] if phase % 5 in {1, 4} else mats["interior"]
+        add_box(objects, prefix + "_SelectiveOccupiedDepth", (width - 0.88, 0.060, height - 0.70), (centre_x, interior_y - outward_sign * 0.025, centre_z), occupied, cfg, "selective_day_or_evening_passive_room_depth", role=role)
+    elif phase % 4 == 2:
+        curtain_width = max(0.28, (width - 0.55) * 0.22)
+        for side in (-1.0, 1.0):
+            curtain_x = centre_x + side * (width / 2 - curtain_width / 2 - 0.18)
+            add_box(objects, prefix + f"_LinenCurtain_{side}", (curtain_width, 0.065, height - 0.42), (curtain_x, interior_y - outward_sign * 0.035, centre_z), mats["curtain"], cfg, "physical_natural_linen_room_depth", role=role)
+    pane_width = (width - 0.17) / 2
+    for pane, offset in (("Left", -pane_width / 2 - 0.025), ("Right", pane_width / 2 + 0.025)):
+        add_box(objects, prefix + f"_{pane}TriplePane", (pane_width, 0.06, height - 0.13), (centre_x + offset, pane_y, centre_z), mats["glass"], cfg, "physical_split_high_performance_triple_pane", role=role)
+    for edge, x in (("Left", centre_x - width / 2), ("Right", centre_x + width / 2)):
+        add_box(objects, prefix + f"_{edge}InsulatedJamb", (0.15, reveal_depth, height), (x, reveal_mid_y, centre_z), mats["larch"], cfg, "deep_larch_insulated_window_return", role=role)
+    for edge, z in (("Sill", centre_z - height / 2), ("Head", centre_z + height / 2)):
+        add_box(objects, prefix + f"_{edge}InsulatedReturn", (width, reveal_depth, 0.15), (centre_x, reveal_mid_y, z), mats["larch"], cfg, "deep_larch_insulated_window_return", role=role)
+    for x in (centre_x - width / 2 + 0.055, centre_x + width / 2 - 0.055):
+        add_box(objects, prefix + f"_FrameJamb_{x:.2f}", (0.065, 0.11, height - 0.08), (x, frame_y, centre_z), mats["frame"], cfg, "slim_timber_aluminum_triple_glazing_frame", role=role)
+    for z in (centre_z - height / 2 + 0.055, centre_z + height / 2 - 0.055):
+        add_box(objects, prefix + f"_FrameRail_{z:.2f}", (width - 0.08, 0.11, 0.065), (centre_x, frame_y, z), mats["frame"], cfg, "slim_timber_aluminum_triple_glazing_frame", role=role)
+    add_box(objects, prefix + "_CentralMullion", (0.055, 0.10, height - 0.10), (centre_x, frame_y, centre_z), mats["frame"], cfg, "slim_timber_aluminum_triple_glazing_mullion", role=role)
+
+
 def add_passive_blind_y(
     objects: list[bpy.types.Object],
     *,
@@ -1270,10 +1439,13 @@ def add_passive_blind_y(
     cfg: dict,
     role: str = "assembled",
 ) -> None:
-    for slat in range(9):
-        z = centre_z - height / 2 + (slat + 0.5) * height / 9
+    add_box(objects, f"{prefix}_BlindHeadbox", (width + 0.10, 0.15, 0.18), (centre_x, y, centre_z + height / 2 + 0.09), mats["blind"], cfg, "integrated_external_blind_headbox", role=role)
+    for slat in range(11):
+        z = centre_z - height / 2 + (slat + 0.5) * height / 11
         blade = add_box(objects, f"{prefix}_BlindBlade_{slat}", (width, 0.11, 0.075), (centre_x, y, z), mats["blind"], cfg, "real_external_venetian_blind_blade", role=role)
         blade.rotation_euler[0] = math.radians(-12.0)
+    for side in (-1.0, 1.0):
+        add_cylinder(objects, f"{prefix}_BlindGuide_{side}", 0.012, height + 0.12, (centre_x + side * (width / 2 - 0.05), y - 0.025, centre_z), mats["blind"], cfg, "slim_external_blind_guide_cable", vertices=6, role=role)
 
 
 def add_passive_storey(
@@ -1290,7 +1462,7 @@ def add_passive_storey(
     width, depth, bays = 36.0, 20.0, 6
     pitch = width / bays
     add_box(objects, prefix + "_FloorPlate", (width, depth, 0.20), (0.0, 0.0, base_z + 0.10), mats["zinc"], cfg, "airtight_passive_floor_edge", role=role)
-    add_box(objects, prefix + "_FrontRegisteredUnderlay", (width - 0.5, 0.05, height - 0.25), (0.0, -depth / 2 + 0.48, base_z + height / 2), mats["floor_a_skin"] if floor_index % 2 == 0 else mats["floor_b_skin"], cfg, "registered_passive_bay_underlay", role=role)
+    add_box(objects, prefix + "_FrontRegisteredUnderlay", (width - 0.5, 0.05, height - 0.25), (0.0, -depth / 2 + 1.72, base_z + height / 2), mats["floor_a_skin"] if floor_index % 2 == 0 else mats["floor_b_skin"], cfg, "registered_passive_bay_underlay_behind_room_depth", role=role)
     centre_z = base_z + 0.40 + (height - 0.74) / 2
     window_height = height - 0.74
     for face, y, sign in (("Front", -depth / 2, -1.0), ("Rear", depth / 2, 1.0)):
@@ -1298,26 +1470,90 @@ def add_passive_storey(
             cx = -width / 2 + pitch * (bay + 0.5)
             if floor_index == 0 and face == "Front" and bay in (2, 3):
                 continue
-            _add_window_y_compact(objects, prefix=f"{prefix}_{face}_Window_{bay}", centre_x=cx, facade_y=y, centre_z=centre_z, width=3.45 if face == "Front" else 2.75, height=window_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, centre_mullion=True)
+            add_passive_window_y(objects, prefix=f"{prefix}_{face}_Window_{bay}", centre_x=cx, facade_y=y, centre_z=centre_z, width=4.25 if face == "Front" else 3.10, height=window_height, outward_sign=sign, mats=mats, cfg=cfg, role=role, phase=floor_index * bays + bay + (0 if face == "Front" else 2))
             if face == "Front" and floor_index in (1, 2) and bay in (0, 1, 3, 4):
-                add_passive_blind_y(objects, prefix=f"{prefix}_{face}_{bay}", centre_x=cx, y=y - 0.22, centre_z=centre_z, width=3.38, height=window_height * 0.54, mats=mats, cfg=cfg, role=role)
+                add_passive_blind_y(objects, prefix=f"{prefix}_{face}_{bay}", centre_x=cx, y=y - sign * 0.12, centre_z=centre_z, width=4.05, height=window_height * (0.48 if (floor_index + bay) % 2 else 0.62), mats=mats, cfg=cfg, role=role)
             if face == "Front" and floor_index == 3 and bay in (0, 2, 3, 5):
-                add_box(objects, f"{prefix}_{face}_InsulatedPanel_{bay}", (3.30, 0.10, 0.85), (cx, y - 0.15, centre_z - 0.45), mats["panel"], cfg, "pale_insulated_balcony_panel", role=role)
+                add_box(objects, f"{prefix}_{face}_InsulatedPanel_{bay}", (4.05, 0.08, 0.72), (cx, y - sign * 0.30, centre_z - 0.49), mats["panel"], cfg, "pale_translucent_insulated_balcony_panel", role=role)
         add_box(objects, f"{prefix}_{face}_LarchSpandrel", (width, 0.48, 0.54), (0.0, y, base_z + 0.37), mats["larch"], cfg, "continuous_vertical_larch_spandrel", role=role)
         for index in range(bays + 1):
             x = -width / 2 + pitch * index
-            add_box(objects, f"{prefix}_{face}_DeepLarchPier_{index}", (1.05, 0.58, height), (x, y, base_z + height / 2), mats["larch"], cfg, "deep_insulated_larch_window_reveal", role=role)
+            add_box(objects, f"{prefix}_{face}_DeepLarchPier_{index}", (0.88, 0.58, height), (x, y, base_z + height / 2), mats["larch"], cfg, "deep_insulated_larch_window_reveal", role=role)
             for offset in (-0.28, 0.0, 0.28):
-                add_box(objects, f"{prefix}_{face}_PierBoardJoint_{index}_{offset}", (0.032, 0.625, height - 0.18), (x + offset, y + sign * 0.025, base_z + height / 2), mats["frame"], cfg, "fine_vertical_larch_pier_board_joint", role=role)
+                add_box(objects, f"{prefix}_{face}_PierBoardJoint_{index}_{offset}", (0.018, 0.625, height - 0.18), (x + offset, y + sign * 0.025, base_z + height / 2), mats["frame"], cfg, "fine_vertical_larch_pier_board_joint", role=role)
         for bay in range(bays):
             cx = -width / 2 + pitch * (bay + 0.5)
             for offset in (-1.65, 0.0, 1.65):
-                add_box(objects, f"{prefix}_{face}_SpandrelBoardJoint_{bay}_{offset}", (0.032, 0.585, 0.46), (cx + offset, y + sign * 0.025, base_z + 0.37), mats["frame"], cfg, "fine_vertical_larch_spandrel_board_joint", role=role)
+                add_box(objects, f"{prefix}_{face}_SpandrelBoardJoint_{bay}_{offset}", (0.016, 0.585, 0.46), (cx + offset, y + sign * 0.025, base_z + 0.37), mats["frame"], cfg, "fine_vertical_larch_spandrel_board_joint", role=role)
     # Solid gable-end construction has smaller punched windows.
     for face, x, sign in (("Left", -width / 2, -1.0), ("Right", width / 2, 1.0)):
         add_box(objects, f"{prefix}_{face}_LarchWall", (0.46, depth, height), (x, 0.0, base_z + height / 2), mats["larch"], cfg, "complete_vertical_larch_gable_end", role=role)
         for y in (-4.8, 4.8):
             _add_window_x_compact(objects, prefix=f"{prefix}_{face}_Window_{y}", centre_y=y, facade_x=x + sign * 0.05, centre_z=centre_z, width=1.65, height=1.75, outward_sign=sign, mats=mats, cfg=cfg, role=role)
+
+
+def slope_point(
+    *,
+    centre_y: float,
+    centre_z: float,
+    local_y: float,
+    angle: float,
+    lift: float,
+) -> tuple[float, float]:
+    return (
+        centre_y + local_y * math.cos(angle) - lift * math.sin(angle),
+        centre_z + local_y * math.sin(angle) + lift * math.cos(angle),
+    )
+
+
+def add_slope_pv_module(
+    objects: list[bpy.types.Object],
+    *,
+    prefix: str,
+    centre_x: float,
+    local_y: float,
+    width: float,
+    depth: float,
+    roof_centre_y: float,
+    roof_centre_z: float,
+    angle: float,
+    mats: dict,
+    cfg: dict,
+    role: str,
+) -> None:
+    lift = 0.19
+    y, z = slope_point(centre_y=roof_centre_y, centre_z=roof_centre_z, local_y=local_y, angle=angle, lift=lift)
+    panel = add_box(objects, prefix + "_CellLaminate", (width, depth, 0.065), (centre_x, y, z), mats["pv"], cfg, "individual_6_by_10_cell_photovoltaic_module", role=role)
+    panel.rotation_euler[0] = angle
+    for edge, offset in (("Low", -depth / 2), ("High", depth / 2)):
+        rail_y, rail_z = slope_point(centre_y=roof_centre_y, centre_z=roof_centre_z, local_y=local_y + offset, angle=angle, lift=lift + 0.025)
+        rail = add_box(objects, prefix + f"_{edge}Frame", (width + 0.045, 0.040, 0.082), (centre_x, rail_y, rail_z), mats["pv_frame"], cfg, "dark_anodized_photovoltaic_module_frame", role=role)
+        rail.rotation_euler[0] = angle
+    for edge, offset in (("Left", -width / 2), ("Right", width / 2)):
+        rail = add_box(objects, prefix + f"_{edge}Frame", (0.040, depth + 0.045, 0.082), (centre_x + offset, y, z), mats["pv_frame"], cfg, "dark_anodized_photovoltaic_module_frame", role=role)
+        rail.rotation_euler[0] = angle
+
+
+def add_vertical_pv_module_x(
+    objects: list[bpy.types.Object],
+    *,
+    prefix: str,
+    facade_x: float,
+    centre_y: float,
+    centre_z: float,
+    width: float,
+    height: float,
+    outward_sign: float,
+    mats: dict,
+    cfg: dict,
+) -> None:
+    panel_x = facade_x + outward_sign * 0.04
+    add_box(objects, prefix + "_CellLaminate", (0.065, width, height), (panel_x, centre_y, centre_z), mats["pv"], cfg, "vertical_6_by_10_cell_photovoltaic_module")
+    frame_x = panel_x + outward_sign * 0.035
+    for edge, y in (("Left", centre_y - width / 2), ("Right", centre_y + width / 2)):
+        add_box(objects, prefix + f"_{edge}Frame", (0.085, 0.045, height + 0.045), (frame_x, y, centre_z), mats["pv_frame"], cfg, "dark_anodized_photovoltaic_module_frame")
+    for edge, z in (("Low", centre_z - height / 2), ("High", centre_z + height / 2)):
+        add_box(objects, prefix + f"_{edge}Frame", (0.085, width + 0.045, 0.045), (frame_x, centre_y, z), mats["pv_frame"], cfg, "dark_anodized_photovoltaic_module_frame")
 
 
 def add_passive_roof(
@@ -1337,12 +1573,23 @@ def add_passive_roof(
     front.rotation_euler[0] = front_angle
     rear = add_box(objects, "PASSIVE_RearGreenRoofStructure", (width, rear_depth, 0.24), (0.0, 6.25, base_z + 2.2), mats["green_roof"], cfg, "asymmetric_sedum_roof_plane", role=role)
     rear.rotation_euler[0] = rear_angle
-    # The locked public roof plane is split along the slope: a continuous PV
-    # band near the ridge and a planted band with rooflights near the eave.
-    # Keep both finish fields clearly proud of the zinc carrier.  A merely
-    # coplanar finish flickers or disappears after glTF quantisation.
-    pv = add_box(objects, "PASSIVE_ContinuousSouthPVField", (35.8, front_depth * 0.44, 0.11), (0.0, -0.88, base_z + 3.58), mats["pv"], cfg, "continuous_sun_facing_photovoltaic_field", role=role)
-    pv.rotation_euler[0] = front_angle
+    # The upper roof field is a real racked array: each module retains one
+    # complete cell texture, perimeter frame and visible inter-module gap.
+    field_width = 35.6
+    columns = 30
+    rows = 3
+    column_gap = 0.075
+    row_gap = 0.11
+    panel_width = (field_width - column_gap * (columns - 1)) / columns
+    panel_depth = (5.45 - row_gap * (rows - 1)) / rows
+    for row in range(rows):
+        local_y = 0.58 + panel_depth / 2 + row * (panel_depth + row_gap)
+        for column in range(columns):
+            x = -field_width / 2 + panel_width / 2 + column * (panel_width + column_gap)
+            add_slope_pv_module(objects, prefix=f"PASSIVE_RoofPVModule_{row}_{column}", centre_x=x, local_y=local_y, width=panel_width, depth=panel_depth, roof_centre_y=-4.25, roof_centre_z=base_z + 2.2, angle=front_angle, mats=mats, cfg=cfg, role=role)
+        rail_y, rail_z = slope_point(centre_y=-4.25, centre_z=base_z + 2.2, local_y=local_y, angle=front_angle, lift=0.125)
+        support = add_box(objects, f"PASSIVE_PVContinuousMountingRail_{row}", (field_width + 0.12, 0.075, 0.075), (0.0, rail_y, rail_z), mats["pv_frame"], cfg, "continuous_photovoltaic_mounting_rail", role=role)
+        support.rotation_euler[0] = front_angle
     front_sedum = add_box(objects, "PASSIVE_PublicSedumRoofBand", (35.8, front_depth * 0.54, 0.12), (0.0, -7.12, base_z + 1.37), mats["green_roof"], cfg, "continuous_public_sedum_roof_band", role=role)
     front_sedum.rotation_euler[0] = front_angle
     # Rooflights interrupt the public sedum field as real proud glazed units.
@@ -1384,7 +1631,7 @@ def build_passive(mats: dict, cfg: dict) -> list[bpy.types.Object]:
     # Side-wall PV bank is separate from the roof array.
     for row, zc in enumerate((6.2, 9.25)):
         for column, y in enumerate((3.8, 7.0)):
-            add_box(objects, f"PASSIVE_GablePV_{row}_{column}", (0.11, 2.75, 2.55), (18.30, y, zc), mats["pv"], cfg, "vertical_gable_photovoltaic_bank")
+            add_vertical_pv_module_x(objects, prefix=f"PASSIVE_GablePV_{row}_{column}", facade_x=18.28, centre_y=y, centre_z=zc, width=2.75, height=2.55, outward_sign=1.0, mats=mats, cfg=cfg)
     for x in (-17.7, 17.7):
         add_cylinder(objects, f"PASSIVE_Downpipe_{x}", 0.07, 12.5, (x, -10.35, 6.45), mats["zinc"], cfg, "zinc_rainwater_downpipe", vertices=10)
     add_passive_roof(objects, base_z=z, mats=mats, cfg=cfg)
@@ -1792,11 +2039,11 @@ def massing_graph(cfg: dict) -> dict:
     if family == "restored-kyoto-machiya":
         return {"type": "fixed_two_storey_machiya_with_repeatable_complete_post_and_koshi_bays", "occupied_storeys": 2, "post_and_beam_bays": 6, "continuous_upper_koshi_screen": True, "real_gap_preserving_lattice": True, "deep_recessed_entries": 1, "plain_indigo_noren_panels": 3, "large_kawara_gable_roofs": 1, "lower_tiled_street_eaves": 1, "individual_kawara_rows": 22, "integral_side_garden": True, "physical_window_layers": ["warm_occupied_depth", "smoky_pane", "real_koshi_screen", "timber_post_and_beam", "deep_eave"]}
     if family == "mid-century-glass-steel-pavilion":
-        return {"type": "fixed_three_level_transparent_pavilion_with_repeatable_complete_structural_bays", "occupied_storeys": 3, "front_structural_bays": 7, "side_structural_bays": 5, "continuous_freestanding_columns": True, "pale_travertine_service_cores": 1, "floating_knife_edge_roofs": 1, "roof_overhang_axes": 2, "physical_window_layers": ["warm_gallery_depth", "neutral_low_iron_pane", "fine_mullion", "black_steel_column", "concrete_slab_edge"]}
+        return {"type": "fixed_three_level_transparent_pavilion_with_repeatable_complete_structural_bays", "occupied_storeys": 3, "front_structural_bays": 7, "side_structural_bays": 5, "continuous_freestanding_columns": True, "pale_travertine_service_cores": 1, "floating_knife_edge_roofs": 1, "roof_overhang_axes": 2, "occupied_depth_variants": ["daylight_gallery", "evening_gallery"], "minimum_room_depth_m": 1.4, "physical_window_layers": ["day_or_evening_gallery_depth", "physical_floor_and_ceiling_returns", "crystal_low_iron_pane", "fine_pressure_cap_and_mullion", "black_steel_column", "concrete_slab_edge"]}
     if family == "timber-glass-transit-station-block":
         return {"type": "fixed_six_level_station_with_repeatable_glazed_and_timber_louver_bays", "occupied_storeys": 6, "transparent_concourse_levels": 3, "timber_upper_levels": 3, "front_bays": 12, "visible_escalators": 2, "recessed_public_doors": 5, "integral_glass_canopies": 1, "external_louver_blades_per_screen": 10, "extensive_green_roofs": 1, "photovoltaic_canopy_rows": 2, "physical_window_layers": ["occupied_transit_depth", "high_transmission_pane", "pressure_cap", "floor_plate", "timber_rainscreen", "real_external_louver"]}
     if family == "passive-house-timber-block":
-        return {"type": "fixed_four_level_passive_timber_block_with_repeatable_complete_environmental_bays", "occupied_storeys": 4, "front_bays": 6, "deep_insulated_reveals": True, "physical_triple_glazing": True, "real_external_blind_sets": 8, "deep_recessed_entries": 1, "asymmetric_roof_planes": 2, "continuous_pv_fields": 1, "sedum_roof_fields": 1, "physical_rooflights": 3, "vertical_gable_pv_panels": 4, "physical_window_layers": ["warm_occupied_depth", "neutral_triple_pane", "dark_frame", "deep_insulated_reveal", "real_external_blind", "vertical_larch_rainscreen"]}
+        return {"type": "fixed_four_level_passive_timber_block_with_repeatable_complete_environmental_bays", "occupied_storeys": 4, "front_bays": 6, "deep_insulated_reveals": True, "physical_triple_glazing": True, "split_panes_per_opening": 2, "occupied_depth_variants": ["daylight_room", "evening_room"], "real_external_blind_sets": 8, "deep_recessed_entries": 1, "asymmetric_roof_planes": 2, "individually_framed_roof_pv_modules": 90, "pv_cell_topology": "6_columns_x_10_rows", "continuous_pv_mounting_rails": 3, "sedum_roof_fields": 1, "physical_rooflights": 3, "vertical_gable_pv_panels": 4, "physical_window_layers": ["day_or_evening_occupied_depth", "split_neutral_triple_panes", "slim_dark_frame", "physical_larch_head_sill_and_jamb_returns", "real_blind_blades_headbox_and_guides", "vertical_larch_rainscreen"]}
     return {
         "type": "fixed_art_deco_setback_landmark_with_repeatable_complete_terracotta_bays",
         "occupied_storeys": 15,
@@ -1831,16 +2078,16 @@ def facade_sheet_contract(skin: dict, cfg: dict) -> dict:
             fixed = ["podium/entrance", "corner returns", "crown", "roof", "noren entry", "lower street eave", "gable ends", "ridge cap", "gutters and downpipes"]
         elif family == "mid-century-glass-steel-pavilion":
             contract["bay_strategy"] = {"fixed_end_bays": ["travertine_service_core", "double_entry", "cantilevered_roof_edges"], "repeatable_middle_bays": list(range(7)), "middle_variants": ["typical_a", "typical_b", "typical_c"], "rule": "Repeat one complete 3.43 metre steel-and-glass bay containing pane, occupied depth, mullion, column and slab edge."}
-            coverage = {"front": "three transparent occupied levels and a recessed double entry below the floating roof", "left": "wrapped clear curtain wall and deep roof overhang", "right": "pale travertine service core beside complete glazed structural bays", "rear": "complete occupied rear curtain wall, service door and continuous steel frame", "roof": "one exceptionally thin warm-white roof plane with deep two-axis cantilever and crisp fascia"}
+            coverage = {"front": "three transparent occupied levels with crystal low-iron panes, fine pressure caps, deep day/evening gallery cavities and a recessed double entry below the floating roof", "left": "wrapped clear curtain wall with physical floor and ceiling returns beneath the deep roof overhang", "right": "pale travertine service core beside complete transparent structural bays", "rear": "complete day/evening occupied rear curtain wall, service door and continuous steel frame", "roof": "one exceptionally thin warm-white roof plane with deep two-axis cantilever and crisp fascia"}
             fixed = ["podium/entrance", "corner returns", "crown", "roof", "travertine service core", "double entry", "continuous steel frame", "knife-edge roof"]
         elif family == "timber-glass-transit-station-block":
             contract["bay_strategy"] = {"fixed_end_bays": ["five_public_doors", "broad_integral_canopy", "glass_to_timber_transition", "green_roof_and_pv_rows"], "repeatable_middle_bays": list(range(12)), "middle_variants": ["typical_a", "typical_b", "typical_c"], "rule": "Repeat a whole 4.83 metre transit bay with pane, cap, slab, occupied depth and either timber rainscreen plus real louvers or complete concourse glazing."}
             coverage = {"front": "three transparent concourse levels with visible circulation, five doors and broad integral canopy below three timber-louver levels", "left": "complete glazed public base and wrapped timber upper construction", "right": "complete glazed public base and wrapped timber upper construction", "rear": "occupied platform-side curtain wall and alternating timber-louver bays", "roof": "extensive green roof, screened service zone, restrained planting and two long PV canopy rows"}
             fixed = ["podium/entrance", "corner returns", "crown", "roof", "public door bank", "integral glass canopy", "visible escalators", "glass-to-timber transition", "green roof", "two PV rows"]
         else:
-            contract["bay_strategy"] = {"fixed_end_bays": ["deep_central_entry", "larch_gable_ends", "asymmetric_environmental_roof", "vertical_gable_pv_bank"], "repeatable_middle_bays": list(range(6)), "middle_variants": ["typical_a", "typical_b", "typical_c"], "rule": "Repeat one complete six metre passive bay with larch piers, deep insulated reveal, triple pane, occupied depth and optional real blind or insulated panel."}
-            coverage = {"front": "six deep triple-glazed larch bays, real external blinds, pale panels and recessed timber entrance", "left": "complete larch gable with small punched windows", "right": "complete larch gable with small openings and vertical PV bank", "rear": "complete occupied secondary facade with mixed deep openings, service doors and drainage", "roof": "asymmetric front PV and rear sedum planes, three rooflights, zinc ridge, gutters and downpipes"}
-            fixed = ["podium/entrance", "corner returns", "crown", "roof", "deep central entry", "larch gable ends", "continuous PV field", "sedum roof", "rooflights", "vertical PV bank"]
+            contract["bay_strategy"] = {"fixed_end_bays": ["deep_central_entry", "larch_gable_ends", "asymmetric_environmental_roof", "vertical_gable_pv_bank"], "repeatable_middle_bays": list(range(6)), "middle_variants": ["typical_a", "typical_b", "typical_c"], "rule": "Repeat one complete six metre passive bay with larch piers, physical insulated returns, split triple panes, alternating occupied depth and optional in-reveal blind or insulated panel."}
+            coverage = {"front": "six deep split-triple-glazed larch bays, alternating day/evening room depth, in-reveal external blinds, pale panels and recessed timber entrance", "left": "complete larch gable with small punched windows", "right": "complete larch gable with small openings and four individually framed vertical PV modules", "rear": "complete occupied secondary facade with mixed deep openings, service doors and drainage", "roof": "ninety individually framed 6x10-cell PV modules on three physical mounting rails above the upper slope, sedum lower field, three rooflights, zinc ridge, gutters and downpipes"}
+            fixed = ["podium/entrance", "corner returns", "crown", "roof", "deep central entry", "larch gable ends", "ninety-module photovoltaic array", "sedum roof", "rooflights", "four-module vertical PV bank"]
         contract["assembly_contract"] = {"fixed": fixed, "repeatable": ["typical_a", "typical_b", "typical_c"], "side_elevations": coverage["left"] + "; " + coverage["right"], "elevation_coverage": coverage, "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."}
         return contract
     contract["bay_strategy"] = {

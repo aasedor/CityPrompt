@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-08-01-wave13-diverse-structural-grammar-v111",
+  "memory_version": "2026-08-01-wave13-optical-pv-refinement-v112",
   "archetype_id": "eco_urban_bioclimatic_block",
   "family": "passive-house-timber-block",
   "status": "pass",
@@ -99,17 +99,17 @@
       {
         "id": "missing_side_elevation_wrap",
         "passed": true,
-        "detail": "complete larch gable with small punched windows; complete larch gable with small openings and vertical PV bank"
+        "detail": "complete larch gable with small punched windows; complete larch gable with small openings and four individually framed vertical PV modules"
       },
       {
         "id": "material_count_warning",
         "passed": true,
-        "detail": "12 assembled materials; review above 20"
+        "detail": "16 assembled materials; review above 20"
       },
       {
         "id": "city_triangle_budget",
         "passed": true,
-        "detail": "12206 assembled triangles; budget 12000-180000"
+        "detail": "21550 assembled triangles; budget 12000-180000"
       }
     ]
   }

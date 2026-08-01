@@ -119,6 +119,23 @@ Constraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; strai
 Avoid: chrome, blue mirrored glass, beige marble, coarse concrete, cartoon materials, dramatic lighting, perspective scene, decorative border."""
 
 
+PAVILION_OPTICAL_REFINEMENT_PROMPT = """Use case: photorealistic-natural
+Asset type: shadow-neutral optical construction source board for the exact mid-century glass-and-steel pavilion
+Input images: Image 1 is the approved pavilion glazing, structure, palette, transparency, and occupation authority. Image 2 is the prior construction plate; retain its realistic material scale but improve the optical separation.
+Primary request: Create six equal square, straight-on orthographic samples in a precise 3-column by 2-row grid, separated only by thin neutral-grey gutters and with no labels.
+Top-left: crystal-clear neutral low-iron architectural glass, faint soft grey exterior-sky reflection variation and an extremely subtle green edge cast, no blue mirror tint, no room, no mullions, no frame, no facade.
+Top-center: bright daytime occupied gallery depth seen dead-on from outside, pale ceiling and floor receding at least three metres, one quiet partition and restrained furniture silhouettes, neutral daylight, no exterior glass, frame, mullion, facade, or directional perspective skew.
+Top-right: softly occupied evening gallery depth seen dead-on from outside, the same pale ceiling and floor, sparse warm downlights and dark recesses, warm but not brown or orange, no exterior glass, frame, mullion, facade, or directional perspective skew.
+Bottom-left: pale acoustic ceiling material with small recessed downlight apertures at real architectural scale, evenly lit, no room perspective.
+Bottom-center: pale honed gallery floor with fine construction joints at real scale, evenly lit, no room perspective.
+Bottom-right: fine matte-black powder-coated steel pressure-cap finish with restrained rolled-metal grain, no beam, frame, grid, or silhouette.
+Scene/backdrop: flat evenly lit material-capture setup.
+Style/medium: premium physically based photoreal architectural construction texture reference.
+Lighting/mood: diffuse neutral overcast capture; no baked sunlight, cast shadow, vignette, or dramatic contrast.
+Constraints: exact 3 by 2 grid; each sample fills its cell edge-to-edge; clean orthographic registration; no labels; no text; no logos; no watermark; no whole windows or facades. Preserve the low-iron, highly transparent optical character and pale occupied interiors of Image 1.
+Avoid: smoked brown glass, blue mirror glass, repeated bottle-like lights, opaque room cards, complete window grids, cartoon materials, decorative borders."""
+
+
 TRANSIT_GOALPOST_PROMPT = """Use case: photorealistic-natural
 Asset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family
 Input images: Image 1 is the sole archetype, massing, programme, structural rhythm, proportion, and palette authority.
@@ -185,6 +202,23 @@ Style/medium: physically based photoreal architectural construction texture refe
 Lighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.
 Constraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no logos; no watermark; no complete facade; no repeated window grid.
 Avoid: orange plastic siding, chrome frames, blue mirrored glass, painted blind texture, cartoon sedum, dramatic lighting, perspective scene, decorative border."""
+
+
+PASSIVE_OPTICAL_PV_REFINEMENT_PROMPT = """Use case: photorealistic-natural
+Asset type: shadow-neutral photovoltaic and window construction source board for the exact passive-house timber block
+Input images: Image 1 is the approved passive-house roof, photovoltaic module, glazing, blind, and occupation authority. Image 2 is the prior construction plate and exact larch/frame palette authority.
+Primary request: Create six equal square, straight-on orthographic samples in a precise 3-column by 2-row grid, separated only by thin neutral-grey gutters and with no labels.
+Top-left: one complete contemporary dark-blue monocrystalline photovoltaic module viewed perfectly straight-on, realistic silver-black perimeter frame, visible dark inter-cell gaps, fine white busbars, six columns by ten rows of individual cells, uniform overcast reflection, generous narrow margin around the module, no roof or surrounding scene.
+Top-center: neutral high-performance triple glazing viewed straight-on, restrained grey daylight reflection, a faint green edge cast and subtle optical depth, no blue mirror tint, no frame, mullions, room, or facade.
+Top-right: dark bronze-charcoal timber-aluminum passive-house frame and deep insulated reveal finish with fine matte grain, shown as material strips only, no whole window.
+Bottom-left: bright daytime occupied passive-house room depth viewed dead-on from outside, pale timber floor and ceiling, sheer linen curtain partly drawn, quiet furniture silhouettes and garden-toned daylight beyond, at least three metres of visual depth, no exterior glass, frame, mullion, facade, or skewed perspective.
+Bottom-center: softly occupied evening passive-house room depth viewed dead-on from outside, same pale timber interior with one restrained warm lamp and darker recesses, warm but not orange, no exterior glass, frame, mullion, facade, or skewed perspective.
+Bottom-right: black exterior venetian blind construction at real scale, separate fine horizontal metal blades with genuine dark gaps, two slim guide cables and a compact headbox, straight-on, no complete window or wall.
+Scene/backdrop: flat evenly lit material-capture setup.
+Style/medium: premium physically based photoreal architectural construction texture reference.
+Lighting/mood: diffuse neutral overcast capture; no baked sunlight, cast shadows, vignette, or dramatic contrast.
+Constraints: exact 3 by 2 grid; each cell cleanly registered; no labels; no text; no logos; no watermark; no full facade. Photovoltaic cells must be countable and module-scale. Glass and occupied room depth must remain separate optical layers.
+Avoid: one giant solar roof texture, diagonal PV perspective, amorphous blue sheet, blue mirrored windows, opaque window pictures, flat black blind texture, cartoon materials, decorative borders."""
 
 
 GOALPOST_CELLS = {
@@ -386,7 +420,7 @@ FAMILIES: dict[str, dict] = {
     "mid-century-glass-steel-pavilion": {
         "archetype_id": "mid_century_modern_pavilion_block",
         "variant_id": "mid_century_pavilion_glass_steel",
-        "skin_schema": "mid-century-glass-steel-pavilion-skin@1",
+        "skin_schema": "mid-century-glass-steel-pavilion-skin@2",
         "goalpost_cells": GOALPOST_CELLS,
         "material_cells": {
             "steel-material-source-v1.png": (0.002, 0.002, 0.331, 0.498),
@@ -396,12 +430,21 @@ FAMILIES: dict[str, dict] = {
             "occupied-depth-source-v1.png": (0.335, 0.502, 0.665, 0.998),
             "soffit-material-source-v1.png": (0.669, 0.502, 0.998, 0.998),
         },
+        "refinement_source": "optical-construction-source-v2.png",
+        "refinement_cells": {
+            "vision-glass-material-source-v2.png": (0.002, 0.002, 0.331, 0.498),
+            "occupied-day-depth-source-v2.png": (0.335, 0.002, 0.665, 0.498),
+            "occupied-evening-depth-source-v2.png": (0.669, 0.002, 0.998, 0.498),
+            "ceiling-material-source-v2.png": (0.002, 0.502, 0.331, 0.998),
+            "gallery-floor-material-source-v2.png": (0.335, 0.502, 0.665, 0.998),
+            "steel-material-source-v2.png": (0.669, 0.502, 0.998, 0.998),
+        },
         "config": {
             "archetype_id": "mid_century_modern_pavilion_block",
             "variant_id": "mid_century_pavilion_glass_steel",
-            "skin_schema": "mid-century-glass-steel-pavilion-skin@1",
+            "skin_schema": "mid-century-glass-steel-pavilion-skin@2",
             "elevation_source": "front-elevation-source-v1.png",
-            "occupied_depth_source": "occupied-depth-source-v1.png",
+            "occupied_depth_source": "occupied-day-depth-source-v2.png",
             "bands": {
                 "facade": (0.06, 0.18, 0.94, 0.87),
                 "podium": (0.06, 0.70, 0.94, 0.88),
@@ -417,41 +460,51 @@ FAMILIES: dict[str, dict] = {
                 "floor_b": "pavilion_complete_glazed_bay_b",
                 "crown": "floating_knife_edge_roof",
                 "side": "wrapped_glass_and_service_core",
-                "interior": "occupied_pavilion_gallery_depth",
+                "interior": "occupied_pavilion_gallery_depth_day",
+                "interior_evening": "occupied_pavilion_gallery_depth_evening",
                 "steel": "matte_black_structural_steel",
                 "vision_glass": "neutral_low_iron_pavilion_glass",
                 "travertine": "pale_honed_travertine",
                 "concrete": "light_grey_smooth_concrete",
+                "ceiling": "pale_acoustic_gallery_ceiling",
+                "gallery_floor": "pale_honed_gallery_floor",
                 "soffit": "warm_white_ribbed_aluminum_soffit",
                 "roof": "pale_knife_edge_roof_membrane",
             },
             "support": {
+                "interior_evening": ((169, 145, 114), "interior", 13291),
                 "steel": ((42, 43, 42), "metal", 13301),
                 "vision_glass": ((126, 136, 136), "glass", 13311),
                 "travertine": ((207, 197, 180), "stone", 13321),
                 "concrete": ((184, 184, 178), "stone", 13331),
+                "ceiling": ((224, 218, 205), "stone", 13336),
+                "gallery_floor": ((208, 202, 190), "stone", 13338),
                 "soffit": ((226, 221, 209), "metal", 13341),
                 "roof": ((216, 214, 207), "metal", 13351),
             },
             "support_sources": {
-                "steel": "steel-material-source-v1.png",
-                "vision_glass": "vision-glass-material-source-v1.png",
+                "interior_evening": "occupied-evening-depth-source-v2.png",
+                "steel": "steel-material-source-v2.png",
+                "vision_glass": "vision-glass-material-source-v2.png",
                 "travertine": "travertine-material-source-v1.png",
                 "concrete": "concrete-material-source-v1.png",
+                "ceiling": "ceiling-material-source-v2.png",
+                "gallery_floor": "gallery-floor-material-source-v2.png",
                 "soffit": "soffit-material-source-v1.png",
                 "roof": "soffit-material-source-v1.png",
             },
             "registered_surfaces": [
                 "three_transparent_occupied_levels",
                 "slender_black_steel_post_and_beam_frame",
-                "physical_low_iron_curtain_wall_and_warm_depth",
+                "physical_low_iron_curtain_wall_with_separate_day_and_evening_depth",
+                "deep_gallery_floor_ceiling_and_partition_returns",
                 "visible_concrete_floor_plates",
                 "pale_travertine_plinth_and_solid_service_core",
                 "exceptionally_thin_floating_roof_with_deep_asymmetric_cantilever",
                 "complete_wrapped_secondary_elevations_and_rear_entry",
             ],
             "registration": "The four-view board locks one three-level transparent pavilion with a 3.6 metre black steel grid, one pale travertine core and one exceptionally thin cantilevered roof plane.",
-            "opening_method": "Every curtain-wall bay is a separate low-iron pane with independent fine mullions, full steel structure, concrete slab edge and warm occupied gallery volume behind it.",
+            "opening_method": "Every curtain-wall bay is a separate high-transmission low-iron pane with fine pressure caps, a deep physical floor/ceiling cavity and alternating daylight or evening occupied depth at least 1.4 metres behind the weather plane.",
             "generic_tiling_allowed": False,
         },
         "design_lock": {
@@ -463,8 +516,8 @@ FAMILIES: dict[str, dict] = {
             "front_identity": "three transparent levels, offset pale travertine service core and one floating knife-edge roof",
             "roof_rule": "single exceptionally thin pale plane with deep front and side cantilever and no parapet",
         },
-        "prompts": {"goalpost": PAVILION_GOALPOST_PROMPT, "material": PAVILION_MATERIAL_PROMPT},
-        "source_ids": {"goalpost": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f", "material": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31"},
+        "prompts": {"goalpost": PAVILION_GOALPOST_PROMPT, "material": PAVILION_MATERIAL_PROMPT, "refinement": PAVILION_OPTICAL_REFINEMENT_PROMPT},
+        "source_ids": {"goalpost": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f", "material": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31", "refinement": "exec-df4a2711-d534-4b91-b2b9-3d9f70f9f6ee"},
         "input_paths": ["/archetypes/buildings/mid_century_modern_pavilion_block/variant_0.png"],
     },
     "timber-glass-transit-station-block": {
@@ -557,7 +610,7 @@ FAMILIES: dict[str, dict] = {
     "passive-house-timber-block": {
         "archetype_id": "eco_urban_bioclimatic_block",
         "variant_id": "eco_bioclimatic_passive",
-        "skin_schema": "passive-house-timber-block-skin@1",
+        "skin_schema": "passive-house-timber-block-skin@2",
         "goalpost_cells": GOALPOST_CELLS,
         "material_cells": {
             "larch-material-source-v1.png": (0.002, 0.002, 0.331, 0.498),
@@ -568,12 +621,21 @@ FAMILIES: dict[str, dict] = {
             "pv-material-source-v1.png": (0.669, 0.502, 0.833, 0.998),
             "green-roof-material-source-v1.png": (0.833, 0.502, 0.998, 0.998),
         },
+        "refinement_source": "optical-pv-construction-source-v2.png",
+        "refinement_cells": {
+            "pv-module-material-source-v2.png": (0.018, 0.018, 0.314, 0.482),
+            "vision-glass-material-source-v2.png": (0.335, 0.002, 0.665, 0.498),
+            "frame-material-source-v2.png": (0.669, 0.002, 0.998, 0.498),
+            "occupied-day-depth-source-v2.png": (0.002, 0.502, 0.331, 0.998),
+            "occupied-evening-depth-source-v2.png": (0.335, 0.502, 0.665, 0.998),
+            "blind-material-source-v2.png": (0.669, 0.502, 0.998, 0.998),
+        },
         "config": {
             "archetype_id": "eco_urban_bioclimatic_block",
             "variant_id": "eco_bioclimatic_passive",
-            "skin_schema": "passive-house-timber-block-skin@1",
+            "skin_schema": "passive-house-timber-block-skin@2",
             "elevation_source": "front-elevation-source-v1.png",
-            "occupied_depth_source": "occupied-depth-source-v1.png",
+            "occupied_depth_source": "occupied-day-depth-source-v2.png",
             "bands": {
                 "facade": (0.04, 0.12, 0.96, 0.91),
                 "podium": (0.04, 0.67, 0.96, 0.91),
@@ -589,7 +651,8 @@ FAMILIES: dict[str, dict] = {
                 "floor_b": "passive_complete_window_bay_b",
                 "crown": "passive_dual_roof_pv_and_sedum",
                 "side": "wrapped_larch_gable_and_rear_elevation",
-                "interior": "occupied_passive_house_room_depth",
+                "interior": "occupied_passive_house_room_depth_day",
+                "interior_evening": "occupied_passive_house_room_depth_evening",
                 "larch": "naturally_weathering_vertical_larch",
                 "frame": "dark_timber_aluminum_frame_and_reveal",
                 "vision_glass": "neutral_passive_triple_glazing",
@@ -599,6 +662,7 @@ FAMILIES: dict[str, dict] = {
                 "zinc": "zinc_gutter_and_roof_edge",
             },
             "support": {
+                "interior_evening": ((151, 118, 82), "interior", 13491),
                 "larch": ((183, 132, 79), "wood", 13501),
                 "frame": ((46, 43, 38), "wood", 13511),
                 "vision_glass": ((124, 134, 132), "glass", 13521),
@@ -609,23 +673,24 @@ FAMILIES: dict[str, dict] = {
             },
             "support_sources": {
                 "larch": "larch-material-source-v1.png",
-                "frame": "frame-material-source-v1.png",
-                "vision_glass": "vision-glass-material-source-v1.png",
-                "blind": "blind-material-source-v1.png",
-                "pv": "pv-material-source-v1.png",
+                "interior_evening": "occupied-evening-depth-source-v2.png",
+                "frame": "frame-material-source-v2.png",
+                "vision_glass": "vision-glass-material-source-v2.png",
+                "blind": "blind-material-source-v2.png",
+                "pv": "pv-module-material-source-v2.png",
                 "green_roof": "green-roof-material-source-v1.png",
             },
             "registered_surfaces": [
                 "four_level_six_bay_vertical_larch_envelope",
-                "deep_real_triple_glazed_window_reveals",
+                "deep_real_triple_glazed_window_reveals_with_separate_room_depth",
                 "mixed_clear_panes_insulated_panels_and_external_blinds",
                 "deeply_recessed_central_timber_entrance",
-                "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+                "asymmetric_dual_pitch_roof_with_individually_framed_pv_modules_and_sedum_fields",
                 "rooflights_zinc_gutters_and_downpipes",
                 "gable_end_punched_windows_and_vertical_facade_pv_bank",
             ],
             "registration": "The four-view board locks one four-level six-bay passive timber block with deep triple glazing, a recessed central entry, external blinds and one asymmetric PV-and-sedum roof.",
-            "opening_method": "Every opening is a deep insulated reveal containing an independent timber-aluminum frame, physical triple pane, occupied depth and optional real external blind blades or pale insulated panel.",
+            "opening_method": "Every opening recesses its independent timber-aluminum frame and split triple panes behind physical larch jamb, head and sill returns; alternating daylight/evening room depth sits farther inside and optional real blind blades remain within the reveal cavity.",
             "generic_tiling_allowed": False,
         },
         "design_lock": {
@@ -637,8 +702,8 @@ FAMILIES: dict[str, dict] = {
             "front_identity": "six tall larch bays, deeply recessed central entry and environmental roof visible from the street",
             "roof_rule": "asymmetric pitched roof with continuous south PV field, north sedum strip, three rooflights, zinc gutters and facade PV bank",
         },
-        "prompts": {"goalpost": PASSIVE_GOALPOST_PROMPT, "material": PASSIVE_MATERIAL_PROMPT},
-        "source_ids": {"goalpost": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db", "material": "exec-94feb115-c27e-41f8-b093-54d931a82ef3"},
+        "prompts": {"goalpost": PASSIVE_GOALPOST_PROMPT, "material": PASSIVE_MATERIAL_PROMPT, "refinement": PASSIVE_OPTICAL_PV_REFINEMENT_PROMPT},
+        "source_ids": {"goalpost": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db", "material": "exec-94feb115-c27e-41f8-b093-54d931a82ef3", "refinement": "exec-82c8e43d-5ede-41a4-b31c-7209b81e60b7"},
         "input_paths": ["/archetypes/buildings/eco_urban_bioclimatic_block/variant_0.png"],
     },
 }
@@ -672,6 +737,27 @@ def write_provenance(family: str, spec: dict) -> None:
     source_root = FAMILY_ROOT / family / "textures" / "source"
     goalpost_id = spec["source_ids"]["goalpost"]
     material_id = spec["source_ids"]["material"]
+    refinement_id = spec["source_ids"].get("refinement")
+    refinement_source = spec.get("refinement_source")
+    refinement_cells = spec.get("refinement_cells", {})
+    refinement_sources = []
+    if refinement_id and refinement_source:
+        refinement_sources = [
+            {
+                "file": refinement_source,
+                "source_id": refinement_id,
+                "role": "reviewed_optical_and_construction_refinement_plate",
+                "prompt": spec["prompts"]["refinement"],
+            },
+            *(
+                {
+                    "file": filename,
+                    "source_id": f"{refinement_id}:{Path(filename).stem}",
+                    "role": f"registered_refinement_crop:{Path(filename).stem}",
+                }
+                for filename in refinement_cells
+            ),
+        ]
     payload = {
         "schema": "reference-generation@1",
         "family": family,
@@ -680,7 +766,7 @@ def write_provenance(family: str, spec: dict) -> None:
         "provider": "OpenAI built-in image generation",
         "model": "gpt-image-2",
         "generated_at": date.today().isoformat(),
-        "status": "source-pack-complete",
+        "status": "source-pack-refined" if refinement_sources else "source-pack-complete",
         "input_paths": spec.get("input_paths", []),
         "design_lock": spec["design_lock"],
         "sources": [
@@ -713,6 +799,7 @@ def write_provenance(family: str, spec: dict) -> None:
                 }
                 for filename in spec["material_cells"]
             ),
+            *refinement_sources,
         ],
     }
     (source_root / "reference-generation.json").write_text(
@@ -745,6 +832,12 @@ def main() -> int:
             "material-construction-source-v1.png",
             spec["material_cells"],
         )
+        if spec.get("refinement_source"):
+            crop_cells(
+                source_root,
+                spec["refinement_source"],
+                spec["refinement_cells"],
+            )
         write_provenance(family, spec)
         prepare_family(family, spec["config"], batch_label="wave13")
         bind_atlas(family)

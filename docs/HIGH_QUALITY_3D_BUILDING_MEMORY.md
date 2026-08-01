@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-01-wave13-diverse-structural-grammar-v111`.
+Current executable memory: `2026-08-01-wave13-optical-pv-refinement-v112`.
 
 ## The quality target
 
@@ -1267,6 +1267,20 @@ The polychrome collegiate family added four rules for resizable hero facades:
   fixed landmark and its semantic LEGO roof or crown kit. Oversized planning
   may repeat complete middle bays, but it must not stretch a photovoltaic
   field, duplicate a central entry or discard the reviewed roof logic.
+- Transparent pavilions need one coherent interior volume behind the curtain
+  wall. Do not place the same opaque occupied-room image immediately behind
+  every pane. Keep the low-iron glass and pressure caps physical, continue
+  floor and ceiling returns through the bay depth, and use sparse modeled
+  furniture, partitions and lighting so adjacent panes reveal one open plan.
+- Passive-house windows are wall sections, not facade pictures. Set the pane
+  behind the insulation line; build full jamb, head and sill returns; keep the
+  external blind, headbox and guide cables in front of the glass; then place a
+  deep room shadow, selective occupation and curtains behind it. Vary those
+  depth layers so a repeated bay does not repeat one photograph.
+- Photovoltaic fields are arrays of standard-scale modules. Each module owns
+  one complete, countable cell topology, a perimeter frame and real gaps to
+  its neighbours; the field also owns continuous mounting rails and roof-edge
+  clearance. Never stretch one PV image over an entire roof plane.
 
 ## Updating this memory
 
