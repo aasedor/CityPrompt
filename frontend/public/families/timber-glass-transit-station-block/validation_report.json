@@ -1,0 +1,181 @@
+{
+  "status": "pass",
+  "family": "timber-glass-transit-station-block",
+  "archetype_id": "transit_oriented_station_block",
+  "reuse_keys": [
+    "transit_oriented_station_block",
+    "transit_station_modern_glass",
+    "timber_glass_transit_station_block",
+    "green_roof_station_concourse",
+    "Timber Glass Transit Station Block",
+    "Modern Glass Station Concourse",
+    "Green Roof Transit Hub",
+    "Timber Louver Station"
+  ],
+  "manifest": "timber-glass-transit-station-block_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "timber-glass-transit-station-block_podium.glb: 18.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_floor_typical_a.glb: 18.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_floor_typical_b.glb: 31.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_floor_typical_c.glb: 31.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_crown_crown.glb: 17.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_roof.glb: 11.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "timber-glass-transit-station-block_assembled.glb: 52.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "timber-glass-transit-station-block_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 4.35,
+        "depth_z": 36.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_HighTransmissionGlass",
+        "MAT_W13_TRANSIT_OccupiedConcourseDepth",
+        "MAT_W13_TRANSIT_PaleConcreteSlab"
+      ],
+      "size_bytes": 19188912
+    },
+    {
+      "file": "timber-glass-transit-station-block_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 58.43,
+        "height_y": 4.05,
+        "depth_z": 34.43
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_HighTransmissionGlass",
+        "MAT_W13_TRANSIT_OccupiedConcourseDepth",
+        "MAT_W13_TRANSIT_PaleConcreteSlab"
+      ],
+      "size_bytes": 19188712
+    },
+    {
+      "file": "timber-glass-transit-station-block_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 56.52,
+        "height_y": 3.65,
+        "depth_z": 32.52
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W13_TRANSIT_DarkTimberLouver",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_HighTransmissionGlass",
+        "MAT_W13_TRANSIT_OccupiedConcourseDepth",
+        "MAT_W13_TRANSIT_PaleConcreteSlab",
+        "MAT_W13_TRANSIT_ReddishTimberRainscreen",
+        "MAT_W13_TRANSIT_RegisteredTimberBayUnderlay"
+      ],
+      "size_bytes": 33274748
+    },
+    {
+      "file": "timber-glass-transit-station-block_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 56.52,
+        "height_y": 3.65,
+        "depth_z": 32.52
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W13_TRANSIT_DarkTimberLouver",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_HighTransmissionGlass",
+        "MAT_W13_TRANSIT_OccupiedConcourseDepth",
+        "MAT_W13_TRANSIT_PaleConcreteSlab",
+        "MAT_W13_TRANSIT_ReddishTimberRainscreen",
+        "MAT_W13_TRANSIT_RegisteredTimberBayUnderlay"
+      ],
+      "size_bytes": 33274732
+    },
+    {
+      "file": "timber-glass-transit-station-block_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 58.0,
+        "height_y": 1.15,
+        "depth_z": 34.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W13_TRANSIT_ExtensiveGreenRoof",
+        "MAT_W13_TRANSIT_PaleConcreteSlab"
+      ],
+      "size_bytes": 18665400
+    },
+    {
+      "file": "timber-glass-transit-station-block_roof.glb",
+      "status": "ok",
+      "triangles": 76,
+      "extent_m": {
+        "width_x": 55.6,
+        "height_y": 3.0,
+        "depth_z": 19.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_PhotovoltaicGlass"
+      ],
+      "size_bytes": 11773316
+    },
+    {
+      "file": "timber-glass-transit-station-block_assembled.glb",
+      "status": "ok",
+      "triangles": 272,
+      "extent_m": {
+        "width_x": 61.0,
+        "height_y": 26.516,
+        "depth_z": 40.54
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W13_TRANSIT_DarkTimberLouver",
+        "MAT_W13_TRANSIT_ExtensiveGreenRoof",
+        "MAT_W13_TRANSIT_GraphiteSteel",
+        "MAT_W13_TRANSIT_HighTransmissionGlass",
+        "MAT_W13_TRANSIT_OccupiedConcourseDepth",
+        "MAT_W13_TRANSIT_PaleConcreteSlab",
+        "MAT_W13_TRANSIT_PhotovoltaicGlass",
+        "MAT_W13_TRANSIT_ReddishTimberRainscreen",
+        "MAT_W13_TRANSIT_RegisteredTimberBayUnderlay"
+      ],
+      "size_bytes": 54757336,
+      "role": "assembled"
+    }
+  ]
+}

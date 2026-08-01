@@ -1,0 +1,141 @@
+{
+  "family_id": "passive-house-timber-block",
+  "source": {
+    "archetype_id": "eco_urban_bioclimatic_block",
+    "variant_id": "eco_bioclimatic_passive",
+    "generation_archetype_id": "eco_bioclimatic_passive",
+    "reuse_keys": [
+      "eco_urban_bioclimatic_block",
+      "eco_bioclimatic_passive",
+      "passive_house_timber_block",
+      "larch_pv_sedum_urban_block",
+      "Passive House Timber Block",
+      "Larch PV Sedum Urban Block",
+      "Bioclimatic Timber Apartment Block",
+      "Deep Reveal Passive Housing"
+    ]
+  },
+  "dimensions": {
+    "width_m": 37.2,
+    "depth_m": 22.06,
+    "podium_height_m": 3.25,
+    "floor_height_m": 3.25,
+    "setback_height_m": 3.25,
+    "roof_height_m": 4.65,
+    "crown_height_m": 0.45,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "architectural_signature": {
+    "identity": "A four-level six-bay passive urban block is wrapped in naturally weathering vertical larch, with deeply recessed triple glazing, selective exterior blinds and a central timber entry beneath an asymmetric roof combining continuous PV, sedum and rooflights.",
+    "material_zones": "honey-brown vertical larch rainscreen; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied room depth; black real external blind blades; pale insulated panels; dark-blue PV glass; dense sedum; zinc edges",
+    "glass_profile": "neutral_triple_glazed_deep_reveal_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "eco_urban_bioclimatic_block",
+    "eco_bioclimatic_passive",
+    "passive_house_timber_block",
+    "larch_pv_sedum_urban_block"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The central entry, PV and sedum roof fields and gable terminals remain fixed. Complete six metre passive-house bays repeat along the long axis with deep reveal, triple pane, occupied depth and optional real blind blades intact.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.22
+    },
+    "recommendedWidth_m": [
+      28.0,
+      90.0
+    ],
+    "recommendedDepth_m": [
+      16.0,
+      45.0
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "preferredBayMultiple_m": 6.0,
+    "scaleMin": 0.72,
+    "scaleMax": 1.32,
+    "maxAxisRatio": 1.22,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          28.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          16.0,
+          45.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.32,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 6.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          32.0,
+          105.0
+        ],
+        "recommendedDepth_m": [
+          18.0,
+          52.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "scaleMin": 0.7,
+        "scaleMax": 1.34,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 6.0,
+        "wingDepth_m": [
+          9.0,
+          18.0
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_four_level_passive_timber_block_with_repeatable_complete_environmental_bays",
+    "occupied_storeys": 4,
+    "front_bays": 6,
+    "deep_insulated_reveals": true,
+    "physical_triple_glazing": true,
+    "real_external_blind_sets": 8,
+    "deep_recessed_entries": 1,
+    "asymmetric_roof_planes": 2,
+    "continuous_pv_fields": 1,
+    "sedum_roof_fields": 1,
+    "physical_rooflights": 3,
+    "vertical_gable_pv_panels": 4,
+    "physical_window_layers": [
+      "warm_occupied_depth",
+      "neutral_triple_pane",
+      "dark_frame",
+      "deep_insulated_reveal",
+      "real_external_blind",
+      "vertical_larch_rainscreen"
+    ]
+  }
+}

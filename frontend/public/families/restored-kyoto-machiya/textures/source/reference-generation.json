@@ -1,0 +1,103 @@
+{
+  "schema": "reference-generation@1",
+  "family": "restored-kyoto-machiya",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "variant_id": "machiya_traditional_restored",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/japanese_machiya_mixed_use/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      18.0,
+      14.0,
+      10.8
+    ],
+    "native_envelope_dimensions_m": [
+      19.4,
+      15.4,
+      11.4
+    ],
+    "occupied_storeys": 2,
+    "primary_material": "dark weathered Japanese cedar post-and-beam frame",
+    "window_rule": "fine koshi lattice with real gaps ahead of smoky panes and warm occupied depth",
+    "front_identity": "continuous upper lattice above a lower tiled eave, ground shop lattice, three plain indigo noren and recessed entry",
+    "roof_rule": "one deep kawara-tile gable with exposed rafters plus one lower street canopy roof"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-bba3be99-49a5-497b-888f-4251f1a3dead",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, construction, proportion, and palette authority.\nPrimary request: Reconstruct the exact same restored Kyoto machiya from Image 1 as one coherent true-metric two-storey building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, facade parallel to camera, complete roof and ground sill visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving timber frame, white clay infill, garden-side openings, gutters, and roof construction wrap the whole building.\nPanel 4: high aerial roof-plan oblique proving the deep tiled gable roof, lower street eave, ridge caps, gutters, and small side passage.\nBuilding lock: approximately 18 m wide by 14 m deep by 10.8 m high; exactly two occupied storeys; dark stained Japanese timber post-and-beam frame; white lime-clay infill at the gable and selected wall panels; a continuous upper-storey deep koshi timber lattice screen with narrow real gaps in front of warm recessed glazing; ground floor shopfront lattice and one deeply recessed entrance; three separate indigo noren fabric panels below the lower tiled eave; a planted side passage; one large steep ceramic kawara-tile gable roof with deep eaves and exposed rafters plus a lower street canopy roof; authentic ridge-end and eave tile rhythm. Preserve identical bay positions and roof geometry in every view.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no trees except the tiny integral side garden, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: dark weathered cedar and cypress; warm brown koshi lattice; matte white clay plaster; charcoal-grey kawara ceramic tiles with distinct individual rows; neutral slightly smoky glass with sparse warm occupied depth; woven indigo noren; blackened copper gutters and downpipes; pebble garden and bamboo.\nConstraints: exact same building topology, two storeys, floor datums, post-and-beam bays, lattice spacing, entrance, eave heights, roof pitch, material zones and proportions in every panel; panels separated only by thin neutral gutters; complete building inside every frame; no labels; no text or calligraphy on the noren; no signs; no logos; no watermark.\nAvoid: generic Asian house, temple, pagoda, extra floors, cartoon roof, thatch, oversized lattice, solid lattice with no gaps, flat roof, baked-on windows, blue mirror glass, blank sides, changed roof between views, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "dark_post_and_beam_frame_with_white_clay_infill",
+        "continuous_upper_koshi_screen_with_real_gaps",
+        "ground_shop_lattice_and_deep_recessed_entry",
+        "three_plain_indigo_noren_panels",
+        "large_kawara_gable_and_lower_street_eave",
+        "exposed_rafters_ridge_caps_gutters_and_downpipes",
+        "complete_rear_service_and_integral_side_garden"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-bba3be99-49a5-497b-888f-4251f1a3dead:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-bba3be99-49a5-497b-888f-4251f1a3dead:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-bba3be99-49a5-497b-888f-4251f1a3dead:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-bba3be99-49a5-497b-888f-4251f1a3dead:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact restored Kyoto machiya in Image 1\nInput images: Image 1 is the approved palette, finish, and construction-scale authority.\nPrimary request: Create six equal square straight-on orthographic material samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: dark weathered Japanese cedar and cypress post-and-beam timber, authentic fine vertical grain and restrained age variation, no facade or complete framing pattern.\nTop-center: warm brown fine koshi lattice timber with several narrow real slats and actual dark gaps at architectural scale, straight-on and tileable, not a whole window.\nTop-right: charcoal-grey glazed kawara ceramic roof tiles in authentic overlapping rows with restrained highlights, correct small building scale and no roof perspective.\nBottom-left: matte warm-white lime-clay plaster with subtle hand-troweled mineral texture, no cracks or ornaments.\nBottom-center: neutral slightly smoky physical glazing plus a clean warm occupied machiya room-depth plate seen straight through it, with dark recessed room, shoji glow and one restrained warm lamp zone, absolutely no exterior lattice or frame.\nBottom-right: woven deep-indigo noren fabric with visible textile weave, subtle folds and plain unprinted field, no lettering or symbols.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural construction texture reference with fine real-world micro-detail.\nLighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.\nConstraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no calligraphy; no logos; no watermark; no complete facade; no oversized motif.\nAvoid: cartoon wood, orange varnish, temple ornament, blue glass, generic shingles, cloth signage, dramatic lighting, perspective scene, decorative border."
+    },
+    {
+      "file": "timber-material-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:timber-material-source-v1",
+      "role": "registered_material_crop:timber-material-source-v1"
+    },
+    {
+      "file": "lattice-material-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:lattice-material-source-v1",
+      "role": "registered_material_crop:lattice-material-source-v1"
+    },
+    {
+      "file": "tile-material-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:tile-material-source-v1",
+      "role": "registered_material_crop:tile-material-source-v1"
+    },
+    {
+      "file": "plaster-material-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:plaster-material-source-v1",
+      "role": "registered_material_crop:plaster-material-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "indigo-material-source-v1.png",
+      "source_id": "exec-45eef64c-966b-4560-8326-e06061383375:indigo-material-source-v1",
+      "role": "registered_material_crop:indigo-material-source-v1"
+    }
+  ]
+}

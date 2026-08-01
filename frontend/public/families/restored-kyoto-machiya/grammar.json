@@ -1,0 +1,139 @@
+{
+  "family_id": "restored-kyoto-machiya",
+  "source": {
+    "archetype_id": "japanese_machiya_mixed_use",
+    "variant_id": "machiya_traditional_restored",
+    "generation_archetype_id": "machiya_traditional_restored",
+    "reuse_keys": [
+      "japanese_machiya_mixed_use",
+      "machiya_traditional_restored",
+      "restored_kyoto_machiya",
+      "traditional_koshi_lattice_shop_house",
+      "Restored Kyoto Machiya",
+      "Traditional Koshi Lattice Shop House",
+      "Japanese Timber Mixed Use House",
+      "Kawara Tile Machiya"
+    ]
+  },
+  "dimensions": {
+    "width_m": 19.77,
+    "depth_m": 16.77,
+    "podium_height_m": 3.35,
+    "floor_height_m": 3.35,
+    "setback_height_m": 3.35,
+    "roof_height_m": 4.7,
+    "crown_height_m": 0.85,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A restored two-storey Kyoto machiya uses a dark cedar post-and-beam frame, white clay infill and continuous fine koshi lattice in front of warm occupied glazing beneath a deep kawara gable, with a lower street eave, recessed entry and three plain indigo noren panels.",
+    "material_zones": "dark weathered Japanese cedar and cypress; warm brown fine koshi lattice; matte white lime-clay plaster; charcoal glazed kawara tiles; neutral smoky physical glass; warm occupied tatami-room depth; plain woven indigo noren; grey stone sill; dark gutters",
+    "glass_profile": "neutral_smoky_lattice_screened_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "japanese_machiya_mixed_use",
+    "machiya_traditional_restored",
+    "restored_kyoto_machiya",
+    "traditional_koshi_lattice_shop_house"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The entry, lower eave, gable ends and roof terminals remain fixed. Differently sized rectangles or L-shaped plots repeat complete three metre post-and-koshi bays with real lattice gaps rather than stretching slats, tiles or noren.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.2
+    },
+    "recommendedWidth_m": [
+      13.0,
+      38.0
+    ],
+    "recommendedDepth_m": [
+      10.0,
+      25.0
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "preferredBayMultiple_m": 3.0,
+    "scaleMin": 0.76,
+    "scaleMax": 1.28,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          13.0,
+          38.0
+        ],
+        "recommendedDepth_m": [
+          10.0,
+          25.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 3.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          16.0,
+          44.0
+        ],
+        "recommendedDepth_m": [
+          12.0,
+          30.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.0,
+        "wingDepth_m": [
+          5.5,
+          10.0
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_two_storey_machiya_with_repeatable_complete_post_and_koshi_bays",
+    "occupied_storeys": 2,
+    "post_and_beam_bays": 6,
+    "continuous_upper_koshi_screen": true,
+    "real_gap_preserving_lattice": true,
+    "deep_recessed_entries": 1,
+    "plain_indigo_noren_panels": 3,
+    "large_kawara_gable_roofs": 1,
+    "lower_tiled_street_eaves": 1,
+    "individual_kawara_rows": 22,
+    "integral_side_garden": true,
+    "physical_window_layers": [
+      "warm_occupied_depth",
+      "smoky_pane",
+      "real_koshi_screen",
+      "timber_post_and_beam",
+      "deep_eave"
+    ]
+  }
+}

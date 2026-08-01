@@ -1,0 +1,190 @@
+{
+  "status": "pass",
+  "family": "passive-house-timber-block",
+  "archetype_id": "eco_urban_bioclimatic_block",
+  "reuse_keys": [
+    "eco_urban_bioclimatic_block",
+    "eco_bioclimatic_passive",
+    "passive_house_timber_block",
+    "larch_pv_sedum_urban_block",
+    "Passive House Timber Block",
+    "Larch PV Sedum Urban Block",
+    "Bioclimatic Timber Apartment Block",
+    "Deep Reveal Passive Housing"
+  ],
+  "manifest": "passive-house-timber-block_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "passive-house-timber-block_podium.glb: 25.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "passive-house-timber-block_floor_typical_a.glb: 27.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "passive-house-timber-block_floor_typical_b.glb: 27.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "passive-house-timber-block_floor_typical_c.glb: 25.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "passive-house-timber-block_roof.glb: 30.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "passive-house-timber-block_assembled.glb: 51.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "passive-house-timber-block_podium.glb",
+      "status": "ok",
+      "triangles": 108,
+      "extent_m": {
+        "width_x": 37.05,
+        "height_y": 3.25,
+        "depth_z": 20.675
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W13_PASSIVE_DarkTimberAluminumFrame",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_OccupiedRoomDepth",
+        "MAT_W13_PASSIVE_RegisteredBayAUnderlay",
+        "MAT_W13_PASSIVE_VerticalLarch",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 26663332
+    },
+    {
+      "file": "passive-house-timber-block_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 37.05,
+        "height_y": 3.25,
+        "depth_z": 20.675
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W13_PASSIVE_DarkTimberAluminumFrame",
+        "MAT_W13_PASSIVE_ExteriorBlind",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_OccupiedRoomDepth",
+        "MAT_W13_PASSIVE_RegisteredBayBUnderlay",
+        "MAT_W13_PASSIVE_VerticalLarch",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 28964964
+    },
+    {
+      "file": "passive-house-timber-block_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 37.05,
+        "height_y": 3.25,
+        "depth_z": 20.675
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W13_PASSIVE_DarkTimberAluminumFrame",
+        "MAT_W13_PASSIVE_ExteriorBlind",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_OccupiedRoomDepth",
+        "MAT_W13_PASSIVE_RegisteredBayAUnderlay",
+        "MAT_W13_PASSIVE_VerticalLarch",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 28704300
+    },
+    {
+      "file": "passive-house-timber-block_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 120,
+      "extent_m": {
+        "width_x": 37.05,
+        "height_y": 3.25,
+        "depth_z": 20.675
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W13_PASSIVE_DarkTimberAluminumFrame",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_OccupiedRoomDepth",
+        "MAT_W13_PASSIVE_PaleInsulatedPanel",
+        "MAT_W13_PASSIVE_RegisteredBayBUnderlay",
+        "MAT_W13_PASSIVE_VerticalLarch",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 26932408
+    },
+    {
+      "file": "passive-house-timber-block_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 36.8,
+        "height_y": 0.45,
+        "depth_z": 20.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W13_PASSIVE_VerticalLarch"
+      ],
+      "size_bytes": 8247788
+    },
+    {
+      "file": "passive-house-timber-block_roof.glb",
+      "status": "ok",
+      "triangles": 114,
+      "extent_m": {
+        "width_x": 37.2,
+        "height_y": 4.763,
+        "depth_z": 21.22
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W13_PASSIVE_LarchGableField",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_PhotovoltaicGlass",
+        "MAT_W13_PASSIVE_SedumRoof",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 31740420
+    },
+    {
+      "file": "passive-house-timber-block_assembled.glb",
+      "status": "ok",
+      "triangles": 198,
+      "extent_m": {
+        "width_x": 37.2,
+        "height_y": 17.8,
+        "depth_z": 22.06
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W13_PASSIVE_DarkTimberAluminumFrame",
+        "MAT_W13_PASSIVE_ExteriorBlind",
+        "MAT_W13_PASSIVE_LarchGableField",
+        "MAT_W13_PASSIVE_NeutralTripleGlass",
+        "MAT_W13_PASSIVE_OccupiedRoomDepth",
+        "MAT_W13_PASSIVE_PaleInsulatedPanel",
+        "MAT_W13_PASSIVE_PhotovoltaicGlass",
+        "MAT_W13_PASSIVE_RegisteredBayAUnderlay",
+        "MAT_W13_PASSIVE_RegisteredBayBUnderlay",
+        "MAT_W13_PASSIVE_SedumRoof",
+        "MAT_W13_PASSIVE_VerticalLarch",
+        "MAT_W13_PASSIVE_ZincEdges"
+      ],
+      "size_bytes": 53837116,
+      "role": "assembled"
+    }
+  ]
+}

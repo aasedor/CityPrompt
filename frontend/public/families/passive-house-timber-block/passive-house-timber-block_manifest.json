@@ -1,0 +1,1532 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave13_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T14:52:18.399577+00:00",
+  "family": "passive-house-timber-block",
+  "archetype_id": "eco_urban_bioclimatic_block",
+  "archetype_label": "Bioclimatic Block - Passive House Timber",
+  "variant_id": "eco_bioclimatic_passive",
+  "generation_archetype_id": "eco_bioclimatic_passive",
+  "archetype_aliases": [
+    "eco_urban_bioclimatic_block",
+    "eco_bioclimatic_passive",
+    "passive_house_timber_block",
+    "larch_pv_sedum_urban_block"
+  ],
+  "aesthetic_category_id": "eco_urban_bioclimatic",
+  "development_type": "residential_midrise",
+  "reuse_keys": [
+    "eco_urban_bioclimatic_block",
+    "eco_bioclimatic_passive",
+    "passive_house_timber_block",
+    "larch_pv_sedum_urban_block",
+    "Passive House Timber Block",
+    "Larch PV Sedum Urban Block",
+    "Bioclimatic Timber Apartment Block",
+    "Deep Reveal Passive Housing"
+  ],
+  "generation_tags": [
+    "wave13",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "deep_triple_glazed_reveals",
+    "real_external_blind_blades",
+    "pv_and_sedum_environmental_roof"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The central entry, PV and sedum roof fields and gable terminals remain fixed. Complete six metre passive-house bays repeat along the long axis with deep reveal, triple pane, occupied depth and optional real blind blades intact.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.22
+    },
+    "recommendedWidth_m": [
+      28.0,
+      90.0
+    ],
+    "recommendedDepth_m": [
+      16.0,
+      45.0
+    ],
+    "recommendedFloors": [
+      3,
+      8
+    ],
+    "preferredBayMultiple_m": 6.0,
+    "scaleMin": 0.72,
+    "scaleMax": 1.32,
+    "maxAxisRatio": 1.22,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          28.0,
+          90.0
+        ],
+        "recommendedDepth_m": [
+          16.0,
+          45.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.32,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 6.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          32.0,
+          105.0
+        ],
+        "recommendedDepth_m": [
+          18.0,
+          52.0
+        ],
+        "recommendedFloors": [
+          3,
+          8
+        ],
+        "scaleMin": 0.7,
+        "scaleMax": 1.34,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 6.0,
+        "wingDepth_m": [
+          9.0,
+          18.0
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/passive_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/passive_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/passive_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/passive_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/passive_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/passive_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/passive_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/passive_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/passive_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/passive_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/passive_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/passive_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/passive_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/passive_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/passive_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/passive_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/passive_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/passive_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/passive_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/passive_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/passive_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/passive_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/passive_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/passive_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/passive_recessed_entry_and_ground_bays_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/passive_complete_window_bay_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/passive_complete_window_bay_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/passive_dual_roof_pv_and_sedum_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/wrapped_larch_gable_and_rear_elevation_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_passive_house_room_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_larch_albedo",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_albedo.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_larch_normal",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_normal.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "normal"
+    },
+    {
+      "key": "near_larch_roughness",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_roughness.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_larch_ao",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_ao.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "ao"
+    },
+    {
+      "key": "near_larch_depth",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_depth.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "depth"
+    },
+    {
+      "key": "near_larch_emissive",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_emissive.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_larch_glass_mask",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_glass.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_larch_opaque_mask",
+      "path": "textures/pbr/near/naturally_weathering_vertical_larch_opaque.png",
+      "lod": "near",
+      "zone": "larch",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_frame_albedo",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_albedo.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_frame_normal",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_normal.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_frame_roughness",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_roughness.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_frame_ao",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_ao.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_frame_depth",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_depth.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_frame_emissive",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_emissive.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_frame_glass_mask",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_glass.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_frame_opaque_mask",
+      "path": "textures/pbr/near/dark_timber_aluminum_frame_and_reveal_opaque.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_vision_glass_albedo",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_albedo.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_vision_glass_normal",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_normal.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_vision_glass_roughness",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_roughness.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_vision_glass_ao",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_ao.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_vision_glass_depth",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_depth.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_vision_glass_emissive",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_emissive.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_vision_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_glass.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_vision_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_passive_triple_glazing_opaque.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_blind_albedo",
+      "path": "textures/pbr/near/black_external_venetian_blind_albedo.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_blind_normal",
+      "path": "textures/pbr/near/black_external_venetian_blind_normal.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "normal"
+    },
+    {
+      "key": "near_blind_roughness",
+      "path": "textures/pbr/near/black_external_venetian_blind_roughness.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_blind_ao",
+      "path": "textures/pbr/near/black_external_venetian_blind_ao.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "ao"
+    },
+    {
+      "key": "near_blind_depth",
+      "path": "textures/pbr/near/black_external_venetian_blind_depth.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "depth"
+    },
+    {
+      "key": "near_blind_emissive",
+      "path": "textures/pbr/near/black_external_venetian_blind_emissive.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_blind_glass_mask",
+      "path": "textures/pbr/near/black_external_venetian_blind_glass.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_blind_opaque_mask",
+      "path": "textures/pbr/near/black_external_venetian_blind_opaque.png",
+      "lod": "near",
+      "zone": "blind",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_pv_albedo",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_albedo.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_pv_normal",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_normal.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "normal"
+    },
+    {
+      "key": "near_pv_roughness",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_roughness.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_pv_ao",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_ao.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "ao"
+    },
+    {
+      "key": "near_pv_depth",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_depth.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "depth"
+    },
+    {
+      "key": "near_pv_emissive",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_emissive.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_pv_glass_mask",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_glass.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_pv_opaque_mask",
+      "path": "textures/pbr/near/dark_blue_passive_photovoltaic_glass_opaque.png",
+      "lod": "near",
+      "zone": "pv",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_green_roof_albedo",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_albedo.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_green_roof_normal",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_normal.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_green_roof_roughness",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_roughness.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_green_roof_ao",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_ao.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_green_roof_depth",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_depth.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_green_roof_emissive",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_emissive.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_green_roof_glass_mask",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_glass.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_green_roof_opaque_mask",
+      "path": "textures/pbr/near/dense_passive_sedum_roof_opaque.png",
+      "lod": "near",
+      "zone": "green_roof",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_zinc_albedo",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_albedo.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_zinc_normal",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_normal.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "normal"
+    },
+    {
+      "key": "near_zinc_roughness",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_roughness.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_zinc_ao",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_ao.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "ao"
+    },
+    {
+      "key": "near_zinc_depth",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_depth.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "depth"
+    },
+    {
+      "key": "near_zinc_emissive",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_emissive.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_zinc_glass_mask",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_glass.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_zinc_opaque_mask",
+      "path": "textures/pbr/near/zinc_gutter_and_roof_edge_opaque.png",
+      "lod": "near",
+      "zone": "zinc",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/passive-house-timber-block",
+    "model": "gpt-image-2",
+    "style_reference": "/families/passive-house-timber-block/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "deep_central_entry",
+        "larch_gable_ends",
+        "asymmetric_environmental_roof",
+        "vertical_gable_pv_bank"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat one complete six metre passive bay with larch piers, deep insulated reveal, triple pane, occupied depth and optional real blind or insulated panel."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "deep central entry",
+        "larch gable ends",
+        "continuous PV field",
+        "sedum roof",
+        "rooflights",
+        "vertical PV bank"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete larch gable with small punched windows; complete larch gable with small openings and vertical PV bank",
+      "elevation_coverage": {
+        "front": "six deep triple-glazed larch bays, real external blinds, pale panels and recessed timber entrance",
+        "left": "complete larch gable with small punched windows",
+        "right": "complete larch gable with small openings and vertical PV bank",
+        "rear": "complete occupied secondary facade with mixed deep openings, service doors and drainage",
+        "roof": "asymmetric front PV and rear sedum planes, three rooflights, zinc ridge, gutters and downpipes"
+      },
+      "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/passive_registered_front_albedo.png",
+        "normal": "textures/pbr/near/passive_registered_front_normal.png",
+        "roughness": "textures/pbr/near/passive_registered_front_roughness.png",
+        "ao": "textures/pbr/near/passive_registered_front_ao.png",
+        "depth": "textures/pbr/near/passive_registered_front_depth.png",
+        "emissive": "textures/pbr/near/passive_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/passive_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/passive_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/passive_registered_front_albedo.png",
+        "normal": "textures/pbr/far/passive_registered_front_normal.png",
+        "roughness": "textures/pbr/far/passive_registered_front_roughness.png",
+        "ao": "textures/pbr/far/passive_registered_front_ao.png",
+        "depth": "textures/pbr/far/passive_registered_front_depth.png",
+        "emissive": "textures/pbr/far/passive_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/passive_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/passive_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/passive_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/passive_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "eco_urban_bioclimatic_block",
+      "source_variant_id": "eco_bioclimatic_passive",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "four_level_six_bay_vertical_larch_envelope",
+        "deep_real_triple_glazed_window_reveals",
+        "mixed_clear_panes_insulated_panels_and_external_blinds",
+        "deeply_recessed_central_timber_entrance",
+        "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+        "rooflights_zinc_gutters_and_downpipes",
+        "gable_end_punched_windows_and_vertical_facade_pv_bank"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/passive-house-timber-block/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_four_level_passive_timber_block_with_repeatable_complete_environmental_bays",
+    "occupied_storeys": 4,
+    "front_bays": 6,
+    "deep_insulated_reveals": true,
+    "physical_triple_glazing": true,
+    "real_external_blind_sets": 8,
+    "deep_recessed_entries": 1,
+    "asymmetric_roof_planes": 2,
+    "continuous_pv_fields": 1,
+    "sedum_roof_fields": 1,
+    "physical_rooflights": 3,
+    "vertical_gable_pv_panels": 4,
+    "physical_window_layers": [
+      "warm_occupied_depth",
+      "neutral_triple_pane",
+      "dark_frame",
+      "deep_insulated_reveal",
+      "real_external_blind",
+      "vertical_larch_rainscreen"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Opaque construction, physical glazing, occupied depth, structure, environmental roof elements and registered elevation underlays remain distinct because their contrasting material response carries the source archetype identity."
+  },
+  "dimensions": {
+    "width_m": 37.2,
+    "depth_m": 22.06,
+    "podium_height_m": 3.25,
+    "floor_height_m": 3.25,
+    "setback_height_m": 3.25,
+    "roof_height_m": 4.65,
+    "crown_height_m": 0.45,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 8
+  },
+  "native_width_m": 37.2,
+  "native_depth_m": 22.06,
+  "native_height_m": 17.8,
+  "native_floors": 4,
+  "min_floors": 3,
+  "max_floors": 8,
+  "default_floors": 4,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_podium.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 37.05,
+      "depth_m": 20.675,
+      "height_m": 3.25,
+      "floor_height_m": 3.25,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 2400,
+      "material_count": 9,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26663332
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_floor_typical_a.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 37.05,
+      "depth_m": 20.675,
+      "height_m": 3.25,
+      "floor_height_m": 3.25,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2988,
+      "material_count": 10,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 28964964
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_floor_typical_b.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 37.05,
+      "depth_m": 20.675,
+      "height_m": 3.25,
+      "floor_height_m": 3.25,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2988,
+      "material_count": 10,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 28704300
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_floor_typical_c.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 37.05,
+      "depth_m": 20.675,
+      "height_m": 3.25,
+      "floor_height_m": 3.25,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 2604,
+      "material_count": 10,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26932408
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_crown_crown.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 36.8,
+      "depth_m": 20.5,
+      "height_m": 0.45,
+      "floor_height_m": 3.25,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 8247788
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "passive-house-timber-block_roof.glb",
+      "module_family": "passive-house-timber-block",
+      "width_m": 37.2,
+      "depth_m": 21.22,
+      "height_m": 4.763,
+      "floor_height_m": 3.25,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 350,
+      "material_count": 8,
+      "texture_keys": [
+        "blind",
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "green_roof",
+        "interior",
+        "larch",
+        "podium",
+        "pv",
+        "side",
+        "vision_glass",
+        "zinc"
+      ],
+      "ao_baked": true,
+      "size_bytes": 31740420
+    }
+  ],
+  "assembled": {
+    "filename": "passive-house-timber-block_assembled.glb",
+    "module_family": "passive-house-timber-block",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "eco_bioclimatic_passive",
+    "generation_archetype_id": "eco_bioclimatic_passive",
+    "width_m": 37.2,
+    "depth_m": 22.06,
+    "floors": 4,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 17.8,
+    "triangle_count": 12206,
+    "material_count": 12,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 17.8
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 37.2,
+      "depth_m": 22.06,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 37.2,
+          "thickness_m": 22.06,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_four_level_passive_timber_block_with_repeatable_complete_environmental_bays",
+      "occupied_storeys": 4,
+      "front_bays": 6,
+      "deep_insulated_reveals": true,
+      "physical_triple_glazing": true,
+      "real_external_blind_sets": 8,
+      "deep_recessed_entries": 1,
+      "asymmetric_roof_planes": 2,
+      "continuous_pv_fields": 1,
+      "sedum_roof_fields": 1,
+      "physical_rooflights": 3,
+      "vertical_gable_pv_panels": 4,
+      "physical_window_layers": [
+        "warm_occupied_depth",
+        "neutral_triple_pane",
+        "dark_frame",
+        "deep_insulated_reveal",
+        "real_external_blind",
+        "vertical_larch_rainscreen"
+      ]
+    },
+    "texture_keys": [
+      "blind",
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "frame",
+      "green_roof",
+      "interior",
+      "larch",
+      "podium",
+      "pv",
+      "side",
+      "vision_glass",
+      "zinc"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "passive-house-timber-block_preview.png",
+  "renders": [
+    "passive-house-timber-block_preview.png",
+    "passive-house-timber-block_front_corner_oblique.png",
+    "passive-house-timber-block_front_elevation.png",
+    "passive-house-timber-block_rear_corner_oblique.png",
+    "passive-house-timber-block_aerial.png",
+    "passive-house-timber-block_facade_close.png",
+    "passive-house-timber-block_identity_close.png",
+    "passive-house-timber-block_street.png",
+    "passive-house-timber-block_context.png"
+  ],
+  "architectural_identity": "A four-level six-bay passive urban block is wrapped in naturally weathering vertical larch, with deeply recessed triple glazing, selective exterior blinds and a central timber entry beneath an asymmetric roof combining continuous PV, sedum and rooflights.",
+  "material_zones": "honey-brown vertical larch rainscreen; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied room depth; black real external blind blades; pale insulated panels; dark-blue PV glass; dense sedum; zinc edges",
+  "glass_profile": "neutral_triple_glazed_deep_reveal_occupied",
+  "source_provenance": {
+    "catalogue_archetype_id": "eco_urban_bioclimatic_block",
+    "catalogue_variant_id": "eco_bioclimatic_passive",
+    "catalogue_alias_ids": [
+      "passive_house_timber_block",
+      "larch_pv_sedum_urban_block"
+    ],
+    "elevation_source": "/families/passive-house-timber-block/elevation.jpg",
+    "goalpost": "/families/passive-house-timber-block/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/passive-house-timber-block/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

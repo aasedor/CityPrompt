@@ -1,0 +1,136 @@
+{
+  "family_id": "mid-century-glass-steel-pavilion",
+  "source": {
+    "archetype_id": "mid_century_modern_pavilion_block",
+    "variant_id": "mid_century_pavilion_glass_steel",
+    "generation_archetype_id": "mid_century_pavilion_glass_steel",
+    "reuse_keys": [
+      "mid_century_modern_pavilion_block",
+      "mid_century_pavilion_glass_steel",
+      "glass_steel_gallery_pavilion",
+      "floating_roof_modern_pavilion",
+      "Mid Century Glass Steel Pavilion",
+      "Floating Roof Modern Pavilion",
+      "Transparent Gallery Pavilion",
+      "Travertine Core Pavilion"
+    ]
+  },
+  "dimensions": {
+    "width_m": 29.28,
+    "depth_m": 22.2,
+    "podium_height_m": 3.65,
+    "floor_height_m": 3.65,
+    "setback_height_m": 3.65,
+    "roof_height_m": 0.34,
+    "crown_height_m": 0.28,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "Three transparent occupied levels sit inside a complete matte-black steel post-and-beam grid, beside one pale travertine service core and below an exceptionally thin warm-white roof plane whose deep asymmetric cantilever makes the pavilion appear to float.",
+    "material_zones": "matte-black painted structural steel; neutral physical low-iron glass; warm occupied gallery depth; pale honed travertine; light grey concrete slab edges and plinth; warm-white ribbed aluminum soffit and smooth knife-edge roof fascia",
+    "glass_profile": "neutral_low_iron_gallery_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "mid_century_modern_pavilion_block",
+    "mid_century_pavilion_glass_steel",
+    "glass_steel_gallery_pavilion",
+    "floating_roof_modern_pavilion"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The travertine core and knife-edge roof remain fixed while complete 3.43 metre steel-and-glass structural bays repeat along rectangle or L-shaped gallery wings; panes, columns and slab edges never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.72,
+      "scaleMax": 1.32,
+      "maxAxisRatio": 1.22
+    },
+    "recommendedWidth_m": [
+      18.0,
+      55.0
+    ],
+    "recommendedDepth_m": [
+      14.0,
+      40.0
+    ],
+    "recommendedFloors": [
+      1,
+      5
+    ],
+    "preferredBayMultiple_m": 3.43,
+    "scaleMin": 0.72,
+    "scaleMax": 1.32,
+    "maxAxisRatio": 1.22,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          18.0,
+          55.0
+        ],
+        "recommendedDepth_m": [
+          14.0,
+          40.0
+        ],
+        "recommendedFloors": [
+          1,
+          5
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.32,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.43
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          22.0,
+          68.0
+        ],
+        "recommendedDepth_m": [
+          16.0,
+          46.0
+        ],
+        "recommendedFloors": [
+          1,
+          5
+        ],
+        "scaleMin": 0.7,
+        "scaleMax": 1.34,
+        "maxAxisRatio": 1.24,
+        "preferredBayMultiple_m": 3.43,
+        "wingDepth_m": [
+          7.0,
+          14.0
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_three_level_transparent_pavilion_with_repeatable_complete_structural_bays",
+    "occupied_storeys": 3,
+    "front_structural_bays": 7,
+    "side_structural_bays": 5,
+    "continuous_freestanding_columns": true,
+    "pale_travertine_service_cores": 1,
+    "floating_knife_edge_roofs": 1,
+    "roof_overhang_axes": 2,
+    "physical_window_layers": [
+      "warm_gallery_depth",
+      "neutral_low_iron_pane",
+      "fine_mullion",
+      "black_steel_column",
+      "concrete_slab_edge"
+    ]
+  }
+}

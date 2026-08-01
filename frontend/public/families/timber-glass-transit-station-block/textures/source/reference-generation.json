@@ -1,0 +1,108 @@
+{
+  "schema": "reference-generation@1",
+  "family": "timber-glass-transit-station-block",
+  "archetype_id": "transit_oriented_station_block",
+  "variant_id": "transit_station_modern_glass",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/transit_oriented_station_block/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      58.0,
+      34.0,
+      27.0
+    ],
+    "native_envelope_dimensions_m": [
+      62.0,
+      38.0,
+      29.5
+    ],
+    "occupied_storeys": 6,
+    "primary_material": "neutral glass public concourse beneath reddish-brown timber rainscreen",
+    "window_rule": "real lower curtain-wall panes and alternating upper clear windows and external timber louver screens",
+    "front_identity": "three transparent transit levels and three horizontally banded timber levels beneath green roof and twin PV canopies",
+    "roof_rule": "broad extensive green roof with two long elevated photovoltaic canopy rows and screened service core"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-908ce2e1-d897-4146-8481-a5885f4da534",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, programme, structural rhythm, proportion, and palette authority.\nPrimary request: Reconstruct the exact same timber-and-glass transit station block from Image 1 as one coherent true-metric six-level building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, facade parallel to camera, full entrance canopy, glass concourse, timber upper block, green roof and PV visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving the glass concourse, platform-side elevation, timber rainscreen, louver bays, cores, and roof construction wrap the whole building.\nPanel 4: high aerial roof-plan oblique proving the broad flat green roof, two photovoltaic canopy strips, service zone, entrance canopy and simple rectangular footprint.\nBuilding lock: approximately 58 m wide by 34 m deep by 27 m high; exactly six occupied levels; a double-height transparent public transit concourse plus one glazed mezzanine level forming the lower three-level base; real low-iron curtain wall with slim dark mullions, visible floor plates, escalator/wayfinding depth and multiple recessed entrance doors; three upper levels in warm reddish-brown timber rainscreen organized as long horizontal bands, with regularly alternating full-height windows and dense external timber louver screens; thin projecting timber belt courses between upper floors; one broad steel-and-glass entrance canopy integrated across the street facade; rooftop planting, restrained trees, and two slender photovoltaic canopy rows. Preserve identical bay positions, level heights, glass-to-timber break, entrance and roof layout in every view.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no street trees, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: neutral high-transmission curtain wall; graphite aluminum pressure caps and steel canopy; warm occupied transit-hall depth; reddish-brown durable timber rainscreen and matching narrow louver blades; pale concrete floor slabs; planted green roof; dark-blue photovoltaic glass.\nConstraints: exact same topology, six levels, floor datums, structural and mullion cadence, upper louver rhythm, entrance canopy and roof features in every panel; panels separated only by thin neutral gutters; complete station inside every frame; no labels; no text; no transit logos; no signs; no watermark.\nAvoid: generic office tower, extra floors, timber lower concourse, blue mirrored box, opaque transit base, pasted louver texture, blank rear, giant rooftop trees, changed bay grid, railway tracks dominating image, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "double_height_transparent_public_concourse_and_mezzanine",
+        "physical_curtain_wall_with_visible_floor_plates_and_depth",
+        "integral_broad_steel_and_glass_entrance_canopy",
+        "three_upper_timber_rainscreen_levels",
+        "alternating_real_windows_and_external_louver_screens",
+        "continuous_projecting_timber_belt_courses",
+        "green_roof_two_pv_canopy_rows_and_screened_service_zone"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-908ce2e1-d897-4146-8481-a5885f4da534:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-908ce2e1-d897-4146-8481-a5885f4da534:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-908ce2e1-d897-4146-8481-a5885f4da534:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-908ce2e1-d897-4146-8481-a5885f4da534:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact timber-and-glass transit station in Image 1\nInput images: Image 1 is the approved palette, finish, and architectural-scale authority.\nPrimary request: Create six equal square straight-on orthographic material samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: warm reddish-brown durable exterior timber rainscreen boards with fine vertical grain and restrained natural variation, no facade pattern.\nTop-center: matching dark timber external louver blades shown as several narrow real slats with genuine dark gaps, straight-on architectural scale, not a whole window.\nTop-right: neutral high-transmission low-iron curtain-wall glass with subtle grey reflection, no blue mirror tint and no mullion grid, suitable for physical panes.\nBottom-left: graphite powder-coated aluminum pressure caps and structural steel with fine matte grain, no complete beam shape.\nBottom-center: clean warm occupied transit-concourse depth viewed straight through glass, with a large dark room volume, pale ceiling, escalator hint and restrained warm lights, no exterior frame, no signage, no text, no facade perspective.\nBottom-right: planted extensive green-roof sedum and dark-blue photovoltaic glass as two construction-scale adjacent material fields, evenly lit and without a complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural construction texture reference with fine real-world micro-detail.\nLighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.\nConstraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no transit logos; no watermark; no complete facade; no repeated windows.\nAvoid: orange plastic wood, blue mirror glass, painted-on louvers, cartoon vegetation, dramatic lighting, perspective scene, decorative border."
+    },
+    {
+      "file": "timber-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:timber-material-source-v1",
+      "role": "registered_material_crop:timber-material-source-v1"
+    },
+    {
+      "file": "louver-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:louver-material-source-v1",
+      "role": "registered_material_crop:louver-material-source-v1"
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "steel-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:steel-material-source-v1",
+      "role": "registered_material_crop:steel-material-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "green-roof-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:green-roof-material-source-v1",
+      "role": "registered_material_crop:green-roof-material-source-v1"
+    },
+    {
+      "file": "pv-material-source-v1.png",
+      "source_id": "exec-eb38b48f-1f66-4f16-ab5b-e0eda67fa115:pv-material-source-v1",
+      "role": "registered_material_crop:pv-material-source-v1"
+    }
+  ]
+}

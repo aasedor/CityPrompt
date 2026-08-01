@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "transit_oriented_station_block",
+  "catalogue_variant_id": "transit_station_modern_glass",
+  "catalogue_alias_ids": [
+    "timber_glass_transit_station_block",
+    "green_roof_station_concourse"
+  ],
+  "elevation_source": "/families/timber-glass-transit-station-block/elevation.jpg",
+  "goalpost": "/families/timber-glass-transit-station-block/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/timber-glass-transit-station-block/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

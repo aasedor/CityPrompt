@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-31-wave12-vegetation-loadpath-v110`.
+Current executable memory: `2026-08-01-wave13-diverse-structural-grammar-v111`.
 
 ## The quality target
 
@@ -1241,6 +1241,32 @@ The polychrome collegiate family added four rules for resizable hero facades:
   its bounded independent-axis scale band absorbs ordinary sketch error. A
   larger target repeats complete semantic bays through the normal planner path
   while keeping the entrance, ends, roof, crown and structural identity fixed.
+
+### Wave 13 diverse structural-grammar + environmental-roof lessons
+
+- Do not begin unrelated families from one universal facade scaffold. Identify
+  the construction system that carries each goalpost first: continuous
+  terra-cotta piers and setback shoulders for an Art Deco tower; timber
+  post-and-beam, clay infill and open koshi lattice for a machiya; a continuous
+  freestanding steel grid for a transparent pavilion; a glazed concourse below
+  timber-louver floors for a station; or deep insulated larch reveals for a
+  passive-house block. Repeat only complete bays written in that language.
+- Lock roof direction and section against a front elevation and aerial before
+  investing in tile, seam or environmental detail. The ridge, eave hierarchy,
+  overhang and public/rear slopes are topology, not styling. Wrong ridge
+  orientation makes an otherwise detailed machiya read as another building.
+- Photovoltaic, sedum, tile, canopy and rooflight fields are physical roof
+  assemblies. Give them metric coverage, supports or frames, edge clearance
+  and a deliberate offset above their carrier plane; coplanar finish fields can
+  disappear after glTF quantisation even when the Blender scene seems correct.
+- Koshi lattice, timber louvers and exterior blinds need real screen-space
+  gaps, an air cavity, physical glazing and registered occupied depth behind.
+  Audit them from a grazing facade-close camera; a dark texture on an opaque
+  panel or a screen fused to its pane cannot reproduce their materiality.
+- Environmental systems that define the archetype remain part of both the
+  fixed landmark and its semantic LEGO roof or crown kit. Oversized planning
+  may repeat complete middle bays, but it must not stretch a photovoltaic
+  field, duplicate a central entry or discard the reviewed roof logic.
 
 ## Updating this memory
 

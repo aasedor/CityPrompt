@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "mid_century_modern_pavilion_block",
+  "catalogue_variant_id": "mid_century_pavilion_glass_steel",
+  "catalogue_alias_ids": [
+    "glass_steel_gallery_pavilion",
+    "floating_roof_modern_pavilion"
+  ],
+  "elevation_source": "/families/mid-century-glass-steel-pavilion/elevation.jpg",
+  "goalpost": "/families/mid-century-glass-steel-pavilion/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/mid-century-glass-steel-pavilion/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

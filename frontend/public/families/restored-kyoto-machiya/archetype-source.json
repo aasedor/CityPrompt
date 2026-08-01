@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "japanese_machiya_mixed_use",
+  "catalogue_variant_id": "machiya_traditional_restored",
+  "catalogue_alias_ids": [
+    "restored_kyoto_machiya",
+    "traditional_koshi_lattice_shop_house"
+  ],
+  "elevation_source": "/families/restored-kyoto-machiya/elevation.jpg",
+  "goalpost": "/families/restored-kyoto-machiya/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/restored-kyoto-machiya/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

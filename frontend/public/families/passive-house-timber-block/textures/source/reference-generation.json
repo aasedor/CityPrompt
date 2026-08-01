@@ -1,0 +1,108 @@
+{
+  "schema": "reference-generation@1",
+  "family": "passive-house-timber-block",
+  "archetype_id": "eco_urban_bioclimatic_block",
+  "variant_id": "eco_bioclimatic_passive",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/eco_urban_bioclimatic_block/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      36.0,
+      20.0,
+      17.0
+    ],
+    "native_envelope_dimensions_m": [
+      37.2,
+      21.0,
+      18.2
+    ],
+    "occupied_storeys": 4,
+    "primary_material": "naturally weathering vertical larch rainscreen",
+    "window_rule": "six bays of deep triple glazing with dark insulated reveals, mixed panels and selected real external blinds",
+    "front_identity": "six tall larch bays, deeply recessed central entry and environmental roof visible from the street",
+    "roof_rule": "asymmetric pitched roof with continuous south PV field, north sedum strip, three rooflights, zinc gutters and facade PV bank"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, passive-building construction, proportion, and palette authority.\nPrimary request: Reconstruct the exact same passive-house timber urban block from Image 1 as one coherent true-metric four-storey building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, facade parallel to camera, complete dual-pitch roof and ground entrances visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving larch rainscreen, deep window reveals, ventilation louvers, service doors, downpipes and garden-side facade wrap the whole building.\nPanel 4: high aerial roof-plan oblique proving the asymmetrical dual mono-pitch/gable roof, south photovoltaic field, north sedum strip, roof windows, gutters and end-wall PV panels.\nBuilding lock: approximately 36 m wide by 20 m deep by 17 m high; exactly four occupied levels; a simple long rectangular urban block in natural vertical larch rainscreen; six strong front bays of deeply recessed triple-glazed openings; real timber-aluminum frames, dark insulated reveals, mixed clear panes and pale balcony/vent panels, and external horizontal sun blinds on selected middle windows; a deeply recessed central timber entrance and secondary ground openings; a steep asymmetrical roof whose sun-facing plane carries one continuous dark photovoltaic field while the other plane carries an extensive green-roof strip and several rooflights; crisp timber-clad gable ends with smaller punched windows and a vertical bank of facade PV panels. Preserve identical bay positions, roof pitches and environmental features in every view.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no street trees, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible passive-house construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: naturally weathering honey-brown vertical larch; dark bronze/charcoal timber-aluminum frames; neutral high-performance triple glazing with sparse warm occupied depth; pale translucent insulated balcony panels; black external blinds; dark-blue photovoltaic glass; dense green sedum; zinc gutters and flashings.\nConstraints: exact same topology, four levels, six-bay cadence, floor datums, deep reveals, entrance, roof geometry, PV and green-roof fields in every panel; panels separated only by thin neutral gutters; complete building inside every frame; no labels; no text; no signs; no logos; no watermark.\nAvoid: generic timber box, chalet, extra floors, shallow painted windows, orange plastic siding, blue mirrored glazing, arbitrary balconies, flat roof, missing photovoltaics, blank rear, changed bay grid, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "four_level_six_bay_vertical_larch_envelope",
+        "deep_real_triple_glazed_window_reveals",
+        "mixed_clear_panes_insulated_panels_and_external_blinds",
+        "deeply_recessed_central_timber_entrance",
+        "asymmetric_dual_pitch_roof_with_pv_and_sedum_fields",
+        "rooflights_zinc_gutters_and_downpipes",
+        "gable_end_punched_windows_and_vertical_facade_pv_bank"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-e8bc5a22-fc2b-4100-b35c-cdf135d0c9db:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact passive-house timber block in Image 1\nInput images: Image 1 is the approved palette, finish, and construction-scale authority.\nPrimary request: Create six equal square straight-on orthographic material samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: naturally weathering honey-brown vertical larch rainscreen boards with fine grain, narrow open joints and restrained color variation, no whole facade.\nTop-center: dark bronze-charcoal timber-aluminum window frame and insulated reveal material with fine matte grain, no complete window.\nTop-right: neutral high-performance triple glazing with restrained grey reflection variation, no blue mirror tint, no mullion grid, suitable for separate physical panes.\nBottom-left: black exterior venetian sun-blind blades shown as fine real horizontal slats with actual dark gaps, straight-on architectural scale, not a whole window.\nBottom-center: clean warm occupied passive-house room depth viewed straight through glass, with dark recessed volume, pale ceiling edge, subtle curtain and one restrained warm light zone, absolutely no exterior frame or facade perspective.\nBottom-right: dark-blue photovoltaic glass and dense extensive green-roof sedum as two adjacent construction-scale material fields, evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural construction texture reference with fine real-world micro-detail.\nLighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.\nConstraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no logos; no watermark; no complete facade; no repeated window grid.\nAvoid: orange plastic siding, chrome frames, blue mirrored glass, painted blind texture, cartoon sedum, dramatic lighting, perspective scene, decorative border."
+    },
+    {
+      "file": "larch-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:larch-material-source-v1",
+      "role": "registered_material_crop:larch-material-source-v1"
+    },
+    {
+      "file": "frame-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:frame-material-source-v1",
+      "role": "registered_material_crop:frame-material-source-v1"
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "blind-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:blind-material-source-v1",
+      "role": "registered_material_crop:blind-material-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "pv-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:pv-material-source-v1",
+      "role": "registered_material_crop:pv-material-source-v1"
+    },
+    {
+      "file": "green-roof-material-source-v1.png",
+      "source_id": "exec-94feb115-c27e-41f8-b093-54d931a82ef3:green-roof-material-source-v1",
+      "role": "registered_material_crop:green-roof-material-source-v1"
+    }
+  ]
+}

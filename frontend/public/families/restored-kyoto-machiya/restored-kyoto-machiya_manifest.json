@@ -1,0 +1,1527 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave13_diverse_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T14:51:41.011597+00:00",
+  "family": "restored-kyoto-machiya",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "archetype_label": "Japanese Machiya - Traditional Restored",
+  "variant_id": "machiya_traditional_restored",
+  "generation_archetype_id": "machiya_traditional_restored",
+  "archetype_aliases": [
+    "japanese_machiya_mixed_use",
+    "machiya_traditional_restored",
+    "restored_kyoto_machiya",
+    "traditional_koshi_lattice_shop_house"
+  ],
+  "aesthetic_category_id": "traditional_japanese_machiya",
+  "development_type": "mixed_use_lowrise",
+  "reuse_keys": [
+    "japanese_machiya_mixed_use",
+    "machiya_traditional_restored",
+    "restored_kyoto_machiya",
+    "traditional_koshi_lattice_shop_house",
+    "Restored Kyoto Machiya",
+    "Traditional Koshi Lattice Shop House",
+    "Japanese Timber Mixed Use House",
+    "Kawara Tile Machiya"
+  ],
+  "generation_tags": [
+    "wave13",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "real_gap_preserving_koshi_lattice",
+    "individual_kawara_rows",
+    "plain_indigo_noren"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The entry, lower eave, gable ends and roof terminals remain fixed. Differently sized rectangles or L-shaped plots repeat complete three metre post-and-koshi bays with real lattice gaps rather than stretching slats, tiles or noren.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.76,
+      "scaleMax": 1.28,
+      "maxAxisRatio": 1.2
+    },
+    "recommendedWidth_m": [
+      13.0,
+      38.0
+    ],
+    "recommendedDepth_m": [
+      10.0,
+      25.0
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "preferredBayMultiple_m": 3.0,
+    "scaleMin": 0.76,
+    "scaleMax": 1.28,
+    "maxAxisRatio": 1.2,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          13.0,
+          38.0
+        ],
+        "recommendedDepth_m": [
+          10.0,
+          25.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.76,
+        "scaleMax": 1.28,
+        "maxAxisRatio": 1.2,
+        "preferredBayMultiple_m": 3.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          16.0,
+          44.0
+        ],
+        "recommendedDepth_m": [
+          12.0,
+          30.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.72,
+        "scaleMax": 1.3,
+        "maxAxisRatio": 1.22,
+        "preferredBayMultiple_m": 3.0,
+        "wingDepth_m": [
+          5.5,
+          10.0
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/machiya_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/machiya_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/machiya_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/machiya_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/machiya_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/machiya_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/machiya_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/machiya_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/machiya_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/machiya_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/machiya_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/machiya_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/machiya_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/machiya_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/machiya_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/machiya_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/machiya_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/machiya_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/machiya_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/machiya_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/machiya_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/machiya_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/machiya_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/machiya_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/machiya_shopfront_and_entry_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/machiya_ground_lattice_bay_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/machiya_upper_koshi_bay_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/machiya_kawara_gable_and_eaves_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/machiya_wrapped_secondary_elevation_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/occupied_machiya_room_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_timber_albedo",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_albedo.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_timber_normal",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_normal.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "normal"
+    },
+    {
+      "key": "near_timber_roughness",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_roughness.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_timber_ao",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_ao.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "ao"
+    },
+    {
+      "key": "near_timber_depth",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_depth.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "depth"
+    },
+    {
+      "key": "near_timber_emissive",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_emissive.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_timber_glass_mask",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_glass.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_timber_opaque_mask",
+      "path": "textures/pbr/near/dark_weathered_japanese_cedar_opaque.png",
+      "lod": "near",
+      "zone": "timber",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_lattice_albedo",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_albedo.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_lattice_normal",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_normal.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "normal"
+    },
+    {
+      "key": "near_lattice_roughness",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_roughness.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_lattice_ao",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_ao.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "ao"
+    },
+    {
+      "key": "near_lattice_depth",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_depth.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "depth"
+    },
+    {
+      "key": "near_lattice_emissive",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_emissive.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_lattice_glass_mask",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_glass.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_lattice_opaque_mask",
+      "path": "textures/pbr/near/warm_brown_koshi_lattice_opaque.png",
+      "lod": "near",
+      "zone": "lattice",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_tile_albedo",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_albedo.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_tile_normal",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_normal.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "normal"
+    },
+    {
+      "key": "near_tile_roughness",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_roughness.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_tile_ao",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_ao.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "ao"
+    },
+    {
+      "key": "near_tile_depth",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_depth.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "depth"
+    },
+    {
+      "key": "near_tile_emissive",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_emissive.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_tile_glass_mask",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_glass.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_tile_opaque_mask",
+      "path": "textures/pbr/near/charcoal_glazed_kawara_tile_opaque.png",
+      "lod": "near",
+      "zone": "tile",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_plaster_albedo",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_albedo.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_plaster_normal",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_normal.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "normal"
+    },
+    {
+      "key": "near_plaster_roughness",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_roughness.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_plaster_ao",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_ao.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "ao"
+    },
+    {
+      "key": "near_plaster_depth",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_depth.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "depth"
+    },
+    {
+      "key": "near_plaster_emissive",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_emissive.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_plaster_glass_mask",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_glass.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_plaster_opaque_mask",
+      "path": "textures/pbr/near/matte_white_lime_clay_plaster_opaque.png",
+      "lod": "near",
+      "zone": "plaster",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_vision_glass_albedo",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_albedo.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_vision_glass_normal",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_normal.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_vision_glass_roughness",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_roughness.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_vision_glass_ao",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_ao.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_vision_glass_depth",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_depth.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_vision_glass_emissive",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_emissive.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_vision_glass_glass_mask",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_glass.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_vision_glass_opaque_mask",
+      "path": "textures/pbr/near/neutral_smoky_machiya_glass_opaque.png",
+      "lod": "near",
+      "zone": "vision_glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_indigo_albedo",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_albedo.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_indigo_normal",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_normal.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "normal"
+    },
+    {
+      "key": "near_indigo_roughness",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_roughness.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_indigo_ao",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_ao.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "ao"
+    },
+    {
+      "key": "near_indigo_depth",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_depth.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "depth"
+    },
+    {
+      "key": "near_indigo_emissive",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_emissive.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_indigo_glass_mask",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_glass.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_indigo_opaque_mask",
+      "path": "textures/pbr/near/plain_woven_indigo_noren_opaque.png",
+      "lod": "near",
+      "zone": "indigo",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_stone_albedo",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_albedo.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_stone_normal",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_normal.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "normal"
+    },
+    {
+      "key": "near_stone_roughness",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_roughness.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_stone_ao",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_ao.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "ao"
+    },
+    {
+      "key": "near_stone_depth",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_depth.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "depth"
+    },
+    {
+      "key": "near_stone_emissive",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_emissive.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_stone_glass_mask",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_glass.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_stone_opaque_mask",
+      "path": "textures/pbr/near/grey_machiya_sill_and_pebble_opaque.png",
+      "lod": "near",
+      "zone": "stone",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/restored-kyoto-machiya",
+    "model": "gpt-image-2",
+    "style_reference": "/families/restored-kyoto-machiya/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "recessed_noren_entry",
+        "lower_street_eave",
+        "gable_end_frames",
+        "ridge_terminals"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat one complete three metre post-and-koshi bay; lattice slats, glass, occupied depth, beam and eave datum remain one unit."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "noren entry",
+        "lower street eave",
+        "gable ends",
+        "ridge cap",
+        "gutters and downpipes"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete clay-infill timber frame with punched occupied openings; complete clay-infill timber frame, drainage and integral bamboo passage",
+      "elevation_coverage": {
+        "front": "continuous upper koshi screen, ground shop lattice, three plain indigo noren and recessed entrance",
+        "left": "complete clay-infill timber frame with punched occupied openings",
+        "right": "complete clay-infill timber frame, drainage and integral bamboo passage",
+        "rear": "complete service elevation with upper koshi panels and lower timber doors",
+        "roof": "large kawara gable, exposed rafters, individual tile rows, ridge cap, gutters and lower street eave"
+      },
+      "variation_policy": "Use the complete fixed landmark inside its independent-axis scale band. Oversized targets use long-axis streetwall repeat of complete semantic bays, never family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/machiya_registered_front_albedo.png",
+        "normal": "textures/pbr/near/machiya_registered_front_normal.png",
+        "roughness": "textures/pbr/near/machiya_registered_front_roughness.png",
+        "ao": "textures/pbr/near/machiya_registered_front_ao.png",
+        "depth": "textures/pbr/near/machiya_registered_front_depth.png",
+        "emissive": "textures/pbr/near/machiya_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/machiya_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/machiya_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/machiya_registered_front_albedo.png",
+        "normal": "textures/pbr/far/machiya_registered_front_normal.png",
+        "roughness": "textures/pbr/far/machiya_registered_front_roughness.png",
+        "ao": "textures/pbr/far/machiya_registered_front_ao.png",
+        "depth": "textures/pbr/far/machiya_registered_front_depth.png",
+        "emissive": "textures/pbr/far/machiya_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/machiya_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/machiya_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/machiya_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/machiya_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "japanese_machiya_mixed_use",
+      "source_variant_id": "machiya_traditional_restored",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "dark_post_and_beam_frame_with_white_clay_infill",
+        "continuous_upper_koshi_screen_with_real_gaps",
+        "ground_shop_lattice_and_deep_recessed_entry",
+        "three_plain_indigo_noren_panels",
+        "large_kawara_gable_and_lower_street_eave",
+        "exposed_rafters_ridge_caps_gutters_and_downpipes",
+        "complete_rear_service_and_integral_side_garden"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/restored-kyoto-machiya/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy."
+  },
+  "massing_graph": {
+    "type": "fixed_two_storey_machiya_with_repeatable_complete_post_and_koshi_bays",
+    "occupied_storeys": 2,
+    "post_and_beam_bays": 6,
+    "continuous_upper_koshi_screen": true,
+    "real_gap_preserving_lattice": true,
+    "deep_recessed_entries": 1,
+    "plain_indigo_noren_panels": 3,
+    "large_kawara_gable_roofs": 1,
+    "lower_tiled_street_eaves": 1,
+    "individual_kawara_rows": 22,
+    "integral_side_garden": true,
+    "physical_window_layers": [
+      "warm_occupied_depth",
+      "smoky_pane",
+      "real_koshi_screen",
+      "timber_post_and_beam",
+      "deep_eave"
+    ]
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Opaque construction, physical glazing, occupied depth, structure, environmental roof elements and registered elevation underlays remain distinct because their contrasting material response carries the source archetype identity."
+  },
+  "dimensions": {
+    "width_m": 19.77,
+    "depth_m": 16.77,
+    "podium_height_m": 3.35,
+    "floor_height_m": 3.35,
+    "setback_height_m": 3.35,
+    "roof_height_m": 4.7,
+    "crown_height_m": 0.85,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "native_width_m": 19.77,
+  "native_depth_m": 16.77,
+  "native_height_m": 11.57,
+  "native_floors": 2,
+  "min_floors": 2,
+  "max_floors": 4,
+  "default_floors": 2,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_podium.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.6,
+      "depth_m": 14.6,
+      "height_m": 3.35,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1140,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 17829224
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_floor_typical_a.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.2,
+      "depth_m": 7.265,
+      "height_m": 3.35,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 1416,
+      "material_count": 7,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13366760
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_floor_typical_b.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.2,
+      "depth_m": 7.265,
+      "height_m": 3.35,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 1416,
+      "material_count": 7,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13366760
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_floor_typical_c.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.2,
+      "depth_m": 7.265,
+      "height_m": 3.35,
+      "floor_height_m": 3.35,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 1416,
+      "material_count": 7,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 13366760
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_crown_crown.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.8,
+      "depth_m": 14.6,
+      "height_m": 0.85,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 104,
+      "material_count": 5,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 8981388
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "restored-kyoto-machiya_roof.glb",
+      "module_family": "restored-kyoto-machiya",
+      "width_m": 18.77,
+      "depth_m": 15.0,
+      "height_m": 5.069,
+      "floor_height_m": 3.35,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 7372,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "indigo",
+        "interior",
+        "lattice",
+        "plaster",
+        "podium",
+        "side",
+        "stone",
+        "tile",
+        "timber",
+        "vision_glass"
+      ],
+      "ao_baked": true,
+      "size_bytes": 18166100
+    }
+  ],
+  "assembled": {
+    "filename": "restored-kyoto-machiya_assembled.glb",
+    "module_family": "restored-kyoto-machiya",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "machiya_traditional_restored",
+    "generation_archetype_id": "machiya_traditional_restored",
+    "width_m": 19.77,
+    "depth_m": 16.77,
+    "floors": 2,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 11.57,
+    "triangle_count": 12820,
+    "material_count": 10,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 11.57
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 19.77,
+      "depth_m": 16.77,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 19.77,
+          "thickness_m": 16.77,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_two_storey_machiya_with_repeatable_complete_post_and_koshi_bays",
+      "occupied_storeys": 2,
+      "post_and_beam_bays": 6,
+      "continuous_upper_koshi_screen": true,
+      "real_gap_preserving_lattice": true,
+      "deep_recessed_entries": 1,
+      "plain_indigo_noren_panels": 3,
+      "large_kawara_gable_roofs": 1,
+      "lower_tiled_street_eaves": 1,
+      "individual_kawara_rows": 22,
+      "integral_side_garden": true,
+      "physical_window_layers": [
+        "warm_occupied_depth",
+        "smoky_pane",
+        "real_koshi_screen",
+        "timber_post_and_beam",
+        "deep_eave"
+      ]
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "indigo",
+      "interior",
+      "lattice",
+      "plaster",
+      "podium",
+      "side",
+      "stone",
+      "tile",
+      "timber",
+      "vision_glass"
+    ],
+    "ao_baked": true
+  },
+  "thumbnail": "restored-kyoto-machiya_preview.png",
+  "renders": [
+    "restored-kyoto-machiya_preview.png",
+    "restored-kyoto-machiya_front_corner_oblique.png",
+    "restored-kyoto-machiya_front_elevation.png",
+    "restored-kyoto-machiya_rear_corner_oblique.png",
+    "restored-kyoto-machiya_aerial.png",
+    "restored-kyoto-machiya_facade_close.png",
+    "restored-kyoto-machiya_identity_close.png",
+    "restored-kyoto-machiya_street.png",
+    "restored-kyoto-machiya_context.png"
+  ],
+  "architectural_identity": "A restored two-storey Kyoto machiya uses a dark cedar post-and-beam frame, white clay infill and continuous fine koshi lattice in front of warm occupied glazing beneath a deep kawara gable, with a lower street eave, recessed entry and three plain indigo noren panels.",
+  "material_zones": "dark weathered Japanese cedar and cypress; warm brown fine koshi lattice; matte white lime-clay plaster; charcoal glazed kawara tiles; neutral smoky physical glass; warm occupied tatami-room depth; plain woven indigo noren; grey stone sill; dark gutters",
+  "glass_profile": "neutral_smoky_lattice_screened_occupied",
+  "source_provenance": {
+    "catalogue_archetype_id": "japanese_machiya_mixed_use",
+    "catalogue_variant_id": "machiya_traditional_restored",
+    "catalogue_alias_ids": [
+      "restored_kyoto_machiya",
+      "traditional_koshi_lattice_shop_house"
+    ],
+    "elevation_source": "/families/restored-kyoto-machiya/elevation.jpg",
+    "goalpost": "/families/restored-kyoto-machiya/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/restored-kyoto-machiya/textures/source/reference-generation.json",
+    "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+  }
+}

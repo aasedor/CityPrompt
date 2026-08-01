@@ -1,0 +1,104 @@
+{
+  "schema": "reference-generation@1",
+  "family": "art-deco-cream-terracotta-tower",
+  "archetype_id": "art_deco_setback_tower",
+  "variant_id": "art_deco_cream_terracotta",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/art_deco_setback_tower/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      30.0,
+      28.0,
+      74.5
+    ],
+    "native_envelope_dimensions_m": [
+      31.0,
+      29.0,
+      77.0
+    ],
+    "occupied_storeys": 15,
+    "primary_material": "cream glazed architectural terra cotta",
+    "window_rule": "dark bronze recessed frames, neutral smoky physical glass, sparse warm occupied depth",
+    "front_identity": "seven-bay vertical shaft stepping to five and three bay stages above a black granite podium",
+    "roof_rule": "complete setback terraces terminating in one octagonal dark-glass lantern with eight gilded posts and finial"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-4614de9d-2065-43a1-a3d9-0a48f0470072",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, proportion, ornament, and palette authority.\nPrimary request: Reconstruct the exact same cream terra-cotta and gold Art Deco setback tower from Image 1 as one coherent true-metric building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, front facade parallel to camera, complete building and crown visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving that terra-cotta piers, punched windows, setbacks, and service elevation wrap the entire tower.\nPanel 4: high aerial roof-plan oblique proving every setback terrace, roof deck, octagonal lantern, gilded posts, and finial.\nBuilding lock: approximately 30 m wide by 28 m deep; exactly 15 occupied levels above a dark polished-granite and bronze double-height public podium; a tall seven-bay lower shaft; progressively narrower five-bay and three-bay setback stages; strong continuous vertical cream glazed-terra-cotta piers; dark recessed bronze residential/office windows with real occupied depth; shallow geometric spandrel relief; sunburst ornament at the first major setback; a compact octagonal dark-glass lantern framed by eight separate gilded posts and a faceted gilded cap and finial. Preserve the same setback heights and footprint relationships in all four panels.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no trees, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: cream glazed architectural terra cotta with fine joints and restrained age variation; charcoal-black polished granite podium; dark bronze doors, frames, and grilles; neutral smoky low-e windows with sparse warm occupied rooms; restrained gold-leaf ornament and lantern metalwork.\nConstraints: exact same building topology, 15 occupied levels, floor datums, bay cadence, setback count, crown, entrance position, material zones, and proportions in every panel; panels separated only by thin neutral gutters; complete tower inside every frame; no labels; no text; no signs; no logos; no watermark.\nAvoid: generic rectangular skyscraper, extra floors, missing setbacks, pyramidal wedding-cake fantasy, oversized gold ornament, blue mirrored glass, blank sides, flat pasted windows, changed crown between views, perspective-distorted front elevation, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "double_height_black_granite_and_bronze_public_podium",
+        "seven_bay_cream_terracotta_lower_shaft",
+        "progressive_five_and_three_bay_setback_stages",
+        "physical_recessed_bronze_windows_with_occupied_depth",
+        "continuous_vertical_piers_and_geometric_spandrel_relief",
+        "sunburst_ornament_at_first_major_setback",
+        "octagonal_dark_glass_lantern_with_eight_gilded_posts",
+        "complete_setback_terraces_and_wrapped_secondary_elevations"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-4614de9d-2065-43a1-a3d9-0a48f0470072:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-4614de9d-2065-43a1-a3d9-0a48f0470072:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-4614de9d-2065-43a1-a3d9-0a48f0470072:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-4614de9d-2065-43a1-a3d9-0a48f0470072:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact cream terra-cotta Art Deco tower in Image 1\nInput images: Image 1 is the approved palette, finish, and architectural-scale authority.\nPrimary request: Create six equal square straight-on orthographic material samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: cream glazed architectural terra-cotta ashlar and narrow geometric relief joints, real 300 to 600 mm unit scale, subtle warm ivory variation, no windows or building perspective.\nTop-center: charcoal-black polished granite podium panels with restrained pale mineral veining and fine construction joints, no reflections of a scene.\nTop-right: aged dark bronze architectural frames and entrance grille metal with fine brushed grain and slight patina, no door or grille pattern baked across the sample.\nBottom-left: neutral smoky low-e vision glass with restrained grey-green reflection variation, no mullion grid, no complete facade, suitable for physical panes.\nBottom-center: a clean warm occupied Art Deco tower room-depth plate seen straight through glass, with dark room volume, subtle curtains, ceiling edge, one warm lamp zone, and human scale but absolutely no exterior frame, text, furniture focal point, or building perspective.\nBottom-right: restrained gold-leaf and gilded architectural metal with fine hand-laid texture and slight age variation, not mirror chrome and not glitter.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural construction texture reference with fine real-world micro-detail.\nLighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.\nConstraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no logos; no watermark; no complete facade; no repeated windows; no ornamental motif larger than real construction scale.\nAvoid: beige stucco, cartoon gold, blue mirror glass, oversized veining, dramatic lighting, perspective scene, decorative border."
+    },
+    {
+      "file": "terracotta-material-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:terracotta-material-source-v1",
+      "role": "registered_material_crop:terracotta-material-source-v1"
+    },
+    {
+      "file": "granite-material-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:granite-material-source-v1",
+      "role": "registered_material_crop:granite-material-source-v1"
+    },
+    {
+      "file": "bronze-material-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:bronze-material-source-v1",
+      "role": "registered_material_crop:bronze-material-source-v1"
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "gold-material-source-v1.png",
+      "source_id": "exec-148ad30f-7fbd-44a3-b871-e539c87b007a:gold-material-source-v1",
+      "role": "registered_material_crop:gold-material-source-v1"
+    }
+  ]
+}

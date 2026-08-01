@@ -1,0 +1,140 @@
+{
+  "family_id": "timber-glass-transit-station-block",
+  "source": {
+    "archetype_id": "transit_oriented_station_block",
+    "variant_id": "transit_station_modern_glass",
+    "generation_archetype_id": "transit_station_modern_glass",
+    "reuse_keys": [
+      "transit_oriented_station_block",
+      "transit_station_modern_glass",
+      "timber_glass_transit_station_block",
+      "green_roof_station_concourse",
+      "Timber Glass Transit Station Block",
+      "Modern Glass Station Concourse",
+      "Green Roof Transit Hub",
+      "Timber Louver Station"
+    ]
+  },
+  "dimensions": {
+    "width_m": 61.0,
+    "depth_m": 40.54,
+    "podium_height_m": 4.35,
+    "floor_height_m": 4.05,
+    "setback_height_m": 4.05,
+    "roof_height_m": 3.0,
+    "crown_height_m": 1.15,
+    "default_floors": 6,
+    "min_floors": 4,
+    "max_floors": 10
+  },
+  "architectural_signature": {
+    "identity": "A transparent three-level public station concourse with real floor plates, entrances and escalator depth supports three warm timber rainscreen levels of alternating clear windows and external louver screens beneath a planted roof and two photovoltaic canopy rows.",
+    "material_zones": "neutral high-transmission curtain wall; graphite aluminum pressure caps and steel canopy; warm occupied transit-hall depth; pale concrete slabs; reddish-brown timber rainscreen; dark timber louver blades with real gaps; extensive sedum roof; dark-blue PV glass",
+    "glass_profile": "high_transmission_transit_concourse_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "transit_oriented_station_block",
+    "transit_station_modern_glass",
+    "timber_glass_transit_station_block",
+    "green_roof_station_concourse"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The entrance canopy, concourse hierarchy and PV roof remain fixed. Oversized station plots repeat complete 4.83 metre glass or timber-louver bays, including pane, pressure cap, slab, occupied depth and real louver blades.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.68,
+      "scaleMax": 1.34,
+      "maxAxisRatio": 1.26
+    },
+    "recommendedWidth_m": [
+      43.0,
+      150.0
+    ],
+    "recommendedDepth_m": [
+      28.0,
+      100.0
+    ],
+    "recommendedFloors": [
+      4,
+      10
+    ],
+    "preferredBayMultiple_m": 4.83,
+    "scaleMin": 0.68,
+    "scaleMax": 1.34,
+    "maxAxisRatio": 1.26,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          43.0,
+          150.0
+        ],
+        "recommendedDepth_m": [
+          28.0,
+          100.0
+        ],
+        "recommendedFloors": [
+          4,
+          10
+        ],
+        "scaleMin": 0.68,
+        "scaleMax": 1.34,
+        "maxAxisRatio": 1.26,
+        "preferredBayMultiple_m": 4.83
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          48.0,
+          170.0
+        ],
+        "recommendedDepth_m": [
+          30.0,
+          112.0
+        ],
+        "recommendedFloors": [
+          4,
+          10
+        ],
+        "scaleMin": 0.66,
+        "scaleMax": 1.36,
+        "maxAxisRatio": 1.28,
+        "preferredBayMultiple_m": 4.83,
+        "wingDepth_m": [
+          16.0,
+          30.0
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_six_level_station_with_repeatable_glazed_and_timber_louver_bays",
+    "occupied_storeys": 6,
+    "transparent_concourse_levels": 3,
+    "timber_upper_levels": 3,
+    "front_bays": 12,
+    "visible_escalators": 2,
+    "recessed_public_doors": 5,
+    "integral_glass_canopies": 1,
+    "external_louver_blades_per_screen": 10,
+    "extensive_green_roofs": 1,
+    "photovoltaic_canopy_rows": 2,
+    "physical_window_layers": [
+      "occupied_transit_depth",
+      "high_transmission_pane",
+      "pressure_cap",
+      "floor_plate",
+      "timber_rainscreen",
+      "real_external_louver"
+    ]
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "schema": "mid-century-glass-steel-pavilion-skin@1",
+  "family": "mid-century-glass-steel-pavilion",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The four-view board locks one three-level transparent pavilion with a 3.6 metre black steel grid, one pale travertine core and one exceptionally thin cantilevered roof plane.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "mid_century_modern_pavilion_block",
+    "source_variant_id": "mid_century_pavilion_glass_steel",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "three_transparent_occupied_levels",
+      "slender_black_steel_post_and_beam_frame",
+      "physical_low_iron_curtain_wall_and_warm_depth",
+      "visible_concrete_floor_plates",
+      "pale_travertine_plinth_and_solid_service_core",
+      "exceptionally_thin_floating_roof_with_deep_asymmetric_cantilever",
+      "complete_wrapped_secondary_elevations_and_rear_entry"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/pavilion_registered_front_albedo.png",
+        "normal": "textures/pbr/near/pavilion_registered_front_normal.png",
+        "roughness": "textures/pbr/near/pavilion_registered_front_roughness.png",
+        "ao": "textures/pbr/near/pavilion_registered_front_ao.png",
+        "depth": "textures/pbr/near/pavilion_registered_front_depth.png",
+        "emissive": "textures/pbr/near/pavilion_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/pavilion_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/pavilion_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pavilion_registered_front_albedo.png",
+        "normal": "textures/pbr/far/pavilion_registered_front_normal.png",
+        "roughness": "textures/pbr/far/pavilion_registered_front_roughness.png",
+        "ao": "textures/pbr/far/pavilion_registered_front_ao.png",
+        "depth": "textures/pbr/far/pavilion_registered_front_depth.png",
+        "emissive": "textures/pbr/far/pavilion_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/pavilion_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/pavilion_registered_front_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/travertine_plinth_and_entry_albedo.png",
+        "normal": "textures/pbr/near/travertine_plinth_and_entry_normal.png",
+        "roughness": "textures/pbr/near/travertine_plinth_and_entry_roughness.png",
+        "ao": "textures/pbr/near/travertine_plinth_and_entry_ao.png",
+        "depth": "textures/pbr/near/travertine_plinth_and_entry_depth.png",
+        "emissive": "textures/pbr/near/travertine_plinth_and_entry_emissive.png",
+        "glass_mask": "textures/pbr/near/travertine_plinth_and_entry_glass.png",
+        "opaque_mask": "textures/pbr/near/travertine_plinth_and_entry_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/travertine_plinth_and_entry_albedo.png",
+        "normal": "textures/pbr/far/travertine_plinth_and_entry_normal.png",
+        "roughness": "textures/pbr/far/travertine_plinth_and_entry_roughness.png",
+        "ao": "textures/pbr/far/travertine_plinth_and_entry_ao.png",
+        "depth": "textures/pbr/far/travertine_plinth_and_entry_depth.png",
+        "emissive": "textures/pbr/far/travertine_plinth_and_entry_emissive.png",
+        "glass_mask": "textures/pbr/far/travertine_plinth_and_entry_glass.png",
+        "opaque_mask": "textures/pbr/far/travertine_plinth_and_entry_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/pavilion_complete_glazed_bay_a_albedo.png",
+        "normal": "textures/pbr/near/pavilion_complete_glazed_bay_a_normal.png",
+        "roughness": "textures/pbr/near/pavilion_complete_glazed_bay_a_roughness.png",
+        "ao": "textures/pbr/near/pavilion_complete_glazed_bay_a_ao.png",
+        "depth": "textures/pbr/near/pavilion_complete_glazed_bay_a_depth.png",
+        "emissive": "textures/pbr/near/pavilion_complete_glazed_bay_a_emissive.png",
+        "glass_mask": "textures/pbr/near/pavilion_complete_glazed_bay_a_glass.png",
+        "opaque_mask": "textures/pbr/near/pavilion_complete_glazed_bay_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pavilion_complete_glazed_bay_a_albedo.png",
+        "normal": "textures/pbr/far/pavilion_complete_glazed_bay_a_normal.png",
+        "roughness": "textures/pbr/far/pavilion_complete_glazed_bay_a_roughness.png",
+        "ao": "textures/pbr/far/pavilion_complete_glazed_bay_a_ao.png",
+        "depth": "textures/pbr/far/pavilion_complete_glazed_bay_a_depth.png",
+        "emissive": "textures/pbr/far/pavilion_complete_glazed_bay_a_emissive.png",
+        "glass_mask": "textures/pbr/far/pavilion_complete_glazed_bay_a_glass.png",
+        "opaque_mask": "textures/pbr/far/pavilion_complete_glazed_bay_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/pavilion_complete_glazed_bay_b_albedo.png",
+        "normal": "textures/pbr/near/pavilion_complete_glazed_bay_b_normal.png",
+        "roughness": "textures/pbr/near/pavilion_complete_glazed_bay_b_roughness.png",
+        "ao": "textures/pbr/near/pavilion_complete_glazed_bay_b_ao.png",
+        "depth": "textures/pbr/near/pavilion_complete_glazed_bay_b_depth.png",
+        "emissive": "textures/pbr/near/pavilion_complete_glazed_bay_b_emissive.png",
+        "glass_mask": "textures/pbr/near/pavilion_complete_glazed_bay_b_glass.png",
+        "opaque_mask": "textures/pbr/near/pavilion_complete_glazed_bay_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pavilion_complete_glazed_bay_b_albedo.png",
+        "normal": "textures/pbr/far/pavilion_complete_glazed_bay_b_normal.png",
+        "roughness": "textures/pbr/far/pavilion_complete_glazed_bay_b_roughness.png",
+        "ao": "textures/pbr/far/pavilion_complete_glazed_bay_b_ao.png",
+        "depth": "textures/pbr/far/pavilion_complete_glazed_bay_b_depth.png",
+        "emissive": "textures/pbr/far/pavilion_complete_glazed_bay_b_emissive.png",
+        "glass_mask": "textures/pbr/far/pavilion_complete_glazed_bay_b_glass.png",
+        "opaque_mask": "textures/pbr/far/pavilion_complete_glazed_bay_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/floating_knife_edge_roof_albedo.png",
+        "normal": "textures/pbr/near/floating_knife_edge_roof_normal.png",
+        "roughness": "textures/pbr/near/floating_knife_edge_roof_roughness.png",
+        "ao": "textures/pbr/near/floating_knife_edge_roof_ao.png",
+        "depth": "textures/pbr/near/floating_knife_edge_roof_depth.png",
+        "emissive": "textures/pbr/near/floating_knife_edge_roof_emissive.png",
+        "glass_mask": "textures/pbr/near/floating_knife_edge_roof_glass.png",
+        "opaque_mask": "textures/pbr/near/floating_knife_edge_roof_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/floating_knife_edge_roof_albedo.png",
+        "normal": "textures/pbr/far/floating_knife_edge_roof_normal.png",
+        "roughness": "textures/pbr/far/floating_knife_edge_roof_roughness.png",
+        "ao": "textures/pbr/far/floating_knife_edge_roof_ao.png",
+        "depth": "textures/pbr/far/floating_knife_edge_roof_depth.png",
+        "emissive": "textures/pbr/far/floating_knife_edge_roof_emissive.png",
+        "glass_mask": "textures/pbr/far/floating_knife_edge_roof_glass.png",
+        "opaque_mask": "textures/pbr/far/floating_knife_edge_roof_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/wrapped_glass_and_service_core_albedo.png",
+        "normal": "textures/pbr/near/wrapped_glass_and_service_core_normal.png",
+        "roughness": "textures/pbr/near/wrapped_glass_and_service_core_roughness.png",
+        "ao": "textures/pbr/near/wrapped_glass_and_service_core_ao.png",
+        "depth": "textures/pbr/near/wrapped_glass_and_service_core_depth.png",
+        "emissive": "textures/pbr/near/wrapped_glass_and_service_core_emissive.png",
+        "glass_mask": "textures/pbr/near/wrapped_glass_and_service_core_glass.png",
+        "opaque_mask": "textures/pbr/near/wrapped_glass_and_service_core_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/wrapped_glass_and_service_core_albedo.png",
+        "normal": "textures/pbr/far/wrapped_glass_and_service_core_normal.png",
+        "roughness": "textures/pbr/far/wrapped_glass_and_service_core_roughness.png",
+        "ao": "textures/pbr/far/wrapped_glass_and_service_core_ao.png",
+        "depth": "textures/pbr/far/wrapped_glass_and_service_core_depth.png",
+        "emissive": "textures/pbr/far/wrapped_glass_and_service_core_emissive.png",
+        "glass_mask": "textures/pbr/far/wrapped_glass_and_service_core_glass.png",
+        "opaque_mask": "textures/pbr/far/wrapped_glass_and_service_core_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/occupied_pavilion_gallery_depth_albedo.png",
+        "normal": "textures/pbr/near/occupied_pavilion_gallery_depth_normal.png",
+        "roughness": "textures/pbr/near/occupied_pavilion_gallery_depth_roughness.png",
+        "ao": "textures/pbr/near/occupied_pavilion_gallery_depth_ao.png",
+        "depth": "textures/pbr/near/occupied_pavilion_gallery_depth_depth.png",
+        "emissive": "textures/pbr/near/occupied_pavilion_gallery_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/occupied_pavilion_gallery_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/occupied_pavilion_gallery_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/occupied_pavilion_gallery_depth_albedo.png",
+        "normal": "textures/pbr/far/occupied_pavilion_gallery_depth_normal.png",
+        "roughness": "textures/pbr/far/occupied_pavilion_gallery_depth_roughness.png",
+        "ao": "textures/pbr/far/occupied_pavilion_gallery_depth_ao.png",
+        "depth": "textures/pbr/far/occupied_pavilion_gallery_depth_depth.png",
+        "emissive": "textures/pbr/far/occupied_pavilion_gallery_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/occupied_pavilion_gallery_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/occupied_pavilion_gallery_depth_opaque.png"
+      }
+    },
+    "steel": {
+      "near": {
+        "albedo": "textures/pbr/near/matte_black_structural_steel_albedo.png",
+        "normal": "textures/pbr/near/matte_black_structural_steel_normal.png",
+        "roughness": "textures/pbr/near/matte_black_structural_steel_roughness.png",
+        "ao": "textures/pbr/near/matte_black_structural_steel_ao.png",
+        "depth": "textures/pbr/near/matte_black_structural_steel_depth.png",
+        "emissive": "textures/pbr/near/matte_black_structural_steel_emissive.png",
+        "glass_mask": "textures/pbr/near/matte_black_structural_steel_glass.png",
+        "opaque_mask": "textures/pbr/near/matte_black_structural_steel_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/matte_black_structural_steel_albedo.png",
+        "normal": "textures/pbr/far/matte_black_structural_steel_normal.png",
+        "roughness": "textures/pbr/far/matte_black_structural_steel_roughness.png",
+        "ao": "textures/pbr/far/matte_black_structural_steel_ao.png",
+        "depth": "textures/pbr/far/matte_black_structural_steel_depth.png",
+        "emissive": "textures/pbr/far/matte_black_structural_steel_emissive.png",
+        "glass_mask": "textures/pbr/far/matte_black_structural_steel_glass.png",
+        "opaque_mask": "textures/pbr/far/matte_black_structural_steel_opaque.png"
+      }
+    },
+    "vision_glass": {
+      "near": {
+        "albedo": "textures/pbr/near/neutral_low_iron_pavilion_glass_albedo.png",
+        "normal": "textures/pbr/near/neutral_low_iron_pavilion_glass_normal.png",
+        "roughness": "textures/pbr/near/neutral_low_iron_pavilion_glass_roughness.png",
+        "ao": "textures/pbr/near/neutral_low_iron_pavilion_glass_ao.png",
+        "depth": "textures/pbr/near/neutral_low_iron_pavilion_glass_depth.png",
+        "emissive": "textures/pbr/near/neutral_low_iron_pavilion_glass_emissive.png",
+        "glass_mask": "textures/pbr/near/neutral_low_iron_pavilion_glass_glass.png",
+        "opaque_mask": "textures/pbr/near/neutral_low_iron_pavilion_glass_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/neutral_low_iron_pavilion_glass_albedo.png",
+        "normal": "textures/pbr/far/neutral_low_iron_pavilion_glass_normal.png",
+        "roughness": "textures/pbr/far/neutral_low_iron_pavilion_glass_roughness.png",
+        "ao": "textures/pbr/far/neutral_low_iron_pavilion_glass_ao.png",
+        "depth": "textures/pbr/far/neutral_low_iron_pavilion_glass_depth.png",
+        "emissive": "textures/pbr/far/neutral_low_iron_pavilion_glass_emissive.png",
+        "glass_mask": "textures/pbr/far/neutral_low_iron_pavilion_glass_glass.png",
+        "opaque_mask": "textures/pbr/far/neutral_low_iron_pavilion_glass_opaque.png"
+      }
+    },
+    "travertine": {
+      "near": {
+        "albedo": "textures/pbr/near/pale_honed_travertine_albedo.png",
+        "normal": "textures/pbr/near/pale_honed_travertine_normal.png",
+        "roughness": "textures/pbr/near/pale_honed_travertine_roughness.png",
+        "ao": "textures/pbr/near/pale_honed_travertine_ao.png",
+        "depth": "textures/pbr/near/pale_honed_travertine_depth.png",
+        "emissive": "textures/pbr/near/pale_honed_travertine_emissive.png",
+        "glass_mask": "textures/pbr/near/pale_honed_travertine_glass.png",
+        "opaque_mask": "textures/pbr/near/pale_honed_travertine_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pale_honed_travertine_albedo.png",
+        "normal": "textures/pbr/far/pale_honed_travertine_normal.png",
+        "roughness": "textures/pbr/far/pale_honed_travertine_roughness.png",
+        "ao": "textures/pbr/far/pale_honed_travertine_ao.png",
+        "depth": "textures/pbr/far/pale_honed_travertine_depth.png",
+        "emissive": "textures/pbr/far/pale_honed_travertine_emissive.png",
+        "glass_mask": "textures/pbr/far/pale_honed_travertine_glass.png",
+        "opaque_mask": "textures/pbr/far/pale_honed_travertine_opaque.png"
+      }
+    },
+    "concrete": {
+      "near": {
+        "albedo": "textures/pbr/near/light_grey_smooth_concrete_albedo.png",
+        "normal": "textures/pbr/near/light_grey_smooth_concrete_normal.png",
+        "roughness": "textures/pbr/near/light_grey_smooth_concrete_roughness.png",
+        "ao": "textures/pbr/near/light_grey_smooth_concrete_ao.png",
+        "depth": "textures/pbr/near/light_grey_smooth_concrete_depth.png",
+        "emissive": "textures/pbr/near/light_grey_smooth_concrete_emissive.png",
+        "glass_mask": "textures/pbr/near/light_grey_smooth_concrete_glass.png",
+        "opaque_mask": "textures/pbr/near/light_grey_smooth_concrete_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/light_grey_smooth_concrete_albedo.png",
+        "normal": "textures/pbr/far/light_grey_smooth_concrete_normal.png",
+        "roughness": "textures/pbr/far/light_grey_smooth_concrete_roughness.png",
+        "ao": "textures/pbr/far/light_grey_smooth_concrete_ao.png",
+        "depth": "textures/pbr/far/light_grey_smooth_concrete_depth.png",
+        "emissive": "textures/pbr/far/light_grey_smooth_concrete_emissive.png",
+        "glass_mask": "textures/pbr/far/light_grey_smooth_concrete_glass.png",
+        "opaque_mask": "textures/pbr/far/light_grey_smooth_concrete_opaque.png"
+      }
+    },
+    "soffit": {
+      "near": {
+        "albedo": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_albedo.png",
+        "normal": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_normal.png",
+        "roughness": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_roughness.png",
+        "ao": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_ao.png",
+        "depth": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_depth.png",
+        "emissive": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_emissive.png",
+        "glass_mask": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_glass.png",
+        "opaque_mask": "textures/pbr/near/warm_white_ribbed_aluminum_soffit_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_albedo.png",
+        "normal": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_normal.png",
+        "roughness": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_roughness.png",
+        "ao": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_ao.png",
+        "depth": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_depth.png",
+        "emissive": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_emissive.png",
+        "glass_mask": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_glass.png",
+        "opaque_mask": "textures/pbr/far/warm_white_ribbed_aluminum_soffit_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/pale_knife_edge_roof_membrane_albedo.png",
+        "normal": "textures/pbr/near/pale_knife_edge_roof_membrane_normal.png",
+        "roughness": "textures/pbr/near/pale_knife_edge_roof_membrane_roughness.png",
+        "ao": "textures/pbr/near/pale_knife_edge_roof_membrane_ao.png",
+        "depth": "textures/pbr/near/pale_knife_edge_roof_membrane_depth.png",
+        "emissive": "textures/pbr/near/pale_knife_edge_roof_membrane_emissive.png",
+        "glass_mask": "textures/pbr/near/pale_knife_edge_roof_membrane_glass.png",
+        "opaque_mask": "textures/pbr/near/pale_knife_edge_roof_membrane_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/pale_knife_edge_roof_membrane_albedo.png",
+        "normal": "textures/pbr/far/pale_knife_edge_roof_membrane_normal.png",
+        "roughness": "textures/pbr/far/pale_knife_edge_roof_membrane_roughness.png",
+        "ao": "textures/pbr/far/pale_knife_edge_roof_membrane_ao.png",
+        "depth": "textures/pbr/far/pale_knife_edge_roof_membrane_depth.png",
+        "emissive": "textures/pbr/far/pale_knife_edge_roof_membrane_emissive.png",
+        "glass_mask": "textures/pbr/far/pale_knife_edge_roof_membrane_glass.png",
+        "opaque_mask": "textures/pbr/far/pale_knife_edge_roof_membrane_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/pavilion_registered_front_albedo.png",
+      "normal": "textures/pbr/near/pavilion_registered_front_normal.png",
+      "roughness": "textures/pbr/near/pavilion_registered_front_roughness.png",
+      "ao": "textures/pbr/near/pavilion_registered_front_ao.png",
+      "depth": "textures/pbr/near/pavilion_registered_front_depth.png",
+      "emissive": "textures/pbr/near/pavilion_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/near/pavilion_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/near/pavilion_registered_front_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/pavilion_registered_front_albedo.png",
+      "normal": "textures/pbr/far/pavilion_registered_front_normal.png",
+      "roughness": "textures/pbr/far/pavilion_registered_front_roughness.png",
+      "ao": "textures/pbr/far/pavilion_registered_front_ao.png",
+      "depth": "textures/pbr/far/pavilion_registered_front_depth.png",
+      "emissive": "textures/pbr/far/pavilion_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/far/pavilion_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/far/pavilion_registered_front_opaque.png"
+    }
+  }
+}

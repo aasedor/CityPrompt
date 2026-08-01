@@ -195,13 +195,15 @@
                                                        "archetypeId":  "art_deco_cream_terracotta",
                                                        "identity":  "Cream glazed terra-cotta Art Deco corner tower with a dark granite commercial base, uninterrupted vertical piers, four stepped massing stages and a faceted gilded lantern crown.",
                                                        "materialZones":  "cream glazed architectural terra cotta; polished black granite podium; dark bronze windows and spandrels; restrained gold leaf sunbursts and crown metal",
-                                                       "glassProfile":  "office_clear_occupied"
+                                                       "glassProfile":  "neutral_smoky_bronze_framed_occupied",
+                                                       "elevationUrl":  "/families/art-deco-cream-terracotta-tower/elevation.jpg"
                                                    },
                      "art_deco_setback_tower":  {
                                                     "archetypeId":  "art_deco_setback_tower",
-                                                    "identity":  "Vertical Art Deco tower with a richly modelled entrance, uninterrupted piers, stepped setbacks, fluted spandrels and an illuminated geometric crown.",
-                                                    "materialZones":  "warm buff masonry; dark bronze; emerald and gold crown accents; shadowed spandrels",
-                                                    "elevationUrl":  "/families/art-deco-setback-tower/elevation.jpg"
+                                                    "identity":  "A fifteen-level cream glazed-terra-cotta tower rises from a black granite and bronze double-height podium through seven-, five- and three-bay setback stages to a faceted gilded lantern crown.",
+                                                    "materialZones":  "cream glazed architectural terra cotta; polished black granite podium; aged dark bronze frames and spandrels; neutral smoky glass; warm occupied depth; restrained gold-leaf belts and lantern",
+                                                    "glassProfile":  "neutral_smoky_bronze_framed_occupied",
+                                                    "elevationUrl":  "/families/art-deco-cream-terracotta-tower/elevation.jpg"
                                                 },
                      "nordic_timber_midrise":  {
                                                    "archetypeId":  "nordic_timber_midrise",
@@ -238,15 +240,17 @@
                                                     },
                      "japanese_machiya_mixed_use":  {
                                                         "archetypeId":  "japanese_machiya_mixed_use",
-                                                        "identity":  "Contemporary machiya with a narrow timber structural rhythm, deep eaves, translucent lattice screens, recessed shopfront and layered threshold.",
-                                                        "materialZones":  "smoked timber; warm cedar lattice; charcoal plaster; translucent glass",
-                                                        "elevationUrl":  "/families/japanese-machiya-mixed-use/elevation.jpg"
+                                                        "identity":  "A restored two-storey Kyoto machiya uses a dark cedar post-and-beam frame, white clay infill and continuous fine koshi lattice beneath a deep charcoal kawara gable, with a recessed shop and indigo noren.",
+                                                        "materialZones":  "weathered dark timber; white lime-clay plaster; warm fine koshi lattice; charcoal kawara tile; neutral smoky glass; warm occupied room depth; indigo cloth; grey stone sill",
+                                                        "glassProfile":  "neutral_smoky_lattice_screened_occupied",
+                                                        "elevationUrl":  "/families/restored-kyoto-machiya/elevation.jpg"
                                                     },
                      "machiya_traditional_restored":  {
                                                           "archetypeId":  "machiya_traditional_restored",
                                                           "identity":  "Restored Kyoto machiya corner with two full timber-and-clay wall levels, an inhabited gable tier, fine koshi screens, an indigo noren, a mossy tsuboniwa threshold and a deeply overhanging charcoal kawara roof.",
                                                           "materialZones":  "weathered dark timber; white shikkui clay plaster; indigo cloth; charcoal ceramic kawara tile; warm shop interior; moss and cut stone",
-                                                          "glassProfile":  "heritage_leaded_occupied"
+                                                          "glassProfile":  "neutral_smoky_lattice_screened_occupied",
+                                                          "elevationUrl":  "/families/restored-kyoto-machiya/elevation.jpg"
                                                       },
                      "modernist_civic_block":  {
                                                    "archetypeId":  "modernist_civic_block",
@@ -409,10 +413,10 @@
                                                    },
                      "transit_oriented_station_block":  {
                                                               "archetypeId":  "transit_oriented_station_block",
-                                                              "identity":  "A five-level honey-glulam station block rises above a transparent public concourse, alternating deep timber louvers with occupied glazing beneath one oversized tree-column canopy.",
-                                                              "materialZones":  "honey glulam frame; warm CLT panels; dark timber louvers; neutral low-e glass; translucent ETFE membrane; planted roof terrace; pale concrete concourse",
-                                                              "glassProfile":  "timber_station_neutral_low_e",
-                                                              "elevationUrl":  "/families/timber-transit-station/elevation.jpg"
+                                                              "identity":  "A transparent three-level public station concourse with visible floor plates, entries and escalator depth supports three warm timber-rainscreen levels beneath a planted roof and twin photovoltaic canopy rows.",
+                                                              "materialZones":  "high-transmission transit glass; graphite pressure caps and canopy steel; warm occupied concourse depth; pale concrete slabs; reddish timber rainscreen; dark real-gap louvers; sedum roof; dark-blue photovoltaic glass",
+                                                              "glassProfile":  "high_transmission_transit_concourse_occupied",
+                                                              "elevationUrl":  "/families/timber-glass-transit-station-block/elevation.jpg"
                                                           },
                      "transit_station_timber_sustainable":  {
                                                                  "archetypeId":  "transit_station_timber_sustainable",
@@ -882,6 +886,111 @@
                                                              "materialZones": "neutral high-transmission terminal glass; champagne-silver aluminum composite panels; graphite and silver structural steel; translucent roof infill; warm occupied terminal depth; pale concrete apron; dark low-slope service roof",
                                                              "glassProfile": "high_transmission_terminal_curtain_wall",
                                                              "elevationUrl": "/families/cable-stayed-airport-terminal/elevation.jpg"
-                                                   }
+                                                   },
+                     "mid_century_pavilion_glass_steel": {
+                                                                  "archetypeId": "mid_century_pavilion_glass_steel",
+                                                                  "identity": "Three transparent occupied gallery levels sit inside a continuous matte-black steel grid beside one pale travertine service core and beneath an exceptionally thin, deeply cantilevered warm-white roof plane.",
+                                                                  "materialZones": "matte-black structural steel; neutral physical low-iron glass; warm occupied gallery depth; pale honed travertine; light concrete slab edges and plinth; ribbed aluminum soffit; smooth knife-edge roof fascia",
+                                                                  "glassProfile": "neutral_low_iron_gallery_occupied",
+                                                                  "elevationUrl": "/families/mid-century-glass-steel-pavilion/elevation.jpg"
+                                                              },
+                     "transit_station_modern_glass": {
+                                                              "archetypeId": "transit_station_modern_glass",
+                                                              "identity": "A transparent three-level public station concourse with visible floor plates, entries and escalator depth supports three warm timber-rainscreen levels beneath a planted roof and twin photovoltaic canopy rows.",
+                                                              "materialZones": "high-transmission transit glass; graphite pressure caps and canopy steel; warm occupied concourse depth; pale concrete slabs; reddish timber rainscreen; dark real-gap louvers; sedum roof; dark-blue photovoltaic glass",
+                                                              "glassProfile": "high_transmission_transit_concourse_occupied",
+                                                              "elevationUrl": "/families/timber-glass-transit-station-block/elevation.jpg"
+                                                          },
+                     "eco_bioclimatic_passive": {
+                                                        "archetypeId": "eco_bioclimatic_passive",
+                                                        "identity": "A four-level passive urban block is wrapped in vertical larch around deeply recessed triple glazing, selective external blinds and a central timber entry beneath an asymmetric photovoltaic, sedum and rooflight roof.",
+                                                        "materialZones": "weathering vertical larch; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied rooms; real black blind blades; pale insulated panels; photovoltaic glass; dense sedum; zinc edges",
+                                                        "glassProfile": "neutral_triple_glazed_deep_reveal_occupied",
+                                                        "elevationUrl": "/families/passive-house-timber-block/elevation.jpg"
+                                                    },
+                     "cream_terracotta_art_deco_tower": {
+                                                                   "archetypeId": "cream_terracotta_art_deco_tower",
+                                                                   "identity": "A fifteen-level cream glazed-terra-cotta tower rises from a black granite and bronze double-height podium through seven-, five- and three-bay setback stages to a faceted gilded lantern crown.",
+                                                                   "materialZones": "cream glazed architectural terra cotta; polished black granite podium; aged dark bronze frames and spandrels; neutral smoky glass; warm occupied depth; restrained gold-leaf belts and lantern",
+                                                                   "glassProfile": "neutral_smoky_bronze_framed_occupied",
+                                                                   "elevationUrl": "/families/art-deco-cream-terracotta-tower/elevation.jpg"
+                                                               },
+                     "gilded_setback_tower": {
+                                                    "archetypeId": "gilded_setback_tower",
+                                                    "identity": "A fifteen-level cream glazed-terra-cotta tower rises from a black granite and bronze double-height podium through seven-, five- and three-bay setback stages to a faceted gilded lantern crown.",
+                                                    "materialZones": "cream glazed architectural terra cotta; polished black granite podium; aged dark bronze frames and spandrels; neutral smoky glass; warm occupied depth; restrained gold-leaf belts and lantern",
+                                                    "glassProfile": "neutral_smoky_bronze_framed_occupied",
+                                                    "elevationUrl": "/families/art-deco-cream-terracotta-tower/elevation.jpg"
+                                                },
+                     "restored_kyoto_machiya": {
+                                                     "archetypeId": "restored_kyoto_machiya",
+                                                     "identity": "A restored two-storey Kyoto machiya uses a dark cedar post-and-beam frame, white clay infill and continuous fine koshi lattice beneath a deep charcoal kawara gable, with a recessed shop and indigo noren.",
+                                                     "materialZones": "weathered dark timber; white lime-clay plaster; warm fine koshi lattice; charcoal kawara tile; neutral smoky glass; warm occupied room depth; indigo cloth; grey stone sill",
+                                                     "glassProfile": "neutral_smoky_lattice_screened_occupied",
+                                                     "elevationUrl": "/families/restored-kyoto-machiya/elevation.jpg"
+                                                 },
+                     "traditional_koshi_lattice_shop_house": {
+                                                                    "archetypeId": "traditional_koshi_lattice_shop_house",
+                                                                    "identity": "A restored two-storey Kyoto machiya uses a dark cedar post-and-beam frame, white clay infill and continuous fine koshi lattice beneath a deep charcoal kawara gable, with a recessed shop and indigo noren.",
+                                                                    "materialZones": "weathered dark timber; white lime-clay plaster; warm fine koshi lattice; charcoal kawara tile; neutral smoky glass; warm occupied room depth; indigo cloth; grey stone sill",
+                                                                    "glassProfile": "neutral_smoky_lattice_screened_occupied",
+                                                                    "elevationUrl": "/families/restored-kyoto-machiya/elevation.jpg"
+                                                                },
+                     "mid_century_modern_pavilion_block": {
+                                                                    "archetypeId": "mid_century_modern_pavilion_block",
+                                                                    "identity": "Three transparent occupied gallery levels sit inside a continuous matte-black steel grid beside one pale travertine service core and beneath an exceptionally thin, deeply cantilevered warm-white roof plane.",
+                                                                    "materialZones": "matte-black structural steel; neutral physical low-iron glass; warm occupied gallery depth; pale honed travertine; light concrete slab edges and plinth; ribbed aluminum soffit; smooth knife-edge roof fascia",
+                                                                    "glassProfile": "neutral_low_iron_gallery_occupied",
+                                                                    "elevationUrl": "/families/mid-century-glass-steel-pavilion/elevation.jpg"
+                                                                },
+                     "glass_steel_gallery_pavilion": {
+                                                             "archetypeId": "glass_steel_gallery_pavilion",
+                                                             "identity": "Three transparent occupied gallery levels sit inside a continuous matte-black steel grid beside one pale travertine service core and beneath an exceptionally thin, deeply cantilevered warm-white roof plane.",
+                                                             "materialZones": "matte-black structural steel; neutral physical low-iron glass; warm occupied gallery depth; pale honed travertine; light concrete slab edges and plinth; ribbed aluminum soffit; smooth knife-edge roof fascia",
+                                                             "glassProfile": "neutral_low_iron_gallery_occupied",
+                                                             "elevationUrl": "/families/mid-century-glass-steel-pavilion/elevation.jpg"
+                                                         },
+                     "floating_roof_modern_pavilion": {
+                                                              "archetypeId": "floating_roof_modern_pavilion",
+                                                              "identity": "Three transparent occupied gallery levels sit inside a continuous matte-black steel grid beside one pale travertine service core and beneath an exceptionally thin, deeply cantilevered warm-white roof plane.",
+                                                              "materialZones": "matte-black structural steel; neutral physical low-iron glass; warm occupied gallery depth; pale honed travertine; light concrete slab edges and plinth; ribbed aluminum soffit; smooth knife-edge roof fascia",
+                                                              "glassProfile": "neutral_low_iron_gallery_occupied",
+                                                              "elevationUrl": "/families/mid-century-glass-steel-pavilion/elevation.jpg"
+                                                          },
+                     "timber_glass_transit_station_block": {
+                                                                  "archetypeId": "timber_glass_transit_station_block",
+                                                                  "identity": "A transparent three-level public station concourse with visible floor plates, entries and escalator depth supports three warm timber-rainscreen levels beneath a planted roof and twin photovoltaic canopy rows.",
+                                                                  "materialZones": "high-transmission transit glass; graphite pressure caps and canopy steel; warm occupied concourse depth; pale concrete slabs; reddish timber rainscreen; dark real-gap louvers; sedum roof; dark-blue photovoltaic glass",
+                                                                  "glassProfile": "high_transmission_transit_concourse_occupied",
+                                                                  "elevationUrl": "/families/timber-glass-transit-station-block/elevation.jpg"
+                                                              },
+                     "green_roof_station_concourse": {
+                                                             "archetypeId": "green_roof_station_concourse",
+                                                             "identity": "A transparent three-level public station concourse with visible floor plates, entries and escalator depth supports three warm timber-rainscreen levels beneath a planted roof and twin photovoltaic canopy rows.",
+                                                             "materialZones": "high-transmission transit glass; graphite pressure caps and canopy steel; warm occupied concourse depth; pale concrete slabs; reddish timber rainscreen; dark real-gap louvers; sedum roof; dark-blue photovoltaic glass",
+                                                             "glassProfile": "high_transmission_transit_concourse_occupied",
+                                                             "elevationUrl": "/families/timber-glass-transit-station-block/elevation.jpg"
+                                                         },
+                     "eco_urban_bioclimatic_block": {
+                                                          "archetypeId": "eco_urban_bioclimatic_block",
+                                                          "identity": "A four-level passive urban block is wrapped in vertical larch around deeply recessed triple glazing, selective external blinds and a central timber entry beneath an asymmetric photovoltaic, sedum and rooflight roof.",
+                                                          "materialZones": "weathering vertical larch; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied rooms; real black blind blades; pale insulated panels; photovoltaic glass; dense sedum; zinc edges",
+                                                          "glassProfile": "neutral_triple_glazed_deep_reveal_occupied",
+                                                          "elevationUrl": "/families/passive-house-timber-block/elevation.jpg"
+                                                      },
+                     "passive_house_timber_block": {
+                                                         "archetypeId": "passive_house_timber_block",
+                                                         "identity": "A four-level passive urban block is wrapped in vertical larch around deeply recessed triple glazing, selective external blinds and a central timber entry beneath an asymmetric photovoltaic, sedum and rooflight roof.",
+                                                         "materialZones": "weathering vertical larch; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied rooms; real black blind blades; pale insulated panels; photovoltaic glass; dense sedum; zinc edges",
+                                                         "glassProfile": "neutral_triple_glazed_deep_reveal_occupied",
+                                                         "elevationUrl": "/families/passive-house-timber-block/elevation.jpg"
+                                                     },
+                     "larch_pv_sedum_urban_block": {
+                                                          "archetypeId": "larch_pv_sedum_urban_block",
+                                                          "identity": "A four-level passive urban block is wrapped in vertical larch around deeply recessed triple glazing, selective external blinds and a central timber entry beneath an asymmetric photovoltaic, sedum and rooflight roof.",
+                                                          "materialZones": "weathering vertical larch; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied rooms; real black blind blades; pale insulated panels; photovoltaic glass; dense sedum; zinc edges",
+                                                          "glassProfile": "neutral_triple_glazed_deep_reveal_occupied",
+                                                          "elevationUrl": "/families/passive-house-timber-block/elevation.jpg"
+                                                    }
                  }
 }

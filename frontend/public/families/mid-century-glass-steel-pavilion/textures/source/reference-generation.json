@@ -1,0 +1,103 @@
+{
+  "schema": "reference-generation@1",
+  "family": "mid-century-glass-steel-pavilion",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "variant_id": "mid_century_pavilion_glass_steel",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/mid_century_modern_pavilion_block/variant_0.png"
+  ],
+  "design_lock": {
+    "native_building_dimensions_m": [
+      25.0,
+      18.0,
+      12.2
+    ],
+    "native_envelope_dimensions_m": [
+      29.0,
+      22.0,
+      12.6
+    ],
+    "occupied_storeys": 3,
+    "primary_material": "matte-black steel structure and neutral low-iron curtain wall",
+    "window_rule": "individual clear panes behind a complete 3.6 metre structural grid with warm gallery depth",
+    "front_identity": "three transparent levels, offset pale travertine service core and one floating knife-edge roof",
+    "roof_rule": "single exceptionally thin pale plane with deep front and side cantilever and no parapet"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f",
+      "role": "canonical_four_view_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building family\nInput images: Image 1 is the sole archetype, massing, structural rhythm, proportion, and palette authority.\nPrimary request: Reconstruct the exact same mid-century modern glass-and-steel pavilion from Image 1 as one coherent true-metric three-level building shown in four equal panels arranged in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, facade parallel to camera, full floating roof and travertine plinth visible.\nPanel 2: pedestrian-height front-right three-quarter architectural survey view.\nPanel 3: rear-left three-quarter view proving black steel frame, clear curtain wall, floor plates, service core, and secondary entrances wrap the whole building.\nPanel 4: high aerial roof-plan oblique proving the very thin flat roof plane, deep asymmetric cantilevered eaves, recessed curtain-wall box and solid travertine service volume.\nBuilding lock: approximately 25 m wide by 18 m deep by 12.2 m high; exactly three transparent occupied levels; a slender matte-black steel post-and-beam frame at roughly 3.6 m bays; neutral low-iron curtain wall physically recessed behind the frame; visible concrete floor plates and warm occupied interior depth; a pale honed travertine plinth and one solid side service core; one exceptionally thin pale roof plane floating above the glass with a deep front and side cantilever, crisp knife edge, and no parapet. Preserve identical column, mullion, slab and core positions in every view.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighboring buildings, no trees, no cars, no people.\nStyle/medium: premium photoreal architectural photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glazing reflections; consistent lighting in all panels.\nMaterials/textures: fine matte-black painted structural steel; neutral clear low-iron glazing with subtle grey reflection; warm occupied offices/gallery depth; pale honed travertine with fine horizontal joints; light-grey concrete slab edges; warm-white aluminum roof soffit and knife-edge fascia.\nConstraints: exact same topology, three levels, bay cadence, floor datums, column positions, service core, cantilever depths, entrance location and proportions in every panel; panels separated only by thin neutral gutters; complete pavilion inside every frame; no labels; no text; no signs; no logos; no watermark.\nAvoid: generic glass cube, office tower, extra floors, thick roof, blue mirrored glass, solid opaque walls replacing glazing, painted-on mullions, blank rear, changed column grid, Mies copy label, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "three_transparent_occupied_levels",
+        "slender_black_steel_post_and_beam_frame",
+        "physical_low_iron_curtain_wall_and_warm_depth",
+        "visible_concrete_floor_plates",
+        "pale_travertine_plinth_and_solid_service_core",
+        "exceptionally_thin_floating_roof_with_deep_asymmetric_cantilever",
+        "complete_wrapped_secondary_elevations_and_rear_entry"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-36d999e0-c95b-4844-b065-7c1e3b07350f:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31",
+      "role": "six_zone_shadow_neutral_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact mid-century glass-and-steel pavilion in Image 1\nInput images: Image 1 is the approved palette, finish, and architectural-scale authority.\nPrimary request: Create six equal square straight-on orthographic material samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: matte-black painted structural steel with fine rolled-metal grain and restrained edge wear, no beam or frame shape.\nTop-center: neutral low-iron architectural vision glass with subtle grey sky reflection variation, no blue tint, no mullion grid, suitable for separate physical panes.\nTop-right: pale honed travertine panels with fine horizontal bedding, restrained pores and subtle warm variation at 600 to 1200 mm construction scale.\nBottom-left: light-grey smooth concrete floor slab edge and plinth material with fine mineral aggregate and no wall pattern.\nBottom-center: clean warm occupied gallery and office depth viewed straight through clear glass, dark room volume, ceiling plane and restrained warm lights, no exterior frame, no perspective facade, no focal furniture.\nBottom-right: warm-white finely ribbed aluminum roof soffit and smooth knife-edge fascia finish, fine linear scale, no complete roof.\nScene/backdrop: flat evenly lit material-capture setup.\nStyle/medium: physically based photoreal architectural construction texture reference with fine real-world micro-detail.\nLighting/mood: diffuse neutral overcast capture; no directional sunlight; no baked cast shadow; no vignette; no perspective.\nConstraints: exact 3 by 2 grid; each material fills its cell edge-to-edge; straight-on orthographic samples; no labels; no text; no logos; no watermark; no complete facade; no repeated windows.\nAvoid: chrome, blue mirrored glass, beige marble, coarse concrete, cartoon materials, dramatic lighting, perspective scene, decorative border."
+    },
+    {
+      "file": "steel-material-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:steel-material-source-v1",
+      "role": "registered_material_crop:steel-material-source-v1"
+    },
+    {
+      "file": "vision-glass-material-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:vision-glass-material-source-v1",
+      "role": "registered_material_crop:vision-glass-material-source-v1"
+    },
+    {
+      "file": "travertine-material-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:travertine-material-source-v1",
+      "role": "registered_material_crop:travertine-material-source-v1"
+    },
+    {
+      "file": "concrete-material-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:concrete-material-source-v1",
+      "role": "registered_material_crop:concrete-material-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "soffit-material-source-v1.png",
+      "source_id": "exec-3b03db1b-0130-4ee9-a96c-ccbf8be87b31:soffit-material-source-v1",
+      "role": "registered_material_crop:soffit-material-source-v1"
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+{
+  "schema": "art-deco-cream-terracotta-tower-skin@1",
+  "family": "art-deco-cream-terracotta-tower",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The four-view board locks one fifteen-level cream glazed terra-cotta tower with one black granite podium, a seven-bay shaft, progressive setback tiers and one compact gilded octagonal lantern.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "art_deco_setback_tower",
+    "source_variant_id": "art_deco_cream_terracotta",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "double_height_black_granite_and_bronze_public_podium",
+      "seven_bay_cream_terracotta_lower_shaft",
+      "progressive_five_and_three_bay_setback_stages",
+      "physical_recessed_bronze_windows_with_occupied_depth",
+      "continuous_vertical_piers_and_geometric_spandrel_relief",
+      "sunburst_ornament_at_first_major_setback",
+      "octagonal_dark_glass_lantern_with_eight_gilded_posts",
+      "complete_setback_terraces_and_wrapped_secondary_elevations"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/art_deco_registered_front_albedo.png",
+        "normal": "textures/pbr/near/art_deco_registered_front_normal.png",
+        "roughness": "textures/pbr/near/art_deco_registered_front_roughness.png",
+        "ao": "textures/pbr/near/art_deco_registered_front_ao.png",
+        "depth": "textures/pbr/near/art_deco_registered_front_depth.png",
+        "emissive": "textures/pbr/near/art_deco_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/art_deco_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/art_deco_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/art_deco_registered_front_albedo.png",
+        "normal": "textures/pbr/far/art_deco_registered_front_normal.png",
+        "roughness": "textures/pbr/far/art_deco_registered_front_roughness.png",
+        "ao": "textures/pbr/far/art_deco_registered_front_ao.png",
+        "depth": "textures/pbr/far/art_deco_registered_front_depth.png",
+        "emissive": "textures/pbr/far/art_deco_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/art_deco_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/art_deco_registered_front_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/black_granite_bronze_podium_albedo.png",
+        "normal": "textures/pbr/near/black_granite_bronze_podium_normal.png",
+        "roughness": "textures/pbr/near/black_granite_bronze_podium_roughness.png",
+        "ao": "textures/pbr/near/black_granite_bronze_podium_ao.png",
+        "depth": "textures/pbr/near/black_granite_bronze_podium_depth.png",
+        "emissive": "textures/pbr/near/black_granite_bronze_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/black_granite_bronze_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/black_granite_bronze_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/black_granite_bronze_podium_albedo.png",
+        "normal": "textures/pbr/far/black_granite_bronze_podium_normal.png",
+        "roughness": "textures/pbr/far/black_granite_bronze_podium_roughness.png",
+        "ao": "textures/pbr/far/black_granite_bronze_podium_ao.png",
+        "depth": "textures/pbr/far/black_granite_bronze_podium_depth.png",
+        "emissive": "textures/pbr/far/black_granite_bronze_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/black_granite_bronze_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/black_granite_bronze_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_albedo.png",
+        "normal": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_normal.png",
+        "roughness": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_roughness.png",
+        "ao": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_ao.png",
+        "depth": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_depth.png",
+        "emissive": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/seven_bay_terracotta_shaft_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_albedo.png",
+        "normal": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_normal.png",
+        "roughness": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_roughness.png",
+        "ao": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_ao.png",
+        "depth": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_depth.png",
+        "emissive": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/seven_bay_terracotta_shaft_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/five_bay_setback_floor_b_albedo.png",
+        "normal": "textures/pbr/near/five_bay_setback_floor_b_normal.png",
+        "roughness": "textures/pbr/near/five_bay_setback_floor_b_roughness.png",
+        "ao": "textures/pbr/near/five_bay_setback_floor_b_ao.png",
+        "depth": "textures/pbr/near/five_bay_setback_floor_b_depth.png",
+        "emissive": "textures/pbr/near/five_bay_setback_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/five_bay_setback_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/five_bay_setback_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/five_bay_setback_floor_b_albedo.png",
+        "normal": "textures/pbr/far/five_bay_setback_floor_b_normal.png",
+        "roughness": "textures/pbr/far/five_bay_setback_floor_b_roughness.png",
+        "ao": "textures/pbr/far/five_bay_setback_floor_b_ao.png",
+        "depth": "textures/pbr/far/five_bay_setback_floor_b_depth.png",
+        "emissive": "textures/pbr/far/five_bay_setback_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/five_bay_setback_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/five_bay_setback_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/octagonal_gilded_lantern_crown_albedo.png",
+        "normal": "textures/pbr/near/octagonal_gilded_lantern_crown_normal.png",
+        "roughness": "textures/pbr/near/octagonal_gilded_lantern_crown_roughness.png",
+        "ao": "textures/pbr/near/octagonal_gilded_lantern_crown_ao.png",
+        "depth": "textures/pbr/near/octagonal_gilded_lantern_crown_depth.png",
+        "emissive": "textures/pbr/near/octagonal_gilded_lantern_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/octagonal_gilded_lantern_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/octagonal_gilded_lantern_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/octagonal_gilded_lantern_crown_albedo.png",
+        "normal": "textures/pbr/far/octagonal_gilded_lantern_crown_normal.png",
+        "roughness": "textures/pbr/far/octagonal_gilded_lantern_crown_roughness.png",
+        "ao": "textures/pbr/far/octagonal_gilded_lantern_crown_ao.png",
+        "depth": "textures/pbr/far/octagonal_gilded_lantern_crown_depth.png",
+        "emissive": "textures/pbr/far/octagonal_gilded_lantern_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/octagonal_gilded_lantern_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/octagonal_gilded_lantern_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/wrapped_terracotta_secondary_elevation_albedo.png",
+        "normal": "textures/pbr/near/wrapped_terracotta_secondary_elevation_normal.png",
+        "roughness": "textures/pbr/near/wrapped_terracotta_secondary_elevation_roughness.png",
+        "ao": "textures/pbr/near/wrapped_terracotta_secondary_elevation_ao.png",
+        "depth": "textures/pbr/near/wrapped_terracotta_secondary_elevation_depth.png",
+        "emissive": "textures/pbr/near/wrapped_terracotta_secondary_elevation_emissive.png",
+        "glass_mask": "textures/pbr/near/wrapped_terracotta_secondary_elevation_glass.png",
+        "opaque_mask": "textures/pbr/near/wrapped_terracotta_secondary_elevation_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/wrapped_terracotta_secondary_elevation_albedo.png",
+        "normal": "textures/pbr/far/wrapped_terracotta_secondary_elevation_normal.png",
+        "roughness": "textures/pbr/far/wrapped_terracotta_secondary_elevation_roughness.png",
+        "ao": "textures/pbr/far/wrapped_terracotta_secondary_elevation_ao.png",
+        "depth": "textures/pbr/far/wrapped_terracotta_secondary_elevation_depth.png",
+        "emissive": "textures/pbr/far/wrapped_terracotta_secondary_elevation_emissive.png",
+        "glass_mask": "textures/pbr/far/wrapped_terracotta_secondary_elevation_glass.png",
+        "opaque_mask": "textures/pbr/far/wrapped_terracotta_secondary_elevation_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/occupied_art_deco_room_depth_albedo.png",
+        "normal": "textures/pbr/near/occupied_art_deco_room_depth_normal.png",
+        "roughness": "textures/pbr/near/occupied_art_deco_room_depth_roughness.png",
+        "ao": "textures/pbr/near/occupied_art_deco_room_depth_ao.png",
+        "depth": "textures/pbr/near/occupied_art_deco_room_depth_depth.png",
+        "emissive": "textures/pbr/near/occupied_art_deco_room_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/occupied_art_deco_room_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/occupied_art_deco_room_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/occupied_art_deco_room_depth_albedo.png",
+        "normal": "textures/pbr/far/occupied_art_deco_room_depth_normal.png",
+        "roughness": "textures/pbr/far/occupied_art_deco_room_depth_roughness.png",
+        "ao": "textures/pbr/far/occupied_art_deco_room_depth_ao.png",
+        "depth": "textures/pbr/far/occupied_art_deco_room_depth_depth.png",
+        "emissive": "textures/pbr/far/occupied_art_deco_room_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/occupied_art_deco_room_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/occupied_art_deco_room_depth_opaque.png"
+      }
+    },
+    "terracotta": {
+      "near": {
+        "albedo": "textures/pbr/near/cream_glazed_architectural_terracotta_albedo.png",
+        "normal": "textures/pbr/near/cream_glazed_architectural_terracotta_normal.png",
+        "roughness": "textures/pbr/near/cream_glazed_architectural_terracotta_roughness.png",
+        "ao": "textures/pbr/near/cream_glazed_architectural_terracotta_ao.png",
+        "depth": "textures/pbr/near/cream_glazed_architectural_terracotta_depth.png",
+        "emissive": "textures/pbr/near/cream_glazed_architectural_terracotta_emissive.png",
+        "glass_mask": "textures/pbr/near/cream_glazed_architectural_terracotta_glass.png",
+        "opaque_mask": "textures/pbr/near/cream_glazed_architectural_terracotta_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/cream_glazed_architectural_terracotta_albedo.png",
+        "normal": "textures/pbr/far/cream_glazed_architectural_terracotta_normal.png",
+        "roughness": "textures/pbr/far/cream_glazed_architectural_terracotta_roughness.png",
+        "ao": "textures/pbr/far/cream_glazed_architectural_terracotta_ao.png",
+        "depth": "textures/pbr/far/cream_glazed_architectural_terracotta_depth.png",
+        "emissive": "textures/pbr/far/cream_glazed_architectural_terracotta_emissive.png",
+        "glass_mask": "textures/pbr/far/cream_glazed_architectural_terracotta_glass.png",
+        "opaque_mask": "textures/pbr/far/cream_glazed_architectural_terracotta_opaque.png"
+      }
+    },
+    "granite": {
+      "near": {
+        "albedo": "textures/pbr/near/charcoal_polished_granite_albedo.png",
+        "normal": "textures/pbr/near/charcoal_polished_granite_normal.png",
+        "roughness": "textures/pbr/near/charcoal_polished_granite_roughness.png",
+        "ao": "textures/pbr/near/charcoal_polished_granite_ao.png",
+        "depth": "textures/pbr/near/charcoal_polished_granite_depth.png",
+        "emissive": "textures/pbr/near/charcoal_polished_granite_emissive.png",
+        "glass_mask": "textures/pbr/near/charcoal_polished_granite_glass.png",
+        "opaque_mask": "textures/pbr/near/charcoal_polished_granite_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/charcoal_polished_granite_albedo.png",
+        "normal": "textures/pbr/far/charcoal_polished_granite_normal.png",
+        "roughness": "textures/pbr/far/charcoal_polished_granite_roughness.png",
+        "ao": "textures/pbr/far/charcoal_polished_granite_ao.png",
+        "depth": "textures/pbr/far/charcoal_polished_granite_depth.png",
+        "emissive": "textures/pbr/far/charcoal_polished_granite_emissive.png",
+        "glass_mask": "textures/pbr/far/charcoal_polished_granite_glass.png",
+        "opaque_mask": "textures/pbr/far/charcoal_polished_granite_opaque.png"
+      }
+    },
+    "bronze": {
+      "near": {
+        "albedo": "textures/pbr/near/aged_dark_architectural_bronze_albedo.png",
+        "normal": "textures/pbr/near/aged_dark_architectural_bronze_normal.png",
+        "roughness": "textures/pbr/near/aged_dark_architectural_bronze_roughness.png",
+        "ao": "textures/pbr/near/aged_dark_architectural_bronze_ao.png",
+        "depth": "textures/pbr/near/aged_dark_architectural_bronze_depth.png",
+        "emissive": "textures/pbr/near/aged_dark_architectural_bronze_emissive.png",
+        "glass_mask": "textures/pbr/near/aged_dark_architectural_bronze_glass.png",
+        "opaque_mask": "textures/pbr/near/aged_dark_architectural_bronze_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/aged_dark_architectural_bronze_albedo.png",
+        "normal": "textures/pbr/far/aged_dark_architectural_bronze_normal.png",
+        "roughness": "textures/pbr/far/aged_dark_architectural_bronze_roughness.png",
+        "ao": "textures/pbr/far/aged_dark_architectural_bronze_ao.png",
+        "depth": "textures/pbr/far/aged_dark_architectural_bronze_depth.png",
+        "emissive": "textures/pbr/far/aged_dark_architectural_bronze_emissive.png",
+        "glass_mask": "textures/pbr/far/aged_dark_architectural_bronze_glass.png",
+        "opaque_mask": "textures/pbr/far/aged_dark_architectural_bronze_opaque.png"
+      }
+    },
+    "vision_glass": {
+      "near": {
+        "albedo": "textures/pbr/near/neutral_smoky_low_e_glass_albedo.png",
+        "normal": "textures/pbr/near/neutral_smoky_low_e_glass_normal.png",
+        "roughness": "textures/pbr/near/neutral_smoky_low_e_glass_roughness.png",
+        "ao": "textures/pbr/near/neutral_smoky_low_e_glass_ao.png",
+        "depth": "textures/pbr/near/neutral_smoky_low_e_glass_depth.png",
+        "emissive": "textures/pbr/near/neutral_smoky_low_e_glass_emissive.png",
+        "glass_mask": "textures/pbr/near/neutral_smoky_low_e_glass_glass.png",
+        "opaque_mask": "textures/pbr/near/neutral_smoky_low_e_glass_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/neutral_smoky_low_e_glass_albedo.png",
+        "normal": "textures/pbr/far/neutral_smoky_low_e_glass_normal.png",
+        "roughness": "textures/pbr/far/neutral_smoky_low_e_glass_roughness.png",
+        "ao": "textures/pbr/far/neutral_smoky_low_e_glass_ao.png",
+        "depth": "textures/pbr/far/neutral_smoky_low_e_glass_depth.png",
+        "emissive": "textures/pbr/far/neutral_smoky_low_e_glass_emissive.png",
+        "glass_mask": "textures/pbr/far/neutral_smoky_low_e_glass_glass.png",
+        "opaque_mask": "textures/pbr/far/neutral_smoky_low_e_glass_opaque.png"
+      }
+    },
+    "gold": {
+      "near": {
+        "albedo": "textures/pbr/near/restrained_architectural_gold_leaf_albedo.png",
+        "normal": "textures/pbr/near/restrained_architectural_gold_leaf_normal.png",
+        "roughness": "textures/pbr/near/restrained_architectural_gold_leaf_roughness.png",
+        "ao": "textures/pbr/near/restrained_architectural_gold_leaf_ao.png",
+        "depth": "textures/pbr/near/restrained_architectural_gold_leaf_depth.png",
+        "emissive": "textures/pbr/near/restrained_architectural_gold_leaf_emissive.png",
+        "glass_mask": "textures/pbr/near/restrained_architectural_gold_leaf_glass.png",
+        "opaque_mask": "textures/pbr/near/restrained_architectural_gold_leaf_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/restrained_architectural_gold_leaf_albedo.png",
+        "normal": "textures/pbr/far/restrained_architectural_gold_leaf_normal.png",
+        "roughness": "textures/pbr/far/restrained_architectural_gold_leaf_roughness.png",
+        "ao": "textures/pbr/far/restrained_architectural_gold_leaf_ao.png",
+        "depth": "textures/pbr/far/restrained_architectural_gold_leaf_depth.png",
+        "emissive": "textures/pbr/far/restrained_architectural_gold_leaf_emissive.png",
+        "glass_mask": "textures/pbr/far/restrained_architectural_gold_leaf_glass.png",
+        "opaque_mask": "textures/pbr/far/restrained_architectural_gold_leaf_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/dark_setback_terrace_membrane_albedo.png",
+        "normal": "textures/pbr/near/dark_setback_terrace_membrane_normal.png",
+        "roughness": "textures/pbr/near/dark_setback_terrace_membrane_roughness.png",
+        "ao": "textures/pbr/near/dark_setback_terrace_membrane_ao.png",
+        "depth": "textures/pbr/near/dark_setback_terrace_membrane_depth.png",
+        "emissive": "textures/pbr/near/dark_setback_terrace_membrane_emissive.png",
+        "glass_mask": "textures/pbr/near/dark_setback_terrace_membrane_glass.png",
+        "opaque_mask": "textures/pbr/near/dark_setback_terrace_membrane_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/dark_setback_terrace_membrane_albedo.png",
+        "normal": "textures/pbr/far/dark_setback_terrace_membrane_normal.png",
+        "roughness": "textures/pbr/far/dark_setback_terrace_membrane_roughness.png",
+        "ao": "textures/pbr/far/dark_setback_terrace_membrane_ao.png",
+        "depth": "textures/pbr/far/dark_setback_terrace_membrane_depth.png",
+        "emissive": "textures/pbr/far/dark_setback_terrace_membrane_emissive.png",
+        "glass_mask": "textures/pbr/far/dark_setback_terrace_membrane_glass.png",
+        "opaque_mask": "textures/pbr/far/dark_setback_terrace_membrane_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/art_deco_registered_front_albedo.png",
+      "normal": "textures/pbr/near/art_deco_registered_front_normal.png",
+      "roughness": "textures/pbr/near/art_deco_registered_front_roughness.png",
+      "ao": "textures/pbr/near/art_deco_registered_front_ao.png",
+      "depth": "textures/pbr/near/art_deco_registered_front_depth.png",
+      "emissive": "textures/pbr/near/art_deco_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/near/art_deco_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/near/art_deco_registered_front_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/art_deco_registered_front_albedo.png",
+      "normal": "textures/pbr/far/art_deco_registered_front_normal.png",
+      "roughness": "textures/pbr/far/art_deco_registered_front_roughness.png",
+      "ao": "textures/pbr/far/art_deco_registered_front_ao.png",
+      "depth": "textures/pbr/far/art_deco_registered_front_depth.png",
+      "emissive": "textures/pbr/far/art_deco_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/far/art_deco_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/far/art_deco_registered_front_opaque.png"
+    }
+  }
+}

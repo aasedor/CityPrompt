@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-07-31-wave12-vegetation-loadpath-v110"
+        == "2026-08-01-wave13-diverse-structural-grammar-v111"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -90,6 +90,22 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     )
     assert any(
         "flat orange window" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert {
+        "structural_grammar_is_family_specific",
+        "roof_orientation_and_fields_are_goalpost_locked",
+        "screens_preserve_real_cavities",
+        "environmental_systems_are_architecture",
+    } <= principle_ids
+    assert any(
+        "same generic box" in item["symptom"].lower()
+        and "structural grammar" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "ridge runs the wrong direction" in item["symptom"].lower()
+        and "export quantisation" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

@@ -1,0 +1,132 @@
+{
+  "family_id": "art-deco-cream-terracotta-tower",
+  "source": {
+    "archetype_id": "art_deco_setback_tower",
+    "variant_id": "art_deco_cream_terracotta",
+    "generation_archetype_id": "art_deco_cream_terracotta",
+    "reuse_keys": [
+      "art_deco_setback_tower",
+      "art_deco_cream_terracotta",
+      "cream_terracotta_art_deco_tower",
+      "gilded_setback_tower",
+      "Cream Terracotta Art Deco Tower",
+      "Gilded Setback Tower",
+      "Art Deco Wedding Cake Tower",
+      "Bronze and Terracotta High Rise"
+    ]
+  },
+  "dimensions": {
+    "width_m": 31.62,
+    "depth_m": 31.56,
+    "podium_height_m": 7.2,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "roof_height_m": 14.8,
+    "crown_height_m": 3.0,
+    "default_floors": 15,
+    "min_floors": 10,
+    "max_floors": 28
+  },
+  "architectural_signature": {
+    "identity": "A fifteen-level cream glazed-terra-cotta tower rises from a black granite and bronze double-height podium through seven-, five- and three-bay setback stages to an octagonal smoky-glass lantern held by eight gilded posts beneath a faceted gold cap and finial.",
+    "material_zones": "cream glazed architectural terra cotta with fine ashlar joints; charcoal polished granite podium; aged dark bronze entrance and window frames; neutral smoky physical low-e glass; warm occupied room depth; restrained gold-leaf belts, lantern posts and finial; dark setback terrace membrane",
+    "glass_profile": "neutral_smoky_bronze_framed_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_crown_and_roof_kit"
+    ]
+  },
+  "archetype_aliases": [
+    "art_deco_setback_tower",
+    "art_deco_cream_terracotta",
+    "cream_terracotta_art_deco_tower",
+    "gilded_setback_tower"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The exact seven-five-three setback landmark tolerates ordinary independent-axis drawing error. Oversized targets repeat complete 4.29 metre terra-cotta bays along the long axis, preserving pier, pane, occupied depth and spandrel rather than stretching ornament or windows.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.74,
+      "scaleMax": 1.26,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      23.0,
+      75.0
+    ],
+    "recommendedDepth_m": [
+      21.0,
+      45.0
+    ],
+    "recommendedFloors": [
+      10,
+      28
+    ],
+    "preferredBayMultiple_m": 4.29,
+    "scaleMin": 0.74,
+    "scaleMax": 1.26,
+    "maxAxisRatio": 1.18,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          23.0,
+          75.0
+        ],
+        "recommendedDepth_m": [
+          21.0,
+          45.0
+        ],
+        "recommendedFloors": [
+          10,
+          28
+        ],
+        "scaleMin": 0.74,
+        "scaleMax": 1.26,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 4.29
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_art_deco_setback_landmark_with_repeatable_complete_terracotta_bays",
+    "occupied_storeys": 15,
+    "double_height_public_podium": true,
+    "setback_stages": [
+      {
+        "bays": 7,
+        "floors": 8,
+        "width_m": 30.0,
+        "depth_m": 26.0
+      },
+      {
+        "bays": 5,
+        "floors": 3,
+        "width_m": 23.0,
+        "depth_m": 21.0
+      },
+      {
+        "bays": 3,
+        "floors": 2,
+        "width_m": 16.0,
+        "depth_m": 15.0
+      }
+    ],
+    "real_setback_terraces": 2,
+    "integral_sunburst_relief": true,
+    "octagonal_lantern_posts": 8,
+    "physical_window_layers": [
+      "warm_occupied_depth",
+      "neutral_smoky_pane",
+      "aged_bronze_frame",
+      "deep_reveal",
+      "terracotta_pier",
+      "geometric_spandrel"
+    ]
+  }
+}

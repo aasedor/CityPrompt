@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "art_deco_setback_tower",
+  "catalogue_variant_id": "art_deco_cream_terracotta",
+  "catalogue_alias_ids": [
+    "cream_terracotta_art_deco_tower",
+    "gilded_setback_tower"
+  ],
+  "elevation_source": "/families/art-deco-cream-terracotta-tower/elevation.jpg",
+  "goalpost": "/families/art-deco-cream-terracotta-tower/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/art-deco-cream-terracotta-tower/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

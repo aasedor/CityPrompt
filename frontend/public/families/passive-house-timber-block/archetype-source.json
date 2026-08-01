@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "eco_urban_bioclimatic_block",
+  "catalogue_variant_id": "eco_bioclimatic_passive",
+  "catalogue_alias_ids": [
+    "passive_house_timber_block",
+    "larch_pv_sedum_urban_block"
+  ],
+  "elevation_source": "/families/passive-house-timber-block/elevation.jpg",
+  "goalpost": "/families/passive-house-timber-block/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/passive-house-timber-block/textures/source/reference-generation.json",
+  "method": "reference-locked four-view source board, six-zone material construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations and semantic LEGO fallback modules"
+}

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-31-wave12-vegetation-loadpath-v110",
+  "memory_version": "2026-08-01-wave13-diverse-structural-grammar-v111",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -155,6 +155,22 @@
     {
       "id": "replacement_context_must_survive",
       "rule": "Clip source tiles in world coordinates for a single replacement footprint so photogrammetry behind the proposal remains visible; projected stencil silhouettes are not acceptable in close orbit or render captures."
+    },
+    {
+      "id": "structural_grammar_is_family_specific",
+      "rule": "Choose and construct the load-bearing and enclosure grammar demanded by the archetype: continuous terra-cotta piers and setbacks, timber post-and-beam plus lattice, a freestanding steel curtain-wall grid, a transparent transit concourse under timber floors, or a deep passive-house rainscreen. Do not force unrelated families through one generic facade scaffold."
+    },
+    {
+      "id": "roof_orientation_and_fields_are_goalpost_locked",
+      "rule": "Lock the ridge direction, eave hierarchy, overhang, slope and public versus rear roof fields against both front and aerial goalposts before detailing. Photovoltaic, sedum, tile, rooflight and canopy fields are separate physical assemblies clearly proud of their carrier planes."
+    },
+    {
+      "id": "screens_preserve_real_cavities",
+      "rule": "Koshi lattice, timber louvers and exterior blinds remain real open geometry with screen-space gaps, a deliberate air cavity, physically shaded glass and occupied depth behind. A textured opaque panel or a screen fused to its pane is not equivalent."
+    },
+    {
+      "id": "environmental_systems_are_architecture",
+      "rule": "When photovoltaics, sedum, rooflights, exterior blinds or planted roofs define the reference, construct their coverage, support, drainage edge and attachment relationship at true metric scale and preserve them in assembled and modular roof contracts."
     }
   ],
   "construction_memory": {
@@ -925,6 +941,26 @@
       "symptom": "A tall wall, tower pier or long roof member displays giant masonry blocks or stretched construction imagery even though the source texture is tile-safe",
       "cause": "One normalized UV island was stretched across the full physical object while repeated instances shared a unit mesh that ignored architectural texture scale.",
       "correction": "Preserve true construction scale by splitting identity-bearing masses into coursed lifts or by assigning physical-scale coordinates before export. Keep shared metric mesh instances for genuinely repeated parts, and reject any hero or close view where the material scale changes with object dimensions."
+    },
+    {
+      "symptom": "Several unrelated new families are detailed and textured but still read as the same generic box with different colours",
+      "cause": "One universal bay scaffold was reused before identifying each archetype's structural and enclosure grammar, so setbacks, gable load paths, freestanding frames, transparent concourses and deep rainscreens became surface decoration.",
+      "correction": "Select a family-specific structural grammar from the multi-angle goalpost before building bays. Construct its continuous primary load path and enclosure first, then author compatible repeatable semantic bays rather than forcing the family through a generic facade template."
+    },
+    {
+      "symptom": "A gabled or environmental roof matches from one street angle but its ridge runs the wrong direction, or its photovoltaic and sedum fields disappear in the aerial render",
+      "cause": "Roof orientation was inferred from the hero alone, or finish planes were coplanar with and quantized beneath their carrier surface during glTF export.",
+      "correction": "Lock ridge, eaves, slopes and field coverage against front plus aerial goalposts before detailing. Build PV, sedum, tile and rooflight fields as separate physical assemblies and keep them clearly proud of the carrier plane to survive export quantisation."
+    },
+    {
+      "symptom": "A machiya lattice, transit louver or passive-house blind reads as a dark printed panel instead of an open shading or privacy layer",
+      "cause": "The screen was baked into an opaque facade, fused to the pane, or packed so densely that its gaps and air cavity vanished at the locked camera.",
+      "correction": "Model each screen as real members with audited screen-space gaps, preserve an air cavity, and place reference-specific physical glazing plus occupied depth behind it. Prove the layer order in a grazing facade close view."
+    },
+    {
+      "symptom": "Photovoltaics, planted roofs or rooflights appear as decorative stickers that do not follow the roof construction or survive modular assembly",
+      "cause": "Environmental systems were treated as texture motifs without true coverage, supports, edge clearances, drainage relationships or a fixed roof-module contract.",
+      "correction": "Construct each environmental system at metric scale with separate carrier, support or frame geometry and roof-edge clearance. Preserve the system in the fixed assembled landmark and the semantic crown or roof module, then compare street and aerial proofs."
     }
   ]
 }

@@ -1,0 +1,170 @@
+{
+  "status": "pass",
+  "family": "mid-century-glass-steel-pavilion",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "reuse_keys": [
+    "mid_century_modern_pavilion_block",
+    "mid_century_pavilion_glass_steel",
+    "glass_steel_gallery_pavilion",
+    "floating_roof_modern_pavilion",
+    "Mid Century Glass Steel Pavilion",
+    "Floating Roof Modern Pavilion",
+    "Transparent Gallery Pavilion",
+    "Travertine Core Pavilion"
+  ],
+  "manifest": "mid-century-glass-steel-pavilion_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "mid-century-glass-steel-pavilion_podium.glb: 30.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_a.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_b.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_floor_typical_c.glb: 21.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-glass-steel-pavilion_assembled.glb: 41.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "mid-century-glass-steel-pavilion_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 25.0,
+        "height_y": 3.65,
+        "depth_z": 17.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W13_PAVILION_HonedTravertine",
+        "MAT_W13_PAVILION_MatteBlackSteel",
+        "MAT_W13_PAVILION_NeutralLowIronGlass",
+        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_SmoothConcrete"
+      ],
+      "size_bytes": 31823120
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 24.43,
+        "height_y": 3.65,
+        "depth_z": 16.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W13_PAVILION_MatteBlackSteel",
+        "MAT_W13_PAVILION_NeutralLowIronGlass",
+        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_SmoothConcrete"
+      ],
+      "size_bytes": 22742884
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 24.43,
+        "height_y": 3.65,
+        "depth_z": 16.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W13_PAVILION_MatteBlackSteel",
+        "MAT_W13_PAVILION_NeutralLowIronGlass",
+        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_SmoothConcrete"
+      ],
+      "size_bytes": 22742884
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 24.43,
+        "height_y": 3.65,
+        "depth_z": 16.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W13_PAVILION_MatteBlackSteel",
+        "MAT_W13_PAVILION_NeutralLowIronGlass",
+        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_SmoothConcrete"
+      ],
+      "size_bytes": 22742884
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.0,
+        "height_y": 0.28,
+        "depth_z": 22.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W13_PAVILION_RibbedAluminumSoffit"
+      ],
+      "size_bytes": 5909040
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.2,
+        "height_y": 0.34,
+        "depth_z": 22.2
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W13_PAVILION_KnifeEdgeRoof"
+      ],
+      "size_bytes": 5909368
+    },
+    {
+      "file": "mid-century-glass-steel-pavilion_assembled.glb",
+      "status": "ok",
+      "triangles": 172,
+      "extent_m": {
+        "width_x": 29.28,
+        "height_y": 11.63,
+        "depth_z": 22.2
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W13_PAVILION_HonedTravertine",
+        "MAT_W13_PAVILION_KnifeEdgeRoof",
+        "MAT_W13_PAVILION_MatteBlackSteel",
+        "MAT_W13_PAVILION_NeutralLowIronGlass",
+        "MAT_W13_PAVILION_OccupiedGalleryDepth",
+        "MAT_W13_PAVILION_RibbedAluminumSoffit",
+        "MAT_W13_PAVILION_SmoothConcrete"
+      ],
+      "size_bytes": 43866512,
+      "role": "assembled"
+    }
+  ]
+}

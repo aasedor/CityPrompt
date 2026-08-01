@@ -1,0 +1,178 @@
+{
+  "status": "pass",
+  "family": "restored-kyoto-machiya",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "reuse_keys": [
+    "japanese_machiya_mixed_use",
+    "machiya_traditional_restored",
+    "restored_kyoto_machiya",
+    "traditional_koshi_lattice_shop_house",
+    "Restored Kyoto Machiya",
+    "Traditional Koshi Lattice Shop House",
+    "Japanese Timber Mixed Use House",
+    "Kawara Tile Machiya"
+  ],
+  "manifest": "restored-kyoto-machiya_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "restored-kyoto-machiya_podium.glb: 17.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_floor_typical_a.glb: 12.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_floor_typical_b.glb: 12.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_floor_typical_c.glb: 12.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_crown_crown.glb: 8.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_roof.glb: 17.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "restored-kyoto-machiya_assembled.glb: 41.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "restored-kyoto-machiya_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 18.6,
+        "height_y": 3.35,
+        "depth_z": 14.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_GreyStoneSill",
+        "MAT_W13_MACHIYA_NeutralSmokyGlass",
+        "MAT_W13_MACHIYA_OccupiedRoomDepth",
+        "MAT_W13_MACHIYA_WarmKoshiLattice"
+      ],
+      "size_bytes": 17829224
+    },
+    {
+      "file": "restored-kyoto-machiya_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 18.2,
+        "height_y": 3.35,
+        "depth_z": 7.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_NeutralSmokyGlass",
+        "MAT_W13_MACHIYA_OccupiedRoomDepth",
+        "MAT_W13_MACHIYA_WarmKoshiLattice"
+      ],
+      "size_bytes": 13366760
+    },
+    {
+      "file": "restored-kyoto-machiya_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 18.2,
+        "height_y": 3.35,
+        "depth_z": 7.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_NeutralSmokyGlass",
+        "MAT_W13_MACHIYA_OccupiedRoomDepth",
+        "MAT_W13_MACHIYA_WarmKoshiLattice"
+      ],
+      "size_bytes": 13366760
+    },
+    {
+      "file": "restored-kyoto-machiya_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 18.2,
+        "height_y": 3.35,
+        "depth_z": 7.265
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_NeutralSmokyGlass",
+        "MAT_W13_MACHIYA_OccupiedRoomDepth",
+        "MAT_W13_MACHIYA_WarmKoshiLattice"
+      ],
+      "size_bytes": 13366760
+    },
+    {
+      "file": "restored-kyoto-machiya_crown_crown.glb",
+      "status": "ok",
+      "triangles": 76,
+      "extent_m": {
+        "width_x": 18.8,
+        "height_y": 0.85,
+        "depth_z": 14.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W13_MACHIYA_CharcoalKawaraTile",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar"
+      ],
+      "size_bytes": 8981388
+    },
+    {
+      "file": "restored-kyoto-machiya_roof.glb",
+      "status": "ok",
+      "triangles": 124,
+      "extent_m": {
+        "width_x": 18.77,
+        "height_y": 5.069,
+        "depth_z": 15.0
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W13_MACHIYA_CharcoalKawaraTile",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_WhiteClayPlaster"
+      ],
+      "size_bytes": 18166100
+    },
+    {
+      "file": "restored-kyoto-machiya_assembled.glb",
+      "status": "ok",
+      "triangles": 232,
+      "extent_m": {
+        "width_x": 19.77,
+        "height_y": 11.57,
+        "depth_z": 16.77
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W13_MACHIYA_Bamboo",
+        "MAT_W13_MACHIYA_CharcoalKawaraTile",
+        "MAT_W13_MACHIYA_DarkWeatheredCedar",
+        "MAT_W13_MACHIYA_GreyStoneSill",
+        "MAT_W13_MACHIYA_NeutralSmokyGlass",
+        "MAT_W13_MACHIYA_OccupiedRoomDepth",
+        "MAT_W13_MACHIYA_PlainIndigoNoren",
+        "MAT_W13_MACHIYA_RegisteredFacadeUnderlay",
+        "MAT_W13_MACHIYA_WarmKoshiLattice",
+        "MAT_W13_MACHIYA_WhiteClayPlaster"
+      ],
+      "size_bytes": 43953548,
+      "role": "assembled"
+    }
+  ]
+}
