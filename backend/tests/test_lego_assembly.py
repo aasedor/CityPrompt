@@ -3475,6 +3475,114 @@ async def test_wave13_diverse_api_plans_parent_variant_and_oversized_streetwall(
 
 
 @pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("family", "variant_size", "oversized_width"),
+    [
+        ("art-deco-black-chrome-tower", (34.0, 29.0), 120.0),
+        ("art-deco-polychrome-zigzag-tower", (43.0, 38.0), 150.0),
+        ("mid-century-wood-stone-pavilion", (39.0, 25.0), 130.0),
+        ("mid-century-white-brise-soleil-pavilion", (30.0, 23.0), 105.0),
+        ("modern-black-screen-machiya", (13.0, 18.0), 55.0),
+        ("red-machiya-cafe-gallery", (18.0, 15.0), 65.0),
+        ("dark-frame-clear-glass-office", (34.0, 25.0), 120.0),
+        ("mass-timber-glass-office", (43.0, 27.0), 150.0),
+        ("streamline-moderne-theater", (26.0, 31.0), 95.0),
+        ("egyptian-revival-theater", (30.0, 35.0), 105.0),
+    ],
+)
+async def test_wave14_variant_api_plans_in_band_and_oversized_streetwall(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    family,
+    variant_size,
+    oversized_width,
+):
+    manifest_path = (
+        Path(__file__).resolve().parents[2]
+        / "frontend"
+        / "public"
+        / "families"
+        / family
+        / f"{family}_manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assembled = {
+        **manifest["assembled"],
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "width_m": manifest["native_width_m"],
+        "depth_m": manifest["native_depth_m"],
+        "floor_height_m": manifest["dimensions"]["floor_height_m"],
+        "repeatable_z": False,
+        "lod": 0,
+        "allowed_levels": [],
+        "native_floors": manifest["native_floors"],
+    }
+    deliverables = [assembled, *manifest["modules"]]
+    library_entries = [
+        SimpleNamespace(
+            id=(
+                f"{family}-{module['role']}-"
+                f"{module.get('variant_key', 'default')}"
+            ),
+            name=module["filename"],
+            model_url=f"https://example.test/{module['filename']}",
+            metadata_={
+                "lego": lego_metadata_from_manifest(
+                    manifest,
+                    module,
+                    role=module["role"],
+                    validation_status="pass",
+                )
+            },
+        )
+        for module in deliverables
+    ]
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
+
+    in_band = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": variant_size[0],
+            "target_depth_m": variant_size[1],
+            "target_floors": manifest["native_floors"],
+            "archetype_id": manifest["variant_id"],
+            "footprint_profile": "rectangle",
+        },
+    )
+    oversized = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": oversized_width,
+            "target_depth_m": manifest["native_depth_m"],
+            "target_floors": manifest["native_floors"],
+            "archetype_id": manifest["variant_id"],
+            "footprint_profile": "rectangle",
+        },
+    )
+
+    assert in_band.status_code == 200, in_band.text
+    assert in_band.json()["family"] == family
+    assert in_band.json()["fit"]["compatibility_source"] != "family_incompatible"
+    assert oversized.status_code == 200, oversized.text
+    oversized_plan = oversized.json()
+    assert oversized_plan["family"] == family
+    assert oversized_plan["fit"]["compatibility_source"] == "streetwall_repeat"
+    assert oversized_plan["fit"]["segment_count"] >= 2
+
+
+@pytest.mark.anyio
 async def test_plan_api_returns_structured_family_incompatible_error(
     client, mock_db, test_user, auth_headers
 ):

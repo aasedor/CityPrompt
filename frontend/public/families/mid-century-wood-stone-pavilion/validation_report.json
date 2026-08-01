@@ -1,0 +1,171 @@
+{
+  "status": "pass",
+  "family": "mid-century-wood-stone-pavilion",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "reuse_keys": [
+    "mid_century_modern_pavilion_block",
+    "mid_century_pavilion_wood_stone",
+    "organic_wood_stone_pavilion",
+    "wright_inspired_terrace_pavilion",
+    "Organic Wood Stone Pavilion",
+    "Wright Inspired Terrace Pavilion",
+    "Cantilevered Landscape Pavilion"
+  ],
+  "manifest": "mid-century-wood-stone-pavilion_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "mid-century-wood-stone-pavilion_podium.glb: 22.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-wood-stone-pavilion_floor_typical_a.glb: 30.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-wood-stone-pavilion_floor_typical_b.glb: 30.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-wood-stone-pavilion_floor_typical_c.glb: 30.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-wood-stone-pavilion_assembled.glb: 40.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "mid-century-wood-stone-pavilion_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 3.45,
+        "depth_z": 22.75
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-wood-stone-pavilion_frame",
+        "MAT_W14_mid-century-wood-stone-pavilion_glass",
+        "MAT_W14_mid-century-wood-stone-pavilion_secondary"
+      ],
+      "size_bytes": 24037844
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 3.45,
+        "depth_z": 22.805
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-wood-stone-pavilion_frame",
+        "MAT_W14_mid-century-wood-stone-pavilion_glass",
+        "MAT_W14_mid-century-wood-stone-pavilion_primary",
+        "MAT_W14_mid-century-wood-stone-pavilion_secondary"
+      ],
+      "size_bytes": 31611884
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 3.45,
+        "depth_z": 22.805
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-wood-stone-pavilion_frame",
+        "MAT_W14_mid-century-wood-stone-pavilion_glass",
+        "MAT_W14_mid-century-wood-stone-pavilion_primary",
+        "MAT_W14_mid-century-wood-stone-pavilion_secondary"
+      ],
+      "size_bytes": 31611884
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 3.45,
+        "depth_z": 22.805
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-wood-stone-pavilion_frame",
+        "MAT_W14_mid-century-wood-stone-pavilion_glass",
+        "MAT_W14_mid-century-wood-stone-pavilion_primary",
+        "MAT_W14_mid-century-wood-stone-pavilion_secondary"
+      ],
+      "size_bytes": 31611884
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 0.55,
+        "depth_z": 22.75
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_ornament"
+      ],
+      "size_bytes": 3722612
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 35.72,
+        "height_y": 3.35,
+        "depth_z": 22.75
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_mid-century-wood-stone-pavilion_roof"
+      ],
+      "size_bytes": 6002868
+    },
+    {
+      "file": "mid-century-wood-stone-pavilion_assembled.glb",
+      "status": "ok",
+      "triangles": 20688,
+      "extent_m": {
+        "width_x": 40.34,
+        "height_y": 9.77,
+        "depth_z": 27.44
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_mid-century-wood-stone-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-wood-stone-pavilion_frame",
+        "MAT_W14_mid-century-wood-stone-pavilion_glass",
+        "MAT_W14_mid-century-wood-stone-pavilion_ornament",
+        "MAT_W14_mid-century-wood-stone-pavilion_primary",
+        "MAT_W14_mid-century-wood-stone-pavilion_roof",
+        "MAT_W14_mid-century-wood-stone-pavilion_secondary"
+      ],
+      "size_bytes": 42758952,
+      "role": "assembled"
+    }
+  ]
+}

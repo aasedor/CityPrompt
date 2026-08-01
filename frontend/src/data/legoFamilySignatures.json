@@ -275,9 +275,10 @@
                                                            },
                      "glass_office_dark_frame":  {
                                                      "archetypeId":  "glass_office_dark_frame",
-                                                     "identity":  "Dark Frame \u0026 Clear Glass office with a bold external charcoal-bronze structural grid, ultra-clear glazing, visibly occupied warm floor plates, a recessed double-height lobby, a real projecting entrance canopy and a lightweight open rooftop terrace crown.",
-                                                     "materialZones":  "ultra-clear low-iron glazing; matte charcoal-bronze expressed steel; pale concrete floor edges; warm occupied office interiors; transparent double-height lobby",
-                                                     "glassProfile":  "office_clear_occupied"
+                                                     "identity":  "A compact five-level office exposes a heavy charcoal steel exoskeleton around exceptionally clear occupied glass, with bright slab datums, a recessed double-height corner lobby, and a transparent rooftop greenhouse room.",
+                                                     "materialZones":  "matte charcoal structural steel; neutral low-iron glass; bright concrete slab edges; warm occupied office depth; black aluminum pressure caps; pale lobby terrazzo; clear rooftop greenhouse and zinc roof",
+                                                     "glassProfile":  "high_transmission_low_iron_revealing_occupied_floorplates",
+                                                     "elevationUrl":  "/families/dark-frame-clear-glass-office/elevation.jpg"
                                                  },
                      "chateauesque_grand_railway_hotel":  {
                                                               "archetypeId":  "chateauesque_grand_railway_hotel",
@@ -991,6 +992,69 @@
                                                           "materialZones": "weathering vertical larch; dark timber-aluminum frames and insulated reveals; neutral physical triple glazing; warm occupied rooms; real black blind blades; pale insulated panels; photovoltaic glass; dense sedum; zinc edges",
                                                           "glassProfile": "neutral_triple_glazed_deep_reveal_occupied",
                                                           "elevationUrl": "/families/passive-house-timber-block/elevation.jpg"
-                                                    }
+                                                    },
+                     "art_deco_black_chrome": {
+                                                    "archetypeId": "art_deco_black_chrome",
+                                                    "identity": "A polished black-granite twenty-four-storey setback tower is drawn upward by continuous chrome fins, narrow smoky geometric windows, three streamlined shoulders, and a fluted chrome crown and needle finial.",
+                                                    "materialZones": "polished black granite; fine silver chrome fins and speed bands; charcoal relief stone; neutral smoky low-e glass; warm occupied depth; brushed stainless crown metal and dark terrace membrane",
+                                                    "glassProfile": "neutral_smoky_geometric_glass_block_and_occupied_depth",
+                                                    "elevationUrl": "/families/art-deco-black-chrome-tower/elevation.jpg"
+                                                },
+                     "art_deco_polychrome": {
+                                                   "archetypeId": "art_deco_polychrome",
+                                                   "identity": "A thirty-two-storey turquoise-and-cream Zigzag Moderne tower steps from seven to five to three bays above a carved two-storey arched portal, with orange-gold-blue mosaic bands and a compact green pyramidal crown.",
+                                                   "materialZones": "turquoise glazed terra cotta; warm cream molded terra cotta; orange, gold, deep-blue and turquoise ceramic mosaic; aged bronze frames; neutral smoky low-e glass; warm occupied depth; patinated copper crown and charcoal terrace membrane",
+                                                   "glassProfile": "neutral_smoky_bronze_framed_occupied",
+                                                   "elevationUrl": "/families/art-deco-polychrome-zigzag-tower/elevation.jpg"
+                                               },
+                     "mid_century_pavilion_wood_stone": {
+                                                               "archetypeId": "mid_century_pavilion_wood_stone",
+                                                               "identity": "A low two-level organic modern pavilion grows from layered native-stone terraces, warm horizontal timber walls and clear occupied glazing beneath one broad, shallow-hipped sheltering roof.",
+                                                               "materialZones": "warm horizontal cedar boards; rugged native ledgestone; dark bronze steel; neutral low-iron glass; warm occupied depth; pale concrete terrace; charcoal roof membrane and copper fascia",
+                                                               "glassProfile": "neutral_low_iron_deep_eave_occupied",
+                                                               "elevationUrl": "/families/mid-century-wood-stone-pavilion/elevation.jpg"
+                                                           },
+                     "mid_century_pavilion_white_concrete": {
+                                                                  "archetypeId": "mid_century_pavilion_white_concrete",
+                                                                  "identity": "A white concrete two-storey pavilion is lifted on slender pilotis, wrapped by dense open-cell brise-soleil screens, and crowned by a recessed glazed garden room beneath one wafer-thin flat canopy.",
+                                                                  "materialZones": "warm white board-formed concrete; perforated breeze-block ceramic; charcoal steel frames; neutral clear low-e glass; occupied gallery depth; pale terrazzo; white aluminum flat canopy and planted terrace",
+                                                                  "glassProfile": "neutral_clear_screened_gallery_occupied",
+                                                                  "elevationUrl": "/families/mid-century-white-brise-soleil-pavilion/elevation.jpg"
+                                                              },
+                     "machiya_modern_reinterpretation": {
+                                                             "archetypeId": "machiya_modern_reinterpretation",
+                                                             "identity": "A narrow four-level contemporary machiya hides clear occupied rooms behind a full-height black metal koshi screen, a deeply cut ground passage and tsuboniwa, beneath a compact dark hip and screened rooftop garden.",
+                                                             "materialZones": "matte blackened steel lattice; charred cedar; graphite metal panels; neutral clear glass; warm occupied depth; dark basalt plinth; charcoal zinc roof and planted courtyard",
+                                                             "glassProfile": "neutral_clear_full_height_screened_occupied",
+                                                             "elevationUrl": "/families/modern-black-screen-machiya/elevation.jpg"
+                                                         },
+                     "machiya_cafe_gallery": {
+                                                   "archetypeId": "machiya_cafe_gallery",
+                                                   "identity": "A converted two-storey machiya cafe-gallery keeps its vermilion timber frame, fine red koshi, pale earthen walls and deep kawara roof while opening one large ground room and side passage toward a planted inner court.",
+                                                   "materialZones": "weathered vermilion cedar; pale ochre earthen plaster; charcoal kawara tile; dark bronze frames; clear neutral glass; warm cafe/gallery depth; woven bamboo blinds and grey stone",
+                                                   "glassProfile": "neutral_clear_koshi_and_bamboo_screened_occupied",
+                                                   "elevationUrl": "/families/red-machiya-cafe-gallery/elevation.jpg"
+                                               },
+                     "glass_office_timber_hybrid": {
+                                                          "archetypeId": "glass_office_timber_hybrid",
+                                                          "identity": "A broad five-level mass-timber office displays honey glulam columns, CLT floor plates and tree-filled occupied rooms through clear glass, stepping into two sawtooth volumes beneath metal clerestory roofs.",
+                                                          "materialZones": "honey glulam; pale CLT end grain and slab edges; graphite steel connectors; neutral low-iron glass; biophilic occupied depth; pale concrete plinth; silver standing-seam clerestory roof",
+                                                          "glassProfile": "neutral_low_iron_revealing_mass_timber_and_biophilic_depth",
+                                                          "elevationUrl": "/families/mass-timber-glass-office/elevation.jpg"
+                                                      },
+                     "deco_theater_streamline": {
+                                                   "archetypeId": "deco_theater_streamline",
+                                                   "identity": "A three-level Streamline Moderne theater rounds both street corners around a broad white lobby, curved glass-block ribbons, sweeping pink-and-blue neon speed bands, a cantilevered marquee and an integrated fin-shaped blade tower.",
+                                                   "materialZones": "smooth warm-white render; pale cream terrazzo; clear and translucent glass block; neutral curved lobby glass; warm occupied lobby depth; brushed stainless trim; restrained pink and blue neon; charcoal auditorium roof",
+                                                   "glassProfile": "curved_clear_lobby_plus_translucent_glass_block_occupied",
+                                                   "elevationUrl": "/families/streamline-moderne-theater/elevation.jpg"
+                                               },
+                     "deco_theater_egyptian_revival": {
+                                                          "archetypeId": "deco_theater_egyptian_revival",
+                                                          "identity": "An ochre Egyptian Revival theater forms a deep ceremonial entrance between battered pylons and four lotus columns, crowned by a winged sun disk, small scarab reliefs, turquoise-copper bands and a projecting bronze marquee.",
+                                                          "materialZones": "warm ochre limestone; sand-colored stucco; turquoise and oxidized copper inlay; dark bronze doors and marquee; neutral smoky lobby glass; warm occupied lobby depth; charcoal auditorium roof",
+                                                          "glassProfile": "neutral_smoky_bronze_framed_ceremonial_lobby",
+                                                          "elevationUrl": "/families/egyptian-revival-theater/elevation.jpg"
+                                                      }
                  }
 }

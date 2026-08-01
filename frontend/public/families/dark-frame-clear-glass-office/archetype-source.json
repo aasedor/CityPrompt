@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "modern_glass_office_institutional",
+  "catalogue_variant_id": "glass_office_dark_frame",
+  "catalogue_alias_ids": [
+    "dark_frame_clear_glass_office",
+    "expressed_steel_grid_office"
+  ],
+  "elevation_source": "/families/dark-frame-clear-glass-office/elevation.jpg",
+  "goalpost": "/families/dark-frame-clear-glass-office/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/dark-frame-clear-glass-office/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

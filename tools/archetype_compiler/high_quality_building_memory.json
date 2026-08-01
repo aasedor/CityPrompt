@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-01-wave13-optical-pv-refinement-v112",
+  "memory_version": "2026-08-01-wave14-sibling-variant-lock-v113",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -159,6 +159,10 @@
     {
       "id": "structural_grammar_is_family_specific",
       "rule": "Choose and construct the load-bearing and enclosure grammar demanded by the archetype: continuous terra-cotta piers and setbacks, timber post-and-beam plus lattice, a freestanding steel curtain-wall grid, a transparent transit concourse under timber floors, or a deep passive-house rainscreen. Do not force unrelated families through one generic facade scaffold."
+    },
+    {
+      "id": "sibling_variants_are_independent_design_contracts",
+      "rule": "A catalogue sibling variant owns its own multi-angle goalpost, silhouette, structural grammar, entrance, roof topology, material zones, glazing profile, metric landmark and repeatable fallback kit. A parent-family recolour or reused assembled GLB is prohibited; variant ids and aesthetic aliases must resolve to the independently authored family."
     },
     {
       "id": "roof_orientation_and_fields_are_goalpost_locked",
@@ -988,6 +992,11 @@
       "symptom": "A solar roof reads as one stretched blue sheet or its cell pattern changes scale with the building",
       "cause": "One photovoltaic image was mapped across the whole roof field instead of being registered once per standard module with physical racking.",
       "correction": "Build individual framed modules at true metric scale, map one complete countable cell topology to each module, preserve real gaps and mounting rails, and prove the array in an aerial close view."
+    },
+    {
+      "symptom": "Two catalogue sibling variants load as the same building with different colours or one variant silently falls back to the parent family",
+      "cause": "The sibling reused the parent's goalpost, geometry, signature or assembled GLB, or its variant and aesthetic aliases were omitted during import and matching.",
+      "correction": "Treat the sibling as an independent family: lock its own compatible multi-angle source board, build its distinct massing, entrance, roof, glazing and materials, export a variant-tagged fixed landmark plus semantic fallback modules, and test every declared alias through the planner."
     }
   ]
 }

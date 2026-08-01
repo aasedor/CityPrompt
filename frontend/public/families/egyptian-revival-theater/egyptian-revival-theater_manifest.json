@@ -1,0 +1,1480 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave14_variant_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-01T21:00:43.721204+00:00",
+  "family": "egyptian-revival-theater",
+  "archetype_id": "deco_theater_mainstreet",
+  "archetype_label": "Deco Theater - Egyptian Revival",
+  "variant_id": "deco_theater_egyptian_revival",
+  "generation_archetype_id": "deco_theater_egyptian_revival",
+  "archetype_aliases": [
+    "deco_theater_mainstreet",
+    "deco_theater_egyptian_revival",
+    "egyptian_revival_theater",
+    "lotus_pylon_cinema"
+  ],
+  "aesthetic_category_id": "egyptian_revival_art_deco",
+  "development_type": "cultural_entertainment_lowrise",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "deco_theater_egyptian_revival",
+    "egyptian_revival_theater",
+    "lotus_pylon_cinema",
+    "Egyptian Revival Theater",
+    "Lotus Pylon Cinema",
+    "Winged Sun Mainstreet Theater"
+  ],
+  "generation_tags": [
+    "wave14",
+    "catalogue_sibling_variant",
+    "fixed_landmark_and_modular_fallback",
+    "custom_pbr_skin",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "deep_auditorium",
+    "paired_battered_pylons",
+    "four_lotus_columns",
+    "deep_entry_court",
+    "winged_sun_scarab_frieze",
+    "integral_marquee"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Larger targets repeat whole 5.00 m construction bays along the long axis, preserving physical glass, occupied depth, frames, screens, structure and floor datums; entrances, corners, crowns and roofs remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      19.8,
+      54.0
+    ],
+    "recommendedDepth_m": [
+      22.4,
+      53.7
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 5.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          19.8,
+          54.0
+        ],
+        "recommendedDepth_m": [
+          22.4,
+          53.7
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 5.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          21.6,
+          61.5
+        ],
+        "recommendedDepth_m": [
+          23.8,
+          61.2
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.32,
+        "preferredBayMultiple_m": 5.0,
+        "wingDepth_m": [
+          9.5,
+          22.1
+        ]
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/egyptian-revival-theater_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_registered_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_occupied_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_primary_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_albedo.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_primary_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_normal.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_primary_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_roughness.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_primary_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_ao.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_primary_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_depth.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_primary_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_emissive.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_primary_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_glass.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_primary_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_primary_warm_ochre_limestone_ashlar_opaque.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_secondary_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_albedo.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_secondary_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_normal.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_secondary_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_roughness.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_secondary_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_ao.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_secondary_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_depth.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_secondary_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_emissive.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_secondary_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_glass.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_secondary_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_secondary_sand-colored_mineral_stucco_opaque.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_ornament_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_albedo.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_ornament_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_normal.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "normal"
+    },
+    {
+      "key": "near_ornament_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_roughness.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_ornament_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_ao.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "ao"
+    },
+    {
+      "key": "near_ornament_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_depth.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "depth"
+    },
+    {
+      "key": "near_ornament_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_emissive.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_ornament_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_glass.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_ornament_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_ornament_turquoise_enamel_and_oxidized_copper_opaque.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_frame_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_albedo.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_frame_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_normal.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_frame_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_roughness.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_frame_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_ao.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_frame_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_depth.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_frame_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_emissive.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_frame_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_glass.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_frame_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_frame_dark_bronze_ceremonial_metalwork_opaque.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_glass_neutral_smoky_lobby_glass_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/egyptian-revival-theater_roof_charcoal_auditorium_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/egyptian-revival-theater",
+    "model": "gpt-image-2",
+    "style_reference": "/families/egyptian-revival-theater/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "integral_public_entrance",
+        "complete_corner_returns",
+        "variant_specific_roof_or_crown",
+        "variant_specific_ornament"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat a complete semantic bay containing physical glass, occupied depth, frame, structure or screen, wall return and floor datum; never stretch an individual pane or ornament."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "deep_auditorium",
+        "paired_battered_pylons",
+        "four_lotus_columns",
+        "deep_entry_court",
+        "winged_sun_scarab_frieze",
+        "integral_marquee"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete wrapped left and right construction with reference-related but independently scheduled secondary openings",
+      "elevation_coverage": {
+        "front": "complete reference-locked public elevation",
+        "left": "complete wrapped secondary construction",
+        "right": "complete wrapped secondary construction",
+        "rear": "complete occupied service elevation",
+        "roof": "complete variant-specific roof, terraces, courts and crowns"
+      },
+      "variation_policy": "Use the fixed landmark throughout the 0.62–1.40 independent-axis band; oversized targets streetwall-repeat complete long-axis construction bays rather than returning family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/egyptian-revival-theater_registered_front_albedo.png",
+        "normal": "textures/pbr/near/egyptian-revival-theater_registered_front_normal.png",
+        "roughness": "textures/pbr/near/egyptian-revival-theater_registered_front_roughness.png",
+        "ao": "textures/pbr/near/egyptian-revival-theater_registered_front_ao.png",
+        "depth": "textures/pbr/near/egyptian-revival-theater_registered_front_depth.png",
+        "emissive": "textures/pbr/near/egyptian-revival-theater_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/egyptian-revival-theater_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/egyptian-revival-theater_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/egyptian-revival-theater_registered_front_albedo.png",
+        "normal": "textures/pbr/far/egyptian-revival-theater_registered_front_normal.png",
+        "roughness": "textures/pbr/far/egyptian-revival-theater_registered_front_roughness.png",
+        "ao": "textures/pbr/far/egyptian-revival-theater_registered_front_ao.png",
+        "depth": "textures/pbr/far/egyptian-revival-theater_registered_front_depth.png",
+        "emissive": "textures/pbr/far/egyptian-revival-theater_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/egyptian-revival-theater_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/egyptian-revival-theater_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/egyptian-revival-theater_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/egyptian-revival-theater_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "deco_theater_mainstreet",
+      "source_variant_id": "deco_theater_egyptian_revival",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/egyptian-revival-theater/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy.",
+    "variant_id": "deco_theater_egyptian_revival"
+  },
+  "massing_graph": {
+    "type": "fixed_egyptian_theater_with_repeatable_complete_middle_bays",
+    "variant_id": "deco_theater_egyptian_revival",
+    "occupied_storeys": 3,
+    "features": [
+      "deep_auditorium",
+      "paired_battered_pylons",
+      "four_lotus_columns",
+      "deep_entry_court",
+      "winged_sun_scarab_frieze",
+      "integral_marquee"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Variant-specific opaque construction, physical glazing, occupied depth, expressed structure, screens, ornament and roof finishes remain separate because their optical contrast carries the catalogue identity."
+  },
+  "dimensions": {
+    "width_m": 31.2,
+    "depth_m": 37.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "roof_height_m": 4.0,
+    "crown_height_m": 2.3,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "native_width_m": 31.2,
+  "native_depth_m": 37.0,
+  "native_height_m": 15.37,
+  "native_floors": 3,
+  "min_floors": 2,
+  "max_floors": 5,
+  "default_floors": 3,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_podium.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.2,
+      "depth_m": 31.49,
+      "height_m": 5.2,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 72,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26013788
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_floor_typical_a.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.53,
+      "depth_m": 31.27,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 588,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 38725236
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_floor_typical_b.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.53,
+      "depth_m": 31.27,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 588,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 38725236
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_floor_typical_c.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.53,
+      "depth_m": 31.27,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 588,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 38725236
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_crown_crown.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.2,
+      "depth_m": 30.94,
+      "height_m": 2.3,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 8612788
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "egyptian-revival-theater_roof.glb",
+      "module_family": "egyptian-revival-theater",
+      "width_m": 28.2,
+      "depth_m": 30.94,
+      "height_m": 4.0,
+      "floor_height_m": 4.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 4558076
+    }
+  ],
+  "assembled": {
+    "filename": "egyptian-revival-theater_assembled.glb",
+    "module_family": "egyptian-revival-theater",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "deco_theater_egyptian_revival",
+    "generation_archetype_id": "deco_theater_egyptian_revival",
+    "width_m": 31.2,
+    "depth_m": 37.0,
+    "floors": 3,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 15.37,
+    "triangle_count": 16744,
+    "material_count": 7,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 15.37
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 31.2,
+      "depth_m": 37.0,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 31.2,
+          "thickness_m": 37.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_egyptian_theater_with_repeatable_complete_middle_bays",
+      "variant_id": "deco_theater_egyptian_revival",
+      "occupied_storeys": 3,
+      "features": [
+        "deep_auditorium",
+        "paired_battered_pylons",
+        "four_lotus_columns",
+        "deep_entry_court",
+        "winged_sun_scarab_frieze",
+        "integral_marquee"
+      ],
+      "physical_window_layers": [
+        "occupied_depth",
+        "physical_pane",
+        "separate_frame",
+        "structural_or_screen_layer",
+        "floor_datum",
+        "material_return"
+      ],
+      "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "frame",
+      "glass",
+      "interior",
+      "ornament",
+      "podium",
+      "primary",
+      "roof",
+      "secondary",
+      "side"
+    ],
+    "ao_baked": true,
+    "edge_treatment": {
+      "method": "adaptive_physical_delivery_bevel",
+      "segments": 4,
+      "minimum_assembled_triangles": 12000
+    }
+  },
+  "thumbnail": "egyptian-revival-theater_preview.png",
+  "renders": [
+    "egyptian-revival-theater_preview.png",
+    "egyptian-revival-theater_street.png",
+    "egyptian-revival-theater_context.png",
+    "egyptian-revival-theater_front_corner_oblique.png",
+    "egyptian-revival-theater_front_elevation.png",
+    "egyptian-revival-theater_rear_corner_oblique.png",
+    "egyptian-revival-theater_aerial.png",
+    "egyptian-revival-theater_facade_close.png"
+  ],
+  "architectural_identity": "An ochre Egyptian Revival theater forms a deep ceremonial entrance between battered pylons and four lotus columns, crowned by a winged sun disk, small scarab reliefs, turquoise-copper bands and a projecting bronze marquee.",
+  "material_zones": "warm ochre limestone; sand-colored stucco; turquoise and oxidized copper inlay; dark bronze doors and marquee; neutral smoky lobby glass; warm occupied lobby depth; charcoal auditorium roof",
+  "glass_profile": "neutral_smoky_bronze_framed_ceremonial_lobby",
+  "source_provenance": {
+    "catalogue_archetype_id": "deco_theater_mainstreet",
+    "catalogue_variant_id": "deco_theater_egyptian_revival",
+    "catalogue_alias_ids": [
+      "egyptian_revival_theater",
+      "lotus_pylon_cinema"
+    ],
+    "elevation_source": "/families/egyptian-revival-theater/elevation.jpg",
+    "goalpost": "/families/egyptian-revival-theater/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/egyptian-revival-theater/textures/source/reference-generation.json",
+    "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+  }
+}

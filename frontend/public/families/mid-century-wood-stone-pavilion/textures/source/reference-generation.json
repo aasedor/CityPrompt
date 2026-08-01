@@ -1,0 +1,98 @@
+{
+  "schema": "reference-generation@1",
+  "family": "mid-century-wood-stone-pavilion",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "variant_id": "mid_century_pavilion_wood_stone",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [
+    "/archetypes/buildings/mid_century_modern_pavilion_block/variant_1.png"
+  ],
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      38.0,
+      25.0,
+      10.8
+    ],
+    "occupied_storeys": 2,
+    "variant_specific_contract": "38 m by 25 m, exactly two occupied levels; interlocking stone hearth/core, long timber-and-glass bars, layered cantilevered terraces, and one shallow hip roof with a long ridge and very deep eaves",
+    "material_zones": "warm horizontal cedar boards; rugged native ledgestone; dark bronze steel; neutral low-iron glass; warm occupied depth; pale concrete terrace; charcoal roof membrane and copper fascia",
+    "glass_profile": "neutral_low_iron_deep_eave_occupied"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-1a3f2312-d542-49f6-84a5-5abdbc635b8c",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural reconstruction board for a CityPrompt LEGO building variant\nInput image: Image 1 is the sole authority for topology, proportions, facade rhythm, ornament, palette, and silhouette.\nPrimary request: Reconstruct the exact same Mid-Century Pavilion - Organic Wood and Stone from Image 1 as one coherent true-metric building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving all construction and materials wrap the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof, setbacks, courts, and mechanical volumes.\nBuilding lock: 38 m by 25 m, exactly two occupied levels; interlocking stone hearth/core, long timber-and-glass bars, layered cantilevered terraces, and one shallow hip roof with a long ridge and very deep eaves.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: warm horizontal cedar boards; rugged native ledgestone; dark bronze steel; neutral low-iron glass; warm occupied depth; pale concrete terrace; charcoal roof membrane and copper fascia.\nConstraints: exact same coherent building topology, storey datums, structural bays, openings, entrances, material zones and roof in all four panels; real recessed openings and physical screens; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: generic glass cube, flat box, white concrete, suburban pitched house, shallow eaves, fake stone wallpaper; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-1a3f2312-d542-49f6-84a5-5abdbc635b8c:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-1a3f2312-d542-49f6-84a5-5abdbc635b8c:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-1a3f2312-d542-49f6-84a5-5abdbc635b8c:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-1a3f2312-d542-49f6-84a5-5abdbc635b8c:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Mid-Century Pavilion - Organic Wood and Stone in Image 1; Image 2 is the original palette authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: warm horizontal cedar siding, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: rugged grey-brown native ledgestone, authentic construction scale and fine micro-detail, no complete building element.\nTop-right: dark bronze structural steel, authentic construction scale and fine micro-detail, no complete ornament assembly.\nBottom-left: dark bronze window frame, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: neutral low-iron glass plus clean occupied room depth seen dead-on, with clear ceiling/floor separation and restrained warm occupation, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: charcoal membrane and aged copper fascia, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Images 1 and 2.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-8e4f85b1-1e19-4e79-8a98-6ebc0debb7e7:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "family_id": "egyptian-revival-theater",
+  "source": {
+    "archetype_id": "deco_theater_mainstreet",
+    "variant_id": "deco_theater_egyptian_revival",
+    "generation_archetype_id": "deco_theater_egyptian_revival",
+    "reuse_keys": [
+      "deco_theater_mainstreet",
+      "deco_theater_egyptian_revival",
+      "egyptian_revival_theater",
+      "lotus_pylon_cinema",
+      "Egyptian Revival Theater",
+      "Lotus Pylon Cinema",
+      "Winged Sun Mainstreet Theater"
+    ]
+  },
+  "dimensions": {
+    "width_m": 31.2,
+    "depth_m": 37.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 4.0,
+    "setback_height_m": 4.0,
+    "roof_height_m": 4.0,
+    "crown_height_m": 2.3,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "An ochre Egyptian Revival theater forms a deep ceremonial entrance between battered pylons and four lotus columns, crowned by a winged sun disk, small scarab reliefs, turquoise-copper bands and a projecting bronze marquee.",
+    "material_zones": "warm ochre limestone; sand-colored stucco; turquoise and oxidized copper inlay; dark bronze doors and marquee; neutral smoky lobby glass; warm occupied lobby depth; charcoal auditorium roof",
+    "glass_profile": "neutral_smoky_bronze_framed_ceremonial_lobby",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "deep_auditorium",
+      "paired_battered_pylons",
+      "four_lotus_columns",
+      "deep_entry_court",
+      "winged_sun_scarab_frieze",
+      "integral_marquee"
+    ]
+  },
+  "archetype_aliases": [
+    "deco_theater_mainstreet",
+    "deco_theater_egyptian_revival",
+    "egyptian_revival_theater",
+    "lotus_pylon_cinema"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Larger targets repeat whole 5.00 m construction bays along the long axis, preserving physical glass, occupied depth, frames, screens, structure and floor datums; entrances, corners, crowns and roofs remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      19.8,
+      54.0
+    ],
+    "recommendedDepth_m": [
+      22.4,
+      53.7
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 5.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          19.8,
+          54.0
+        ],
+        "recommendedDepth_m": [
+          22.4,
+          53.7
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 5.0
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          21.6,
+          61.5
+        ],
+        "recommendedDepth_m": [
+          23.8,
+          61.2
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.32,
+        "preferredBayMultiple_m": 5.0,
+        "wingDepth_m": [
+          9.5,
+          22.1
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_egyptian_theater_with_repeatable_complete_middle_bays",
+    "variant_id": "deco_theater_egyptian_revival",
+    "occupied_storeys": 3,
+    "features": [
+      "deep_auditorium",
+      "paired_battered_pylons",
+      "four_lotus_columns",
+      "deep_entry_court",
+      "winged_sun_scarab_frieze",
+      "integral_marquee"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

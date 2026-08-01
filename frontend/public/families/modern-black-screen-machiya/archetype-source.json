@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "japanese_machiya_mixed_use",
+  "catalogue_variant_id": "machiya_modern_reinterpretation",
+  "catalogue_alias_ids": [
+    "modern_black_screen_machiya",
+    "contemporary_koshi_townhouse"
+  ],
+  "elevation_source": "/families/modern-black-screen-machiya/elevation.jpg",
+  "goalpost": "/families/modern-black-screen-machiya/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/modern-black-screen-machiya/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

@@ -1,0 +1,171 @@
+{
+  "status": "pass",
+  "family": "red-machiya-cafe-gallery",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "reuse_keys": [
+    "japanese_machiya_mixed_use",
+    "machiya_cafe_gallery",
+    "red_machiya_cafe_gallery",
+    "vermilion_koshi_gallery_house",
+    "Red Machiya Cafe Gallery",
+    "Vermilion Koshi Gallery House",
+    "Converted Kyoto Cafe"
+  ],
+  "manifest": "red-machiya-cafe-gallery_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "red-machiya-cafe-gallery_podium.glb: 22.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "red-machiya-cafe-gallery_floor_typical_a.glb: 31.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "red-machiya-cafe-gallery_floor_typical_b.glb: 31.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "red-machiya-cafe-gallery_floor_typical_c.glb: 31.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "red-machiya-cafe-gallery_assembled.glb: 45.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "red-machiya-cafe-gallery_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 16.92,
+        "height_y": 3.25,
+        "depth_z": 13.65
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_red-machiya-cafe-gallery_OccupiedDepth",
+        "MAT_W14_red-machiya-cafe-gallery_frame",
+        "MAT_W14_red-machiya-cafe-gallery_glass",
+        "MAT_W14_red-machiya-cafe-gallery_secondary"
+      ],
+      "size_bytes": 23061836
+    },
+    {
+      "file": "red-machiya-cafe-gallery_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 16.92,
+        "height_y": 3.25,
+        "depth_z": 13.98
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_red-machiya-cafe-gallery_OccupiedDepth",
+        "MAT_W14_red-machiya-cafe-gallery_frame",
+        "MAT_W14_red-machiya-cafe-gallery_glass",
+        "MAT_W14_red-machiya-cafe-gallery_primary",
+        "MAT_W14_red-machiya-cafe-gallery_secondary"
+      ],
+      "size_bytes": 32570548
+    },
+    {
+      "file": "red-machiya-cafe-gallery_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 16.92,
+        "height_y": 3.25,
+        "depth_z": 13.98
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_red-machiya-cafe-gallery_OccupiedDepth",
+        "MAT_W14_red-machiya-cafe-gallery_frame",
+        "MAT_W14_red-machiya-cafe-gallery_glass",
+        "MAT_W14_red-machiya-cafe-gallery_primary",
+        "MAT_W14_red-machiya-cafe-gallery_secondary"
+      ],
+      "size_bytes": 32572228
+    },
+    {
+      "file": "red-machiya-cafe-gallery_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 16.92,
+        "height_y": 3.25,
+        "depth_z": 13.98
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_red-machiya-cafe-gallery_OccupiedDepth",
+        "MAT_W14_red-machiya-cafe-gallery_frame",
+        "MAT_W14_red-machiya-cafe-gallery_glass",
+        "MAT_W14_red-machiya-cafe-gallery_primary",
+        "MAT_W14_red-machiya-cafe-gallery_secondary"
+      ],
+      "size_bytes": 32573884
+    },
+    {
+      "file": "red-machiya-cafe-gallery_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 16.92,
+        "height_y": 0.65,
+        "depth_z": 13.65
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_red-machiya-cafe-gallery_ornament"
+      ],
+      "size_bytes": 8332952
+    },
+    {
+      "file": "red-machiya-cafe-gallery_roof.glb",
+      "status": "ok",
+      "triangles": 56,
+      "extent_m": {
+        "width_x": 17.17,
+        "height_y": 4.4,
+        "depth_z": 13.65
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_red-machiya-cafe-gallery_roof"
+      ],
+      "size_bytes": 5529660
+    },
+    {
+      "file": "red-machiya-cafe-gallery_assembled.glb",
+      "status": "ok",
+      "triangles": 17180,
+      "extent_m": {
+        "width_x": 19.25,
+        "height_y": 10.67,
+        "depth_z": 16.805
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_red-machiya-cafe-gallery_OccupiedDepth",
+        "MAT_W14_red-machiya-cafe-gallery_frame",
+        "MAT_W14_red-machiya-cafe-gallery_glass",
+        "MAT_W14_red-machiya-cafe-gallery_ornament",
+        "MAT_W14_red-machiya-cafe-gallery_primary",
+        "MAT_W14_red-machiya-cafe-gallery_roof",
+        "MAT_W14_red-machiya-cafe-gallery_secondary"
+      ],
+      "size_bytes": 47650432,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "status": "pass",
+  "family": "egyptian-revival-theater",
+  "archetype_id": "deco_theater_mainstreet",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "deco_theater_egyptian_revival",
+    "egyptian_revival_theater",
+    "lotus_pylon_cinema",
+    "Egyptian Revival Theater",
+    "Lotus Pylon Cinema",
+    "Winged Sun Mainstreet Theater"
+  ],
+  "manifest": "egyptian-revival-theater_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "egyptian-revival-theater_podium.glb: 24.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater_floor_typical_a.glb: 36.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater_floor_typical_b.glb: 36.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater_floor_typical_c.glb: 36.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater_crown_crown.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater_assembled.glb: 50.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "egyptian-revival-theater_podium.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 28.2,
+        "height_y": 5.2,
+        "depth_z": 31.49
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_egyptian-revival-theater_OccupiedDepth",
+        "MAT_W14_egyptian-revival-theater_primary",
+        "MAT_W14_egyptian-revival-theater_secondary"
+      ],
+      "size_bytes": 26013788
+    },
+    {
+      "file": "egyptian-revival-theater_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 28.53,
+        "height_y": 4.0,
+        "depth_z": 31.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_egyptian-revival-theater_OccupiedDepth",
+        "MAT_W14_egyptian-revival-theater_frame",
+        "MAT_W14_egyptian-revival-theater_glass",
+        "MAT_W14_egyptian-revival-theater_primary",
+        "MAT_W14_egyptian-revival-theater_secondary"
+      ],
+      "size_bytes": 38725236
+    },
+    {
+      "file": "egyptian-revival-theater_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 28.53,
+        "height_y": 4.0,
+        "depth_z": 31.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_egyptian-revival-theater_OccupiedDepth",
+        "MAT_W14_egyptian-revival-theater_frame",
+        "MAT_W14_egyptian-revival-theater_glass",
+        "MAT_W14_egyptian-revival-theater_primary",
+        "MAT_W14_egyptian-revival-theater_secondary"
+      ],
+      "size_bytes": 38725236
+    },
+    {
+      "file": "egyptian-revival-theater_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 28.53,
+        "height_y": 4.0,
+        "depth_z": 31.27
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_egyptian-revival-theater_OccupiedDepth",
+        "MAT_W14_egyptian-revival-theater_frame",
+        "MAT_W14_egyptian-revival-theater_glass",
+        "MAT_W14_egyptian-revival-theater_primary",
+        "MAT_W14_egyptian-revival-theater_secondary"
+      ],
+      "size_bytes": 38725236
+    },
+    {
+      "file": "egyptian-revival-theater_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 28.2,
+        "height_y": 2.3,
+        "depth_z": 30.94
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_egyptian-revival-theater_ornament"
+      ],
+      "size_bytes": 8612788
+    },
+    {
+      "file": "egyptian-revival-theater_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 28.2,
+        "height_y": 4.0,
+        "depth_z": 30.94
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_egyptian-revival-theater_roof"
+      ],
+      "size_bytes": 4558076
+    },
+    {
+      "file": "egyptian-revival-theater_assembled.glb",
+      "status": "ok",
+      "triangles": 15124,
+      "extent_m": {
+        "width_x": 31.2,
+        "height_y": 15.37,
+        "depth_z": 37.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_egyptian-revival-theater_OccupiedDepth",
+        "MAT_W14_egyptian-revival-theater_frame",
+        "MAT_W14_egyptian-revival-theater_glass",
+        "MAT_W14_egyptian-revival-theater_ornament",
+        "MAT_W14_egyptian-revival-theater_primary",
+        "MAT_W14_egyptian-revival-theater_roof",
+        "MAT_W14_egyptian-revival-theater_secondary"
+      ],
+      "size_bytes": 52881384,
+      "role": "assembled"
+    }
+  ]
+}

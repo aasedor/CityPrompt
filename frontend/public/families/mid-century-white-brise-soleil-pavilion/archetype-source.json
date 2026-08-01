@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "mid_century_modern_pavilion_block",
+  "catalogue_variant_id": "mid_century_pavilion_white_concrete",
+  "catalogue_alias_ids": [
+    "white_brise_soleil_pavilion",
+    "pilotis_butterfly_roof_pavilion"
+  ],
+  "elevation_source": "/families/mid-century-white-brise-soleil-pavilion/elevation.jpg",
+  "goalpost": "/families/mid-century-white-brise-soleil-pavilion/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/mid-century-white-brise-soleil-pavilion/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

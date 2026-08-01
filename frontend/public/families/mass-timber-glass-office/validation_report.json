@@ -1,0 +1,167 @@
+{
+  "status": "pass",
+  "family": "mass-timber-glass-office",
+  "archetype_id": "modern_glass_office_institutional",
+  "reuse_keys": [
+    "modern_glass_office_institutional",
+    "glass_office_timber_hybrid",
+    "mass_timber_glass_office",
+    "glulam_biophilic_office",
+    "Mass Timber Glass Office",
+    "Glulam Biophilic Office",
+    "CLT Clerestory Workplace"
+  ],
+  "manifest": "mass-timber-glass-office_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "mass-timber-glass-office_podium.glb: 28.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mass-timber-glass-office_floor_typical_a.glb: 31.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mass-timber-glass-office_floor_typical_b.glb: 31.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mass-timber-glass-office_floor_typical_c.glb: 31.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mass-timber-glass-office_assembled.glb: 44.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "mass-timber-glass-office_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 42.3,
+        "height_y": 4.0,
+        "depth_z": 25.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_mass-timber-glass-office_OccupiedDepth",
+        "MAT_W14_mass-timber-glass-office_frame",
+        "MAT_W14_mass-timber-glass-office_glass",
+        "MAT_W14_mass-timber-glass-office_secondary"
+      ],
+      "size_bytes": 30028604
+    },
+    {
+      "file": "mass-timber-glass-office_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 42.64,
+        "height_y": 4.09,
+        "depth_z": 26.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_mass-timber-glass-office_OccupiedDepth",
+        "MAT_W14_mass-timber-glass-office_glass",
+        "MAT_W14_mass-timber-glass-office_primary",
+        "MAT_W14_mass-timber-glass-office_secondary"
+      ],
+      "size_bytes": 32703968
+    },
+    {
+      "file": "mass-timber-glass-office_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 42.64,
+        "height_y": 4.09,
+        "depth_z": 26.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_mass-timber-glass-office_OccupiedDepth",
+        "MAT_W14_mass-timber-glass-office_glass",
+        "MAT_W14_mass-timber-glass-office_primary",
+        "MAT_W14_mass-timber-glass-office_secondary"
+      ],
+      "size_bytes": 32703968
+    },
+    {
+      "file": "mass-timber-glass-office_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 42.64,
+        "height_y": 4.09,
+        "depth_z": 26.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_mass-timber-glass-office_OccupiedDepth",
+        "MAT_W14_mass-timber-glass-office_glass",
+        "MAT_W14_mass-timber-glass-office_primary",
+        "MAT_W14_mass-timber-glass-office_secondary"
+      ],
+      "size_bytes": 32703968
+    },
+    {
+      "file": "mass-timber-glass-office_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 42.3,
+        "height_y": 0.55,
+        "depth_z": 25.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_mass-timber-glass-office_ornament"
+      ],
+      "size_bytes": 5978000
+    },
+    {
+      "file": "mass-timber-glass-office_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 42.3,
+        "height_y": 3.7,
+        "depth_z": 25.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_mass-timber-glass-office_roof"
+      ],
+      "size_bytes": 7303256
+    },
+    {
+      "file": "mass-timber-glass-office_assembled.glb",
+      "status": "ok",
+      "triangles": 11692,
+      "extent_m": {
+        "width_x": 45.267,
+        "height_y": 21.2,
+        "depth_z": 28.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_mass-timber-glass-office_OccupiedDepth",
+        "MAT_W14_mass-timber-glass-office_glass",
+        "MAT_W14_mass-timber-glass-office_ornament",
+        "MAT_W14_mass-timber-glass-office_primary",
+        "MAT_W14_mass-timber-glass-office_roof",
+        "MAT_W14_mass-timber-glass-office_secondary"
+      ],
+      "size_bytes": 46813076,
+      "role": "assembled"
+    }
+  ]
+}

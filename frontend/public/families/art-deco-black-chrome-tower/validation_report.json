@@ -1,0 +1,172 @@
+{
+  "status": "pass",
+  "family": "art-deco-black-chrome-tower",
+  "archetype_id": "art_deco_setback_tower",
+  "reuse_keys": [
+    "art_deco_setback_tower",
+    "art_deco_black_chrome",
+    "black_chrome_art_deco_tower",
+    "streamlined_black_granite_tower",
+    "Black Chrome Art Deco Tower",
+    "Streamlined Black Granite Tower",
+    "Chrome Fin Setback High Rise"
+  ],
+  "manifest": "art-deco-black-chrome-tower_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "art-deco-black-chrome-tower_podium.glb: 23.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-black-chrome-tower_floor_typical_a.glb: 23.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-black-chrome-tower_floor_typical_b.glb: 23.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-black-chrome-tower_floor_typical_c.glb: 23.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-black-chrome-tower_assembled.glb: 35.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "art-deco-black-chrome-tower_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 32.9,
+        "height_y": 7.3,
+        "depth_z": 27.525
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_art-deco-black-chrome-tower_OccupiedDepth",
+        "MAT_W14_art-deco-black-chrome-tower_frame",
+        "MAT_W14_art-deco-black-chrome-tower_glass",
+        "MAT_W14_art-deco-black-chrome-tower_ornament",
+        "MAT_W14_art-deco-black-chrome-tower_secondary"
+      ],
+      "size_bytes": 24758392
+    },
+    {
+      "file": "art-deco-black-chrome-tower_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 33.23,
+        "height_y": 3.65,
+        "depth_z": 27.63
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_art-deco-black-chrome-tower_OccupiedDepth",
+        "MAT_W14_art-deco-black-chrome-tower_frame",
+        "MAT_W14_art-deco-black-chrome-tower_glass",
+        "MAT_W14_art-deco-black-chrome-tower_primary",
+        "MAT_W14_art-deco-black-chrome-tower_secondary"
+      ],
+      "size_bytes": 24172148
+    },
+    {
+      "file": "art-deco-black-chrome-tower_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 33.23,
+        "height_y": 3.65,
+        "depth_z": 27.63
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_art-deco-black-chrome-tower_OccupiedDepth",
+        "MAT_W14_art-deco-black-chrome-tower_frame",
+        "MAT_W14_art-deco-black-chrome-tower_glass",
+        "MAT_W14_art-deco-black-chrome-tower_primary",
+        "MAT_W14_art-deco-black-chrome-tower_secondary"
+      ],
+      "size_bytes": 24172148
+    },
+    {
+      "file": "art-deco-black-chrome-tower_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 33.23,
+        "height_y": 3.65,
+        "depth_z": 27.63
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_art-deco-black-chrome-tower_OccupiedDepth",
+        "MAT_W14_art-deco-black-chrome-tower_frame",
+        "MAT_W14_art-deco-black-chrome-tower_glass",
+        "MAT_W14_art-deco-black-chrome-tower_ornament",
+        "MAT_W14_art-deco-black-chrome-tower_secondary"
+      ],
+      "size_bytes": 24762744
+    },
+    {
+      "file": "art-deco-black-chrome-tower_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 32.9,
+        "height_y": 2.0,
+        "depth_z": 27.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_art-deco-black-chrome-tower_ornament"
+      ],
+      "size_bytes": 6005076
+    },
+    {
+      "file": "art-deco-black-chrome-tower_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 32.9,
+        "height_y": 8.2,
+        "depth_z": 27.3
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_art-deco-black-chrome-tower_roof"
+      ],
+      "size_bytes": 5906968
+    },
+    {
+      "file": "art-deco-black-chrome-tower_assembled.glb",
+      "status": "ok",
+      "triangles": 148,
+      "extent_m": {
+        "width_x": 35.1,
+        "height_y": 73.83,
+        "depth_z": 30.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_art-deco-black-chrome-tower_OccupiedDepth",
+        "MAT_W14_art-deco-black-chrome-tower_frame",
+        "MAT_W14_art-deco-black-chrome-tower_glass",
+        "MAT_W14_art-deco-black-chrome-tower_ornament",
+        "MAT_W14_art-deco-black-chrome-tower_primary",
+        "MAT_W14_art-deco-black-chrome-tower_roof",
+        "MAT_W14_art-deco-black-chrome-tower_secondary"
+      ],
+      "size_bytes": 37114384,
+      "role": "assembled"
+    }
+  ]
+}

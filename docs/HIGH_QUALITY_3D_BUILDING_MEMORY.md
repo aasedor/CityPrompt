@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-01-wave13-optical-pv-refinement-v112`.
+Current executable memory: `2026-08-01-wave14-sibling-variant-lock-v113`.
 
 ## The quality target
 
@@ -1281,6 +1281,32 @@ The polychrome collegiate family added four rules for resizable hero facades:
   one complete, countable cell topology, a perimeter frame and real gaps to
   its neighbours; the field also owns continuous mounting rails and roof-edge
   clearance. Never stretch one PV image over an entire roof plane.
+
+### Wave 14 sibling-variant + topology-lock lessons
+
+- A catalogue sibling is an independent architectural contract, not a palette
+  preset on the parent GLB. Lock its own four-view goalpost, footprint,
+  silhouette, floor grouping, entrance, roof topology, material zones and
+  glazing response before sharing any implementation helper.
+- Parent ids may remain useful discovery aliases, but every catalogue variant
+  and aesthetic id must resolve to the independently authored family on import.
+  Preserve `source_variant_id` and `generation_archetype_id` on the fixed
+  landmark and prove exact variant ids through the planner.
+- Similar programs can require opposite construction systems. A white
+  brise-soleil pavilion uses real open cells, pilotis and a recessed roof-garden
+  room; an organic pavilion uses stone hearths, timber wall planes and one
+  continuous shallow hip. Recolouring one scaffold cannot produce both.
+- Rotated roof slabs are not a reliable final roof method. Gables, hips and
+  rounded theater corners are closed connected mesh volumes with shared ridges,
+  eaves and end faces; otherwise detached shards appear in export even when an
+  individual camera disguises them.
+- Screens and glass-block fields are counted construction. Calibrate their
+  member spacing against the reference close view, preserve a real cavity and
+  physical glass or occupied depth behind, and continue the system around the
+  corners shown by the goalpost.
+- The comparison sheet is a production gate. Place front, oblique, aerial,
+  rear and material proofs beside the matching goalpost roles and correct the
+  largest silhouette or topology mismatch before adding surface microdetail.
 
 ## Updating this memory
 

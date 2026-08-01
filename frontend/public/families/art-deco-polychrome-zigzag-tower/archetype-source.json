@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "art_deco_setback_tower",
+  "catalogue_variant_id": "art_deco_polychrome",
+  "catalogue_alias_ids": [
+    "polychrome_zigzag_moderne_tower",
+    "turquoise_mosaic_setback_tower"
+  ],
+  "elevation_source": "/families/art-deco-polychrome-zigzag-tower/elevation.jpg",
+  "goalpost": "/families/art-deco-polychrome-zigzag-tower/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/art-deco-polychrome-zigzag-tower/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

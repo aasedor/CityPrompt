@@ -1,0 +1,170 @@
+{
+  "status": "pass",
+  "family": "streamline-moderne-theater",
+  "archetype_id": "deco_theater_mainstreet",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "deco_theater_streamline",
+    "streamline_moderne_theater",
+    "curved_neon_corner_cinema",
+    "Streamline Moderne Theater",
+    "Curved Neon Corner Cinema",
+    "Glass Block Deco Theater"
+  ],
+  "manifest": "streamline-moderne-theater_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "streamline-moderne-theater_podium.glb: 17.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "streamline-moderne-theater_floor_typical_a.glb: 29.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "streamline-moderne-theater_floor_typical_b.glb: 29.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "streamline-moderne-theater_floor_typical_c.glb: 29.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "streamline-moderne-theater_assembled.glb: 42.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "streamline-moderne-theater_podium.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 25.38,
+        "height_y": 5.0,
+        "depth_z": 29.67
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_streamline-moderne-theater_OccupiedDepth",
+        "MAT_W14_streamline-moderne-theater_primary",
+        "MAT_W14_streamline-moderne-theater_secondary"
+      ],
+      "size_bytes": 18707304
+    },
+    {
+      "file": "streamline-moderne-theater_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 25.71,
+        "height_y": 4.0,
+        "depth_z": 29.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_streamline-moderne-theater_OccupiedDepth",
+        "MAT_W14_streamline-moderne-theater_frame",
+        "MAT_W14_streamline-moderne-theater_glass",
+        "MAT_W14_streamline-moderne-theater_primary",
+        "MAT_W14_streamline-moderne-theater_secondary"
+      ],
+      "size_bytes": 30377884
+    },
+    {
+      "file": "streamline-moderne-theater_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 25.71,
+        "height_y": 4.0,
+        "depth_z": 29.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_streamline-moderne-theater_OccupiedDepth",
+        "MAT_W14_streamline-moderne-theater_frame",
+        "MAT_W14_streamline-moderne-theater_glass",
+        "MAT_W14_streamline-moderne-theater_primary",
+        "MAT_W14_streamline-moderne-theater_secondary"
+      ],
+      "size_bytes": 30377884
+    },
+    {
+      "file": "streamline-moderne-theater_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 25.71,
+        "height_y": 4.0,
+        "depth_z": 29.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_streamline-moderne-theater_OccupiedDepth",
+        "MAT_W14_streamline-moderne-theater_frame",
+        "MAT_W14_streamline-moderne-theater_glass",
+        "MAT_W14_streamline-moderne-theater_primary",
+        "MAT_W14_streamline-moderne-theater_secondary"
+      ],
+      "size_bytes": 30377884
+    },
+    {
+      "file": "streamline-moderne-theater_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 25.38,
+        "height_y": 2.0,
+        "depth_z": 29.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_streamline-moderne-theater_ornament"
+      ],
+      "size_bytes": 7671940
+    },
+    {
+      "file": "streamline-moderne-theater_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 25.38,
+        "height_y": 5.0,
+        "depth_z": 29.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_streamline-moderne-theater_roof"
+      ],
+      "size_bytes": 5995008
+    },
+    {
+      "file": "streamline-moderne-theater_assembled.glb",
+      "status": "ok",
+      "triangles": 16724,
+      "extent_m": {
+        "width_x": 26.6,
+        "height_y": 18.3,
+        "depth_z": 32.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_streamline-moderne-theater_OccupiedDepth",
+        "MAT_W14_streamline-moderne-theater_frame",
+        "MAT_W14_streamline-moderne-theater_glass",
+        "MAT_W14_streamline-moderne-theater_ornament",
+        "MAT_W14_streamline-moderne-theater_primary",
+        "MAT_W14_streamline-moderne-theater_roof",
+        "MAT_W14_streamline-moderne-theater_secondary"
+      ],
+      "size_bytes": 44921148,
+      "role": "assembled"
+    }
+  ]
+}

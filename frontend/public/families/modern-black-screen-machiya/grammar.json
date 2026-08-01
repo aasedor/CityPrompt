@@ -1,0 +1,144 @@
+{
+  "family_id": "modern-black-screen-machiya",
+  "source": {
+    "archetype_id": "japanese_machiya_mixed_use",
+    "variant_id": "machiya_modern_reinterpretation",
+    "generation_archetype_id": "machiya_modern_reinterpretation",
+    "reuse_keys": [
+      "japanese_machiya_mixed_use",
+      "machiya_modern_reinterpretation",
+      "modern_black_screen_machiya",
+      "contemporary_koshi_townhouse",
+      "Modern Black Screen Machiya",
+      "Contemporary Koshi Townhouse",
+      "Urban Tsuboniwa Mixed Use"
+    ]
+  },
+  "dimensions": {
+    "width_m": 14.0,
+    "depth_m": 19.01,
+    "podium_height_m": 3.45,
+    "floor_height_m": 3.25,
+    "setback_height_m": 3.25,
+    "roof_height_m": 4.25,
+    "crown_height_m": 0.55,
+    "default_floors": 4,
+    "min_floors": 3,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "A narrow four-level contemporary machiya hides clear occupied rooms behind a full-height black metal koshi screen, a deeply cut ground passage and tsuboniwa, beneath a compact dark hip and screened rooftop garden.",
+    "material_zones": "matte blackened steel lattice; charred cedar; graphite metal panels; neutral clear glass; warm occupied depth; dark basalt plinth; charcoal zinc roof and planted courtyard",
+    "glass_profile": "neutral_clear_full_height_screened_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "carved_ground_passage",
+      "visible_tsuboniwa",
+      "full_height_wrapped_real_gap_koshi_screen",
+      "shallow_dark_hip",
+      "screened_rooftop_garden"
+    ]
+  },
+  "archetype_aliases": [
+    "japanese_machiya_mixed_use",
+    "machiya_modern_reinterpretation",
+    "modern_black_screen_machiya",
+    "contemporary_koshi_townhouse"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Larger targets repeat whole 2.17 m construction bays along the long axis, preserving physical glass, occupied depth, frames, screens, structure and floor datums; entrances, corners, crowns and roofs remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      8.6,
+      23.4
+    ],
+    "recommendedDepth_m": [
+      11.9,
+      28.4
+    ],
+    "recommendedFloors": [
+      3,
+      6
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 2.17,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          8.6,
+          23.4
+        ],
+        "recommendedDepth_m": [
+          11.9,
+          28.4
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 2.17
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          9.4,
+          26.6
+        ],
+        "recommendedDepth_m": [
+          12.6,
+          32.4
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.32,
+        "preferredBayMultiple_m": 2.17,
+        "wingDepth_m": [
+          5.0,
+          11.7
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_modern_machiya_with_repeatable_complete_middle_bays",
+    "variant_id": "machiya_modern_reinterpretation",
+    "occupied_storeys": 4,
+    "features": [
+      "carved_ground_passage",
+      "visible_tsuboniwa",
+      "full_height_wrapped_real_gap_koshi_screen",
+      "shallow_dark_hip",
+      "screened_rooftop_garden"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

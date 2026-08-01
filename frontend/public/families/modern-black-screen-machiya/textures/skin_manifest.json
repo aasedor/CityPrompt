@@ -1,0 +1,366 @@
+{
+  "schema": "modern-black-screen-machiya-skin@1",
+  "family": "modern-black-screen-machiya",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The four-view board locks one Japanese Machiya - Modern Black Screen with 13 m by 18 m, four occupied levels; one continuous black vertical screen with real gaps, recessed glass rooms, carved ground passage and visible courtyard, shallow dark hip and screened rooftop garden. The fixed landmark consumes that complete topology; LEGO fallback modules repeat only audited ordinary middle bays.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "japanese_machiya_mixed_use",
+    "source_variant_id": "machiya_modern_reinterpretation",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "complete_dead_front_variant_elevation",
+      "variant_specific_primary_and_secondary_massing",
+      "physical_recessed_glazing_with_occupied_depth",
+      "complete_structural_bay_and_floor_datum_schedule",
+      "integral_entrance_and_public_threshold",
+      "variant_specific_roof_crown_and_ornament",
+      "wrapped_left_right_and_rear_elevations",
+      "semantic_repeatable_complete_middle_bays"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_front_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_front_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_front_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_front_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_front_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_front_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_front_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_front_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_front_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_front_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_front_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_podium_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_podium_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_podium_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_podium_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_podium_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_podium_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_podium_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_podium_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_podium_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_podium_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_crown_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_crown_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_crown_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_crown_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_crown_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_crown_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_crown_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_crown_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_crown_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_crown_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_side_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_registered_side_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_side_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_registered_side_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_registered_side_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_side_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_side_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_registered_side_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_side_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_registered_side_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_registered_side_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_side_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_occupied_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_occupied_depth_opaque.png"
+      }
+    },
+    "primary": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_primary_matte_blackened_steel_koshi_slats_opaque.png"
+      }
+    },
+    "secondary": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_secondary_charred_cedar_shou_sugi_ban_opaque.png"
+      }
+    },
+    "ornament": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_ornament_dark_basalt_plinth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_ornament_dark_basalt_plinth_opaque.png"
+      }
+    },
+    "frame": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_frame_graphite_aluminum_frame_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_frame_graphite_aluminum_frame_opaque.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_glass_neutral_clear_low-e_glass_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_albedo.png",
+        "normal": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_normal.png",
+        "roughness": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_roughness.png",
+        "ao": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_ao.png",
+        "depth": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_depth.png",
+        "emissive": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_emissive.png",
+        "glass_mask": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_glass.png",
+        "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_albedo.png",
+        "normal": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_normal.png",
+        "roughness": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_roughness.png",
+        "ao": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_ao.png",
+        "depth": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_depth.png",
+        "emissive": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_emissive.png",
+        "glass_mask": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_glass.png",
+        "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_roof_charcoal_zinc_standing_seam_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/modern-black-screen-machiya_registered_front_albedo.png",
+      "normal": "textures/pbr/near/modern-black-screen-machiya_registered_front_normal.png",
+      "roughness": "textures/pbr/near/modern-black-screen-machiya_registered_front_roughness.png",
+      "ao": "textures/pbr/near/modern-black-screen-machiya_registered_front_ao.png",
+      "depth": "textures/pbr/near/modern-black-screen-machiya_registered_front_depth.png",
+      "emissive": "textures/pbr/near/modern-black-screen-machiya_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/near/modern-black-screen-machiya_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/near/modern-black-screen-machiya_registered_front_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/modern-black-screen-machiya_registered_front_albedo.png",
+      "normal": "textures/pbr/far/modern-black-screen-machiya_registered_front_normal.png",
+      "roughness": "textures/pbr/far/modern-black-screen-machiya_registered_front_roughness.png",
+      "ao": "textures/pbr/far/modern-black-screen-machiya_registered_front_ao.png",
+      "depth": "textures/pbr/far/modern-black-screen-machiya_registered_front_depth.png",
+      "emissive": "textures/pbr/far/modern-black-screen-machiya_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/far/modern-black-screen-machiya_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/far/modern-black-screen-machiya_registered_front_opaque.png"
+    }
+  }
+}

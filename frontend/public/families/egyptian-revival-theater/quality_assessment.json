@@ -1,0 +1,116 @@
+{
+  "schema": "high-quality-building-assessment@1",
+  "memory_version": "2026-08-01-wave14-sibling-variant-lock-v113",
+  "archetype_id": "deco_theater_mainstreet",
+  "family": "egyptian-revival-theater",
+  "status": "pass",
+  "high_quality_ready": true,
+  "hard_failures": [],
+  "review_findings": [],
+  "gates": {
+    "hard": [
+      {
+        "id": "validation_report_not_pass",
+        "passed": true,
+        "detail": "validation status is 'pass'"
+      },
+      {
+        "id": "missing_assembled_glb",
+        "passed": true,
+        "detail": "assembled filename is present"
+      },
+      {
+        "id": "missing_fixed_semantic_module",
+        "passed": true,
+        "detail": "3 fixed semantic modules"
+      },
+      {
+        "id": "missing_repeatable_middle_module",
+        "passed": true,
+        "detail": "3 repeatable middle modules"
+      },
+      {
+        "id": "missing_footprint_compatibility",
+        "passed": true,
+        "detail": "2 preferred footprint profiles"
+      },
+      {
+        "id": "missing_required_render",
+        "passed": true,
+        "detail": "all required renders declared"
+      }
+    ],
+    "review": [
+      {
+        "id": "fewer_than_three_middle_variants",
+        "passed": true,
+        "detail": "3 middle variants; target is 3"
+      },
+      {
+        "id": "missing_full_pbr_channels",
+        "passed": true,
+        "detail": "full PBR channel set declared"
+      },
+      {
+        "id": "albedo_not_shadow_neutral",
+        "passed": true,
+        "detail": "shadow-neutral albedo declared"
+      },
+      {
+        "id": "generic_or_unregistered_skin",
+        "passed": true,
+        "detail": "archetype-specific source registered to 5 elevation(s) and 8 semantic surface(s); depth binding shader_bump"
+      },
+      {
+        "id": "near_atlas_below_2048",
+        "passed": true,
+        "detail": "near atlas width 2048px; minimum 2048px"
+      },
+      {
+        "id": "far_atlas_above_1024",
+        "passed": true,
+        "detail": "far atlas width 1024px; maximum 1024px"
+      },
+      {
+        "id": "missing_fixed_assembly_contract",
+        "passed": true,
+        "detail": "fixed entrance, corner, crown and roof declared"
+      },
+      {
+        "id": "fewer_than_three_preferred_footprint_profiles",
+        "passed": true,
+        "detail": "2 preferred profiles; target is 2; exception rationale: The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Larger targets repeat whole 5.00 m construction bays along the long axis, preserving physical glass, occupied depth, frames, screens, structure and floor datums; entrances, corners, crowns and roofs remain fixed."
+      },
+      {
+        "id": "missing_or_unsafe_fixed_landmark_scale_band",
+        "passed": true,
+        "detail": "not a fixed-landmark massing graph"
+      },
+      {
+        "id": "missing_or_invalid_pbr_assets",
+        "passed": true,
+        "detail": "all declared near/far PBR atlases, masks, source, and skin manifest resolve on disk"
+      },
+      {
+        "id": "missing_variant_alias_contract",
+        "passed": true,
+        "detail": "parent and selected variant aliases declared"
+      },
+      {
+        "id": "missing_side_elevation_wrap",
+        "passed": true,
+        "detail": "complete wrapped left and right construction with reference-related but independently scheduled secondary openings"
+      },
+      {
+        "id": "material_count_warning",
+        "passed": true,
+        "detail": "7 assembled materials; review above 20"
+      },
+      {
+        "id": "city_triangle_budget",
+        "passed": true,
+        "detail": "16744 assembled triangles; budget 12000-180000"
+      }
+    ]
+  }
+}

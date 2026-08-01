@@ -1,0 +1,173 @@
+{
+  "status": "pass",
+  "family": "art-deco-polychrome-zigzag-tower",
+  "archetype_id": "art_deco_setback_tower",
+  "reuse_keys": [
+    "art_deco_setback_tower",
+    "art_deco_polychrome",
+    "polychrome_zigzag_moderne_tower",
+    "turquoise_mosaic_setback_tower",
+    "Polychrome Zigzag Moderne Tower",
+    "Turquoise Mosaic Setback Tower",
+    "Colorful Terra Cotta High Rise"
+  ],
+  "manifest": "art-deco-polychrome-zigzag-tower_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "art-deco-polychrome-zigzag-tower_podium.glb: 27.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-polychrome-zigzag-tower_floor_typical_a.glb: 22.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-polychrome-zigzag-tower_floor_typical_b.glb: 22.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-polychrome-zigzag-tower_floor_typical_c.glb: 27.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-polychrome-zigzag-tower_crown_crown.glb: 10.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "art-deco-polychrome-zigzag-tower_assembled.glb: 39.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "art-deco-polychrome-zigzag-tower_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 42.3,
+        "height_y": 5.1,
+        "depth_z": 34.805
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_OccupiedDepth",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_frame",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_glass",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_ornament",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_secondary"
+      ],
+      "size_bytes": 29172252
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 42.63,
+        "height_y": 2.55,
+        "depth_z": 34.91
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_OccupiedDepth",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_frame",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_glass",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_primary",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_secondary"
+      ],
+      "size_bytes": 23715272
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 42.63,
+        "height_y": 2.55,
+        "depth_z": 34.91
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_OccupiedDepth",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_frame",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_glass",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_primary",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_secondary"
+      ],
+      "size_bytes": 23715272
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 42.63,
+        "height_y": 2.55,
+        "depth_z": 34.91
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_OccupiedDepth",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_frame",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_glass",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_ornament",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_secondary"
+      ],
+      "size_bytes": 29176536
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 42.3,
+        "height_y": 2.1,
+        "depth_z": 34.58
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_ornament"
+      ],
+      "size_bytes": 11304556
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_roof.glb",
+      "status": "ok",
+      "triangles": 42,
+      "extent_m": {
+        "width_x": 23.265,
+        "height_y": 10.5,
+        "depth_z": 19.019
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_roof"
+      ],
+      "size_bytes": 4951528
+    },
+    {
+      "file": "art-deco-polychrome-zigzag-tower_assembled.glb",
+      "status": "ok",
+      "triangles": 350,
+      "extent_m": {
+        "width_x": 45.1,
+        "height_y": 86.6,
+        "depth_z": 40.525
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_art-deco-polychrome-zigzag-tower_OccupiedDepth",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_frame",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_glass",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_ornament",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_primary",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_roof",
+        "MAT_W14_art-deco-polychrome-zigzag-tower_secondary"
+      ],
+      "size_bytes": 41077876,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "status": "pass",
+  "family": "modern-black-screen-machiya",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "reuse_keys": [
+    "japanese_machiya_mixed_use",
+    "machiya_modern_reinterpretation",
+    "modern_black_screen_machiya",
+    "contemporary_koshi_townhouse",
+    "Modern Black Screen Machiya",
+    "Contemporary Koshi Townhouse",
+    "Urban Tsuboniwa Mixed Use"
+  ],
+  "manifest": "modern-black-screen-machiya_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "modern-black-screen-machiya_podium.glb: 17.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-black-screen-machiya_floor_typical_a.glb: 19.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-black-screen-machiya_floor_typical_b.glb: 19.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-black-screen-machiya_floor_typical_c.glb: 19.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "modern-black-screen-machiya_assembled.glb: 32.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "modern-black-screen-machiya_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 12.22,
+        "height_y": 3.45,
+        "depth_z": 16.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_modern-black-screen-machiya_OccupiedDepth",
+        "MAT_W14_modern-black-screen-machiya_frame",
+        "MAT_W14_modern-black-screen-machiya_glass",
+        "MAT_W14_modern-black-screen-machiya_secondary"
+      ],
+      "size_bytes": 17913424
+    },
+    {
+      "file": "modern-black-screen-machiya_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.22,
+        "height_y": 3.25,
+        "depth_z": 16.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_modern-black-screen-machiya_OccupiedDepth",
+        "MAT_W14_modern-black-screen-machiya_frame",
+        "MAT_W14_modern-black-screen-machiya_glass",
+        "MAT_W14_modern-black-screen-machiya_primary",
+        "MAT_W14_modern-black-screen-machiya_secondary"
+      ],
+      "size_bytes": 20669944
+    },
+    {
+      "file": "modern-black-screen-machiya_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.22,
+        "height_y": 3.25,
+        "depth_z": 16.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_modern-black-screen-machiya_OccupiedDepth",
+        "MAT_W14_modern-black-screen-machiya_frame",
+        "MAT_W14_modern-black-screen-machiya_glass",
+        "MAT_W14_modern-black-screen-machiya_primary",
+        "MAT_W14_modern-black-screen-machiya_secondary"
+      ],
+      "size_bytes": 20671720
+    },
+    {
+      "file": "modern-black-screen-machiya_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.22,
+        "height_y": 3.25,
+        "depth_z": 16.71
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_modern-black-screen-machiya_OccupiedDepth",
+        "MAT_W14_modern-black-screen-machiya_frame",
+        "MAT_W14_modern-black-screen-machiya_glass",
+        "MAT_W14_modern-black-screen-machiya_primary",
+        "MAT_W14_modern-black-screen-machiya_secondary"
+      ],
+      "size_bytes": 20673480
+    },
+    {
+      "file": "modern-black-screen-machiya_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 12.22,
+        "height_y": 0.55,
+        "depth_z": 16.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_modern-black-screen-machiya_ornament"
+      ],
+      "size_bytes": 5896412
+    },
+    {
+      "file": "modern-black-screen-machiya_roof.glb",
+      "status": "ok",
+      "triangles": 56,
+      "extent_m": {
+        "width_x": 12.47,
+        "height_y": 4.25,
+        "depth_z": 16.38
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_modern-black-screen-machiya_roof"
+      ],
+      "size_bytes": 4241292
+    },
+    {
+      "file": "modern-black-screen-machiya_assembled.glb",
+      "status": "ok",
+      "triangles": 38880,
+      "extent_m": {
+        "width_x": 14.0,
+        "height_y": 15.97,
+        "depth_z": 19.01
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_modern-black-screen-machiya_LivingPlanting",
+        "MAT_W14_modern-black-screen-machiya_OccupiedDepth",
+        "MAT_W14_modern-black-screen-machiya_frame",
+        "MAT_W14_modern-black-screen-machiya_glass",
+        "MAT_W14_modern-black-screen-machiya_ornament",
+        "MAT_W14_modern-black-screen-machiya_primary",
+        "MAT_W14_modern-black-screen-machiya_roof",
+        "MAT_W14_modern-black-screen-machiya_secondary"
+      ],
+      "size_bytes": 33644320,
+      "role": "assembled"
+    }
+  ]
+}

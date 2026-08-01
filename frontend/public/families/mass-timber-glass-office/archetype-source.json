@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "modern_glass_office_institutional",
+  "catalogue_variant_id": "glass_office_timber_hybrid",
+  "catalogue_alias_ids": [
+    "mass_timber_glass_office",
+    "glulam_biophilic_office"
+  ],
+  "elevation_source": "/families/mass-timber-glass-office/elevation.jpg",
+  "goalpost": "/families/mass-timber-glass-office/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/mass-timber-glass-office/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

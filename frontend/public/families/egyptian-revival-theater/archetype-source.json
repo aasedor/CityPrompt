@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "deco_theater_mainstreet",
+  "catalogue_variant_id": "deco_theater_egyptian_revival",
+  "catalogue_alias_ids": [
+    "egyptian_revival_theater",
+    "lotus_pylon_cinema"
+  ],
+  "elevation_source": "/families/egyptian-revival-theater/elevation.jpg",
+  "goalpost": "/families/egyptian-revival-theater/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/egyptian-revival-theater/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

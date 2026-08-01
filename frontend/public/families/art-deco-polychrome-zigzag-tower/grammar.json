@@ -1,0 +1,119 @@
+{
+  "family_id": "art-deco-polychrome-zigzag-tower",
+  "source": {
+    "archetype_id": "art_deco_setback_tower",
+    "variant_id": "art_deco_polychrome",
+    "generation_archetype_id": "art_deco_polychrome",
+    "reuse_keys": [
+      "art_deco_setback_tower",
+      "art_deco_polychrome",
+      "polychrome_zigzag_moderne_tower",
+      "turquoise_mosaic_setback_tower",
+      "Polychrome Zigzag Moderne Tower",
+      "Turquoise Mosaic Setback Tower",
+      "Colorful Terra Cotta High Rise"
+    ]
+  },
+  "dimensions": {
+    "width_m": 45.1,
+    "depth_m": 40.525,
+    "podium_height_m": 5.1,
+    "floor_height_m": 2.55,
+    "setback_height_m": 2.55,
+    "roof_height_m": 10.5,
+    "crown_height_m": 2.1,
+    "default_floors": 32,
+    "min_floors": 30,
+    "max_floors": 45
+  },
+  "architectural_signature": {
+    "identity": "A thirty-two-storey turquoise-and-cream Zigzag Moderne tower steps from seven to five to three bays above a carved two-storey arched portal, with orange-gold-blue mosaic bands and a compact green pyramidal crown.",
+    "material_zones": "turquoise glazed terra cotta; warm cream molded terra cotta; orange, gold, deep-blue and turquoise ceramic mosaic; aged bronze frames; neutral smoky low-e glass; warm occupied depth; patinated copper crown and charcoal terrace membrane",
+    "glass_profile": "neutral_smoky_bronze_framed_occupied",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "three_polychrome_setback_stages",
+      "carved_two_storey_arched_portal",
+      "continuous_mosaic_belts",
+      "green_pyramidal_crown"
+    ]
+  },
+  "archetype_aliases": [
+    "art_deco_setback_tower",
+    "art_deco_polychrome",
+    "polychrome_zigzag_moderne_tower",
+    "turquoise_mosaic_setback_tower"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Larger targets repeat whole 6.43 m construction bays along the long axis, preserving physical glass, occupied depth, frames, screens, structure and floor datums; entrances, corners, crowns and roofs remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      29.7,
+      81.0
+    ],
+    "recommendedDepth_m": [
+      25.1,
+      60.0
+    ],
+    "recommendedFloors": [
+      30,
+      45
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 6.43,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          29.7,
+          81.0
+        ],
+        "recommendedDepth_m": [
+          25.1,
+          60.0
+        ],
+        "recommendedFloors": [
+          30,
+          45
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 6.43
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_polychrome_deco_with_repeatable_complete_middle_bays",
+    "variant_id": "art_deco_polychrome",
+    "occupied_storeys": 32,
+    "features": [
+      "three_polychrome_setback_stages",
+      "carved_two_storey_arched_portal",
+      "continuous_mosaic_belts",
+      "green_pyramidal_crown"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

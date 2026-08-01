@@ -1,0 +1,12 @@
+{
+  "catalogue_archetype_id": "japanese_machiya_mixed_use",
+  "catalogue_variant_id": "machiya_cafe_gallery",
+  "catalogue_alias_ids": [
+    "red_machiya_cafe_gallery",
+    "vermilion_koshi_gallery_house"
+  ],
+  "elevation_source": "/families/red-machiya-cafe-gallery/elevation.jpg",
+  "goalpost": "/families/red-machiya-cafe-gallery/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/red-machiya-cafe-gallery/textures/source/reference-generation.json",
+  "method": "variant-locked four-view source board, six-zone construction plate, deterministic true-metric parts, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and semantic LEGO fallback modules"
+}

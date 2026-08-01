@@ -1,0 +1,170 @@
+{
+  "status": "pass",
+  "family": "mid-century-white-brise-soleil-pavilion",
+  "archetype_id": "mid_century_modern_pavilion_block",
+  "reuse_keys": [
+    "mid_century_modern_pavilion_block",
+    "mid_century_pavilion_white_concrete",
+    "white_brise_soleil_pavilion",
+    "pilotis_butterfly_roof_pavilion",
+    "White Brise Soleil Pavilion",
+    "Pilotis Butterfly Roof Pavilion",
+    "Breeze Block Modernist Gallery"
+  ],
+  "manifest": "mid-century-white-brise-soleil-pavilion_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "mid-century-white-brise-soleil-pavilion_podium.glb: 17.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-white-brise-soleil-pavilion_floor_typical_a.glb: 17.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-white-brise-soleil-pavilion_floor_typical_b.glb: 17.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-white-brise-soleil-pavilion_floor_typical_c.glb: 17.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-white-brise-soleil-pavilion_crown_crown.glb: 8.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "mid-century-white-brise-soleil-pavilion_assembled.glb: 43.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.14,
+        "height_y": 3.55,
+        "depth_z": 20.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_frame",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_glass",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_secondary"
+      ],
+      "size_bytes": 17834824
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.33,
+        "height_y": 3.74,
+        "depth_z": 21.035
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_frame",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_glass",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_secondary"
+      ],
+      "size_bytes": 17843948
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.33,
+        "height_y": 3.74,
+        "depth_z": 21.035
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_frame",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_glass",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_secondary"
+      ],
+      "size_bytes": 17843948
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.33,
+        "height_y": 3.74,
+        "depth_z": 21.035
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_frame",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_glass",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_secondary"
+      ],
+      "size_bytes": 17843948
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.14,
+        "height_y": 0.45,
+        "depth_z": 20.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_ornament"
+      ],
+      "size_bytes": 8696768
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.557,
+        "height_y": 3.75,
+        "depth_z": 20.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_roof"
+      ],
+      "size_bytes": 7849724
+    },
+    {
+      "file": "mid-century-white-brise-soleil-pavilion_assembled.glb",
+      "status": "ok",
+      "triangles": 23056,
+      "extent_m": {
+        "width_x": 32.5,
+        "height_y": 10.54,
+        "depth_z": 24.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_LivingPlanting",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_OccupiedDepth",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_frame",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_glass",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_ornament",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_primary",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_roof",
+        "MAT_W14_mid-century-white-brise-soleil-pavilion_secondary"
+      ],
+      "size_bytes": 45769556,
+      "role": "assembled"
+    }
+  ]
+}
