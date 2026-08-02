@@ -1,0 +1,6 @@
+numpy>=1.26.4,<3
+imagecodecs>=2026.1.14
+Pillow>=11.1.0,<12
+pyarrow>=21,<22
+rasterio>=1.4.3,<2
+tifffile>=2026.7.14

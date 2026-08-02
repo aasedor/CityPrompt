@@ -1,0 +1,21 @@
+{
+  "type": "Feature",
+  "properties": {
+    "id": "calgary-university-district-pilot",
+    "name": "University District, Calgary",
+    "purpose": "One-site AlphaEarth annual change-detection pilot",
+    "boundary_quality": "Approximate pilot boundary; not authoritative parcel geometry"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [-114.1468, 51.0770],
+        [-114.1260, 51.0770],
+        [-114.1260, 51.0872],
+        [-114.1468, 51.0872],
+        [-114.1468, 51.0770]
+      ]
+    ]
+  }
+}

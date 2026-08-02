@@ -1,0 +1,33 @@
+{
+  "pilot": "alphaearth_annual_change_v1",
+  "site_name": "University District, Calgary",
+  "period": "2017-2025",
+  "native_resolution_m": 10,
+  "analysis_resolution_m": 80,
+  "measurement": "1 - cosine_similarity",
+  "change_threshold": 0.15,
+  "threshold_status": "pilot heuristic; validate before production",
+  "site": {
+    "valid_pixel_count": 257,
+    "mean_change": 0.0961,
+    "median_change": 0.0695,
+    "p90_change": 0.1529,
+    "p95_change": 0.2863,
+    "changed_area_pct": 10.51
+  },
+  "context_buffer_m": 500.0,
+  "context_ring": {
+    "valid_pixel_count": 639,
+    "mean_change": 0.0931,
+    "median_change": 0.075,
+    "p90_change": 0.1323,
+    "p95_change": 0.1944,
+    "changed_area_pct": 7.04
+  },
+  "attribution": "The AlphaEarth Foundations Satellite Embedding dataset is produced by Google and Google DeepMind.",
+  "notes": [
+    "The analysis uses the 80-metre COG overview and re-normalizes each aggregated 64-axis vector before comparison.",
+    "Change magnitude is not a semantic land-cover classification.",
+    "The pilot boundary is approximate and must not be used as parcel geometry."
+  ]
+}
