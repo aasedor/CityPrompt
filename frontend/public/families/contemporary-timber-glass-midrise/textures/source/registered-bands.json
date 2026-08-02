@@ -1,0 +1,43 @@
+{
+  "schema": "registered-facade-bands@1",
+  "source": "front-elevation-source-v1.png",
+  "bands": {
+    "facade": [
+      0.075,
+      0.035,
+      0.925,
+      0.965
+    ],
+    "podium": [
+      0.085,
+      0.735,
+      0.915,
+      0.965
+    ],
+    "floor_a": [
+      0.095,
+      0.485,
+      0.905,
+      0.755
+    ],
+    "floor_b": [
+      0.12,
+      0.245,
+      0.88,
+      0.525
+    ],
+    "crown": [
+      0.175,
+      0.04,
+      0.825,
+      0.3
+    ],
+    "side": [
+      0.075,
+      0.245,
+      0.29,
+      0.93
+    ]
+  },
+  "notes": "The fixed landmark consumes the complete registered elevation. The fallback kit consumes only fixed podium/crown and audited repeatable middle bands."
+}

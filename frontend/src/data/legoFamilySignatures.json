@@ -27,6 +27,13 @@
                                                                        "glassProfile":  "residential_low_e",
                                                                        "elevationUrl":  "/families/contemporary-midrise-residential/elevation.jpg"
                                                                    },
+                     "contemporary_midrise_variant_timber_glass":  {
+                                                                       "archetypeId":  "contemporary_midrise_variant_timber_glass",
+                                                                       "identity":  "A six-storey honey-amber mass-timber apartment building exposes a continuous glulam post-and-beam grid around deep neutral low-iron glazing, alternating planted balcony bays, and a carved double-height central lobby; the set-back sixth floor opens to timber terraces beneath a roof divided between sedum, framed photovoltaic arrays and communal deck.",
+                                                                       "materialZones":  "honey-amber larch and glulam structure; pale board-formed concrete plinth and lobby threshold; deep timber-framed balconies with dark soil and mixed green planting; slim graphite aluminum window, guard and photovoltaic frames; neutral high-transmission low-iron glass revealing warm occupied rooms; sedum roof beds, timber terrace decking, gravel fire breaks and dark blue-black photovoltaic cells",
+                                                                       "glassProfile":  "neutral_high_transmission_low_iron_residential_glass_with_warm_occupied_room_depth",
+                                                                       "elevationUrl":  "/families/contemporary-timber-glass-midrise/elevation.jpg"
+                                                                   },
                      "contemporary_midrise_residential":  {
                                                               "archetypeId":  "contemporary_midrise_residential",
                                                               "identity":  "Six-storey brick-and-bronze residential block with a pale limestone podium, one deeply recessed arched entrance and a disciplined wide/narrow opening cadence held by expressed brick piers.",

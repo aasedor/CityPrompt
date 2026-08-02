@@ -1,0 +1,187 @@
+{
+  "family_id": "contemporary-timber-glass-midrise",
+  "source": {
+    "archetype_id": "contemporary_midrise_residential",
+    "variant_id": "contemporary_midrise_variant_timber_glass",
+    "generation_archetype_id": "contemporary_midrise_variant_timber_glass",
+    "reuse_keys": [
+      "contemporary_midrise_residential",
+      "contemporary_midrise_variant_timber_glass",
+      "contemporary_timber_glass_midrise",
+      "timber_glass_biophilic_midrise",
+      "mass_timber_balcony_apartments",
+      "Contemporary Mid-Rise Residential Timber and Glass",
+      "Mass Timber Balcony Apartments",
+      "Biophilic Glulam Mid-Rise",
+      "Timber Frame Low-Iron Glass Housing"
+    ]
+  },
+  "dimensions": {
+    "width_m": 32.0,
+    "depth_m": 26.63,
+    "podium_height_m": 3.85,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 1.25,
+    "crown_height_m": 3.2,
+    "default_floors": 6,
+    "min_floors": 4,
+    "max_floors": 8
+  },
+  "architectural_signature": {
+    "identity": "A six-storey honey-amber mass-timber apartment building exposes a continuous glulam post-and-beam grid around deep neutral low-iron glazing, alternating planted balcony bays, and a carved double-height central lobby; the set-back sixth floor opens to timber terraces beneath a roof divided between sedum, framed photovoltaic arrays and communal deck.",
+    "material_zones": "honey-amber larch and glulam structure; pale board-formed concrete plinth and lobby threshold; deep timber-framed balconies with dark soil and mixed green planting; slim graphite aluminum window, guard and photovoltaic frames; neutral high-transmission low-iron glass revealing warm occupied rooms; sedum roof beds, timber terrace decking, gravel fire breaks and dark blue-black photovoltaic cells",
+    "glass_profile": "neutral_high_transmission_low_iron_residential_glass_with_warm_occupied_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "exactly_six_occupied_levels",
+      "carved_double_height_central_lobby",
+      "continuous_exposed_glulam_load_path",
+      "alternating_supported_planted_balconies",
+      "setback_sixth_floor_and_communal_terrace",
+      "physical_low_iron_glazing_with_occupied_depth",
+      "wrapped_secondary_elevations",
+      "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+    ]
+  },
+  "archetype_aliases": [
+    "contemporary_midrise_residential",
+    "contemporary_midrise_variant_timber_glass",
+    "contemporary_timber_glass_midrise",
+    "timber_glass_biophilic_midrise",
+    "mass_timber_balcony_apartments"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "Rectangle, L and U drawings repeat complete 4.80 m glulam apartment bays around authored secondary elevations. Each repeated bay preserves its CLT datum, physical pane, occupied depth, frame, timber load path and optional supported balcony; the carved lobby, corners, setback and roof systems remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedFloors": [
+      4,
+      8
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 4.8,
+    "recommendedWidth_m": [
+      19.8,
+      57.6
+    ],
+    "recommendedDepth_m": [
+      13.6,
+      34.8
+    ],
+    "wingDepth_m": [
+      7.2,
+      14.4
+    ],
+    "minimumCourtyard_m": 10.8,
+    "profiles": {
+      "rectangle": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          19.8,
+          57.6
+        ],
+        "recommendedDepth_m": [
+          13.6,
+          34.8
+        ]
+      },
+      "l_shape": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          23.0,
+          65.0
+        ],
+        "recommendedDepth_m": [
+          15.4,
+          39.0
+        ],
+        "wingDepth_m": [
+          7.2,
+          14.4
+        ]
+      },
+      "u_shape": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          26.0,
+          70.0
+        ],
+        "recommendedDepth_m": [
+          17.0,
+          42.0
+        ],
+        "wingDepth_m": [
+          7.2,
+          14.4
+        ],
+        "minimumCourtyard_m": 10.8
+      }
+    },
+    "notes": [
+      "Vary width only in whole 4.80 m structural apartment bays.",
+      "Vary height only with complete floor modules between four and eight occupied levels.",
+      "Preserve the central lobby, corner returns, setback terrace and roof systems as fixed semantic pieces."
+    ]
+  },
+  "massing_graph": {
+    "type": "fixed_six_storey_mass_timber_midrise_with_repeatable_complete_apartment_bays",
+    "variant_id": "contemporary_midrise_variant_timber_glass",
+    "occupied_storeys": 6,
+    "features": [
+      "exactly_six_occupied_levels",
+      "carved_double_height_central_lobby",
+      "continuous_exposed_glulam_load_path",
+      "alternating_supported_planted_balconies",
+      "setback_sixth_floor_and_communal_terrace",
+      "physical_low_iron_glazing_with_occupied_depth",
+      "wrapped_secondary_elevations",
+      "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_low_iron_pane",
+      "separate_graphite_frame",
+      "glulam_structural_surround",
+      "clt_floor_datum",
+      "timber_wall_return"
+    ],
+    "fallback_policy": "fixed lobby, ends, setback and roof plus repeatable complete 4.80 m glulam apartment construction bays"
+  }
+}

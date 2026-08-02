@@ -1,0 +1,1532 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_multifamily_piece1_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-02T05:22:08.486670+00:00",
+  "family": "contemporary-timber-glass-midrise",
+  "archetype_id": "contemporary_midrise_residential",
+  "archetype_label": "Contemporary Mid-Rise Residential - Timber & Glass",
+  "variant_id": "contemporary_midrise_variant_timber_glass",
+  "generation_archetype_id": "contemporary_midrise_variant_timber_glass",
+  "archetype_aliases": [
+    "contemporary_midrise_residential",
+    "contemporary_midrise_variant_timber_glass",
+    "contemporary_timber_glass_midrise",
+    "timber_glass_biophilic_midrise",
+    "mass_timber_balcony_apartments"
+  ],
+  "aesthetic_category_id": "mass_timber_biophilic_contemporary",
+  "development_type": "residential_multifamily",
+  "reuse_keys": [
+    "contemporary_midrise_residential",
+    "contemporary_midrise_variant_timber_glass",
+    "contemporary_timber_glass_midrise",
+    "timber_glass_biophilic_midrise",
+    "mass_timber_balcony_apartments",
+    "Contemporary Mid-Rise Residential Timber and Glass",
+    "Mass Timber Balcony Apartments",
+    "Biophilic Glulam Mid-Rise",
+    "Timber Frame Low-Iron Glass Housing"
+  ],
+  "generation_tags": [
+    "multifamily_completion_piece1",
+    "timber_glass_pilot",
+    "reference_locked_goalpost",
+    "six_zone_custom_pbr_skin",
+    "fixed_landmark_and_modular_fallback",
+    "complete_semantic_apartment_bay_repeat",
+    "physical_separate_low_iron_glazing",
+    "occupied_residential_depth",
+    "credible_timber_load_paths",
+    "integrated_supported_balconies",
+    "roof_systems_not_texture",
+    "exactly_six_occupied_levels",
+    "carved_double_height_central_lobby",
+    "continuous_exposed_glulam_load_path",
+    "alternating_supported_planted_balconies",
+    "setback_sixth_floor_and_communal_terrace",
+    "physical_low_iron_glazing_with_occupied_depth",
+    "wrapped_secondary_elevations",
+    "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape",
+      "u_shape"
+    ],
+    "minimumPreferredProfiles": 3,
+    "profileRationale": "Rectangle, L and U drawings repeat complete 4.80 m glulam apartment bays around authored secondary elevations. Each repeated bay preserves its CLT datum, physical pane, occupied depth, frame, timber load path and optional supported balcony; the carved lobby, corners, setback and roof systems remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedFloors": [
+      4,
+      8
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 4.8,
+    "recommendedWidth_m": [
+      19.8,
+      57.6
+    ],
+    "recommendedDepth_m": [
+      13.6,
+      34.8
+    ],
+    "wingDepth_m": [
+      7.2,
+      14.4
+    ],
+    "minimumCourtyard_m": 10.8,
+    "profiles": {
+      "rectangle": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          19.8,
+          57.6
+        ],
+        "recommendedDepth_m": [
+          13.6,
+          34.8
+        ]
+      },
+      "l_shape": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          23.0,
+          65.0
+        ],
+        "recommendedDepth_m": [
+          15.4,
+          39.0
+        ],
+        "wingDepth_m": [
+          7.2,
+          14.4
+        ]
+      },
+      "u_shape": {
+        "recommendedFloors": [
+          4,
+          8
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.8,
+        "recommendedWidth_m": [
+          26.0,
+          70.0
+        ],
+        "recommendedDepth_m": [
+          17.0,
+          42.0
+        ],
+        "wingDepth_m": [
+          7.2,
+          14.4
+        ],
+        "minimumCourtyard_m": 10.8
+      }
+    },
+    "notes": [
+      "Vary width only in whole 4.80 m structural apartment bays.",
+      "Vary height only with complete floor modules between four and eight occupied levels.",
+      "Preserve the central lobby, corner returns, setback terrace and roof systems as fixed semantic pieces."
+    ]
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_setback_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_registered_wrapped_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_occupied_residential_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_primary_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_albedo.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_primary_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_normal.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_primary_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_roughness.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_primary_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_ao.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_primary_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_depth.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_primary_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_emissive.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_primary_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_glass.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_primary_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_primary_honey_amber_larch_and_exposed_glulam_with_legible_end_grain_and_joints_opaque.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_secondary_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_albedo.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_secondary_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_normal.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_secondary_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_roughness.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_secondary_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_ao.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_secondary_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_depth.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_secondary_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_emissive.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_secondary_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_glass.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_secondary_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_secondary_pale_board_formed_concrete_plinth_and_entrance_threshold_opaque.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_ornament_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_albedo.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_ornament_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_normal.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "normal"
+    },
+    {
+      "key": "near_ornament_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_roughness.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_ornament_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_ao.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "ao"
+    },
+    {
+      "key": "near_ornament_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_depth.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "depth"
+    },
+    {
+      "key": "near_ornament_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_emissive.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_ornament_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_glass.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_ornament_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_ornament_timber_balcony_planter_with_dark_soil_and_mixed_green_planting_opaque.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_frame_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_albedo.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_frame_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_normal.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_frame_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_roughness.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_frame_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_ao.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_frame_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_depth.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_frame_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_emissive.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_frame_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_glass.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_frame_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_frame_slim_graphite_aluminum_window_guard_and_photovoltaic_framing_opaque.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_glass_neutral_low_iron_residential_glazing_with_warm_occupied_depth_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/contemporary-timber-glass-midrise_roof_dark_blue_black_photovoltaic_cells_with_silver_rails_and_sedum_roof_edge_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/contemporary-timber-glass-midrise",
+    "model": "gpt-image-2",
+    "style_reference": "/families/contemporary-timber-glass-midrise/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "integral_public_entrance",
+        "complete_corner_returns",
+        "variant_specific_roof_or_crown",
+        "variant_specific_ornament"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat a complete semantic bay containing physical glass, occupied depth, frame, structure or screen, wall return and floor datum; never stretch an individual pane or ornament."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "exactly_six_occupied_levels",
+        "carved_double_height_central_lobby",
+        "continuous_exposed_glulam_load_path",
+        "alternating_supported_planted_balconies",
+        "setback_sixth_floor_and_communal_terrace",
+        "physical_low_iron_glazing_with_occupied_depth",
+        "wrapped_secondary_elevations",
+        "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete wrapped left and right construction with reference-related but independently scheduled secondary openings",
+      "elevation_coverage": {
+        "front": "complete reference-locked public elevation",
+        "left": "complete wrapped secondary construction",
+        "right": "complete wrapped secondary construction",
+        "rear": "complete occupied service elevation",
+        "roof": "complete variant-specific roof, terraces, courts and crowns"
+      },
+      "variation_policy": "Use the fixed landmark throughout the 0.62–1.40 independent-axis band; oversized targets streetwall-repeat complete long-axis construction bays rather than returning family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_albedo.png",
+        "normal": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_normal.png",
+        "roughness": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_roughness.png",
+        "ao": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_ao.png",
+        "depth": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_depth.png",
+        "emissive": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_albedo.png",
+        "normal": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_normal.png",
+        "roughness": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_roughness.png",
+        "ao": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_ao.png",
+        "depth": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_depth.png",
+        "emissive": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/contemporary-timber-glass-midrise_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/contemporary-timber-glass-midrise_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "contemporary_midrise_residential",
+      "source_variant_id": "contemporary_midrise_variant_timber_glass",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "complete_six_storey_dead_front_elevation",
+        "carved_double_height_central_lobby",
+        "continuous_exposed_glulam_load_path",
+        "alternating_supported_planted_balconies",
+        "setback_sixth_floor_and_communal_terrace",
+        "physical_recessed_low_iron_glazing_with_occupied_depth",
+        "wrapped_left_right_and_rear_elevations",
+        "sedum_pv_deck_gravel_and_drainage_roof_zones",
+        "semantic_repeatable_complete_apartment_bays"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/contemporary-timber-glass-midrise/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy.",
+    "variant_id": "contemporary_midrise_variant_timber_glass"
+  },
+  "massing_graph": {
+    "type": "fixed_six_storey_mass_timber_midrise_with_repeatable_complete_apartment_bays",
+    "variant_id": "contemporary_midrise_variant_timber_glass",
+    "occupied_storeys": 6,
+    "features": [
+      "exactly_six_occupied_levels",
+      "carved_double_height_central_lobby",
+      "continuous_exposed_glulam_load_path",
+      "alternating_supported_planted_balconies",
+      "setback_sixth_floor_and_communal_terrace",
+      "physical_low_iron_glazing_with_occupied_depth",
+      "wrapped_secondary_elevations",
+      "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_low_iron_pane",
+      "separate_graphite_frame",
+      "glulam_structural_surround",
+      "clt_floor_datum",
+      "timber_wall_return"
+    ],
+    "fallback_policy": "fixed lobby, ends, setback and roof plus repeatable complete 4.80 m glulam apartment construction bays"
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Variant-specific opaque construction, physical glazing, occupied depth, expressed structure, screens, ornament and roof finishes remain separate because their optical contrast carries the catalogue identity."
+  },
+  "dimensions": {
+    "width_m": 32.0,
+    "depth_m": 26.63,
+    "podium_height_m": 3.85,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 1.25,
+    "crown_height_m": 3.2,
+    "default_floors": 6,
+    "min_floors": 4,
+    "max_floors": 8
+  },
+  "native_width_m": 32.0,
+  "native_depth_m": 26.63,
+  "native_height_m": 20.835,
+  "native_floors": 6,
+  "min_floors": 4,
+  "max_floors": 8,
+  "default_floors": 6,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_podium.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 30.0,
+      "depth_m": 23.98,
+      "height_m": 4.02,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 1608,
+      "material_count": 11,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 33258804
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_floor_typical_a.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 29.12,
+      "depth_m": 22.26,
+      "height_m": 3.901,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 3088,
+      "material_count": 13,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26177008
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_floor_typical_b.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 29.12,
+      "depth_m": 22.26,
+      "height_m": 3.901,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 3088,
+      "material_count": 13,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26177008
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_floor_typical_c.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 29.12,
+      "depth_m": 22.26,
+      "height_m": 3.901,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 3088,
+      "material_count": 13,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26177008
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_crown_crown.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 29.5,
+      "depth_m": 18.9,
+      "height_m": 3.951,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 3100,
+      "material_count": 13,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 26177728
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "contemporary-timber-glass-midrise_roof.glb",
+      "module_family": "contemporary-timber-glass-midrise",
+      "width_m": 25.8,
+      "depth_m": 16.8,
+      "height_m": 1.25,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 3780,
+      "material_count": 10,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 7453396
+    }
+  ],
+  "assembled": {
+    "filename": "contemporary-timber-glass-midrise_assembled.glb",
+    "module_family": "contemporary-timber-glass-midrise",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "contemporary_midrise_variant_timber_glass",
+    "generation_archetype_id": "contemporary_midrise_variant_timber_glass",
+    "width_m": 32.0,
+    "depth_m": 26.63,
+    "floors": 6,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 20.835,
+    "triangle_count": 29664,
+    "material_count": 17,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 20.835
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 32.0,
+      "depth_m": 26.63,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 32.0,
+          "thickness_m": 26.63,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_six_storey_mass_timber_midrise_with_repeatable_complete_apartment_bays",
+      "variant_id": "contemporary_midrise_variant_timber_glass",
+      "occupied_storeys": 6,
+      "features": [
+        "exactly_six_occupied_levels",
+        "carved_double_height_central_lobby",
+        "continuous_exposed_glulam_load_path",
+        "alternating_supported_planted_balconies",
+        "setback_sixth_floor_and_communal_terrace",
+        "physical_low_iron_glazing_with_occupied_depth",
+        "wrapped_secondary_elevations",
+        "separate_sedum_pv_deck_gravel_and_drainage_roof_zones"
+      ],
+      "physical_window_layers": [
+        "occupied_depth",
+        "physical_low_iron_pane",
+        "separate_graphite_frame",
+        "glulam_structural_surround",
+        "clt_floor_datum",
+        "timber_wall_return"
+      ],
+      "fallback_policy": "fixed lobby, ends, setback and roof plus repeatable complete 4.80 m glulam apartment construction bays"
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "frame",
+      "glass",
+      "interior",
+      "ornament",
+      "podium",
+      "primary",
+      "roof",
+      "secondary",
+      "side"
+    ],
+    "ao_baked": true,
+    "edge_treatment": {
+      "method": "adaptive_physical_delivery_bevel",
+      "segments": 0,
+      "minimum_assembled_triangles": 12000
+    }
+  },
+  "thumbnail": "contemporary-timber-glass-midrise_preview.png",
+  "renders": [
+    "contemporary-timber-glass-midrise_preview.png",
+    "contemporary-timber-glass-midrise_street.png",
+    "contemporary-timber-glass-midrise_context.png",
+    "contemporary-timber-glass-midrise_front_corner_oblique.png",
+    "contemporary-timber-glass-midrise_front_elevation.png",
+    "contemporary-timber-glass-midrise_rear_corner_oblique.png",
+    "contemporary-timber-glass-midrise_aerial.png",
+    "contemporary-timber-glass-midrise_facade_close.png"
+  ],
+  "architectural_identity": "A six-storey honey-amber mass-timber apartment building exposes a continuous glulam post-and-beam grid around deep neutral low-iron glazing, alternating planted balcony bays, and a carved double-height central lobby; the set-back sixth floor opens to timber terraces beneath a roof divided between sedum, framed photovoltaic arrays and communal deck.",
+  "material_zones": "honey-amber larch and glulam structure; pale board-formed concrete plinth and lobby threshold; deep timber-framed balconies with dark soil and mixed green planting; slim graphite aluminum window, guard and photovoltaic frames; neutral high-transmission low-iron glass revealing warm occupied rooms; sedum roof beds, timber terrace decking, gravel fire breaks and dark blue-black photovoltaic cells",
+  "glass_profile": "neutral_high_transmission_low_iron_residential_glass_with_warm_occupied_room_depth",
+  "source_provenance": {
+    "catalogue_archetype_id": "contemporary_midrise_residential",
+    "catalogue_variant_id": "contemporary_midrise_variant_timber_glass",
+    "catalogue_alias_ids": [
+      "contemporary_timber_glass_midrise",
+      "timber_glass_biophilic_midrise",
+      "mass_timber_balcony_apartments"
+    ],
+    "elevation_source": "/families/contemporary-timber-glass-midrise/elevation.jpg",
+    "goalpost": "/families/contemporary-timber-glass-midrise/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/contemporary-timber-glass-midrise/textures/source/reference-generation.json",
+    "method": "corrected six-storey four-view goalpost, separate construction-material board, deterministic true-metric physical geometry, exposed glulam load paths, carved double-height lobby, supported planted balconies, physical low-iron panes with occupied room depth, independently modelled roof systems, and complete semantic LEGO apartment-bay fallback modules",
+    "coverage_cohort": "multifamily_parent_completion_pilot"
+  }
+}

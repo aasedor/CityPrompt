@@ -1,0 +1,14 @@
+{
+  "catalogue_archetype_id": "contemporary_midrise_residential",
+  "catalogue_variant_id": "contemporary_midrise_variant_timber_glass",
+  "catalogue_alias_ids": [
+    "contemporary_timber_glass_midrise",
+    "timber_glass_biophilic_midrise",
+    "mass_timber_balcony_apartments"
+  ],
+  "elevation_source": "/families/contemporary-timber-glass-midrise/elevation.jpg",
+  "goalpost": "/families/contemporary-timber-glass-midrise/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/contemporary-timber-glass-midrise/textures/source/reference-generation.json",
+  "method": "corrected six-storey four-view goalpost, separate construction-material board, deterministic true-metric physical geometry, exposed glulam load paths, carved double-height lobby, supported planted balconies, physical low-iron panes with occupied room depth, independently modelled roof systems, and complete semantic LEGO apartment-bay fallback modules",
+  "coverage_cohort": "multifamily_parent_completion_pilot"
+}

@@ -1,0 +1,101 @@
+{
+  "schema": "reference-generation@1",
+  "family": "contemporary-timber-glass-midrise",
+  "archetype_id": "contemporary_midrise_residential",
+  "variant_id": "contemporary_midrise_variant_timber_glass",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/contemporary_mid_rise_residential/variant_0.png",
+  "source_mode": "catalogue_contract_to_corrected_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      32.0,
+      22.0,
+      21.4
+    ],
+    "occupied_storeys": 6,
+    "variant_specific_contract": "32 m by 22 m and exactly six occupied levels: one pale-concrete ground floor, four full upper residential floors, and one set-back sixth floor; a real double-height glazed lobby is carved through the centre of the front rather than printed onto it; exposed glulam columns and beams form six broad coherent front bays; alternating outer bays project as supported timber balconies with open guards and integral planters; every glazed bay has occupied depth, pane, frame and wall return; the roof visibly separates sedum, PV, gravel drainage and a communal timber terrace",
+    "material_zones": "honey-amber larch and glulam structure; pale board-formed concrete plinth and lobby threshold; deep timber-framed balconies with dark soil and mixed green planting; slim graphite aluminum window, guard and photovoltaic frames; neutral high-transmission low-iron glass revealing warm occupied rooms; sedum roof beds, timber terrace decking, gravel fire breaks and dark blue-black photovoltaic cells",
+    "glass_profile": "neutral_high_transmission_low_iron_residential_glass_with_warm_occupied_room_depth",
+    "coverage_cohort": "multifamily_parent_completion_pilot"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-05034d56-f5fe-4829-a16a-b142eb63ca6a",
+      "role": "canonical_corrected_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO multifamily variant\nPrimary request: Design one coherent, physically buildable Contemporary Mid-Rise Residential - Timber & Glass from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof zoning, setback, terraces, photovoltaics, sedum, drainage and equipment.\nCatalogue contract: A six-storey honey-amber mass-timber apartment building exposes a continuous glulam post-and-beam grid around deep neutral low-iron glazing, alternating planted balcony bays, and a carved double-height central lobby; the set-back sixth floor opens to timber terraces beneath a roof divided between sedum, framed photovoltaic arrays and communal deck.\nBuilding lock: 32 m by 22 m and exactly six occupied levels: one pale-concrete ground floor, four full upper residential floors, and one set-back sixth floor; a real double-height glazed lobby is carved through the centre of the front rather than printed onto it; exposed glulam columns and beams form six broad coherent front bays; alternating outer bays project as supported timber balconies with open guards and integral planters; every glazed bay has occupied depth, pane, frame and wall return; the roof visibly separates sedum, PV, gravel drainage and a communal timber terrace.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: honey-amber larch and glulam structure; pale board-formed concrete plinth and lobby threshold; deep timber-framed balconies with dark soil and mixed green planting; slim graphite aluminum window, guard and photovoltaic frames; neutral high-transmission low-iron glass revealing warm occupied rooms; sedum roof beds, timber terrace decking, gravel fire breaks and dark blue-black photovoltaic cells.\nConstraints: exact same coherent building topology and exactly six occupied levels in every panel; credible timber load paths; real recessed openings; deep integral balconies; slim physical frames; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: generic timber-clad box, pasted window texture, flat curtain wall, blue mirror glass, unsupported bolt-on balconies, repeated balcony on every bay, token green roof, oversized solar panels, opaque lobby, missing secondary elevations, seven occupied storeys; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_six_storey_dead_front_elevation",
+        "carved_double_height_central_lobby",
+        "continuous_exposed_glulam_load_path",
+        "alternating_supported_planted_balconies",
+        "setback_sixth_floor_and_communal_terrace",
+        "physical_recessed_low_iron_glazing_with_occupied_depth",
+        "wrapped_left_right_and_rear_elevations",
+        "sedum_pv_deck_gravel_and_drainage_roof_zones",
+        "semantic_repeatable_complete_apartment_bays"
+      ],
+      "review_note": "Second-pass correction fixed the board to exactly six occupied levels."
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-05034d56-f5fe-4829-a16a-b142eb63ca6a:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-05034d56-f5fe-4829-a16a-b142eb63ca6a:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-05034d56-f5fe-4829-a16a-b142eb63ca6a:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-05034d56-f5fe-4829-a16a-b142eb63ca6a:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Contemporary Mid-Rise Residential - Timber & Glass shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: honey-amber glulam and larch post-and-beam joint with legible timber grain and steel knife-plate connection at authentic construction scale, no complete facade.\nTop-center: neutral high-transmission low-iron residential pane seen dead-on, revealing a clean warm occupied room with floor edge, ceiling, curtain, timber furniture and restrained depth; no exterior mullion or facade.\nTop-right: integral timber balcony edge and planter with dark soil, mixed grasses and trailing plants at authentic construction scale, no complete balcony elevation.\nBottom-left: pale board-formed concrete threshold meeting a deep glulam entrance canopy with credible flashing and shadow-neutral soffit, no complete entrance.\nBottom-center: sedum roof build-up, gravel fire break, metal drainage edge and dark membrane at authentic construction scale, no complete roof.\nBottom-right: dark blue-black photovoltaic module with fine cell pattern, silver edge frame and raised rail connection at authentic construction scale, no complete array.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, blue mirror glass, oversized solar cells, decorative border, dramatic lighting, building perspective."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-230a3f5f-19fe-4281-9f21-894f272704a2:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}
