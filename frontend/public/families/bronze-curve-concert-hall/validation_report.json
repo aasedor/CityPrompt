@@ -1,0 +1,165 @@
+{
+  "status": "pass",
+  "family": "bronze-curve-concert-hall",
+  "archetype_id": "concert_hall_modern",
+  "reuse_keys": [
+    "concert_hall_modern",
+    "concert_timber_acoustic",
+    "bronze_curve_concert_hall",
+    "opposing_acoustic_wall_civic_hall",
+    "Bronze Curve Concert Hall",
+    "Opposing Acoustic Wall Civic Hall",
+    "Timber Foyer Bronze Music Venue"
+  ],
+  "manifest": "bronze-curve-concert-hall_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "bronze-curve-concert-hall_podium.glb: 23.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "bronze-curve-concert-hall_floor_typical_a.glb: 12.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "bronze-curve-concert-hall_floor_typical_b.glb: 12.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "bronze-curve-concert-hall_floor_typical_c.glb: 12.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "bronze-curve-concert-hall_assembled.glb: 38.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "bronze-curve-concert-hall_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 5.4,
+        "depth_z": 48.89
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_bronze-curve-concert-hall_OccupiedDepth",
+        "MAT_W14_bronze-curve-concert-hall_glass",
+        "MAT_W14_bronze-curve-concert-hall_primary",
+        "MAT_W14_bronze-curve-concert-hall_secondary"
+      ],
+      "size_bytes": 24655912
+    },
+    {
+      "file": "bronze-curve-concert-hall_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 48.69
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_bronze-curve-concert-hall_OccupiedDepth",
+        "MAT_W14_bronze-curve-concert-hall_frame",
+        "MAT_W14_bronze-curve-concert-hall_glass"
+      ],
+      "size_bytes": 13385220
+    },
+    {
+      "file": "bronze-curve-concert-hall_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 48.69
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_bronze-curve-concert-hall_OccupiedDepth",
+        "MAT_W14_bronze-curve-concert-hall_frame",
+        "MAT_W14_bronze-curve-concert-hall_glass"
+      ],
+      "size_bytes": 13386968
+    },
+    {
+      "file": "bronze-curve-concert-hall_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 48.69
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_bronze-curve-concert-hall_OccupiedDepth",
+        "MAT_W14_bronze-curve-concert-hall_frame",
+        "MAT_W14_bronze-curve-concert-hall_glass"
+      ],
+      "size_bytes": 13388660
+    },
+    {
+      "file": "bronze-curve-concert-hall_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 1.0,
+        "depth_z": 48.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_bronze-curve-concert-hall_ornament"
+      ],
+      "size_bytes": 5321844
+    },
+    {
+      "file": "bronze-curve-concert-hall_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 13.0,
+        "depth_z": 48.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_bronze-curve-concert-hall_roof"
+      ],
+      "size_bytes": 7358924
+    },
+    {
+      "file": "bronze-curve-concert-hall_assembled.glb",
+      "status": "ok",
+      "triangles": 4708,
+      "extent_m": {
+        "width_x": 86.0,
+        "height_y": 32.613,
+        "depth_z": 62.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_bronze-curve-concert-hall_OccupiedDepth",
+        "MAT_W14_bronze-curve-concert-hall_frame",
+        "MAT_W14_bronze-curve-concert-hall_glass",
+        "MAT_W14_bronze-curve-concert-hall_ornament",
+        "MAT_W14_bronze-curve-concert-hall_primary",
+        "MAT_W14_bronze-curve-concert-hall_roof",
+        "MAT_W14_bronze-curve-concert-hall_secondary"
+      ],
+      "size_bytes": 39840960,
+      "role": "assembled"
+    }
+  ]
+}

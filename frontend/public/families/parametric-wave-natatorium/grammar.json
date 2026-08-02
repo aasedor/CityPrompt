@@ -1,0 +1,121 @@
+{
+  "family_id": "parametric-wave-natatorium",
+  "source": {
+    "archetype_id": "aquatic_natatorium_complex",
+    "variant_id": "parametric_wave_shell",
+    "generation_archetype_id": "parametric_wave_shell",
+    "reuse_keys": [
+      "aquatic_natatorium_complex",
+      "parametric_wave_shell",
+      "parametric_wave_natatorium",
+      "cable_stayed_aquatic_shell",
+      "Parametric Wave Shell Natatorium",
+      "Cable Stayed Aquatic Hall",
+      "Translucent Wave Pool Complex"
+    ]
+  },
+  "dimensions": {
+    "width_m": 82.0,
+    "depth_m": 61.872,
+    "podium_height_m": 5.8,
+    "floor_height_m": 5.4,
+    "setback_height_m": 5.4,
+    "roof_height_m": 23.0,
+    "crown_height_m": 0.9,
+    "default_floors": 2,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A broad public natatorium is enclosed by a continuous asymmetric wave shell whose translucent silver polycarbonate crest lifts above a full-height glazed gable; branching concrete struts, twin cable masts, roof ribs, and a visible blue pool hall form one credible long-span structure.",
+    "material_zones": "translucent platinum polycarbonate roof panels; cool board-formed concrete plinth and branching struts; stainless cable stays; silver aluminum pressure caps; neutral low-iron pool-hall glass; occupied aquatic-hall depth with blue water and warm soffits; pale standing-seam service roof",
+    "glass_profile": "high_transmission_low_iron_pool_hall_glass_with_blue_water_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "continuous_double_curved_shell",
+      "branching_concrete_struts",
+      "grounded_cable_masts",
+      "visible_pool_hall",
+      "deep_glazed_gables"
+    ]
+  },
+  "archetype_aliases": [
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell",
+    "parametric_wave_natatorium",
+    "cable_stayed_aquatic_shell"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 10.25 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      54.1,
+      147.6
+    ],
+    "recommendedDepth_m": [
+      37.0,
+      88.5
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.25,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          54.1,
+          147.6
+        ],
+        "recommendedDepth_m": [
+          37.0,
+          88.5
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.25
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_wave_shell_natatorium_with_repeatable_complete_middle_bays",
+    "variant_id": "parametric_wave_shell",
+    "occupied_storeys": 2,
+    "features": [
+      "continuous_double_curved_shell",
+      "branching_concrete_struts",
+      "grounded_cable_masts",
+      "visible_pool_hall",
+      "deep_glazed_gables"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

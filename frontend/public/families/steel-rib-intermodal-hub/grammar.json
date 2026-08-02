@@ -1,0 +1,121 @@
+{
+  "family_id": "steel-rib-intermodal-hub",
+  "source": {
+    "archetype_id": "intermodal_transit_hub",
+    "variant_id": "sculptural_steel_exoskeleton",
+    "generation_archetype_id": "sculptural_steel_exoskeleton",
+    "reuse_keys": [
+      "intermodal_transit_hub",
+      "sculptural_steel_exoskeleton",
+      "steel_rib_intermodal_hub",
+      "parabolic_arch_transit_concourse",
+      "Steel Rib Intermodal Hub",
+      "Parabolic Arch Transit Concourse",
+      "White Exoskeleton Station"
+    ]
+  },
+  "dimensions": {
+    "width_m": 65.0,
+    "depth_m": 104.31,
+    "podium_height_m": 6.0,
+    "floor_height_m": 5.4,
+    "setback_height_m": 5.4,
+    "roof_height_m": 19.0,
+    "crown_height_m": 1.0,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A glazed intermodal concourse is sheltered by two immense parabolic white-steel arches and a continuous fan of branching ribs, all landing on visible structural shoes above a warm brick-and-glass plinth; the luminous central nave remains open from entry to platforms.",
+    "material_zones": "satin white structural steel ribs and cast nodes; warm red-brown civic brick plinth; clear low-iron concourse glass; silver pressure caps; pale terrazzo platform deck; warm occupied station depth; translucent ETFE and glass roof strips",
+    "glass_profile": "high_transmission_station_glass_with_deep_luminous_concourse",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "twin_grounded_parabolic_arches",
+      "continuous_fan_rib_field",
+      "translucent_station_roof",
+      "deep_luminous_concourse",
+      "occupied_cross_concourse_bridges"
+    ]
+  },
+  "archetype_aliases": [
+    "intermodal_transit_hub",
+    "sculptural_steel_exoskeleton",
+    "steel_rib_intermodal_hub",
+    "parabolic_arch_transit_concourse"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 10.83 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      42.9,
+      117.0
+    ],
+    "recommendedDepth_m": [
+      66.0,
+      158.0
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.83,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          42.9,
+          117.0
+        ],
+        "recommendedDepth_m": [
+          66.0,
+          158.0
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.83
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_steel_rib_transit_hub_with_repeatable_complete_middle_bays",
+    "variant_id": "sculptural_steel_exoskeleton",
+    "occupied_storeys": 3,
+    "features": [
+      "twin_grounded_parabolic_arches",
+      "continuous_fan_rib_field",
+      "translucent_station_roof",
+      "deep_luminous_concourse",
+      "occupied_cross_concourse_bridges"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

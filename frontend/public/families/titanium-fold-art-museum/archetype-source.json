@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "large_art_museum_gallery",
+  "catalogue_variant_id": "deconstructivist_titanium_pavilion",
+  "catalogue_alias_ids": [
+    "titanium_fold_art_museum",
+    "sculptural_metal_gallery_canyon"
+  ],
+  "elevation_source": "/families/titanium-fold-art-museum/elevation.jpg",
+  "goalpost": "/families/titanium-fold-art-museum/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/titanium-fold-art-museum/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

@@ -1,0 +1,121 @@
+{
+  "family_id": "historic-iron-glass-market",
+  "source": {
+    "archetype_id": "food_hall_market_hall",
+    "variant_id": "market_historic_iron_glass",
+    "generation_archetype_id": "market_historic_iron_glass",
+    "reuse_keys": [
+      "food_hall_market_hall",
+      "market_historic_iron_glass",
+      "historic_iron_glass_market",
+      "victorian_barrel_vault_market",
+      "Historic Iron and Glass Market",
+      "Victorian Barrel Vault Food Hall",
+      "Restored Wrought Iron Market"
+    ]
+  },
+  "dimensions": {
+    "width_m": 69.54,
+    "depth_m": 41.67,
+    "podium_height_m": 5.0,
+    "floor_height_m": 4.5,
+    "setback_height_m": 4.5,
+    "roof_height_m": 12.0,
+    "crown_height_m": 0.8,
+    "default_floors": 2,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A restored nineteenth-century market hall forms three connected barrel-vaulted iron-and-glass aisles above a red-brick and honey-stone base, with exposed wrought-iron arches, clerestory lanterns, operable end fans, deep arcaded entrances and visible occupied market stalls.",
+    "material_zones": "weathered red stock brick; honey sandstone spring blocks and plinth; dark green-black wrought and cast iron; slender bronze glazing bars; lightly rippled clear roof glass; warm occupied market-hall depth; patinated zinc ridge caps and stone paving",
+    "glass_profile": "lightly_rippled_clear_market_glass_with_warm_stall_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "three_connected_barrel_vaults",
+      "fourteen_aligned_iron_arch_frames",
+      "radial_gable_fanlights",
+      "shared_brick_spring_piers",
+      "visible_market_stalls_and_mezzanine"
+    ]
+  },
+  "archetype_aliases": [
+    "food_hall_market_hall",
+    "market_historic_iron_glass",
+    "historic_iron_glass_market",
+    "victorian_barrel_vault_market"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 11.33 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      44.9,
+      122.4
+    ],
+    "recommendedDepth_m": [
+      27.7,
+      66.4
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 11.33,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          44.9,
+          122.4
+        ],
+        "recommendedDepth_m": [
+          27.7,
+          66.4
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 11.33
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_historic_iron_glass_market_with_repeatable_complete_middle_bays",
+    "variant_id": "market_historic_iron_glass",
+    "occupied_storeys": 2,
+    "features": [
+      "three_connected_barrel_vaults",
+      "fourteen_aligned_iron_arch_frames",
+      "radial_gable_fanlights",
+      "shared_brick_spring_piers",
+      "visible_market_stalls_and_mezzanine"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

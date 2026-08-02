@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "second_empire_civic_building",
+  "catalogue_variant_id": "grand_city_hall_tower",
+  "catalogue_alias_ids": [
+    "second_empire_clocktower_city_hall",
+    "copper_dome_civic_palace"
+  ],
+  "elevation_source": "/families/second-empire-clocktower-city-hall/elevation.jpg",
+  "goalpost": "/families/second-empire-clocktower-city-hall/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/second-empire-clocktower-city-hall/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-01-wave14-sibling-variant-lock-v113`.
+Current executable memory: `2026-08-01-wave15-program-topology-v114`.
 
 ## The quality target
 
@@ -1307,6 +1307,34 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - The comparison sheet is a production gate. Place front, oblique, aerial,
   rear and material proofs beside the matching goalpost roles and correct the
   largest silhouette or topology mismatch before adding surface microdetail.
+
+### Wave 15 program-topology + infrastructure lessons
+
+- Program is often the silhouette. An inhabited energy plant needs one
+  continuous skiable roof from public low point to process summit; a
+  natatorium needs one shared roof equation for shell, ribs, masts and stays;
+  a station needs an uninterrupted nave; and a silo complex needs transfer
+  galleries that visibly connect real vessels and loading points.
+- Treat those systems as routes or load paths before treating them as detail.
+  Build their endpoints, landings, supports, edge protection and clearances at
+  metric scale. Detached ramps, floating cables, unsupported galleries and
+  ornamental stairs fail even when their colours match the reference.
+- Non-orthogonal landmarks still need closed construction. Rolled titanium
+  shells, folded concrete wings, barrel-vault market aisles and opposing
+  bronze acoustic walls are continuous weathering volumes with thickness,
+  returns, seams and drainage edges rather than flat cards or rotated boxes.
+- Transparent civic halls reveal their program. Pool water, market stalls,
+  station platforms, greenhouse crop decks and concert foyers should occupy a
+  coherent depth behind physical glazing, with slabs, mullions and structural
+  members continuing across adjacent panes.
+- Preserve the reviewed landmark as an `assembled` module, then provide a
+  semantic six-part fallback kit whose complete middle bays can absorb normal
+  sketch error. Keep the 0.62–1.40 compatibility band and let oversized sites
+  repeat whole bars along the long axis rather than stretching the landmark.
+- Compare the model against the same front, oblique, rear and aerial roles used
+  to lock the goalpost. Correct the largest program or silhouette mismatch
+  first; material microdetail cannot repair a reversed station axis, a flat
+  wave crest, an ungrounded tower or a market whose side arcades disappear.
 
 ## Updating this memory
 

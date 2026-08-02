@@ -1,0 +1,121 @@
+{
+  "family_id": "copenhill-ski-slope-energy-plant",
+  "source": {
+    "archetype_id": "waste_to_energy_plant",
+    "variant_id": "wte_ski_slope",
+    "generation_archetype_id": "wte_ski_slope",
+    "reuse_keys": [
+      "waste_to_energy_plant",
+      "wte_ski_slope",
+      "copenhill_ski_slope_energy_plant",
+      "inhabited_energy_landscape",
+      "Inhabited Ski Slope Energy Plant",
+      "Civic Waste to Energy Landscape",
+      "Aluminum Climbing Wall Power Plant"
+    ]
+  },
+  "dimensions": {
+    "width_m": 161.0,
+    "depth_m": 73.192,
+    "podium_height_m": 8.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 46.0,
+    "crown_height_m": 1.2,
+    "default_floors": 7,
+    "min_floors": 3,
+    "max_floors": 12
+  },
+  "architectural_signature": {
+    "identity": "A monumental silver waste-to-energy plant rises beneath one continuous inhabited green ski slope, climbing from a low public forecourt to a tall industrial summit beside a faceted white emissions stack; a multicolour climbing wall and diagonal aluminum cassette field make the long elevation civic rather than utilitarian.",
+    "material_zones": "checkerboard brushed and perforated aluminum cassettes; planted and synthetic-turf ski slope with real edge rails; pale exposed concrete process base; graphite industrial steel; neutral high-transmission visitor glazing; warm occupied control-room depth; white ceramic-coated emissions stack and dark service roof",
+    "glass_profile": "neutral_high_transmission_industrial_visitor_glass_with_control_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "continuous_inhabited_ski_slope",
+      "integrated_climbing_wall",
+      "summit_process_deck",
+      "glass_public_elevator",
+      "faceted_emissions_stack"
+    ]
+  },
+  "archetype_aliases": [
+    "waste_to_energy_plant",
+    "wte_ski_slope",
+    "copenhill_ski_slope_energy_plant",
+    "inhabited_energy_landscape"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 20.00 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      105.6,
+      288.0
+    ],
+    "recommendedDepth_m": [
+      46.2,
+      110.6
+    ],
+    "recommendedFloors": [
+      3,
+      12
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 20.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          105.6,
+          288.0
+        ],
+        "recommendedDepth_m": [
+          46.2,
+          110.6
+        ],
+        "recommendedFloors": [
+          3,
+          12
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 20.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_ski_slope_energy_plant_with_repeatable_complete_middle_bays",
+    "variant_id": "wte_ski_slope",
+    "occupied_storeys": 7,
+    "features": [
+      "continuous_inhabited_ski_slope",
+      "integrated_climbing_wall",
+      "summit_process_deck",
+      "glass_public_elevator",
+      "faceted_emissions_stack"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

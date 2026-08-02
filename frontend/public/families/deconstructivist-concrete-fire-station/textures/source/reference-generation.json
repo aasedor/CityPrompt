@@ -1,0 +1,99 @@
+{
+  "schema": "reference-generation@1",
+  "family": "deconstructivist-concrete-fire-station",
+  "archetype_id": "modern_fire_station",
+  "variant_id": "fire_deconstructivist",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/modern_fire_station/variant_0.png",
+  "source_mode": "catalogue_contract_to_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      52.0,
+      36.0,
+      28.0
+    ],
+    "occupied_storeys": 3,
+    "variant_specific_contract": "52 m by 36 m, three occupied levels; three unobstructed deep apparatus portals occupy the left concrete hall while a ground-to-roof charcoal crew wing and sheltered public entry complete the right side of the front, one tapered and visibly grounded hose tower leans above the roof with a narrow slit, and every angled wall owns real thickness and closed returns",
+    "material_zones": "raw board-formed concrete; charcoal fibre-cement crew wing; deep fire-red insulated apparatus doors; blackened steel lintels and rails; neutral clear operations glazing; warm occupied crew and watch-room depth; dark zinc folded roof and red beacon metal",
+    "glass_profile": "neutral_clear_operations_glass_with_deep_crew_room_depth",
+    "coverage_cohort": "sibling_variant"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-22cf7123-ae54-4efe-8151-972bcdf0c083",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO building variant\nPrimary request: Design one coherent, physically buildable Modern Fire Station - Deconstructivist Concrete from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof topology, courts, spans, and equipment.\nCatalogue contract: A raw-concrete fire station is assembled as one angular apparatus hall cut by three deep red engine bays, a folded crew wing and a leaning hose-drying tower whose narrow vertical slit and roof beacon complete an intentionally off-axis but structurally grounded civic composition.\nBuilding lock: 44 m by 36 m, three occupied levels; three unobstructed deep apparatus portals are cut into a canted concrete hall, the crew wing folds around a sheltered public entry, one tapered and visibly grounded hose tower leans above the roof with a narrow slit, and every angled wall owns real thickness and closed returns.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: raw board-formed concrete; charcoal fibre-cement crew wing; deep fire-red insulated apparatus doors; blackened steel lintels and rails; neutral clear operations glazing; warm occupied crew and watch-room depth; dark zinc folded roof and red beacon metal.\nConstraints: exact same coherent building topology, storey datums, structural bays, openings, entrances, material zones and roof in all four panels; credible load paths; real recessed openings and physical screens; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: mass timber sibling, ordinary suburban firehouse, concrete box with applied fins, blocked apparatus doors, floating hose tower, arbitrary shards, blue glass; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-22cf7123-ae54-4efe-8151-972bcdf0c083:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-22cf7123-ae54-4efe-8151-972bcdf0c083:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-22cf7123-ae54-4efe-8151-972bcdf0c083:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-22cf7123-ae54-4efe-8151-972bcdf0c083:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Modern Fire Station - Deconstructivist Concrete shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: raw board formed architectural concrete, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: charcoal fibre cement crew wing, authentic construction scale and fine micro-detail, no complete building element.\nTop-right: deep fire red insulated apparatus door, authentic construction scale and fine micro-detail, no complete ornament assembly.\nBottom-left: blackened steel lintel rail and flashing, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: neutral clear operations glazing plus clean occupied depth seen dead-on, with clear floor, ceiling and restrained warm occupation, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: dark zinc folded roof and red beacon metal, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-10daa4fb-9205-4352-a914-ede8ee1b52ab:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

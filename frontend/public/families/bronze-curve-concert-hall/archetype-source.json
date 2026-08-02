@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "concert_hall_modern",
+  "catalogue_variant_id": "concert_timber_acoustic",
+  "catalogue_alias_ids": [
+    "bronze_curve_concert_hall",
+    "opposing_acoustic_wall_civic_hall"
+  ],
+  "elevation_source": "/families/bronze-curve-concert-hall/elevation.jpg",
+  "goalpost": "/families/bronze-curve-concert-hall/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/bronze-curve-concert-hall/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "sibling_variant"
+}

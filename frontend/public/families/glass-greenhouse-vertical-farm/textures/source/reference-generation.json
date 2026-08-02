@@ -1,0 +1,99 @@
+{
+  "schema": "reference-generation@1",
+  "family": "glass-greenhouse-vertical-farm",
+  "archetype_id": "vertical_farm",
+  "variant_id": "farm_glass_greenhouse_tower",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/vertical_farm/variant_0.png",
+  "source_mode": "catalogue_contract_to_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      36.0,
+      34.0,
+      112.0
+    ],
+    "occupied_storeys": 30,
+    "variant_specific_contract": "36 m by 34 m, thirty occupied cultivation levels grouped into ten three-storey greenhouse bays; clear continuous corners, visible pale decks and varied green crop trays, alternating double-height winter gardens, three giant integrated exoskeletal X-fields, two service cores and one vented greenhouse crown without opaque office spandrels",
+    "material_zones": "high-transmission low-iron greenhouse glass; silver galvanized steel mullions and diagonal braces; pale concrete growing decks; deep green hydroponic crops; graphite robotic rails; warm occupied cultivation depth; translucent vented greenhouse roof",
+    "glass_profile": "ultra_clear_greenhouse_glass_revealing_hydroponic_depth",
+    "coverage_cohort": "uncovered_parent"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-23374c1c-4839-4973-b3df-19258a2171fe",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO building variant\nPrimary request: Design one coherent, physically buildable Vertical Farm - Glass Greenhouse Tower from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof topology, courts, spans, and equipment.\nCatalogue contract: A thirty-level greenhouse tower exposes stacked hydroponic growing trays, circulation cores, robotic rails and dense living crops behind exceptionally clear glass, with alternating double-height winter gardens, silver exoskeletal braces and a vented greenhouse crown.\nBuilding lock: 30 m square, thirty occupied cultivation levels grouped into ten three-storey greenhouse bays; clear continuous corners, visible pale decks and varied green crop trays, alternating double-height winter gardens, external silver braces, two service cores and one vented greenhouse crown without opaque office spandrels.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: high-transmission low-iron greenhouse glass; silver galvanized steel mullions and diagonal braces; pale concrete growing decks; deep green hydroponic crops; graphite robotic rails; warm occupied cultivation depth; translucent vented greenhouse roof.\nConstraints: exact same coherent building topology, storey datums, structural bays, openings, entrances, material zones and roof in all four panels; credible load paths; real recessed openings and physical screens; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: blue mirror office tower, green wallpaper, identical plant stripe every floor, opaque spandrel box, sealed roof, missing deck depth, fantasy tree skyscraper; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-23374c1c-4839-4973-b3df-19258a2171fe:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-23374c1c-4839-4973-b3df-19258a2171fe:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-23374c1c-4839-4973-b3df-19258a2171fe:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-23374c1c-4839-4973-b3df-19258a2171fe:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Vertical Farm - Glass Greenhouse Tower shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: deep green living hydroponic crop beds, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: pale concrete cultivation deck edges, authentic construction scale and fine micro-detail, no complete building element.\nTop-right: graphite robotic rail and irrigation hardware, authentic construction scale and fine micro-detail, no complete ornament assembly.\nBottom-left: silver galvanized greenhouse framing, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: ultra-clear low-iron greenhouse glass plus clean occupied depth seen dead-on, with clear floor, ceiling and restrained warm occupation, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: translucent vented greenhouse crown, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-8f8908cd-62a9-417a-9b5a-91b436b69b17:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

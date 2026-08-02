@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "vertical_farm",
+  "catalogue_variant_id": "farm_glass_greenhouse_tower",
+  "catalogue_alias_ids": [
+    "glass_greenhouse_vertical_farm",
+    "stacked_hydroponic_tower"
+  ],
+  "elevation_source": "/families/glass-greenhouse-vertical-farm/elevation.jpg",
+  "goalpost": "/families/glass-greenhouse-vertical-farm/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/glass-greenhouse-vertical-farm/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

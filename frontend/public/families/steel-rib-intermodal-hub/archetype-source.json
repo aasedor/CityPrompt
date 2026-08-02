@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "intermodal_transit_hub",
+  "catalogue_variant_id": "sculptural_steel_exoskeleton",
+  "catalogue_alias_ids": [
+    "steel_rib_intermodal_hub",
+    "parabolic_arch_transit_concourse"
+  ],
+  "elevation_source": "/families/steel-rib-intermodal-hub/elevation.jpg",
+  "goalpost": "/families/steel-rib-intermodal-hub/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/steel-rib-intermodal-hub/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

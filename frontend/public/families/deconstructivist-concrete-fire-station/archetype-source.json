@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "modern_fire_station",
+  "catalogue_variant_id": "fire_deconstructivist",
+  "catalogue_alias_ids": [
+    "deconstructivist_concrete_fire_station",
+    "angular_hose_tower_station"
+  ],
+  "elevation_source": "/families/deconstructivist-concrete-fire-station/elevation.jpg",
+  "goalpost": "/families/deconstructivist-concrete-fire-station/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/deconstructivist-concrete-fire-station/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "sibling_variant"
+}

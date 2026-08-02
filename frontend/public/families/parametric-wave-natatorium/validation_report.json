@@ -1,0 +1,167 @@
+{
+  "status": "pass",
+  "family": "parametric-wave-natatorium",
+  "archetype_id": "aquatic_natatorium_complex",
+  "reuse_keys": [
+    "aquatic_natatorium_complex",
+    "parametric_wave_shell",
+    "parametric_wave_natatorium",
+    "cable_stayed_aquatic_shell",
+    "Parametric Wave Shell Natatorium",
+    "Cable Stayed Aquatic Hall",
+    "Translucent Wave Pool Complex"
+  ],
+  "manifest": "parametric-wave-natatorium_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "parametric-wave-natatorium_podium.glb: 32.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-natatorium_floor_typical_a.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-natatorium_floor_typical_b.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-natatorium_floor_typical_c.glb: 23.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-natatorium_roof.glb: 14.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "parametric-wave-natatorium_assembled.glb: 55.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "parametric-wave-natatorium_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 67.24,
+        "height_y": 5.8,
+        "depth_z": 44.21
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_parametric-wave-natatorium_OccupiedDepth",
+        "MAT_W14_parametric-wave-natatorium_glass",
+        "MAT_W14_parametric-wave-natatorium_primary",
+        "MAT_W14_parametric-wave-natatorium_secondary"
+      ],
+      "size_bytes": 34451476
+    },
+    {
+      "file": "parametric-wave-natatorium_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 67.57,
+        "height_y": 5.4,
+        "depth_z": 44.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_parametric-wave-natatorium_OccupiedDepth",
+        "MAT_W14_parametric-wave-natatorium_frame",
+        "MAT_W14_parametric-wave-natatorium_glass"
+      ],
+      "size_bytes": 24288280
+    },
+    {
+      "file": "parametric-wave-natatorium_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 67.57,
+        "height_y": 5.4,
+        "depth_z": 44.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_parametric-wave-natatorium_OccupiedDepth",
+        "MAT_W14_parametric-wave-natatorium_frame",
+        "MAT_W14_parametric-wave-natatorium_glass"
+      ],
+      "size_bytes": 24290024
+    },
+    {
+      "file": "parametric-wave-natatorium_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 67.57,
+        "height_y": 5.4,
+        "depth_z": 44.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_parametric-wave-natatorium_OccupiedDepth",
+        "MAT_W14_parametric-wave-natatorium_frame",
+        "MAT_W14_parametric-wave-natatorium_glass"
+      ],
+      "size_bytes": 24291716
+    },
+    {
+      "file": "parametric-wave-natatorium_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 67.24,
+        "height_y": 0.9,
+        "depth_z": 43.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_parametric-wave-natatorium_ornament"
+      ],
+      "size_bytes": 7381248
+    },
+    {
+      "file": "parametric-wave-natatorium_roof.glb",
+      "status": "ok",
+      "triangles": 292,
+      "extent_m": {
+        "width_x": 67.495,
+        "height_y": 23.479,
+        "depth_z": 43.94
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_parametric-wave-natatorium_frame",
+        "MAT_W14_parametric-wave-natatorium_roof"
+      ],
+      "size_bytes": 15111464
+    },
+    {
+      "file": "parametric-wave-natatorium_assembled.glb",
+      "status": "ok",
+      "triangles": 10552,
+      "extent_m": {
+        "width_x": 82.0,
+        "height_y": 34.5,
+        "depth_z": 61.87
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_parametric-wave-natatorium_OccupiedDepth",
+        "MAT_W14_parametric-wave-natatorium_frame",
+        "MAT_W14_parametric-wave-natatorium_glass",
+        "MAT_W14_parametric-wave-natatorium_ornament",
+        "MAT_W14_parametric-wave-natatorium_primary",
+        "MAT_W14_parametric-wave-natatorium_roof",
+        "MAT_W14_parametric-wave-natatorium_secondary"
+      ],
+      "size_bytes": 57733364,
+      "role": "assembled"
+    }
+  ]
+}

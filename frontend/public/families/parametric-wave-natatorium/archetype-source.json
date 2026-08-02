@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "aquatic_natatorium_complex",
+  "catalogue_variant_id": "parametric_wave_shell",
+  "catalogue_alias_ids": [
+    "parametric_wave_natatorium",
+    "cable_stayed_aquatic_shell"
+  ],
+  "elevation_source": "/families/parametric-wave-natatorium/elevation.jpg",
+  "goalpost": "/families/parametric-wave-natatorium/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/parametric-wave-natatorium/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

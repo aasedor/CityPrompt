@@ -1,0 +1,121 @@
+{
+  "family_id": "second-empire-clocktower-city-hall",
+  "source": {
+    "archetype_id": "second_empire_civic_building",
+    "variant_id": "grand_city_hall_tower",
+    "generation_archetype_id": "grand_city_hall_tower",
+    "reuse_keys": [
+      "second_empire_civic_building",
+      "grand_city_hall_tower",
+      "second_empire_clocktower_city_hall",
+      "copper_dome_civic_palace",
+      "Grand Second Empire City Hall",
+      "Copper Dome Clocktower Civic Palace",
+      "Limestone Mansard Municipal Hall"
+    ]
+  },
+  "dimensions": {
+    "width_m": 62.4,
+    "depth_m": 46.86,
+    "podium_height_m": 5.0,
+    "floor_height_m": 4.1,
+    "setback_height_m": 4.1,
+    "roof_height_m": 11.5,
+    "crown_height_m": 2.0,
+    "default_floors": 5,
+    "min_floors": 3,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "A symmetrical pale-limestone city hall steps around a deep arched civic portal, four occupied storeys, a slate mansard attic, corner turrets and a central clock tower capped by a patinated-copper dome; balustrades, dormers, chimneys and the broad ceremonial stair complete the public silhouette.",
+    "material_zones": "pale grey limestone ashlar; charcoal-blue slate mansard and turret caps; carved limestone quoins, cornices and balustrades; dark bronze heritage sash; neutral lightly reflective glazing; warm occupied civic rooms; green patinated copper clock dome and lead flashing",
+    "glass_profile": "neutral_heritage_sash_with_warm_civic_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "deep_triple_arch_civic_portal",
+      "continuous_mansard",
+      "four_corner_turrets",
+      "dormers_and_chimneys",
+      "clock_tower_and_copper_dome"
+    ]
+  },
+  "archetype_aliases": [
+    "second_empire_civic_building",
+    "grand_city_hall_tower",
+    "second_empire_clocktower_city_hall",
+    "copper_dome_civic_palace"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 10.33 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      40.9,
+      111.6
+    ],
+    "recommendedDepth_m": [
+      29.0,
+      69.5
+    ],
+    "recommendedFloors": [
+      3,
+      6
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.33,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          40.9,
+          111.6
+        ],
+        "recommendedDepth_m": [
+          29.0,
+          69.5
+        ],
+        "recommendedFloors": [
+          3,
+          6
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.33
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_second_empire_city_hall_with_repeatable_complete_middle_bays",
+    "variant_id": "grand_city_hall_tower",
+    "occupied_storeys": 5,
+    "features": [
+      "deep_triple_arch_civic_portal",
+      "continuous_mansard",
+      "four_corner_turrets",
+      "dormers_and_chimneys",
+      "clock_tower_and_copper_dome"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

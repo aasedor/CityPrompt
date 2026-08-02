@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "machine_aesthetic_heavy_industrial",
+  "catalogue_variant_id": "heavy_silo_cluster",
+  "catalogue_alias_ids": [
+    "monumental_silo_cluster",
+    "connected_bulk_storage_complex"
+  ],
+  "elevation_source": "/families/monumental-silo-cluster/elevation.jpg",
+  "goalpost": "/families/monumental-silo-cluster/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/monumental-silo-cluster/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

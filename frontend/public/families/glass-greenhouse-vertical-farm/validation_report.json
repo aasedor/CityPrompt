@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "glass-greenhouse-vertical-farm",
+  "archetype_id": "vertical_farm",
+  "reuse_keys": [
+    "vertical_farm",
+    "farm_glass_greenhouse_tower",
+    "glass_greenhouse_vertical_farm",
+    "stacked_hydroponic_tower",
+    "Glass Greenhouse Vertical Farm",
+    "Stacked Hydroponic Tower",
+    "Thirty Storey Urban Greenhouse"
+  ],
+  "manifest": "glass-greenhouse-vertical-farm_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "glass-greenhouse-vertical-farm_podium.glb: 28.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "glass-greenhouse-vertical-farm_floor_typical_a.glb: 30.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "glass-greenhouse-vertical-farm_floor_typical_b.glb: 30.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "glass-greenhouse-vertical-farm_floor_typical_c.glb: 30.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "glass-greenhouse-vertical-farm_assembled.glb: 50.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "glass-greenhouse-vertical-farm_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.52,
+        "height_y": 5.2,
+        "depth_z": 27.05
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_OccupiedDepth",
+        "MAT_W14_glass-greenhouse-vertical-farm_glass",
+        "MAT_W14_glass-greenhouse-vertical-farm_primary",
+        "MAT_W14_glass-greenhouse-vertical-farm_secondary"
+      ],
+      "size_bytes": 30204204
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.85,
+        "height_y": 3.45,
+        "depth_z": 26.85
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_OccupiedDepth",
+        "MAT_W14_glass-greenhouse-vertical-farm_frame",
+        "MAT_W14_glass-greenhouse-vertical-farm_glass",
+        "MAT_W14_glass-greenhouse-vertical-farm_primary"
+      ],
+      "size_bytes": 32088984
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.85,
+        "height_y": 3.45,
+        "depth_z": 26.85
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_OccupiedDepth",
+        "MAT_W14_glass-greenhouse-vertical-farm_frame",
+        "MAT_W14_glass-greenhouse-vertical-farm_glass",
+        "MAT_W14_glass-greenhouse-vertical-farm_primary"
+      ],
+      "size_bytes": 32090740
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 29.85,
+        "height_y": 3.45,
+        "depth_z": 26.85
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_OccupiedDepth",
+        "MAT_W14_glass-greenhouse-vertical-farm_frame",
+        "MAT_W14_glass-greenhouse-vertical-farm_glass",
+        "MAT_W14_glass-greenhouse-vertical-farm_primary"
+      ],
+      "size_bytes": 32092424
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.52,
+        "height_y": 1.5,
+        "depth_z": 26.52
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_ornament"
+      ],
+      "size_bytes": 6619628
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 29.52,
+        "height_y": 4.5,
+        "depth_z": 26.52
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_glass-greenhouse-vertical-farm_roof"
+      ],
+      "size_bytes": 7802624
+    },
+    {
+      "file": "glass-greenhouse-vertical-farm_assembled.glb",
+      "status": "ok",
+      "triangles": 256,
+      "extent_m": {
+        "width_x": 37.29,
+        "height_y": 115.1,
+        "depth_z": 35.29
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_glass-greenhouse-vertical-farm_OccupiedDepth",
+        "MAT_W14_glass-greenhouse-vertical-farm_frame",
+        "MAT_W14_glass-greenhouse-vertical-farm_glass",
+        "MAT_W14_glass-greenhouse-vertical-farm_ornament",
+        "MAT_W14_glass-greenhouse-vertical-farm_primary",
+        "MAT_W14_glass-greenhouse-vertical-farm_roof",
+        "MAT_W14_glass-greenhouse-vertical-farm_secondary"
+      ],
+      "size_bytes": 53078752,
+      "role": "assembled"
+    }
+  ]
+}

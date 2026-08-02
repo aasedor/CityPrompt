@@ -1,0 +1,121 @@
+{
+  "family_id": "monumental-silo-cluster",
+  "source": {
+    "archetype_id": "machine_aesthetic_heavy_industrial",
+    "variant_id": "heavy_silo_cluster",
+    "generation_archetype_id": "heavy_silo_cluster",
+    "reuse_keys": [
+      "machine_aesthetic_heavy_industrial",
+      "heavy_silo_cluster",
+      "monumental_silo_cluster",
+      "connected_bulk_storage_complex",
+      "Monumental Silo Cluster",
+      "Connected Bulk Storage Complex",
+      "Concrete Silo and Conveyor Headworks"
+    ]
+  },
+  "dimensions": {
+    "width_m": 77.2,
+    "depth_m": 55.377,
+    "podium_height_m": 5.5,
+    "floor_height_m": 4.2,
+    "setback_height_m": 4.2,
+    "roof_height_m": 7.0,
+    "crown_height_m": 1.0,
+    "default_floors": 8,
+    "min_floors": 1,
+    "max_floors": 10
+  },
+  "architectural_signature": {
+    "identity": "Eight monumental cylindrical silos rise as two connected banks beneath conical caps, a glazed conveyor headhouse and elevated truss galleries; external stairs, catwalks, pipes, hoppers and a low loading hall make every transfer route physically legible.",
+    "material_zones": "weathered pale concrete silo shells; galvanized corrugated steel caps and headhouse; graphite truss steel and catwalk grating; muted rust process pipes; neutral industrial glazing; warm occupied control depth; dark membrane loading-hall roof",
+    "glass_profile": "neutral_industrial_control_glass_with_sparse_occupied_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "exactly_eight_full_height_silos",
+      "individual_hoppers_and_caps",
+      "glazed_conveyor_headhouse",
+      "enclosed_truss_galleries",
+      "supported_catwalks_stairs_and_pipes"
+    ]
+  },
+  "archetype_aliases": [
+    "machine_aesthetic_heavy_industrial",
+    "heavy_silo_cluster",
+    "monumental_silo_cluster",
+    "connected_bulk_storage_complex"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 10.25 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      54.1,
+      147.6
+    ],
+    "recommendedDepth_m": [
+      36.3,
+      86.9
+    ],
+    "recommendedFloors": [
+      1,
+      10
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.25,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          54.1,
+          147.6
+        ],
+        "recommendedDepth_m": [
+          36.3,
+          86.9
+        ],
+        "recommendedFloors": [
+          1,
+          10
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.25
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_monumental_silo_cluster_with_repeatable_complete_middle_bays",
+    "variant_id": "heavy_silo_cluster",
+    "occupied_storeys": 8,
+    "features": [
+      "exactly_eight_full_height_silos",
+      "individual_hoppers_and_caps",
+      "glazed_conveyor_headhouse",
+      "enclosed_truss_galleries",
+      "supported_catwalks_stairs_and_pipes"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

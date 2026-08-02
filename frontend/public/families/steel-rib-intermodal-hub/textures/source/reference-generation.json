@@ -1,0 +1,99 @@
+{
+  "schema": "reference-generation@1",
+  "family": "steel-rib-intermodal-hub",
+  "archetype_id": "intermodal_transit_hub",
+  "variant_id": "sculptural_steel_exoskeleton",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/intermodal-transit-hub/variant_0.png",
+  "source_mode": "catalogue_contract_to_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      65.0,
+      100.0,
+      37.0
+    ],
+    "occupied_storeys": 3,
+    "variant_specific_contract": "65 m by 100 m, three public levels; the narrow glazed gable is the front facade and the complete nave runs deep along the long axis, with a lower brick plinth beneath two longitudinal parabolic arches, twenty-four paired fan ribs connecting arch nodes to real perimeter shoes, roof glazing between ribs, and an unobstructed central entry and platform axis",
+    "material_zones": "satin white structural steel ribs and cast nodes; warm red-brown civic brick plinth; clear low-iron concourse glass; silver pressure caps; pale terrazzo platform deck; warm occupied station depth; translucent ETFE and glass roof strips",
+    "glass_profile": "high_transmission_station_glass_with_deep_luminous_concourse",
+    "coverage_cohort": "uncovered_parent"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-2f42e799-214c-4c63-9a74-8fafe1460585",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO building variant\nPrimary request: Design one coherent, physically buildable Intermodal Transit Hub - Sculptural Steel Exoskeleton from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof topology, courts, spans, and equipment.\nCatalogue contract: A glazed intermodal concourse is sheltered by two immense parabolic white-steel arches and a continuous fan of branching ribs, all landing on visible structural shoes above a warm brick-and-glass plinth; the luminous central nave remains open from entry to platforms.\nBuilding lock: 100 m by 62 m, three public levels; a complete glazed nave and lower brick plinth sit beneath two longitudinal parabolic arches, twenty-four paired fan ribs connect arch nodes to real perimeter shoes, roof glazing spans between ribs, and the central entry and platform axis remains unobstructed.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: satin white structural steel ribs and cast nodes; warm red-brown civic brick plinth; clear low-iron concourse glass; silver pressure caps; pale terrazzo platform deck; warm occupied station depth; translucent ETFE and glass roof strips.\nConstraints: exact same coherent building topology, storey datums, structural bays, openings, entrances, material zones and roof in all four panels; credible load paths; real recessed openings and physical screens; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: generic airport box, loose decorative ribs, ribs ending in mid-air, sealed central nave, blue mirror glass, identical simple barrel vault, opaque roof; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-2f42e799-214c-4c63-9a74-8fafe1460585:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-2f42e799-214c-4c63-9a74-8fafe1460585:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-2f42e799-214c-4c63-9a74-8fafe1460585:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-2f42e799-214c-4c63-9a74-8fafe1460585:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Intermodal Transit Hub - Sculptural Steel Exoskeleton shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: satin white structural steel rib and node, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: warm red brown civic brick plinth, authentic construction scale and fine micro-detail, no complete building element.\nTop-right: pale terrazzo platform and stair, authentic construction scale and fine micro-detail, no complete ornament assembly.\nBottom-left: silver aluminum curtain-wall cap, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: neutral low-iron concourse glass plus clean occupied depth seen dead-on, with clear floor, ceiling and restrained warm occupation, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: translucent ETFE and laminated roof glass, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-9b14bfc2-d936-4e63-b672-4ff89a901a88:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

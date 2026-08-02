@@ -1,0 +1,366 @@
+{
+  "schema": "deconstructivist-concrete-fire-station-skin@1",
+  "family": "deconstructivist-concrete-fire-station",
+  "source": "textures/source/front-elevation-source-v1.png",
+  "source_model": "gpt-image-2",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/front-elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The four-view board locks one Modern Fire Station - Deconstructivist Concrete with 52 m by 36 m, three occupied levels; three unobstructed deep apparatus portals occupy the left concrete hall while a ground-to-roof charcoal crew wing and sheltered public entry complete the right side of the front, one tapered and visibly grounded hose tower leans above the roof with a narrow slit, and every angled wall owns real thickness and closed returns. The fixed landmark consumes that complete topology; LEGO fallback modules repeat only audited ordinary middle bays.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "modern_fire_station",
+    "source_variant_id": "fire_deconstructivist",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "complete_dead_front_variant_elevation",
+      "variant_specific_primary_and_secondary_massing",
+      "physical_recessed_glazing_with_occupied_depth",
+      "complete_structural_bay_and_floor_datum_schedule",
+      "integral_entrance_and_public_threshold",
+      "variant_specific_roof_crown_and_ornament",
+      "wrapped_left_right_and_rear_elevations",
+      "semantic_repeatable_complete_middle_bays"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_side_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_side_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_occupied_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_occupied_depth_opaque.png"
+      }
+    },
+    "primary": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_primary_raw_board_formed_architectural_concrete_opaque.png"
+      }
+    },
+    "secondary": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_secondary_charcoal_fibre_cement_crew_wing_opaque.png"
+      }
+    },
+    "ornament": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_ornament_deep_fire_red_insulated_apparatus_door_opaque.png"
+      }
+    },
+    "frame": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_frame_blackened_steel_lintel_rail_and_flashing_opaque.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_glass_neutral_clear_operations_glazing_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_albedo.png",
+        "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_normal.png",
+        "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_roughness.png",
+        "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_ao.png",
+        "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_depth.png",
+        "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_emissive.png",
+        "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_glass.png",
+        "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_albedo.png",
+        "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_normal.png",
+        "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_roughness.png",
+        "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_ao.png",
+        "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_depth.png",
+        "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_emissive.png",
+        "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_glass.png",
+        "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_roof_dark_zinc_folded_roof_and_red_beacon_metal_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_albedo.png",
+      "normal": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_normal.png",
+      "roughness": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_roughness.png",
+      "ao": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_ao.png",
+      "depth": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_depth.png",
+      "emissive": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/near/deconstructivist-concrete-fire-station_registered_front_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_albedo.png",
+      "normal": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_normal.png",
+      "roughness": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_roughness.png",
+      "ao": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_ao.png",
+      "depth": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_depth.png",
+      "emissive": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_emissive.png",
+      "glass_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_glass.png",
+      "opaque_mask": "textures/pbr/far/deconstructivist-concrete-fire-station_registered_front_opaque.png"
+    }
+  }
+}

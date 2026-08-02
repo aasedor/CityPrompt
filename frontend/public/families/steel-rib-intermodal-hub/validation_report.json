@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "steel-rib-intermodal-hub",
+  "archetype_id": "intermodal_transit_hub",
+  "reuse_keys": [
+    "intermodal_transit_hub",
+    "sculptural_steel_exoskeleton",
+    "steel_rib_intermodal_hub",
+    "parabolic_arch_transit_concourse",
+    "Steel Rib Intermodal Hub",
+    "Parabolic Arch Transit Concourse",
+    "White Exoskeleton Station"
+  ],
+  "manifest": "steel-rib-intermodal-hub_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "steel-rib-intermodal-hub_podium.glb: 29.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_floor_typical_a.glb: 21.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_floor_typical_b.glb: 21.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_floor_typical_c.glb: 21.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_crown_crown.glb: 8.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_roof.glb: 14.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "steel-rib-intermodal-hub_assembled.glb: 53.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "steel-rib-intermodal-hub_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 53.3,
+        "height_y": 6.0,
+        "depth_z": 78.53
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_steel-rib-intermodal-hub_OccupiedDepth",
+        "MAT_W14_steel-rib-intermodal-hub_glass",
+        "MAT_W14_steel-rib-intermodal-hub_primary",
+        "MAT_W14_steel-rib-intermodal-hub_secondary"
+      ],
+      "size_bytes": 30668316
+    },
+    {
+      "file": "steel-rib-intermodal-hub_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 53.63,
+        "height_y": 5.4,
+        "depth_z": 78.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_steel-rib-intermodal-hub_OccupiedDepth",
+        "MAT_W14_steel-rib-intermodal-hub_frame",
+        "MAT_W14_steel-rib-intermodal-hub_glass"
+      ],
+      "size_bytes": 22375088
+    },
+    {
+      "file": "steel-rib-intermodal-hub_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 53.63,
+        "height_y": 5.4,
+        "depth_z": 78.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_steel-rib-intermodal-hub_OccupiedDepth",
+        "MAT_W14_steel-rib-intermodal-hub_frame",
+        "MAT_W14_steel-rib-intermodal-hub_glass"
+      ],
+      "size_bytes": 22376860
+    },
+    {
+      "file": "steel-rib-intermodal-hub_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 53.63,
+        "height_y": 5.4,
+        "depth_z": 78.36
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_steel-rib-intermodal-hub_OccupiedDepth",
+        "MAT_W14_steel-rib-intermodal-hub_frame",
+        "MAT_W14_steel-rib-intermodal-hub_glass"
+      ],
+      "size_bytes": 22378652
+    },
+    {
+      "file": "steel-rib-intermodal-hub_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 53.3,
+        "height_y": 1.0,
+        "depth_z": 78.0
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_steel-rib-intermodal-hub_ornament"
+      ],
+      "size_bytes": 9124624
+    },
+    {
+      "file": "steel-rib-intermodal-hub_roof.glb",
+      "status": "ok",
+      "triangles": 292,
+      "extent_m": {
+        "width_x": 53.556,
+        "height_y": 19.479,
+        "depth_z": 78.26
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_steel-rib-intermodal-hub_frame",
+        "MAT_W14_steel-rib-intermodal-hub_roof"
+      ],
+      "size_bytes": 15578900
+    },
+    {
+      "file": "steel-rib-intermodal-hub_assembled.glb",
+      "status": "ok",
+      "triangles": 1972,
+      "extent_m": {
+        "width_x": 65.0,
+        "height_y": 34.52,
+        "depth_z": 104.31
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_steel-rib-intermodal-hub_OccupiedDepth",
+        "MAT_W14_steel-rib-intermodal-hub_frame",
+        "MAT_W14_steel-rib-intermodal-hub_glass",
+        "MAT_W14_steel-rib-intermodal-hub_ornament",
+        "MAT_W14_steel-rib-intermodal-hub_primary",
+        "MAT_W14_steel-rib-intermodal-hub_roof",
+        "MAT_W14_steel-rib-intermodal-hub_secondary"
+      ],
+      "size_bytes": 55731300,
+      "role": "assembled"
+    }
+  ]
+}

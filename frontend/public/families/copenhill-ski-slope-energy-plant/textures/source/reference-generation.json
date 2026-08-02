@@ -1,0 +1,99 @@
+{
+  "schema": "reference-generation@1",
+  "family": "copenhill-ski-slope-energy-plant",
+  "archetype_id": "waste_to_energy_plant",
+  "variant_id": "wte_ski_slope",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/waste_to_energy_plant/variant_0.png",
+  "source_mode": "catalogue_contract_to_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      160.0,
+      70.0,
+      85.0
+    ],
+    "occupied_storeys": 7,
+    "variant_specific_contract": "160 m by 70 m industrial envelope; one uninterrupted skiable roof rises diagonally from the public front edge to the high rear process block, the long side is a silver triangular-cassette climbing wall, and a separate faceted white stack reaches the 85 m summit without becoming a generic chimney pasted onto a box",
+    "material_zones": "checkerboard brushed and perforated aluminum cassettes; planted and synthetic-turf ski slope with real edge rails; pale exposed concrete process base; graphite industrial steel; neutral high-transmission visitor glazing; warm occupied control-room depth; white ceramic-coated emissions stack and dark service roof",
+    "glass_profile": "neutral_high_transmission_industrial_visitor_glass_with_control_room_depth",
+    "coverage_cohort": "uncovered_parent"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-4b899008-fc8f-4ed5-9b66-4974f08dfbc5",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO building variant\nPrimary request: Design one coherent, physically buildable Waste-to-Energy Plant - Inhabited Ski Slope from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof topology, three slope gradients, public paths, process volumes, and equipment.\nCatalogue contract: A monumental silver waste-to-energy plant rises beneath one continuous inhabited green ski slope, climbing from a low public forecourt to a tall industrial summit beside a faceted white emissions stack; a multicolour climbing wall and diagonal aluminum cassette field make the long elevation civic rather than utilitarian.\nBuilding lock: 160 m by 70 m industrial envelope; one uninterrupted skiable roof rises diagonally from the public front edge to the high rear process block; a meandering planted public route and three ski gradients occupy the roof; the long side uses overlapping 1.2 m by 3.3 m aluminum box cassettes and carries an 85 m climbing wall; a glass elevator and separate faceted white emissions stack reach the summit. The slope, building shell, summit, and stack must be integrated construction\u2014not an attached ramp or fantasy mountain.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: checkerboard brushed and perforated aluminum cassettes; planted and synthetic-turf ski slope with real edge rails; pale exposed concrete process base; graphite industrial steel; neutral high-transmission visitor glazing; warm occupied control-room depth; white ceramic-coated emissions stack and dark service roof.\nConstraints: exact same coherent building topology, facade pattern, slope path, stack position, structural bays, openings, entrance, material zones and roof in all four panels; credible load paths; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: generic factory box, flat green roof, detached ramp, grass pasted on a vertical wall, tiny chimney, blue mirror curtain wall, smoke plume, fantasy mountain, perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-4b899008-fc8f-4ed5-9b66-4974f08dfbc5:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-4b899008-fc8f-4ed5-9b66-4974f08dfbc5:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-4b899008-fc8f-4ed5-9b66-4974f08dfbc5:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-4b899008-fc8f-4ed5-9b66-4974f08dfbc5:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Waste-to-Energy Plant - Inhabited Ski Slope shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: brushed and perforated silver aluminum cassette field using overlapping 1.2 m by 3.3 m box modules, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: green planted ski slope plus pale aggregate public path and synthetic ski surface, authentic construction scale and fine micro-detail, no complete landscape scene.\nTop-right: colour-coded climbing holds on dark perforated backing, authentic construction scale and fine micro-detail, no complete climbing-wall elevation.\nBottom-left: graphite industrial structural steel, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: neutral high-transmission visitor and control-room glass plus clean occupied control-room depth seen dead-on, with clear floor, ceiling, sparse warm occupation and process silhouettes, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: white ceramic-coated faceted stack cladding plus charcoal service membrane, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-d24b335c-1b45-48a8-bbe3-14a3fcd3a00c:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

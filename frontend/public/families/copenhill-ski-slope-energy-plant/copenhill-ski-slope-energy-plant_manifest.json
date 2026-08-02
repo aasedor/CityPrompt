@@ -1,0 +1,1457 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave15_mixed_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.1.2",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-02T02:10:03.395622+00:00",
+  "family": "copenhill-ski-slope-energy-plant",
+  "archetype_id": "waste_to_energy_plant",
+  "archetype_label": "Waste-to-Energy Plant - Inhabited Ski Slope",
+  "variant_id": "wte_ski_slope",
+  "generation_archetype_id": "wte_ski_slope",
+  "archetype_aliases": [
+    "waste_to_energy_plant",
+    "wte_ski_slope",
+    "copenhill_ski_slope_energy_plant",
+    "inhabited_energy_landscape"
+  ],
+  "aesthetic_category_id": "inhabited_energy_landscape",
+  "development_type": "energy_infrastructure",
+  "reuse_keys": [
+    "waste_to_energy_plant",
+    "wte_ski_slope",
+    "copenhill_ski_slope_energy_plant",
+    "inhabited_energy_landscape",
+    "Inhabited Ski Slope Energy Plant",
+    "Civic Waste to Energy Landscape",
+    "Aluminum Climbing Wall Power Plant"
+  ],
+  "generation_tags": [
+    "wave15",
+    "uncovered_parent",
+    "reference_locked_goalpost",
+    "six_zone_custom_pbr_skin",
+    "fixed_landmark_and_modular_fallback",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "continuous_program_topology",
+    "credible_structural_load_paths",
+    "complete_semantic_bay_repeat",
+    "continuous_inhabited_ski_slope",
+    "integrated_climbing_wall",
+    "summit_process_deck",
+    "glass_public_elevator",
+    "faceted_emissions_stack"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 20.00 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      105.6,
+      288.0
+    ],
+    "recommendedDepth_m": [
+      46.2,
+      110.6
+    ],
+    "recommendedFloors": [
+      3,
+      12
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 20.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          105.6,
+          288.0
+        ],
+        "recommendedDepth_m": [
+          46.2,
+          110.6
+        ],
+        "recommendedFloors": [
+          3,
+          12
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 20.0
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_occupied_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_primary_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_albedo.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_primary_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_normal.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_primary_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_roughness.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_primary_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_ao.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_primary_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_depth.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_primary_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_emissive.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_primary_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_glass.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_primary_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_primary_brushed_and_perforated_silver_aluminum_cassette_field_opaque.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_secondary_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_albedo.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_secondary_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_normal.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_secondary_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_roughness.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_secondary_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_ao.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_secondary_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_depth.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_secondary_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_emissive.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_secondary_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_glass.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_secondary_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_secondary_green_planted_ski_slope_and_pale_aggregate_path_opaque.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_ornament_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_albedo.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_ornament_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_normal.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "normal"
+    },
+    {
+      "key": "near_ornament_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_roughness.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_ornament_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_ao.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "ao"
+    },
+    {
+      "key": "near_ornament_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_depth.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "depth"
+    },
+    {
+      "key": "near_ornament_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_emissive.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_ornament_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_glass.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_ornament_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_ornament_colour-coded_climbing_holds_on_dark_perforated_backing_opaque.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_frame_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_albedo.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_frame_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_normal.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_frame_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_roughness.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_frame_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_ao.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_frame_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_depth.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_frame_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_emissive.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_frame_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_glass.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_frame_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_frame_graphite_industrial_structural_steel_opaque.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_glass_neutral_visitor_and_control-room_glass_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/copenhill-ski-slope-energy-plant_roof_white_ceramic_stack_cladding_and_charcoal_service_membrane_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/copenhill-ski-slope-energy-plant",
+    "model": "gpt-image-2",
+    "style_reference": "/families/copenhill-ski-slope-energy-plant/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "integral_public_entrance",
+        "complete_corner_returns",
+        "variant_specific_roof_or_crown",
+        "variant_specific_ornament"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat a complete semantic bay containing physical glass, occupied depth, frame, structure or screen, wall return and floor datum; never stretch an individual pane or ornament."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "continuous_inhabited_ski_slope",
+        "integrated_climbing_wall",
+        "summit_process_deck",
+        "glass_public_elevator",
+        "faceted_emissions_stack"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete wrapped left and right construction with reference-related but independently scheduled secondary openings",
+      "elevation_coverage": {
+        "front": "complete reference-locked public elevation",
+        "left": "complete wrapped secondary construction",
+        "right": "complete wrapped secondary construction",
+        "rear": "complete occupied service elevation",
+        "roof": "complete variant-specific roof, terraces, courts and crowns"
+      },
+      "variation_policy": "Use the fixed landmark throughout the 0.62–1.40 independent-axis band; oversized targets streetwall-repeat complete long-axis construction bays rather than returning family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/front-elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_albedo.png",
+        "normal": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_normal.png",
+        "roughness": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_roughness.png",
+        "ao": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_ao.png",
+        "depth": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_depth.png",
+        "emissive": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_albedo.png",
+        "normal": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_normal.png",
+        "roughness": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_roughness.png",
+        "ao": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_ao.png",
+        "depth": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_depth.png",
+        "emissive": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_emissive.png",
+        "glass_mask": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/far/copenhill-ski-slope-energy-plant_registered_front_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_glass.png",
+        "opaque_mask": "textures/pbr/near/copenhill-ski-slope-energy-plant_registered_front_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "waste_to_energy_plant",
+      "source_variant_id": "wte_ski_slope",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/copenhill-ski-slope-energy-plant/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy.",
+    "variant_id": "wte_ski_slope"
+  },
+  "massing_graph": {
+    "type": "fixed_ski_slope_energy_plant_with_repeatable_complete_middle_bays",
+    "variant_id": "wte_ski_slope",
+    "occupied_storeys": 7,
+    "features": [
+      "continuous_inhabited_ski_slope",
+      "integrated_climbing_wall",
+      "summit_process_deck",
+      "glass_public_elevator",
+      "faceted_emissions_stack"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Variant-specific opaque construction, physical glazing, occupied depth, expressed structure, screens, ornament and roof finishes remain separate because their optical contrast carries the catalogue identity."
+  },
+  "dimensions": {
+    "width_m": 161.0,
+    "depth_m": 73.192,
+    "podium_height_m": 8.0,
+    "floor_height_m": 5.0,
+    "setback_height_m": 5.0,
+    "roof_height_m": 46.0,
+    "crown_height_m": 1.2,
+    "default_floors": 7,
+    "min_floors": 3,
+    "max_floors": 12
+  },
+  "native_width_m": 161.0,
+  "native_depth_m": 73.192,
+  "native_height_m": 85.375,
+  "native_floors": 7,
+  "min_floors": 3,
+  "max_floors": 12,
+  "default_floors": 7,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_podium.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.2,
+      "depth_m": 55.13,
+      "height_m": 8.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 84,
+      "material_count": 7,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 28919672
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_floor_typical_a.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.53,
+      "depth_m": 54.93,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 540,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 14956032
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_floor_typical_b.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.53,
+      "depth_m": 54.93,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 588,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 14957660
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_floor_typical_c.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.53,
+      "depth_m": 54.93,
+      "height_m": 5.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 636,
+      "material_count": 6,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 14959224
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_crown_crown.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.2,
+      "depth_m": 54.6,
+      "height_m": 1.2,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 7792532
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "copenhill-ski-slope-energy-plant_roof.glb",
+      "module_family": "copenhill-ski-slope-energy-plant",
+      "width_m": 131.2,
+      "depth_m": 54.6,
+      "height_m": 46.0,
+      "floor_height_m": 5.0,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 48,
+      "material_count": 4,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "ao_baked": true,
+      "size_bytes": 6021112
+    }
+  ],
+  "assembled": {
+    "filename": "copenhill-ski-slope-energy-plant_assembled.glb",
+    "module_family": "copenhill-ski-slope-energy-plant",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "wte_ski_slope",
+    "generation_archetype_id": "wte_ski_slope",
+    "width_m": 161.0,
+    "depth_m": 73.192,
+    "floors": 7,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 85.375,
+    "triangle_count": 66480,
+    "material_count": 16,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 85.375
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 161.0,
+      "depth_m": 73.192,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 161.0,
+          "thickness_m": 73.192,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_ski_slope_energy_plant_with_repeatable_complete_middle_bays",
+      "variant_id": "wte_ski_slope",
+      "occupied_storeys": 7,
+      "features": [
+        "continuous_inhabited_ski_slope",
+        "integrated_climbing_wall",
+        "summit_process_deck",
+        "glass_public_elevator",
+        "faceted_emissions_stack"
+      ],
+      "physical_window_layers": [
+        "occupied_depth",
+        "physical_pane",
+        "separate_frame",
+        "structural_or_screen_layer",
+        "floor_datum",
+        "material_return"
+      ],
+      "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "frame",
+      "glass",
+      "interior",
+      "ornament",
+      "podium",
+      "primary",
+      "roof",
+      "secondary",
+      "side"
+    ],
+    "ao_baked": true,
+    "edge_treatment": {
+      "method": "adaptive_physical_delivery_bevel",
+      "segments": 0,
+      "minimum_assembled_triangles": 12000
+    }
+  },
+  "thumbnail": "copenhill-ski-slope-energy-plant_preview.png",
+  "renders": [
+    "copenhill-ski-slope-energy-plant_preview.png",
+    "copenhill-ski-slope-energy-plant_front_elevation.png",
+    "copenhill-ski-slope-energy-plant_front_corner_oblique.png",
+    "copenhill-ski-slope-energy-plant_aerial.png",
+    "copenhill-ski-slope-energy-plant_facade_close.png",
+    "copenhill-ski-slope-energy-plant_street.png",
+    "copenhill-ski-slope-energy-plant_context.png",
+    "copenhill-ski-slope-energy-plant_rear_corner_oblique.png"
+  ],
+  "architectural_identity": "A monumental silver waste-to-energy plant rises beneath one continuous inhabited green ski slope, climbing from a low public forecourt to a tall industrial summit beside a faceted white emissions stack; a multicolour climbing wall and diagonal aluminum cassette field make the long elevation civic rather than utilitarian.",
+  "material_zones": "checkerboard brushed and perforated aluminum cassettes; planted and synthetic-turf ski slope with real edge rails; pale exposed concrete process base; graphite industrial steel; neutral high-transmission visitor glazing; warm occupied control-room depth; white ceramic-coated emissions stack and dark service roof",
+  "glass_profile": "neutral_high_transmission_industrial_visitor_glass_with_control_room_depth",
+  "source_provenance": {
+    "catalogue_archetype_id": "waste_to_energy_plant",
+    "catalogue_variant_id": "wte_ski_slope",
+    "catalogue_alias_ids": [
+      "copenhill_ski_slope_energy_plant",
+      "inhabited_energy_landscape"
+    ],
+    "elevation_source": "/families/copenhill-ski-slope-energy-plant/elevation.jpg",
+    "goalpost": "/families/copenhill-ski-slope-energy-plant/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/copenhill-ski-slope-energy-plant/textures/source/reference-generation.json",
+    "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+    "coverage_cohort": "uncovered_parent"
+  }
+}

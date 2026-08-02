@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "food_hall_market_hall",
+  "catalogue_variant_id": "market_historic_iron_glass",
+  "catalogue_alias_ids": [
+    "historic_iron_glass_market",
+    "victorian_barrel_vault_market"
+  ],
+  "elevation_source": "/families/historic-iron-glass-market/elevation.jpg",
+  "goalpost": "/families/historic-iron-glass-market/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/historic-iron-glass-market/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "sibling_variant"
+}

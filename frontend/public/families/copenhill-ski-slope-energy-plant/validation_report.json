@@ -1,0 +1,175 @@
+{
+  "status": "pass",
+  "family": "copenhill-ski-slope-energy-plant",
+  "archetype_id": "waste_to_energy_plant",
+  "reuse_keys": [
+    "waste_to_energy_plant",
+    "wte_ski_slope",
+    "copenhill_ski_slope_energy_plant",
+    "inhabited_energy_landscape",
+    "Inhabited Ski Slope Energy Plant",
+    "Civic Waste to Energy Landscape",
+    "Aluminum Climbing Wall Power Plant"
+  ],
+  "manifest": "copenhill-ski-slope-energy-plant_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "copenhill-ski-slope-energy-plant_podium.glb: 27.6 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "copenhill-ski-slope-energy-plant_floor_typical_a.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "copenhill-ski-slope-energy-plant_floor_typical_b.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "copenhill-ski-slope-energy-plant_floor_typical_c.glb: 14.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "copenhill-ski-slope-energy-plant_assembled.glb: 16 materials (many; consider consolidation)",
+    "copenhill-ski-slope-energy-plant_assembled.glb: 40.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "copenhill-ski-slope-energy-plant_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 131.2,
+        "height_y": 8.0,
+        "depth_z": 55.13
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_OccupiedDepth",
+        "MAT_W14_copenhill-ski-slope-energy-plant_glass",
+        "MAT_W14_copenhill-ski-slope-energy-plant_primary",
+        "MAT_W14_copenhill-ski-slope-energy-plant_secondary"
+      ],
+      "size_bytes": 28919672
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 131.53,
+        "height_y": 5.0,
+        "depth_z": 54.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_OccupiedDepth",
+        "MAT_W14_copenhill-ski-slope-energy-plant_frame",
+        "MAT_W14_copenhill-ski-slope-energy-plant_glass"
+      ],
+      "size_bytes": 14956032
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 131.53,
+        "height_y": 5.0,
+        "depth_z": 54.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_OccupiedDepth",
+        "MAT_W14_copenhill-ski-slope-energy-plant_frame",
+        "MAT_W14_copenhill-ski-slope-energy-plant_glass"
+      ],
+      "size_bytes": 14957660
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 131.53,
+        "height_y": 5.0,
+        "depth_z": 54.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_OccupiedDepth",
+        "MAT_W14_copenhill-ski-slope-energy-plant_frame",
+        "MAT_W14_copenhill-ski-slope-energy-plant_glass"
+      ],
+      "size_bytes": 14959224
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 131.2,
+        "height_y": 1.2,
+        "depth_z": 54.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_ornament"
+      ],
+      "size_bytes": 7792532
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 131.2,
+        "height_y": 46.0,
+        "depth_z": 54.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_copenhill-ski-slope-energy-plant_roof"
+      ],
+      "size_bytes": 6021112
+    },
+    {
+      "file": "copenhill-ski-slope-energy-plant_assembled.glb",
+      "status": "ok",
+      "triangles": 44144,
+      "extent_m": {
+        "width_x": 161.0,
+        "height_y": 85.375,
+        "depth_z": 73.192
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_copenhill-ski-slope-energy-plant_OccupiedDepth",
+        "MAT_W14_copenhill-ski-slope-energy-plant_frame",
+        "MAT_W14_copenhill-ski-slope-energy-plant_glass",
+        "MAT_W14_copenhill-ski-slope-energy-plant_primary",
+        "MAT_W14_copenhill-ski-slope-energy-plant_roof",
+        "MAT_W14_copenhill-ski-slope-energy-plant_secondary",
+        "MAT_W15_copenhill-ski-slope-energy-plant_AggregatePath",
+        "MAT_W15_copenhill-ski-slope-energy-plant_AluminumDark",
+        "MAT_W15_copenhill-ski-slope-energy-plant_AluminumMid",
+        "MAT_W15_copenhill-ski-slope-energy-plant_PaleConcrete",
+        "MAT_W15_copenhill-ski-slope-energy-plant_PlantDark",
+        "MAT_W15_copenhill-ski-slope-energy-plant_SkiLight",
+        "MAT_W15_copenhill-ski-slope-energy-plant_hold_blue",
+        "MAT_W15_copenhill-ski-slope-energy-plant_hold_green",
+        "MAT_W15_copenhill-ski-slope-energy-plant_hold_red",
+        "MAT_W15_copenhill-ski-slope-energy-plant_hold_yellow"
+      ],
+      "size_bytes": 41986456,
+      "role": "assembled"
+    }
+  ]
+}

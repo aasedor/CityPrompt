@@ -1,0 +1,144 @@
+{
+  "family_id": "deconstructivist-concrete-fire-station",
+  "source": {
+    "archetype_id": "modern_fire_station",
+    "variant_id": "fire_deconstructivist",
+    "generation_archetype_id": "fire_deconstructivist",
+    "reuse_keys": [
+      "modern_fire_station",
+      "fire_deconstructivist",
+      "deconstructivist_concrete_fire_station",
+      "angular_hose_tower_station",
+      "Deconstructivist Concrete Fire Station",
+      "Angular Hose Tower Station",
+      "Folded Apparatus Hall"
+    ]
+  },
+  "dimensions": {
+    "width_m": 51.299,
+    "depth_m": 32.0,
+    "podium_height_m": 5.4,
+    "floor_height_m": 4.2,
+    "setback_height_m": 4.2,
+    "roof_height_m": 7.0,
+    "crown_height_m": 0.8,
+    "default_floors": 3,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A raw-concrete fire station is assembled as one angular apparatus hall cut by three deep red engine bays, a folded crew wing and a leaning hose-drying tower whose narrow vertical slit and roof beacon complete an intentionally off-axis but structurally grounded civic composition.",
+    "material_zones": "raw board-formed concrete; charcoal fibre-cement crew wing; deep fire-red insulated apparatus doors; blackened steel lintels and rails; neutral clear operations glazing; warm occupied crew and watch-room depth; dark zinc folded roof and red beacon metal",
+    "glass_profile": "neutral_clear_operations_glass_with_deep_crew_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "three_true_deep_apparatus_portals",
+      "folded_occupied_crew_wing",
+      "sheltered_public_entry",
+      "grounded_leaning_hose_tower",
+      "closed_angular_roof_planes"
+    ]
+  },
+  "archetype_aliases": [
+    "modern_fire_station",
+    "fire_deconstructivist",
+    "deconstructivist_concrete_fire_station",
+    "angular_hose_tower_station"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle",
+      "l_shape"
+    ],
+    "minimumPreferredProfiles": 2,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 8.67 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      34.3,
+      93.6
+    ],
+    "recommendedDepth_m": [
+      23.8,
+      56.9
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 8.67,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          34.3,
+          93.6
+        ],
+        "recommendedDepth_m": [
+          23.8,
+          56.9
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 8.67
+      },
+      "l_shape": {
+        "recommendedWidth_m": [
+          37.4,
+          106.6
+        ],
+        "recommendedDepth_m": [
+          25.2,
+          64.8
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.32,
+        "preferredBayMultiple_m": 8.67,
+        "wingDepth_m": [
+          10.1,
+          23.4
+        ]
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_deconstructivist_fire_station_with_repeatable_complete_middle_bays",
+    "variant_id": "fire_deconstructivist",
+    "occupied_storeys": 3,
+    "features": [
+      "three_true_deep_apparatus_portals",
+      "folded_occupied_crew_wing",
+      "sheltered_public_entry",
+      "grounded_leaning_hose_tower",
+      "closed_angular_roof_planes"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

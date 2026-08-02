@@ -66,7 +66,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-01-wave14-sibling-variant-lock-v113"
+        == "2026-08-01-wave15-program-topology-v114"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -101,7 +101,13 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "passive_windows_are_sectional_envelopes",
         "photovoltaic_fields_are_discrete_modules",
         "sibling_variants_are_independent_design_contracts",
+        "program_systems_are_connected_topology",
     } <= principle_ids
+    assert any(
+        "civic or industrial landmark" in item["symptom"].lower()
+        and "trace the complete route or load path" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
     assert any(
         "stack of cubicles" in item["symptom"].lower()
         and "per-pane occupation cards" in item["correction"].lower()

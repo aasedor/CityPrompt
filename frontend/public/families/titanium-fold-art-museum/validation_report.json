@@ -1,0 +1,165 @@
+{
+  "status": "pass",
+  "family": "titanium-fold-art-museum",
+  "archetype_id": "large_art_museum_gallery",
+  "reuse_keys": [
+    "large_art_museum_gallery",
+    "deconstructivist_titanium_pavilion",
+    "titanium_fold_art_museum",
+    "sculptural_metal_gallery_canyon",
+    "Folded Titanium Art Museum",
+    "Sculptural Metal Gallery Canyon",
+    "Deconstructivist Civic Pavilion"
+  ],
+  "manifest": "titanium-fold-art-museum_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "titanium-fold-art-museum_podium.glb: 27.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "titanium-fold-art-museum_floor_typical_a.glb: 12.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "titanium-fold-art-museum_floor_typical_b.glb: 12.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "titanium-fold-art-museum_floor_typical_c.glb: 12.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "titanium-fold-art-museum_crown_crown.glb: 8.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "titanium-fold-art-museum_assembled.glb: 40.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "titanium-fold-art-museum_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 5.2,
+        "depth_z": 50.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_titanium-fold-art-museum_OccupiedDepth",
+        "MAT_W14_titanium-fold-art-museum_glass",
+        "MAT_W14_titanium-fold-art-museum_primary",
+        "MAT_W14_titanium-fold-art-museum_secondary"
+      ],
+      "size_bytes": 28707620
+    },
+    {
+      "file": "titanium-fold-art-museum_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 50.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_titanium-fold-art-museum_OccupiedDepth",
+        "MAT_W14_titanium-fold-art-museum_frame",
+        "MAT_W14_titanium-fold-art-museum_glass"
+      ],
+      "size_bytes": 12949552
+    },
+    {
+      "file": "titanium-fold-art-museum_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 50.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_titanium-fold-art-museum_OccupiedDepth",
+        "MAT_W14_titanium-fold-art-museum_frame",
+        "MAT_W14_titanium-fold-art-museum_glass"
+      ],
+      "size_bytes": 12951392
+    },
+    {
+      "file": "titanium-fold-art-museum_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 72.49,
+        "height_y": 4.6,
+        "depth_z": 50.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_titanium-fold-art-museum_OccupiedDepth",
+        "MAT_W14_titanium-fold-art-museum_frame",
+        "MAT_W14_titanium-fold-art-museum_glass"
+      ],
+      "size_bytes": 12953164
+    },
+    {
+      "file": "titanium-fold-art-museum_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 1.0,
+        "depth_z": 49.92
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_titanium-fold-art-museum_ornament"
+      ],
+      "size_bytes": 8483272
+    },
+    {
+      "file": "titanium-fold-art-museum_roof.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 72.16,
+        "height_y": 10.0,
+        "depth_z": 49.92
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_titanium-fold-art-museum_roof"
+      ],
+      "size_bytes": 7837788
+    },
+    {
+      "file": "titanium-fold-art-museum_assembled.glb",
+      "status": "ok",
+      "triangles": 31296,
+      "extent_m": {
+        "width_x": 86.0,
+        "height_y": 31.115,
+        "depth_z": 64.5
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_titanium-fold-art-museum_OccupiedDepth",
+        "MAT_W14_titanium-fold-art-museum_frame",
+        "MAT_W14_titanium-fold-art-museum_glass",
+        "MAT_W14_titanium-fold-art-museum_ornament",
+        "MAT_W14_titanium-fold-art-museum_secondary",
+        "MAT_W15_titanium-fold-art-museum_PerforatedTitaniumMid"
+      ],
+      "size_bytes": 42358624,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "waste_to_energy_plant",
+  "catalogue_variant_id": "wte_ski_slope",
+  "catalogue_alias_ids": [
+    "copenhill_ski_slope_energy_plant",
+    "inhabited_energy_landscape"
+  ],
+  "elevation_source": "/families/copenhill-ski-slope-energy-plant/elevation.jpg",
+  "goalpost": "/families/copenhill-ski-slope-energy-plant/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/copenhill-ski-slope-energy-plant/textures/source/reference-generation.json",
+  "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
+  "coverage_cohort": "uncovered_parent"
+}

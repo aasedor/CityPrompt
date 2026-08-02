@@ -1,0 +1,167 @@
+{
+  "status": "pass",
+  "family": "historic-iron-glass-market",
+  "archetype_id": "food_hall_market_hall",
+  "reuse_keys": [
+    "food_hall_market_hall",
+    "market_historic_iron_glass",
+    "historic_iron_glass_market",
+    "victorian_barrel_vault_market",
+    "Historic Iron and Glass Market",
+    "Victorian Barrel Vault Food Hall",
+    "Restored Wrought Iron Market"
+  ],
+  "manifest": "historic-iron-glass-market_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "historic-iron-glass-market_podium.glb: 29.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-iron-glass-market_floor_typical_a.glb: 16.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-iron-glass-market_floor_typical_b.glb: 16.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-iron-glass-market_floor_typical_c.glb: 16.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-iron-glass-market_roof.glb: 12.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "historic-iron-glass-market_assembled.glb: 47.0 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "historic-iron-glass-market_podium.glb",
+      "status": "ok",
+      "triangles": 84,
+      "extent_m": {
+        "width_x": 55.76,
+        "height_y": 5.0,
+        "depth_z": 33.29
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_historic-iron-glass-market_OccupiedDepth",
+        "MAT_W14_historic-iron-glass-market_glass",
+        "MAT_W14_historic-iron-glass-market_primary",
+        "MAT_W14_historic-iron-glass-market_secondary"
+      ],
+      "size_bytes": 30590264
+    },
+    {
+      "file": "historic-iron-glass-market_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 56.09,
+        "height_y": 4.5,
+        "depth_z": 33.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_historic-iron-glass-market_OccupiedDepth",
+        "MAT_W14_historic-iron-glass-market_frame",
+        "MAT_W14_historic-iron-glass-market_glass"
+      ],
+      "size_bytes": 17289732
+    },
+    {
+      "file": "historic-iron-glass-market_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 56.09,
+        "height_y": 4.5,
+        "depth_z": 33.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_historic-iron-glass-market_OccupiedDepth",
+        "MAT_W14_historic-iron-glass-market_frame",
+        "MAT_W14_historic-iron-glass-market_glass"
+      ],
+      "size_bytes": 17291472
+    },
+    {
+      "file": "historic-iron-glass-market_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 100,
+      "extent_m": {
+        "width_x": 56.09,
+        "height_y": 4.5,
+        "depth_z": 33.12
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_historic-iron-glass-market_OccupiedDepth",
+        "MAT_W14_historic-iron-glass-market_frame",
+        "MAT_W14_historic-iron-glass-market_glass"
+      ],
+      "size_bytes": 17293136
+    },
+    {
+      "file": "historic-iron-glass-market_crown_crown.glb",
+      "status": "ok",
+      "triangles": 48,
+      "extent_m": {
+        "width_x": 55.76,
+        "height_y": 0.8,
+        "depth_z": 32.76
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_historic-iron-glass-market_ornament"
+      ],
+      "size_bytes": 5436000
+    },
+    {
+      "file": "historic-iron-glass-market_roof.glb",
+      "status": "ok",
+      "triangles": 292,
+      "extent_m": {
+        "width_x": 56.009,
+        "height_y": 12.48,
+        "depth_z": 33.02
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_historic-iron-glass-market_frame",
+        "MAT_W14_historic-iron-glass-market_roof"
+      ],
+      "size_bytes": 12595912
+    },
+    {
+      "file": "historic-iron-glass-market_assembled.glb",
+      "status": "ok",
+      "triangles": 5088,
+      "extent_m": {
+        "width_x": 69.54,
+        "height_y": 23.9,
+        "depth_z": 41.67
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_historic-iron-glass-market_OccupiedDepth",
+        "MAT_W14_historic-iron-glass-market_frame",
+        "MAT_W14_historic-iron-glass-market_glass",
+        "MAT_W14_historic-iron-glass-market_ornament",
+        "MAT_W14_historic-iron-glass-market_primary",
+        "MAT_W14_historic-iron-glass-market_roof",
+        "MAT_W14_historic-iron-glass-market_secondary"
+      ],
+      "size_bytes": 49247396,
+      "role": "assembled"
+    }
+  ]
+}

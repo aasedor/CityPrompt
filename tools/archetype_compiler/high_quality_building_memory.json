@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-01-wave14-sibling-variant-lock-v113",
+  "memory_version": "2026-08-01-wave15-program-topology-v114",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -187,6 +187,10 @@
     {
       "id": "photovoltaic_fields_are_discrete_modules",
       "rule": "A reference-defining photovoltaic field consists of standard-scale modules with one complete countable cell topology per module, individual perimeter frames, real inter-module gaps, mounting rails and roof-edge clearance; one stretched PV texture across a roof is prohibited."
+    },
+    {
+      "id": "program_systems_are_connected_topology",
+      "rule": "When circulation, long-span structure or industrial transfer equipment defines an archetype, construct it as one continuous usable or load-bearing system with credible landings, supports, clearances and endpoints. A ski path, concourse nave, cable roof, silo gallery or public stair cannot be reduced to disconnected decorative pieces."
     }
   ],
   "construction_memory": {
@@ -997,6 +1001,11 @@
       "symptom": "Two catalogue sibling variants load as the same building with different colours or one variant silently falls back to the parent family",
       "cause": "The sibling reused the parent's goalpost, geometry, signature or assembled GLB, or its variant and aesthetic aliases were omitted during import and matching.",
       "correction": "Treat the sibling as an independent family: lock its own compatible multi-angle source board, build its distinct massing, entrance, roof, glazing and materials, export a variant-tagged fixed landmark plus semantic fallback modules, and test every declared alias through the planner."
+    },
+    {
+      "symptom": "A civic or industrial landmark contains the right ski path, roof ribs, conveyor gallery, market vault or entrance stair as isolated motifs but the building still looks toy-like and cannot plausibly function",
+      "cause": "Program-defining circulation, structure or process equipment was modeled as decorative fragments without continuous geometry, credible supports, landings, clearances or connections to occupied space.",
+      "correction": "Trace the complete route or load path from start to finish before adding surface detail. Join every segment to its architectural endpoint, model supports and guards at metric scale, preserve the connected system in the assembled GLB, and prove continuity in front, oblique and aerial comparisons."
     }
   ]
 }

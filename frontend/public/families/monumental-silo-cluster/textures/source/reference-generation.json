@@ -1,0 +1,99 @@
+{
+  "schema": "reference-generation@1",
+  "family": "monumental-silo-cluster",
+  "archetype_id": "machine_aesthetic_heavy_industrial",
+  "variant_id": "heavy_silo_cluster",
+  "provider": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "generated_at": "2026-08-01",
+  "status": "source-pack-complete",
+  "input_paths": [],
+  "catalogue_card_path": "/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2.png",
+  "source_mode": "catalogue_contract_to_render_locked_board",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      82.0,
+      55.0,
+      62.0
+    ],
+    "occupied_storeys": 8,
+    "variant_specific_contract": "82 m by 55 m industrial site envelope; exactly eight full-height cylindrical silos in two four-silo banks, each with a conical cap and hopper logic, one elevated glazed headhouse, two enclosed truss galleries, open catwalk guards, external stair towers, process pipes and a separate low loading shed",
+    "material_zones": "weathered pale concrete silo shells; galvanized corrugated steel caps and headhouse; graphite truss steel and catwalk grating; muted rust process pipes; neutral industrial glazing; warm occupied control depth; dark membrane loading-hall roof",
+    "glass_profile": "neutral_industrial_control_glass_with_sparse_occupied_depth",
+    "coverage_cohort": "uncovered_parent"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "exec-229e7e69-0f47-43dd-ab0d-0e2639207a1e",
+      "role": "canonical_four_view_variant_reference_board",
+      "prompt": "Use case: photorealistic-natural\nAsset type: render-locked four-view architectural construction board for a CityPrompt LEGO building variant\nPrimary request: Design one coherent, physically buildable Machine-Aesthetic Heavy Industrial - Monumental Silo Cluster from the catalogue contract below and show that exact same building in four equal panels in a precise 2 by 2 grid.\nPanel 1: dead-front orthographic elevation, complete building visible. Panel 2: pedestrian-height front-right architectural survey oblique. Panel 3: rear-left oblique proving every material and structural system wraps the secondary elevations. Panel 4: high aerial roof-plan oblique proving roof topology, courts, spans, and equipment.\nCatalogue contract: Eight monumental cylindrical silos rise as two connected banks beneath conical caps, a glazed conveyor headhouse and elevated truss galleries; external stairs, catwalks, pipes, hoppers and a low loading hall make every transfer route physically legible.\nBuilding lock: 82 m by 55 m industrial site envelope; exactly eight full-height cylindrical silos in two four-silo banks, each with a conical cap and hopper logic, one elevated glazed headhouse, two enclosed truss galleries, open catwalk guards, external stair towers, process pipes and a separate low loading shed.\nScene/backdrop: clean warm-light-grey architectural studio ground and backdrop, no neighbors, trees, cars or people.\nStyle/medium: premium photoreal architectural survey photography and physically plausible construction reference, not concept art.\nLighting/mood: neutral bright overcast survey illumination with soft contact shadows and controlled glass reflections, consistent in every panel.\nMaterials/textures: weathered pale concrete silo shells; galvanized corrugated steel caps and headhouse; graphite truss steel and catwalk grating; muted rust process pipes; neutral industrial glazing; warm occupied control depth; dark membrane loading-hall roof.\nConstraints: exact same coherent building topology, storey datums, structural bays, openings, entrances, material zones and roof in all four panels; credible load paths; real recessed openings and physical screens; thin neutral gutters; whole building in every frame; no labels, text, signs, logos or watermark.\nAvoid: one giant cylinder, grain-elevator cartoon, random pipe spaghetti, inaccessible floating catwalks, office curtain wall, identical smooth toy silos, missing transfer galleries; perspective distortion, blank sides, changed geometry between panels, entourage, dramatic sunset.",
+      "registered_surfaces": [
+        "complete_dead_front_variant_elevation",
+        "variant_specific_primary_and_secondary_massing",
+        "physical_recessed_glazing_with_occupied_depth",
+        "complete_structural_bay_and_floor_datum_schedule",
+        "integral_entrance_and_public_threshold",
+        "variant_specific_roof_crown_and_ornament",
+        "wrapped_left_right_and_rear_elevations",
+        "semantic_repeatable_complete_middle_bays"
+      ]
+    },
+    {
+      "file": "front-elevation-source-v1.png",
+      "source_id": "exec-229e7e69-0f47-43dd-ab0d-0e2639207a1e:front-elevation-source-v1",
+      "role": "registered_goalpost_crop:front-elevation-source-v1"
+    },
+    {
+      "file": "street-hero-source-v1.png",
+      "source_id": "exec-229e7e69-0f47-43dd-ab0d-0e2639207a1e:street-hero-source-v1",
+      "role": "registered_goalpost_crop:street-hero-source-v1"
+    },
+    {
+      "file": "rear-corner-source-v1.png",
+      "source_id": "exec-229e7e69-0f47-43dd-ab0d-0e2639207a1e:rear-corner-source-v1",
+      "role": "registered_goalpost_crop:rear-corner-source-v1"
+    },
+    {
+      "file": "aerial-roof-source-v1.png",
+      "source_id": "exec-229e7e69-0f47-43dd-ab0d-0e2639207a1e:aerial-roof-source-v1",
+      "role": "registered_goalpost_crop:aerial-roof-source-v1"
+    },
+    {
+      "file": "material-construction-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd",
+      "role": "six_zone_shadow_neutral_variant_material_plate",
+      "prompt": "Use case: photorealistic-natural\nAsset type: shadow-neutral 3 by 2 construction and occupied-depth material board for the exact Machine-Aesthetic Heavy Industrial - Monumental Silo Cluster shown in Image 1\nInput images: Image 1 is the approved four-view geometry, palette, construction-scale and optical authority.\nPrimary request: Create six equal square straight-on orthographic samples in a precise 3-column by 2-row grid separated only by thin neutral-grey gutters, with no labels.\nTop-left: weathered pale slip-formed concrete, authentic construction scale and fine micro-detail, no facade or opening.\nTop-center: galvanized corrugated steel cap and cladding, authentic construction scale and fine micro-detail, no complete building element.\nTop-right: muted rust process pipe and valve, authentic construction scale and fine micro-detail, no complete ornament assembly.\nBottom-left: graphite truss steel and catwalk grating, authentic construction scale and fine micro-detail, no complete frame, door or screen.\nBottom-center: neutral industrial control-room glass plus clean occupied depth seen dead-on, with clear floor, ceiling and restrained warm occupation, no exterior frame, mullion, screen, facade or skewed perspective.\nBottom-right: charcoal loading-hall membrane and metal flashing, authentic construction scale and evenly lit, no complete roof scene.\nScene/backdrop: flat evenly lit material-capture setup. Style/medium: premium physically based photoreal architectural construction texture reference.\nLighting: diffuse neutral overcast capture; no directional sunlight, baked shadow, vignette or perspective.\nConstraints: exact 3 by 2 grid; every sample fills its cell edge-to-edge; no labels, text, logos or watermark; no complete facade or repeated window grid; match Image 1 exactly.\nAvoid: cartoon materials, generic substitutions, oversized motifs, blue mirror glass, dramatic lighting, building perspective, decorative border."
+    },
+    {
+      "file": "material-a-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:material-a-source-v1",
+      "role": "registered_material_crop:material-a-source-v1"
+    },
+    {
+      "file": "material-b-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:material-b-source-v1",
+      "role": "registered_material_crop:material-b-source-v1"
+    },
+    {
+      "file": "material-c-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:material-c-source-v1",
+      "role": "registered_material_crop:material-c-source-v1"
+    },
+    {
+      "file": "material-d-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:material-d-source-v1",
+      "role": "registered_material_crop:material-d-source-v1"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:occupied-depth-source-v1",
+      "role": "registered_material_crop:occupied-depth-source-v1"
+    },
+    {
+      "file": "material-f-source-v1.png",
+      "source_id": "exec-9a2a524b-f19a-41f4-9170-3a223eb86efd:material-f-source-v1",
+      "role": "registered_material_crop:material-f-source-v1"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "family_id": "titanium-fold-art-museum",
+  "source": {
+    "archetype_id": "large_art_museum_gallery",
+    "variant_id": "deconstructivist_titanium_pavilion",
+    "generation_archetype_id": "deconstructivist_titanium_pavilion",
+    "reuse_keys": [
+      "large_art_museum_gallery",
+      "deconstructivist_titanium_pavilion",
+      "titanium_fold_art_museum",
+      "sculptural_metal_gallery_canyon",
+      "Folded Titanium Art Museum",
+      "Sculptural Metal Gallery Canyon",
+      "Deconstructivist Civic Pavilion"
+    ]
+  },
+  "dimensions": {
+    "width_m": 86.0,
+    "depth_m": 64.5,
+    "podium_height_m": 5.2,
+    "floor_height_m": 4.6,
+    "setback_height_m": 4.6,
+    "roof_height_m": 10.0,
+    "crown_height_m": 1.0,
+    "default_floors": 4,
+    "min_floors": 2,
+    "max_floors": 5
+  },
+  "architectural_signature": {
+    "identity": "A civic art museum is composed from five colliding but continuously clad titanium-zinc gallery volumes, including two rolled shells, three folded wedges, a glazed central canyon and one suspended rectilinear gallery bridge above a deep public entry.",
+    "material_zones": "small-scale matte titanium-zinc shingles; silver perforated metal screen; pale architectural concrete plinth; charcoal steel shadow joints; neutral low-iron atrium glass; warm occupied gallery and lobby depth; dark zinc roof seams and concealed drainage",
+    "glass_profile": "neutral_low_iron_museum_atrium_glass_with_deep_gallery_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "two_closed_rolled_gallery_shells",
+      "three_closed_folded_gallery_wedges",
+      "full_height_glazed_canyon",
+      "supported_gallery_bridge",
+      "deep_public_entry"
+    ]
+  },
+  "archetype_aliases": [
+    "large_art_museum_gallery",
+    "deconstructivist_titanium_pavilion",
+    "titanium_fold_art_museum",
+    "sculptural_metal_gallery_canyon"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 11.00 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      58.1,
+      158.4
+    ],
+    "recommendedDepth_m": [
+      42.2,
+      101.1
+    ],
+    "recommendedFloors": [
+      2,
+      5
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 11.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          58.1,
+          158.4
+        ],
+        "recommendedDepth_m": [
+          42.2,
+          101.1
+        ],
+        "recommendedFloors": [
+          2,
+          5
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 11.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_titanium_fold_museum_with_repeatable_complete_middle_bays",
+    "variant_id": "deconstructivist_titanium_pavilion",
+    "occupied_storeys": 4,
+    "features": [
+      "two_closed_rolled_gallery_shells",
+      "three_closed_folded_gallery_wedges",
+      "full_height_glazed_canyon",
+      "supported_gallery_bridge",
+      "deep_public_entry"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete middle construction bays"
+  }
+}

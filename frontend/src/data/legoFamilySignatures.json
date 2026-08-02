@@ -1055,6 +1055,76 @@
                                                           "materialZones": "warm ochre limestone; sand-colored stucco; turquoise and oxidized copper inlay; dark bronze doors and marquee; neutral smoky lobby glass; warm occupied lobby depth; charcoal auditorium roof",
                                                           "glassProfile": "neutral_smoky_bronze_framed_ceremonial_lobby",
                                                           "elevationUrl": "/families/egyptian-revival-theater/elevation.jpg"
+                                                      },
+                     "wte_ski_slope": {
+                                           "archetypeId": "wte_ski_slope",
+                                           "identity": "A monumental silver waste-to-energy plant rises beneath one continuous inhabited green ski slope, climbing from a low public forecourt to a tall industrial summit beside a faceted white emissions stack; a multicolour climbing wall and diagonal aluminum cassette field make the long elevation civic rather than utilitarian.",
+                                           "materialZones": "checkerboard brushed and perforated aluminum cassettes; planted and synthetic-turf ski slope with real edge rails; pale exposed concrete process base; graphite industrial steel; neutral high-transmission visitor glazing; warm occupied control-room depth; white ceramic-coated emissions stack and dark service roof",
+                                           "glassProfile": "neutral_high_transmission_industrial_visitor_glass_with_control_room_depth",
+                                           "elevationUrl": "/families/copenhill-ski-slope-energy-plant/elevation.jpg"
+                                       },
+                     "parametric_wave_shell": {
+                                                  "archetypeId": "parametric_wave_shell",
+                                                  "identity": "A broad public natatorium is enclosed by a continuous asymmetric wave shell whose translucent silver polycarbonate crest lifts above a full-height glazed gable; branching concrete struts, twin cable masts, roof ribs, and a visible blue pool hall form one credible long-span structure.",
+                                                  "materialZones": "translucent platinum polycarbonate roof panels; cool board-formed concrete plinth and branching struts; stainless cable stays; silver aluminum pressure caps; neutral low-iron pool-hall glass; occupied aquatic-hall depth with blue water and warm soffits; pale standing-seam service roof",
+                                                  "glassProfile": "high_transmission_low_iron_pool_hall_glass_with_blue_water_depth",
+                                                  "elevationUrl": "/families/parametric-wave-natatorium/elevation.jpg"
+                                              },
+                     "grand_city_hall_tower": {
+                                                   "archetypeId": "grand_city_hall_tower",
+                                                   "identity": "A symmetrical pale-limestone city hall steps around a deep arched civic portal, four occupied storeys, a slate mansard attic, corner turrets and a central clock tower capped by a patinated-copper dome; balustrades, dormers, chimneys and the broad ceremonial stair complete the public silhouette.",
+                                                   "materialZones": "pale grey limestone ashlar; charcoal-blue slate mansard and turret caps; carved limestone quoins, cornices and balustrades; dark bronze heritage sash; neutral lightly reflective glazing; warm occupied civic rooms; green patinated copper clock dome and lead flashing",
+                                                   "glassProfile": "neutral_heritage_sash_with_warm_civic_room_depth",
+                                                   "elevationUrl": "/families/second-empire-clocktower-city-hall/elevation.jpg"
+                                               },
+                     "farm_glass_greenhouse_tower": {
+                                                          "archetypeId": "farm_glass_greenhouse_tower",
+                                                          "identity": "A thirty-level greenhouse tower exposes stacked hydroponic growing trays, circulation cores, robotic rails and dense living crops behind exceptionally clear glass, with alternating double-height winter gardens, silver exoskeletal braces and a vented greenhouse crown.",
+                                                          "materialZones": "high-transmission low-iron greenhouse glass; silver galvanized steel mullions and diagonal braces; pale concrete growing decks; deep green hydroponic crops; graphite robotic rails; warm occupied cultivation depth; translucent vented greenhouse roof",
+                                                          "glassProfile": "ultra_clear_greenhouse_glass_revealing_hydroponic_depth",
+                                                          "elevationUrl": "/families/glass-greenhouse-vertical-farm/elevation.jpg"
+                                                      },
+                     "sculptural_steel_exoskeleton": {
+                                                           "archetypeId": "sculptural_steel_exoskeleton",
+                                                           "identity": "A glazed intermodal concourse is sheltered by two immense parabolic white-steel arches and a continuous fan of branching ribs, all landing on visible structural shoes above a warm brick-and-glass plinth; the luminous central nave remains open from entry to platforms.",
+                                                           "materialZones": "satin white structural steel ribs and cast nodes; warm red-brown civic brick plinth; clear low-iron concourse glass; silver pressure caps; pale terrazzo platform deck; warm occupied station depth; translucent ETFE and glass roof strips",
+                                                           "glassProfile": "high_transmission_station_glass_with_deep_luminous_concourse",
+                                                           "elevationUrl": "/families/steel-rib-intermodal-hub/elevation.jpg"
+                                                       },
+                     "heavy_silo_cluster": {
+                                                "archetypeId": "heavy_silo_cluster",
+                                                "identity": "Eight monumental cylindrical silos rise as two connected banks beneath conical caps, a glazed conveyor headhouse and elevated truss galleries; external stairs, catwalks, pipes, hoppers and a low loading hall make every transfer route physically legible.",
+                                                "materialZones": "weathered pale concrete silo shells; galvanized corrugated steel caps and headhouse; graphite truss steel and catwalk grating; muted rust process pipes; neutral industrial glazing; warm occupied control depth; dark membrane loading-hall roof",
+                                                "glassProfile": "neutral_industrial_control_glass_with_sparse_occupied_depth",
+                                                "elevationUrl": "/families/monumental-silo-cluster/elevation.jpg"
+                                            },
+                     "deconstructivist_titanium_pavilion": {
+                                                                  "archetypeId": "deconstructivist_titanium_pavilion",
+                                                                  "identity": "A civic art museum is composed from five colliding but continuously clad titanium-zinc gallery volumes, including two rolled shells, three folded wedges, a glazed central canyon and one suspended rectilinear gallery bridge above a deep public entry.",
+                                                                  "materialZones": "small-scale matte titanium-zinc shingles; silver perforated metal screen; pale architectural concrete plinth; charcoal steel shadow joints; neutral low-iron atrium glass; warm occupied gallery and lobby depth; dark zinc roof seams and concealed drainage",
+                                                                  "glassProfile": "neutral_low_iron_museum_atrium_glass_with_deep_gallery_depth",
+                                                                  "elevationUrl": "/families/titanium-fold-art-museum/elevation.jpg"
+                                                              },
+                     "market_historic_iron_glass": {
+                                                         "archetypeId": "market_historic_iron_glass",
+                                                         "identity": "A restored nineteenth-century market hall forms three connected barrel-vaulted iron-and-glass aisles above a red-brick and honey-stone base, with exposed wrought-iron arches, clerestory lanterns, operable end fans, deep arcaded entrances and visible occupied market stalls.",
+                                                         "materialZones": "weathered red stock brick; honey sandstone spring blocks and plinth; dark green-black wrought and cast iron; slender bronze glazing bars; lightly rippled clear roof glass; warm occupied market-hall depth; patinated zinc ridge caps and stone paving",
+                                                         "glassProfile": "lightly_rippled_clear_market_glass_with_warm_stall_depth",
+                                                         "elevationUrl": "/families/historic-iron-glass-market/elevation.jpg"
+                                                     },
+                     "concert_timber_acoustic": {
+                                                   "archetypeId": "concert_timber_acoustic",
+                                                   "identity": "Two immense opposing weathered-bronze acoustic walls curl around a warm timber-lined glazed foyer canyon and a solid central auditorium, descending into planted roof terraces at opposite corners while deep entry soffits and balcony edges reveal the public section.",
+                                                   "materialZones": "weathered bronze standing-seam panels; warm Douglas-fir acoustic lining; charcoal architectural concrete auditorium; dark bronze frames; neutral low-iron foyer glass; warm occupied foyer and balcony depth; planted terrace soil, sedum and black membrane",
+                                                   "glassProfile": "neutral_low_iron_foyer_glass_revealing_timber_acoustic_depth",
+                                                   "elevationUrl": "/families/bronze-curve-concert-hall/elevation.jpg"
+                                               },
+                     "fire_deconstructivist": {
+                                                 "archetypeId": "fire_deconstructivist",
+                                                 "identity": "A raw-concrete fire station is assembled as one angular apparatus hall cut by three deep red engine bays, a folded crew wing and a leaning hose-drying tower whose narrow vertical slit and roof beacon complete an intentionally off-axis but structurally grounded civic composition.",
+                                                 "materialZones": "raw board-formed concrete; charcoal fibre-cement crew wing; deep fire-red insulated apparatus doors; blackened steel lintels and rails; neutral clear operations glazing; warm occupied crew and watch-room depth; dark zinc folded roof and red beacon metal",
+                                                 "glassProfile": "neutral_clear_operations_glass_with_deep_crew_room_depth",
+                                                 "elevationUrl": "/families/deconstructivist-concrete-fire-station/elevation.jpg"
                                                       }
                  }
 }
