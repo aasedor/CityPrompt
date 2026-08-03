@@ -72,4 +72,15 @@ describe('buildVideoSceneContract', () => {
     expect(contract.referenceImageUrls).toContain('/archetypes/buildings/parisian_midrise_block/variant_0.png');
     expect(contract.referenceImageUrls).toContain('/archetypes/openspaces/beer-garden/variant_0_video.png');
   });
+
+  it('locks multiple building zones as disconnected solids', () => {
+    const contract = buildVideoSceneContract([
+      zone('b1', 'building', { development_archetype_id: 'first_building' }),
+      zone('b2', 'building', { development_archetype_id: 'second_building' }),
+    ]);
+
+    expect(contract.text).toContain('exactly 2 mutually disconnected solids');
+    expect(contract.text).toContain('Never bridge, join, fuse, wrap, or extend one building toward another');
+    expect(contract.text).toContain('never consolidate them into a perimeter block');
+  });
 });

@@ -126,10 +126,14 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     )
 
     assert "COURTYARD TOPOLOGY CHECKSUM" in prompt
+    assert "BUILDING SEPARATION CHECKSUM" in prompt
+    assert "Never bridge, join, fuse, wrap, or extend one building toward another" in prompt
     assert "exact count, perimeter, length, width, aspect ratio" in prompt
     assert "Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard" in prompt
-    assert "one eighth of the shorter authored building dimension" in prompt
-    assert "increase the apparent building scale by more than five percent" in prompt
+    assert "one sixteenth of the shorter authored building dimension" in prompt
+    assert "increase the apparent building scale by more than two percent" in prompt
+    assert "exact Image1 geometry outranks beauty" in prompt
+    assert "never recast the site as another city" in prompt
 
 
 @pytest.mark.parametrize(
@@ -175,5 +179,5 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
         {"status": "failed", "provider_call_started_at": "2026-08-03T00:01:00Z"},
     ]
 
-    assert PILOT_MAX_PROVIDER_CALLS == 20
+    assert PILOT_MAX_PROVIDER_CALLS == 25
     assert _count_provider_calls(attempts) == 2

@@ -110,6 +110,7 @@ interface VideoGeneratePanelProps {
   siteZones: SiteZone[];
   waitForTilesSettled?: () => Promise<boolean>;
   onBeforeCapture?: () => Promise<void>;
+  captureAerialFrame?: () => Promise<string | null>;
   captureStreetFrame?: () => Promise<string | null>;
   onVideoSaved?: (attempt: VideoAttempt) => void;
   onClose: () => void;
@@ -185,6 +186,7 @@ export function VideoGeneratePanel({
   siteZones,
   waitForTilesSettled,
   onBeforeCapture,
+  captureAerialFrame,
   captureStreetFrame,
   onVideoSaved,
   onClose,
@@ -195,7 +197,7 @@ export function VideoGeneratePanel({
   const [drawingRoute, setDrawingRoute] = useState(false);
   const [style, setStyle] = useState<StyleId>('golden_hour');
   const [motion, setMotion] = useState<MotionId>('path_follow');
-  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 20, max_attempts: 20 });
+  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 25, max_attempts: 25 });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
@@ -227,7 +229,7 @@ export function VideoGeneratePanel({
 
   const capture = useCallback(async () => {
     const sequence = ++captureSequence.current;
-    if (!canvas) {
+    if (!canvas && !captureAerialFrame) {
       if (sequence === captureSequence.current) {
         setError('The 3D globe is still starting. Close Video Render and try again in a moment.');
         setIsCapturing(false);
@@ -242,7 +244,10 @@ export function VideoGeneratePanel({
       if (settled === false) {
         toast('Captured the visible site; distant background tiles are still refining.', { icon: '◌' });
       }
-      const captured = await captureSceneFrame(canvas);
+      const directCapture = await captureAerialFrame?.();
+      const captured = directCapture
+        ? await normalizeImageFrame(directCapture.startsWith('data:') ? directCapture : `data:image/png;base64,${directCapture}`)
+        : await captureSceneFrame(canvas!);
       if (sequence === captureSequence.current) {
         setSourceFrame(captured);
         setPreflight(null);
@@ -255,7 +260,7 @@ export function VideoGeneratePanel({
     } finally {
       if (sequence === captureSequence.current) setIsCapturing(false);
     }
-  }, [canvas, onBeforeCapture, waitForTilesSettled]);
+  }, [canvas, captureAerialFrame, onBeforeCapture, waitForTilesSettled]);
 
   const captureStreet = useCallback(async () => {
     const sequence = ++captureSequence.current;
@@ -513,15 +518,18 @@ export function VideoGeneratePanel({
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Scene lock</p>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#dff5d0] px-2 py-1 text-[9px] font-black uppercase text-[#285b22]"><ShieldCheck size={11} /> Continuity protected</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Continuity constrained</span>
                 </div>
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    Authored massing, storeys, roofs, courtyard count and proportions, facade rhythm, materials, and open-space program stay fixed in every frame. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for stable continuity.
+                    The prompt locks authored massing, storeys, roofs, courtyard topology, facade rhythm, materials, and open-space program. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
                     Geometry-first mode anchors to the modeled site and archetype text; catalog stills stay off so their massing cannot override authored courtyards or roof voids.
+                  </p>
+                  <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
+                    AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
                   </p>
                 </div>
               </div>

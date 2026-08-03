@@ -1347,7 +1347,7 @@ interface GlobeSitePlannerMapProps {
     setBuildingModelsVisible?: (visible: boolean) => void;
     /** Capture a clean, current-camera 3D beauty frame plus exact proposal
      *  mask and semantic class-ID frame. This is isolated from Classic. */
-    captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+    captureDirect3D?: (options?: { skipTileWait?: boolean }) => Promise<Direct3DCaptureBundle>;
     /** Run a street-level capture with scene hygiene: hides the pegman marker,
      *  and — when authored 3D building models are present ('model3d') — hides
      *  zone overlays, deselects buildings, and forces models visible so the
@@ -2275,7 +2275,7 @@ export function GlobeSitePlannerMap({
     [],
   );
 
-  const captureDirect3D = useCallback((): Promise<Direct3DCaptureBundle> => {
+  const captureDirect3D = useCallback((options: { skipTileWait?: boolean } = {}): Promise<Direct3DCaptureBundle> => {
     if (direct3DCapturePromiseRef.current) {
       return Promise.reject(new Direct3DCaptureError(
         'busy',
@@ -2302,7 +2302,7 @@ export function GlobeSitePlannerMap({
         );
       }
 
-      const tilesSettled = await waitForCurrentTiles();
+      const tilesSettled = options.skipTileWait || await waitForCurrentTiles();
       if (!tilesSettled) {
         throw new Direct3DCaptureError(
           'capture_failed',

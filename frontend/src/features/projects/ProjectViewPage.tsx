@@ -70,7 +70,7 @@ export function ProjectViewPage() {
     isSettled?: boolean;
     waitForTilesSettled?: () => Promise<boolean>;
     setBuildingModelsVisible?: (visible: boolean) => void;
-    captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+    captureDirect3D?: (options?: { skipTileWait?: boolean }) => Promise<Direct3DCaptureBundle>;
     withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
     captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
   } | null>(null);
@@ -131,6 +131,12 @@ export function ProjectViewPage() {
       ? globeRefs.withStreetCaptureScene(runCapture)
       : runCapture('context3d');
   }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
+
+  const captureVideoAerialFrame = useCallback(async (): Promise<string | null> => {
+    if (!globeRefs?.captureDirect3D) return null;
+    const capture = await globeRefs.captureDirect3D({ skipTileWait: true });
+    return capture.beautyImageBase64;
+  }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
   useUndoRedoKeyboard();
@@ -855,6 +861,7 @@ export function ProjectViewPage() {
             siteZones={visibleZones}
             waitForTilesSettled={globeRefs?.waitForTilesSettled}
             onBeforeCapture={prepareForVideoCapture}
+            captureAerialFrame={captureVideoAerialFrame}
             captureStreetFrame={async () => (await handleGlobeStreetCapture())?.imageBase64 ?? null}
             onVideoSaved={rememberSavedVideo}
             onClose={() => setShowVideoRender(false)}

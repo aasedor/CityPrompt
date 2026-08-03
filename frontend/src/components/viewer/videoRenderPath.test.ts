@@ -43,7 +43,7 @@ describe('videoRenderPath', () => {
       return total + Math.hypot(point.x - previous.x, point.y - previous.y);
     }, 0);
 
-    expect(distance).toBeLessThanOrEqual(0.17);
+    expect(distance).toBeLessThanOrEqual(0.05);
     expect(DEFAULT_VIDEO_ROUTE.every(({ x, y }) => x >= 0.4 && x <= 0.6 && y >= 0.4 && y <= 0.9)).toBe(true);
   });
 

@@ -47,7 +47,7 @@ MOTION_PROMPTS: dict[str, str] = {
     "path_follow": (
         "Use the drawn route to define heading and curve shape, not the amount of distance to cover. Make an extremely "
         "slow constant-altitude drone truck with gentle banking only where the route curves. Do not dolly toward the "
-        "site, zoom, descend, or increase the apparent building scale by more than five percent"
+        "site, zoom, descend, or increase the apparent building scale by more than two percent"
     ),
     "forward_descent": (
         "Track forward along the route while descending very gradually toward the central park; keep a dignified, "
@@ -159,7 +159,7 @@ def build_cinematic_prompt(
         "Move no more than 4 metres during the full shot."
         if is_street
         else (
-            "Translate no more than one eighth of the shorter authored building dimension during the full shot; "
+            "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
             "hold altitude, focal length, and subject scale constant."
             if camera_motion == "path_follow"
             else "Keep total camera travel below one quarter of an authored building length during the full shot."
@@ -192,7 +192,11 @@ def build_cinematic_prompt(
                 f"{scene_brief.strip()} Keep every authored zone at the same location, footprint, height, proportions, "
                 "setbacks, roofline, opening pattern, path layout, and street relationship in every frame. Each building "
                 "zone is one indivisible persistent object and must never split into wings, merge with another zone, or "
-                "duplicate. COURTYARD TOPOLOGY CHECKSUM: before generating motion, count every visible courtyard, lightwell, "
+                "duplicate. BUILDING SEPARATION CHECKSUM: count the disconnected building solids in the first frame and "
+                "preserve that exact component count. Every open-air gap, alley, park frontage, and setback separating them "
+                "must remain open from ground to sky. Never bridge, join, fuse, wrap, or extend one building toward another, "
+                "and never turn separate buildings into a perimeter block. COURTYARD TOPOLOGY CHECKSUM: before generating "
+                "motion, count every visible courtyard, lightwell, "
                 "roof void, and wing in the first frame. Treat each void as immutable three-dimensional negative space. "
                 "Preserve its exact count, perimeter, length, width, aspect ratio, separation, alignment, and position inside "
                 "its building in all 192 frames. Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard or "
@@ -204,6 +208,10 @@ def build_cinematic_prompt(
             (
                 "VISUAL FINISH: Apply texture, material, lighting, and atmospheric enhancement to the existing geometry "
                 "only; do not remodel, reinterpret, or regenerate the architecture or landscape. "
+                "FIDELITY GATE: exact Image1 geometry outranks beauty, realism, and stylistic enhancement. If an enhancement "
+                "would change a footprint, roof void, wing, facade bay, height, gap, street, park edge, or geographic setting, "
+                "leave that source feature visually unchanged. Never replace the authored buildings with a more familiar, "
+                "generic, or prestigious architectural type and never recast the site as another city. "
                 f"{style_prompt}. Use realistic PBR materials, coherent reflections, the same planted areas, "
                 "and razor-sharp facade detail. This must read as premium cinema-camera footage, not a game capture or map model."
             ),
