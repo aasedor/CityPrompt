@@ -88,18 +88,14 @@ function buildingContract(zone: SiteZone, index: number): ContractEntry {
   const massing = clipped(asString(style.massing), 180);
   const roof = clipped(asString(style.roofForm), 160);
   const materials = asStringList(style.materials).slice(0, 5);
-  const description = clipped(asString(properties.description_text), 300);
   const facts = [
     floors ? `${floors} storeys` : undefined,
     height ? `${height} m authored height` : undefined,
-    massing,
-    roof,
-    materials.length ? `materials: ${materials.join(', ')}` : undefined,
-    description,
   ].filter((item): item is string => Boolean(item));
+  const measuredFacts = facts.length ? `: ${facts.join('; ')}` : '';
   return {
     label: `B${index + 1}`,
-    line: `B${index + 1} — ${archetype}: ${facts.join('; ')}. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, and LEGO massing; improve finish only. Count B${index + 1}'s visible courtyards, lightwells, roof voids, and wings in the first frame, then preserve that exact topology and every void's perimeter, aspect ratio, separation, and placement.`,
+    line: `B${index + 1} — authored proposal building${measuredFacts}. Its appearance comes from its exact pixels in Image1; no place, city, or historical style name is supplied because such labels must not influence the surrounding context. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, and LEGO massing; improve finish only. Count B${index + 1}'s visible courtyards, lightwells, roof voids, and wings in the first frame, then preserve that exact topology and every void's perimeter, aspect ratio, separation, and placement.`,
     referenceUrl: catalogReference(archetype, firstString(properties, [
       'development_archetype_image',
       'development_archetype_image_url',
@@ -123,16 +119,13 @@ function openSpaceContract(zone: SiteZone, index: number): ContractEntry {
     'plaza_aesthetic',
     'green_space_aesthetic',
   ]) ?? 'authored open space';
-  const description = clipped(asString(properties.description_text), 420);
   const paving = clipped(asString(style.pavingType), 180);
   const planting = clipped(asString(style.plantingType), 180);
   const seating = clipped(asString(style.seatingRealm), 180);
   const water = clipped(asString(style.waterFeatures), 140);
-  const facts = [paving, planting, seating, water ? `water features: ${water}` : undefined, description]
-    .filter((item): item is string => Boolean(item));
   return {
     label: `P${index + 1}`,
-    line: `P${index + 1} — ${archetype}: ${facts.join('; ')}. Preserve its exact on-screen boundary and internal program. Do not replace it with a generic lawn, formal garden, plaza, pool, or fountain.`,
+    line: `P${index + 1} — authored proposal open space. Its appearance and program come only from its exact pixels in Image1; archetype names and descriptive style words are intentionally withheld from the video model. Preserve its exact on-screen boundary, layout, planting, furniture, and internal program. Do not replace it with a generic lawn, formal garden, plaza, pool, or fountain.`,
     referenceUrl: catalogReference(archetype, firstString(properties, [
       'plaza_archetype_image',
       'green_space_archetype_image',

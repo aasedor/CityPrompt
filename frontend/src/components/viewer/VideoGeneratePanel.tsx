@@ -197,7 +197,7 @@ export function VideoGeneratePanel({
   const [drawingRoute, setDrawingRoute] = useState(false);
   const [style, setStyle] = useState<StyleId>('golden_hour');
   const [motion, setMotion] = useState<MotionId>('path_follow');
-  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 25, max_attempts: 25 });
+  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 30, max_attempts: 30 });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
@@ -523,10 +523,10 @@ export function VideoGeneratePanel({
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    The prompt locks authored massing, storeys, roofs, courtyard topology, facade rhythm, materials, and open-space program. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for more stable continuity.
+                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, and open-space program; only storey count and height are repeated in text. Source-tile cars and pedestrians are removed, and pilot streets stay empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    Geometry-first mode anchors to the modeled site and archetype text. Archetype styling is restricted to authored zones; surrounding context architecture stays tied to the captured location.
+                    Geometry-first mode anchors to the captured model. Place names and descriptive style words are withheld from Omni so proposal styling cannot leak into the surrounding location.
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.

@@ -40,10 +40,15 @@ describe('buildVideoSceneContract', () => {
 
     expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · geometry-first video');
     expect(contract.referenceImageUrls).toEqual(['/building.png', '/park.png']);
-    expect(contract.text).toContain('custom_midrise_variant_0');
+    expect(contract.text).not.toContain('custom_midrise_variant_0');
     expect(contract.text).toContain('6 storeys');
-    expect(contract.text).toContain('custom_garden_variant_0');
-    expect(contract.text).toContain('None — no fountains');
+    expect(contract.text).not.toContain('custom_garden_variant_0');
+    expect(contract.text).not.toContain('Boulevard mid-rise');
+    expect(contract.text).not.toContain('zinc mansard');
+    expect(contract.text).not.toContain('cream limestone');
+    expect(contract.text).not.toContain('None — no fountains');
+    expect(contract.text).toContain('no place, city, or historical style name is supplied');
+    expect(contract.text).toContain('descriptive style words are intentionally withheld');
     expect(contract.text).toContain('first frame is the geometric source of truth');
     expect(contract.text).toContain('visible courtyards, lightwells, roof voids, and wings');
     expect(contract.text).toContain('Never lengthen, widen, shrink, merge, split, fill, or invent');

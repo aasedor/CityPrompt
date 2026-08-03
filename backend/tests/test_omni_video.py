@@ -183,5 +183,5 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
         {"status": "failed", "provider_call_started_at": "2026-08-03T00:01:00Z"},
     ]
 
-    assert PILOT_MAX_PROVIDER_CALLS == 25
+    assert PILOT_MAX_PROVIDER_CALLS == 30
     assert _count_provider_calls(attempts) == 2
