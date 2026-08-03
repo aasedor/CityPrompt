@@ -42,6 +42,11 @@ const STYLES = [
   { id: 'after_rain', name: 'After rain', detail: 'Reflective + rich' },
   { id: 'blue_hour', name: 'Blue hour', detail: 'Lights + atmosphere' },
   { id: 'warm_overcast', name: 'Soft overcast', detail: 'Calm + natural' },
+  { id: 'watercolour', name: 'Watercolour', detail: 'Painterly concept' },
+  { id: 'pen-and-ink', name: 'Pen & Ink', detail: 'Drafted linework' },
+  { id: 'charcoal', name: 'Charcoal', detail: 'Tonal sketch' },
+  { id: 'clay-maquette', name: 'Clay', detail: 'Physical maquette' },
+  { id: 'woodblock', name: 'Wood Block', detail: 'Graphic print' },
 ] as const;
 
 const MOTIONS = [
@@ -197,7 +202,7 @@ export function VideoGeneratePanel({
   const [drawingRoute, setDrawingRoute] = useState(false);
   const [style, setStyle] = useState<StyleId>('golden_hour');
   const [motion, setMotion] = useState<MotionId>('path_follow');
-  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 30, max_attempts: 30 });
+  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 40, max_attempts: 40 });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
@@ -490,7 +495,7 @@ export function VideoGeneratePanel({
 
             <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[1fr_1fr]">
               <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Cinematic look</p>
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Visual style</p>
                 <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-3">
                   {STYLES.map((item) => (
                     <button key={item.id} aria-pressed={style === item.id} onClick={() => setStyle(item.id)} disabled={isGenerating} className={`rounded-xl border px-2.5 py-2 text-left transition ${style === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
@@ -526,7 +531,7 @@ export function VideoGeneratePanel({
                     The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, and open-space program; only storey count and height are repeated in text. Source-tile cars and pedestrians are removed, and pilot streets stay empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    Geometry-first mode anchors to the captured model. Place names and descriptive style words are withheld from Omni so proposal styling cannot leak into the surrounding location.
+                    Geometry-first mode anchors to the captured model. Place names and archetype style descriptions are withheld from Omni; only the visual style selected above is applied to the full frame.
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
@@ -577,7 +582,7 @@ export function VideoGeneratePanel({
                   <video key={activeVideoUrl} controls playsInline autoPlay muted loop className="aspect-video w-full bg-black" src={activeVideoUrl} />
                   <div className="flex items-center gap-2 bg-white px-3 py-2">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[11px] font-black uppercase">{selectedAttempt.style.split('_').join(' ')} · {selectedAttempt.camera_motion.split('_').join(' ')}</p>
+                      <p className="truncate text-[11px] font-black uppercase">{selectedAttempt.style.split(/[_-]/).join(' ')} · {selectedAttempt.camera_motion.split('_').join(' ')}</p>
                       <p className="text-[9px] text-[#151515]/45">8 sec · Gemini Omni · saved to project</p>
                     </div>
                     <a href={downloadUrl(selectedAttempt) ?? activeVideoUrl} download className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-2 text-[10px] font-black uppercase hover:bg-[#f7f2e8]" aria-label="Download video"><Download size={14} /> MP4</a>

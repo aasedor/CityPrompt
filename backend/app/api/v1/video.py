@@ -29,11 +29,22 @@ from app.services.omni_video import (
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-PILOT_MAX_PROVIDER_CALLS = 30
+PILOT_MAX_PROVIDER_CALLS = 40
 VIDEO_CREDIT_COST = 50
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
-VideoStyle = Literal["golden_hour", "crisp_daylight", "after_rain", "blue_hour", "warm_overcast"]
+VideoStyle = Literal[
+    "golden_hour",
+    "crisp_daylight",
+    "after_rain",
+    "blue_hour",
+    "warm_overcast",
+    "watercolour",
+    "pen-and-ink",
+    "charcoal",
+    "clay-maquette",
+    "woodblock",
+]
 CameraMotion = Literal["path_follow", "forward_descent", "reveal_ascent", "orbit_left", "orbit_right", "street_walkby"]
 
 
@@ -177,7 +188,7 @@ async def preflight_video(
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     used = _count_provider_calls(attempts)
     if used >= PILOT_MAX_PROVIDER_CALLS:
-        raise HTTPException(status_code=409, detail="This project has used all thirty authorized pilot video submissions.")
+        raise HTTPException(status_code=409, detail="This project has used all forty authorized pilot video submissions.")
     if not is_admin_or_above(user) and user.render_credits < VIDEO_CREDIT_COST:
         raise HTTPException(
             status_code=402,
@@ -244,7 +255,7 @@ async def generate_video(
     used = _count_provider_calls(attempts)
     active_reservations = sum(1 for attempt in attempts if attempt.get("status") == "reserved")
     if used + active_reservations >= PILOT_MAX_PROVIDER_CALLS:
-        raise HTTPException(status_code=409, detail="This project has reserved all thirty authorized pilot video submissions.")
+        raise HTTPException(status_code=409, detail="This project has reserved all forty authorized pilot video submissions.")
     if not is_admin_or_above(user) and user.render_credits < VIDEO_CREDIT_COST:
         raise HTTPException(status_code=402, detail="Insufficient Video Render credits.")
 
@@ -382,7 +393,7 @@ async def generate_video(
         await db.commit()
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"Omni submission failed and still counts toward the thirty-run cap: {message}",
+            detail=f"Omni submission failed and still counts toward the forty-run cap: {message}",
         ) from exc
 
     project = await db.get(Project, req.project_id)

@@ -46,7 +46,7 @@ def test_prompt_locks_scene_and_single_shot_constraints():
 
     assert "single continuous, unbroken 8-second" in prompt
     assert "there is intentionally no route graphic burned into the first frame" in prompt
-    assert "zone tokens are internal prompt identifiers only" in prompt
+    assert "Internal prompt identifiers are organizational metadata only" in prompt
     assert "Each building zone is one indivisible persistent object" in prompt
     assert "persistent identity and fixed world coordinates across all 192 frames" in prompt
     assert "Architecture and site geometry are immutable" in prompt
@@ -140,6 +140,28 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     assert prompt.endswith("preserve Image1 unchanged.")
 
 
+def test_artistic_prompt_applies_medium_without_replacing_context():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.52, "y": 0.62}, {"x": 0.5, "y": 0.46}],
+        style="watercolour",
+        camera_motion="path_follow",
+        scene_brief="B1 and B2 frame P1.",
+        duration_seconds=8,
+    )
+
+    assert "master architectural watercolour" in prompt
+    assert "surface treatment only" in prompt
+    assert "stylize its existing pixels without replacing" in prompt
+    assert "Do not drift between artistic and photorealistic rendering" in prompt
+    assert "ARTISTIC MEDIUM — FINAL PASS" in prompt
+    assert "Use realistic PBR materials" not in prompt
+    assert "B1" not in prompt
+    assert "B2" not in prompt
+    assert "P1" not in prompt
+    assert "authored building 1 and authored building 2 frame authored open space 1" in prompt
+    assert prompt.endswith("Preserve Image1's spatial arrangement exactly.")
+
+
 @pytest.mark.parametrize(
     "response",
     [
@@ -183,5 +205,5 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
         {"status": "failed", "provider_call_started_at": "2026-08-03T00:01:00Z"},
     ]
 
-    assert PILOT_MAX_PROVIDER_CALLS == 30
+    assert PILOT_MAX_PROVIDER_CALLS == 40
     assert _count_provider_calls(attempts) == 2
