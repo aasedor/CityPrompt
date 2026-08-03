@@ -59,7 +59,7 @@ type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
 
 const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
   { id: 'omni', name: 'Gemini Omni', detail: 'Current benchmark · $0.80 estimate' },
-  { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 2 calls' },
+  { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 4 calls' },
 ];
 
 export interface VideoAttempt {

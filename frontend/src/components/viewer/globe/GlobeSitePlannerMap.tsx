@@ -3215,6 +3215,10 @@ export function GlobeSitePlannerMap({
 
   const handleBuildingModelClick = useCallback((buildingId: string) => {
     if (interactionPaused || hasDrawingTool || measureModeActive) return;
+    // Street View pegman-drop mode owns the canvas click. Generated building
+    // meshes must not select themselves and swallow placement when the user
+    // intentionally drops a close-up camera on or beside the authored model.
+    if (streetViewPegman !== null) return;
     ignoreNextCanvasClickRef.current = true;
     // A generated model is a first-class handle onto its zone: select both so
     // the properties panel (type/floors/Quick Regenerate) and the polygon
@@ -3222,7 +3226,7 @@ export function GlobeSitePlannerMap({
     const owningZone = siteZones.find((zone) => zone.building_id === buildingId);
     onZoneSelected(owningZone ? owningZone.id : null);
     setSelectedBuildingId(buildingId);
-  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones]);
+  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
 
   useEffect(() => {
     if (!selectedBuildingId) return;
