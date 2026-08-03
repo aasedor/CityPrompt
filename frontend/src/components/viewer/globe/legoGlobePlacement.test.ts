@@ -11,6 +11,7 @@ import {
   legoFootprintRing,
   legoInstanceTransform,
   recipeIsRenderable,
+  renderableLegoBuildingIds,
   uniqueModuleUrls,
 } from './legoGlobePlacement';
 
@@ -139,6 +140,19 @@ describe('legoFootprintRing / recipeIsRenderable', () => {
     expect(recipeIsRenderable(buildingWithRecipe(makeRecipe(), { footprint_coordinates: undefined }))).toBe(false);
     // Footprint but no recipe.
     expect(recipeIsRenderable(makeBuilding({ footprint_coordinates: CALGARY_RING }))).toBe(false);
+  });
+
+  it('collects only recipes that can replace their planning prisms', () => {
+    const renderable = buildingWithRecipe(makeRecipe(), { id: 'renderable' });
+    const noFootprint = buildingWithRecipe(makeRecipe(), {
+      id: 'no-footprint',
+      footprint_coordinates: undefined,
+    });
+    const noRecipe = makeBuilding({ id: 'no-recipe', footprint_coordinates: CALGARY_RING });
+
+    expect(renderableLegoBuildingIds([renderable, noFootprint, noRecipe])).toEqual(
+      new Set(['renderable']),
+    );
   });
 });
 

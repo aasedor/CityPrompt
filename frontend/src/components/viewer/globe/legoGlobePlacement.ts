@@ -108,6 +108,18 @@ export function recipeIsRenderable(building: Building): boolean {
   return extractLegoRecipe(building) !== null && legoFootprintRing(building) !== null;
 }
 
+/** Building ids whose persisted LEGO recipes are sufficient to replace the
+ * editable planning prism. Suppression follows this durable render contract,
+ * rather than a transient loader callback that can reset during hot reload or
+ * a WebGL layer handoff while the authored model remains visible. */
+export function renderableLegoBuildingIds(buildings: readonly Building[]): Set<string> {
+  return new Set(
+    buildings
+      .filter(recipeIsRenderable)
+      .map((building) => building.id),
+  );
+}
+
 /** Any valid saved recipe, footprint or not — drives the layer mount so the
  *  layer itself can debug-count recipe-without-footprint skips. */
 export function hasLegoRecipe(building: Building): boolean {

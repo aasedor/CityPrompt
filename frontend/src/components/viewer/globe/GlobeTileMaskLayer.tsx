@@ -23,7 +23,7 @@ import {
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { shouldUseSpatialTileMask } from './TileSpatialMaskPlugin';
+import { createTileSpatialMaskSetConfig } from './TileSpatialMaskPlugin';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -135,10 +135,18 @@ function TileMaskVolume({ zone, terrainHeight }: { zone: SiteZone; terrainHeight
 }
 
 export function GlobeTileMaskLayer({ zones, terrainHeight }: GlobeTileMaskLayerProps) {
-  // One replacement footprint is clipped in true world coordinates by
-  // TileStencilPatcher. Mounting the old projected stencil volume as well
-  // would reintroduce the pale camera-facing wedge it is designed to avoid.
-  if (zones.length === 1 && shouldUseSpatialTileMask(zones[0])) return null;
+  const spatialMask = useMemo(() => {
+    const siteBoundary = zones.find((zone) => zone.zone_type === 'site_boundary');
+    return createTileSpatialMaskSetConfig(
+      siteBoundary ? [siteBoundary] : zones,
+      terrainHeight,
+    );
+  }, [terrainHeight, zones]);
+
+  // These footprints are clipped in true world coordinates by
+  // TileStencilPatcher. Mounting the old projected stencil volumes as well
+  // would reintroduce pale camera-facing wedges around authored buildings.
+  if (spatialMask) return null;
   return (
     <>
       {zones.map((zone) => (

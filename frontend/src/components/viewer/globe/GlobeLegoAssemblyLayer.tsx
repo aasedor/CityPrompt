@@ -62,8 +62,9 @@ import {
 } from './modelMaterialQuality';
 import { buildLegoMassingMeshData, legoMassingColor } from './legoMassingGeometry';
 import {
+  LEGO_DISTINCT_FAMILY_RENDER_BUDGET,
   LEGO_STACK_RENDER_BUDGET,
-  partitionLegoStacksByDistance,
+  partitionLegoStacksByDistanceAndFamily,
 } from './legoStackBudget';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
 import {
@@ -569,12 +570,17 @@ export function GlobeLegoAssemblyLayer({
     const legoEntries = entries.filter(
       (entry): entry is Extract<GlobeBuildingEntry, { kind: 'lego' }> => entry.kind === 'lego',
     );
-    const selection = partitionLegoStacksByDistance(
+    const selection = partitionLegoStacksByDistanceAndFamily(
       legoEntries,
-      (entry) => entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity,
+      (entry) => entry.recipe.module_family,
+      (entry) => (
+        entry.building.id === selectedBuildingId
+          ? -1
+          : entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity
+      ),
     );
     return new Set(selection.detailed.map((entry) => entry.building.id));
-  }, [entries, entryWorldPositions]);
+  }, [entries, entryWorldPositions, selectedBuildingId]);
   const [detailedIds, setDetailedIds] = useState<Set<string>>(() => new Set());
   const lodFrameRef = useRef(0);
   useEffect(() => {
@@ -586,7 +592,6 @@ export function GlobeLegoAssemblyLayer({
     const next = selectDetailedIds(camera.position);
     setDetailedIds((previous) => (setsEqual(previous, next) ? previous : next));
   });
-
   const zoneByBuildingId = useMemo(() => {
     const map = new Map<string, SiteZone>();
     for (const zone of zones) {
@@ -617,8 +622,8 @@ export function GlobeLegoAssemblyLayer({
       const plannedMassingCount = entries.length - legoCount;
       console.debug(
         `[GlobeLego] Mounted all ${entries.length} building representations `
-        + `(${Math.min(legoCount, LEGO_STACK_RENDER_BUDGET)} detailed, `
-        + `${Math.max(0, legoCount - LEGO_STACK_RENDER_BUDGET)} LOD massing, `
+        + `(${Math.min(legoCount, LEGO_STACK_RENDER_BUDGET)} stack budget, `
+        + `${LEGO_DISTINCT_FAMILY_RENDER_BUDGET} distinct-family budget, `
         + `${plannedMassingCount} planned-family massing)`,
       );
     }

@@ -4,6 +4,7 @@ import type { SiteZone } from '@/types';
 import {
   convexHull,
   createTileSpatialMaskConfig,
+  createTileSpatialMaskSetConfig,
   isPointInsideSpatialMask,
   patchMaterialForSpatialMask,
   shouldUseSpatialTileMask,
@@ -45,6 +46,36 @@ describe('world-coordinate tile masking', () => {
     expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 220 }, config!)).toBe(false);
   });
 
+  it('combines disjoint replacement footprints without clipping the space between them', () => {
+    const second = {
+      ...boundary(),
+      id: 'site-2',
+      coordinates: boundary().coordinates.map(([lng, lat]) => [lng + 0.01, lat] as [number, number]),
+    };
+    const config = createTileSpatialMaskSetConfig([boundary(), second], 1045);
+    expect(config).not.toBeNull();
+    expect(config?.maskCount).toBe(2);
+    expect(config?.halfSpaces).toHaveLength(8);
+    expect(config?.maskRanges.map((range) => [range.x, range.y])).toEqual([
+      [0, 4],
+      [4, 4],
+    ]);
+
+    const firstCenterX = -0.005 * 69_700;
+    const secondCenterX = 0.005 * 69_700;
+    expect(isPointInsideSpatialMask({ x: firstCenterX, y: 0, z: 5 }, config!)).toBe(true);
+    expect(isPointInsideSpatialMask({ x: secondCenterX, y: 0, z: 5 }, config!)).toBe(true);
+    expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 5 }, config!)).toBe(false);
+  });
+
+  it('falls back instead of overflowing the shader footprint capacity', () => {
+    const masks = Array.from({ length: 9 }, (_, index) => ({
+      ...boundary(),
+      id: `site-${index}`,
+    }));
+    expect(createTileSpatialMaskSetConfig(masks, 1045)).toBeNull();
+  });
+
   it('removes interior dents from a concave parcel without changing winding', () => {
     const hull = convexHull([
       { x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 },
@@ -67,7 +98,7 @@ describe('world-coordinate tile masking', () => {
     expect(material.customProgramCacheKey).toBe(originalCacheKey);
   });
 
-  it('pads the fixed-length shader half-space uniform', () => {
+  it('pads fixed-length shader arrays and exposes the active mask count', () => {
     const material = new THREE.MeshBasicMaterial();
     const config = createTileSpatialMaskConfig(boundary(), 1045)!;
     patchMaterialForSpatialMask(material, config);
@@ -79,5 +110,10 @@ describe('world-coordinate tile masking', () => {
     material.onBeforeCompile(shader as never, {} as never);
     expect((shader.uniforms as { siteMaskHalfSpaces: { value: THREE.Vector3[] } })
       .siteMaskHalfSpaces.value).toHaveLength(32);
+    expect((shader.uniforms as { siteMaskRanges: { value: THREE.Vector2[] } })
+      .siteMaskRanges.value).toHaveLength(8);
+    expect((shader.uniforms as { siteMaskCount: { value: number } })
+      .siteMaskCount.value).toBe(1);
+    expect(shader.fragmentShader).toContain('insideAnySiteMask');
   });
 });

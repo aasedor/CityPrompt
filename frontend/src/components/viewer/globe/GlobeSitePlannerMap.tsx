@@ -33,7 +33,12 @@ import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
 import { GlobeLegoAssemblyLayer } from './GlobeLegoAssemblyLayer';
-import { excludeLegoStackBuildings, hasLegoRecipe, hasPlannedMassing } from './legoGlobePlacement';
+import {
+  excludeLegoStackBuildings,
+  hasLegoRecipe,
+  hasPlannedMassing,
+  renderableLegoBuildingIds,
+} from './legoGlobePlacement';
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
@@ -1468,6 +1473,13 @@ export function GlobeSitePlannerMap({
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
   const selectedBuildingIdRef = useRef<string | null>(null);
   selectedBuildingIdRef.current = selectedBuildingId;
+  // Zone overlays can legitimately win the pointer race against the model
+  // beneath them. Treat the selected zone's generated building as selected
+  // for render-detail budgeting too, so inspecting a footprint always
+  // promotes its authored LEGO family instead of leaving a massing proxy.
+  const selectedRenderedBuildingId = selectedBuildingId
+    ?? siteZones.find((zone) => zone.id === selectedZoneId)?.building_id
+    ?? null;
   // Coexistence: a building with a renderable LEGO recipe renders as a module
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
@@ -1487,15 +1499,24 @@ export function GlobeSitePlannerMap({
     () => getCurrentCommunity3DBuildingIds(siteZones, buildings ?? []),
     [buildings, siteZones],
   );
+  const savedRenderableLegoBuildingIds = useMemo(
+    () => renderableLegoBuildingIds(buildings ?? []),
+    [buildings],
+  );
   const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url))
     || legoLayerBuildings.length > 0;
   // Prism suppression + outward "has real 3D massing" set = Meshy ∪ LEGO.
   const suppressedBuildingIds = useMemo(() => {
-    if (legoBuildingIds.size === 0) return modeledBuildingIds;
     const merged = new Set(modeledBuildingIds);
     legoBuildingIds.forEach((id) => merged.add(id));
+    // A valid saved recipe durably replaces the planning prism while 3D is
+    // enabled. Loader callbacks may reset during hot reload or a WebGL layer
+    // handoff, but they must never resurrect an opaque box behind the GLB.
+    if (buildingModelsVisible) {
+      savedRenderableLegoBuildingIds.forEach((id) => merged.add(id));
+    }
     return merged;
-  }, [modeledBuildingIds, legoBuildingIds]);
+  }, [buildingModelsVisible, legoBuildingIds, modeledBuildingIds, savedRenderableLegoBuildingIds]);
   const preparedSiteBoundaryIds = useMemo(
     () => getPreparedSiteBoundaryIds(siteZones),
     [siteZones],
@@ -3231,7 +3252,6 @@ export function GlobeSitePlannerMap({
               onZoneClick={handleZoneMeshClick}
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
               suppressedBuildingIds={suppressedBuildingIds}
-              legoPlacedBuildingIds={legoBuildingIds}
               planningOverlaysVisible={zoneOverlaysVisible}
             />
           </group>
@@ -3288,7 +3308,7 @@ export function GlobeSitePlannerMap({
                 direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleModeledIdsChange}
-                selectedBuildingId={selectedBuildingId}
+                selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
               />
             )}
@@ -3304,7 +3324,7 @@ export function GlobeSitePlannerMap({
                 direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleLegoIdsChange}
-                selectedBuildingId={selectedBuildingId}
+                selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
               />
             )}

@@ -7,6 +7,7 @@ import {
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
 
+const MAX_SITE_MASKS = 8;
 const MAX_SITE_HALF_SPACES = 32;
 const SPATIAL_PATCH_STATE_KEY = '__cityPromptTileSpatialMaskPatch';
 const DEG_TO_RAD = Math.PI / 180;
@@ -14,6 +15,8 @@ const DEG_TO_RAD = Math.PI / 180;
 export interface TileSpatialMaskConfig {
   worldToLocal: THREE.Matrix4;
   halfSpaces: THREE.Vector3[];
+  maskRanges: THREE.Vector2[];
+  maskCount: number;
   minHeight: number;
   maxHeight: number;
   cacheKey: string;
@@ -81,26 +84,49 @@ export function createTileSpatialMaskConfig(
   boundary: SiteZone,
   terrainHeight: number,
 ): TileSpatialMaskConfig | null {
-  if (!shouldUseSpatialTileMask(boundary)) return null;
-  const centroid = computeCentroid(boundary.coordinates);
-  const mPerLon = metersPerDegLon(centroid[1]);
-  const hull = convexHull(boundary.coordinates.map(([lng, lat]) => ({
-    x: (lng - centroid[0]) * mPerLon,
-    y: (lat - centroid[1]) * METERS_PER_DEG_LAT,
-  })));
-  if (hull.length < 3 || hull.length > MAX_SITE_HALF_SPACES) return null;
+  return createTileSpatialMaskSetConfig([boundary], terrainHeight);
+}
 
-  // Hull is counter-clockwise. Each left-hand normal points inward, and its
-  // dot-product threshold is the half-space boundary used in the shader.
-  const halfSpaces = hull.map((point, index) => {
-    const next = hull[(index + 1) % hull.length];
-    const dx = next.x - point.x;
-    const dy = next.y - point.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const nx = -dy / length;
-    const ny = dx / length;
-    return new THREE.Vector3(nx, ny, nx * point.x + ny * point.y);
-  });
+/** Build one true world-coordinate clipping shader for several disjoint
+ * replacement footprints. All polygons share one ENU frame, so the shader
+ * needs only one world transform and can test the union without projected
+ * stencil side walls. */
+export function createTileSpatialMaskSetConfig(
+  boundaries: readonly SiteZone[],
+  terrainHeight: number,
+): TileSpatialMaskConfig | null {
+  const usable = boundaries.filter(shouldUseSpatialTileMask);
+  if (usable.length === 0 || usable.length > MAX_SITE_MASKS) return null;
+  const allCoordinates = usable.flatMap((boundary) => boundary.coordinates);
+  const centroid = computeCentroid(allCoordinates);
+  const mPerLon = metersPerDegLon(centroid[1]);
+  const halfSpaces: THREE.Vector3[] = [];
+  const maskRanges: THREE.Vector2[] = [];
+  for (const boundary of usable) {
+    const hull = convexHull(boundary.coordinates.map(([lng, lat]) => ({
+      x: (lng - centroid[0]) * mPerLon,
+      y: (lat - centroid[1]) * METERS_PER_DEG_LAT,
+    })));
+    if (
+      hull.length < 3
+      || halfSpaces.length + hull.length > MAX_SITE_HALF_SPACES
+    ) {
+      return null;
+    }
+    const offset = halfSpaces.length;
+    // Hull is counter-clockwise. Each left-hand normal points inward, and its
+    // dot-product threshold is the half-space boundary used in the shader.
+    hull.forEach((point, index) => {
+      const next = hull[(index + 1) % hull.length];
+      const dx = next.x - point.x;
+      const dy = next.y - point.y;
+      const length = Math.hypot(dx, dy) || 1;
+      const nx = -dy / length;
+      const ny = dx / length;
+      halfSpaces.push(new THREE.Vector3(nx, ny, nx * point.x + ny * point.y));
+    });
+    maskRanges.push(new THREE.Vector2(offset, hull.length));
+  }
 
   const localToWorld = new THREE.Matrix4();
   WGS84_ELLIPSOID.getEastNorthUpFrame(
@@ -117,11 +143,20 @@ export function createTileSpatialMaskConfig(
   const minHeight = -120;
   const maxHeight = 180;
   const cacheKey = [
-    boundary.id,
+    ...usable.map((boundary) => boundary.id),
     terrainHeight.toFixed(2),
+    ...maskRanges.flatMap((range) => [range.x, range.y]),
     ...halfSpaces.flatMap((space) => [space.x.toFixed(3), space.y.toFixed(3), space.z.toFixed(3)]),
   ].join(':');
-  return { worldToLocal, halfSpaces, minHeight, maxHeight, cacheKey };
+  return {
+    worldToLocal,
+    halfSpaces,
+    maskRanges,
+    maskCount: maskRanges.length,
+    minHeight,
+    maxHeight,
+    cacheKey,
+  };
 }
 
 export function isPointInsideSpatialMask(
@@ -130,8 +165,12 @@ export function isPointInsideSpatialMask(
 ): boolean {
   return point.z >= config.minHeight
     && point.z <= config.maxHeight
-    && config.halfSpaces.every((space) => (
-      space.x * point.x + space.y * point.y >= space.z - 1e-6
+    && config.maskRanges.some((range) => (
+      config.halfSpaces
+        .slice(range.x, range.x + range.y)
+        .every((space) => (
+          space.x * point.x + space.y * point.y >= space.z - 1e-6
+        ))
     ));
 }
 
@@ -164,6 +203,13 @@ export function patchMaterialForSpatialMask(
       ),
     };
     shader.uniforms.siteMaskHalfSpaceCount = { value: config.halfSpaces.length };
+    shader.uniforms.siteMaskRanges = {
+      value: Array.from(
+        { length: MAX_SITE_MASKS },
+        (_, index) => config.maskRanges[index] ?? new THREE.Vector2(),
+      ),
+    };
+    shader.uniforms.siteMaskCount = { value: config.maskCount };
     shader.uniforms.siteMaskHeightRange = {
       value: new THREE.Vector2(config.minHeight, config.maxHeight),
     };
@@ -179,11 +225,11 @@ export function patchMaterialForSpatialMask(
     shader.fragmentShader = shader.fragmentShader
       .replace(
         '#include <common>',
-        `#include <common>\n#define MAX_SITE_HALF_SPACES ${MAX_SITE_HALF_SPACES}\nuniform vec3 siteMaskHalfSpaces[MAX_SITE_HALF_SPACES];\nuniform int siteMaskHalfSpaceCount;\nuniform vec2 siteMaskHeightRange;\nvarying vec3 vSiteMaskLocalPosition;`,
+        `#include <common>\n#define MAX_SITE_MASKS ${MAX_SITE_MASKS}\n#define MAX_SITE_HALF_SPACES ${MAX_SITE_HALF_SPACES}\nuniform vec3 siteMaskHalfSpaces[MAX_SITE_HALF_SPACES];\nuniform int siteMaskHalfSpaceCount;\nuniform vec2 siteMaskRanges[MAX_SITE_MASKS];\nuniform int siteMaskCount;\nuniform vec2 siteMaskHeightRange;\nvarying vec3 vSiteMaskLocalPosition;`,
       )
       .replace(
         '#include <clipping_planes_fragment>',
-        `#include <clipping_planes_fragment>\nbool insideSiteMask = true;\nfor (int sitePlane = 0; sitePlane < MAX_SITE_HALF_SPACES; sitePlane++) {\n  if (sitePlane < siteMaskHalfSpaceCount) {\n    vec3 halfSpace = siteMaskHalfSpaces[sitePlane];\n    if (dot(halfSpace.xy, vSiteMaskLocalPosition.xy) < halfSpace.z) insideSiteMask = false;\n  }\n}\nif (insideSiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;`,
+        `#include <clipping_planes_fragment>\nbool insideAnySiteMask = false;\nfor (int siteMask = 0; siteMask < MAX_SITE_MASKS; siteMask++) {\n  if (siteMask < siteMaskCount) {\n    vec2 siteRange = siteMaskRanges[siteMask];\n    bool insideCurrentSiteMask = true;\n    for (int sitePlane = 0; sitePlane < MAX_SITE_HALF_SPACES; sitePlane++) {\n      float sitePlaneIndex = float(sitePlane);\n      if (sitePlane < siteMaskHalfSpaceCount && sitePlaneIndex >= siteRange.x && sitePlaneIndex < siteRange.x + siteRange.y) {\n        vec3 halfSpace = siteMaskHalfSpaces[sitePlane];\n        if (dot(halfSpace.xy, vSiteMaskLocalPosition.xy) < halfSpace.z) insideCurrentSiteMask = false;\n      }\n    }\n    if (insideCurrentSiteMask) insideAnySiteMask = true;\n  }\n}\nif (insideAnySiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;`,
       );
   };
   material.customProgramCacheKey = () => `${previousCacheKey.call(material)}|site-mask:${config.cacheKey}`;

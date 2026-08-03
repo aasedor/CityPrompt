@@ -104,10 +104,6 @@ interface GlobeZoneLayerProps {
   /** Buildings whose GLB model is mounted on the globe — their extruded prism
    *  is skipped (the model replaces it). Stencil volume + label stay. */
   suppressedBuildingIds?: Set<string>;
-  /** Suppressed buildings whose replacement is a placed LEGO stack: the prism
-   *  still hides, but the ground outline stays so the zone remains clickable
-   *  (Meshy models keep the historical outline-off behaviour). */
-  legoPlacedBuildingIds?: Set<string>;
   /** Planning fills/outlines/labels can be hidden while generated park
    * orthophotos remain mounted as authored proposal content. */
   planningOverlaysVisible?: boolean;
@@ -400,7 +396,7 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, keepOutlineWhenSuppressed = false, planningOverlaysVisible = true, sitePrepared = false }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, sitePrepared = false }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -408,7 +404,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   selectionEnabled?: boolean;
   lightweight?: boolean;
   suppressed?: boolean;
-  keepOutlineWhenSuppressed?: boolean;
   planningOverlaysVisible?: boolean;
   sitePrepared?: boolean;
 }) {
@@ -1092,7 +1087,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       )}
 
       {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
-      {showThisPlanningOverlay && !(isBuilding && suppressed && !keepOutlineWhenSuppressed) && (
+      {showThisPlanningOverlay && !(isBuilding && suppressed) && (
         <line
           ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
           {...({ geometry: !isBuilding ? (importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
@@ -1134,7 +1129,6 @@ export function GlobeZoneLayer({
   onZoneClick,
   selectionEnabled = true,
   suppressedBuildingIds,
-  legoPlacedBuildingIds,
   planningOverlaysVisible = true,
 }: GlobeZoneLayerProps) {
   // Render-time clean capture (cc_clean_composite): useGlobeAIRender hides the
@@ -1182,7 +1176,6 @@ export function GlobeZoneLayer({
               selectionEnabled={selectionEnabled}
               lightweight={lightweight}
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
-              keepOutlineWhenSuppressed={Boolean(zone.building_id && legoPlacedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
               sitePrepared={sitePrepared}
             />

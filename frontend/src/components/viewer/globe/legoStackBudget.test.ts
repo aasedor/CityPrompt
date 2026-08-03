@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
+  LEGO_DISTINCT_FAMILY_RENDER_BUDGET,
   LEGO_STACK_RENDER_BUDGET,
   partitionLegoStacksByDistance,
+  partitionLegoStacksByDistanceAndFamily,
   selectDetailedLegoStacks,
 } from './legoStackBudget';
 
@@ -38,5 +40,74 @@ describe('selectDetailedLegoStacks', () => {
     expect(selection.detailed.map((entry) => entry.id)).toEqual(['b', 'd']);
     expect(selection.simplified.map((entry) => entry.id)).toEqual(['a', 'c']);
     expect(new Set([...selection.detailed, ...selection.simplified])).toEqual(new Set(entries));
+  });
+});
+
+describe('partitionLegoStacksByDistanceAndFamily', () => {
+  it('admits the nearest distinct families and keeps later stacks from admitted families detailed', () => {
+    const entries = [
+      { id: 'a-near', family: 'a', distance: 1 },
+      { id: 'b-near', family: 'b', distance: 2 },
+      { id: 'c-near', family: 'c', distance: 3 },
+      { id: 'd-near', family: 'd', distance: 4 },
+      { id: 'a-far', family: 'a', distance: 5 },
+    ];
+
+    const selection = partitionLegoStacksByDistanceAndFamily(
+      entries,
+      (entry) => entry.family,
+      (entry) => entry.distance,
+      96,
+      3,
+    );
+
+    expect(LEGO_DISTINCT_FAMILY_RENDER_BUDGET).toBe(LEGO_STACK_RENDER_BUDGET);
+    expect(selection.detailed.map((entry) => entry.id)).toEqual([
+      'a-near',
+      'b-near',
+      'c-near',
+      'a-far',
+    ]);
+    expect(selection.simplified.map((entry) => entry.id)).toEqual(['d-near']);
+  });
+
+  it('honors zero and explicit stack budgets', () => {
+    const entries = [
+      { family: 'a', distance: 1 },
+      { family: 'a', distance: 2 },
+      { family: 'b', distance: 3 },
+    ];
+
+    expect(partitionLegoStacksByDistanceAndFamily(
+      entries,
+      (entry) => entry.family,
+      (entry) => entry.distance,
+      2,
+      2,
+    ).detailed).toEqual(entries.slice(0, 2));
+    expect(partitionLegoStacksByDistanceAndFamily(
+      entries,
+      (entry) => entry.family,
+      (entry) => entry.distance,
+      2,
+      0,
+    ).detailed).toEqual([]);
+  });
+
+  it('keeps every distinct family detailed under the default stack budget', () => {
+    const entries = Array.from({ length: 12 }, (_value, index) => ({
+      id: `building-${index}`,
+      family: `family-${index}`,
+      distance: index,
+    }));
+
+    const selection = partitionLegoStacksByDistanceAndFamily(
+      entries,
+      (entry) => entry.family,
+      (entry) => entry.distance,
+    );
+
+    expect(selection.detailed).toEqual(entries);
+    expect(selection.simplified).toEqual([]);
   });
 });

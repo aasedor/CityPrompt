@@ -16,9 +16,8 @@ import {
 } from './StencilMaskPlugin';
 import type { SiteZone } from '@/types';
 import {
-  createTileSpatialMaskConfig,
+  createTileSpatialMaskSetConfig,
   patchMaterialForSpatialMask,
-  shouldUseSpatialTileMask,
   unpatchMaterialSpatialMask,
 } from './TileSpatialMaskPlugin';
 
@@ -31,15 +30,15 @@ interface TileStencilPatcherProps {
 export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherProps) {
   const tiles = useContext(TilesRendererContext);
   const patchedMaterials = useRef(new Set<THREE.Material>());
-  const spatialBoundary = zones.find((zone) => zone.zone_type === 'site_boundary')
-    ?? (zones.length === 1 && shouldUseSpatialTileMask(zones[0]) ? zones[0] : undefined);
   const spatialMask = useMemo(
-    () => (
-      spatialBoundary
-        ? createTileSpatialMaskConfig(spatialBoundary, terrainHeight)
-        : null
-    ),
-    [spatialBoundary, terrainHeight],
+    () => {
+      const siteBoundary = zones.find((zone) => zone.zone_type === 'site_boundary');
+      return createTileSpatialMaskSetConfig(
+        siteBoundary ? [siteBoundary] : zones,
+        terrainHeight,
+      );
+    },
+    [zones, terrainHeight],
   );
   const hasStencilZones = !spatialMask && zones.some(
     (zone) => shouldCreateTileStencilMask(zone.zone_type) && zone.coordinates.length >= 3,
