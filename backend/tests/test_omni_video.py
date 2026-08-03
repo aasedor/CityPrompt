@@ -5,7 +5,13 @@ import pytest
 from PIL import Image
 from pydantic import ValidationError
 
-from app.api.v1.video import PILOT_MAX_PROVIDER_CALLS, VideoPilotRequest, _count_provider_calls
+from app.api.v1.video import (
+    PILOT_MAX_PROVIDER_CALLS,
+    SEEDANCE_PILOT_MAX_PROVIDER_CALLS,
+    VideoPilotRequest,
+    _count_provider_calls,
+    _provider_usage,
+)
 from app.services.omni_video import (
     build_cinematic_prompt,
     build_omni_payload,
@@ -277,3 +283,19 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
 
     assert PILOT_MAX_PROVIDER_CALLS == 46
     assert _count_provider_calls(attempts) == 2
+
+
+def test_seedance_ledger_has_an_independent_hard_two_call_cap():
+    attempts = [
+        {"provider": "omni", "provider_call_started_at": "2026-08-03T00:00:00Z"},
+        {"provider": "seedance_mini", "provider_call_started_at": "2026-08-03T00:01:00Z"},
+        {"provider": "seedance_mini", "provider_call_started_at": "2026-08-03T00:02:00Z"},
+    ]
+
+    usage = _provider_usage(attempts, "seedance_mini")
+
+    assert SEEDANCE_PILOT_MAX_PROVIDER_CALLS == 2
+    assert _count_provider_calls(attempts, "seedance_mini") == 2
+    assert usage.attempts_used == 2
+    assert usage.attempts_remaining == 0
+    assert usage.max_attempts == 2

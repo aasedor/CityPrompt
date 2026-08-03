@@ -153,6 +153,7 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     omni_video_model: str = "gemini-omni-flash-preview"
     omni_video_timeout_seconds: int = 600
+    seedance_video_timeout_seconds: int = 900
     google_maps_api_key: str = ""
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"

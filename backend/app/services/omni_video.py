@@ -143,6 +143,7 @@ def build_cinematic_prompt(
     duration_seconds: int,
     control_mode: str = "single_frame",
     keyframe_count: int = 1,
+    provider: str = "omni",
 ) -> str:
     """Build a motion-only prompt used for both preflight and generation."""
     prompt_scene_brief = scene_brief.strip()
@@ -183,13 +184,23 @@ def build_cinematic_prompt(
         final_preservation = "preserve the corresponding City Prompt route image and reduce motion between checkpoints"
     elif control_mode == "preview_video":
         control_prefix = ""
-        input_authority = (
-            "The supplied video is City Prompt's deterministic render of the complete camera path through one frozen 3D scene"
-        )
-        flight_instruction = (
-            "Copy the supplied video's camera positions, headings, speed, timing, focal length, and single-shot continuity exactly. "
-            "Do not substitute a new camera move or treat the video as a loose stylistic reference."
-        )
+        if provider == "seedance_mini" and keyframe_count > 0:
+            input_authority = (
+                f"@Video1 is City Prompt's deterministic render of the complete camera path through one frozen 3D scene; "
+                f"@Image1 through @Image{keyframe_count} are exact chronological geometry checkpoints sampled from that same route"
+            )
+            flight_instruction = (
+                "Copy @Video1's camera positions, headings, speed, timing, focal length, and single-shot continuity exactly. "
+                "Use the ordered images only as immutable geometry anchors for the corresponding moments; they are not alternate designs."
+            )
+        else:
+            input_authority = (
+                "The supplied video is City Prompt's deterministic render of the complete camera path through one frozen 3D scene"
+            )
+            flight_instruction = (
+                "Copy the supplied video's camera positions, headings, speed, timing, focal length, and single-shot continuity exactly. "
+                "Do not substitute a new camera move or treat the video as a loose stylistic reference."
+            )
         final_preservation = "preserve the corresponding source-video frame and reduce generative change"
     else:
         control_prefix = ""
@@ -230,7 +241,7 @@ def build_cinematic_prompt(
                 "are organizational metadata only; never render any identifier as a label, callout, leader line, or text."
             ),
             (
-                f"APPEARANCE LOCK — OMNI IS THE ANIMATOR ONLY: {input_authority}. The control input already contains the final approved design and look. "
+                f"APPEARANCE LOCK — {provider.replace('_', ' ').upper()} IS THE ANIMATOR ONLY: {input_authority}. The control input already contains the final approved design and look. "
                 "Animate those existing pixels; do not improve, beautify, materialize, regenerate, relight, recolor, sharpen, "
                 "restyle, or add detail. Preserve the exact materials, colors, textures, facade rhythm, landscape treatment, "
                 "time of day, weather, shadows, exposure, and visual medium from the source. Do not apply a photographic or "

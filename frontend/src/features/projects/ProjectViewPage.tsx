@@ -1509,14 +1509,18 @@ interface ProjectRendersTrayProps {
 function videoDownloadUrl(video: VideoAttempt): string {
   const source = resolveApiFileUrl(video.video_url ?? '');
   const separator = source.includes('?') ? '&' : '?';
-  const name = `city-prompt-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
+  const name = `city-prompt-${video.provider === 'seedance_mini' ? 'seedance-mini' : 'omni'}-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
   return `${source}${separator}download=true&filename=${encodeURIComponent(name)}`;
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
   const motion = video.camera_motion.split('_').join(' ');
-  if (video.style === 'source_fidelity') return `Source fidelity · ${motion}`;
-  return `${video.style.split(/[_-]/).join(' ')} · ${motion}`;
+  const provider = video.provider === 'seedance_mini' ? 'Seedance Mini' : 'Omni';
+  const reference = video.provider === 'seedance_mini'
+    ? video.seedance_reference_mode === 'preview_plus_keyframes' ? 'preview + 3 views' : 'preview only'
+    : 'source fidelity';
+  if (video.style === 'source_fidelity') return `${provider} · ${reference} · ${motion}`;
+  return `${provider} · ${video.style.split(/[_-]/).join(' ')} · ${motion}`;
 }
 
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {

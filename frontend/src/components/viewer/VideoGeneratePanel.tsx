@@ -54,10 +54,20 @@ const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string 
 ];
 
 type MotionId = typeof MOTIONS[number]['id'];
+type VideoProvider = 'omni' | 'seedance_mini';
+type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
+
+const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
+  { id: 'omni', name: 'Gemini Omni', detail: 'Current benchmark · $0.80 estimate' },
+  { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 2 calls' },
+];
 
 export interface VideoAttempt {
   id: string;
   request_id: string;
+  provider?: VideoProvider;
+  model?: string | null;
+  seedance_reference_mode?: SeedanceReferenceMode | null;
   status: string;
   style: string;
   control_mode?: VideoControlMode;
@@ -73,14 +83,23 @@ export interface VideoAttempt {
 }
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
+  const provider = attempt.provider === 'seedance_mini' ? 'Seedance Mini' : 'Omni';
   const motion = attempt.camera_motion.split('_').join(' ');
-  const control = attempt.control_mode === 'multi_keyframe'
-    ? 'Route keyframes'
-    : attempt.control_mode === 'preview_video'
-      ? 'Preview-video edit'
-      : 'Single frame';
-  if (attempt.style === 'source_fidelity') return `${control} · ${motion}`;
-  return `${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
+  const control = attempt.provider === 'seedance_mini'
+    ? attempt.seedance_reference_mode === 'preview_plus_keyframes' ? 'Preview + 3 views' : 'Preview only'
+    : attempt.control_mode === 'multi_keyframe'
+      ? 'Route keyframes'
+      : attempt.control_mode === 'preview_video'
+        ? 'Preview-video edit'
+        : 'Single frame';
+  if (attempt.style === 'source_fidelity') return `${provider} · ${control} · ${motion}`;
+  return `${provider} · ${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
+}
+
+interface ProviderUsage {
+  attempts_used: number;
+  attempts_remaining: number;
+  max_attempts: number;
 }
 
 interface VideoPilotState {
@@ -88,6 +107,7 @@ interface VideoPilotState {
   attempts_used: number;
   attempts_remaining: number;
   max_attempts: number;
+  provider_usage: Record<VideoProvider, ProviderUsage>;
 }
 
 interface PreflightResult {
@@ -97,8 +117,10 @@ interface PreflightResult {
   height: number;
   mime_type: string;
   prompt_preview: string;
+  provider: VideoProvider;
   attempts_used: number;
   attempts_remaining: number;
+  max_attempts: number;
   estimated_cost_usd: number;
   model: string;
   reference_image_count: number;
@@ -106,6 +128,8 @@ interface PreflightResult {
 
 interface PreparedVideoRequest {
   project_id: string;
+  provider: VideoProvider;
+  seedance_reference_mode: SeedanceReferenceMode;
   guide_frame_base64: string;
   control_mode: VideoControlMode;
   route_keyframes_base64: string[];
@@ -211,10 +235,21 @@ export function VideoGeneratePanel({
   const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>(DEFAULT_VIDEO_ROUTE);
   const [drawingRoute, setDrawingRoute] = useState(false);
   const [motion, setMotion] = useState<MotionId>('path_follow');
+  const [provider, setProvider] = useState<VideoProvider>('omni');
+  const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
   const [routeControls, setRouteControls] = useState<(VideoRouteCaptureResult & { signature: string }) | null>(null);
   const [isPreparingControls, setIsPreparingControls] = useState(false);
-  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 46, max_attempts: 46 });
+  const [pilot, setPilot] = useState<VideoPilotState>({
+    attempts: [],
+    attempts_used: 0,
+    attempts_remaining: 46,
+    max_attempts: 46,
+    provider_usage: {
+      omni: { attempts_used: 0, attempts_remaining: 46, max_attempts: 46 },
+      seedance_mini: { attempts_used: 0, attempts_remaining: 2, max_attempts: 2 },
+    },
+  });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
@@ -230,18 +265,29 @@ export function VideoGeneratePanel({
   );
 
   const currentSignature = useMemo(
-    () => `${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
-    [controlMode, motion, routePoints, sceneContract.signature],
+    () => `${provider}:${seedanceReferenceMode}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
+    [controlMode, motion, provider, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
+  const providerUsage = pilot.provider_usage[provider];
 
   const loadPilot = useCallback(async () => {
     try {
       const state = await videoRenderApi.list(projectId) as VideoPilotState;
-      setPilot(state);
+      setPilot({
+        ...state,
+        provider_usage: state.provider_usage ?? {
+          omni: {
+            attempts_used: state.attempts_used,
+            attempts_remaining: state.attempts_remaining,
+            max_attempts: state.max_attempts,
+          },
+          seedance_mini: { attempts_used: 0, attempts_remaining: 2, max_attempts: 2 },
+        },
+      });
       setSelectedAttempt((current) => current ?? state.attempts.find((attempt) => attempt.status === 'complete') ?? null);
     } catch (loadError) {
       setError(getApiErrorMessage(loadError, 'Could not load Video Render history.'));
@@ -369,9 +415,20 @@ export function VideoGeneratePanel({
       : controlMode === 'preview_video'
         ? `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera and geometry authority. Preserve every frame's layout and timing. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`
         : `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
-    const routeKeyframes = controlMode === 'multi_keyframe' ? activeControls?.keyframesBase64 ?? [] : [];
+    const allRouteKeyframes = activeControls?.keyframesBase64 ?? [];
+    const routeKeyframes = controlMode === 'multi_keyframe'
+      ? allRouteKeyframes
+      : provider === 'seedance_mini' && seedanceReferenceMode === 'preview_plus_keyframes' && allRouteKeyframes.length >= 3
+        ? [
+            allRouteKeyframes[0],
+            allRouteKeyframes[Math.floor((allRouteKeyframes.length - 1) / 2)],
+            allRouteKeyframes[allRouteKeyframes.length - 1],
+          ]
+        : [];
     return {
       project_id: projectId,
+      provider,
+      seedance_reference_mode: seedanceReferenceMode,
       guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
       control_mode: controlMode,
       route_keyframes_base64: routeKeyframes,
@@ -384,7 +441,7 @@ export function VideoGeneratePanel({
       duration_seconds: 8,
       scene_brief: sceneBrief,
     };
-  }, [captureRouteControls, controlMode, motion, projectId, routeCaptureSignature, routeControls, routePoints, sceneContract, sourceFrame]);
+  }, [captureRouteControls, controlMode, motion, projectId, provider, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -394,7 +451,17 @@ export function VideoGeneratePanel({
       const result = await videoRenderApi.preflight(body) as PreflightResult;
       setPrepared(body);
       setPreflight(result);
-      setPilot((current) => ({ ...current, attempts_used: result.attempts_used, attempts_remaining: result.attempts_remaining }));
+      setPilot((current) => ({
+        ...current,
+        provider_usage: {
+          ...current.provider_usage,
+          [result.provider]: {
+            attempts_used: result.attempts_used,
+            attempts_remaining: result.attempts_remaining,
+            max_attempts: result.max_attempts,
+          },
+        },
+      }));
       toast.success('Scene and route passed the zero-cost check');
     } catch (preflightError) {
       setPreflight(null);
@@ -406,7 +473,7 @@ export function VideoGeneratePanel({
   }, [requestBody]);
 
   const generate = useCallback(async () => {
-    if (!prepared || !hasValidPreflight || pilot.attempts_remaining <= 0) return;
+    if (!prepared || !hasValidPreflight || providerUsage.attempts_remaining <= 0) return;
     setIsGenerating(true);
     setError(null);
     try {
@@ -420,14 +487,14 @@ export function VideoGeneratePanel({
       setPrepared(null);
       onVideoSaved?.(result.attempt);
       await loadPilot();
-      toast.success(`Video trial ${result.attempts_used} is ready`);
+      toast.success(`${prepared.provider === 'seedance_mini' ? 'Seedance' : 'Omni'} trial ${result.attempts_used} is ready`);
     } catch (generationError) {
-      setError(getApiErrorMessage(generationError, 'The Omni video submission failed.'));
+      setError(getApiErrorMessage(generationError, 'The video submission failed.'));
       await loadPilot();
     } finally {
       setIsGenerating(false);
     }
-  }, [hasValidPreflight, loadPilot, onVideoSaved, pilot.attempts_remaining, prepared]);
+  }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerUsage.attempts_remaining]);
 
   const beginRoute = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (isGenerating) return;
@@ -451,11 +518,11 @@ export function VideoGeneratePanel({
   const activeVideoUrl = selectedAttempt?.video_url ? resolveApiFileUrl(selectedAttempt.video_url) : null;
   const downloadUrl = useCallback((attempt: VideoAttempt) => {
     if (!attempt.video_url) return null;
-    const fileName = `city-prompt-${attempt.style}-${attempt.camera_motion}-${attempt.id.slice(0, 8)}.mp4`;
+    const fileName = `city-prompt-${attempt.provider === 'seedance_mini' ? 'seedance-mini' : 'omni'}-${attempt.style}-${attempt.camera_motion}-${attempt.id.slice(0, 8)}.mp4`;
     const separator = attempt.video_url.includes('?') ? '&' : '?';
     return `${resolveApiFileUrl(attempt.video_url)}${separator}download=true&filename=${encodeURIComponent(fileName)}`;
   }, []);
-  const usedDots = Array.from({ length: pilot.max_attempts }, (_, index) => index < pilot.attempts_used);
+  const usedDots = Array.from({ length: providerUsage.max_attempts }, (_, index) => index < providerUsage.attempts_used);
 
   return createPortal(
     <div className="fixed inset-0 z-[240] flex items-center justify-center bg-[#081011]/88 p-3 backdrop-blur-md sm:p-6">
@@ -469,13 +536,13 @@ export function VideoGeneratePanel({
             <p className="truncate text-[11px] text-white/55">Draw the path. Animate the captured scene. Preserve every building.</p>
           </div>
           <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">Pilot calls</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{provider === 'seedance_mini' ? 'Seedance calls' : 'Omni calls'}</span>
             <div className="flex gap-1">
               {usedDots.map((used, index) => (
                 <span key={index} className={`h-2 w-2 rounded-full ${used ? 'bg-[#ff6b57]' : 'bg-white/20'}`} />
               ))}
             </div>
-            <span className="text-xs font-black">{pilot.attempts_used}/{pilot.max_attempts}</span>
+            <span className="text-xs font-black">{providerUsage.attempts_used}/{providerUsage.max_attempts}</span>
           </div>
           <button onClick={onClose} disabled={isGenerating} className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Close Video Render">
             <X size={19} />
@@ -508,7 +575,7 @@ export function VideoGeneratePanel({
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#111c1d]/90 px-8 text-center text-sm font-semibold text-white/75">
                   <Loader2 className="mb-3 animate-spin" size={24} />
                   Preparing six geographic route views and the exact 8-second camera preview…
-                  <span className="mt-1 text-[10px] font-normal text-white/45">No Omni call or credit is used during this step.</span>
+                  <span className="mt-1 text-[10px] font-normal text-white/45">No provider call or credit is used during this step.</span>
                 </div>
               )}
               {!isCapturing && !sourceFrame && (
@@ -577,10 +644,11 @@ export function VideoGeneratePanel({
                 <div className="grid grid-cols-3 gap-1.5">
                   {CONTROL_MODES.map((item) => (
                     <button key={item.id} aria-pressed={controlMode === item.id} onClick={() => {
+                      if (provider === 'seedance_mini' && item.id !== 'preview_video') return;
                       setControlMode(item.id);
                       setPreflight(null);
                       setPrepared(null);
-                    }} disabled={isGenerating || isCapturing || isPreparingControls} className={`rounded-xl border px-2 py-2 text-left transition ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
+                    }} disabled={isGenerating || isCapturing || isPreparingControls || (provider === 'seedance_mini' && item.id !== 'preview_video')} className={`rounded-xl border px-2 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-30 ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
                       <span className="block text-[10px] font-bold">{item.name}</span>
                       <span className="mt-0.5 block text-[8px] leading-tight opacity-55">{item.detail}</span>
                     </button>
@@ -604,6 +672,45 @@ export function VideoGeneratePanel({
           <aside className="flex min-h-0 flex-col bg-[#f7f2e8] lg:overflow-y-auto">
             <div className="space-y-4 p-4 sm:p-5">
               <div>
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Video provider</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {PROVIDERS.map((item) => (
+                    <button key={item.id} type="button" aria-pressed={provider === item.id} onClick={() => {
+                      setProvider(item.id);
+                      if (item.id === 'seedance_mini') setControlMode('preview_video');
+                      setPreflight(null);
+                      setPrepared(null);
+                      setError(null);
+                    }} disabled={isGenerating || isPreflighting} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${provider === item.id ? 'border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
+                      <span className="block text-[10px] font-black">{item.name}</span>
+                      <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
+                    </button>
+                  ))}
+                </div>
+                {provider === 'seedance_mini' && (
+                  <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#eef8ff] p-2.5">
+                    <p className="mb-1.5 text-[9px] font-black uppercase tracking-wider text-[#151515]/50">Reference package</p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {([
+                        { id: 'preview_plus_keyframes' as const, label: 'Preview + 3 views', detail: 'Recommended' },
+                        { id: 'preview_only' as const, label: 'Preview only', detail: 'Baseline' },
+                      ]).map((item) => (
+                        <button key={item.id} type="button" aria-pressed={seedanceReferenceMode === item.id} onClick={() => {
+                          setSeedanceReferenceMode(item.id);
+                          setPreflight(null);
+                          setPrepared(null);
+                        }} disabled={isGenerating || isPreflighting} className={`rounded-lg border px-2 py-1.5 text-left ${seedanceReferenceMode === item.id ? 'border-[#28c7e8] bg-white' : 'border-[#151515]/10 bg-white/40'}`}>
+                          <span className="block text-[9px] font-black">{item.label}</span>
+                          <span className="block text-[8px] text-[#151515]/45">{item.detail}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-[8px] font-semibold leading-relaxed text-[#315d73]">Hard server cap: {providerUsage.attempts_used}/{providerUsage.max_attempts} Seedance submissions. No automatic generation retries.</p>
+                  </div>
+                )}
+              </div>
+
+              <div>
                 <div className="mb-2 flex items-center justify-between">
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Scene lock</p>
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Continuity constrained</span>
@@ -614,14 +721,18 @@ export function VideoGeneratePanel({
                     The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, context buildings, and open-space program. Source-tile cars and pedestrians are removed, and streets stay empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    {controlMode === 'multi_keyframe'
+                    {provider === 'seedance_mini'
+                      ? seedanceReferenceMode === 'preview_plus_keyframes'
+                        ? 'Seedance receives the exact City Prompt route preview plus three chronological geometry checkpoints.'
+                        : 'Seedance receives the exact City Prompt route preview as its sole visual authority.'
+                      : controlMode === 'multi_keyframe'
                       ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
                       : controlMode === 'preview_video'
                         ? 'Omni edits City Prompt’s deterministic route video, which carries the exact camera timing and scene geometry.'
                         : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
-                    AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
+                    AI concept visualization: {provider === 'seedance_mini' ? 'Seedance' : 'Omni'} can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
                   </p>
                 </div>
               </div>
@@ -633,10 +744,10 @@ export function VideoGeneratePanel({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-black uppercase">Zero-cost preflight</p>
-                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Prepares route controls, then checks every input, quota, auth, and final prompt. Gemini is not called.</p>
+                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Prepares route controls, then checks every input, quota, auth, and final prompt. No provider is called.</p>
                   </div>
                 </div>
-                <button onClick={() => void runPreflight()} disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2 || pilot.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 py-2 text-xs font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
+                <button onClick={() => void runPreflight()} disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2 || providerUsage.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 py-2 text-xs font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
                   {isPreflighting ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />}
                   {isPreflighting ? 'Checking…' : hasValidPreflight ? 'Run check again' : 'Run free check'}
                 </button>
@@ -651,13 +762,13 @@ export function VideoGeneratePanel({
                 <div className="flex items-start gap-2">
                   <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-black">2</div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black uppercase">Generate with Omni</p>
+                    <p className="text-xs font-black uppercase">Generate with {provider === 'seedance_mini' ? 'Seedance Mini' : 'Omni'}</p>
                     <p className="mt-0.5 text-[10px] leading-relaxed text-white/50">One click = one paid provider call. There are no automatic retries.</p>
                   </div>
                 </div>
-                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || pilot.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
+                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || providerUsage.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
                   {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
-                  {isGenerating ? 'Rendering one continuous shot…' : pilot.attempts_remaining > 0 ? `Generate trial ${pilot.attempts_used + 1} of ${pilot.max_attempts} · est. $0.80` : `${pilot.max_attempts}-trial cap reached`}
+                  {isGenerating ? 'Rendering one continuous shot…' : providerUsage.attempts_remaining > 0 ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? (provider === 'seedance_mini' ? 1.98 : 0.8)).toFixed(2)}` : `${providerUsage.max_attempts}-trial cap reached`}
                 </button>
                 {isGenerating && <p className="mt-2 text-center text-[10px] text-white/45">Keep this panel open. High-quality video can take several minutes.</p>}
               </div>
@@ -670,7 +781,7 @@ export function VideoGeneratePanel({
                   <div className="flex items-center gap-2 bg-white px-3 py-2">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[11px] font-black uppercase">{videoAttemptLabel(selectedAttempt)}</p>
-                      <p className="text-[9px] text-[#151515]/45">8 sec · Gemini Omni · saved to project</p>
+                      <p className="text-[9px] text-[#151515]/45">8 sec · {selectedAttempt.provider === 'seedance_mini' ? 'fal Seedance Mini' : 'Gemini Omni'} · saved to project</p>
                     </div>
                     <a href={downloadUrl(selectedAttempt) ?? activeVideoUrl} download className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-2 text-[10px] font-black uppercase hover:bg-[#f7f2e8]" aria-label="Download video"><Download size={14} /> MP4</a>
                   </div>
@@ -684,7 +795,7 @@ export function VideoGeneratePanel({
                     {pilot.attempts.map((attempt, index) => (
                       <div key={attempt.id} className={`flex w-full items-center gap-1 rounded-xl border px-1.5 py-1 ${selectedAttempt?.id === attempt.id ? 'border-[#151515] bg-white' : 'border-[#151515]/10 bg-white/45'}`}>
                         <button onClick={() => attempt.video_url && setSelectedAttempt(attempt)} className={`flex min-w-0 flex-1 items-center gap-2 rounded-lg px-1 py-1 text-left ${attempt.video_url ? 'hover:bg-[#f7f2e8]' : 'cursor-default'}`}>
-                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black ${attempt.status === 'complete' ? 'bg-[#c9ff3d]' : attempt.status === 'failed' ? 'bg-[#ffb5a9]' : 'bg-[#eee8dc]'}`}>{pilot.attempts_used - index}</span>
+                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black ${attempt.status === 'complete' ? 'bg-[#c9ff3d]' : attempt.status === 'failed' ? 'bg-[#ffb5a9]' : 'bg-[#eee8dc]'}`}>{pilot.attempts.length - index}</span>
                           <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{videoAttemptLabel(attempt)}</span>
                           <span className="text-[9px] font-black uppercase text-[#151515]/40">{attempt.status}</span>
                         </button>

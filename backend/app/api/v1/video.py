@@ -26,16 +26,27 @@ from app.services.omni_video import (
     decode_preview_video,
     request_omni_video_once,
 )
+from app.services.seedance_video import (
+    SEEDANCE_MINI_ENDPOINT,
+    SeedanceRequestError,
+    estimate_seedance_mini_cost,
+    request_seedance_video_once,
+    seedance_runtime_error,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 PILOT_MAX_PROVIDER_CALLS = 46
+SEEDANCE_PILOT_MAX_PROVIDER_CALLS = 2
 VIDEO_CREDIT_COST = 50
+SEEDANCE_VIDEO_CREDIT_COST = 125
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
 CameraMotion = Literal["path_follow", "street_walkby"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
+VideoProvider = Literal["omni", "seedance_mini"]
+SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
 
 
 class RoutePoint(BaseModel):
@@ -47,6 +58,8 @@ class VideoPilotRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     project_id: uuid.UUID
+    provider: VideoProvider = "omni"
+    seedance_reference_mode: SeedanceReferenceMode = "preview_only"
     guide_frame_base64: str = Field(..., min_length=100, max_length=20_000_000)
     control_mode: ControlMode = "single_frame"
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
@@ -76,8 +89,10 @@ class VideoPreflightResponse(BaseModel):
     height: int
     mime_type: str
     prompt_preview: str
+    provider: VideoProvider
     attempts_used: int
     attempts_remaining: int
+    max_attempts: int
     estimated_cost_usd: float
     model: str
     reference_image_count: int
@@ -86,6 +101,9 @@ class VideoPreflightResponse(BaseModel):
 class VideoAttemptResponse(BaseModel):
     id: str
     request_id: str
+    provider: VideoProvider = "omni"
+    model: str | None = None
+    seedance_reference_mode: SeedanceReferenceMode | None = None
     status: str
     style: str
     control_mode: ControlMode = "single_frame"
@@ -107,19 +125,52 @@ class VideoGenerateResponse(BaseModel):
     provider_call_counted: bool
 
 
+class VideoProviderUsage(BaseModel):
+    attempts_used: int
+    attempts_remaining: int
+    max_attempts: int
+
+
 class VideoPilotStateResponse(BaseModel):
     attempts: list[VideoAttemptResponse]
     attempts_used: int
     attempts_remaining: int
     max_attempts: int = PILOT_MAX_PROVIDER_CALLS
+    provider_usage: dict[VideoProvider, VideoProviderUsage]
 
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _count_provider_calls(attempts: list[dict]) -> int:
-    return sum(1 for attempt in attempts if attempt.get("provider_call_started_at"))
+def _attempt_provider(attempt: dict) -> VideoProvider:
+    return "seedance_mini" if attempt.get("provider") == "seedance_mini" else "omni"
+
+
+def _provider_cap(provider: VideoProvider) -> int:
+    return SEEDANCE_PILOT_MAX_PROVIDER_CALLS if provider == "seedance_mini" else PILOT_MAX_PROVIDER_CALLS
+
+
+def _provider_credit_cost(provider: VideoProvider) -> int:
+    return SEEDANCE_VIDEO_CREDIT_COST if provider == "seedance_mini" else VIDEO_CREDIT_COST
+
+
+def _count_provider_calls(attempts: list[dict], provider: VideoProvider | None = None) -> int:
+    return sum(
+        1
+        for attempt in attempts
+        if attempt.get("provider_call_started_at") and (provider is None or _attempt_provider(attempt) == provider)
+    )
+
+
+def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProviderUsage:
+    used = _count_provider_calls(attempts, provider)
+    maximum = _provider_cap(provider)
+    return VideoProviderUsage(
+        attempts_used=used,
+        attempts_remaining=max(0, maximum - used),
+        max_attempts=maximum,
+    )
 
 
 def _public_attempt(entry: dict) -> VideoAttemptResponse:
@@ -171,15 +222,25 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if keyframes:
+            if req.provider == "omni" and keyframes:
                 raise ValueError("Preview-video mode sends the route video without route keyframe references.")
+            if req.provider == "seedance_mini":
+                expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
+                if len(keyframes) != expected_keyframes:
+                    raise ValueError(
+                        f"Seedance {req.seedance_reference_mode.replace('_', ' ')} requires exactly "
+                        f"{expected_keyframes} route keyframes."
+                    )
+        if req.provider == "seedance_mini" and req.control_mode != "preview_video":
+            raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         prompt = build_cinematic_prompt(
             route_points=[point.model_dump() for point in req.route_points],
             camera_motion=req.camera_motion,
             scene_brief=req.scene_brief,
             duration_seconds=req.duration_seconds,
             control_mode=req.control_mode,
-            keyframe_count=len(keyframes) or 1,
+            keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
+            provider=req.provider,
         )
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -192,32 +253,52 @@ async def preflight_video(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Validate the complete request without calling Gemini or consuming the pilot cap."""
+    """Validate the complete request without calling a provider or consuming a pilot slot."""
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
-    if not settings.gemini_api_key:
+    if req.provider == "omni" and not settings.gemini_api_key:
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
-    guide, keyframes, _preview, prompt = _preflight_values(req)
+    if req.provider == "seedance_mini" and not settings.fal_key:
+        raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
+    guide, keyframes, preview, prompt = _preflight_values(req)
+    if req.provider == "seedance_mini" and preview:
+        runtime_error = seedance_runtime_error(preview.mime_type)
+        if runtime_error:
+            raise HTTPException(status_code=503, detail=runtime_error)
     project = await db.get(Project, req.project_id)
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
-    used = _count_provider_calls(attempts)
-    if used >= PILOT_MAX_PROVIDER_CALLS:
-        raise HTTPException(status_code=409, detail="This project has used all forty-six authorized pilot video submissions.")
-    if not is_admin_or_above(user) and user.render_credits < VIDEO_CREDIT_COST:
+    usage = _provider_usage(attempts, req.provider)
+    if usage.attempts_remaining <= 0:
+        raise HTTPException(
+            status_code=409,
+            detail=f"This project has used all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
+        )
+    credit_cost = _provider_credit_cost(req.provider)
+    if not is_admin_or_above(user) and user.render_credits < credit_cost:
         raise HTTPException(
             status_code=402,
-            detail=f"Video Render requires {VIDEO_CREDIT_COST} credits; you have {user.render_credits}.",
+            detail=f"Video Render requires {credit_cost} credits; you have {user.render_credits}.",
         )
+    estimated_cost = (
+        estimate_seedance_mini_cost(
+            input_video_seconds=req.duration_seconds,
+            output_video_seconds=req.duration_seconds,
+        )
+        if req.provider == "seedance_mini"
+        else float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    )
     return VideoPreflightResponse(
         ready=True,
         width=guide.width,
         height=guide.height,
         mime_type=guide.mime_type,
         prompt_preview=prompt,
-        attempts_used=used,
-        attempts_remaining=PILOT_MAX_PROVIDER_CALLS - used,
-        estimated_cost_usd=float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds),
-        model=settings.omni_video_model,
+        provider=req.provider,
+        attempts_used=usage.attempts_used,
+        attempts_remaining=usage.attempts_remaining,
+        max_attempts=usage.max_attempts,
+        estimated_cost_usd=estimated_cost,
+        model=SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model,
         reference_image_count=len(keyframes),
     )
 
@@ -231,11 +312,15 @@ async def list_video_attempts(
     await check_project_permission(project_id, user, db, required="viewer")
     project = await db.get(Project, project_id)
     attempts = [dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])] if project else []
-    used = _count_provider_calls(attempts)
+    omni_usage = _provider_usage(attempts, "omni")
     return VideoPilotStateResponse(
         attempts=[_public_attempt(item) for item in reversed(attempts)],
-        attempts_used=used,
-        attempts_remaining=max(0, PILOT_MAX_PROVIDER_CALLS - used),
+        attempts_used=omni_usage.attempts_used,
+        attempts_remaining=omni_usage.attempts_remaining,
+        provider_usage={
+            "omni": omni_usage,
+            "seedance_mini": _provider_usage(attempts, "seedance_mini"),
+        },
     )
 
 
@@ -245,12 +330,18 @@ async def generate_video(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Reserve a pilot slot, then make exactly one non-retrying Omni POST."""
+    """Reserve a provider-specific pilot slot, then submit exactly one generation."""
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
-    if not settings.gemini_api_key:
+    if req.provider == "omni" and not settings.gemini_api_key:
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
+    if req.provider == "seedance_mini" and not settings.fal_key:
+        raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
     guide, keyframes, preview, prompt = _preflight_values(req)
+    if req.provider == "seedance_mini" and preview:
+        runtime_error = seedance_runtime_error(preview.mime_type)
+        if runtime_error:
+            raise HTTPException(status_code=503, detail=runtime_error)
 
     # Idempotency and the hard cap are persisted before any provider contact.
     project = await _locked_project(db, req.project_id)
@@ -258,19 +349,28 @@ async def generate_video(
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
     for existing in attempts:
         if existing.get("request_id") == str(req.request_id):
-            used = _count_provider_calls(attempts)
+            provider = _attempt_provider(existing)
+            usage = _provider_usage(attempts, provider)
             return VideoGenerateResponse(
                 attempt=_public_attempt(existing),
-                attempts_used=used,
-                attempts_remaining=max(0, PILOT_MAX_PROVIDER_CALLS - used),
+                attempts_used=usage.attempts_used,
+                attempts_remaining=usage.attempts_remaining,
                 provider_call_counted=bool(existing.get("provider_call_started_at")),
             )
 
-    used = _count_provider_calls(attempts)
-    active_reservations = sum(1 for attempt in attempts if attempt.get("status") == "reserved")
-    if used + active_reservations >= PILOT_MAX_PROVIDER_CALLS:
-        raise HTTPException(status_code=409, detail="This project has reserved all forty-six authorized pilot video submissions.")
-    if not is_admin_or_above(user) and user.render_credits < VIDEO_CREDIT_COST:
+    usage = _provider_usage(attempts, req.provider)
+    active_reservations = sum(
+        1
+        for attempt in attempts
+        if attempt.get("status") == "reserved" and _attempt_provider(attempt) == req.provider
+    )
+    if usage.attempts_used + active_reservations >= usage.max_attempts:
+        raise HTTPException(
+            status_code=409,
+            detail=f"This project has reserved all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
+        )
+    credit_cost = _provider_credit_cost(req.provider)
+    if not is_admin_or_above(user) and user.render_credits < credit_cost:
         raise HTTPException(status_code=402, detail="Insufficient Video Render credits.")
 
     attempt_id = str(uuid.uuid4())
@@ -282,10 +382,20 @@ async def generate_video(
     if preview:
         control_hash.update(preview.data)
     guide_hash = control_hash.hexdigest()
-    estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    estimated_cost = (
+        estimate_seedance_mini_cost(
+            input_video_seconds=req.duration_seconds,
+            output_video_seconds=req.duration_seconds,
+        )
+        if req.provider == "seedance_mini"
+        else float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    )
     entry = {
         "id": attempt_id,
         "request_id": str(req.request_id),
+        "provider": req.provider,
+        "model": SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model,
+        "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
         "status": "reserved",
         "style": "source_fidelity",
         "control_mode": req.control_mode,
@@ -308,7 +418,8 @@ async def generate_video(
 
     guide_extension = "png" if primary_guide.mime_type == "image/png" else "jpg"
     guide_key = f"projects/{req.project_id}/video-render/{attempt_id}/route-guide.{guide_extension}"
-    video_key = f"projects/{req.project_id}/video-render/{attempt_id}/omni.mp4"
+    video_name = "seedance-mini.mp4" if req.provider == "seedance_mini" else "omni.mp4"
+    video_key = f"projects/{req.project_id}/video-render/{attempt_id}/{video_name}"
     try:
         from app.api.v1.documents import _upload_to_storage
 
@@ -341,7 +452,7 @@ async def generate_video(
             req.project_id,
             attempt_id,
             status="preflight_failed",
-            error=f"Could not save the route guide; Gemini was not called: {str(exc)[:300]}",
+            error=f"Could not save the route guide; the provider was not called: {str(exc)[:300]}",
         )
         raise HTTPException(status_code=503, detail=entry["error"]) from exc
 
@@ -355,30 +466,50 @@ async def generate_video(
         provider_call_started_at=_now(),
     )
     if not is_admin_or_above(user):
-        user.render_credits = max(0, user.render_credits - VIDEO_CREDIT_COST)
+        user.render_credits = max(0, user.render_credits - credit_cost)
         db.add(user)
         await db.commit()
 
-    payload = build_omni_payload(
-        model=settings.omni_video_model,
-        guide_base64=req.guide_frame_base64,
-        guide_mime_type=guide.mime_type,
-        prompt=prompt,
-        duration_seconds=req.duration_seconds,
-        control_mode=req.control_mode,
-        route_keyframes=[
-            (value, frame.mime_type)
-            for value, frame in zip(req.route_keyframes_base64, keyframes, strict=True)
-        ],
-        preview_video_base64=req.preview_video_base64,
-        preview_video_mime_type=preview.mime_type if preview else None,
-    )
+    provider_name = "fal" if req.provider == "seedance_mini" else "gemini"
+    operation = "seedance_video" if req.provider == "seedance_mini" else "omni_video"
+    model = SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model
+    interaction_id: str | None = None
+    output_seed: int | None = None
     try:
-        result = await request_omni_video_once(
-            api_key=settings.gemini_api_key,
-            payload=payload,
-            timeout_seconds=settings.omni_video_timeout_seconds,
-        )
+        if req.provider == "seedance_mini":
+            if preview is None:  # Kept explicit for static type checking and defense in depth.
+                raise ValueError("Seedance requires the deterministic route preview.")
+            result = await request_seedance_video_once(
+                api_key=settings.fal_key,
+                preview=preview,
+                keyframes=keyframes,
+                prompt=prompt,
+                duration_seconds=req.duration_seconds,
+                timeout_seconds=settings.seedance_video_timeout_seconds,
+            )
+            interaction_id = result.request_id
+            output_seed = result.seed
+        else:
+            payload = build_omni_payload(
+                model=settings.omni_video_model,
+                guide_base64=req.guide_frame_base64,
+                guide_mime_type=guide.mime_type,
+                prompt=prompt,
+                duration_seconds=req.duration_seconds,
+                control_mode=req.control_mode,
+                route_keyframes=[
+                    (value, frame.mime_type)
+                    for value, frame in zip(req.route_keyframes_base64, keyframes, strict=True)
+                ],
+                preview_video_base64=req.preview_video_base64,
+                preview_video_mime_type=preview.mime_type if preview else None,
+            )
+            result = await request_omni_video_once(
+                api_key=settings.gemini_api_key,
+                payload=payload,
+                timeout_seconds=settings.omni_video_timeout_seconds,
+            )
+            interaction_id = result.interaction_id
         from app.api.v1.documents import _upload_to_storage
 
         await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
@@ -390,31 +521,37 @@ async def generate_video(
             status="complete",
             completed_at=_now(),
             video_url=video_url,
-            interaction_id=result.interaction_id,
+            interaction_id=interaction_id,
+            seed=output_seed,
             size_bytes=len(result.video_bytes),
         )
         db.add(
             ApiUsageLog(
-                provider="gemini",
-                operation="omni_video",
-                credits_used=Decimal(VIDEO_CREDIT_COST),
+                provider=provider_name,
+                operation=operation,
+                credits_used=Decimal(credit_cost),
                 task_id=attempt_id,
                 user_id=user.id,
                 status="success",
                 metadata_={
                     "project_id": str(req.project_id),
                     "duration_seconds": req.duration_seconds,
-                    "model": settings.omni_video_model,
+                    "model": model,
                     "control_mode": req.control_mode,
-                    "interaction_id": result.interaction_id,
+                    "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
+                    "interaction_id": interaction_id,
+                    "seed": output_seed,
                     "estimated_provider_cost_usd": estimated_cost,
                 },
             )
         )
         await db.commit()
     except Exception as exc:
-        message = str(exc).replace(settings.gemini_api_key, "[redacted]")[:700]
-        logger.exception("Gemini Omni pilot attempt %s failed", attempt_id)
+        secret = settings.fal_key if req.provider == "seedance_mini" else settings.gemini_api_key
+        message = str(exc).replace(secret, "[redacted]")[:700] if secret else str(exc)[:700]
+        if isinstance(exc, SeedanceRequestError) and exc.request_id:
+            interaction_id = exc.request_id
+        logger.exception("%s pilot attempt %s failed", req.provider, attempt_id)
         entry = await _update_attempt(
             db,
             req.project_id,
@@ -422,35 +559,40 @@ async def generate_video(
             status="failed",
             completed_at=_now(),
             error=message,
+            interaction_id=interaction_id,
         )
         db.add(
             ApiUsageLog(
-                provider="gemini",
-                operation="omni_video",
-                credits_used=Decimal(VIDEO_CREDIT_COST),
+                provider=provider_name,
+                operation=operation,
+                credits_used=Decimal(credit_cost),
                 task_id=attempt_id,
                 user_id=user.id,
                 status="failed",
                 metadata_={
                     "project_id": str(req.project_id),
-                    "model": settings.omni_video_model,
+                    "model": model,
                     "control_mode": req.control_mode,
+                    "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
+                    "interaction_id": interaction_id,
                     "estimated_provider_cost_usd": estimated_cost,
                 },
             )
         )
         await db.commit()
+        cap = _provider_cap(req.provider)
+        provider_label = "Seedance Mini" if req.provider == "seedance_mini" else "Omni"
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"Omni submission failed and still counts toward the forty-six-run cap: {message}",
+            detail=f"{provider_label} submission failed and still counts toward the {cap}-run cap: {message}",
         ) from exc
 
     project = await db.get(Project, req.project_id)
     latest_attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
-    used = _count_provider_calls(latest_attempts)
+    usage = _provider_usage(latest_attempts, req.provider)
     return VideoGenerateResponse(
         attempt=_public_attempt(entry),
-        attempts_used=used,
-        attempts_remaining=max(0, PILOT_MAX_PROVIDER_CALLS - used),
+        attempts_used=usage.attempts_used,
+        attempts_remaining=usage.attempts_remaining,
         provider_call_counted=True,
     )
