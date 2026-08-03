@@ -99,7 +99,7 @@ function buildingContract(zone: SiteZone, index: number): ContractEntry {
   ].filter((item): item is string => Boolean(item));
   return {
     label: `B${index + 1}`,
-    line: `B${index + 1} — ${archetype}: ${facts.join('; ')}. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, and LEGO massing; improve finish only.`,
+    line: `B${index + 1} — ${archetype}: ${facts.join('; ')}. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, and LEGO massing; improve finish only. Count B${index + 1}'s visible courtyards, lightwells, roof voids, and wings in the first frame, then preserve that exact topology and every void's perimeter, aspect ratio, separation, and placement.`,
     referenceUrl: catalogReference(archetype, firstString(properties, [
       'development_archetype_image',
       'development_archetype_image_url',
@@ -160,7 +160,8 @@ export function buildVideoSceneContract(siteZones: SiteZone[]): VideoSceneContra
   const text = [
     `ARCHETYPE CONTRACT: exactly ${buildings.length} authored building zone(s) and ${openSpaces.length} authored open-space zone(s). The first frame is the geometric source of truth; archetype records and reference images define appearance, never replacement massing.`,
     ...entries.map((entry) => entry.line),
-    'GLOBAL FORBIDDEN CHANGES: no new wings, duplicate buildings, extra storeys, roof substitutions, filled or invented courtyards, moved entrances, changed facade bay spacing, genericized open space, fountains unless explicitly required, or objects borrowed from one archetype and applied to another.',
+    'GLOBAL TOPOLOGY LOCK: building solids and their negative spaces are equally immutable. Never lengthen, widen, shrink, merge, split, fill, or invent any courtyard, lightwell, roof void, or gap between wings.',
+    'GLOBAL FORBIDDEN CHANGES: no new wings, duplicate buildings, extra storeys, roof substitutions, moved entrances, changed facade bay spacing, genericized open space, fountains unless explicitly required, or objects borrowed from one archetype and applied to another.',
   ].filter(Boolean).join('\n');
   const signature = entries.length
     ? entries.map((entry) => entry.identity).join('|')
@@ -169,7 +170,7 @@ export function buildVideoSceneContract(siteZones: SiteZone[]): VideoSceneContra
     text: entries.length ? text : fallback,
     signature,
     summary: entries.length
-      ? `${buildings.length} building archetype${buildings.length === 1 ? '' : 's'} · ${openSpaces.length} open-space archetype${openSpaces.length === 1 ? '' : 's'} · ${referenceImageUrls.length} visual reference${referenceImageUrls.length === 1 ? '' : 's'}`
+      ? `${buildings.length} building archetype${buildings.length === 1 ? '' : 's'} · ${openSpaces.length} open-space archetype${openSpaces.length === 1 ? '' : 's'} · geometry-first video`
       : 'Captured geometry only · no archetype metadata found',
     buildingCount: buildings.length,
     openSpaceCount: openSpaces.length,

@@ -45,8 +45,9 @@ STYLE_PROMPTS: dict[str, str] = {
 
 MOTION_PROMPTS: dict[str, str] = {
     "path_follow": (
-        "Follow the drawn route precisely as a smooth forward drone flight. Translate continuously through space "
-        "with gentle banking only where the route curves"
+        "Use the drawn route to define heading and curve shape, not the amount of distance to cover. Make an extremely "
+        "slow constant-altitude drone truck with gentle banking only where the route curves. Do not dolly toward the "
+        "site, zoom, descend, or increase the apparent building scale by more than five percent"
     ),
     "forward_descent": (
         "Track forward along the route while descending very gradually toward the central park; keep a dignified, "
@@ -67,7 +68,7 @@ MOTION_PROMPTS: dict[str, str] = {
     "street_walkby": (
         "Create a stabilized pedestrian-height walk-by parallel to the visible site frontage at an unhurried walking "
         "pace. Hold the lens at 1.7 metres above the sidewalk with a natural 35 mm perspective, level verticals, "
-        "no drone rise, and no orbit. Travel no more than 8 metres during the entire shot"
+        "no drone rise, and no orbit. Travel no more than 4 metres during the entire shot"
     ),
 }
 
@@ -154,6 +155,16 @@ def build_cinematic_prompt(
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
     is_street = camera_motion == "street_walkby"
+    travel_lock = (
+        "Move no more than 4 metres during the full shot."
+        if is_street
+        else (
+            "Translate no more than one eighth of the shorter authored building dimension during the full shot; "
+            "hold altitude, focal length, and subject scale constant."
+            if camera_motion == "path_follow"
+            else "Keep total camera travel below one quarter of an authored building length during the full shot."
+        )
+    )
     shot_kind = "pedestrian-height architectural walk-by" if is_street else "professional architectural drone shot"
     framing_lock = (
         "Keep the authored facade and adjacent public realm in clear close-up view for the entire shot. Resolve fine "
@@ -181,8 +192,12 @@ def build_cinematic_prompt(
                 f"{scene_brief.strip()} Keep every authored zone at the same location, footprint, height, proportions, "
                 "setbacks, roofline, opening pattern, path layout, and street relationship in every frame. Each building "
                 "zone is one indivisible persistent object and must never split into wings, merge with another zone, or "
-                "duplicate. Do not turn a solid mass into a courtyard or fill an authored courtyard. Architecture and site "
-                "geometry are immutable. Do not invent a fountain, pool, monument, gazebo, roof feature, extra path, or "
+                "duplicate. COURTYARD TOPOLOGY CHECKSUM: before generating motion, count every visible courtyard, lightwell, "
+                "roof void, and wing in the first frame. Treat each void as immutable three-dimensional negative space. "
+                "Preserve its exact count, perimeter, length, width, aspect ratio, separation, alignment, and position inside "
+                "its building in all 192 frames. Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard or "
+                "roof opening. Architecture and site geometry are immutable. Do not invent a fountain, pool, monument, "
+                "gazebo, roof feature, extra path, or "
                 "landscape centerpiece unless the archetype contract explicitly requires it. B1, B2, P1, and all similar "
                 "zone tokens are internal prompt identifiers only; never render them as labels, callouts, leader lines, or text."
             ),
@@ -207,7 +222,7 @@ def build_cinematic_prompt(
                 "Do not add, remove, duplicate, repeat, resize, bend, melt, or redesign any building, road, park, path, "
                 "tree mass, or landmark. No facade warping, sliding textures, floating objects, fisheye distortion, "
                 "excessive motion blur, visible red route, pins, labels, captions, logos, borders, or split screens. "
-                "Move slowly: total camera travel is no more than half a building length over the full shot. Keep all "
+                f"Move slowly. {travel_lock} Courtyard perimeter drift or changing roof negative space is a failed result. Keep all "
                 f"buildings spatially coherent. {framing_lock} Keep the "
                 "horizon level, motion fluid, exposure stable, and the final composition calm and sharp. "
                 "Output polished 720p 24 fps cinematic footage."

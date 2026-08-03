@@ -46,11 +46,11 @@ export function routeSvgPoints(points: VideoRoutePoint[]): string {
 }
 
 export const DEFAULT_VIDEO_ROUTE: VideoRoutePoint[] = [
-  { x: 0.52, y: 0.82 },
-  { x: 0.51, y: 0.72 },
-  { x: 0.50, y: 0.62 },
-  { x: 0.49, y: 0.53 },
-  { x: 0.48, y: 0.45 },
+  { x: 0.52, y: 0.62 },
+  { x: 0.515, y: 0.58 },
+  { x: 0.51, y: 0.54 },
+  { x: 0.505, y: 0.50 },
+  { x: 0.50, y: 0.46 },
 ];
 
 /** Short pedestrian-height move parallel to the visible frontage. */

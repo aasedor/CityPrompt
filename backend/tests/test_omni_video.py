@@ -112,8 +112,24 @@ def test_street_walkby_is_pedestrian_height_and_detail_locked():
 
     assert "pedestrian-height architectural walk-by" in prompt
     assert "1.7 metres above the sidewalk" in prompt
-    assert "Travel no more than 8 metres" in prompt
+    assert "Travel no more than 4 metres" in prompt
     assert "stone joints, window frames, balcony railings" in prompt
+
+
+def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.52, "y": 0.62}, {"x": 0.5, "y": 0.46}],
+        style="crisp_daylight",
+        camera_motion="path_follow",
+        scene_brief="Two authored buildings frame one authored beer garden.",
+        duration_seconds=8,
+    )
+
+    assert "COURTYARD TOPOLOGY CHECKSUM" in prompt
+    assert "exact count, perimeter, length, width, aspect ratio" in prompt
+    assert "Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard" in prompt
+    assert "one eighth of the shorter authored building dimension" in prompt
+    assert "increase the apparent building scale by more than five percent" in prompt
 
 
 @pytest.mark.parametrize(

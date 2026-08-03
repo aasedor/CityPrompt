@@ -115,23 +115,6 @@ interface VideoGeneratePanelProps {
   onClose: () => void;
 }
 
-async function imageUrlToDataUrl(url: string): Promise<string | null> {
-  try {
-    const response = await fetch(url, { credentials: 'same-origin' });
-    if (!response.ok) return null;
-    const blob = await response.blob();
-    if (!blob.type.startsWith('image/')) return null;
-    return await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
-  }
-}
-
 function loadImage(source: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -327,27 +310,11 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    // Omni can occasionally treat a catalog reference as a literal opening
-    // shot when the first frame is already a close street-level composition.
-    // Street mode therefore relies on the authored 3D facade plus the complete
-    // text contract; aerial mode keeps catalog images for whole-site identity.
-    const referenceEntries = sceneContract.referenceImageUrls.map((url, index) => ({
-      url,
-      role: sceneContract.referenceRoleLabels[index],
-    }));
-    const activeReferences = motion === 'street_walkby'
-      ? []
-      : referenceEntries.filter((entry) => entry.role.split(' and ').every((label) => label.startsWith('B')));
-    const referenceUrls = activeReferences.map((entry) => entry.url);
-    const loadedReferences = await Promise.all(referenceUrls.map(imageUrlToDataUrl));
-    const referenceImages = loadedReferences.filter((reference): reference is string => Boolean(reference));
-    const referenceRoleMap = activeReferences
-      .filter((_, index) => Boolean(loadedReferences[index]))
-      .map((entry, index) => `<IMAGE_REF_${index}> is the appearance reference only for ${entry.role}`)
-      .join('; ');
-    const sceneBrief = referenceRoleMap
-      ? `${sceneContract.text}\nREFERENCE ROLE MAP: ${referenceRoleMap}. Reference images are not literal video frames and their backgrounds, people, camera angles, and site layouts must never appear in the output.`
-      : sceneContract.text;
+    // Pilot comparison showed that catalog stills can improve facade finish but
+    // also compete with the authored first-frame massing and elongate roof voids.
+    // Video therefore defaults to geometry-first image-to-video: the exact 3D
+    // capture defines all geometry and the catalog-derived text defines finish.
+    const sceneBrief = `${sceneContract.text}\nREFERENCE POLICY: use the first frame as the only geometric and visual composition source. Archetype catalog data is textual appearance guidance only; do not substitute geometry from any other image.`;
     return {
       project_id: projectId,
       // Keep the literal first frame clean. Route geometry travels as structured
@@ -359,7 +326,7 @@ export function VideoGeneratePanel({
       camera_motion: motion,
       duration_seconds: 8,
       scene_brief: sceneBrief,
-      reference_images_base64: referenceImages,
+      reference_images_base64: [],
     };
   }, [motion, projectId, routePoints, sceneContract, sourceFrame, style]);
 
@@ -551,13 +518,11 @@ export function VideoGeneratePanel({
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    Authored massing, storeys, roofs, facade rhythm, materials, and open-space program stay fixed in every frame. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for stable continuity.
+                    Authored massing, storeys, roofs, courtyard count and proportions, facade rhythm, materials, and open-space program stay fixed in every frame. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for stable continuity.
                   </p>
-                  {motion === 'street_walkby' && (
-                    <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                      Street mode anchors to the modeled facade and archetype contract; catalog stills stay off to prevent an unrelated opening shot.
-                    </p>
-                  )}
+                  <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
+                    Geometry-first mode anchors to the modeled site and archetype text; catalog stills stay off so their massing cannot override authored courtyards or roof voids.
+                  </p>
                 </div>
               </div>
 

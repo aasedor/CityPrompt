@@ -38,13 +38,15 @@ describe('buildVideoSceneContract', () => {
       }),
     ]);
 
-    expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · 2 visual references');
+    expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · geometry-first video');
     expect(contract.referenceImageUrls).toEqual(['/building.png', '/park.png']);
     expect(contract.text).toContain('custom_midrise_variant_0');
     expect(contract.text).toContain('6 storeys');
     expect(contract.text).toContain('custom_garden_variant_0');
     expect(contract.text).toContain('None — no fountains');
     expect(contract.text).toContain('first frame is the geometric source of truth');
+    expect(contract.text).toContain('visible courtyards, lightwells, roof voids, and wings');
+    expect(contract.text).toContain('Never lengthen, widen, shrink, merge, split, fill, or invent');
     expect(contract.referenceRoleLabels).toEqual(['B1', 'P1']);
     expect(contract.text).not.toContain('<IMAGE_REF_0>');
   });
