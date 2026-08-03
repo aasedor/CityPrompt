@@ -206,8 +206,10 @@ def build_cinematic_prompt(
                 "zone tokens are internal prompt identifiers only; never render them as labels, callouts, leader lines, or text."
             ),
             (
-                "VISUAL FINISH: Apply texture, material, lighting, and atmospheric enhancement to the existing geometry "
-                "only; do not remodel, reinterpret, or regenerate the architecture or landscape. "
+                "VISUAL FINISH: Apply architectural texture and material enhancement only to the explicitly authored "
+                "proposal zones. Apply one coherent exposure, lighting, and atmospheric grade to the whole frame, but do "
+                "not restyle surrounding context architecture. Do not remodel, reinterpret, or regenerate the architecture "
+                "or landscape. "
                 "FIDELITY GATE: exact Image1 geometry outranks beauty, realism, and stylistic enhancement. If an enhancement "
                 "would change a footprint, roof void, wing, facade bay, height, gap, street, park edge, or geographic setting, "
                 "leave that source feature visually unchanged. Never replace the authored buildings with a more familiar, "
@@ -234,6 +236,15 @@ def build_cinematic_prompt(
                 f"buildings spatially coherent. {framing_lock} Keep the "
                 "horizon level, motion fluid, exposure stable, and the final composition calm and sharp. "
                 "Output polished 720p 24 fps cinematic footage."
+            ),
+            (
+                "CONTEXT ISOLATION — FINAL OVERRIDE: Archetype descriptions apply only to their explicitly authored B/P "
+                "proposal zones; they are not a global art direction. Every building, roof, lot, street, tree, and skyline "
+                "element outside those authored proposal silhouettes is immutable geographic context from Image1. Preserve "
+                "each context building's exact count, footprint, height, roof form, facade style, spacing, and location. Do "
+                "not propagate, repeat, clone, or extend any authored architectural archetype into the background or replace "
+                "the captured neighborhood with a stylistically matching city. Any new background instance of an authored "
+                "archetype is a failed result. When visual quality conflicts with context fidelity, preserve Image1 unchanged."
             ),
         ]
     )

@@ -526,7 +526,7 @@ export function VideoGeneratePanel({
                     The prompt locks authored massing, storeys, roofs, courtyard topology, facade rhythm, materials, and open-space program. Source-tile cars and pedestrians are removed; pilot videos keep streets empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    Geometry-first mode anchors to the modeled site and archetype text; catalog stills stay off so their massing cannot override authored courtyards or roof voids.
+                    Geometry-first mode anchors to the modeled site and archetype text. Archetype styling is restricted to authored zones; surrounding context architecture stays tied to the captured location.
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.

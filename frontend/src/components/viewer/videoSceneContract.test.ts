@@ -82,5 +82,8 @@ describe('buildVideoSceneContract', () => {
     expect(contract.text).toContain('exactly 2 mutually disconnected solids');
     expect(contract.text).toContain('Never bridge, join, fuse, wrap, or extend one building toward another');
     expect(contract.text).toContain('never consolidate them into a perimeter block');
+    expect(contract.text).toContain('ARCHETYPE SCOPE LOCK');
+    expect(contract.text).toContain('All non-authored background buildings are immutable captured context');
+    expect(contract.text).toContain('never copy, repeat, or propagate an authored facade');
   });
 });

@@ -163,6 +163,7 @@ export function buildVideoSceneContract(siteZones: SiteZone[]): VideoSceneContra
     buildings.length > 1
       ? `BUILDING SEPARATION CHECKSUM: the ${buildings.length} authored building zones are exactly ${buildings.length} mutually disconnected solids. Preserve every open-air gap, alley, park edge, and setback between them from ground to sky. Never bridge, join, fuse, wrap, or extend one building toward another; never consolidate them into a perimeter block.`
       : undefined,
+    'ARCHETYPE SCOPE LOCK: each archetype applies only to its explicitly authored zone and is never global art direction. All non-authored background buildings are immutable captured context, not additional archetype instances. Preserve their regional architecture exactly; never copy, repeat, or propagate an authored facade, roof, material, massing, or building type into the background.',
     'GLOBAL TOPOLOGY LOCK: building solids and their negative spaces are equally immutable. Never lengthen, widen, shrink, merge, split, fill, or invent any courtyard, lightwell, roof void, or gap between wings.',
     'GLOBAL FORBIDDEN CHANGES: no new wings, duplicate buildings, extra storeys, roof substitutions, moved entrances, changed facade bay spacing, genericized open space, fountains unless explicitly required, or objects borrowed from one archetype and applied to another.',
   ].filter(Boolean).join('\n');

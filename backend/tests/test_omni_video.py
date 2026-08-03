@@ -134,6 +134,10 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     assert "increase the apparent building scale by more than two percent" in prompt
     assert "exact Image1 geometry outranks beauty" in prompt
     assert "never recast the site as another city" in prompt
+    assert "CONTEXT ISOLATION — FINAL OVERRIDE" in prompt
+    assert "they are not a global art direction" in prompt
+    assert "Any new background instance of an authored archetype is a failed result" in prompt
+    assert prompt.endswith("preserve Image1 unchanged.")
 
 
 @pytest.mark.parametrize(
