@@ -10,7 +10,6 @@ from __future__ import annotations
 import base64
 import binascii
 import io
-import re
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
 
@@ -21,72 +20,11 @@ OMNI_INTERACTIONS_URL = "https://generativelanguage.googleapis.com/v1beta/intera
 MAX_GUIDE_IMAGE_BYTES = 12 * 1024 * 1024
 MIN_GUIDE_IMAGE_EDGE = 640
 
-STYLE_PROMPTS: dict[str, str] = {
-    "golden_hour": (
-        "Late golden-hour sunlight with long soft shadows, warm limestone and brick, "
-        "subtle atmospheric haze, restrained lens bloom, and premium architectural-film color grading"
-    ),
-    "crisp_daylight": (
-        "Bright soft daylight after a clearing storm, crisp material definition, realistic neutral color, "
-        "soft cloud shadows, and polished architectural-film color grading"
-    ),
-    "after_rain": (
-        "A refined after-rain atmosphere with damp paving, subtle physically plausible reflections, "
-        "soft overcast-to-sun light, rich planting, and cinematic contrast"
-    ),
-    "blue_hour": (
-        "Early blue hour with a luminous sky, warm interior window light, realistic street and park lighting, "
-        "and sophisticated low-noise cinematic exposure"
-    ),
-    "warm_overcast": (
-        "Warm bright overcast daylight, exceptionally soft shadows, natural material color, lush but plausible "
-        "landscape detail, and calm high-end architectural photography"
-    ),
-    "watercolour": (
-        "A master architectural watercolour on heavy textured paper with translucent layered washes, faint pencil "
-        "construction lines, restrained pigment blooms, sage and ochre accents, and stable paper grain"
-    ),
-    "pen-and-ink": (
-        "A precise architectural pen-and-ink drawing on warm cream paper with crisp variable-weight outlines, "
-        "controlled cross-hatching, sparse stippling, and consistent hand-drafted line character"
-    ),
-    "charcoal": (
-        "A gallery-quality architectural charcoal drawing on rough paper with expressive edge work, deep but legible "
-        "tonal shadows, selective soft blending, and persistent paper and charcoal texture"
-    ),
-    "clay-maquette": (
-        "A museum-quality physical architectural clay maquette photographed in a studio, using warm off-white clay, "
-        "subtle hand-built surface texture, restrained material accents, and soft directional model lighting"
-    ),
-    "woodblock": (
-        "A museum-quality architectural woodblock print with bold carved outlines, visible wood grain, and a restrained "
-        "five-color vintage palette using flat, cleanly separated color planes"
-    ),
-}
-
-ARTISTIC_STYLES = frozenset({"watercolour", "pen-and-ink", "charcoal", "clay-maquette", "woodblock"})
-
 MOTION_PROMPTS: dict[str, str] = {
     "path_follow": (
         "Use the drawn route to define heading and curve shape, not the amount of distance to cover. Make an extremely "
         "slow constant-altitude drone truck with gentle banking only where the route curves. Do not dolly toward the "
         "site, zoom, descend, or increase the apparent building scale by more than two percent"
-    ),
-    "forward_descent": (
-        "Track forward along the route while descending very gradually toward the central park; keep a dignified, "
-        "slow real-estate-film pace"
-    ),
-    "reveal_ascent": (
-        "Track forward along the route while rising gradually to reveal the full two-building composition and its "
-        "surrounding urban context"
-    ),
-    "orbit_left": (
-        "Use the route as a counter-clockwise orbital arc around the central park, maintaining stable altitude, "
-        "distance, horizon, and subject scale"
-    ),
-    "orbit_right": (
-        "Use the route as a clockwise orbital arc around the central park, maintaining stable altitude, distance, "
-        "horizon, and subject scale"
     ),
     "street_walkby": (
         "Create a stabilized pedestrian-height walk-by parallel to the visible site frontage at an unhurried walking "
@@ -168,42 +106,12 @@ def describe_route(points: Iterable[Mapping[str, float]]) -> str:
 def build_cinematic_prompt(
     *,
     route_points: Iterable[Mapping[str, float]],
-    style: str,
     camera_motion: str,
     scene_brief: str,
     duration_seconds: int,
 ) -> str:
-    """Build the immutable-geometry prompt used for both preflight and generation."""
-    style_prompt = STYLE_PROMPTS[style]
+    """Build a motion-only prompt used for both preflight and generation."""
     prompt_scene_brief = scene_brief.strip()
-    if style in ARTISTIC_STYLES:
-        prompt_scene_brief = re.sub(r"\bB(\d+)\b", r"authored building \1", prompt_scene_brief)
-        prompt_scene_brief = re.sub(r"\bP(\d+)\b", r"authored open space \1", prompt_scene_brief)
-        visual_finish = (
-            "Apply the selected artistic medium coherently to the entire frame so the proposal and captured context "
-            "share one visual language. This is a surface treatment only: trace every source silhouette, roof, street, "
-            "lot, tree mass, skyline feature, gap, and courtyard in place before applying the medium. Preserve the "
-            "captured neighborhood as the same recognizable geography; stylize its existing pixels without replacing "
-            "or redesigning any contextual building. "
-            f"{style_prompt}. Keep medium texture, line character, palette, lighting, and exposure temporally stable "
-            "across all frames. Do not drift between artistic and photorealistic rendering."
-        )
-        final_artistic_override = (
-            "ARTISTIC MEDIUM — FINAL PASS: After locking every source edge and world coordinate, render every pixel "
-            f"consistently as {style_prompt}. This final pass changes visual medium only, never scene content, geometry, "
-            "object count, topology, or geography. Keep the same medium strength from first frame to last. Render no "
-            "words, letters, numbers, identifiers, legends, or planning labels. Preserve Image1's spatial arrangement exactly."
-        )
-    else:
-        visual_finish = (
-            "Apply architectural texture and material enhancement only to the explicitly authored proposal zones. "
-            "Apply one coherent exposure, lighting, and atmospheric grade to the whole frame, but do not restyle "
-            "surrounding context architecture. Do not remodel, reinterpret, or regenerate the architecture or "
-            "landscape. "
-            f"{style_prompt}. Use realistic PBR materials, coherent reflections, the same planted areas, and "
-            "razor-sharp facade detail. This must read as premium cinema-camera footage, not a game capture or map model."
-        )
-        final_artistic_override = None
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
     is_street = camera_motion == "street_walkby"
@@ -219,9 +127,8 @@ def build_cinematic_prompt(
     )
     shot_kind = "pedestrian-height architectural walk-by" if is_street else "professional architectural drone shot"
     framing_lock = (
-        "Keep the authored facade and adjacent public realm in clear close-up view for the entire shot. Resolve fine "
-        "stone joints, window frames, balcony railings, entrances, planting, and paving consistently without changing "
-        "their design or position."
+        "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
+        "every already-visible joint, window frame, railing, entrance, plant, and paving edge at its source level of detail."
         if is_street
         else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
     )
@@ -254,16 +161,16 @@ def build_cinematic_prompt(
                 "Preserve its exact count, perimeter, length, width, aspect ratio, separation, alignment, and position inside "
                 "its building in all 192 frames. Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard or "
                 "roof opening. Architecture and site geometry are immutable. Do not invent a fountain, pool, monument, "
-                "gazebo, roof feature, extra path, or "
-                "landscape centerpiece unless the archetype contract explicitly requires it. Internal prompt identifiers "
+                "gazebo, roof feature, extra path, or landscape centerpiece. Internal prompt identifiers "
                 "are organizational metadata only; never render any identifier as a label, callout, leader line, or text."
             ),
             (
-                f"VISUAL FINISH: {visual_finish} "
-                "FIDELITY GATE: exact Image1 geometry outranks beauty, realism, and stylistic enhancement. If an enhancement "
-                "would change a footprint, roof void, wing, facade bay, height, gap, street, park edge, or geographic setting, "
-                "leave that source feature visually unchanged. Never replace the authored buildings with a more familiar, "
-                "generic, or prestigious architectural type and never recast the site as another city."
+                "APPEARANCE LOCK — OMNI IS THE ANIMATOR ONLY: Image1 already contains the final approved design and look. "
+                "Animate those existing pixels; do not improve, beautify, materialize, regenerate, relight, recolor, sharpen, "
+                "restyle, or add detail. Preserve the exact materials, colors, textures, facade rhythm, landscape treatment, "
+                "time of day, weather, shadows, exposure, and visual medium from the source. Do not apply a photographic or "
+                "artistic style. Newly revealed pixels caused by the small camera move must be conservative continuations of "
+                "adjacent source surfaces, never invented architecture or landscape."
             ),
             (
                 "ACTOR AND TRAFFIC LOCK: Before the first visible frame, remove every car and pedestrian baked into the "
@@ -286,15 +193,15 @@ def build_cinematic_prompt(
                 "Output polished 720p 24 fps cinematic footage."
             ),
             (
-                "CONTEXT ISOLATION — FINAL OVERRIDE: Archetype descriptions apply only to their explicitly authored "
-                "proposal zones; they are not a global art direction. Every building, roof, lot, street, tree, and skyline "
+                "CONTEXT ISOLATION — FINAL OVERRIDE: Authored-zone identity applies only inside each explicitly authored "
+                "proposal silhouette; it is not global art direction. Every building, roof, lot, street, tree, and skyline "
                 "element outside those authored proposal silhouettes is immutable geographic context from Image1. Preserve "
                 "each context building's exact count, footprint, height, roof form, facade style, spacing, and location. Do "
                 "not propagate, repeat, clone, or extend any authored architectural archetype into the background or replace "
                 "the captured neighborhood with a stylistically matching city. Any new background instance of an authored "
-                "archetype is a failed result. When visual quality conflicts with context fidelity, preserve Image1 unchanged."
+                "archetype is a failed result. Do not redesign or enhance any pixel. When motion or visual quality conflicts "
+                "with context fidelity, reduce camera motion and preserve Image1 unchanged."
             ),
-            final_artistic_override,
         ]
         if section
     ).strip()
@@ -307,26 +214,16 @@ def build_omni_payload(
     guide_mime_type: str,
     prompt: str,
     duration_seconds: int,
-    reference_images: Iterable[GuideImage] = (),
 ) -> dict[str, Any]:
     encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64
-    references = list(reference_images)
     input_items: list[dict[str, Any]] = [
         {"type": "image", "data": encoded, "mime_type": guide_mime_type},
+        {"type": "text", "text": prompt},
     ]
-    input_items.extend(
-        {
-            "type": "image",
-            "data": base64.b64encode(reference.data).decode("ascii"),
-            "mime_type": reference.mime_type,
-        }
-        for reference in references
-    )
-    input_items.append({"type": "text", "text": prompt})
     return {
         "model": model,
         "input": input_items,
-        "generation_config": {"video_config": {"task": "reference_to_video" if references else "image_to_video"}},
+        "generation_config": {"video_config": {"task": "image_to_video"}},
         "response_format": {
             "type": "video",
             "aspect_ratio": "16:9",
@@ -337,24 +234,6 @@ def build_omni_payload(
         "store": False,
         "stream": False,
     }
-
-
-def bind_reference_roles(prompt: str, reference_count: int) -> str:
-    """Bind ordered images to Omni's documented first-frame/reference tags."""
-    if reference_count <= 0:
-        return prompt
-    reference_tags = " ".join(
-        f"<IMAGE_REF_{index}>@Image{index + 2}" for index in range(reference_count)
-    )
-    return (
-        f"[# Sources <FIRST_FRAME>@Image1] [# References {reference_tags}]\n\n{prompt}\n\n"
-        "Use Image1 as the exact geometric starting view and camera composition. The first visible frame must be its "
-        "clean architectural version after removing only baked-in cars, pedestrians, pins, labels, and route markup. "
-        f"Use Images 2 through {reference_count + 1} only as references for video generation; those images must "
-        "not be used as literal initial frames or appear as shots in the video. Use each reference only for its "
-        "explicitly mapped authored archetype's facade, roof, material, or landscape identity. Never copy a "
-        "reference image's people, vehicles, camera angle, background, footprint, massing, or site layout into Image1."
-    )
 
 
 def find_omni_video_content(payload: Mapping[str, Any]) -> OmniVideoContent:

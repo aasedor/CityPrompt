@@ -3,11 +3,10 @@ import io
 
 import pytest
 from PIL import Image
+from pydantic import ValidationError
 
-from app.api.v1.video import PILOT_MAX_PROVIDER_CALLS, _count_provider_calls
+from app.api.v1.video import PILOT_MAX_PROVIDER_CALLS, VideoPilotRequest, _count_provider_calls
 from app.services.omni_video import (
-    GuideImage,
-    bind_reference_roles,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
@@ -35,11 +34,31 @@ def test_decode_guide_image_rejects_tiny_capture():
         decode_guide_image(_jpeg_data_url(320, 180))
 
 
+def test_video_request_exposes_motion_not_visual_style_or_reference_images():
+    assert "style" not in VideoPilotRequest.model_fields
+    assert "reference_images_base64" not in VideoPilotRequest.model_fields
+
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(
+            project_id="00000000-0000-0000-0000-000000000001",
+            guide_frame_base64=_jpeg_data_url(),
+            route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+            camera_motion="orbit_left",
+        )
+
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(
+            project_id="00000000-0000-0000-0000-000000000001",
+            guide_frame_base64=_jpeg_data_url(),
+            route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+            style="watercolour",
+        )
+
+
 def test_prompt_locks_scene_and_single_shot_constraints():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.5, "y": 0.85}, {"x": 0.48, "y": 0.55}, {"x": 0.38, "y": 0.2}],
-        style="golden_hour",
-        camera_motion="forward_descent",
+        camera_motion="path_follow",
         scene_brief="Two courtyard buildings frame one rectangular central park.",
         duration_seconds=8,
     )
@@ -81,30 +100,22 @@ def test_omni_payload_is_one_inline_image_to_video_request():
     assert not payload["input"][0]["data"].startswith("data:")
 
 
-def test_omni_payload_binds_first_frame_and_archetype_references():
+def test_omni_payload_accepts_exactly_one_visual_source():
     payload = build_omni_payload(
         model="gemini-omni-flash-preview",
         guide_base64=_jpeg_data_url(),
         guide_mime_type="image/jpeg",
-        reference_images=[
-            GuideImage(data=base64.b64decode(_jpeg_data_url().split(",", 1)[1]), mime_type="image/jpeg", width=1280, height=720),
-            GuideImage(data=base64.b64decode(_jpeg_data_url().split(",", 1)[1]), mime_type="image/jpeg", width=1280, height=720),
-        ],
-        prompt=bind_reference_roles("preserve the authored scene", 2),
+        prompt="animate the captured scene without redesigning it",
         duration_seconds=8,
     )
 
-    assert payload["generation_config"] == {"video_config": {"task": "reference_to_video"}}
-    assert [item["type"] for item in payload["input"]] == ["image", "image", "image", "text"]
-    assert "<FIRST_FRAME>@Image1" in payload["input"][-1]["text"]
-    assert "<IMAGE_REF_0>@Image2" in payload["input"][-1]["text"]
-    assert "<IMAGE_REF_1>@Image3" in payload["input"][-1]["text"]
+    assert payload["generation_config"] == {"video_config": {"task": "image_to_video"}}
+    assert [item["type"] for item in payload["input"]] == ["image", "text"]
 
 
 def test_street_walkby_is_pedestrian_height_and_detail_locked():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.4, "y": 0.66}, {"x": 0.6, "y": 0.64}],
-        style="crisp_daylight",
         camera_motion="street_walkby",
         scene_brief="One authored facade.",
         duration_seconds=8,
@@ -113,13 +124,13 @@ def test_street_walkby_is_pedestrian_height_and_detail_locked():
     assert "pedestrian-height architectural walk-by" in prompt
     assert "1.7 metres above the sidewalk" in prompt
     assert "Travel no more than 4 metres" in prompt
-    assert "stone joints, window frames, balcony railings" in prompt
+    assert "every already-visible joint, window frame, railing" in prompt
+    assert "source level of detail" in prompt
 
 
 def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.52, "y": 0.62}, {"x": 0.5, "y": 0.46}],
-        style="crisp_daylight",
         camera_motion="path_follow",
         scene_brief="Two authored buildings frame one authored beer garden.",
         duration_seconds=8,
@@ -132,34 +143,30 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     assert "Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard" in prompt
     assert "one sixteenth of the shorter authored building dimension" in prompt
     assert "increase the apparent building scale by more than two percent" in prompt
-    assert "exact Image1 geometry outranks beauty" in prompt
-    assert "never recast the site as another city" in prompt
+    assert "Image1 already contains the final approved design and look" in prompt
+    assert "Newly revealed pixels caused by the small camera move" in prompt
     assert "CONTEXT ISOLATION — FINAL OVERRIDE" in prompt
-    assert "they are not a global art direction" in prompt
+    assert "it is not global art direction" in prompt
     assert "Any new background instance of an authored archetype is a failed result" in prompt
     assert prompt.endswith("preserve Image1 unchanged.")
 
 
-def test_artistic_prompt_applies_medium_without_replacing_context():
+def test_prompt_makes_omni_an_animator_without_visual_style_instructions():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.52, "y": 0.62}, {"x": 0.5, "y": 0.46}],
-        style="watercolour",
         camera_motion="path_follow",
         scene_brief="B1 and B2 frame P1.",
         duration_seconds=8,
     )
 
-    assert "master architectural watercolour" in prompt
-    assert "surface treatment only" in prompt
-    assert "stylize its existing pixels without replacing" in prompt
-    assert "Do not drift between artistic and photorealistic rendering" in prompt
-    assert "ARTISTIC MEDIUM — FINAL PASS" in prompt
-    assert "Use realistic PBR materials" not in prompt
-    assert "B1" not in prompt
-    assert "B2" not in prompt
-    assert "P1" not in prompt
-    assert "authored building 1 and authored building 2 frame authored open space 1" in prompt
-    assert prompt.endswith("Preserve Image1's spatial arrangement exactly.")
+    assert "OMNI IS THE ANIMATOR ONLY" in prompt
+    assert "do not improve, beautify, materialize, regenerate, relight, recolor, sharpen" in prompt
+    assert "Do not apply a photographic or artistic style" in prompt
+    assert "newly revealed pixels" in prompt.lower()
+    assert "watercolour" not in prompt
+    assert "golden-hour" not in prompt
+    assert "PBR materials" not in prompt
+    assert prompt.endswith("preserve Image1 unchanged.")
 
 
 @pytest.mark.parametrize(

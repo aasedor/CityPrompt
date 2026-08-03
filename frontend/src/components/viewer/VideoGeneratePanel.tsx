@@ -7,7 +7,6 @@ import {
   MapPinned,
   RefreshCw,
   ShieldCheck,
-  Sparkles,
   X,
 } from 'lucide-react';
 import {
@@ -18,6 +17,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react';
+import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
 
 import { getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
@@ -36,29 +36,12 @@ import { buildVideoSceneContract } from './videoSceneContract';
 
 const FRAME_WIDTH = 1280;
 const FRAME_HEIGHT = 720;
-const STYLES = [
-  { id: 'golden_hour', name: 'Golden hour', detail: 'Warm hero film' },
-  { id: 'crisp_daylight', name: 'Crisp daylight', detail: 'Clean + precise' },
-  { id: 'after_rain', name: 'After rain', detail: 'Reflective + rich' },
-  { id: 'blue_hour', name: 'Blue hour', detail: 'Lights + atmosphere' },
-  { id: 'warm_overcast', name: 'Soft overcast', detail: 'Calm + natural' },
-  { id: 'watercolour', name: 'Watercolour', detail: 'Painterly concept' },
-  { id: 'pen-and-ink', name: 'Pen & Ink', detail: 'Drafted linework' },
-  { id: 'charcoal', name: 'Charcoal', detail: 'Tonal sketch' },
-  { id: 'clay-maquette', name: 'Clay', detail: 'Physical maquette' },
-  { id: 'woodblock', name: 'Wood Block', detail: 'Graphic print' },
-] as const;
 
 const MOTIONS = [
-  { id: 'path_follow', name: 'Path follow' },
-  { id: 'forward_descent', name: 'Forward + descend' },
-  { id: 'reveal_ascent', name: 'Reveal + rise' },
-  { id: 'orbit_left', name: 'Orbit left' },
-  { id: 'orbit_right', name: 'Orbit right' },
-  { id: 'street_walkby', name: 'Street walk-by' },
+  { id: 'path_follow', name: 'Aerial fly-through', detail: 'Slow + high oblique' },
+  { id: 'street_walkby', name: 'Street walk-by', detail: 'Slow + pedestrian height' },
 ] as const;
 
-type StyleId = typeof STYLES[number]['id'];
 type MotionId = typeof MOTIONS[number]['id'];
 
 export interface VideoAttempt {
@@ -75,6 +58,12 @@ export interface VideoAttempt {
   interaction_id?: string | null;
   prompt?: string | null;
   estimated_cost_usd: number;
+}
+
+function videoAttemptLabel(attempt: VideoAttempt): string {
+  const motion = attempt.camera_motion.split('_').join(' ');
+  if (attempt.style === 'source_fidelity') return `Source fidelity · ${motion}`;
+  return `${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
 }
 
 interface VideoPilotState {
@@ -102,11 +91,9 @@ interface PreparedVideoRequest {
   project_id: string;
   guide_frame_base64: string;
   route_points: VideoRoutePoint[];
-  style: StyleId;
   camera_motion: MotionId;
   duration_seconds: 8;
   scene_brief: string;
-  reference_images_base64: string[];
 }
 
 interface VideoGeneratePanelProps {
@@ -200,7 +187,6 @@ export function VideoGeneratePanel({
   const [isCapturing, setIsCapturing] = useState(true);
   const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>(DEFAULT_VIDEO_ROUTE);
   const [drawingRoute, setDrawingRoute] = useState(false);
-  const [style, setStyle] = useState<StyleId>('golden_hour');
   const [motion, setMotion] = useState<MotionId>('path_follow');
   const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 40, max_attempts: 40 });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
@@ -214,11 +200,11 @@ export function VideoGeneratePanel({
   const sceneContract = useMemo(() => buildVideoSceneContract(siteZones), [siteZones]);
 
   const currentSignature = useMemo(
-    () => `${style}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
-    [motion, routePoints, sceneContract.signature, style],
+    () => `${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
+    [motion, routePoints, sceneContract.signature],
   );
   const preparedSignature = prepared
-    ? `${prepared.style}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
+    ? `${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
 
@@ -320,11 +306,10 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    // Pilot comparison showed that catalog stills can improve facade finish but
-    // also compete with the authored first-frame massing and elongate roof voids.
-    // Video therefore defaults to geometry-first image-to-video: the exact 3D
-    // capture defines all geometry and the catalog-derived text defines finish.
-    const sceneBrief = `${sceneContract.text}\nREFERENCE POLICY: use the first frame as the only geometric and visual composition source. Archetype catalog data is textual appearance guidance only; do not substitute geometry from any other image.`;
+    // The 38-video pilot showed that additional style and catalog references
+    // make Omni redesign the city. Video Render therefore sends one authoritative
+    // frame and asks Omni to animate its existing pixels without visual invention.
+    const sceneBrief = `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
     return {
       project_id: projectId,
       // Keep the literal first frame clean. Route geometry travels as structured
@@ -332,13 +317,11 @@ export function VideoGeneratePanel({
       // preserve the markup as though it were part of the authored site.
       guide_frame_base64: sourceFrame,
       route_points: routePoints,
-      style,
       camera_motion: motion,
       duration_seconds: 8,
       scene_brief: sceneBrief,
-      reference_images_base64: [],
     };
-  }, [motion, projectId, routePoints, sceneContract, sourceFrame, style]);
+  }, [motion, projectId, routePoints, sceneContract, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -410,8 +393,8 @@ export function VideoGeneratePanel({
   }, []);
   const usedDots = Array.from({ length: pilot.max_attempts }, (_, index) => index < pilot.attempts_used);
 
-  return (
-    <div className="absolute inset-0 z-[70] flex items-center justify-center bg-[#081011]/88 p-3 backdrop-blur-md sm:p-6">
+  return createPortal(
+    <div className="fixed inset-0 z-[240] flex items-center justify-center bg-[#081011]/88 p-3 backdrop-blur-md sm:p-6">
       <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[1180px] flex-col overflow-hidden rounded-[28px] border-2 border-[#151515] bg-[#f7f2e8] shadow-[10px_10px_0_0_#151515] sm:max-h-[calc(100dvh-3rem)]">
         <header className="flex items-center gap-3 border-b-2 border-[#151515] bg-[#151515] px-4 py-3 text-white sm:px-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#28c7e8] to-[#c9ff3d] text-[#151515]">
@@ -419,7 +402,7 @@ export function VideoGeneratePanel({
           </div>
           <div className="min-w-0">
             <h2 className="text-sm font-black uppercase tracking-[0.14em] sm:text-base">Video Render</h2>
-            <p className="truncate text-[11px] text-white/55">Draw the flight. Lock the scene. Generate one continuous shot.</p>
+            <p className="truncate text-[11px] text-white/55">Draw the path. Animate the captured scene. Preserve every building.</p>
           </div>
           <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
             <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">Pilot calls</span>
@@ -493,24 +476,21 @@ export function VideoGeneratePanel({
               </div>
             </div>
 
-            <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[1fr_1fr]">
+            <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[0.85fr_1.15fr]">
               <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Visual style</p>
-                <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-3">
-                  {STYLES.map((item) => (
-                    <button key={item.id} aria-pressed={style === item.id} onClick={() => setStyle(item.id)} disabled={isGenerating} className={`rounded-xl border px-2.5 py-2 text-left transition ${style === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
-                      <span className="block text-[11px] font-bold">{item.name}</span>
-                      <span className="block text-[9px] opacity-55">{item.detail}</span>
-                    </button>
-                  ))}
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Render mode</p>
+                <div className="rounded-xl border border-[#c9ff3d] bg-[#c9ff3d]/15 px-3 py-2.5 text-white">
+                  <span className="flex items-center gap-1.5 text-[11px] font-black"><ShieldCheck size={13} /> Source fidelity</span>
+                  <span className="mt-0.5 block text-[9px] leading-relaxed text-white/55">Omni animates one captured frame with no style or archetype reference images.</span>
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Camera behavior</p>
-                <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-3">
+                <div className="grid grid-cols-2 gap-1.5">
                   {MOTIONS.map((item) => (
-                    <button key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isCapturing} className={`rounded-xl border px-2.5 py-2 text-left text-[11px] font-bold transition ${motion === item.id ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
-                      {item.name}
+                    <button key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isCapturing} className={`rounded-xl border px-2.5 py-2 text-left transition ${motion === item.id ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
+                      <span className="block text-[11px] font-bold">{item.name}</span>
+                      <span className="block text-[9px] opacity-55">{item.detail}</span>
                     </button>
                   ))}
                 </div>
@@ -528,10 +508,10 @@ export function VideoGeneratePanel({
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, and open-space program; only storey count and height are repeated in text. Source-tile cars and pedestrians are removed, and pilot streets stay empty for more stable continuity.
+                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, context buildings, and open-space program. Source-tile cars and pedestrians are removed, and streets stay empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    Geometry-first mode anchors to the captured model. Place names and archetype style descriptions are withheld from Omni; only the visual style selected above is applied to the full frame.
+                    Omni receives one authoritative image plus camera-motion instructions. Place names, style prompts, artistic media, and archetype reference images are withheld so it animates rather than redesigns.
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
@@ -555,7 +535,7 @@ export function VideoGeneratePanel({
                 </button>
                 {hasValidPreflight && preflight && (
                   <div className="mt-2 flex items-center gap-2 rounded-lg bg-[#edf8e7] px-2.5 py-2 text-[10px] font-bold text-[#285b22]">
-                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · {preflight.reference_image_count} archetype refs · {preflight.model}
+                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · source frame only · {preflight.model}
                   </div>
                 )}
               </div>
@@ -569,7 +549,7 @@ export function VideoGeneratePanel({
                   </div>
                 </div>
                 <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || pilot.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
-                  {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />}
+                  {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
                   {isGenerating ? 'Rendering one continuous shot…' : pilot.attempts_remaining > 0 ? `Generate trial ${pilot.attempts_used + 1} of ${pilot.max_attempts} · est. $0.80` : `${pilot.max_attempts}-trial cap reached`}
                 </button>
                 {isGenerating && <p className="mt-2 text-center text-[10px] text-white/45">Keep this panel open. High-quality video can take several minutes.</p>}
@@ -582,7 +562,7 @@ export function VideoGeneratePanel({
                   <video key={activeVideoUrl} controls playsInline autoPlay muted loop className="aspect-video w-full bg-black" src={activeVideoUrl} />
                   <div className="flex items-center gap-2 bg-white px-3 py-2">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[11px] font-black uppercase">{selectedAttempt.style.split(/[_-]/).join(' ')} · {selectedAttempt.camera_motion.split('_').join(' ')}</p>
+                      <p className="truncate text-[11px] font-black uppercase">{videoAttemptLabel(selectedAttempt)}</p>
                       <p className="text-[9px] text-[#151515]/45">8 sec · Gemini Omni · saved to project</p>
                     </div>
                     <a href={downloadUrl(selectedAttempt) ?? activeVideoUrl} download className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-2 text-[10px] font-black uppercase hover:bg-[#f7f2e8]" aria-label="Download video"><Download size={14} /> MP4</a>
@@ -598,11 +578,11 @@ export function VideoGeneratePanel({
                       <div key={attempt.id} className={`flex w-full items-center gap-1 rounded-xl border px-1.5 py-1 ${selectedAttempt?.id === attempt.id ? 'border-[#151515] bg-white' : 'border-[#151515]/10 bg-white/45'}`}>
                         <button onClick={() => attempt.video_url && setSelectedAttempt(attempt)} className={`flex min-w-0 flex-1 items-center gap-2 rounded-lg px-1 py-1 text-left ${attempt.video_url ? 'hover:bg-[#f7f2e8]' : 'cursor-default'}`}>
                           <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black ${attempt.status === 'complete' ? 'bg-[#c9ff3d]' : attempt.status === 'failed' ? 'bg-[#ffb5a9]' : 'bg-[#eee8dc]'}`}>{pilot.attempts_used - index}</span>
-                          <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{attempt.style.split('_').join(' ')} · {attempt.camera_motion.split('_').join(' ')}</span>
+                          <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{videoAttemptLabel(attempt)}</span>
                           <span className="text-[9px] font-black uppercase text-[#151515]/40">{attempt.status}</span>
                         </button>
                         {attempt.video_url && (
-                          <a href={downloadUrl(attempt) ?? undefined} download className="rounded-full p-2 hover:bg-[#f7f2e8]" aria-label={`Download ${attempt.style.split('_').join(' ')} video`} title="Download MP4">
+                          <a href={downloadUrl(attempt) ?? undefined} download className="rounded-full p-2 hover:bg-[#f7f2e8]" aria-label={`Download ${videoAttemptLabel(attempt)} video`} title="Download MP4">
                             <Download size={13} />
                           </a>
                         )}
@@ -615,6 +595,7 @@ export function VideoGeneratePanel({
           </aside>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

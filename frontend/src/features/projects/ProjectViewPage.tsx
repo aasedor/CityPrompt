@@ -987,7 +987,7 @@ export function ProjectViewPage() {
               <div className="flex items-center gap-3 bg-[#151515] px-4 py-3 text-white">
                 <Video size={18} className="text-[#c9ff3d]" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold capitalize">{videoLightbox.style.split('_').join(' ')} · {videoLightbox.camera_motion.split('_').join(' ')}</p>
+                  <p className="truncate text-sm font-bold capitalize">{videoRenderLabel(videoLightbox)}</p>
                   <p className="text-xs text-white/50">8 sec · Gemini Omni · saved to project</p>
                 </div>
                 <a
@@ -1478,6 +1478,12 @@ function videoDownloadUrl(video: VideoAttempt): string {
   return `${source}${separator}download=true&filename=${encodeURIComponent(name)}`;
 }
 
+function videoRenderLabel(video: VideoAttempt): string {
+  const motion = video.camera_motion.split('_').join(' ');
+  if (video.style === 'source_fidelity') return `Source fidelity · ${motion}`;
+  return `${video.style.split(/[_-]/).join(' ')} · ${motion}`;
+}
+
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
   const items = [
     ...renders.map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
@@ -1545,7 +1551,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#151515] shadow-lg"><Video size={19} fill="currentColor" /></span>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-2">
-                  <p className="truncate text-[10px] font-semibold capitalize text-white">{item.video.style.split('_').join(' ')} · video</p>
+                  <p className="truncate text-[10px] font-semibold capitalize text-white">{videoRenderLabel(item.video)} · video</p>
                   <p className="text-[10px] text-white/65">{new Date(item.video.created_at).toLocaleDateString()}</p>
                 </div>
               </button>

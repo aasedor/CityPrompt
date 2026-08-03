@@ -10,7 +10,7 @@ from decimal import Decimal
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,7 +19,6 @@ from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import ApiUsageLog, Project, User
 from app.services.omni_video import (
-    bind_reference_roles,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
@@ -33,19 +32,7 @@ PILOT_MAX_PROVIDER_CALLS = 40
 VIDEO_CREDIT_COST = 50
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
-VideoStyle = Literal[
-    "golden_hour",
-    "crisp_daylight",
-    "after_rain",
-    "blue_hour",
-    "warm_overcast",
-    "watercolour",
-    "pen-and-ink",
-    "charcoal",
-    "clay-maquette",
-    "woodblock",
-]
-CameraMotion = Literal["path_follow", "forward_descent", "reveal_ascent", "orbit_left", "orbit_right", "street_walkby"]
+CameraMotion = Literal["path_follow", "street_walkby"]
 
 
 class RoutePoint(BaseModel):
@@ -54,16 +41,16 @@ class RoutePoint(BaseModel):
 
 
 class VideoPilotRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     project_id: uuid.UUID
     guide_frame_base64: str = Field(..., min_length=100, max_length=20_000_000)
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
-    style: VideoStyle = "golden_hour"
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
-    reference_images_base64: list[str] = Field(default_factory=list, max_length=6)
     scene_brief: str = Field(
         default=(
-            "Two masonry courtyard buildings frame a formal rectangular central park with paths, lawns, and trees."
+            "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
         ),
         min_length=20,
         max_length=12_000,
@@ -158,18 +145,15 @@ async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: s
 def _preflight_values(req: VideoPilotRequest):
     try:
         guide = decode_guide_image(req.guide_frame_base64)
-        references = [decode_guide_image(value) for value in req.reference_images_base64]
         prompt = build_cinematic_prompt(
             route_points=[point.model_dump() for point in req.route_points],
-            style=req.style,
             camera_motion=req.camera_motion,
             scene_brief=req.scene_brief,
             duration_seconds=req.duration_seconds,
         )
-        prompt = bind_reference_roles(prompt, len(references))
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return guide, references, prompt
+    return guide, prompt
 
 
 @router.post("/preflight", response_model=VideoPreflightResponse)
@@ -183,7 +167,7 @@ async def preflight_video(
     settings = get_settings()
     if not settings.gemini_api_key:
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
-    guide, references, prompt = _preflight_values(req)
+    guide, prompt = _preflight_values(req)
     project = await db.get(Project, req.project_id)
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     used = _count_provider_calls(attempts)
@@ -204,7 +188,7 @@ async def preflight_video(
         attempts_remaining=PILOT_MAX_PROVIDER_CALLS - used,
         estimated_cost_usd=float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds),
         model=settings.omni_video_model,
-        reference_image_count=len(references),
+        reference_image_count=0,
     )
 
 
@@ -236,7 +220,7 @@ async def generate_video(
     settings = get_settings()
     if not settings.gemini_api_key:
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
-    guide, references, prompt = _preflight_values(req)
+    guide, prompt = _preflight_values(req)
 
     # Idempotency and the hard cap are persisted before any provider contact.
     project = await _locked_project(db, req.project_id)
@@ -266,7 +250,7 @@ async def generate_video(
         "id": attempt_id,
         "request_id": str(req.request_id),
         "status": "reserved",
-        "style": req.style,
+        "style": "source_fidelity",
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,
         "created_at": _now(),
@@ -277,8 +261,7 @@ async def generate_video(
         "prompt": prompt,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
-        "reference_image_sha256": [hashlib.sha256(reference.data).hexdigest() for reference in references],
-        "reference_image_count": len(references),
+        "reference_image_count": 0,
     }
     attempts.append(entry)
     meta["video_pilot_attempts"] = attempts
@@ -324,7 +307,6 @@ async def generate_video(
         guide_mime_type=guide.mime_type,
         prompt=prompt,
         duration_seconds=req.duration_seconds,
-        reference_images=references,
     )
     try:
         result = await request_omni_video_once(

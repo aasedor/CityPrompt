@@ -18,7 +18,7 @@ function zone(id: string, zone_type: SiteZone['zone_type'], properties: Record<s
 }
 
 describe('buildVideoSceneContract', () => {
-  it('binds each authored archetype to its exact massing and reference', () => {
+  it('uses zone metadata only to lock the captured scene', () => {
     const contract = buildVideoSceneContract([
       zone('b1', 'building', {
         floors: 6,
@@ -38,8 +38,7 @@ describe('buildVideoSceneContract', () => {
       }),
     ]);
 
-    expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · geometry-first video');
-    expect(contract.referenceImageUrls).toEqual(['/building.png', '/park.png']);
+    expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · source-fidelity animation');
     expect(contract.text).not.toContain('custom_midrise_variant_0');
     expect(contract.text).toContain('6 storeys');
     expect(contract.text).not.toContain('custom_garden_variant_0');
@@ -47,35 +46,19 @@ describe('buildVideoSceneContract', () => {
     expect(contract.text).not.toContain('zinc mansard');
     expect(contract.text).not.toContain('cream limestone');
     expect(contract.text).not.toContain('None — no fountains');
-    expect(contract.text).toContain('no place, city, or historical style name is supplied');
-    expect(contract.text).toContain('descriptive style words are intentionally withheld');
-    expect(contract.text).toContain('first frame is the geometric source of truth');
+    expect(contract.text).toContain('no place, city, historical style name, material prompt, or catalog image is supplied');
+    expect(contract.text).toContain('descriptive style words, and catalog images are intentionally withheld');
+    expect(contract.text).toContain('Image1 is the sole geometric and visual source of truth');
+    expect(contract.text).toContain('without enhancement');
     expect(contract.text).toContain('visible courtyards, lightwells, roof voids, and wings');
     expect(contract.text).toContain('Never lengthen, widen, shrink, merge, split, fill, or invent');
-    expect(contract.referenceRoleLabels).toEqual(['B1', 'P1']);
     expect(contract.text).not.toContain('<IMAGE_REF_0>');
   });
 
   it('falls back safely when zones have no archetype data', () => {
     const contract = buildVideoSceneContract([]);
-    expect(contract.referenceImageUrls).toEqual([]);
-    expect(contract.referenceRoleLabels).toEqual([]);
     expect(contract.text).toContain('Preserve every authored zone exactly');
-  });
-
-  it('repairs stale stored image paths from the current archetype catalogs', () => {
-    const contract = buildVideoSceneContract([
-      zone('b1', 'building', {
-        development_archetype_id: 'parisian_midrise_block_variant_0',
-        development_archetype_image: '/archetypes/buildings/parisian_mid_rise/variant_0.png',
-      }),
-      zone('p1', 'green_space', {
-        plaza_archetype_id: 'beer_garden_variant_0',
-      }),
-    ]);
-
-    expect(contract.referenceImageUrls).toContain('/archetypes/buildings/parisian_midrise_block/variant_0.png');
-    expect(contract.referenceImageUrls).toContain('/archetypes/openspaces/beer-garden/variant_0_video.png');
+    expect(contract.text).toContain('without adding materials, lighting, detail, or design interpretation');
   });
 
   it('locks multiple building zones as disconnected solids', () => {

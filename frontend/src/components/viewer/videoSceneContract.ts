@@ -1,25 +1,11 @@
 import type { SiteZone } from '@/types';
-import buildingCatalog from '@/data/buildingArchetypes.json';
-import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 
 type UnknownRecord = Record<string, unknown>;
 
-interface CatalogEntry {
-  id?: string;
-  thumbnailUrl?: string;
-  videoReferenceUrl?: string;
-  variants?: Array<{ thumbnailUrl?: string; videoReferenceUrl?: string }>;
-}
-
 interface ContractEntry {
-  label: string;
   line: string;
-  referenceUrl?: string;
   identity: string;
 }
-
-const BUILDING_CATALOG = ((buildingCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? []);
-const OPEN_SPACE_CATALOG = ((openSpaceCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? []);
 
 export interface VideoSceneContract {
   text: string;
@@ -27,8 +13,6 @@ export interface VideoSceneContract {
   summary: string;
   buildingCount: number;
   openSpaceCount: number;
-  referenceImageUrls: string[];
-  referenceRoleLabels: string[];
 }
 
 function asObject(value: unknown): UnknownRecord | undefined {
@@ -65,18 +49,6 @@ function clipped(value: string | undefined, maxLength = 420): string | undefined
   return value.length <= maxLength ? value : `${value.slice(0, maxLength - 1).trim()}…`;
 }
 
-function catalogReference(rawId: string, fallback: string | undefined, catalog: CatalogEntry[]): string | undefined {
-  const match = rawId.match(/_(?:variant_|v)(\d+)$/);
-  const baseId = match ? rawId.slice(0, match.index) : rawId;
-  const variantIndex = match ? Number(match[1]) : 0;
-  const entry = catalog.find((candidate) => candidate.id === baseId) ?? catalog.find((candidate) => candidate.id === rawId);
-  return entry?.variants?.[variantIndex]?.videoReferenceUrl
-    ?? entry?.videoReferenceUrl
-    ?? entry?.variants?.[variantIndex]?.thumbnailUrl
-    ?? entry?.thumbnailUrl
-    ?? fallback;
-}
-
 function buildingContract(zone: SiteZone, index: number): ContractEntry {
   const properties = (zone.properties ?? {}) as UnknownRecord;
   const style = asObject(properties.development_style_profile)
@@ -94,12 +66,7 @@ function buildingContract(zone: SiteZone, index: number): ContractEntry {
   ].filter((item): item is string => Boolean(item));
   const measuredFacts = facts.length ? `: ${facts.join('; ')}` : '';
   return {
-    label: `B${index + 1}`,
-    line: `B${index + 1} — authored proposal building${measuredFacts}. Its appearance comes from its exact pixels in Image1; no place, city, or historical style name is supplied because such labels must not influence the surrounding context. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, and LEGO massing; improve finish only. Count B${index + 1}'s visible courtyards, lightwells, roof voids, and wings in the first frame, then preserve that exact topology and every void's perimeter, aspect ratio, separation, and placement.`,
-    referenceUrl: catalogReference(archetype, firstString(properties, [
-      'development_archetype_image',
-      'development_archetype_image_url',
-    ]), BUILDING_CATALOG),
+    line: `B${index + 1} — authored proposal building${measuredFacts}. Its complete appearance comes only from its exact pixels in Image1; no place, city, historical style name, material prompt, or catalog image is supplied to the video model. Preserve the exact on-screen footprint, orientation, silhouette, setbacks, openings, LEGO massing, materials, lighting, and level of detail without enhancement. Count B${index + 1}'s visible courtyards, lightwells, roof voids, and wings in the first frame, then preserve that exact topology and every void's perimeter, aspect ratio, separation, and placement.`,
     identity: `${zone.id}:${archetype}:${floors ?? ''}:${height ?? ''}:${massing ?? ''}:${roof ?? ''}:${materials.join(',')}`,
   };
 }
@@ -124,14 +91,7 @@ function openSpaceContract(zone: SiteZone, index: number): ContractEntry {
   const seating = clipped(asString(style.seatingRealm), 180);
   const water = clipped(asString(style.waterFeatures), 140);
   return {
-    label: `P${index + 1}`,
-    line: `P${index + 1} — authored proposal open space. Its appearance and program come only from its exact pixels in Image1; archetype names and descriptive style words are intentionally withheld from the video model. Preserve its exact on-screen boundary, layout, planting, furniture, and internal program. Do not replace it with a generic lawn, formal garden, plaza, pool, or fountain.`,
-    referenceUrl: catalogReference(archetype, firstString(properties, [
-      'plaza_archetype_image',
-      'green_space_archetype_image',
-      'plaza_archetype_image_url',
-      'green_space_archetype_image_url',
-    ]), OPEN_SPACE_CATALOG),
+    line: `P${index + 1} — authored proposal open space. Its complete appearance and program come only from its exact pixels in Image1; archetype names, descriptive style words, and catalog images are intentionally withheld from the video model. Preserve its exact on-screen boundary, layout, planting, furniture, materials, lighting, and internal program without enhancement. Do not replace it with a generic lawn, formal garden, plaza, pool, or fountain.`,
     identity: `${zone.id}:${archetype}:${paving ?? ''}:${planting ?? ''}:${seating ?? ''}:${water ?? ''}`,
   };
 }
@@ -142,16 +102,9 @@ export function buildVideoSceneContract(siteZones: SiteZone[]): VideoSceneContra
   const buildingEntries = buildings.map(buildingContract);
   const openSpaceEntries = openSpaces.map(openSpaceContract);
   const entries = [...buildingEntries, ...openSpaceEntries];
-  const referenceLabels = new Map<string, string[]>();
-  entries.forEach((entry) => {
-    if (!entry.referenceUrl) return;
-    referenceLabels.set(entry.referenceUrl, [...(referenceLabels.get(entry.referenceUrl) ?? []), entry.label]);
-  });
-  const referenceImageUrls = [...referenceLabels.keys()].slice(0, 6);
-  const referenceRoleLabels = referenceImageUrls.map((url) => referenceLabels.get(url)?.join(' and ') ?? 'authored zone');
-  const fallback = 'Preserve every authored zone exactly as it appears in the supplied first frame; add materials and lighting only.';
+  const fallback = 'Preserve every authored zone exactly as it appears in Image1. Animate the existing captured pixels without adding materials, lighting, detail, or design interpretation.';
   const text = [
-    `ARCHETYPE CONTRACT: exactly ${buildings.length} authored building zone(s) and ${openSpaces.length} authored open-space zone(s). The first frame is the geometric source of truth; archetype records and reference images define appearance, never replacement massing.`,
+    `SCENE INVENTORY: exactly ${buildings.length} authored building zone(s) and ${openSpaces.length} authored open-space zone(s). Image1 is the sole geometric and visual source of truth. Zone metadata identifies what must remain stable; it does not authorize redesign or supply a new appearance.`,
     ...entries.map((entry) => entry.line),
     buildings.length > 1
       ? `BUILDING SEPARATION CHECKSUM: the ${buildings.length} authored building zones are exactly ${buildings.length} mutually disconnected solids. Preserve every open-air gap, alley, park edge, and setback between them from ground to sky. Never bridge, join, fuse, wrap, or extend one building toward another; never consolidate them into a perimeter block.`
@@ -167,11 +120,9 @@ export function buildVideoSceneContract(siteZones: SiteZone[]): VideoSceneContra
     text: entries.length ? text : fallback,
     signature,
     summary: entries.length
-      ? `${buildings.length} building archetype${buildings.length === 1 ? '' : 's'} · ${openSpaces.length} open-space archetype${openSpaces.length === 1 ? '' : 's'} · geometry-first video`
-      : 'Captured geometry only · no archetype metadata found',
+      ? `${buildings.length} building archetype${buildings.length === 1 ? '' : 's'} · ${openSpaces.length} open-space archetype${openSpaces.length === 1 ? '' : 's'} · source-fidelity animation`
+      : 'Captured scene only · source-fidelity animation',
     buildingCount: buildings.length,
     openSpaceCount: openSpaces.length,
-    referenceImageUrls,
-    referenceRoleLabels,
   };
 }
