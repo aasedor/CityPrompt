@@ -2,8 +2,8 @@ import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
-import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
+import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Video, Wand2, X } from 'lucide-react';
+import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi, videoRenderApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
@@ -15,6 +15,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
+import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
 import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
 import type { StreetCaptureResult } from '@/components/viewer/useStreetViewRender';
 import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
@@ -49,11 +50,14 @@ export function ProjectViewPage() {
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [savedVideos, setSavedVideos] = useState<VideoAttempt[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [videoLightbox, setVideoLightbox] = useState<VideoAttempt | null>(null);
   const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
+  const [showVideoRender, setShowVideoRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [measureActive, setMeasureActive] = useState(false);
   const [aiPanelLightboxOpen, setAiPanelLightboxOpen] = useState(false);
@@ -260,6 +264,10 @@ export function ProjectViewPage() {
   useEffect(() => {
     if (!id) return;
     rendersApi.list(id).then(setSavedRenders).catch(() => {});
+    videoRenderApi.list(id).then((result) => {
+      const state = result as { attempts?: VideoAttempt[] };
+      setSavedVideos((state.attempts ?? []).filter((attempt) => attempt.status === 'complete' && attempt.video_url));
+    }).catch(() => {});
   }, [id]);
 
   useEffect(() => {
@@ -357,6 +365,7 @@ export function ProjectViewPage() {
 
   const handleToggleHistory = useCallback(() => {
     setShowGlobeRender(false);
+    setShowVideoRender(false);
     setMeasureActive(false);
     setShowHistory((open) => !open);
   }, []);
@@ -385,9 +394,18 @@ export function ProjectViewPage() {
   const handleOpenGlobeRender = useCallback(() => {
     setShowHistory(false);
     setMeasureActive(false);
+    setShowVideoRender(false);
     setGlobeRenderPosition(null);
     setShowGlobeRender(true);
   }, []);
+
+  const handleOpenVideoRender = useCallback(() => {
+    setShowHistory(false);
+    setMeasureActive(false);
+    setShowGlobeRender(false);
+    selectZone(null);
+    setShowVideoRender(true);
+  }, [selectZone]);
 
   const prepareForAIRenderCapture = useCallback(async () => {
     const tilesSettled = await globeRefs?.waitForTilesSettled?.();
@@ -400,6 +418,12 @@ export function ProjectViewPage() {
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
   }, [globeRefs, selectZone]);
+
+  const prepareForVideoCapture = useCallback(async () => {
+    if (useViewerStore.getState().selectedZoneId) selectZone(null);
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+  }, [selectZone]);
 
   // ── AI Render state ────────────────────────────────────────────────
   const [aiRenderResult, setAiRenderResult] = useState<AIRenderResult | null>(null);
@@ -414,6 +438,12 @@ export function ProjectViewPage() {
 
   const rememberSavedRender = useCallback((render: SavedRender) => {
     setSavedRenders((current) => [render, ...current.filter((item) => item.id !== render.id)]);
+    setShowProjectRenders(true);
+  }, []);
+
+  const rememberSavedVideo = useCallback((attempt: VideoAttempt) => {
+    if (!attempt.video_url || attempt.status !== 'complete') return;
+    setSavedVideos((current) => [attempt, ...current.filter((item) => item.id !== attempt.id)]);
     setShowProjectRenders(true);
   }, []);
 
@@ -547,7 +577,7 @@ export function ProjectViewPage() {
     }
   }, [handleAIRenderComplete, showRenderModal]);
 
-  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!renderEditTarget || !!lightboxImageUrl || aiPanelLightboxOpen;
+  const renderViewerActive = showRenderModal || showGlobeRender || showVideoRender || !!renderLightbox || !!renderEditTarget || !!lightboxImageUrl || aiPanelLightboxOpen;
 
   const stepRenderLightbox = useCallback((direction: -1 | 1) => {
     setRenderLightbox((current) => {
@@ -703,7 +733,7 @@ export function ProjectViewPage() {
                 />
               }
               bottomSlot={
-                !showGlobeRender ? (
+                !showGlobeRender && !showVideoRender ? (
                   <div className="flex flex-col gap-2">
                     <button
                       onClick={handleOpenGlobeRender}
@@ -711,6 +741,13 @@ export function ProjectViewPage() {
                     >
                       <Camera size={16} />
                       Render
+                    </button>
+                    <button
+                      onClick={handleOpenVideoRender}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#151515] px-3 py-2.5 text-sm font-black uppercase text-white shadow-[4px_4px_0_0_#28c7e8] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#28c7e8]"
+                    >
+                      <Video size={16} />
+                      Video Render
                     </button>
                     <button
                       onClick={() => setShowLegoBuilder(true)}
@@ -811,6 +848,19 @@ export function ProjectViewPage() {
           </div>
         )}
 
+        {showVideoRender && id && (
+          <VideoGeneratePanel
+            projectId={id}
+            canvas={globeRefs?.canvas ?? null}
+            siteZones={visibleZones}
+            waitForTilesSettled={globeRefs?.waitForTilesSettled}
+            onBeforeCapture={prepareForVideoCapture}
+            captureStreetFrame={async () => (await handleGlobeStreetCapture())?.imageBase64 ?? null}
+            onVideoSaved={rememberSavedVideo}
+            onClose={() => setShowVideoRender(false)}
+          />
+        )}
+
         {/* Back button */}
         <div className="absolute left-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] items-center gap-3">
           <Link to="/projects" className="shrink-0 rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
@@ -825,10 +875,12 @@ export function ProjectViewPage() {
 
         <ProjectRendersTray
           renders={savedRenders}
+          videos={savedVideos}
           open={showProjectRenders}
           onToggle={() => setShowProjectRenders((open) => !open)}
           onClose={() => setShowProjectRenders(false)}
           onSelect={setRenderLightbox}
+          onSelectVideo={setVideoLightbox}
         />
 
         <StreetViewPanel
@@ -905,6 +957,40 @@ export function ProjectViewPage() {
                   className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
                   aria-label="Close render"
                 >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {videoLightbox?.video_url && (
+          <div
+            className="fixed inset-0 z-[250] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+            onClick={() => setVideoLightbox(null)}
+          >
+            <div className="relative w-full max-w-6xl overflow-hidden rounded-xl bg-black shadow-2xl ring-1 ring-white/15" onClick={(event) => event.stopPropagation()}>
+              <video
+                src={resolveApiFileUrl(videoLightbox.video_url)}
+                controls
+                autoPlay
+                playsInline
+                className="aspect-video w-full bg-black object-contain"
+              />
+              <div className="flex items-center gap-3 bg-[#151515] px-4 py-3 text-white">
+                <Video size={18} className="text-[#c9ff3d]" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-bold capitalize">{videoLightbox.style.split('_').join(' ')} · {videoLightbox.camera_motion.split('_').join(' ')}</p>
+                  <p className="text-xs text-white/50">8 sec · Gemini Omni · saved to project</p>
+                </div>
+                <a
+                  href={videoDownloadUrl(videoLightbox)}
+                  download
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-xs font-black uppercase text-[#151515] hover:bg-[#f7f2e8]"
+                >
+                  <FileDown size={16} /> Download MP4
+                </a>
+                <button onClick={() => setVideoLightbox(null)} className="rounded-full bg-white/10 p-2 hover:bg-white/20" aria-label="Close video">
                   <X size={18} />
                 </button>
               </div>
@@ -1060,10 +1146,12 @@ export function ProjectViewPage() {
 
           <ProjectRendersTray
             renders={savedRenders}
+            videos={savedVideos}
             open={showProjectRenders}
             onToggle={() => setShowProjectRenders((open) => !open)}
             onClose={() => setShowProjectRenders(false)}
             onSelect={setRenderLightbox}
+            onSelectVideo={setVideoLightbox}
           />
 
           {/* AI render result indicator */}
@@ -1368,13 +1456,27 @@ export function ProjectViewPage() {
 
 interface ProjectRendersTrayProps {
   renders: SavedRender[];
+  videos: VideoAttempt[];
   open: boolean;
   onToggle: () => void;
   onClose: () => void;
   onSelect: (render: SavedRender) => void;
+  onSelectVideo: (video: VideoAttempt) => void;
 }
 
-function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: ProjectRendersTrayProps) {
+function videoDownloadUrl(video: VideoAttempt): string {
+  const source = resolveApiFileUrl(video.video_url ?? '');
+  const separator = source.includes('?') ? '&' : '?';
+  const name = `city-prompt-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
+  return `${source}${separator}download=true&filename=${encodeURIComponent(name)}`;
+}
+
+function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
+  const items = [
+    ...renders.map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
+    ...videos.map((video) => ({ kind: 'video' as const, created_at: video.created_at, video })),
+  ].sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
+
   if (!open) {
     return (
       <button
@@ -1385,7 +1487,7 @@ function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: Proj
       >
         <Camera size={16} className="text-amber-300" />
         Project Renders
-        <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs text-white/80">{renders.length}</span>
+        <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs text-white/80">{items.length}</span>
       </button>
     );
   }
@@ -1395,7 +1497,7 @@ function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: Proj
       <div className="flex items-center justify-between border-b border-primary-950/[0.08] px-4 py-3">
         <div>
           <h3 className="text-sm font-bold text-primary-950">Project Renders</h3>
-          <p className="text-xs text-primary-950/50">{renders.length} saved in this project</p>
+          <p className="text-xs text-primary-950/50">{items.length} saved in this project</p>
         </div>
         <button
           type="button"
@@ -1409,29 +1511,35 @@ function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: Proj
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
-        {renders.length === 0 ? (
+        {items.length === 0 ? (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
             <Sparkles size={22} className="text-primary-950/25" />
             <p className="mt-2 text-sm font-medium text-primary-950/70">No renders yet</p>
-            <p className="mt-1 text-xs text-primary-950/45">New aerial and street-view renders save here automatically.</p>
+            <p className="mt-1 text-xs text-primary-950/45">New images and videos save here automatically.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
-            {renders.map((render) => (
-              <button
-                key={render.id}
-                type="button"
-                onClick={() => onSelect(render)}
-                className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80"
-              >
-                <img
-                  src={resolveApiFileUrl(render.image_url)}
-                  alt={render.prompt || 'Saved render'}
-                  className="aspect-square w-full object-cover"
-                />
+            {items.map((item) => item.kind === 'image' ? (
+              <button key={`image-${item.render.id}`} type="button" onClick={() => onSelect(item.render)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80">
+                <img src={resolveApiFileUrl(item.render.image_url)} alt={item.render.prompt || 'Saved render'} className="aspect-square w-full object-cover" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
-                  <p className="truncate text-[10px] font-semibold text-white">{render.style || 'render'}</p>
-                  <p className="text-[10px] text-white/65">{new Date(render.created_at).toLocaleDateString()}</p>
+                  <p className="truncate text-[10px] font-semibold text-white">{item.render.style || 'render'}</p>
+                  <p className="text-[10px] text-white/65">{new Date(item.render.created_at).toLocaleDateString()}</p>
+                </div>
+              </button>
+            ) : (
+              <button key={`video-${item.video.id}`} type="button" onClick={() => onSelectVideo(item.video)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-black text-left transition hover:border-[#28c7e8]">
+                {item.video.guide_image_url ? (
+                  <img src={resolveApiFileUrl(item.video.guide_image_url)} alt="Video flight path" className="aspect-square w-full object-cover opacity-80" />
+                ) : (
+                  <div className="aspect-square w-full bg-[#0d1718]" />
+                )}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/15 transition group-hover:bg-black/30">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#151515] shadow-lg"><Video size={19} fill="currentColor" /></span>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-2">
+                  <p className="truncate text-[10px] font-semibold capitalize text-white">{item.video.style.split('_').join(' ')} · video</p>
+                  <p className="text-[10px] text-white/65">{new Date(item.video.created_at).toLocaleDateString()}</p>
                 </div>
               </button>
             ))}

@@ -6,6 +6,8 @@ Keys contain UUIDs and are unguessable, so no auth is required
 """
 
 import logging
+import re
+from pathlib import PurePosixPath
 
 import boto3
 from botocore.config import Config
@@ -18,6 +20,14 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 settings = get_settings()
+
+
+def _safe_download_name(requested: str | None, file_path: str) -> str:
+    """Return an ASCII filename that is safe inside Content-Disposition."""
+    fallback = PurePosixPath(file_path).name or "download"
+    candidate = (requested or fallback).strip()[:160]
+    sanitized = re.sub(r"[^A-Za-z0-9._-]+", "-", candidate).strip(".-")
+    return sanitized or fallback
 
 
 def _s3_client():
@@ -54,7 +64,7 @@ async def head_file(file_path: str):
 
 
 @router.get("/{file_path:path}")
-async def get_file(file_path: str):
+async def get_file(file_path: str, download: bool = False, filename: str | None = None):
     """Serve a file from S3-compatible storage by its key."""
     if not file_path:
         raise HTTPException(status_code=400, detail="File path is required")
@@ -66,8 +76,13 @@ async def get_file(file_path: str):
     except Exception as exc:
         raise HTTPException(status_code=404, detail="File not found in storage") from exc
 
+    headers = {"Cache-Control": "public, max-age=31536000, immutable"}
+    if download:
+        safe_name = _safe_download_name(filename, file_path)
+        headers["Content-Disposition"] = f'attachment; filename="{safe_name}"'
+
     return Response(
         content=file_data,
         media_type=content_type,
-        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+        headers=headers,
     )

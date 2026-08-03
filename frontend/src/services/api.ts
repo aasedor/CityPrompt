@@ -1605,6 +1605,26 @@ export const rendersApi = {
   },
 };
 
+/** Bounded Gemini Omni pilot. The generate call intentionally has a long
+ * timeout and is never retried by the client; the server persists idempotency
+ * and the bounded pilot ledger before contacting the provider. */
+export const videoRenderApi = {
+  preflight: async (request: unknown): Promise<unknown> => {
+    const { data } = await api.post('/api/v1/video/preflight', request, { timeout: 30000 });
+    return data;
+  },
+
+  generate: async (request: unknown): Promise<unknown> => {
+    const { data } = await api.post('/api/v1/video/generate', request, { timeout: 720000 });
+    return data;
+  },
+
+  list: async (projectId: string): Promise<unknown> => {
+    const { data } = await api.get(`/api/v1/video/projects/${projectId}`);
+    return data;
+  },
+};
+
 export const elevationApi = {
   get: async (
     lat: number,
