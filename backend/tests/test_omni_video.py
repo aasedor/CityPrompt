@@ -10,6 +10,7 @@ from app.services.omni_video import (
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
+    decode_preview_video,
     find_omni_video_content,
     parse_omni_video,
 )
@@ -32,6 +33,15 @@ def test_decode_guide_image_inspects_real_format_and_dimensions():
 def test_decode_guide_image_rejects_tiny_capture():
     with pytest.raises(ValueError, match="at least 640 px"):
         decode_guide_image(_jpeg_data_url(320, 180))
+
+
+def test_decode_preview_video_accepts_browser_webm_and_rejects_mime_mismatch():
+    webm = b"\x1aE\xdf\xa3" + b"0" * 1024
+    encoded = "data:video/webm;base64," + base64.b64encode(webm).decode()
+
+    assert decode_preview_video(encoded, "video/webm;codecs=vp9").data == webm
+    with pytest.raises(ValueError, match="MP4 content"):
+        decode_preview_video(encoded, "video/mp4")
 
 
 def test_video_request_exposes_motion_not_visual_style_or_reference_images():
@@ -113,6 +123,59 @@ def test_omni_payload_accepts_exactly_one_visual_source():
     assert [item["type"] for item in payload["input"]] == ["image", "text"]
 
 
+def test_omni_payload_supports_ordered_route_keyframes():
+    frames = [(_jpeg_data_url(), "image/jpeg") for _ in range(6)]
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        camera_motion="path_follow",
+        scene_brief="Two buildings and one park.",
+        duration_seconds=8,
+        control_mode="multi_keyframe",
+        keyframe_count=6,
+    )
+    payload = build_omni_payload(
+        model="gemini-omni-flash-preview",
+        guide_base64=_jpeg_data_url(),
+        guide_mime_type="image/jpeg",
+        prompt=prompt,
+        duration_seconds=8,
+        control_mode="multi_keyframe",
+        route_keyframes=frames,
+    )
+
+    assert prompt.startswith("[# Sources <FIRST_FRAME>@Image1]")
+    assert "<IMAGE_REF_4>@Image6" in prompt
+    assert "later images are geometric and geographic route checkpoints" in prompt
+    assert payload["generation_config"] == {"video_config": {"task": "reference_to_video"}}
+    assert [item["type"] for item in payload["input"]] == ["image"] * 6 + ["text"]
+
+
+def test_omni_payload_supports_deterministic_preview_video_edit():
+    preview = "data:video/webm;base64," + base64.b64encode(b"preview").decode()
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        camera_motion="path_follow",
+        scene_brief="Two buildings and one park.",
+        duration_seconds=8,
+        control_mode="preview_video",
+    )
+    payload = build_omni_payload(
+        model="gemini-omni-flash-preview",
+        guide_base64=_jpeg_data_url(),
+        guide_mime_type="image/jpeg",
+        prompt=prompt,
+        duration_seconds=8,
+        control_mode="preview_video",
+        preview_video_base64=preview,
+        preview_video_mime_type="video/webm",
+    )
+
+    assert "Copy the supplied video's camera positions, headings, speed, timing" in prompt
+    assert payload["generation_config"] == {"video_config": {"task": "edit"}}
+    assert [item["type"] for item in payload["input"]] == ["video", "text"]
+    assert payload["response_format"] == {"type": "video"}
+
+
 def test_street_walkby_is_pedestrian_height_and_detail_locked():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.4, "y": 0.66}, {"x": 0.6, "y": 0.64}],
@@ -143,7 +206,7 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     assert "Never lengthen, widen, shrink, merge, split, fill, or invent a courtyard" in prompt
     assert "one sixteenth of the shorter authored building dimension" in prompt
     assert "increase the apparent building scale by more than two percent" in prompt
-    assert "Image1 already contains the final approved design and look" in prompt
+    assert "The control input already contains the final approved design and look" in prompt
     assert "Newly revealed pixels caused by the small camera move" in prompt
     assert "CONTEXT ISOLATION — FINAL OVERRIDE" in prompt
     assert "it is not global art direction" in prompt
@@ -212,5 +275,5 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
         {"status": "failed", "provider_call_started_at": "2026-08-03T00:01:00Z"},
     ]
 
-    assert PILOT_MAX_PROVIDER_CALLS == 40
+    assert PILOT_MAX_PROVIDER_CALLS == 46
     assert _count_provider_calls(attempts) == 2

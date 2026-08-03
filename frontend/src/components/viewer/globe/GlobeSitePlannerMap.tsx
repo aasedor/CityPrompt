@@ -102,6 +102,13 @@ import {
   direct3DZoneInstanceDescriptor,
   type Direct3DCaptureBundle,
 } from './direct3dCapture';
+import {
+  normalizedVideoPointToNdc,
+  resampleVideoRoute,
+  selectVideoRecorderMimeType,
+  type VideoRouteCaptureRequest,
+  type VideoRouteCaptureResult,
+} from '../videoRouteControls';
 
 import { elevationApi } from '@/services/api';
 
@@ -1360,6 +1367,9 @@ interface GlobeSitePlannerMapProps {
      *  CURRENT camera with street-relaxed coverage bounds. Returns null on
      *  failure so callers can fall back to a plain screenshot. */
     captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
+    /** Capture six deterministic route views and an exact 8-second browser
+     *  preview of the same camera motion for Omni control inputs. */
+    captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
   }) => void;
   /** Fired with the ids of buildings whose GLB is currently mounted on the
    *  globe — the render panel keys preserve-the-massing prompts off it. */
@@ -2372,6 +2382,181 @@ export function GlobeSitePlannerMap({
     }
   }, []);
 
+  const captureVideoRouteControls = useCallback(async (
+    request: VideoRouteCaptureRequest,
+  ): Promise<VideoRouteCaptureResult> => {
+    const canvas = canvasRef.current;
+    const camera = cameraRef.current;
+    if (!canvas || !camera || !canvas.isConnected) {
+      throw new Error('The 3D globe is not ready to prepare video route controls.');
+    }
+    if (typeof MediaRecorder === 'undefined' || typeof canvas.captureStream !== 'function') {
+      throw new Error('This browser cannot record the deterministic route preview.');
+    }
+
+    const sampledRoute = resampleVideoRoute(request.routePoints, request.keyframeCount ?? 6);
+    const sourceAspect = (canvas.clientWidth || canvas.width) / Math.max(1, canvas.clientHeight || canvas.height);
+    const routeSurfacePoints = sampledRoute.map((point) => {
+      const ndc = normalizedVideoPointToNdc(point, sourceAspect);
+      const hit = raycastSurfacePoint(ndc.x, ndc.y);
+      if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
+      const world = new THREE.Vector3();
+      WGS84_ELLIPSOID.getCartographicToPosition(
+        hit.lngLat[1] * DEG_TO_RAD,
+        hit.lngLat[0] * DEG_TO_RAD,
+        hit.height,
+        world,
+      );
+      return world;
+    });
+    const centerHit = raycastSurfacePoint(0, 0);
+    if (!centerHit) throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
+    const centerWorld = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(
+      centerHit.lngLat[1] * DEG_TO_RAD,
+      centerHit.lngLat[0] * DEG_TO_RAD,
+      centerHit.height,
+      centerWorld,
+    );
+
+    const originalCamera = {
+      position: camera.position.clone(),
+      quaternion: camera.quaternion.clone(),
+      up: camera.up.clone(),
+    };
+    const cameraOffset = camera.position.clone().sub(centerWorld);
+    const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
+    const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+    const previousSelectedBuildingId = selectedBuildingIdRef.current;
+    const previousModelsVisible = buildingModelsVisibleRef.current;
+    const controls = globeControlsRef.current;
+    const controlsTarget = controls?.controls ?? controls;
+    const originalPivot = controls?.pivotPoint?.clone?.() as THREE.Vector3 | undefined;
+    const previousControlsEnabled = controlsTarget && 'enabled' in controlsTarget
+      ? Boolean(controlsTarget.enabled)
+      : null;
+    let previewStream: MediaStream | null = null;
+
+    const applyRoutePose = (progress: number) => {
+      const target = pathCurve.getPointAt(Math.max(0, Math.min(1, progress)));
+      camera.position.copy(target).add(cameraOffset);
+      camera.up.copy(originalCamera.up);
+      camera.lookAt(target);
+      camera.updateMatrixWorld(true);
+      if (controls?.pivotPoint) controls.pivotPoint.copy(target);
+    };
+    const twoFrames = () => new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+
+    try {
+      if (previousControlsEnabled !== null) controlsTarget.enabled = false;
+      setStreetCapturePegmanHidden(true);
+      setZoneOverlaysVisible(false);
+      setSelectedBuildingId(null);
+      setBuildingModelsVisible(true);
+      await twoFrames();
+
+      const keyframesBase64: string[] = [];
+      for (let index = 0; index < sampledRoute.length; index += 1) {
+        applyRoutePose(index / (sampledRoute.length - 1));
+        await twoFrames();
+        const settled = await waitForCurrentTiles();
+        if (!settled) {
+          throw new Error(`The surrounding 3D tiles did not settle at route view ${index + 1}. Try a shorter path.`);
+        }
+        const capture = await captureDirect3D({ skipTileWait: true });
+        keyframesBase64.push(capture.beautyImageBase64);
+      }
+
+      // The recorder uses a dedicated 16:9 canvas so the preview sent to Omni
+      // has the exact same crop and aspect ratio as the route keyframes.
+      const previewCanvas = document.createElement('canvas');
+      previewCanvas.width = 1280;
+      previewCanvas.height = 720;
+      const previewContext = previewCanvas.getContext('2d');
+      if (!previewContext) throw new Error('The browser could not prepare the route preview canvas.');
+      const stream = previewCanvas.captureStream(24);
+      previewStream = stream;
+      const recorderMimeType = selectVideoRecorderMimeType((mime) => MediaRecorder.isTypeSupported(mime));
+      const recorder = new MediaRecorder(stream, {
+        ...(recorderMimeType ? { mimeType: recorderMimeType } : {}),
+        videoBitsPerSecond: 8_000_000,
+      });
+      const chunks: Blob[] = [];
+      recorder.addEventListener('dataavailable', (event) => {
+        if (event.data.size > 0) chunks.push(event.data);
+      });
+      const stopped = new Promise<void>((resolve, reject) => {
+        recorder.addEventListener('stop', () => resolve(), { once: true });
+        recorder.addEventListener('error', () => reject(new Error('The browser could not record the route preview.')), { once: true });
+      });
+      const drawPreviewFrame = () => {
+        const sourceWidth = canvas.width;
+        const sourceHeight = canvas.height;
+        const sourceFrameAspect = sourceWidth / Math.max(1, sourceHeight);
+        const targetAspect = previewCanvas.width / previewCanvas.height;
+        let sx = 0;
+        let sy = 0;
+        let sw = sourceWidth;
+        let sh = sourceHeight;
+        if (sourceFrameAspect > targetAspect) {
+          sw = sourceHeight * targetAspect;
+          sx = (sourceWidth - sw) / 2;
+        } else {
+          sh = sourceWidth / targetAspect;
+          sy = (sourceHeight - sh) / 2;
+        }
+        previewContext.drawImage(canvas, sx, sy, sw, sh, 0, 0, previewCanvas.width, previewCanvas.height);
+      };
+
+      applyRoutePose(0);
+      await twoFrames();
+      recorder.start(500);
+      const startedAt = performance.now();
+      await new Promise<void>((resolve) => {
+        const animate = (now: number) => {
+          const progress = Math.min(1, (now - startedAt) / (request.durationSeconds * 1000));
+          applyRoutePose(progress);
+          drawPreviewFrame();
+          if (progress >= 1) resolve();
+          else requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      });
+      recorder.stop();
+      await stopped;
+      stream.getTracks().forEach((track) => track.stop());
+      previewStream = null;
+      const previewBlob = new Blob(chunks, { type: recorder.mimeType || 'video/webm' });
+      if (previewBlob.size < 1024) throw new Error('The deterministic route preview was unexpectedly empty.');
+      const previewVideoBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error('The route preview could not be encoded.'));
+        reader.readAsDataURL(previewBlob);
+      });
+      return {
+        keyframesBase64,
+        previewVideoBase64,
+        previewVideoMimeType: previewBlob.type || 'video/webm',
+      };
+    } finally {
+      camera.position.copy(originalCamera.position);
+      camera.quaternion.copy(originalCamera.quaternion);
+      camera.up.copy(originalCamera.up);
+      camera.updateMatrixWorld(true);
+      if (controls?.pivotPoint && originalPivot) controls.pivotPoint.copy(originalPivot);
+      if (previousControlsEnabled !== null) controlsTarget.enabled = previousControlsEnabled;
+      controls?.update?.();
+      previewStream?.getTracks().forEach((track) => track.stop());
+      setStreetCapturePegmanHidden(false);
+      setZoneOverlaysVisible(previousOverlaysVisible);
+      setSelectedBuildingId(previousSelectedBuildingId);
+      setBuildingModelsVisible(previousModelsVisible);
+    }
+  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles]);
+
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).
   const withStreetCaptureScene = useCallback(async <T,>(
@@ -2426,6 +2611,7 @@ export function GlobeSitePlannerMap({
       captureDirect3D,
       withStreetCaptureScene,
       captureStreetDirect3D,
+      captureVideoRouteControls,
     });
     // Dev-only handle for e2e/console camera control (hidden browser pane
     // can't reach React state; see memory: e2e browser pane tricks).
@@ -2440,7 +2626,7 @@ export function GlobeSitePlannerMap({
         captureDirect3D,
       });
     }
-  }, [captureDirect3D, captureStreetDirect3D, globeAIRenderViewport, isSceneSettled, onGlobeReady, terrainElevation, waitForCurrentTiles, withStreetCaptureScene]);
+  }, [captureDirect3D, captureStreetDirect3D, captureVideoRouteControls, globeAIRenderViewport, isSceneSettled, onGlobeReady, terrainElevation, waitForCurrentTiles, withStreetCaptureScene]);
 
   // Prevent page scroll
   useEffect(() => {

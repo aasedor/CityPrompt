@@ -11,13 +11,15 @@ import base64
 import binascii
 import io
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Mapping, Sequence
 
 import httpx
 from PIL import Image
 
 OMNI_INTERACTIONS_URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
 MAX_GUIDE_IMAGE_BYTES = 12 * 1024 * 1024
+MAX_ROUTE_IMAGE_BYTES = 36 * 1024 * 1024
+MAX_PREVIEW_VIDEO_BYTES = 24 * 1024 * 1024
 MIN_GUIDE_IMAGE_EDGE = 640
 
 MOTION_PROMPTS: dict[str, str] = {
@@ -56,6 +58,12 @@ class OmniVideoContent:
     mime_type: str
 
 
+@dataclass(frozen=True)
+class PreviewVideo:
+    data: bytes
+    mime_type: str
+
+
 def decode_guide_image(value: str) -> GuideImage:
     """Decode and inspect a base64 PNG/JPEG without trusting the data-URL label."""
     encoded = value.split(",", 1)[1] if "," in value else value
@@ -87,6 +95,30 @@ def decode_guide_image(value: str) -> GuideImage:
     return GuideImage(data=data, mime_type=mime_type, width=width, height=height)
 
 
+def decode_preview_video(value: str, declared_mime_type: str) -> PreviewVideo:
+    """Decode the browser-recorded deterministic route preview safely."""
+    encoded = value.split(",", 1)[1] if "," in value else value
+    try:
+        data = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError("The route preview is not valid base64 video data.") from exc
+    if len(data) < 1024:
+        raise ValueError("The route preview is empty or incomplete.")
+    if len(data) > MAX_PREVIEW_VIDEO_BYTES:
+        raise ValueError("The route preview exceeds the 24 MB pilot limit.")
+
+    mime_type = declared_mime_type.split(";", 1)[0].strip().lower()
+    if mime_type not in {"video/webm", "video/mp4"}:
+        raise ValueError("The route preview must be WebM or MP4.")
+    is_webm = data.startswith(b"\x1aE\xdf\xa3")
+    is_mp4 = len(data) >= 12 and data[4:8] == b"ftyp"
+    if mime_type == "video/webm" and not is_webm:
+        raise ValueError("The route preview MIME type does not match its WebM content.")
+    if mime_type == "video/mp4" and not is_mp4:
+        raise ValueError("The route preview MIME type does not match its MP4 content.")
+    return PreviewVideo(data=data, mime_type=mime_type)
+
+
 def _screen_region(point: Mapping[str, float]) -> str:
     horizontal = "left" if point["x"] < 0.34 else "right" if point["x"] > 0.66 else "center"
     vertical = "upper" if point["y"] < 0.34 else "lower" if point["y"] > 0.66 else "middle"
@@ -109,6 +141,8 @@ def build_cinematic_prompt(
     camera_motion: str,
     scene_brief: str,
     duration_seconds: int,
+    control_mode: str = "single_frame",
+    keyframe_count: int = 1,
 ) -> str:
     """Build a motion-only prompt used for both preflight and generation."""
     prompt_scene_brief = scene_brief.strip()
@@ -132,23 +166,54 @@ def build_cinematic_prompt(
         if is_street
         else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
     )
-    return "\n\n".join(
+    if control_mode == "multi_keyframe":
+        references = " ".join(
+            f"<IMAGE_REF_{index}>@Image{index + 2}"
+            for index in range(max(0, keyframe_count - 1))
+        )
+        control_prefix = f"[# Sources <FIRST_FRAME>@Image1] [# References {references}]"
+        input_authority = (
+            f"Images1 through Image{keyframe_count} are deterministic City Prompt renders of the same frozen scene, "
+            "sampled in chronological order at equal travelled-distance intervals along the route"
+        )
+        flight_instruction = (
+            "Follow the exact chronological camera progression demonstrated by the ordered route images. "
+            "Image1 is the literal first frame; later images are geometric and geographic route checkpoints, not alternate designs."
+        )
+        final_preservation = "preserve the corresponding City Prompt route image and reduce motion between checkpoints"
+    elif control_mode == "preview_video":
+        control_prefix = ""
+        input_authority = (
+            "The supplied video is City Prompt's deterministic render of the complete camera path through one frozen 3D scene"
+        )
+        flight_instruction = (
+            "Copy the supplied video's camera positions, headings, speed, timing, focal length, and single-shot continuity exactly. "
+            "Do not substitute a new camera move or treat the video as a loose stylistic reference."
+        )
+        final_preservation = "preserve the corresponding source-video frame and reduce generative change"
+    else:
+        control_prefix = ""
+        input_authority = "Image1 is the sole authoritative City Prompt render of one frozen 3D scene"
+        flight_instruction = "Use the described screen-space route conservatively and keep the camera move extremely small."
+        final_preservation = "preserve Image1 unchanged"
+
+    body = "\n\n".join(
         section
         for section in [
             (
                 f"Create one single continuous, unbroken {duration_seconds}-second 16:9 {shot_kind} from the supplied "
-                "City Prompt planning image. This is one coherent camera take—no cuts, "
+                "City Prompt control input. This is one coherent camera take—no cuts, "
                 "montage, jump transitions, or time lapse."
             ),
             (
                 "FLIGHT PATH: The route is supplied as normalized screen-space coordinates and described below; "
                 "there is intentionally no route graphic burned into the first frame. Travel smoothly from the "
                 "described start region toward the described finish region at a physically plausible speed. "
-                f"{route_description} {motion_prompt}."
+                f"{route_description} {motion_prompt}. {flight_instruction}"
             ),
             (
                 "STATIC SCENE IDENTITY — HIGHEST PRIORITY: This is a camera animation of one frozen 3D scene, not "
-                "a scene redesign. Preserve the exact site plan and recognizable spatial identity of the source. "
+                f"a scene redesign. {input_authority}. Preserve the exact site plan and recognizable spatial identity of the source. "
                 f"{prompt_scene_brief} Keep every authored zone at the same location, footprint, height, proportions, "
                 "setbacks, roofline, opening pattern, path layout, and street relationship in every frame. Each building "
                 "zone is one indivisible persistent object and must never split into wings, merge with another zone, or "
@@ -165,7 +230,7 @@ def build_cinematic_prompt(
                 "are organizational metadata only; never render any identifier as a label, callout, leader line, or text."
             ),
             (
-                "APPEARANCE LOCK — OMNI IS THE ANIMATOR ONLY: Image1 already contains the final approved design and look. "
+                f"APPEARANCE LOCK — OMNI IS THE ANIMATOR ONLY: {input_authority}. The control input already contains the final approved design and look. "
                 "Animate those existing pixels; do not improve, beautify, materialize, regenerate, relight, recolor, sharpen, "
                 "restyle, or add detail. Preserve the exact materials, colors, textures, facade rhythm, landscape treatment, "
                 "time of day, weather, shadows, exposure, and visual medium from the source. Do not apply a photographic or "
@@ -195,16 +260,17 @@ def build_cinematic_prompt(
             (
                 "CONTEXT ISOLATION — FINAL OVERRIDE: Authored-zone identity applies only inside each explicitly authored "
                 "proposal silhouette; it is not global art direction. Every building, roof, lot, street, tree, and skyline "
-                "element outside those authored proposal silhouettes is immutable geographic context from Image1. Preserve "
+                "element outside those authored proposal silhouettes is immutable geographic context from the City Prompt control input. Preserve "
                 "each context building's exact count, footprint, height, roof form, facade style, spacing, and location. Do "
                 "not propagate, repeat, clone, or extend any authored architectural archetype into the background or replace "
                 "the captured neighborhood with a stylistically matching city. Any new background instance of an authored "
                 "archetype is a failed result. Do not redesign or enhance any pixel. When motion or visual quality conflicts "
-                "with context fidelity, reduce camera motion and preserve Image1 unchanged."
+                f"with context fidelity, {final_preservation}."
             ),
         ]
         if section
     ).strip()
+    return f"{control_prefix}\n\n{body}".strip()
 
 
 def build_omni_payload(
@@ -214,22 +280,52 @@ def build_omni_payload(
     guide_mime_type: str,
     prompt: str,
     duration_seconds: int,
+    control_mode: str = "single_frame",
+    route_keyframes: Sequence[tuple[str, str]] | None = None,
+    preview_video_base64: str | None = None,
+    preview_video_mime_type: str | None = None,
 ) -> dict[str, Any]:
-    encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64
-    input_items: list[dict[str, Any]] = [
-        {"type": "image", "data": encoded, "mime_type": guide_mime_type},
-        {"type": "text", "text": prompt},
-    ]
-    return {
-        "model": model,
-        "input": input_items,
-        "generation_config": {"video_config": {"task": "image_to_video"}},
-        "response_format": {
+    if control_mode == "multi_keyframe":
+        if not route_keyframes:
+            raise ValueError("Multi-keyframe video generation requires route keyframes.")
+        input_items: list[dict[str, Any]] = [
+            {
+                "type": "image",
+                "data": value.split(",", 1)[1] if "," in value else value,
+                "mime_type": mime_type,
+            }
+            for value, mime_type in route_keyframes
+        ]
+        task = "reference_to_video"
+    elif control_mode == "preview_video":
+        if not preview_video_base64 or not preview_video_mime_type:
+            raise ValueError("Preview-video generation requires a deterministic route preview.")
+        input_items = [{
+            "type": "video",
+            "data": preview_video_base64.split(",", 1)[1] if "," in preview_video_base64 else preview_video_base64,
+            "mime_type": preview_video_mime_type,
+        }]
+        task = "edit"
+    else:
+        encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64
+        input_items = [{"type": "image", "data": encoded, "mime_type": guide_mime_type}]
+        task = "image_to_video"
+    input_items.append({"type": "text", "text": prompt})
+    response_format = (
+        {"type": "video"}
+        if control_mode == "preview_video"
+        else {
             "type": "video",
             "aspect_ratio": "16:9",
             "duration": f"{duration_seconds}s",
             "delivery": "inline",
-        },
+        }
+    )
+    return {
+        "model": model,
+        "input": input_items,
+        "generation_config": {"video_config": {"task": task}},
+        "response_format": response_format,
         "background": False,
         "store": False,
         "stream": False,

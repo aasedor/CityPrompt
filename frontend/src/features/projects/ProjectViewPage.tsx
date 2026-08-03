@@ -16,6 +16,7 @@ import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
+import type { VideoRouteCaptureRequest, VideoRouteCaptureResult } from '@/components/viewer/videoRouteControls';
 import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
 import type { StreetCaptureResult } from '@/components/viewer/useStreetViewRender';
 import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
@@ -73,6 +74,7 @@ export function ProjectViewPage() {
     captureDirect3D?: (options?: { skipTileWait?: boolean }) => Promise<Direct3DCaptureBundle>;
     withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
     captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
+    captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
   // render panel keys "render with 3D models" behavior off this set.
@@ -137,6 +139,38 @@ export function ProjectViewPage() {
     const capture = await globeRefs.captureDirect3D({ skipTileWait: true });
     return capture.beautyImageBase64;
   }, [globeRefs]);
+
+  const captureVideoRouteControls = useCallback(async (
+    request: VideoRouteCaptureRequest,
+  ): Promise<VideoRouteCaptureResult> => {
+    if (!globeRefs?.captureVideoRouteControls || !globeRefs.camera) {
+      throw new Error('Route control capture is unavailable until the 3D globe has finished starting.');
+    }
+    if (request.cameraMotion !== 'street_walkby') {
+      return globeRefs.captureVideoRouteControls(request);
+    }
+
+    const pegman = useViewerStore.getState().streetViewPegman;
+    if (!pegman?.position) {
+      throw new Error('Place the Street View marker beside the site before preparing a street route.');
+    }
+    const savedCamera = saveCameraState(globeRefs.camera);
+    if (!savedCamera) throw new Error('The current aerial camera could not be saved.');
+    const [lng, lat] = pegman.position;
+    try {
+      flyToStreetLevel(
+        lat,
+        lng,
+        pegman.angle,
+        pegman.terrainHeight ?? globeRefs.terrainHeight,
+        globeRefs.camera,
+      );
+      await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      return await globeRefs.captureVideoRouteControls(request);
+    } finally {
+      restoreAerialView(savedCamera, globeRefs.camera);
+    }
+  }, [flyToStreetLevel, globeRefs, restoreAerialView, saveCameraState]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
   useUndoRedoKeyboard();
@@ -863,6 +897,7 @@ export function ProjectViewPage() {
             onBeforeCapture={prepareForVideoCapture}
             captureAerialFrame={captureVideoAerialFrame}
             captureStreetFrame={async () => (await handleGlobeStreetCapture())?.imageBase64 ?? null}
+            captureRouteControls={captureVideoRouteControls}
             onVideoSaved={rememberSavedVideo}
             onClose={() => setShowVideoRender(false)}
           />

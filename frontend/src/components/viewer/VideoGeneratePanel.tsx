@@ -33,6 +33,11 @@ import {
   type VideoRoutePoint,
 } from './videoRenderPath';
 import { buildVideoSceneContract } from './videoSceneContract';
+import {
+  type VideoControlMode,
+  type VideoRouteCaptureRequest,
+  type VideoRouteCaptureResult,
+} from './videoRouteControls';
 
 const FRAME_WIDTH = 1280;
 const FRAME_HEIGHT = 720;
@@ -42,6 +47,12 @@ const MOTIONS = [
   { id: 'street_walkby', name: 'Street walk-by', detail: 'Slow + pedestrian height' },
 ] as const;
 
+const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string }> = [
+  { id: 'preview_video', name: 'Preview-video edit', detail: 'Recommended · exact 8-second camera' },
+  { id: 'multi_keyframe', name: 'Route keyframes', detail: 'Experimental · 6 exact City Prompt views' },
+  { id: 'single_frame', name: 'Single frame', detail: 'Original baseline method' },
+];
+
 type MotionId = typeof MOTIONS[number]['id'];
 
 export interface VideoAttempt {
@@ -49,6 +60,7 @@ export interface VideoAttempt {
   request_id: string;
   status: string;
   style: string;
+  control_mode?: VideoControlMode;
   camera_motion: string;
   duration_seconds: number;
   created_at: string;
@@ -62,7 +74,12 @@ export interface VideoAttempt {
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
   const motion = attempt.camera_motion.split('_').join(' ');
-  if (attempt.style === 'source_fidelity') return `Source fidelity · ${motion}`;
+  const control = attempt.control_mode === 'multi_keyframe'
+    ? 'Route keyframes'
+    : attempt.control_mode === 'preview_video'
+      ? 'Preview-video edit'
+      : 'Single frame';
+  if (attempt.style === 'source_fidelity') return `${control} · ${motion}`;
   return `${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
 }
 
@@ -90,6 +107,10 @@ interface PreflightResult {
 interface PreparedVideoRequest {
   project_id: string;
   guide_frame_base64: string;
+  control_mode: VideoControlMode;
+  route_keyframes_base64: string[];
+  preview_video_base64?: string;
+  preview_video_mime_type?: string;
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
   duration_seconds: 8;
@@ -104,6 +125,7 @@ interface VideoGeneratePanelProps {
   onBeforeCapture?: () => Promise<void>;
   captureAerialFrame?: () => Promise<string | null>;
   captureStreetFrame?: () => Promise<string | null>;
+  captureRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
   onVideoSaved?: (attempt: VideoAttempt) => void;
   onClose: () => void;
 }
@@ -180,6 +202,7 @@ export function VideoGeneratePanel({
   onBeforeCapture,
   captureAerialFrame,
   captureStreetFrame,
+  captureRouteControls,
   onVideoSaved,
   onClose,
 }: VideoGeneratePanelProps) {
@@ -188,7 +211,10 @@ export function VideoGeneratePanel({
   const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>(DEFAULT_VIDEO_ROUTE);
   const [drawingRoute, setDrawingRoute] = useState(false);
   const [motion, setMotion] = useState<MotionId>('path_follow');
-  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 40, max_attempts: 40 });
+  const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
+  const [routeControls, setRouteControls] = useState<(VideoRouteCaptureResult & { signature: string }) | null>(null);
+  const [isPreparingControls, setIsPreparingControls] = useState(false);
+  const [pilot, setPilot] = useState<VideoPilotState>({ attempts: [], attempts_used: 0, attempts_remaining: 46, max_attempts: 46 });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
@@ -198,13 +224,17 @@ export function VideoGeneratePanel({
   const captureStarted = useRef(false);
   const captureSequence = useRef(0);
   const sceneContract = useMemo(() => buildVideoSceneContract(siteZones), [siteZones]);
+  const routeCaptureSignature = useMemo(
+    () => `${motion}:${routeSignature(routePoints)}`,
+    [motion, routePoints],
+  );
 
   const currentSignature = useMemo(
-    () => `${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
-    [motion, routePoints, sceneContract.signature],
+    () => `${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
+    [controlMode, motion, routePoints, sceneContract.signature],
   );
   const preparedSignature = prepared
-    ? `${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
+    ? `${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
 
@@ -241,6 +271,7 @@ export function VideoGeneratePanel({
         : await captureSceneFrame(canvas!);
       if (sequence === captureSequence.current) {
         setSourceFrame(captured);
+        setRouteControls(null);
         setPreflight(null);
         setPrepared(null);
       }
@@ -268,6 +299,7 @@ export function VideoGeneratePanel({
       const normalized = await normalizeImageFrame(source);
       if (sequence === captureSequence.current) {
         setSourceFrame(normalized);
+        setRouteControls(null);
         setPreflight(null);
         setPrepared(null);
       }
@@ -283,6 +315,7 @@ export function VideoGeneratePanel({
   const selectMotion = useCallback((nextMotion: MotionId) => {
     const wasStreet = motion === 'street_walkby';
     setMotion(nextMotion);
+    setRouteControls(null);
     setRoutePoints(nextMotion === 'street_walkby' ? DEFAULT_STREET_VIDEO_ROUTE : DEFAULT_VIDEO_ROUTE);
     if (nextMotion === 'street_walkby') void captureStreet();
     else if (wasStreet) void capture();
@@ -306,22 +339,52 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    // The 38-video pilot showed that additional style and catalog references
-    // make Omni redesign the city. Video Render therefore sends one authoritative
-    // frame and asks Omni to animate its existing pixels without visual invention.
-    const sceneBrief = `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
+    let activeControls = routeControls?.signature === routeCaptureSignature ? routeControls : null;
+    if (controlMode !== 'single_frame' && !activeControls) {
+      if (!captureRouteControls) throw new Error('This 3D view cannot prepare route controls yet.');
+      setIsPreparingControls(true);
+      try {
+        const captured = await captureRouteControls({
+          routePoints,
+          cameraMotion: motion,
+          durationSeconds: 8,
+          keyframeCount: 6,
+        });
+        const normalizedKeyframes = await Promise.all(captured.keyframesBase64.map((frame) => (
+          normalizeImageFrame(frame.startsWith('data:') ? frame : `data:image/png;base64,${frame}`)
+        )));
+        activeControls = {
+          ...captured,
+          keyframesBase64: normalizedKeyframes,
+          signature: routeCaptureSignature,
+        };
+        setRouteControls(activeControls);
+      } finally {
+        setIsPreparingControls(false);
+      }
+    }
+
+    const sceneBrief = controlMode === 'multi_keyframe'
+      ? `${sceneContract.text}\nSOURCE POLICY: The ordered City Prompt route images are the only visual authorities. They depict one unchanged scene along the exact desired path. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`
+      : controlMode === 'preview_video'
+        ? `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera and geometry authority. Preserve every frame's layout and timing. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`
+        : `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
+    const routeKeyframes = controlMode === 'multi_keyframe' ? activeControls?.keyframesBase64 ?? [] : [];
     return {
       project_id: projectId,
-      // Keep the literal first frame clean. Route geometry travels as structured
-      // coordinates + prompt text; burning it into the image makes video models
-      // preserve the markup as though it were part of the authored site.
-      guide_frame_base64: sourceFrame,
+      guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
+      control_mode: controlMode,
+      route_keyframes_base64: routeKeyframes,
+      ...(controlMode === 'preview_video' && activeControls ? {
+        preview_video_base64: activeControls.previewVideoBase64,
+        preview_video_mime_type: activeControls.previewVideoMimeType,
+      } : {}),
       route_points: routePoints,
       camera_motion: motion,
       duration_seconds: 8,
       scene_brief: sceneBrief,
     };
-  }, [motion, projectId, routePoints, sceneContract, sourceFrame]);
+  }, [captureRouteControls, controlMode, motion, projectId, routeCaptureSignature, routeControls, routePoints, sceneContract, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -370,6 +433,7 @@ export function VideoGeneratePanel({
     if (isGenerating) return;
     event.currentTarget.setPointerCapture(event.pointerId);
     setDrawingRoute(true);
+    setRouteControls(null);
     setRoutePoints([normalizedRoutePoint(event.clientX, event.clientY, event.currentTarget.getBoundingClientRect())]);
   };
   const continueRoute = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -425,7 +489,10 @@ export function VideoGeneratePanel({
                 <MapPinned size={12} /> Flight path
               </span>
               <span className="text-[11px] text-white/45">Drag from start to finish · the red guide is removed from the video</span>
-              <button onClick={() => setRoutePoints(motion === 'street_walkby' ? DEFAULT_STREET_VIDEO_ROUTE : DEFAULT_VIDEO_ROUTE)} disabled={isGenerating} className="ml-auto inline-flex items-center gap-1 rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold text-white/65 hover:bg-white/10">
+              <button onClick={() => {
+                setRouteControls(null);
+                setRoutePoints(motion === 'street_walkby' ? DEFAULT_STREET_VIDEO_ROUTE : DEFAULT_VIDEO_ROUTE);
+              }} disabled={isGenerating || isPreparingControls} className="ml-auto inline-flex items-center gap-1 rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold text-white/65 hover:bg-white/10">
                 <RefreshCw size={11} /> Reset route
               </button>
             </div>
@@ -435,6 +502,13 @@ export function VideoGeneratePanel({
               {isCapturing && (
                 <div className="absolute inset-0 flex items-center justify-center bg-[#111c1d] text-sm font-semibold text-white/65">
                   <Loader2 className="mr-2 animate-spin" size={18} /> Capturing clean 16:9 scene…
+                </div>
+              )}
+              {isPreparingControls && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#111c1d]/90 px-8 text-center text-sm font-semibold text-white/75">
+                  <Loader2 className="mb-3 animate-spin" size={24} />
+                  Preparing six geographic route views and the exact 8-second camera preview…
+                  <span className="mt-1 text-[10px] font-normal text-white/45">No Omni call or credit is used during this step.</span>
                 </div>
               )}
               {!isCapturing && !sourceFrame && (
@@ -476,19 +550,48 @@ export function VideoGeneratePanel({
               </div>
             </div>
 
-            <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[0.85fr_1.15fr]">
+            {routeControls?.signature === routeCaptureSignature && controlMode !== 'single_frame' && (
+              <div className="mt-3 rounded-xl border border-white/10 bg-black/25 p-2">
+                <div className="mb-2 flex items-center justify-between text-[9px] font-black uppercase tracking-wider text-white/45">
+                  <span>{controlMode === 'multi_keyframe' ? 'Ordered route checkpoints' : 'Deterministic camera preview'}</span>
+                  <span className="text-[#c9ff3d]">Prepared locally</span>
+                </div>
+                {controlMode === 'multi_keyframe' ? (
+                  <div className="grid grid-cols-6 gap-1">
+                    {routeControls.keyframesBase64.map((frame, index) => (
+                      <div key={index} className="relative overflow-hidden rounded border border-white/15 bg-black">
+                        <img src={frame} alt={`Route checkpoint ${index + 1}`} className="aspect-video h-full w-full object-cover" />
+                        <span className="absolute bottom-0.5 left-0.5 rounded bg-black/70 px-1 text-[8px] font-bold text-white">{index + 1}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <video controls muted playsInline className="aspect-video max-h-36 w-full rounded-lg bg-black object-contain" src={routeControls.previewVideoBase64} />
+                )}
+              </div>
+            )}
+
+            <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[1.15fr_0.85fr]">
               <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Render mode</p>
-                <div className="rounded-xl border border-[#c9ff3d] bg-[#c9ff3d]/15 px-3 py-2.5 text-white">
-                  <span className="flex items-center gap-1.5 text-[11px] font-black"><ShieldCheck size={13} /> Source fidelity</span>
-                  <span className="mt-0.5 block text-[9px] leading-relaxed text-white/55">Omni animates one captured frame with no style or archetype reference images.</span>
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Motion control</p>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {CONTROL_MODES.map((item) => (
+                    <button key={item.id} aria-pressed={controlMode === item.id} onClick={() => {
+                      setControlMode(item.id);
+                      setPreflight(null);
+                      setPrepared(null);
+                    }} disabled={isGenerating || isCapturing || isPreparingControls} className={`rounded-xl border px-2 py-2 text-left transition ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
+                      <span className="block text-[10px] font-bold">{item.name}</span>
+                      <span className="mt-0.5 block text-[8px] leading-tight opacity-55">{item.detail}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Camera behavior</p>
                 <div className="grid grid-cols-2 gap-1.5">
                   {MOTIONS.map((item) => (
-                    <button key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isCapturing} className={`rounded-xl border px-2.5 py-2 text-left transition ${motion === item.id ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
+                    <button key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isCapturing || isPreparingControls} className={`rounded-xl border px-2.5 py-2 text-left transition ${motion === item.id ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
                       <span className="block text-[11px] font-bold">{item.name}</span>
                       <span className="block text-[9px] opacity-55">{item.detail}</span>
                     </button>
@@ -511,7 +614,11 @@ export function VideoGeneratePanel({
                     The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, context buildings, and open-space program. Source-tile cars and pedestrians are removed, and streets stay empty for more stable continuity.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    Omni receives one authoritative image plus camera-motion instructions. Place names, style prompts, artistic media, and archetype reference images are withheld so it animates rather than redesigns.
+                    {controlMode === 'multi_keyframe'
+                      ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
+                      : controlMode === 'preview_video'
+                        ? 'Omni edits City Prompt’s deterministic route video, which carries the exact camera timing and scene geometry.'
+                        : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     AI concept visualization: Omni can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.
@@ -526,16 +633,16 @@ export function VideoGeneratePanel({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-black uppercase">Zero-cost preflight</p>
-                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Checks the frame, route, quota, auth, and final prompt. Gemini is not called.</p>
+                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Prepares route controls, then checks every input, quota, auth, and final prompt. Gemini is not called.</p>
                   </div>
                 </div>
-                <button onClick={() => void runPreflight()} disabled={isCapturing || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2 || pilot.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 py-2 text-xs font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
+                <button onClick={() => void runPreflight()} disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2 || pilot.attempts_remaining <= 0} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 py-2 text-xs font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
                   {isPreflighting ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />}
                   {isPreflighting ? 'Checking…' : hasValidPreflight ? 'Run check again' : 'Run free check'}
                 </button>
                 {hasValidPreflight && preflight && (
                   <div className="mt-2 flex items-center gap-2 rounded-lg bg-[#edf8e7] px-2.5 py-2 text-[10px] font-bold text-[#285b22]">
-                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · source frame only · {preflight.model}
+                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · {controlMode === 'multi_keyframe' ? `${preflight.reference_image_count} route images` : controlMode === 'preview_video' ? 'route-video edit' : 'single frame'} · {preflight.model}
                   </div>
                 )}
               </div>
