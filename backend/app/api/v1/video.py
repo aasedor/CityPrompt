@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import logging
 import uuid
@@ -33,6 +34,7 @@ from app.services.seedance_video import (
     request_seedance_video_once,
     seedance_runtime_error,
 )
+from app.services.video_fidelity import FidelityStatus, score_video_fidelity
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -116,6 +118,12 @@ class VideoAttemptResponse(BaseModel):
     interaction_id: str | None = None
     prompt: str | None = None
     estimated_cost_usd: float
+    fidelity_score: float | None = None
+    fidelity_min_score: float | None = None
+    fidelity_status: FidelityStatus | Literal["pending"] | None = None
+    fidelity_samples: list[dict[str, float]] = Field(default_factory=list)
+    is_benchmark: bool = False
+    benchmark_source: Literal["automatic", "user"] | None = None
 
 
 class VideoGenerateResponse(BaseModel):
@@ -137,6 +145,21 @@ class VideoPilotStateResponse(BaseModel):
     attempts_remaining: int
     max_attempts: int = PILOT_MAX_PROVIDER_CALLS
     provider_usage: dict[VideoProvider, VideoProviderUsage]
+
+
+class VideoFidelityBackfillRequest(BaseModel):
+    project_id: uuid.UUID
+
+
+class VideoFidelityBackfillResponse(BaseModel):
+    attempts_scored: int
+    attempts_skipped: int
+    benchmark_attempt_id: str | None = None
+
+
+class VideoBenchmarkRequest(BaseModel):
+    project_id: uuid.UUID
+    attempt_id: str
 
 
 def _now() -> str:
@@ -199,6 +222,101 @@ async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: s
             await db.commit()
             return entry
     raise HTTPException(status_code=404, detail="Video attempt not found")
+
+
+def _best_automatic_benchmark_index(attempts: list[dict]) -> int | None:
+    eligible: list[tuple[int, dict]] = [
+        (index, attempt)
+        for index, attempt in enumerate(attempts)
+        if _attempt_provider(attempt) == "omni"
+        and attempt.get("status") == "complete"
+        and attempt.get("style") == "source_fidelity"
+        and isinstance(attempt.get("fidelity_score"), (int, float))
+    ]
+    if not eligible:
+        return None
+    # Prefer the highest mean, then the strongest worst frame. When both are
+    # equal, keep the earlier result so the benchmark does not churn.
+    return max(
+        eligible,
+        key=lambda item: (
+            float(item[1]["fidelity_score"]),
+            float(item[1].get("fidelity_min_score") or 0),
+            -item[0],
+        ),
+    )[0]
+
+
+async def _refresh_automatic_benchmark(db: AsyncSession, project_id: uuid.UUID) -> str | None:
+    project = await _locked_project(db, project_id)
+    meta = dict(project.metadata_ or {})
+    attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
+    user_benchmark = next(
+        (
+            attempt
+            for attempt in attempts
+            if attempt.get("is_benchmark") and attempt.get("benchmark_source") == "user"
+        ),
+        None,
+    )
+    if user_benchmark:
+        return str(user_benchmark.get("id"))
+    best_index = _best_automatic_benchmark_index(attempts)
+    if best_index is None:
+        return None
+    for index, attempt in enumerate(attempts):
+        if _attempt_provider(attempt) != "omni":
+            continue
+        attempt["is_benchmark"] = index == best_index
+        attempt["benchmark_source"] = "automatic" if index == best_index else None
+    meta["video_pilot_attempts"] = attempts
+    project.metadata_ = meta
+    await db.commit()
+    return str(attempts[best_index].get("id"))
+
+
+def _storage_key_from_file_url(url: str | None, project_id: uuid.UUID) -> str | None:
+    if not url or "/api/v1/files/" not in url:
+        return None
+    key = url.split("/api/v1/files/", 1)[1].split("?", 1)[0]
+    expected_prefix = f"projects/{project_id}/video-render/"
+    return key if key.startswith(expected_prefix) else None
+
+
+def _read_storage_file(url: str | None, project_id: uuid.UUID) -> bytes:
+    key = _storage_key_from_file_url(url, project_id)
+    if not key:
+        raise ValueError("A saved fidelity-control URL is missing or outside this project.")
+    from app.api.v1.files import _s3_client
+
+    settings = get_settings()
+    obj = _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=key)
+    return obj["Body"].read()
+
+
+async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
+    video_bytes = await asyncio.to_thread(_read_storage_file, attempt.get("video_url"), project_id)
+    preview_url = attempt.get("preview_video_url")
+    keyframe_urls = list(attempt.get("route_keyframe_urls") or [])
+    preview_bytes = (
+        await asyncio.to_thread(_read_storage_file, preview_url, project_id) if preview_url else None
+    )
+    keyframe_bytes = (
+        await asyncio.gather(
+            *(asyncio.to_thread(_read_storage_file, url, project_id) for url in keyframe_urls)
+        )
+        if keyframe_urls
+        else []
+    )
+    report = await asyncio.to_thread(
+        score_video_fidelity,
+        generated_video=video_bytes,
+        duration_seconds=int(attempt.get("duration_seconds") or 8),
+        preview_video=preview_bytes,
+        preview_mime_type="video/webm" if str(preview_url).endswith(".webm") else "video/mp4",
+        route_keyframes=keyframe_bytes,
+    )
+    return report.metadata()
 
 
 def _preflight_values(req: VideoPilotRequest):
@@ -324,6 +442,77 @@ async def list_video_attempts(
     )
 
 
+@router.post("/fidelity/backfill", response_model=VideoFidelityBackfillResponse)
+async def backfill_video_fidelity(
+    req: VideoFidelityBackfillRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Score existing source-fidelity videos without making provider calls."""
+    await check_project_permission(req.project_id, user, db, required="editor")
+    project = await db.get(Project, req.project_id)
+    attempts = [dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])] if project else []
+    candidates = [
+        attempt
+        for attempt in attempts
+        if attempt.get("status") == "complete"
+        and attempt.get("video_url")
+        and attempt.get("style") == "source_fidelity"
+        and not isinstance(attempt.get("fidelity_score"), (int, float))
+        and (attempt.get("preview_video_url") or len(attempt.get("route_keyframe_urls") or []) >= 2)
+    ][:12]
+    scored = 0
+    for attempt in candidates:
+        try:
+            fidelity = await _score_saved_attempt(attempt, req.project_id)
+            await _update_attempt(db, req.project_id, str(attempt["id"]), **fidelity)
+            scored += 1
+        except Exception as exc:  # Scoring is advisory and must never hide a saved render.
+            logger.warning("Video fidelity backfill failed for %s: %s", attempt.get("id"), exc)
+            await _update_attempt(
+                db,
+                req.project_id,
+                str(attempt["id"]),
+                fidelity_status="unavailable",
+                fidelity_error=str(exc)[:300],
+            )
+    benchmark_id = await _refresh_automatic_benchmark(db, req.project_id)
+    return VideoFidelityBackfillResponse(
+        attempts_scored=scored,
+        attempts_skipped=max(0, len(attempts) - len(candidates)),
+        benchmark_attempt_id=benchmark_id,
+    )
+
+
+@router.post("/benchmark", response_model=VideoAttemptResponse)
+async def set_video_benchmark(
+    req: VideoBenchmarkRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Pin a completed Omni result as the user-approved fidelity benchmark."""
+    await check_project_permission(req.project_id, user, db, required="editor")
+    project = await _locked_project(db, req.project_id)
+    meta = dict(project.metadata_ or {})
+    attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
+    selected: dict | None = None
+    for attempt in attempts:
+        is_selected = attempt.get("id") == req.attempt_id
+        if is_selected:
+            if _attempt_provider(attempt) != "omni" or attempt.get("status") != "complete" or not attempt.get("video_url"):
+                raise HTTPException(status_code=400, detail="Only a completed Omni video can be the benchmark.")
+            selected = attempt
+        if _attempt_provider(attempt) == "omni":
+            attempt["is_benchmark"] = is_selected
+            attempt["benchmark_source"] = "user" if is_selected else None
+    if selected is None:
+        raise HTTPException(status_code=404, detail="Video attempt not found")
+    meta["video_pilot_attempts"] = attempts
+    project.metadata_ = meta
+    await db.commit()
+    return _public_attempt(selected)
+
+
 @router.post("/generate", response_model=VideoGenerateResponse)
 async def generate_video(
     req: VideoGenerateRequest,
@@ -410,6 +599,7 @@ async def generate_video(
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "reference_image_count": len(keyframes),
+        "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
     }
     attempts.append(entry)
     meta["video_pilot_attempts"] = attempts
@@ -510,6 +700,24 @@ async def generate_video(
                 timeout_seconds=settings.omni_video_timeout_seconds,
             )
             interaction_id = result.interaction_id
+        fidelity_updates: dict = {}
+        if preview or len(keyframes) >= 2:
+            try:
+                fidelity_report = await asyncio.to_thread(
+                    score_video_fidelity,
+                    generated_video=result.video_bytes,
+                    duration_seconds=req.duration_seconds,
+                    preview_video=preview.data if preview else None,
+                    preview_mime_type=preview.mime_type if preview else None,
+                    route_keyframes=[frame.data for frame in keyframes],
+                )
+                fidelity_updates = fidelity_report.metadata()
+            except Exception as fidelity_exc:
+                logger.warning("Video fidelity scoring failed for %s: %s", attempt_id, fidelity_exc)
+                fidelity_updates = {
+                    "fidelity_status": "unavailable",
+                    "fidelity_error": str(fidelity_exc)[:300],
+                }
         from app.api.v1.documents import _upload_to_storage
 
         await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
@@ -524,6 +732,7 @@ async def generate_video(
             interaction_id=interaction_id,
             seed=output_seed,
             size_bytes=len(result.video_bytes),
+            **fidelity_updates,
         )
         db.add(
             ApiUsageLog(
@@ -546,6 +755,7 @@ async def generate_video(
             )
         )
         await db.commit()
+        await _refresh_automatic_benchmark(db, req.project_id)
     except Exception as exc:
         secret = settings.fal_key if req.provider == "seedance_mini" else settings.gemini_api_key
         message = str(exc).replace(secret, "[redacted]")[:700] if secret else str(exc)[:700]
@@ -587,8 +797,9 @@ async def generate_video(
             detail=f"{provider_label} submission failed and still counts toward the {cap}-run cap: {message}",
         ) from exc
 
-    project = await db.get(Project, req.project_id)
+    project = await db.get(Project, req.project_id, populate_existing=True)
     latest_attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
+    entry = next((dict(item) for item in latest_attempts if item.get("id") == attempt_id), entry)
     usage = _provider_usage(latest_attempts, req.provider)
     return VideoGenerateResponse(
         attempt=_public_attempt(entry),

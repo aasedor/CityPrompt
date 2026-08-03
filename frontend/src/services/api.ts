@@ -1623,6 +1623,19 @@ export const videoRenderApi = {
     const { data } = await api.get(`/api/v1/video/projects/${projectId}`);
     return data;
   },
+
+  backfillFidelity: async (projectId: string): Promise<unknown> => {
+    const { data } = await api.post('/api/v1/video/fidelity/backfill', { project_id: projectId }, { timeout: 120000 });
+    return data;
+  },
+
+  setBenchmark: async (projectId: string, attemptId: string): Promise<unknown> => {
+    const { data } = await api.post('/api/v1/video/benchmark', {
+      project_id: projectId,
+      attempt_id: attemptId,
+    });
+    return data;
+  },
 };
 
 export const elevationApi = {

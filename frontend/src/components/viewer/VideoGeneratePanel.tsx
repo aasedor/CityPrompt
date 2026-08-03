@@ -7,6 +7,7 @@ import {
   MapPinned,
   RefreshCw,
   ShieldCheck,
+  Star,
   X,
 } from 'lucide-react';
 import {
@@ -80,6 +81,19 @@ export interface VideoAttempt {
   interaction_id?: string | null;
   prompt?: string | null;
   estimated_cost_usd: number;
+  fidelity_score?: number | null;
+  fidelity_min_score?: number | null;
+  fidelity_status?: 'pending' | 'stable' | 'review' | 'drift' | 'unavailable' | null;
+  fidelity_samples?: Array<{ time_seconds: number; score: number }>;
+  is_benchmark?: boolean;
+  benchmark_source?: 'automatic' | 'user' | null;
+}
+
+function fidelityTone(status: VideoAttempt['fidelity_status']): string {
+  if (status === 'stable') return 'bg-[#c9ff3d] text-[#151515]';
+  if (status === 'review') return 'bg-[#ffd76a] text-[#151515]';
+  if (status === 'drift') return 'bg-[#ffb5a9] text-[#8d2c23]';
+  return 'bg-[#eee8dc] text-[#151515]/55';
 }
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
@@ -254,6 +268,8 @@ export function VideoGeneratePanel({
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isScoring, setIsScoring] = useState(false);
+  const [isBenchmarking, setIsBenchmarking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedAttempt, setSelectedAttempt] = useState<VideoAttempt | null>(null);
   const captureStarted = useRef(false);
@@ -288,7 +304,11 @@ export function VideoGeneratePanel({
           seedance_mini: { attempts_used: 0, attempts_remaining: 2, max_attempts: 2 },
         },
       });
-      setSelectedAttempt((current) => current ?? state.attempts.find((attempt) => attempt.status === 'complete') ?? null);
+      setSelectedAttempt((current) => (
+        (current ? state.attempts.find((attempt) => attempt.id === current.id) : null)
+        ?? state.attempts.find((attempt) => attempt.status === 'complete')
+        ?? null
+      ));
     } catch (loadError) {
       setError(getApiErrorMessage(loadError, 'Could not load Video Render history.'));
     }
@@ -516,6 +536,41 @@ export function VideoGeneratePanel({
   };
 
   const activeVideoUrl = selectedAttempt?.video_url ? resolveApiFileUrl(selectedAttempt.video_url) : null;
+  const unscoredAttempts = pilot.attempts.filter((attempt) => (
+    attempt.status === 'complete'
+    && attempt.style === 'source_fidelity'
+    && typeof attempt.fidelity_score !== 'number'
+    && (attempt.control_mode === 'multi_keyframe' || attempt.control_mode === 'preview_video')
+  ));
+  const scoreSavedVideos = useCallback(async () => {
+    setIsScoring(true);
+    setError(null);
+    try {
+      const result = await videoRenderApi.backfillFidelity(projectId) as { attempts_scored: number };
+      await loadPilot();
+      toast.success(result.attempts_scored > 0
+        ? `Scored ${result.attempts_scored} saved video${result.attempts_scored === 1 ? '' : 's'}`
+        : 'All eligible videos are already scored');
+    } catch (scoreError) {
+      setError(getApiErrorMessage(scoreError, 'Saved videos could not be scored.'));
+    } finally {
+      setIsScoring(false);
+    }
+  }, [loadPilot, projectId]);
+  const setBenchmark = useCallback(async (attempt: VideoAttempt) => {
+    if (attempt.provider === 'seedance_mini' || attempt.status !== 'complete') return;
+    setIsBenchmarking(true);
+    setError(null);
+    try {
+      await videoRenderApi.setBenchmark(projectId, attempt.id);
+      await loadPilot();
+      toast.success('Omni benchmark updated');
+    } catch (benchmarkError) {
+      setError(getApiErrorMessage(benchmarkError, 'The benchmark could not be updated.'));
+    } finally {
+      setIsBenchmarking(false);
+    }
+  }, [loadPilot, projectId]);
   const downloadUrl = useCallback((attempt: VideoAttempt) => {
     if (!attempt.video_url) return null;
     const fileName = `city-prompt-${attempt.provider === 'seedance_mini' ? 'seedance-mini' : 'omni'}-${attempt.style}-${attempt.camera_motion}-${attempt.id.slice(0, 8)}.mp4`;
@@ -780,24 +835,66 @@ export function VideoGeneratePanel({
                   <video key={activeVideoUrl} controls playsInline autoPlay muted loop className="aspect-video w-full bg-black" src={activeVideoUrl} />
                   <div className="flex items-center gap-2 bg-white px-3 py-2">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[11px] font-black uppercase">{videoAttemptLabel(selectedAttempt)}</p>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <p className="truncate text-[11px] font-black uppercase">{videoAttemptLabel(selectedAttempt)}</p>
+                        {selectedAttempt.is_benchmark && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#151515] px-2 py-0.5 text-[8px] font-black uppercase text-white">
+                            <Star size={9} fill="currentColor" /> Benchmark
+                          </span>
+                        )}
+                        {typeof selectedAttempt.fidelity_score === 'number' && (
+                          <span className={`rounded-full px-2 py-0.5 text-[8px] font-black uppercase ${fidelityTone(selectedAttempt.fidelity_status)}`}>
+                            Fidelity {Math.round(selectedAttempt.fidelity_score)}/100 · {selectedAttempt.fidelity_status}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-[9px] text-[#151515]/45">8 sec · {selectedAttempt.provider === 'seedance_mini' ? 'fal Seedance Mini' : 'Gemini Omni'} · saved to project</p>
                     </div>
+                    {selectedAttempt.provider !== 'seedance_mini' && !selectedAttempt.is_benchmark && (
+                      <button type="button" onClick={() => void setBenchmark(selectedAttempt)} disabled={isBenchmarking} className="inline-flex items-center gap-1 rounded-full border-2 border-[#151515] px-2.5 py-2 text-[9px] font-black uppercase hover:bg-[#f7f2e8] disabled:opacity-40" aria-label="Set as Omni benchmark" title="Set as Omni benchmark">
+                        {isBenchmarking ? <Loader2 size={13} className="animate-spin" /> : <Star size={13} />} Benchmark
+                      </button>
+                    )}
                     <a href={downloadUrl(selectedAttempt) ?? activeVideoUrl} download className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-2 text-[10px] font-black uppercase hover:bg-[#f7f2e8]" aria-label="Download video"><Download size={14} /> MP4</a>
                   </div>
+                  {selectedAttempt.fidelity_samples && selectedAttempt.fidelity_samples.length > 0 && (
+                    <div className="flex items-center gap-1.5 border-t border-[#151515]/10 bg-white px-3 py-2" aria-label="Fidelity samples">
+                      <span className="mr-1 text-[8px] font-black uppercase text-[#151515]/45">Scene lock</span>
+                      {selectedAttempt.fidelity_samples.map((sample) => (
+                        <span key={sample.time_seconds} className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(sample.score >= 72 ? 'stable' : sample.score >= 52 ? 'review' : 'drift')}`} title={`${sample.time_seconds.toFixed(0)} seconds: ${sample.score.toFixed(1)}/100`}>
+                          {sample.time_seconds.toFixed(0)}s {Math.round(sample.score)}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {pilot.attempts.length > 0 && (
                 <div>
-                  <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Pilot history</p>
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Pilot history</p>
+                    {unscoredAttempts.length > 0 && (
+                      <button type="button" onClick={() => void scoreSavedVideos()} disabled={isScoring} className="inline-flex items-center gap-1 rounded-full border border-[#151515]/20 bg-white/60 px-2 py-1 text-[8px] font-black uppercase hover:bg-white disabled:opacity-40">
+                        {isScoring ? <Loader2 size={10} className="animate-spin" /> : <ShieldCheck size={10} />}
+                        Score saved ({unscoredAttempts.length})
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-1.5">
                     {pilot.attempts.map((attempt, index) => (
                       <div key={attempt.id} className={`flex w-full items-center gap-1 rounded-xl border px-1.5 py-1 ${selectedAttempt?.id === attempt.id ? 'border-[#151515] bg-white' : 'border-[#151515]/10 bg-white/45'}`}>
                         <button onClick={() => attempt.video_url && setSelectedAttempt(attempt)} className={`flex min-w-0 flex-1 items-center gap-2 rounded-lg px-1 py-1 text-left ${attempt.video_url ? 'hover:bg-[#f7f2e8]' : 'cursor-default'}`}>
                           <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black ${attempt.status === 'complete' ? 'bg-[#c9ff3d]' : attempt.status === 'failed' ? 'bg-[#ffb5a9]' : 'bg-[#eee8dc]'}`}>{pilot.attempts.length - index}</span>
                           <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{videoAttemptLabel(attempt)}</span>
-                          <span className="text-[9px] font-black uppercase text-[#151515]/40">{attempt.status}</span>
+                          {attempt.is_benchmark && <Star size={11} fill="currentColor" aria-label="Benchmark" />}
+                          {typeof attempt.fidelity_score === 'number' ? (
+                            <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(attempt.fidelity_status)}`} title={`Fidelity ${attempt.fidelity_score.toFixed(1)} of 100`}>
+                              {Math.round(attempt.fidelity_score)}
+                            </span>
+                          ) : (
+                            <span className="text-[9px] font-black uppercase text-[#151515]/40">{attempt.status}</span>
+                          )}
                         </button>
                         {attempt.video_url && (
                           <a href={downloadUrl(attempt) ?? undefined} download className="rounded-full p-2 hover:bg-[#f7f2e8]" aria-label={`Download ${videoAttemptLabel(attempt)} video`} title="Download MP4">

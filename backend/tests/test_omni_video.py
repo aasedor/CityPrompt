@@ -1,5 +1,6 @@
 import base64
 import io
+import uuid
 
 import pytest
 from PIL import Image
@@ -9,8 +10,10 @@ from app.api.v1.video import (
     PILOT_MAX_PROVIDER_CALLS,
     SEEDANCE_PILOT_MAX_PROVIDER_CALLS,
     VideoPilotRequest,
+    _best_automatic_benchmark_index,
     _count_provider_calls,
     _provider_usage,
+    _storage_key_from_file_url,
 )
 from app.services.omni_video import (
     build_cinematic_prompt,
@@ -299,3 +302,47 @@ def test_seedance_ledger_has_an_independent_hard_four_call_cap():
     assert usage.attempts_used == 2
     assert usage.attempts_remaining == 2
     assert usage.max_attempts == 4
+
+
+def test_automatic_benchmark_prefers_score_then_worst_frame_then_earlier_result():
+    attempts = [
+        {
+            "provider": "omni",
+            "status": "complete",
+            "style": "source_fidelity",
+            "fidelity_score": 71.0,
+            "fidelity_min_score": 48.0,
+        },
+        {
+            "provider": "omni",
+            "status": "complete",
+            "style": "source_fidelity",
+            "fidelity_score": 74.0,
+            "fidelity_min_score": 44.0,
+        },
+        {
+            "provider": "omni",
+            "status": "complete",
+            "style": "source_fidelity",
+            "fidelity_score": 74.0,
+            "fidelity_min_score": 52.0,
+        },
+        {
+            "provider": "seedance_mini",
+            "status": "complete",
+            "style": "source_fidelity",
+            "fidelity_score": 99.0,
+            "fidelity_min_score": 99.0,
+        },
+    ]
+
+    assert _best_automatic_benchmark_index(attempts) == 2
+
+
+def test_fidelity_storage_keys_are_scoped_to_the_authorized_project():
+    project_id = uuid.uuid4()
+    own_url = f"/api/v1/files/projects/{project_id}/video-render/attempt/omni.mp4"
+    other_url = f"/api/v1/files/projects/{uuid.uuid4()}/video-render/attempt/omni.mp4"
+
+    assert _storage_key_from_file_url(own_url, project_id) == own_url.split("/api/v1/files/", 1)[1]
+    assert _storage_key_from_file_url(other_url, project_id) is None
