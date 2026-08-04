@@ -187,3 +187,6 @@ output.
   envelope massing remains the safe fallback.
 - Expand end-to-end browser coverage for provider-backed still and video jobs;
   automated tests intentionally do not spend external API credits.
+- Re-baseline the inherited frontend performance budget after route-level code
+  splitting. CI reports the current map/Three.js/catalogue bundle overage as an
+  advisory while continuing to require a successful production build.
