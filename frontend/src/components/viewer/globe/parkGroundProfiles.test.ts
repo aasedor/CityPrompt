@@ -419,6 +419,22 @@ describe('park ground pilot profiles', () => {
     expect(prompt).toContain('FINAL PIXEL-TO-PIXEL TOPOLOGY LOCK');
   });
 
+  it('includes measured surroundings without weakening the diagram topology lock', () => {
+    const prompt = buildParkGroundPrompt(
+      zone('neighborhood_park'),
+      { width: 80, height: 60 },
+      { playground: 0, pavilion: 0, bench: 0, plaza: 0, access: 2 },
+      false,
+      'SURROUNDING-SITE CONTEXT:\n- proposed street "Main Street" touches on the east edge\nEDGE RESPONSE: align park gateways with the street.',
+    );
+
+    expect(prompt).toContain('proposed street "Main Street"');
+    expect(prompt).toContain('align park gateways with the street');
+    expect(prompt).toContain('FINAL PIXEL-TO-PIXEL TOPOLOGY LOCK');
+    expect(prompt.indexOf('SURROUNDING-SITE CONTEXT'))
+      .toBeLessThan(prompt.indexOf('FINAL PIXEL-TO-PIXEL TOPOLOGY LOCK'));
+  });
+
   it('selects the newest saved render as the drape appearance target', () => {
     expect(selectLatestParkRenderReference([
       { id: 'older', created_at: '2026-07-17T12:00:00Z' },

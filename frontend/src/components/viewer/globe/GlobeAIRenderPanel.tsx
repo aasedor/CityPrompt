@@ -18,6 +18,7 @@ import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import {
   buildParkDiagram,
+  capturePublicRealmSceneReference,
   generateParkGroundTexture,
   getParkGroundMeta,
   MAX_PARK_GROUND_BATCH_CALLS,
@@ -54,6 +55,7 @@ import {
   type Direct3DFidelityPolicy,
   type Direct3DRenderDiagnostics,
 } from './useDirect3DRender';
+import { buildPublicRealmSceneContextPrompt } from './publicRealmGenerationContext';
 
 // Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
@@ -460,6 +462,13 @@ export function GlobeAIRenderPanel({
     ? parkEligibleForGroundRegeneration
     : null;
 
+  const prepareParkSceneContext = useCallback(async (): Promise<string | null> => {
+    // Paid park material calls should see the same settled Google-tile scene
+    // as full renders. If the settle gate fails, stop before reserving spend.
+    await onBeforeRender?.();
+    return capturePublicRealmSceneReference(canvas);
+  }, [canvas, onBeforeRender]);
+
   const handleGenerateSelectedParkGround = useCallback(async () => {
     if (planGeometryStale || isGeneratingParks || !selectedParkNeedingGround) return;
     const label = selectedParkNeedingGround.name || 'selected park';
@@ -467,7 +476,11 @@ export function GlobeAIRenderPanel({
     setParkGroundStatus(`Generating optional AI material drape for ${label}…`);
     setError(null);
     try {
-      await generateParkGroundTexture(selectedParkNeedingGround);
+      const sceneContextImageBase64 = await prepareParkSceneContext();
+      await generateParkGroundTexture(selectedParkNeedingGround, {
+        siteZones: authoritativeZones,
+        sceneContextImageBase64,
+      });
       setParkGroundStatus(`Generated optional AI material drape for ${label}.`);
       await queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       await queryClient.invalidateQueries({ queryKey: ['project', projectId] });
@@ -477,7 +490,7 @@ export function GlobeAIRenderPanel({
     } finally {
       setIsGeneratingParks(false);
     }
-  }, [isGeneratingParks, planGeometryStale, projectId, queryClient, selectedParkNeedingGround]);
+  }, [authoritativeZones, isGeneratingParks, planGeometryStale, prepareParkSceneContext, projectId, queryClient, selectedParkNeedingGround]);
 
   const handleRegenerateParkGround = useCallback(async () => {
     if (planGeometryStale || isGeneratingParks || !parkHasGroundToRegenerate) return;
@@ -486,7 +499,11 @@ export function GlobeAIRenderPanel({
     setParkGroundStatus(`Regenerating geometry-locked AI material drape for ${label}…`);
     setError(null);
     try {
-      await generateParkGroundTexture(parkHasGroundToRegenerate);
+      const sceneContextImageBase64 = await prepareParkSceneContext();
+      await generateParkGroundTexture(parkHasGroundToRegenerate, {
+        siteZones: authoritativeZones,
+        sceneContextImageBase64,
+      });
       setParkGroundStatus(`Regenerated geometry-locked AI material drape for ${label}.`);
       await queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       await queryClient.invalidateQueries({ queryKey: ['project', projectId] });
@@ -496,7 +513,7 @@ export function GlobeAIRenderPanel({
     } finally {
       setIsGeneratingParks(false);
     }
-  }, [isGeneratingParks, parkHasGroundToRegenerate, planGeometryStale, projectId, queryClient]);
+  }, [authoritativeZones, isGeneratingParks, parkHasGroundToRegenerate, planGeometryStale, prepareParkSceneContext, projectId, queryClient]);
 
   const handleGenerateParkGrounds = useCallback(async () => {
     if (planGeometryStale || isGeneratingParks || parksNeedingGround.length === 0) return;
@@ -507,11 +524,23 @@ export function GlobeAIRenderPanel({
     setError(null);
     let done = 0;
     let failed = 0;
+    let sceneContextImageBase64: string | null = null;
+    try {
+      sceneContextImageBase64 = await prepareParkSceneContext();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Google-tile context did not settle for park generation.');
+      setParkGroundStatus(null);
+      setIsGeneratingParks(false);
+      return;
+    }
     // Sequential on purpose: each call is a full Gemini render; parallel
     // fan-out would trip the proxy's daily token cap alarms for no benefit.
     for (const zone of parkGroundBatch) {
       try {
-        await generateParkGroundTexture(zone);
+        await generateParkGroundTexture(zone, {
+          siteZones: authoritativeZones,
+          sceneContextImageBase64,
+        });
         done += 1;
       } catch (err) {
         failed += 1;
@@ -535,6 +564,8 @@ export function GlobeAIRenderPanel({
     isGeneratingParks,
     parkGroundBatch,
     parksNeedingGround.length,
+    authoritativeZones,
+    prepareParkSceneContext,
     queryClient,
     projectId,
   ]);
@@ -549,14 +580,18 @@ export function GlobeAIRenderPanel({
       const zone = authoritativeZones.find((z) => z.id === zoneId);
       if (!zone) throw new Error(`zone ${zoneId} not loaded`);
       const diagram = buildParkDiagram(zone);
-      const meta = await generateParkGroundTexture(zone);
+      const sceneContextImageBase64 = await prepareParkSceneContext();
+      const meta = await generateParkGroundTexture(zone, {
+        siteZones: authoritativeZones,
+        sceneContextImageBase64,
+      });
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       return { diagram: diagram?.dataUrl, markers: diagram?.markers, meta };
     };
     return () => {
       delete dbg.generateParkGround;
     };
-  }, [authoritativeZones, queryClient, projectId]);
+  }, [authoritativeZones, prepareParkSceneContext, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (planGeometryStale || !projectId || !communityBoundaryReady || isQueuing3D) return;
@@ -839,6 +874,10 @@ export function GlobeAIRenderPanel({
       // each building toward its archetype's real character instead of a
       // generic palette-preserving restyle.
       const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
+      const publicRealmContext = buildPublicRealmSceneContextPrompt(
+        siteZones,
+        { sceneReferenceAttached: true },
+      );
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
@@ -847,6 +886,7 @@ export function GlobeAIRenderPanel({
         community3DClaims: community3DCaptureClaims!,
         residualLandscapeClaim,
         archetypeReferences,
+        publicRealmContext,
       });
       setPreviews([direct.render]);
       setSelectedPreviewIndex(0);
