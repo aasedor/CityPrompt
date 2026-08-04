@@ -39,7 +39,10 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
-import type { Direct3DCaptureBundle } from '@/components/viewer/globe/direct3dCapture';
+import type {
+  Direct3DCaptureBundle,
+  Direct3DCaptureOptions,
+} from '@/components/viewer/globe/direct3dCapture';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 
@@ -71,9 +74,13 @@ export function ProjectViewPage() {
     isSettled?: boolean;
     waitForTilesSettled?: () => Promise<boolean>;
     setBuildingModelsVisible?: (visible: boolean) => void;
-    captureDirect3D?: (options?: { skipTileWait?: boolean }) => Promise<Direct3DCaptureBundle>;
+    captureDirect3D?: (options?: {
+      skipTileWait?: boolean;
+      includeGeometryPasses?: boolean;
+      maxLongEdge?: number;
+    }) => Promise<Direct3DCaptureBundle>;
     withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
-    captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
+    captureStreetDirect3D?: (options?: Direct3DCaptureOptions) => Promise<Direct3DCaptureBundle | null>;
     captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
@@ -143,34 +150,11 @@ export function ProjectViewPage() {
   const captureVideoRouteControls = useCallback(async (
     request: VideoRouteCaptureRequest,
   ): Promise<VideoRouteCaptureResult> => {
-    if (!globeRefs?.captureVideoRouteControls || !globeRefs.camera) {
+    if (!globeRefs?.captureVideoRouteControls) {
       throw new Error('Route control capture is unavailable until the 3D globe has finished starting.');
     }
-    if (request.cameraMotion !== 'street_walkby') {
-      return globeRefs.captureVideoRouteControls(request);
-    }
-
-    const pegman = useViewerStore.getState().streetViewPegman;
-    if (!pegman?.position) {
-      throw new Error('Place the Street View marker beside the site before preparing a street route.');
-    }
-    const savedCamera = saveCameraState(globeRefs.camera);
-    if (!savedCamera) throw new Error('The current aerial camera could not be saved.');
-    const [lng, lat] = pegman.position;
-    try {
-      flyToStreetLevel(
-        lat,
-        lng,
-        pegman.angle,
-        pegman.terrainHeight ?? globeRefs.terrainHeight,
-        globeRefs.camera,
-      );
-      await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-      return await globeRefs.captureVideoRouteControls(request);
-    } finally {
-      restoreAerialView(savedCamera, globeRefs.camera);
-    }
-  }, [flyToStreetLevel, globeRefs, restoreAerialView, saveCameraState]);
+    return globeRefs.captureVideoRouteControls(request);
+  }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
   useUndoRedoKeyboard();
@@ -896,7 +880,6 @@ export function ProjectViewPage() {
             waitForTilesSettled={globeRefs?.waitForTilesSettled}
             onBeforeCapture={prepareForVideoCapture}
             captureAerialFrame={captureVideoAerialFrame}
-            captureStreetFrame={async () => (await handleGlobeStreetCapture())?.imageBase64 ?? null}
             captureRouteControls={captureVideoRouteControls}
             onVideoSaved={rememberSavedVideo}
             onClose={() => setShowVideoRender(false)}
@@ -1509,15 +1492,26 @@ interface ProjectRendersTrayProps {
 function videoDownloadUrl(video: VideoAttempt): string {
   const source = resolveApiFileUrl(video.video_url ?? '');
   const separator = source.includes('?') ? '&' : '?';
-  const name = `city-prompt-${video.provider === 'seedance_mini' ? 'seedance-mini' : 'omni'}-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
+  const provider = video.provider === 'seedance_mini'
+    ? 'seedance-mini'
+    : video.provider === 'internal_enhance'
+      ? 'internal-enhance'
+      : 'omni';
+  const name = `city-prompt-${provider}-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
   return `${source}${separator}download=true&filename=${encodeURIComponent(name)}`;
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
   const motion = video.camera_motion.split('_').join(' ');
-  const provider = video.provider === 'seedance_mini' ? 'Seedance Mini' : 'Omni';
+  const provider = video.provider === 'seedance_mini'
+    ? 'Seedance Mini'
+    : video.provider === 'internal_enhance'
+      ? 'Internal Enhance'
+      : 'Omni';
   const reference = video.provider === 'seedance_mini'
     ? video.seedance_reference_mode === 'preview_plus_keyframes' ? 'preview + 3 views' : 'preview only'
+    : video.provider === 'internal_enhance'
+      ? 'source-locked cleanup'
     : 'source fidelity';
   if (video.style === 'source_fidelity') return `${provider} · ${reference} · ${motion}`;
   return `${provider} · ${video.style.split(/[_-]/).join(' ')} · ${motion}`;

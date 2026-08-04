@@ -51,6 +51,9 @@ export interface Direct3DCaptureBundle {
   classIdManifest: Readonly<Record<string, Direct3DProposalRole>>;
   instanceIdImageBase64: string;
   instanceIdManifest: Readonly<Record<string, Direct3DInstanceDescriptor>>;
+  /** Optional renderer-space geometry controls used by video enhancement. */
+  depthImageBase64?: string;
+  normalImageBase64?: string;
   width: number;
   height: number;
   proposalPixelCount: number;
@@ -146,6 +149,7 @@ export interface Direct3DCaptureOptions {
   maxLongEdge?: number;
   minMaskCoverage?: number;
   maxMaskCoverage?: number;
+  includeGeometryPasses?: boolean;
 }
 
 interface CaptureAnalysis {
@@ -488,7 +492,7 @@ function createCaptureTarget(
   renderer: THREE.WebGLRenderer,
   width: number,
   height: number,
-  pass: 'beauty' | 'class-id' | 'instance-id',
+  pass: Direct3DRenderPass,
 ): THREE.WebGLRenderTarget {
   const target = new THREE.WebGLRenderTarget(width, height, {
     depthBuffer: true,
@@ -504,13 +508,15 @@ function createCaptureTarget(
 
 export function getDirect3DTargetSampleCount(
   isWebGL2: boolean,
-  pass: 'beauty' | 'class-id' | 'instance-id',
+  pass: Direct3DRenderPass,
 ): number {
   if (!isWebGL2 || pass !== 'beauty') return 0;
   // Two samples soften the final beauty edge without the 4x multisample GPU
   // footprint that previously overlapped two 2048² capture targets.
   return 2;
 }
+
+export type Direct3DRenderPass = 'beauty' | 'class-id' | 'instance-id' | 'depth' | 'normal';
 
 function readTargetPixels(
   renderer: THREE.WebGLRenderer,
@@ -1235,8 +1241,20 @@ export async function captureDirect3DScene(
   const rendererSnapshot = snapshotRenderer(renderer, scene);
   const semanticMaterials = createSemanticMaterialCache();
   let beautyTarget: THREE.WebGLRenderTarget | null = null;
+  let depthTarget: THREE.WebGLRenderTarget | null = null;
+  let normalTarget: THREE.WebGLRenderTarget | null = null;
   let classTarget: THREE.WebGLRenderTarget | null = null;
   let instanceTarget: THREE.WebGLRenderTarget | null = null;
+  let depthImageBase64: string | undefined;
+  let normalImageBase64: string | undefined;
+  const depthMaterial = options.includeGeometryPasses
+    ? new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking })
+    : null;
+  const normalMaterial = options.includeGeometryPasses
+    ? new THREE.MeshNormalMaterial()
+    : null;
+  if (depthMaterial) depthMaterial.side = THREE.DoubleSide;
+  if (normalMaterial) normalMaterial.side = THREE.DoubleSide;
   let captureFailure: Direct3DCaptureError | null = null;
 
   try {
@@ -1265,6 +1283,50 @@ export async function captureDirect3DScene(
     renderer.setRenderTarget(rendererSnapshot.renderTarget);
     beautyTarget.dispose();
     beautyTarget = null;
+
+    if (options.includeGeometryPasses && depthMaterial && normalMaterial) {
+      // Geometry controls are renderer-space facts, not appearance guidance.
+      // They use the exact same camera and visible scene as the beauty pass.
+      // Targets are allocated and released serially to keep peak GPU memory
+      // bounded while Google Tiles remain resident for the video route.
+      scene.background = null;
+      scene.fog = null;
+      renderer.autoClear = true;
+      renderer.setScissorTest(false);
+      renderer.setViewport(0, 0, width, height);
+
+      scene.overrideMaterial = depthMaterial;
+      depthTarget = createCaptureTarget(renderer, width, height, 'depth');
+      renderer.setRenderTarget(depthTarget);
+      renderer.setClearColor(0xffffff, 1);
+      renderer.render(scene, camera);
+      depthImageBase64 = rgbaToPngDataUrl(
+        flipRgbaRows(readTargetPixels(renderer, depthTarget, width, height), width, height),
+        width,
+        height,
+      );
+      renderer.setRenderTarget(rendererSnapshot.renderTarget);
+      depthTarget.dispose();
+      depthTarget = null;
+
+      scene.overrideMaterial = normalMaterial;
+      normalTarget = createCaptureTarget(renderer, width, height, 'normal');
+      renderer.setRenderTarget(normalTarget);
+      renderer.setClearColor(0x8080ff, 1);
+      renderer.render(scene, camera);
+      normalImageBase64 = rgbaToPngDataUrl(
+        flipRgbaRows(readTargetPixels(renderer, normalTarget, width, height), width, height),
+        width,
+        height,
+      );
+      renderer.setRenderTarget(rendererSnapshot.renderTarget);
+      normalTarget.dispose();
+      normalTarget = null;
+
+      scene.overrideMaterial = rendererSnapshot.overrideMaterial;
+      scene.background = rendererSnapshot.background;
+      scene.fog = rendererSnapshot.fog;
+    }
 
     // Semantic proposal ID: first render context only into the class target,
     // then clear color only. Its depth buffer now contains the exact visible
@@ -1403,6 +1465,8 @@ export async function captureDirect3DScene(
       classIdManifest: DIRECT_3D_CLASS_ID_MANIFEST,
       instanceIdImageBase64: rgbaToPngDataUrl(instanceAnalysis.instanceIdPixels, width, height),
       instanceIdManifest,
+      depthImageBase64,
+      normalImageBase64,
       width,
       height,
       proposalPixelCount: analysis.proposalPixelCount,
@@ -1439,7 +1503,14 @@ export async function captureDirect3DScene(
     } catch (error) {
       cleanupFailure ??= error;
     }
-    for (const target of [beautyTarget, classTarget, instanceTarget]) {
+    for (const material of [depthMaterial, normalMaterial]) {
+      try {
+        material?.dispose();
+      } catch (error) {
+        cleanupFailure ??= error;
+      }
+    }
+    for (const target of [beautyTarget, depthTarget, normalTarget, classTarget, instanceTarget]) {
       try {
         target?.dispose();
       } catch (error) {

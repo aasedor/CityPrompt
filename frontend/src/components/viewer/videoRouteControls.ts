@@ -1,3 +1,6 @@
+import type { StreetRenderReadiness } from './globe/streetRenderReadiness';
+import type { VideoRenderQuality } from './videoRenderQuality';
+
 export type VideoControlMode = 'single_frame' | 'multi_keyframe' | 'preview_video';
 
 export interface NormalizedVideoRoutePoint {
@@ -7,7 +10,8 @@ export interface NormalizedVideoRoutePoint {
 
 export interface VideoRouteCaptureRequest {
   routePoints: NormalizedVideoRoutePoint[];
-  cameraMotion: 'path_follow' | 'street_walkby';
+  cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough';
+  renderQuality: VideoRenderQuality;
   durationSeconds: 8;
   keyframeCount?: number;
 }
@@ -16,6 +20,27 @@ export interface VideoRouteCaptureResult {
   keyframesBase64: string[];
   previewVideoBase64: string;
   previewVideoMimeType: string;
+  previewCaptureProfile?: {
+    encoder: 'webcodecs_h264' | 'media_recorder_webm';
+    frameCount: number;
+    fps: number;
+    width: number;
+    height: number;
+    renderWidth?: number;
+    renderHeight?: number;
+    tileWarmupFrameCount?: number;
+    tileSetHeld?: boolean;
+    fixedTimestep: true;
+  };
+  geometryPassProfile?: {
+    checkpointCount: number;
+    semanticCheckpointCount: number;
+    instanceCheckpointCount: number;
+    depthCheckpointCount: number;
+    normalCheckpointCount: number;
+    motionFrameCount: number;
+  };
+  streetRenderReadiness?: StreetRenderReadiness;
 }
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
@@ -78,6 +103,29 @@ export function normalizedVideoPointToNdc(
     x: sourceX * 2 - 1,
     y: 1 - sourceY * 2,
   };
+}
+
+/** Near-field paths must follow the project's terrain surface, not the first
+ * Google-mesh intersection under the cursor. That topmost hit may be a roof,
+ * tree canopy, vehicle, or photogrammetry spike and would place a pedestrian
+ * or low drone inside geometry. Aerial routes intentionally retain the hit
+ * height because roof-to-roof target motion is valid at a high orbit offset. */
+export function videoRouteSurfaceHeight(
+  hitHeight: number,
+  terrainHeight: number,
+  cameraMotion: VideoRouteCaptureRequest['cameraMotion'],
+): number {
+  return cameraMotion === 'path_follow' ? hitHeight : terrainHeight;
+}
+
+/** A low quantile rejects an isolated photogrammetry void without allowing
+ * roofs/canopies to pull the whole near-field path upward. The user is still
+ * expected to click visible ground, so the second-lowest of six route samples
+ * is a conservative and stable local terrain estimate. */
+export function stableNearFieldTerrainHeight(hitHeights: number[]): number {
+  const sorted = hitHeights.filter(Number.isFinite).sort((a, b) => a - b);
+  if (sorted.length === 0) throw new Error('The video route has no usable terrain heights.');
+  return sorted[Math.floor((sorted.length - 1) * 0.2)];
 }
 
 export function selectVideoRecorderMimeType(

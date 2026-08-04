@@ -8,6 +8,7 @@ import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { computeCentroid, haversineDistance } from '../mapEngine/geoUtils';
+import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -104,7 +105,7 @@ export function useGlobeCamera() {
   }, [flyToLatLng]);
 
   /**
-   * Position camera at street level (1.7m eye height) facing a compass heading.
+   * Position camera at street level (1.6m eye height) facing a compass heading.
    * Used for street view capture — positions camera as if standing on the ground looking ahead.
    *
    * @param lat - Latitude
@@ -122,7 +123,7 @@ export function useGlobeCamera() {
     const camera = externalCamera || cameraRef.current;
     if (!camera) return;
 
-    const eyeHeight = 1.7; // meters above ground
+    const eyeHeight = STREET_RENDER_EYE_HEIGHT_METERS;
 
     // Surface position at terrain height
     const surfacePos = new THREE.Vector3();

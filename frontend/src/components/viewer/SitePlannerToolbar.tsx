@@ -255,6 +255,10 @@ export function SitePlannerToolbar({
           <button
             onClick={() => {
               onMeasureModeChange?.(false);
+              // Street placement owns the next map click. Clear any drawing
+              // tool so a previously active Buildings/Parks mode cannot
+              // silently swallow the pegman drop.
+              setActiveSitePlannerTool(null);
               setStreetViewActive(!streetViewPegman);
             }}
             className={`site-planner-tool-button ${smallToolButtonBase} ${

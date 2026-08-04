@@ -42,14 +42,17 @@ import {
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
+import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
 import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import {
+  holdTileQueueUpdates,
   type SceneTileRenderer,
   waitForTilesSettled,
+  waitForVisibleTileCoverage,
 } from './tileLoadReadiness';
 import {
   estimateProjectFrameHeight,
@@ -101,14 +104,34 @@ import {
   direct3DProposalUserData,
   direct3DZoneInstanceDescriptor,
   type Direct3DCaptureBundle,
+  type Direct3DCaptureOptions,
 } from './direct3dCapture';
 import {
   normalizedVideoPointToNdc,
   resampleVideoRoute,
-  selectVideoRecorderMimeType,
+  stableNearFieldTerrainHeight,
+  videoRouteSurfaceHeight,
   type VideoRouteCaptureRequest,
   type VideoRouteCaptureResult,
 } from '../videoRouteControls';
+import {
+  captureDeterministicVideo,
+  getCenterCropRect,
+} from '../deterministicVideoCapture';
+import { assertNearFieldVideoSourceQuality } from '../videoSourceQuality';
+import {
+  applyVideoFrameProjection,
+  buildVideoWarmupFrames,
+  restoreVideoFrameProjection,
+  validateVideoRenderProfile,
+  videoRenderQualityProfile,
+} from '../videoRenderQuality';
+import {
+  applyStreetCameraProjection,
+  applyStreetRoutePose,
+  restoreStreetCameraProjection,
+} from './streetRenderProfile';
+import { inspectStreetRenderReadiness } from './streetRenderReadiness';
 
 import { elevationApi } from '@/services/api';
 
@@ -123,6 +146,43 @@ const MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = DEFAULT_INITIAL_CAMERA_HEIGHT_ABO
 const MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 1800;
 const MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND = 40000;
 const INITIAL_CAMERA_REVEAL_FALLBACK_MS = 2500;
+
+interface SceneTilesFadePlugin {
+  fadeDuration: number;
+}
+
+interface SceneUnloadTilesPlugin {
+  delay: number;
+  bytesTarget: number;
+  estimatedGpuBytes: number;
+}
+
+function applyCaptureTextureAnisotropy(
+  scene: THREE.Scene,
+  anisotropy: number,
+): () => void {
+  const previous = new Map<THREE.Texture, number>();
+  scene.traverse((object) => {
+    const materialValue = (object as THREE.Mesh).material;
+    const materials = Array.isArray(materialValue) ? materialValue : materialValue ? [materialValue] : [];
+    materials.forEach((material) => {
+      Object.values(material).forEach((value) => {
+        if (!(value instanceof THREE.Texture) || previous.has(value)) return;
+        previous.set(value, value.anisotropy);
+        if (value.anisotropy < anisotropy) {
+          value.anisotropy = anisotropy;
+          value.needsUpdate = true;
+        }
+      });
+    });
+  });
+  return () => {
+    previous.forEach((value, texture) => {
+      texture.anisotropy = value;
+      texture.needsUpdate = true;
+    });
+  };
+}
 
 function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined): boolean {
   return zoneType === 'building' || zoneType === 'residential' || zoneType === 'development_area';
@@ -1354,7 +1414,11 @@ interface GlobeSitePlannerMapProps {
     setBuildingModelsVisible?: (visible: boolean) => void;
     /** Capture a clean, current-camera 3D beauty frame plus exact proposal
      *  mask and semantic class-ID frame. This is isolated from Classic. */
-    captureDirect3D?: (options?: { skipTileWait?: boolean }) => Promise<Direct3DCaptureBundle>;
+    captureDirect3D?: (options?: {
+      skipTileWait?: boolean;
+      includeGeometryPasses?: boolean;
+      maxLongEdge?: number;
+    }) => Promise<Direct3DCaptureBundle>;
     /** Run a street-level capture with scene hygiene: hides the pegman marker,
      *  and — when authored 3D building models are present ('model3d') — hides
      *  zone overlays, deselects buildings, and forces models visible so the
@@ -1366,7 +1430,7 @@ interface GlobeSitePlannerMapProps {
     /** Full Direct 3D pass stack (beauty/class-ID/instance-ID) from the
      *  CURRENT camera with street-relaxed coverage bounds. Returns null on
      *  failure so callers can fall back to a plain screenshot. */
-    captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
+    captureStreetDirect3D?: (options?: Direct3DCaptureOptions) => Promise<Direct3DCaptureBundle | null>;
     /** Capture six deterministic route views and an exact 8-second browser
      *  preview of the same camera motion for Omni control inputs. */
     captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
@@ -1473,6 +1537,10 @@ export function GlobeSitePlannerMap({
   // where the capture camera stands, so they photobomb every street capture
   // unless hidden for the duration.
   const [streetCapturePegmanHidden, setStreetCapturePegmanHidden] = useState(false);
+  // A deterministic authored-scene profile. The proposal uses the original
+  // GLBs, PBR materials, public realm and vegetation, while Google Tiles stay
+  // visible outside the existing project-boundary replacement mask.
+  const [streetRenderProfileActive, setStreetRenderProfileActive] = useState(false);
   // Whether the scene holds authored 3D building models (compiled community,
   // LEGO stacks, or placed GLBs) — decides whether a street capture shows the
   // design itself ('model3d') or only existing context + overlays ('context3d').
@@ -1574,6 +1642,16 @@ export function GlobeSitePlannerMap({
   terrainElevationRef.current = terrainElevation;
   const terrainEllipsoidRef = useRef(createTerrainEllipsoid(DEFAULT_TERRAIN_ELEVATION));
   const tilesRendererRef = useRef<SceneTileRenderer | null>(null);
+  const tilesFadePluginRef = useRef<SceneTilesFadePlugin | null>(null);
+  const unloadTilesPluginRef = useRef<SceneUnloadTilesPlugin | null>(null);
+  // TilesPlugin's public declaration types the forwarded ref as the plugin
+  // constructor, although runtime correctly supplies the registered instance.
+  const handleTilesFadePluginRef = useCallback((plugin: typeof TilesFadePlugin | null) => {
+    tilesFadePluginRef.current = plugin as unknown as SceneTilesFadePlugin | null;
+  }, []);
+  const handleUnloadTilesPluginRef = useCallback((plugin: typeof UnloadTilesPlugin | null) => {
+    unloadTilesPluginRef.current = plugin as unknown as SceneUnloadTilesPlugin | null;
+  }, []);
   const [sceneReady, setSceneReady] = useState(false);
   const [globeControlsReady, setGlobeControlsReady] = useState(false);
   const [isInitialCameraApplied, setIsInitialCameraApplied] = useState(false);
@@ -2285,7 +2363,11 @@ export function GlobeSitePlannerMap({
     [],
   );
 
-  const captureDirect3D = useCallback((options: { skipTileWait?: boolean } = {}): Promise<Direct3DCaptureBundle> => {
+  const captureDirect3D = useCallback((options: {
+    skipTileWait?: boolean;
+    includeGeometryPasses?: boolean;
+    maxLongEdge?: number;
+  } = {}): Promise<Direct3DCaptureBundle> => {
     if (direct3DCapturePromiseRef.current) {
       return Promise.reject(new Direct3DCaptureError(
         'busy',
@@ -2348,7 +2430,10 @@ export function GlobeSitePlannerMap({
             'The WebGL context was lost while preparing the Direct 3D capture.',
           );
         }
-        return await captureDirect3DScene(renderer, scene, camera);
+        return await captureDirect3DScene(renderer, scene, camera, {
+          includeGeometryPasses: options.includeGeometryPasses,
+          maxLongEdge: options.maxLongEdge,
+        });
       } finally {
         setZoneOverlaysVisible(previousOverlaysVisible);
         setSelectedBuildingId(previousSelectedBuildingId);
@@ -2366,13 +2451,16 @@ export function GlobeSitePlannerMap({
   // class-ID + instance-ID) from the CURRENT camera — the caller parks the
   // camera at street level first. Aerial mask-coverage bounds are relaxed:
   // at eye level the sky legitimately dominates the frame.
-  const captureStreetDirect3D = useCallback(async (): Promise<Direct3DCaptureBundle | null> => {
+  const captureStreetDirect3D = useCallback(async (
+    options: Direct3DCaptureOptions = {},
+  ): Promise<Direct3DCaptureBundle | null> => {
     const renderer = rendererRef.current;
     const scene = sceneRef.current;
     const camera = cameraRef.current;
     if (!renderer || !scene || !camera || renderer.getContext().isContextLost()) return null;
     try {
       return await captureDirect3DScene(renderer, scene, camera, {
+        ...options,
         minMaskCoverage: 0,
         maxMaskCoverage: 1,
       });
@@ -2386,45 +2474,90 @@ export function GlobeSitePlannerMap({
     request: VideoRouteCaptureRequest,
   ): Promise<VideoRouteCaptureResult> => {
     const canvas = canvasRef.current;
+    const renderer = rendererRef.current;
     const camera = cameraRef.current;
-    if (!canvas || !camera || !canvas.isConnected) {
+    const scene = sceneRef.current;
+    if (!canvas || !renderer || !camera || !scene || !canvas.isConnected) {
       throw new Error('The 3D globe is not ready to prepare video route controls.');
     }
-    if (typeof MediaRecorder === 'undefined' || typeof canvas.captureStream !== 'function') {
-      throw new Error('This browser cannot record the deterministic route preview.');
-    }
+
+    const renderProfile = videoRenderQualityProfile(request.renderQuality);
+    validateVideoRenderProfile(renderProfile, renderer.capabilities.maxTextureSize);
+    const originalRendererSize = renderer.getSize(new THREE.Vector2());
+    const originalPixelRatio = renderer.getPixelRatio();
+    const originalDrawingBufferSize = renderer.getDrawingBufferSize(new THREE.Vector2());
 
     const sampledRoute = resampleVideoRoute(request.routePoints, request.keyframeCount ?? 6);
     const sourceAspect = (canvas.clientWidth || canvas.width) / Math.max(1, canvas.clientHeight || canvas.height);
-    const routeSurfacePoints = sampledRoute.map((point) => {
-      const ndc = normalizedVideoPointToNdc(point, sourceAspect);
-      const hit = raycastSurfacePoint(ndc.x, ndc.y);
-      if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
-      const world = new THREE.Vector3();
-      WGS84_ELLIPSOID.getCartographicToPosition(
-        hit.lngLat[1] * DEG_TO_RAD,
-        hit.lngLat[0] * DEG_TO_RAD,
-        hit.height,
-        world,
-      );
-      return world;
-    });
+    const streetWalkby = request.cameraMotion === 'street_walkby';
+    const detailFlythrough = request.cameraMotion === 'detail_flythrough';
+    const nearFieldRoute = streetWalkby || detailFlythrough;
+    const streetUp = camera.up.clone().normalize();
+    let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
+    let routeSurfacePoints: THREE.Vector3[];
+    let nearFieldTerrainHeight: number | null = null;
+    try {
+      // The user draws against the captured aerial frame, so resolve every
+      // point against that exact scene projection before switching to the
+      // pedestrian lens. This anchors a street route to real road/sidewalk
+      // elevations instead of an artificial plane beneath the aerial camera.
+      const routeHits = sampledRoute.map((point) => {
+        const ndc = normalizedVideoPointToNdc(point, sourceAspect);
+        const hit = raycastSurfacePoint(ndc.x, ndc.y);
+        if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
+        return hit;
+      });
+      nearFieldTerrainHeight = nearFieldRoute
+        ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
+        : null;
+      routeSurfacePoints = routeHits.map((hit) => {
+        const world = new THREE.Vector3();
+        WGS84_ELLIPSOID.getCartographicToPosition(
+          hit.lngLat[1] * DEG_TO_RAD,
+          hit.lngLat[0] * DEG_TO_RAD,
+          videoRouteSurfaceHeight(
+            hit.height,
+            nearFieldTerrainHeight ?? hit.height,
+            request.cameraMotion,
+          ),
+          world,
+        );
+        return world;
+      });
+    } catch (error) {
+      restoreStreetCameraProjection(camera, previousStreetProjection);
+      throw error;
+    }
     const centerHit = raycastSurfacePoint(0, 0);
-    if (!centerHit) throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
+    if (!centerHit) {
+      restoreStreetCameraProjection(camera, previousStreetProjection);
+      throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
+    }
     const centerWorld = new THREE.Vector3();
     WGS84_ELLIPSOID.getCartographicToPosition(
       centerHit.lngLat[1] * DEG_TO_RAD,
       centerHit.lngLat[0] * DEG_TO_RAD,
-      centerHit.height,
+      videoRouteSurfaceHeight(
+        centerHit.height,
+        nearFieldTerrainHeight ?? centerHit.height,
+        request.cameraMotion,
+      ),
       centerWorld,
     );
+    if (nearFieldRoute) previousStreetProjection = applyStreetCameraProjection(camera);
+    const previousFrameProjection = applyVideoFrameProjection(camera, sourceAspect);
 
     const originalCamera = {
       position: camera.position.clone(),
       quaternion: camera.quaternion.clone(),
       up: camera.up.clone(),
     };
-    const cameraOffset = camera.position.clone().sub(centerWorld);
+    const cameraOffset = nearFieldRoute
+      ? new THREE.Vector3()
+      : camera.position.clone().sub(centerWorld);
+    const streetFocusWorld = streetWalkby
+      ? centerWorld.clone().addScaledVector(streetUp, 7)
+      : null;
     const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
@@ -2435,9 +2568,40 @@ export function GlobeSitePlannerMap({
     const previousControlsEnabled = controlsTarget && 'enabled' in controlsTarget
       ? Boolean(controlsTarget.enabled)
       : null;
-    let previewStream: MediaStream | null = null;
+    const fadePlugin = tilesFadePluginRef.current;
+    const previousFadeDuration = fadePlugin?.fadeDuration ?? null;
+    const unloadPlugin = unloadTilesPluginRef.current;
+    const previousUnloadDelay = unloadPlugin?.delay ?? null;
+    const tileRenderer = tilesRendererRef.current;
+    const previousTileErrorTarget = tileRenderer?.errorTarget ?? null;
+    const previousLoadSiblings = tileRenderer?.loadSiblings ?? null;
+    const tileCache = tileRenderer?.lruCache;
+    const previousTileCache = tileCache ? {
+      minSize: tileCache.minSize,
+      maxSize: tileCache.maxSize,
+      minBytesSize: tileCache.minBytesSize,
+      maxBytesSize: tileCache.maxBytesSize,
+    } : null;
+    let restoreTextureAnisotropy: (() => void) | null = null;
+    let releaseTileQueueHold: (() => void) | null = null;
+    let streetRenderReadiness: VideoRouteCaptureResult['streetRenderReadiness'];
+    const waitForRouteContext = () => request.renderQuality === 'high'
+      ? waitForVisibleTileCoverage(tileRenderer, {
+          stableMs: 750,
+          timeoutMs: 4_000,
+          acceptVisibleCoverageAtTimeout: true,
+        })
+      : waitForCurrentTiles();
 
     const applyRoutePose = (progress: number) => {
+      if (streetWalkby) {
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp, undefined, streetFocusWorld ?? undefined);
+        return;
+      }
+      if (detailFlythrough) {
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp, 6);
+        return;
+      }
       const target = pathCurve.getPointAt(Math.max(0, Math.min(1, progress)));
       camera.position.copy(target).add(cameraOffset);
       camera.up.copy(originalCamera.up);
@@ -2455,81 +2619,151 @@ export function GlobeSitePlannerMap({
       setZoneOverlaysVisible(false);
       setSelectedBuildingId(null);
       setBuildingModelsVisible(true);
+      // Capture one frozen tile selection without cross-fades. This applies to
+      // both drone and street routes so context buildings cannot dissolve
+      // between the indexed source frames.
+      if (fadePlugin) fadePlugin.fadeDuration = 0;
+      if (unloadPlugin) unloadPlugin.delay = renderProfile.tileHoldMilliseconds;
+      if (tileRenderer && renderProfile.tileErrorTarget !== null) {
+        tileRenderer.errorTarget = Math.min(
+          tileRenderer.errorTarget ?? renderProfile.tileErrorTarget,
+          renderProfile.tileErrorTarget,
+        );
+        tileRenderer.loadSiblings = true;
+      }
+      if (tileCache && request.renderQuality === 'high') {
+        // Keep the bounded 80 m route resident through both passes. These
+        // limits are restored immediately after capture; the Unload plugin's
+        // delay prevents GPU disposal while the camera revisits warm views.
+        tileCache.minSize = Math.max(tileCache.minSize, 8_000);
+        tileCache.maxSize = Math.max(tileCache.maxSize, 12_000);
+        tileCache.minBytesSize = Math.max(tileCache.minBytesSize, 0.45 * 1024 ** 3);
+        tileCache.maxBytesSize = Math.max(tileCache.maxBytesSize, 0.65 * 1024 ** 3);
+      }
+      renderer.setPixelRatio(1);
+      renderer.setSize(renderProfile.renderWidth, renderProfile.renderHeight, false);
+      tileRenderer?.setResolution?.(
+        camera,
+        renderProfile.renderWidth,
+        renderProfile.renderHeight,
+      );
+      if (renderProfile.maximumTextureAnisotropy) {
+        restoreTextureAnisotropy = applyCaptureTextureAnisotropy(
+          scene,
+          renderer.capabilities.getMaxAnisotropy(),
+        );
+      }
+      if (nearFieldRoute) {
+        setStreetRenderProfileActive(true);
+      }
       await twoFrames();
 
+      // High Quality is a true two-pass render. The dry traversal visits every
+      // final camera pose and waits for a stable tile window at 25 distributed
+      // views before any encoded frame is produced.
+      const warmupFrames = buildVideoWarmupFrames(renderProfile);
+      if (request.renderQuality === 'high') {
+        for (const warmup of warmupFrames) {
+          applyRoutePose(warmup.progress);
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          if (warmup.settleTiles) {
+            const settled = await waitForRouteContext();
+            if (!settled) {
+              throw new Error(
+                `The surrounding Google context did not settle during full-route preload at frame ${warmup.index + 1}. Try a shorter path or Draft quality.`,
+              );
+            }
+          }
+        }
+        // The entire path is now resident in the enlarged cache. Stop new
+        // downloads and parses before source capture so no Google building can
+        // switch LOD halfway through the video. The original queue state is
+        // restored in the finally block.
+        releaseTileQueueHold = holdTileQueueUpdates(tileRenderer);
+        await twoFrames();
+        const frozenContextReady = await waitForVisibleTileCoverage(tileRenderer);
+        if (!frozenContextReady) {
+          throw new Error('The preloaded Google context could not be frozen for capture. Try a shorter path.');
+        }
+      }
+
       const keyframesBase64: string[] = [];
+      let semanticCheckpointCount = 0;
+      let instanceCheckpointCount = 0;
+      let depthCheckpointCount = 0;
+      let normalCheckpointCount = 0;
       for (let index = 0; index < sampledRoute.length; index += 1) {
         applyRoutePose(index / (sampledRoute.length - 1));
         await twoFrames();
-        const settled = await waitForCurrentTiles();
+        const settled = await waitForRouteContext();
         if (!settled) {
-          throw new Error(`The surrounding 3D tiles did not settle at route view ${index + 1}. Try a shorter path.`);
+          throw new Error(`The surrounding Google context did not settle at route view ${index + 1}. Try a shorter path.`);
         }
-        const capture = await captureDirect3D({ skipTileWait: true });
-        keyframesBase64.push(capture.beautyImageBase64);
+        // Near-field source creation needs a trustworthy beauty checkpoint,
+        // not a full semantic/instance pass at every pose. The latter is a
+        // metadata product and can fail when a close facade fills the frame;
+        // it must never prevent the deterministic route video from rendering.
+        const capture = nearFieldRoute
+          ? null
+          : await captureDirect3D({
+              skipTileWait: true,
+              includeGeometryPasses: request.renderQuality === 'high',
+            });
+        if (capture) {
+          keyframesBase64.push(capture.beautyImageBase64);
+          semanticCheckpointCount += capture.classIdImageBase64 ? 1 : 0;
+          instanceCheckpointCount += capture.instanceIdImageBase64 ? 1 : 0;
+          depthCheckpointCount += capture.depthImageBase64 ? 1 : 0;
+          normalCheckpointCount += capture.normalImageBase64 ? 1 : 0;
+        } else {
+          renderer.setRenderTarget(null);
+          renderer.render(scene, camera);
+          const beautyImageBase64 = canvas.toDataURL('image/png');
+          if (beautyImageBase64.length < 1_024) {
+            throw new Error(`The authored route frame ${index + 1} could not be captured.`);
+          }
+          keyframesBase64.push(beautyImageBase64);
+        }
       }
+      if (nearFieldRoute) {
+        await assertNearFieldVideoSourceQuality(keyframesBase64);
+      }
+      if (nearFieldRoute) streetRenderReadiness = inspectStreetRenderReadiness(scene);
 
-      // The recorder uses a dedicated 16:9 canvas so the preview sent to Omni
-      // has the exact same crop and aspect ratio as the route keyframes.
+      // Render a dedicated 16:9, fixed-timestep frame sequence so local output
+      // and provider previews share the same crop, camera poses, and timing.
       const previewCanvas = document.createElement('canvas');
-      previewCanvas.width = 1280;
-      previewCanvas.height = 720;
+      previewCanvas.width = renderProfile.outputWidth;
+      previewCanvas.height = renderProfile.outputHeight;
       const previewContext = previewCanvas.getContext('2d');
       if (!previewContext) throw new Error('The browser could not prepare the route preview canvas.');
-      const stream = previewCanvas.captureStream(24);
-      previewStream = stream;
-      const recorderMimeType = selectVideoRecorderMimeType((mime) => MediaRecorder.isTypeSupported(mime));
-      const recorder = new MediaRecorder(stream, {
-        ...(recorderMimeType ? { mimeType: recorderMimeType } : {}),
-        videoBitsPerSecond: 8_000_000,
-      });
-      const chunks: Blob[] = [];
-      recorder.addEventListener('dataavailable', (event) => {
-        if (event.data.size > 0) chunks.push(event.data);
-      });
-      const stopped = new Promise<void>((resolve, reject) => {
-        recorder.addEventListener('stop', () => resolve(), { once: true });
-        recorder.addEventListener('error', () => reject(new Error('The browser could not record the route preview.')), { once: true });
-      });
       const drawPreviewFrame = () => {
         const sourceWidth = canvas.width;
         const sourceHeight = canvas.height;
-        const sourceFrameAspect = sourceWidth / Math.max(1, sourceHeight);
-        const targetAspect = previewCanvas.width / previewCanvas.height;
-        let sx = 0;
-        let sy = 0;
-        let sw = sourceWidth;
-        let sh = sourceHeight;
-        if (sourceFrameAspect > targetAspect) {
-          sw = sourceHeight * targetAspect;
-          sx = (sourceWidth - sw) / 2;
-        } else {
-          sh = sourceWidth / targetAspect;
-          sy = (sourceHeight - sh) / 2;
-        }
+        const { sx, sy, sw, sh } = getCenterCropRect(
+          sourceWidth,
+          sourceHeight,
+          previewCanvas.width,
+          previewCanvas.height,
+        );
         previewContext.drawImage(canvas, sx, sy, sw, sh, 0, 0, previewCanvas.width, previewCanvas.height);
       };
 
-      applyRoutePose(0);
-      await twoFrames();
-      recorder.start(500);
-      const startedAt = performance.now();
-      await new Promise<void>((resolve) => {
-        const animate = (now: number) => {
-          const progress = Math.min(1, (now - startedAt) / (request.durationSeconds * 1000));
-          applyRoutePose(progress);
+      const previewCapture = await captureDeterministicVideo({
+        canvas: previewCanvas,
+        durationSeconds: request.durationSeconds,
+        bitrate: renderProfile.bitrate,
+        renderFrame: async (frame) => {
+          applyRoutePose(frame.progress);
+          // Give TilesRenderer and the authored R3F layers one render cycle to
+          // respond to this indexed pose, then render that exact camera state.
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          renderer.setRenderTarget(null);
+          renderer.render(scene, camera);
           drawPreviewFrame();
-          if (progress >= 1) resolve();
-          else requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate);
+        },
       });
-      recorder.stop();
-      await stopped;
-      stream.getTracks().forEach((track) => track.stop());
-      previewStream = null;
-      const previewBlob = new Blob(chunks, { type: recorder.mimeType || 'video/webm' });
-      if (previewBlob.size < 1024) throw new Error('The deterministic route preview was unexpectedly empty.');
+      const previewBlob = previewCapture.blob;
       const previewVideoBase64 = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(String(reader.result));
@@ -2539,23 +2773,77 @@ export function GlobeSitePlannerMap({
       return {
         keyframesBase64,
         previewVideoBase64,
-        previewVideoMimeType: previewBlob.type || 'video/webm',
+        previewVideoMimeType: previewBlob.type,
+        previewCaptureProfile: {
+          encoder: previewCapture.encoder,
+          frameCount: previewCapture.frameCount,
+          fps: previewCapture.fps,
+          width: previewCapture.width,
+          height: previewCapture.height,
+          renderWidth: renderProfile.renderWidth,
+          renderHeight: renderProfile.renderHeight,
+          tileWarmupFrameCount: warmupFrames.length,
+          tileSetHeld: Boolean(unloadPlugin),
+          fixedTimestep: true,
+        },
+        geometryPassProfile: {
+          checkpointCount: Math.max(
+            semanticCheckpointCount,
+            instanceCheckpointCount,
+            depthCheckpointCount,
+            normalCheckpointCount,
+          ),
+          semanticCheckpointCount,
+          instanceCheckpointCount,
+          depthCheckpointCount,
+          normalCheckpointCount,
+          motionFrameCount: previewCapture.frameCount,
+        },
+        streetRenderReadiness,
       };
     } finally {
+      releaseTileQueueHold?.();
+      restoreTextureAnisotropy?.();
       camera.position.copy(originalCamera.position);
       camera.quaternion.copy(originalCamera.quaternion);
       camera.up.copy(originalCamera.up);
+      restoreVideoFrameProjection(camera, previousFrameProjection);
+      restoreStreetCameraProjection(camera, previousStreetProjection);
       camera.updateMatrixWorld(true);
+      renderer.setRenderTarget(null);
+      renderer.setPixelRatio(originalPixelRatio);
+      renderer.setSize(originalRendererSize.x, originalRendererSize.y, false);
+      tileRenderer?.setResolution?.(
+        camera,
+        originalDrawingBufferSize.x,
+        originalDrawingBufferSize.y,
+      );
+      if (tileRenderer && previousTileErrorTarget !== null) {
+        tileRenderer.errorTarget = previousTileErrorTarget;
+      }
+      if (tileRenderer && previousLoadSiblings !== null) {
+        tileRenderer.loadSiblings = previousLoadSiblings;
+      }
+      if (tileCache && previousTileCache) {
+        tileCache.minSize = previousTileCache.minSize;
+        tileCache.maxSize = previousTileCache.maxSize;
+        tileCache.minBytesSize = previousTileCache.minBytesSize;
+        tileCache.maxBytesSize = previousTileCache.maxBytesSize;
+      }
+      if (unloadPlugin && previousUnloadDelay !== null) {
+        unloadPlugin.delay = previousUnloadDelay;
+      }
       if (controls?.pivotPoint && originalPivot) controls.pivotPoint.copy(originalPivot);
       if (previousControlsEnabled !== null) controlsTarget.enabled = previousControlsEnabled;
       controls?.update?.();
-      previewStream?.getTracks().forEach((track) => track.stop());
       setStreetCapturePegmanHidden(false);
+      setStreetRenderProfileActive(false);
       setZoneOverlaysVisible(previousOverlaysVisible);
       setSelectedBuildingId(previousSelectedBuildingId);
       setBuildingModelsVisible(previousModelsVisible);
+      if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
     }
-  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles]);
+  }, [captureDirect3D, captureStreetDirect3D, raycastSurfacePoint, waitForCurrentTiles]);
 
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).
@@ -2568,14 +2856,23 @@ export function GlobeSitePlannerMap({
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
     const previousModelsVisible = buildingModelsVisibleRef.current;
+    const camera = cameraRef.current;
+    const fadePlugin = tilesFadePluginRef.current;
+    const previousFadeDuration = fadePlugin?.fadeDuration ?? null;
+    let previousProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     try {
       setStreetCapturePegmanHidden(true);
       setSelectedBuildingId(null);
       if (kind === 'model3d') {
         // The authored models carry the design — colored zone overlays would
-        // only contaminate the capture.
+        // only contaminate the capture. Google Tiles remain as context outside
+        // the existing project-boundary mask, where authored City Prompt
+        // geometry replaces the underlying photogrammetry.
         setZoneOverlaysVisible(false);
         setBuildingModelsVisible(true);
+        setStreetRenderProfileActive(true);
+        if (fadePlugin) fadePlugin.fadeDuration = 0;
+        if (camera) previousProjection = applyStreetCameraProjection(camera);
       } else {
         // No models: the overlays ARE the intervention markers the prompt
         // references, so they must be in frame even if the user hid them.
@@ -2587,9 +2884,12 @@ export function GlobeSitePlannerMap({
       return await fn(kind);
     } finally {
       setStreetCapturePegmanHidden(false);
+      setStreetRenderProfileActive(false);
       setSelectedBuildingId(previousSelectedBuildingId);
       setZoneOverlaysVisible(previousOverlaysVisible);
       setBuildingModelsVisible(previousModelsVisible);
+      if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
+      if (camera) restoreStreetCameraProjection(camera, previousProjection);
     }
   }, []);
 
@@ -3274,8 +3574,11 @@ export function GlobeSitePlannerMap({
   return (
     <div ref={containerRef} className="relative h-full w-full bg-black" style={{ overflow: 'hidden' }}>
       <Canvas
+        aria-label="3D city map"
+        role="application"
         style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden' }}
         camera={initialThreeCamera}
+        shadows
         gl={{ antialias: true, logarithmicDepthBuffer: true, preserveDrawingBuffer: true, stencil: true }}
         onPointerMissed={() => {
           if (!hasDrawingTool && !measureModeActive && !interactionPaused) {
@@ -3294,6 +3597,8 @@ export function GlobeSitePlannerMap({
 
           // Attach pointer handlers directly to WebGL canvas for drawing
           const cvs = gl.domElement;
+          cvs.setAttribute('role', 'application');
+          cvs.setAttribute('aria-label', '3D city map');
 
           // Remove previous listeners first (React StrictMode / hot-reload safety)
           if (cleanupCanvasListenersRef.current) {
@@ -3394,16 +3699,32 @@ export function GlobeSitePlannerMap({
         <CameraExposer cameraRef={cameraRef} />
         <PitchMonitor onPitchChange={setPitchAngle} />
         <FallbackPlaneSync controlsRef={globeControlsRef} />
-        <color attach="background" args={['#dbeafe']} />
-        <ambientLight intensity={1.35} />
-        <hemisphereLight args={['#f8fbff', '#5b6775', 1.5]} />
-        <directionalLight
-          position={[8_000_000, 10_000_000, 7_000_000]}
-          intensity={1.8}
-          color="#fff7d6"
+        <color attach="background" args={[streetRenderProfileActive ? '#cfdae4' : '#dbeafe']} />
+        {streetRenderProfileActive ? (
+          <GlobeStreetRenderProfile
+            latitude={focusLatitude}
+            longitude={focusLongitude}
+            terrainHeight={terrainElevation}
+          />
+        ) : (
+          <>
+            <ambientLight intensity={1.35} />
+            <hemisphereLight args={['#f8fbff', '#5b6775', 1.5]} />
+            <directionalLight
+              position={[8_000_000, 10_000_000, 7_000_000]}
+              intensity={1.8}
+              color="#fff7d6"
+            />
+          </>
+        )}
+        {/* Street mode uses a near architectural atmosphere; globe mode keeps
+            the existing horizon-scale fog. */}
+        <fog
+          attach="fog"
+          args={streetRenderProfileActive
+            ? ['#cfdae4', 180, 900]
+            : ['#b8c8d8', 8000, 80000]}
         />
-        {/* Atmospheric fog — grounds the horizon and hides the infinite void */}
-        <fog attach="fog" args={['#b8c8d8', 8000, 80000]} />
         {/* IBL for placed GLB models (PBR materials only) — tiles and zone
             overlays are unlit basic materials, so they're unaffected. */}
         {hasPlaceableModels && <Environment preset="city" background={false} />}
@@ -3417,8 +3738,8 @@ export function GlobeSitePlannerMap({
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GLTFExtensionsPlugin} args={{ dracoLoader: new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') } as any} />
           <TilesPlugin plugin={UpdateOnChangePlugin} />
-          <TilesPlugin plugin={UnloadTilesPlugin} />
-          <TilesPlugin plugin={TilesFadePlugin} />
+          <TilesPlugin ref={handleUnloadTilesPluginRef} plugin={UnloadTilesPlugin} />
+          <TilesPlugin ref={handleTilesFadePluginRef} plugin={TilesFadePlugin} />
           <TilesExposer tilesRef={tilesRendererRef} />
           <GlobeControls
             ref={handleGlobeControlsRef}

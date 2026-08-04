@@ -8,6 +8,40 @@ interface OAuthButtonsProps {
   returnTo?: string;
 }
 
+interface OAuthStartPayload {
+  authorization_url?: unknown;
+  detail?: unknown;
+}
+
+export async function readOAuthAuthorizationUrl(
+  response: Response,
+  provider: 'google' | 'microsoft',
+): Promise<string> {
+  const body = await response.text();
+  let payload: OAuthStartPayload = {};
+  if (body.trim()) {
+    try {
+      payload = JSON.parse(body) as OAuthStartPayload;
+    } catch {
+      throw new Error(
+        `The login API returned an invalid response (HTTP ${response.status}). Check the API connection and try again.`,
+      );
+    }
+  }
+
+  if (!response.ok) {
+    const detail = typeof payload.detail === 'string' ? payload.detail : null;
+    throw new Error(
+      detail
+      || `The login API returned an empty response (HTTP ${response.status}). Check the API connection and try again.`,
+    );
+  }
+  if (typeof payload.authorization_url !== 'string' || !payload.authorization_url) {
+    throw new Error(`The login API did not return a ${provider} authorization URL.`);
+  }
+  return payload.authorization_url;
+}
+
 export function OAuthButtons({ returnTo = '/projects' }: OAuthButtonsProps) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
@@ -19,14 +53,10 @@ export function OAuthButtons({ returnTo = '/projects' }: OAuthButtonsProps) {
       url.searchParams.set('frontend_origin', window.location.origin);
 
       const response = await fetch(url.toString());
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || `Failed to initiate ${provider} login`);
-      }
+      const authorizationUrl = await readOAuthAuthorizationUrl(response, provider);
 
       // Redirect browser to the OAuth provider's authorization page.
-      window.location.href = data.authorization_url;
+      window.location.href = authorizationUrl;
     } catch (error) {
       const message = error instanceof Error ? error.message : `Failed to initiate ${provider} login`;
       toast.error(

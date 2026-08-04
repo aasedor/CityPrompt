@@ -1605,9 +1605,8 @@ export const rendersApi = {
   },
 };
 
-/** Bounded Gemini Omni pilot. The generate call intentionally has a long
- * timeout and is never retried by the client; the server persists idempotency
- * and the bounded pilot ledger before contacting the provider. */
+/** Bounded Video Render pilot. Generate calls are never retried by the client;
+ * the server persists idempotency and the bounded run ledger before starting. */
 export const videoRenderApi = {
   preflight: async (request: unknown): Promise<unknown> => {
     const { data } = await api.post('/api/v1/video/preflight', request, { timeout: 30000 });
@@ -1615,7 +1614,17 @@ export const videoRenderApi = {
   },
 
   generate: async (request: unknown): Promise<unknown> => {
-    const { data } = await api.post('/api/v1/video/generate', request, { timeout: 720000 });
+    const isGpuDetail = Boolean(
+      request
+      && typeof request === 'object'
+      && 'provider' in request
+      && request.provider === 'internal_enhance'
+      && 'internal_enhance_quality' in request
+      && request.internal_enhance_quality === 'gpu_detail',
+    );
+    const { data } = await api.post('/api/v1/video/generate', request, {
+      timeout: isGpuDetail ? 1_500_000 : 720_000,
+    });
     return data;
   },
 

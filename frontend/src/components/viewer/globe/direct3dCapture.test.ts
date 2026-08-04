@@ -43,6 +43,8 @@ describe('Direct 3D capture helpers', () => {
     expect(getDirect3DTargetSampleCount(true, 'beauty')).toBe(2);
     expect(getDirect3DTargetSampleCount(true, 'class-id')).toBe(0);
     expect(getDirect3DTargetSampleCount(true, 'instance-id')).toBe(0);
+    expect(getDirect3DTargetSampleCount(true, 'depth')).toBe(0);
+    expect(getDirect3DTargetSampleCount(true, 'normal')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'beauty')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'class-id')).toBe(0);
   });

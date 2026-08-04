@@ -1,4 +1,4 @@
-"""Bounded Gemini Omni architectural-video pilot endpoints."""
+"""Bounded architectural-video pilot endpoints."""
 
 from __future__ import annotations
 
@@ -18,7 +18,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
-from app.models.models import ApiUsageLog, Project, User
+from app.models.models import ApiUsageLog, Building, Project, SiteZone, User
+from app.services.internal_video import (
+    INTERNAL_VIDEO_MODEL,
+    build_internal_video_contract,
+    enhance_video_locally,
+    internal_video_runtime,
+    internal_video_runtime_error,
+)
 from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
     build_cinematic_prompt,
@@ -39,21 +46,48 @@ from app.services.video_fidelity import FidelityStatus, score_video_fidelity
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-PILOT_MAX_PROVIDER_CALLS = 46
+PILOT_MAX_PROVIDER_CALLS = 49
 SEEDANCE_PILOT_MAX_PROVIDER_CALLS = 4
+INTERNAL_ENHANCE_MAX_RUNS: None = None
 VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
-CameraMotion = Literal["path_follow", "street_walkby"]
+CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
-VideoProvider = Literal["omni", "seedance_mini"]
+VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
+InternalEnhanceQuality = Literal["fast", "gpu_detail"]
+RenderQuality = Literal["draft", "high"]
+CaptureEncoder = Literal["webcodecs_h264", "media_recorder_webm"]
 
 
 class RoutePoint(BaseModel):
     x: float = Field(..., ge=0, le=1)
     y: float = Field(..., ge=0, le=1)
+
+
+class VideoCaptureProfile(BaseModel):
+    """Auditable facts about the deterministic browser source render."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    encoder: CaptureEncoder
+    fixed_timestep: Literal[True]
+    frame_count: Literal[192]
+    fps: Literal[24]
+    width: int = Field(..., ge=640, le=1920)
+    height: int = Field(..., ge=360, le=1080)
+    render_width: int = Field(..., ge=640, le=4096)
+    render_height: int = Field(..., ge=360, le=4096)
+    tile_warmup_frame_count: int = Field(..., ge=0, le=192)
+    tile_set_held: bool
+    geometry_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    semantic_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    instance_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    depth_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    normal_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    motion_frame_count: int = Field(default=0, ge=0, le=192)
 
 
 class VideoPilotRequest(BaseModel):
@@ -62,11 +96,14 @@ class VideoPilotRequest(BaseModel):
     project_id: uuid.UUID
     provider: VideoProvider = "omni"
     seedance_reference_mode: SeedanceReferenceMode = "preview_only"
+    internal_enhance_quality: InternalEnhanceQuality = "fast"
+    render_quality: RenderQuality = "high"
     guide_frame_base64: str = Field(..., min_length=100, max_length=20_000_000)
     control_mode: ControlMode = "single_frame"
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
     preview_video_base64: str | None = Field(default=None, max_length=34_000_000)
     preview_video_mime_type: str | None = Field(default=None, max_length=100)
+    capture_profile: VideoCaptureProfile | None = None
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
@@ -93,8 +130,8 @@ class VideoPreflightResponse(BaseModel):
     prompt_preview: str
     provider: VideoProvider
     attempts_used: int
-    attempts_remaining: int
-    max_attempts: int
+    attempts_remaining: int | None
+    max_attempts: int | None
     estimated_cost_usd: float
     model: str
     reference_image_count: int
@@ -106,6 +143,9 @@ class VideoAttemptResponse(BaseModel):
     provider: VideoProvider = "omni"
     model: str | None = None
     seedance_reference_mode: SeedanceReferenceMode | None = None
+    internal_enhance_quality: InternalEnhanceQuality | None = None
+    render_quality: RenderQuality = "draft"
+    capture_profile: VideoCaptureProfile | None = None
     status: str
     style: str
     control_mode: ControlMode = "single_frame"
@@ -124,19 +164,26 @@ class VideoAttemptResponse(BaseModel):
     fidelity_samples: list[dict[str, float]] = Field(default_factory=list)
     is_benchmark: bool = False
     benchmark_source: Literal["automatic", "user"] | None = None
+    enhancement_engine: str | None = None
+    resource_count: int = 0
+    resource_asset_count: int = 0
+    resource_families: list[str] = Field(default_factory=list)
+    resource_strategy: str | None = None
+    processing_seconds: float | None = None
+    enhancement_warning: str | None = None
 
 
 class VideoGenerateResponse(BaseModel):
     attempt: VideoAttemptResponse
     attempts_used: int
-    attempts_remaining: int
+    attempts_remaining: int | None
     provider_call_counted: bool
 
 
 class VideoProviderUsage(BaseModel):
     attempts_used: int
-    attempts_remaining: int
-    max_attempts: int
+    attempts_remaining: int | None
+    max_attempts: int | None
 
 
 class VideoPilotStateResponse(BaseModel):
@@ -167,22 +214,34 @@ def _now() -> str:
 
 
 def _attempt_provider(attempt: dict) -> VideoProvider:
-    return "seedance_mini" if attempt.get("provider") == "seedance_mini" else "omni"
+    provider = attempt.get("provider")
+    if provider in {"omni", "seedance_mini", "internal_enhance"}:
+        return provider
+    return "omni"
 
 
-def _provider_cap(provider: VideoProvider) -> int:
-    return SEEDANCE_PILOT_MAX_PROVIDER_CALLS if provider == "seedance_mini" else PILOT_MAX_PROVIDER_CALLS
+def _provider_cap(provider: VideoProvider) -> int | None:
+    if provider == "seedance_mini":
+        return SEEDANCE_PILOT_MAX_PROVIDER_CALLS
+    if provider == "internal_enhance":
+        return INTERNAL_ENHANCE_MAX_RUNS
+    return PILOT_MAX_PROVIDER_CALLS
 
 
 def _provider_credit_cost(provider: VideoProvider) -> int:
-    return SEEDANCE_VIDEO_CREDIT_COST if provider == "seedance_mini" else VIDEO_CREDIT_COST
+    if provider == "seedance_mini":
+        return SEEDANCE_VIDEO_CREDIT_COST
+    if provider == "internal_enhance":
+        return 0
+    return VIDEO_CREDIT_COST
 
 
 def _count_provider_calls(attempts: list[dict], provider: VideoProvider | None = None) -> int:
     return sum(
         1
         for attempt in attempts
-        if attempt.get("provider_call_started_at") and (provider is None or _attempt_provider(attempt) == provider)
+        if (attempt.get("provider_call_started_at") or attempt.get("local_run_started_at"))
+        and (provider is None or _attempt_provider(attempt) == provider)
     )
 
 
@@ -191,7 +250,7 @@ def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProvi
     maximum = _provider_cap(provider)
     return VideoProviderUsage(
         attempts_used=used,
-        attempts_remaining=max(0, maximum - used),
+        attempts_remaining=None if maximum is None else max(0, maximum - used),
         max_attempts=maximum,
     )
 
@@ -199,6 +258,72 @@ def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProvi
 def _public_attempt(entry: dict) -> VideoAttemptResponse:
     public = {key: entry[key] for key in VideoAttemptResponse.model_fields if key in entry}
     return VideoAttemptResponse(**public)
+
+
+def _provider_model(
+    provider: VideoProvider,
+    settings,
+    internal_quality: InternalEnhanceQuality = "fast",
+) -> str:
+    if provider == "seedance_mini":
+        return SEEDANCE_MINI_ENDPOINT
+    if provider == "internal_enhance":
+        runtime = internal_video_runtime()
+        return runtime.model if internal_quality == "gpu_detail" else INTERNAL_VIDEO_MODEL
+    return settings.omni_video_model
+
+
+def _provider_label(provider: VideoProvider) -> str:
+    if provider == "seedance_mini":
+        return "Seedance Mini"
+    if provider == "internal_enhance":
+        return "Internal Enhance"
+    return "Omni"
+
+
+async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -> dict:
+    """Record the exact render-locked families already baked into the route video."""
+    building_result = await db.execute(select(Building).where(Building.project_id == project_id))
+    zone_result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id))
+    families: set[str] = set()
+    asset_ids: set[str] = set()
+    for building in building_result.scalars():
+        assembly = (building.specifications or {}).get("legoAssembly") or {}
+        family = assembly.get("module_family")
+        if isinstance(family, str) and family.strip():
+            families.add(family.strip())
+        for instance in assembly.get("instances") or []:
+            if not isinstance(instance, dict):
+                continue
+            instance_family = instance.get("family")
+            asset_id = instance.get("asset_id")
+            if isinstance(instance_family, str) and instance_family.strip():
+                families.add(instance_family.strip())
+            if isinstance(asset_id, str) and asset_id.strip():
+                asset_ids.add(asset_id.strip())
+    open_space_resources: set[str] = set()
+    for zone in zone_result.scalars():
+        if zone.zone_type not in {"green_space", "park", "plaza"}:
+            continue
+        properties = zone.properties or {}
+        archetype = (
+            properties.get("plaza_archetype_id")
+            or properties.get("green_space_archetype_id")
+            or "authored-open-space"
+        )
+        variant = properties.get("plaza_selected_variant_id") or properties.get(
+            "green_space_selected_variant_id"
+        )
+        open_space_resources.add(
+            f"open-space:{archetype}{f':{variant}' if variant else ''}"
+        )
+    resource_families = sorted(families | open_space_resources)
+    return {
+        "resource_count": len(resource_families),
+        "resource_families": resource_families,
+        "resource_asset_count": len(asset_ids),
+        "resource_strategy": "captured_render_locked_glb_and_open_space_assets",
+    }
 
 
 async def _locked_project(db: AsyncSession, project_id: uuid.UUID) -> Project:
@@ -340,8 +465,10 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider == "omni" and keyframes:
-                raise ValueError("Preview-video mode sends the route video without route keyframe references.")
+            if req.provider in {"omni", "internal_enhance"} and keyframes:
+                raise ValueError(
+                    "This preview-video mode sends the route video without route keyframe references."
+                )
             if req.provider == "seedance_mini":
                 expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
                 if len(keyframes) != expected_keyframes:
@@ -351,14 +478,20 @@ def _preflight_values(req: VideoPilotRequest):
                     )
         if req.provider == "seedance_mini" and req.control_mode != "preview_video":
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
-        prompt = build_cinematic_prompt(
-            route_points=[point.model_dump() for point in req.route_points],
-            camera_motion=req.camera_motion,
-            scene_brief=req.scene_brief,
-            duration_seconds=req.duration_seconds,
-            control_mode=req.control_mode,
-            keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
-            provider=req.provider,
+        if req.provider == "internal_enhance" and req.control_mode != "preview_video":
+            raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
+        prompt = (
+            build_internal_video_contract(req.scene_brief)
+            if req.provider == "internal_enhance"
+            else build_cinematic_prompt(
+                route_points=[point.model_dump() for point in req.route_points],
+                camera_motion=req.camera_motion,
+                scene_brief=req.scene_brief,
+                duration_seconds=req.duration_seconds,
+                control_mode=req.control_mode,
+                keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
+                provider=req.provider,
+            )
         )
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -383,10 +516,16 @@ async def preflight_video(
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
+    if req.provider == "internal_enhance":
+        runtime_error = internal_video_runtime_error(
+            require_upscaler=req.internal_enhance_quality == "gpu_detail"
+        )
+        if runtime_error:
+            raise HTTPException(status_code=503, detail=runtime_error)
     project = await db.get(Project, req.project_id)
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     usage = _provider_usage(attempts, req.provider)
-    if usage.attempts_remaining <= 0:
+    if usage.attempts_remaining is not None and usage.attempts_remaining <= 0:
         raise HTTPException(
             status_code=409,
             detail=f"This project has used all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
@@ -397,14 +536,15 @@ async def preflight_video(
             status_code=402,
             detail=f"Video Render requires {credit_cost} credits; you have {user.render_credits}.",
         )
-    estimated_cost = (
-        estimate_seedance_mini_cost(
+    if req.provider == "seedance_mini":
+        estimated_cost = estimate_seedance_mini_cost(
             input_video_seconds=req.duration_seconds,
             output_video_seconds=req.duration_seconds,
         )
-        if req.provider == "seedance_mini"
-        else float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
-    )
+    elif req.provider == "internal_enhance":
+        estimated_cost = 0.0
+    else:
+        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
     return VideoPreflightResponse(
         ready=True,
         width=guide.width,
@@ -416,7 +556,7 @@ async def preflight_video(
         attempts_remaining=usage.attempts_remaining,
         max_attempts=usage.max_attempts,
         estimated_cost_usd=estimated_cost,
-        model=SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model,
+        model=_provider_model(req.provider, settings, req.internal_enhance_quality),
         reference_image_count=len(keyframes),
     )
 
@@ -438,6 +578,7 @@ async def list_video_attempts(
         provider_usage={
             "omni": omni_usage,
             "seedance_mini": _provider_usage(attempts, "seedance_mini"),
+            "internal_enhance": _provider_usage(attempts, "internal_enhance"),
         },
     )
 
@@ -531,6 +672,12 @@ async def generate_video(
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
+    if req.provider == "internal_enhance":
+        runtime_error = internal_video_runtime_error(
+            require_upscaler=req.internal_enhance_quality == "gpu_detail"
+        )
+        if runtime_error:
+            raise HTTPException(status_code=503, detail=runtime_error)
 
     # Idempotency and the hard cap are persisted before any provider contact.
     project = await _locked_project(db, req.project_id)
@@ -544,7 +691,10 @@ async def generate_video(
                 attempt=_public_attempt(existing),
                 attempts_used=usage.attempts_used,
                 attempts_remaining=usage.attempts_remaining,
-                provider_call_counted=bool(existing.get("provider_call_started_at")),
+                provider_call_counted=bool(
+                    existing.get("provider_call_started_at")
+                    or existing.get("local_run_started_at")
+                ),
             )
 
     usage = _provider_usage(attempts, req.provider)
@@ -553,7 +703,10 @@ async def generate_video(
         for attempt in attempts
         if attempt.get("status") == "reserved" and _attempt_provider(attempt) == req.provider
     )
-    if usage.attempts_used + active_reservations >= usage.max_attempts:
+    if (
+        usage.max_attempts is not None
+        and usage.attempts_used + active_reservations >= usage.max_attempts
+    ):
         raise HTTPException(
             status_code=409,
             detail=f"This project has reserved all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
@@ -571,20 +724,31 @@ async def generate_video(
     if preview:
         control_hash.update(preview.data)
     guide_hash = control_hash.hexdigest()
-    estimated_cost = (
-        estimate_seedance_mini_cost(
+    if req.provider == "seedance_mini":
+        estimated_cost = estimate_seedance_mini_cost(
             input_video_seconds=req.duration_seconds,
             output_video_seconds=req.duration_seconds,
         )
-        if req.provider == "seedance_mini"
-        else float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    elif req.provider == "internal_enhance":
+        estimated_cost = 0.0
+    else:
+        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    resource_updates = (
+        await _project_internal_resources(db, req.project_id)
+        if req.provider == "internal_enhance"
+        else {}
     )
     entry = {
         "id": attempt_id,
         "request_id": str(req.request_id),
         "provider": req.provider,
-        "model": SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model,
+        "model": _provider_model(req.provider, settings, req.internal_enhance_quality),
         "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
+        "internal_enhance_quality": (
+            req.internal_enhance_quality if req.provider == "internal_enhance" else None
+        ),
+        "render_quality": req.render_quality,
+        "capture_profile": req.capture_profile.model_dump() if req.capture_profile else None,
         "status": "reserved",
         "style": "source_fidelity",
         "control_mode": req.control_mode,
@@ -600,6 +764,7 @@ async def generate_video(
         "guide_sha256": guide_hash,
         "reference_image_count": len(keyframes),
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
+        **resource_updates,
     }
     attempts.append(entry)
     meta["video_pilot_attempts"] = attempts
@@ -608,7 +773,11 @@ async def generate_video(
 
     guide_extension = "png" if primary_guide.mime_type == "image/png" else "jpg"
     guide_key = f"projects/{req.project_id}/video-render/{attempt_id}/route-guide.{guide_extension}"
-    video_name = "seedance-mini.mp4" if req.provider == "seedance_mini" else "omni.mp4"
+    video_name = {
+        "seedance_mini": "seedance-mini.mp4",
+        "internal_enhance": "internal-enhance.mp4",
+        "omni": "omni.mp4",
+    }[req.provider]
     video_key = f"projects/{req.project_id}/video-render/{attempt_id}/{video_name}"
     try:
         from app.api.v1.documents import _upload_to_storage
@@ -646,27 +815,58 @@ async def generate_video(
         )
         raise HTTPException(status_code=503, detail=entry["error"]) from exc
 
-    # From this committed timestamp onward the attempt consumes one pilot call,
-    # even if the provider times out: the remote billing outcome is ambiguous.
+    # From this committed timestamp onward the attempt consumes one bounded run.
+    # Remote calls may incur billing; local runs remain free but are capped while
+    # the pilot is being evaluated.
+    run_marker = (
+        {"local_run_started_at": _now()}
+        if req.provider == "internal_enhance"
+        else {"provider_call_started_at": _now()}
+    )
     entry = await _update_attempt(
         db,
         req.project_id,
         attempt_id,
         status="generating",
-        provider_call_started_at=_now(),
+        **run_marker,
     )
-    if not is_admin_or_above(user):
+    if credit_cost and not is_admin_or_above(user):
         user.render_credits = max(0, user.render_credits - credit_cost)
         db.add(user)
         await db.commit()
 
-    provider_name = "fal" if req.provider == "seedance_mini" else "gemini"
-    operation = "seedance_video" if req.provider == "seedance_mini" else "omni_video"
-    model = SEEDANCE_MINI_ENDPOINT if req.provider == "seedance_mini" else settings.omni_video_model
+    provider_name = {
+        "seedance_mini": "fal",
+        "internal_enhance": "local",
+        "omni": "gemini",
+    }[req.provider]
+    operation = {
+        "seedance_mini": "seedance_video",
+        "internal_enhance": "internal_video_enhance",
+        "omni": "omni_video",
+    }[req.provider]
+    model = _provider_model(req.provider, settings, req.internal_enhance_quality)
     interaction_id: str | None = None
     output_seed: int | None = None
+    enhancement_updates: dict = {}
     try:
-        if req.provider == "seedance_mini":
+        if req.provider == "internal_enhance":
+            if preview is None:  # Defense in depth after request validation.
+                raise ValueError("Internal Enhance requires the deterministic route preview.")
+            result = await enhance_video_locally(
+                preview=preview,
+                duration_seconds=req.duration_seconds,
+                allow_upscaler=req.internal_enhance_quality == "gpu_detail",
+                render_quality=req.render_quality,
+            )
+            model = result.model
+            enhancement_updates = {
+                "model": result.model,
+                "enhancement_engine": result.engine,
+                "processing_seconds": result.processing_seconds,
+                "enhancement_warning": result.fallback_reason,
+            }
+        elif req.provider == "seedance_mini":
             if preview is None:  # Kept explicit for static type checking and defense in depth.
                 raise ValueError("Seedance requires the deterministic route preview.")
             result = await request_seedance_video_once(
@@ -732,6 +932,7 @@ async def generate_video(
             interaction_id=interaction_id,
             seed=output_seed,
             size_bytes=len(result.video_bytes),
+            **enhancement_updates,
             **fidelity_updates,
         )
         db.add(
@@ -751,13 +952,27 @@ async def generate_video(
                     "interaction_id": interaction_id,
                     "seed": output_seed,
                     "estimated_provider_cost_usd": estimated_cost,
+                    "enhancement_engine": enhancement_updates.get("enhancement_engine"),
+                    "internal_enhance_quality": (
+                        req.internal_enhance_quality if req.provider == "internal_enhance" else None
+                    ),
+                    "render_quality": req.render_quality,
+                    "capture_profile": req.capture_profile.model_dump() if req.capture_profile else None,
+                    "resource_count": resource_updates.get("resource_count", 0),
+                    "resource_families": resource_updates.get("resource_families", []),
                 },
             )
         )
         await db.commit()
         await _refresh_automatic_benchmark(db, req.project_id)
     except Exception as exc:
-        secret = settings.fal_key if req.provider == "seedance_mini" else settings.gemini_api_key
+        secret = (
+            settings.fal_key
+            if req.provider == "seedance_mini"
+            else settings.gemini_api_key
+            if req.provider == "omni"
+            else ""
+        )
         message = str(exc).replace(secret, "[redacted]")[:700] if secret else str(exc)[:700]
         if isinstance(exc, SeedanceRequestError) and exc.request_id:
             interaction_id = exc.request_id
@@ -786,15 +1001,22 @@ async def generate_video(
                     "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
                     "interaction_id": interaction_id,
                     "estimated_provider_cost_usd": estimated_cost,
+                    "resource_count": resource_updates.get("resource_count", 0),
+                    "resource_families": resource_updates.get("resource_families", []),
                 },
             )
         )
         await db.commit()
         cap = _provider_cap(req.provider)
-        provider_label = "Seedance Mini" if req.provider == "seedance_mini" else "Omni"
+        provider_label = _provider_label(req.provider)
+        failure_detail = (
+            f"{provider_label} run failed: {message}"
+            if cap is None
+            else f"{provider_label} submission failed and still counts toward the {cap}-run cap: {message}"
+        )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"{provider_label} submission failed and still counts toward the {cap}-run cap: {message}",
+            detail=failure_detail,
         ) from exc
 
     project = await db.get(Project, req.project_id, populate_existing=True)

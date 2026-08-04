@@ -33,6 +33,11 @@ MOTION_PROMPTS: dict[str, str] = {
         "pace. Hold the lens at 1.7 metres above the sidewalk with a natural 35 mm perspective, level verticals, "
         "no drone rise, and no orbit. Travel no more than 4 metres during the entire shot"
     ),
+    "detail_flythrough": (
+        "Create a stabilized low architectural-drone fly-through along the supplied route between the authored "
+        "buildings. Hold the camera six metres above the route surface with a natural 35 mm perspective, level "
+        "verticals, restrained acceleration, and no orbit, zoom, or altitude pumping"
+    ),
 }
 
 
@@ -150,7 +155,12 @@ def build_cinematic_prompt(
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
     is_street = camera_motion == "street_walkby"
+    is_detail_flythrough = camera_motion == "detail_flythrough"
+    omni_preview_finish = provider == "omni" and control_mode == "preview_video"
     travel_lock = (
+        "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
+        if control_mode == "preview_video"
+        else
         "Move no more than 4 metres during the full shot."
         if is_street
         else (
@@ -160,12 +170,23 @@ def build_cinematic_prompt(
             else "Keep total camera travel below one quarter of an authored building length during the full shot."
         )
     )
-    shot_kind = "pedestrian-height architectural walk-by" if is_street else "professional architectural drone shot"
+    shot_kind = (
+        "pedestrian-height architectural walk-by"
+        if is_street
+        else "low detail architectural-drone fly-through"
+        if is_detail_flythrough
+        else "professional architectural drone shot"
+    )
     framing_lock = (
         "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
         "every already-visible joint, window frame, railing, entrance, plant, and paving edge at its source level of detail."
         if is_street
-        else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
+        else (
+            "Keep the route corridor, adjacent authored facades, entrances, landscape edges, and the open-air gap between "
+            "the buildings legible throughout the shot. Never fly through a solid wall, roof, tree, or facade."
+            if is_detail_flythrough
+            else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
+        )
     )
     if control_mode == "multi_keyframe":
         references = " ".join(
@@ -208,6 +229,50 @@ def build_cinematic_prompt(
         flight_instruction = "Use the described screen-space route conservatively and keep the camera move extremely small."
         final_preservation = "preserve Image1 unchanged"
 
+    appearance_lock = (
+        (
+            "VISUAL FINISH — CONTROLLED EXCEPTION: The supplied route video is the exact geometry, geography, composition, "
+            "camera, and timing authority. Improve only the visual finish: physically convincing facade materials; realistic "
+            "glazing with restrained reflections; natural contact shadows and ambient occlusion; detailed but disciplined "
+            "landscaping; subtle foliage movement; consistent natural daylight matching the source; smooth professional "
+            "architectural-drone stabilization; and subtle environmental ambience only, with no dialogue or music. These "
+            "finishing changes must be temporally stable and source-consistent. They may not alter any silhouette, footprint, "
+            "roof, courtyard, opening, path, curb, context building, object count, or spatial relationship. Do not replace the "
+            "captured architectural language, exaggerate reflections, add decorative facade features, or apply an artistic style."
+        )
+        if omni_preview_finish
+        else (
+            f"APPEARANCE LOCK — {provider.replace('_', ' ').upper()} IS THE ANIMATOR ONLY: {input_authority}. The control input already contains the final approved design and look. "
+            "Animate those existing pixels; do not improve, beautify, materialize, regenerate, relight, recolor, sharpen, "
+            "restyle, or add detail. Preserve the exact materials, colors, textures, facade rhythm, landscape treatment, "
+            "time of day, weather, shadows, exposure, and visual medium from the source. Do not apply a photographic or "
+            "artistic style. Newly revealed pixels caused by the small camera move must be conservative continuations of "
+            "adjacent source surfaces, never invented architecture or landscape."
+        )
+    )
+    actor_lock = (
+        (
+            "ACTOR AND TRAFFIC DISCIPLINE: A small number of correctly scaled pedestrians and slow-moving vehicles may be "
+            "added only where appropriate on visible sidewalks and legal road lanes. Their motion must be continuous, orderly, "
+            "directionally correct, and fully tracked through occlusion. Never spawn, fade, dissolve, teleport, duplicate, "
+            "resize, or place an actor inside landscaping, a building, or the wrong traffic lane. If continuity cannot be "
+            "maintained, leave that area empty."
+        )
+        if omni_preview_finish
+        else (
+            "ACTOR AND TRAFFIC LOCK: Before the first visible frame, remove every car and pedestrian baked into the "
+            "source map tiles. This pre-frame actor cleanup is explicitly allowed and does not alter the locked site "
+            "geometry. Keep every street and sidewalk empty for this pilot: no replacement cars, bicycles, buses, "
+            "motorcycles, pedestrians, or animals in any frame. Do not preserve, invent, spawn, fade, dissolve, "
+            "teleport, duplicate, or move any actor or vehicle."
+        )
+    )
+    context_finish_lock = (
+        "Do not redesign or replace any context geometry; restrict enhancement to source-consistent material finish, lighting, and ambience."
+        if omni_preview_finish
+        else "Do not redesign or enhance any pixel."
+    )
+
     body = "\n\n".join(
         section
         for section in [
@@ -240,21 +305,8 @@ def build_cinematic_prompt(
                 "gazebo, roof feature, extra path, or landscape centerpiece. Internal prompt identifiers "
                 "are organizational metadata only; never render any identifier as a label, callout, leader line, or text."
             ),
-            (
-                f"APPEARANCE LOCK — {provider.replace('_', ' ').upper()} IS THE ANIMATOR ONLY: {input_authority}. The control input already contains the final approved design and look. "
-                "Animate those existing pixels; do not improve, beautify, materialize, regenerate, relight, recolor, sharpen, "
-                "restyle, or add detail. Preserve the exact materials, colors, textures, facade rhythm, landscape treatment, "
-                "time of day, weather, shadows, exposure, and visual medium from the source. Do not apply a photographic or "
-                "artistic style. Newly revealed pixels caused by the small camera move must be conservative continuations of "
-                "adjacent source surfaces, never invented architecture or landscape."
-            ),
-            (
-                "ACTOR AND TRAFFIC LOCK: Before the first visible frame, remove every car and pedestrian baked into the "
-                "source map tiles. This pre-frame actor cleanup is explicitly allowed and does not alter the locked site "
-                "geometry. Keep every street and sidewalk empty for this pilot: no replacement cars, bicycles, buses, "
-                "motorcycles, pedestrians, or animals in any frame. Do not preserve, invent, spawn, fade, dissolve, "
-                "teleport, duplicate, or move any actor or vehicle."
-            ),
+            appearance_lock,
+            actor_lock,
             (
                 "CONTINUITY LOCKS: Maintain one stable world coordinate system and physically realistic parallax. "
                 "Every physical object has persistent identity and fixed world coordinates across all 192 frames. Every "
@@ -275,7 +327,7 @@ def build_cinematic_prompt(
                 "each context building's exact count, footprint, height, roof form, facade style, spacing, and location. Do "
                 "not propagate, repeat, clone, or extend any authored architectural archetype into the background or replace "
                 "the captured neighborhood with a stylistically matching city. Any new background instance of an authored "
-                "archetype is a failed result. Do not redesign or enhance any pixel. When motion or visual quality conflicts "
+                f"archetype is a failed result. {context_finish_lock} When motion or visual quality conflicts "
                 f"with context fidelity, {final_preservation}."
             ),
         ]

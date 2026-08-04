@@ -7,6 +7,7 @@ from PIL import Image
 from pydantic import ValidationError
 
 from app.api.v1.video import (
+    INTERNAL_ENHANCE_MAX_RUNS,
     PILOT_MAX_PROVIDER_CALLS,
     SEEDANCE_PILOT_MAX_PROVIDER_CALLS,
     VideoPilotRequest,
@@ -73,6 +74,54 @@ def test_video_request_exposes_motion_not_visual_style_or_reference_images():
             style="watercolour",
         )
 
+
+def test_internal_enhance_defaults_to_the_fast_source_locked_tier():
+    request = VideoPilotRequest(
+        project_id="00000000-0000-0000-0000-000000000001",
+        provider="internal_enhance",
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+    )
+
+    assert request.internal_enhance_quality == "fast"
+
+
+def test_video_request_defaults_to_high_quality_and_validates_capture_audit():
+    request = VideoPilotRequest(
+        project_id="00000000-0000-0000-0000-000000000001",
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        capture_profile={
+            "encoder": "webcodecs_h264",
+            "fixed_timestep": True,
+            "frame_count": 192,
+            "fps": 24,
+            "width": 1920,
+            "height": 1080,
+            "render_width": 2560,
+            "render_height": 1440,
+            "tile_warmup_frame_count": 192,
+            "tile_set_held": True,
+            "geometry_checkpoint_count": 6,
+            "semantic_checkpoint_count": 6,
+            "instance_checkpoint_count": 6,
+            "depth_checkpoint_count": 6,
+            "normal_checkpoint_count": 6,
+            "motion_frame_count": 192,
+        },
+    )
+
+    assert request.render_quality == "high"
+    assert request.capture_profile is not None
+    assert request.capture_profile.render_width == 2560
+
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(
+            project_id="00000000-0000-0000-0000-000000000001",
+            guide_frame_base64=_jpeg_data_url(),
+            route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+            render_quality="ultra",
+        )
 
 def test_prompt_locks_scene_and_single_shot_constraints():
     prompt = build_cinematic_prompt(
@@ -180,6 +229,15 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
     )
 
     assert "Copy the supplied video's camera positions, headings, speed, timing" in prompt
+    assert "VISUAL FINISH — CONTROLLED EXCEPTION" in prompt
+    assert "physically convincing facade materials" in prompt
+    assert "realistic glazing with restrained reflections" in prompt
+    assert "natural contact shadows and ambient occlusion" in prompt
+    assert "subtle foliage movement" in prompt
+    assert "small number of correctly scaled pedestrians" in prompt
+    assert "Never spawn, fade, dissolve, teleport, duplicate" in prompt
+    assert "subtle environmental ambience only, with no dialogue or music" in prompt
+    assert "Match the source video's total travel distance" in prompt
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
     assert payload["response_format"] == {"type": "video"}
@@ -198,6 +256,26 @@ def test_street_walkby_is_pedestrian_height_and_detail_locked():
     assert "Travel no more than 4 metres" in prompt
     assert "every already-visible joint, window frame, railing" in prompt
     assert "source level of detail" in prompt
+
+
+def test_detail_flythrough_is_low_and_source_route_locked():
+    prompt = build_cinematic_prompt(
+        route_points=[
+            {"x": 0.25, "y": 0.7},
+            {"x": 0.5, "y": 0.52},
+            {"x": 0.75, "y": 0.68},
+        ],
+        camera_motion="detail_flythrough",
+        scene_brief="Two authored buildings and one park.",
+        duration_seconds=8,
+        control_mode="preview_video",
+    )
+
+    assert "low detail architectural-drone fly-through" in prompt
+    assert "six metres above the route surface" in prompt
+    assert "between the authored buildings" in prompt
+    assert "Match the source video's total travel distance" in prompt
+    assert "Never fly through a solid wall, roof, tree, or facade" in prompt
 
 
 def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
@@ -284,7 +362,7 @@ def test_pilot_ledger_counts_every_started_call_regardless_of_outcome():
         {"status": "failed", "provider_call_started_at": "2026-08-03T00:01:00Z"},
     ]
 
-    assert PILOT_MAX_PROVIDER_CALLS == 46
+    assert PILOT_MAX_PROVIDER_CALLS == 49
     assert _count_provider_calls(attempts) == 2
 
 
@@ -302,6 +380,34 @@ def test_seedance_ledger_has_an_independent_hard_four_call_cap():
     assert usage.attempts_used == 2
     assert usage.attempts_remaining == 2
     assert usage.max_attempts == 4
+
+
+def test_internal_enhance_ledger_counts_unlimited_local_runs_without_paid_provider_calls():
+    attempts = [
+        {
+            "provider": "internal_enhance",
+            "status": "complete",
+            "local_run_started_at": "2026-08-03T12:00:00Z",
+        },
+        {
+            "provider": "internal_enhance",
+            "status": "failed",
+            "local_run_started_at": "2026-08-03T12:05:00Z",
+        },
+        {
+            "provider": "omni",
+            "status": "complete",
+            "provider_call_started_at": "2026-08-03T12:10:00Z",
+        },
+    ]
+
+    usage = _provider_usage(attempts, "internal_enhance")
+
+    assert INTERNAL_ENHANCE_MAX_RUNS is None
+    assert _count_provider_calls(attempts, "internal_enhance") == 2
+    assert usage.attempts_used == 2
+    assert usage.attempts_remaining is None
+    assert usage.max_attempts is None
 
 
 def test_automatic_benchmark_prefers_score_then_worst_frame_then_earlier_result():

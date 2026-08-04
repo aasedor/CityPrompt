@@ -4,6 +4,8 @@ import {
   normalizedVideoPointToNdc,
   resampleVideoRoute,
   selectVideoRecorderMimeType,
+  stableNearFieldTerrainHeight,
+  videoRouteSurfaceHeight,
 } from './videoRouteControls';
 
 describe('video route controls', () => {
@@ -29,5 +31,12 @@ describe('video route controls', () => {
   it('selects the best browser recorder codec with safe fallbacks', () => {
     expect(selectVideoRecorderMimeType((mime) => mime.includes('vp8'))).toBe('video/webm;codecs=vp8');
     expect(selectVideoRecorderMimeType(() => false)).toBe('');
+  });
+
+  it('keeps pedestrian and low-drone routes on terrain instead of roofs', () => {
+    expect(videoRouteSurfaceHeight(1045, 1002, 'street_walkby')).toBe(1002);
+    expect(videoRouteSurfaceHeight(1045, 1002, 'detail_flythrough')).toBe(1002);
+    expect(videoRouteSurfaceHeight(1045, 1002, 'path_follow')).toBe(1045);
+    expect(stableNearFieldTerrainHeight([990, 1000, 1001, 1045, 1046, 1047])).toBe(1000);
   });
 });
