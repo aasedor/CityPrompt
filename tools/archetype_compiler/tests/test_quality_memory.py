@@ -11,6 +11,35 @@ def production_manifest() -> dict:
         "archetype_id": "quality_pilot",
         "variant_id": "quality_pilot_selected",
         "archetype_aliases": ["quality_pilot", "quality_pilot_selected"],
+        "quality_standard_evidence": {
+            "standard_id": "haussmann-depth-shape-skin-scale@1",
+            "distinctive_shape_features": [
+                "chamfered occupied corner",
+                "open courtyard massing",
+            ],
+            "physical_depth_features": [
+                "open projecting balcony railings",
+                "recessed layered window assemblies",
+            ],
+            "photoreal_skin_approved": True,
+            "fixed_identity_anchors": [
+                "podium/entrance",
+                "corner returns",
+                "crown",
+                "roof",
+            ],
+            "repeatable_middle_roles": ["typical_a", "typical_b", "typical_c"],
+            "comparison_views": [
+                "street",
+                "front_corner_oblique",
+                "rear_corner_oblique",
+                "aerial",
+                "facade_close",
+                "context",
+            ],
+            "comparison_sheet": "quality-pilot_comparison.jpg",
+            "human_visual_approval": True,
+        },
         "footprint_compatibility": {
             "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
         },
@@ -40,9 +69,21 @@ def production_manifest() -> dict:
             },
         },
         "modules": [
-            {"role": "podium", "assembly_class": "fixed_semantic"},
-            {"role": "floor", "assembly_class": "repeatable_middle"},
-            {"role": "roof", "assembly_class": "fixed_semantic"},
+            {
+                "role": "podium",
+                "assembly_class": "fixed_semantic",
+                "allow_inset_footprint": True,
+            },
+            {
+                "role": "floor",
+                "assembly_class": "repeatable_middle",
+                "allow_inset_footprint": True,
+            },
+            {
+                "role": "roof",
+                "assembly_class": "fixed_semantic",
+                "allow_inset_footprint": True,
+            },
         ],
         "assembled": {"filename": "quality-pilot.glb", "triangle_count": 60000},
         "renders": [
@@ -66,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-01-wave15-program-topology-v114"
+        == "2026-08-02-clean-3d-no-prisms-runtime-v118"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -74,6 +115,19 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         / "HIGH_QUALITY_3D_BUILDING_MEMORY.md"
     ).read_text(encoding="utf-8")
     assert memory["memory_version"] in memory_doc
+    minimum_standard = memory["minimum_standard"]
+    assert minimum_standard["id"] == "haussmann-depth-shape-skin-scale@1"
+    assert minimum_standard["reference_archetype_id"] == "parisian_haussmann_classic"
+    goalpost_path = Path(__file__).resolve().parents[3] / minimum_standard[
+        "reference_goalpost_path"
+    ]
+    assert goalpost_path.is_file()
+    assert {
+        "archetype_shape",
+        "physical_depth",
+        "photoreal_skin",
+        "lego_scalability",
+    } == set(minimum_standard["pillars"])
     assert any(
         "arena, dome or inhabited-arch landmark" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
@@ -102,10 +156,22 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "photovoltaic_fields_are_discrete_modules",
         "sibling_variants_are_independent_design_contracts",
         "program_systems_are_connected_topology",
+        "haussmann_depth_shape_skin_scale_is_minimum",
+        "archetype_envelope_not_parcel_fill",
     } <= principle_ids
     assert any(
         "civic or industrial landmark" in item["symptom"].lower()
         and "trace the complete route or load path" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "haussmann minimum standard" in item["symptom"].lower()
+        and "all four pillars" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "four-vertex user polygon" in item["symptom"].lower()
+        and "uniform horizontal contain scale" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(
@@ -237,11 +303,21 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "validate_shapes_not_one_box",
         "shape_matrices_are_honest",
         "archetype_envelope_not_parcel_fill",
+        "all_placed_families_remain_authored_geometry",
+        "authored_buildings_hide_planning_volumes",
         "identity_aliases_are_explicit",
         "monumental_glazing_has_sectional_depth",
         "multi_aisle_roofs_are_complete_systems",
         "detached_houses_are_complete_compositions",
     } <= principle_ids
+    assert any(
+        "grey massing polygons" in item["symptom"]
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "surrounded by pale blue" in item["symptom"]
+        for item in memory["known_failure_patterns"]
+    )
     image_generation = memory["construction_memory"]["image_generation"]
     assert {
         "labelled_archetype_goalpost",
@@ -377,10 +453,26 @@ def test_complete_family_passes_executable_quality_memory():
     assert assessment["review_findings"] == []
 
 
-def test_filesystem_assessor_rejects_declared_channels_without_real_assets(tmp_path):
+def test_missing_haussmann_minimum_standard_evidence_routes_to_review():
     from quality_memory import assess_family_quality
 
     manifest = production_manifest()
+    manifest.pop("quality_standard_evidence")
+    assessment = assess_family_quality(manifest, {"status": "pass", "warnings": []})
+
+    assert assessment["status"] == "review"
+    assert assessment["high_quality_ready"] is False
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_haussmann_minimum_standard_evidence"
+    }
+
+
+def test_filesystem_assessor_rejects_declared_channels_without_real_assets(tmp_path):
+    from quality_memory import assess_family_quality
+    from PIL import Image
+
+    manifest = production_manifest()
+    Image.new("RGB", (16, 16)).save(tmp_path / "quality-pilot_comparison.jpg")
     manifest["facade_sheet"]["assets"] = {
         "skin_manifest": "textures/skin_manifest.json",
         "source": "textures/source.png",
@@ -412,6 +504,7 @@ def write_verified_assets(manifest: dict, family_dir: Path) -> None:
     textures.mkdir(exist_ok=True)
     (textures / "skin_manifest.json").write_text("{}\n", encoding="utf-8")
     Image.new("RGB", (8, 8)).save(textures / "source.png")
+    Image.new("RGB", (16, 16)).save(family_dir / "quality-pilot_comparison.jpg")
     near = {}
     far = {}
     for channel in (
@@ -604,6 +697,20 @@ def test_fixed_landmark_requires_a_bounded_near_native_scale_contract():
     assert assessment["status"] == "review"
     assert {item["id"] for item in assessment["review_findings"]} == {
         "missing_or_unsafe_fixed_landmark_scale_band"
+    }
+
+
+def test_missing_archetype_contain_contract_routes_family_to_review():
+    from quality_memory import assess_family_quality
+
+    manifest = production_manifest()
+    manifest["modules"][1]["allow_inset_footprint"] = False
+
+    assessment = assess_family_quality(manifest, {"status": "pass", "warnings": []})
+
+    assert assessment["status"] == "review"
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_archetype_contain_contract"
     }
 
 

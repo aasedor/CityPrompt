@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-01-wave15-program-topology-v114`.
+Current executable memory: `2026-08-02-clean-3d-no-prisms-runtime-v118`.
 
 ## The quality target
 
@@ -20,6 +20,55 @@ The target is Kinnaird-class architectural identity in a modular real-time asset
 3. **Facade scale:** materials, glazing, joints, returns, interiors and restrained variation withstand close inspection.
 
 A texture can supply surface richness. It cannot repair incorrect massing, missing corners, unsupported projections or a generic roof.
+
+### Runtime visibility standard
+
+Every placed building with a valid LEGO recipe must resolve to its authored GLB
+in the normal site view. Do not cap detailed rendering by distinct-family count:
+a mixed plan may contain many one-off families, and replacing the third or later
+family with a generic grey massing prism destroys the reviewed archetype identity.
+The ordinary total-stack guard and WebGL context recovery may remain, but every
+family inside that supported plan budget is admitted. Loading placeholders must
+be transient; after the assets settle, no valid placed family remains a generic
+massing proxy.
+
+An authored building also owns the visual footprint once its saved recipe is
+renderable. Suppress the planning prism and its outline from that durable saved
+state rather than from a transient GLB-loader callback. For several disjoint
+replacement footprints, clip source tiles with one world-coordinate polygon
+union; never leave projected stencil side walls mounted behind the GLBs. The
+normal 3D view must show authored construction and surrounding context, not
+pale blue, grey or white planning boxes.
+
+### Haussmann minimum acceptance standard
+
+The user-approved Classic Haussmann live model is the minimum quality goalpost
+for every new or materially revised building family, regardless of style. The
+archived live reference is
+[`haussmann-minimum-standard.png`](assets/high-quality-3d/haussmann-minimum-standard.png).
+It establishes four inseparable acceptance pillars:
+
+1. **Archetype-shaped massing:** corners, courts, roof profile, setbacks and
+   other identity-bearing volumes create a distinctive silhouette rather than
+   a decorated rectangular box.
+2. **Real construction depth:** railings, balcony slabs, recesses, returns,
+   cornices, dormers, entrances and other shadow-casting elements project,
+   recede or remain visibly open as the reference construction requires.
+3. **Photoreal material and optical response:** an archetype-specific,
+   render-locked PBR skin, layered glazing and occupied depth remain convincing
+   in the live City Prompt lighting stack at facade-close and oblique cameras.
+4. **Resilient LEGO scaling:** fixed entrances, corners, crowns and roofs retain
+   authored proportions while complete middle bays absorb ordinary width,
+   depth and floor variation; oversized targets use the authored fallback or
+   streetwall repeat instead of stretching the identity.
+
+A family that succeeds in only one or two pillars is not production-ready.
+Every keeper manifest records `quality_standard_evidence` naming distinctive
+shape features, physical depth features, fixed identity anchors, repeatable
+middle roles, the locked comparison views and the human-approved comparison
+sheet. The assessor routes missing or incomplete evidence to review, so a
+textured box, a detailed but non-scalable sculpture, or a modular model with
+generic materials cannot receive `high_quality_ready`.
 
 ## The repeatable construction recipe
 
@@ -419,7 +468,7 @@ The Junction Contemporary Addition pilot established the live render-to-model lo
 - Measure the drawn geographic polygon for every assembly request, even when an older catalogue card has no `footprintCompatibility` record. Catalogue dimensions are recommendations; the parcel is the source of truth.
 - Author coexisting native dimension tiers for materially larger parcels. Scaling a 25 x 20 m family onto a roughly 45 x 36 m site loses bay proportions and lets an older, less accurate family win the fit score.
 - Use `--allow-outside-bounds` only for an intentional, named dimension tier. The resulting grammar records that it exceeds catalogue recommendations and still passes the standard geometry validator.
-- Use true world-coordinate tile clipping when there is one replacement footprint. A projected stencil volume can erase photogrammetry that merely sits behind the proposal, producing pale wedges around an otherwise realistic model.
+- Use true world-coordinate tile clipping for every supported replacement footprint. Several disjoint buildings share one polygon-union shader mask; projected stencil volumes can erase photogrammetry that merely sits behind a proposal and produce pale wedges or boxes around otherwise realistic models.
 - Deleting a generated Building makes the zone ready to build again. A stale historical `community_3d` marker or `building_ids` array must not disable placement or redirect recipe saves to a deleted record.
 - Review three scales before approval: rectified facade, standalone street/aerial GLB, and a close orbit inside Google Tiles. A family passes only when the architectural hierarchy survives all three.
 - Generate a dedicated repeatable secondary-elevation band. Never wrap a front sign, ceremonial entrance or fire escape around side and rear walls; secondary elevations share the material language but use their own opening/service rhythm.
@@ -930,6 +979,13 @@ The polychrome collegiate family added four rules for resizable hero facades:
   advertises one nominal rectangular footprint. Use
   `allow_inset_footprint` for deliberately narrower modules and let empty
   envelope space preserve the silhouette.
+- The runtime uses one uniform horizontal contain scale for the complete
+  landmark or selected vertical stack. Never divide the drawn width and depth
+  by each module independently: that operation stretches every level back to
+  the rectangle, erasing narrower upper floors, setbacks, courts, chamfers,
+  entrance recesses and roof shoulders. A four-vertex polygon is a site
+  envelope; unused space becomes an intentional setback around the preserved
+  archetype form.
 - Shape matrices must be architecturally honest. A single-frontage theater may
   declare only `rectangle` when L, U or courtyard assembly would duplicate its
   marquee and public entrance. Such an exception must set
@@ -956,9 +1012,10 @@ The polychrome collegiate family added four rules for resizable hero facades:
   authored construction geometry; it is never approximated by a textured box.
 - Fixed landmarks must tolerate ordinary drawing imprecision without silently
   becoming generic. Declare a conservative per-family near-native scale band
-  and maximum independent-axis ratio; keep the whole GLB inside that contract,
-  and route larger or shape-distorting parcels to the authored stack or
-  streetwall fallback.
+  and maximum independent-axis ratio. A bounded uniform contain-fit may retain
+  the complete landmark on a modestly smaller or differently proportioned
+  polygon because it does not deform the authored axes; route larger or
+  strongly elongated parcels to the authored stack or streetwall fallback.
 - The fixed landmark and its conservative stack fallback serve different
   targets. The landmark owns native-scale visual identity. Podium, three
   repeatable middle variants, crown and roof keep oversized targets plannable

@@ -52,6 +52,16 @@ describe('analyzeLegoFootprint', () => {
     expect(result?.profile).toBe('rectangle');
   });
 
+  it('treats an imprecise four-corner drawing as a site envelope', () => {
+    const result = analyzeLegoFootprint(geographic([
+      [-10, -10], [10, -10], [-2, 0], [-10, 10],
+    ]), compatibility);
+
+    expect(result?.concave_vertices).toBe(1);
+    expect(result?.profile).toBe('rectangle');
+    expect(result?.wing_depth_m).toBeUndefined();
+  });
+
   it('recognizes a U-shaped parcel from its two re-entrant corners', () => {
     const result = analyzeLegoFootprint(geographic([
       [-20, -15], [20, -15], [20, 15], [10, 15], [10, -4],

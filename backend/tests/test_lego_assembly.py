@@ -157,9 +157,11 @@ def test_fixed_landmark_absorbs_near_native_drawing_variation():
     assert plan["fit"]["compatibility_source"] == "fixed_landmark_tolerance"
     assert plan["instances"][0]["scale"] == [
         pytest.approx(0.92),
-        pytest.approx(1.07),
+        pytest.approx(0.92),
         1.0,
     ]
+    assert plan["fit"]["footprint_mode"] == "archetype_contain"
+    assert plan["fit"]["envelope_scale_y"] == pytest.approx(1.07)
     assert plan["fit"]["axis_ratio"] == pytest.approx(1.16304, abs=1e-5)
     assert plan["fit"]["scale_band"] == {
         "min": 0.8,
@@ -202,12 +204,13 @@ def test_fixed_landmark_rejects_an_unsafe_manifest_scale_band():
         ),
     )
 
-    assert plan["fit"]["compatibility_source"] == "forced_fit"
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_contain"
     assert plan["fit"]["scale_band"] == {
         "min": 0.8,
         "max": 1.2,
         "max_axis_ratio": 1.18,
     }
+    assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
 
 
 def test_generation_archetype_id_resolves_to_exact_fixed_landmark():
@@ -262,7 +265,8 @@ def test_exact_variant_landmark_resizes_to_a_small_city_parcel():
     )
 
     assert plan["fit"]["assembly_mode"] == "fixed_landmark"
-    assert plan["instances"][0]["scale"] == [pytest.approx(0.57324), pytest.approx(0.50304), 1.0]
+    assert plan["instances"][0]["scale"] == [pytest.approx(0.50304), pytest.approx(0.50304), 1.0]
+    assert plan["fit"]["footprint_mode"] == "archetype_contain"
 
 
 def test_wide_parcel_builds_as_streetwall_repeat():
@@ -285,7 +289,8 @@ def test_wide_parcel_builds_as_streetwall_repeat():
     assert [segment["rotation_degrees"] for segment in segments] == [0.0, 0.0]
     assert sorted(segment["centre_x_m"] for segment in segments) == [-10.0, 10.0]
     assert plan["fit"]["scale_x"] == pytest.approx(0.83333, abs=1e-4)
-    assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+    assert plan["fit"]["scale_y"] == pytest.approx(0.83333, abs=1e-4)
+    assert plan["fit"]["envelope_scale_y"] == pytest.approx(1.0)
     roles = [item["role"] for item in plan["instances"]]
     assert roles.count("podium") == 2
     assert roles.count("roof") == 2
@@ -311,8 +316,9 @@ def test_deep_parcel_builds_two_back_to_back_rows():
     assert [segment["rotation_degrees"] for segment in segments] == [90.0, 90.0]
     assert sorted(segment["centre_x_m"] for segment in segments) == [-10.0, 10.0]
     assert all(segment["centre_y_m"] == 0.0 for segment in segments)
-    assert plan["fit"]["scale_x"] == pytest.approx(1.14, abs=1e-4)
+    assert plan["fit"]["scale_x"] == pytest.approx(1.0)
     assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+    assert plan["fit"]["envelope_scale_x"] == pytest.approx(1.14, abs=1e-4)
 
 
 def test_extreme_parcel_still_builds_with_forced_fit():
@@ -331,8 +337,9 @@ def test_extreme_parcel_still_builds_with_forced_fit():
 
     assert plan["fit"]["compatibility_source"] == "forced_fit"
     assert plan["fit"]["segment_count"] == 4
-    assert plan["fit"]["scale_x"] == pytest.approx(200 / 4 / 24, abs=1e-4)
+    assert plan["fit"]["scale_x"] == pytest.approx(1.0)
     assert plan["fit"]["scale_y"] == pytest.approx(1.0)
+    assert plan["fit"]["envelope_scale_x"] == pytest.approx(200 / 4 / 24, abs=1e-4)
 
 
 def test_floor_count_beyond_family_range_still_builds():
@@ -525,6 +532,20 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     assert metadata["min_floors"] == 2 and metadata["max_floors"] == 8
     assert metadata["validation_status"] == "pass"
     assert metadata["asset_kind"] == "lego_module"
+    assert metadata["allow_inset_footprint"] is False
+
+    inset_module = {**manifest["modules"][1], "allow_inset_footprint": True}
+    inset_metadata = lego_metadata_from_manifest(manifest, inset_module)
+    assert inset_metadata["allow_inset_footprint"] is True
+    inset_entry = SimpleNamespace(
+        id="inset-floor",
+        name="Inset floor",
+        model_url="https://example.test/inset-floor.glb",
+        metadata_={"lego": inset_metadata},
+    )
+    inset_descriptor = descriptor_from_library_entry(inset_entry)
+    assert inset_descriptor is not None
+    assert inset_descriptor.allow_inset_footprint is True
 
     assembled_meta = lego_metadata_from_manifest(
         manifest,
@@ -632,6 +653,176 @@ def test_rectangle_plan_quarter_turns_an_exact_narrow_module():
     }]
 
 
+def test_stack_preserves_authored_relative_footprints_inside_rectangle():
+    """A rectangle is a site envelope, not a mould for every LEGO level.
+
+    The floor and roof remain narrower than the podium after placement, and
+    one common uniform scale preserves their authored proportions.
+    """
+    modules = [
+        descriptor_from_library_entry(
+            entry("shaped-podium", "Shaped podium", "podium", height=4.5, width=30, depth=20)
+        ),
+        descriptor_from_library_entry(
+            entry("shaped-floor", "Narrow floor", "floor", height=3.2, width=24, depth=16)
+        ),
+        descriptor_from_library_entry(
+            entry("shaped-roof", "Shouldered roof", "roof", height=1.0, width=27, depth=18)
+        ),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=36,
+            target_depth_m=24,
+            target_floors=4,
+            archetype_id="nordic-midrise",
+        ),
+    )
+
+    assert plan["fit"]["footprint_mode"] == "archetype_contain"
+    assert plan["fit"]["scale_x"] == pytest.approx(1.2)
+    assert plan["fit"]["scale_y"] == pytest.approx(1.2)
+    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {
+        (1.2, 1.2, 1.0)
+    }
+    floor = next(instance for instance in plan["instances"] if instance["role"] == "floor")
+    roof = next(instance for instance in plan["instances"] if instance["role"] == "roof")
+    assert floor["native_dimensions_m"][0] * floor["scale"][0] == pytest.approx(28.8)
+    assert floor["native_dimensions_m"][1] * floor["scale"][1] == pytest.approx(19.2)
+    assert roof["native_dimensions_m"][0] * roof["scale"][0] == pytest.approx(32.4)
+    assert roof["native_dimensions_m"][1] * roof["scale"][1] == pytest.approx(21.6)
+
+
+def test_mismatched_rectangle_preserves_landmark_with_uniform_containment():
+    assembled_raw = entry(
+        "assembled-shape",
+        "Complete courtyard landmark",
+        "assembled",
+        height=24.3,
+        width=42,
+        depth=38,
+    )
+    assembled_raw.metadata_["lego"].update({
+        "native_floors": 6,
+        "source_variant_id": "nordic-midrise",
+        "footprint_compatibility": {
+            "fixedLandmarkScaleBand": {
+                "scaleMin": 0.8,
+                "scaleMax": 1.2,
+                "maxAxisRatio": 1.18,
+            },
+        },
+    })
+    modules = [
+        descriptor_from_library_entry(assembled_raw),
+        descriptor_from_library_entry(
+            entry("fallback-podium", "Fallback podium", "podium", height=4.5, width=42, depth=38)
+        ),
+        descriptor_from_library_entry(
+            entry("fallback-floor", "Fallback floor", "floor", height=3.2, width=42, depth=38)
+        ),
+        descriptor_from_library_entry(
+            entry("fallback-roof", "Fallback roof", "roof", height=1.0, width=42, depth=38)
+        ),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=37.9,
+            target_depth_m=26.1,
+            target_floors=6,
+            archetype_id="nordic-midrise",
+        ),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_contain"
+    assert {instance["role"] for instance in plan["instances"]} == {"assembled"}
+    assert plan["fit"]["footprint_mode"] == "archetype_contain"
+    assert plan["fit"]["scale_x"] == pytest.approx(26.1 / 38, abs=1e-5)
+    assert plan["fit"]["scale_y"] == pytest.approx(26.1 / 38, abs=1e-5)
+
+
+def test_elongated_four_corner_envelope_keeps_complete_landmark_form():
+    assembled_raw = entry(
+        "cast-iron-landmark",
+        "Complete cast-iron landmark",
+        "assembled",
+        height=16.8,
+        width=30,
+        depth=26,
+    )
+    assembled_raw.metadata_["lego"].update({
+        "native_floors": 4,
+        "source_variant_id": "nordic-midrise",
+    })
+    modules = [
+        descriptor_from_library_entry(assembled_raw),
+        descriptor_from_library_entry(
+            entry("cast-iron-podium", "Podium", "podium", height=4.2, width=30, depth=26)
+        ),
+        descriptor_from_library_entry(
+            entry("cast-iron-floor", "Floor", "floor", height=4.2, width=30, depth=26)
+        ),
+        descriptor_from_library_entry(
+            entry("cast-iron-roof", "Roof", "roof", height=1.0, width=30, depth=26)
+        ),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=37.6,
+            target_depth_m=19.1,
+            target_floors=4,
+            archetype_id="nordic-midrise",
+        ),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_contain"
+    assert [instance["role"] for instance in plan["instances"]] == ["assembled"]
+    assert plan["instances"][0]["scale"] == [
+        pytest.approx(19.1 / 26, abs=1e-5),
+        pytest.approx(19.1 / 26, abs=1e-5),
+        1.0,
+    ]
+
+
+def test_larger_site_leaves_setback_instead_of_swelling_landmark_to_edges():
+    raw = entry(
+        "gothic-landmark",
+        "Complete Gothic quadrangle",
+        "assembled",
+        height=27.6,
+        width=40,
+        depth=35,
+    )
+    raw.metadata_["lego"].update({
+        "archetype_ids": ["gothic-ruskinian"],
+        "native_floors": 4,
+        "source_variant_id": "gothic-ruskinian",
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=52,
+            target_depth_m=48,
+            target_floors=4,
+            archetype_id="gothic-ruskinian",
+        ),
+    )
+
+    assert plan["fit"]["compatibility_source"] == "fixed_landmark_contain"
+    assert plan["instances"][0]["scale"] == [1.2, 1.2, 1.0]
+    assert plan["instances"][0]["native_dimensions_m"][0] * 1.2 == pytest.approx(48)
+    assert plan["instances"][0]["native_dimensions_m"][1] * 1.2 == pytest.approx(42)
+
+
 def test_oversized_parcel_builds_as_streetwall_grid():
     """60 x 40 m on 24 x 18 m natives assembles as a 3 x 2 bar grid."""
     modules = [
@@ -653,7 +844,8 @@ def test_oversized_parcel_builds_as_streetwall_grid():
     assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
     assert plan["fit"]["segment_count"] == 6
     assert plan["fit"]["scale_x"] == pytest.approx(60 / 3 / 24, abs=1e-4)
-    assert plan["fit"]["scale_y"] == pytest.approx(40 / 2 / 18, abs=1e-4)
+    assert plan["fit"]["scale_y"] == pytest.approx(60 / 3 / 24, abs=1e-4)
+    assert plan["fit"]["envelope_scale_y"] == pytest.approx(40 / 2 / 18, abs=1e-4)
 
 
 def test_family_missing_roof_still_reports_incompatible_with_ranges():
@@ -1443,7 +1635,7 @@ async def test_wave3_fixed_landmarks_accept_near_native_drawn_dimensions(
     assert plan["instances"][0]["role"] == "assembled"
     assert plan["instances"][0]["scale"] == [
         pytest.approx(0.92),
-        pytest.approx(1.07),
+        pytest.approx(0.92),
         1.0,
     ]
 

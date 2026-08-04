@@ -412,6 +412,12 @@ export function LegoAssemblyPreview({
             </div>
           )}
 
+          {plan?.fit.footprint_mode === 'archetype_contain' && (
+            <div className="mt-2 rounded border border-emerald-300 bg-emerald-50 p-2 text-[11px] font-semibold text-emerald-800">
+              Archetype form preserved: the building is uniformly scaled and contained inside the drawn site envelope.
+            </div>
+          )}
+
           <button
             type="button"
             onClick={() => assemble()}

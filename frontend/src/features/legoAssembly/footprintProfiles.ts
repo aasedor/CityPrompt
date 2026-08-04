@@ -115,7 +115,15 @@ export function analyzeLegoFootprint(
   const depth = Math.max(1, dimensions[1]);
   const concaveVertices = concaveVertexCount(local);
   const orientedFillRatio = Math.min(1, Math.abs(polygonArea(local)) / (width * depth));
-  const detected = classifyProfile(concaveVertices, orientedFillRatio);
+  // A hand-drawn four-corner polygon expresses a simple site envelope even
+  // when perspective picking, terrain or an imprecise click order makes one
+  // corner slightly re-entrant. Real L/U/courtyard topology needs additional
+  // authored vertices. Treating a noisy quadrilateral as an L shape blocks
+  // the family's high-fidelity fixed landmark and replaces it with generic
+  // wing bars—the opposite of the intended archetype-first behaviour.
+  const detected = ring.length === 4
+    ? 'rectangle'
+    : classifyProfile(concaveVertices, orientedFillRatio);
   // Geometry is authoritative. `preferredProfiles` describes the catalogue's
   // ideal design envelope; it must not relabel a real L/U/courtyard footprint
   // as a rectangle and let a rectangular recipe overwrite its topology.

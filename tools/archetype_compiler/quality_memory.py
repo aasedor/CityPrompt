@@ -69,6 +69,144 @@ def _fixed_contract_tokens(manifest: dict[str, Any]) -> set[str]:
     return {str(value).lower() for value in contract.get("fixed") or []}
 
 
+def _minimum_standard_evidence_gate(
+    manifest: dict[str, Any],
+    memory: dict[str, Any],
+    family_dir: Path | None,
+) -> dict[str, Any]:
+    standard = memory.get("minimum_standard") or {}
+    field_name = str(
+        standard.get("manifest_evidence_field") or "quality_standard_evidence"
+    )
+    evidence = manifest.get(field_name) or {}
+    issues: list[str] = []
+
+    standard_id = str(standard.get("id") or "").strip()
+    evidence_standard_id = str(evidence.get("standard_id") or "").strip()
+    if not standard_id or evidence_standard_id != standard_id:
+        issues.append(f"standard_id must be {standard_id!r}")
+
+    shape_features = {
+        str(value).strip()
+        for value in evidence.get("distinctive_shape_features") or []
+        if str(value).strip()
+    }
+    minimum_shape_features = int(
+        standard.get("minimum_distinctive_shape_features") or 1
+    )
+    if len(shape_features) < minimum_shape_features:
+        issues.append(
+            f"distinctive_shape_features has {len(shape_features)}; "
+            f"minimum {minimum_shape_features}"
+        )
+
+    depth_features = {
+        str(value).strip()
+        for value in evidence.get("physical_depth_features") or []
+        if str(value).strip()
+    }
+    minimum_depth_features = int(
+        standard.get("minimum_physical_depth_features") or 1
+    )
+    if len(depth_features) < minimum_depth_features:
+        issues.append(
+            f"physical_depth_features has {len(depth_features)}; "
+            f"minimum {minimum_depth_features}"
+        )
+
+    if (
+        standard.get("photoreal_skin_approval_required") is True
+        and evidence.get("photoreal_skin_approved") is not True
+    ):
+        issues.append("photoreal_skin_approved must be true")
+
+    required_anchors = {
+        str(value).strip().lower()
+        for value in standard.get("required_fixed_identity_anchors") or []
+        if str(value).strip()
+    }
+    fixed_anchors = {
+        str(value).strip().lower()
+        for value in evidence.get("fixed_identity_anchors") or []
+        if str(value).strip()
+    }
+    if not required_anchors <= fixed_anchors:
+        issues.append(
+            "fixed_identity_anchors missing: "
+            + ", ".join(sorted(required_anchors - fixed_anchors))
+        )
+
+    repeatable_roles = {
+        str(value).strip().lower()
+        for value in evidence.get("repeatable_middle_roles") or []
+        if str(value).strip()
+    }
+    minimum_repeatable = int(
+        standard.get("minimum_repeatable_middle_roles") or 1
+    )
+    if len(repeatable_roles) < minimum_repeatable:
+        issues.append(
+            f"repeatable_middle_roles has {len(repeatable_roles)}; "
+            f"minimum {minimum_repeatable}"
+        )
+
+    required_views = {
+        str(value).strip().lower()
+        for value in standard.get("required_comparison_views") or []
+        if str(value).strip()
+    }
+    comparison_views = {
+        str(value).strip().lower()
+        for value in evidence.get("comparison_views") or []
+        if str(value).strip()
+    }
+    if not required_views <= comparison_views:
+        issues.append(
+            "comparison_views missing: "
+            + ", ".join(sorted(required_views - comparison_views))
+        )
+
+    comparison_sheet = str(evidence.get("comparison_sheet") or "").strip()
+    if standard.get("comparison_sheet_required") is True:
+        if not comparison_sheet:
+            issues.append("comparison_sheet is required")
+        elif family_dir is not None:
+            family_root = family_dir.resolve()
+            comparison_path = (family_root / comparison_sheet).resolve()
+            try:
+                comparison_path.relative_to(family_root)
+            except ValueError:
+                issues.append("comparison_sheet must remain inside the family directory")
+            else:
+                if not comparison_path.is_file():
+                    issues.append(f"comparison_sheet missing file: {comparison_sheet}")
+                else:
+                    try:
+                        with Image.open(comparison_path) as image:
+                            image.verify()
+                    except OSError as exc:
+                        issues.append(f"comparison_sheet unreadable: {exc}")
+
+    if (
+        standard.get("human_visual_approval_required") is True
+        and evidence.get("human_visual_approval") is not True
+    ):
+        issues.append("human_visual_approval must be true")
+
+    detail = (
+        f"{len(shape_features)} shape features, {len(depth_features)} depth features, "
+        f"{len(repeatable_roles)} repeatable roles and approved comparison "
+        f"{comparison_sheet}"
+        if not issues
+        else "; ".join(issues)
+    )
+    return _gate(
+        "missing_haussmann_minimum_standard_evidence",
+        not issues,
+        detail,
+    )
+
+
 def assess_family_quality(
     manifest: dict[str, Any],
     report: dict[str, Any],
@@ -239,6 +377,13 @@ def assess_family_quality(
         min_profiles = max(1, min(default_min_profiles, int(declared_min_profiles)))
     else:
         min_profiles = default_min_profiles
+    archetype_contain_modules = [
+        item for item in modules
+        if item.get("allow_inset_footprint") is True
+    ]
+    archetype_contain_contract = (
+        bool(modules) and len(archetype_contain_modules) == len(modules)
+    )
     aliases = {
         str(value).strip()
         for value in manifest.get("archetype_aliases") or []
@@ -269,6 +414,11 @@ def assess_family_quality(
             bool(material_waiver_rationale)
             and material_waiver_max >= material_count
         )
+    )
+    minimum_standard_gate = _minimum_standard_evidence_gate(
+        manifest,
+        memory,
+        family_dir,
     )
 
     review = [
@@ -335,6 +485,18 @@ def assess_family_quality(
             ),
         ),
         _gate(
+            "missing_archetype_contain_contract",
+            archetype_contain_contract,
+            (
+                f"all {len(modules)} modules declare allow_inset_footprint=true"
+                if archetype_contain_contract
+                else (
+                    f"{len(archetype_contain_modules)} of {len(modules)} modules declare "
+                    "allow_inset_footprint=true"
+                )
+            ),
+        ),
+        _gate(
             "missing_or_unsafe_fixed_landmark_scale_band",
             fixed_scale_band_valid,
             fixed_scale_band_detail,
@@ -353,6 +515,7 @@ def assess_family_quality(
                 else "missing: " + ", ".join(sorted(required_aliases - aliases))
             ),
         ),
+        minimum_standard_gate,
         _gate(
             "missing_side_elevation_wrap",
             bool(side_wrap),

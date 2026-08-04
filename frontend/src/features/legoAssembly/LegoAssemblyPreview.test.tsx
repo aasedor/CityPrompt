@@ -280,6 +280,28 @@ describe('LegoAssemblyPreview', () => {
     );
   });
 
+  it('labels uniform polygon containment as preserved form instead of stretching', async () => {
+    apiPost.mockResolvedValueOnce({
+      data: {
+        ...planFixture,
+        fit: {
+          ...planFixture.fit,
+          scale_x: 0.7,
+          scale_y: 0.7,
+          envelope_scale_x: 0.9,
+          envelope_scale_y: 0.7,
+          footprint_mode: 'archetype_contain',
+        },
+      },
+    });
+
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+
+    expect(await screen.findByText(/Archetype form preserved/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Modules are stretched to fit/i)).not.toBeInTheDocument();
+  });
+
   it('scopes planning to the zone project module inventory', async () => {
     apiPost.mockResolvedValueOnce({ data: planFixture });
 
