@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import {
   buildStreetNetworkPlacement,
+  getCurrentStreetNetworkGroundMeta,
   getStreetNetworkGroundMeta,
   streetZoneSourceSignature,
   type StreetNetworkGroundTextureMeta,
@@ -83,6 +84,7 @@ describe('connected street-network ground atlas', () => {
       properties: { ...road.properties, street_network_ground_texture: meta },
     });
     expect(getStreetNetworkGroundMeta(persisted)).toEqual(meta);
+    expect(getCurrentStreetNetworkGroundMeta([boundary, persisted])).toEqual(meta);
 
     const edited = zone({
       coordinates: persisted.coordinates.map((coordinate, index) => (
@@ -91,5 +93,6 @@ describe('connected street-network ground atlas', () => {
       properties: persisted.properties,
     });
     expect(getStreetNetworkGroundMeta(edited)).toBeNull();
+    expect(getCurrentStreetNetworkGroundMeta([boundary, edited])).toBeNull();
   });
 });

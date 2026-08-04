@@ -23,6 +23,16 @@ const { apiGet, apiPost, apiPut, apiDelete } = vi.hoisted(() => ({
   apiDelete: vi.fn(),
 }));
 
+const { generatePublicRealmDrapesMock, planPublicRealmDrapesMock } = vi.hoisted(() => ({
+  generatePublicRealmDrapesMock: vi.fn(),
+  planPublicRealmDrapesMock: vi.fn(),
+}));
+
+vi.mock('@/components/viewer/globe/publicRealmDrapeGenerator', () => ({
+  generatePublicRealmDrapes: generatePublicRealmDrapesMock,
+  planPublicRealmDrapes: planPublicRealmDrapesMock,
+}));
+
 vi.mock('@/services/api', () => ({
   api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete },
   siteZonesApi: {
@@ -50,6 +60,9 @@ vi.mock('@/components/viewer/aestheticCatalog', () => ({
       variants: [],
     },
   ],
+  ROADWAY_AESTHETIC_OPTIONS_V2: [],
+  GREEN_SPACE_AESTHETIC_OPTIONS_V2: [],
+  PLAZA_AESTHETIC_OPTIONS_V2: [],
 }));
 
 // jsdom has no WebGL — keep the r3f Canvas (mounted after successful plans)
@@ -127,6 +140,20 @@ function make422(detail: unknown) {
 describe('LegoBuilderPanel', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    planPublicRealmDrapesMock.mockReturnValue({
+      parkZones: [],
+      parksNeedingDrape: [],
+      streetZones: [],
+      streetNetworkNeedsDrape: false,
+      totalImageCalls: 0,
+    });
+    generatePublicRealmDrapesMock.mockImplementation(async (_projectId: string, zones: SiteZone[]) => ({
+      zones,
+      generatedParks: 0,
+      generatedStreetNetwork: false,
+      remainingParks: 0,
+      imageCalls: 0,
+    }));
   });
 
   it('plans one request per buildable zone on mount and shows the assembled count', async () => {
@@ -291,6 +318,104 @@ describe('LegoBuilderPanel', () => {
     expect(compileCall?.[1]).not.toEqual(expect.objectContaining({
       items: expect.arrayContaining([expect.objectContaining({ zone_id: 'z-framework' })]),
     }));
+  });
+
+  it('AI-drapes public realm first and compiles the authoritative revisions returned by the drape writes', async () => {
+    const park = makeZone({
+      id: 'z-park-refresh',
+      zone_type: 'green_space',
+      properties: { _plan_role: 'open_space' },
+    });
+    const street = makeZone({
+      id: 'z-street-refresh',
+      zone_type: 'road',
+      properties: { _plan_role: 'street' },
+    });
+    generatePublicRealmDrapesMock.mockImplementation(async (
+      projectId: string,
+      zones: SiteZone[],
+      options: { onProgress?: (value: { completed: number; total: number; label: string }) => void },
+    ) => {
+      expect(projectId).toBe('proj-1');
+      expect(zones.map((zone) => zone.id)).toEqual(['z-park-refresh', 'z-street-refresh']);
+      options.onProgress?.({ completed: 2, total: 2, label: 'Ground drapes saved' });
+      return {
+        zones: zones.map((zone) => ({ ...zone, updated_at: `2026-08-04T02:00:0${zone.id.includes('park') ? '1' : '2'}Z` })),
+        generatedParks: 1,
+        generatedStreetNetwork: true,
+        remainingParks: 0,
+        imageCalls: 2,
+      };
+    });
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-08-04T02:01:00Z',
+              counts: { building: 0, park: 1, street: 1 },
+              items: [],
+            },
+          })
+        : Promise.reject(new Error(`unexpected POST ${url}`))
+    ));
+
+    render(<LegoBuilderPanel zones={[park, street]} onClose={vi.fn()} />);
+    fireEvent.click(await screen.findByRole('button', { name: /^generate to 3d$/i }));
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place-community',
+      {
+        items: expect.arrayContaining([
+          { zone_id: 'z-park-refresh', source_updated_at: '2026-08-04T02:00:01Z' },
+          { zone_id: 'z-street-refresh', source_updated_at: '2026-08-04T02:00:02Z' },
+        ]),
+      },
+    ));
+    expect(generatePublicRealmDrapesMock).toHaveBeenCalledTimes(1);
+    expect(await screen.findByText(/Built 0 detailed buildings.*2 park\/street layers/i)).toBeInTheDocument();
+  });
+
+  it('upgrades an already compiled procedural park when its AI drape is missing', async () => {
+    const park = makeZone({
+      id: 'z-procedural-park',
+      zone_type: 'green_space',
+      properties: {
+        _plan_role: 'open_space',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'park',
+          generator: 'park_kit',
+          compiled_at: '2026-08-04T01:00:00Z',
+        },
+      },
+    });
+    planPublicRealmDrapesMock.mockReturnValue({
+      parkZones: [park],
+      parksNeedingDrape: [park],
+      streetZones: [],
+      streetNetworkNeedsDrape: false,
+      totalImageCalls: 1,
+    });
+    apiPost.mockResolvedValue({
+      data: {
+        status: 'compiled',
+        compiled_at: '2026-08-04T02:00:00Z',
+        counts: { building: 0, park: 1, street: 0 },
+        items: [],
+      },
+    });
+
+    render(<LegoBuilderPanel zones={[park]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/1 AI ground-drape image call will run/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
+
+    await waitFor(() => expect(generatePublicRealmDrapesMock).toHaveBeenCalledTimes(1));
+    expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place-community',
+      { items: [{ zone_id: park.id, source_updated_at: park.updated_at }] },
+    );
   });
 
   it('shows no-family rows and one deduplicated command hint on mixed success/422', async () => {

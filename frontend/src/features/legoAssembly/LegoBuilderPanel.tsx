@@ -33,6 +33,10 @@ import {
   getStreetNetworkGroundMeta,
   importStreetNetworkGroundTexture,
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
+import {
+  generatePublicRealmDrapes,
+  planPublicRealmDrapes,
+} from '@/components/viewer/globe/publicRealmDrapeGenerator';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -76,17 +80,24 @@ export function LegoBuilderPanel({
   zones,
   onClose,
   autoGenerate = false,
+  sceneContextImageBase64 = null,
+  onZonesRefreshed,
 }: {
   zones: SiteZone[];
   onClose: () => void;
   /** Top-level workflow entry: plan, then compile the complete scene once. */
   autoGenerate?: boolean;
+  /** Frozen Google Tiles frame used only as local material/edge context. */
+  sceneContextImageBase64?: string | null;
+  /** Keep the owning workflow snapshot current after drape metadata writes. */
+  onZonesRefreshed?: (zones: SiteZone[]) => void;
 }) {
   const [items, setItems] = useState<ZoneBuildItem[]>(() => deriveItems(zones));
   const [groundItems, setGroundItems] = useState<GroundBuildItem[]>(() => deriveGroundItems(zones));
   const [planning, setPlanning] = useState(false);
   const [saving, setSaving] = useState(false);
   const [placingAll, setPlacingAll] = useState(false);
+  const [generationStage, setGenerationStage] = useState<string | null>(null);
   const [initialPlanningComplete, setInitialPlanningComplete] = useState(false);
   const [saveResult, setSaveResult] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -99,8 +110,19 @@ export function LegoBuilderPanel({
   } | null>(null);
   const [importingStreetAtlas, setImportingStreetAtlas] = useState(false);
   const projectId = zones[0]?.project_id;
-  const streetZones = zones.filter((zone) => resolveCommunity3DKind(zone) === 'street');
+  const currentDrapeZones = useMemo(() => {
+    const currentById = new Map([
+      ...items.map((item) => [item.zone.id, item.zone] as const),
+      ...groundItems.map((item) => [item.zone.id, item.zone] as const),
+    ]);
+    return zones.map((zone) => currentById.get(zone.id) ?? zone);
+  }, [groundItems, items, zones]);
+  const streetZones = currentDrapeZones.filter((zone) => resolveCommunity3DKind(zone) === 'street');
   const streetsWithAtlas = streetZones.filter((zone) => getStreetNetworkGroundMeta(zone)).length;
+  const publicRealmDrapePlan = useMemo(
+    () => planPublicRealmDrapes(currentDrapeZones),
+    [currentDrapeZones],
+  );
 
   // The globe reads buildings from the project query and links from the zone
   // query — both must refetch for the placed stack to appear.
@@ -138,7 +160,15 @@ export function LegoBuilderPanel({
     const massingOnly = items.filter((item) => (
       !item.plan && Boolean(item.offset) && (forceRebuild || item.massingState !== 'compiled')
     ));
-    const groundToCompile = groundItems.filter((item) => forceRebuild || item.state !== 'compiled');
+    const groundNeedingDrapeIds = new Set([
+      ...publicRealmDrapePlan.parksNeedingDrape.map((zone) => zone.id),
+      ...(publicRealmDrapePlan.streetNetworkNeedsDrape
+        ? publicRealmDrapePlan.streetZones.map((zone) => zone.id)
+        : []),
+    ]);
+    const groundToCompile = groundItems.filter((item) => (
+      forceRebuild || item.state !== 'compiled' || groundNeedingDrapeIds.has(item.zone.id)
+    ));
     if (
       (placeable.length === 0 && massingOnly.length === 0 && groundToCompile.length === 0)
       || placingAll
@@ -161,33 +191,64 @@ export function LegoBuilderPanel({
       item.state === 'compiled' ? item : { ...item, state: 'compiling' }
     )));
     try {
+      const latestPanelZoneById = new Map([
+        ...items.map((item) => [item.zone.id, item.zone] as const),
+        ...groundItems.map((item) => [item.zone.id, item.zone] as const),
+      ]);
+      const sourceZones = zones.map((zone) => latestPanelZoneById.get(zone.id) ?? zone);
+      let compileZones = sourceZones;
+      if (groundToCompile.length > 0) {
+        const drapeResult = await generatePublicRealmDrapes(projectId!, sourceZones, {
+          sceneContextImageBase64,
+          onProgress: ({ completed, total, label }) => {
+            setGenerationStage(
+              total > 0 ? `${label} · ${completed}/${total} image calls` : label,
+            );
+          },
+        });
+        compileZones = drapeResult.zones;
+        onZonesRefreshed?.(compileZones);
+        if (drapeResult.remainingParks > 0) {
+          throw new Error(
+            `Generated ${drapeResult.generatedParks} park drapes in this protected batch. `
+            + `${drapeResult.remainingParks} parks remain; run Generate to 3D again to finish them without regenerating completed drapes.`,
+          );
+        }
+      }
+      setGenerationStage('Placing 3D buildings and public-realm objects');
+      const authoritativeById = new Map(compileZones.map((zone) => [zone.id, zone]));
+      const authoritativeZone = (zoneId: string): SiteZone => {
+        const zone = authoritativeById.get(zoneId);
+        if (!zone) throw new Error('A plan zone changed while Generate to 3D was preparing. Refresh and retry.');
+        return zone;
+      };
       const result = await legoAssemblyApi.compileCommunity([
         ...placeable.map((item) => ({
           zone_id: item.zone.id,
-          source_updated_at: item.zone.updated_at,
+          source_updated_at: authoritativeZone(item.zone.id).updated_at,
           recipe: recipeFromPlan(item),
         })),
         ...massingOnly.map((item) => ({
           zone_id: item.zone.id,
-          source_updated_at: item.zone.updated_at,
+          source_updated_at: authoritativeZone(item.zone.id).updated_at,
         })),
         ...groundToCompile.map((item) => ({
           zone_id: item.zone.id,
-          source_updated_at: item.zone.updated_at,
+          source_updated_at: authoritativeZone(item.zone.id).updated_at,
         })),
       ]);
       setItems((prev) => prev.map((item) => {
         if (placeableIds.has(item.zone.id)) {
-          return { ...item, placeState: 'placed' };
+          return { ...item, zone: authoritativeZone(item.zone.id), placeState: 'placed' };
         }
         if (massingOnlyIds.has(item.zone.id)) {
-          return { ...item, massingState: 'compiled' };
+          return { ...item, zone: authoritativeZone(item.zone.id), massingState: 'compiled' };
         }
         return item;
       }));
       setGroundItems((prev) => prev.map((item) => (
         groundToCompileIds.has(item.zone.id)
-          ? { ...item, state: 'compiled' }
+          ? { ...item, zone: authoritativeZone(item.zone.id), state: 'compiled' }
           : item
       )));
       const groundCount = result.counts.park + result.counts.street;
@@ -219,10 +280,12 @@ export function LegoBuilderPanel({
           : item
       )));
       setSaveResult(getApiErrorMessage(error, 'Could not build this community. No changes were saved.'));
+      await refetchPlacedData();
     } finally {
+      setGenerationStage(null);
       setPlacingAll(false);
     }
-  }, [groundItems, items, placingAll, refetchPlacedData]);
+  }, [groundItems, items, onZonesRefreshed, placingAll, projectId, publicRealmDrapePlan, refetchPlacedData, sceneContextImageBase64, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
     const base = deriveItems(zones);
@@ -337,6 +400,11 @@ export function LegoBuilderPanel({
     unplacedDetailedCount > 0
     || uncompiledMassingCount > 0
     || compiledGroundCount < groundItems.length
+    || publicRealmDrapePlan.totalImageCalls > 0
+  );
+  const saveResultIsError = Boolean(
+    items.some((item) => item.placeState === 'failed' || item.massingState === 'failed')
+    || groundItems.some((item) => item.state === 'failed'),
   );
 
   const missingArchetypeIds = useMemo(
@@ -437,6 +505,17 @@ export function LegoBuilderPanel({
               <p className="mt-1 flex items-center gap-1.5 text-[11px] text-black/55">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 Assembling {items.length} zone{items.length === 1 ? '' : 's'}…
+              </p>
+            )}
+            {generationStage && (
+              <p className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-sky-800">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                {generationStage}
+              </p>
+            )}
+            {!placingAll && publicRealmDrapePlan.totalImageCalls > 0 && (
+              <p className="mt-1 text-[10px] font-bold text-black/55">
+                {`${publicRealmDrapePlan.totalImageCalls} AI ground-drape image call${publicRealmDrapePlan.totalImageCalls === 1 ? '' : 's'} will run during Generate to 3D.`}
               </p>
             )}
           </div>
@@ -568,8 +647,8 @@ export function LegoBuilderPanel({
                       </div>
                       <p className="mt-0.5 text-black/55">
                         {item.kind === 'park'
-                          ? 'Zero-credit archetype ground + programmed structures; final render adds mature planting and seating'
-                          : 'Road surface + curbs, lanes, sidewalks and reserved planting bands; final render adds street trees'}
+                          ? 'AI-draped archetype ground, then programmed 3D trees, structures, planting and seating'
+                          : 'One connected AI road atlas, then 3D curbs, markings, trees, lights, furniture and vehicles'}
                       </p>
                     </div>
                   ))}
@@ -600,7 +679,11 @@ export function LegoBuilderPanel({
 
           <div className="border-t-2 border-[#151515]/15 p-4 pt-3">
             {saveResult && (
-              <p className="mb-2 rounded border-2 border-emerald-600 bg-emerald-50 p-2 text-[11px] font-bold text-emerald-800">
+              <p className={`mb-2 rounded border-2 p-2 text-[11px] font-bold ${
+                saveResultIsError
+                  ? 'border-red-500 bg-red-50 text-red-800'
+                  : 'border-emerald-600 bg-emerald-50 text-emerald-800'
+              }`}>
                 {saveResult}
               </p>
             )}

@@ -67,8 +67,26 @@ curbs, crossings, the roundabout, landscape, and the LEGO building layout.
 
 ## Remaining work to reach the product workflow
 
-1. Move atlas generation behind a backend Generate to 3D job. The user should
-   not manually import a reviewed image.
+### Implemented on the pilot branch
+
+- The normal **Generate to 3D** action now freezes authoritative zone
+  revisions, generates missing/stale drapes, reloads the revisions written by
+  those image jobs, and only then compiles LEGO buildings plus park/street 3D
+  kits. The old Render-panel upgrade is no longer required for this workflow.
+- The complete active street network uses one GPT Image atlas call regardless
+  of polygon count. Parks currently use one geometry-locked Gemini call each.
+- Current drapes are signature-checked and reused on retry, preventing a
+  failed Community 3D compile from automatically spending the same image calls
+  again.
+- The signed-in live trial on project
+  `482d8897-af45-4d74-b46d-55d2b3dfcfa5` completed one street atlas, one park
+  drape, and the subsequent 2/2 ground-system compile without the previous 409
+  source-revision failure.
+
+### Still required
+
+1. Move the browser-orchestrated drape sequence into a durable backend job so
+   it survives navigation and can expose provider cancellation/recovery.
 2. Generate coordinated public-realm inputs from the whole site: buildings and
    their entrances, streets, parks, residual landscape, Google Tiles context, and
    archetype references. Keep separate hard masks per surface class even if one

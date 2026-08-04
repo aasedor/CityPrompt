@@ -49,6 +49,7 @@ import type {
   Direct3DCaptureBundle,
   Direct3DCaptureOptions,
 } from '@/components/viewer/globe/direct3dCapture';
+import { capturePublicRealmSceneReference } from '@/components/viewer/globe/parkGroundTexture';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 const PLAN_LAYER_PREFIX = 'Plan — ';
@@ -64,6 +65,9 @@ export function ProjectViewPage() {
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
+  const [isPreparingGenerate3D, setIsPreparingGenerate3D] = useState(false);
+  const [generate3DZones, setGenerate3DZones] = useState<SiteZone[] | null>(null);
+  const [generate3DSceneContext, setGenerate3DSceneContext] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [savedVideos, setSavedVideos] = useState<VideoAttempt[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
@@ -516,7 +520,7 @@ export function ProjectViewPage() {
   const masterPlanActive =
     workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
 
-  const handleOpenGenerate3D = useCallback(() => {
+  const handleOpenGenerate3D = useCallback(async () => {
     if (!cityPromptWorkflow.canGenerate3D) {
       toast(cityPromptWorkflow.generationReason, { icon: '🏗️' });
       return;
@@ -530,8 +534,36 @@ export function ProjectViewPage() {
     setShowGlobeRender(false);
     setShowVideoRender(false);
     selectZone(null);
-    setShowLegoBuilder(true);
-  }, [cityPromptWorkflow, selectZone, visiblePlanLayers]);
+    setIsPreparingGenerate3D(true);
+    try {
+      const authoritativeProjectZones = id ? await siteZonesApi.list(id) : visibleZones;
+      const authoritativeById = new Map(authoritativeProjectZones.map((zone) => [zone.id, zone]));
+      const frozenVisibleZones = visibleZones.map((zone) => {
+        const authoritative = authoritativeById.get(zone.id);
+        if (!authoritative) {
+          throw new Error('A plan zone is still saving. Wait a moment and run Generate to 3D again.');
+        }
+        return authoritative;
+      });
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      setGenerate3DZones(frozenVisibleZones);
+      setGenerate3DSceneContext(
+        globeRefs?.canvas ? capturePublicRealmSceneReference(globeRefs.canvas) : null,
+      );
+      setShowLegoBuilder(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not prepare Generate to 3D.');
+    } finally {
+      setIsPreparingGenerate3D(false);
+    }
+  }, [cityPromptWorkflow, globeRefs, id, selectZone, visiblePlanLayers, visibleZones]);
+
+  const handleCloseGenerate3D = useCallback(() => {
+    setShowLegoBuilder(false);
+    setGenerate3DZones(null);
+    setGenerate3DSceneContext(null);
+  }, []);
 
   const handleOpenGlobeRender = useCallback(() => {
     if (!cityPromptWorkflow.canRender) {
@@ -939,12 +971,12 @@ export function ProjectViewPage() {
                     />
                     <button
                       onClick={handleOpenGenerate3D}
-                      disabled={!cityPromptWorkflow.canGenerate3D}
+                      disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
                       title={cityPromptWorkflow.generationReason}
                       className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <Blocks size={16} />
-                      Generate to 3D
+                      {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
                     </button>
                     <div className="grid grid-cols-2 gap-2">
                       <button
@@ -1234,9 +1266,11 @@ export function ProjectViewPage() {
         {/* LEGO builder — the whole plan assembled from archetype modules */}
         {showLegoBuilder && (
           <LegoBuilderPanel
-            zones={visibleZones}
+            zones={generate3DZones ?? visibleZones}
             autoGenerate
-            onClose={() => setShowLegoBuilder(false)}
+            sceneContextImageBase64={generate3DSceneContext}
+            onZonesRefreshed={setGenerate3DZones}
+            onClose={handleCloseGenerate3D}
           />
         )}
       </div>
@@ -1406,12 +1440,12 @@ export function ProjectViewPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleOpenGenerate3D}
-                disabled={!cityPromptWorkflow.canGenerate3D}
+                disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
                 className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 title={cityPromptWorkflow.generationReason}
               >
                 <Blocks size={16} />
-                Generate to 3D
+                {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
               </button>
               <button
                 data-tour="ai-render-btn"
@@ -1518,9 +1552,11 @@ export function ProjectViewPage() {
           {/* LEGO builder — the whole plan assembled from archetype modules */}
           {showLegoBuilder && (
             <LegoBuilderPanel
-              zones={visibleZones}
+              zones={generate3DZones ?? visibleZones}
               autoGenerate
-              onClose={() => setShowLegoBuilder(false)}
+              sceneContextImageBase64={generate3DSceneContext}
+              onZonesRefreshed={setGenerate3DZones}
+              onClose={handleCloseGenerate3D}
             />
           )}
         </div>
