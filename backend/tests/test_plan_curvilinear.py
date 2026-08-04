@@ -215,8 +215,12 @@ def test_crescent_tagging():
                      if z["properties"].get("road_archetype_id") == "london_crescent_road"]
         assert crescents, scenario_id
         assert all(MIN_ROW_M <= z["properties"]["width"] < 15 for z in crescents)
-        # Straight cross-streets guarantee plain locals survive alongside.
-        assert any(z["properties"].get("road_archetype_id") is None for z in locals_), scenario_id
+        # Straight cross-streets guarantee width-resolved locals survive
+        # alongside the explicitly styled crescents.
+        assert any(
+            z["properties"].get("road_archetype_id") == "narrow_residential_street"
+            for z in locals_
+        ), scenario_id
 
     environmental = _generate("environmental")
     env_locals = [z for z in environmental.zones if z["properties"].get("street_role") == "local"]

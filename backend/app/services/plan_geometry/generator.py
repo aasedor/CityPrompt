@@ -69,6 +69,12 @@ PLAN_COLORS = {
     "water": "#4a90c2",
 }
 
+# Direct catalog ids for generated public-realm geometry.  Every generated
+# street and green-space zone must be independently renderable: relying on the
+# frontend's width/area resolver leaves locked streets, numerical residue and
+# block courtyards without a concrete 3D recipe.
+COURTYARD_ARCHETYPE_ID = "courtyard_plaza"
+
 # Height framework bands (amber -> deep red), aligned to LAP building-scale steps.
 HEIGHT_BANDS = [(3, "#fde68a"), (6, "#fbbf24"), (12, "#f97316"), (26, "#dc2626"), (999, "#7c2d12")]
 
@@ -559,7 +565,7 @@ def generate_plan_geometry(
     # Parks without a palette/LLM archetype get a catalog fallback so the
     # globe park kit resolves a real furniture recipe (playgrounds/pavilions
     # gate on planting_structure + area downstream, not here). Ponds keep
-    # their water ids; courtyards stay unstamped by design.
+    # their water ids. Block courtyards are stamped separately below.
     _PARK_ARCHETYPE_FALLBACK = {
         "central": "neighborhood_park",
         "pocket": "urban_pocket_park",
@@ -576,7 +582,10 @@ def generate_plan_geometry(
         result.green_m.append(spec.geom_m)
         color = PLAN_COLORS["water"] if spec.kind == "pond" else PLAN_COLORS["green_space"]
         planting = palette.landscape.get(_LANDSCAPE_KEY.get(spec.kind, ""))
-        archetype_id = spec.archetype_id or _PARK_ARCHETYPE_FALLBACK.get(spec.kind)
+        archetype_id = (
+            spec.archetype_id
+            or _PARK_ARCHETYPE_FALLBACK.get(spec.kind, "neighborhood_park")
+        )
         for poly_m in iter_polygons(spec.geom_m):
             poly = project_geometry(poly_m, to_wgs84)
             access_points = [
@@ -593,8 +602,7 @@ def generate_plan_geometry(
                     "_plan_scenario": scenario_id, "_imported_from": layer_name,
                     "_plan_role": "open_space", "tree_density": tree_density,
                     "green_kind": spec.kind,
-                    **({"green_space_archetype_id": archetype_id}
-                       if archetype_id else {}),
+                    "green_space_archetype_id": archetype_id,
                     **({"ground_texture": ground_texture} if ground_texture else {}),
                     **({"planting_structure": planting} if planting else {}),
                     **({
@@ -811,6 +819,7 @@ def generate_plan_geometry(
                         "properties": {
                             "_plan_scenario": scenario_id, "_imported_from": layer_name,
                             "_plan_role": "courtyard", "tree_density": tree_density,
+                            "green_space_archetype_id": COURTYARD_ARCHETYPE_ID,
                             **({"planting_structure": palette.landscape["courtyard"]}
                                if palette.landscape.get("courtyard") else {}),
                         },
@@ -867,12 +876,36 @@ def generate_plan_geometry(
     return result
 
 
+def _default_road_archetype_id(role: str, width: float) -> str:
+    """Resolve every generated ROW piece to a concrete street catalog id.
+
+    Role-specific infrastructure wins first; ordinary streets then mirror the
+    frontend's established width bands.  This also covers locked networks and
+    precision residue, which have no source segment from which to inherit an
+    archetype.
+    """
+    if role == "roundabout":
+        return "roundabout"
+    if role == "path":
+        return "multi_use_trail"
+    if role == "lane":
+        return "back_alley_service_lane"
+    if width < 10.0:
+        return "yield_street"
+    if width < 15.0:
+        return "narrow_residential_street"
+    if width < 22.0:
+        return "collector_road"
+    return "main_street_complete"
+
+
 def _street_zone(
     poly_m, *, name: str, width: float, role: str, rules: RuleProfile,
     scenario_id: str, layer_name: str, to_wgs84,
     archetype_id: str | None = None,
     context_connection: bool = False,
 ) -> list[dict[str, Any]]:
+    resolved_archetype_id = archetype_id or _default_road_archetype_id(role, width)
     zones = []
     for wpoly in iter_polygons(project_geometry(poly_m, to_wgs84)):
         zones.append({
@@ -886,8 +919,8 @@ def _street_zone(
                 "_plan_role": "street", "width": width,
                 "clear_width_m": width if role == "path" else rules.clear_width_m,
                 "street_role": role,
+                "road_archetype_id": resolved_archetype_id,
                 **({"context_connection": True} if context_connection else {}),
-                **({"road_archetype_id": archetype_id} if archetype_id else {}),
             },
         })
     return zones
