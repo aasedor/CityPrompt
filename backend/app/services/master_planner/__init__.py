@@ -21,7 +21,9 @@ from app.services.master_planner.lego_geometry import (
 )
 from app.services.master_planner.spec import (
     MasterPlanSpec,
+    PlanDiversity,
     PublicRealmPlan,
+    diversity_plan_for_site,
     lego_fallback_spec,
     palette_from_spec,
     validate_spec,
@@ -33,10 +35,12 @@ __all__ = [
     "LegoGeometryCompatibilityError",
     "LegoPlanningCatalog",
     "MasterPlanSpec",
+    "PlanDiversity",
     "PublicRealmPlan",
     "build_lego_planning_catalog",
     "bind_building_zones_to_lego",
     "compose_master_plan",
+    "diversity_plan_for_site",
     "lego_fallback_spec",
     "palette_from_spec",
     "validate_spec",

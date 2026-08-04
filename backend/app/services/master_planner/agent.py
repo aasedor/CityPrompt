@@ -41,6 +41,7 @@ from app.services.master_planner.spec import (
     TYPOLOGIES,
     WATER_ARCHETYPE_IDS,
     MasterPlanSpec,
+    diversity_plan_for_site,
     lego_fallback_spec,
     validate_spec,
 )
@@ -89,7 +90,9 @@ SYSTEM = (
     "be omitted — an invented id renders nothing.\n"
     "- Small sites express few bands: with fewer than ~5 blocks only mid/edge (and maybe "
     "frontage) will appear; put your best thinking there and set single_block_typology for the "
-    "degenerate one-block case."
+    "degenerate one-block case. Follow the site-specific DIVERSITY CONTRACT: compact sites may "
+    "be one ensemble, neighborhoods need a family of related characters, and district-scale "
+    "plans must not let one building, park, or street appearance dominate."
 )
 
 
@@ -341,6 +344,17 @@ def _site_brief(
         f"SITE GEOMETRY: ~{area_m2 / 10000:.1f} ha"
         + (f", expect roughly {est_blocks} developable blocks" if est_blocks else "")
     )
+    diversity = diversity_plan_for_site(site_summary)
+    lines.append(
+        "DIVERSITY CONTRACT: "
+        f"{diversity.scale} scale; retain at least "
+        f"{diversity.building_characters_per_band} compatible building character"
+        f"{'s' if diversity.building_characters_per_band != 1 else ''} in repeated fabric bands, "
+        f"{diversity.park_characters} park/public-realm appearance"
+        f"{'s' if diversity.park_characters != 1 else ''}, and "
+        f"{diversity.street_characters} street appearance"
+        f"{'s' if diversity.street_characters != 1 else ''}. Compact sites may remain a single ensemble."
+    )
     if parameters:
         expert_lines = [
             f"  - {path}: {merged.get('value') if isinstance(merged, dict) else merged}"
@@ -437,7 +451,9 @@ async def compose_master_plan(
             raise ValueError("no usable tool payload after retry")
 
         try:
-            raw_spec = MasterPlanSpec(**payload)
+            raw_spec = MasterPlanSpec(**payload).model_copy(
+                update={"diversity": diversity_plan_for_site(site_summary)}
+            )
         except (ValidationError, TypeError) as exc:
             raise ValueError(f"spec failed validation: {exc}") from exc
 
@@ -487,6 +503,7 @@ async def compose_master_plan(
                 lego_catalog,
                 palette_hint,
                 narrative=("A deterministic plan composed from the imported LEGO " "building, park, and street kits."),
+                site_summary=site_summary,
             )
             notes.append(
                 _note(

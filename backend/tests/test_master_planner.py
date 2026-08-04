@@ -23,15 +23,19 @@ from app.services.master_planner.spec import (
     LandscapePlan,
     MasterPlanSpec,
     OpenSpaceProgram,
+    PlanDiversity,
     PublicRealmPlan,
+    diversity_plan_for_site,
     lego_fallback_spec,
     palette_from_spec,
     validate_spec,
 )
 from app.services.plan_geometry.generator import (
     _lego_park_identity_for_metric_polygon,
+    _safe_plan_centerline_coordinates,
     generate_plan_geometry,
     recover_street_plan_centerline_wgs84,
+    validate_street_plan_centerline_wgs84,
 )
 from app.services.plan_geometry.placement import (
     PALETTES,
@@ -74,6 +78,27 @@ def test_recovers_safe_centerline_metadata_for_a_locked_legacy_street():
     assert line.length > 0
 
 
+def test_clipped_connector_drops_a_stale_authored_centerline():
+    """Regression: the larger Richmond pilot emitted this unsafe wedge chord."""
+
+    connector = Polygon(
+        [
+            (-114.11859769490745, 51.0268459660692),
+            (-114.11862277673409, 51.026813439064156),
+            (-114.11896783021396, 51.026843801813506),
+            (-114.11936381335292, 51.027069447446394),
+            (-114.11936377514687, 51.02708086993554),
+        ]
+    )
+    stale_chord = [
+        [-114.1187588195544, 51.026825410060816],
+        [-114.11914146536746, 51.026942745455926],
+    ]
+
+    assert not validate_street_plan_centerline_wgs84(connector, stale_chord)
+    assert _safe_plan_centerline_coordinates(connector, stale_chord) is None
+
+
 def test_locked_street_centerline_backfill_invalidates_compiled_proof():
     from app.tasks.urban_dna import _backfill_locked_street_plan_centerline
 
@@ -108,6 +133,31 @@ PARAMS = {
     "buildings.floors": {"value": 6},
     "landscape.tree_density": {"value": 0.6},
 }
+
+
+@pytest.mark.parametrize(
+    ("summary", "scale", "building_characters", "park_characters", "street_characters"),
+    [
+        ({"area_m2": 8_000, "est_blocks": 1}, "compact", 1, 1, 1),
+        ({"area_m2": 16_000, "est_blocks": 2}, "neighborhood", 2, 2, 2),
+        ({"area_m2": 10_000, "est_blocks": 3}, "neighborhood", 2, 2, 2),
+        ({"area_m2": 52_000, "est_blocks": 6}, "district", 3, 3, 3),
+        ({"area_m2": 40_000, "est_blocks": 8}, "district", 3, 3, 3),
+    ],
+)
+def test_site_diversity_contract_scales_with_area_or_block_capacity(
+    summary,
+    scale,
+    building_characters,
+    park_characters,
+    street_characters,
+):
+    diversity = diversity_plan_for_site(summary)
+
+    assert diversity.scale == scale
+    assert diversity.building_characters_per_band == building_characters
+    assert diversity.park_characters == park_characters
+    assert diversity.street_characters == street_characters
 
 
 def test_plan_redraw_deletes_only_derived_buildings_owned_by_replaced_zones():
@@ -486,6 +536,57 @@ def test_lego_validation_fills_every_band_selects_exact_variant_and_snaps_floors
     assert any(note["code"] == "MASTER_PLAN_LEGO_FLOORS_SNAPPED" for note in notes)
 
 
+def test_neighborhood_diversity_contract_fills_missing_lego_alternates():
+    base_catalog = _lego_catalog()
+    industrial = replace(
+        base_catalog.capabilities[0],
+        supported_floors=(4, 5),
+        supported_floors_by_selectable_id={"industrial_brick_original_mill": (4, 5)},
+    )
+    catalog = replace(
+        base_catalog,
+        capabilities=(industrial, base_catalog.capabilities[1]),
+        supported_floors_by_parent={
+            "industrial_brick_mixed_use": (4, 5),
+            "parisian_boulevard_corner": (5, 6),
+        },
+        supported_floors_by_selectable_id={
+            "industrial_brick_original_mill": (4, 5),
+            "parisian_boulevard_corner": (5, 6),
+        },
+    )
+    raw = MasterPlanSpec(
+        diversity=PlanDiversity(
+            scale="neighborhood",
+            building_characters_per_band=2,
+            park_characters=2,
+            street_characters=2,
+            max_repeat_share=0.7,
+        ),
+        bands={
+            key: BandPlan(
+                development_type="mixed_use",
+                aesthetic="industrial_brick",
+                floors=5,
+                typology="perimeter_block",
+                archetype_id="parisian_boulevard_corner",
+            )
+            for key in ("core", "frontage", "mid", "edge", "anchor")
+        },
+    )
+
+    validated, notes = validate_spec(
+        raw,
+        "city_policy",
+        lego_catalog=catalog,
+    )
+
+    for band in validated.bands.values():
+        parent_ids = {band.archetype_id, *(alternate.archetype_id for alternate in band.alternates)}
+        assert parent_ids == {"industrial_brick_mixed_use", "parisian_boulevard_corner"}
+    assert any(note["code"] == "MASTER_PLAN_DIVERSITY_FILLED" for note in notes)
+
+
 def test_lego_palette_carries_variants_four_field_alternates_and_runtime_limits():
     catalog = _lego_catalog()
     raw = MasterPlanSpec(
@@ -534,6 +635,26 @@ def test_lego_fallback_spec_is_complete_and_deterministic():
         int(band.floors) in catalog.supported_floors_by_selectable_id[band.variant_id or band.archetype_id]
         for band in first.bands.values()
     )
+
+
+def test_neighborhood_palette_rotates_compatible_public_realm_variants():
+    catalog = _lego_catalog()
+    spec = lego_fallback_spec(
+        "city_policy",
+        catalog,
+        site_summary={"area_m2": 20_000, "est_blocks": 4},
+    )
+
+    palette = palette_from_spec(spec, "city_policy", lego_catalog=catalog)
+
+    assert spec.diversity.scale == "neighborhood"
+    cycle_lengths = []
+    for role in ("spine", "local", "central", "pocket", "courtyard", "greenway"):
+        cycle = palette.public_realm_variant_cycles[role]
+        assert cycle[0] == palette.public_realm_variants[role]
+        assert 1 <= len(cycle) <= 2
+        cycle_lengths.append(len(cycle))
+    assert 2 in cycle_lengths, "installed multi-variant roles should use the neighborhood target"
 
 
 def test_plan_blocks_cannot_escape_or_mispair_the_validated_lego_identity():
@@ -612,6 +733,8 @@ async def test_compose_failure_returns_lego_constrained_fallback(monkeypatch):
 
     assert spec is not None
     assert set(spec.bands) == {"core", "frontage", "mid", "edge", "anchor"}
+    assert spec.diversity.scale == "neighborhood"
+    assert spec.diversity.building_characters_per_band == 2
     assert usage["status"] == "error"
     assert any(note["code"] == "MASTER_PLANNER_LEGO_FALLBACK" for note in notes)
 
@@ -914,6 +1037,58 @@ def test_generated_lego_plan_stamps_public_realm_variant_identity_by_role():
     )
 
 
+def test_large_lego_plan_rotates_compatible_local_street_and_courtyard_appearances():
+    variants = {
+        "spine": "main_street_complete_v0",
+        "local": "narrow_residential_street_v0",
+        "central": "neighborhood_park_v0",
+        "pocket": "urban_pocket_park_v0",
+        "courtyard": "urban_pocket_park_v0",
+        "greenway": "linear_park_greenway_v0",
+        "plaza": "formal_civic_plaza_v0",
+        "pond": "stormwater_retention_pond_v0",
+        "path": "multi_use_trail_v1",
+        "lane": "toronto_laneway_v0",
+        "roundabout": "roundabout_v0",
+    }
+    palette = replace(
+        palette_for("city_policy"),
+        spine_archetype_id="main_street_complete",
+        local_archetype_id="narrow_residential_street",
+        central_archetype_id="neighborhood_park",
+        water_archetype_id="stormwater_retention_pond",
+        public_realm_variants=variants,
+        public_realm_variant_cycles={
+            "local": ("narrow_residential_street_v0", "narrow_residential_street_v2"),
+            "pocket": ("urban_pocket_park_v0", "urban_pocket_park_v2"),
+            "courtyard": ("urban_pocket_park_v0", "urban_pocket_park_v2"),
+        },
+    )
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(),
+        scenario_id="city_policy",
+        scenario_label="Varied Public Realm LEGO",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+
+    local_variants = {
+        zone["properties"].get("road_selected_variant_id")
+        for zone in result.zones
+        if zone["zone_type"] == "road" and zone["properties"].get("street_role") == "local"
+    }
+    courtyard_variants = {
+        zone["properties"].get("green_space_selected_variant_id")
+        for zone in result.zones
+        if zone["properties"].get("_plan_role") == "courtyard"
+    }
+    assert local_variants == {"narrow_residential_street_v0", "narrow_residential_street_v2"}
+    assert courtyard_variants == {"urban_pocket_park_v0", "urban_pocket_park_v2"}
+
+
 @pytest.mark.parametrize(
     ("scenario_id", "width_m", "depth_m"),
     [
@@ -956,6 +1131,11 @@ def test_every_generated_lego_public_realm_zone_compiles_strictly(
     failures: list[str] = []
     for zone in public_realm:
         try:
+            if zone["zone_type"] == "road" and "plan_centerline" in zone["properties"]:
+                assert validate_street_plan_centerline_wgs84(
+                    Polygon(zone["coordinates"]),
+                    zone["properties"]["plan_centerline"],
+                )
             recipe = plan_public_realm_zone_recipe(
                 zone["zone_type"],
                 Polygon(zone["coordinates"]),

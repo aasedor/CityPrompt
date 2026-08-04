@@ -234,6 +234,10 @@ class Palette:
     # keys choose only a compatible, visible material/planting/furnishing
     # variant for each generated role.
     public_realm_variants: dict[str, str] = field(default_factory=dict)
+    # Size-aware cycles for repeated roles. The AI-selected identity remains
+    # first; larger neighborhoods rotate only variants proven compatible with
+    # that same archetype family and metric section/program.
+    public_realm_variant_cycles: dict[str, tuple[str, ...]] = field(default_factory=dict)
     # Direct green_space_archetype_id for the signature central green.
     central_archetype_id: str | None = None
     # Massing for the degenerate one-block site; None keeps the historic

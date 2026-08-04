@@ -797,14 +797,27 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         from app.services.master_planner import (
             MasterPlanSpec,
             compose_master_plan,
+            diversity_plan_for_site,
             lego_fallback_spec,
             palette_from_spec,
             validate_spec,
+        )
+        from app.services import spatial_engine as se
+        from app.services.plan_geometry.community_rules import (
+            _DEFAULTS,
+            _SCENARIO_DEFAULTS,
         )
         from app.services.planning_agents.scenarios import resolve_scenario_preset
         from app.services.planning_agents.schemas import ScenarioDefinition
 
         settings = get_settings()
+        frame = se.SiteFrame.from_wgs84(site_polygon)
+        block_m = _SCENARIO_DEFAULTS.get(row.scenario_id, _DEFAULTS)["block"]
+        site_summary = {
+            "area_m2": frame.area_m2,
+            "est_blocks": max(1, round(frame.area_m2 / (block_m * block_m))),
+        }
+        diversity_policy = diversity_plan_for_site(site_summary)
         master_notes: list[dict] = []
         master_spec = None
         master_usage = None
@@ -815,7 +828,9 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         cached_reusable = cached_master.get("cache_reusable") is True
         if isinstance(cached_spec, dict) and cached_fingerprint == lego_catalog.fingerprint and cached_reusable:
             try:
-                parsed_spec = MasterPlanSpec(**cached_spec)
+                parsed_spec = MasterPlanSpec(**cached_spec).model_copy(
+                    update={"diversity": diversity_policy}
+                )
                 master_spec, repair_notes = validate_spec(
                     parsed_spec,
                     row.scenario_id,
@@ -849,18 +864,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                     definition = None
             if definition is not None and snapshot.dna:
                 from app.core.usage_logger import log_api_usage_sync
-                from app.services import spatial_engine as se
-                from app.services.plan_geometry.community_rules import (
-                    _DEFAULTS,
-                    _SCENARIO_DEFAULTS,
-                )
-
-                frame = se.SiteFrame.from_wgs84(site_polygon)
-                block_m = _SCENARIO_DEFAULTS.get(row.scenario_id, _DEFAULTS)["block"]
-                site_summary = {
-                    "area_m2": frame.area_m2,
-                    "est_blocks": max(1, round(frame.area_m2 / (block_m * block_m))),
-                }
                 # compose_master_plan never raises, but the event-loop plumbing
                 # around it can — and the draw must never depend on the LLM.
                 try:
@@ -916,6 +919,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 row.scenario_id,
                 lego_catalog,
                 palette_hint,
+                site_summary=site_summary,
             )
             master_notes.append(
                 {
@@ -935,6 +939,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             "generated_at": datetime.now(tz.utc).isoformat(),
             "usage": master_usage,
             "source": master_source,
+            "diversity_policy": master_spec.diversity.model_dump(mode="json"),
             "lego_catalog_fingerprint": lego_catalog.fingerprint,
             "lego_parent_count": len(lego_catalog.parent_ids),
         }

@@ -344,6 +344,32 @@ def validate_street_plan_centerline_wgs84(
     return True
 
 
+def _safe_plan_centerline_coordinates(
+    zone_wgs84: Polygon,
+    value: list[list[float]] | None,
+) -> list[list[float]] | None:
+    """Keep authored centreline metadata only when it describes this polygon.
+
+    Ordered street subtraction can leave a valid road surface as a clipped
+    wedge or short connector.  The source segment can still intersect that
+    surface while no longer representing its longitudinal axis.  Persisting
+    that stale chord poisons the otherwise-valid public-realm compile because
+    the compiler correctly treats present metadata as authoritative.
+
+    Prefer a conservative polygon-derived replacement when possible.  If the
+    shape is not safely recoverable (roundabouts and tiny wedges commonly are
+    not), omit the optional hint so the executable polygon recipe remains the
+    source of truth.
+    """
+
+    if value is None or validate_street_plan_centerline_wgs84(zone_wgs84, value):
+        return value
+    recovered = recover_street_plan_centerline_wgs84(zone_wgs84)
+    if recovered and validate_street_plan_centerline_wgs84(zone_wgs84, recovered):
+        return recovered
+    return None
+
+
 def _stable_public_realm_polygons_wgs84(
     geometry_m: BaseGeometry,
     *,
@@ -802,6 +828,7 @@ def generate_plan_geometry(
     # broad/Classic planner continues to honor expert ROW parameters exactly;
     # only a LEGO-authored palette normalizes its graph before subdivision.
     public_realm_variants = getattr(palette, "public_realm_variants", None) or {}
+    public_realm_occurrences: dict[str, int] = {}
     if public_realm_variants:
         local_native_row_m = {
             "yield_street": 10.0,
@@ -1011,7 +1038,10 @@ def generate_plan_geometry(
                 kind, archetype_id = identity
             color = PLAN_COLORS["water"] if kind == "pond" else PLAN_COLORS["green_space"]
             planting = palette.landscape.get(_LANDSCAPE_KEY.get(kind, ""))
-            variant_id = public_realm_variants.get(_PUBLIC_REALM_KEY.get(kind, ""))
+            public_realm_role = _PUBLIC_REALM_KEY.get(kind, "")
+            occurrence = public_realm_occurrences.get(public_realm_role, 0)
+            variant_id = _public_realm_variant_for(palette, public_realm_role, occurrence)
+            public_realm_occurrences[public_realm_role] = occurrence + 1
             poly = project_geometry(poly_m, to_wgs84)
             access_points = [project_geometry(point, to_wgs84) for point in _park_access_points_m(poly_m, network)]
             result.zones.append(
@@ -1374,9 +1404,17 @@ def generate_plan_geometry(
                                 "green_space_archetype_id": "urban_pocket_park",
                                 **(
                                     {
-                                        "green_space_selected_variant_id": public_realm_variants["courtyard"],
+                                        "green_space_selected_variant_id": _public_realm_variant_for(
+                                            palette,
+                                            "courtyard",
+                                            public_realm_occurrences.get("courtyard", 0),
+                                        ),
                                     }
-                                    if public_realm_variants.get("courtyard")
+                                    if _public_realm_variant_for(
+                                        palette,
+                                        "courtyard",
+                                        public_realm_occurrences.get("courtyard", 0),
+                                    )
                                     else {}
                                 ),
                                 **(
@@ -1386,6 +1424,9 @@ def generate_plan_geometry(
                                 ),
                             },
                         }
+                    )
+                    public_realm_occurrences["courtyard"] = (
+                        public_realm_occurrences.get("courtyard", 0) + 1
                     )
                     zone_sort += 1
 
@@ -1451,6 +1492,17 @@ def generate_plan_geometry(
     return result
 
 
+def _public_realm_variant_for(palette, role: str, occurrence: int = 0) -> str | None:
+    """Select a deterministic compatible appearance for one repeated role."""
+
+    cycles = getattr(palette, "public_realm_variant_cycles", None) or {}
+    cycle = tuple(cycles.get(role) or ())
+    if cycle:
+        return cycle[max(0, int(occurrence)) % len(cycle)]
+    variants = getattr(palette, "public_realm_variants", None) or {}
+    return variants.get(role)
+
+
 def _default_road_archetype_id(role: str, width: float) -> str:
     """Persist the same measured street identity the frontend would infer.
 
@@ -1504,10 +1556,13 @@ def _street_zone(
         else list(iter_polygons(project_geometry(poly_m, to_wgs84)))
     )
     for wpoly in projected_polygons:
-        plan_centerline = _plan_centerline_coordinates(
-            centerline_m,
+        plan_centerline = _safe_plan_centerline_coordinates(
             wpoly,
-            to_wgs84=to_wgs84,
+            _plan_centerline_coordinates(
+                centerline_m,
+                wpoly,
+                to_wgs84=to_wgs84,
+            ),
         )
         zones.append(
             {
@@ -1575,6 +1630,7 @@ def _emit_street_zones(
         return
     if not network.segments:
         public_realm_catalog = build_public_realm_capability_catalog() if public_realm_variants else None
+        locked_occurrence = 0
         for poly in iter_polygons(street_area):
             pieces = iter_polygons(decompose_holed(poly, poly)) if poly.interiors else [poly]
             for piece in pieces:
@@ -1583,13 +1639,13 @@ def _emit_street_zones(
                         (
                             "local",
                             getattr(palette, "local_archetype_id", None),
-                            public_realm_variants.get("local"),
+                            _public_realm_variant_for(palette, "local", locked_occurrence),
                             rules.local_row_width_m,
                         ),
                         (
                             "spine",
                             getattr(palette, "spine_archetype_id", None),
-                            public_realm_variants.get("spine"),
+                            _public_realm_variant_for(palette, "spine", locked_occurrence),
                             rules.spine_row_width_m,
                         ),
                     )
@@ -1657,6 +1713,7 @@ def _emit_street_zones(
                         geometry_source=("locked_area" if public_realm_variants else None),
                     )
                 )
+                locked_occurrence += 1
         return
 
     remaining = _snap(street_area)
@@ -1682,7 +1739,7 @@ def _emit_street_zones(
         )
 
     spine_segments = [s for s in network.segments if s.role == "spine"]
-    for segment in spine_segments:
+    for spine_index, segment in enumerate(spine_segments):
         band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
         piece = make_valid(band.intersection(remaining))
         if piece.is_empty:
@@ -1700,7 +1757,7 @@ def _emit_street_zones(
                 to_wgs84=to_wgs84,
                 to_metric=to_metric,
                 archetype_id=getattr(palette, "spine_archetype_id", None),
-                variant_id=public_realm_variants.get("spine"),
+                variant_id=_public_realm_variant_for(palette, "spine", spine_index),
                 centerline_m=segment.line,
             )
         )
@@ -1726,7 +1783,7 @@ def _emit_street_zones(
                 to_metric=to_metric,
                 archetype_id="multi_use_trail",
                 context_connection=True,
-                variant_id=public_realm_variants.get("path"),
+                variant_id=_public_realm_variant_for(palette, "path", path_counter - 1),
                 centerline_m=segment.line,
             )
         )
@@ -1765,7 +1822,7 @@ def _emit_street_zones(
                 to_metric=to_metric,
                 archetype_id=archetype,
                 context_connection=segment.context_connection,
-                variant_id=public_realm_variants.get("local"),
+                variant_id=_public_realm_variant_for(palette, "local", counter - 1),
                 centerline_m=segment.line,
             )
         )
@@ -1790,6 +1847,6 @@ def _emit_street_zones(
                 to_wgs84=to_wgs84,
                 to_metric=to_metric,
                 archetype_id=local_archetype,
-                variant_id=public_realm_variants.get("local"),
+                variant_id=_public_realm_variant_for(palette, "local", counter - 1),
             )
         )

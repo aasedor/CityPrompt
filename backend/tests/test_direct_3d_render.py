@@ -2779,7 +2779,10 @@ async def test_provider_read_timeout_is_ambiguous_and_not_refund_eligible(monkey
     )
     monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
 
-    with pytest.raises(Direct3DProviderError, match="outcome is unknown") as exc_info:
+    with pytest.raises(
+        Direct3DProviderError,
+        match=r"outcome is unknown: ReadTimeout: ReadTimeout\('response dropped after upload'\)",
+    ) as exc_info:
         await Direct3DRenderService("test-key")._call_openai(request, capture)
 
     assert len(_RecordingClient.calls) == 1

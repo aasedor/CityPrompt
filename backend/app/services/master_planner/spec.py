@@ -11,7 +11,7 @@ engine already understands.
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -40,6 +40,10 @@ MAX_FLOORS = 40.0
 MAX_ALTERNATES = 3
 BLOCK_TARGET_MIN_M = 60.0
 BLOCK_TARGET_MAX_M = 180.0
+NEIGHBORHOOD_DIVERSITY_MIN_AREA_M2 = 15_000.0
+DISTRICT_DIVERSITY_MIN_AREA_M2 = 50_000.0
+NEIGHBORHOOD_DIVERSITY_MIN_BLOCKS = 3
+DISTRICT_DIVERSITY_MIN_BLOCKS = 8
 
 # Direct road_archetype_id allowlists (streetPathArchetypes.json). The spine
 # set keeps to >=22 m main-street characters; locals to 10-15 m residential
@@ -200,6 +204,50 @@ class PublicRealmPlan(BaseModel):
     rationale: str = ""
 
 
+class PlanDiversity(BaseModel):
+    """Size-aware minimum character palette retained by deterministic planning.
+
+    A compact infill site may truthfully be one architectural ensemble. Larger
+    sites need several compatible hands and repeated public-realm roles need
+    visible variation. These targets are derived from geometry, never authored
+    by the LLM, and are capped by the executable catalog actually installed.
+    """
+
+    scale: Literal["compact", "neighborhood", "district"] = "compact"
+    building_characters_per_band: int = Field(default=1, ge=1, le=4)
+    park_characters: int = Field(default=1, ge=1, le=4)
+    street_characters: int = Field(default=1, ge=1, le=4)
+    max_repeat_share: float = Field(default=1.0, ge=0.25, le=1.0)
+
+
+def diversity_plan_for_site(site_summary: dict[str, Any] | None) -> PlanDiversity:
+    """Translate site area/block capacity into a deterministic variety floor."""
+
+    summary = site_summary or {}
+    area_m2 = max(0.0, float(summary.get("area_m2") or 0.0))
+    try:
+        estimated_blocks = max(0, int(summary.get("est_blocks") or 0))
+    except (TypeError, ValueError):
+        estimated_blocks = 0
+    if area_m2 >= DISTRICT_DIVERSITY_MIN_AREA_M2 or estimated_blocks >= DISTRICT_DIVERSITY_MIN_BLOCKS:
+        return PlanDiversity(
+            scale="district",
+            building_characters_per_band=3,
+            park_characters=3,
+            street_characters=3,
+            max_repeat_share=0.5,
+        )
+    if area_m2 >= NEIGHBORHOOD_DIVERSITY_MIN_AREA_M2 or estimated_blocks >= NEIGHBORHOOD_DIVERSITY_MIN_BLOCKS:
+        return PlanDiversity(
+            scale="neighborhood",
+            building_characters_per_band=2,
+            park_characters=2,
+            street_characters=2,
+            max_repeat_share=0.7,
+        )
+    return PlanDiversity()
+
+
 class MasterPlanSpec(BaseModel):
     design_narrative: str = ""
     # Declared palette family (archetype_families.json). All band characters
@@ -223,6 +271,7 @@ class MasterPlanSpec(BaseModel):
     open_space: OpenSpaceProgram = Field(default_factory=OpenSpaceProgram)
     landscape: LandscapePlan = Field(default_factory=LandscapePlan)
     public_realm: PublicRealmPlan = Field(default_factory=PublicRealmPlan)
+    diversity: PlanDiversity = Field(default_factory=PlanDiversity)
 
 
 @lru_cache(maxsize=1)
@@ -576,6 +625,7 @@ def validate_spec(
         open_space=open_space,
         landscape=landscape,
         public_realm=public_realm,
+        diversity=spec.diversity,
     )
     return validated, notes
 
@@ -645,6 +695,137 @@ def _select_lego_character(
     if selection is None:
         raise ValueError(f"LEGO archetype '{parent_id}' has no executable identity and floor pair.")
     return capability, selection.variant_id, selection.floors
+
+
+def _fill_site_scaled_lego_alternates(
+    bands: dict[str, BandPlan],
+    *,
+    diversity: PlanDiversity,
+    lego_catalog: LegoPlanningCatalog,
+    dimensions: dict[str, dict[str, Any]],
+    notes: list[dict[str, Any]],
+) -> None:
+    """Guarantee a coherent alternate palette when a larger-site LLM omits it.
+
+    Same-band rotation is the geometry engine's safe diversity mechanism: each
+    block is carved to its own primary family's native footprint. We therefore
+    add parents here, before placement, instead of forcing unlike authored 3D
+    assets into an already-cut cell. Existing AI choices always lead; catalog
+    additions merely fill the size-derived minimum when compatible inventory
+    exists at the band's exact floor count.
+    """
+
+    requested_count = min(
+        diversity.building_characters_per_band,
+        MAX_ALTERNATES + 1,
+        len(lego_catalog.capabilities),
+    )
+    if requested_count <= 1:
+        return
+
+    by_parent = {capability.parent_id: capability for capability in lego_catalog.capabilities}
+    added = 0
+    underfilled: list[str] = []
+    for band_key in BAND_KEYS:
+        band = bands.get(band_key)
+        if band is None or band.archetype_id not in by_parent:
+            continue
+        # A neighborhood has one landmark anchor, not a rotating landmark row.
+        target_count = min(requested_count, 2) if band_key == "anchor" else requested_count
+        primary_capability = by_parent[band.archetype_id]
+        primary_family = family_of(primary_capability.parent_id)
+        allowed_families = compatible_families(primary_family) if primary_family else frozenset()
+        existing_parents = {
+            parent_id
+            for parent_id in (
+                band.archetype_id,
+                *(alternate.archetype_id for alternate in band.alternates),
+            )
+            if parent_id
+        }
+        if len(existing_parents) >= target_count:
+            continue
+
+        primary_type = _norm(primary_capability.development_type)
+        primary_aesthetic = _norm(primary_capability.aesthetic_category)
+        candidates: list[tuple[tuple[int, int, int, str], LegoArchetypeCapability, str | None]] = []
+        for capability in lego_catalog.capabilities:
+            if capability.parent_id in existing_parents:
+                continue
+            selection = select_lego_archetype(
+                lego_catalog,
+                capability.parent_id,
+                band.floors,
+            )
+            if selection is None or int(selection.floors) != int(round(band.floors)):
+                continue
+            candidate_family = family_of(capability.parent_id)
+            candidate_type = _norm(capability.development_type)
+            candidate_aesthetic = _norm(capability.aesthetic_category)
+            same_type = candidate_type == primary_type
+            related_aesthetic = bool(
+                primary_aesthetic
+                and candidate_aesthetic
+                and (
+                    primary_aesthetic in candidate_aesthetic
+                    or candidate_aesthetic in primary_aesthetic
+                )
+            )
+            if primary_family and candidate_family == primary_family:
+                coherence_rank = 0
+            elif primary_family and candidate_family in allowed_families:
+                coherence_rank = 1
+            elif same_type or related_aesthetic:
+                coherence_rank = 2
+            else:
+                # Do not satisfy a numeric target by creating an architectural
+                # mash-up. A smaller coherent executable palette is truthful.
+                continue
+            score = (
+                coherence_rank,
+                0 if same_type else 1,
+                0 if related_aesthetic else 1,
+                capability.parent_id,
+            )
+            candidates.append((score, capability, selection.variant_id))
+
+        for _score, capability, variant_id in sorted(candidates, key=lambda item: item[0]):
+            entry = dimensions.get(capability.parent_id)
+            if entry is None:
+                continue
+            band.alternates.append(
+                BandAlternate(
+                    development_type=_norm(entry["development_type"]),
+                    aesthetic=_norm(entry["aesthetic_category"]),
+                    archetype_id=capability.parent_id,
+                    variant_id=variant_id,
+                )
+            )
+            existing_parents.add(capability.parent_id)
+            added += 1
+            if len(existing_parents) >= target_count or len(band.alternates) >= MAX_ALTERNATES:
+                break
+        if len(existing_parents) < target_count:
+            underfilled.append(band_key)
+
+    if added:
+        notes.append(
+            _note(
+                "MASTER_PLAN_DIVERSITY_FILLED",
+                f"The {diversity.scale} site diversity contract added {added} compatible "
+                "LEGO building character"
+                f"{'s' if added != 1 else ''} to under-specified bands.",
+            )
+        )
+    if underfilled:
+        notes.append(
+            _note(
+                "MASTER_PLAN_DIVERSITY_CATALOG_LIMITED",
+                "The installed executable catalog cannot fully meet the "
+                f"{diversity.scale} diversity target for: {', '.join(underfilled)}. "
+                "The plan kept the smaller coherent palette instead of mixing incompatible families.",
+            )
+        )
 
 
 def _validate_spec_with_lego(
@@ -788,6 +969,14 @@ def _validate_spec_with_lego(
             alternates=alternates,
         )
 
+    _fill_site_scaled_lego_alternates(
+        repaired_bands,
+        diversity=common.diversity,
+        lego_catalog=lego_catalog,
+        dimensions=dimensions,
+        notes=notes,
+    )
+
     family_votes = [family_of(band.archetype_id) for band in repaired_bands.values() if family_of(band.archetype_id)]
     style_family = (
         sorted(set(family_votes), key=lambda family: (-family_votes.count(family), family))[0] if family_votes else None
@@ -814,6 +1003,7 @@ def lego_fallback_spec(
     palette_hint: str | None = None,
     *,
     narrative: str = "The imported LEGO building library sets the district character.",
+    site_summary: dict[str, Any] | None = None,
 ) -> MasterPlanSpec:
     """Create a complete zero-LLM plan constrained to executable families."""
 
@@ -843,6 +1033,7 @@ def lego_fallback_spec(
             courtyard_structure=preset.landscape.get("courtyard", "garden_courtyard"),
             greenway_structure=preset.landscape.get("greenway", "formal_allee"),
         ),
+        diversity=diversity_plan_for_site(site_summary),
     )
     validated, _ = validate_spec(
         raw,
@@ -924,6 +1115,50 @@ def palette_from_spec(
     target_dimensions_by_selectable_id = (
         dict(lego_catalog.target_dimensions_by_selectable_id) if lego_catalog is not None else {}
     )
+    public_realm_variants = (
+        {
+            key: value
+            for key, value in {
+                "spine": spec.public_realm.spine_street_variant_id,
+                "local": spec.public_realm.local_street_variant_id,
+                "central": spec.public_realm.central_park_variant_id,
+                "pocket": spec.public_realm.pocket_park_variant_id,
+                "courtyard": spec.public_realm.courtyard_variant_id,
+                "greenway": spec.public_realm.greenway_variant_id,
+                "plaza": "formal_civic_plaza_v0",
+                "pond": "stormwater_retention_pond_v0",
+                "path": "multi_use_trail_v1",
+                "lane": "toronto_laneway_v0",
+                "roundabout": "roundabout_v0",
+            }.items()
+            if value
+        }
+        if lego_catalog is not None
+        else {}
+    )
+    public_realm_variant_cycles: dict[str, tuple[str, ...]] = {}
+    if lego_catalog is not None:
+        role_archetypes = {
+            "spine": spec.spine_archetype_id,
+            "local": spec.local_archetype_id,
+            "central": spec.open_space.central_park_archetype_id,
+            "pocket": "urban_pocket_park",
+            "courtyard": "urban_pocket_park",
+            "greenway": "linear_park_greenway",
+        }
+        for role, archetype_id in role_archetypes.items():
+            selected = public_realm_variants.get(role)
+            allowed = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE.get(archetype_id or "", ())
+            if not selected or selected not in allowed:
+                continue
+            target = (
+                spec.diversity.street_characters
+                if role in {"spine", "local"}
+                else spec.diversity.park_characters
+            )
+            public_realm_variant_cycles[role] = tuple(
+                list(dict.fromkeys((selected, *allowed)))[:target]
+            )
 
     return Palette(
         bands=bands,
@@ -946,27 +1181,8 @@ def palette_from_spec(
             "greenway": spec.landscape.greenway_structure,
             "plaza": "formal_allee",
         },
-        public_realm_variants=(
-            {
-                key: value
-                for key, value in {
-                    "spine": spec.public_realm.spine_street_variant_id,
-                    "local": spec.public_realm.local_street_variant_id,
-                    "central": spec.public_realm.central_park_variant_id,
-                    "pocket": spec.public_realm.pocket_park_variant_id,
-                    "courtyard": spec.public_realm.courtyard_variant_id,
-                    "greenway": spec.public_realm.greenway_variant_id,
-                    "plaza": "formal_civic_plaza_v0",
-                    "pond": "stormwater_retention_pond_v0",
-                    "path": "multi_use_trail_v1",
-                    "lane": "toronto_laneway_v0",
-                    "roundabout": "roundabout_v0",
-                }.items()
-                if value
-            }
-            if lego_catalog is not None
-            else {}
-        ),
+        public_realm_variants=public_realm_variants,
+        public_realm_variant_cycles=public_realm_variant_cycles,
         central_archetype_id=spec.open_space.central_park_archetype_id,
         single_block_typology=spec.single_block_typology,
         allowed_archetype_ids=allowed_archetype_ids,

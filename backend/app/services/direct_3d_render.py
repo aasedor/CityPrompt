@@ -3788,8 +3788,16 @@ class Direct3DRenderService:
             "output_format": "png",
         }
         headers = {"Authorization": f"Bearer {self.api_key}"}
+        attachment_inventory = [
+            {
+                "field": field_name,
+                "filename": file_value[0],
+                "bytes": len(file_value[1]),
+            }
+            for field_name, file_value in files
+        ]
         logger.info(
-            "Direct 3D edit request: model=%s mode=%s style=%s fidelity=%s size=%s coverage=%.3f object_id=%s instance_id=%s fingerprint=%s",
+            "Direct 3D edit request: model=%s mode=%s style=%s fidelity=%s size=%s coverage=%.3f object_id=%s instance_id=%s fingerprint=%s attachments=%s total_attachment_bytes=%d",
             DIRECT_3D_MODEL,
             req.presentation_mode,
             req.style,
@@ -3799,6 +3807,8 @@ class Direct3DRenderService:
             capture.normalized_object_id is not None,
             capture.normalized_instance_id is not None,
             capture.capture_fingerprint[:16],
+            attachment_inventory,
+            sum(item["bytes"] for item in attachment_inventory),
         )
 
         # Exactly one provider call. Legacy source-anchored mode includes its
@@ -3822,8 +3832,14 @@ class Direct3DRenderService:
         except httpx.HTTPError as exc:
             # Read/write/protocol failures can occur after the upload reached
             # OpenAI. Billing cannot be inferred from the missing response.
+            logger.warning(
+                "OpenAI Direct 3D transport failure after submission: type=%s repr=%r",
+                type(exc).__name__,
+                exc,
+            )
             raise Direct3DProviderError(
-                f"OpenAI Direct 3D request outcome is unknown: {exc}",
+                "OpenAI Direct 3D request outcome is unknown: "
+                f"{type(exc).__name__}: {exc!r}",
                 billing_status="unknown",
             ) from exc
         if response.status_code != 200:
