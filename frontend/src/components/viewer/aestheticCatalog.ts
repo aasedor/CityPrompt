@@ -325,13 +325,15 @@ function toArchetypeImages(
   seed: ArchetypeSeed,
 ): ArchetypeImage[] {
   const variants = visualSystem.cardVariants || [];
-  // Derive folder slug: use the slug from thumbnailUrl when the domain uses
-  // hyphenated directory names (streets, openspaces), fall back to seed.id
-  // for domains that use underscored directory names (buildings).
+  // Derive the folder from the authored thumbnail path whenever one exists.
+  // Building ids and asset folders are not always the same slug (for example
+  // contemporary_midrise_residential vs contemporary_mid_rise_residential),
+  // so falling back to the catalogue id merely because a folder uses
+  // underscores produces valid-looking URLs that 404 in the picker.
   const thumbSlug = seed.thumbnailUrl
     ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
     : undefined;
-  const folderSlug = thumbSlug && thumbSlug.includes('-') ? thumbSlug : seed.id;
+  const folderSlug = thumbSlug || seed.id;
   return variants.map((variant) => {
     const imagePath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
     const thumbPath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
@@ -375,12 +377,22 @@ function toAestheticOption(
   const styleProfile = (seed.styleProfile || {}) as StyleProfile;
   const category = seed.aestheticCategory;
 
-  // Use the first design variant's thumbnail as hero (paths are known-correct),
-  // fall back to the visual system primary image
+  // The catalogue's hero is the canonical archetype reference. Design
+  // variants remain fallback references, but generated 3D previews must never
+  // replace the authored archetype image in the picker.
+  const authoredHero = seed.thumbnailUrl
+    ? resolvePublicAssetUrl(seed.thumbnailUrl)
+    : undefined;
   const heroFromVariant = seed.variants?.[0]?.thumbnailUrl;
-  const heroUrl = heroFromVariant
+  const resolvedVariantHero = heroFromVariant
     ? resolvePublicAssetUrl(heroFromVariant)
-    : (primary?.imageUrl || '');
+    : undefined;
+  const heroUrl = authoredHero || resolvedVariantHero || primary?.imageUrl || '';
+  const photoUrls = [
+    authoredHero,
+    resolvedVariantHero,
+    ...orderedArchetypeImages.map((image) => image.imageUrl),
+  ].filter((url, index, values): url is string => Boolean(url) && values.indexOf(url) === index);
 
   return {
     id: seed.id,
@@ -388,7 +400,7 @@ function toAestheticOption(
     label: seed.title,
     description: seed.description,
     photoUrl: heroUrl,
-    photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
+    photoUrls,
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
     developmentType: seed.developmentType || (Array.isArray(seed.developmentTypes) ? seed.developmentTypes[0] : undefined),
     developmentTypes: seed.developmentType ? [seed.developmentType] : (Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined),
