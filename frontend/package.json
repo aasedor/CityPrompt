@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
+    "check:archetype-assets": "node scripts/check-archetype-assets.mjs",
     "check-budget": "node scripts/check-bundle-size.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

@@ -3117,11 +3117,26 @@ def _presentation_prompt(
             " ARCHETYPE REFERENCES: "
             + "; ".join(reference_roles)
             + ". Unlike the metadata above, these are authored design sources: "
-            "apply each reference's materials, facade rhythm, opening "
-            "proportions, colour palette and detailing to its named building "
-            "while preserving Image 1's geometry, massing, position and "
-            "camera exactly."
+            "apply every BUILDING reference strictly to its named building; "
+            "apply every PARK or STREET reference to its named public-realm "
+            "zone using the capacity rule stated in that reference label. "
+            "Reference identity overrides generic material examples while "
+            "Image 1 remains authoritative for geometry, massing, position, "
+            "polygon extent, cross-section and camera."
         )
+    archetype_identity_lock = (
+        " ARCHETYPE IDENTITY LOCK: Attached building references are strict: "
+        "preserve their selected architectural language, material hierarchy, "
+        "facade rhythm, openings, roof character and detailing; never replace "
+        "them with another period or style. Attached park and street references "
+        "are appearance-strict but capacity-flexible: preserve their planting, "
+        "surface, edge and furnishing language while using only complete program "
+        "elements that fit the compiled polygon or cross-section. Generic art-"
+        "direction material examples apply only when that material already exists "
+        "in Image 1 or its attached reference."
+        if archetype_reference_labels
+        else ""
+    )
     inventory = _server_inventory_prompt(server_inventory)
     treatment = _PRESENTATION_STYLE_TREATMENTS.get(
         style,
@@ -3161,7 +3176,7 @@ def _presentation_prompt(
             "Do not add, remove, split, merge, move or redesign any permanent "
             "building, road, park, water body or site feature. You may add only "
             "non-permanent entourage and finish detail such as people, bicycles, "
-            "vehicles, cafe seating, planting, benches and lighting. "
+            "vehicles, cafe seating, planting, benches and lighting." + archetype_identity_lock + " "
             "CONTEXT IDENTITY: every existing building around the proposal is a "
             "real photographed structure — keep each one recognizably itself, "
             "with its own cladding colours, materials, window pattern and roof "
@@ -3187,7 +3202,7 @@ def _presentation_prompt(
             "rooflines, site layout, street, intersection and path topology, park "
             "boundaries, water bodies and adjacency relationships. Do not add, "
             "remove, split, merge, move or redesign any permanent building, road, "
-            "park, water body or site feature."
+            "park, water body or site feature." + archetype_identity_lock
         )
     prompt_prefix = "\n".join(
         [
@@ -3215,6 +3230,7 @@ def _authoritative_prompt(
     instance_id_manifest: dict[str, Any] | None = None,
     server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
+    archetype_reference_labels: list[str] | None = None,
 ) -> str:
     has_object_id = bool(object_id_manifest)
     has_instance_id = bool(instance_id_manifest)
@@ -3258,6 +3274,24 @@ def _authoritative_prompt(
             "split one object into multiple visible regions. The compact B/S/P identifiers "
             "exist only in the guide as metadata and must never appear in the render."
         )
+    reference_guidance = ""
+    reference_lock = ""
+    if archetype_reference_labels:
+        reference_entries = "; ".join(
+            f"Image {structural_guide_number + 1 + offset}: {label}"
+            for offset, label in enumerate(archetype_reference_labels)
+        )
+        reference_guidance = (
+            "\n\nARCHETYPE REFERENCES: "
+            + reference_entries
+            + ". These are authored design sources, not metadata images."
+        )
+        reference_lock = (
+            " ARCHETYPE IDENTITY LOCK: apply building references strictly to "
+            "their named buildings. Apply park and street references with their "
+            "stated size-aware capacity rules. Their selected material, planting, "
+            "surface and furnishing identities override generic style examples."
+        )
     authority = (
         "DIRECT 3D GEOMETRY LOCK: Image 1 is the authoritative clean 3D scene. "
         "Preserve its exact camera, projection, framing, horizon, terrain, building "
@@ -3267,21 +3301,27 @@ def _authoritative_prompt(
         "and atmospheric polish inside the transparent edit mask. Do not invent, "
         "remove, move, resize, rotate, or recompose any designed element. Preserve all "
         "unmasked context exactly. The result must be a direct stylization of Image 1, "
-        "not a redesigned scene." + id_guidance + instance_guidance + edge_guidance + component_guidance
+        "not a redesigned scene."
+        + id_guidance
+        + instance_guidance
+        + edge_guidance
+        + component_guidance
+        + reference_lock
     )
     inventory = _server_inventory_prompt(server_inventory)
     # Repeat the non-negotiable lock after user prose so a client prompt cannot
     # weaken the geometry rules through recency or contradictory instructions.
     prompt = (
-        f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n" f"{client_prompt.strip()}\n\n{authority}"
+        f"{authority}{legend}{reference_guidance}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
+        f"{client_prompt.strip()}\n\n{authority}"
     )
     if len(prompt) > 31_900:
         available = max(
             1,
-            31_900 - len(authority) * 2 - len(legend) - len(inventory) - 44,
+            31_900 - len(authority) * 2 - len(legend) - len(reference_guidance) - len(inventory) - 44,
         )
         prompt = (
-            f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
+            f"{authority}{legend}{reference_guidance}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
             f"{client_prompt.strip()[:available]}\n\n{authority}"
         )
     return prompt
@@ -3724,6 +3764,7 @@ class Direct3DRenderService:
                 instance_id_manifest=req.instance_id_manifest,
                 server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
+                archetype_reference_labels=[reference.label for reference in req.archetype_references],
             )
             if req.presentation_mode == "source_anchored"
             else _presentation_prompt(

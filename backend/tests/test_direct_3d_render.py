@@ -1772,6 +1772,26 @@ def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
     assert "never draw, tint, or expose its contours or labels" in prompt
 
 
+def test_authoritative_prompt_numbers_and_locks_exact_archetype_references():
+    prompt = _authoritative_prompt(
+        "Use warm limestone only where the source already contains stone.",
+        {"#FF0000": "building"},
+        {"#010001": {"instance_id": "zone:test:building"}},
+        archetype_reference_labels=[
+            "BUILDING FIDELITY REFERENCE - Scandinavian white plaster",
+            "PARK APPEARANCE REFERENCE - Natural meadow; capacity-flexible",
+        ],
+    )
+
+    # beauty(1) + class(2) + instance(3) + structure(4) -> references at 5, 6.
+    assert "Image 5: BUILDING FIDELITY REFERENCE - Scandinavian white plaster" in prompt
+    assert "Image 6: PARK APPEARANCE REFERENCE - Natural meadow; capacity-flexible" in prompt
+    assert "authored design sources, not metadata images" in prompt
+    assert "apply building references strictly" in prompt
+    assert "stated size-aware capacity rules" in prompt
+    assert "override generic style examples" in prompt
+
+
 def test_provider_first_prompts_use_one_concise_natural_design_lock():
     scene = _presentation_prompt(
         "Bright softly overcast daylight, warm limestone and restrained planting.",
@@ -4199,7 +4219,11 @@ def test_presentation_prompt_numbers_archetype_references_after_metadata():
     # beauty(1) + class(2) + instance(3) + structure(4) -> references at 5, 6.
     assert "ARCHETYPE REFERENCES: Image 5: FACADE SOURCE — Haussmann block; " in prompt
     assert "Image 6: STYLE REFERENCE — Warehouse lofts" in prompt
-    assert "apply each reference's materials" in prompt
+    assert "apply every BUILDING reference strictly" in prompt
+    assert "PARK or STREET reference" in prompt
+    assert "ARCHETYPE IDENTITY LOCK" in prompt
+    assert "appearance-strict but capacity-flexible" in prompt
+    assert "Generic art-direction material examples apply only" in prompt
     # The design lock must still close the prompt.
     assert prompt.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
 
@@ -4212,3 +4236,4 @@ def test_presentation_prompt_omits_reference_clause_without_references():
         object_id_manifest={"#FF0000": "building"},
     )
     assert "ARCHETYPE REFERENCES" not in prompt
+    assert "ARCHETYPE IDENTITY LOCK" not in prompt

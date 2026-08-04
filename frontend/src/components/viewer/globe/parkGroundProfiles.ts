@@ -439,23 +439,26 @@ export function fitParkGroundGuides(
   };
 }
 
-const GUIDE_COUNT_LABELS: Partial<Record<ParkGuideKind, string>> = {
-  tennis_court: 'tennis courts',
-  soccer_field: 'football/soccer fields',
-  track: 'track/oval envelopes',
-  rectangle: 'fixed rectangular program elements',
-  rounded_rectangle: 'fixed rounded-rectangular program elements',
-  ellipse: 'fixed elliptical program elements',
-  line: 'fixed linear structures',
+const GUIDE_COUNT_LABELS: Partial<Record<ParkGuideKind, [singular: string, plural: string]>> = {
+  tennis_court: ['tennis court', 'tennis courts'],
+  soccer_field: ['football/soccer field', 'football/soccer fields'],
+  track: ['track/oval envelope', 'track/oval envelopes'],
+  rectangle: ['fixed rectangular program element', 'fixed rectangular program elements'],
+  rounded_rectangle: ['fixed rounded-rectangular program element', 'fixed rounded-rectangular program elements'],
+  ellipse: ['fixed elliptical program element', 'fixed elliptical program elements'],
+  line: ['fixed linear structure', 'fixed linear structures'],
 };
 
 export function describeParkGroundGuideFit(result: ParkGroundGuideFitResult): string {
   if (result.omittedGuides.length === 0) return '';
   const kinds = [...new Set(result.omittedGuides.map((guide) => guide.kind))];
-  const counts = kinds.map((kind) => (
-    `${result.fittedCounts[kind] ?? 0} complete ${GUIDE_COUNT_LABELS[kind] ?? kind} `
-    + `fit out of ${result.originalCounts[kind] ?? 0}`
-  ));
+  const counts = kinds.map((kind) => {
+    const fittedCount = result.fittedCounts[kind] ?? 0;
+    const labels = GUIDE_COUNT_LABELS[kind] ?? [kind, `${kind}s`];
+    const label = fittedCount === 1 ? labels[0] : labels[1];
+    return `${fittedCount} complete ${label} ${fittedCount === 1 ? 'fits' : 'fit'} `
+      + `out of ${result.originalCounts[kind] ?? 0}`;
+  });
   return 'WHOLE-ELEMENT FIT OVERRIDE: '
     + `${counts.join('; ')}. Elements that did not fit were omitted as complete objects. `
     + 'Do not draw, reconstruct, crop, truncate, squeeze or scale any omitted element; leave its area as compatible open landscape or circulation.';

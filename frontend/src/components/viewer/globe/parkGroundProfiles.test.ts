@@ -509,6 +509,15 @@ describe('park ground pilot profiles', () => {
     expect(describeParkGroundGuideFit(fit)).toContain('2 complete tennis courts fit out of 3');
   });
 
+  it('reduces a four-court archetype to one complete court on a small parcel', () => {
+    const tennis = resolveParkGroundProfile(zone('tennis_court_cluster')).guides;
+    const fit = fitParkGroundGuides(tennis, { width: 46, height: 26 });
+
+    expect(fit.guides.filter((guide) => guide.kind === 'tennis_court')).toHaveLength(1);
+    expect(fit.omittedGuides.filter((guide) => guide.kind === 'tennis_court')).toHaveLength(3);
+    expect(describeParkGroundGuideFit(fit)).toContain('1 complete tennis court fits out of 4');
+  });
+
   it('finds orientations for the field and all three whole courts in the current sloped trial parcel', () => {
     const sports = resolveParkGroundProfile(zone('sports_field_complex')).guides;
     const fit = fitParkGroundGuides(

@@ -1,15 +1,16 @@
 /**
  * Authored archetype artwork for Direct 3D renders.
  *
- * Collects per-building style references — the compiler's facade elevation
- * sheets first (binding design sources), catalogue hero cards otherwise — and
- * labels each with the building it styles plus the authored family identity.
- * The backend attaches them to the provider call after the metadata passes
- * and instructs the model to apply them to the named buildings.
+ * Buildings are bound to their exact selected variant and authored facade
+ * source whenever one exists. Parks and streets carry the selected catalogue
+ * appearance too, but their labels explicitly allow the metric program to
+ * respond to the drawn polygon without squeezing or inventing facilities.
  */
 import type { SiteZone } from '@/types';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import legoFamilySignatures from '@/data/legoFamilySignatures.json';
+import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
+import streetCatalog from '@/data/streetPathArchetypes.json';
 
 export interface Direct3DArchetypeReference {
   image_base64: string;
@@ -23,26 +24,96 @@ interface FamilySignature {
   elevationUrl?: string;
 }
 
+interface CatalogVariant {
+  id?: string;
+  label?: string;
+  description?: string;
+  thumbnailUrl?: string;
+}
+
 interface CatalogEntry {
   id?: string;
   title?: string;
   thumbnailUrl?: string;
+  variants?: CatalogVariant[];
+}
+
+interface ReferenceCandidate {
+  key: string;
+  kind: 'building' | 'park' | 'street';
+  title: string;
+  selectedId: string;
+  imageUrl?: string;
+  signature?: FamilySignature;
+  variant?: CatalogVariant;
+  zoneNames: string[];
+  targetDescription?: string;
 }
 
 const FAMILIES: Record<string, FamilySignature> =
   (legoFamilySignatures as { families?: Record<string, FamilySignature> }).families ?? {};
 
-const CATALOG: CatalogEntry[] =
+const BUILDINGS: CatalogEntry[] =
   (buildingCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? [];
 
-/** Server-side schema cap is 8; leave headroom for future street/park refs. */
-const MAX_REFERENCES = 6;
+const PARKS: CatalogEntry[] =
+  (openSpaceCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? [];
+
+const STREETS: CatalogEntry[] =
+  (streetCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? [];
+
+/** The server schema accepts at most eight reference images. */
+const MAX_REFERENCES = 8;
 const MAX_LABEL_LENGTH = 600;
 
-/** Planner cards store `<archetype>_variant_<n>`; the suffix picks artwork,
- *  not a different family. Mirrors the backend/LEGO matching rule. */
+/** Planner cards may store numbered view variants on the parent identity. */
 function stripCardVariantSuffix(id: string): string {
   return id.replace(/_(?:variant_|v)\d+$/, '');
+}
+
+function normalizeId(value: unknown): string {
+  return typeof value === 'string' ? value.trim().toLowerCase().replace(/-/g, '_') : '';
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : null;
+}
+
+function findEntry(catalog: CatalogEntry[], id: string): CatalogEntry | undefined {
+  const normalized = normalizeId(id);
+  return catalog.find((entry) => normalizeId(entry.id) === normalized)
+    ?? catalog.find((entry) => normalizeId(entry.id) === stripCardVariantSuffix(normalized));
+}
+
+function findVariant(entry: CatalogEntry | undefined, id: string): CatalogVariant | undefined {
+  const normalized = normalizeId(id);
+  return entry?.variants?.find((variant) => normalizeId(variant.id) === normalized);
+}
+
+function targetDescription(
+  properties: Record<string, unknown>,
+  kind: 'park' | 'street',
+): string | undefined {
+  const recipe = asRecord(properties.public_realm_lego);
+  const target = asRecord(recipe?.target);
+  if (!target) return undefined;
+  const number = (key: string) => {
+    const value = Number(target[key]);
+    return Number.isFinite(value) && value > 0 ? value : undefined;
+  };
+  if (kind === 'park') {
+    const width = number('width_m');
+    const depth = number('depth_m');
+    const area = number('area_m2');
+    return width && depth
+      ? `${width.toFixed(1)} by ${depth.toFixed(1)} metre polygon${area ? ` (${Math.round(area)} square metres)` : ''}`
+      : undefined;
+  }
+  const row = number('row_width_m');
+  const length = number('length_m');
+  return row && length ? `${row.toFixed(1)} metre width over ${Math.round(length)} metres` : undefined;
 }
 
 async function fetchImageBase64(url: string): Promise<string | null> {
@@ -75,67 +146,151 @@ function clampLabel(label: string): string {
   return label.length <= MAX_LABEL_LENGTH ? label : `${label.slice(0, MAX_LABEL_LENGTH - 1)}…`;
 }
 
-/** Collect authored style references for the building zones in a capture. */
+function namedZones(candidate: ReferenceCandidate): string {
+  return candidate.zoneNames.length
+    ? ` for ${candidate.kind === 'building' ? 'building(s)' : 'zone(s)'} ${candidate.zoneNames.map((name) => `"${name}"`).join(', ')}`
+    : '';
+}
+
+function candidateLabel(candidate: ReferenceCandidate, facadeSource: boolean): string {
+  const selected = candidate.variant?.label || candidate.selectedId.replace(/_/g, ' ');
+  const heading = candidate.kind === 'building'
+    ? `${facadeSource ? 'FACADE SOURCE' : 'BUILDING FIDELITY REFERENCE'} — ${candidate.title} — ${selected}`
+    : candidate.kind === 'park'
+      ? `PARK APPEARANCE REFERENCE — ${candidate.title} — ${selected}`
+      : `STREET APPEARANCE REFERENCE — ${candidate.title} — ${selected}`;
+  const binding = candidate.kind === 'building'
+    ? 'BINDING BUILDING IDENTITY: reproduce this selected variant\'s architectural language, material hierarchy, facade rhythm, openings, roof character and detailing. It overrides generic material examples; never substitute an unrelated architectural style.'
+    : candidate.kind === 'park'
+      ? `BINDING APPEARANCE, FLEXIBLE CAPACITY: preserve this variant's planting, surface and furniture language. Fit only complete program elements to the actual ${candidate.targetDescription ?? 'drawn park polygon'}; never crop, squeeze or multiply equipment to imitate the reference. Small polygons may carry one complete facility or one landscape room.`
+      : `BINDING CORRIDOR IDENTITY: preserve this variant's surface, planting, edge and furnishing language across the actual ${candidate.targetDescription ?? 'drawn street segment'}. Keep the compiled cross-section exact; corridor length may change only the count and spacing of complete repeated furnishings.`;
+  const identity = candidate.signature?.identity
+    ? ` AUTHORED IDENTITY: ${candidate.signature.identity}${candidate.signature.materialZones ? ` Materials: ${candidate.signature.materialZones}.` : ''}`
+    : candidate.variant?.description ? ` SELECTED VARIANT: ${candidate.variant.description}` : '';
+  return clampLabel(`${heading}${namedZones(candidate)}. ${binding}${identity}`);
+}
+
+function addCandidate(
+  candidates: Map<string, ReferenceCandidate>,
+  candidate: ReferenceCandidate,
+  zoneName: string | undefined,
+): void {
+  const existing = candidates.get(candidate.key);
+  if (!existing) {
+    if (zoneName) candidate.zoneNames.push(zoneName);
+    candidates.set(candidate.key, candidate);
+    return;
+  }
+  if (zoneName && existing.zoneNames.length < 3 && !existing.zoneNames.includes(zoneName)) {
+    existing.zoneNames.push(zoneName);
+  }
+}
+
+function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
+  const candidates = new Map<string, ReferenceCandidate>();
+  for (const zone of zones) {
+    const props = asRecord(zone.properties) ?? {};
+    if (zone.zone_type === 'building') {
+      const rawBaseId = normalizeId(props.development_archetype_id ?? props.archetype_id);
+      if (!rawBaseId) continue;
+      const baseId = stripCardVariantSuffix(rawBaseId);
+      const requestedVariantId = normalizeId(
+        props.development_selected_variant_id
+        ?? asRecord(props.generation_style_input)?.archetypeId
+        ?? baseId,
+      );
+      const entry = findEntry(BUILDINGS, baseId) ?? findEntry(BUILDINGS, requestedVariantId);
+      const variant = findVariant(entry, requestedVariantId);
+      // Visual-system view ids such as `<parent>_variant_0` are camera cards,
+      // not design variants. Collapse them to the parent so repeated buildings
+      // share one reference; only a catalogue design variant remains exact.
+      const selectedId = variant ? requestedVariantId : baseId;
+      const exactSignature = FAMILIES[selectedId];
+      const parentSignature = FAMILIES[baseId] ?? FAMILIES[stripCardVariantSuffix(baseId)];
+      const signature = exactSignature ?? parentSignature;
+      // Exact variant artwork wins unless an exact compiler signature proves
+      // the elevation belongs to this selected variant.
+      const imageUrl = exactSignature?.elevationUrl
+        ?? variant?.thumbnailUrl
+        ?? parentSignature?.elevationUrl
+        ?? entry?.thumbnailUrl;
+      addCandidate(candidates, {
+        key: `building:${selectedId}`,
+        kind: 'building',
+        title: entry?.title || baseId.replace(/_/g, ' '),
+        selectedId,
+        imageUrl,
+        signature,
+        variant,
+        zoneNames: [],
+      }, zone.name);
+      continue;
+    }
+
+    const parkId = normalizeId(props.green_space_archetype_id ?? props.plaza_archetype_id);
+    if (parkId) {
+      const selectedId = normalizeId(
+        props.green_space_selected_variant_id
+        ?? props.plaza_selected_variant_id
+        ?? parkId,
+      );
+      const entry = findEntry(PARKS, parkId);
+      const variant = findVariant(entry, selectedId);
+      addCandidate(candidates, {
+        key: `park:${selectedId}`,
+        kind: 'park',
+        title: entry?.title || parkId.replace(/_/g, ' '),
+        selectedId,
+        imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
+        variant,
+        zoneNames: [],
+        targetDescription: targetDescription(props, 'park'),
+      }, zone.name);
+      continue;
+    }
+
+    const streetId = normalizeId(props.road_archetype_id);
+    if (!streetId) continue;
+    const selectedId = normalizeId(props.road_selected_variant_id ?? streetId);
+    const entry = findEntry(STREETS, streetId);
+    const variant = findVariant(entry, selectedId);
+    addCandidate(candidates, {
+      key: `street:${selectedId}`,
+      kind: 'street',
+      title: entry?.title || streetId.replace(/_/g, ' '),
+      selectedId,
+      imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
+      variant,
+      zoneNames: [],
+      targetDescription: targetDescription(props, 'street'),
+    }, zone.name);
+  }
+  // Buildings remain strict and receive reference capacity first. Public realm
+  // follows in stable semantic order and is intentionally size-aware.
+  return [...candidates.values()].sort((left, right) => (
+    ['building', 'park', 'street'].indexOf(left.kind) - ['building', 'park', 'street'].indexOf(right.kind)
+    || left.key.localeCompare(right.key)
+  ));
+}
+
+/** Collect exact selected-variant artwork for the compiled proposal. */
 export async function collectDirect3DArchetypeReferences(
   zones: SiteZone[],
   limit: number = MAX_REFERENCES,
 ): Promise<Direct3DArchetypeReference[]> {
-  // Group building zones by resolved archetype so a repeated family attaches
-  // one reference naming every building it styles.
-  const byArchetype = new Map<string, { rawId: string; zoneNames: string[] }>();
-  for (const zone of zones) {
-    if (zone.zone_type !== 'building') continue;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const props: any = zone.properties || {};
-    const rawId = props.development_archetype_id || props.archetype_id;
-    if (!rawId) continue;
-    const baseId = stripCardVariantSuffix(String(rawId));
-    const entry = byArchetype.get(baseId) ?? { rawId: String(rawId), zoneNames: [] };
-    if (zone.name && entry.zoneNames.length < 3) entry.zoneNames.push(zone.name);
-    byArchetype.set(baseId, entry);
-  }
-
   const references: Direct3DArchetypeReference[] = [];
-  for (const [baseId, { rawId, zoneNames }] of byArchetype) {
+  for (const candidate of collectCandidates(zones)) {
     if (references.length >= limit) break;
-    const signature = FAMILIES[baseId] ?? FAMILIES[rawId] ?? null;
-    const catalogEntry = CATALOG.find((c) => c.id === baseId)
-      ?? CATALOG.find((c) => c.id === rawId)
-      ?? null;
-    const title = catalogEntry?.title || baseId.replace(/_/g, ' ');
-    const buildingClause = zoneNames.length
-      ? ` for the building(s) named ${zoneNames.map((n) => `"${n}"`).join(', ')}`
-      : '';
-    const identityClause = signature?.identity
-      ? ` AUTHORED IDENTITY (binding): ${signature.identity}${signature.materialZones ? ` Materials: ${signature.materialZones}.` : ''}`
-      : '';
-
-    if (signature?.elevationUrl) {
-      const facade = await fetchImageBase64(signature.elevationUrl);
-      if (facade) {
-        references.push({
-          image_base64: facade,
-          label: clampLabel(
-            `FACADE SOURCE — ${title}${buildingClause}: authored facade elevation. `
-            + 'Reproduce this exact facade system — bay rhythm, opening proportions, '
-            + `coursing, cornice and materials — on the matching building.${identityClause}`,
-          ),
-        });
-        continue;
-      }
-    }
-    if (catalogEntry?.thumbnailUrl) {
-      const card = await fetchImageBase64(catalogEntry.thumbnailUrl);
-      if (card) {
-        references.push({
-          image_base64: card,
-          label: clampLabel(
-            `STYLE REFERENCE — ${title}${buildingClause}: apply this archetype's `
-            + `materials, facade character and detailing to the matching building.${identityClause}`,
-          ),
-        });
-      }
-    }
+    if (!candidate.imageUrl) continue;
+    const image = await fetchImageBase64(candidate.imageUrl);
+    if (!image) continue;
+    references.push({
+      image_base64: image,
+      label: candidateLabel(
+        candidate,
+        candidate.kind === 'building' && candidate.imageUrl === candidate.signature?.elevationUrl,
+      ),
+    });
   }
   return references;
 }
