@@ -20765,7 +20765,7 @@
                 {
                       "id": "london-heritage-mansion-portland-stone",
                       "label": "Portland Stone Corner",
-                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/hero.png",
+                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/variant_0.png",
                       "description": "A Kinnaird-quality study in pale Portland stone: rusticated base, tall sash windows, carved pediments, strongly projecting centre and corner pavilions, a deep modillion cornice, and a dark dormered mansard roof.",
                       "facadeDetail": {
                             "primaryMaterial": "warm Portland stone ashlar with subtle age variation",
@@ -20785,6 +20785,81 @@
                       "palette": {
                             "primary": "#D8D0C0",
                             "window": "#A8BBC5"
+                      }
+                },
+                {
+                      "id": "london-heritage-mansion-stock-brick",
+                      "label": "London Stock Brick",
+                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/variant_1.png",
+                      "description": "A London stock-brick mansion block with a Portland-stone rusticated base, pale stone window dressings, articulated corner pavilions, deep sash openings, and a dormered slate mansard.",
+                      "facadeDetail": {
+                            "primaryMaterial": "warm yellow-brown London stock brick with restrained natural variation",
+                            "secondaryMaterial": "Portland-stone rustication, string courses, quoins, architraves, and cornice",
+                            "groundFloor": "deeply rusticated Portland-stone base with an integrated arched entrance",
+                            "upperFloors": "multi-pane sash windows in deep brick reveals with pale stone heads and sills"
+                      },
+                      "roofDetail": {
+                            "form": "tall slate mansard with a shallow top deck and regular dormers",
+                            "material": "natural Welsh slate with lead flashings",
+                            "features": "pedimented dormers, brick-and-stone chimney stacks, and metal finials"
+                      },
+                      "minFloors": 5,
+                      "maxFloors": 5,
+                      "suggestedFloorHeight": 3.8,
+                      "shadeId": null,
+                      "palette": {
+                            "primary": "#B99B6B",
+                            "window": "#879AA3"
+                      }
+                },
+                {
+                      "id": "london-heritage-mansion-edwardian-terracotta",
+                      "label": "Edwardian Brick & Terracotta",
+                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/variant_2.png",
+                      "description": "An Edwardian red-brick interpretation with buff terracotta bands and dressings, a carved entrance pavilion, deeply modelled sash bays, a strong cornice, and dark dormered roof pavilions.",
+                      "facadeDetail": {
+                            "primaryMaterial": "deep red Edwardian facing brick with fine lime joints",
+                            "secondaryMaterial": "buff terracotta window surrounds, bands, quoins, pediments, and cornice",
+                            "groundFloor": "red-brick and buff-terracotta base with a recessed ceremonial entrance",
+                            "upperFloors": "vertically proportioned sash windows with alternating terracotta pediments"
+                      },
+                      "roofDetail": {
+                            "form": "dark slate mansard with raised pavilion roofs and rhythmic dormers",
+                            "material": "blue-grey Welsh slate with dark leadwork",
+                            "features": "terracotta-fronted dormers, tall chimneys, clay pots, and finials"
+                      },
+                      "minFloors": 5,
+                      "maxFloors": 5,
+                      "suggestedFloorHeight": 3.8,
+                      "shadeId": null,
+                      "palette": {
+                            "primary": "#8E4636",
+                            "window": "#566B75"
+                      }
+                },
+                {
+                      "id": "london-heritage-mansion-restored-bronze",
+                      "label": "Restored Stone & Bronze",
+                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/variant_3.png",
+                      "description": "A carefully restored pale-stone mansion block with crisp conservation repairs, dark bronze sash and entrance metalwork, warm occupied interiors, and a fully integrated bronze canopy beneath the original mansard skyline.",
+                      "facadeDetail": {
+                            "primaryMaterial": "cleaned warm Portland stone with visible fine ashlar joints and restrained repair variation",
+                            "secondaryMaterial": "restored carved stone rustication, architraves, pilasters, and modillion cornice",
+                            "groundFloor": "deep stone entrance reveal with an integrated dark-bronze canopy and glazed doors",
+                            "upperFloors": "deep-set sash windows with dark-bronze frames and subtly reflective glazing"
+                      },
+                      "roofDetail": {
+                            "form": "restored slate mansard with a shallow lead top deck and pavilion caps",
+                            "material": "dark natural slate, renewed lead flashings, and bronze accents",
+                            "features": "restored dormers, chimney stacks, clay pots, and restrained metal finials"
+                      },
+                      "minFloors": 5,
+                      "maxFloors": 5,
+                      "suggestedFloorHeight": 3.8,
+                      "shadeId": null,
+                      "palette": {
+                            "primary": "#D4CCBC",
+                            "window": "#3F4A4B"
                       }
                 }
           ],

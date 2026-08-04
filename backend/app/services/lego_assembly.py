@@ -57,6 +57,13 @@ STACKABLE_ROLES = ("podium", "floor", "setback", "crown", "roof")
 FIXED_LANDMARK_SCALE_MIN = 0.80
 FIXED_LANDMARK_SCALE_MAX = 1.20
 FIXED_LANDMARK_MAX_AXIS_RATIO = 1.18
+# A uniformly scaled landmark does not suffer the per-axis deformation guarded
+# by the stricter authored band. Permit a modest additional downscale when the
+# complete model still occupies the parcel coherently; beyond this bounded
+# contain-fit, use the authored stack/repeat kit.
+FIXED_LANDMARK_CONTAIN_SCALE_MIN = 0.62
+FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO = 2.00
+FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE = 1.80
 
 # Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
 SUPPORTED_MANIFEST_SCHEMA = 3
@@ -86,6 +93,11 @@ class ModuleDescriptor:
     source_variant_id: str | None = None
     generation_archetype_id: str | None = None
     footprint_compatibility: dict[str, Any] | None = None
+    # The declared width/depth are a placement envelope. The authored mesh may
+    # intentionally occupy less of that envelope (setbacks, shoulders, courts,
+    # chamfers, entrance recesses, sculptural roofs) and must not be stretched
+    # independently back to the parcel edges at runtime.
+    allow_inset_footprint: bool = False
 
 
 @dataclass(frozen=True)
@@ -192,6 +204,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             if isinstance(lego.get("footprint_compatibility"), dict)
             else None
         ),
+        allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
     )
 
 
@@ -681,6 +694,23 @@ def plan_vertical_assembly(
         if forced and best_plan is not None:
             break
         family_modules = [m for m in descriptors if m.family == family]
+        # Fixed landmarks are the most faithful option inside their audited
+        # near-native band. Outside it, prefer the semantic LEGO fallback kit
+        # so a hand-drawn rectangle does not crush a courtyard, dome, chamfer,
+        # mansard, entrance recess, or other identity-bearing form. An
+        # assembled-only family still remains usable in the forced pass, but
+        # it is uniformly contain-fitted rather than distorted per axis.
+        has_stack_fallback = (
+            any(module.role == "podium" for module in family_modules)
+            and any(module.role == "roof" for module in family_modules)
+            and (
+                request.target_floors <= 1
+                or any(
+                    module.role == "floor" and module.repeatable_z
+                    for module in family_modules
+                )
+            )
+        )
         assembled = _best(
             (
                 module for module in family_modules
@@ -721,12 +751,42 @@ def plan_vertical_assembly(
                 scale_x / max(scale_y, 1e-9),
                 scale_y / max(scale_x, 1e-9),
             )
+            authored_axis_scale_x = (
+                request.target_width_m / max(assembled.width_m, 1e-9)
+            )
+            authored_axis_scale_y = (
+                request.target_depth_m / max(assembled.depth_m, 1e-9)
+            )
+            raw_contain_scale = min(scale_x, scale_y)
+            # A parcel larger than the landmark does not require the building
+            # to swell until it touches an edge. Cap the applied scale at the
+            # family's audited maximum and leave the remaining land as a real
+            # setback inside the site envelope.
+            contain_scale = min(raw_contain_scale, landmark_scale_max)
             near_native_fit = (
                 landmark_scale_min <= scale_x <= landmark_scale_max
                 and landmark_scale_min <= scale_y <= landmark_scale_max
                 and axis_ratio <= landmark_max_axis_ratio
             )
-            if forced or near_native_fit:
+            uniform_contain_fit = (
+                FIXED_LANDMARK_CONTAIN_SCALE_MIN <= raw_contain_scale
+                and max(scale_x, scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
+                # Do not let a 90-degree trial disguise a genuinely oversized
+                # authored axis. Large sites still belong on the LEGO
+                # repeat/stack path; containment is for ordinary drawing
+                # tolerance around the landmark's declared orientation.
+                and max(authored_axis_scale_x, authored_axis_scale_y)
+                <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
+                and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
+            )
+            if (
+                near_native_fit
+                or uniform_contain_fit
+                or (forced and not has_stack_fallback)
+            ):
+                # The polygon is a site envelope, not an extrusion mould.
+                # Preserve the reviewed landmark proportions and centre the
+                # complete authored form inside the available rectangle.
                 family_score = 100.0 + _module_score(assembled, request)
                 if forced:
                     family_score -= 2.0 * (
@@ -758,31 +818,50 @@ def plan_vertical_assembly(
                         "segment_id": "landmark",
                         "position": [0.0, 0.0, 0.0],
                         "rotation_degrees": rectangle_rotation,
-                        "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
+                        "scale": [
+                            round(contain_scale, 5),
+                            round(contain_scale, 5),
+                            1.0,
+                        ],
                         "native_dimensions_m": [
                             assembled.width_m, assembled.depth_m, assembled.height_m,
                         ],
                     }],
                     "fit": {
-                        "scale_x": round(scale_x, 5),
-                        "scale_y": round(scale_y, 5),
+                        "scale_x": round(contain_scale, 5),
+                        "scale_y": round(contain_scale, 5),
+                        "envelope_scale_x": round(scale_x, 5),
+                        "envelope_scale_y": round(scale_y, 5),
                         "axis_ratio": round(axis_ratio, 5),
                         "score": round(family_score, 5),
                         "profile": "rectangle",
                         "segment_count": 1,
                         "assembly_mode": "fixed_landmark",
+                        "footprint_mode": "archetype_contain",
                         "compatibility_source": (
                             "forced_fit"
-                            if forced
+                            if forced and not (near_native_fit or uniform_contain_fit)
                             else "fixed_landmark_native"
                             if math.isclose(scale_x, 1.0, abs_tol=1e-6)
                             and math.isclose(scale_y, 1.0, abs_tol=1e-6)
                             else "fixed_landmark_tolerance"
+                            if near_native_fit
+                            else "fixed_landmark_contain"
                         ),
                         "scale_band": {
                             "min": landmark_scale_min,
                             "max": landmark_scale_max,
                             "max_axis_ratio": landmark_max_axis_ratio,
+                        },
+                        "containment_band": {
+                            "min": FIXED_LANDMARK_CONTAIN_SCALE_MIN,
+                            "max": landmark_scale_max,
+                            "max_envelope_axis_ratio": (
+                                FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
+                            ),
+                            "max_envelope_scale": (
+                                FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
+                            ),
                         },
                     },
                     "footprint_segments": [{
@@ -920,10 +999,23 @@ def plan_vertical_assembly(
         add_level(roof, "roof", request.target_floors)
 
         instances: list[dict[str, Any]] = []
-        for segment in segments:
+        # Keep every selected module inside the segment while applying one
+        # common horizontal scale to the complete stack. Scaling each level by
+        # its own native width/depth made every level fill the rectangle and
+        # erased authored setbacks, narrower crowns, roof shoulders and voids.
+        # The largest declared level envelope is the containment anchor; all
+        # smaller modules retain their designed relative footprint.
+        stack_envelope_width = max(module.width_m for module, _, _, _ in levels)
+        stack_envelope_depth = max(module.depth_m for module, _, _, _ in levels)
+        segment_contain_scales = [
+            min(
+                float(segment["length_m"]) / stack_envelope_width,
+                float(segment["thickness_m"]) / stack_envelope_depth,
+            )
+            for segment in segments
+        ]
+        for segment, contain_scale in zip(segments, segment_contain_scales, strict=True):
             for module, role, level, level_z in levels:
-                scale_x = float(segment["length_m"]) / module.width_m
-                scale_y = float(segment["thickness_m"]) / module.depth_m
                 instances.append(
                     {
                         "asset_id": module.id,
@@ -941,7 +1033,11 @@ def plan_vertical_assembly(
                             round(level_z, 4),
                         ],
                         "rotation_degrees": float(segment["rotation_degrees"]),
-                        "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
+                        "scale": [
+                            round(contain_scale, 5),
+                            round(contain_scale, 5),
+                            1.0,
+                        ],
                         "native_dimensions_m": [module.width_m, module.depth_m, module.height_m],
                     }
                 )
@@ -978,11 +1074,14 @@ def plan_vertical_assembly(
             "assembled_height_m": round(z, 4),
             "instances": instances,
             "fit": {
-                "scale_x": round(max(scale[0] for scale in segment_scales), 5),
-                "scale_y": round(max(scale[1] for scale in segment_scales), 5),
+                "scale_x": round(max(segment_contain_scales), 5),
+                "scale_y": round(max(segment_contain_scales), 5),
+                "envelope_scale_x": round(max(scale[0] for scale in segment_scales), 5),
+                "envelope_scale_y": round(max(scale[1] for scale in segment_scales), 5),
                 "score": round(family_score, 5),
                 "profile": request.footprint_profile,
                 "segment_count": len(segments),
+                "footprint_mode": "archetype_contain",
                 "compatibility_source": (
                     "forced_fit"
                     if forced
@@ -1136,6 +1235,7 @@ def lego_metadata_from_manifest(
         "material_count": module.get("material_count"),
         "coordinate_contract": manifest.get("coordinate_contract") or {},
         "footprint_compatibility": manifest.get("footprint_compatibility") or {},
+        "allow_inset_footprint": bool(module.get("allow_inset_footprint", False)),
         "source_variant_id": variant_id,
         "generation_archetype_id": generation_archetype_id,
         "asset_kind": "lego_module",

@@ -93,13 +93,23 @@ export function familyGenerationCommands(archetypeId: string): string {
   ].join('\n');
 }
 
-/** True when the planner had to stretch modules noticeably to hit the target footprint. */
+/** True when the planner distorted modules noticeably to hit the target footprint. */
 export function fitIsStretched(fit: LegoAssemblyPlan['fit'] | null | undefined): boolean {
   if (!fit) return false;
+  // Uniform containment changes overall size without changing the building's
+  // shape. The remaining space is an intentional site setback, not a failed
+  // fit or a reason to warn that the model was stretched.
+  if (fit.footprint_mode === 'archetype_contain') return false;
   return (
     Math.abs(fit.scale_x - 1) > SCALE_WARNING_THRESHOLD
     || Math.abs(fit.scale_y - 1) > SCALE_WARNING_THRESHOLD
   );
+}
+
+export function fitPreservesArchetypeForm(
+  fit: LegoAssemblyPlan['fit'] | null | undefined,
+): boolean {
+  return fit?.footprint_mode === 'archetype_contain';
 }
 
 export function Progress() {

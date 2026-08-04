@@ -1,8 +1,40 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-01-wave15-program-topology-v114",
-  "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
+  "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
+  "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+  "minimum_standard": {
+    "id": "haussmann-depth-shape-skin-scale@1",
+    "reference_archetype_id": "parisian_haussmann_classic",
+    "reference_goalpost_path": "docs/assets/high-quality-3d/haussmann-minimum-standard.png",
+    "manifest_evidence_field": "quality_standard_evidence",
+    "pillars": {
+      "archetype_shape": "Distinctive corners, courts, setbacks, roof profile and identity-bearing masses must form the archetype silhouette instead of decorating a generic box.",
+      "physical_depth": "Open railings, balcony slabs, recesses, returns, cornices, dormers, entrances and other shadow-casting construction must project or recede at believable metric depth.",
+      "photoreal_skin": "An archetype-specific render-locked PBR skin, layered glazing and occupied depth must remain convincing in the live City Prompt lighting stack.",
+      "lego_scalability": "Fixed identity anchors retain authored proportions while complete repeatable middle bays and an authored fallback absorb ordinary user-drawn variation."
+    },
+    "minimum_distinctive_shape_features": 2,
+    "minimum_physical_depth_features": 2,
+    "required_fixed_identity_anchors": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "minimum_repeatable_middle_roles": 1,
+    "photoreal_skin_approval_required": true,
+    "required_comparison_views": [
+      "street",
+      "front_corner_oblique",
+      "rear_corner_oblique",
+      "aerial",
+      "facade_close",
+      "context"
+    ],
+    "comparison_sheet_required": true,
+    "human_visual_approval_required": true
+  },
   "non_negotiable_principles": [
     {
       "id": "reference_is_goalpost",
@@ -11,6 +43,10 @@
     {
       "id": "geometry_carries_identity",
       "rule": "Silhouette-changing and shadow-casting features are geometry. A facade photograph must not be asked to hide generic massing."
+    },
+    {
+      "id": "haussmann_depth_shape_skin_scale_is_minimum",
+      "rule": "Every new or materially revised family must meet or exceed the user-approved Classic Haussmann goalpost in four dimensions together: archetype-shaped massing, real projecting/recessed/open construction, photoreal reference-locked materials and glazing, and LEGO scaling that preserves fixed identity while repeating complete middle bays."
     },
     {
       "id": "freeform_envelopes_are_continuous_and_sectional",
@@ -30,7 +66,7 @@
     },
     {
       "id": "fixed_landmarks_accept_bounded_drawing_variation",
-      "rule": "A fixed-landmark manifest declares a conservative fixedLandmarkScaleBand around native width and depth plus a maximum independent-axis ratio. Slight user-drawn footprint variation may scale the whole landmark inside that authored band; larger or shape-distorting targets must use the stack kit, streetwall repetition or explicitly labelled forced fit."
+      "rule": "A fixed-landmark manifest declares a conservative fixedLandmarkScaleBand around native width and depth plus a maximum independent-axis ratio. Slight user-drawn footprint variation may use that authored band; a bounded uniform contain-fit may absorb a modestly smaller or differently proportioned site without deforming the landmark; larger or strongly elongated targets must use the stack kit, streetwall repetition or explicitly labelled forced fit."
     },
     {
       "id": "materials_are_pbr",
@@ -126,7 +162,15 @@
     },
     {
       "id": "archetype_envelope_not_parcel_fill",
-      "rule": "Manifest native width and depth define a placement and matching envelope, not a requirement to extrude every module across it. Preserve archetype-shaped occupied solids, setbacks, shoulders, voids and roof volumes inside that envelope, and mark deliberately narrower modules allow_inset_footprint."
+      "rule": "Manifest native width and depth define a placement and matching envelope, not a requirement to extrude every module across it. Preserve archetype-shaped occupied solids, setbacks, shoulders, voids and roof volumes inside that envelope, mark modules allow_inset_footprint, and apply one uniform horizontal contain scale to the complete landmark or stack at runtime instead of independently stretching axes or levels to the parcel edges."
+    },
+    {
+      "id": "all_placed_families_remain_authored_geometry",
+      "rule": "Every placed building with a valid LEGO recipe resolves to its authored GLB in the normal site view. Admit every distinct family inside the supported total-stack budget; never leave later families as persistent generic grey massing proxies merely because a mixed plan uses more than two archetypes."
+    },
+    {
+      "id": "authored_buildings_hide_planning_volumes",
+      "rule": "A building with a saved renderable LEGO recipe suppresses its planning prism and outline independently of transient asset-loader state. Clip several disjoint replacement footprints with one true world-coordinate polygon union and do not mount projected stencil volumes behind the authored GLBs; the normal 3D view must contain no pale blue, grey or white polygon boxes around them."
     },
     {
       "id": "identity_aliases_are_explicit",
@@ -154,7 +198,7 @@
     },
     {
       "id": "replacement_context_must_survive",
-      "rule": "Clip source tiles in world coordinates for a single replacement footprint so photogrammetry behind the proposal remains visible; projected stencil silhouettes are not acceptable in close orbit or render captures."
+      "rule": "Clip source tiles in world coordinates for every supported replacement footprint so photogrammetry behind the proposal remains visible. Several disjoint footprints share one polygon-union shader mask; projected stencil silhouettes are not acceptable in close orbit or render captures."
     },
     {
       "id": "structural_grammar_is_family_specific",
@@ -452,8 +496,10 @@
       "far_atlas_above_1024",
       "missing_fixed_assembly_contract",
       "fewer_than_three_preferred_footprint_profiles",
+      "missing_archetype_contain_contract",
       "missing_or_unsafe_fixed_landmark_scale_band",
       "missing_variant_alias_contract",
+      "missing_haussmann_minimum_standard_evidence",
       "missing_side_elevation_wrap",
       "semantic_mask_shape_mismatch",
       "material_count_warning"
@@ -486,6 +532,26 @@
       "symptom": "Boxy or cartoonish building",
       "cause": "Generic rectangular massing with identity delegated to a flat image.",
       "correction": "Add semantic massing, recesses, bevels, profiles and fixed signature assemblies."
+    },
+    {
+      "symptom": "A detailed LEGO family becomes a rectangular box when placed inside a four-vertex user polygon",
+      "cause": "The runtime treats the polygon as an extrusion mould and independently stretches every module or landmark axis to the parcel edges, erasing authored setbacks, shoulders, courts, chamfers, entrance recesses and roof volumes.",
+      "correction": "Treat the polygon as a site envelope. Require allow_inset_footprint on the authored modules, choose the fixed landmark only inside its audited band, and apply one common uniform horizontal contain scale to the complete landmark or stack so the archetype form remains centred inside the vertices."
+    },
+    {
+      "symptom": "Valid placed LEGO buildings persist as generic grey massing polygons in a mixed-family plan",
+      "cause": "The viewer caps detailed rendering by distinct-family count, so only the nearest few family asset sets mount while every later family is deliberately replaced by a massing proxy.",
+      "correction": "Admit every distinct family inside the supported total-stack budget and retain WebGL context recovery as the safety mechanism. Verify a mixed plan after assets settle: every saved LEGO recipe must display authored geometry and materials simultaneously."
+    },
+    {
+      "symptom": "Lifelike authored buildings are surrounded by pale blue, grey or white polygon boxes",
+      "cause": "The planning prism or outline is suppressed only after a transient GLB load event, while projected stencil side walls remain mounted for multi-building tile replacement and become visible as camera-facing wedges.",
+      "correction": "Suppress each planning solid and outline from the durable saved renderable recipe, then clip all supported disjoint footprints with one world-coordinate polygon-union shader mask and omit the projected stencil volumes whenever that mask is active."
+    },
+    {
+      "symptom": "A building is polished in one dimension but still falls below the Haussmann minimum standard",
+      "cause": "Shape, physical construction depth, photoreal material response and LEGO scalability were reviewed as independent optional features instead of one inseparable acceptance contract.",
+      "correction": "Record and prove all four pillars together in quality_standard_evidence: distinctive archetype-shaped masses, projecting/recessed/open construction, a human-approved render-locked PBR and glazing comparison, and fixed identity anchors plus complete repeatable middle roles across the declared shape matrix."
     },
     {
       "symptom": "Roof windows look pasted on",

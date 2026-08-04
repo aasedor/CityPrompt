@@ -19,6 +19,7 @@ import {
   Progress,
   familyGenerationCommands,
   fitIsStretched,
+  fitPreservesArchetypeForm,
 } from './legoShared';
 import {
   deriveGroundItems,
@@ -391,6 +392,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
                     <span className="flex shrink-0 items-center gap-1 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800">
                       <AlertTriangle className="h-3 w-3" />
                       stretched
+                    </span>
+                  )}
+                  {item.plan && fitPreservesArchetypeForm(item.plan.fit) && (
+                    <span className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                      form preserved
                     </span>
                   )}
                   {!item.plan && item.massingState && (

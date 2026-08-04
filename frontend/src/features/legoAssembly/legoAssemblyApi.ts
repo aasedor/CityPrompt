@@ -56,9 +56,16 @@ export interface LegoAssemblyPlan {
   fit: {
     scale_x: number;
     scale_y: number;
+    /** Raw parcel-envelope ratios before archetype-preserving containment. */
+    envelope_scale_x?: number;
+    envelope_scale_y?: number;
     score: number;
     profile?: LegoFootprintProfile;
     segment_count?: number;
+    assembly_mode?: 'fixed_landmark';
+    compatibility_source?: string;
+    /** The authored form is uniformly scaled and centred inside the polygon. */
+    footprint_mode?: 'archetype_contain' | 'envelope_fill';
   };
   footprint_segments?: Array<{
     id: string;
