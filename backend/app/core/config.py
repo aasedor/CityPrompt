@@ -28,6 +28,7 @@ _LOCAL_ORIGIN_MARKERS = (
     "::1",
 )
 
+
 def _git_common_dir(project_root: Path) -> Path | None:
     """Return the repository's shared Git directory for any worktree."""
     dot_git = project_root / ".git"
@@ -76,14 +77,8 @@ if _gac := _dotenv.get("GOOGLE_APPLICATION_CREDENTIALS"):
     if not _gac_path.is_absolute():
         backend_candidate = (_BACKEND_ROOT / _gac_path).resolve()
         common_dir = _git_common_dir(_PROJECT_ROOT)
-        shared_candidate = (
-            (common_dir / _gac_path).resolve() if common_dir is not None else None
-        )
-        _gac_path = (
-            backend_candidate
-            if backend_candidate.is_file() or shared_candidate is None
-            else shared_candidate
-        )
+        shared_candidate = (common_dir / _gac_path).resolve() if common_dir is not None else None
+        _gac_path = backend_candidate if backend_candidate.is_file() or shared_candidate is None else shared_candidate
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(_gac_path)
 
 
@@ -216,9 +211,7 @@ class Settings(BaseSettings):
     def _normalize_openai_api_key(self) -> "Settings":
         """Accept the temporary OPENAI alias while local testing GPT Image 2."""
         if not self.openai_api_key:
-            self.openai_api_key = (
-                os.environ.get("OPENAI", "") or _dotenv.get("OPENAI", "") or ""
-            )
+            self.openai_api_key = os.environ.get("OPENAI", "") or _dotenv.get("OPENAI", "") or ""
         return self
 
     @model_validator(mode="after")
@@ -233,9 +226,7 @@ class Settings(BaseSettings):
         """
         if not self.google_maps_api_key:
             self.google_maps_api_key = (
-                os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
-                or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
-                or ""
+                os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "") or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "") or ""
             )
         return self
 
