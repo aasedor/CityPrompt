@@ -227,11 +227,15 @@ class RealWorldSiteEngine:
             sliver_area_threshold=sliver_area_threshold,
         )
 
-        clipped_row_union = unary_union([feature["geometry"] for feature in clipped_row_features]) if clipped_row_features else None
+        clipped_row_union = (
+            unary_union([feature["geometry"] for feature in clipped_row_features]) if clipped_row_features else None
+        )
         right_of_way_area_sqm = float(clipped_row_union.area) if clipped_row_union is not None else 0.0
         developable_area_sqm = float(sum(block.area for block in blocks))
         site_area_sqm = float(site_metric.area)
-        roads_considered = len({feature.get("osm_id") for feature in clipped_row_features if feature.get("osm_id") is not None}) or len(clipped_row_features)
+        roads_considered = len(
+            {feature.get("osm_id") for feature in clipped_row_features if feature.get("osm_id") is not None}
+        ) or len(clipped_row_features)
 
         logger.info(
             "Derived %d developable blocks from %d roads for site area %.1f sqm",
@@ -269,4 +273,3 @@ class RealWorldSiteEngine:
                 for index, block in enumerate(blocks)
             ],
         }
-

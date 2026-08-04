@@ -16,9 +16,27 @@ _WORD_RE = re.compile(r"[a-z0-9][a-z0-9\-]{1,}")
 
 # High-signal planning terms get a scoring boost when matched.
 _BOOST_TERMS = {
-    "density", "height", "setback", "parking", "far", "floor", "storeys", "storey",
-    "transit", "pedestrian", "cycling", "bikeway", "pathway", "canopy", "tree",
-    "flood", "heritage", "affordable", "housing", "mixed-use", "frontage",
+    "density",
+    "height",
+    "setback",
+    "parking",
+    "far",
+    "floor",
+    "storeys",
+    "storey",
+    "transit",
+    "pedestrian",
+    "cycling",
+    "bikeway",
+    "pathway",
+    "canopy",
+    "tree",
+    "flood",
+    "heritage",
+    "affordable",
+    "housing",
+    "mixed-use",
+    "frontage",
 }
 
 

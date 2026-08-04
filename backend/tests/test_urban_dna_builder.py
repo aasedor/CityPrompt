@@ -20,9 +20,17 @@ SITE = Polygon([(-114.075, 51.043), (-114.062, 51.043), (-114.062, 51.049), (-11
 
 def _spec(connector_cls, dataset_id, dna_fields, transform, **overrides):
     defaults = dict(
-        id=dataset_id, name=dataset_id, priority=1, geometry_type="point",
-        refresh_days=7, source_url="", api_endpoint="x", adapter="socrata",
-        adapter_params={"geo_field": "point"}, dna_fields=dna_fields, transform=transform,
+        id=dataset_id,
+        name=dataset_id,
+        priority=1,
+        geometry_type="point",
+        refresh_days=7,
+        source_url="",
+        api_endpoint="x",
+        adapter="socrata",
+        adapter_params={"geo_field": "point"},
+        dna_fields=dna_fields,
+        transform=transform,
     )
     defaults.update(overrides)
     return connector_cls.register(DatasetSpec(**defaults))
@@ -44,9 +52,18 @@ async def _ok_adapter(spec, boundary):
 
 
 async def _partial_adapter(spec, boundary):
-    return [{"geometry": None, "properties": {}}], "partial", [
-        {"code": "DATASET_TRUNCATED", "severity": "warning", "message": "truncated", "source_phase": "city_connector"}
-    ]
+    return (
+        [{"geometry": None, "properties": {}}],
+        "partial",
+        [
+            {
+                "code": "DATASET_TRUNCATED",
+                "severity": "warning",
+                "message": "truncated",
+                "source_phase": "city_connector",
+            }
+        ],
+    )
 
 
 async def _failing_adapter(spec, boundary):
@@ -57,13 +74,26 @@ async def _failing_adapter(spec, boundary):
 async def test_all_sections_exist_and_failure_degrades_gracefully():
     FakeConnector = _make_connector({"socrata": _ok_adapter, "broken": _failing_adapter})
 
-    _spec(FakeConnector, "faketown.good", ("land_use.dominant_district",),
-          lambda f, s: ({"land_use.dominant_district": "R-CG"}, []))
-    _spec(FakeConnector, "faketown.broken", ("mobility.transit_stops_400m",),
-          lambda f, s: ({"mobility.transit_stops_400m": 3}, []), adapter="broken", priority=2)
+    _spec(
+        FakeConnector,
+        "faketown.good",
+        ("land_use.dominant_district",),
+        lambda f, s: ({"land_use.dominant_district": "R-CG"}, []),
+    )
+    _spec(
+        FakeConnector,
+        "faketown.broken",
+        ("mobility.transit_stops_400m",),
+        lambda f, s: ({"mobility.transit_stops_400m": 3}, []),
+        adapter="broken",
+        priority=2,
+    )
 
     dna = await build_dna(
-        site_polygon=SITE, connector=FakeConnector(), project_id="p1", zone_id="z1",
+        site_polygon=SITE,
+        connector=FakeConnector(),
+        project_id="p1",
+        zone_id="z1",
     )
 
     for name in SECTION_NAMES:
@@ -88,8 +118,7 @@ async def test_all_sections_exist_and_failure_degrades_gracefully():
 @pytest.mark.anyio
 async def test_partial_status_caps_confidence_at_degraded():
     FakeConnector = _make_connector({"socrata": _partial_adapter})
-    _spec(FakeConnector, "faketown.partial", ("site.parcel_count",),
-          lambda f, s: ({"site.parcel_count": 12}, []))
+    _spec(FakeConnector, "faketown.partial", ("site.parcel_count",), lambda f, s: ({"site.parcel_count": 12}, []))
 
     dna = await build_dna(site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z")
     field = dna.site.fields["parcel_count"]
@@ -102,11 +131,20 @@ async def test_partial_status_caps_confidence_at_degraded():
 async def test_proxy_values_are_capped():
     FakeConnector = _make_connector({"socrata": _ok_adapter})
     _spec(
-        FakeConnector, "faketown.transit", ("mobility.nearest_transit",),
-        lambda f, s: ({"mobility.nearest_transit": {
-            "stop_name": "3 ST SW", "distance_m": 120.0,
-            "network_estimate_m": 162.0, "method": "euclidean_estimate",
-        }}, []),
+        FakeConnector,
+        "faketown.transit",
+        ("mobility.nearest_transit",),
+        lambda f, s: (
+            {
+                "mobility.nearest_transit": {
+                    "stop_name": "3 ST SW",
+                    "distance_m": 120.0,
+                    "network_estimate_m": 162.0,
+                    "method": "euclidean_estimate",
+                }
+            },
+            [],
+        ),
     )
 
     dna = await build_dna(site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z")
@@ -142,12 +180,15 @@ async def test_aging_cache_hit_degrades_confidence_and_skips_fetch():
         raise AssertionError("network adapter must not run on a cache hit")
 
     FakeConnector = _make_connector({"socrata": _never_called})
-    _spec(FakeConnector, "faketown.cached", ("site.parcel_count",),
-          lambda f, s: ({"site.parcel_count": len(f)}, []))
+    _spec(FakeConnector, "faketown.cached", ("site.parcel_count",), lambda f, s: ({"site.parcel_count": len(f)}, []))
 
     cache = _FakeCache(_FakeCacheHit(age_days=5, ttl_days=7))  # >50% of TTL elapsed
     dna = await build_dna(
-        site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z", cache=cache,
+        site_polygon=SITE,
+        connector=FakeConnector(),
+        project_id="p",
+        zone_id="z",
+        cache=cache,
     )
     field = dna.site.fields["parcel_count"]
     assert field.value == 1  # transform re-ran over the cached features
@@ -159,12 +200,15 @@ async def test_aging_cache_hit_degrades_confidence_and_skips_fetch():
 @pytest.mark.anyio
 async def test_fresh_fetch_writes_cache():
     FakeConnector = _make_connector({"socrata": _ok_adapter})
-    spec = _spec(FakeConnector, "faketown.fresh", ("site.parcel_count",),
-                 lambda f, s: ({"site.parcel_count": 1}, []))
+    spec = _spec(FakeConnector, "faketown.fresh", ("site.parcel_count",), lambda f, s: ({"site.parcel_count": 1}, []))
 
     cache = _FakeCache(hit=None)
     dna = await build_dna(
-        site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z", cache=cache,
+        site_polygon=SITE,
+        connector=FakeConnector(),
+        project_id="p",
+        zone_id="z",
+        cache=cache,
     )
     assert dna.site.fields["parcel_count"].confidence == 1.0
     assert len(cache.set_calls) == 1
@@ -200,9 +244,14 @@ async def test_stale_regime_dataset_warns_and_degrades():
     from datetime import date
 
     FakeConnector = _make_connector({"socrata": _ok_adapter})
-    _spec(FakeConnector, "faketown.stale", ("land_use.dominant_district",),
-          lambda f, s: ({"land_use.dominant_district": "R-C1"}, []),
-          valid_until=date(2020, 1, 1), dataset_version="v1-pre-repeal")
+    _spec(
+        FakeConnector,
+        "faketown.stale",
+        ("land_use.dominant_district",),
+        lambda f, s: ({"land_use.dominant_district": "R-C1"}, []),
+        valid_until=date(2020, 1, 1),
+        dataset_version="v1-pre-repeal",
+    )
 
     dna = await build_dna(site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z")
     assert any(w.code == "POLICY_REGIME_CHANGE" for w in dna.land_use.meta.warnings)

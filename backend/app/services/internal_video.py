@@ -67,9 +67,7 @@ def _configured_upscaler() -> Path | None:
         candidate = Path(configured).expanduser()
         if candidate.is_file():
             return candidate.resolve()
-    discovered = shutil.which("realesrgan-ncnn-vulkan") or shutil.which(
-        "realesrgan-ncnn-vulkan.exe"
-    )
+    discovered = shutil.which("realesrgan-ncnn-vulkan") or shutil.which("realesrgan-ncnn-vulkan.exe")
     return Path(discovered).resolve() if discovered else None
 
 
@@ -212,10 +210,7 @@ async def _encode_model_restoration(
         "-t",
         str(duration_seconds),
         "-vf",
-        (
-            f"fps={INTERNAL_VIDEO_FPS},"
-            f"scale={width}:{height}:flags=lanczos"
-        ),
+        (f"fps={INTERNAL_VIDEO_FPS}," f"scale={width}:{height}:flags=lanczos"),
         str(input_frames / "%06d.png"),
         timeout_seconds=180,
     )
@@ -342,11 +337,7 @@ async def enhance_video_locally(
             raise RuntimeError("The internal video cleanup returned an empty output.")
 
     engine = "realesrgan_ncnn_vulkan" if used_model else "ffmpeg_restoration"
-    model = (
-        f"{INTERNAL_VIDEO_MODEL}+{INTERNAL_UPSCALER_MODEL}"
-        if used_model
-        else INTERNAL_VIDEO_MODEL
-    )
+    model = f"{INTERNAL_VIDEO_MODEL}+{INTERNAL_UPSCALER_MODEL}" if used_model else INTERNAL_VIDEO_MODEL
     return InternalVideoResult(
         video_bytes=video_bytes,
         mime_type="video/mp4",

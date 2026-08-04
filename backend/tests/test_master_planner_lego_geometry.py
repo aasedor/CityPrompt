@@ -120,28 +120,42 @@ def test_actual_footprint_binding_keeps_a_compatible_identity():
     assert report.unchanged_count == 1
     assert report.repaired_count == 0
     assert report.omitted_count == 0
-    assert zones[0]["properties"]["development_archetype_id"] == (
-        "industrial_brick_mixed_use"
-    )
-    assert zones[0]["properties"]["archetype_source"] == (
-        "runtime_lego_actual_footprint"
-    )
+    assert zones[0]["properties"]["development_archetype_id"] == ("industrial_brick_mixed_use")
+    assert zones[0]["properties"]["archetype_source"] == ("runtime_lego_actual_footprint")
 
 
 def test_actual_footprint_analysis_matches_browser_near_rectangle_rule():
-    analysis = _frontend_footprint_analysis(_geographic([
-        (-15, -10), (15, -10), (15, 10), (1, 10), (0, 9), (-1, 10),
-        (-15, 10),
-    ]))
+    analysis = _frontend_footprint_analysis(
+        _geographic(
+            [
+                (-15, -10),
+                (15, -10),
+                (15, 10),
+                (1, 10),
+                (0, 9),
+                (-1, 10),
+                (-15, 10),
+            ]
+        )
+    )
 
     assert analysis is not None
     assert analysis[2] == "rectangle"
 
 
 def test_actual_footprint_analysis_preserves_a_material_l_shape():
-    analysis = _frontend_footprint_analysis(_geographic([
-        (-18, -14), (18, -14), (18, -4), (-8, -4), (-8, 14), (-18, 14),
-    ]))
+    analysis = _frontend_footprint_analysis(
+        _geographic(
+            [
+                (-18, -14),
+                (18, -14),
+                (18, -4),
+                (-8, -4),
+                (-8, 14),
+                (-18, 14),
+            ]
+        )
+    )
 
     assert analysis is not None
     assert analysis[2] == "l_shape"
@@ -169,9 +183,7 @@ def test_actual_footprint_binding_rejects_a_cross_parent_selected_identity():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
     zone = _zone(14, 14)
-    zone["properties"]["development_selected_variant_id"] = (
-        "courtyard_family_housing"
-    )
+    zone["properties"]["development_selected_variant_id"] = "courtyard_family_housing"
 
     zones, report = bind_building_zones_to_lego([zone], entries, catalog)
 
@@ -237,12 +249,14 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
         depth_m=15,
         archetype_id=brownstone_parent,
     )
-    brownstone.metadata_["lego"].update({
-        "archetype_ids": [brownstone_parent, brownstone_variant],
-        "native_floors": 3,
-        "source_variant_id": brownstone_variant,
-        "generation_archetype_id": brownstone_variant,
-    })
+    brownstone.metadata_["lego"].update(
+        {
+            "archetype_ids": [brownstone_parent, brownstone_variant],
+            "native_floors": 3,
+            "source_variant_id": brownstone_variant,
+            "generation_archetype_id": brownstone_variant,
+        }
+    )
     entries = [
         *_family(rndsqr_parent, 38, 30),
         brownstone,
@@ -254,12 +268,16 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
         "city_policy",
         lego_catalog=catalog,
     )
-    site = Polygon(_geographic([
-        (0, 0),
-        (300, 0),
-        (300, 240),
-        (0, 240),
-    ]))
+    site = Polygon(
+        _geographic(
+            [
+                (0, 0),
+                (300, 0),
+                (300, 240),
+                (0, 240),
+            ]
+        )
+    )
 
     result, _, _ = run_refinement_loop(
         site_polygon_wgs84=site,
@@ -276,11 +294,7 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
         district_features=[],
         palette_override=palette,
     )
-    building_zones = [
-        zone
-        for zone in result.zones
-        if (zone.get("properties") or {}).get("_plan_role") == "building"
-    ]
+    building_zones = [zone for zone in result.zones if (zone.get("properties") or {}).get("_plan_role") == "building"]
     identities_before = [
         (
             zone["properties"].get("development_archetype_id"),
@@ -298,9 +312,7 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
         catalog,
     )
     rebound_buildings = [
-        zone
-        for zone in rebound_zones
-        if (zone.get("properties") or {}).get("_plan_role") == "building"
+        zone for zone in rebound_zones if (zone.get("properties") or {}).get("_plan_role") == "building"
     ]
     identities_after = [
         (
@@ -315,20 +327,12 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
     assert report.repaired_count == 0
     assert report.omitted_count == 0
     assert identities_after == identities_before
-    assert all(
-        "_lego_runtime_repaired_from" not in zone["properties"]
-        for zone in rebound_buildings
-    )
+    assert all("_lego_runtime_repaired_from" not in zone["properties"] for zone in rebound_buildings)
 
     for zone in rebound_buildings:
         properties = zone["properties"]
-        selectable_id = (
-            properties.get("development_selected_variant_id")
-            or properties["development_archetype_id"]
-        )
-        native_width, native_depth = (
-            catalog.target_dimensions_by_selectable_id[selectable_id]
-        )
+        selectable_id = properties.get("development_selected_variant_id") or properties["development_archetype_id"]
+        native_width, native_depth = catalog.target_dimensions_by_selectable_id[selectable_id]
         analysis = _frontend_footprint_analysis(zone["coordinates"])
         assert analysis is not None
         actual_width, actual_depth, profile = analysis
@@ -337,10 +341,7 @@ def test_fallback_refinement_preserves_native_lego_identities_through_binding():
             (actual_depth / native_width, actual_width / native_depth),
         )
         assert profile == "rectangle"
-        assert any(
-            0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20
-            for scale_x, scale_y in orientation_scales
-        )
+        assert any(0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20 for scale_x, scale_y in orientation_scales)
 
 
 def test_runtime_cell_alternates_survive_final_binding_without_rebound():
@@ -365,12 +366,14 @@ def test_runtime_cell_alternates_survive_final_binding_without_rebound():
             depth_m=depth_m,
             archetype_id=parent_id,
         )
-        module.metadata_["lego"].update({
-            "archetype_ids": [parent_id, variant_id],
-            "native_floors": 4,
-            "source_variant_id": variant_id,
-            "generation_archetype_id": variant_id,
-        })
+        module.metadata_["lego"].update(
+            {
+                "archetype_ids": [parent_id, variant_id],
+                "native_floors": 4,
+                "source_variant_id": variant_id,
+                "generation_archetype_id": variant_id,
+            }
+        )
         entries.append(module)
 
     catalog = build_lego_planning_catalog(entries)
@@ -384,25 +387,22 @@ def test_runtime_cell_alternates_survive_final_binding_without_rebound():
         variant_id=primary_variant,
     )
     palette = Palette(
-        bands={
-            key: band
-            for key in ("core", "frontage", "mid", "edge", "anchor")
-        },
+        bands={key: band for key in ("core", "frontage", "mid", "edge", "anchor")},
         allowed_archetype_ids=frozenset(catalog.parent_ids),
         allowed_variant_ids_by_archetype=dict(catalog.variants_by_parent),
-        supported_floors_by_selectable_id=dict(
-            catalog.supported_floors_by_selectable_id
-        ),
-        target_dimensions_by_selectable_id=dict(
-            catalog.target_dimensions_by_selectable_id
-        ),
+        supported_floors_by_selectable_id=dict(catalog.supported_floors_by_selectable_id),
+        target_dimensions_by_selectable_id=dict(catalog.target_dimensions_by_selectable_id),
     )
-    site = Polygon(_geographic([
-        (0, 0),
-        (160, 0),
-        (160, 120),
-        (0, 120),
-    ]))
+    site = Polygon(
+        _geographic(
+            [
+                (0, 0),
+                (160, 0),
+                (160, 120),
+                (0, 120),
+            ]
+        )
+    )
 
     result, _, _ = run_refinement_loop(
         site_polygon_wgs84=site,
@@ -419,15 +419,8 @@ def test_runtime_cell_alternates_survive_final_binding_without_rebound():
         district_features=[],
         palette_override=palette,
     )
-    buildings = [
-        zone
-        for zone in result.zones
-        if (zone.get("properties") or {}).get("_plan_role") == "building"
-    ]
-    identities_before = [
-        zone["properties"].get("development_selected_variant_id")
-        for zone in buildings
-    ]
+    buildings = [zone for zone in result.zones if (zone.get("properties") or {}).get("_plan_role") == "building"]
+    identities_before = [zone["properties"].get("development_selected_variant_id") for zone in buildings]
 
     assert primary_variant in identities_before
     assert rotated_variant in identities_before

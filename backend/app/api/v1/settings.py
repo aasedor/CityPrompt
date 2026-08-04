@@ -18,6 +18,7 @@ settings = get_settings()
 
 class PlatformSettingsResponse(BaseModel):
     """Current platform settings for the cofounder dashboard."""
+
     layout_ai_provider: str
     claude_configured: bool
     gemini_configured: bool
@@ -26,6 +27,7 @@ class PlatformSettingsResponse(BaseModel):
 
 class PlatformSettingsUpdate(BaseModel):
     """Update platform settings."""
+
     layout_ai_provider: Optional[str] = None
 
 
@@ -70,6 +72,7 @@ async def update_platform_settings(
     if update.layout_ai_provider:
         if update.layout_ai_provider not in ("claude", "gemini", "algorithmic"):
             from fastapi import HTTPException
+
             raise HTTPException(
                 status_code=400,
                 detail="layout_ai_provider must be 'claude', 'gemini', or 'algorithmic'",

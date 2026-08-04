@@ -37,8 +37,9 @@ ZONE_PAGE_PREFIX = "https://zoningbylaw.edmonton.ca/part-"  # standard + special
 
 def enumerate_zone_pages() -> list[dict]:
     params = urllib.parse.urlencode({"$select": "zoning,url", "$group": "zoning,url", "$limit": "5000"})
-    response = httpx.get(f"{ZONING_RESOURCE}?{params}", timeout=60.0,
-                         headers={"User-Agent": "cityprompt-zone-page-seeder"})
+    response = httpx.get(
+        f"{ZONING_RESOURCE}?{params}", timeout=60.0, headers={"User-Agent": "cityprompt-zone-page-seeder"}
+    )
     response.raise_for_status()
     pages = [
         {"zoning": row["zoning"], "url": row["url"]}
@@ -56,8 +57,9 @@ def main() -> None:
     session = _get_sync_session()
     seeded, skipped = [], []
     try:
-        with httpx.Client(timeout=60.0, follow_redirects=True,
-                          headers={"User-Agent": "cityprompt-zone-page-seeder"}) as client:
+        with httpx.Client(
+            timeout=60.0, follow_redirects=True, headers={"User-Agent": "cityprompt-zone-page-seeder"}
+        ) as client:
             for page in pages:
                 code = page["zoning"]
                 slug = f"zone-{code.lower()}"

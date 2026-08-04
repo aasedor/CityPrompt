@@ -16,9 +16,7 @@ from app.services.spatial_engine import buffer_wgs84
 MAX_VERTICES = 120
 
 
-def buffered_boundary(
-    boundary_wgs84: Polygon, buffer_m: float, max_vertices: int = MAX_VERTICES
-) -> Polygon:
+def buffered_boundary(boundary_wgs84: Polygon, buffer_m: float, max_vertices: int = MAX_VERTICES) -> Polygon:
     """Buffered site boundary with a bounded exterior ring (WGS84)."""
     buffered = buffer_wgs84(boundary_wgs84, buffer_m)
     # Keep doubling tolerance until the ring is genuinely bounded.

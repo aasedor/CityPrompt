@@ -164,9 +164,7 @@ async def get_library_item(
     db: AsyncSession = Depends(get_db),
 ):
     """Get a specific model library entry."""
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Library item not found")
@@ -184,9 +182,7 @@ async def apply_library_model(
 ):
     """Apply a library model to a building (copies the model file)."""
     # Get library entry
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Library item not found")
@@ -205,6 +201,7 @@ async def apply_library_model(
     project = proj_result.scalar_one_or_none()
     if project.owner_id != user.id:
         from app.models.models import ProjectShare
+
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
@@ -248,10 +245,7 @@ async def apply_library_model(
         db,
         project_id=building.project_id,
         building_id=building.id,
-        reason=(
-            "Linked generated building model changed; rebuild Community 3D "
-            "before Direct rendering."
-        ),
+        reason=("Linked generated building model changed; rebuild Community 3D " "before Direct rendering."),
     )
 
     # Increment use count
@@ -279,9 +273,7 @@ async def update_library_item(
     db: AsyncSession = Depends(get_db),
 ):
     """Update a library entry's metadata."""
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Library item not found")
@@ -398,9 +390,7 @@ async def delete_library_item(
     db: AsyncSession = Depends(get_db),
 ):
     """Delete a model from the library."""
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Library item not found")
@@ -436,15 +426,16 @@ async def archetype_previews(
     stored in their specifications. Returns a dict mapping archetype_id to a
     list of {id, name, preview_url, model_url} objects (max 4 per archetype).
     """
-    from sqlalchemy import cast, String, text
 
     result = await db.execute(
-        select(Building).where(
+        select(Building)
+        .where(
             Building.preview_url.isnot(None),
             Building.model_url.isnot(None),
             Building.generation_status == "completed",
             Building.specifications.isnot(None),
-        ).order_by(Building.created_at.desc())
+        )
+        .order_by(Building.created_at.desc())
     )
     buildings = result.scalars().all()
 
@@ -467,12 +458,14 @@ async def archetype_previews(
         if len(archetype_map[archetype_id]) >= 4:
             continue
 
-        archetype_map[archetype_id].append({
-            "id": str(b.id),
-            "name": b.name,
-            "preview_url": b.preview_url,
-            "model_url": b.model_url,
-            "project_id": str(b.project_id) if b.project_id else None,
-        })
+        archetype_map[archetype_id].append(
+            {
+                "id": str(b.id),
+                "name": b.name,
+                "preview_url": b.preview_url,
+                "model_url": b.model_url,
+                "project_id": str(b.project_id) if b.project_id else None,
+            }
+        )
 
     return archetype_map

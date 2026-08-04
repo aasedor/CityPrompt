@@ -67,10 +67,7 @@ def env(monkeypatch):
         "development_archetype_id": f"{arch}_front_day",
         "development_selected_variant_id": "variant_0",
     }
-    buildings = [
-        Building(project_id=project.id, name=f"B{i}", specifications=dict(specs))
-        for i in range(2)
-    ]
+    buildings = [Building(project_id=project.id, name=f"B{i}", specifications=dict(specs)) for i in range(2)]
     session.add_all(buildings)
     session.commit()
     building_ids = [str(b.id) for b in buildings]
@@ -78,9 +75,7 @@ def env(monkeypatch):
     provider = FakeProvider()
     uploads: list[str] = []
     monkeypatch.setattr(processing, "get_engine", lambda _: provider)
-    monkeypatch.setattr(
-        processing, "_upload_to_storage", lambda key, data, ct: uploads.append(key)
-    )
+    monkeypatch.setattr(processing, "_upload_to_storage", lambda key, data, ct: uploads.append(key))
 
     yield session, arch, building_ids, provider, uploads
 
@@ -108,21 +103,23 @@ def test_second_generation_hits_cache(env):
     assert provider.calls == 1, "second generation must not call the provider"
     assert r2["model_url"] == r1["model_url"]
 
-    entry = session.execute(
-        select(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id == arch)
-    ).scalar_one()
+    entry = session.execute(select(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id == arch)).scalar_one()
     assert entry.status == "completed"
     assert entry.use_count == 1
     assert entry.model_key.startswith(f"archetype-cache/{arch}/variant_0/meshy/")
     # only ONE model object was ever uploaded
     assert [k for k in uploads if k.endswith(".glb")] == [entry.model_key]
 
-    hit_logs = session.execute(
-        select(ApiUsageLog).where(
-            ApiUsageLog.building_id == uuid.UUID(building_ids[1]),
-            ApiUsageLog.operation == "cache_hit",
+    hit_logs = (
+        session.execute(
+            select(ApiUsageLog).where(
+                ApiUsageLog.building_id == uuid.UUID(building_ids[1]),
+                ApiUsageLog.operation == "cache_hit",
+            )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
     assert len(hit_logs) == 1
     assert float(hit_logs[0].credits_used) == 0
 
@@ -130,9 +127,7 @@ def test_second_generation_hits_cache(env):
 def test_image_mode_bypasses_cache(env):
     session, arch, building_ids, provider, uploads = env
 
-    r = generate_3d_model_ai.apply(
-        args=[building_ids[0], "a building", "image", "data:image/png;base64,xx"]
-    ).get()
+    r = generate_3d_model_ai.apply(args=[building_ids[0], "a building", "image", "data:image/png;base64,xx"]).get()
     assert r["status"] == "completed"
     assert provider.calls == 1
     assert "/archetype-cache/" not in r["model_url"]
@@ -154,7 +149,5 @@ def test_failed_generation_releases_claim(env):
     r = generate_3d_model_ai.apply(args=[building_ids[0], "a building", "text"]).get()
     assert r["status"] == "failed"
 
-    entry = session.execute(
-        select(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id == arch)
-    ).scalar_one()
+    entry = session.execute(select(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id == arch)).scalar_one()
     assert entry.status == "failed"  # claim released — key is retryable

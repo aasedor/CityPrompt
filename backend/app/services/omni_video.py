@@ -136,7 +136,11 @@ def describe_route(points: Iterable[Mapping[str, float]]) -> str:
     finish = _screen_region(route[-1])
     dx = route[-1]["x"] - route[0]["x"]
     bends = max(0, len(route) - 2)
-    turn = "with a gentle rightward arc" if dx > 0.12 else "with a gentle leftward arc" if dx < -0.12 else "nearly straight"
+    turn = (
+        "with a gentle rightward arc"
+        if dx > 0.12
+        else "with a gentle leftward arc" if dx < -0.12 else "nearly straight"
+    )
     return f"The route begins in the {start} of frame and finishes in the {finish}, {turn}, using {bends} guide bends."
 
 
@@ -160,22 +164,25 @@ def build_cinematic_prompt(
     travel_lock = (
         "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
         if control_mode == "preview_video"
-        else
-        "Move no more than 4 metres during the full shot."
-        if is_street
         else (
-            "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
-            "hold altitude, focal length, and subject scale constant."
-            if camera_motion == "path_follow"
-            else "Keep total camera travel below one quarter of an authored building length during the full shot."
+            "Move no more than 4 metres during the full shot."
+            if is_street
+            else (
+                "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
+                "hold altitude, focal length, and subject scale constant."
+                if camera_motion == "path_follow"
+                else "Keep total camera travel below one quarter of an authored building length during the full shot."
+            )
         )
     )
     shot_kind = (
         "pedestrian-height architectural walk-by"
         if is_street
-        else "low detail architectural-drone fly-through"
-        if is_detail_flythrough
-        else "professional architectural drone shot"
+        else (
+            "low detail architectural-drone fly-through"
+            if is_detail_flythrough
+            else "professional architectural drone shot"
+        )
     )
     framing_lock = (
         "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
@@ -189,10 +196,7 @@ def build_cinematic_prompt(
         )
     )
     if control_mode == "multi_keyframe":
-        references = " ".join(
-            f"<IMAGE_REF_{index}>@Image{index + 2}"
-            for index in range(max(0, keyframe_count - 1))
-        )
+        references = " ".join(f"<IMAGE_REF_{index}>@Image{index + 2}" for index in range(max(0, keyframe_count - 1)))
         control_prefix = f"[# Sources <FIRST_FRAME>@Image1] [# References {references}]"
         input_authority = (
             f"Images1 through Image{keyframe_count} are deterministic City Prompt renders of the same frozen scene, "
@@ -215,9 +219,7 @@ def build_cinematic_prompt(
                 "Use the ordered images only as immutable geometry anchors for the corresponding moments; they are not alternate designs."
             )
         else:
-            input_authority = (
-                "The supplied video is City Prompt's deterministic render of the complete camera path through one frozen 3D scene"
-            )
+            input_authority = "The supplied video is City Prompt's deterministic render of the complete camera path through one frozen 3D scene"
             flight_instruction = (
                 "Copy the supplied video's camera positions, headings, speed, timing, focal length, and single-shot continuity exactly. "
                 "Do not substitute a new camera move or treat the video as a loose stylistic reference."
@@ -226,7 +228,9 @@ def build_cinematic_prompt(
     else:
         control_prefix = ""
         input_authority = "Image1 is the sole authoritative City Prompt render of one frozen 3D scene"
-        flight_instruction = "Use the described screen-space route conservatively and keep the camera move extremely small."
+        flight_instruction = (
+            "Use the described screen-space route conservatively and keep the camera move extremely small."
+        )
         final_preservation = "preserve Image1 unchanged"
 
     appearance_lock = (
@@ -363,11 +367,13 @@ def build_omni_payload(
     elif control_mode == "preview_video":
         if not preview_video_base64 or not preview_video_mime_type:
             raise ValueError("Preview-video generation requires a deterministic route preview.")
-        input_items = [{
-            "type": "video",
-            "data": preview_video_base64.split(",", 1)[1] if "," in preview_video_base64 else preview_video_base64,
-            "mime_type": preview_video_mime_type,
-        }]
+        input_items = [
+            {
+                "type": "video",
+                "data": preview_video_base64.split(",", 1)[1] if "," in preview_video_base64 else preview_video_base64,
+                "mime_type": preview_video_mime_type,
+            }
+        ]
         task = "edit"
     else:
         encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64

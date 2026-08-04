@@ -19,9 +19,7 @@ def _textured_glb(tex_size: int = 2048, with_normal: bool = False) -> bytes:
     base = Image.fromarray(rng.integers(0, 255, (tex_size, tex_size, 3), dtype=np.uint8), "RGB")
     kwargs = {"baseColorTexture": base}
     if with_normal:
-        kwargs["normalTexture"] = Image.fromarray(
-            rng.integers(0, 255, (tex_size, tex_size, 3), dtype=np.uint8), "RGB"
-        )
+        kwargs["normalTexture"] = Image.fromarray(rng.integers(0, 255, (tex_size, tex_size, 3), dtype=np.uint8), "RGB")
     material = trimesh.visual.material.PBRMaterial(**kwargs)
     uv = rng.random((len(mesh.vertices), 2))
     mesh.visual = trimesh.visual.TextureVisuals(uv=uv, material=material)
@@ -66,9 +64,7 @@ def test_normal_map_stays_png():
     optimized = optimize_glb(_textured_glb(tex_size=2048, with_normal=True))
     gltf = GLTF2.load_from_bytes(optimized)
     normal_sources = {
-        gltf.textures[m.normalTexture.index].source
-        for m in gltf.materials
-        if m.normalTexture is not None
+        gltf.textures[m.normalTexture.index].source for m in gltf.materials if m.normalTexture is not None
     }
     for idx, image in enumerate(gltf.images):
         if idx in normal_sources:

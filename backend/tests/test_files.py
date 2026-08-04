@@ -5,7 +5,7 @@ from app.api.v1 import files
 
 
 def test_safe_download_name_rejects_header_control_characters() -> None:
-    assert files._safe_download_name('City Prompt\r\nunsafe: yes.mp4', 'video/omni.mp4') == 'City-Prompt-unsafe-yes.mp4'
+    assert files._safe_download_name("City Prompt\r\nunsafe: yes.mp4", "video/omni.mp4") == "City-Prompt-unsafe-yes.mp4"
 
 
 @pytest.mark.asyncio
@@ -23,10 +23,12 @@ async def test_head_file_checks_metadata_without_downloading(monkeypatch) -> Non
     assert response.status_code == 200
     assert response.headers["content-length"] == "42"
     assert response.headers["content-type"] == "model/gltf-binary"
-    assert calls == [{
-        "Bucket": files.settings.s3_bucket_name,
-        "Key": "archetype-cache/example.glb",
-    }]
+    assert calls == [
+        {
+            "Bucket": files.settings.s3_bucket_name,
+            "Key": "archetype-cache/example.glb",
+        }
+    ]
 
 
 @pytest.mark.asyncio

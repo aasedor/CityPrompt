@@ -123,6 +123,7 @@ def test_video_request_defaults_to_high_quality_and_validates_capture_audit():
             render_quality="ultra",
         )
 
+
 def test_prompt_locks_scene_and_single_shot_constraints():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.5, "y": 0.85}, {"x": 0.48, "y": 0.55}, {"x": 0.38, "y": 0.2}],
@@ -323,7 +324,13 @@ def test_prompt_makes_omni_an_animator_without_visual_style_instructions():
     "response",
     [
         {"id": "interaction-1", "output_video": {"type": "video", "data": base64.b64encode(b"mp4").decode()}},
-        {"id": "interaction-2", "outputs": [{"type": "text", "text": "done"}, {"type": "video", "data": base64.b64encode(b"mp4").decode(), "mime_type": "video/mp4"}]},
+        {
+            "id": "interaction-2",
+            "outputs": [
+                {"type": "text", "text": "done"},
+                {"type": "video", "data": base64.b64encode(b"mp4").decode(), "mime_type": "video/mp4"},
+            ],
+        },
     ],
 )
 def test_parse_omni_video_supports_current_response_shapes(response):
@@ -335,15 +342,24 @@ def test_parse_omni_video_supports_current_response_shapes(response):
 
 
 def test_find_omni_video_content_supports_nested_uri_delivery():
-    output = find_omni_video_content({
-        "id": "interaction-uri",
-        "status": "completed",
-        "steps": [{"type": "model_output", "content": [{
-            "type": "video",
-            "uri": "https://generativelanguage.googleapis.com/v1beta/files/generated-video",
-            "mime_type": "video/mp4",
-        }]}],
-    })
+    output = find_omni_video_content(
+        {
+            "id": "interaction-uri",
+            "status": "completed",
+            "steps": [
+                {
+                    "type": "model_output",
+                    "content": [
+                        {
+                            "type": "video",
+                            "uri": "https://generativelanguage.googleapis.com/v1beta/files/generated-video",
+                            "mime_type": "video/mp4",
+                        }
+                    ],
+                }
+            ],
+        }
+    )
 
     assert output.data is None
     assert output.uri and output.uri.endswith("generated-video")

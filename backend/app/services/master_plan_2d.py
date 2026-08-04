@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import base64
@@ -144,8 +143,13 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.60,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "paper": "#f5efe6", "building": "#c4b5a0", "shadow": "#8a7e70",
-            "park": "#7a9a6a", "road": "#b8b0a4", "path": "#d6cfc2", "water": "#8aacbe",
+            "paper": "#f5efe6",
+            "building": "#c4b5a0",
+            "shadow": "#8a7e70",
+            "park": "#7a9a6a",
+            "road": "#b8b0a4",
+            "path": "#d6cfc2",
+            "water": "#8aacbe",
         },
     },
     "ink_line_drawing": {
@@ -162,8 +166,13 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.70,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "paper": "#ffffff", "building": "#1a1a1a", "shadow": "#444444",
-            "park": "#c8c8c8", "road": "#3a3a3a", "path": "#888888", "water": "#aaaaaa",
+            "paper": "#ffffff",
+            "building": "#1a1a1a",
+            "shadow": "#444444",
+            "park": "#c8c8c8",
+            "road": "#3a3a3a",
+            "path": "#888888",
+            "water": "#aaaaaa",
         },
     },
     "marker_render": {
@@ -180,8 +189,13 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.60,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "paper": "#fefcf8", "building": "#9a8a78", "shadow": "#4a4040",
-            "park": "#2d8a28", "road": "#5a5a60", "path": "#d4c8b8", "water": "#2878b0",
+            "paper": "#fefcf8",
+            "building": "#9a8a78",
+            "shadow": "#4a4040",
+            "park": "#2d8a28",
+            "road": "#5a5a60",
+            "path": "#d4c8b8",
+            "water": "#2878b0",
         },
     },
     "cinematic_dusk": {
@@ -199,8 +213,13 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.57,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "paper": "#1a2030", "building": "#3a4050", "shadow": "#0a0e18",
-            "park": "#1a3020", "road": "#2a2a35", "path": "#3a3840", "water": "#152030",
+            "paper": "#1a2030",
+            "building": "#3a4050",
+            "shadow": "#0a0e18",
+            "park": "#1a3020",
+            "road": "#2a2a35",
+            "path": "#3a3840",
+            "water": "#152030",
             "accent": "#e8a840",
         },
     },
@@ -235,7 +254,9 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.60,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "park": "#3a8a30", "path": "#c8be9a", "water": "#4a90b0",
+            "park": "#3a8a30",
+            "path": "#c8be9a",
+            "water": "#4a90b0",
         },
     },
     "white_massing_model": {
@@ -253,8 +274,13 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.45,
         "provider_preference": "gemini",
         "palette_overrides": {
-            "paper": "#f0f0f0", "building": "#e8e8e8", "shadow": "#999999",
-            "park": "#d8d8d8", "road": "#cccccc", "path": "#dddddd", "water": "#c0c0c0",
+            "paper": "#f0f0f0",
+            "building": "#e8e8e8",
+            "shadow": "#999999",
+            "park": "#d8d8d8",
+            "road": "#cccccc",
+            "path": "#dddddd",
+            "water": "#c0c0c0",
             "site": "#e4e4e4",
         },
     },
@@ -268,9 +294,15 @@ RENDER_STYLE_CATALOG: dict[str, dict[str, Any]] = {
         "compositing_blend": 0.0,
         "provider_preference": "none",
         "palette_overrides": {
-            "paper": "#f8f9fa", "building": "#6b7280", "shadow": "#9ca3af",
-            "park": "#22c55e", "road": "#374151", "path": "#d1d5db", "water": "#3b82f6",
-            "site": "#fef3c7", "accent": "#ef4444",
+            "paper": "#f8f9fa",
+            "building": "#6b7280",
+            "shadow": "#9ca3af",
+            "park": "#22c55e",
+            "road": "#374151",
+            "path": "#d1d5db",
+            "water": "#3b82f6",
+            "site": "#fef3c7",
+            "accent": "#ef4444",
         },
     },
 }
@@ -295,9 +327,7 @@ THREE_D_NEGATIVE_PROMPT = (
     "cartoon, facade sheet, presentation board, floating annotations"
 )
 
-STYLE_PASS_NEGATIVE_PROMPT = (
-    "side view, facade sheet, elevation, front-facing perspective, collage board, floating annotations, legends, title blocks, north arrow, scale bar"
-)
+STYLE_PASS_NEGATIVE_PROMPT = "side view, facade sheet, elevation, front-facing perspective, collage board, floating annotations, legends, title blocks, north arrow, scale bar"
 
 NON_PLAN_VIEW_TOKENS = re.compile(
     r"\b(front[-\s]?facing|front elevation|street[-\s]?level|eye[-\s]?height|perspective|elevation|facade sheet)\b",
@@ -401,42 +431,55 @@ def _append_osm_context_layers(scene: dict[str, Any], boundary: Polygon | None, 
         geometry = _coords_to_line(road.get("coordinates"))
         if geometry is None:
             continue
-        scene["context_roads"].append({
-            "geometry": geometry,
-            "kind": "context_road",
-            "width_m": float(road.get("width_m") or 6.0),
-            "properties": {"source": "osm", "road_type": road.get("road_type"), "name": road.get("name")},
-        })
+        scene["context_roads"].append(
+            {
+                "geometry": geometry,
+                "kind": "context_road",
+                "width_m": float(road.get("width_m") or 6.0),
+                "properties": {"source": "osm", "road_type": road.get("road_type"), "name": road.get("name")},
+            }
+        )
 
     for item in osm_context.get("buildings", []) or []:
         poly = _coords_to_polygon(item.get("coordinates"))
         if poly is None or not outside_site(poly):
             continue
-        scene["context_buildings"].append({
-            "geometry": poly,
-            "name": item.get("name"),
-            "properties": {"source": "osm", "building_type": item.get("building_type"), "height_m": item.get("height_m")},
-        })
+        scene["context_buildings"].append(
+            {
+                "geometry": poly,
+                "name": item.get("name"),
+                "properties": {
+                    "source": "osm",
+                    "building_type": item.get("building_type"),
+                    "height_m": item.get("height_m"),
+                },
+            }
+        )
 
     for item in osm_context.get("parks", []) or []:
         poly = _coords_to_polygon(item.get("coordinates"))
         if poly is None or not outside_site(poly):
             continue
-        scene["context_parks"].append({
-            "geometry": poly,
-            "name": item.get("name"),
-            "properties": {"source": "osm", "park_type": item.get("park_type")},
-        })
+        scene["context_parks"].append(
+            {
+                "geometry": poly,
+                "name": item.get("name"),
+                "properties": {"source": "osm", "park_type": item.get("park_type")},
+            }
+        )
 
     for item in osm_context.get("water", []) or []:
         poly = _coords_to_polygon(item.get("coordinates"))
         if poly is None or not outside_site(poly):
             continue
-        scene["context_water"].append({
-            "geometry": poly,
-            "name": item.get("name"),
-            "properties": {"source": "osm", "water_type": item.get("water_type")},
-        })
+        scene["context_water"].append(
+            {
+                "geometry": poly,
+                "name": item.get("name"),
+                "properties": {"source": "osm", "water_type": item.get("water_type")},
+            }
+        )
+
 
 DEFAULT_STYLE_TOGGLES = {
     "show_legend": True,
@@ -556,7 +599,9 @@ def _normalize_zone_type(zone_type: str | None) -> str:
     return aliases.get(token, "development_area")
 
 
-def _normalize_provider(value: str | None, *, default: Literal["vertex", "stability", "gemini"]) -> Literal["vertex", "stability", "gemini"]:
+def _normalize_provider(
+    value: str | None, *, default: Literal["vertex", "stability", "gemini"]
+) -> Literal["vertex", "stability", "gemini"]:
     token = str(value or "").strip().lower()
     if token in {"vertex", "stability", "gemini"}:
         return token  # type: ignore[return-value]
@@ -756,7 +801,7 @@ def _extract_linestrings(geometry: Any) -> list[LineString]:
         return [geometry]
     if isinstance(geometry, MultiLineString):
         return [ls for ls in geometry.geoms if isinstance(ls, LineString) and not ls.is_empty]
-    if hasattr(geometry, 'geoms'):
+    if hasattr(geometry, "geoms"):
         # GeometryCollection or other multi-types
         result: list[LineString] = []
         for g in geometry.geoms:
@@ -794,11 +839,12 @@ def _polygon_from_coordinates(polygon: Sequence[Sequence[float]] | None) -> Poly
     return None
 
 
-
 def _polygon_coordinates_wgs84(polygon: Polygon | None) -> list[list[float]] | None:
     if polygon is None or polygon.is_empty:
         return None
     return [[round(float(x), 8), round(float(y), 8)] for x, y in polygon.exterior.coords]
+
+
 def _meters_per_degree_lon(latitude: float) -> float:
     return 111320 * max(math.cos(math.radians(latitude)), 0.15)
 
@@ -817,6 +863,7 @@ def _geometry_extent_m(geometry: BaseGeometry | None) -> tuple[float, float]:
     width_m = abs(maxx - minx) * _meters_per_degree_lon(center_lat)
     height_m = abs(maxy - miny) * _meters_per_degree_lat(center_lat)
     return (width_m, height_m)
+
 
 def _scene_geometry_hash(boundary: Polygon, layers: dict[str, list[dict[str, Any]]]) -> str:
     chunks = [boundary.wkt]
@@ -878,7 +925,7 @@ def _project_geometry_to_pixels(boundary: Polygon, width: int, height: int) -> t
             x, y = to_px(geometry.x, geometry.y)
             return Point(x, y)
         # GeometryCollection fallback — transform each sub-geometry
-        if hasattr(geometry, 'geoms'):
+        if hasattr(geometry, "geoms"):
             transformed = [geom_to_px(g) for g in geometry.geoms]
             if transformed:
                 return transformed[0] if len(transformed) == 1 else geometry.__class__(transformed)
@@ -920,24 +967,24 @@ def _resolve_scene_view_extent(
     extent = box(minx - dx * 0.30, miny - dy * 0.30, maxx + dx * 0.30, maxy + dy * 0.30)
 
     context_geometries: list[BaseGeometry] = []
-    for feature in payload.get('context_buildings', []) or []:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in payload.get("context_buildings", []) or []:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None and not poly.is_empty:
             context_geometries.append(poly)
-    for feature in payload.get('context_parks', []) or []:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in payload.get("context_parks", []) or []:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None and not poly.is_empty:
             context_geometries.append(poly)
-    for feature in payload.get('context_water', []) or []:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in payload.get("context_water", []) or []:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None and not poly.is_empty:
             context_geometries.append(poly)
-    for feature in payload.get('context_roads', []) or []:
-        geometry = _safe_to_shape(feature.get('geometry'))
+    for feature in payload.get("context_roads", []) or []:
+        geometry = _safe_to_shape(feature.get("geometry"))
         if geometry is None or geometry.is_empty:
             continue
         if isinstance(geometry, LineString):
-            width_m = max(float(feature.get('width_m') or 6.0), 2.0)
+            width_m = max(float(feature.get("width_m") or 6.0), 2.0)
             lat = float(boundary.centroid.y)
             degrees = width_m / max((_meters_per_degree_lat(lat) + _meters_per_degree_lon(lat)) / 2.0, 1.0)
             context_geometries.append(geometry.buffer(max(degrees * 0.9, 1e-5), cap_style=2, join_style=2))
@@ -1061,6 +1108,7 @@ def _prepare_scene(
         "toggles": {**DEFAULT_STYLE_TOGGLES, **(toggles or {})},
     }
 
+
 def _supports_precinct_generation(properties: dict[str, Any]) -> bool:
     if not isinstance(properties, dict) or properties.get("treat_as_single_building") is True:
         return False
@@ -1084,14 +1132,12 @@ def _should_generate_precinct_for_building_zone(geometry: Polygon, properties: d
     min_dim = min(width_m, height_m)
     area_m2 = width_m * height_m
     try:
-        floors = int(float(properties.get("floors") or properties.get("floor_count") or properties.get("floorCount") or 0))
+        floors = int(
+            float(properties.get("floors") or properties.get("floor_count") or properties.get("floorCount") or 0)
+        )
     except (TypeError, ValueError):
         floors = 0
-    return bool(
-        area_m2 >= 2800
-        or (max_dim >= 60 and min_dim >= 25)
-        or (floors >= 6 and area_m2 >= 2000)
-    )
+    return bool(area_m2 >= 2800 or (max_dim >= 60 and min_dim >= 25) or (floors >= 6 and area_m2 >= 2000))
 
 
 def _hex_to_rgba(hex_color: str, alpha: int = 255) -> tuple[int, int, int, int]:
@@ -1219,7 +1265,10 @@ def _make_variant_profile(
 ) -> dict[str, Any]:
     render_key = str(render_style_preset or "photorealistic_aerial").strip().lower()
     lighting_key = str(lighting_atmosphere_preset or "crisp_summer_day").strip().lower()
-    hash_seed = int(hashlib.sha256(f"{geometry_hash}:{style_preset}:{render_key}:{lighting_key}".encode("utf-8")).hexdigest()[:12], 16)
+    hash_seed = int(
+        hashlib.sha256(f"{geometry_hash}:{style_preset}:{render_key}:{lighting_key}".encode("utf-8")).hexdigest()[:12],
+        16,
+    )
     layout_seed = hash_seed % 1_000_000
     style_seed = (hash_seed + variant_index * 977) % 1_000_000
     quality_boost = {"draft": 0.9, "presentation": 1.0, "board_ready": 1.08}.get(quality_level, 1.0)
@@ -1273,7 +1322,9 @@ def _make_variant_profile(
         "tree_shadow_offset": (shadow_offset[0] * 0.55, shadow_offset[1] * 0.55),
         "shadow_blur": shadow_blur,
         "shadow_alpha": 180 if orthographic else 165 if photoreal else 140,
-        "context_alpha": 214 if site_insert_mode and orthographic else 198 if orthographic else 178 if photoreal else 150,
+        "context_alpha": (
+            214 if site_insert_mode and orthographic else 198 if orthographic else 178 if photoreal else 150
+        ),
         "roof_detail_alpha": 118 if orthographic else 92 if photoreal else 60,
         "roof_detail_lines": 4 if orthographic else 3 if photoreal else 2,
         "rooftop_unit_count": 4 if orthographic else 3 if photoreal else 2,
@@ -1359,7 +1410,9 @@ def _draw_dashed_line(
             progress += dash_px + gap_px
 
 
-def _tree_points(geometry: Polygon, properties: dict[str, Any], variant: dict[str, Any]) -> list[tuple[float, float, float, str]]:
+def _tree_points(
+    geometry: Polygon, properties: dict[str, Any], variant: dict[str, Any]
+) -> list[tuple[float, float, float, str]]:
     density_level = str(properties.get("tree_density_level") or "").strip().lower()
     density = properties.get("tree_density")
     try:
@@ -1384,7 +1437,6 @@ def _tree_points(geometry: Polygon, properties: dict[str, Any], variant: dict[st
     size_multiplier = float(variant.get("tree_size") or 1.0)
 
     tree_types = ["deciduous_round", "deciduous_spread", "conifer"]
-    tree_weights = [0.55, 0.30, 0.15]
     tree_cum_weights = [0.55, 0.85, 1.0]
 
     points: list[tuple[float, float, float, str]] = []
@@ -1409,7 +1461,9 @@ def _tree_points(geometry: Polygon, properties: dict[str, Any], variant: dict[st
     return points
 
 
-def _park_program_geometries(geometry: Polygon, properties: dict[str, Any], variant: dict[str, Any]) -> list[tuple[str, BaseGeometry]]:
+def _park_program_geometries(
+    geometry: Polygon, properties: dict[str, Any], variant: dict[str, Any]
+) -> list[tuple[str, BaseGeometry]]:
     _ = int(variant.get("layout_seed") or 0)
     minx, miny, maxx, maxy = geometry.bounds
     width = maxx - minx
@@ -1443,8 +1497,9 @@ def _park_program_geometries(geometry: Polygon, properties: dict[str, Any], vari
     return items
 
 
-
-def _line_feature(geometry: BaseGeometry | None, *, width_m: float, properties: dict[str, Any] | None = None, kind: str = "path") -> dict[str, Any] | None:
+def _line_feature(
+    geometry: BaseGeometry | None, *, width_m: float, properties: dict[str, Any] | None = None, kind: str = "path"
+) -> dict[str, Any] | None:
     shape = _safe_to_shape(geometry)
     if shape is None or shape.is_empty:
         return None
@@ -1456,7 +1511,9 @@ def _line_feature(geometry: BaseGeometry | None, *, width_m: float, properties: 
     }
 
 
-def _polygon_feature(geometry: BaseGeometry | None, *, name: str | None = None, properties: dict[str, Any] | None = None) -> dict[str, Any] | None:
+def _polygon_feature(
+    geometry: BaseGeometry | None, *, name: str | None = None, properties: dict[str, Any] | None = None
+) -> dict[str, Any] | None:
     poly = _polygon_from_geometry(geometry)
     if poly is None or poly.is_empty:
         return None
@@ -1494,7 +1551,11 @@ def _generate_precinct_site_features(
     if usable is None:
         usable = zone_geometry
 
-    footprint_polys = [poly for poly in (_polygon_from_geometry(item.get("geometry")) for item in footprints) if poly is not None and not poly.is_empty]
+    footprint_polys = [
+        poly
+        for poly in (_polygon_from_geometry(item.get("geometry")) for item in footprints)
+        if poly is not None and not poly.is_empty
+    ]
     if not footprint_polys:
         return features
 
@@ -1529,7 +1590,12 @@ def _generate_precinct_site_features(
         (east_west, max(min_dim_m * 0.08, 5.5), "internal_drive"),
         (north_south, max(min_dim_m * 0.05, 3.0), "pedestrian_spine"),
     ):
-        feature = _line_feature(geometry, width_m=width_m_value, properties={"generated": True, "kind": kind}, kind="road" if "drive" in kind else "path")
+        feature = _line_feature(
+            geometry,
+            width_m=width_m_value,
+            properties={"generated": True, "kind": kind},
+            kind="road" if "drive" in kind else "path",
+        )
         if feature is None:
             continue
         if feature["kind"] == "road":
@@ -1545,12 +1611,22 @@ def _generate_precinct_site_features(
             sec_y = usable.bounds[1] + height_deg * frac
             # E-W secondary lane
             sec_ew = LineString([(usable.bounds[0], sec_y), (usable.bounds[2], sec_y)]).intersection(usable)
-            feat = _line_feature(sec_ew, width_m=max(min_dim_m * 0.04, 3.5), properties={"generated": True, "kind": "secondary_lane"}, kind="road")
+            feat = _line_feature(
+                sec_ew,
+                width_m=max(min_dim_m * 0.04, 3.5),
+                properties={"generated": True, "kind": "secondary_lane"},
+                kind="road",
+            )
             if feat is not None:
                 features["roads"].append(feat)
             # N-S secondary lane
             sec_ns = LineString([(sec_x, usable.bounds[1]), (sec_x, usable.bounds[3])]).intersection(usable)
-            feat = _line_feature(sec_ns, width_m=max(min_dim_m * 0.035, 3.0), properties={"generated": True, "kind": "secondary_lane"}, kind="path")
+            feat = _line_feature(
+                sec_ns,
+                width_m=max(min_dim_m * 0.035, 3.0),
+                properties={"generated": True, "kind": "secondary_lane"},
+                kind="path",
+            )
             if feat is not None:
                 features["paths"].append(feat)
 
@@ -1564,13 +1640,20 @@ def _generate_precinct_site_features(
     diag_a = LineString([corners[0], (center_x, center_y)]).intersection(usable)
     diag_b = LineString([corners[1], (center_x, center_y)]).intersection(usable)
     for diag_geom in (diag_a, diag_b):
-        feat = _line_feature(diag_geom, width_m=max(min_dim_m * 0.025, 2.0), properties={"generated": True, "kind": "pedestrian_link"}, kind="path")
+        feat = _line_feature(
+            diag_geom,
+            width_m=max(min_dim_m * 0.025, 2.0),
+            properties={"generated": True, "kind": "pedestrian_link"},
+            kind="path",
+        )
         if feat is not None:
             features["paths"].append(feat)
 
     promenade_outer = meters_to_degrees(max(min_dim_m * 0.035, 2.2))
     promenade_inner = meters_to_degrees(max(min_dim_m * 0.015, 1.1))
-    promenade_ring = _polygon_from_geometry(built_union.buffer(promenade_outer).difference(built_union.buffer(promenade_inner)))
+    promenade_ring = _polygon_from_geometry(
+        built_union.buffer(promenade_outer).difference(built_union.buffer(promenade_inner))
+    )
     if promenade_ring is not None and area_m2(promenade_ring) > 40.0:
         plaza_feature = _polygon_feature(
             promenade_ring.intersection(usable),
@@ -1593,12 +1676,22 @@ def _generate_precinct_site_features(
         anchor_park = _polygon_feature(
             anchor_candidate,
             name=f"{zone_name or 'Precinct'} civic green",
-            properties={"generated": True, "tree_density_level": "medium", "tree_density": 0.20, "has_paths": True, "landscape_role": "civic_anchor"},
+            properties={
+                "generated": True,
+                "tree_density_level": "medium",
+                "tree_density": 0.20,
+                "has_paths": True,
+                "landscape_role": "civic_anchor",
+            },
         )
         if anchor_park is not None:
             features["parks"].append(anchor_park)
-        if ("pond" in description or "water" in description or zone_area_m2 > 1200.0) and area_m2(anchor_candidate) > 120.0:
-            pond = _polygon_from_geometry(Point(center_x, center_y).buffer(meters_to_degrees(min_dim_m * 0.11)).intersection(anchor_candidate))
+        if ("pond" in description or "water" in description or zone_area_m2 > 1200.0) and area_m2(
+            anchor_candidate
+        ) > 120.0:
+            pond = _polygon_from_geometry(
+                Point(center_x, center_y).buffer(meters_to_degrees(min_dim_m * 0.11)).intersection(anchor_candidate)
+            )
             pond_feature = _polygon_feature(
                 pond,
                 name=f"{zone_name or 'Precinct'} water anchor",
@@ -1632,7 +1725,9 @@ def _generate_precinct_site_features(
         if park_feature is not None:
             features["parks"].append(park_feature)
 
-    if not features["parks"] and any(token in description for token in ("courtyard", "park", "green", "plaza", "promenade", "public realm")):
+    if not features["parks"] and any(
+        token in description for token in ("courtyard", "park", "green", "plaza", "promenade", "public realm")
+    ):
         fallback_anchor = _polygon_from_geometry(
             Point(center_x, center_y).buffer(meters_to_degrees(max(min_dim_m * 0.14, 8.0))).intersection(open_area_geom)
         )
@@ -1640,7 +1735,13 @@ def _generate_precinct_site_features(
             park_feature = _polygon_feature(
                 fallback_anchor,
                 name=f"{zone_name or 'Precinct'} civic green",
-                properties={"generated": True, "tree_density_level": "medium", "tree_density": 0.18, "has_paths": True, "landscape_role": "civic_anchor"},
+                properties={
+                    "generated": True,
+                    "tree_density_level": "medium",
+                    "tree_density": 0.18,
+                    "has_paths": True,
+                    "landscape_role": "civic_anchor",
+                },
             )
             if park_feature is not None:
                 features["parks"].append(park_feature)
@@ -1683,9 +1784,9 @@ def _render_parks(
     path_fill = _hex_to_rgba(palette["path"], 248)
     water_fill = _hex_to_rgba(palette["water"], 232)
     water_edge = _hex_to_rgba(_blend_hex(palette["water"], "#ffffff", 0.42), int(variant.get("water_edge_alpha") or 88))
-    canopy_fill = _hex_to_rgba(_blend_hex(palette["park"], "#416640", 0.36), 196)
-    canopy_highlight = _hex_to_rgba(_blend_hex(palette["park"], "#c4d6ae", 0.46), 116)
-    tree_shadow_fill = _hex_to_rgba(_blend_hex(palette["shadow"], "#000000", 0.28), int(variant.get("tree_shadow_alpha") or 64))
+    tree_shadow_fill = _hex_to_rgba(
+        _blend_hex(palette["shadow"], "#000000", 0.28), int(variant.get("tree_shadow_alpha") or 64)
+    )
     tree_shadow_offset = variant.get("tree_shadow_offset") or (4.0, 5.0)
     tree_canopies: list[tuple[float, float, float]] = []
     base_seed = int(variant.get("seed") or 0)
@@ -1728,7 +1829,9 @@ def _render_parks(
                             _draw_line(draw, ripple_seg, park_water_ripple, width=1)
                         pwy += pw_gap
                 else:
-                    _draw_polygon(draw, program_geometry, _hex_to_rgba(_blend_hex(palette["park"], "#cadab7", 0.12), 224))
+                    _draw_polygon(
+                        draw, program_geometry, _hex_to_rgba(_blend_hex(palette["park"], "#cadab7", 0.12), 224)
+                    )
             elif isinstance(program_geometry, LineString):
                 width = 6 if kind == "promenade" else 4
                 _draw_line(draw, program_geometry, path_fill, width=width)
@@ -1737,20 +1840,24 @@ def _render_parks(
             sx = x + float(tree_shadow_offset[0])
             sy = y + float(tree_shadow_offset[1])
             shadow_radius = radius * 1.2
-            shadow_draw.ellipse((sx - shadow_radius, sy - shadow_radius, sx + shadow_radius, sy + shadow_radius), fill=tree_shadow_fill)
+            shadow_draw.ellipse(
+                (sx - shadow_radius, sy - shadow_radius, sx + shadow_radius, sy + shadow_radius), fill=tree_shadow_fill
+            )
             tree_canopies.append((x, y, radius, tree_type))
 
     image.alpha_composite(texture_image.filter(ImageFilter.GaussianBlur(radius=0.45)))
-    image.alpha_composite(shadow_image.filter(ImageFilter.GaussianBlur(radius=max(float(variant.get("shadow_blur") or 2.0) - 0.8, 1.2))))
+    image.alpha_composite(
+        shadow_image.filter(ImageFilter.GaussianBlur(radius=max(float(variant.get("shadow_blur") or 2.0) - 0.8, 1.2)))
+    )
 
     # Multi-layer canopy rendering with tree type variation
     # Use strongly saturated greens — these must read as rich foliage, not pale dots
     canopy_greens = [
-        _blend_hex("#3a7a3a", palette["park"], 0.20),   # dominant dark green
-        _blend_hex("#2d6830", palette["park"], 0.15),   # forest green
-        _blend_hex("#4a8848", palette["park"], 0.22),   # slightly lighter
-        _blend_hex("#357035", palette["park"], 0.18),   # medium dark
-        _blend_hex("#508a4a", palette["park"], 0.25),   # brightest variant
+        _blend_hex("#3a7a3a", palette["park"], 0.20),  # dominant dark green
+        _blend_hex("#2d6830", palette["park"], 0.15),  # forest green
+        _blend_hex("#4a8848", palette["park"], 0.22),  # slightly lighter
+        _blend_hex("#357035", palette["park"], 0.18),  # medium dark
+        _blend_hex("#508a4a", palette["park"], 0.25),  # brightest variant
     ]
     conifer_green = _blend_hex("#1a3a1a", palette["park"], 0.10)
     tree_rng = random.Random(base_seed + 777)
@@ -1772,19 +1879,25 @@ def _render_parks(
             # Outer dark rim
             draw.ellipse((x - ew, y - eh, x + ew, y + eh), fill=_hex_to_rgba(rim_green, 240))
             # Inner lighter fill (80% of radius)
-            draw.ellipse((x - ew * 0.80, y - eh * 0.80, x + ew * 0.80, y + eh * 0.80), fill=_hex_to_rgba(base_green, 235))
+            draw.ellipse(
+                (x - ew * 0.80, y - eh * 0.80, x + ew * 0.80, y + eh * 0.80), fill=_hex_to_rgba(base_green, 235)
+            )
             # 3–4 sub-canopy blobs for texture
             for _ in range(tree_rng.randint(3, 4)):
                 bx = x + tree_rng.uniform(-radius * 0.35, radius * 0.35)
                 by = y + tree_rng.uniform(-radius * 0.25, radius * 0.25)
                 br = radius * tree_rng.uniform(0.35, 0.65)
                 blob_green = tree_rng.choice(canopy_greens)
-                draw.ellipse((bx - br * 1.2, by - br * 0.8, bx + br * 1.2, by + br * 0.8), fill=_hex_to_rgba(blob_green, 210))
+                draw.ellipse(
+                    (bx - br * 1.2, by - br * 0.8, bx + br * 1.2, by + br * 0.8), fill=_hex_to_rgba(blob_green, 210)
+                )
             # Highlight center — simulates dome lit from above
             hx = x - radius * 0.12
             hy = y - radius * 0.12
             hr = radius * 0.38
-            draw.ellipse((hx - hr, hy - hr, hx + hr, hy + hr), fill=_hex_to_rgba(_blend_hex(base_green, "#a8d89a", 0.40), 100))
+            draw.ellipse(
+                (hx - hr, hy - hr, hx + hr, hy + hr), fill=_hex_to_rgba(_blend_hex(base_green, "#a8d89a", 0.40), 100)
+            )
         else:
             # deciduous_round — richest rendering: dome gradient + overlapping sub-canopy
             base_green = tree_rng.choice(canopy_greens)
@@ -1806,7 +1919,9 @@ def _render_parks(
             hx = x - radius * 0.10
             hy = y - radius * 0.10
             hr = radius * 0.35
-            draw.ellipse((hx - hr, hy - hr, hx + hr, hy + hr), fill=_hex_to_rgba(_blend_hex(base_green, "#b8dca8", 0.38), 120))
+            draw.ellipse(
+                (hx - hr, hy - hr, hx + hr, hy + hr), fill=_hex_to_rgba(_blend_hex(base_green, "#b8dca8", 0.38), 120)
+            )
 
 
 def _render_street_trees(
@@ -1855,7 +1970,7 @@ def _render_street_trees(
 
             for side in [1, -1]:
                 try:
-                    offset_line = line.parallel_offset(offset_dist * side, 'left' if side > 0 else 'right')
+                    offset_line = line.parallel_offset(offset_dist * side, "left" if side > 0 else "right")
                 except Exception:
                     continue
                 if offset_line.is_empty:
@@ -1886,7 +2001,9 @@ def _render_street_trees(
                             bx = tx + rng.uniform(-tr * 0.25, tr * 0.25)
                             by = ty + rng.uniform(-tr * 0.25, tr * 0.25)
                             br = tr * rng.uniform(0.35, 0.60)
-                            draw.ellipse((bx - br, by - br, bx + br, by + br), fill=_hex_to_rgba(rng.choice(canopy_greens), 210))
+                            draw.ellipse(
+                                (bx - br, by - br, bx + br, by + br), fill=_hex_to_rgba(rng.choice(canopy_greens), 210)
+                            )
 
                         dist += tree_spacing * rng.uniform(0.85, 1.15)
 
@@ -1972,7 +2089,7 @@ def _render_ground_textures(
                 continue
             if isinstance(clipped, LineString) and not clipped.is_empty:
                 _draw_line(draw, clipped, paving_color, width=1)
-            elif hasattr(clipped, 'geoms'):
+            elif hasattr(clipped, "geoms"):
                 for g in clipped.geoms:
                     if isinstance(g, LineString) and not g.is_empty:
                         _draw_line(draw, g, paving_color, width=1)
@@ -2086,8 +2203,7 @@ def _classify_building_typology(props: dict[str, Any], height_m: float) -> str:
         return "mixed_use"
     if height_m > 20:
         return "highrise"
-    if ("perimeter" in grammar or "mid_rise" in typology or "apartment" in typology
-            or 10 < height_m <= 20):
+    if "perimeter" in grammar or "mid_rise" in typology or "apartment" in typology or 10 < height_m <= 20:
         return "midrise"
     if "office" in typology or "commercial" in dev_type or "retail" in typology:
         return "commercial"
@@ -2108,12 +2224,12 @@ def _render_entourage(
 
     # People colors — warm tones suggesting clothing
     people_colors = [
-        _hex_to_rgba("#3a3a4a", 200),   # dark jacket
-        _hex_to_rgba("#6a3a2a", 190),   # brown
-        _hex_to_rgba("#2a4a6a", 185),   # blue shirt
-        _hex_to_rgba("#8a3a3a", 180),   # red top
-        _hex_to_rgba("#e8d8c8", 175),   # light clothing
-        _hex_to_rgba("#4a6a3a", 180),   # green jacket
+        _hex_to_rgba("#3a3a4a", 200),  # dark jacket
+        _hex_to_rgba("#6a3a2a", 190),  # brown
+        _hex_to_rgba("#2a4a6a", 185),  # blue shirt
+        _hex_to_rgba("#8a3a3a", 180),  # red top
+        _hex_to_rgba("#e8d8c8", 175),  # light clothing
+        _hex_to_rgba("#4a6a3a", 180),  # green jacket
     ]
     person_radius = max(1.5, ppm * 0.4)
 
@@ -2133,8 +2249,7 @@ def _render_entourage(
                     pt = seg.interpolate(dist)
                     color = rng.choice(people_colors)
                     draw.ellipse(
-                        (pt.x - person_radius, pt.y - person_radius,
-                         pt.x + person_radius, pt.y + person_radius),
+                        (pt.x - person_radius, pt.y - person_radius, pt.x + person_radius, pt.y + person_radius),
                         fill=color,
                     )
                     # Occasional pair (couple walking together)
@@ -2142,8 +2257,7 @@ def _render_entourage(
                         px = pt.x + rng.uniform(-2.5, 2.5)
                         py = pt.y + rng.uniform(-2.5, 2.5)
                         draw.ellipse(
-                            (px - person_radius, py - person_radius,
-                             px + person_radius, py + person_radius),
+                            (px - person_radius, py - person_radius, px + person_radius, py + person_radius),
                             fill=rng.choice(people_colors),
                         )
                 dist += spacing * rng.uniform(0.8, 1.2)
@@ -2162,8 +2276,7 @@ def _render_entourage(
             if not poly.buffer(1e-9).contains(Point(px, py)):
                 continue
             draw.ellipse(
-                (px - person_radius, py - person_radius,
-                 px + person_radius, py + person_radius),
+                (px - person_radius, py - person_radius, px + person_radius, py + person_radius),
                 fill=rng.choice(people_colors),
             )
             placed += 1
@@ -2189,18 +2302,22 @@ def _render_entourage(
 
 # -- Roof color palettes per typology -- distinct, high-contrast values
 _ROOF_COLORS: dict[str, str] = {
-    "townhouse": "#6A5540",   # warm terracotta/slate — reads clearly as residential pitched
-    "midrise": "#707880",     # cool concrete grey — distinct from townhouse
-    "highrise": "#5A6470",    # dark steel blue-grey — tallest = darkest
-    "mixed_use": "#585E68",   # urban charcoal — podium + tower
+    "townhouse": "#6A5540",  # warm terracotta/slate — reads clearly as residential pitched
+    "midrise": "#707880",  # cool concrete grey — distinct from townhouse
+    "highrise": "#5A6470",  # dark steel blue-grey — tallest = darkest
+    "mixed_use": "#585E68",  # urban charcoal — podium + tower
     "commercial": "#646A72",  # neutral dark — office/retail
-    "generic": "#6E757D",     # mid-dark grey fallback
+    "generic": "#6E757D",  # mid-dark grey fallback
 }
 
 
 def _render_roof_townhouse(
-    draw: ImageDraw.ImageDraw, poly: Polygon, inset: Polygon,
-    palette: dict[str, str], rng: random.Random, variant: dict[str, Any],
+    draw: ImageDraw.ImageDraw,
+    poly: Polygon,
+    inset: Polygon,
+    palette: dict[str, str],
+    rng: random.Random,
+    variant: dict[str, Any],
 ) -> None:
     """Pitched roof with ridge line, slope shading, and chimney."""
     roof_base = _ROOF_COLORS["townhouse"]
@@ -2247,8 +2364,12 @@ def _render_roof_townhouse(
 
 
 def _render_roof_midrise(
-    draw: ImageDraw.ImageDraw, poly: Polygon, inset: Polygon,
-    palette: dict[str, str], rng: random.Random, variant: dict[str, Any],
+    draw: ImageDraw.ImageDraw,
+    poly: Polygon,
+    inset: Polygon,
+    palette: dict[str, str],
+    rng: random.Random,
+    variant: dict[str, Any],
 ) -> None:
     """Flat roof with HVAC units, elevator shaft, possible green roof."""
     roof_base = _ROOF_COLORS["midrise"]
@@ -2292,8 +2413,12 @@ def _render_roof_midrise(
 
 
 def _render_roof_highrise(
-    draw: ImageDraw.ImageDraw, poly: Polygon, inset: Polygon,
-    palette: dict[str, str], rng: random.Random, variant: dict[str, Any],
+    draw: ImageDraw.ImageDraw,
+    poly: Polygon,
+    inset: Polygon,
+    palette: dict[str, str],
+    rng: random.Random,
+    variant: dict[str, Any],
 ) -> None:
     """Flat roof with mechanical core, double parapet, and floor plate lines."""
     roof_base = _ROOF_COLORS["highrise"]
@@ -2329,8 +2454,12 @@ def _render_roof_highrise(
 
 
 def _render_roof_mixed_use(
-    draw: ImageDraw.ImageDraw, poly: Polygon, inset: Polygon,
-    palette: dict[str, str], rng: random.Random, variant: dict[str, Any],
+    draw: ImageDraw.ImageDraw,
+    poly: Polygon,
+    inset: Polygon,
+    palette: dict[str, str],
+    rng: random.Random,
+    variant: dict[str, Any],
 ) -> None:
     """Mixed-use: podium base + tower portion if elongated, otherwise midrise treatment."""
     minx, miny, maxx, maxy = inset.bounds
@@ -2370,8 +2499,12 @@ def _render_roof_mixed_use(
 
 
 def _render_roof_generic(
-    draw: ImageDraw.ImageDraw, poly: Polygon, inset: Polygon,
-    palette: dict[str, str], rng: random.Random, variant: dict[str, Any],
+    draw: ImageDraw.ImageDraw,
+    poly: Polygon,
+    inset: Polygon,
+    palette: dict[str, str],
+    rng: random.Random,
+    variant: dict[str, Any],
     height_m: float,
 ) -> None:
     """Enhanced generic roof with more HVAC units and height-based color."""
@@ -2388,7 +2521,9 @@ def _render_roof_generic(
 
     # Grid lines
     line_count = max(1, min(int(variant.get("roof_detail_lines") or 2), int(max(spanx, spany) / 24)))
-    detail_color = _hex_to_rgba(_blend_hex(palette["building"], "#79828a", 0.55), int(variant.get("roof_detail_alpha") or 72))
+    detail_color = _hex_to_rgba(
+        _blend_hex(palette["building"], "#79828a", 0.55), int(variant.get("roof_detail_alpha") or 72)
+    )
     for li in range(1, line_count + 1):
         t = li / (line_count + 1)
         if spanx >= spany:
@@ -2420,10 +2555,9 @@ def _render_buildings(
     palette: dict[str, str],
     variant: dict[str, Any],
 ) -> None:
-    shadow_image = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    shadow_draw = ImageDraw.Draw(shadow_image, "RGBA")
-
-    building_edge = _hex_to_rgba(_blend_hex(palette["building"], "#3a4248", 0.50), int(variant.get("building_edge_alpha") or 160))
+    building_edge = _hex_to_rgba(
+        _blend_hex(palette["building"], "#3a4248", 0.50), int(variant.get("building_edge_alpha") or 160)
+    )
     shadow_fill = _hex_to_rgba(_blend_hex(palette["shadow"], "#000000", 0.35), int(variant.get("shadow_alpha") or 128))
     shadow_offset = variant.get("shadow_offset") or (8, 9)
     shadow_blur = float(variant.get("shadow_blur") or 2.4)
@@ -2443,9 +2577,9 @@ def _render_buildings(
     # Draw shadows — grouped into height bands for per-band blur
     base_sx, base_sy = float(shadow_offset[0]), float(shadow_offset[1])
     height_bands: list[tuple[float, float, float]] = [
-        (0.0, 12.0, shadow_blur * 0.7),       # low-rise: tighter shadow
-        (12.0, 25.0, shadow_blur * 1.0),       # mid-rise: base shadow
-        (25.0, 999.0, shadow_blur * 1.5),      # high-rise: softer diffuse shadow
+        (0.0, 12.0, shadow_blur * 0.7),  # low-rise: tighter shadow
+        (12.0, 25.0, shadow_blur * 1.0),  # mid-rise: base shadow
+        (25.0, 999.0, shadow_blur * 1.5),  # high-rise: softer diffuse shadow
     ]
     for band_min, band_max, band_blur in height_bands:
         band_shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
@@ -2466,8 +2600,6 @@ def _render_buildings(
 
     for index, (poly, height_m, props) in enumerate(building_entries):
         typology = _classify_building_typology(props, height_m)
-        roof_base_hex = _ROOF_COLORS.get(typology, _ROOF_COLORS["generic"])
-
         # Building base fill — darker than roof for parapet edge effect
         height_tint = max(0.0, min((height_m - 9.0) / 36.0, 0.18))
         base_hex = _blend_hex(palette["building"], "#606870", 0.45)
@@ -2520,7 +2652,9 @@ def _render_streets_and_context(
     draw = ImageDraw.Draw(image, "RGBA")
     road_fill = _hex_to_rgba(palette["road"], 255)
     road_edge = _hex_to_rgba(_blend_hex(palette["road"], "#2a3038", 0.50), 230)
-    lane_fill = _hex_to_rgba(_blend_hex(palette["road"], "#ffffff", 0.82), int(variant.get("lane_marking_alpha") or 140))
+    lane_fill = _hex_to_rgba(
+        _blend_hex(palette["road"], "#ffffff", 0.82), int(variant.get("lane_marking_alpha") or 140)
+    )
     path_fill = _hex_to_rgba(palette["path"], 248)
     path_edge = _hex_to_rgba(_blend_hex(palette["path"], "#c2b7a4", 0.28), 130)
     water_fill = _hex_to_rgba(palette["water"], 238)
@@ -2629,7 +2763,7 @@ def _render_streets_and_context(
             pts = []
             if isinstance(ix, Point):
                 pts = [(ix.x, ix.y)]
-            elif hasattr(ix, 'geoms'):
+            elif hasattr(ix, "geoms"):
                 pts = [(g.x, g.y) for g in ix.geoms if isinstance(g, Point)]
             for px, py in pts:
                 # Draw crosswalk bars perpendicular to each road
@@ -2670,7 +2804,7 @@ def _render_streets_and_context(
         offset_dist = road_width_px / 2 - car_w * 0.6
         for side_mult in [1, -1]:
             try:
-                side_line = line.parallel_offset(offset_dist * side_mult, 'left' if side_mult > 0 else 'right')
+                side_line = line.parallel_offset(offset_dist * side_mult, "left" if side_mult > 0 else "right")
             except Exception:
                 continue
             if side_line.is_empty:
@@ -2682,15 +2816,9 @@ def _render_streets_and_context(
                 while dist < side_line.length:
                     if car_rng.random() < 0.60:  # 60% fill rate
                         pt = side_line.interpolate(dist)
-                        frac = dist / max(side_line.length, 1e-6)
-                        frac2 = min(frac + 0.005, 1.0)
-                        p1 = side_line.interpolate(frac, normalized=True)
-                        p2 = side_line.interpolate(frac2, normalized=True)
-                        angle = math.atan2(p2.y - p1.y, p2.x - p1.x)
                         # Car rectangle — keep proportional to pixels_per_meter
                         cw, ch = max(car_w * 0.5, 3), max(car_h * 0.5, 5)
                         car_color = car_rng.choice(car_colors)
-                        cos_a, sin_a = math.cos(angle), math.sin(angle)
                         # Simple axis-aligned rectangle approximation
                         cx, cy = pt.x, pt.y
                         draw.rectangle(
@@ -2738,9 +2866,12 @@ def _render_streets_and_context(
     # --- Entourage: people on paths and plazas ---
     ent_rng = random.Random(int(variant.get("seed", 0)) + 8888)
     person_colors = [
-        _hex_to_rgba("#8a6a5a", 180), _hex_to_rgba("#5a6a8a", 180),
-        _hex_to_rgba("#a08060", 180), _hex_to_rgba("#6a5a7a", 180),
-        _hex_to_rgba("#4a7a6a", 180), _hex_to_rgba("#8a4a4a", 180),
+        _hex_to_rgba("#8a6a5a", 180),
+        _hex_to_rgba("#5a6a8a", 180),
+        _hex_to_rgba("#a08060", 180),
+        _hex_to_rgba("#6a5a7a", 180),
+        _hex_to_rgba("#4a7a6a", 180),
+        _hex_to_rgba("#8a4a4a", 180),
     ]
     # People on paths
     for feature in scene["pixel"]["paths"]:
@@ -2754,7 +2885,9 @@ def _render_streets_and_context(
                 draw.ellipse((pt.x - r, pt.y - r, pt.x + r, pt.y + r), fill=color)
                 # Occasional pair (couple walking)
                 if ent_rng.random() < 0.3:
-                    draw.ellipse((pt.x - r + 3, pt.y - r + 1, pt.x + r + 3, pt.y + r + 1), fill=ent_rng.choice(person_colors))
+                    draw.ellipse(
+                        (pt.x - r + 3, pt.y - r + 1, pt.x + r + 3, pt.y + r + 1), fill=ent_rng.choice(person_colors)
+                    )
                 dist += ent_rng.uniform(15, 25) * ppm
 
     # People in plazas
@@ -2776,17 +2909,16 @@ def _render_streets_and_context(
                         break
 
 
-
 def _feature_height_m(feature: dict[str, Any]) -> float:
-    properties = feature.get('properties') if isinstance(feature.get('properties'), dict) else {}
-    for key in ('height_m', 'height'):
+    properties = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+    for key in ("height_m", "height"):
         try:
             value = float(properties.get(key))
         except (TypeError, ValueError):
             continue
         if value > 0:
             return value
-    for key in ('floors', 'floor_count', 'floorCount'):
+    for key in ("floors", "floor_count", "floorCount"):
         try:
             floors = int(float(properties.get(key)))
         except (TypeError, ValueError):
@@ -2803,29 +2935,29 @@ def _render_control_maps(
     *,
     base_image: Image.Image | None = None,
 ) -> dict[str, Image.Image]:
-    width = int(scene['width'])
-    height = int(scene['height'])
-    boundary = _polygon_from_geometry(scene['pixel']['boundary'])
+    width = int(scene["width"])
+    height = int(scene["height"])
+    boundary = _polygon_from_geometry(scene["pixel"]["boundary"])
     if boundary is None:
-        raise ValueError('Scene boundary is missing in control-map render payload.')
+        raise ValueError("Scene boundary is missing in control-map render payload.")
 
-    massing = Image.new('RGBA', (width, height), (18, 20, 22, 255))
-    depth = Image.new('L', (width, height), 10)
-    segmentation = Image.new('RGBA', (width, height), (14, 16, 18, 255))
+    massing = Image.new("RGBA", (width, height), (18, 20, 22, 255))
+    depth = Image.new("L", (width, height), 10)
+    segmentation = Image.new("RGBA", (width, height), (14, 16, 18, 255))
 
-    massing_draw = ImageDraw.Draw(massing, 'RGBA')
+    massing_draw = ImageDraw.Draw(massing, "RGBA")
     depth_draw = ImageDraw.Draw(depth)
-    segmentation_draw = ImageDraw.Draw(segmentation, 'RGBA')
+    segmentation_draw = ImageDraw.Draw(segmentation, "RGBA")
 
     boundary_coords = _polygon_coords(boundary)
     massing_draw.polygon(boundary_coords, fill=(214, 218, 212, 255))
     depth_draw.polygon(boundary_coords, fill=40)
     segmentation_draw.polygon(boundary_coords, fill=(42, 44, 48, 255))
 
-    if toggles.get('show_surrounding_context', True):
-        for feature in scene['pixel']['context_roads']:
-            geometry = feature.get('geometry')
-            width_px = int(max(round(float(feature.get('width_m', 6.0)) * scene['pixels_per_meter']), 2))
+    if toggles.get("show_surrounding_context", True):
+        for feature in scene["pixel"]["context_roads"]:
+            geometry = feature.get("geometry")
+            width_px = int(max(round(float(feature.get("width_m", 6.0)) * scene["pixels_per_meter"]), 2))
             if isinstance(geometry, LineString):
                 _draw_line(massing_draw, geometry, (46, 50, 56, 196), width=width_px)
                 _draw_line(depth_draw, geometry, 24, width=width_px)
@@ -2836,28 +2968,28 @@ def _render_control_maps(
                     _draw_polygon(massing_draw, poly, (46, 50, 56, 188))
                     _draw_polygon(depth_draw, poly, 24)
                     _draw_polygon(segmentation_draw, poly, (34, 36, 40, 255))
-        for feature in scene['pixel']['context_buildings']:
-            poly = _polygon_from_geometry(feature.get('geometry'))
+        for feature in scene["pixel"]["context_buildings"]:
+            poly = _polygon_from_geometry(feature.get("geometry"))
             if poly is not None:
                 _draw_polygon(massing_draw, poly, (74, 78, 84, 168))
                 _draw_polygon(depth_draw, poly, 30)
                 _draw_polygon(segmentation_draw, poly, (56, 58, 62, 255))
-        for feature in scene['pixel']['context_parks']:
-            poly = _polygon_from_geometry(feature.get('geometry'))
+        for feature in scene["pixel"]["context_parks"]:
+            poly = _polygon_from_geometry(feature.get("geometry"))
             if poly is not None:
                 _draw_polygon(massing_draw, poly, (62, 88, 60, 152))
                 _draw_polygon(depth_draw, poly, 22)
                 _draw_polygon(segmentation_draw, poly, (36, 62, 40, 255))
-        for feature in scene['pixel']['context_water']:
-            poly = _polygon_from_geometry(feature.get('geometry'))
+        for feature in scene["pixel"]["context_water"]:
+            poly = _polygon_from_geometry(feature.get("geometry"))
             if poly is not None:
                 _draw_polygon(massing_draw, poly, (52, 74, 98, 160))
                 _draw_polygon(depth_draw, poly, 26)
                 _draw_polygon(segmentation_draw, poly, (40, 56, 72, 255))
 
-    for feature in scene['pixel']['roads']:
-        geometry = feature.get('geometry')
-        width_px = int(max(round(float(feature.get('width_m', 8.0)) * scene['pixels_per_meter']), 3))
+    for feature in scene["pixel"]["roads"]:
+        geometry = feature.get("geometry")
+        width_px = int(max(round(float(feature.get("width_m", 8.0)) * scene["pixels_per_meter"]), 3))
         if isinstance(geometry, LineString):
             _draw_line(massing_draw, geometry, (98, 102, 108, 255), width=width_px)
             _draw_line(massing_draw, geometry, (126, 130, 136, 176), width=max(width_px - 2, 1))
@@ -2870,9 +3002,9 @@ def _render_control_maps(
                 _draw_polygon(depth_draw, poly, 62)
                 _draw_polygon(segmentation_draw, poly, (76, 104, 182, 255))
 
-    for feature in scene['pixel']['paths']:
-        geometry = feature.get('geometry')
-        width_px = int(max(round(float(feature.get('width_m', 4.0)) * scene['pixels_per_meter']), 2))
+    for feature in scene["pixel"]["paths"]:
+        geometry = feature.get("geometry")
+        width_px = int(max(round(float(feature.get("width_m", 4.0)) * scene["pixels_per_meter"]), 2))
         if isinstance(geometry, LineString):
             _draw_line(massing_draw, geometry, (188, 180, 160, 255), width=width_px)
             _draw_line(depth_draw, geometry, 74, width=width_px)
@@ -2884,37 +3016,37 @@ def _render_control_maps(
                 _draw_polygon(depth_draw, poly, 74)
                 _draw_polygon(segmentation_draw, poly, (214, 182, 122, 255))
 
-    for feature in scene['pixel']['plazas']:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in scene["pixel"]["plazas"]:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None:
             _draw_polygon(massing_draw, poly, (196, 188, 170, 255))
             _draw_polygon(depth_draw, poly, 84)
             _draw_polygon(segmentation_draw, poly, (224, 196, 132, 255))
 
-    for feature in scene['pixel']['parks']:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in scene["pixel"]["parks"]:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None:
             _draw_polygon(massing_draw, poly, (92, 126, 84, 255))
             _draw_polygon(depth_draw, poly, 92)
             _draw_polygon(segmentation_draw, poly, (72, 156, 92, 255))
 
-    for feature in scene['pixel']['water']:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+    for feature in scene["pixel"]["water"]:
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None:
             _draw_polygon(massing_draw, poly, (76, 108, 134, 255))
             _draw_polygon(depth_draw, poly, 104)
             _draw_polygon(segmentation_draw, poly, (66, 128, 196, 255))
 
-    building_features = list(scene['pixel']['building_masses']) + list(scene['pixel']['building_footprints'])
+    building_features = list(scene["pixel"]["building_masses"]) + list(scene["pixel"]["building_footprints"])
     building_heights = [_feature_height_m(feature) for feature in building_features]
     max_height = max(building_heights, default=24.0)
-    shadow_image = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-    shadow_draw = ImageDraw.Draw(shadow_image, 'RGBA')
-    shadow_offset = variant.get('shadow_offset') or (7, 8)
-    skirt_px = max(float(scene['pixels_per_meter']) * 3.0, 2.0)
+    shadow_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    shadow_draw = ImageDraw.Draw(shadow_image, "RGBA")
+    shadow_offset = variant.get("shadow_offset") or (7, 8)
+    skirt_px = max(float(scene["pixels_per_meter"]) * 3.0, 2.0)
 
     for feature in building_features:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is None:
             continue
         skirt = _polygon_from_geometry(poly.buffer(skirt_px).intersection(boundary))
@@ -2925,10 +3057,12 @@ def _render_control_maps(
         shifted = translate(poly, xoff=float(shadow_offset[0]) * 0.62, yoff=float(shadow_offset[1]) * 0.62)
         _draw_polygon(shadow_draw, shifted, (10, 12, 16, 126))
 
-    massing.alpha_composite(shadow_image.filter(ImageFilter.GaussianBlur(radius=max(float(variant.get('shadow_blur') or 2.0) * 0.75, 1.3))))
+    massing.alpha_composite(
+        shadow_image.filter(ImageFilter.GaussianBlur(radius=max(float(variant.get("shadow_blur") or 2.0) * 0.75, 1.3)))
+    )
 
     for feature, height_m in zip(building_features, building_heights):
-        poly = _polygon_from_geometry(feature.get('geometry'))
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is None:
             continue
         normalized = max(0.0, min(height_m / max(max_height, 1.0), 1.0))
@@ -2941,26 +3075,26 @@ def _render_control_maps(
         _draw_polygon_outline(segmentation_draw, poly, (255, 244, 236, 255), width=2)
 
     if base_image is not None:
-        structure = Image.blend(base_image.convert('RGBA'), massing, 0.46)
+        structure = Image.blend(base_image.convert("RGBA"), massing, 0.46)
     else:
         structure = massing.copy()
-    depth_rgb = Image.merge('RGBA', (depth, depth, depth, Image.new('L', (width, height), 255)))
+    depth_rgb = Image.merge("RGBA", (depth, depth, depth, Image.new("L", (width, height), 255)))
     structure = Image.blend(structure, depth_rgb, 0.20)
 
-    structure_overlay = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-    overlay_draw = ImageDraw.Draw(structure_overlay, 'RGBA')
-    overlay_draw.line(boundary_coords, fill=(255, 255, 255, 160), width=2, joint='curve')
+    structure_overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    overlay_draw = ImageDraw.Draw(structure_overlay, "RGBA")
+    overlay_draw.line(boundary_coords, fill=(255, 255, 255, 160), width=2, joint="curve")
     for feature in building_features:
-        poly = _polygon_from_geometry(feature.get('geometry'))
+        poly = _polygon_from_geometry(feature.get("geometry"))
         if poly is not None:
             _draw_polygon_outline(overlay_draw, poly, (255, 255, 255, 148), width=1)
     structure.alpha_composite(structure_overlay)
 
     return {
-        'massing': massing,
-        'depth': depth,
-        'segmentation': segmentation,
-        'structure': structure,
+        "massing": massing,
+        "depth": depth,
+        "segmentation": segmentation,
+        "structure": structure,
     }
 
 
@@ -2976,7 +3110,9 @@ def _image_from_data_uri(data_uri: str | None) -> Image.Image | None:
         return None
 
 
-def _fetch_mapbox_satellite_underlay(view_extent: Polygon, width: int, height: int) -> tuple[Image.Image | None, str | None]:
+def _fetch_mapbox_satellite_underlay(
+    view_extent: Polygon, width: int, height: int
+) -> tuple[Image.Image | None, str | None]:
     if not settings.mapbox_access_token:
         return None, "MAPBOX_ACCESS_TOKEN not configured"
     try:
@@ -3014,7 +3150,10 @@ def _resolve_context_underlay(
 ) -> tuple[Image.Image | None, dict[str, Any]]:
     mode = _normalize_render_mode(render_mode)
     render_key = str(render_style_preset or "").strip().lower()
-    wants_underlay = mode == MASTER_PLAN_2D_RENDER_MODE_DEFAULT or render_key in {"photorealistic_aerial", "photoreal_orthographic_aerial"}
+    wants_underlay = mode == MASTER_PLAN_2D_RENDER_MODE_DEFAULT or render_key in {
+        "photorealistic_aerial",
+        "photoreal_orthographic_aerial",
+    }
     status = {
         "requested": wants_underlay or bool(_normalize_whitespace(map_screenshot_satellite)),
         "applied": False,
@@ -3040,11 +3179,13 @@ def _resolve_context_underlay(
             status["reason"] = error or "context underlay unavailable"
 
         if screenshot_image is not None:
-            status.update({
-                "applied": True,
-                "source": "viewer_map_screenshot_unbounded",
-                "reason": status.get("reason") or "map bounds unavailable; screenshot alignment may vary",
-            })
+            status.update(
+                {
+                    "applied": True,
+                    "source": "viewer_map_screenshot_unbounded",
+                    "reason": status.get("reason") or "map bounds unavailable; screenshot alignment may vary",
+                }
+            )
             return screenshot_image, status
 
         if not wants_underlay:
@@ -3077,6 +3218,7 @@ def _resolve_context_underlay(
 
     status.update({"applied": True, "source": "mapbox_static", "reason": None})
     return fetched, status
+
 
 def _render_plan_image(
     scene: dict[str, Any],
@@ -3115,7 +3257,9 @@ def _render_plan_image(
         sat_image = Image.blend(sat_image, desat, 0.35)
         # Slightly lighten to push context further into background
         sat_image = ImageEnhance.Brightness(sat_image).enhance(1.06)
-        atmosphere_wash = Image.new("RGBA", (width, height), _hex_to_rgba(_blend_hex(palette["paper"], "#eef2ee", 0.12), 18))
+        atmosphere_wash = Image.new(
+            "RGBA", (width, height), _hex_to_rgba(_blend_hex(palette["paper"], "#eef2ee", 0.12), 18)
+        )
         sat_image.alpha_composite(atmosphere_wash)
 
         # Composite: satellite outside boundary, clean ground inside
@@ -3134,7 +3278,6 @@ def _render_plan_image(
         ground_noise = Image.new("RGBA", (width, height), (0, 0, 0, 0))
         gn_draw = ImageDraw.Draw(ground_noise, "RGBA")
         gn_rng = random.Random(int(variant.get("seed", 0)) + 7)
-        site_color = _hex_to_rgba(palette["site"], 255)
         for _ in range(int(width * height / 200)):
             gx = gn_rng.randint(0, width - 1)
             gy = gn_rng.randint(0, height - 1)
@@ -3189,7 +3332,9 @@ def _render_plan_image(
     site_overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     logger.info(
         "Rendering plan: %dx%d, ppm=%.3f, buildings=%d+%d, roads=%d, parks=%d, paths=%d, plazas=%d, water=%d, underlay=%s",
-        width, height, float(scene.get("pixels_per_meter", 0)),
+        width,
+        height,
+        float(scene.get("pixels_per_meter", 0)),
         len(scene["pixel"].get("building_masses", [])),
         len(scene["pixel"].get("building_footprints", [])),
         len(scene["pixel"].get("roads", [])),
@@ -3255,7 +3400,7 @@ def _render_plan_image(
         # Normalise 0‥1, apply power curve so centre stays bright
         normed = np.clip(dist / max_r, 0.0, 1.0)
         vignette_strength = 0.12 if variant["quality_level"] == "board_ready" else 0.08
-        alpha_arr = (normed ** 2.2 * 255 * vignette_strength).astype(np.uint8)
+        alpha_arr = (normed**2.2 * 255 * vignette_strength).astype(np.uint8)
         vignette_layer = Image.fromarray(
             np.stack(
                 [np.zeros_like(alpha_arr), np.zeros_like(alpha_arr), np.zeros_like(alpha_arr), alpha_arr],
@@ -3312,7 +3457,9 @@ def _polygon_path_from_feature(feature: dict[str, Any], default_width: float = 3
     return "", None
 
 
-def _render_plan_svg(scene: dict[str, Any], style_preset: str, variant: dict[str, Any], toggles: dict[str, bool]) -> str:
+def _render_plan_svg(
+    scene: dict[str, Any], style_preset: str, variant: dict[str, Any], toggles: dict[str, bool]
+) -> str:
     _ = style_preset
     width = int(scene["width"])
     height = int(scene["height"])
@@ -3367,7 +3514,7 @@ def _render_plan_svg(scene: dict[str, Any], style_preset: str, variant: dict[str
             '<polygon points="0,-18 -6,12 6,12" fill="#2a3038" opacity="0.85" />'
             '<polygon points="0,-18 0,12 6,12" fill="#5a6068" opacity="0.70" />'
             '<text x="0" y="-22" text-anchor="middle" font-size="11" font-family="Arial,sans-serif" fill="#2a3038" font-weight="bold">N</text>'
-            '</g>'
+            "</g>"
         )
 
     # Scale bar (bottom-left)
@@ -3396,7 +3543,7 @@ def _render_plan_svg(scene: dict[str, Any], style_preset: str, variant: dict[str
                 f'<g id="scale-bar">{sb_rects}'
                 f'<text x="{sb_x}" y="{sb_y + 16}" font-size="9" font-family="Arial,sans-serif" fill="#2a3038">0</text>'
                 f'<text x="{sb_x + bar_px}" y="{sb_y + 16}" text-anchor="end" font-size="9" font-family="Arial,sans-serif" fill="#2a3038">{dist_label}</text>'
-                '</g>'
+                "</g>"
             )
 
     # Legend (bottom-right)
@@ -3405,17 +3552,29 @@ def _render_plan_svg(scene: dict[str, Any], style_preset: str, variant: dict[str
         if legend_entries:
             lg_x = width - 180
             lg_y = height - 20 - len(legend_entries) * 20 - 28
-            lg_parts = [f'<rect x="{lg_x - 8}" y="{lg_y - 8}" width="180" height="{len(legend_entries) * 20 + 36}" rx="6" fill="#f8f6f1" fill-opacity="0.88" stroke="#d5d1c8" />']
-            lg_parts.append(f'<text x="{lg_x}" y="{lg_y + 12}" font-size="10" font-family="Arial,sans-serif" fill="#126a8b" font-weight="bold">LEGEND</text>')
+            lg_parts = [
+                f'<rect x="{lg_x - 8}" y="{lg_y - 8}" width="180" height="{len(legend_entries) * 20 + 36}" rx="6" fill="#f8f6f1" fill-opacity="0.88" stroke="#d5d1c8" />'
+            ]
+            lg_parts.append(
+                f'<text x="{lg_x}" y="{lg_y + 12}" font-size="10" font-family="Arial,sans-serif" fill="#126a8b" font-weight="bold">LEGEND</text>'
+            )
             lg_cy = lg_y + 28
             for label, color_hex, shape_type in legend_entries:
                 if shape_type == "rect":
-                    lg_parts.append(f'<rect x="{lg_x}" y="{lg_cy}" width="12" height="12" fill="{color_hex}" stroke="#5a6068" stroke-opacity="0.5" stroke-width="0.5" />')
+                    lg_parts.append(
+                        f'<rect x="{lg_x}" y="{lg_cy}" width="12" height="12" fill="{color_hex}" stroke="#5a6068" stroke-opacity="0.5" stroke-width="0.5" />'
+                    )
                 elif shape_type == "circle":
-                    lg_parts.append(f'<circle cx="{lg_x + 6}" cy="{lg_cy + 6}" r="6" fill="{color_hex}" stroke="#5a6068" stroke-opacity="0.5" stroke-width="0.5" />')
+                    lg_parts.append(
+                        f'<circle cx="{lg_x + 6}" cy="{lg_cy + 6}" r="6" fill="{color_hex}" stroke="#5a6068" stroke-opacity="0.5" stroke-width="0.5" />'
+                    )
                 elif shape_type == "line":
-                    lg_parts.append(f'<line x1="{lg_x}" y1="{lg_cy + 6}" x2="{lg_x + 12}" y2="{lg_cy + 6}" stroke="{color_hex}" stroke-width="3" />')
-                lg_parts.append(f'<text x="{lg_x + 18}" y="{lg_cy + 10}" font-size="9" font-family="Arial,sans-serif" fill="#2a3038">{label}</text>')
+                    lg_parts.append(
+                        f'<line x1="{lg_x}" y1="{lg_cy + 6}" x2="{lg_x + 12}" y2="{lg_cy + 6}" stroke="{color_hex}" stroke-width="3" />'
+                    )
+                lg_parts.append(
+                    f'<text x="{lg_x + 18}" y="{lg_cy + 10}" font-size="9" font-family="Arial,sans-serif" fill="#2a3038">{label}</text>'
+                )
                 lg_cy += 20
             overlay_parts.append(f'<g id="legend">{"".join(lg_parts)}</g>')
 
@@ -3427,7 +3586,7 @@ def _render_plan_svg(scene: dict[str, Any], style_preset: str, variant: dict[str
         f'<rect x="0" y="0" width="{width}" height="{height}" fill="{palette["paper"]}" />'
         f'<path d="{boundary_path}" fill="{palette["site"]}" />'
         f'<g id="geometry-layer" clip-path="url(#siteClip)">{geometry_markup}</g>'
-        f'{overlay_markup}'
+        f"{overlay_markup}"
         "</svg>"
     )
 
@@ -3479,9 +3638,7 @@ def _derive_board_title(title: str, scene: dict[str, Any]) -> tuple[str, str]:
         zt = _normalize_zone_type(zone.get("zone_type"))
         props = zone.get("properties") if isinstance(zone.get("properties"), dict) else {}
         gsi = props.get("generation_style_input") if isinstance(props.get("generation_style_input"), dict) else {}
-        label = _normalize_whitespace(
-            gsi.get("archetypeLabel") or gsi.get("subtype") or zone.get("name") or ""
-        )
+        label = _normalize_whitespace(gsi.get("archetypeLabel") or gsi.get("subtype") or zone.get("name") or "")
         if label:
             zone_types.append(label)
         elif zt in {"building", "residential", "development_area"}:
@@ -3522,7 +3679,9 @@ def _collect_legend_entries(
 
     # Building typologies present in the scene
     typology_seen: set[str] = set()
-    for building in scene.get("pixel", {}).get("building_footprints", []) + scene.get("pixel", {}).get("building_masses", []):
+    for building in scene.get("pixel", {}).get("building_footprints", []) + scene.get("pixel", {}).get(
+        "building_masses", []
+    ):
         props = building.get("properties") or {}
         height_m = _feature_height_m(building)
         typology = _classify_building_typology(props, height_m)
@@ -3581,7 +3740,8 @@ def _draw_north_arrow(draw: ImageDraw.ImageDraw, cx: int, cy: int, size: int) ->
 
 def _draw_scale_bar(
     draw: ImageDraw.ImageDraw,
-    x: int, y: int,
+    x: int,
+    y: int,
     bar_width_px: int,
     distance_m: float,
     palette: dict[str, str],
@@ -3605,7 +3765,8 @@ def _draw_scale_bar(
 
 def _draw_legend_block(
     draw: ImageDraw.ImageDraw,
-    x: int, y: int,
+    x: int,
+    y: int,
     entries: list[tuple[str, str, str]],
     max_width: int,
 ) -> int:
@@ -3626,9 +3787,13 @@ def _draw_legend_block(
         sy = cursor_y + 3
         swatch_fill = _hex_to_rgba(color_hex, 255)
         if shape_type == "rect":
-            draw.rectangle((sx, sy, sx + swatch_size, sy + swatch_size), fill=swatch_fill, outline=_hex_to_rgba("#5a6068", 120))
+            draw.rectangle(
+                (sx, sy, sx + swatch_size, sy + swatch_size), fill=swatch_fill, outline=_hex_to_rgba("#5a6068", 120)
+            )
         elif shape_type == "circle":
-            draw.ellipse((sx, sy, sx + swatch_size, sy + swatch_size), fill=swatch_fill, outline=_hex_to_rgba("#5a6068", 120))
+            draw.ellipse(
+                (sx, sy, sx + swatch_size, sy + swatch_size), fill=swatch_fill, outline=_hex_to_rgba("#5a6068", 120)
+            )
         elif shape_type == "line":
             mid_y = sy + swatch_size // 2
             draw.line((sx, mid_y, sx + swatch_size, mid_y), fill=swatch_fill, width=3)
@@ -3693,7 +3858,6 @@ def _compose_board_image(
 
     # Site statistics
     stats_lines: list[str] = []
-    ppm = float(scene.get("pixels_per_meter") or 1.0)
     boundary = scene.get("boundary")
     if boundary is not None and hasattr(boundary, "area"):
         try:
@@ -3708,7 +3872,9 @@ def _compose_board_image(
         except Exception:
             pass
 
-    n_buildings = len(scene.get("pixel", {}).get("building_footprints", [])) + len(scene.get("pixel", {}).get("building_masses", []))
+    n_buildings = len(scene.get("pixel", {}).get("building_footprints", [])) + len(
+        scene.get("pixel", {}).get("building_masses", [])
+    )
     if n_buildings:
         stats_lines.append(f"Buildings: {n_buildings}")
     n_parks = len(scene.get("pixel", {}).get("parks", []))
@@ -3772,8 +3938,18 @@ def _compose_board_image(
 
     board_meta = {
         "template": board_template,
-        "left_panel": {"x": left_rect[0], "y": left_rect[1], "width": left_rect[2] - left_rect[0], "height": left_rect[3] - left_rect[1]},
-        "right_panel": {"x": right_rect[0], "y": right_rect[1], "width": right_rect[2] - right_rect[0], "height": right_rect[3] - right_rect[1]},
+        "left_panel": {
+            "x": left_rect[0],
+            "y": left_rect[1],
+            "width": left_rect[2] - left_rect[0],
+            "height": left_rect[3] - left_rect[1],
+        },
+        "right_panel": {
+            "x": right_rect[0],
+            "y": right_rect[1],
+            "width": right_rect[2] - right_rect[0],
+            "height": right_rect[3] - right_rect[1],
+        },
         "reference_strip_rendered": render_reference_strip,
         "reference_strip_count": len(valid_refs) if render_reference_strip else 0,
         "scene_geometry_hash": scene.get("geometry_hash"),
@@ -3790,6 +3966,7 @@ def _compose_board_svg(image_bytes: bytes, width: int, height: int) -> str:
         "</svg>"
     )
 
+
 def _build_ai_style_pass_prompt(
     title: str,
     scene: dict[str, Any],
@@ -3799,7 +3976,11 @@ def _build_ai_style_pass_prompt(
     variant: dict[str, Any],
 ) -> str:
     _ = variant
-    style_pass_surface_directive = "Treat the entire site as one coherent orthographic aerial image with one light direction, one atmospheric condition, and one continuous material world." if style_preset in {"photorealistic_aerial", "photoreal_orthographic_aerial"} else "Treat the entire site as one continuous sheet with one palette family, one light direction, and one shared paper texture."
+    style_pass_surface_directive = (
+        "Treat the entire site as one coherent orthographic aerial image with one light direction, one atmospheric condition, and one continuous material world."
+        if style_preset in {"photorealistic_aerial", "photoreal_orthographic_aerial"}
+        else "Treat the entire site as one continuous sheet with one palette family, one light direction, and one shared paper texture."
+    )
     lines = [
         "90-degree direct overhead planimetric master plan. True top-down view only. No side views. No elevations. No collage elements.",
         style_pass_surface_directive,
@@ -3821,16 +4002,27 @@ def _build_ai_style_pass_prompt(
         props = zone.get("properties") if isinstance(zone.get("properties"), dict) else {}
         if zone_type in {"building", "residential", "development_area"}:
             gsi = props.get("generation_style_input") if isinstance(props.get("generation_style_input"), dict) else {}
-            archetype = _normalize_whitespace(gsi.get("archetypeLabel") or gsi.get("subtype") or zone.get("name") or "the defined architectural precinct")
+            archetype = _normalize_whitespace(
+                gsi.get("archetypeLabel")
+                or gsi.get("subtype")
+                or zone.get("name")
+                or "the defined architectural precinct"
+            )
             directive = f"Render the roof plan and building footprint for {archetype}."
         elif zone_type == "green_space":
-            gsi_all = props.get("generation_style_inputs") if isinstance(props.get("generation_style_inputs"), dict) else {}
+            gsi_all = (
+                props.get("generation_style_inputs") if isinstance(props.get("generation_style_inputs"), dict) else {}
+            )
             park = gsi_all.get("parks") if isinstance(gsi_all.get("parks"), dict) else {}
             profile = park.get("styleProfile") if isinstance(park.get("styleProfile"), dict) else {}
-            landscape = _normalize_whitespace(profile.get("landscapeCharacter") or park.get("subcategory") or "formal civic garden composition")
+            landscape = _normalize_whitespace(
+                profile.get("landscapeCharacter") or park.get("subcategory") or "formal civic garden composition"
+            )
             directive = f"Render a top-down landscape plan with {landscape}."
         elif zone_type == "road":
-            gsi_all = props.get("generation_style_inputs") if isinstance(props.get("generation_style_inputs"), dict) else {}
+            gsi_all = (
+                props.get("generation_style_inputs") if isinstance(props.get("generation_style_inputs"), dict) else {}
+            )
             street = gsi_all.get("streets_paths") if isinstance(gsi_all.get("streets_paths"), dict) else {}
             profile = street.get("styleProfile") if isinstance(street.get("styleProfile"), dict) else {}
             corridor = _normalize_whitespace(profile.get("corridorCharacter") or "ceremonial paseo public realm")
@@ -3898,7 +4090,8 @@ def _compose_ai_style_pass(
     inside_mask_blurred = inside_mask.filter(ImageFilter.GaussianBlur(radius=5.0))
 
     # Inside: full blend_factor.  Outside: reduced (0.25 × blend_factor)
-    import numpy as np  # noqa: local import
+    import numpy as np
+
     inside_arr = np.array(inside_mask_blurred, dtype=np.float32) / 255.0
     outside_blend = blend_factor * 0.25
     blend_arr = outside_blend + (blend_factor - outside_blend) * inside_arr
@@ -3927,7 +4120,6 @@ def _compose_ai_style_pass(
     return ImageChops.add(merged, grain)
 
 
-
 def _run_stability_structure_pass(
     *,
     control_image: Image.Image,
@@ -3936,35 +4128,37 @@ def _run_stability_structure_pass(
     control_strength: float,
 ) -> tuple[Image.Image | None, str | None]:
     if not settings.stability_api_key:
-        return None, 'STABILITY_API_KEY not configured'
+        return None, "STABILITY_API_KEY not configured"
     try:
-        httpx = importlib.import_module('httpx')
+        httpx = importlib.import_module("httpx")
     except Exception as exc:
-        return None, f'stability http client unavailable: {exc}'
+        return None, f"stability http client unavailable: {exc}"
 
-    image_bytes = _image_to_png_bytes(control_image.convert('RGB'))
+    image_bytes = _image_to_png_bytes(control_image.convert("RGB"))
     url = f'{settings.stability_api_base.rstrip("/")}/v2beta/stable-image/control/structure'
     try:
         response = httpx.post(
             url,
             headers={
-                'Authorization': f'Bearer {settings.stability_api_key}',
-                'Accept': 'image/*',
+                "Authorization": f"Bearer {settings.stability_api_key}",
+                "Accept": "image/*",
             },
             data={
-                'prompt': prompt,
-                'negative_prompt': negative_prompt,
-                'control_strength': f'{max(0.0, min(control_strength, 1.0)):.2f}',
-                'output_format': 'png',
+                "prompt": prompt,
+                "negative_prompt": negative_prompt,
+                "control_strength": f"{max(0.0, min(control_strength, 1.0)):.2f}",
+                "output_format": "png",
             },
-            files={'image': ('structure.png', image_bytes, 'image/png')},
+            files={"image": ("structure.png", image_bytes, "image/png")},
             timeout=90.0,
         )
         response.raise_for_status()
-        styled = Image.open(io.BytesIO(response.content)).convert('RGBA')
+        styled = Image.open(io.BytesIO(response.content)).convert("RGBA")
         return styled, None
     except Exception as exc:
-        return None, f'stability structure pass failed: {exc}'
+        return None, f"stability structure pass failed: {exc}"
+
+
 def _run_stability_style_pass(
     *,
     base_image: Image.Image,
@@ -4128,10 +4322,14 @@ def _apply_ai_style_pass(
     catalog_entry = RENDER_STYLE_CATALOG.get(render_style, {})
     if catalog_entry.get("denoising_strength", 1.0) <= 0.0 or catalog_entry.get("provider_preference") == "none":
         return base_image, {
-            "requested": True, "applied": False,
+            "requested": True,
+            "applied": False,
             "reason": f"Style '{render_style}' uses deterministic rendering only (no AI pass)",
-            "provider": None, "model": None, "control_mode": None,
-            "requested_provider": provider_preference, "attempted_providers": [],
+            "provider": None,
+            "model": None,
+            "control_mode": None,
+            "requested_provider": provider_preference,
+            "attempted_providers": [],
         }
 
     # Pre-processing for specific styles
@@ -4174,19 +4372,21 @@ def _apply_ai_style_pass(
                 composited = _compose_ai_style_pass(working_image, styled, scene, variant)
                 status["applied"] = True
                 status["provider"] = "gemini"
-                status["model"] = str(getattr(settings, "master_plan_2d_style_model", "") or "gemini-3.1-flash-image-preview")
+                status["model"] = str(
+                    getattr(settings, "master_plan_2d_style_model", "") or "gemini-3.1-flash-image-preview"
+                )
                 status["reason"] = None
                 return composited, status
         elif provider == "stability":
             styled = None
             error = None
-            structure_image = control_maps.get('structure') if isinstance(control_maps, dict) else None
-            if variant.get('orthographic_mode') and isinstance(structure_image, Image.Image):
+            structure_image = control_maps.get("structure") if isinstance(control_maps, dict) else None
+            if variant.get("orthographic_mode") and isinstance(structure_image, Image.Image):
                 styled, error = _run_stability_structure_pass(
                     control_image=structure_image,
                     prompt=prompt_text,
                     negative_prompt=STYLE_PASS_NEGATIVE_PROMPT,
-                    control_strength=float(variant.get('stability_control_strength') or 0.88),
+                    control_strength=float(variant.get("stability_control_strength") or 0.88),
                 )
                 if styled is not None:
                     composited = _compose_ai_style_pass(working_image, styled, scene, variant)
@@ -4286,7 +4486,9 @@ def _render_variant_assets(
     control_images = _render_control_maps(scene, variant, toggles, base_image=plan_image)
     control_maps = {
         "available": True,
-        "conditioning_mode": "stability_structure_ready" if variant.get("orthographic_mode") else "deterministic_control_maps_only",
+        "conditioning_mode": (
+            "stability_structure_ready" if variant.get("orthographic_mode") else "deterministic_control_maps_only"
+        ),
         "control_strength": float(variant.get("stability_control_strength") or 0.0),
         "images": control_images,
     }
@@ -4361,6 +4563,7 @@ def _render_variant_assets(
         "control_maps": control_maps,
     }
 
+
 def _extract_city_context(project: Project, zones: Sequence[SiteZone]) -> str:
     location = getattr(project, "location", None) if project is not None else None
     if isinstance(location, dict):
@@ -4399,16 +4602,32 @@ def _resolve_zone_design_brief(zones: Sequence[SiteZone]) -> dict[str, str]:
 
     def ingest_style_input(payload: dict[str, Any]) -> None:
         profile = payload.get("styleProfile") if isinstance(payload.get("styleProfile"), dict) else {}
-        remember("aesthetic", payload.get("aestheticCategoryLabel") or payload.get("subcategory") or payload.get("buildingSubcategory") or payload.get("subtype"))
-        remember("typologies", payload.get("archetypeLabel") or payload.get("buildingSubcategory") or payload.get("subcategory") or payload.get("subtype"))
-        remember("architectural", profile.get("massing") or profile.get("streetRelationship") or profile.get("publicRealm"))
+        remember(
+            "aesthetic",
+            payload.get("aestheticCategoryLabel")
+            or payload.get("subcategory")
+            or payload.get("buildingSubcategory")
+            or payload.get("subtype"),
+        )
+        remember(
+            "typologies",
+            payload.get("archetypeLabel")
+            or payload.get("buildingSubcategory")
+            or payload.get("subcategory")
+            or payload.get("subtype"),
+        )
+        remember(
+            "architectural", profile.get("massing") or profile.get("streetRelationship") or profile.get("publicRealm")
+        )
         materials = payload.get("materials") or profile.get("materials")
         if isinstance(materials, (list, tuple)):
             remember("materials", ", ".join(str(item) for item in materials if _normalize_whitespace(item)))
         else:
             remember("materials", materials)
         remember("roof", profile.get("roofForm"))
-        remember("landscape", profile.get("plantingType") or profile.get("landscapeCharacter") or profile.get("publicRealm"))
+        remember(
+            "landscape", profile.get("plantingType") or profile.get("landscapeCharacter") or profile.get("publicRealm")
+        )
         remember("paving", profile.get("pavingType"))
 
     for zone in zones:
@@ -4423,9 +4642,25 @@ def _resolve_zone_design_brief(zones: Sequence[SiteZone]) -> dict[str, str]:
         description = _normalize_whitespace(props.get("description_text"))
         if description:
             lowered = description.lower()
-            if any(token in lowered for token in ("mixed-use", "mixed use", "main street", "retail", "townhouse", "rowhouse", "courtyard", "podium", "tower")):
+            if any(
+                token in lowered
+                for token in (
+                    "mixed-use",
+                    "mixed use",
+                    "main street",
+                    "retail",
+                    "townhouse",
+                    "rowhouse",
+                    "courtyard",
+                    "podium",
+                    "tower",
+                )
+            ):
                 remember("typologies", description)
-            if any(token in lowered for token in ("park", "civic", "plaza", "pond", "water", "green", "public realm", "promenade", "mews")):
+            if any(
+                token in lowered
+                for token in ("park", "civic", "plaza", "pond", "water", "green", "public realm", "promenade", "mews")
+            ):
                 remember("district", description)
 
         generation_style_input = props.get("generation_style_input")
@@ -4438,22 +4673,30 @@ def _resolve_zone_design_brief(zones: Sequence[SiteZone]) -> dict[str, str]:
                 if isinstance(payload, dict):
                     ingest_style_input(payload)
 
-    typology_mix = ", ".join(buckets["typologies"][:3]) or "mixed-use podium blocks, courtyard mid-rise housing, and fine-grain residential edges"
-    district_structure = ", ".join(buckets["district"][:2]) or "perimeter-aligned blocks, internal mews, structured forecourts, planted courtyards, and at least one civic landscape anchor"
+    typology_mix = (
+        ", ".join(buckets["typologies"][:3])
+        or "mixed-use podium blocks, courtyard mid-rise housing, and fine-grain residential edges"
+    )
+    district_structure = (
+        ", ".join(buckets["district"][:2])
+        or "perimeter-aligned blocks, internal mews, structured forecourts, planted courtyards, and at least one civic landscape anchor"
+    )
     context_alignment = "align new blocks and streets to real surrounding roads and neighboring houses while keeping context subdued and secondary"
 
     return {
         "aesthetic_category": ", ".join(buckets["aesthetic"][:2]) or "eco-urban mixed-use",
-        "architectural_language": ", ".join(buckets["architectural"][:2]) or "contemporary mixed-use urban architecture with disciplined street walls and readable roof planes",
+        "architectural_language": ", ".join(buckets["architectural"][:2])
+        or "contemporary mixed-use urban architecture with disciplined street walls and readable roof planes",
         "facade_materials": ", ".join(buckets["materials"][:2]) or "refined concrete, brick, and glazing",
         "roof_style": ", ".join(buckets["roof"][:2]) or "articulated contemporary roof expression",
-        "landscape_character": ", ".join(buckets["landscape"][:2]) or "layered planting, courtyards, civic greens, and pedestrian-focused public realm",
-        "paving_type": ", ".join(buckets["paving"][:2]) or "warm neutral paving, asphalt streets, and crisp sidewalk edges",
+        "landscape_character": ", ".join(buckets["landscape"][:2])
+        or "layered planting, courtyards, civic greens, and pedestrian-focused public realm",
+        "paving_type": ", ".join(buckets["paving"][:2])
+        or "warm neutral paving, asphalt streets, and crisp sidewalk edges",
         "typology_mix": typology_mix,
         "district_structure": district_structure,
         "context_alignment": context_alignment,
     }
-
 
 
 def _resolve_height_floor_defaults(zones: Sequence[SiteZone]) -> tuple[float, int]:
@@ -4519,8 +4762,9 @@ def _build_2d_site_image_prompt(
     )
 
 
-
-def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], buildings: Sequence[Building]) -> dict[str, Any]:
+def _collect_scene_payload(
+    project: Project, zones: Sequence[SiteZone], buildings: Sequence[Building]
+) -> dict[str, Any]:
     _ = project
     boundary: Polygon | None = None
     scene: dict[str, Any] = {
@@ -4541,7 +4785,9 @@ def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], building
         "prompt_zones": [],
     }
 
-    for zone in sorted(zones, key=lambda item: (getattr(item, "sort_order", 0), getattr(item, "created_at", _now_utc()))):
+    for zone in sorted(
+        zones, key=lambda item: (getattr(item, "sort_order", 0), getattr(item, "created_at", _now_utc()))
+    ):
         geometry = _polygon_from_geometry(getattr(zone, "geometry", None))
         if geometry is None:
             continue
@@ -4562,7 +4808,9 @@ def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], building
             continue
 
         if zone_type in {"building", "residential", "development_area"}:
-            scene["buildable_zones"].append({"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties})
+            scene["buildable_zones"].append(
+                {"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties}
+            )
             generated_footprints: list[dict[str, Any]] = []
             if zone_type == "building":
                 if _should_generate_precinct_for_building_zone(geometry, properties):
@@ -4570,7 +4818,9 @@ def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], building
                     for footprint in generated_footprints:
                         scene["building_footprints"].append(footprint)
                 else:
-                    scene["building_footprints"].append({"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties})
+                    scene["building_footprints"].append(
+                        {"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties}
+                    )
             else:
                 generated_footprints = _generate_precinct_footprints(zone, geometry, scene)
                 for footprint in generated_footprints:
@@ -4589,19 +4839,32 @@ def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], building
                 scene["plazas"].extend(generated_site.get("plazas", []))
                 scene["water"].extend(generated_site.get("water", []))
         elif zone_type == "road":
-            scene["roads"].append({"geometry": geometry, "kind": "road", "width_m": float(properties.get("width") or 8.0), "properties": properties})
+            scene["roads"].append(
+                {
+                    "geometry": geometry,
+                    "kind": "road",
+                    "width_m": float(properties.get("width") or 8.0),
+                    "properties": properties,
+                }
+            )
         elif zone_type == "green_space":
             scene["parks"].append({"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties})
         elif zone_type == "water":
             scene["water"].append({"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties})
         elif zone_type == "parking":
-            scene["plazas"].append({"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties})
+            scene["plazas"].append(
+                {"geometry": geometry, "name": getattr(zone, "name", None), "properties": properties}
+            )
         scene["prompt_zones"].append(zone_payload)
 
     if boundary is None:
         candidates = [item["geometry"] for item in scene["buildable_zones"]]
         if not candidates:
-            candidates = [item["geometry"] for item in scene["parks"] + scene["roads"] + scene["plazas"] + scene["water"] if item.get("geometry")]
+            candidates = [
+                item["geometry"]
+                for item in scene["parks"] + scene["roads"] + scene["plazas"] + scene["water"]
+                if item.get("geometry")
+            ]
         if candidates:
             boundary_union = unary_union(candidates).convex_hull.buffer(0)
             boundary = boundary_union if isinstance(boundary_union, Polygon) else boundary_union.envelope
@@ -4613,7 +4876,9 @@ def _collect_scene_payload(project: Project, zones: Sequence[SiteZone], building
         footprint = _polygon_from_geometry(getattr(building, "footprint", None))
         if footprint is None:
             continue
-        scene["context_buildings"].append({"geometry": footprint, "name": getattr(building, "name", None), "properties": {"source": "building_model"}})
+        scene["context_buildings"].append(
+            {"geometry": footprint, "name": getattr(building, "name", None), "properties": {"source": "building_model"}}
+        )
 
     return scene
 
@@ -4633,7 +4898,8 @@ def _generate_precinct_footprints(zone: Any, zone_geometry: Polygon, context: di
     ]
     deterministic_seed = int(hashlib.sha1(f"{zone_id}:{description}".encode("utf-8")).hexdigest()[:8], 16)
     hint_text = " ".join(
-        str(properties.get(key) or "") for key in ("development_type", "development_subcategory", "development_archetype_label", "description_text")
+        str(properties.get(key) or "")
+        for key in ("development_type", "development_subcategory", "development_archetype_label", "description_text")
     ).lower()
     if any(token in hint_text for token in ("townhouse", "rowhouse", "row house")):
         grammar = "townhouse_courtyard"
@@ -4658,7 +4924,9 @@ def _generate_precinct_footprints(zone: Any, zone_geometry: Polygon, context: di
         bar_w = width * 0.24
         gaps = [0.27, 0.58]
         for g in gaps:
-            poly = box(minx + width * g - bar_w / 2, miny + height * 0.18, minx + width * g + bar_w / 2, miny + height * 0.84)
+            poly = box(
+                minx + width * g - bar_w / 2, miny + height * 0.18, minx + width * g + bar_w / 2, miny + height * 0.84
+            )
             clipped = _polygon_from_geometry(poly.intersection(usable))
             if clipped is not None:
                 footprints.append(clipped)
@@ -4742,7 +5010,9 @@ def _generate_precinct_footprints(zone: Any, zone_geometry: Polygon, context: di
                     "height": properties.get("height") or properties.get("height_m"),
                     "height_m": properties.get("height_m") or properties.get("height"),
                     "floors": properties.get("floors") or properties.get("floor_count") or properties.get("floorCount"),
-                    "floor_count": properties.get("floor_count") or properties.get("floors") or properties.get("floorCount"),
+                    "floor_count": properties.get("floor_count")
+                    or properties.get("floors")
+                    or properties.get("floorCount"),
                 },
             }
         )
@@ -4762,7 +5032,9 @@ def _extract_zone_properties(zone: Any, skipped_zones: list[dict[str, Any]]) -> 
             "reason": "Zone properties were malformed and could not be parsed; defaults were applied.",
         }
     )
-    logger.warning("Zone %s contains malformed properties payload (%s)", getattr(zone, "id", "unknown"), type(properties).__name__)
+    logger.warning(
+        "Zone %s contains malformed properties payload (%s)", getattr(zone, "id", "unknown"), type(properties).__name__
+    )
     return {}
 
 
@@ -4784,7 +5056,11 @@ def _clip_zone_polygon_to_boundary(zone_geometry: Polygon, boundary: Polygon) ->
 def _zone_snapshots_from_request(request: MasterPlan3DGenerateRequest) -> list[ZoneSnapshot]:
     snapshots: list[ZoneSnapshot] = []
     for idx, zone in enumerate(request.zones or []):
-        zone_id = str(getattr(zone, "zone_id", None) or (zone.get("zone_id") if isinstance(zone, dict) else "") or f"zone-{idx + 1}")
+        zone_id = str(
+            getattr(zone, "zone_id", None)
+            or (zone.get("zone_id") if isinstance(zone, dict) else "")
+            or f"zone-{idx + 1}"
+        )
         zone_type_raw = getattr(zone, "zone_type", None) if not isinstance(zone, dict) else zone.get("zone_type")
         zone_type = _normalize_zone_type(zone_type_raw)
         polygon_payload = getattr(zone, "polygon", None) if not isinstance(zone, dict) else zone.get("polygon")
@@ -4792,9 +5068,12 @@ def _zone_snapshots_from_request(request: MasterPlan3DGenerateRequest) -> list[Z
         if geometry is None:
             logger.warning("Skipping zone snapshot %s due to invalid polygon payload.", zone_id)
             continue
-        name = _normalize_whitespace(
-            getattr(zone, "zone_label", None) if not isinstance(zone, dict) else zone.get("zone_label")
-        ) or f"Zone {idx + 1}"
+        name = (
+            _normalize_whitespace(
+                getattr(zone, "zone_label", None) if not isinstance(zone, dict) else zone.get("zone_label")
+            )
+            or f"Zone {idx + 1}"
+        )
         color = str(getattr(zone, "color", None) if not isinstance(zone, dict) else zone.get("color") or "#9b59b6")
         properties: dict[str, Any] = {}
         for key in ("height_m", "floor_count", "archetype_title", "archetype_metadata", "user_notes"):
@@ -4817,7 +5096,9 @@ def _zone_snapshots_from_request(request: MasterPlan3DGenerateRequest) -> list[Z
 
 
 def _boundary_from_snapshot_zones(snapshot_zones: Sequence[ZoneSnapshot]) -> Polygon | None:
-    polygons = [zone.geometry for zone in snapshot_zones if isinstance(zone.geometry, Polygon) and not zone.geometry.is_empty]
+    polygons = [
+        zone.geometry for zone in snapshot_zones if isinstance(zone.geometry, Polygon) and not zone.geometry.is_empty
+    ]
     if not polygons:
         return None
     boundary = unary_union(polygons).convex_hull.buffer(0)
@@ -4826,7 +5107,6 @@ def _boundary_from_snapshot_zones(snapshot_zones: Sequence[ZoneSnapshot]) -> Pol
     if isinstance(boundary, MultiPolygon):
         return max(boundary.geoms, key=lambda geom: geom.area, default=None)
     return None
-
 
 
 def _render_perspective_conditioning_assets(
@@ -4883,34 +5163,62 @@ def _render_perspective_conditioning_assets(
     primary_height_m = 24.0
     zone_features: list[dict[str, Any]] = []
     for zone in zones:
-        geometry = _polygon_from_geometry(getattr(zone, 'geometry', None))
+        geometry = _polygon_from_geometry(getattr(zone, "geometry", None))
         if geometry is None or geometry.is_empty:
             continue
-        zone_id = str(getattr(zone, 'zone_id', getattr(zone, 'id', '')))
-        zone_type = _normalize_zone_type(getattr(zone, 'zone_type', None))
-        properties = getattr(zone, 'properties', None) if isinstance(getattr(zone, 'properties', None), dict) else {}
-        height_m = _feature_height_m({'properties': properties}) if zone_type in {'building', 'residential', 'development_area'} else 0.0
-        zone_features.append({'zone_id': zone_id, 'zone_type': zone_type, 'geometry': geometry, 'properties': properties, 'height_m': height_m})
+        zone_id = str(getattr(zone, "zone_id", getattr(zone, "id", "")))
+        zone_type = _normalize_zone_type(getattr(zone, "zone_type", None))
+        properties = getattr(zone, "properties", None) if isinstance(getattr(zone, "properties", None), dict) else {}
+        height_m = (
+            _feature_height_m({"properties": properties})
+            if zone_type in {"building", "residential", "development_area"}
+            else 0.0
+        )
+        zone_features.append(
+            {
+                "zone_id": zone_id,
+                "zone_type": zone_type,
+                "geometry": geometry,
+                "properties": properties,
+                "height_m": height_m,
+            }
+        )
         if zone_id == primary_zone_id:
             primary_polygon = geometry
             primary_height_m = max(height_m, 18.0)
 
     primary_centroid = primary_polygon.centroid
     focus = _world_point(primary_centroid.x, primary_centroid.y, max(primary_height_m * 0.24, 4.0))
-    if selected_perspective == 'street_level_eye_height':
-        camera = (focus[0] - site_span * 0.92, max(14.0, min(primary_height_m * 0.42, 34.0)), focus[2] + site_span * 0.22)
+    if selected_perspective == "street_level_eye_height":
+        camera = (
+            focus[0] - site_span * 0.92,
+            max(14.0, min(primary_height_m * 0.42, 34.0)),
+            focus[2] + site_span * 0.22,
+        )
         fov_deg = 52.0
         horizon = 0.64
-    elif selected_perspective == 'promenade_view':
-        camera = (focus[0] - site_span * 0.48, max(12.0, min(primary_height_m * 0.36, 30.0)), focus[2] + site_span * 0.88)
+    elif selected_perspective == "promenade_view":
+        camera = (
+            focus[0] - site_span * 0.48,
+            max(12.0, min(primary_height_m * 0.36, 30.0)),
+            focus[2] + site_span * 0.88,
+        )
         fov_deg = 47.0
         horizon = 0.62
-    elif selected_perspective == 'corner_perspective':
-        camera = (focus[0] - site_span * 1.02, max(site_span * 0.78, primary_height_m * 2.1), focus[2] + site_span * 0.58)
+    elif selected_perspective == "corner_perspective":
+        camera = (
+            focus[0] - site_span * 1.02,
+            max(site_span * 0.78, primary_height_m * 2.1),
+            focus[2] + site_span * 0.58,
+        )
         fov_deg = 38.0
         horizon = 0.60
     else:
-        camera = (focus[0] - site_span * 1.14, max(site_span * 1.10, primary_height_m * 2.5), focus[2] + site_span * 1.04)
+        camera = (
+            focus[0] - site_span * 1.14,
+            max(site_span * 1.10, primary_height_m * 2.5),
+            focus[2] + site_span * 1.04,
+        )
         fov_deg = 34.0
         horizon = 0.58
     target = (focus[0], max(primary_height_m * 0.34, 8.0), focus[2])
@@ -4949,52 +5257,70 @@ def _render_perspective_conditioning_assets(
 
     faces: list[dict[str, Any]] = []
     boundary_world = [_world_point(x, y, 0.0) for x, y in list(boundary.exterior.coords)]
-    faces.append({
-        'points': boundary_world,
-        'massing_fill': (60, 66, 72, 255),
-        'seg_fill': (54, 58, 66, 255),
-        'outline': (255, 255, 255, 80),
-    })
+    faces.append(
+        {
+            "points": boundary_world,
+            "massing_fill": (60, 66, 72, 255),
+            "seg_fill": (54, 58, 66, 255),
+            "outline": (255, 255, 255, 80),
+        }
+    )
 
     for feature in zone_features:
-        geometry = feature['geometry']
-        zone_type = feature['zone_type']
-        zone_id = feature['zone_id']
+        geometry = feature["geometry"]
+        zone_type = feature["zone_type"]
+        zone_id = feature["zone_id"]
         is_primary = zone_id == primary_zone_id
         coords_world = [_world_point(x, y, 0.0) for x, y in list(geometry.exterior.coords)]
         if len(coords_world) < 4:
             continue
-        if zone_type in {'building', 'residential', 'development_area'}:
-            height_m = max(float(feature['height_m'] or 0.0), 14.0)
+        if zone_type in {"building", "residential", "development_area"}:
+            height_m = max(float(feature["height_m"] or 0.0), 14.0)
             top_points = [(point[0], height_m, point[2]) for point in coords_world]
             roof_fill = (224, 226, 230, 255) if is_primary else (198, 202, 208, 240)
             side_fill = (152, 158, 168, 255) if is_primary else (128, 134, 144, 220)
             seg_fill = (236, 122, 88, 255) if is_primary else (176, 98, 74, 232)
-            faces.append({'points': top_points, 'massing_fill': roof_fill, 'seg_fill': seg_fill, 'outline': (255, 255, 255, 180)})
+            faces.append(
+                {"points": top_points, "massing_fill": roof_fill, "seg_fill": seg_fill, "outline": (255, 255, 255, 180)}
+            )
             for idx in range(len(coords_world) - 1):
                 side = [coords_world[idx], coords_world[idx + 1], top_points[idx + 1], top_points[idx]]
                 if _face_visible(side):
-                    faces.append({'points': side, 'massing_fill': side_fill, 'seg_fill': seg_fill, 'outline': (255, 255, 255, 90)})
+                    faces.append(
+                        {
+                            "points": side,
+                            "massing_fill": side_fill,
+                            "seg_fill": seg_fill,
+                            "outline": (255, 255, 255, 90),
+                        }
+                    )
         else:
-            if zone_type == 'green_space':
+            if zone_type == "green_space":
                 massing_fill = (98, 136, 92, 255)
                 seg_fill = (72, 158, 96, 255)
-            elif zone_type == 'water':
+            elif zone_type == "water":
                 massing_fill = (78, 112, 142, 255)
                 seg_fill = (66, 130, 202, 255)
-            elif zone_type in {'road', 'parking'}:
-                massing_fill = (130, 134, 140, 255) if zone_type == 'road' else (182, 174, 156, 255)
-                seg_fill = (92, 116, 192, 255) if zone_type == 'road' else (228, 190, 128, 255)
+            elif zone_type in {"road", "parking"}:
+                massing_fill = (130, 134, 140, 255) if zone_type == "road" else (182, 174, 156, 255)
+                seg_fill = (92, 116, 192, 255) if zone_type == "road" else (228, 190, 128, 255)
             else:
                 massing_fill = (142, 146, 150, 255)
                 seg_fill = (132, 136, 142, 255)
-            faces.append({'points': coords_world, 'massing_fill': massing_fill, 'seg_fill': seg_fill, 'outline': (255, 255, 255, 60)})
+            faces.append(
+                {
+                    "points": coords_world,
+                    "massing_fill": massing_fill,
+                    "seg_fill": seg_fill,
+                    "outline": (255, 255, 255, 60),
+                }
+            )
 
     projected_faces: list[dict[str, Any]] = []
     for face in faces:
         projected_points: list[tuple[float, float]] = []
         depths: list[float] = []
-        for point in face['points']:
+        for point in face["points"]:
             projected = _project(point)
             if projected is None:
                 projected_points = []
@@ -5002,49 +5328,53 @@ def _render_perspective_conditioning_assets(
             projected_points.append((projected[0], projected[1]))
             depths.append(projected[2])
         if len(projected_points) >= 3:
-            projected_faces.append({
-                'points': projected_points,
-                'avg_depth': sum(depths) / len(depths),
-                'massing_fill': face['massing_fill'],
-                'seg_fill': face['seg_fill'],
-                'outline': face['outline'],
-            })
+            projected_faces.append(
+                {
+                    "points": projected_points,
+                    "avg_depth": sum(depths) / len(depths),
+                    "massing_fill": face["massing_fill"],
+                    "seg_fill": face["seg_fill"],
+                    "outline": face["outline"],
+                }
+            )
 
     if not projected_faces:
         return None
 
-    min_depth = min(face['avg_depth'] for face in projected_faces)
-    max_depth = max(face['avg_depth'] for face in projected_faces)
+    min_depth = min(face["avg_depth"] for face in projected_faces)
+    max_depth = max(face["avg_depth"] for face in projected_faces)
     depth_span = max(max_depth - min_depth, 1.0)
 
-    massing = Image.new('RGBA', (image_width, image_height), (18, 22, 28, 255))
-    segmentation = Image.new('RGBA', (image_width, image_height), (20, 22, 28, 255))
-    depth = Image.new('L', (image_width, image_height), 18)
-    massing_draw = ImageDraw.Draw(massing, 'RGBA')
-    segmentation_draw = ImageDraw.Draw(segmentation, 'RGBA')
+    massing = Image.new("RGBA", (image_width, image_height), (18, 22, 28, 255))
+    segmentation = Image.new("RGBA", (image_width, image_height), (20, 22, 28, 255))
+    depth = Image.new("L", (image_width, image_height), 18)
+    massing_draw = ImageDraw.Draw(massing, "RGBA")
+    segmentation_draw = ImageDraw.Draw(segmentation, "RGBA")
     depth_draw = ImageDraw.Draw(depth)
 
-    for face in sorted(projected_faces, key=lambda item: item['avg_depth'], reverse=True):
-        depth_ratio = 1.0 - ((face['avg_depth'] - min_depth) / depth_span)
+    for face in sorted(projected_faces, key=lambda item: item["avg_depth"], reverse=True):
+        depth_ratio = 1.0 - ((face["avg_depth"] - min_depth) / depth_span)
         depth_value = int(42 + depth_ratio * 196)
-        massing_draw.polygon(face['points'], fill=face['massing_fill'])
-        segmentation_draw.polygon(face['points'], fill=face['seg_fill'])
-        depth_draw.polygon(face['points'], fill=depth_value)
-        massing_draw.line(face['points'] + [face['points'][0]], fill=face['outline'], width=1)
+        massing_draw.polygon(face["points"], fill=face["massing_fill"])
+        segmentation_draw.polygon(face["points"], fill=face["seg_fill"])
+        depth_draw.polygon(face["points"], fill=depth_value)
+        massing_draw.line(face["points"] + [face["points"][0]], fill=face["outline"], width=1)
 
-    depth_rgba = Image.merge('RGBA', (depth, depth, depth, Image.new('L', (image_width, image_height), 255)))
+    depth_rgba = Image.merge("RGBA", (depth, depth, depth, Image.new("L", (image_width, image_height), 255)))
     structure = Image.blend(massing, depth_rgba, 0.18)
-    structure_draw = ImageDraw.Draw(structure, 'RGBA')
-    for face in sorted(projected_faces, key=lambda item: item['avg_depth'], reverse=True):
-        structure_draw.line(face['points'] + [face['points'][0]], fill=(255, 255, 255, 96), width=1)
+    structure_draw = ImageDraw.Draw(structure, "RGBA")
+    for face in sorted(projected_faces, key=lambda item: item["avg_depth"], reverse=True):
+        structure_draw.line(face["points"] + [face["points"][0]], fill=(255, 255, 255, 96), width=1)
 
     return {
-        'perspective_structure_image_url': _png_data_uri(_preview_png(structure, target_width=1200)),
-        'perspective_depth_map_url': _png_data_uri(_preview_png(depth, target_width=1200)),
-        'perspective_segmentation_map_url': _png_data_uri(_preview_png(segmentation, target_width=1200)),
-        'perspective_massing_image_url': _png_data_uri(_preview_png(massing, target_width=1200)),
-        'camera_perspective': selected_perspective,
+        "perspective_structure_image_url": _png_data_uri(_preview_png(structure, target_width=1200)),
+        "perspective_depth_map_url": _png_data_uri(_preview_png(depth, target_width=1200)),
+        "perspective_segmentation_map_url": _png_data_uri(_preview_png(segmentation, target_width=1200)),
+        "perspective_massing_image_url": _png_data_uri(_preview_png(massing, target_width=1200)),
+        "camera_perspective": selected_perspective,
     }
+
+
 def _source_concept_image(option: Any) -> tuple[str | None, str | None]:
     metadata = getattr(option, "metadata_", None) or {}
     assets = metadata.get("assets") if isinstance(metadata, dict) else {}
@@ -5061,22 +5391,27 @@ def _source_concept_image(option: Any) -> tuple[str | None, str | None]:
 
 
 def _source_conditioning_assets(option: Any) -> dict[str, Any] | None:
-    metadata = getattr(option, 'metadata_', None) or {}
-    assets = metadata.get('assets') if isinstance(metadata, dict) else {}
-    control_meta = metadata.get('control_maps') if isinstance(metadata, dict) else {}
+    metadata = getattr(option, "metadata_", None) or {}
+    assets = metadata.get("assets") if isinstance(metadata, dict) else {}
+    control_meta = metadata.get("control_maps") if isinstance(metadata, dict) else {}
     if not isinstance(assets, dict):
         return None
     payload = {
-        'structure_image_url': assets.get('control_structure_png_url'),
-        'depth_map_url': assets.get('control_depth_png_url'),
-        'segmentation_map_url': assets.get('control_segmentation_png_url'),
-        'massing_image_url': assets.get('control_massing_png_url'),
-        'control_mode': control_meta.get('conditioning_mode') if isinstance(control_meta, dict) else None,
-        'control_strength': control_meta.get('control_strength') if isinstance(control_meta, dict) else None,
+        "structure_image_url": assets.get("control_structure_png_url"),
+        "depth_map_url": assets.get("control_depth_png_url"),
+        "segmentation_map_url": assets.get("control_segmentation_png_url"),
+        "massing_image_url": assets.get("control_massing_png_url"),
+        "control_mode": control_meta.get("conditioning_mode") if isinstance(control_meta, dict) else None,
+        "control_strength": control_meta.get("control_strength") if isinstance(control_meta, dict) else None,
     }
-    if any(payload.get(key) for key in ('structure_image_url', 'depth_map_url', 'segmentation_map_url', 'massing_image_url')):
+    if any(
+        payload.get(key)
+        for key in ("structure_image_url", "depth_map_url", "segmentation_map_url", "massing_image_url")
+    ):
         return payload
     return None
+
+
 def _zone_archetype(zone: Any, properties: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     archetype_metadata: dict[str, Any] = {}
     if isinstance(properties.get("archetype_metadata"), dict):
@@ -5096,12 +5431,17 @@ def _zone_archetype(zone: Any, properties: dict[str, Any]) -> tuple[str, dict[st
         properties.get("plaza_archetype_label"),
         getattr(zone, "name", None),
     ]
-    archetype_title = next((_normalize_whitespace(item) for item in title_candidates if _normalize_whitespace(item)), "Mixed-Use Urban Development")
+    archetype_title = next(
+        (_normalize_whitespace(item) for item in title_candidates if _normalize_whitespace(item)),
+        "Mixed-Use Urban Development",
+    )
     archetype_metadata["resolved_archetype_title"] = archetype_title
     return archetype_title, archetype_metadata
 
 
-def _resolve_height_and_floors(zone: Any, properties: dict[str, Any], skipped_zones: list[dict[str, Any]]) -> tuple[float, int]:
+def _resolve_height_and_floors(
+    zone: Any, properties: dict[str, Any], skipped_zones: list[dict[str, Any]]
+) -> tuple[float, int]:
     zone_id = str(getattr(zone, "zone_id", getattr(zone, "id", "")) or "")
     zone_label = getattr(zone, "name", None)
 
@@ -5183,7 +5523,6 @@ def _build_3d_from_2d_prompt(
     return "\n\n".join(lines)
 
 
-
 def _master_plan_3d_avoid_terms() -> list[str]:
     return [term.strip() for term in THREE_D_NEGATIVE_PROMPT.split(",") if term.strip()]
 
@@ -5202,7 +5541,9 @@ def _build_master_plan_3d_response(
 
     selected_ids = [str(value) for value in request.selected_zone_ids]
     if request.scope in {"selected_zones", "focused_frontage"}:
-        zone_candidates = [zone for zone in zones if str(getattr(zone, "zone_id", getattr(zone, "id", ""))) in selected_ids]
+        zone_candidates = [
+            zone for zone in zones if str(getattr(zone, "zone_id", getattr(zone, "id", ""))) in selected_ids
+        ]
     else:
         zone_candidates = list(zones)
     if not zone_candidates:
@@ -5211,7 +5552,11 @@ def _build_master_plan_3d_response(
     style_notes = _dedupe_sentences(
         [
             request.global_style_notes,
-            (getattr(option, "metadata_", {}) or {}).get("prompt") if isinstance(getattr(option, "metadata_", {}), dict) else None,
+            (
+                (getattr(option, "metadata_", {}) or {}).get("prompt")
+                if isinstance(getattr(option, "metadata_", {}), dict)
+                else None
+            ),
             getattr(project, "default_style", None),
         ]
     )
@@ -5236,7 +5581,9 @@ def _build_master_plan_3d_response(
         zone_type = _normalize_zone_type(getattr(zone, "zone_type", None))
         geometry = _polygon_from_geometry(getattr(zone, "geometry", None))
         if geometry is None:
-            skipped_zones.append({"zone_id": zone_id, "zone_label": zone_label, "reason": "Zone geometry is missing or invalid."})
+            skipped_zones.append(
+                {"zone_id": zone_id, "zone_label": zone_label, "reason": "Zone geometry is missing or invalid."}
+            )
             continue
         clipped, clip_error = _clip_zone_polygon_to_boundary(geometry, boundary)
         if clipped is None:
@@ -5247,36 +5594,56 @@ def _build_master_plan_3d_response(
         archetype_title, archetype_metadata = _zone_archetype(zone, properties)
         user_note = _normalize_whitespace(properties.get("user_notes") or properties.get("description_text"))
 
-        architectural_language = _normalize_whitespace(
-            archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("massing")
-            if isinstance(archetype_metadata.get("generation_style_input"), dict)
-            else None
-        ) or "contemporary mixed-use architectural language"
-        facade_materials = _normalize_whitespace(
-            archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("materials")
-            if isinstance(archetype_metadata.get("generation_style_input"), dict)
-            else None
-        ) or "refined concrete and glazing"
-        roof_style = _normalize_whitespace(
-            archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("roofForm")
-            if isinstance(archetype_metadata.get("generation_style_input"), dict)
-            else None
-        ) or "articulated urban roof expression"
-        landscape_character = _normalize_whitespace(
-            archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("plantingType")
-            if isinstance(archetype_metadata.get("generation_style_input"), dict)
-            else None
-        ) or "layered landscape structure"
-        paving_type = _normalize_whitespace(
-            archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("pavingType")
-            if isinstance(archetype_metadata.get("generation_style_input"), dict)
-            else None
-        ) or "high-quality public-realm paving"
+        architectural_language = (
+            _normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("massing")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "contemporary mixed-use architectural language"
+        )
+        facade_materials = (
+            _normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("materials")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "refined concrete and glazing"
+        )
+        roof_style = (
+            _normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("roofForm")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "articulated urban roof expression"
+        )
+        landscape_character = (
+            _normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("plantingType")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "layered landscape structure"
+        )
+        paving_type = (
+            _normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("styleProfile", {}).get("pavingType")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "high-quality public-realm paving"
+        )
 
         render_prompt = _build_3d_from_2d_prompt(
             selected_perspective=request.selected_perspective,
             selected_lighting=request.lighting_variant,
-            aesthetic_category=_normalize_whitespace(archetype_metadata.get("generation_style_input", {}).get("aestheticCategoryLabel") if isinstance(archetype_metadata.get("generation_style_input"), dict) else None) or "eco-urban",
+            aesthetic_category=_normalize_whitespace(
+                archetype_metadata.get("generation_style_input", {}).get("aestheticCategoryLabel")
+                if isinstance(archetype_metadata.get("generation_style_input"), dict)
+                else None
+            )
+            or "eco-urban",
             city_context=_extract_city_context(project, []),
             height_m=height_m,
             floor_count=floor_count,
@@ -5304,7 +5671,9 @@ def _build_master_plan_3d_response(
                 if package_conditioning_assets.get("structure_image_url")
                 else "camera_controls_only"
             )
-            package_conditioning_assets["control_strength"] = max(float(package_conditioning_assets.get("control_strength") or 0.0), 0.84)
+            package_conditioning_assets["control_strength"] = max(
+                float(package_conditioning_assets.get("control_strength") or 0.0), 0.84
+            )
 
         coords = [[float(x), float(y)] for x, y in list(clipped.exterior.coords)]
         package = {
@@ -5379,8 +5748,20 @@ def _build_master_plan_3d_response(
         "renderer_adapter": {
             "status": "ready",
             "provider": provider,
-            "integration_status": "camera_conditioned_packages_ready" if has_camera_conditioning else "conditioned_packages_ready" if conditioning_assets else "structured_packages_ready",
-            "notes": "3D packages preserve approved 2D footprint geometry and include camera-aware control images for the selected perspective." if has_camera_conditioning else "3D packages preserve approved 2D footprint geometry and include control-image assets for conditioned provider execution." if conditioning_assets else "3D packages preserve approved 2D footprint geometry and are ready for provider execution.",
+            "integration_status": (
+                "camera_conditioned_packages_ready"
+                if has_camera_conditioning
+                else "conditioned_packages_ready" if conditioning_assets else "structured_packages_ready"
+            ),
+            "notes": (
+                "3D packages preserve approved 2D footprint geometry and include camera-aware control images for the selected perspective."
+                if has_camera_conditioning
+                else (
+                    "3D packages preserve approved 2D footprint geometry and include control-image assets for conditioned provider execution."
+                    if conditioning_assets
+                    else "3D packages preserve approved 2D footprint geometry and are ready for provider execution."
+                )
+            ),
         },
         "created_at": _now_utc(),
     }
@@ -5414,7 +5795,9 @@ class MasterPlan2DService:
             "show_north_arrow": request.show_north_arrow if request.show_north_arrow is not None else True,
             "show_scale_bar": request.show_scale_bar if request.show_scale_bar is not None else True,
             "show_callout_markers": request.show_callout_markers if request.show_callout_markers is not None else True,
-            "show_surrounding_context": request.show_surrounding_context if request.show_surrounding_context is not None else True,
+            "show_surrounding_context": (
+                request.show_surrounding_context if request.show_surrounding_context is not None else True
+            ),
         }
         scene = _prepare_scene(
             scene_payload,
@@ -5432,7 +5815,10 @@ class MasterPlan2DService:
 
         reference_images = request.reference_images or request.selected_image_urls or []
         sanitized_reference_metadata = _sanitize_reference_metadata_bundle(
-            [item.model_dump() if hasattr(item, "model_dump") else dict(item) for item in (request.reference_metadata or [])]
+            [
+                item.model_dump() if hasattr(item, "model_dump") else dict(item)
+                for item in (request.reference_metadata or [])
+            ]
         )
 
         city_context = _extract_city_context(project, zones)
@@ -5444,7 +5830,6 @@ class MasterPlan2DService:
             specific_overrides=request.specific_overrides,
             legacy_global_style_notes=request.prompt,
         )
-        resolved_render_mode = _normalize_render_mode(request.render_mode)
         scene_boundary_coords = _polygon_coordinates_wgs84(_polygon_from_geometry(scene.get("boundary")))
         scene_view_extent_coords = _polygon_coordinates_wgs84(_polygon_from_geometry(scene.get("view_extent")))
 
@@ -5508,8 +5893,12 @@ class MasterPlan2DService:
                         control_assets[f"control_{key}_png_url"] = _png_data_uri(_preview_png(image, target_width=1200))
             control_map_summary = {
                 "available": bool(control_assets),
-                "conditioning_mode": control_map_payload.get("conditioning_mode") if isinstance(control_map_payload, dict) else None,
-                "control_strength": control_map_payload.get("control_strength") if isinstance(control_map_payload, dict) else None,
+                "conditioning_mode": (
+                    control_map_payload.get("conditioning_mode") if isinstance(control_map_payload, dict) else None
+                ),
+                "control_strength": (
+                    control_map_payload.get("control_strength") if isinstance(control_map_payload, dict) else None
+                ),
                 "maps": sorted(list(control_images.keys())) if isinstance(control_images, dict) else [],
             }
 
@@ -5529,7 +5918,7 @@ class MasterPlan2DService:
                 "compiled_prompt": compiled_prompt,
                 "negative_prompt": _build_2d_negative_prompt(),
                 "render_style_preset": request.render_style_preset,
-        "lighting_atmosphere_preset": request.lighting_atmosphere_preset,
+                "lighting_atmosphere_preset": request.lighting_atmosphere_preset,
                 "specific_overrides": request.specific_overrides,
                 "global_style_payload": global_style_payload,
                 "provider": _normalize_provider(
@@ -5588,7 +5977,9 @@ class MasterPlan2DService:
         if selected is None:
             raise ValueError("2D master plan option not found")
 
-        await db.execute(update(MasterPlan2DOption).where(MasterPlan2DOption.project_id == project_id).values(is_selected=False))
+        await db.execute(
+            update(MasterPlan2DOption).where(MasterPlan2DOption.project_id == project_id).values(is_selected=False)
+        )
         await db.execute(update(MasterPlan2DOption).where(MasterPlan2DOption.id == option_id).values(is_selected=True))
         await db.commit()
         await db.refresh(selected)
@@ -5621,7 +6012,9 @@ class MasterPlan2DService:
                 zone_geometry = _polygon_from_geometry(getattr(zone, "geometry", None))
                 if zone_geometry is None:
                     continue
-                properties = getattr(zone, "properties", None) if isinstance(getattr(zone, "properties", None), dict) else {}
+                properties = (
+                    getattr(zone, "properties", None) if isinstance(getattr(zone, "properties", None), dict) else {}
+                )
                 snapshot_zones.append(
                     ZoneSnapshot(
                         zone_id=str(getattr(zone, "id")),
@@ -5684,23 +6077,3 @@ __all__ = [
     "_tree_points",
     "_zone_snapshots_from_request",
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

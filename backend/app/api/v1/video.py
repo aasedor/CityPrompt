@@ -322,16 +322,10 @@ async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -
             continue
         properties = zone.properties or {}
         archetype = (
-            properties.get("plaza_archetype_id")
-            or properties.get("green_space_archetype_id")
-            or "authored-open-space"
+            properties.get("plaza_archetype_id") or properties.get("green_space_archetype_id") or "authored-open-space"
         )
-        variant = properties.get("plaza_selected_variant_id") or properties.get(
-            "green_space_selected_variant_id"
-        )
-        open_space_resources.add(
-            f"open-space:{archetype}{f':{variant}' if variant else ''}"
-        )
+        variant = properties.get("plaza_selected_variant_id") or properties.get("green_space_selected_variant_id")
+        open_space_resources.add(f"open-space:{archetype}{f':{variant}' if variant else ''}")
     resource_families = sorted(families | open_space_resources)
     return {
         "resource_count": len(resource_families),
@@ -372,21 +366,12 @@ async def _validate_video_scene_revision(
     """
 
     if not req.community_3d_claims or req.residual_landscape_claim is None:
-        raise _video_scene_conflict(
-            "Generate the current site in 3D again before Video Render."
-        )
+        raise _video_scene_conflict("Generate the current site in 3D again before Video Render.")
 
-    zones_result = await db.execute(
-        select(SiteZone).where(SiteZone.project_id == req.project_id)
-    )
+    zones_result = await db.execute(select(SiteZone).where(SiteZone.project_id == req.project_id))
     zones = list(zones_result.scalars().all())
-    buildings_result = await db.execute(
-        select(Building).where(Building.project_id == req.project_id)
-    )
-    buildings = {
-        str(building.id): building
-        for building in buildings_result.scalars().all()
-    }
+    buildings_result = await db.execute(select(Building).where(Building.project_id == req.project_id))
+    buildings = {str(building.id): building for building in buildings_result.scalars().all()}
 
     # Import locally to keep the video module's schema/service dependencies
     # independent from the image-render router at import time.
@@ -403,11 +388,7 @@ async def _validate_video_scene_revision(
         if exc.status_code != status.HTTP_409_CONFLICT:
             raise
         detail = exc.detail
-        message = (
-            detail.get("message")
-            if isinstance(detail, dict)
-            else str(detail)
-        )
+        message = detail.get("message") if isinstance(detail, dict) else str(detail)
         raise _video_scene_conflict(message) from exc
 
     return compiled_scene_revision_sha256(
@@ -459,11 +440,7 @@ async def _refresh_automatic_benchmark(db: AsyncSession, project_id: uuid.UUID) 
     meta = dict(project.metadata_ or {})
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
     user_benchmark = next(
-        (
-            attempt
-            for attempt in attempts
-            if attempt.get("is_benchmark") and attempt.get("benchmark_source") == "user"
-        ),
+        (attempt for attempt in attempts if attempt.get("is_benchmark") and attempt.get("benchmark_source") == "user"),
         None,
     )
     if user_benchmark:
@@ -505,13 +482,9 @@ async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
     video_bytes = await asyncio.to_thread(_read_storage_file, attempt.get("video_url"), project_id)
     preview_url = attempt.get("preview_video_url")
     keyframe_urls = list(attempt.get("route_keyframe_urls") or [])
-    preview_bytes = (
-        await asyncio.to_thread(_read_storage_file, preview_url, project_id) if preview_url else None
-    )
+    preview_bytes = await asyncio.to_thread(_read_storage_file, preview_url, project_id) if preview_url else None
     keyframe_bytes = (
-        await asyncio.gather(
-            *(asyncio.to_thread(_read_storage_file, url, project_id) for url in keyframe_urls)
-        )
+        await asyncio.gather(*(asyncio.to_thread(_read_storage_file, url, project_id) for url in keyframe_urls))
         if keyframe_urls
         else []
     )
@@ -548,9 +521,7 @@ def _preflight_values(req: VideoPilotRequest):
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
             if req.provider in {"omni", "internal_enhance"} and keyframes:
-                raise ValueError(
-                    "This preview-video mode sends the route video without route keyframe references."
-                )
+                raise ValueError("This preview-video mode sends the route video without route keyframe references.")
             if req.provider == "seedance_mini":
                 expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
                 if len(keyframes) != expected_keyframes:
@@ -599,9 +570,7 @@ async def preflight_video(
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
     if req.provider == "internal_enhance":
-        runtime_error = internal_video_runtime_error(
-            require_upscaler=req.internal_enhance_quality == "gpu_detail"
-        )
+        runtime_error = internal_video_runtime_error(require_upscaler=req.internal_enhance_quality == "gpu_detail")
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
@@ -724,7 +693,11 @@ async def set_video_benchmark(
     for attempt in attempts:
         is_selected = attempt.get("id") == req.attempt_id
         if is_selected:
-            if _attempt_provider(attempt) != "omni" or attempt.get("status") != "complete" or not attempt.get("video_url"):
+            if (
+                _attempt_provider(attempt) != "omni"
+                or attempt.get("status") != "complete"
+                or not attempt.get("video_url")
+            ):
                 raise HTTPException(status_code=400, detail="Only a completed Omni video can be the benchmark.")
             selected = attempt
         if _attempt_provider(attempt) == "omni":
@@ -757,9 +730,7 @@ async def generate_video(
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
     if req.provider == "internal_enhance":
-        runtime_error = internal_video_runtime_error(
-            require_upscaler=req.internal_enhance_quality == "gpu_detail"
-        )
+        runtime_error = internal_video_runtime_error(require_upscaler=req.internal_enhance_quality == "gpu_detail")
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
 
@@ -776,8 +747,7 @@ async def generate_video(
                 attempts_used=usage.attempts_used,
                 attempts_remaining=usage.attempts_remaining,
                 provider_call_counted=bool(
-                    existing.get("provider_call_started_at")
-                    or existing.get("local_run_started_at")
+                    existing.get("provider_call_started_at") or existing.get("local_run_started_at")
                 ),
             )
 
@@ -785,14 +755,9 @@ async def generate_video(
 
     usage = _provider_usage(attempts, req.provider)
     active_reservations = sum(
-        1
-        for attempt in attempts
-        if attempt.get("status") == "reserved" and _attempt_provider(attempt) == req.provider
+        1 for attempt in attempts if attempt.get("status") == "reserved" and _attempt_provider(attempt) == req.provider
     )
-    if (
-        usage.max_attempts is not None
-        and usage.attempts_used + active_reservations >= usage.max_attempts
-    ):
+    if usage.max_attempts is not None and usage.attempts_used + active_reservations >= usage.max_attempts:
         raise HTTPException(
             status_code=409,
             detail=f"This project has reserved all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
@@ -820,9 +785,7 @@ async def generate_video(
     else:
         estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
     resource_updates = (
-        await _project_internal_resources(db, req.project_id)
-        if req.provider == "internal_enhance"
-        else {}
+        await _project_internal_resources(db, req.project_id) if req.provider == "internal_enhance" else {}
     )
     entry = {
         "id": attempt_id,
@@ -830,9 +793,7 @@ async def generate_video(
         "provider": req.provider,
         "model": _provider_model(req.provider, settings, req.internal_enhance_quality),
         "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
-        "internal_enhance_quality": (
-            req.internal_enhance_quality if req.provider == "internal_enhance" else None
-        ),
+        "internal_enhance_quality": (req.internal_enhance_quality if req.provider == "internal_enhance" else None),
         "render_quality": req.render_quality,
         "capture_profile": req.capture_profile.model_dump() if req.capture_profile else None,
         "status": "reserved",
@@ -880,7 +841,9 @@ async def generate_video(
         preview_video_url = None
         if preview:
             preview_extension = "mp4" if preview.mime_type == "video/mp4" else "webm"
-            preview_key = f"projects/{req.project_id}/video-render/{attempt_id}/controls/route-preview.{preview_extension}"
+            preview_key = (
+                f"projects/{req.project_id}/video-render/{attempt_id}/controls/route-preview.{preview_extension}"
+            )
             await _upload_to_storage(preview_key, preview.data, preview.mime_type)
             preview_video_url = f"/api/v1/files/{preview_key}"
         entry = await _update_attempt(
@@ -906,9 +869,7 @@ async def generate_video(
     # Remote calls may incur billing; local runs remain free but are capped while
     # the pilot is being evaluated.
     run_marker = (
-        {"local_run_started_at": _now()}
-        if req.provider == "internal_enhance"
-        else {"provider_call_started_at": _now()}
+        {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )
     entry = await _update_attempt(
         db,
@@ -975,8 +936,7 @@ async def generate_video(
                 duration_seconds=req.duration_seconds,
                 control_mode=req.control_mode,
                 route_keyframes=[
-                    (value, frame.mime_type)
-                    for value, frame in zip(req.route_keyframes_base64, keyframes, strict=True)
+                    (value, frame.mime_type) for value, frame in zip(req.route_keyframes_base64, keyframes, strict=True)
                 ],
                 preview_video_base64=req.preview_video_base64,
                 preview_video_mime_type=preview.mime_type if preview else None,
@@ -1056,9 +1016,7 @@ async def generate_video(
         secret = (
             settings.fal_key
             if req.provider == "seedance_mini"
-            else settings.gemini_api_key
-            if req.provider == "omni"
-            else ""
+            else settings.gemini_api_key if req.provider == "omni" else ""
         )
         message = str(exc).replace(secret, "[redacted]")[:700] if secret else str(exc)[:700]
         if isinstance(exc, SeedanceRequestError) and exc.request_id:

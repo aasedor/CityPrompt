@@ -8,7 +8,6 @@ same constants drive both — the ±10% bar applies to the live smoke).
 import pytest
 
 from app.services.plan_metrics import (
-    ASSUMPTIONS,
     coerce_floors,
     compute_metrics,
     reconcile_ceilings,
@@ -78,7 +77,9 @@ def test_beltline_parameter_mode_hand_verified():
 
 def test_climate_scenario_uses_reduced_parking_ratio():
     report = compute_metrics(
-        scenario_id="climate_first", dna=BELTLINE_DNA, parameters=PARAMS,
+        scenario_id="climate_first",
+        dna=BELTLINE_DNA,
+        parameters=PARAMS,
         geometry_inputs={"site_area_m2": SITE_AREA},
     )
     units = report.metrics["units"].value
@@ -88,7 +89,9 @@ def test_climate_scenario_uses_reduced_parking_ratio():
 
 def test_geometry_mode_supersedes_parameter_assumptions():
     report = compute_metrics(
-        scenario_id="as_of_right", dna=BELTLINE_DNA, parameters=PARAMS,
+        scenario_id="as_of_right",
+        dna=BELTLINE_DNA,
+        parameters=PARAMS,
         geometry_inputs={
             "site_area_m2": SITE_AREA,
             "row_area_m2": 30_000.0,
@@ -100,8 +103,8 @@ def test_geometry_mode_supersedes_parameter_assumptions():
     assert report.mode == "geometry"
     m = report.metrics
     assert m["net_developable_m2"].value == pytest.approx(114_000)
-    assert m["net_developable_m2"].assumptions == []          # no land-share assumptions
-    assert m["gfa_m2"].value == pytest.approx(300_000)        # 50,000 x 6
+    assert m["net_developable_m2"].assumptions == []  # no land-share assumptions
+    assert m["gfa_m2"].value == pytest.approx(300_000)  # 50,000 x 6
     assert "drawn" in m["building_footprint_m2"].derivation
 
 
@@ -123,20 +126,22 @@ def test_ceiling_reconciliation_uses_lap_fallback_and_flags_exceedance():
     rec, warnings = reconcile_ceilings(districts, "low", proposed_floors=11.0, floor_height_m=3.2)
 
     cc_mh = next(r for r in rec if r["district"] == "CC-MH")
-    assert cc_mh["ceiling_floors"] == 25.0            # 80 / 3.2
+    assert cc_mh["ceiling_floors"] == 25.0  # 80 / 3.2
     assert cc_mh["status"] == "within"
 
     m_cg = next(r for r in rec if r["district"] == "M-CG")
-    assert m_cg["ceiling_floors"] == 6.0              # LAP 'low' fallback
-    assert "LAP building-scale" in m_cg["source"]     # says so explicitly
-    assert m_cg["status"] == "exceeds"                # 11 > 6
+    assert m_cg["ceiling_floors"] == 6.0  # LAP 'low' fallback
+    assert "LAP building-scale" in m_cg["source"]  # says so explicitly
+    assert m_cg["status"] == "exceeds"  # 11 > 6
     assert any("M-CG" in w and "relaxation" in w for w in warnings)
 
 
 def test_unknown_ceiling_is_reported_not_guessed():
     rec, warnings = reconcile_ceilings(
         [{"code": "DC", "area_pct_of_site": 24.0, "far": None, "height_m": None}],
-        None, proposed_floors=6.0, floor_height_m=3.2,
+        None,
+        proposed_floors=6.0,
+        floor_height_m=3.2,
     )
     assert rec[0]["status"] == "unknown"
     assert any("not assessable" in w for w in warnings)

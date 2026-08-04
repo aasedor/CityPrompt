@@ -196,9 +196,7 @@ async def expand_custom_style(
     except Exception as exc:
         logger.warning(f"Failed to log custom style expansion usage: {exc}")
 
-    expanded = "".join(
-        block.text for block in message.content if getattr(block, "type", None) == "text"
-    ).strip()
+    expanded = "".join(block.text for block in message.content if getattr(block, "type", None) == "text").strip()
     if not expanded:
         raise HTTPException(
             status_code=502,

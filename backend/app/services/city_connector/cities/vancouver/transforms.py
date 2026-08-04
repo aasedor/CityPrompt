@@ -61,6 +61,7 @@ def _zone_family(classification: str | None) -> str | None:
 # Fields: zoning_district (R1-1, CD-1 (413)...), zoning_classification,
 #         zoning_category, cd_1_number, geom
 
+
 def zoning(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -90,7 +91,8 @@ def zoning(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list
     dominant = districts[0]
 
     adjacent = se.coverage_by(
-        frame, features,
+        frame,
+        features,
         lambda f: _zone_family(_props(f).get("zoning_classification")),
         zone_m=se.ring_m(frame, 200.0),
     )
@@ -137,6 +139,7 @@ def zoning(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list
 # tax_folio_count, tax_land_value_total, tax_improvement_value_total (numeric
 # sums across strata folios for the latest report_year), tax_year_built,
 # tax_zoning_district (sampled).
+
 
 def parcels(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -205,6 +208,7 @@ def parcels(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], lis
 
 # --- 3. Local areas (local-area-boundary) ----------------------------------------
 # Fields: name, geom (22 planning areas)
+
 
 def local_areas(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -280,6 +284,7 @@ def rapid_transit(features: list[Feature], site: Polygon) -> tuple[dict[str, Any
 # --- 6. Parks (parks-polygon-representation) ----------------------------------------
 # Fields: park_name, area_ha, classification, park_url, geom
 
+
 def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -288,9 +293,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
         warnings.append(note("PARKS_EMPTY", "No parks within 800m of the site.", severity="info"))
         return {}, warnings
 
-    walkshed_area = se.coverage_by(
-        frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0)
-    )
+    walkshed_area = se.coverage_by(frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0))
     park_area_ha = round(walkshed_area.get("parks", {}).get("area_m2", 0.0) / 10_000.0, 2)
 
     nearest = se.nearest(frame, features, k=1)
@@ -317,6 +320,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # Fields: name, description, area_in_sq_meters, url, geom. 8 polygons citywide,
 # incl. the 2100 sea-level-rise (1m SLR + freeboard) scenario.
 
+
 def floodplain(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -330,11 +334,13 @@ def floodplain(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], 
         if name in seen:
             continue
         seen.add(name)
-        zones.append({
-            "name": name,
-            "description": (props.get("description") or "")[:280],
-            "url": props.get("url"),
-        })
+        zones.append(
+            {
+                "name": name,
+                "description": (props.get("description") or "")[:280],
+                "url": props.get("url"),
+            }
+        )
 
     if zones:
         warnings.append(
@@ -358,6 +364,7 @@ def floodplain(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], 
 # --- 9. Public trees (public-trees) ---------------------------------------------------
 # Fields: common_name, genus_name, species_name, height_m, diameter_cm, geom
 
+
 def trees(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -373,6 +380,7 @@ def trees(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # Fields: view_cone_name, view_number, description, url, geom. 24 protected view
 # corridors with height limits — a Vancouver-only development constraint.
 
+
 def view_cones(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -386,12 +394,14 @@ def view_cones(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], 
         if name in seen:
             continue
         seen.add(name)
-        cones.append({
-            "name": name,
-            "view_number": props.get("view_number"),
-            "description": (props.get("description") or "")[:280],
-            "url": props.get("url"),
-        })
+        cones.append(
+            {
+                "name": name,
+                "view_number": props.get("view_number"),
+                "description": (props.get("description") or "")[:280],
+                "url": props.get("url"),
+            }
+        )
 
     if cones:
         warnings.append(

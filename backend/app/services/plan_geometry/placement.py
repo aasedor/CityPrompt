@@ -50,11 +50,19 @@ from app.services.site_engine import iter_polygons
 
 # development_type values the palettes may emit — every one exists in
 # buildingArchetypes.json, so the resolver never falls back to mixed_use.
-CATALOG_DEV_TYPES = frozenset({
-    "residential_single_family", "residential_duplex", "residential_multifamily",
-    "residential_highrise", "mixed_use", "commercial_retail", "commercial_office",
-    "institutional_education", "institutional_health",
-})
+CATALOG_DEV_TYPES = frozenset(
+    {
+        "residential_single_family",
+        "residential_duplex",
+        "residential_multifamily",
+        "residential_highrise",
+        "mixed_use",
+        "commercial_retail",
+        "commercial_office",
+        "institutional_education",
+        "institutional_health",
+    }
+)
 
 # Footprint envelopes per typology — see TypologyDims docstring for the
 # catalog archetypes each row mirrors.
@@ -69,21 +77,21 @@ POCKET_PARK_MIN_M2 = 200.0
 POCKET_PARK_MAX_M2 = 900.0
 NEIGHBORHOOD_PARK_MIN_M2 = 2000.0
 
-POND_MIN_M2 = 300.0     # stormwater_retention_pond catalog range
+POND_MIN_M2 = 300.0  # stormwater_retention_pond catalog range
 POND_MAX_M2 = 9600.0
-PLAZA_MIN_M2 = 1400.0   # formal_civic_plaza catalog range
+PLAZA_MIN_M2 = 1400.0  # formal_civic_plaza catalog range
 
 
 @dataclass(frozen=True)
 class BlockContext:
-    index: int                     # original block index (names stay "Block {i+1}")
+    index: int  # original block index (names stay "Block {i+1}")
     area_m2: float
     dist_to_centroid_m: float
     dist_to_edge_m: float
-    transect: float                # 0 = site edge, 1 = deepest core
+    transect: float  # 0 = site edge, 1 = deepest core
     fronts_spine: bool
-    touches_boundary: bool         # the block borders the site edge
-    dist_to_green_m: float         # to the signature green; inf if none
+    touches_boundary: bool  # the block borders the site edge
+    dist_to_green_m: float  # to the signature green; inf if none
     abuts_low_rise: bool
     ceiling_floors: float | None
 
@@ -92,8 +100,8 @@ class BlockContext:
 class BandSpec:
     development_type: str
     aesthetic: str
-    floors_delta: float | None     # relative to rules.floors (refinement bumps propagate)
-    floors_abs: float | None       # absolute target (edge/anchor bands)
+    floors_delta: float | None  # relative to rules.floors (refinement bumps propagate)
+    floors_abs: float | None  # absolute target (edge/anchor bands)
     typology: str
     # Exact catalog archetype (Master Planner-named). None = resolve by
     # (development_type, aesthetic, floors) as always.
@@ -108,6 +116,7 @@ class BarOption:
     """One resolved per-bar character (within-block variety). Emitted on
     BlockPlan so the generator can rotate archetypes across the bars of a
     perimeter ring / row set instead of stamping one model N times."""
+
     development_type: str
     aesthetic: str
     archetype_id: str | None
@@ -158,12 +167,15 @@ def runtime_lego_rectangle_fit(
 ) -> bool:
     """Whether an authored rectangle fits a cell directly or quarter-turned."""
 
-    if min(
-        cell_width_m,
-        cell_depth_m,
-        candidate_width_m,
-        candidate_depth_m,
-    ) <= 0:
+    if (
+        min(
+            cell_width_m,
+            cell_depth_m,
+            candidate_width_m,
+            candidate_depth_m,
+        )
+        <= 0
+    ):
         return False
     orientations = (
         (
@@ -178,19 +190,18 @@ def runtime_lego_rectangle_fit(
     return any(
         RUNTIME_BAR_SCALE_MIN <= scale_x <= RUNTIME_BAR_SCALE_MAX
         and RUNTIME_BAR_SCALE_MIN <= scale_y <= RUNTIME_BAR_SCALE_MAX
-        and max(scale_x, scale_y) / min(scale_x, scale_y)
-        <= RUNTIME_BAR_MAX_AXIS_RATIO
+        and max(scale_x, scale_y) / min(scale_x, scale_y) <= RUNTIME_BAR_MAX_AXIS_RATIO
         for scale_x, scale_y in orientations
     )
 
 
 @dataclass(frozen=True)
 class Palette:
-    bands: dict[str, BandSpec]     # keys: core | frontage | mid | edge | anchor
+    bands: dict[str, BandSpec]  # keys: core | frontage | mid | edge | anchor
     spine_archetype_id: str | None = None  # direct road_archetype_id for the spine
-    water_feature: bool = False    # water basin + greenway on the central green
-    plaza: bool = False            # carve a civic plaza off the anchor block
-    laneways: bool = False         # mid-block rear lanes on row_bars blocks
+    water_feature: bool = False  # water basin + greenway on the central green
+    plaza: bool = False  # carve a civic plaza off the anchor block
+    laneways: bool = False  # mid-block rear lanes on row_bars blocks
     # Cap EVERY band's floors at the DNA context average + 2 (not just core) —
     # the Economic scenario's "similar to surrounding development" mechanism.
     context_match: bool = False
@@ -214,9 +225,7 @@ class Palette:
     style_family: str | None = None
     # Per-band character rotation: (development_type, aesthetic,
     # archetype_id, variant_id) tuples cycled across same-band blocks and bars.
-    alternates: dict[
-        str, tuple[tuple[str, str, str | None, str | None], ...]
-    ] = field(default_factory=dict)
+    alternates: dict[str, tuple[tuple[str, str, str | None, str | None], ...]] = field(default_factory=dict)
     # planting_structure per green kind (park/pocket/courtyard/greenway/plaza),
     # mirrored by the globe's parkScatter — see master_planner.spec vocabulary.
     landscape: dict[str, str] = field(default_factory=dict)
@@ -236,9 +245,7 @@ class Palette:
     allowed_archetype_ids: frozenset[str] | None = None
     allowed_variant_ids_by_archetype: dict[str, tuple[str, ...]] = field(default_factory=dict)
     supported_floors_by_selectable_id: dict[str, tuple[int, ...]] = field(default_factory=dict)
-    target_dimensions_by_selectable_id: dict[
-        str, tuple[float, float]
-    ] = field(default_factory=dict)
+    target_dimensions_by_selectable_id: dict[str, tuple[float, float]] = field(default_factory=dict)
 
 
 def selected_target_footprint(
@@ -292,80 +299,152 @@ class BlockPlan:
 # 4+, institutional_health at 2+).
 PALETTES: dict[str, Palette] = {
     # ── Current master-plan philosophies ─────────────────────────────────────
-    "economic": Palette(bands={
-        "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "contemporary_urban", 0.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "contemporary", 0.0, None, "perimeter_block"),
-        "edge": BandSpec("residential_single_family", "contemporary", None, 2.0, "row_bars"),
-        "anchor": BandSpec("commercial_retail", "contemporary", None, 2.0, "anchor_mass"),
-    }, context_match=True, curvilinear=True, crescent_archetype_id="london_crescent_road",
-       landscape={"park": "active_recreation", "pocket": "garden_courtyard",
-                  "courtyard": "garden_courtyard", "greenway": "formal_allee",
-                  "plaza": "formal_allee"}),
-    "city_policy": Palette(bands={
-        "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "brownstone", 0.0, None, "row_bars"),
-        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
-        "anchor": BandSpec("institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"),
-    }, plaza=True, laneways=True, curvilinear=True, crescent_archetype_id="london_crescent_road",
-       landscape={"park": "active_recreation", "pocket": "garden_courtyard",
-                  "courtyard": "formal_quad", "greenway": "formal_allee",
-                  "plaza": "formal_allee"}),
-    "city_beautiful": Palette(bands={
-        "core": BandSpec("mixed_use", "parisian", 2.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "haussmann", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "neoclassical", 0.0, None, "perimeter_block"),
-        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
-        "anchor": BandSpec("institutional_education", "classical", None, 4.0, "anchor_mass"),
-    }, spine_archetype_id="haussmann_boulevard", water_feature=True, plaza=True,
-       water_archetype_id="fountain_water_feature", formal_water=True,
-       landscape={"park": "formal_allee", "pocket": "formal_quad",
-                  "courtyard": "formal_quad", "greenway": "formal_allee",
-                  "plaza": "formal_allee"}),
-    "environmental": Palette(bands={
-        "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "scandinavian_nordic", 0.0, None, "row_bars"),
-        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
-        "anchor": BandSpec("institutional_education", "biophilic", None, 3.0, "anchor_mass"),
-        # curvilinear but NO crescent id: every local stays a woonerf, bowed or not.
-    }, water_feature=True, laneways=True, local_archetype_id="woonerf_shared_street",
-       curvilinear=True,
-       landscape={"park": "naturalistic_grove", "pocket": "garden_courtyard",
-                  "courtyard": "garden_courtyard", "greenway": "naturalistic_grove",
-                  "plaza": "formal_allee"}),
+    "economic": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "contemporary_urban", 0.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "contemporary", 0.0, None, "perimeter_block"),
+            "edge": BandSpec("residential_single_family", "contemporary", None, 2.0, "row_bars"),
+            "anchor": BandSpec("commercial_retail", "contemporary", None, 2.0, "anchor_mass"),
+        },
+        context_match=True,
+        curvilinear=True,
+        crescent_archetype_id="london_crescent_road",
+        landscape={
+            "park": "active_recreation",
+            "pocket": "garden_courtyard",
+            "courtyard": "garden_courtyard",
+            "greenway": "formal_allee",
+            "plaza": "formal_allee",
+        },
+    ),
+    "city_policy": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "brownstone", 0.0, None, "row_bars"),
+            "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+            "anchor": BandSpec(
+                "institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"
+            ),
+        },
+        plaza=True,
+        laneways=True,
+        curvilinear=True,
+        crescent_archetype_id="london_crescent_road",
+        landscape={
+            "park": "active_recreation",
+            "pocket": "garden_courtyard",
+            "courtyard": "formal_quad",
+            "greenway": "formal_allee",
+            "plaza": "formal_allee",
+        },
+    ),
+    "city_beautiful": Palette(
+        bands={
+            "core": BandSpec("mixed_use", "parisian", 2.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "haussmann", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "neoclassical", 0.0, None, "perimeter_block"),
+            "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+            "anchor": BandSpec("institutional_education", "classical", None, 4.0, "anchor_mass"),
+        },
+        spine_archetype_id="haussmann_boulevard",
+        water_feature=True,
+        plaza=True,
+        water_archetype_id="fountain_water_feature",
+        formal_water=True,
+        landscape={
+            "park": "formal_allee",
+            "pocket": "formal_quad",
+            "courtyard": "formal_quad",
+            "greenway": "formal_allee",
+            "plaza": "formal_allee",
+        },
+    ),
+    "environmental": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "scandinavian_nordic", 0.0, None, "row_bars"),
+            "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+            "anchor": BandSpec("institutional_education", "biophilic", None, 3.0, "anchor_mass"),
+            # curvilinear but NO crescent id: every local stays a woonerf, bowed or not.
+        },
+        water_feature=True,
+        laneways=True,
+        local_archetype_id="woonerf_shared_street",
+        curvilinear=True,
+        landscape={
+            "park": "naturalistic_grove",
+            "pocket": "garden_courtyard",
+            "courtyard": "garden_courtyard",
+            "greenway": "naturalistic_grove",
+            "plaza": "formal_allee",
+        },
+    ),
     # ── Retired V1 preset ids (existing scenario rows redraw identically) ────
-    "climate_first": Palette(bands={
-        "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "scandinavian_nordic", 0.0, None, "row_bars"),
-        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
-        "anchor": BandSpec("institutional_education", "biophilic", None, 3.0, "anchor_mass"),
-    }, spine_archetype_id=None, water_feature=True, plaza=False, laneways=True,
-       landscape={"park": "naturalistic_grove", "pocket": "garden_courtyard",
-                  "courtyard": "garden_courtyard", "greenway": "naturalistic_grove",
-                  "plaza": "formal_allee"}),
-    "as_of_right": Palette(bands={
-        "core": BandSpec("residential_multifamily", "contemporary_urban", 3.0, None, "point_towers"),
-        "frontage": BandSpec("mixed_use", "contemporary_urban", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "contemporary_midrise", 0.0, None, "perimeter_block"),
-        "edge": BandSpec("residential_single_family", "contemporary", None, 2.0, "row_bars"),
-        "anchor": BandSpec("commercial_office", "modernist", None, 6.0, "anchor_mass"),
-    }, spine_archetype_id="arterial_boulevard", water_feature=False, plaza=True, laneways=False,
-       landscape={"park": "open_meadow", "pocket": "garden_courtyard",
-                  "courtyard": "paved_plaza", "greenway": "formal_allee",
-                  "plaza": "formal_allee"}),
-    "lap_compliant": Palette(bands={
-        "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
-        "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
-        "mid": BandSpec("residential_multifamily", "brownstone", 0.0, None, "row_bars"),
-        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
-        "anchor": BandSpec("institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"),
-    }, spine_archetype_id=None, water_feature=False, plaza=True, laneways=True,
-       landscape={"park": "active_recreation", "pocket": "garden_courtyard",
-                  "courtyard": "formal_quad", "greenway": "formal_allee",
-                  "plaza": "formal_allee"}),
+    "climate_first": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "scandinavian_nordic", 0.0, None, "row_bars"),
+            "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+            "anchor": BandSpec("institutional_education", "biophilic", None, 3.0, "anchor_mass"),
+        },
+        spine_archetype_id=None,
+        water_feature=True,
+        plaza=False,
+        laneways=True,
+        landscape={
+            "park": "naturalistic_grove",
+            "pocket": "garden_courtyard",
+            "courtyard": "garden_courtyard",
+            "greenway": "naturalistic_grove",
+            "plaza": "formal_allee",
+        },
+    ),
+    "as_of_right": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "contemporary_urban", 3.0, None, "point_towers"),
+            "frontage": BandSpec("mixed_use", "contemporary_urban", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "contemporary_midrise", 0.0, None, "perimeter_block"),
+            "edge": BandSpec("residential_single_family", "contemporary", None, 2.0, "row_bars"),
+            "anchor": BandSpec("commercial_office", "modernist", None, 6.0, "anchor_mass"),
+        },
+        spine_archetype_id="arterial_boulevard",
+        water_feature=False,
+        plaza=True,
+        laneways=False,
+        landscape={
+            "park": "open_meadow",
+            "pocket": "garden_courtyard",
+            "courtyard": "paved_plaza",
+            "greenway": "formal_allee",
+            "plaza": "formal_allee",
+        },
+    ),
+    "lap_compliant": Palette(
+        bands={
+            "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
+            "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
+            "mid": BandSpec("residential_multifamily", "brownstone", 0.0, None, "row_bars"),
+            "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+            "anchor": BandSpec(
+                "institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"
+            ),
+        },
+        spine_archetype_id=None,
+        water_feature=False,
+        plaza=True,
+        laneways=True,
+        landscape={
+            "park": "active_recreation",
+            "pocket": "garden_courtyard",
+            "courtyard": "formal_quad",
+            "greenway": "formal_allee",
+            "plaza": "formal_allee",
+        },
+    ),
 }
 _DEFAULT_PALETTE = PALETTES["city_policy"]
 
@@ -419,10 +498,7 @@ def effective_palette(scenario_id: str, strategy: str, palette_hint: str | None 
     if strategy == "transect_green":
         return palette
     # Both alternate strategies read as consistent perimeter fabric.
-    bands = {
-        key: replace(spec, typology="perimeter_block")
-        for key, spec in palette.bands.items()
-    }
+    bands = {key: replace(spec, typology="perimeter_block") for key, spec in palette.bands.items()}
     if strategy == "urban_grid":
         # A fine-grained-grid brief reads straight and rectilinear.
         return replace(palette, bands=bands, laneways=False, curvilinear=False)
@@ -467,8 +543,7 @@ def compute_block_contexts(
     for geom, props in district_lookup:
         height = props.get("height_m")
         code = str(props.get("code") or "")
-        if (height is not None and float(height) <= _LOW_RISE_CEILING_M) or \
-                code.startswith(_LOW_RISE_LU_PREFIXES):
+        if (height is not None and float(height) <= _LOW_RISE_CEILING_M) or code.startswith(_LOW_RISE_LU_PREFIXES):
             low_rise_geoms.append(geom)
 
     edge_dists = {index: block.centroid.distance(exterior) for index, block in blocks}
@@ -486,24 +561,22 @@ def compute_block_contexts(
             except Exception:  # noqa: BLE001 — municipal geometry
                 continue
         touches_boundary = bool(block.distance(exterior) < 2.0)
-        contexts.append(BlockContext(
-            index=index,
-            area_m2=float(block.area),
-            dist_to_centroid_m=float(block_centroid.distance(centroid)),
-            dist_to_edge_m=float(edge_dists[index]),
-            transect=(edge_dists[index] / max_edge) if max_edge > 0 else 0.0,
-            fronts_spine=bool(spine_band is not None and block.distance(spine_band) < 0.5),
-            touches_boundary=touches_boundary,
-            dist_to_green_m=(
-                float(block.distance(signature_green_m))
-                if signature_green_m is not None else math.inf
-            ),
-            abuts_low_rise=bool(
-                touches_boundary
-                and any(g.distance(block) < 30.0 for g in low_rise_geoms)
-            ),
-            ceiling_floors=ceiling,
-        ))
+        contexts.append(
+            BlockContext(
+                index=index,
+                area_m2=float(block.area),
+                dist_to_centroid_m=float(block_centroid.distance(centroid)),
+                dist_to_edge_m=float(edge_dists[index]),
+                transect=(edge_dists[index] / max_edge) if max_edge > 0 else 0.0,
+                fronts_spine=bool(spine_band is not None and block.distance(spine_band) < 0.5),
+                touches_boundary=touches_boundary,
+                dist_to_green_m=(
+                    float(block.distance(signature_green_m)) if signature_green_m is not None else math.inf
+                ),
+                abuts_low_rise=bool(touches_boundary and any(g.distance(block) < 30.0 for g in low_rise_geoms)),
+                ceiling_floors=ceiling,
+            )
+        )
     return contexts
 
 
@@ -538,16 +611,18 @@ def plan_blocks(
     band_turns: dict[str, int] = {}
     supported_floors_by_parent = (
         {
-            parent_id: tuple(sorted({
-                floor
-                for selectable_id in (
-                    parent_id,
-                    *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+            parent_id: tuple(
+                sorted(
+                    {
+                        floor
+                        for selectable_id in (
+                            parent_id,
+                            *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+                        )
+                        for floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
+                    }
                 )
-                for floor in palette.supported_floors_by_selectable_id.get(
-                    selectable_id, ()
-                )
-            }))
+            )
             for parent_id in palette.allowed_archetype_ids
         }
         if palette.allowed_archetype_ids is not None
@@ -653,10 +728,7 @@ def plan_blocks(
         floors_int = max(1, int(round(float(floors))))
 
         def _resolve_entry(dev: str, aes: str, aid: str | None) -> dict | None:
-            if aid and (
-                palette.allowed_archetype_ids is None
-                or aid in palette.allowed_archetype_ids
-            ):
+            if aid and (palette.allowed_archetype_ids is None or aid in palette.allowed_archetype_ids):
                 pinned = dims_by_id().get(aid)
                 if pinned is not None and pinned.get("usable"):
                     return pinned
@@ -685,18 +757,14 @@ def plan_blocks(
                     supported_floor,
                 )
                 for selectable_id in selection_ids
-                for supported_floor in palette.supported_floors_by_selectable_id.get(
-                    selectable_id, ()
-                )
+                for supported_floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
             ]
             if not candidates:
                 entry = None
             else:
                 _, _, selectable_id, floors_int = min(candidates)
                 floors = float(floors_int)
-                selected_variant_id = (
-                    selectable_id if selectable_id != entry["id"] else None
-                )
+                selected_variant_id = selectable_id if selectable_id != entry["id"] else None
         target = selected_target_footprint(
             entry,
             floors_int,
@@ -711,9 +779,7 @@ def plan_blocks(
         # band's other characters when their frontage fits the carved grid.
         bar_options: list[BarOption] = []
         if entry is not None:
-            primary_variant = selected_variant_id or (
-                measured_entry.variant_id if measured_entry else None
-            )
+            primary_variant = selected_variant_id or (measured_entry.variant_id if measured_entry else None)
             available_variants = (
                 palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
                 if palette.allowed_archetype_ids is not None
@@ -728,9 +794,7 @@ def plan_blocks(
                 ):
                     continue
                 if palette.allowed_archetype_ids is not None:
-                    variant_dimensions = (
-                        palette.target_dimensions_by_selectable_id.get(vid)
-                    )
+                    variant_dimensions = palette.target_dimensions_by_selectable_id.get(vid)
                     if (
                         target is None
                         or variant_dimensions is None
@@ -742,12 +806,14 @@ def plan_blocks(
                         )
                     ):
                         continue
-                bar_options.append(BarOption(
-                    development_type=development_type,
-                    aesthetic=aesthetic,
-                    archetype_id=entry["id"],
-                    variant_id=vid,
-                ))
+                bar_options.append(
+                    BarOption(
+                        development_type=development_type,
+                        aesthetic=aesthetic,
+                        archetype_id=entry["id"],
+                        variant_id=vid,
+                    )
+                )
                 if len(bar_options) >= MAX_VARIANT_BARS:
                     break
         if entry is not None and len(options) > 1:
@@ -765,24 +831,23 @@ def plan_blocks(
                     continue
                 alt_variant_id = option_variant_id
                 if palette.allowed_archetype_ids is not None:
-                    selection_ids = tuple(dict.fromkeys((
-                        alt_variant_id,
-                        alt["id"],
-                        *palette.allowed_variant_ids_by_archetype.get(alt["id"], ()),
-                    )))
+                    selection_ids = tuple(
+                        dict.fromkeys(
+                            (
+                                alt_variant_id,
+                                alt["id"],
+                                *palette.allowed_variant_ids_by_archetype.get(alt["id"], ()),
+                            )
+                        )
+                    )
                     alt_selectable_id = next(
                         (
                             selectable_id
                             for selectable_id in selection_ids
                             if selectable_id
-                            and floors_int in palette.supported_floors_by_selectable_id.get(
-                                selectable_id, ()
-                            )
-                            and (
-                                dimensions := palette.target_dimensions_by_selectable_id.get(
-                                    selectable_id
-                                )
-                            ) is not None
+                            and floors_int in palette.supported_floors_by_selectable_id.get(selectable_id, ())
+                            and (dimensions := palette.target_dimensions_by_selectable_id.get(selectable_id))
+                            is not None
                             and target is not None
                             and runtime_lego_rectangle_fit(
                                 target.width_m,
@@ -795,9 +860,7 @@ def plan_blocks(
                     )
                     if alt_selectable_id is None:
                         continue
-                    alt_variant_id = (
-                        alt_selectable_id if alt_selectable_id != alt["id"] else None
-                    )
+                    alt_variant_id = alt_selectable_id if alt_selectable_id != alt["id"] else None
                 alt_target = selected_target_footprint(
                     alt,
                     floors_int,
@@ -811,14 +874,14 @@ def plan_blocks(
                         continue
                 seen_ids.add(alt["id"])
                 alt_measured = (measured_dims or {}).get(alt["id"])
-                bar_options.append(BarOption(
-                    development_type=dev,
-                    aesthetic=aes,
-                    archetype_id=alt["id"],
-                    variant_id=alt_variant_id or (
-                        alt_measured.variant_id if alt_measured else None
-                    ),
-                ))
+                bar_options.append(
+                    BarOption(
+                        development_type=dev,
+                        aesthetic=aes,
+                        archetype_id=alt["id"],
+                        variant_id=alt_variant_id or (alt_measured.variant_id if alt_measured else None),
+                    )
+                )
                 if len(bar_options) >= MAX_BAR_OPTIONS:
                     break
 
@@ -829,9 +892,7 @@ def plan_blocks(
             typology=typology,
             band=band,
             archetype_id=entry["id"] if entry else None,
-            variant_id=selected_variant_id or (
-                measured_entry.variant_id if measured_entry else None
-            ),
+            variant_id=selected_variant_id or (measured_entry.variant_id if measured_entry else None),
             target=target,
             bar_options=tuple(bar_options),
         )
@@ -844,9 +905,9 @@ def plan_blocks(
 @dataclass(frozen=True)
 class GreenSpec:
     geom_m: BaseGeometry
-    kind: str                      # "central" | "pocket" | "plaza" | "pond" | "greenway"
+    kind: str  # "central" | "pocket" | "plaza" | "pond" | "greenway"
     name_suffix: str
-    archetype_id: str | None       # direct green_space_archetype_id, else area-band resolve
+    archetype_id: str | None  # direct green_space_archetype_id, else area-band resolve
 
 
 @dataclass(frozen=True)
@@ -859,8 +920,13 @@ class OpenSpacePlan:
 
 
 def organic_basin(
-    center: Point, rx: float, ry: float, angle_deg: float, seed: int,
-    vertices: int = 64, formal: bool = False,
+    center: Point,
+    rx: float,
+    ry: float,
+    angle_deg: float,
+    seed: int,
+    vertices: int = 64,
+    formal: bool = False,
 ) -> Polygon:
     """Basin outline: an ellipse modulated by two sinusoidal harmonics whose
     phases derive from the site hash — pure function of geometry. `formal`
@@ -961,12 +1027,9 @@ def _carve_park_strip(
     depth = max(14.0, min(target_area / width, span - 32.0))
     if span - depth < 30.0:
         return None, None
-    toward_pt = affinity.rotate(
-        toward if isinstance(toward, Point) else toward.centroid, -angle, origin=origin
-    )
+    toward_pt = affinity.rotate(toward if isinstance(toward, Point) else toward.centroid, -angle, origin=origin)
     near_min = abs(toward_pt.y - miny) <= abs(maxy - toward_pt.y)
-    strip = (box(minx - 1, miny, maxx + 1, miny + depth) if near_min
-             else box(minx - 1, maxy - depth, maxx + 1, maxy + 1))
+    strip = box(minx - 1, miny, maxx + 1, miny + depth) if near_min else box(minx - 1, maxy - depth, maxx + 1, maxy + 1)
     park = make_valid(work.intersection(strip))
     remainder = make_valid(work.difference(strip))
     park_polys = [p for p in iter_polygons(park) if p.area >= 1.0]
@@ -1034,14 +1097,16 @@ def select_open_space(
         if pond is not None and greenway is not None:
             pond_name = "Reflecting Basin" if palette.formal_water else "Pond"
             specs.append(GreenSpec(pond, "pond", pond_name, palette.water_archetype_id))
-            lobes = [
-                p for p in iter_polygons(decompose_holed(greenway, central))
-                if p.area >= 50.0
-            ]
+            lobes = [p for p in iter_polygons(decompose_holed(greenway, central)) if p.area >= 50.0]
             for n, lobe in enumerate(lobes):
-                specs.append(GreenSpec(
-                    lobe, "greenway", f"Greenway {chr(65 + (n % 26))}", "linear_park_greenway",
-                ))
+                specs.append(
+                    GreenSpec(
+                        lobe,
+                        "greenway",
+                        f"Greenway {chr(65 + (n % 26))}",
+                        "linear_park_greenway",
+                    )
+                )
         else:
             specs.append(GreenSpec(central, "central", "Park", palette.central_archetype_id))
 
@@ -1099,9 +1164,7 @@ def select_open_space(
                 key=lambda i: (blocks[i].distance(central), i),
             )
             spine_segments = [s for s in network.segments if s.role == "spine"]
-            plaza_target: BaseGeometry = (
-                spine_segments[0].line if spine_segments else boundary_m.centroid
-            )
+            plaza_target: BaseGeometry = spine_segments[0].line if spine_segments else boundary_m.centroid
             for i in candidates[:2]:
                 base = carved.get(i, blocks[i])
                 piece, remainder = _carve_corner(base, plaza_target, 42.0, 45.0)

@@ -131,9 +131,7 @@ async def test_text_preview_sends_polycount_cap(monkeypatch):
 async def test_get_image_task_polls_v1_endpoint(monkeypatch):
     recorded: list[httpx.Request] = []
     client = MeshyClient(api_key="test-key")
-    monkeypatch.setattr(
-        client, "_client", lambda: _mock_client(recorded, {"status": "SUCCEEDED"})
-    )
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"status": "SUCCEEDED"}))
 
     result = await client.get_image_task("task-9")
 
@@ -217,9 +215,7 @@ async def test_multi_image_omits_polycount_without_remesh(monkeypatch):
 async def test_get_multi_image_task_and_poll_dispatch(monkeypatch):
     recorded: list[httpx.Request] = []
     client = MeshyClient(api_key="test-key")
-    monkeypatch.setattr(
-        client, "_client", lambda: _mock_client(recorded, {"status": "SUCCEEDED"})
-    )
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"status": "SUCCEEDED"}))
 
     result = await client.get_multi_image_task("task-9")
     assert result["status"] == "SUCCEEDED"
@@ -248,9 +244,7 @@ async def test_image_to_image_multiview_posts_v1_with_multi_view_flag(monkeypatc
     client = MeshyClient(api_key="test-key")
     monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"result": "i2i-1"}))
 
-    task_id = await client.image_to_image_multiview(
-        ["data:image/png;base64,card"], "flush facade tower"
-    )
+    task_id = await client.image_to_image_multiview(["data:image/png;base64,card"], "flush facade tower")
 
     assert task_id == "i2i-1"
     assert recorded[0].url.path == "/openapi/v1/image-to-image"
@@ -280,9 +274,7 @@ async def test_multi_image_to_3d_chains_input_task_id(monkeypatch):
     client = MeshyClient(api_key="test-key")
     monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"result": "mi3d-1"}))
 
-    task_id = await client.multi_image_to_3d(
-        input_task_id="i2i-1", texture_prompt="brick", target_polycount=30000
-    )
+    task_id = await client.multi_image_to_3d(input_task_id="i2i-1", texture_prompt="brick", target_polycount=30000)
 
     assert task_id == "mi3d-1"
     import json

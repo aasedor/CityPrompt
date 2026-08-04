@@ -22,10 +22,10 @@ DOWNTOWN = {
 # Suburbs that sit inside (or beside) the coarse detection bbox but outside the
 # municipality — the exact misroutes the boundary polygons exist to prevent.
 SUBURB_NEAR_MISSES = {
-    "calgary": [(-113.82, 51.04)],                      # Chestermere
-    "edmonton": [(-113.63, 53.63), (-113.28, 53.52)],   # St. Albert, Sherwood Park
+    "calgary": [(-113.82, 51.04)],  # Chestermere
+    "edmonton": [(-113.63, 53.63), (-113.28, 53.52)],  # St. Albert, Sherwood Park
     "vancouver": [(-123.24, 49.26), (-123.07, 49.31)],  # UBC/UEL, North Vancouver
-    "toronto": [(-79.64, 43.59), (-79.51, 43.84)],      # Mississauga, Vaughan
+    "toronto": [(-79.64, 43.59), (-79.51, 43.84)],  # Mississauga, Vaughan
 }
 
 

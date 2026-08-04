@@ -377,7 +377,10 @@ async def send_admin_welcome_email(to_email: str, promoted_by_email: str, login_
 
     logger.info(
         "Attempting admin welcome email: from=%s to=%s smtp_host=%s smtp_user=%s",
-        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+        settings.smtp_sender or settings.smtp_user,
+        to_email,
+        settings.smtp_host,
+        settings.smtp_user,
     )
     try:
         result = await aiosmtplib.send(
@@ -596,7 +599,10 @@ async def send_cofounder_welcome_email(to_email: str, promoted_by_email: str, lo
 
     logger.info(
         "Attempting cofounder welcome email: from=%s to=%s smtp_host=%s smtp_user=%s",
-        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+        settings.smtp_sender or settings.smtp_user,
+        to_email,
+        settings.smtp_host,
+        settings.smtp_user,
     )
     try:
         result = await aiosmtplib.send(
@@ -652,7 +658,10 @@ async def send_admin_demotion_confirmation_email(
 
     logger.info(
         "Attempting demotion confirmation email: from=%s to=%s smtp_host=%s smtp_user=%s",
-        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+        settings.smtp_sender or settings.smtp_user,
+        to_email,
+        settings.smtp_host,
+        settings.smtp_user,
     )
     try:
         result = await aiosmtplib.send(
@@ -665,7 +674,10 @@ async def send_admin_demotion_confirmation_email(
         )
         logger.info(
             "Admin demotion confirmation email sent to %s (target: %s -> %s), SMTP response: %s",
-            to_email, target_email, new_role, result,
+            to_email,
+            target_email,
+            new_role,
+            result,
         )
     except Exception:
         logger.exception("Failed to send demotion confirmation email to %s", to_email)

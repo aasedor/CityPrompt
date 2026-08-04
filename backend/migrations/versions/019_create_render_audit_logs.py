@@ -4,6 +4,7 @@ Revision ID: 019_create_render_audit_logs
 Revises: 018_add_render_credits
 Create Date: 2026-03-26
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -16,7 +17,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute(sa.text("""
+    op.execute(
+        sa.text(
+            """
         CREATE TABLE IF NOT EXISTS render_audit_logs (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -31,7 +34,9 @@ def upgrade() -> None:
         );
         CREATE INDEX IF NOT EXISTS ix_render_audit_logs_user_id ON render_audit_logs(user_id);
         CREATE INDEX IF NOT EXISTS ix_render_audit_logs_created_at ON render_audit_logs(created_at DESC);
-    """))
+    """
+        )
+    )
 
 
 def downgrade() -> None:

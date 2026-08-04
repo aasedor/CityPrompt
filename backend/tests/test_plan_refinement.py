@@ -41,6 +41,7 @@ def _report(**scores) -> EvaluationReport:
 # Revision rules
 # ---------------------------------------------------------------------------
 
+
 def test_low_yield_bumps_floors_with_reason():
     base = {"floors": 4.0, "open_space_share": 0.1, "block_target_m": 180.0}
     overrides, revisions = revise_rules(_report(yield_vs_target=0.5), {}, base, [])
@@ -55,8 +56,7 @@ def test_floor_bump_is_bounded():
     overrides: dict[str, float] = {}
     bumps = 0
     for iteration in range(4):
-        base = {"floors": overrides.get("floors", 4.0), "open_space_share": 0.1,
-                "block_target_m": 180.0}
+        base = {"floors": overrides.get("floors", 4.0), "open_space_share": 0.1, "block_target_m": 180.0}
         overrides, revisions = revise_rules(_report(yield_vs_target=0.5), overrides, base, [])
         bumps += sum(1 for r in revisions if r["parameter"] == "floors")
     assert bumps == 3
@@ -74,9 +74,10 @@ def test_streets_lock_blocks_grid_revisions():
 def test_no_revisions_when_everything_is_good():
     base = {"floors": 6.0, "open_space_share": 0.12, "block_target_m": 150.0}
     _, revisions = revise_rules(
-        _report(yield_vs_target=1.0, open_space=1.0, park_access=1.0,
-                intersection_density=0.9, block_scale=1.0),
-        {}, base, [],
+        _report(yield_vs_target=1.0, open_space=1.0, park_access=1.0, intersection_density=0.9, block_scale=1.0),
+        {},
+        base,
+        [],
     )
     assert revisions == []
 
@@ -85,13 +86,17 @@ def test_no_revisions_when_everything_is_good():
 # Evaluator on real drawn geometry
 # ---------------------------------------------------------------------------
 
+
 def test_evaluator_scores_a_real_plan():
     from app.services.plan_geometry.generator import generate_plan_geometry
 
     result = generate_plan_geometry(
-        site_polygon_wgs84=_site(), scenario_id="lap_compliant", scenario_label="LAP",
+        site_polygon_wgs84=_site(),
+        scenario_id="lap_compliant",
+        scenario_label="LAP",
         parameters={"streets.row_width_m": {"value": 16.0}, "buildings.floors": {"value": 6}},
-        road_features=[], district_features=[],
+        road_features=[],
+        district_features=[],
     )
     report = evaluate_plan(result, {"landscape.tree_density": {"value": 0.7}}, units_estimate=2000)
     assert 0.0 < report.overall <= 1.0
@@ -105,6 +110,7 @@ def test_evaluator_scores_a_real_plan():
 # The P3 gate: a rigged bad plan measurably improves across iterations
 # ---------------------------------------------------------------------------
 
+
 def test_rigged_bad_plan_improves_across_iterations():
     # Rig: 2 storeys against a 3,000-unit target, starved open space, coarse grid.
     parameters = {
@@ -116,29 +122,34 @@ def test_rigged_bad_plan_improves_across_iterations():
     }
     result, metrics, iterations = run_refinement_loop(
         site_polygon_wgs84=_site(),
-        scenario_id="as_of_right",           # coarse 200 m grid, 10% open space
+        scenario_id="as_of_right",  # coarse 200 m grid, 10% open space
         scenario_label="Rigged",
         parameters=parameters,
         dna=DNA_STUB,
-        road_features=[], district_features=[],
+        road_features=[],
+        district_features=[],
     )
     assert len(iterations) >= 2, "the loop should have found revisions to try"
     first, last = iterations[0], iterations[-1]
-    assert last["overall_score"] > first["overall_score"], (
-        f"no improvement: {first['overall_score']} -> {last['overall_score']}"
-    )
+    assert (
+        last["overall_score"] > first["overall_score"]
+    ), f"no improvement: {first['overall_score']} -> {last['overall_score']}"
     # Every non-final iteration recorded WHY the next one differs.
     for step in iterations[:-1]:
         assert step["revisions"], "intermediate iteration without recorded revisions"
         assert all(r.get("reason") for r in step["revisions"])
     # The revisions actually took effect on the drawn plan.
-    assert last["overrides_in_effect"].get("floors", 2) > 2 or \
-           last["overrides_in_effect"].get("open_space_share", 0) > 0.1
+    assert (
+        last["overrides_in_effect"].get("floors", 2) > 2 or last["overrides_in_effect"].get("open_space_share", 0) > 0.1
+    )
     # Final metrics are geometry-mode and internally consistent.
     assert metrics.mode == "geometry"
     gi = result.geometry_inputs
-    assert abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"]
-               - gi["site_area_m2"]) / gi["site_area_m2"] < 0.06
+    assert (
+        abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"] - gi["site_area_m2"])
+        / gi["site_area_m2"]
+        < 0.06
+    )
 
 
 def test_locked_streets_survive_the_loop():
@@ -152,16 +163,25 @@ def test_locked_streets_survive_the_loop():
         "buildings.unit_count": {"value": 3000},
     }
     seed = generate_plan_geometry(
-        site_polygon_wgs84=_site(), scenario_id="as_of_right", scenario_label="Seed",
-        parameters=parameters, road_features=[], district_features=[],
+        site_polygon_wgs84=_site(),
+        scenario_id="as_of_right",
+        scenario_label="Seed",
+        parameters=parameters,
+        road_features=[],
+        district_features=[],
     )
     locked = unary_union([Polygon(z["coordinates"]) for z in seed.zones if z["zone_type"] == "road"])
 
     result, _, iterations = run_refinement_loop(
-        site_polygon_wgs84=_site(), scenario_id="as_of_right", scenario_label="Locked",
-        parameters=parameters, dna=DNA_STUB,
-        road_features=[], district_features=[],
-        locked_street_area_wgs84=locked, locks=["streets"],
+        site_polygon_wgs84=_site(),
+        scenario_id="as_of_right",
+        scenario_label="Locked",
+        parameters=parameters,
+        dna=DNA_STUB,
+        road_features=[],
+        district_features=[],
+        locked_street_area_wgs84=locked,
+        locks=["streets"],
     )
     # The loop iterated, but never touched the grid — and never judged the
     # locked network's intersection density (no countable centerlines).

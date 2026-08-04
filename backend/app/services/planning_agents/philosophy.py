@@ -64,10 +64,7 @@ def _band(intensity: float) -> str:
         return "Prefer this direction where it adds little cost or conflict."
     if intensity <= 0.7:
         return "Prioritize this direction when trading off against other goals."
-    return (
-        "Treat this as the primary organizing principle; concede only for life-safety "
-        "or statutory barriers."
-    )
+    return "Treat this as the primary organizing principle; concede only for life-safety " "or statutory barriers."
 
 
 def philosophy_prompt_block(philosophy: PhilosophyWeights) -> str:
@@ -82,7 +79,6 @@ def philosophy_prompt_block(philosophy: PhilosophyWeights) -> str:
             f"{PHILOSOPHY_FRAGMENTS[philosophy.secondary]}"
         )
         lines.append(
-            "When these conflict, PRIMARY wins unless the SECONDARY concern is "
-            "life-safety or flood/heat related."
+            "When these conflict, PRIMARY wins unless the SECONDARY concern is " "life-safety or flood/heat related."
         )
     return "\n".join(lines)

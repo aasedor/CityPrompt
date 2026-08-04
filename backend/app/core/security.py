@@ -84,6 +84,7 @@ async def get_current_user(
         raise HTTPException(status_code=401, detail="Invalid token payload")
 
     from app.models.models import User
+
     result = await db.execute(select(User).where(User.id == uuid.UUID(user_id)))
     user = result.scalar_one_or_none()
 
@@ -112,6 +113,7 @@ def require_role(required_role: str):
 
     Usage: Depends(require_role("admin"))
     """
+
     async def checker(user=Depends(require_auth)):
         role_hierarchy = {"viewer": 0, "editor": 1, "admin": 2, "cofounder": 3}
         user_level = role_hierarchy.get(user.role, 0)
@@ -122,6 +124,7 @@ def require_role(required_role: str):
                 detail=f"Requires {required_role} role",
             )
         return user
+
     return checker
 
 

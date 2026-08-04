@@ -28,6 +28,7 @@ from app.services.policy_intelligence.synthesis import (
 # Chunker
 # ---------------------------------------------------------------------------
 
+
 def test_chunker_page_anchors_and_sizes():
     pages = [
         "2.1 RESIDENTIAL DENSITY\n\n" + ("Density shall support transit viability. " * 40),
@@ -72,17 +73,26 @@ def test_summaries_are_scrubbed_for_verdict_language():
 # Retrieval
 # ---------------------------------------------------------------------------
 
+
 def _record(i: int, text: str, slug: str = "mdp", section: str | None = None) -> ChunkRecord:
     return ChunkRecord(
-        chunk_id=str(i), document_slug=slug, document_title=slug.upper(),
-        section_label=section, page_start=i, page_end=i, text=text,
+        chunk_id=str(i),
+        document_slug=slug,
+        document_title=slug.upper(),
+        section_label=section,
+        page_start=i,
+        page_end=i,
+        text=text,
     )
 
 
 def test_build_query_terms_includes_districts_and_topics():
     terms = build_query_terms(
-        {"districts": [{"code": "CC-X"}, {"code": "R-CG"}], "lap_name": "Beltline: Part 1",
-         "community_name": "BELTLINE"},
+        {
+            "districts": [{"code": "CC-X"}, {"code": "R-CG"}],
+            "lap_name": "Beltline: Part 1",
+            "community_name": "BELTLINE",
+        },
         topics=["density", "tree canopy"],
     )
     assert "cc-x" in terms
@@ -97,8 +107,7 @@ def test_rank_chunks_prefers_relevant_and_respects_budget():
     records = [
         _record(1, "Residential density near transit stations should increase. " * 5),
         _record(2, "Storm sewer maintenance schedules for winter operations. " * 5),
-        _record(3, "Density bonusing and height incentives in the Beltline. " * 5,
-                section="Density provisions"),
+        _record(3, "Density bonusing and height incentives in the Beltline. " * 5, section="Density provisions"),
     ]
     ranked = rank_chunks(records, ["density", "height", "beltline", "transit"], top_k=2)
     assert [c.chunk_id for c in ranked] == ["3", "1"]  # section boost wins
@@ -126,21 +135,34 @@ CHUNK_TEXT = (
 
 def _scored_chunk() -> ScoredChunk:
     return ScoredChunk(
-        chunk_id="c1", document_slug="mdp-lup009", document_title="MDP",
-        section_label="2.2 Transit Areas", page_start=41, page_end=41,
-        text=CHUNK_TEXT, score=3.0,
+        chunk_id="c1",
+        document_slug="mdp-lup009",
+        document_title="MDP",
+        section_label="2.2 Transit Areas",
+        page_start=41,
+        page_end=41,
+        text=CHUNK_TEXT,
+        score=3.0,
         source_url="https://www.calgary.ca/content/dam/mdp.pdf",
     )
 
 
 def test_guardrails_keep_verified_quote():
-    insight = PolicyInsight(conformance_considerations=[
-        Consideration(
-            topic="density", detail="Density supports the MDP direction.",
-            citations=[Citation(doc="mdp-lup009", page=41,
-                                quote="residential density in transit station areas should support transit viability")],
-        )
-    ])
+    insight = PolicyInsight(
+        conformance_considerations=[
+            Consideration(
+                topic="density",
+                detail="Density supports the MDP direction.",
+                citations=[
+                    Citation(
+                        doc="mdp-lup009",
+                        page=41,
+                        quote="residential density in transit station areas should support transit viability",
+                    )
+                ],
+            )
+        ]
+    )
     result, warnings = apply_guardrails(insight, [_scored_chunk()])
     consideration = result.conformance_considerations[0]
     assert consideration.citations and consideration.citations[0].verified
@@ -152,18 +174,26 @@ def test_guardrails_keep_verified_quote():
 
 
 def test_guardrails_strip_fabricated_quote_and_demote():
-    insight = PolicyInsight(conformance_considerations=[
-        Consideration(
-            topic="parking", detail="Parking minimums are abolished citywide.",
-            confidence=0.8,
-            citations=[Citation(doc="mdp-lup009", page=99,
-                                quote="all parking minimums are hereby abolished across the entire city")],
-        )
-    ])
+    insight = PolicyInsight(
+        conformance_considerations=[
+            Consideration(
+                topic="parking",
+                detail="Parking minimums are abolished citywide.",
+                confidence=0.8,
+                citations=[
+                    Citation(
+                        doc="mdp-lup009",
+                        page=99,
+                        quote="all parking minimums are hereby abolished across the entire city",
+                    )
+                ],
+            )
+        ]
+    )
     result, warnings = apply_guardrails(insight, [_scored_chunk()])
     consideration = result.conformance_considerations[0]
-    assert consideration.citations == []            # fabricated quote stripped
-    assert consideration.framing == "context"        # demoted without citations
+    assert consideration.citations == []  # fabricated quote stripped
+    assert consideration.framing == "context"  # demoted without citations
     assert consideration.confidence <= 0.3
     codes = {w["code"] for w in warnings}
     assert "CITATION_UNVERIFIED" in codes
@@ -171,13 +201,21 @@ def test_guardrails_strip_fabricated_quote_and_demote():
 
 
 def test_guardrails_rewrite_verdict_language():
-    insight = PolicyInsight(conformance_considerations=[
-        Consideration(
-            topic="height", detail="The proposal violates the height limit and is non-compliant.",
-            citations=[Citation(doc="mdp-lup009", page=41,
-                                quote="a gradient of building heights stepping down to established streets")],
-        )
-    ])
+    insight = PolicyInsight(
+        conformance_considerations=[
+            Consideration(
+                topic="height",
+                detail="The proposal violates the height limit and is non-compliant.",
+                citations=[
+                    Citation(
+                        doc="mdp-lup009",
+                        page=41,
+                        quote="a gradient of building heights stepping down to established streets",
+                    )
+                ],
+            )
+        ]
+    )
     result, warnings = apply_guardrails(insight, [_scored_chunk()])
     detail = result.conformance_considerations[0].detail.lower()
     assert "violates" not in detail
@@ -188,6 +226,7 @@ def test_guardrails_rewrite_verdict_language():
 # ---------------------------------------------------------------------------
 # Synthesis (mocked Anthropic)
 # ---------------------------------------------------------------------------
+
 
 class _FakeUsage:
     input_tokens = 900
@@ -228,8 +267,10 @@ async def test_synthesis_happy_path(monkeypatch):
 ```"""
     _mock_anthropic(monkeypatch, text=payload)
     insight, warnings = await synthesize_policy_insight(
-        site_facts={"dominant_district": "CC-X"}, chunks=[_scored_chunk()],
-        corpus_status="partial", documents_consulted=["mdp-lup009"],
+        site_facts={"dominant_district": "CC-X"},
+        chunks=[_scored_chunk()],
+        corpus_status="partial",
+        documents_consulted=["mdp-lup009"],
     )
     assert insight.corpus_status == "partial"
     assert insight.conformance_considerations[0].citations[0].verified
@@ -241,7 +282,10 @@ async def test_synthesis_happy_path(monkeypatch):
 async def test_synthesis_no_corpus_degrades(monkeypatch):
     create_mock = _mock_anthropic(monkeypatch)
     insight, warnings = await synthesize_policy_insight(
-        site_facts={}, chunks=[], corpus_status="absent", documents_consulted=[],
+        site_facts={},
+        chunks=[],
+        corpus_status="absent",
+        documents_consulted=[],
     )
     assert insight.corpus_status == "absent"
     assert insight.confidence == 0.0
@@ -253,8 +297,10 @@ async def test_synthesis_no_corpus_degrades(monkeypatch):
 async def test_synthesis_llm_failure_degrades(monkeypatch):
     _mock_anthropic(monkeypatch, error=RuntimeError("api down"))
     insight, warnings = await synthesize_policy_insight(
-        site_facts={}, chunks=[_scored_chunk()],
-        corpus_status="partial", documents_consulted=["mdp-lup009"],
+        site_facts={},
+        chunks=[_scored_chunk()],
+        corpus_status="partial",
+        documents_consulted=["mdp-lup009"],
     )
     assert insight.confidence == 0.0
     assert any(w["code"] == "POLICY_SYNTHESIS_UNAVAILABLE" for w in warnings)
@@ -264,8 +310,10 @@ async def test_synthesis_llm_failure_degrades(monkeypatch):
 async def test_synthesis_unparseable_output_degrades(monkeypatch):
     _mock_anthropic(monkeypatch, text="I think this site is great, here are my thoughts...")
     insight, warnings = await synthesize_policy_insight(
-        site_facts={}, chunks=[_scored_chunk()],
-        corpus_status="partial", documents_consulted=["mdp-lup009"],
+        site_facts={},
+        chunks=[_scored_chunk()],
+        corpus_status="partial",
+        documents_consulted=["mdp-lup009"],
     )
     assert insight.confidence == 0.0
     assert any(w["code"] == "POLICY_SYNTHESIS_UNPARSEABLE" for w in warnings)
@@ -281,11 +329,13 @@ def test_coerce_stringified_payload_repairs_model_quirks():
     consideration = {"topic": "density", "detail": "d", "citations": []}
 
     # nested array stringified
-    repaired = _coerce_stringified_payload({
-        "summaries": ["ok"],
-        "conformance_considerations": json_module.dumps([consideration]),
-        "opportunities": [],
-    })
+    repaired = _coerce_stringified_payload(
+        {
+            "summaries": ["ok"],
+            "conformance_considerations": json_module.dumps([consideration]),
+            "opportunities": [],
+        }
+    )
     assert repaired["conformance_considerations"] == [consideration]
 
     # whole payload nested under one stringified field
@@ -295,17 +345,20 @@ def test_coerce_stringified_payload_repairs_model_quirks():
     assert repaired["conformance_considerations"] == [consideration]
 
     # string ITEMS inside the array + garbage items dropped
-    repaired = _coerce_stringified_payload({
-        "summaries": [],
-        "conformance_considerations": [json_module.dumps(consideration), "not json {", 42],
-        "opportunities": [],
-    })
+    repaired = _coerce_stringified_payload(
+        {
+            "summaries": [],
+            "conformance_considerations": [json_module.dumps(consideration), "not json {", 42],
+            "opportunities": [],
+        }
+    )
     assert repaired["conformance_considerations"] == [consideration]
 
 
 # ---------------------------------------------------------------------------
 # Builder integration: the policy phase merges into the policy section
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.anyio
 async def test_builder_policy_phase_merges_and_degrades():
@@ -322,13 +375,22 @@ async def test_builder_policy_phase_merges_and_degrades():
     async def fake_synthesizer(dna):
         return (
             {"insight": {"summaries": ["s"], "corpus_status": "partial"}},
-            [{"code": "POLICY_INSTRUMENT_SUNSETTING", "severity": "warning",
-              "message": "x", "source_phase": "policy_intelligence"}],
+            [
+                {
+                    "code": "POLICY_INSTRUMENT_SUNSETTING",
+                    "severity": "warning",
+                    "message": "x",
+                    "source_phase": "policy_intelligence",
+                }
+            ],
             0.75,
         )
 
     dna = await build_dna(
-        site_polygon=site, connector=EmptyConnector(), project_id="p", zone_id="z",
+        site_polygon=site,
+        connector=EmptyConnector(),
+        project_id="p",
+        zone_id="z",
         policy_synthesizer=fake_synthesizer,
     )
     assert dna.policy.fields["insight"].value["summaries"] == ["s"]
@@ -340,7 +402,10 @@ async def test_builder_policy_phase_merges_and_degrades():
         raise RuntimeError("db exploded")
 
     dna2 = await build_dna(
-        site_polygon=site, connector=EmptyConnector(), project_id="p", zone_id="z",
+        site_polygon=site,
+        connector=EmptyConnector(),
+        project_id="p",
+        zone_id="z",
         policy_synthesizer=raising_synthesizer,
     )
     assert dna2.policy.meta.confidence == 0.0

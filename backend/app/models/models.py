@@ -74,14 +74,18 @@ class Project(Base):
     documents: Mapped[list["Document"]] = relationship(back_populates="project", cascade="all, delete-orphan")
     shares: Mapped[list["ProjectShare"]] = relationship(back_populates="project", cascade="all, delete-orphan")
     site_zones: Mapped[list["SiteZone"]] = relationship(back_populates="project", cascade="all, delete-orphan")
-    master_plan_2d_options: Mapped[list["MasterPlan2DOption"]] = relationship(back_populates="project", cascade="all, delete-orphan")
+    master_plan_2d_options: Mapped[list["MasterPlan2DOption"]] = relationship(
+        back_populates="project", cascade="all, delete-orphan"
+    )
 
 
 class Building(Base):
     __tablename__ = "buildings"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False, index=True
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=True)
     footprint = mapped_column(Geography("POLYGON", srid=4326), nullable=True)
     height_meters: Mapped[float | None] = mapped_column(Numeric(10, 2), nullable=True)
@@ -104,15 +108,21 @@ class Building(Base):
 
     # Relationships
     project: Mapped["Project"] = relationship(back_populates="buildings")
-    render_previews: Mapped[list["RenderPreview"]] = relationship(back_populates="building", cascade="all, delete-orphan")
+    render_previews: Mapped[list["RenderPreview"]] = relationship(
+        back_populates="building", cascade="all, delete-orphan"
+    )
 
 
 class ProjectShare(Base):
     __tablename__ = "project_shares"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True
+    )
     email: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
     permission: Mapped[str] = mapped_column(
         Enum("viewer", "editor", name="share_permission"),
@@ -131,8 +141,12 @@ class Annotation(Base):
     __tablename__ = "annotations"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
-    building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    building_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
+    )
     author_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     position_x: Mapped[float] = mapped_column(Numeric(10, 3), nullable=False)
@@ -150,7 +164,9 @@ class Document(Base):
     __tablename__ = "documents"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False, index=True
+    )
     filename: Mapped[str] = mapped_column(String(255), nullable=False)
     file_type: Mapped[str] = mapped_column(String(50), nullable=False)
     file_size_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False)
@@ -171,18 +187,29 @@ class SiteZone(Base):
     __tablename__ = "site_zones"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     zone_type: Mapped[str] = mapped_column(
-        Enum("site_boundary", "building", "residential", "road", "green_space", "parking", "water", "development_area", name="zone_type", create_type=False),
+        Enum(
+            "site_boundary",
+            "building",
+            "residential",
+            "road",
+            "green_space",
+            "parking",
+            "water",
+            "development_area",
+            name="zone_type",
+            create_type=False,
+        ),
         nullable=False,
     )
     geometry = mapped_column(Geography("POLYGON", srid=4326), nullable=False)
     color: Mapped[str] = mapped_column(String(7), nullable=False, default="#9b59b6")
     properties: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
-    is_active_boundary: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False, server_default="false"
-    )
+    is_active_boundary: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     building_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
@@ -200,18 +227,23 @@ class SiteZone(Base):
 
 class ZoneHistory(Base):
     """Audit log for zone changes — stores a full snapshot on every create/update/delete."""
+
     __tablename__ = "zone_history"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     zone_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     action: Mapped[str] = mapped_column(
         Enum("create", "update", "delete", name="zone_history_action", create_type=False),
         nullable=False,
     )
     snapshot: Mapped[dict] = mapped_column(JSONB, nullable=False)
     previous_snapshot: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
     user_email: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(String(500), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
@@ -224,7 +256,9 @@ class RenderPreview(Base):
     __tablename__ = "render_previews"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    building_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="CASCADE"), nullable=False, index=True)
+    building_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     image_url: Mapped[str] = mapped_column(String(500), nullable=False)
     prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
     style: Mapped[str | None] = mapped_column(String(50), nullable=True)
@@ -240,7 +274,9 @@ class MasterPlan2DOption(Base):
     __tablename__ = "master_plan_2d_options"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     label: Mapped[str] = mapped_column(String(120), nullable=False)
     style_preset: Mapped[str] = mapped_column(String(80), nullable=False)
     variant_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
@@ -257,8 +293,12 @@ class ActivityLog(Base):
     __tablename__ = "activity_logs"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
     action: Mapped[str] = mapped_column(String(100), nullable=False)
     details: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -273,8 +313,12 @@ class PendingRoleChange(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     token: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
-    target_user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    requested_by_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    target_user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    requested_by_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     new_role: Mapped[str] = mapped_column(String(20), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
@@ -288,9 +332,15 @@ class ModelLibraryEntry(Base):
     __tablename__ = "model_library"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    owner_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    source_building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
-    source_project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="SET NULL"), nullable=True)
+    owner_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    source_building_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
+    )
+    source_project_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="SET NULL"), nullable=True
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     category: Mapped[str] = mapped_column(String(50), nullable=False, default="other")
@@ -316,11 +366,15 @@ class BetaFeedback(Base):
     __tablename__ = "beta_feedback"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    author_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    author_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     category: Mapped[str] = mapped_column(String(30), nullable=False, default="suggestion")  # suggestion, bug, question
     text: Mapped[str] = mapped_column(Text, nullable=False)
     page_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    status: Mapped[str] = mapped_column(String(20), nullable=False, default="open")  # open, reviewed, resolved, dismissed
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="open"
+    )  # open, reviewed, resolved, dismissed
     admin_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
@@ -332,7 +386,9 @@ class RenderAuditLog(Base):
     __tablename__ = "render_audit_logs"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     user_email: Mapped[str] = mapped_column(String(255), nullable=False)
     project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     model: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -356,9 +412,15 @@ class ApiUsageLog(Base):
     input_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     output_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
-    document_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("documents.id", ondelete="SET NULL"), nullable=True)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    building_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
+    )
+    document_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("documents.id", ondelete="SET NULL"), nullable=True
+    )
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
     status: Mapped[str] = mapped_column(String(20), default="success")
     metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -380,12 +442,16 @@ class ArchetypeModelCache(Base):
     archetype_id: Mapped[str] = mapped_column(String(120), nullable=False)
     variant_id: Mapped[str] = mapped_column(String(120), nullable=False, default="default")
     engine: Mapped[str] = mapped_column(String(20), nullable=False)
-    status: Mapped[str] = mapped_column(String(16), nullable=False, default="generating")  # generating, completed, failed
+    status: Mapped[str] = mapped_column(
+        String(16), nullable=False, default="generating"
+    )  # generating, completed, failed
     model_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
     lod_keys: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     thumbnail_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
     source_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    source_building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
+    source_building_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
+    )
     generation_mode: Mapped[str | None] = mapped_column(String(20), nullable=True, default="text")
     generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
     size_bytes: Mapped[int | None] = mapped_column(Integer, nullable=True)
@@ -394,7 +460,9 @@ class ArchetypeModelCache(Base):
     metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
     claimed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
 
 class DatasetCache(Base):
@@ -422,7 +490,9 @@ class PolicyDocument(Base):
     city: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
     slug: Mapped[str] = mapped_column(String(120), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
-    instrument_type: Mapped[str] = mapped_column(String(30), nullable=False, default="policy")  # statutory|policy|strategy|guide
+    instrument_type: Mapped[str] = mapped_column(
+        String(30), nullable=False, default="policy"
+    )  # statutory|policy|strategy|guide
     source_url: Mapped[str] = mapped_column(String(600), nullable=False)
     storage_url: Mapped[str | None] = mapped_column(String(600), nullable=True)
     effective_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
@@ -470,7 +540,9 @@ class UrbanDnaSnapshot(Base):
     dna_schema_version: Mapped[str] = mapped_column(String(20), nullable=False)
     dna: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     overall_confidence: Mapped[float | None] = mapped_column(Numeric(4, 2), nullable=True)
-    status: Mapped[str] = mapped_column(String(12), nullable=False, default="pending")  # pending|partial|complete|failed
+    status: Mapped[str] = mapped_column(
+        String(12), nullable=False, default="pending"
+    )  # pending|partial|complete|failed
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
@@ -479,9 +551,7 @@ class UrbanDnaSnapshot(Base):
 
     # Relationships
     project: Mapped["Project"] = relationship()
-    scenarios: Mapped[list["UrbanDnaScenario"]] = relationship(
-        back_populates="snapshot", cascade="all, delete-orphan"
-    )
+    scenarios: Mapped[list["UrbanDnaScenario"]] = relationship(back_populates="snapshot", cascade="all, delete-orphan")
 
 
 class UrbanDnaScenario(Base):
@@ -495,7 +565,9 @@ class UrbanDnaScenario(Base):
     )
     scenario_id: Mapped[str] = mapped_column(String(60), nullable=False)
     label: Mapped[str] = mapped_column(String(120), nullable=False)
-    status: Mapped[str] = mapped_column(String(12), nullable=False, default="pending")  # pending|running|complete|failed
+    status: Mapped[str] = mapped_column(
+        String(12), nullable=False, default="pending"
+    )  # pending|running|complete|failed
     payload: Mapped[dict | None] = mapped_column(JSONB, nullable=True)  # ScenarioResult dump
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

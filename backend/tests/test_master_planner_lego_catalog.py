@@ -88,30 +88,34 @@ def _modular_family(
         ),
     ]
     if include_floor:
-        entries.append(_entry(
-            f"{family}-floor",
-            family=family,
-            role="floor",
-            width_m=30,
-            depth_m=20,
-            height_m=3.2,
-            archetype_ids=ids,
-            repeatable_z=True,
-            min_floors=min_floors,
-            max_floors=max_floors,
-        ))
+        entries.append(
+            _entry(
+                f"{family}-floor",
+                family=family,
+                role="floor",
+                width_m=30,
+                depth_m=20,
+                height_m=3.2,
+                archetype_ids=ids,
+                repeatable_z=True,
+                min_floors=min_floors,
+                max_floors=max_floors,
+            )
+        )
     if include_roof:
-        entries.append(_entry(
-            f"{family}-roof",
-            family=family,
-            role="roof",
-            width_m=30,
-            depth_m=20,
-            height_m=1,
-            archetype_ids=ids,
-            min_floors=min_floors,
-            max_floors=max_floors,
-        ))
+        entries.append(
+            _entry(
+                f"{family}-roof",
+                family=family,
+                role="roof",
+                width_m=30,
+                depth_m=20,
+                height_m=1,
+                archetype_ids=ids,
+                min_floors=min_floors,
+                max_floors=max_floors,
+            )
+        )
     return entries
 
 
@@ -200,28 +204,32 @@ def test_catalog_keeps_one_newest_native_revision_and_its_floor_set():
 
 def test_catalog_rejects_inconsistent_podium_dimensions_within_one_family():
     entries = _modular_family()
-    entries.append(_entry(
-        "industrial-family-podium-conflict",
-        family="industrial-family",
-        role="podium",
-        width_m=31,
-        depth_m=20,
-        height_m=3.2,
-        archetype_ids=[INDUSTRIAL_PARENT, INDUSTRIAL_VARIANT],
-        min_floors=2,
-        max_floors=5,
-    ))
+    entries.append(
+        _entry(
+            "industrial-family-podium-conflict",
+            family="industrial-family",
+            role="podium",
+            width_m=31,
+            depth_m=20,
+            height_m=3.2,
+            archetype_ids=[INDUSTRIAL_PARENT, INDUSTRIAL_VARIANT],
+            min_floors=2,
+            max_floors=5,
+        )
+    )
 
     assert build_lego_planning_catalog(entries).parent_ids == ()
 
 
 def test_modular_family_without_floor_is_capable_only_at_one_floor():
-    catalog = build_lego_planning_catalog(_modular_family(
-        include_floor=False,
-        min_floors=None,
-        max_floors=None,
-        archetype_ids=[INDUSTRIAL_PARENT],
-    ))
+    catalog = build_lego_planning_catalog(
+        _modular_family(
+            include_floor=False,
+            min_floors=None,
+            max_floors=None,
+            archetype_ids=[INDUSTRIAL_PARENT],
+        )
+    )
 
     assert catalog.parent_ids == (INDUSTRIAL_PARENT,)
     assert catalog.supported_floors_by_parent[INDUSTRIAL_PARENT] == (1,)
@@ -271,18 +279,20 @@ def test_selection_uses_exact_variant_for_assembled_only_family():
 
 def test_hybrid_exact_variant_uses_assembled_native_dimensions():
     entries = _modular_family()
-    entries.append(_entry(
-        "mill-renderlocked",
-        family="industrial-family",
-        role="assembled",
-        width_m=45,
-        depth_m=27,
-        height_m=14,
-        archetype_ids=[INDUSTRIAL_PARENT, INDUSTRIAL_VARIANT],
-        native_floors=4,
-        source_variant_id=INDUSTRIAL_VARIANT,
-        generation_archetype_id=INDUSTRIAL_VARIANT,
-    ))
+    entries.append(
+        _entry(
+            "mill-renderlocked",
+            family="industrial-family",
+            role="assembled",
+            width_m=45,
+            depth_m=27,
+            height_m=14,
+            archetype_ids=[INDUSTRIAL_PARENT, INDUSTRIAL_VARIANT],
+            native_floors=4,
+            source_variant_id=INDUSTRIAL_VARIANT,
+            generation_archetype_id=INDUSTRIAL_VARIANT,
+        )
+    )
 
     catalog = build_lego_planning_catalog(entries)
 
@@ -344,9 +354,11 @@ def test_assembled_only_family_requires_exact_source_identity_and_native_floor()
 
 
 def test_unknown_archetype_aliases_are_not_exposed():
-    catalog = build_lego_planning_catalog(_modular_family(
-        archetype_ids=["invented_lego_city", INDUSTRIAL_PARENT],
-    ))
+    catalog = build_lego_planning_catalog(
+        _modular_family(
+            archetype_ids=["invented_lego_city", INDUSTRIAL_PARENT],
+        )
+    )
 
     assert catalog.parent_ids == (INDUSTRIAL_PARENT,)
     assert "invented_lego_city" not in catalog.prompt_vocabulary

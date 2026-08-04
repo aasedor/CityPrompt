@@ -4,6 +4,7 @@ Revision ID: 001_site_zones
 Revises: None
 Create Date: 2026-02-16
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -21,7 +22,12 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     # Create zone_type enum
     zone_type_enum = ENUM(
-        "building", "residential", "road", "green_space", "parking", "water",
+        "building",
+        "residential",
+        "road",
+        "green_space",
+        "parking",
+        "water",
         name="zone_type",
         create_type=False,
     )
@@ -31,7 +37,13 @@ def upgrade() -> None:
     op.create_table(
         "site_zones",
         sa.Column("id", UUID(as_uuid=True), primary_key=True),
-        sa.Column("project_id", UUID(as_uuid=True), sa.ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True),
+        sa.Column(
+            "project_id",
+            UUID(as_uuid=True),
+            sa.ForeignKey("projects.id", ondelete="CASCADE"),
+            nullable=False,
+            index=True,
+        ),
         sa.Column("name", sa.String(255), nullable=True),
         sa.Column("zone_type", zone_type_enum, nullable=False),
         sa.Column("geometry", geoalchemy2.Geography("POLYGON", srid=4326), nullable=False),

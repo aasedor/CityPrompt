@@ -113,11 +113,7 @@ def _legacy_catalog_vocabulary() -> str:
 def _catalog_vocabulary(lego_catalog: LegoPlanningCatalog | None = None) -> str:
     if lego_catalog is None:
         return _legacy_catalog_vocabulary()
-    return (
-        lego_catalog.prompt_vocabulary
-        + "\n\n"
-        + build_public_realm_capability_catalog().prompt_vocabulary
-    )
+    return lego_catalog.prompt_vocabulary + "\n\n" + build_public_realm_capability_catalog().prompt_vocabulary
 
 
 def _band_schema(
@@ -125,7 +121,10 @@ def _band_schema(
 ) -> dict[str, Any]:
     properties: dict[str, Any] = {
         "development_type": {"type": "string", "description": "One of the catalog development_type values."},
-        "aesthetic": {"type": "string", "description": "Aesthetic family for this band, from the catalog list for the chosen type."},
+        "aesthetic": {
+            "type": "string",
+            "description": "Aesthetic family for this band, from the catalog list for the chosen type.",
+        },
         "floors": {"type": "number", "minimum": 1, "maximum": 40},
         "typology": {"type": "string", "enum": list(TYPOLOGIES)},
         "alternates": {
@@ -175,9 +174,7 @@ def _master_plan_tool(
     # realm identities that have an executable family/recipe contract.
     spine_ids = LEGO_SPINE_STREET_IDS if lego_catalog is not None else SPINE_STREET_IDS
     local_ids = LEGO_LOCAL_STREET_IDS if lego_catalog is not None else LOCAL_STREET_IDS
-    central_park_ids = (
-        LEGO_CENTRAL_PARK_IDS if lego_catalog is not None else CENTRAL_PARK_IDS
-    )
+    central_park_ids = LEGO_CENTRAL_PARK_IDS if lego_catalog is not None else CENTRAL_PARK_IDS
     water_ids = LEGO_WATER_ARCHETYPE_IDS if lego_catalog is not None else WATER_ARCHETYPE_IDS
     tool = {
         "name": "record_master_plan",
@@ -218,17 +215,17 @@ def _master_plan_tool(
                 "bands": {
                     "type": "object",
                     "description": "anchor = landmark block by the central green; frontage = blocks on the main spine; core = deep interior; edge = boundary step-down; mid = general fabric.",
-                    "properties": {
-                        key: _band_schema(lego_catalog)
-                        for key in BAND_KEYS
-                    },
+                    "properties": {key: _band_schema(lego_catalog) for key in BAND_KEYS},
                     "required": list(BAND_KEYS),
                 },
                 "open_space": {
                     "type": "object",
                     "properties": {
                         "water_feature": {"type": "boolean"},
-                        "formal_water": {"type": "boolean", "description": "true = formal reflecting basin, false = naturalized pond edge."},
+                        "formal_water": {
+                            "type": "boolean",
+                            "description": "true = formal reflecting basin, false = naturalized pond edge.",
+                        },
                         "water_archetype_id": {
                             "type": "string",
                             "enum": sorted(water_ids),
@@ -250,7 +247,10 @@ def _master_plan_tool(
                         "pocket_structure": {"type": "string", "enum": list(POCKET_STRUCTURES)},
                         "courtyard_structure": {"type": "string", "enum": list(COURTYARD_STRUCTURES)},
                         "greenway_structure": {"type": "string", "enum": list(LINEAR_STRUCTURES)},
-                        "rationale": {"type": "string", "description": "One or two sentences of landscape-architecture reasoning."},
+                        "rationale": {
+                            "type": "string",
+                            "description": "One or two sentences of landscape-architecture reasoning.",
+                        },
                     },
                     "required": ["park_structure", "courtyard_structure"],
                 },
@@ -319,12 +319,12 @@ def _master_plan_tool(
 
 
 def _note(code: str, severity: str, message: str) -> dict[str, Any]:
-    return {"code": code, "severity": severity, "message": message,
-            "source_phase": "master_planner"}
+    return {"code": code, "severity": severity, "message": message, "source_phase": "master_planner"}
 
 
-def _site_brief(site_summary: dict[str, Any], definition: ScenarioDefinition,
-                parameters: dict[str, Any], brief: str | None) -> str:
+def _site_brief(
+    site_summary: dict[str, Any], definition: ScenarioDefinition, parameters: dict[str, Any], brief: str | None
+) -> str:
     area_m2 = float(site_summary.get("area_m2") or 0.0)
     est_blocks = site_summary.get("est_blocks")
     lines = [
@@ -346,8 +346,10 @@ def _site_brief(site_summary: dict[str, Any], definition: ScenarioDefinition,
             f"  - {path}: {merged.get('value') if isinstance(merged, dict) else merged}"
             for path, merged in sorted(parameters.items())
         ]
-        lines.append("EXPERT PANEL PARAMETERS (already merged — your plan should honor their intent):\n"
-                     + "\n".join(expert_lines[:12]))
+        lines.append(
+            "EXPERT PANEL PARAMETERS (already merged — your plan should honor their intent):\n"
+            + "\n".join(expert_lines[:12])
+        )
     return "\n".join(lines)
 
 
@@ -365,17 +367,24 @@ async def compose_master_plan(
 ) -> tuple[MasterPlanSpec | None, dict[str, Any], list[dict[str, Any]]]:
     """Compose and validate a master plan. Never raises (soft time limit
     excepted — Celery must see it); returns (spec|None, usage, notes)."""
-    usage: dict[str, Any] = {"agent_id": "master_planner", "model": model,
-                             "input_tokens": 0, "output_tokens": 0, "status": "success"}
+    usage: dict[str, Any] = {
+        "agent_id": "master_planner",
+        "model": model,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "status": "success",
+    }
     notes: list[dict[str, Any]] = []
 
     if lego_catalog is not None and not lego_catalog.capabilities:
         usage["status"] = "error"
-        notes.append(_note(
-            "MASTER_PLANNER_NO_LEGO_CATALOG",
-            "warning",
-            "No executable LEGO building families are available; the Master Planner cannot draw buildings.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLANNER_NO_LEGO_CATALOG",
+                "warning",
+                "No executable LEGO building families are available; the Master Planner cannot draw buildings.",
+            )
+        )
         return None, usage, notes
 
     user_content = [
@@ -388,10 +397,11 @@ async def compose_master_plan(
             "type": "text",
             "text": (
                 _site_brief(site_summary, definition, parameters or {}, brief)
-                + "\n\n" + _catalog_vocabulary(lego_catalog)
+                + "\n\n"
+                + _catalog_vocabulary(lego_catalog)
                 + "\n\nCompose the master plan now. Be site-specific and philosophy-true; "
-                  "make the variety deliberate (distinct alternates per band, mixed typologies) "
-                  "and the landscape intentional."
+                "make the variety deliberate (distinct alternates per band, mixed typologies) "
+                "and the landscape intentional."
             ),
         },
     ]
@@ -411,8 +421,7 @@ async def compose_master_plan(
             usage["input_tokens"] += message.usage.input_tokens
             usage["output_tokens"] += message.usage.output_tokens
             payload = next(
-                (block.input for block in message.content
-                 if getattr(block, "type", None) == "tool_use"),
+                (block.input for block in message.content if getattr(block, "type", None) == "tool_use"),
                 None,
             )
             if isinstance(payload, str):
@@ -442,11 +451,17 @@ async def compose_master_plan(
         if not spec.bands:
             # Nothing usable survived — the preset palette will draw better.
             raise ValueError("no valid bands in the composed plan")
-        notes.append(_note(
-            "MASTER_PLAN_COMPOSED", "info",
-            f"Master Planner: {spec.design_narrative[:220]}" if spec.design_narrative
-            else "Master Planner composed the plan.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_COMPOSED",
+                "info",
+                (
+                    f"Master Planner: {spec.design_narrative[:220]}"
+                    if spec.design_narrative
+                    else "Master Planner composed the plan."
+                ),
+            )
+        )
         return spec, usage, notes
 
     except SoftTimeLimitExceeded:
@@ -459,25 +474,27 @@ async def compose_master_plan(
             if lego_catalog is not None
             else "the scenario's preset palette drew this plan"
         )
-        notes.append(_note(
-            "MASTER_PLANNER_UNAVAILABLE", "warning",
-            f"Master Planner unavailable ({exc}) — {fallback_description}.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLANNER_UNAVAILABLE",
+                "warning",
+                f"Master Planner unavailable ({exc}) — {fallback_description}.",
+            )
+        )
         if lego_catalog is not None:
             fallback = lego_fallback_spec(
                 definition.scenario_id,
                 lego_catalog,
                 palette_hint,
-                narrative=(
-                    "A deterministic plan composed from the imported LEGO "
-                    "building, park, and street kits."
-                ),
+                narrative=("A deterministic plan composed from the imported LEGO " "building, park, and street kits."),
             )
-            notes.append(_note(
-                "MASTER_PLANNER_LEGO_FALLBACK",
-                "info",
-                "The imported LEGO catalog supplied a complete deterministic fallback plan.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLANNER_LEGO_FALLBACK",
+                    "info",
+                    "The imported LEGO catalog supplied a complete deterministic fallback plan.",
+                )
+            )
             return fallback, usage, notes
         return None, usage, notes
     finally:

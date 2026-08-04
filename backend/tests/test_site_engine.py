@@ -37,10 +37,12 @@ def _site_polygon() -> Polygon:
 
 
 def test_cleanup_developable_blocks_discards_small_slivers() -> None:
-    geometry = MultiPolygon([
-        box(0, 0, 20, 20),
-        box(21, 0, 21.2, 100),
-    ])
+    geometry = MultiPolygon(
+        [
+            box(0, 0, 20, 20),
+            box(21, 0, 21.2, 100),
+        ]
+    )
 
     blocks = cleanup_developable_blocks(geometry, sliver_area_threshold=50.0)
 
@@ -111,4 +113,3 @@ async def test_extract_developable_blocks_fetches_context_and_splits_site() -> N
     assert len(result["developable_blocks"]) == 2
     assert result["developable_area_sqm"] < result["site_area_sqm"]
     assert all(block["area_sqm"] >= 50.0 for block in result["developable_blocks"])
-

@@ -188,21 +188,17 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         variant_key=str(lego.get("variant_key") or "default"),
         lod=max(0, _as_int_or_none(lego.get("lod")) or 0),
         allowed_levels=tuple(
-            int(value) for value in (lego.get("allowed_levels") or [])
+            int(value)
+            for value in (lego.get("allowed_levels") or [])
             if isinstance(value, (int, float)) and int(value) >= 0
         ),
         native_floors=_as_int_or_none(lego.get("native_floors")),
-        source_variant_id=(
-            str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None
-        ),
+        source_variant_id=(str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None),
         generation_archetype_id=(
-            str(lego.get("generation_archetype_id"))
-            if lego.get("generation_archetype_id") else None
+            str(lego.get("generation_archetype_id")) if lego.get("generation_archetype_id") else None
         ),
         footprint_compatibility=(
-            lego.get("footprint_compatibility")
-            if isinstance(lego.get("footprint_compatibility"), dict)
-            else None
+            lego.get("footprint_compatibility") if isinstance(lego.get("footprint_compatibility"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
     )
@@ -248,10 +244,7 @@ def _strip_card_variant_suffix(semantic_id: str) -> str:
 
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
     requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
-    return any(
-        _strip_card_variant_suffix(_semantic_id(candidate)) == requested
-        for candidate in module.archetype_ids
-    )
+    return any(_strip_card_variant_suffix(_semantic_id(candidate)) == requested for candidate in module.archetype_ids)
 
 
 def _module_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
@@ -292,11 +285,7 @@ def _declared_profile_covers_target(
     if not isinstance(compatibility, dict):
         return False
     profiles = compatibility.get("profiles")
-    profile = (
-        profiles.get(request.footprint_profile)
-        if isinstance(profiles, dict)
-        else None
-    )
+    profile = profiles.get(request.footprint_profile) if isinstance(profiles, dict) else None
     if not isinstance(profile, dict):
         return False
 
@@ -310,10 +299,7 @@ def _declared_profile_covers_target(
     floors = _recommended_range_contains(float(request.target_floors), floor_range)
 
     dimensions_declared = direct_width is not None and direct_depth is not None
-    dimensions_fit = bool(
-        (direct_width and direct_depth)
-        or (rotated_width and rotated_depth)
-    )
+    dimensions_fit = bool((direct_width and direct_depth) or (rotated_width and rotated_depth))
     floors_fit = floors is not False
     return dimensions_declared and dimensions_fit and floors_fit
 
@@ -354,32 +340,18 @@ def _supported_family_metadata(
         modules = [module for module in descriptors if module.family == family]
         if not modules:
             continue
-        minimum_floors = [
-            int(module.min_floors)
-            for module in modules
-            if module.min_floors is not None
-        ]
-        maximum_floors = [
-            int(module.max_floors)
-            for module in modules
-            if module.max_floors is not None
-        ]
-        native_floors = [
-            int(module.native_floors)
-            for module in modules
-            if module.native_floors is not None
-        ]
-        summaries.append({
-            "family": family,
-            "widths_m": sorted({round(float(module.width_m), 4) for module in modules}),
-            "depths_m": sorted({round(float(module.depth_m), 4) for module in modules}),
-            "min_floors": min(minimum_floors + native_floors)
-            if (minimum_floors or native_floors)
-            else None,
-            "max_floors": max(maximum_floors + native_floors)
-            if (maximum_floors or native_floors)
-            else None,
-        })
+        minimum_floors = [int(module.min_floors) for module in modules if module.min_floors is not None]
+        maximum_floors = [int(module.max_floors) for module in modules if module.max_floors is not None]
+        native_floors = [int(module.native_floors) for module in modules if module.native_floors is not None]
+        summaries.append(
+            {
+                "family": family,
+                "widths_m": sorted({round(float(module.width_m), 4) for module in modules}),
+                "depths_m": sorted({round(float(module.depth_m), 4) for module in modules}),
+                "min_floors": min(minimum_floors + native_floors) if (minimum_floors or native_floors) else None,
+                "max_floors": max(maximum_floors + native_floors) if (maximum_floors or native_floors) else None,
+            }
+        )
     return summaries
 
 
@@ -403,47 +375,89 @@ def footprint_segments(
     width = float(width_m)
     depth = float(depth_m)
     if profile == "rectangle":
-        return [{
-            "id": "main", "centre_x_m": 0.0, "centre_y_m": 0.0,
-            "length_m": width, "thickness_m": depth, "rotation_degrees": 0.0,
-        }]
+        return [
+            {
+                "id": "main",
+                "centre_x_m": 0.0,
+                "centre_y_m": 0.0,
+                "length_m": width,
+                "thickness_m": depth,
+                "rotation_degrees": 0.0,
+            }
+        ]
     requested = float(wing_depth_m) if wing_depth_m else float(native_depth_m)
     wing = min(max(5.5, requested), max(5.5, min(width, depth) * 0.46))
-    segments: list[dict[str, float | str]] = [{
-        "id": "front", "centre_x_m": 0.0, "centre_y_m": -(depth - wing) / 2,
-        "length_m": width, "thickness_m": wing, "rotation_degrees": 0.0,
-    }]
+    segments: list[dict[str, float | str]] = [
+        {
+            "id": "front",
+            "centre_x_m": 0.0,
+            "centre_y_m": -(depth - wing) / 2,
+            "length_m": width,
+            "thickness_m": wing,
+            "rotation_degrees": 0.0,
+        }
+    ]
     if profile == "l_shape":
-        segments.append({
-            "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
-            "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
-        })
+        segments.append(
+            {
+                "id": "left_return",
+                "centre_x_m": -(width - wing) / 2,
+                "centre_y_m": 0.0,
+                "length_m": depth,
+                "thickness_m": wing,
+                "rotation_degrees": 90.0,
+            }
+        )
     elif profile == "u_shape":
-        segments.extend([
-            {
-                "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
-                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
-            },
-            {
-                "id": "right_return", "centre_x_m": (width - wing) / 2, "centre_y_m": 0.0,
-                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
-            },
-        ])
+        segments.extend(
+            [
+                {
+                    "id": "left_return",
+                    "centre_x_m": -(width - wing) / 2,
+                    "centre_y_m": 0.0,
+                    "length_m": depth,
+                    "thickness_m": wing,
+                    "rotation_degrees": 90.0,
+                },
+                {
+                    "id": "right_return",
+                    "centre_x_m": (width - wing) / 2,
+                    "centre_y_m": 0.0,
+                    "length_m": depth,
+                    "thickness_m": wing,
+                    "rotation_degrees": 90.0,
+                },
+            ]
+        )
     else:
-        segments.extend([
-            {
-                "id": "rear", "centre_x_m": 0.0, "centre_y_m": (depth - wing) / 2,
-                "length_m": width, "thickness_m": wing, "rotation_degrees": 0.0,
-            },
-            {
-                "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
-                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
-            },
-            {
-                "id": "right_return", "centre_x_m": (width - wing) / 2, "centre_y_m": 0.0,
-                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
-            },
-        ])
+        segments.extend(
+            [
+                {
+                    "id": "rear",
+                    "centre_x_m": 0.0,
+                    "centre_y_m": (depth - wing) / 2,
+                    "length_m": width,
+                    "thickness_m": wing,
+                    "rotation_degrees": 0.0,
+                },
+                {
+                    "id": "left_return",
+                    "centre_x_m": -(width - wing) / 2,
+                    "centre_y_m": 0.0,
+                    "length_m": depth,
+                    "thickness_m": wing,
+                    "rotation_degrees": 90.0,
+                },
+                {
+                    "id": "right_return",
+                    "centre_x_m": (width - wing) / 2,
+                    "centre_y_m": 0.0,
+                    "length_m": depth,
+                    "thickness_m": wing,
+                    "rotation_degrees": 90.0,
+                },
+            ]
+        )
     return segments
 
 
@@ -482,10 +496,7 @@ def _rectangle_orientation(
 
     def fit_key(candidate: tuple[float, float, float, float, float]) -> tuple:
         scale_x, scale_y, rotation, _, _ = candidate
-        valid = (
-            scale_min <= scale_x <= scale_max
-            and scale_min <= scale_y <= scale_max
-        )
+        valid = scale_min <= scale_x <= scale_max and scale_min <= scale_y <= scale_max
         distortion = (
             abs(math.log(max(scale_x, 1e-9)))
             + abs(math.log(max(scale_y, 1e-9)))
@@ -514,9 +525,7 @@ def _fixed_landmark_scale_contract(
     try:
         scale_min = float(declared.get("scaleMin", FIXED_LANDMARK_SCALE_MIN))
         scale_max = float(declared.get("scaleMax", FIXED_LANDMARK_SCALE_MAX))
-        max_axis_ratio = float(
-            declared.get("maxAxisRatio", FIXED_LANDMARK_MAX_AXIS_RATIO)
-        )
+        max_axis_ratio = float(declared.get("maxAxisRatio", FIXED_LANDMARK_MAX_AXIS_RATIO))
     except (TypeError, ValueError):
         return (
             FIXED_LANDMARK_SCALE_MIN,
@@ -524,10 +533,7 @@ def _fixed_landmark_scale_contract(
             FIXED_LANDMARK_MAX_AXIS_RATIO,
         )
 
-    if not (
-        0.75 <= scale_min <= 1.0 <= scale_max <= 1.25
-        and 1.0 <= max_axis_ratio <= 1.20
-    ):
+    if not (0.75 <= scale_min <= 1.0 <= scale_max <= 1.25 and 1.0 <= max_axis_ratio <= 1.20):
         return (
             FIXED_LANDMARK_SCALE_MIN,
             FIXED_LANDMARK_SCALE_MAX,
@@ -592,10 +598,7 @@ def _rectangle_repeat_segments(
             continue
         if not forced and bars_along * rows_deep == 1:
             continue
-        distortion = (
-            abs(math.log(scale_len / bars_along))
-            + abs(math.log(scale_thk / rows_deep))
-        )
+        distortion = abs(math.log(scale_len / bars_along)) + abs(math.log(scale_thk / rows_deep))
         if best is not None and distortion >= best[0]:
             continue
         bar_length = length / bars_along
@@ -606,14 +609,16 @@ def _rectangle_repeat_segments(
             v = -thickness / 2 + bar_thickness * (row + 0.5)
             for col in range(bars_along):
                 u = -length / 2 + bar_length * (col + 0.5)
-                segments.append({
-                    "id": f"bar_r{row}_c{col}",
-                    "centre_x_m": round(u * math.cos(theta) - v * math.sin(theta), 4),
-                    "centre_y_m": round(u * math.sin(theta) + v * math.cos(theta), 4),
-                    "length_m": bar_length,
-                    "thickness_m": bar_thickness,
-                    "rotation_degrees": rotation,
-                })
+                segments.append(
+                    {
+                        "id": f"bar_r{row}_c{col}",
+                        "centre_x_m": round(u * math.cos(theta) - v * math.sin(theta), 4),
+                        "centre_y_m": round(u * math.sin(theta) + v * math.cos(theta), 4),
+                        "length_m": bar_length,
+                        "thickness_m": bar_thickness,
+                        "rotation_degrees": rotation,
+                    }
+                )
         best = (distortion, segments)
     return best[1] if best else None
 
@@ -705,15 +710,13 @@ def plan_vertical_assembly(
             and any(module.role == "roof" for module in family_modules)
             and (
                 request.target_floors <= 1
-                or any(
-                    module.role == "floor" and module.repeatable_z
-                    for module in family_modules
-                )
+                or any(module.role == "floor" and module.repeatable_z for module in family_modules)
             )
         )
         assembled = _best(
             (
-                module for module in family_modules
+                module
+                for module in family_modules
                 if module.role == "assembled"
                 and module.native_floors == request.target_floors
                 and request.footprint_profile == "rectangle"
@@ -751,12 +754,8 @@ def plan_vertical_assembly(
                 scale_x / max(scale_y, 1e-9),
                 scale_y / max(scale_x, 1e-9),
             )
-            authored_axis_scale_x = (
-                request.target_width_m / max(assembled.width_m, 1e-9)
-            )
-            authored_axis_scale_y = (
-                request.target_depth_m / max(assembled.depth_m, 1e-9)
-            )
+            authored_axis_scale_x = request.target_width_m / max(assembled.width_m, 1e-9)
+            authored_axis_scale_y = request.target_depth_m / max(assembled.depth_m, 1e-9)
             raw_contain_scale = min(scale_x, scale_y)
             # A parcel larger than the landmark does not require the building
             # to swell until it touches an edge. Cap the applied scale at the
@@ -775,24 +774,16 @@ def plan_vertical_assembly(
                 # authored axis. Large sites still belong on the LEGO
                 # repeat/stack path; containment is for ordinary drawing
                 # tolerance around the landmark's declared orientation.
-                and max(authored_axis_scale_x, authored_axis_scale_y)
-                <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
+                and max(authored_axis_scale_x, authored_axis_scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
-            if (
-                near_native_fit
-                or uniform_contain_fit
-                or (forced and not has_stack_fallback)
-            ):
+            if near_native_fit or uniform_contain_fit or (forced and not has_stack_fallback):
                 # The polygon is a site envelope, not an extrusion mould.
                 # Preserve the reviewed landmark proportions and centre the
                 # complete authored form inside the available rectangle.
                 family_score = 100.0 + _module_score(assembled, request)
                 if forced:
-                    family_score -= 2.0 * (
-                        abs(math.log(max(scale_x, 1e-9)))
-                        + abs(math.log(max(scale_y, 1e-9)))
-                    )
+                    family_score -= 2.0 * (abs(math.log(max(scale_x, 1e-9))) + abs(math.log(max(scale_y, 1e-9))))
                 plan = {
                     "version": 3,
                     "family": family,
@@ -806,27 +797,31 @@ def plan_vertical_assembly(
                         "wing_depth_m": request.target_depth_m,
                     },
                     "assembled_height_m": round(assembled.height_m, 4),
-                    "instances": [{
-                        "asset_id": assembled.id,
-                        "asset_name": assembled.name,
-                        "model_url": assembled.model_url,
-                        "family": assembled.family,
-                        "role": "assembled",
-                        "variant_key": assembled.variant_key,
-                        "lod": assembled.lod,
-                        "level": 0,
-                        "segment_id": "landmark",
-                        "position": [0.0, 0.0, 0.0],
-                        "rotation_degrees": rectangle_rotation,
-                        "scale": [
-                            round(contain_scale, 5),
-                            round(contain_scale, 5),
-                            1.0,
-                        ],
-                        "native_dimensions_m": [
-                            assembled.width_m, assembled.depth_m, assembled.height_m,
-                        ],
-                    }],
+                    "instances": [
+                        {
+                            "asset_id": assembled.id,
+                            "asset_name": assembled.name,
+                            "model_url": assembled.model_url,
+                            "family": assembled.family,
+                            "role": "assembled",
+                            "variant_key": assembled.variant_key,
+                            "lod": assembled.lod,
+                            "level": 0,
+                            "segment_id": "landmark",
+                            "position": [0.0, 0.0, 0.0],
+                            "rotation_degrees": rectangle_rotation,
+                            "scale": [
+                                round(contain_scale, 5),
+                                round(contain_scale, 5),
+                                1.0,
+                            ],
+                            "native_dimensions_m": [
+                                assembled.width_m,
+                                assembled.depth_m,
+                                assembled.height_m,
+                            ],
+                        }
+                    ],
                     "fit": {
                         "scale_x": round(contain_scale, 5),
                         "scale_y": round(contain_scale, 5),
@@ -841,12 +836,11 @@ def plan_vertical_assembly(
                         "compatibility_source": (
                             "forced_fit"
                             if forced and not (near_native_fit or uniform_contain_fit)
-                            else "fixed_landmark_native"
-                            if math.isclose(scale_x, 1.0, abs_tol=1e-6)
-                            and math.isclose(scale_y, 1.0, abs_tol=1e-6)
-                            else "fixed_landmark_tolerance"
-                            if near_native_fit
-                            else "fixed_landmark_contain"
+                            else (
+                                "fixed_landmark_native"
+                                if math.isclose(scale_x, 1.0, abs_tol=1e-6) and math.isclose(scale_y, 1.0, abs_tol=1e-6)
+                                else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
+                            )
                         ),
                         "scale_band": {
                             "min": landmark_scale_min,
@@ -856,20 +850,20 @@ def plan_vertical_assembly(
                         "containment_band": {
                             "min": FIXED_LANDMARK_CONTAIN_SCALE_MIN,
                             "max": landmark_scale_max,
-                            "max_envelope_axis_ratio": (
-                                FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
-                            ),
-                            "max_envelope_scale": (
-                                FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
-                            ),
+                            "max_envelope_axis_ratio": (FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO),
+                            "max_envelope_scale": (FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE),
                         },
                     },
-                    "footprint_segments": [{
-                        "id": "landmark", "centre_x_m": 0.0, "centre_y_m": 0.0,
-                        "length_m": segment_length,
-                        "thickness_m": segment_thickness,
-                        "rotation_degrees": rectangle_rotation,
-                    }],
+                    "footprint_segments": [
+                        {
+                            "id": "landmark",
+                            "centre_x_m": 0.0,
+                            "centre_y_m": 0.0,
+                            "length_m": segment_length,
+                            "thickness_m": segment_thickness,
+                            "rotation_degrees": rectangle_rotation,
+                        }
+                    ],
                 }
                 if family_score > best_score:
                     best_score = family_score
@@ -877,9 +871,9 @@ def plan_vertical_assembly(
                 continue
         podium = _best((m for m in family_modules if m.role == "podium"), request, forced=forced)
         floor_candidates = [
-            m for m in family_modules
-            if m.role == "floor" and m.repeatable_z
-            and (forced or _valid_for_floor_count(m, request.target_floors))
+            m
+            for m in family_modules
+            if m.role == "floor" and m.repeatable_z and (forced or _valid_for_floor_count(m, request.target_floors))
         ]
         # Pick one render LOD for each design variant. Cycling LOD0/LOD1 as if
         # they were different facades would create visual and performance pops.
@@ -897,9 +891,7 @@ def plan_vertical_assembly(
         if not podium or not roof:
             continue
         use_setback = bool(
-            setback
-            and request.target_floors >= (setback.setback_min_floors or 5)
-            and request.allow_setback
+            setback and request.target_floors >= (setback.setback_min_floors or 5) and request.allow_setback
         )
         use_crown = bool(crown and request.target_floors >= 3)
         standard_count = request.target_floors - 1 - (1 if use_setback else 0) - (1 if use_crown else 0)
@@ -913,9 +905,7 @@ def plan_vertical_assembly(
         # fit; multi-wing profiles already encode each return's rotation.
         declared_profile_fit = _declared_profile_covers_target(podium, request)
         scale_min, scale_max = (
-            (0.62, 1.40)
-            if declared_profile_fit or request.footprint_profile != "rectangle"
-            else (0.80, 1.20)
+            (0.62, 1.40) if declared_profile_fit or request.footprint_profile != "rectangle" else (0.80, 1.20)
         )
         streetwall_repeat = False
         if request.footprint_profile == "rectangle":
@@ -931,14 +921,16 @@ def plan_vertical_assembly(
                 scale_min=scale_min,
                 scale_max=scale_max,
             )
-            segments = [{
-                "id": "main",
-                "centre_x_m": 0.0,
-                "centre_y_m": 0.0,
-                "length_m": segment_length,
-                "thickness_m": segment_thickness,
-                "rotation_degrees": rectangle_rotation,
-            }]
+            segments = [
+                {
+                    "id": "main",
+                    "centre_x_m": 0.0,
+                    "centre_y_m": 0.0,
+                    "length_m": segment_length,
+                    "thickness_m": segment_thickness,
+                    "rotation_degrees": rectangle_rotation,
+                }
+            ]
             single_fits = (
                 scale_min <= segment_length / podium.width_m <= scale_max
                 and scale_min <= segment_thickness / podium.depth_m <= scale_max
@@ -972,9 +964,7 @@ def plan_vertical_assembly(
         # streetwall-repeat bars need a little more latitude because each bar
         # keeps authored facade proportions, but still reject anything that
         # would visibly crush the facade atlas.
-        bar_scale_min, bar_scale_max = (
-            _STREETWALL_BAND if streetwall_repeat else (scale_min, scale_max)
-        )
+        bar_scale_min, bar_scale_max = _STREETWALL_BAND if streetwall_repeat else (scale_min, scale_max)
         if not forced and any(
             not (bar_scale_min <= sx <= bar_scale_max and bar_scale_min <= sy <= bar_scale_max)
             for sx, sy in segment_scales
@@ -1055,10 +1045,11 @@ def plan_vertical_assembly(
             family_score -= 0.25 * (len(segments) - 1)
         if forced:
             # Within the forced pass the least-distorted family must win.
-            family_score -= 2.0 * sum(
-                abs(math.log(max(sx, 1e-9))) + abs(math.log(max(sy, 1e-9)))
-                for sx, sy in segment_scales
-            ) / len(segment_scales)
+            family_score -= (
+                2.0
+                * sum(abs(math.log(max(sx, 1e-9))) + abs(math.log(max(sy, 1e-9))) for sx, sy in segment_scales)
+                / len(segment_scales)
+            )
         plan = {
             "version": 2,
             "family": family,
@@ -1085,11 +1076,11 @@ def plan_vertical_assembly(
                 "compatibility_source": (
                     "forced_fit"
                     if forced
-                    else "streetwall_repeat"
-                    if streetwall_repeat
-                    else "manifest_shape_matrix"
-                    if declared_profile_fit
-                    else "native_scale"
+                    else (
+                        "streetwall_repeat"
+                        if streetwall_repeat
+                        else "manifest_shape_matrix" if declared_profile_fit else "native_scale"
+                    )
                 ),
             },
             "footprint_segments": segments,
@@ -1209,9 +1200,8 @@ def lego_metadata_from_manifest(
     dimensions = manifest.get("dimensions") or {}
     generator = manifest.get("generator") or {}
     return {
-        "enabled": resolved_role in STACKABLE_ROLES or (
-            resolved_role == "assembled" and bool(manifest.get("massing_graph"))
-        ),
+        "enabled": resolved_role in STACKABLE_ROLES
+        or (resolved_role == "assembled" and bool(manifest.get("massing_graph"))),
         "role": resolved_role,
         "family": str(manifest.get("family") or ""),
         "width_m": module.get("width_m"),

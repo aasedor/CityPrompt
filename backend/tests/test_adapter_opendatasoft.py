@@ -17,10 +17,14 @@ from app.core.config import get_settings
 from app.services.city_connector.adapters import opendatasoft
 from app.services.city_connector.base import DatasetSpec
 
-SITE = Polygon([
-    (-123.1210, 49.2800), (-123.1195, 49.2800),
-    (-123.1195, 49.2809), (-123.1210, 49.2809),
-])
+SITE = Polygon(
+    [
+        (-123.1210, 49.2800),
+        (-123.1195, 49.2800),
+        (-123.1195, 49.2809),
+        (-123.1210, 49.2809),
+    ]
+)
 
 
 def _noop_transform(features, site):
@@ -168,24 +172,36 @@ ENRICH = {
 
 def _enrich_handler(url, params):
     if url.endswith("/exports/geojson"):
-        return FakeResponse(payload={"features": [
-            _feature({"tax_coord": "111"}),
-            _feature({"tax_coord": "222"}),
-            _feature({"tax_coord": "222"}),  # duplicate key must not duplicate queries
-        ]})
+        return FakeResponse(
+            payload={
+                "features": [
+                    _feature({"tax_coord": "111"}),
+                    _feature({"tax_coord": "222"}),
+                    _feature({"tax_coord": "222"}),  # duplicate key must not duplicate queries
+                ]
+            }
+        )
     # records endpoint
     if params.get("order_by") == "report_year desc":
         return FakeResponse(payload={"results": [{"report_year": "2026"}]})
     if params.get("group_by"):
         assert 'report_year = "2026"' in params["where"]
-        return FakeResponse(payload={"results": [
-            {"land_coordinate": "111", "folio_count": 1, "land_value_total": 1_000_000},
-            {"land_coordinate": "222", "folio_count": 40, "land_value_total": 9_000_000},
-        ]})
-    return FakeResponse(payload={"results": [
-        {"land_coordinate": "111", "year_built": "1950"},
-        {"land_coordinate": "222", "year_built": "1990"},
-    ]})
+        return FakeResponse(
+            payload={
+                "results": [
+                    {"land_coordinate": "111", "folio_count": 1, "land_value_total": 1_000_000},
+                    {"land_coordinate": "222", "folio_count": 40, "land_value_total": 9_000_000},
+                ]
+            }
+        )
+    return FakeResponse(
+        payload={
+            "results": [
+                {"land_coordinate": "111", "year_built": "1950"},
+                {"land_coordinate": "222", "year_built": "1990"},
+            ]
+        }
+    )
 
 
 @pytest.mark.anyio
@@ -205,9 +221,9 @@ async def test_enrichment_merges_under_prefix():
 async def test_enrichment_key_cap_warns_join_truncated():
     def handler(url, params):
         if url.endswith("/exports/geojson"):
-            return FakeResponse(payload={"features": [
-                _feature({"tax_coord": str(i)}) for i in range(6)  # 6 keys > max_keys 3
-            ]})
+            return FakeResponse(
+                payload={"features": [_feature({"tax_coord": str(i)}) for i in range(6)]}  # 6 keys > max_keys 3
+            )
         return _enrich_handler(url, params)
 
     FakeClient.handler = staticmethod(handler)

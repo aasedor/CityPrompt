@@ -3,7 +3,7 @@ import pytest
 
 cv2 = pytest.importorskip("cv2")
 
-from app.services.video_fidelity import classify_fidelity, score_frame_similarity
+from app.services.video_fidelity import classify_fidelity, score_frame_similarity  # noqa: E402
 
 
 def _architectural_frame() -> np.ndarray:

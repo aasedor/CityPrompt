@@ -4,6 +4,7 @@ Revision ID: 002_dev_area_generation
 Revises: 001_site_zones
 Create Date: 2026-02-17
 """
+
 from typing import Sequence, Union
 
 from alembic import op

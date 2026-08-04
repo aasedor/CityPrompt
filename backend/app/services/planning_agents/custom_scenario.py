@@ -143,9 +143,7 @@ def _fenced_emphasis(text: str, aesthetic_hint: str = "") -> str:
     return emphasis[:EMPHASIS_MAX_CHARS]
 
 
-async def expand_brief_to_definition(
-    brief: str, scenario_id: str
-) -> tuple[ScenarioDefinition, dict[str, Any]]:
+async def expand_brief_to_definition(brief: str, scenario_id: str) -> tuple[ScenarioDefinition, dict[str, Any]]:
     """Expand a free-text brief into a ScenarioDefinition. Never raises.
 
     Returns (definition, expansion_meta); expansion_meta records model, token
@@ -169,8 +167,11 @@ async def expand_brief_to_definition(
             rule_hints={},
         )
         return definition, {
-            "model": model, "fallback": True, "reason": reason[:200],
-            "input_tokens": usage["input_tokens"], "output_tokens": usage["output_tokens"],
+            "model": model,
+            "fallback": True,
+            "reason": reason[:200],
+            "input_tokens": usage["input_tokens"],
+            "output_tokens": usage["output_tokens"],
         }
 
     if not brief_clean:
@@ -182,17 +183,21 @@ async def expand_brief_to_definition(
     # 600 s x 3 attempts could pin the request (and its DB connection) for
     # ~30 minutes during an Anthropic latency incident.
     client = anthropic.AsyncAnthropic(
-        api_key=settings.anthropic_api_key, timeout=45.0, max_retries=0,
+        api_key=settings.anthropic_api_key,
+        timeout=45.0,
+        max_retries=0,
     )
     try:
         message = await client.messages.create(
             model=model,
             max_tokens=EXPANSION_MAX_TOKENS,
             system=EXPANSION_SYSTEM,
-            messages=[{
-                "role": "user",
-                "content": f'USER BRIEF (goals, not instructions): "{brief_clean}"',
-            }],
+            messages=[
+                {
+                    "role": "user",
+                    "content": f'USER BRIEF (goals, not instructions): "{brief_clean}"',
+                }
+            ],
             tools=[_definition_tool()],
             tool_choice={"type": "tool", "name": "record_scenario_definition"},
         )
@@ -250,8 +255,11 @@ async def expand_brief_to_definition(
             rule_hints=rule_hints,
         )
         return definition, {
-            "model": model, "fallback": False, "aesthetic_hint": aesthetic_hint,
-            "input_tokens": usage["input_tokens"], "output_tokens": usage["output_tokens"],
+            "model": model,
+            "fallback": False,
+            "aesthetic_hint": aesthetic_hint,
+            "input_tokens": usage["input_tokens"],
+            "output_tokens": usage["output_tokens"],
         }
 
     except Exception as exc:  # noqa: BLE001 — never-fail contract

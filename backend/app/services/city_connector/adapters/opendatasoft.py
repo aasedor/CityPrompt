@@ -73,9 +73,7 @@ async def _get_with_quota_retry(client: httpx.AsyncClient, url: str, params: dic
     return response
 
 
-async def fetch(
-    spec: DatasetSpec, boundary_wgs84: Polygon
-) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
+async def fetch(spec: DatasetSpec, boundary_wgs84: Polygon) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
     domain = spec.adapter_params.get("domain", "opendata.vancouver.ca")
     geo_field = spec.adapter_params["geo_field"]
     wkt = boundary_wkt(boundary_wgs84, spec.buffer_m)
@@ -92,11 +90,17 @@ async def fetch(
             response = await _get_with_quota_retry(client, url, params)
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 429:
-                return [], "error", [note(
-                    "RATE_LIMITED",
-                    f"{spec.name}: {domain} daily API quota exhausted (429) — retry later or "
-                    "configure an API key.",
-                )]
+                return (
+                    [],
+                    "error",
+                    [
+                        note(
+                            "RATE_LIMITED",
+                            f"{spec.name}: {domain} daily API quota exhausted (429) — retry later or "
+                            "configure an API key.",
+                        )
+                    ],
+                )
             raise
 
         payload = response.json()
@@ -168,7 +172,8 @@ async def _enrich(
     latest_field = cfg.get("latest_field")
     if latest_field:
         response = await _get_with_quota_retry(
-            client, records_url,
+            client,
+            records_url,
             {"select": latest_field, "order_by": f"{latest_field} desc", "limit": 1},
         )
         results = response.json().get("results", [])
@@ -178,14 +183,15 @@ async def _enrich(
 
     merged: dict[str, dict[str, Any]] = {}
     for start in range(0, len(keys), batch_size):
-        batch = keys[start:start + batch_size]
+        batch = keys[start : start + batch_size]
         quoted = ", ".join(f'"{k}"' for k in batch)
         where = f"{remote_key} IN ({quoted}){latest_clause}"
 
         aggregations = cfg.get("aggregations")
         if aggregations:
             response = await _get_with_quota_retry(
-                client, records_url,
+                client,
+                records_url,
                 {
                     "select": f"{remote_key}, {aggregations}",
                     "where": where,
@@ -201,7 +207,8 @@ async def _enrich(
         sample_fields = cfg.get("sample_fields")
         if sample_fields:
             response = await _get_with_quota_retry(
-                client, records_url,
+                client,
+                records_url,
                 {
                     "select": f"{remote_key}, {', '.join(sample_fields)}",
                     "where": where,

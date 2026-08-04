@@ -382,22 +382,14 @@ def _load_image(raw: bytes, *, label: str, allowed_formats: set[str]) -> Image.I
         formats = ", ".join(sorted(allowed_formats))
         raise Direct3DValidationError(f"{label} must use one of these formats: {formats}")
     width, height = image.size
-    if (
-        width <= 0
-        or height <= 0
-        or width > DIRECT_3D_MAX_SOURCE_EDGE
-        or height > DIRECT_3D_MAX_SOURCE_EDGE
-    ):
+    if width <= 0 or height <= 0 or width > DIRECT_3D_MAX_SOURCE_EDGE or height > DIRECT_3D_MAX_SOURCE_EDGE:
         image.close()
         raise Direct3DValidationError(
-            f"{label} decoded dimensions must each be between 1 and "
-            f"{DIRECT_3D_MAX_SOURCE_EDGE} pixels"
+            f"{label} decoded dimensions must each be between 1 and " f"{DIRECT_3D_MAX_SOURCE_EDGE} pixels"
         )
     if width * height > DIRECT_3D_MAX_SOURCE_PIXELS:
         image.close()
-        raise Direct3DValidationError(
-            f"{label} exceeds the {DIRECT_3D_MAX_SOURCE_PIXELS}-pixel decoded-image limit"
-        )
+        raise Direct3DValidationError(f"{label} exceeds the {DIRECT_3D_MAX_SOURCE_PIXELS}-pixel decoded-image limit")
     try:
         if getattr(image, "n_frames", 1) != 1:
             raise Direct3DValidationError(f"{label} must be a single-frame image")
@@ -500,10 +492,9 @@ def _normalized_dimensions(width: int, height: int) -> tuple[int, int]:
             if not (1 / 3 <= candidate_aspect <= 3):
                 continue
             aspect_error = abs(math.log(candidate_aspect / aspect))
-            scale_error = (
-                abs(candidate_w - target_width) / max(target_width, 1)
-                + abs(candidate_h - target_height) / max(target_height, 1)
-            )
+            scale_error = abs(candidate_w - target_width) / max(target_width, 1) + abs(
+                candidate_h - target_height
+            ) / max(target_height, 1)
             candidates.append((aspect_error, scale_error, candidate_w, candidate_h))
 
     if not candidates:
@@ -516,7 +507,7 @@ def _normalized_dimensions(width: int, height: int) -> tuple[int, int]:
 
 
 def _hex_to_rgb(value: str) -> tuple[int, int, int]:
-    return tuple(int(value[index:index + 2], 16) for index in (1, 3, 5))  # type: ignore[return-value]
+    return tuple(int(value[index : index + 2], 16) for index in (1, 3, 5))  # type: ignore[return-value]
 
 
 def _capture_fingerprint(
@@ -540,11 +531,7 @@ def _capture_fingerprint(
         digest.update(instance_id.tobytes())
     if instance_manifest:
         serializable_manifest = {
-            color: (
-                descriptor.model_dump(mode="json")
-                if hasattr(descriptor, "model_dump")
-                else descriptor
-            )
+            color: (descriptor.model_dump(mode="json") if hasattr(descriptor, "model_dump") else descriptor)
             for color, descriptor in instance_manifest.items()
         }
         digest.update(
@@ -572,20 +559,13 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     )
 
     width, height = beauty_image.size
-    if (
-        width < 256
-        or height < 256
-        or width > DIRECT_3D_MAX_SOURCE_EDGE
-        or height > DIRECT_3D_MAX_SOURCE_EDGE
-    ):
+    if width < 256 or height < 256 or width > DIRECT_3D_MAX_SOURCE_EDGE or height > DIRECT_3D_MAX_SOURCE_EDGE:
         raise Direct3DValidationError(
-            "Direct 3D beauty capture dimensions must each be between 256 and "
-            f"{DIRECT_3D_MAX_SOURCE_EDGE} pixels"
+            "Direct 3D beauty capture dimensions must each be between 256 and " f"{DIRECT_3D_MAX_SOURCE_EDGE} pixels"
         )
     if width * height > DIRECT_3D_MAX_SOURCE_PIXELS:
         raise Direct3DValidationError(
-            "Direct 3D beauty capture exceeds the "
-            f"{DIRECT_3D_MAX_SOURCE_PIXELS}-pixel source limit"
+            "Direct 3D beauty capture exceeds the " f"{DIRECT_3D_MAX_SOURCE_PIXELS}-pixel source limit"
         )
     if mask_image.size != beauty_image.size:
         raise Direct3DValidationError("Proposal mask dimensions must exactly match the beauty capture")
@@ -621,9 +601,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             allowed_formats={"PNG"},
         ).convert("RGB")
         if object_id_image.size != beauty_image.size:
-            raise Direct3DValidationError(
-                "Object-ID image dimensions must exactly match the beauty capture"
-            )
+            raise Direct3DValidationError("Object-ID image dimensions must exactly match the beauty capture")
 
         object_pixels = np.asarray(object_id_image)
         classified = np.zeros((height, width), dtype=bool)
@@ -637,22 +615,15 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         intersection_count = int(np.count_nonzero(classified & proposal_active))
         proposal_count = int(np.count_nonzero(proposal_active))
         union_count = int(np.count_nonzero(classified | proposal_active))
-        object_id_proposal_recall = float(
-            intersection_count / max(1, proposal_count)
-        )
-        object_id_proposal_iou = float(
-            intersection_count / max(1, union_count)
-        )
+        object_id_proposal_recall = float(intersection_count / max(1, proposal_count))
+        object_id_proposal_iou = float(intersection_count / max(1, union_count))
         outside = proposal_values < (8 / 255)
         leak_count = int(np.count_nonzero(classified & outside))
         classified_count = int(np.count_nonzero(classified))
         if leak_count / max(classified_count, 1) > 0.01:
-            raise Direct3DValidationError(
-                "Object-ID classes extend materially outside the proposal mask"
-            )
+            raise Direct3DValidationError("Object-ID classes extend materially outside the proposal mask")
         if req.presentation_mode in {"scene", "reproject"} and (
-            object_id_proposal_recall
-            < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
+            object_id_proposal_recall < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
             or object_id_proposal_iou < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU
         ):
             raise Direct3DValidationError(
@@ -661,9 +632,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
                 f"IoU {object_id_proposal_iou:.3f})"
             )
     elif req.presentation_mode in {"scene", "reproject"}:
-        raise Direct3DValidationError(
-            "Presentation modes require an object-ID image and manifest"
-        )
+        raise Direct3DValidationError("Presentation modes require an object-ID image and manifest")
 
     instance_id_image: Image.Image | None = None
     instance_id_coverage: float | None = None
@@ -680,30 +649,20 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             allowed_formats={"PNG"},
         ).convert("RGB")
         if instance_id_image.size != beauty_image.size:
-            raise Direct3DValidationError(
-                "Instance-ID image dimensions must exactly match the beauty capture"
-            )
+            raise Direct3DValidationError("Instance-ID image dimensions must exactly match the beauty capture")
 
         instance_pixels = np.asarray(instance_id_image)
         classified_instances = np.zeros((height, width), dtype=bool)
-        semantic_pixels = (
-            np.asarray(object_id_image)
-            if object_id_image is not None
-            else None
-        )
+        semantic_pixels = np.asarray(object_id_image) if object_id_image is not None else None
         semantic_colors: dict[str, np.ndarray] = {}
         if req.object_id_manifest:
             for color, semantic_class in req.object_id_manifest.items():
-                semantic_colors[semantic_class] = (
-                    semantic_colors.get(
-                        semantic_class,
-                        np.zeros((height, width), dtype=bool),
-                    )
-                    | np.all(
-                        semantic_pixels
-                        == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
-                        axis=2,
-                    )
+                semantic_colors[semantic_class] = semantic_colors.get(
+                    semantic_class,
+                    np.zeros((height, width), dtype=bool),
+                ) | np.all(
+                    semantic_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                    axis=2,
                 )
 
         for color, descriptor in req.instance_id_manifest.items():
@@ -723,9 +682,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
                     )
 
         non_black = np.any(instance_pixels != 0, axis=2)
-        unmanifested_count = int(
-            np.count_nonzero(non_black & ~classified_instances)
-        )
+        unmanifested_count = int(np.count_nonzero(non_black & ~classified_instances))
         if unmanifested_count:
             raise Direct3DValidationError(
                 "Instance-ID image contains non-black colors absent from "
@@ -734,33 +691,21 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
 
         instance_id_coverage = float(classified_instances.mean())
         if instance_id_coverage < _MIN_PROPOSAL_COVERAGE:
-            raise Direct3DValidationError(
-                "Instance-ID image does not contain enough classified proposal pixels"
-            )
+            raise Direct3DValidationError("Instance-ID image does not contain enough classified proposal pixels")
         proposal_active = proposal_values >= 0.5
-        intersection_count = int(
-            np.count_nonzero(classified_instances & proposal_active)
-        )
+        intersection_count = int(np.count_nonzero(classified_instances & proposal_active))
         proposal_count = int(np.count_nonzero(proposal_active))
         union_count = int(np.count_nonzero(classified_instances | proposal_active))
-        instance_id_proposal_recall = float(
-            intersection_count / max(1, proposal_count)
-        )
-        instance_id_proposal_iou = float(
-            intersection_count / max(1, union_count)
-        )
+        instance_id_proposal_recall = float(intersection_count / max(1, proposal_count))
+        instance_id_proposal_iou = float(intersection_count / max(1, union_count))
         outside = proposal_values < (8 / 255)
         leak_count = int(np.count_nonzero(classified_instances & outside))
         classified_count = int(np.count_nonzero(classified_instances))
         if leak_count / max(classified_count, 1) > 0.01:
-            raise Direct3DValidationError(
-                "Instance-ID classes extend materially outside the proposal mask"
-            )
+            raise Direct3DValidationError("Instance-ID classes extend materially outside the proposal mask")
         if req.presentation_mode in {"scene", "reproject"} and (
-            instance_id_proposal_recall
-            < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL
-            or instance_id_proposal_iou
-            < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU
+            instance_id_proposal_recall < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL
+            or instance_id_proposal_iou < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU
         ):
             raise Direct3DValidationError(
                 "Presentation instance-ID classes must cover the proposal "
@@ -768,21 +713,16 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
                 f"IoU {instance_id_proposal_iou:.3f})"
             )
     elif req.presentation_mode in {"scene", "reproject"}:
-        raise Direct3DValidationError(
-            "Presentation modes require an instance-ID image and manifest"
-        )
+        raise Direct3DValidationError("Presentation modes require an instance-ID image and manifest")
 
     normalized_size = _normalized_dimensions(width, height)
     normalized_beauty = beauty_image.resize(normalized_size, Image.Resampling.LANCZOS)
     normalized_mask = proposal_mask.resize(normalized_size, Image.Resampling.LANCZOS)
     immutable_context_coverage = float(
-        np.count_nonzero(_registration_context_mask(normalized_mask))
-        / (normalized_mask.width * normalized_mask.height)
+        np.count_nonzero(_registration_context_mask(normalized_mask)) / (normalized_mask.width * normalized_mask.height)
     )
     if immutable_context_coverage < 0.10:
-        raise Direct3DValidationError(
-            "Proposal mask must preserve at least 10% fully immutable context"
-        )
+        raise Direct3DValidationError("Proposal mask must preserve at least 10% fully immutable context")
     scene_lower_context_coverage: float | None = None
     # The lower-frame-context gate encodes an AERIAL framing assumption (site
     # ground ringed by real context). A street capture legitimately fills the
@@ -799,14 +739,10 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
                 f"received {scene_lower_context_coverage:.2%}"
             )
     normalized_object_id = (
-        object_id_image.resize(normalized_size, Image.Resampling.NEAREST)
-        if object_id_image is not None
-        else None
+        object_id_image.resize(normalized_size, Image.Resampling.NEAREST) if object_id_image is not None else None
     )
     normalized_instance_id = (
-        instance_id_image.resize(normalized_size, Image.Resampling.NEAREST)
-        if instance_id_image is not None
-        else None
+        instance_id_image.resize(normalized_size, Image.Resampling.NEAREST) if instance_id_image is not None else None
     )
     capture_fingerprint = _capture_fingerprint(
         beauty_image,
@@ -870,20 +806,14 @@ def _beauty_structural_edges(
     """Extract long, high-confidence scene edges without material texture noise."""
 
     if beauty.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Structural guide beauty and proposal mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Structural guide beauty and proposal mask must have identical dimensions")
 
     import cv2
 
     rgb = np.asarray(beauty.convert("RGB"), dtype=np.uint8)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     diagonal = math.hypot(beauty.width, beauty.height)
-    sigma = (
-        min(4.0, max(2.5, diagonal / 500.0))
-        if coarse
-        else min(2.2, max(1.0, diagonal / 900.0))
-    )
+    sigma = min(4.0, max(2.5, diagonal / 500.0)) if coarse else min(2.2, max(1.0, diagonal / 900.0))
     blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=sigma, sigmaY=sigma)
     gradient_x = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)
     gradient_y = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
@@ -891,19 +821,18 @@ def _beauty_structural_edges(
     active = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 32
     active_gradient = gradient[active]
     nonzero_gradient = active_gradient[active_gradient > 1.0]
-    adaptive_high = (
-        float(np.percentile(nonzero_gradient, 72))
-        if nonzero_gradient.size
-        else 48.0
-    )
+    adaptive_high = float(np.percentile(nonzero_gradient, 72)) if nonzero_gradient.size else 48.0
     high_threshold = min(140.0, max(42.0, adaptive_high))
     low_threshold = max(16.0, high_threshold * 0.42)
-    edges = cv2.Canny(
-        blurred,
-        threshold1=low_threshold,
-        threshold2=high_threshold,
-        L2gradient=True,
-    ) > 0
+    edges = (
+        cv2.Canny(
+            blurred,
+            threshold1=low_threshold,
+            threshold2=high_threshold,
+            L2gradient=True,
+        )
+        > 0
+    )
     edges &= active
 
     # Isolated texture flecks are not geometry. Preserve connected facade,
@@ -1010,11 +939,13 @@ def _visible_semantic_components(
             if int(stats[component, cv2.CC_STAT_AREA]) < component_floor:
                 continue
             component_region = (component_labels == component).astype(np.uint8)
-            components.append((
-                int(stats[component, cv2.CC_STAT_TOP]),
-                int(stats[component, cv2.CC_STAT_LEFT]),
-                component_region,
-            ))
+            components.append(
+                (
+                    int(stats[component, cv2.CC_STAT_TOP]),
+                    int(stats[component, cv2.CC_STAT_LEFT]),
+                    component_region,
+                )
+            )
         components.sort(key=lambda item: (item[0], item[1]))
         if components:
             summary[semantic_class] = len(components)
@@ -1049,11 +980,14 @@ def build_structural_edge_guide(
         stable_only=False,
     )
     combined = beauty_edges | semantic_edges
-    combined = cv2.dilate(
-        combined.astype(np.uint8),
-        np.ones((3, 3), dtype=np.uint8),
-        iterations=1,
-    ) > 0
+    combined = (
+        cv2.dilate(
+            combined.astype(np.uint8),
+            np.ones((3, 3), dtype=np.uint8),
+            iterations=1,
+        )
+        > 0
+    )
     guide = np.full(combined.shape, 255, dtype=np.uint8)
     guide[combined] = 0
     guide_image = Image.fromarray(guide, mode="L")
@@ -1078,9 +1012,7 @@ def _finish_fusion_sigma(width: int, height: int) -> float:
         4.0,
         min(
             16.0,
-            _FINISH_FUSION_SIGMA_AT_REFERENCE_PX
-            * math.hypot(width, height)
-            / _FINISH_FUSION_REFERENCE_DIAGONAL,
+            _FINISH_FUSION_SIGMA_AT_REFERENCE_PX * math.hypot(width, height) / _FINISH_FUSION_REFERENCE_DIAGONAL,
         ),
     )
 
@@ -1129,11 +1061,7 @@ def _finish_band_contrast(band: np.ndarray, selected: np.ndarray) -> float:
 
     if int(np.count_nonzero(selected)) < _FINISH_MIN_ROLE_STAT_PIXELS:
         return 0.0
-    magnitude = (
-        np.abs(band)
-        if band.ndim == 2
-        else np.sqrt(np.mean(np.square(band, dtype=np.float32), axis=2))
-    )
+    magnitude = np.abs(band) if band.ndim == 2 else np.sqrt(np.mean(np.square(band, dtype=np.float32), axis=2))
     return float(np.percentile(magnitude[selected], 75))
 
 
@@ -1177,20 +1105,14 @@ def _finish_detail_correlation(
     fused_values = fused_detail[selected].astype(np.float64)
     source_values -= float(np.mean(source_values))
     fused_values -= float(np.mean(fused_values))
-    denominator = float(
-        np.sqrt(np.sum(source_values * source_values) * np.sum(fused_values * fused_values))
-    )
+    denominator = float(np.sqrt(np.sum(source_values * source_values) * np.sum(fused_values * fused_values)))
     if denominator <= 1e-8:
         return None
     return float(np.clip(np.sum(source_values * fused_values) / denominator, -1.0, 1.0))
 
 
 def _finish_luminance(rgb: np.ndarray) -> np.ndarray:
-    return (
-        rgb[..., 0] * 0.2126
-        + rgb[..., 1] * 0.7152
-        + rgb[..., 2] * 0.0722
-    ).astype(np.float32)
+    return (rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722).astype(np.float32)
 
 
 def _finish_texture_p75(detail: np.ndarray, selected: np.ndarray) -> float | None:
@@ -1216,13 +1138,9 @@ def _fuse_source_geometry_with_provider_finish(
     """
 
     if source.size != provider.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Finish-fusion images and proposal mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Finish-fusion images and proposal mask must have identical dimensions")
     if object_id is not None and object_id.size != source.size:
-        raise Direct3DValidationError(
-            "Finish-fusion object-ID image must match the source dimensions"
-        )
+        raise Direct3DValidationError("Finish-fusion object-ID image must match the source dimensions")
 
     import cv2
 
@@ -1271,11 +1189,14 @@ def _fuse_source_geometry_with_provider_finish(
         2,
         round(_FINISH_EDGE_DILATION_RADIUS_AT_REFERENCE_PX * scale),
     )
-    protected_edges = cv2.dilate(
-        protected_edges.astype(np.uint8),
-        np.ones((edge_radius * 2 + 1, edge_radius * 2 + 1), dtype=np.uint8),
-        iterations=1,
-    ) > 0
+    protected_edges = (
+        cv2.dilate(
+            protected_edges.astype(np.uint8),
+            np.ones((edge_radius * 2 + 1, edge_radius * 2 + 1), dtype=np.uint8),
+            iterations=1,
+        )
+        > 0
+    )
     erosion_radius = max(
         2,
         round(_FINISH_INTERIOR_EROSION_RADIUS_AT_REFERENCE_PX * scale),
@@ -1291,24 +1212,23 @@ def _fuse_source_geometry_with_provider_finish(
     role_masks = _finish_role_masks(alpha, object_id, object_id_manifest)
 
     def safe_interior(role_mask: np.ndarray) -> np.ndarray:
-        eroded = cv2.erode(
-            role_mask.astype(np.uint8),
-            erosion_kernel,
-            iterations=1,
-        ) > 0
+        eroded = (
+            cv2.erode(
+                role_mask.astype(np.uint8),
+                erosion_kernel,
+                iterations=1,
+            )
+            > 0
+        )
         return eroded & ~protected_edges
 
     # The analysis pass is luminance-only and sequential. This avoids retaining
     # six full-resolution float32 RGB bands at the provider's maximum size.
     source_luminance = cv2.cvtColor(source_rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
-    provider_luminance = cv2.cvtColor(provider_rgb, cv2.COLOR_RGB2GRAY).astype(
-        np.float32
-    )
+    provider_luminance = cv2.cvtColor(provider_rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
     source_gradient = _finish_gradient_magnitude(source_rgb)
     provider_gradient = _finish_gradient_magnitude(provider_rgb)
-    contrast_stats: dict[str, dict[str, tuple[float, float]]] = {
-        semantic_class: {} for semantic_class in role_masks
-    }
+    contrast_stats: dict[str, dict[str, tuple[float, float]]] = {semantic_class: {} for semantic_class in role_masks}
 
     source_fine_blur = cv2.GaussianBlur(
         source_luminance,
@@ -1386,9 +1306,7 @@ def _fuse_source_geometry_with_provider_finish(
         source_threshold = _finish_low_gradient_threshold(source_gradient, selected)
         provider_threshold = _finish_low_gradient_threshold(provider_gradient, selected)
         statistics_region = (
-            selected
-            & (source_gradient <= source_threshold + 1e-6)
-            & (provider_gradient <= provider_threshold + 1e-6)
+            selected & (source_gradient <= source_threshold + 1e-6) & (provider_gradient <= provider_threshold + 1e-6)
         )
         contrast_stats[semantic_class]["microtexture"] = (
             _finish_band_contrast(source_micro_band, statistics_region),
@@ -1428,15 +1346,9 @@ def _fuse_source_geometry_with_provider_finish(
             semantic_class,
             _FINISH_DETAIL_DEFAULT_GAIN_CAPS,
         )
-        source_fine_contrast, provider_fine_contrast = contrast_stats[
-            semantic_class
-        ]["fine"]
-        source_medium_contrast, provider_medium_contrast = contrast_stats[
-            semantic_class
-        ]["medium"]
-        source_micro_contrast, provider_micro_contrast = contrast_stats[
-            semantic_class
-        ]["microtexture"]
+        source_fine_contrast, provider_fine_contrast = contrast_stats[semantic_class]["fine"]
+        source_medium_contrast, provider_medium_contrast = contrast_stats[semantic_class]["medium"]
+        source_micro_contrast, provider_micro_contrast = contrast_stats[semantic_class]["microtexture"]
         fine_gain = (
             min(fine_cap, max(1.0, provider_fine_contrast / source_fine_contrast))
             if source_fine_contrast >= _FINISH_DETAIL_MIN_ROBUST_CONTRAST
@@ -1466,11 +1378,7 @@ def _fuse_source_geometry_with_provider_finish(
         application_region = selected & (source_gradient <= source_threshold + 1e-6)
         fine_gain_map += interior_weight * (fine_gain - 1.0)
         medium_gain_map += interior_weight * (medium_gain - 1.0)
-        microtexture_gain_map += (
-            interior_weight
-            * application_region.astype(np.float32)
-            * (microtexture_gain - 1.0)
-        )
+        microtexture_gain_map += interior_weight * application_region.astype(np.float32) * (microtexture_gain - 1.0)
         target_gains[semantic_class] = (
             float(fine_gain),
             float(medium_gain),
@@ -1656,9 +1564,7 @@ def _fuse_source_geometry_with_provider_finish(
             source_gradient,
             detail_region,
         )
-        microtexture_region = detail_region & (
-            source_gradient <= source_threshold + 1e-6
-        )
+        microtexture_region = detail_region & (source_gradient <= source_threshold + 1e-6)
         combined_detail_region |= detail_region
         combined_microtexture_region |= microtexture_region
         source_texture_p75 = _finish_texture_p75(
@@ -1692,20 +1598,10 @@ def _fuse_source_geometry_with_provider_finish(
                 safe_microtexture_pixels / max(1, int(np.count_nonzero(role_mask))),
                 6,
             ),
-            "source_texture_p75": (
-                round(source_texture_p75, 6)
-                if source_texture_p75 is not None
-                else None
-            ),
-            "fused_texture_p75": (
-                round(fused_texture_p75, 6)
-                if fused_texture_p75 is not None
-                else None
-            ),
+            "source_texture_p75": (round(source_texture_p75, 6) if source_texture_p75 is not None else None),
+            "fused_texture_p75": (round(fused_texture_p75, 6) if fused_texture_p75 is not None else None),
             "texture_gain": round(texture_gain, 6) if texture_gain is not None else None,
-            "source_detail_correlation": (
-                round(correlation, 6) if correlation is not None else None
-            ),
+            "source_detail_correlation": (round(correlation, 6) if correlation is not None else None),
         }
     source_texture_p75 = _finish_texture_p75(
         source_micro_luminance,
@@ -1732,25 +1628,14 @@ def _fuse_source_geometry_with_provider_finish(
         image=Image.fromarray(fused, mode="RGB"),
         diagnostics={
             "safe_microtexture_coverage": round(
-                int(np.count_nonzero(combined_microtexture_region))
-                / proposal_pixel_count,
+                int(np.count_nonzero(combined_microtexture_region)) / proposal_pixel_count,
                 6,
             ),
             "source_detail_correlation": (
-                round(source_detail_correlation, 6)
-                if source_detail_correlation is not None
-                else None
+                round(source_detail_correlation, 6) if source_detail_correlation is not None else None
             ),
-            "source_texture_p75": (
-                round(source_texture_p75, 6)
-                if source_texture_p75 is not None
-                else None
-            ),
-            "fused_texture_p75": (
-                round(fused_texture_p75, 6)
-                if fused_texture_p75 is not None
-                else None
-            ),
+            "source_texture_p75": (round(source_texture_p75, 6) if source_texture_p75 is not None else None),
+            "fused_texture_p75": (round(fused_texture_p75, 6) if fused_texture_p75 is not None else None),
             "texture_gain": round(texture_gain, 6) if texture_gain is not None else None,
             "role_metrics": role_metrics,
         },
@@ -1791,9 +1676,7 @@ def assess_structural_edge_fidelity(
     """
 
     if source.size != candidate.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Structural fidelity images and proposal mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Structural fidelity images and proposal mask must have identical dimensions")
 
     import cv2
 
@@ -1802,39 +1685,54 @@ def assess_structural_edge_fidelity(
     # drift; the allowance scales to four pixels at the largest provider size.
     tolerance_px = max(2, min(4, round(diagonal * 0.0015)))
     proposal = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
-    evaluation_mask = cv2.erode(
-        proposal.astype(np.uint8),
-        np.ones((tolerance_px * 2 + 1, tolerance_px * 2 + 1), dtype=np.uint8),
-        iterations=1,
-    ) > 0
+    evaluation_mask = (
+        cv2.erode(
+            proposal.astype(np.uint8),
+            np.ones((tolerance_px * 2 + 1, tolerance_px * 2 + 1), dtype=np.uint8),
+            iterations=1,
+        )
+        > 0
+    )
     if np.count_nonzero(evaluation_mask) < _MIN_STRUCTURAL_EDGE_PIXELS:
         evaluation_mask = proposal
 
     source_edges = _beauty_structural_edges(source, proposal_mask) & evaluation_mask
     candidate_edges = _beauty_structural_edges(candidate, proposal_mask) & evaluation_mask
-    source_coarse_edges = _beauty_structural_edges(
-        source,
-        proposal_mask,
-        coarse=True,
-    ) & evaluation_mask
-    candidate_coarse_edges = _beauty_structural_edges(
-        candidate,
-        proposal_mask,
-        coarse=True,
-    ) & evaluation_mask
-    raw_semantic_edges = _semantic_boundary_edges(
-        object_id,
-        object_id_manifest,
-        proposal_mask,
-        stable_only=True,
-    ) & evaluation_mask
+    source_coarse_edges = (
+        _beauty_structural_edges(
+            source,
+            proposal_mask,
+            coarse=True,
+        )
+        & evaluation_mask
+    )
+    candidate_coarse_edges = (
+        _beauty_structural_edges(
+            candidate,
+            proposal_mask,
+            coarse=True,
+        )
+        & evaluation_mask
+    )
+    raw_semantic_edges = (
+        _semantic_boundary_edges(
+            object_id,
+            object_id_manifest,
+            proposal_mask,
+            stable_only=True,
+        )
+        & evaluation_mask
+    )
     source_anchor_edges = source_edges | source_coarse_edges
     candidate_anchor_edges = candidate_edges | candidate_coarse_edges
-    semantic_anchor_band = cv2.dilate(
-        raw_semantic_edges.astype(np.uint8),
-        np.ones((tolerance_px * 2 + 1, tolerance_px * 2 + 1), dtype=np.uint8),
-        iterations=1,
-    ) > 0
+    semantic_anchor_band = (
+        cv2.dilate(
+            raw_semantic_edges.astype(np.uint8),
+            np.ones((tolerance_px * 2 + 1, tolerance_px * 2 + 1), dtype=np.uint8),
+            iterations=1,
+        )
+        > 0
+    )
     # A class transition is a useful geometry requirement only where the
     # authoritative beauty pass actually depicts a structural edge. Ownership
     # changes between visually continuous surfaces must not invent an edge.
@@ -1900,17 +1798,11 @@ def assess_structural_edge_fidelity(
     beauty_recall = recall(source_edges)
     coarse_count = int(np.count_nonzero(source_coarse_edges))
     coarse_recall = (
-        float(np.mean(distance_to_candidate_coarse[source_coarse_edges] <= tolerance_px))
-        if coarse_count
-        else 1.0
+        float(np.mean(distance_to_candidate_coarse[source_coarse_edges] <= tolerance_px)) if coarse_count else 1.0
     )
     semantic_count = int(np.count_nonzero(semantic_edges))
     semantic_recall = anchor_recall(semantic_edges) if semantic_count else None
-    reference_p90 = (
-        float(np.percentile(distance_to_candidate[reference_edges], 90))
-        if reference_count
-        else 0.0
-    )
+    reference_p90 = float(np.percentile(distance_to_candidate[reference_edges], 90)) if reference_count else 0.0
 
     component_recalls: list[float] = []
     building_region = np.zeros(reference_edges.shape, dtype=bool)
@@ -1926,8 +1818,8 @@ def assess_structural_edge_fidelity(
             if semantic_class not in {"building", "street", "park"}:
                 continue
             class_region = color_region.astype(np.uint8)
-            component_count, component_labels, component_stats, _centroids = (
-                cv2.connectedComponentsWithStats(class_region, connectivity=8)
+            component_count, component_labels, component_stats, _centroids = cv2.connectedComponentsWithStats(
+                class_region, connectivity=8
             )
             for component in range(1, component_count):
                 if int(component_stats[component, cv2.CC_STAT_AREA]) < 64:
@@ -1941,46 +1833,33 @@ def assess_structural_edge_fidelity(
                     )
                     > 0
                 ) & evaluation_mask
-                component_anchor_band = cv2.dilate(
-                    raw_component_edge.astype(np.uint8),
-                    np.ones(
-                        (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
-                        dtype=np.uint8,
-                    ),
-                    iterations=1,
-                ) > 0
-                component_edge = (
-                    source_anchor_edges & component_anchor_band & evaluation_mask
+                component_anchor_band = (
+                    cv2.dilate(
+                        raw_component_edge.astype(np.uint8),
+                        np.ones(
+                            (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
+                            dtype=np.uint8,
+                        ),
+                        iterations=1,
+                    )
+                    > 0
                 )
+                component_edge = source_anchor_edges & component_anchor_band & evaluation_mask
                 if np.count_nonzero(component_edge) >= 16:
                     component_recalls.append(anchor_recall(component_edge))
     component_min_recall = min(component_recalls) if component_recalls else None
     building_internal_edges = source_edges & building_region & evaluation_mask
     building_internal_count = int(np.count_nonzero(building_internal_edges))
-    building_internal_recall = (
-        recall(building_internal_edges) if building_internal_count else None
-    )
+    building_internal_recall = recall(building_internal_edges) if building_internal_count else None
 
     beauty_pass = beauty_recall >= _MIN_BEAUTY_EDGE_RECALL
     coarse_pass = coarse_recall >= _MIN_COARSE_EDGE_RECALL
-    semantic_pass = (
-        semantic_recall is None or semantic_recall >= _MIN_SEMANTIC_EDGE_RECALL
-    )
-    component_pass = (
-        component_min_recall is None
-        or component_min_recall >= _MIN_SEMANTIC_COMPONENT_RECALL
-    )
+    semantic_pass = semantic_recall is None or semantic_recall >= _MIN_SEMANTIC_EDGE_RECALL
+    component_pass = component_min_recall is None or component_min_recall >= _MIN_SEMANTIC_COMPONENT_RECALL
     building_internal_pass = (
-        building_internal_recall is None
-        or building_internal_recall >= _MIN_BUILDING_INTERNAL_EDGE_RECALL
+        building_internal_recall is None or building_internal_recall >= _MIN_BUILDING_INTERNAL_EDGE_RECALL
     )
-    passed = identical or (
-        beauty_pass
-        and coarse_pass
-        and semantic_pass
-        and component_pass
-        and building_internal_pass
-    )
+    passed = identical or (beauty_pass and coarse_pass and semantic_pass and component_pass and building_internal_pass)
     return StructuralEdgeFidelityResult(
         passed=passed,
         tolerance_px=tolerance_px,
@@ -2015,13 +1894,9 @@ def assess_macro_design_fidelity(
     """
 
     if source.size != candidate.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Macro fidelity images and proposal mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Macro fidelity images and proposal mask must have identical dimensions")
     if object_id is not None and object_id.size != source.size:
-        raise Direct3DValidationError(
-            "Macro fidelity object-ID image must match the source dimensions"
-        )
+        raise Direct3DValidationError("Macro fidelity object-ID image must match the source dimensions")
 
     import cv2
 
@@ -2068,29 +1943,29 @@ def assess_macro_design_fidelity(
     candidate_coarse_active = candidate_coarse & active
     candidate_coarse_count = int(np.count_nonzero(candidate_coarse_active))
     candidate_coarse_precision = (
-        float(
-            np.mean(
-                distance_to_source[candidate_coarse_active] <= tolerance_px
-            )
-        )
-        if candidate_coarse_count
-        else 0.0
+        float(np.mean(distance_to_source[candidate_coarse_active] <= tolerance_px)) if candidate_coarse_count else 0.0
     )
 
     boundary_kernel = np.ones(
         (tolerance_px * 2 + 1, tolerance_px * 2 + 1),
         dtype=np.uint8,
     )
-    proposal_boundary = cv2.morphologyEx(
-        active.astype(np.uint8),
-        cv2.MORPH_GRADIENT,
-        np.ones((3, 3), dtype=np.uint8),
-    ) > 0
-    proposal_boundary_band = cv2.dilate(
-        proposal_boundary.astype(np.uint8),
-        boundary_kernel,
-        iterations=1,
-    ) > 0
+    proposal_boundary = (
+        cv2.morphologyEx(
+            active.astype(np.uint8),
+            cv2.MORPH_GRADIENT,
+            np.ones((3, 3), dtype=np.uint8),
+        )
+        > 0
+    )
+    proposal_boundary_band = (
+        cv2.dilate(
+            proposal_boundary.astype(np.uint8),
+            boundary_kernel,
+            iterations=1,
+        )
+        > 0
+    )
     silhouette_edges = source_anchor & proposal_boundary_band
     silhouette_count = int(np.count_nonzero(silhouette_edges))
     silhouette_recall = recall(silhouette_edges) if silhouette_count else None
@@ -2098,21 +1973,25 @@ def assess_macro_design_fidelity(
     coarse_edges = source_coarse & active
     coarse_count = int(np.count_nonzero(coarse_edges))
     coarse_recall = recall(coarse_edges)
-    candidate_coarse_density_ratio = float(
-        candidate_coarse_count / max(1, coarse_count)
-    )
+    candidate_coarse_density_ratio = float(candidate_coarse_count / max(1, coarse_count))
 
-    raw_semantic = _semantic_boundary_edges(
-        object_id,
-        object_id_manifest,
-        proposal_mask,
-        stable_only=True,
-    ) & active
-    semantic_band = cv2.dilate(
-        raw_semantic.astype(np.uint8),
-        boundary_kernel,
-        iterations=1,
-    ) > 0
+    raw_semantic = (
+        _semantic_boundary_edges(
+            object_id,
+            object_id_manifest,
+            proposal_mask,
+            stable_only=True,
+        )
+        & active
+    )
+    semantic_band = (
+        cv2.dilate(
+            raw_semantic.astype(np.uint8),
+            boundary_kernel,
+            iterations=1,
+        )
+        > 0
+    )
     semantic_edges = source_anchor & semantic_band
     semantic_count = int(np.count_nonzero(semantic_edges))
     semantic_recall = recall(semantic_edges) if semantic_count else None
@@ -2127,60 +2006,51 @@ def assess_macro_design_fidelity(
                 object_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
                 axis=2,
             ).astype(np.uint8)
-            component_count, component_labels, component_stats, _centroids = (
-                cv2.connectedComponentsWithStats(color_region, connectivity=8)
+            component_count, component_labels, component_stats, _centroids = cv2.connectedComponentsWithStats(
+                color_region, connectivity=8
             )
             for component in range(1, component_count):
                 if int(component_stats[component, cv2.CC_STAT_AREA]) < 64:
                     continue
                 component_region = (component_labels == component).astype(np.uint8)
-                raw_component_edge = cv2.morphologyEx(
-                    component_region,
-                    cv2.MORPH_GRADIENT,
-                    np.ones((3, 3), dtype=np.uint8),
-                ) > 0
-                component_band = cv2.dilate(
-                    raw_component_edge.astype(np.uint8),
-                    boundary_kernel,
-                    iterations=1,
-                ) > 0
+                raw_component_edge = (
+                    cv2.morphologyEx(
+                        component_region,
+                        cv2.MORPH_GRADIENT,
+                        np.ones((3, 3), dtype=np.uint8),
+                    )
+                    > 0
+                )
+                component_band = (
+                    cv2.dilate(
+                        raw_component_edge.astype(np.uint8),
+                        boundary_kernel,
+                        iterations=1,
+                    )
+                    > 0
+                )
                 component_edge = source_anchor & component_band
                 if np.count_nonzero(component_edge) >= 16:
                     component_recalls.append(recall(component_edge))
     component_min = min(component_recalls) if component_recalls else None
 
     macro_reference = silhouette_edges | coarse_edges | semantic_edges
-    reference_p90 = (
-        float(np.percentile(distance_to_candidate[macro_reference], 90))
-        if np.any(macro_reference)
-        else 0.0
-    )
+    reference_p90 = float(np.percentile(distance_to_candidate[macro_reference], 90)) if np.any(macro_reference) else 0.0
     thresholds = _macro_fidelity_thresholds(
         fidelity_policy,
         tolerance_px=tolerance_px,
     )
-    silhouette_pass = (
-        silhouette_recall is None
-        or silhouette_recall >= thresholds.minimum_silhouette_edge_recall
-    )
-    semantic_pass = (
-        semantic_recall is None
-        or semantic_recall >= thresholds.minimum_semantic_edge_recall
-    )
-    component_pass = (
-        component_min is None
-        or component_min >= thresholds.minimum_semantic_component_recall
-    )
+    silhouette_pass = silhouette_recall is None or silhouette_recall >= thresholds.minimum_silhouette_edge_recall
+    semantic_pass = semantic_recall is None or semantic_recall >= thresholds.minimum_semantic_edge_recall
+    component_pass = component_min is None or component_min >= thresholds.minimum_semantic_component_recall
     passed = (
         silhouette_pass
         and coarse_recall >= thresholds.minimum_coarse_edge_recall
         and semantic_pass
         and component_pass
         and reference_p90 <= thresholds.maximum_reference_p90_distance_px
-        and candidate_coarse_precision
-        >= thresholds.minimum_candidate_coarse_edge_precision
-        and candidate_coarse_density_ratio
-        <= thresholds.maximum_candidate_coarse_edge_density_ratio
+        and candidate_coarse_precision >= thresholds.minimum_candidate_coarse_edge_precision
+        and candidate_coarse_density_ratio <= thresholds.maximum_candidate_coarse_edge_density_ratio
     )
     return MacroDesignFidelityResult(
         passed=passed,
@@ -2219,19 +2089,13 @@ def _macro_fidelity_thresholds(
             minimum_silhouette_edge_recall=_MIN_MACRO_SILHOUETTE_EDGE_RECALL,
             minimum_coarse_edge_recall=_MIN_MACRO_COARSE_EDGE_RECALL,
             minimum_semantic_edge_recall=_MIN_MACRO_SEMANTIC_EDGE_RECALL,
-            minimum_semantic_component_recall=(
-                _MIN_MACRO_SEMANTIC_COMPONENT_RECALL
-            ),
+            minimum_semantic_component_recall=(_MIN_MACRO_SEMANTIC_COMPONENT_RECALL),
             maximum_reference_p90_distance_px=min(
                 _MAX_MACRO_REFERENCE_P90_DISTANCE_PX,
                 tolerance_px * _MAX_MACRO_REFERENCE_P90_TOLERANCE_MULTIPLIER,
             ),
-            minimum_candidate_coarse_edge_precision=(
-                _MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION
-            ),
-            maximum_candidate_coarse_edge_density_ratio=(
-                _MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO
-            ),
+            minimum_candidate_coarse_edge_precision=(_MIN_MACRO_CANDIDATE_COARSE_EDGE_PRECISION),
+            maximum_candidate_coarse_edge_density_ratio=(_MAX_MACRO_CANDIDATE_COARSE_EDGE_DENSITY_RATIO),
         )
     if fidelity_policy == "balanced":
         return MacroFidelityThresholds(
@@ -2273,23 +2137,15 @@ def assess_instance_source_presence(
             missing_instance_ids=(),
             instance_recalls={},
         )
-    if not (
-        source.size
-        == candidate.size
-        == proposal_mask.size
-        == instance_id.size
-    ):
-        raise Direct3DValidationError(
-            "Instance-presence images must have identical dimensions"
-        )
+    if not (source.size == candidate.size == proposal_mask.size == instance_id.size):
+        raise Direct3DValidationError("Instance-presence images must have identical dimensions")
 
     import cv2
 
     tolerance_px = max(2, min(4, round(math.hypot(*source.size) * 0.0015)))
     active = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
     source_anchor = (
-        _beauty_structural_edges(source, proposal_mask)
-        | _beauty_structural_edges(source, proposal_mask, coarse=True)
+        _beauty_structural_edges(source, proposal_mask) | _beauty_structural_edges(source, proposal_mask, coarse=True)
     ) & active
     candidate_anchor = (
         _beauty_structural_edges(candidate, proposal_mask)
@@ -2334,18 +2190,19 @@ def assess_instance_source_presence(
             # produce screen-space evidence in this capture.
             recalls[instance_identifier] = None
             continue
-        region_band = cv2.dilate(
-            region.astype(np.uint8),
-            kernel,
-            iterations=1,
-        ) > 0
+        region_band = (
+            cv2.dilate(
+                region.astype(np.uint8),
+                kernel,
+                iterations=1,
+            )
+            > 0
+        )
         reference = source_anchor & region_band
         if int(np.count_nonzero(reference)) < 16:
             recalls[instance_identifier] = None
             continue
-        instance_recall = float(
-            np.mean(distance_to_candidate[reference] <= tolerance_px)
-        )
+        instance_recall = float(np.mean(distance_to_candidate[reference] <= tolerance_px))
         recalls[instance_identifier] = instance_recall
         evaluated.append(instance_recall)
         if instance_recall < minimum_recall:
@@ -2369,20 +2226,15 @@ def _unsupported_coarse_structure_analysis(
     """Detect unsupported components and return a bounded local repair mask."""
 
     if source.size != candidate.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Unsupported-structure images must have identical dimensions"
-        )
+        raise Direct3DValidationError("Unsupported-structure images must have identical dimensions")
     if instance_id is not None and instance_id.size != source.size:
-        raise Direct3DValidationError(
-            "Unsupported-structure instance-ID image must match the source"
-        )
+        raise Direct3DValidationError("Unsupported-structure instance-ID image must match the source")
 
     import cv2
 
     full_frame_mask = Image.new("L", source.size, 255)
-    source_anchor = (
-        _beauty_structural_edges(source, full_frame_mask)
-        | _beauty_structural_edges(source, full_frame_mask, coarse=True)
+    source_anchor = _beauty_structural_edges(source, full_frame_mask) | _beauty_structural_edges(
+        source, full_frame_mask, coarse=True
     )
     candidate_coarse = _beauty_structural_edges(
         candidate,
@@ -2419,11 +2271,14 @@ def _unsupported_coarse_structure_analysis(
                 pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
                 axis=2,
             )
-            allowed_interior = cv2.erode(
-                region.astype(np.uint8),
-                erosion_kernel,
-                iterations=1,
-            ) > 0
+            allowed_interior = (
+                cv2.erode(
+                    region.astype(np.uint8),
+                    erosion_kernel,
+                    iterations=1,
+                )
+                > 0
+            )
             unsupported &= ~allowed_interior
 
     unsupported = cv2.morphologyEx(
@@ -2480,13 +2335,15 @@ def _unsupported_coarse_structure_analysis(
             and component_density >= 0.035
             and bbox_aspect_ratio >= 0.18
         ):
-            component_records.append({
-                "component": component,
-                "x0": bbox_x,
-                "y0": bbox_y,
-                "x1": bbox_x + bbox_width,
-                "y1": bbox_y + bbox_height,
-            })
+            component_records.append(
+                {
+                    "component": component,
+                    "x0": bbox_x,
+                    "y0": bbox_y,
+                    "x1": bbox_x + bbox_width,
+                    "y1": bbox_y + bbox_height,
+                }
+            )
         if (
             pixel_count < component_floor
             or bbox_area < bbox_area_floor
@@ -2515,10 +2372,7 @@ def _unsupported_coarse_structure_analysis(
     # fragments around each qualifying seed, then fill their convex hull. This
     # removes the whole object without replacing a conspicuous rectangular
     # neighborhood of otherwise valid provider pixels.
-    records_by_component = {
-        int(record["component"]): record
-        for record in component_records
-    }
+    records_by_component = {int(record["component"]): record for record in component_records}
     for seed_component in qualifying_components:
         seed = records_by_component.get(seed_component)
         if seed is None:
@@ -2533,10 +2387,13 @@ def _unsupported_coarse_structure_analysis(
             changed = False
             link_distance = max(
                 repair_pad * 2,
-                round(max(
-                    group_x1 - group_x0,
-                    group_y1 - group_y0,
-                ) * 0.18),
+                round(
+                    max(
+                        group_x1 - group_x0,
+                        group_y1 - group_y0,
+                    )
+                    * 0.18
+                ),
             )
             for record in component_records:
                 record_component = int(record["component"])
@@ -2645,10 +2502,7 @@ def _safe_instance_interior_mask(
         dtype=np.uint8,
     )
     for color, descriptor in sorted(instance_id_manifest.items()):
-        if (
-            descriptor.semantic_class not in semantic_classes
-            or descriptor.instance_id in missing_instance_ids
-        ):
+        if descriptor.semantic_class not in semantic_classes or descriptor.instance_id in missing_instance_ids:
             continue
         region = np.all(
             pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
@@ -2786,9 +2640,7 @@ def _locally_repair_scene_candidate(
         object_id_manifest,
     )
     repair_pixels = unsupported_pixels | (missing_restore * 255)
-    repair_coverage = float(
-        np.count_nonzero(repair_pixels) / max(1, repair_pixels.size)
-    )
+    repair_coverage = float(np.count_nonzero(repair_pixels) / max(1, repair_pixels.size))
     if not np.any(repair_pixels):
         return provider.convert("RGB").copy(), source_phase, repair_coverage
 
@@ -2842,9 +2694,7 @@ def _global_tone_source_finish(
     """
 
     if source.size != provider.size:
-        raise Direct3DValidationError(
-            "Source-locked tone images must have identical dimensions"
-        )
+        raise Direct3DValidationError("Source-locked tone images must have identical dimensions")
 
     source_rgb = np.asarray(source.convert("RGB"), dtype=np.float32)
     provider_rgb = np.asarray(provider.convert("RGB"), dtype=np.float32)
@@ -2869,8 +2719,7 @@ def _global_tone_source_finish(
     scale = np.clip(provider_span / source_span, 0.90, 1.10)
     shift = np.clip(provider_median - source_median, -18.0, 18.0)
     transformed = (
-        (source_rgb - source_median.reshape((1, 1, 3)))
-        * scale.reshape((1, 1, 3))
+        (source_rgb - source_median.reshape((1, 1, 3))) * scale.reshape((1, 1, 3))
         + source_median.reshape((1, 1, 3))
         + shift.reshape((1, 1, 3))
     )
@@ -2919,10 +2768,7 @@ def _source_locked_scene_fallback(
         dtype=np.uint8,
     )
     for color, descriptor in sorted(instance_id_manifest.items()):
-        if (
-            descriptor.semantic_class != "building"
-            or descriptor.instance_id in missing_instance_ids
-        ):
+        if descriptor.semantic_class != "building" or descriptor.instance_id in missing_instance_ids:
             continue
         region = np.all(
             pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
@@ -2953,9 +2799,7 @@ def assess_scene_visual_change(
     """Reject an expensive scene result that is only identity/colour grading."""
 
     if source.size != candidate.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Visual-change images and proposal mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Visual-change images and proposal mask must have identical dimensions")
 
     import cv2
 
@@ -2973,11 +2817,7 @@ def assess_scene_visual_change(
     # mask-zero pixels in the lower 55% of the frame for this evidence.
     context = _scene_lower_context_mask(proposal_mask)
     context_pixel_count = int(np.count_nonzero(context))
-    context_mad = (
-        float(np.mean(absolute_delta[context]))
-        if context_pixel_count
-        else 0.0
-    )
+    context_mad = float(np.mean(absolute_delta[context])) if context_pixel_count else 0.0
 
     source_luma = _finish_luminance(source_rgb)
     candidate_luma = _finish_luminance(candidate_rgb)
@@ -2995,9 +2835,7 @@ def assess_scene_visual_change(
         sigmaY=1.2,
         borderType=cv2.BORDER_REFLECT,
     )
-    detail_delta_p75 = float(
-        np.percentile(np.abs(candidate_detail - source_detail)[active], 75)
-    )
+    detail_delta_p75 = float(np.percentile(np.abs(candidate_detail - source_detail)[active], 75))
     context_detail_delta_p75 = (
         float(
             np.percentile(
@@ -3040,38 +2878,40 @@ def assess_scene_visual_change(
     source_edges = _beauty_structural_edges(source, proposal_mask)
     candidate_edges = _beauty_structural_edges(candidate, proposal_mask)
     exclusion_radius = max(4, min(8, round(math.hypot(*source.size) * 0.0025)))
-    source_edge_band = cv2.dilate(
-        source_edges.astype(np.uint8),
-        np.ones(
-            (exclusion_radius * 2 + 1, exclusion_radius * 2 + 1),
-            dtype=np.uint8,
-        ),
-        iterations=1,
-    ) > 0
+    source_edge_band = (
+        cv2.dilate(
+            source_edges.astype(np.uint8),
+            np.ones(
+                (exclusion_radius * 2 + 1, exclusion_radius * 2 + 1),
+                dtype=np.uint8,
+            ),
+            iterations=1,
+        )
+        > 0
+    )
     # Ignore the proposal seam itself: an additive colour grade creates a
     # synthetic mask-boundary edge even though it added no scene detail.
-    safe_active = cv2.erode(
-        active.astype(np.uint8),
-        np.ones((7, 7), dtype=np.uint8),
-        iterations=1,
-    ) > 0
-    novel_edges = candidate_edges & ~source_edge_band & safe_active
-    novel_edge_coverage = float(
-        np.count_nonzero(novel_edges) / max(1, int(np.count_nonzero(active)))
+    safe_active = (
+        cv2.erode(
+            active.astype(np.uint8),
+            np.ones((7, 7), dtype=np.uint8),
+            iterations=1,
+        )
+        > 0
     )
+    novel_edges = candidate_edges & ~source_edge_band & safe_active
+    novel_edge_coverage = float(np.count_nonzero(novel_edges) / max(1, int(np.count_nonzero(active))))
     passed = (
         whole_frame_mad >= _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
         and proposal_mad >= _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
-        and photometric_residual_p95
-        >= _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
+        and photometric_residual_p95 >= _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
         and (
             detail_delta_p75 >= _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
             or novel_edge_coverage >= _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
         )
         and (
             context_mad >= _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
-            or context_photometric_residual_p95
-            >= _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
+            or context_photometric_residual_p95 >= _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
         )
         and context_detail_delta_p75 >= _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
     )
@@ -3107,13 +2947,9 @@ def assess_reproject_output_sanity(
     """
 
     if source.size != candidate.size:
-        raise Direct3DValidationError(
-            "Reproject source and provider image must have identical dimensions"
-        )
+        raise Direct3DValidationError("Reproject source and provider image must have identical dimensions")
     if object_id is not None and object_id.size != source.size:
-        raise Direct3DValidationError(
-            "Reproject object-ID image must match the source dimensions"
-        )
+        raise Direct3DValidationError("Reproject object-ID image must match the source dimensions")
 
     import cv2
 
@@ -3122,9 +2958,7 @@ def assess_reproject_output_sanity(
     whole_frame_mad = float(np.mean(np.abs(candidate_rgb - source_rgb)))
     luminance = _finish_luminance(candidate_rgb)
     luminance_standard_deviation = float(np.std(luminance))
-    luminance_dynamic_range_p90 = float(
-        np.percentile(luminance, 95) - np.percentile(luminance, 5)
-    )
+    luminance_dynamic_range_p90 = float(np.percentile(luminance, 95) - np.percentile(luminance, 5))
 
     luminance_u8 = np.clip(luminance, 0, 255).astype(np.uint8)
     blurred = cv2.GaussianBlur(
@@ -3138,18 +2972,17 @@ def assess_reproject_output_sanity(
     gradient_y = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
     gradient = cv2.magnitude(gradient_x, gradient_y)
     nonzero_gradient = gradient[gradient > 1.0]
-    high_threshold = (
-        float(np.percentile(nonzero_gradient, 70))
-        if nonzero_gradient.size
-        else 48.0
-    )
+    high_threshold = float(np.percentile(nonzero_gradient, 70)) if nonzero_gradient.size else 48.0
     high_threshold = min(140.0, max(42.0, high_threshold))
-    edges = cv2.Canny(
-        blurred,
-        threshold1=max(16.0, high_threshold * 0.42),
-        threshold2=high_threshold,
-        L2gradient=True,
-    ) > 0
+    edges = (
+        cv2.Canny(
+            blurred,
+            threshold1=max(16.0, high_threshold * 0.42),
+            threshold2=high_threshold,
+            L2gradient=True,
+        )
+        > 0
+    )
     structural_edge_coverage = float(np.mean(edges))
 
     occupied_edge_cells = 0
@@ -3175,8 +3008,7 @@ def assess_reproject_output_sanity(
     )
     component_area_floor = max(12, round(source.width * source.height * 0.00002))
     significant_edge_component_count = sum(
-        int(stats[index, cv2.CC_STAT_AREA]) >= component_area_floor
-        for index in range(1, component_count)
+        int(stats[index, cv2.CC_STAT_AREA]) >= component_area_floor for index in range(1, component_count)
     )
     source_inventory, _labels = _visible_semantic_components(
         object_id,
@@ -3187,10 +3019,8 @@ def assess_reproject_output_sanity(
 
     passed = (
         whole_frame_mad >= _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-        and luminance_standard_deviation
-        >= _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
-        and luminance_dynamic_range_p90
-        >= _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
+        and luminance_standard_deviation >= _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
+        and luminance_dynamic_range_p90 >= _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
         and structural_edge_coverage >= _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
         and structural_edge_coverage <= _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
         and occupied_edge_cells >= _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
@@ -3265,18 +3095,14 @@ def _presentation_prompt(
         "Image 1 is the clean 3D source and primary visual reference",
     ]
     if has_object_id:
-        image_roles.append(
-            "Image 2 is class-ID metadata for distinguishing proposal roles"
-        )
+        image_roles.append("Image 2 is class-ID metadata for distinguishing proposal roles")
     if has_instance_id:
         instance_number = 2 + int(has_object_id)
         image_roles.append(
             f"Image {instance_number} is instance-ID metadata in which each "
             "non-black colour is one authored instance"
         )
-    image_roles.append(
-        f"Image {guide_number} is monochrome structure and layout metadata"
-    )
+    image_roles.append(f"Image {guide_number} is monochrome structure and layout metadata")
     guide = (
         "REFERENCE IMAGES: "
         + "; ".join(image_roles)
@@ -3285,8 +3111,7 @@ def _presentation_prompt(
     )
     if archetype_reference_labels:
         reference_roles = [
-            f"Image {guide_number + 1 + offset}: {label}"
-            for offset, label in enumerate(archetype_reference_labels)
+            f"Image {guide_number + 1 + offset}: {label}" for offset, label in enumerate(archetype_reference_labels)
         ]
         guide += (
             " ARCHETYPE REFERENCES: "
@@ -3364,12 +3189,14 @@ def _presentation_prompt(
             "remove, split, merge, move or redesign any permanent building, road, "
             "park, water body or site feature."
         )
-    prompt_prefix = "\n".join([
-        task,
-        guide,
-        inventory,
-        "PRIMARY ART DIRECTION: ",
-    ])
+    prompt_prefix = "\n".join(
+        [
+            task,
+            guide,
+            inventory,
+            "PRIMARY ART DIRECTION: ",
+        ]
+    )
     prompt_suffix = f"\n{final_lock}"
     # Truncate only client-controlled art direction. The final inventory lock
     # must remain present and last even when a caller supplies the maximum
@@ -3378,11 +3205,7 @@ def _presentation_prompt(
         0,
         31_900 - len(prompt_prefix) - len(prompt_suffix),
     )
-    prompt = (
-        prompt_prefix
-        + client_prompt.strip()[:available_art_direction]
-        + prompt_suffix
-    )
+    prompt = prompt_prefix + client_prompt.strip()[:available_art_direction] + prompt_suffix
     return prompt
 
 
@@ -3405,10 +3228,7 @@ def _authoritative_prompt(
     )
     legend = ""
     if object_id_manifest:
-        entries = "; ".join(
-            f"{color}={semantic_class}"
-            for color, semantic_class in sorted(object_id_manifest.items())
-        )
+        entries = "; ".join(f"{color}={semantic_class}" for color, semantic_class in sorted(object_id_manifest.items()))
         legend = f"\n\nCLASS-ID METADATA LEGEND (Image 2 only): {entries}."
     instance_guidance = ""
     if has_instance_id:
@@ -3428,8 +3248,7 @@ def _authoritative_prompt(
     component_guidance = ""
     if visible_component_summary:
         component_entries = ", ".join(
-            f"{count} visibly disjoint {semantic_class} region"
-            f"{'s' if count != 1 else ''}"
+            f"{count} visibly disjoint {semantic_class} region" f"{'s' if count != 1 else ''}"
             for semantic_class, count in sorted(visible_component_summary.items())
         )
         component_guidance = (
@@ -3448,18 +3267,13 @@ def _authoritative_prompt(
         "and atmospheric polish inside the transparent edit mask. Do not invent, "
         "remove, move, resize, rotate, or recompose any designed element. Preserve all "
         "unmasked context exactly. The result must be a direct stylization of Image 1, "
-        "not a redesigned scene."
-        + id_guidance
-        + instance_guidance
-        + edge_guidance
-        + component_guidance
+        "not a redesigned scene." + id_guidance + instance_guidance + edge_guidance + component_guidance
     )
     inventory = _server_inventory_prompt(server_inventory)
     # Repeat the non-negotiable lock after user prose so a client prompt cannot
     # weaken the geometry rules through recency or contradictory instructions.
     prompt = (
-        f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n"
-        f"{client_prompt.strip()}\n\n{authority}"
+        f"{authority}{legend}\n\n{inventory}\n\nDESIRED VISUAL TREATMENT:\n" f"{client_prompt.strip()}\n\n{authority}"
     )
     if len(prompt) > 31_900:
         available = max(
@@ -3484,10 +3298,7 @@ def _server_inventory_prompt(
     for item in server_inventory:
         semantic_class = str(item["semantic_class"])
         counts[semantic_class] = counts.get(semantic_class, 0) + 1
-    count_text = ", ".join(
-        f"{semantic_class}={count}"
-        for semantic_class, count in sorted(counts.items())
-    )
+    count_text = ", ".join(f"{semantic_class}={count}" for semantic_class, count in sorted(counts.items()))
     identity_counts: dict[str, int] = {}
     for item in server_inventory:
         identity = item.get("design_identity")
@@ -3497,8 +3308,7 @@ def _server_inventory_prompt(
     identity_text = ""
     if identity_counts:
         identity_text = "; design identities: " + ", ".join(
-            f"{count}x {identity}"
-            for identity, count in sorted(identity_counts.items())
+            f"{count}x {identity}" for identity, count in sorted(identity_counts.items())
         )
     return (
         "SERVER-VALIDATED AUTHORED INVENTORY (binding): "
@@ -3542,9 +3352,7 @@ def _structural_context_agreement(
     """
 
     if source.size != candidate.size or source.size != proposal_mask.size:
-        raise Direct3DValidationError(
-            "Structural context images and mask must have identical dimensions"
-        )
+        raise Direct3DValidationError("Structural context images and mask must have identical dimensions")
 
     import cv2
 
@@ -3555,10 +3363,7 @@ def _structural_context_agreement(
     candidate_edges = _beauty_structural_edges(candidate, context_image) & active
     source_count = int(np.count_nonzero(source_edges))
     candidate_count = int(np.count_nonzero(candidate_edges))
-    if (
-        source_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS
-        or candidate_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS
-    ):
+    if source_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS or candidate_count < _MIN_STRUCTURAL_CONTEXT_EDGE_PIXELS:
         return 0.0
 
     diagonal = math.hypot(source.width, source.height)
@@ -3573,12 +3378,8 @@ def _structural_context_agreement(
         cv2.DIST_L2,
         3,
     )
-    source_recall = float(
-        np.mean(distance_to_candidate[source_edges] <= tolerance_px)
-    )
-    candidate_recall = float(
-        np.mean(distance_to_source[candidate_edges] <= tolerance_px)
-    )
+    source_recall = float(np.mean(distance_to_candidate[source_edges] <= tolerance_px))
+    candidate_recall = float(np.mean(distance_to_source[candidate_edges] <= tolerance_px))
     return min(source_recall, candidate_recall)
 
 
@@ -3648,15 +3449,9 @@ def register_generated_image(
     translation_y = float(warp[1, 2])
     rotation_degrees = math.degrees(math.atan2(float(warp[1, 0]), float(warp[0, 0])))
     max_translation = max(12.0, math.hypot(source.width, source.height) * 0.025)
-    if (
-        enforce_transform_limits
-        and math.hypot(translation_x, translation_y) > max_translation
-    ):
+    if enforce_transform_limits and math.hypot(translation_x, translation_y) > max_translation:
         raise Direct3DValidationError("Generated image drift exceeds the Direct 3D translation limit")
-    if (
-        enforce_transform_limits
-        and abs(rotation_degrees) > _MAX_REGISTRATION_ROTATION_DEGREES
-    ):
+    if enforce_transform_limits and abs(rotation_degrees) > _MAX_REGISTRATION_ROTATION_DEGREES:
         raise Direct3DValidationError("Generated image rotation exceeds the Direct 3D limit")
 
     registered_rgb = cv2.warpAffine(
@@ -3763,26 +3558,14 @@ def _macro_diagnostics(
         "reference_edge_p90_distance_px": result.reference_edge_p90_distance_px,
         "candidate_coarse_edge_pixels": result.candidate_coarse_edge_pixels,
         "candidate_coarse_edge_precision": result.candidate_coarse_edge_precision,
-        "candidate_coarse_edge_density_ratio": (
-            result.candidate_coarse_edge_density_ratio
-        ),
-        "minimum_silhouette_edge_recall": (
-            thresholds.minimum_silhouette_edge_recall
-        ),
+        "candidate_coarse_edge_density_ratio": (result.candidate_coarse_edge_density_ratio),
+        "minimum_silhouette_edge_recall": (thresholds.minimum_silhouette_edge_recall),
         "minimum_coarse_edge_recall": thresholds.minimum_coarse_edge_recall,
         "minimum_semantic_edge_recall": thresholds.minimum_semantic_edge_recall,
-        "minimum_semantic_component_recall": (
-            thresholds.minimum_semantic_component_recall
-        ),
-        "maximum_reference_edge_p90_distance_px": (
-            thresholds.maximum_reference_p90_distance_px
-        ),
-        "minimum_candidate_coarse_edge_precision": (
-            thresholds.minimum_candidate_coarse_edge_precision
-        ),
-        "maximum_candidate_coarse_edge_density_ratio": (
-            thresholds.maximum_candidate_coarse_edge_density_ratio
-        ),
+        "minimum_semantic_component_recall": (thresholds.minimum_semantic_component_recall),
+        "maximum_reference_edge_p90_distance_px": (thresholds.maximum_reference_p90_distance_px),
+        "minimum_candidate_coarse_edge_precision": (thresholds.minimum_candidate_coarse_edge_precision),
+        "maximum_candidate_coarse_edge_density_ratio": (thresholds.maximum_candidate_coarse_edge_density_ratio),
         "building_internal_edges_required": False,
     }
 
@@ -3814,46 +3597,24 @@ def _unsupported_structure_diagnostics(
 def _visual_change_diagnostics(result: VisualChangeResult) -> dict[str, Any]:
     return {
         "passed": True,
-        "whole_frame_mean_absolute_delta": (
-            result.whole_frame_mean_absolute_delta
-        ),
+        "whole_frame_mean_absolute_delta": (result.whole_frame_mean_absolute_delta),
         "proposal_mean_absolute_delta": result.proposal_mean_absolute_delta,
         "proposal_detail_delta_p75": result.proposal_detail_delta_p75,
-        "proposal_photometric_residual_p95": (
-            result.proposal_photometric_residual_p95
-        ),
+        "proposal_photometric_residual_p95": (result.proposal_photometric_residual_p95),
         "novel_detail_edge_coverage": result.novel_detail_edge_coverage,
         "context_mean_absolute_delta": result.context_mean_absolute_delta,
-        "context_photometric_residual_p95": (
-            result.context_photometric_residual_p95
-        ),
+        "context_photometric_residual_p95": (result.context_photometric_residual_p95),
         "context_detail_delta_p75": result.context_detail_delta_p75,
         "context_pixel_count": result.context_pixel_count,
         "context_frame_top_fraction": result.context_frame_top_fraction,
-        "minimum_whole_frame_mean_absolute_delta": (
-            _MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-        ),
-        "minimum_proposal_mean_absolute_delta": (
-            _MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA
-        ),
-        "minimum_proposal_detail_delta_p75": (
-            _MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75
-        ),
-        "minimum_proposal_photometric_residual_p95": (
-            _MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95
-        ),
-        "minimum_novel_detail_edge_coverage": (
-            _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
-        ),
-        "minimum_context_mean_absolute_delta": (
-            _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
-        ),
-        "minimum_context_photometric_residual_p95": (
-            _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
-        ),
-        "minimum_context_detail_delta_p75": (
-            _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
-        ),
+        "minimum_whole_frame_mean_absolute_delta": (_MIN_SCENE_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA),
+        "minimum_proposal_mean_absolute_delta": (_MIN_SCENE_PROPOSAL_MEAN_ABSOLUTE_DELTA),
+        "minimum_proposal_detail_delta_p75": (_MIN_SCENE_PROPOSAL_DETAIL_DELTA_P75),
+        "minimum_proposal_photometric_residual_p95": (_MIN_SCENE_PROPOSAL_PHOTOMETRIC_RESIDUAL_P95),
+        "minimum_novel_detail_edge_coverage": (_MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE),
+        "minimum_context_mean_absolute_delta": (_MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA),
+        "minimum_context_photometric_residual_p95": (_MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95),
+        "minimum_context_detail_delta_p75": (_MIN_SCENE_CONTEXT_DETAIL_DELTA_P75),
         "context_change_required": True,
         "color_grade_only_rejected": True,
     }
@@ -3890,12 +3651,14 @@ class Direct3DRenderService:
 
         normalized_width, normalized_height = capture.normalized_beauty.size
         beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
-        structural_guide_png = _png_bytes(build_structural_edge_guide(
-            capture.normalized_beauty,
-            capture.normalized_proposal_mask,
-            capture.normalized_object_id,
-            req.object_id_manifest,
-        ))
+        structural_guide_png = _png_bytes(
+            build_structural_edge_guide(
+                capture.normalized_beauty,
+                capture.normalized_proposal_mask,
+                capture.normalized_object_id,
+                req.object_id_manifest,
+            )
+        )
         visible_component_summary, _component_labels = _visible_semantic_components(
             capture.normalized_object_id,
             req.object_id_manifest,
@@ -3904,52 +3667,56 @@ class Direct3DRenderService:
             ("image[]", ("direct-3d-beauty.png", beauty_png, "image/png")),
         ]
         if capture.normalized_object_id is not None:
-            files.append((
-                "image[]",
-                ("direct-3d-class-id.png", _png_bytes(capture.normalized_object_id), "image/png"),
-            ))
-        if capture.normalized_instance_id is not None:
-            files.append((
-                "image[]",
+            files.append(
                 (
-                    "direct-3d-instance-id.png",
-                    _png_bytes(capture.normalized_instance_id),
-                    "image/png",
-                ),
-            ))
-        files.append((
-            "image[]",
-            ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
-        ))
+                    "image[]",
+                    ("direct-3d-class-id.png", _png_bytes(capture.normalized_object_id), "image/png"),
+                )
+            )
+        if capture.normalized_instance_id is not None:
+            files.append(
+                (
+                    "image[]",
+                    (
+                        "direct-3d-instance-id.png",
+                        _png_bytes(capture.normalized_instance_id),
+                        "image/png",
+                    ),
+                )
+            )
+        files.append(
+            (
+                "image[]",
+                ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
+            )
+        )
         # Authored archetype artwork rides after the metadata passes so the
         # prompt's ARCHETYPE REFERENCES numbering lines up with attachment
         # order. These are design sources the provider applies, not metadata.
         for reference_index, reference in enumerate(req.archetype_references):
             try:
-                reference_bytes = base64.b64decode(
-                    reference.image_base64.split(",", 1)[-1]
-                )
+                reference_bytes = base64.b64decode(reference.image_base64.split(",", 1)[-1])
             except (ValueError, binascii.Error) as exc:
-                raise Direct3DValidationError(
-                    f"Archetype reference {reference_index + 1} is not valid base64"
-                ) from exc
+                raise Direct3DValidationError(f"Archetype reference {reference_index + 1} is not valid base64") from exc
             is_png = reference_bytes[:8] == b"\x89PNG\r\n\x1a\n"
-            files.append((
-                "image[]",
+            files.append(
                 (
-                    f"archetype-ref-{reference_index + 1}.{'png' if is_png else 'jpg'}",
-                    reference_bytes,
-                    "image/png" if is_png else "image/jpeg",
-                ),
-            ))
-        if req.presentation_mode == "source_anchored":
-            edit_mask_png = _png_bytes(
-                build_openai_edit_mask(capture.normalized_proposal_mask)
+                    "image[]",
+                    (
+                        f"archetype-ref-{reference_index + 1}.{'png' if is_png else 'jpg'}",
+                        reference_bytes,
+                        "image/png" if is_png else "image/jpeg",
+                    ),
+                )
             )
-            files.append((
-                "mask",
-                ("direct-3d-edit-mask.png", edit_mask_png, "image/png"),
-            ))
+        if req.presentation_mode == "source_anchored":
+            edit_mask_png = _png_bytes(build_openai_edit_mask(capture.normalized_proposal_mask))
+            files.append(
+                (
+                    "mask",
+                    ("direct-3d-edit-mask.png", edit_mask_png, "image/png"),
+                )
+            )
         prompt = (
             _authoritative_prompt(
                 req.prompt,
@@ -3968,9 +3735,7 @@ class Direct3DRenderService:
                 server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
                 view_mode=req.view_mode,
-                archetype_reference_labels=[
-                    reference.label for reference in req.archetype_references
-                ],
+                archetype_reference_labels=[reference.label for reference in req.archetype_references],
             )
         )
         data = {
@@ -4023,11 +3788,7 @@ class Direct3DRenderService:
         if response.status_code != 200:
             body = response.text[:500]
             logger.error("Direct 3D OpenAI edit returned %d: %s", response.status_code, body)
-            billing_status = (
-                "unproduced"
-                if response.status_code in _KNOWN_UNBILLED_PROVIDER_STATUSES
-                else "unknown"
-            )
+            billing_status = "unproduced" if response.status_code in _KNOWN_UNBILLED_PROVIDER_STATUSES else "unknown"
             raise Direct3DProviderError(
                 f"OpenAI Direct 3D error ({response.status_code}): {body}",
                 billing_status=billing_status,
@@ -4043,9 +3804,7 @@ class Direct3DRenderService:
             ) from exc
         if not image_b64:
             response_has_image_reference = bool(
-                response_data
-                and isinstance(response_data[0], dict)
-                and response_data[0].get("url")
+                response_data and isinstance(response_data[0], dict) and response_data[0].get("url")
             )
             raise Direct3DProviderError(
                 "OpenAI Direct 3D response did not contain b64_json",
@@ -4112,20 +3871,14 @@ class Direct3DRenderService:
                     if req.presentation_mode in {"scene", "reproject"}
                     else None
                 ),
-                "instance_id_attached": (
-                    capture.normalized_instance_id is not None
-                ),
+                "instance_id_attached": (capture.normalized_instance_id is not None),
                 "instance_count": capture.instance_count,
                 "instance_source_presence": None,
                 "unsupported_structure": None,
                 "server_inventory": _server_inventory_counts(server_inventory),
-                "scene_lower_context_coverage": (
-                    capture.scene_lower_context_coverage
-                ),
+                "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
                 "minimum_scene_lower_context_coverage": (
-                    _MIN_SCENE_LOWER_CONTEXT_COVERAGE
-                    if req.presentation_mode == "scene"
-                    else None
+                    _MIN_SCENE_LOWER_CONTEXT_COVERAGE if req.presentation_mode == "scene" else None
                 ),
                 "structural_edge_guide_attached": True,
                 "finish_fusion": None,
@@ -4185,54 +3938,25 @@ class Direct3DRenderService:
                         "provider_first": True,
                         "reproject_output_sanity": {
                             "passed": True,
-                            "whole_frame_mean_absolute_delta": (
-                                street_sanity.whole_frame_mean_absolute_delta
-                            ),
-                            "luminance_standard_deviation": (
-                                street_sanity.luminance_standard_deviation
-                            ),
-                            "luminance_dynamic_range_p90": (
-                                street_sanity.luminance_dynamic_range_p90
-                            ),
-                            "structural_edge_coverage": (
-                                street_sanity.structural_edge_coverage
-                            ),
-                            "occupied_edge_cells": (
-                                street_sanity.occupied_edge_cells
-                            ),
-                            "significant_edge_component_count": (
-                                street_sanity.significant_edge_component_count
-                            ),
-                            "required_edge_component_count": (
-                                street_sanity.required_edge_component_count
-                            ),
-                            "minimum_whole_frame_mean_absolute_delta": (
-                                _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-                            ),
-                            "minimum_luminance_standard_deviation": (
-                                _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
-                            ),
-                            "minimum_luminance_dynamic_range_p90": (
-                                _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
-                            ),
-                            "minimum_structural_edge_coverage": (
-                                _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
-                            ),
-                            "maximum_structural_edge_coverage": (
-                                _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
-                            ),
-                            "minimum_occupied_edge_cells": (
-                                _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
-                            ),
+                            "whole_frame_mean_absolute_delta": (street_sanity.whole_frame_mean_absolute_delta),
+                            "luminance_standard_deviation": (street_sanity.luminance_standard_deviation),
+                            "luminance_dynamic_range_p90": (street_sanity.luminance_dynamic_range_p90),
+                            "structural_edge_coverage": (street_sanity.structural_edge_coverage),
+                            "occupied_edge_cells": (street_sanity.occupied_edge_cells),
+                            "significant_edge_component_count": (street_sanity.significant_edge_component_count),
+                            "required_edge_component_count": (street_sanity.required_edge_component_count),
+                            "minimum_whole_frame_mean_absolute_delta": (_MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA),
+                            "minimum_luminance_standard_deviation": (_MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION),
+                            "minimum_luminance_dynamic_range_p90": (_MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90),
+                            "minimum_structural_edge_coverage": (_MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
+                            "maximum_structural_edge_coverage": (_MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
+                            "minimum_occupied_edge_cells": (_MIN_REPROJECT_OCCUPIED_EDGE_CELLS),
                             "semantic_inventory_proxy_only": True,
                         },
                     },
                 )
 
-            if (
-                DIRECT_3D_PRESENTATION_FIRST
-                and req.presentation_mode in {"scene", "reproject"}
-            ):
+            if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode in {"scene", "reproject"}:
                 # The provider image is returned untouched. Style choice governs
                 # appearance; the capture/claim validation that already ran
                 # before spend remains the only structural contract.
@@ -4248,9 +3972,7 @@ class Direct3DRenderService:
                     diagnostics={
                         **common_diagnostics,
                         "view_lock": (
-                            "camera_registered"
-                            if req.presentation_mode == "scene"
-                            else "not_applicable_layout_guided"
+                            "camera_registered" if req.presentation_mode == "scene" else "not_applicable_layout_guided"
                         ),
                         "context_restyled": True,
                         "provider_first": True,
@@ -4291,8 +4013,7 @@ class Direct3DRenderService:
                     outcome="review_required",
                     provider_image_base64=provider_image_base64,
                     warnings=(
-                        "Projection-changing Direct 3D renders require human review "
-                        "against the source inventory.",
+                        "Projection-changing Direct 3D renders require human review " "against the source inventory.",
                     ),
                     diagnostics={
                         **common_diagnostics,
@@ -4301,45 +4022,19 @@ class Direct3DRenderService:
                         "provider_first": True,
                         "reproject_output_sanity": {
                             "passed": True,
-                            "whole_frame_mean_absolute_delta": (
-                                reproject_sanity.whole_frame_mean_absolute_delta
-                            ),
-                            "luminance_standard_deviation": (
-                                reproject_sanity.luminance_standard_deviation
-                            ),
-                            "luminance_dynamic_range_p90": (
-                                reproject_sanity.luminance_dynamic_range_p90
-                            ),
-                            "structural_edge_coverage": (
-                                reproject_sanity.structural_edge_coverage
-                            ),
-                            "occupied_edge_cells": (
-                                reproject_sanity.occupied_edge_cells
-                            ),
-                            "significant_edge_component_count": (
-                                reproject_sanity.significant_edge_component_count
-                            ),
-                            "required_edge_component_count": (
-                                reproject_sanity.required_edge_component_count
-                            ),
-                            "minimum_whole_frame_mean_absolute_delta": (
-                                _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA
-                            ),
-                            "minimum_luminance_standard_deviation": (
-                                _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION
-                            ),
-                            "minimum_luminance_dynamic_range_p90": (
-                                _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90
-                            ),
-                            "minimum_structural_edge_coverage": (
-                                _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE
-                            ),
-                            "maximum_structural_edge_coverage": (
-                                _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE
-                            ),
-                            "minimum_occupied_edge_cells": (
-                                _MIN_REPROJECT_OCCUPIED_EDGE_CELLS
-                            ),
+                            "whole_frame_mean_absolute_delta": (reproject_sanity.whole_frame_mean_absolute_delta),
+                            "luminance_standard_deviation": (reproject_sanity.luminance_standard_deviation),
+                            "luminance_dynamic_range_p90": (reproject_sanity.luminance_dynamic_range_p90),
+                            "structural_edge_coverage": (reproject_sanity.structural_edge_coverage),
+                            "occupied_edge_cells": (reproject_sanity.occupied_edge_cells),
+                            "significant_edge_component_count": (reproject_sanity.significant_edge_component_count),
+                            "required_edge_component_count": (reproject_sanity.required_edge_component_count),
+                            "minimum_whole_frame_mean_absolute_delta": (_MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA),
+                            "minimum_luminance_standard_deviation": (_MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION),
+                            "minimum_luminance_dynamic_range_p90": (_MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90),
+                            "minimum_structural_edge_coverage": (_MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
+                            "maximum_structural_edge_coverage": (_MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
+                            "minimum_occupied_edge_cells": (_MIN_REPROJECT_OCCUPIED_EDGE_CELLS),
                             "semantic_inventory_proxy_only": True,
                         },
                     },
@@ -4364,8 +4059,7 @@ class Direct3DRenderService:
                     # unavailable instead of inventing an identity transform.
                     scene_registration_error = str(exc)
                     logger.warning(
-                        "Direct 3D scene registration was unreliable; using "
-                        "source-locked fallback: %s",
+                        "Direct 3D scene registration was unreliable; using " "source-locked fallback: %s",
                         exc,
                     )
             else:
@@ -4375,9 +4069,7 @@ class Direct3DRenderService:
                     capture.normalized_proposal_mask,
                 )
 
-            provider_analysis_image = (
-                registration.image if registration is not None else generated
-            )
+            provider_analysis_image = registration.image if registration is not None else generated
             scene_translation_norm_px = (
                 math.hypot(
                     registration.translation_x_px,
@@ -4398,22 +4090,18 @@ class Direct3DRenderService:
                 (
                     source_lock_translation_px,
                     source_lock_rotation_degrees,
-                ) = _SCENE_REGISTRATION_SOURCE_LOCK_LIMITS[
-                    req.fidelity_policy
-                ]
+                ) = _SCENE_REGISTRATION_SOURCE_LOCK_LIMITS[req.fidelity_policy]
                 scene_drift_requires_review = (
                     registration is None
                     or scene_translation_norm_px is None
                     or scene_translation_norm_px > scene_review_translation_px
-                    or abs(registration.rotation_degrees)
-                    > scene_review_rotation_degrees
+                    or abs(registration.rotation_degrees) > scene_review_rotation_degrees
                 )
                 scene_drift_requires_source_lock = (
                     registration is None
                     or scene_translation_norm_px is None
                     or scene_translation_norm_px > source_lock_translation_px
-                    or abs(registration.rotation_degrees)
-                    > source_lock_rotation_degrees
+                    or abs(registration.rotation_degrees) > source_lock_rotation_degrees
                 )
             provider_edge_fidelity = assess_structural_edge_fidelity(
                 capture.normalized_beauty,
@@ -4427,12 +4115,8 @@ class Direct3DRenderService:
                 "beauty_edge_recall": provider_edge_fidelity.beauty_edge_recall,
                 "coarse_edge_recall": provider_edge_fidelity.coarse_edge_recall,
                 "semantic_edge_recall": provider_edge_fidelity.semantic_edge_recall,
-                "semantic_component_min_recall": (
-                    provider_edge_fidelity.semantic_component_min_recall
-                ),
-                "building_internal_edge_recall": (
-                    provider_edge_fidelity.building_internal_edge_recall
-                ),
+                "semantic_component_min_recall": (provider_edge_fidelity.semantic_component_min_recall),
+                "building_internal_edge_recall": (provider_edge_fidelity.building_internal_edge_recall),
             }
 
             if req.presentation_mode == "scene":
@@ -4460,15 +4144,9 @@ class Direct3DRenderService:
                     req.instance_id_manifest,
                 )
                 severe_macro_redesign = (
-                    (
-                        macro_fidelity.silhouette_edge_recall is not None
-                        and macro_fidelity.silhouette_edge_recall < 0.55
-                    )
+                    (macro_fidelity.silhouette_edge_recall is not None and macro_fidelity.silhouette_edge_recall < 0.55)
                     or macro_fidelity.coarse_edge_recall < 0.55
-                    or (
-                        macro_fidelity.semantic_edge_recall is not None
-                        and macro_fidelity.semantic_edge_recall < 0.60
-                    )
+                    or (macro_fidelity.semantic_edge_recall is not None and macro_fidelity.semantic_edge_recall < 0.60)
                     or (
                         macro_fidelity.semantic_component_min_recall is not None
                         and macro_fidelity.semantic_component_min_recall < 0.55
@@ -4476,11 +4154,7 @@ class Direct3DRenderService:
                 )
                 provider_quality_warnings: list[str] = []
                 provider_quality_requires_source_lock = False
-                if (
-                    req.fidelity_policy == "precise"
-                    and severe_macro_redesign
-                    and not scene_drift_requires_source_lock
-                ):
+                if req.fidelity_policy == "precise" and severe_macro_redesign and not scene_drift_requires_source_lock:
                     provider_quality_requires_source_lock = True
                     provider_quality_warnings.append(
                         "The provider materially changed macro design geometry under "
@@ -4492,10 +4166,7 @@ class Direct3DRenderService:
                     provider_analysis_image,
                     capture.normalized_proposal_mask,
                 )
-                if (
-                    not visual_change.passed
-                    and not scene_drift_requires_source_lock
-                ):
+                if not visual_change.passed and not scene_drift_requires_source_lock:
                     provider_quality_requires_source_lock = True
                     provider_quality_warnings.append(
                         "The provider result was too close to a colour grade to prove "
@@ -4505,12 +4176,9 @@ class Direct3DRenderService:
 
                 # Dense noise can satisfy directed source recall by chance and
                 # is not useful even as a review candidate.
-                if (
-                    not scene_drift_requires_source_lock
-                    and (
-                        macro_fidelity.candidate_coarse_edge_precision < 0.18
-                        or macro_fidelity.candidate_coarse_edge_density_ratio > 5.5
-                    )
+                if not scene_drift_requires_source_lock and (
+                    macro_fidelity.candidate_coarse_edge_precision < 0.18
+                    or macro_fidelity.candidate_coarse_edge_density_ratio > 5.5
                 ):
                     provider_quality_requires_source_lock = True
                     provider_quality_warnings.append(
@@ -4518,20 +4186,12 @@ class Direct3DRenderService:
                         "returned image uses only source-owned spatial pixels."
                     )
 
-                scene_source_lock_required = (
-                    scene_drift_requires_source_lock
-                    or provider_quality_requires_source_lock
-                )
+                scene_source_lock_required = scene_drift_requires_source_lock or provider_quality_requires_source_lock
 
                 outcome: Literal["accepted", "review_required"] = "accepted"
                 warnings: list[str] = list(provider_quality_warnings)
-                if (
-                    capture.normalized_instance_id is None
-                    or not req.instance_id_manifest
-                ):
-                    raise Direct3DValidationError(
-                        "Scene output requires exact instance inventory"
-                    )
+                if capture.normalized_instance_id is None or not req.instance_id_manifest:
+                    raise Direct3DValidationError("Scene output requires exact instance inventory")
 
                 def assess_returned_scene(
                     candidate: Image.Image,
@@ -4574,9 +4234,7 @@ class Direct3DRenderService:
                         missing_instance_ids,
                         admit_building_interiors=False,
                     )
-                    safe_presence, safe_unsupported = assess_returned_scene(
-                        presentation_normalized
-                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
                 else:
                     # Keep the registered full-frame AI finish whenever the
                     # authoritative inventory gates accept it. If the provider
@@ -4584,13 +4242,9 @@ class Direct3DRenderService:
                     # restore only those bounded regions from source phase so
                     # the surrounding Google Tiles treatment and public-realm
                     # finish survive.
-                    presentation_normalized = (
-                        provider_analysis_image.convert("RGB").copy()
-                    )
+                    presentation_normalized = provider_analysis_image.convert("RGB").copy()
                     safety_strategy = "provider_full_scene"
-                    safe_presence, safe_unsupported = assess_returned_scene(
-                        presentation_normalized
-                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
                     if not safe_presence.passed or not safe_unsupported.passed:
                         (
                             presentation_normalized,
@@ -4607,20 +4261,9 @@ class Direct3DRenderService:
                             set(safe_presence.missing_instance_ids),
                         )
                         safety_strategy = "provider_full_scene_local_repairs"
-                        safe_presence, safe_unsupported = assess_returned_scene(
-                            presentation_normalized
-                        )
-                        local_repair_exceeded_limit = (
-                            local_repair_coverage
-                            > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
-                        )
-                    if (
-                        not local_repair_exceeded_limit
-                        and (
-                            not safe_presence.passed
-                            or not safe_unsupported.passed
-                        )
-                    ):
+                        safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
+                        local_repair_exceeded_limit = local_repair_coverage > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
+                    if not local_repair_exceeded_limit and (not safe_presence.passed or not safe_unsupported.passed):
                         (
                             presentation_normalized,
                             _source_phase,
@@ -4637,36 +4280,22 @@ class Direct3DRenderService:
                         )
                         local_repair_coverage = min(
                             1.0,
-                            (local_repair_coverage or 0.0)
-                            + second_repair_coverage,
+                            (local_repair_coverage or 0.0) + second_repair_coverage,
                         )
-                        local_repair_exceeded_limit = (
-                            local_repair_coverage
-                            > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
-                        )
-                        safe_presence, safe_unsupported = assess_returned_scene(
-                            presentation_normalized
-                        )
-                    if (
-                        local_repair_exceeded_limit
-                        or not safe_presence.passed
-                        or not safe_unsupported.passed
-                    ):
-                        presentation_normalized, _source_phase = (
-                            _balanced_scene_hybrid(
-                                capture.normalized_beauty,
-                                provider_analysis_image,
-                                capture.normalized_object_id,
-                                req.object_id_manifest,
-                                capture.normalized_instance_id,
-                                req.instance_id_manifest,
-                                missing_instance_ids,
-                            )
+                        local_repair_exceeded_limit = local_repair_coverage > _MAX_SCENE_LOCAL_REPAIR_COVERAGE
+                        safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
+                    if local_repair_exceeded_limit or not safe_presence.passed or not safe_unsupported.passed:
+                        presentation_normalized, _source_phase = _balanced_scene_hybrid(
+                            capture.normalized_beauty,
+                            provider_analysis_image,
+                            capture.normalized_object_id,
+                            req.object_id_manifest,
+                            capture.normalized_instance_id,
+                            req.instance_id_manifest,
+                            missing_instance_ids,
                         )
                         safety_strategy = "source_envelope_building_interiors"
-                        safe_presence, safe_unsupported = assess_returned_scene(
-                            presentation_normalized
-                        )
+                        safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
                     if not safe_presence.passed or not safe_unsupported.passed:
                         safety_strategy = "global_tone_with_safe_building_interiors"
                         presentation_normalized = _source_locked_scene_fallback(
@@ -4677,9 +4306,7 @@ class Direct3DRenderService:
                             missing_instance_ids,
                             admit_building_interiors=True,
                         )
-                        safe_presence, safe_unsupported = assess_returned_scene(
-                            presentation_normalized
-                        )
+                        safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
 
                 if not safe_presence.passed or not safe_unsupported.passed:
                     safety_strategy = "global_tone_only"
@@ -4691,21 +4318,15 @@ class Direct3DRenderService:
                         missing_instance_ids,
                         admit_building_interiors=False,
                     )
-                    safe_presence, safe_unsupported = assess_returned_scene(
-                        presentation_normalized
-                    )
+                    safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
 
                 if not safe_presence.passed or not safe_unsupported.passed:
                     # The exact authoritative capture is the deterministic last
                     # resort after a paid provider response. It prevents both an
                     # unsafe return and an avoidable post-generation hard block.
                     safety_strategy = "authoritative_source"
-                    presentation_normalized = (
-                        capture.normalized_beauty.convert("RGB").copy()
-                    )
-                    safe_presence, safe_unsupported = assess_returned_scene(
-                        presentation_normalized
-                    )
+                    presentation_normalized = capture.normalized_beauty.convert("RGB").copy()
+                    safe_presence, safe_unsupported = assess_returned_scene(presentation_normalized)
 
                 if not safe_presence.passed or not safe_unsupported.passed:
                     raise Direct3DValidationError(
@@ -4791,13 +4412,9 @@ class Direct3DRenderService:
                         "the source and exact instance inventory."
                     )
                     if not macro_fidelity.passed:
-                        warnings.append(
-                            "The expressive render materially reinterpreted source edges."
-                        )
+                        warnings.append("The expressive render materially reinterpreted source edges.")
                     if not instance_presence.passed:
-                        warnings.append(
-                            "At least one authored instance has weak source-presence evidence."
-                        )
+                        warnings.append("At least one authored instance has weak source-presence evidence.")
                     if not unsupported_structure.passed:
                         warnings.append(
                             "Unsupported coarse structures were repaired against the "
@@ -4825,10 +4442,7 @@ class Direct3DRenderService:
                     "provider_full_scene",
                     "provider_full_scene_local_repairs",
                 }
-                if (
-                    provider_spatial_pixels_retained
-                    and not returned_visual_change.passed
-                ):
+                if provider_spatial_pixels_retained and not returned_visual_change.passed:
                     outcome = "review_required"
                     warnings.append(
                         "The inventory-safe returned image did not retain enough "
@@ -4845,10 +4459,11 @@ class Direct3DRenderService:
                 exterior = np.asarray(capture.source_proposal_mask.convert("L")) == 0
                 exterior_count = int(np.count_nonzero(exterior))
                 exterior_max_delta = (
-                    int(np.max(np.abs(
-                        output_pixels[exterior].astype(np.int16)
-                        - source_pixels[exterior].astype(np.int16)
-                    )))
+                    int(
+                        np.max(
+                            np.abs(output_pixels[exterior].astype(np.int16) - source_pixels[exterior].astype(np.int16))
+                        )
+                    )
                     if exterior_count
                     else 0
                 )
@@ -4862,27 +4477,19 @@ class Direct3DRenderService:
                         "score": registration.score,
                         "score_metric": registration.score_metric,
                         "photometric_score": registration.photometric_score,
-                        "structural_context_score": (
-                            registration.structural_context_score
-                        ),
+                        "structural_context_score": (registration.structural_context_score),
                         "translation_x_px": registration.translation_x_px,
                         "translation_y_px": registration.translation_y_px,
                         "translation_norm_px": scene_translation_norm_px,
                         "rotation_degrees": registration.rotation_degrees,
-                        "maximum_translation_norm_px": (
-                            scene_review_translation_px
-                        ),
-                        "maximum_abs_rotation_degrees": (
-                            scene_review_rotation_degrees
-                        ),
+                        "maximum_translation_norm_px": (scene_review_translation_px),
+                        "maximum_abs_rotation_degrees": (scene_review_rotation_degrees),
                     }
                     if registration is not None
                     else None
                 )
                 visual_change_diagnostics = (
-                    _visual_change_diagnostics(returned_visual_change)
-                    if returned_visual_change.passed
-                    else None
+                    _visual_change_diagnostics(returned_visual_change) if returned_visual_change.passed else None
                 )
                 output_png = _png_bytes(presentation)
                 return Direct3DServiceResult(
@@ -4895,45 +4502,24 @@ class Direct3DRenderService:
                     warnings=tuple(warnings),
                     diagnostics={
                         **common_diagnostics,
-                        "view_lock": (
-                            "source_pixel_locked"
-                            if returned_source_pixel_locked
-                            else "camera_registered"
-                        ),
-                        "context_restyled": (
-                            provider_spatial_pixels_retained
-                            and returned_visual_change.passed
-                        ),
+                        "view_lock": ("source_pixel_locked" if returned_source_pixel_locked else "camera_registered"),
+                        "context_restyled": (provider_spatial_pixels_retained and returned_visual_change.passed),
                         "provider_first": provider_spatial_pixels_retained,
-                        "provider_spatial_pixels_retained": (
-                            provider_spatial_pixels_retained
-                        ),
+                        "provider_spatial_pixels_retained": (provider_spatial_pixels_retained),
                         "provider_raw_structural_edge_fidelity": provider_edge_diagnostics,
-                        "provider_raw_instance_source_presence": (
-                            _instance_presence_diagnostics(instance_presence)
-                        ),
+                        "provider_raw_instance_source_presence": (_instance_presence_diagnostics(instance_presence)),
                         "provider_raw_unsupported_structure": (
-                            _unsupported_structure_diagnostics(
-                                unsupported_structure
-                            )
+                            _unsupported_structure_diagnostics(unsupported_structure)
                         ),
                         "returned_safety_strategy": safety_strategy,
                         "local_repair_coverage": local_repair_coverage,
-                        "maximum_local_repair_coverage": (
-                            _MAX_SCENE_LOCAL_REPAIR_COVERAGE
-                        ),
+                        "maximum_local_repair_coverage": (_MAX_SCENE_LOCAL_REPAIR_COVERAGE),
                         "macro_design_fidelity": _macro_diagnostics(
                             macro_fidelity,
                             req.fidelity_policy,
                         ),
-                        "instance_source_presence": (
-                            _instance_presence_diagnostics(safe_presence)
-                        ),
-                        "unsupported_structure": (
-                            _unsupported_structure_diagnostics(
-                                safe_unsupported
-                            )
-                        ),
+                        "instance_source_presence": (_instance_presence_diagnostics(safe_presence)),
+                        "unsupported_structure": (_unsupported_structure_diagnostics(safe_unsupported)),
                         "visual_change": visual_change_diagnostics,
                         "registration": registration_diagnostics,
                         "exterior_pixel_count": exterior_count,
@@ -4964,14 +4550,12 @@ class Direct3DRenderService:
                     else ""
                 )
                 component_detail = (
-                    ", weakest object recall "
-                    f"{edge_fidelity.semantic_component_min_recall:.3f}"
+                    ", weakest object recall " f"{edge_fidelity.semantic_component_min_recall:.3f}"
                     if edge_fidelity.semantic_component_min_recall is not None
                     else ""
                 )
                 building_detail = (
-                    ", building-internal recall "
-                    f"{edge_fidelity.building_internal_edge_recall:.3f}"
+                    ", building-internal recall " f"{edge_fidelity.building_internal_edge_recall:.3f}"
                     if edge_fidelity.building_internal_edge_recall is not None
                     else ""
                 )
@@ -5012,15 +4596,11 @@ class Direct3DRenderService:
                     "context_coverage": 1.0 - capture.proposal_coverage,
                     "object_id_attached": capture.normalized_object_id is not None,
                     "object_id_coverage": capture.object_id_coverage,
-                    "object_id_proposal_recall": (
-                        capture.object_id_proposal_recall
-                    ),
+                    "object_id_proposal_recall": (capture.object_id_proposal_recall),
                     "object_id_proposal_iou": capture.object_id_proposal_iou,
                     "minimum_object_id_proposal_recall": None,
                     "minimum_object_id_proposal_iou": None,
-                    "instance_id_attached": (
-                        capture.normalized_instance_id is not None
-                    ),
+                    "instance_id_attached": (capture.normalized_instance_id is not None),
                     "instance_count": capture.instance_count,
                     "instance_source_presence": None,
                     "unsupported_structure": None,
@@ -5059,9 +4639,7 @@ class Direct3DRenderService:
                                 "fine": gain_caps[0],
                                 "medium": gain_caps[1],
                             }
-                            for semantic_class, gain_caps in sorted(
-                                _FINISH_DETAIL_ROLE_GAIN_CAPS.items()
-                            )
+                            for semantic_class, gain_caps in sorted(_FINISH_DETAIL_ROLE_GAIN_CAPS.items())
                         },
                         "microtexture_sigma_px": max(
                             0.4,
@@ -5071,12 +4649,8 @@ class Direct3DRenderService:
                                 capture.normalized_beauty.height,
                             ),
                         ),
-                        "microtexture_correction_clip": (
-                            _FINISH_MICROTEXTURE_CORRECTION_CLIP
-                        ),
-                        "microtexture_role_gain_caps": dict(
-                            _FINISH_MICROTEXTURE_ROLE_GAIN_CAPS
-                        ),
+                        "microtexture_correction_clip": (_FINISH_MICROTEXTURE_CORRECTION_CLIP),
+                        "microtexture_role_gain_caps": dict(_FINISH_MICROTEXTURE_ROLE_GAIN_CAPS),
                         "provider_high_frequency_phase_transferred": False,
                         **finish_fusion.diagnostics,
                     },
@@ -5091,27 +4665,17 @@ class Direct3DRenderService:
                         "coarse_edge_recall": edge_fidelity.coarse_edge_recall,
                         "semantic_edge_pixels": edge_fidelity.semantic_edge_pixels,
                         "semantic_edge_recall": edge_fidelity.semantic_edge_recall,
-                        "semantic_component_min_recall": (
-                            edge_fidelity.semantic_component_min_recall
-                        ),
-                        "building_internal_edge_pixels": (
-                            edge_fidelity.building_internal_edge_pixels
-                        ),
-                        "building_internal_edge_recall": (
-                            edge_fidelity.building_internal_edge_recall
-                        ),
-                        "reference_edge_p90_distance_px": (
-                            edge_fidelity.reference_edge_p90_distance_px
-                        ),
+                        "semantic_component_min_recall": (edge_fidelity.semantic_component_min_recall),
+                        "building_internal_edge_pixels": (edge_fidelity.building_internal_edge_pixels),
+                        "building_internal_edge_recall": (edge_fidelity.building_internal_edge_recall),
+                        "reference_edge_p90_distance_px": (edge_fidelity.reference_edge_p90_distance_px),
                     },
                     "registration": {
                         "method": registration.method,
                         "score": registration.score,
                         "score_metric": registration.score_metric,
                         "photometric_score": registration.photometric_score,
-                        "structural_context_score": (
-                            registration.structural_context_score
-                        ),
+                        "structural_context_score": (registration.structural_context_score),
                         "translation_x_px": registration.translation_x_px,
                         "translation_y_px": registration.translation_y_px,
                         "rotation_degrees": registration.rotation_degrees,

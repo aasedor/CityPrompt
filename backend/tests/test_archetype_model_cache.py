@@ -54,9 +54,13 @@ def test_normalize_same_key_from_both_variant_forms():
         "development_archetype_id": "glass_tower_modern",
         "development_selected_variant_id": "glass_tower_modern_variant_1",
     }
-    assert normalize_cache_key(baked) == normalize_cache_key(selected) == (
-        "glass_tower_modern",
-        "variant_1",
+    assert (
+        normalize_cache_key(baked)
+        == normalize_cache_key(selected)
+        == (
+            "glass_tower_modern",
+            "variant_1",
+        )
     )
 
 
@@ -80,11 +84,7 @@ def db_session():
     session = _get_sync_session()
     created_archetypes: list[str] = []
     yield session, created_archetypes
-    session.execute(
-        delete(ArchetypeModelCache).where(
-            ArchetypeModelCache.archetype_id.in_(created_archetypes)
-        )
-    )
+    session.execute(delete(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id.in_(created_archetypes)))
     session.commit()
     session.close()
 

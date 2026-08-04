@@ -4,6 +4,7 @@ Revision ID: 013_add_analytics_indexes
 Revises: 012_add_last_login_at
 Create Date: 2026-02-28
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -18,9 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def _index_exists(name: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = :name)"
-    ), {"name": name})
+    result = conn.execute(sa.text("SELECT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = :name)"), {"name": name})
     return result.scalar()
 
 

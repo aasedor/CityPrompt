@@ -73,9 +73,16 @@ def _road_width(tags: dict[str, str]) -> float:
             pass
     highway = tags.get("highway", "")
     widths = {
-        "motorway": 14, "trunk": 12, "primary": 10, "secondary": 8,
-        "tertiary": 7, "residential": 6, "service": 4, "footway": 2,
-        "cycleway": 2, "path": 1.5,
+        "motorway": 14,
+        "trunk": 12,
+        "primary": 10,
+        "secondary": 8,
+        "tertiary": 7,
+        "residential": 6,
+        "service": 4,
+        "footway": 2,
+        "cycleway": 2,
+        "path": 1.5,
     }
     return widths.get(highway, 6.0)
 
@@ -93,9 +100,7 @@ class OSMContextFetcher:
         self.timeout = timeout
         self.feature_caps = {**DEFAULT_FEATURE_CAPS, **(feature_caps or {})}
 
-    async def fetch(
-        self, polygon: Polygon, buffer_m: float = 50
-    ) -> dict[str, Any]:
+    async def fetch(self, polygon: Polygon, buffer_m: float = 50) -> dict[str, Any]:
         """Fetch OSM features for the given polygon + buffer.
 
         Returns dict with keys: buildings, roads, water, parks, fetched_at, buffer_m
@@ -129,9 +134,7 @@ out skel qt;
 
         return self._parse_response(data, polygon)
 
-    def _parse_response(
-        self, data: dict[str, Any], original_polygon: Polygon
-    ) -> dict[str, Any]:
+    def _parse_response(self, data: dict[str, Any], original_polygon: Polygon) -> dict[str, Any]:
         """Parse Overpass JSON response into categorized feature lists."""
         elements = data.get("elements", [])
 
@@ -146,8 +149,6 @@ out skel qt;
         water: list[dict[str, Any]] = []
         parks: list[dict[str, Any]] = []
 
-        centroid = original_polygon.centroid
-
         for el in elements:
             if el["type"] != "way":
                 continue
@@ -161,42 +162,53 @@ out skel qt;
                 if len(coords) < 3:
                     continue
                 height = _parse_height(tags)
-                buildings.append({
-                    "osm_id": el["id"],
-                    "coordinates": coords,
-                    "height_m": height,
-                    "building_type": tags.get("building", "yes"),
-                    "name": tags.get("name"),
-                    "levels": tags.get("building:levels"),
-                })
+                buildings.append(
+                    {
+                        "osm_id": el["id"],
+                        "coordinates": coords,
+                        "height_m": height,
+                        "building_type": tags.get("building", "yes"),
+                        "name": tags.get("name"),
+                        "levels": tags.get("building:levels"),
+                    }
+                )
             elif tags.get("highway"):
-                roads.append({
-                    "osm_id": el["id"],
-                    "coordinates": coords,
-                    "width_m": _road_width(tags),
-                    "road_type": tags.get("highway", "residential"),
-                    "name": tags.get("name"),
-                    "surface": tags.get("surface"),
-                    "lanes": tags.get("lanes"),
-                })
+                roads.append(
+                    {
+                        "osm_id": el["id"],
+                        "coordinates": coords,
+                        "width_m": _road_width(tags),
+                        "road_type": tags.get("highway", "residential"),
+                        "name": tags.get("name"),
+                        "surface": tags.get("surface"),
+                        "lanes": tags.get("lanes"),
+                    }
+                )
             elif tags.get("natural") == "water" or tags.get("waterway"):
-                water.append({
-                    "osm_id": el["id"],
-                    "coordinates": coords,
-                    "water_type": tags.get("waterway") or "water",
-                    "name": tags.get("name"),
-                })
+                water.append(
+                    {
+                        "osm_id": el["id"],
+                        "coordinates": coords,
+                        "water_type": tags.get("waterway") or "water",
+                        "name": tags.get("name"),
+                    }
+                )
             elif tags.get("leisure") == "park" or tags.get("landuse") == "grass":
-                parks.append({
-                    "osm_id": el["id"],
-                    "coordinates": coords,
-                    "park_type": tags.get("leisure") or tags.get("landuse", "park"),
-                    "name": tags.get("name"),
-                })
+                parks.append(
+                    {
+                        "osm_id": el["id"],
+                        "coordinates": coords,
+                        "park_type": tags.get("leisure") or tags.get("landuse", "park"),
+                        "name": tags.get("name"),
+                    }
+                )
 
         logger.info(
             "OSM context fetched: %d buildings, %d roads, %d water, %d parks",
-            len(buildings), len(roads), len(water), len(parks),
+            len(buildings),
+            len(roads),
+            len(water),
+            len(parks),
         )
 
         return {

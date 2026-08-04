@@ -31,7 +31,14 @@ _FAMILIES_PATH = Path(__file__).resolve().parents[2] / "data" / "archetype_famil
 # Mirror of resolvePlanZoneArchetypes.ts AESTHETIC_FAMILIES — keep in sync.
 AESTHETIC_FAMILIES: dict[str, list[str]] = {
     "european": ["parisian", "haussmann", "amsterdam", "mediterranean", "neoclassical", "classical"],
-    "heritage": ["historical", "brownstone", "industrial_brick", "traditional_vernacular", "neoclassical", "romanesque"],
+    "heritage": [
+        "historical",
+        "brownstone",
+        "industrial_brick",
+        "traditional_vernacular",
+        "neoclassical",
+        "romanesque",
+    ],
     "historic": ["historical", "brownstone", "traditional_vernacular", "neoclassical", "romanesque"],
     "modern": ["contemporary_urban", "contemporary_midrise", "modernist", "minimalist", "glass_tower_modern"],
     "contemporary": ["contemporary_urban", "contemporary_midrise", "japanese_contemporary", "modernist"],
@@ -107,7 +114,9 @@ def _stable_pick(candidates: list[dict]) -> dict | None:
 
 
 def resolve_building_archetype(
-    development_type: object, aesthetic: object, floors: object,
+    development_type: object,
+    aesthetic: object,
+    floors: object,
     prefer_family: str | None = None,
     allowed_archetype_ids: Collection[str] | None = None,
     supported_floors_by_archetype: Mapping[str, Collection[int]] | None = None,
@@ -160,6 +169,7 @@ def resolve_building_archetype(
         return None
 
     if aesthetic_n:
+
         def _cat(e: dict) -> str:
             return _norm(e["aesthetic_category"])
 
@@ -174,11 +184,7 @@ def resolve_building_archetype(
                 for term in terms
             ]
             if family_terms:
-                familial = [
-                    e
-                    for e in pool
-                    if _cat(e) and any(t in _cat(e) or _cat(e) in t for t in family_terms)
-                ]
+                familial = [e for e in pool if _cat(e) and any(t in _cat(e) or _cat(e) in t for t in family_terms)]
                 if familial:
                     pool = familial
 
@@ -200,6 +206,7 @@ def resolve_building_archetype(
         if exact:
             pool = exact
         else:
+
             def _lego_floor_distance(entry: dict) -> int:
                 return min(abs(value - floors_n) for value in floor_map[entry["id"]])
 
@@ -210,6 +217,7 @@ def resolve_building_archetype(
         if in_range:
             pool = in_range
         else:
+
             def _distance(e: dict) -> float:
                 return min(abs(_min_f(e) - floors_n), abs(_max_f(e) - floors_n))
 
@@ -242,11 +250,7 @@ def closest_supported_floor(
     """
     if not archetype_id or supported_floors_by_archetype is None:
         return None
-    available = sorted({
-        int(value)
-        for value in supported_floors_by_archetype.get(archetype_id, ())
-        if int(value) >= 1
-    })
+    available = sorted({int(value) for value in supported_floors_by_archetype.get(archetype_id, ()) if int(value) >= 1})
     if not available:
         return None
     try:

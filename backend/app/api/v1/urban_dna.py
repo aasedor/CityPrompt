@@ -71,9 +71,7 @@ class CapabilitiesResponse(BaseModel):
     dna_fields: list[str]
 
 
-async def _load_zone_checked(
-    zone_id: uuid.UUID, user: User, db: AsyncSession, required: str
-) -> SiteZone:
+async def _load_zone_checked(zone_id: uuid.UUID, user: User, db: AsyncSession, required: str) -> SiteZone:
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = result.scalar_one_or_none()
     if zone is None:
@@ -421,9 +419,7 @@ async def apply_scenario(
     if row is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
 
-    snapshot_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
-    )
+    snapshot_result = await db.execute(select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id))
     snapshot = snapshot_result.scalar_one_or_none()
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -499,9 +495,7 @@ async def delete_scenario(
     if row is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
 
-    snapshot_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
-    )
+    snapshot_result = await db.execute(select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id))
     snapshot = snapshot_result.scalar_one_or_none()
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -557,7 +551,9 @@ async def delete_scenario(
     await db.commit()
     logger.info(
         "Deleted custom scenario %s (%s) and %d plan zones",
-        row.scenario_id, scenario_row_id, len(plan_zones),
+        row.scenario_id,
+        scenario_row_id,
+        len(plan_zones),
     )
     return Response(status_code=204)
 
@@ -588,9 +584,7 @@ async def generate_plan(
     if row is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
 
-    snapshot_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
-    )
+    snapshot_result = await db.execute(select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id))
     snapshot = snapshot_result.scalar_one_or_none()
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -627,11 +621,13 @@ async def generate_plan(
 
     payload = dict(row.payload)
     plan = dict(payload.get("plan") or {})
-    plan.update({
-        "status": "queued",
-        "locks": req.locks,
-        "queued_at": datetime.now(timezone.utc).isoformat(),
-    })
+    plan.update(
+        {
+            "status": "queued",
+            "locks": req.locks,
+            "queued_at": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     payload["plan"] = plan
     row.payload = payload
     await db.commit()
@@ -656,9 +652,7 @@ async def _load_plan_context(
     row = result.scalar_one_or_none()
     if row is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
-    snapshot_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
-    )
+    snapshot_result = await db.execute(select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id))
     snapshot = snapshot_result.scalar_one_or_none()
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -671,9 +665,7 @@ async def _load_plan_context(
     if not row.payload or (row.payload.get("plan") or {}).get("status") != "complete":
         raise HTTPException(status_code=409, detail="Draw the plan before exporting it")
 
-    zones_result = await db.execute(
-        select(SiteZone).where(SiteZone.project_id == snapshot.project_id)
-    )
+    zones_result = await db.execute(select(SiteZone).where(SiteZone.project_id == snapshot.project_id))
     plan_zones = []
     for zone in zones_result.scalars().all():
         props = zone.properties or {}
@@ -683,11 +675,13 @@ async def _load_plan_context(
         if role not in ("street", "open_space", "courtyard", "building"):
             continue
         shape = to_shape(zone.geometry)
-        plan_zones.append({
-            "role": role,
-            "coordinates": [[float(x), float(y)] for x, y in shape.exterior.coords[:-1]],
-            "floors": props.get("floors"),
-        })
+        plan_zones.append(
+            {
+                "role": role,
+                "coordinates": [[float(x), float(y)] for x, y in shape.exterior.coords[:-1]],
+                "floors": props.get("floors"),
+            }
+        )
     return row, snapshot, to_shape(boundary_zone.geometry), plan_zones
 
 
@@ -715,8 +709,9 @@ async def plan_sheet(
         snapshot_meta={
             "snapshot_id": str(snapshot.id),
             "city_id": snapshot.city_id,
-            "overall_confidence": float(snapshot.overall_confidence)
-            if snapshot.overall_confidence is not None else None,
+            "overall_confidence": (
+                float(snapshot.overall_confidence) if snapshot.overall_confidence is not None else None
+            ),
         },
     )
     return HTMLResponse(content=sheet)
@@ -741,9 +736,7 @@ async def hearing_pack(
     diagram_png = render_plan_diagram_png(boundary_shape, plan_zones)
 
     # Sibling scenarios of the same snapshot for the comparison table.
-    siblings_result = await db.execute(
-        select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id == row.snapshot_id)
-    )
+    siblings_result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id == row.snapshot_id))
     sibling_scenarios = [
         {"label": s.label, "scenario_id": s.scenario_id, "payload": s.payload or {}}
         for s in siblings_result.scalars().all()
@@ -776,11 +769,13 @@ async def hearing_pack(
                 continue
             try:
                 obj = s3_client.get_object(Bucket=settings.s3_bucket_name, Key=file_key)
-                renders.append({
-                    "png": obj["Body"].read(),
-                    "style": entry.get("style"),
-                    "created_at": entry.get("created_at"),
-                })
+                renders.append(
+                    {
+                        "png": obj["Body"].read(),
+                        "style": entry.get("style"),
+                        "created_at": entry.get("created_at"),
+                    }
+                )
             except Exception as exc:  # noqa: BLE001 — a missing file must not sink the pack
                 logger.warning("Hearing pack: could not fetch render %s: %s", file_key, exc)
 
@@ -794,8 +789,9 @@ async def hearing_pack(
         snapshot_meta={
             "snapshot_id": str(snapshot.id),
             "city_id": snapshot.city_id,
-            "overall_confidence": float(snapshot.overall_confidence)
-            if snapshot.overall_confidence is not None else None,
+            "overall_confidence": (
+                float(snapshot.overall_confidence) if snapshot.overall_confidence is not None else None
+            ),
         },
         diagram_png=diagram_png,
         renders=renders,

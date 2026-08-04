@@ -31,11 +31,14 @@ async def test_register_success(client, mock_db):
 
     mock_db.refresh = AsyncMock(side_effect=fake_refresh)
 
-    response = await client.post("/api/v1/auth/register", json={
-        "email": "new@example.com",
-        "password": "securepassword",
-        "full_name": "New User",
-    })
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "new@example.com",
+            "password": "securepassword",
+            "full_name": "New User",
+        },
+    )
 
     assert response.status_code == 201
     data = response.json()
@@ -50,10 +53,13 @@ async def test_register_duplicate_email(client, mock_db):
     mock_result.scalar_one_or_none.return_value = existing
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/register", json={
-        "email": "taken@example.com",
-        "password": "securepassword",
-    })
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "taken@example.com",
+            "password": "securepassword",
+        },
+    )
 
     assert response.status_code == 409
     assert "already registered" in response.json()["detail"]
@@ -61,10 +67,13 @@ async def test_register_duplicate_email(client, mock_db):
 
 @pytest.mark.anyio
 async def test_register_short_password(client):
-    response = await client.post("/api/v1/auth/register", json={
-        "email": "a@b.com",
-        "password": "short",
-    })
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "a@b.com",
+            "password": "short",
+        },
+    )
     assert response.status_code == 422
 
 
@@ -78,10 +87,13 @@ async def test_login_success(client, mock_db):
     mock_result.scalar_one_or_none.return_value = user
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/login", json={
-        "email": "user@example.com",
-        "password": "correctpass",
-    })
+    response = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "user@example.com",
+            "password": "correctpass",
+        },
+    )
 
     assert response.status_code == 200
     data = response.json()
@@ -98,10 +110,13 @@ async def test_login_wrong_password(client, mock_db):
     mock_result.scalar_one_or_none.return_value = user
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/login", json={
-        "email": "user@example.com",
-        "password": "wrongpass",
-    })
+    response = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "user@example.com",
+            "password": "wrongpass",
+        },
+    )
 
     assert response.status_code == 401
 
@@ -112,10 +127,13 @@ async def test_login_nonexistent_user(client, mock_db):
     mock_result.scalar_one_or_none.return_value = None
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/login", json={
-        "email": "nobody@example.com",
-        "password": "any",
-    })
+    response = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "nobody@example.com",
+            "password": "any",
+        },
+    )
 
     assert response.status_code == 401
 
@@ -130,10 +148,13 @@ async def test_login_inactive_user(client, mock_db):
     mock_result.scalar_one_or_none.return_value = user
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/login", json={
-        "email": "user@example.com",
-        "password": "pass12345",
-    })
+    response = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "user@example.com",
+            "password": "pass12345",
+        },
+    )
 
     assert response.status_code == 403
 
@@ -164,9 +185,12 @@ async def test_refresh_token_success(client, mock_db, test_user):
     mock_result.scalar_one_or_none.return_value = test_user
     mock_db.execute = AsyncMock(return_value=mock_result)
 
-    response = await client.post("/api/v1/auth/refresh", json={
-        "refresh_token": refresh,
-    })
+    response = await client.post(
+        "/api/v1/auth/refresh",
+        json={
+            "refresh_token": refresh,
+        },
+    )
 
     assert response.status_code == 200
     data = response.json()
@@ -178,8 +202,11 @@ async def test_refresh_token_success(client, mock_db, test_user):
 async def test_refresh_with_access_token_fails(client, mock_db, test_user):
     access = create_access_token(str(test_user.id))
 
-    response = await client.post("/api/v1/auth/refresh", json={
-        "refresh_token": access,
-    })
+    response = await client.post(
+        "/api/v1/auth/refresh",
+        json={
+            "refresh_token": access,
+        },
+    )
 
     assert response.status_code == 401

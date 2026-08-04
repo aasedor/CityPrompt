@@ -115,9 +115,7 @@ class PublicRealmFamilyCapability(_FrozenModel):
     kind: PublicRealmKind
     title: str = Field(min_length=1)
     generator: PublicRealmGenerator
-    terrain_policy: Literal["terrain_drape_and_metric_assemblies"] = (
-        "terrain_drape_and_metric_assemblies"
-    )
+    terrain_policy: Literal["terrain_drape_and_metric_assemblies"] = "terrain_drape_and_metric_assemblies"
     selections: tuple[PublicRealmSelectionCapability, ...]
 
 
@@ -390,30 +388,20 @@ _STREET_APPEARANCE_KITS_BY_ARCHETYPE: dict[str, tuple[str, ...]] = {
         "european_cobblestone_v1",
         "tropical_boulevard_v1",
     ),
-    "yield_street": (
-        "dutch_woonerf_v1",
-    ),
-    "woonerf_shared_street": (
-        "dutch_woonerf_v1",
-    ),
+    "yield_street": ("dutch_woonerf_v1",),
+    "woonerf_shared_street": ("dutch_woonerf_v1",),
     # The source card and the render-locked V1 cohort expose only the Street
     # Manual identity.  Historical backend catalogs accidentally synthesized
     # v1-v3 by applying the generic district palette.
-    "calgary_local": (
-        "calgary_contemporary_native",
-    ),
+    "calgary_local": ("calgary_contemporary_native",),
     # The green-alley V1 render lock is the permeable planted corridor.  The
     # other source-card variants remain manual/legacy until their own kits are
     # reviewed rather than borrowing unrelated district-building identities.
-    "green_alley": (
-        "green_corridor_v1",
-    ),
+    "green_alley": ("green_corridor_v1",),
     # Traditional service-lane v0 is intentionally neutral.  Of the existing
     # reviewed kits, the contemporary local-street palette makes the fewest
     # unsupported claims about heritage, timber, or industrial character.
-    "toronto_laneway": (
-        "calgary_contemporary_native",
-    ),
+    "toronto_laneway": ("calgary_contemporary_native",),
 }
 
 
@@ -423,27 +411,14 @@ _STREET_APPEARANCE_KITS_BY_ARCHETYPE: dict[str, tuple[str, ...]] = {
 # finite historical set to the reviewed default; every other unknown variant
 # must continue to fail closed.
 _LEGACY_STREET_VARIANT_NORMALIZATION: dict[tuple[str, str], str] = {
+    **{("yield_street", f"yield_street_v{index}"): "yield_street_v0" for index in range(1, 4)},
     **{
-        ("yield_street", f"yield_street_v{index}"): "yield_street_v0"
+        ("woonerf_shared_street", f"woonerf_shared_street_v{index}"): "woonerf_shared_street_v0"
         for index in range(1, 4)
     },
-    **{
-        ("woonerf_shared_street", f"woonerf_shared_street_v{index}"):
-            "woonerf_shared_street_v0"
-        for index in range(1, 4)
-    },
-    **{
-        ("calgary_local", f"calgary_local_v{index}"): "calgary_local_v0"
-        for index in range(1, 4)
-    },
-    **{
-        ("green_alley", f"green_alley_v{index}"): "green_alley_v0"
-        for index in range(1, 4)
-    },
-    **{
-        ("toronto_laneway", f"toronto_laneway_v{index}"): "toronto_laneway_v0"
-        for index in range(1, 4)
-    },
+    **{("calgary_local", f"calgary_local_v{index}"): "calgary_local_v0" for index in range(1, 4)},
+    **{("green_alley", f"green_alley_v{index}"): "green_alley_v0" for index in range(1, 4)},
+    **{("toronto_laneway", f"toronto_laneway_v{index}"): "toronto_laneway_v0" for index in range(1, 4)},
 }
 
 
@@ -460,9 +435,7 @@ def normalize_legacy_ai_street_variant_properties(
     normalized = dict(properties or {})
     archetype_id = str(normalized.get("road_archetype_id") or "").strip()
     variant_id = str(normalized.get("road_selected_variant_id") or "").strip()
-    canonical_variant_id = _LEGACY_STREET_VARIANT_NORMALIZATION.get(
-        (archetype_id, variant_id)
-    )
+    canonical_variant_id = _LEGACY_STREET_VARIANT_NORMALIZATION.get((archetype_id, variant_id))
     if canonical_variant_id is None:
         return normalized, None
     normalized["road_selected_variant_id"] = canonical_variant_id
@@ -786,10 +759,7 @@ def public_realm_capability_fingerprint(
 
 
 def _catalog_prompt(capabilities: tuple[PublicRealmFamilyCapability, ...]) -> str:
-    lines = [
-        "EXECUTABLE PUBLIC REALM LEGO CATALOG "
-        "(select only exact archetype and variant identifiers below):"
-    ]
+    lines = ["EXECUTABLE PUBLIC REALM LEGO CATALOG " "(select only exact archetype and variant identifiers below):"]
     if not capabilities:
         return lines[0] + "\n- No executable public-realm families are available."
     for capability in capabilities:
@@ -797,12 +767,10 @@ def _catalog_prompt(capabilities: tuple[PublicRealmFamilyCapability, ...]) -> st
         for selection in capability.selections:
             sources.setdefault(selection.archetype_id, []).append(selection.variant_id)
         source_text = "; ".join(
-            f"{archetype_id}=[{', '.join(sorted(variants))}]"
-            for archetype_id, variants in sorted(sources.items())
+            f"{archetype_id}=[{', '.join(sorted(variants))}]" for archetype_id, variants in sorted(sources.items())
         )
         lines.append(
-            f"- {capability.family_id}@{capability.family_version}; "
-            f"kind={capability.kind}; sources={source_text}"
+            f"- {capability.family_id}@{capability.family_version}; " f"kind={capability.kind}; sources={source_text}"
         )
     return "\n".join(lines)
 
@@ -816,27 +784,31 @@ def build_public_realm_capability_catalog(
 
     allowed_kinds = set(kinds) if kinds is not None else None
     allowed_families = set(family_ids) if family_ids is not None else None
-    capabilities = tuple(sorted(
-        (
-            capability
-            for capability in _CAPABILITIES
-            if (allowed_kinds is None or capability.kind in allowed_kinds)
-            and (allowed_families is None or capability.family_id in allowed_families)
-        ),
-        key=lambda capability: capability.family_id,
-    ))
+    capabilities = tuple(
+        sorted(
+            (
+                capability
+                for capability in _CAPABILITIES
+                if (allowed_kinds is None or capability.kind in allowed_kinds)
+                and (allowed_families is None or capability.family_id in allowed_families)
+            ),
+            key=lambda capability: capability.family_id,
+        )
+    )
     variants_by_archetype: dict[str, tuple[str, ...]] = {}
-    for archetype_id in sorted({
-        selection.archetype_id
-        for capability in capabilities
-        for selection in capability.selections
-    }):
-        variants_by_archetype[archetype_id] = tuple(sorted({
-            selection.variant_id
-            for capability in capabilities
-            for selection in capability.selections
-            if selection.archetype_id == archetype_id
-        }))
+    for archetype_id in sorted(
+        {selection.archetype_id for capability in capabilities for selection in capability.selections}
+    ):
+        variants_by_archetype[archetype_id] = tuple(
+            sorted(
+                {
+                    selection.variant_id
+                    for capability in capabilities
+                    for selection in capability.selections
+                    if selection.archetype_id == archetype_id
+                }
+            )
+        )
     payload = [capability.model_dump(mode="json") for capability in capabilities]
     return PublicRealmCapabilityCatalog(
         capabilities=capabilities,
@@ -853,12 +825,8 @@ def _family_summary(capability: PublicRealmFamilyCapability) -> dict[str, Any]:
         "family_id": capability.family_id,
         "family_version": capability.family_version,
         "kind": capability.kind,
-        "archetype_ids": sorted({
-            selection.archetype_id for selection in capability.selections
-        }),
-        "variant_ids": sorted({
-            selection.variant_id for selection in capability.selections
-        }),
+        "archetype_ids": sorted({selection.archetype_id for selection in capability.selections}),
+        "variant_ids": sorted({selection.variant_id for selection in capability.selections}),
     }
 
 
@@ -875,11 +843,13 @@ def _compatibility_violations(
     envelope: PublicRealmCompatibility,
 ) -> list[dict[str, Any]]:
     if target.target_type != envelope.target_type:
-        return [{
-            "field": "target.target_type",
-            "requested": target.target_type,
-            "supported": envelope.target_type,
-        }]
+        return [
+            {
+                "field": "target.target_type",
+                "requested": target.target_type,
+                "supported": envelope.target_type,
+            }
+        ]
 
     violations: list[dict[str, Any]] = []
     if isinstance(target, ParkPolygonTarget):
@@ -892,77 +862,87 @@ def _compatibility_violations(
             for width, depth in orientations
         )
         if not axes_fit:
-            violations.append({
-                "field": "target.footprint_m",
-                "requested": [target.width_m, target.depth_m],
-                "supported": {
-                    "width_m": [envelope.min_width_m, envelope.max_width_m],
-                    "depth_m": [envelope.min_depth_m, envelope.max_depth_m],
-                    "quarter_turn": envelope.allow_quarter_turn,
-                },
-            })
+            violations.append(
+                {
+                    "field": "target.footprint_m",
+                    "requested": [target.width_m, target.depth_m],
+                    "supported": {
+                        "width_m": [envelope.min_width_m, envelope.max_width_m],
+                        "depth_m": [envelope.min_depth_m, envelope.max_depth_m],
+                        "quarter_turn": envelope.allow_quarter_turn,
+                    },
+                }
+            )
         if not _in_range(target.area_m2, envelope.min_area_m2, envelope.max_area_m2):
-            violations.append({
-                "field": "target.area_m2",
-                "requested": target.area_m2,
-                "supported": [envelope.min_area_m2, envelope.max_area_m2],
-            })
+            violations.append(
+                {
+                    "field": "target.area_m2",
+                    "requested": target.area_m2,
+                    "supported": [envelope.min_area_m2, envelope.max_area_m2],
+                }
+            )
         aspect_ratio = max(target.width_m, target.depth_m) / min(
             target.width_m,
             target.depth_m,
         )
-        if (
-            envelope.min_aspect_ratio is not None
-            and aspect_ratio < envelope.min_aspect_ratio
-        ):
-            violations.append({
-                "field": "target.aspect_ratio",
-                "requested": round(aspect_ratio, 3),
-                "supported": {"min": envelope.min_aspect_ratio},
-            })
+        if envelope.min_aspect_ratio is not None and aspect_ratio < envelope.min_aspect_ratio:
+            violations.append(
+                {
+                    "field": "target.aspect_ratio",
+                    "requested": round(aspect_ratio, 3),
+                    "supported": {"min": envelope.min_aspect_ratio},
+                }
+            )
     elif isinstance(target, StreetSegmentTarget):
         if not _in_range(
             target.row_width_m,
             envelope.min_row_width_m,
             envelope.max_row_width_m,
         ):
-            violations.append({
-                "field": "target.row_width_m",
-                "requested": target.row_width_m,
-                "supported": [envelope.min_row_width_m, envelope.max_row_width_m],
-            })
+            violations.append(
+                {
+                    "field": "target.row_width_m",
+                    "requested": target.row_width_m,
+                    "supported": [envelope.min_row_width_m, envelope.max_row_width_m],
+                }
+            )
         if not _in_range(target.length_m, envelope.min_length_m, envelope.max_length_m):
-            violations.append({
-                "field": "target.length_m",
-                "requested": target.length_m,
-                "supported": [envelope.min_length_m, envelope.max_length_m],
-            })
+            violations.append(
+                {
+                    "field": "target.length_m",
+                    "requested": target.length_m,
+                    "supported": [envelope.min_length_m, envelope.max_length_m],
+                }
+            )
     else:
         if not _in_range(
             target.approach_row_width_m,
             envelope.min_row_width_m,
             envelope.max_row_width_m,
         ):
-            violations.append({
-                "field": "target.approach_row_width_m",
-                "requested": target.approach_row_width_m,
-                "supported": [envelope.min_row_width_m, envelope.max_row_width_m],
-            })
+            violations.append(
+                {
+                    "field": "target.approach_row_width_m",
+                    "requested": target.approach_row_width_m,
+                    "supported": [envelope.min_row_width_m, envelope.max_row_width_m],
+                }
+            )
         if not _in_range(target.diameter_m, envelope.min_diameter_m, envelope.max_diameter_m):
-            violations.append({
-                "field": "target.diameter_m",
-                "requested": target.diameter_m,
-                "supported": [envelope.min_diameter_m, envelope.max_diameter_m],
-            })
-        if (
-            envelope.supported_arm_counts
-            and target.arm_count not in envelope.supported_arm_counts
-        ):
-            violations.append({
-                "field": "target.arm_count",
-                "requested": target.arm_count,
-                "supported": list(envelope.supported_arm_counts),
-            })
+            violations.append(
+                {
+                    "field": "target.diameter_m",
+                    "requested": target.diameter_m,
+                    "supported": [envelope.min_diameter_m, envelope.max_diameter_m],
+                }
+            )
+        if envelope.supported_arm_counts and target.arm_count not in envelope.supported_arm_counts:
+            violations.append(
+                {
+                    "field": "target.arm_count",
+                    "requested": target.arm_count,
+                    "supported": list(envelope.supported_arm_counts),
+                }
+            )
     return violations
 
 
@@ -998,21 +978,13 @@ def plan_public_realm_recipe(
         capability
         for capability in catalog.capabilities
         if request.preferred_family_id in (None, capability.family_id)
-        and any(
-            selection.archetype_id == request.archetype_id
-            for selection in capability.selections
-        )
+        and any(selection.archetype_id == request.archetype_id for selection in capability.selections)
     ]
     supported = [_family_summary(capability) for capability in catalog.capabilities]
     if not candidates:
-        qualifier = (
-            f" in family '{request.preferred_family_id}'"
-            if request.preferred_family_id
-            else ""
-        )
+        qualifier = f" in family '{request.preferred_family_id}'" if request.preferred_family_id else ""
         raise PublicRealmPlanningError(
-            f"No executable Public Realm LEGO family supports "
-            f"'{request.archetype_id}'{qualifier}.",
+            f"No executable Public Realm LEGO family supports " f"'{request.archetype_id}'{qualifier}.",
             code="family_not_found",
             requested=_request_payload(request),
             supported_families=supported,
@@ -1032,30 +1004,27 @@ def plan_public_realm_recipe(
         ]
         if not selection_candidates:
             raise PublicRealmPlanningError(
-                f"Variant '{request.variant_id}' is not executable for "
-                f"'{request.archetype_id}'.",
+                f"Variant '{request.variant_id}' is not executable for " f"'{request.archetype_id}'.",
                 code="family_incompatible",
                 requested=_request_payload(request),
-                supported_families=[
-                    _family_summary(capability) for capability in candidates
+                supported_families=[_family_summary(capability) for capability in candidates],
+                violations=[
+                    {
+                        "field": "variant_id",
+                        "requested": request.variant_id,
+                        "supported": sorted(
+                            {
+                                selection.variant_id
+                                for capability in candidates
+                                for selection in capability.selections
+                                if selection.archetype_id == request.archetype_id
+                            }
+                        ),
+                    }
                 ],
-                violations=[{
-                    "field": "variant_id",
-                    "requested": request.variant_id,
-                    "supported": sorted({
-                        selection.variant_id
-                        for capability in candidates
-                        for selection in capability.selections
-                        if selection.archetype_id == request.archetype_id
-                    }),
-                }],
             )
     else:
-        defaults = [
-            (capability, selection)
-            for capability, selection in selection_candidates
-            if selection.is_default
-        ]
+        defaults = [(capability, selection) for capability, selection in selection_candidates if selection.is_default]
         selection_candidates = defaults or selection_candidates
 
     normalized_target = _normalized_target(request.target)
@@ -1080,9 +1049,7 @@ def plan_public_realm_recipe(
             f"Family '{capability.family_id}' cannot compile the requested metric target.",
             code="family_incompatible",
             requested=_request_payload(request),
-            supported_families=[
-                _family_summary(candidate) for candidate in candidates
-            ],
+            supported_families=[_family_summary(candidate) for candidate in candidates],
             violations=violations,
         )
     capability, selection = min(
@@ -1110,9 +1077,11 @@ def plan_public_realm_recipe(
         "recipe_hash": "0" * 64,
     }
     provisional = PublicRealmRecipePayload.model_validate(payload)
-    return provisional.model_copy(update={
-        "recipe_hash": public_realm_recipe_hash(provisional),
-    })
+    return provisional.model_copy(
+        update={
+            "recipe_hash": public_realm_recipe_hash(provisional),
+        }
+    )
 
 
 def _positive_number(value: Any) -> float | None:
@@ -1132,8 +1101,7 @@ def _metric_rectangle_axes(geometry: BaseGeometry) -> tuple[float, float]:
         raise ValueError("Public-realm geometry has no measurable footprint")
     coordinates = list(exterior.coords)
     sides = sorted(
-        math.dist(coordinates[index], coordinates[index + 1])
-        for index in range(min(4, len(coordinates) - 1))
+        math.dist(coordinates[index], coordinates[index + 1]) for index in range(min(4, len(coordinates) - 1))
     )
     if len(sides) < 2 or sides[-1] <= 0 or sides[0] <= 0:
         raise ValueError("Public-realm geometry has no measurable footprint")
@@ -1178,11 +1146,7 @@ def _target_from_metric_geometry(
                 short_axis=short_axis,
             )
         )
-        if (
-            use_measured_width
-            and declared_width is not None
-            and abs(short_axis - declared_width) <= 0.1
-        ):
+        if use_measured_width and declared_width is not None and abs(short_axis - declared_width) <= 0.1:
             # Projection round-trips can move an otherwise exact authored
             # edge by a few centimetres.  The measured geometry has attested
             # the declaration; retain its canonical native-section value.
@@ -1258,14 +1222,16 @@ def plan_public_realm_metric_street_recipe(
             target_type="street_segment",
             attest_segment_width=True,
         )
-        nominal_widths = sorted({
-            float(selection.compatibility.nominal_row_width_m)
-            for capability in catalog.capabilities
-            for selection in capability.selections
-            if selection.archetype_id == archetype_id
-            and variant_id in (None, selection.variant_id)
-            and selection.compatibility.nominal_row_width_m is not None
-        })
+        nominal_widths = sorted(
+            {
+                float(selection.compatibility.nominal_row_width_m)
+                for capability in catalog.capabilities
+                for selection in capability.selections
+                if selection.archetype_id == archetype_id
+                and variant_id in (None, selection.variant_id)
+                and selection.compatibility.nominal_row_width_m is not None
+            }
+        )
         if nominal_widths:
             nearest_nominal = min(
                 nominal_widths,
@@ -1275,9 +1241,11 @@ def plan_public_realm_metric_street_recipe(
                 # Preserve canonical section widths across WGS84 projection
                 # round-trips, including the accepted legacy 22 m migration
                 # family. Geometry has already attested the value here.
-                target = target.model_copy(update={
-                    "row_width_m": nearest_nominal,
-                })
+                target = target.model_copy(
+                    update={
+                        "row_width_m": nearest_nominal,
+                    }
+                )
         return plan_public_realm_recipe(
             PublicRealmPlanRequest(
                 archetype_id=archetype_id,
@@ -1306,23 +1274,16 @@ def plan_public_realm_zone_recipe(
     """
 
     props = properties or {}
-    is_street = props.get("_plan_role") == "street" or zone_type in {
-        "road", "street", "path"
-    }
+    is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
     if is_street:
         archetype_id = str(props.get("road_archetype_id") or "").strip()
         variant_id = str(props.get("road_selected_variant_id") or "").strip() or None
     else:
-        archetype_id = str(
-            props.get("green_space_archetype_id")
-            or props.get("plaza_archetype_id")
-            or ""
-        ).strip()
-        variant_id = str(
-            props.get("green_space_selected_variant_id")
-            or props.get("plaza_selected_variant_id")
-            or ""
-        ).strip() or None
+        archetype_id = str(props.get("green_space_archetype_id") or props.get("plaza_archetype_id") or "").strip()
+        variant_id = (
+            str(props.get("green_space_selected_variant_id") or props.get("plaza_selected_variant_id") or "").strip()
+            or None
+        )
 
     catalog = catalog or build_public_realm_capability_catalog()
     matching = [
@@ -1335,27 +1296,19 @@ def plan_public_realm_zone_recipe(
         if not strict:
             return None
         raise PublicRealmPlanningError(
-            f"No executable Public Realm LEGO family supports "
-            f"'{archetype_id or 'missing_archetype_id'}'.",
+            f"No executable Public Realm LEGO family supports " f"'{archetype_id or 'missing_archetype_id'}'.",
             code="family_not_found",
             requested={
                 "archetype_id": archetype_id or "missing_archetype_id",
                 **({"variant_id": variant_id} if variant_id else {}),
                 "kind": "street" if is_street else "park",
             },
-            supported_families=[
-                _family_summary(capability)
-                for capability in catalog.capabilities
-            ],
+            supported_families=[_family_summary(capability) for capability in catalog.capabilities],
         )
 
-    target_types = {
-        selection.compatibility.target_type for _capability, selection in matching
-    }
+    target_types = {selection.compatibility.target_type for _capability, selection in matching}
     if len(target_types) != 1:
-        raise ValueError(
-            f"Public-realm archetype '{archetype_id}' has ambiguous target types"
-        )
+        raise ValueError(f"Public-realm archetype '{archetype_id}' has ambiguous target types")
     transformer = build_transformer(
         WGS84_CRS,
         local_metric_crs_for_polygon(geometry_wgs84),
@@ -1396,9 +1349,7 @@ def public_realm_recipe_identity(
         return None
     try:
         recipe = (
-            value
-            if isinstance(value, PublicRealmRecipePayload)
-            else PublicRealmRecipePayload.model_validate(value)
+            value if isinstance(value, PublicRealmRecipePayload) else PublicRealmRecipePayload.model_validate(value)
         )
     except (TypeError, ValueError):
         return None
@@ -1411,8 +1362,7 @@ def public_realm_recipe_identity(
         (
             item
             for item in catalog.capabilities
-            if item.family_id == recipe.family_id
-            and item.family_version == recipe.family_version
+            if item.family_id == recipe.family_id and item.family_version == recipe.family_version
         ),
         None,
     )
@@ -1455,8 +1405,10 @@ def public_realm_representation_hash(
     identity = public_realm_recipe_identity(recipe)
     if identity is None:
         return None
-    return _sha256({
-        "contract_version": 1,
-        "source_hash": source_hash.lower(),
-        **identity,
-    })
+    return _sha256(
+        {
+            "contract_version": 1,
+            "source_hash": source_hash.lower(),
+            **identity,
+        }
+    )

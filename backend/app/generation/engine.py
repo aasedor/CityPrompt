@@ -34,10 +34,10 @@ PreviewCallback = Callable[[bytes], None]
 # PREVIEW + (attempts × REFINE), leaving headroom to download/upload a ~30 MB
 # GLB. The Celery soft_time_limit is derived from it (see tasks/processing.py)
 # so the two can never drift back out of sync.
-MESHY_PREVIEW_TIMEOUT_S = 600   # 10 min
-MESHY_REFINE_TIMEOUT_S = 900    # 15 min; on timeout we keep the preview mesh
-MESHY_REFINE_ATTEMPTS = 2       # refine failures are intermittent — retry once
-MESHY_IO_HEADROOM_S = 300       # GLB download + S3 upload + thumbnail
+MESHY_PREVIEW_TIMEOUT_S = 600  # 10 min
+MESHY_REFINE_TIMEOUT_S = 900  # 15 min; on timeout we keep the preview mesh
+MESHY_REFINE_ATTEMPTS = 2  # refine failures are intermittent — retry once
+MESHY_IO_HEADROOM_S = 300  # GLB download + S3 upload + thumbnail
 # multi_image fuses up to 4 views + remesh + PBR in a single task (no refine
 # leg), so it gets one longer poll: 1800 + IO headroom = 2100 < MAX_RUNTIME.
 MESHY_MULTI_IMAGE_TIMEOUT_S = 1800
@@ -67,6 +67,7 @@ MESHY_MAX_RUNTIME_S = (
 
 class GenerationEngine(str, enum.Enum):
     """Available AI 3D generation engine identifiers."""
+
     MESHY = "meshy"
     TRIPO = "tripo"
 
@@ -74,6 +75,7 @@ class GenerationEngine(str, enum.Enum):
 @dataclass
 class GenerationResult:
     """Provider output returned to the task orchestrator."""
+
     glb_data: bytes
     engine: str
     task_id: str
@@ -218,15 +220,15 @@ class MeshyEngine(BaseGenerationEngine):
                         poll_budget = int(stage1_deadline - loop.time())
                         if poll_budget < 30:
                             break
-                        iresult = await client.poll_until_done(
-                            i2i_id, timeout=poll_budget, task_type="image_to_image"
-                        )
+                        iresult = await client.poll_until_done(i2i_id, timeout=poll_budget, task_type="image_to_image")
                         break
                     except Exception as exc:
                         last_exc = exc
                         logger.warning(
                             "Multi-view synthesis attempt %d/%d failed: %s",
-                            attempt, MESHY_MULTIVIEW_ATTEMPTS, exc,
+                            attempt,
+                            MESHY_MULTIVIEW_ATTEMPTS,
+                            exc,
                         )
                 if iresult is None:
                     raise RuntimeError(
@@ -272,9 +274,7 @@ class MeshyEngine(BaseGenerationEngine):
         self._emit_task_id(task_callback, task_id)
         self._emit_progress(progress_callback, 0.3, "polling")
 
-        poll_timeout = (
-            MESHY_MULTI_IMAGE_TIMEOUT_S if mode == "multi_image" else MESHY_PREVIEW_TIMEOUT_S
-        )
+        poll_timeout = MESHY_MULTI_IMAGE_TIMEOUT_S if mode == "multi_image" else MESHY_PREVIEW_TIMEOUT_S
         result = await client.poll_until_done(task_id, timeout=poll_timeout, task_type=task_type)
         preview_glb_url = (result.get("model_urls") or {}).get("glb")
         if preview_callback and preview_glb_url:
@@ -297,10 +297,14 @@ class MeshyEngine(BaseGenerationEngine):
                     )
                     logger.info(
                         "Refine task started: %s (from preview %s, attempt %d)",
-                        refine_task_id, task_id, attempt,
+                        refine_task_id,
+                        task_id,
+                        attempt,
                     )
                     self._emit_task_id(task_callback, refine_task_id)
-                    result = await client.poll_until_done(refine_task_id, timeout=MESHY_REFINE_TIMEOUT_S, task_type="text")
+                    result = await client.poll_until_done(
+                        refine_task_id, timeout=MESHY_REFINE_TIMEOUT_S, task_type="text"
+                    )
                     final_task_id = refine_task_id
                     logger.info(
                         "Meshy refine result keys: %s, model_urls: %s",
@@ -318,7 +322,10 @@ class MeshyEngine(BaseGenerationEngine):
                 except Exception as exc:
                     logger.error(
                         "Refine attempt %d FAILED for building %s: %s",
-                        attempt, building_id, exc, exc_info=True,
+                        attempt,
+                        building_id,
+                        exc,
+                        exc_info=True,
                     )
                     if attempt == MESHY_REFINE_ATTEMPTS:
                         logger.warning("Falling back to preview model (will lack textures)")
@@ -410,7 +417,9 @@ class TripoEngine(BaseGenerationEngine):
             self._emit_progress(progress_callback, 0.5, "smart_low_poly")
             low_poly_task_id = await client.smart_low_poly(task_id)
             low_poly_result = await client.poll_until_done(low_poly_task_id, timeout=120)
-            lod_model_url_remote = low_poly_result.get("model_url") or low_poly_result.get("output", {}).get("model", {}).get("url")
+            lod_model_url_remote = low_poly_result.get("model_url") or low_poly_result.get("output", {}).get(
+                "model", {}
+            ).get("url")
             log_api_usage_sync(
                 provider=self.engine_id,
                 operation="retopology",

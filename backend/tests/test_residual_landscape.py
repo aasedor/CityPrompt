@@ -89,12 +89,15 @@ def test_community_representation_fingerprint_tracks_exact_generator_content():
         building=building,
     )
     assert original is not None
-    assert community_3d_representation_hash(
-        kind="building",
-        generator="lego_assembly",
-        source_hash=source_hash,
-        building=building,
-    ) == original
+    assert (
+        community_3d_representation_hash(
+            kind="building",
+            generator="lego_assembly",
+            source_hash=source_hash,
+            building=building,
+        )
+        == original
+    )
 
     changed_recipe = SimpleNamespace(**building.__dict__)
     changed_recipe.specifications = {
@@ -103,30 +106,39 @@ def test_community_representation_fingerprint_tracks_exact_generator_content():
             "instances": [{"model_url": "/podium-v2.glb", "position": [0, 0, 0]}],
         },
     }
-    assert community_3d_representation_hash(
-        kind="building",
-        generator="lego_assembly",
-        source_hash=source_hash,
-        building=changed_recipe,
-    ) != original
+    assert (
+        community_3d_representation_hash(
+            kind="building",
+            generator="lego_assembly",
+            source_hash=source_hash,
+            building=changed_recipe,
+        )
+        != original
+    )
 
     changed_placement = SimpleNamespace(**building.__dict__)
     changed_placement.rotation_degrees = 15
-    assert community_3d_representation_hash(
-        kind="building",
-        generator="lego_assembly",
-        source_hash=source_hash,
-        building=changed_placement,
-    ) != original
+    assert (
+        community_3d_representation_hash(
+            kind="building",
+            generator="lego_assembly",
+            source_hash=source_hash,
+            building=changed_placement,
+        )
+        != original
+    )
 
     changed_display_seed = SimpleNamespace(**building.__dict__)
     changed_display_seed.name = "Different massing color"
-    assert community_3d_representation_hash(
-        kind="building",
-        generator="lego_assembly",
-        source_hash=source_hash,
-        building=changed_display_seed,
-    ) != original
+    assert (
+        community_3d_representation_hash(
+            kind="building",
+            generator="lego_assembly",
+            source_hash=source_hash,
+            building=changed_display_seed,
+        )
+        != original
+    )
 
     assert community_3d_representation_hash(
         kind="park",
@@ -137,12 +149,15 @@ def test_community_representation_fingerprint_tracks_exact_generator_content():
         generator="park_kit",
         source_hash=source_hash,
     )
-    assert community_3d_representation_hash(
-        kind="building",
-        generator="lego_assembly",
-        source_hash=source_hash,
-        building=SimpleNamespace(id="incomplete", footprint=wgs_box(0, 0, 1, 1), specifications={}),
-    ) is None
+    assert (
+        community_3d_representation_hash(
+            kind="building",
+            generator="lego_assembly",
+            source_hash=source_hash,
+            building=SimpleNamespace(id="incomplete", footprint=wgs_box(0, 0, 1, 1), specifications={}),
+        )
+        is None
+    )
 
 
 def test_community_source_fingerprint_tracks_building_design_not_operational_metadata():
@@ -222,11 +237,14 @@ def test_community_source_fingerprint_canonicalizes_polygon_ring_representation(
 
     assert source_fingerprint("building", properties, rotated) == original
     assert source_fingerprint("building", properties, reversed_ring) == original
-    assert source_fingerprint(
-        "building",
-        properties,
-        Polygon([(0, 0), (3.01, 0), (3, 2), (0, 2), (0, 0)]),
-    ) != original
+    assert (
+        source_fingerprint(
+            "building",
+            properties,
+            Polygon([(0, 0), (3.01, 0), (3, 2), (0, 2), (0, 0)]),
+        )
+        != original
+    )
 
 
 def test_community_source_fingerprint_tracks_park_and_street_semantics():
@@ -275,34 +293,40 @@ def test_residual_is_boundary_minus_union_of_overlapping_authored_zones():
     boundary = wgs_box(0, 0, 100, 100)
     building = wgs_box(10, 10, 50, 50)
     overlapping_park = wgs_box(35, 35, 75, 70)
-    recipe = build(boundary, [
-        source("building", "building", building, "building"),
-        source("park", "park", overlapping_park, "open_space"),
-    ])
+    recipe = build(
+        boundary,
+        [
+            source("building", "building", building, "building"),
+            source("park", "park", overlapping_park, "open_space"),
+        ],
+    )
 
     boundary_metric = project_geometry(boundary, TO_METRIC)
-    occupied_metric = unary_union([
-        project_geometry(building, TO_METRIC),
-        project_geometry(overlapping_park, TO_METRIC),
-    ])
+    occupied_metric = unary_union(
+        [
+            project_geometry(building, TO_METRIC),
+            project_geometry(overlapping_park, TO_METRIC),
+        ]
+    )
     expected = boundary_metric.difference(occupied_metric)
     residual = metric_geometry(recipe["geometry"])
 
     assert recipe["area_sqm"] == pytest.approx(expected.area, abs=0.1)
     assert residual.symmetric_difference(expected).area < 0.05
-    assert sum(region["area_sqm"] for region in recipe["regions"]) == pytest.approx(
-        recipe["area_sqm"], abs=0.15
-    )
+    assert sum(region["area_sqm"] for region in recipe["regions"]) == pytest.approx(recipe["area_sqm"], abs=0.15)
 
 
 def test_outside_polygons_are_clipped_and_framework_overlays_do_not_subtract():
     boundary = wgs_box(0, 0, 50, 50)
     crossing_street = wgs_box(-20, 20, 25, 30)
     framework = wgs_box(0, 0, 50, 50)
-    recipe = build(boundary, [
-        source("street", "street", crossing_street, "street"),
-        source("framework", "building", framework, "framework_height"),
-    ])
+    recipe = build(
+        boundary,
+        [
+            source("street", "street", crossing_street, "street"),
+            source("framework", "building", framework, "framework_height"),
+        ],
+    )
 
     assert recipe["occupied_area_sqm"] == pytest.approx(250.0, abs=0.2)
     assert recipe["area_sqm"] == pytest.approx(2_250.0, abs=0.2)
@@ -349,10 +373,13 @@ def test_tree_placements_stay_in_residual_and_clear_buildings_and_streets():
     boundary = wgs_box(0, 0, 160, 120)
     building = wgs_box(55, 35, 100, 85)
     street = wgs_box(0, 98, 160, 110)
-    recipe = build(boundary, [
-        source("building", "building", building, "building"),
-        source("street", "street", street, "street"),
-    ])
+    recipe = build(
+        boundary,
+        [
+            source("building", "building", building, "building"),
+            source("street", "street", street, "street"),
+        ],
+    )
     residual = metric_geometry(recipe["geometry"])
     building_metric = project_geometry(building, TO_METRIC)
     street_metric = project_geometry(street, TO_METRIC)
@@ -402,14 +429,16 @@ def test_boundaryless_legacy_plan_gets_metric_convex_hull_without_extra_buffer()
 
 
 def test_shared_stale_transition_is_idempotent_and_preserves_diagnostics():
-    boundary = SimpleNamespace(properties={
-        "site_name": "Pilot",
-        "community_3d_landscape": {
-            "state": "compiled",
-            "source_hash": "authoritative-hash",
-            "area_sqm": 123.4,
-        },
-    })
+    boundary = SimpleNamespace(
+        properties={
+            "site_name": "Pilot",
+            "community_3d_landscape": {
+                "state": "compiled",
+                "source_hash": "authoritative-hash",
+                "area_sqm": 123.4,
+            },
+        }
+    )
 
     assert mark_residual_landscape_stale(
         boundary,
@@ -433,13 +462,15 @@ def test_shared_stale_transition_is_idempotent_and_preserves_diagnostics():
         reason="Repeated change",
     )
 
-    zone = SimpleNamespace(properties={
-        "community_3d": {
-            "state": "compiled",
-            "kind": "building",
-            "source_hash": "zone-hash",
-        },
-    })
+    zone = SimpleNamespace(
+        properties={
+            "community_3d": {
+                "state": "compiled",
+                "kind": "building",
+                "source_hash": "zone-hash",
+            },
+        }
+    )
     assert mark_community_3d_stale(
         zone,
         reason="Floors changed",

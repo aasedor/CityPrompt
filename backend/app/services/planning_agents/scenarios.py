@@ -15,7 +15,9 @@ SCENARIO_PRESETS: dict[str, ScenarioDefinition] = {
         scenario_id="economic",
         label="Economic",
         philosophy=PhilosophyWeights(
-            primary="developer_feasibility", secondary="neighbourhood_context", intensity=0.5,
+            primary="developer_feasibility",
+            secondary="neighbourhood_context",
+            intensity=0.5,
         ),
         emphasis=(
             "Deliver dependable returns with minimal approval risk. Treat the DNA's built_form "
@@ -30,7 +32,9 @@ SCENARIO_PRESETS: dict[str, ScenarioDefinition] = {
         scenario_id="city_policy",
         label="City Policy",
         philosophy=PhilosophyWeights(
-            primary="new_urbanism", secondary="missing_middle", intensity=0.65,
+            primary="new_urbanism",
+            secondary="missing_middle",
+            intensity=0.65,
         ),
         emphasis=(
             "Follow the city's adopted policy direction from the DNA policy insight (statutory "
@@ -44,7 +48,9 @@ SCENARIO_PRESETS: dict[str, ScenarioDefinition] = {
         scenario_id="city_beautiful",
         label="City Beautiful",
         philosophy=PhilosophyWeights(
-            primary="city_beautiful", secondary="garden_city", intensity=0.8,
+            primary="city_beautiful",
+            secondary="garden_city",
+            intensity=0.8,
         ),
         emphasis=(
             "Design the most beautiful ensemble this site can carry: formal composition, a grand "
@@ -58,7 +64,9 @@ SCENARIO_PRESETS: dict[str, ScenarioDefinition] = {
         scenario_id="environmental",
         label="Environmental",
         philosophy=PhilosophyWeights(
-            primary="climate_resilience", secondary="transit_oriented", intensity=0.8,
+            primary="climate_resilience",
+            secondary="transit_oriented",
+            intensity=0.8,
         ),
         emphasis=(
             "Most sustainable development achievable: green high-performance buildings, maximum "

@@ -11,10 +11,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
-from app.core.security import get_current_user, is_admin_or_above, require_auth, check_project_permission
+from app.core.security import is_admin_or_above, require_auth, check_project_permission
 from app.models.models import Project, ProjectShare, User
 from app.schemas.schemas import (
-    LocationResponse,
     ProjectCreate,
     ProjectListResponse,
     ProjectResponse,
@@ -75,11 +74,13 @@ async def create_project(
         owner_id=user.id,
         construction_phases=(
             [p.model_dump(mode="json") for p in project_in.construction_phases]
-            if project_in.construction_phases else None
+            if project_in.construction_phases
+            else None
         ),
     )
     if project_in.location:
         from geoalchemy2.elements import WKTElement
+
         point = f"POINT({project_in.location.longitude} {project_in.location.latitude})"
         project.location = WKTElement(point, srid=4326)
         if project_in.location.address:
@@ -118,16 +119,17 @@ async def list_projects(
 
     # Get IDs of projects shared with this user
     shared_result = await db.execute(
-        select(ProjectShare.project_id).where(
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email)
-        )
+        select(ProjectShare.project_id).where((ProjectShare.user_id == user.id) | (ProjectShare.email == user.email))
     )
     shared_ids = [row[0] for row in shared_result.all()]
 
     from sqlalchemy import or_
+
     query = (
         select(Project)
-        .where(or_(Project.owner_id == user.id, Project.id.in_(shared_ids)) if shared_ids else Project.owner_id == user.id)
+        .where(
+            or_(Project.owner_id == user.id, Project.id.in_(shared_ids)) if shared_ids else Project.owner_id == user.id
+        )
         .order_by(Project.updated_at.desc())
         .offset(skip)
     )
@@ -178,6 +180,7 @@ async def update_project(
     for field, value in update_data.items():
         if field == "location" and value:
             from geoalchemy2.elements import WKTElement
+
             point = f"POINT({value['longitude']} {value['latitude']})"
             project.location = WKTElement(point, srid=4326)
             if "address" in value:

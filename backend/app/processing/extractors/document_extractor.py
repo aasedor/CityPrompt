@@ -4,7 +4,6 @@ Routes uploaded files to the appropriate extractor based on file type.
 """
 
 import logging
-from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -112,17 +111,43 @@ def _classify_pdf_page(page_image_bytes: bytes, page_text: str, page_num: int) -
         # Keyword detection for floor plans
         text_lower = page_text.lower()
         floor_plan_keywords = [
-            "floor plan", "ground floor", "first floor", "level", "scale",
-            "bedroom", "bathroom", "kitchen", "living", "corridor",
-            "1:", "m²", "sq ft", "sqm", "sq.m",
+            "floor plan",
+            "ground floor",
+            "first floor",
+            "level",
+            "scale",
+            "bedroom",
+            "bathroom",
+            "kitchen",
+            "living",
+            "corridor",
+            "1:",
+            "m²",
+            "sq ft",
+            "sqm",
+            "sq.m",
         ]
         elevation_keywords = [
-            "elevation", "section", "facade", "front view", "side view",
-            "rear view", "north elevation", "south elevation",
+            "elevation",
+            "section",
+            "facade",
+            "front view",
+            "side view",
+            "rear view",
+            "north elevation",
+            "south elevation",
         ]
         schedule_keywords = [
-            "schedule", "specification", "table", "qty", "quantity",
-            "item", "description", "total", "summary", "legend",
+            "schedule",
+            "specification",
+            "table",
+            "qty",
+            "quantity",
+            "item",
+            "description",
+            "total",
+            "summary",
+            "legend",
         ]
 
         fp_keyword_hits = sum(1 for kw in floor_plan_keywords if kw in text_lower)
@@ -137,27 +162,27 @@ def _classify_pdf_page(page_image_bytes: bytes, page_text: str, page_num: int) -
 
         scores = {
             "floor_plan": (
-                (min(line_count / 100, 1.0) * 0.35) +
-                (min(edge_density / 0.05, 1.0) * 0.25) +
-                (min(fp_keyword_hits / 3, 1.0) * 0.25) +
-                ((1.0 - min(text_density / 5, 1.0)) * 0.15)
+                (min(line_count / 100, 1.0) * 0.35)
+                + (min(edge_density / 0.05, 1.0) * 0.25)
+                + (min(fp_keyword_hits / 3, 1.0) * 0.25)
+                + ((1.0 - min(text_density / 5, 1.0)) * 0.15)
             ),
             "elevation": (
-                (min(line_count / 80, 1.0) * 0.30) +
-                (min(edge_density / 0.04, 1.0) * 0.25) +
-                (min(elev_keyword_hits / 2, 1.0) * 0.30) +
-                ((1.0 - min(text_density / 5, 1.0)) * 0.15)
+                (min(line_count / 80, 1.0) * 0.30)
+                + (min(edge_density / 0.04, 1.0) * 0.25)
+                + (min(elev_keyword_hits / 2, 1.0) * 0.30)
+                + ((1.0 - min(text_density / 5, 1.0)) * 0.15)
             ),
             "schedule": (
-                (min(text_density / 3, 1.0) * 0.35) +
-                (min(sched_keyword_hits / 3, 1.0) * 0.35) +
-                ((1.0 - min(line_count / 200, 1.0)) * 0.15) +
-                ((1.0 - min(edge_density / 0.06, 1.0)) * 0.15)
+                (min(text_density / 3, 1.0) * 0.35)
+                + (min(sched_keyword_hits / 3, 1.0) * 0.35)
+                + ((1.0 - min(line_count / 200, 1.0)) * 0.15)
+                + ((1.0 - min(edge_density / 0.06, 1.0)) * 0.15)
             ),
             "text": (
-                (min(text_density / 2, 1.0) * 0.40) +
-                ((1.0 - min(line_count / 50, 1.0)) * 0.30) +
-                ((1.0 - min(edge_density / 0.03, 1.0)) * 0.30)
+                (min(text_density / 2, 1.0) * 0.40)
+                + ((1.0 - min(line_count / 50, 1.0)) * 0.30)
+                + ((1.0 - min(edge_density / 0.03, 1.0)) * 0.30)
             ),
         }
 
@@ -220,10 +245,7 @@ def extract_pdf(file_path: str) -> ExtractionResult:
         result.metadata["page_types"] = type_counts
 
         result.confidence = 0.7
-        logger.info(
-            f"PDF extracted: {len(doc)} pages, "
-            f"types: {type_counts}"
-        )
+        logger.info(f"PDF extracted: {len(doc)} pages, " f"types: {type_counts}")
 
     except Exception as e:
         result.errors.append(f"PDF extraction error: {str(e)}")
@@ -260,6 +282,7 @@ def extract_image(file_path: str) -> ExtractionResult:
         # OCR for dimension text
         try:
             import pytesseract
+
             text = pytesseract.image_to_string(gray)
             result.text_content = text
         except Exception:
@@ -298,19 +321,23 @@ def extract_cad(file_path: str) -> ExtractionResult:
 
         for entity in msp:
             if entity.dxftype() == "LINE":
-                lines.append({
-                    "start": [entity.dxf.start.x, entity.dxf.start.y],
-                    "end": [entity.dxf.end.x, entity.dxf.end.y],
-                    "layer": entity.dxf.layer,
-                })
+                lines.append(
+                    {
+                        "start": [entity.dxf.start.x, entity.dxf.start.y],
+                        "end": [entity.dxf.end.x, entity.dxf.end.y],
+                        "layer": entity.dxf.layer,
+                    }
+                )
             elif entity.dxftype() in ("LWPOLYLINE", "POLYLINE"):
                 points = [[p[0], p[1]] for p in entity.get_points()]
                 polylines.append({"points": points, "layer": entity.dxf.layer})
             elif entity.dxftype() == "DIMENSION":
-                dimensions.append({
-                    "value": getattr(entity.dxf, "actual_measurement", None),
-                    "text": getattr(entity.dxf, "text", ""),
-                })
+                dimensions.append(
+                    {
+                        "value": getattr(entity.dxf, "actual_measurement", None),
+                        "text": getattr(entity.dxf, "text", ""),
+                    }
+                )
 
         result.metadata["entity_counts"] = {
             "lines": len(lines),
@@ -354,7 +381,9 @@ def extract_spreadsheet(file_path: str) -> ExtractionResult:
             result.metadata["has_coordinates"] = True
 
         # Look for dimension columns
-        dim_cols = [c for c in df.columns if any(kw in c.lower() for kw in ("height", "width", "length", "area", "floor"))]
+        dim_cols = [
+            c for c in df.columns if any(kw in c.lower() for kw in ("height", "width", "length", "area", "floor"))
+        ]
         if dim_cols:
             for _, row in df.iterrows():
                 dim = {}

@@ -146,15 +146,13 @@ async def get_elevation_batch(body: BatchElevationRequest):
     api_key = s.google_maps_api_key or s.gemini_api_key
     if not api_key:
         # No key: best-effort flat geoid so callers degrade rather than fail.
-        return BatchElevationResponse(
-            elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points]
-        )
+        return BatchElevationResponse(elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points])
 
     chunk_size = 250  # keep the GET URL well under length limits
     elevations: list[float] = []
     async with httpx.AsyncClient(timeout=20.0) as client:
         for start in range(0, len(points), chunk_size):
-            chunk = points[start:start + chunk_size]
+            chunk = points[start : start + chunk_size]
             locations = "|".join(f"{lat},{lng}" for lng, lat in chunk)
             try:
                 resp = await client.get(

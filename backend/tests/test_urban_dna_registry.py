@@ -16,9 +16,14 @@ from app.services.city_connector.cities.osm_fallback import OSMFallbackConnector
 from app.services.city_connector.cities.vancouver import VancouverConnector
 from app.services.urban_dna.schema import SECTION_NAMES
 
-DOWNTOWN_CALGARY = Polygon([
-    (-114.075, 51.043), (-114.062, 51.043), (-114.062, 51.049), (-114.075, 51.049),
-])
+DOWNTOWN_CALGARY = Polygon(
+    [
+        (-114.075, 51.043),
+        (-114.062, 51.043),
+        (-114.062, 51.049),
+        (-114.075, 51.049),
+    ]
+)
 
 
 def _noop_transform(features, site):
@@ -36,7 +41,7 @@ def test_registries_are_isolated_per_city():
         assert ids, f"{city} registered no datasets"
     cities = list(registries)
     for i, city_a in enumerate(cities):
-        for city_b in cities[i + 1:]:
+        for city_b in cities[i + 1 :]:
             shared = registries[city_a] & registries[city_b]
             assert not shared, f"per-subclass registries must not share entries: {shared}"
 
@@ -132,9 +137,16 @@ def test_duplicate_registration_raises():
         city_id = "scratch"
 
     spec = DatasetSpec(
-        id="scratch.thing", name="Thing", priority=1, geometry_type="point",
-        refresh_days=1, source_url="", api_endpoint="x", adapter="socrata",
-        adapter_params={"geo_field": "point"}, dna_fields=("site.parcel_count",),
+        id="scratch.thing",
+        name="Thing",
+        priority=1,
+        geometry_type="point",
+        refresh_days=1,
+        source_url="",
+        api_endpoint="x",
+        adapter="socrata",
+        adapter_params={"geo_field": "point"},
+        dna_fields=("site.parcel_count",),
         transform=_noop_transform,
     )
     ScratchConnector.register(spec)
@@ -169,7 +181,7 @@ def test_detect_city_and_fallback():
 def test_city_bounds_are_pairwise_disjoint():
     items = list(CITY_BOUNDS.items())
     for i, (city_a, a) in enumerate(items):
-        for city_b, b in items[i + 1:]:
+        for city_b, b in items[i + 1 :]:
             overlaps = a[0] <= b[2] and b[0] <= a[2] and a[1] <= b[3] and b[1] <= a[3]
             assert not overlaps, f"{city_a} and {city_b} bboxes overlap — detection order-dependent"
 
@@ -190,14 +202,24 @@ async def test_raising_adapter_never_escapes():
         def _adapters(self):
             async def boom(spec, boundary):
                 raise RuntimeError("adapter blew up")
+
             return {"socrata": boom}
 
-    ExplodingConnector.register(DatasetSpec(
-        id="exploding.data", name="Exploding", priority=1, geometry_type="point",
-        refresh_days=1, source_url="", api_endpoint="x", adapter="socrata",
-        adapter_params={"geo_field": "point"}, dna_fields=("site.parcel_count",),
-        transform=_noop_transform,
-    ))
+    ExplodingConnector.register(
+        DatasetSpec(
+            id="exploding.data",
+            name="Exploding",
+            priority=1,
+            geometry_type="point",
+            refresh_days=1,
+            source_url="",
+            api_endpoint="x",
+            adapter="socrata",
+            adapter_params={"geo_field": "point"},
+            dna_fields=("site.parcel_count",),
+            transform=_noop_transform,
+        )
+    )
 
     result = await ExplodingConnector().fetch_dataset("exploding.data", DOWNTOWN_CALGARY)
     assert result.status == "error"
@@ -216,6 +238,7 @@ def test_overpass_lock_survives_sequential_event_loops():
         async def hold():
             async with _get_overpass_lock():
                 await asyncio.sleep(0.01)
+
         await asyncio.gather(hold(), hold(), hold())  # forces the waiter path -> loop binding
 
     asyncio.run(contend())
@@ -234,19 +257,33 @@ async def test_osm_paths_category_keeps_only_walk_and_cycle_lines(monkeypatch):
             assert buffer_m == 0
             return {
                 "roads": [
-                    {"coordinates": [(-114.07, 51.04), (-114.069, 51.04)],
-                     "road_type": "footway", "name": "River Walk"},
-                    {"coordinates": [(-114.07, 51.041), (-114.069, 51.041)],
-                     "road_type": "residential", "name": "Local Street"},
+                    {
+                        "coordinates": [(-114.07, 51.04), (-114.069, 51.04)],
+                        "road_type": "footway",
+                        "name": "River Walk",
+                    },
+                    {
+                        "coordinates": [(-114.07, 51.041), (-114.069, 51.041)],
+                        "road_type": "residential",
+                        "name": "Local Street",
+                    },
                 ]
             }
 
     monkeypatch.setattr(osm, "OSMContextFetcher", FakeFetcher)
     spec = DatasetSpec(
-        id="test.osm_paths", name="Paths", priority=1, geometry_type="line",
-        refresh_days=1, source_url="", api_endpoint="overpass", adapter="osm",
-        adapter_params={"category": "paths"}, dna_fields=("mobility.pathway_m_800m",),
-        transform=_noop_transform, buffer_m=80.0,
+        id="test.osm_paths",
+        name="Paths",
+        priority=1,
+        geometry_type="line",
+        refresh_days=1,
+        source_url="",
+        api_endpoint="overpass",
+        adapter="osm",
+        adapter_params={"category": "paths"},
+        dna_fields=("mobility.pathway_m_800m",),
+        transform=_noop_transform,
+        buffer_m=80.0,
     )
 
     features, status, warnings = await osm.fetch(spec, DOWNTOWN_CALGARY)
@@ -270,14 +307,24 @@ async def test_soft_time_limit_propagates_through_fetch_guard():
         def _adapters(self):
             async def limited(spec, boundary):
                 raise SoftTimeLimitExceeded()
+
             return {"socrata": limited}
 
-    SoftLimitConnector.register(DatasetSpec(
-        id="softlimit.data", name="SoftLimit", priority=1, geometry_type="point",
-        refresh_days=1, source_url="", api_endpoint="x", adapter="socrata",
-        adapter_params={"geo_field": "point"}, dna_fields=("site.parcel_count",),
-        transform=_noop_transform,
-    ))
+    SoftLimitConnector.register(
+        DatasetSpec(
+            id="softlimit.data",
+            name="SoftLimit",
+            priority=1,
+            geometry_type="point",
+            refresh_days=1,
+            source_url="",
+            api_endpoint="x",
+            adapter="socrata",
+            adapter_params={"geo_field": "point"},
+            dna_fields=("site.parcel_count",),
+            transform=_noop_transform,
+        )
+    )
 
     with pytest.raises(SoftTimeLimitExceeded):
         await SoftLimitConnector().fetch_dataset("softlimit.data", DOWNTOWN_CALGARY)
@@ -291,17 +338,27 @@ async def test_raising_transform_degrades_not_fails():
         def _adapters(self):
             async def ok(spec, boundary):
                 return [{"geometry": None, "properties": {}}], "ok", []
+
             return {"socrata": ok}
 
     def bad_transform(features, site):
         raise KeyError("column renamed upstream")
 
-    BadTransformConnector.register(DatasetSpec(
-        id="badtransform.data", name="BadTransform", priority=1, geometry_type="point",
-        refresh_days=1, source_url="", api_endpoint="x", adapter="socrata",
-        adapter_params={"geo_field": "point"}, dna_fields=("site.parcel_count",),
-        transform=bad_transform,
-    ))
+    BadTransformConnector.register(
+        DatasetSpec(
+            id="badtransform.data",
+            name="BadTransform",
+            priority=1,
+            geometry_type="point",
+            refresh_days=1,
+            source_url="",
+            api_endpoint="x",
+            adapter="socrata",
+            adapter_params={"geo_field": "point"},
+            dna_fields=("site.parcel_count",),
+            transform=bad_transform,
+        )
+    )
 
     result = await BadTransformConnector().fetch_dataset("badtransform.data", DOWNTOWN_CALGARY)
     assert result.status == "error"

@@ -15,9 +15,7 @@ from dataclasses import dataclass
 MIN_CHUNK_CHARS = 1200
 MAX_CHUNK_CHARS = 2800
 
-_HEADING_RE = re.compile(
-    r"^(?:\d+(?:\.\d+)*\s+)?[A-Z][A-Za-z0-9 ,'&/\-()]{4,80}$"
-)
+_HEADING_RE = re.compile(r"^(?:\d+(?:\.\d+)*\s+)?[A-Z][A-Za-z0-9 ,'&/\-()]{4,80}$")
 
 
 @dataclass

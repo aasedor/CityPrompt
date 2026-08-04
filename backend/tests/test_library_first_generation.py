@@ -110,9 +110,7 @@ def env(monkeypatch):
     uploads: list[str] = []
     copies: list[tuple[str, str]] = []
     monkeypatch.setattr(processing, "get_engine", lambda _: provider)
-    monkeypatch.setattr(
-        processing, "_upload_to_storage", lambda key, data, ct: uploads.append(key)
-    )
+    monkeypatch.setattr(processing, "_upload_to_storage", lambda key, data, ct: uploads.append(key))
     monkeypatch.setattr(
         processing,
         "_copy_storage_object",
@@ -124,9 +122,7 @@ def env(monkeypatch):
     session.rollback()
     building_ids = [source.id, target.id]
     session.execute(delete(ApiUsageLog).where(ApiUsageLog.building_id.in_(building_ids)))
-    session.execute(
-        delete(ModelLibraryEntry).where(ModelLibraryEntry.source_building_id.in_(building_ids))
-    )
+    session.execute(delete(ModelLibraryEntry).where(ModelLibraryEntry.source_building_id.in_(building_ids)))
     session.execute(delete(ArchetypeModelCache).where(ArchetypeModelCache.archetype_id == arch))
     session.execute(delete(Building).where(Building.id.in_(building_ids)))
     session.execute(delete(Project).where(Project.id == project.id))
@@ -167,12 +163,16 @@ def test_library_hit_short_circuits_generation(env):
     assert cache_row.status == "failed"
     assert "model library hit" in (cache_row.error or "")
 
-    hit_logs = session.execute(
-        select(ApiUsageLog).where(
-            ApiUsageLog.building_id == target.id,
-            ApiUsageLog.operation == "model_library_hit",
+    hit_logs = (
+        session.execute(
+            select(ApiUsageLog).where(
+                ApiUsageLog.building_id == target.id,
+                ApiUsageLog.operation == "model_library_hit",
+            )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
     assert len(hit_logs) == 1
     assert float(hit_logs[0].credits_used) == 0
 
@@ -192,9 +192,7 @@ def test_image_mode_never_consults_library(env):
     session, arch, user, project, source, target, provider, uploads, copies = env
     entry = _make_entry(session, user.id, source)
 
-    r = generate_3d_model_ai.apply(
-        args=[str(target.id), "a building", "image", "data:image/png;base64,xx"]
-    ).get()
+    r = generate_3d_model_ai.apply(args=[str(target.id), "a building", "image", "data:image/png;base64,xx"]).get()
     assert r["status"] == "completed"
     assert "library_hit" not in r
     assert provider.calls == 1
@@ -231,9 +229,7 @@ def test_foreign_private_entry_is_not_used(env):
         assert provider.calls == 1
     finally:
         session.rollback()
-        session.execute(
-            delete(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == other.id)
-        )
+        session.execute(delete(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == other.id))
         session.execute(delete(User).where(User.id == other.id))
         session.commit()
 
@@ -250,8 +246,6 @@ def test_foreign_public_entry_is_used(env):
         assert provider.calls == 0
     finally:
         session.rollback()
-        session.execute(
-            delete(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == other.id)
-        )
+        session.execute(delete(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == other.id))
         session.execute(delete(User).where(User.id == other.id))
         session.commit()

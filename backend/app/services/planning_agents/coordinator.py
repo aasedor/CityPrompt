@@ -50,7 +50,9 @@ def _affinity(agent_id: str, philosophy: PhilosophyWeights) -> float:
 
 
 def _weight(recommendation: Recommendation, agent_id: str, philosophy: PhilosophyWeights) -> float:
-    return recommendation.confidence * (1.0 + philosophy.intensity * (_affinity(agent_id, philosophy) - 1.0) + philosophy.intensity)
+    return recommendation.confidence * (
+        1.0 + philosophy.intensity * (_affinity(agent_id, philosophy) - 1.0) + philosophy.intensity
+    )
 
 
 def _is_numeric(path: str, value: Any) -> bool:
@@ -79,8 +81,13 @@ def merge_recommendations(
     for path in sorted(positions):
         candidates = sorted(positions[path], key=lambda item: item[2], reverse=True)
         candidate_dump = [
-            {"agent_id": agent_id, "value": rec.value, "rationale": rec.rationale,
-             "confidence": rec.confidence, "weight": round(weight, 3)}
+            {
+                "agent_id": agent_id,
+                "value": rec.value,
+                "rationale": rec.rationale,
+                "confidence": rec.confidence,
+                "weight": round(weight, 3),
+            }
             for agent_id, rec, weight in candidates
         ]
         winner_agent, winner_rec, winner_weight = candidates[0]
@@ -98,7 +105,8 @@ def merge_recommendations(
                     vocab_unit = PARAMETER_VOCABULARY.get(path, {}).get("unit")
                     value = round(blended) if vocab_unit in ("storeys", "dwellings") else round(blended, 1)
                     merged[path] = MergedParameter(
-                        parameter_path=path, value=value,
+                        parameter_path=path,
+                        value=value,
                         rationale=winner_rec.rationale,
                         contributors=[a for a, _, _ in numeric],
                         candidates=candidate_dump,
@@ -112,24 +120,25 @@ def merge_recommendations(
                 contested = len(distinct) > 1
 
         tension_flagged = any(
-            path in r.tension_with for sets in expert_sets if not sets.failed
-            for r in sets.recommendations
+            path in r.tension_with for sets in expert_sets if not sets.failed for r in sets.recommendations
         ) or any(other in winner_rec.tension_with for other in positions)
 
         if contested or (tension_flagged and len(candidates) > 1):
             runner_agent, runner_rec, runner_weight = candidates[1]
-            trade_offs.append(ValidationNote(
-                code=f"EXPERT_TRADEOFF:{path}",
-                severity="warning",
-                message=(
-                    f"{winner_agent} recommends {winner_rec.value!r} ({winner_rec.rationale[:140]}) while "
-                    f"{runner_agent} recommends {runner_rec.value!r} ({runner_rec.rationale[:140]}). "
-                    f"Adopted {winner_rec.value!r} under {philosophy.primary} weighting "
-                    f"(weight {winner_weight:.2f} vs {runner_weight:.2f}); the alternative remains a "
-                    "legitimate position for deliberation."
-                ),
-                source_phase="coordinator",
-            ))
+            trade_offs.append(
+                ValidationNote(
+                    code=f"EXPERT_TRADEOFF:{path}",
+                    severity="warning",
+                    message=(
+                        f"{winner_agent} recommends {winner_rec.value!r} ({winner_rec.rationale[:140]}) while "
+                        f"{runner_agent} recommends {runner_rec.value!r} ({runner_rec.rationale[:140]}). "
+                        f"Adopted {winner_rec.value!r} under {philosophy.primary} weighting "
+                        f"(weight {winner_weight:.2f} vs {runner_weight:.2f}); the alternative remains a "
+                        "legitimate position for deliberation."
+                    ),
+                    source_phase="coordinator",
+                )
+            )
 
         merged[path] = MergedParameter(
             parameter_path=path,
@@ -157,12 +166,14 @@ def diff_scenarios(
         curr_value = curr_param.value if curr_param else None
         if base_value == curr_value:
             continue
-        changed.append(ChangedParameter(
-            parameter_path=path,
-            baseline_value=base_value,
-            value=curr_value,
-            driven_by=", ".join(curr_param.contributors) if curr_param else "removed",
-        ))
+        changed.append(
+            ChangedParameter(
+                parameter_path=path,
+                baseline_value=base_value,
+                value=curr_value,
+                driven_by=", ".join(curr_param.contributors) if curr_param else "removed",
+            )
+        )
     return changed
 
 
@@ -181,8 +192,7 @@ def _fallback_narrative(scenario: ScenarioDefinition, changed: list[ChangedParam
     if not changed:
         return f"{scenario.label} matches the baseline parameters."
     fragments = [
-        f"{c.parameter_path.split('.')[-1].replace('_', ' ')} {c.baseline_value} → {c.value}"
-        for c in changed[:4]
+        f"{c.parameter_path.split('.')[-1].replace('_', ' ')} {c.baseline_value} → {c.value}" for c in changed[:4]
     ]
     return f"{scenario.label} differs from the baseline in: " + "; ".join(fragments) + "."
 
@@ -212,15 +222,20 @@ async def write_explanation(
                 "Reference ONLY those changes (at least two of them). <=120 words, plain language, "
                 "trade-off framing, no verdict language. Record it with the record_narrative tool."
             ),
-            messages=[{
-                "role": "user",
-                "content": json.dumps({
-                    "scenario": scenario.label,
-                    "philosophy": scenario.philosophy.model_dump(),
-                    "changed_parameters": [c.model_dump() for c in changed],
-                    "trade_offs": [t.message for t in trade_offs[:4]],
-                }, default=str),
-            }],
+            messages=[
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {
+                            "scenario": scenario.label,
+                            "philosophy": scenario.philosophy.model_dump(),
+                            "changed_parameters": [c.model_dump() for c in changed],
+                            "trade_offs": [t.message for t in trade_offs[:4]],
+                        },
+                        default=str,
+                    ),
+                }
+            ],
             tools=[_NARRATIVE_TOOL],
             tool_choice={"type": "tool", "name": "record_narrative"},
         )

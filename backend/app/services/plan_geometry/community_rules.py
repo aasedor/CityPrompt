@@ -12,8 +12,8 @@ from typing import Any
 
 from app.services.plan_metrics import coerce_floors
 
-FIRE_CLEAR_WIDTH_M = 6.0          # CSPS033 — hard rule
-WALK_ZONE_EACH_SIDE_M = 1.8       # sidewalk/boulevard per side inside the ROW
+FIRE_CLEAR_WIDTH_M = 6.0  # CSPS033 — hard rule
+WALK_ZONE_EACH_SIDE_M = 1.8  # sidewalk/boulevard per side inside the ROW
 MIN_ROW_M = FIRE_CLEAR_WIDTH_M + 2 * WALK_ZONE_EACH_SIDE_M  # 9.6
 FLOOR_HEIGHT_M = 3.2
 # Rear laneways are secondary access — blocks they serve still front a full
@@ -25,16 +25,16 @@ LANE_ROW_M = 7.0
 @dataclass(frozen=True)
 class RuleProfile:
     scenario_id: str
-    block_target_m: float          # preferred block edge (street-grid spacing = this + local ROW)
-    row_width_m: float             # internal street right-of-way
-    open_space_share: float        # of gross site area
-    coverage_ratio: float          # building footprint / net block area (cap)
+    block_target_m: float  # preferred block edge (street-grid spacing = this + local ROW)
+    row_width_m: float  # internal street right-of-way
+    open_space_share: float  # of gross site area
+    coverage_ratio: float  # building footprint / net block area (cap)
     parcel_width_m: float
     front_setback_m: float
-    building_depth_m: float        # perimeter-block bar depth
-    floors: float                  # working storey count (ceilings clamp per block)
+    building_depth_m: float  # perimeter-block bar depth
+    floors: float  # working storey count (ceilings clamp per block)
     floors_note: str
-    perimeter_inset_m: float       # boundary inset before the internal grid starts
+    perimeter_inset_m: float  # boundary inset before the internal grid starts
     # Hard walkability cap on the LONGEST block edge. The street grid adds
     # internal streets until no block edge exceeds this — so a site smaller
     # than one target block still subdivides instead of becoming a single
@@ -118,30 +118,39 @@ def resolve_rules(
         clamped = min(hi, max(lo, float(raw)))
         defaults[defaults_key] = clamped
         clamp_suffix = f" (clamped from {float(raw):g})" if clamped != float(raw) else ""
-        notes.append({
-            "code": "RULE_HINT_APPLIED", "severity": "info",
-            "message": f"Custom brief hint: {hint_key} = {clamped:g}{clamp_suffix}.",
-            "source_phase": "community_rules",
-        })
+        notes.append(
+            {
+                "code": "RULE_HINT_APPLIED",
+                "severity": "info",
+                "message": f"Custom brief hint: {hint_key} = {clamped:g}{clamp_suffix}.",
+                "source_phase": "community_rules",
+            }
+        )
 
     row_param = _param_value(parameters, "streets.row_width_m")
     row_width, _ = coerce_floors(row_param, 1.0)  # numeric-or-range coercion reused
     if row_width is None:
         row_width = 16.0
-        notes.append({
-            "code": "ROW_DEFAULTED", "severity": "info",
-            "message": "No interpretable streets.row_width_m — using 16.0 m internal ROW.",
-            "source_phase": "row_geometry",
-        })
+        notes.append(
+            {
+                "code": "ROW_DEFAULTED",
+                "severity": "info",
+                "message": "No interpretable streets.row_width_m — using 16.0 m internal ROW.",
+                "source_phase": "row_geometry",
+            }
+        )
     if row_width < MIN_ROW_M:
-        notes.append({
-            "code": "FIRE_CLEAR_WIDTH_FLOOR", "severity": "warning",
-            "message": (
-                f"Requested {row_width:g} m ROW cannot keep the CSPS033 {FIRE_CLEAR_WIDTH_M:g} m "
-                f"clear width plus walk zones — raised to {MIN_ROW_M:g} m."
-            ),
-            "source_phase": "row_geometry",
-        })
+        notes.append(
+            {
+                "code": "FIRE_CLEAR_WIDTH_FLOOR",
+                "severity": "warning",
+                "message": (
+                    f"Requested {row_width:g} m ROW cannot keep the CSPS033 {FIRE_CLEAR_WIDTH_M:g} m "
+                    f"clear width plus walk zones — raised to {MIN_ROW_M:g} m."
+                ),
+                "source_phase": "row_geometry",
+            }
+        )
         row_width = MIN_ROW_M
 
     floors, floors_note = coerce_floors(_param_value(parameters, "buildings.floors"), FLOOR_HEIGHT_M)
@@ -153,10 +162,14 @@ def resolve_rules(
     if floors is None:
         floors = 4.0
         floors_note = "no floors/height parameter — conservative 4 storeys"
-        notes.append({
-            "code": "FLOORS_DEFAULTED", "severity": "info",
-            "message": floors_note, "source_phase": "building_placement",
-        })
+        notes.append(
+            {
+                "code": "FLOORS_DEFAULTED",
+                "severity": "info",
+                "message": floors_note,
+                "source_phase": "building_placement",
+            }
+        )
 
     # Edge cap tracks the (possibly hinted) block target: a bespoke fine grain
     # must not be undone by a stale default edge, and vice-versa.

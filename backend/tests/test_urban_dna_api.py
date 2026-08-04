@@ -13,9 +13,14 @@ from shapely.geometry import Polygon
 
 from tests.conftest import FakeProject
 
-DOWNTOWN_CALGARY = Polygon([
-    (-114.075, 51.043), (-114.062, 51.043), (-114.062, 51.049), (-114.075, 51.049),
-])
+DOWNTOWN_CALGARY = Polygon(
+    [
+        (-114.075, 51.043),
+        (-114.062, 51.043),
+        (-114.062, 51.049),
+        (-114.075, 51.049),
+    ]
+)
 
 
 class FakeZone:
@@ -61,13 +66,13 @@ async def test_get_requires_auth(client):
 
 @pytest.mark.anyio
 async def test_generate_404_for_missing_zone(client, mock_db, test_user, auth_headers):
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),  # require_auth user lookup
-        _scalar_result(None),       # zone lookup
-    ])
-    response = await client.post(
-        f"/api/v1/urban-dna/zones/{uuid.uuid4()}/generate", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),  # require_auth user lookup
+            _scalar_result(None),  # zone lookup
+        ]
     )
+    response = await client.post(f"/api/v1/urban-dna/zones/{uuid.uuid4()}/generate", headers=auth_headers)
     assert response.status_code == 404
 
 
@@ -75,38 +80,36 @@ async def test_generate_404_for_missing_zone(client, mock_db, test_user, auth_he
 async def test_generate_forbidden_without_editor_permission(client, mock_db, test_user, auth_headers):
     zone = FakeZone()
     project = FakeProject()  # owned by someone else
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(None),  # no share
-    ])
-    response = await client.post(
-        f"/api/v1/urban-dna/zones/{zone.id}/generate", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(None),  # no share
+        ]
     )
+    response = await client.post(f"/api/v1/urban-dna/zones/{zone.id}/generate", headers=auth_headers)
     assert response.status_code == 403
 
 
 @pytest.mark.anyio
-async def test_generate_creates_snapshot_and_queues_task(
-    client, mock_db, test_user, auth_headers, monkeypatch
-):
+async def test_generate_creates_snapshot_and_queues_task(client, mock_db, test_user, auth_headers, monkeypatch):
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+        ]
+    )
 
     import app.tasks.urban_dna as tasks_module
 
     delay_mock = MagicMock()
     monkeypatch.setattr(tasks_module.generate_urban_dna, "delay", delay_mock)
 
-    response = await client.post(
-        f"/api/v1/urban-dna/zones/{zone.id}/generate", headers=auth_headers
-    )
+    response = await client.post(f"/api/v1/urban-dna/zones/{zone.id}/generate", headers=auth_headers)
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "pending"
@@ -122,12 +125,14 @@ async def test_get_latest_returns_snapshot(client, mock_db, test_user, auth_head
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, status="partial")
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(snapshot),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(snapshot),
+        ]
+    )
 
     response = await client.get(f"/api/v1/urban-dna/zones/{zone.id}", headers=auth_headers)
     assert response.status_code == 200
@@ -141,12 +146,14 @@ async def test_get_latest_returns_snapshot(client, mock_db, test_user, auth_head
 async def test_get_latest_404_when_no_snapshot(client, mock_db, test_user, auth_headers):
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(None),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(None),
+        ]
+    )
     response = await client.get(f"/api/v1/urban-dna/zones/{zone.id}", headers=auth_headers)
     assert response.status_code == 404
 
@@ -155,11 +162,13 @@ async def test_get_latest_404_when_no_snapshot(client, mock_db, test_user, auth_
 async def test_capabilities_lists_calgary_datasets(client, mock_db, test_user, auth_headers):
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+        ]
+    )
     response = await client.get(f"/api/v1/urban-dna/capabilities/{zone.id}", headers=auth_headers)
     assert response.status_code == 200
     data = response.json()

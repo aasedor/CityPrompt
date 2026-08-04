@@ -36,6 +36,7 @@ from app.services.planning_agents.schemas import (
 # Registry / vocabulary sanity
 # ---------------------------------------------------------------------------
 
+
 def test_expert_scopes_are_within_vocabulary():
     for expert in EXPERTS:
         for path in expert.parameter_scope:
@@ -68,12 +69,16 @@ def test_legacy_presets_still_resolve():
 
 def test_zone_property_updates_maps_vocabulary():
     result = ScenarioResult(
-        scenario_id="x", label="X", philosophy=PhilosophyWeights(),
+        scenario_id="x",
+        label="X",
+        philosophy=PhilosophyWeights(),
         plan_parameters={
             "buildings.floors": MergedParameter(
-                parameter_path="buildings.floors", value=6, rationale="r", contributors=["a"]),
+                parameter_path="buildings.floors", value=6, rationale="r", contributors=["a"]
+            ),
             "landscape.tree_density": MergedParameter(
-                parameter_path="landscape.tree_density", value=0.8, rationale="r", contributors=["b"]),
+                parameter_path="landscape.tree_density", value=0.8, rationale="r", contributors=["b"]
+            ),
         },
     )
     updates = result.zone_property_updates()
@@ -84,16 +89,23 @@ def test_zone_property_updates_maps_vocabulary():
 # Coordinator merge
 # ---------------------------------------------------------------------------
 
+
 def _expert_set(agent_id: str, *recs: Recommendation) -> ExpertRecommendationSet:
     return ExpertRecommendationSet(agent_id=agent_id, summary="s", recommendations=list(recs))
 
 
 def test_merge_agreement_blends_numeric_within_tolerance():
     sets = [
-        _expert_set("land_use_zoning", Recommendation(
-            parameter_path="buildings.floors", value=6, rationale="zoning supports six", confidence=0.8)),
-        _expert_set("built_form_urban_design", Recommendation(
-            parameter_path="buildings.floors", value=6.5, rationale="context supports six-ish", confidence=0.8)),
+        _expert_set(
+            "land_use_zoning",
+            Recommendation(parameter_path="buildings.floors", value=6, rationale="zoning supports six", confidence=0.8),
+        ),
+        _expert_set(
+            "built_form_urban_design",
+            Recommendation(
+                parameter_path="buildings.floors", value=6.5, rationale="context supports six-ish", confidence=0.8
+            ),
+        ),
     ]
     merged, trade_offs = merge_recommendations(sets, PhilosophyWeights(primary="balanced", intensity=0.5))
     assert trade_offs == []
@@ -106,14 +118,25 @@ def test_merge_agreement_blends_numeric_within_tolerance():
 def test_merge_conflict_produces_exactly_one_tradeoff_with_both_rationales():
     # The canonical rigged conflict: fire access 11m vs walkable 8.5m ROW.
     sets = [
-        _expert_set("mobility", Recommendation(
-            parameter_path="streets.row_width_m", value=11.0,
-            rationale="emergency apparatus requires 11m clear operating width",
-            confidence=0.9, tension_with=["streets.row_width_m"])),
-        _expert_set("built_form_urban_design", Recommendation(
-            parameter_path="streets.row_width_m", value=8.5,
-            rationale="narrow ROW calms traffic and supports walkability",
-            confidence=0.85)),
+        _expert_set(
+            "mobility",
+            Recommendation(
+                parameter_path="streets.row_width_m",
+                value=11.0,
+                rationale="emergency apparatus requires 11m clear operating width",
+                confidence=0.9,
+                tension_with=["streets.row_width_m"],
+            ),
+        ),
+        _expert_set(
+            "built_form_urban_design",
+            Recommendation(
+                parameter_path="streets.row_width_m",
+                value=8.5,
+                rationale="narrow ROW calms traffic and supports walkability",
+                confidence=0.85,
+            ),
+        ),
     ]
     merged, trade_offs = merge_recommendations(sets, PhilosophyWeights(primary="balanced", intensity=0.5))
     assert len(trade_offs) == 1
@@ -129,12 +152,21 @@ def test_merge_conflict_produces_exactly_one_tradeoff_with_both_rationales():
 
 def test_philosophy_intensity_flips_a_rigged_tie():
     sets = [
-        _expert_set("climate_public_realm", Recommendation(
-            parameter_path="layout.strategy", value="green network first",
-            rationale="canopy continuity", confidence=0.7)),
-        _expert_set("land_use_zoning", Recommendation(
-            parameter_path="layout.strategy", value="perimeter blocks",
-            rationale="frontage yield", confidence=0.7)),
+        _expert_set(
+            "climate_public_realm",
+            Recommendation(
+                parameter_path="layout.strategy",
+                value="green network first",
+                rationale="canopy continuity",
+                confidence=0.7,
+            ),
+        ),
+        _expert_set(
+            "land_use_zoning",
+            Recommendation(
+                parameter_path="layout.strategy", value="perimeter blocks", rationale="frontage yield", confidence=0.7
+            ),
+        ),
     ]
     # climate_resilience: climate expert affinity 1.4 vs land_use 1.0
     low = merge_recommendations(sets, PhilosophyWeights(primary="climate_resilience", intensity=0.0))[0]
@@ -142,19 +174,24 @@ def test_philosophy_intensity_flips_a_rigged_tie():
     assert high["layout.strategy"].value == "green network first"
     # at zero intensity affinity is neutralized -> deterministic order but weight tie;
     # the point is intensity CHANGES the outcome vs some baseline
-    assert (low["layout.strategy"].value != high["layout.strategy"].value) or (
-        low["layout.strategy"].contributors != high["layout.strategy"].contributors
-    ) or low["layout.strategy"].value == "green network first"
+    assert (
+        (low["layout.strategy"].value != high["layout.strategy"].value)
+        or (low["layout.strategy"].contributors != high["layout.strategy"].contributors)
+        or low["layout.strategy"].value == "green network first"
+    )
 
 
 def test_merge_zero_confidence_numeric_agreement_no_crash():
     """Regression (review finding): all-zero confidences made the weighted mean
     divide by zero."""
     sets = [
-        _expert_set("land_use_zoning", Recommendation(
-            parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0)),
-        _expert_set("built_form_urban_design", Recommendation(
-            parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0)),
+        _expert_set(
+            "land_use_zoning", Recommendation(parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0)
+        ),
+        _expert_set(
+            "built_form_urban_design",
+            Recommendation(parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0),
+        ),
     ]
     merged, _ = merge_recommendations(sets, PhilosophyWeights(primary="balanced", intensity=0.0))
     assert merged["buildings.floors"].value == 6  # falls through to winner, no crash
@@ -163,8 +200,9 @@ def test_merge_zero_confidence_numeric_agreement_no_crash():
 def test_failed_experts_are_excluded_but_merge_completes():
     sets = [
         ExpertRecommendationSet(agent_id="mobility", failed=True),
-        _expert_set("land_use_zoning", Recommendation(
-            parameter_path="buildings.floors", value=4, rationale="r", confidence=0.6)),
+        _expert_set(
+            "land_use_zoning", Recommendation(parameter_path="buildings.floors", value=4, rationale="r", confidence=0.6)
+        ),
     ]
     merged, _ = merge_recommendations(sets, PhilosophyWeights())
     assert merged["buildings.floors"].value == 4
@@ -174,16 +212,21 @@ def test_failed_experts_are_excluded_but_merge_completes():
 # Diff + explanation
 # ---------------------------------------------------------------------------
 
+
 def _merged(path: str, value) -> MergedParameter:
     return MergedParameter(parameter_path=path, value=value, rationale="r", contributors=["a"])
 
 
 def test_diff_scenarios_only_reports_real_changes():
-    baseline = {"buildings.floors": _merged("buildings.floors", 4),
-                "landscape.tree_density": _merged("landscape.tree_density", 0.4)}
-    current = {"buildings.floors": _merged("buildings.floors", 8),
-               "landscape.tree_density": _merged("landscape.tree_density", 0.4),
-               "layout.strategy": _merged("layout.strategy", "green network")}
+    baseline = {
+        "buildings.floors": _merged("buildings.floors", 4),
+        "landscape.tree_density": _merged("landscape.tree_density", 0.4),
+    }
+    current = {
+        "buildings.floors": _merged("buildings.floors", 8),
+        "landscape.tree_density": _merged("landscape.tree_density", 0.4),
+        "layout.strategy": _merged("layout.strategy", "green network"),
+    }
     changed = diff_scenarios(baseline, current)
     paths = {c.parameter_path for c in changed}
     assert paths == {"buildings.floors", "layout.strategy"}
@@ -200,8 +243,9 @@ async def test_write_explanation_degrades_to_deterministic_narrative(monkeypatch
     monkeypatch.setattr(coordinator_module.anthropic, "AsyncAnthropic", MagicMock(return_value=failing_client))
 
     scenario = SCENARIO_PRESETS["environmental"]
-    changed = diff_scenarios({"buildings.floors": _merged("buildings.floors", 4)},
-                             {"buildings.floors": _merged("buildings.floors", 8)})
+    changed = diff_scenarios(
+        {"buildings.floors": _merged("buildings.floors", 4)}, {"buildings.floors": _merged("buildings.floors", 8)}
+    )
     explanation = await write_explanation(scenario, changed, [])
     assert explanation.changed_parameters == changed
     assert "floors" in explanation.narrative  # deterministic fallback references the diff
@@ -210,6 +254,7 @@ async def test_write_explanation_degrades_to_deterministic_narrative(monkeypatch
 # ---------------------------------------------------------------------------
 # Runner (patched client)
 # ---------------------------------------------------------------------------
+
 
 class _FakeUsage:
     input_tokens = 12000
@@ -244,8 +289,14 @@ async def test_panel_drops_out_of_scope_and_demotes_uncited_policy(monkeypatch):
     payload = {
         "summary": "position",
         "recommendations": [
-            {"parameter_path": "landscape.tree_density", "value": 0.8, "rationale": "canopy",
-             "claim_type": "policy", "citations": [], "confidence": 0.9},          # uncited policy -> demoted
+            {
+                "parameter_path": "landscape.tree_density",
+                "value": 0.8,
+                "rationale": "canopy",
+                "claim_type": "policy",
+                "citations": [],
+                "confidence": 0.9,
+            },  # uncited policy -> demoted
             {"parameter_path": "buildings.floors", "value": 20, "rationale": "tall"},  # out of scope for climate expert
         ],
     }
@@ -258,7 +309,7 @@ async def test_panel_drops_out_of_scope_and_demotes_uncited_policy(monkeypatch):
     recs = sets[0].recommendations
     assert len(recs) == 1  # out-of-scope dropped
     assert recs[0].parameter_path == "landscape.tree_density"
-    assert recs[0].claim_type == "best_practice"       # demoted
+    assert recs[0].claim_type == "best_practice"  # demoted
     assert recs[0].confidence <= 0.5
     assert usage[0]["input_tokens"] == 12000
 
@@ -323,6 +374,7 @@ def test_cost_estimate_scales_by_model():
 # Handoff seam: site context + prompt regression
 # ---------------------------------------------------------------------------
 
+
 def test_build_site_context_includes_directives_only_when_present():
     from app.api.v1.site_zones import _build_site_context
 
@@ -336,11 +388,14 @@ def test_build_site_context_includes_directives_only_when_present():
     bare = _build_site_context(FakeZone(), [])
     assert "planning_directives" not in bare  # regression: absent -> unchanged shape
 
-    directives = {"scenario_id": "climate_first", "label": "Climate First",
-                  "parameters": {"tree_density": 0.8}, "narrative": "n"}
+    directives = {
+        "scenario_id": "climate_first",
+        "label": "Climate First",
+        "parameters": {"tree_density": 0.8},
+        "narrative": "n",
+    }
     with_directives = _build_site_context(FakeZone({"_urban_dna_directives": directives}), [])
     assert with_directives["planning_directives"]["parameters"]["tree_density"] == 0.8
 
-    empty_params = _build_site_context(
-        FakeZone({"_urban_dna_directives": {"parameters": {}}}), [])
+    empty_params = _build_site_context(FakeZone({"_urban_dna_directives": {"parameters": {}}}), [])
     assert "planning_directives" not in empty_params

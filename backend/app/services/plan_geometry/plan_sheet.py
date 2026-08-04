@@ -37,8 +37,7 @@ SHEET_COLORS = {
 def _svg_ring(poly, to_metric, origin_x: float, origin_y: float) -> str:
     metric = project_geometry(poly, to_metric)
     points = " ".join(
-        f"{x - origin_x:.1f},{origin_y - y:.1f}"  # flip y: SVG grows downward
-        for x, y in metric.exterior.coords
+        f"{x - origin_x:.1f},{origin_y - y:.1f}" for x, y in metric.exterior.coords  # flip y: SVG grows downward
     )
     return points
 
@@ -84,12 +83,10 @@ def _drawing_svg(
             parts.append(
                 f'<text x="{centroid.x - ox:.1f}" y="{oy - centroid.y:.1f}" font-size="9" '
                 f'text-anchor="middle" fill="#ffffff" font-family="sans-serif">'
-                f'{floors_value:g}F</text>'
+                f"{floors_value:g}F</text>"
             )
 
-    boundary_points = " ".join(
-        f"{x - ox:.1f},{oy - y:.1f}" for x, y in boundary_m.exterior.coords
-    )
+    boundary_points = " ".join(f"{x - ox:.1f},{oy - y:.1f}" for x, y in boundary_m.exterior.coords)
     parts.append(
         f'<polygon points="{boundary_points}" fill="none" stroke="{SHEET_COLORS["boundary"]}" '
         'stroke-width="2" stroke-dasharray="8 4"/>'
@@ -104,8 +101,7 @@ def _drawing_svg(
     )
     return (
         f'<svg viewBox="0 0 {width:.0f} {height:.0f}" xmlns="http://www.w3.org/2000/svg" '
-        'style="width:100%;max-width:820px;background:#f6f4ee;border:2px solid #151515">'
-        + "".join(parts) + "</svg>"
+        'style="width:100%;max-width:820px;background:#f6f4ee;border:2px solid #151515">' + "".join(parts) + "</svg>"
     )
 
 
@@ -137,8 +133,17 @@ def build_plan_sheet(
     plan = payload.get("plan") or {}
     metrics = payload.get("metrics") or {}
     metric_rows = ""
-    for key in ("site_area_m2", "net_developable_m2", "open_space_m2", "building_footprint_m2",
-                "gfa_m2", "far_achieved", "units", "population", "parking_stalls"):
+    for key in (
+        "site_area_m2",
+        "net_developable_m2",
+        "open_space_m2",
+        "building_footprint_m2",
+        "gfa_m2",
+        "far_achieved",
+        "units",
+        "population",
+        "parking_stalls",
+    ):
         metric = (metrics.get("metrics") or {}).get(key)
         if not metric or metric.get("value") is None:
             continue
@@ -159,12 +164,14 @@ def build_plan_sheet(
 
     iteration_rows = ""
     for step in plan.get("iterations") or []:
-        revisions = "; ".join(
-            f"{r['parameter']} {r['from']:g}→{r['to']:g} ({r['reason'].split(':')[0]})"
-            for r in step.get("revisions", [])
-        ) or "converged"
-        worst = min((step.get("scores") or {}).items(),
-                    key=lambda kv: kv[1].get("score", 1.0), default=(None, {}))
+        revisions = (
+            "; ".join(
+                f"{r['parameter']} {r['from']:g}→{r['to']:g} ({r['reason'].split(':')[0]})"
+                for r in step.get("revisions", [])
+            )
+            or "converged"
+        )
+        worst = min((step.get("scores") or {}).items(), key=lambda kv: kv[1].get("score", 1.0), default=(None, {}))
         iteration_rows += (
             f"<tr><td class='num'>{step['iteration']}</td>"
             f"<td class='num'>{step['overall_score']:.3f}</td>"
@@ -172,9 +179,10 @@ def build_plan_sheet(
             f"<td class='derivation'>{_esc(revisions)}</td></tr>"
         )
 
-    trade_off_items = "".join(
-        f"<li>{_esc(t.get('message'))}</li>" for t in (payload.get("trade_offs") or [])[:8]
-    ) or "<li>No unresolved inter-disciplinary conflicts recorded.</li>"
+    trade_off_items = (
+        "".join(f"<li>{_esc(t.get('message'))}</li>" for t in (payload.get("trade_offs") or [])[:8])
+        or "<li>No unresolved inter-disciplinary conflicts recorded.</li>"
+    )
 
     policy_items = ""
     insight = ((((dna or {}).get("policy") or {}).get("fields") or {}).get("insight") or {}).get("value") or {}
@@ -202,13 +210,8 @@ def build_plan_sheet(
     svg = _drawing_svg(boundary_wgs84, plan_zones)
     gi = plan.get("geometry_inputs") or {}
     context_total = int((gi.get("context_road_anchors") or 0) + (gi.get("context_path_anchors") or 0))
-    context_served = int(
-        (gi.get("context_road_connections") or 0) + (gi.get("context_path_connections") or 0)
-    )
-    context_summary = (
-        f" · context connections {context_served}/{context_total}"
-        if context_total else ""
-    )
+    context_served = int((gi.get("context_road_connections") or 0) + (gi.get("context_path_connections") or 0))
+    context_summary = f" · context connections {context_served}/{context_total}" if context_total else ""
 
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <title>Plan sheet — {_esc(scenario_label)}</title>

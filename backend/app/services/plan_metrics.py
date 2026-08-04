@@ -31,43 +31,53 @@ logger = logging.getLogger(__name__)
 # everywhere consistently.
 ASSUMPTIONS: dict[str, dict[str, Any]] = {
     "internal_row_share": {
-        "value": 0.22, "unit": "ratio",
+        "value": 0.22,
+        "unit": "ratio",
         "note": "internal streets/lanes consume ~22% of gross site area (typical inner-city grid)",
     },
     "open_space_share_default": {
-        "value": 0.10, "unit": "ratio",
+        "value": 0.10,
+        "unit": "ratio",
         "note": "minimum public open space share of gross area (MDP open-space direction)",
     },
     "coverage_ratio_default": {
-        "value": 0.50, "unit": "ratio",
+        "value": 0.50,
+        "unit": "ratio",
         "note": "building footprint coverage of net developable block area (perimeter-block form)",
     },
     "residential_efficiency": {
-        "value": 0.82, "unit": "ratio",
+        "value": 0.82,
+        "unit": "ratio",
         "note": "net sellable/rentable residential area per gross floor area",
     },
     "avg_unit_area_m2": {
-        "value": 75.0, "unit": "m2",
+        "value": 75.0,
+        "unit": "m2",
         "note": "blended average unit size (mix of studios-3bd, inner-city)",
     },
     "persons_per_unit": {
-        "value": 1.7, "unit": "persons",
+        "value": 1.7,
+        "unit": "persons",
         "note": "average household size, Calgary inner-city (census-informed)",
     },
     "nonresidential_share_mixed_use": {
-        "value": 0.15, "unit": "ratio",
+        "value": 0.15,
+        "unit": "ratio",
         "note": "ground-floor commercial share of GFA when development_type=mixed_use",
     },
     "parking_ratio_default": {
-        "value": 0.50, "unit": "stalls/unit",
+        "value": 0.50,
+        "unit": "stalls/unit",
         "note": "structured parking ratio, transit-rich inner city",
     },
     "parking_ratio_climate": {
-        "value": 0.25, "unit": "stalls/unit",
+        "value": 0.25,
+        "unit": "stalls/unit",
         "note": "reduced ratio under climate-first/TOD scenarios",
     },
     "floor_height_m": {
-        "value": 3.2, "unit": "m",
+        "value": 3.2,
+        "unit": "m",
         "note": "storey-to-storey height used to convert heights <-> floors",
     },
     # LAP Building Scale categories -> storey ceilings (Guidebook for Great
@@ -86,15 +96,15 @@ class DerivedMetric(BaseModel):
     label: str
     value: Optional[float] = None
     unit: str = ""
-    derivation: str = ""                 # formula with the actual numbers substituted
+    derivation: str = ""  # formula with the actual numbers substituted
     inputs: list[str] = Field(default_factory=list)
-    assumptions: list[str] = Field(default_factory=list)   # ASSUMPTIONS keys used
+    assumptions: list[str] = Field(default_factory=list)  # ASSUMPTIONS keys used
     confidence: float = 0.5
     mode: Literal["parameter", "geometry"] = "parameter"
 
     def rounded(self) -> "DerivedMetric":
         if self.value is not None:
-            if abs(self.value) < 10:        # FAR-scale ratios need 2 decimals
+            if abs(self.value) < 10:  # FAR-scale ratios need 2 decimals
                 self.value = round(self.value, 2)
             elif abs(self.value) < 100:
                 self.value = round(self.value, 1)
@@ -117,6 +127,7 @@ class MetricsReport(BaseModel):
 
 
 # --- Input extraction ---------------------------------------------------------
+
 
 def _dna_field(dna: dict[str, Any], section: str, field: str) -> tuple[Any, float]:
     """(value, confidence) of a DNA field from a serialized UrbanDNA dict."""
@@ -153,6 +164,7 @@ def _scenario_param(parameters: dict[str, Any], path: str) -> Any:
 
 
 # --- Ceiling reconciliation ---------------------------------------------------
+
 
 def reconcile_ceilings(
     districts: list[dict[str, Any]] | None,
@@ -207,16 +219,18 @@ def reconcile_ceilings(
         status = "exceeds" if "exceeds" in verdicts else ("within" if verdicts else "unknown")
         source = "; ".join(sources)
 
-        reconciliation.append({
-            "district": code,
-            "area_pct_of_site": pct,
-            "far_ceiling": far,
-            "height_ceiling_m": height_m,
-            "ceiling_floors": round(ceiling_floors, 1) if ceiling_floors else None,
-            "proposed_floors": proposed_floors,
-            "status": status,
-            "source": source,
-        })
+        reconciliation.append(
+            {
+                "district": code,
+                "area_pct_of_site": pct,
+                "far_ceiling": far,
+                "height_ceiling_m": height_m,
+                "ceiling_floors": round(ceiling_floors, 1) if ceiling_floors else None,
+                "proposed_floors": proposed_floors,
+                "status": status,
+                "source": source,
+            }
+        )
 
         if status == "exceeds":
             warnings.append(
@@ -227,6 +241,7 @@ def reconcile_ceilings(
 
 
 # --- Main entry ----------------------------------------------------------------
+
 
 def compute_metrics(
     *,
@@ -245,11 +260,9 @@ def compute_metrics(
     required input either way; UrbanDNA v1 does not persist it).
     """
     is_geometry = bool(geometry_inputs) and any(
-        key in geometry_inputs
-        for key in ("net_block_area_m2", "building_footprint_m2", "row_area_m2", "gfa_m2")
+        key in geometry_inputs for key in ("net_block_area_m2", "building_footprint_m2", "row_area_m2", "gfa_m2")
     )
-    report = MetricsReport(scenario_id=scenario_id,
-                           mode="geometry" if is_geometry else "parameter")
+    report = MetricsReport(scenario_id=scenario_id, mode="geometry" if is_geometry else "parameter")
 
     floor_height = ASSUMPTIONS["floor_height_m"]["value"]
 
@@ -267,11 +280,18 @@ def compute_metrics(
         return report
 
     gross = float(area_value)
-    report.add(DerivedMetric(
-        key="site_area_m2", label="Gross site area", value=gross, unit="m2",
-        derivation="site boundary polygon area (UTM)", inputs=["site_boundary"],
-        confidence=area_conf or 1.0, mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="site_area_m2",
+            label="Gross site area",
+            value=gross,
+            unit="m2",
+            derivation="site boundary polygon area (UTM)",
+            inputs=["site_boundary"],
+            confidence=area_conf or 1.0,
+            mode=report.mode,
+        )
+    )
 
     districts, districts_conf = _dna_field(dna, "land_use", "districts")
     lap_scale, _ = _dna_field(dna, "land_use", "lap_building_scale")
@@ -321,31 +341,53 @@ def compute_metrics(
         footprint = net * coverage
         land_inputs = ["site_area_m2"]
         land_assumptions = ["internal_row_share", "open_space_share_default", "coverage_ratio_default"]
-        land_derivation = (
-            f"{gross:,.0f} × (1 − {row_share} streets − {open_share} open space) = {net:,.0f} m²"
-        )
+        land_derivation = f"{gross:,.0f} × (1 − {row_share} streets − {open_share} open space) = {net:,.0f} m²"
         footprint_derivation = f"net {net:,.0f} × coverage {coverage} = {footprint:,.0f} m²"
         land_conf = 0.6  # parameter mode carries assumption risk
 
-    report.add(DerivedMetric(
-        key="net_developable_m2", label="Net developable block area", value=net, unit="m2",
-        derivation=land_derivation, inputs=land_inputs, assumptions=land_assumptions,
-        confidence=land_conf, mode=report.mode,
-    ))
-    report.add(DerivedMetric(
-        key="open_space_m2", label="Public open space", value=open_area, unit="m2",
-        derivation=("sum of drawn open-space polygons" if is_geometry
-                    else f"gross × {ASSUMPTIONS['open_space_share_default']['value']}"),
-        inputs=land_inputs,
-        assumptions=[] if is_geometry else ["open_space_share_default"],
-        confidence=land_conf, mode=report.mode,
-    ))
-    report.add(DerivedMetric(
-        key="building_footprint_m2", label="Building footprint", value=footprint, unit="m2",
-        derivation=footprint_derivation, inputs=land_inputs,
-        assumptions=[] if is_geometry else ["coverage_ratio_default"],
-        confidence=land_conf, mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="net_developable_m2",
+            label="Net developable block area",
+            value=net,
+            unit="m2",
+            derivation=land_derivation,
+            inputs=land_inputs,
+            assumptions=land_assumptions,
+            confidence=land_conf,
+            mode=report.mode,
+        )
+    )
+    report.add(
+        DerivedMetric(
+            key="open_space_m2",
+            label="Public open space",
+            value=open_area,
+            unit="m2",
+            derivation=(
+                "sum of drawn open-space polygons"
+                if is_geometry
+                else f"gross × {ASSUMPTIONS['open_space_share_default']['value']}"
+            ),
+            inputs=land_inputs,
+            assumptions=[] if is_geometry else ["open_space_share_default"],
+            confidence=land_conf,
+            mode=report.mode,
+        )
+    )
+    report.add(
+        DerivedMetric(
+            key="building_footprint_m2",
+            label="Building footprint",
+            value=footprint,
+            unit="m2",
+            derivation=footprint_derivation,
+            inputs=land_inputs,
+            assumptions=[] if is_geometry else ["coverage_ratio_default"],
+            confidence=land_conf,
+            mode=report.mode,
+        )
+    )
 
     # --- GFA / FAR ---------------------------------------------------------------
     gfa = (geometry_inputs or {}).get("gfa_m2") or footprint * floors
@@ -354,18 +396,32 @@ def compute_metrics(
         if not (geometry_inputs or {}).get("gfa_m2")
         else "sum of drawn building footprints × their storeys"
     )
-    report.add(DerivedMetric(
-        key="gfa_m2", label="Gross floor area", value=gfa, unit="m2",
-        derivation=gfa_derivation, inputs=land_inputs + ["buildings.floors"],
-        assumptions=[] if is_geometry else ["coverage_ratio_default"],
-        confidence=min(land_conf, 0.8), mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="gfa_m2",
+            label="Gross floor area",
+            value=gfa,
+            unit="m2",
+            derivation=gfa_derivation,
+            inputs=land_inputs + ["buildings.floors"],
+            assumptions=[] if is_geometry else ["coverage_ratio_default"],
+            confidence=min(land_conf, 0.8),
+            mode=report.mode,
+        )
+    )
     far = gfa / gross if gross else None
-    report.add(DerivedMetric(
-        key="far_achieved", label="Site FAR achieved", value=far, unit="FAR",
-        derivation=f"GFA {gfa:,.0f} / gross {gross:,.0f} = {far:.2f}",
-        inputs=["gfa_m2", "site_area_m2"], confidence=min(land_conf, 0.8), mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="far_achieved",
+            label="Site FAR achieved",
+            value=far,
+            unit="FAR",
+            derivation=f"GFA {gfa:,.0f} / gross {gross:,.0f} = {far:.2f}",
+            inputs=["gfa_m2", "site_area_m2"],
+            confidence=min(land_conf, 0.8),
+            mode=report.mode,
+        )
+    )
 
     # --- residential program -------------------------------------------------------
     nonres_share = ASSUMPTIONS["nonresidential_share_mixed_use"]["value"] if development_type == "mixed_use" else 0.0
@@ -373,37 +429,61 @@ def compute_metrics(
     efficiency = ASSUMPTIONS["residential_efficiency"]["value"]
     unit_area = ASSUMPTIONS["avg_unit_area_m2"]["value"]
     units = res_gfa * efficiency / unit_area
-    report.add(DerivedMetric(
-        key="units", label="Dwelling units", value=units, unit="units",
-        derivation=(f"GFA {gfa:,.0f} × (1 − {nonres_share} non-res) × {efficiency} efficiency "
-                    f"/ {unit_area} m² per unit = {units:,.0f}"),
-        inputs=["gfa_m2", "buildings.development_type"],
-        assumptions=["residential_efficiency", "avg_unit_area_m2"]
-        + (["nonresidential_share_mixed_use"] if nonres_share else []),
-        confidence=min(land_conf, 0.7), mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="units",
+            label="Dwelling units",
+            value=units,
+            unit="units",
+            derivation=(
+                f"GFA {gfa:,.0f} × (1 − {nonres_share} non-res) × {efficiency} efficiency "
+                f"/ {unit_area} m² per unit = {units:,.0f}"
+            ),
+            inputs=["gfa_m2", "buildings.development_type"],
+            assumptions=["residential_efficiency", "avg_unit_area_m2"]
+            + (["nonresidential_share_mixed_use"] if nonres_share else []),
+            confidence=min(land_conf, 0.7),
+            mode=report.mode,
+        )
+    )
 
     persons = ASSUMPTIONS["persons_per_unit"]["value"]
-    report.add(DerivedMetric(
-        key="population", label="Population at build-out", value=units * persons, unit="people",
-        derivation=f"{units:,.0f} units × {persons} persons/unit",
-        inputs=["units"], assumptions=["persons_per_unit"],
-        confidence=min(land_conf, 0.65), mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="population",
+            label="Population at build-out",
+            value=units * persons,
+            unit="people",
+            derivation=f"{units:,.0f} units × {persons} persons/unit",
+            inputs=["units"],
+            assumptions=["persons_per_unit"],
+            confidence=min(land_conf, 0.65),
+            mode=report.mode,
+        )
+    )
 
     parking_key = "parking_ratio_climate" if scenario_id == "climate_first" else "parking_ratio_default"
     ratio = ASSUMPTIONS[parking_key]["value"]
-    report.add(DerivedMetric(
-        key="parking_stalls", label="Parking stalls", value=units * ratio, unit="stalls",
-        derivation=f"{units:,.0f} units × {ratio} stalls/unit ({parking_key})",
-        inputs=["units"], assumptions=[parking_key],
-        confidence=min(land_conf, 0.6), mode=report.mode,
-    ))
+    report.add(
+        DerivedMetric(
+            key="parking_stalls",
+            label="Parking stalls",
+            value=units * ratio,
+            unit="stalls",
+            derivation=f"{units:,.0f} units × {ratio} stalls/unit ({parking_key})",
+            inputs=["units"],
+            assumptions=[parking_key],
+            confidence=min(land_conf, 0.6),
+            mode=report.mode,
+        )
+    )
 
     # --- ceiling reconciliation ------------------------------------------------------
     reconciliation, ceiling_warnings = reconcile_ceilings(
         districts if isinstance(districts, list) else [],
-        lap_scale, floors, floor_height,
+        lap_scale,
+        floors,
+        floor_height,
         far_achieved=far,
     )
     report.ceiling_reconciliation = reconciliation

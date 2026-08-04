@@ -26,6 +26,7 @@ BRIEF = "A European style development with a large central park and small walkab
 # Expansion service (patched client)
 # ---------------------------------------------------------------------------
 
+
 class _FakeUsage:
     input_tokens = 800
     output_tokens = 200
@@ -50,22 +51,23 @@ def _patch_client(monkeypatch, payload=None, error: Exception | None = None):
     client = MagicMock()
     client.messages.create = AsyncMock(side_effect=create)
     client.close = AsyncMock()
-    monkeypatch.setattr(
-        custom_scenario_module.anthropic, "AsyncAnthropic", MagicMock(return_value=client)
-    )
+    monkeypatch.setattr(custom_scenario_module.anthropic, "AsyncAnthropic", MagicMock(return_value=client))
     monkeypatch.setattr(custom_scenario_module, "log_api_usage_sync", MagicMock())
     return client
 
 
 @pytest.mark.anyio
 async def test_expand_happy_path(monkeypatch):
-    _patch_client(monkeypatch, payload={
-        "short_name": "European Park Quarter",
-        "philosophy": {"primary": "garden_city", "secondary": "new_urbanism", "intensity": 0.7},
-        "emphasis": "Prioritize a generous central park with continuous European street walls.",
-        "rule_hints": {"open_space_share": 0.25, "block_target_m": "140", "bogus_key": 9.0},
-        "aesthetic_hint": "parisian",
-    })
+    _patch_client(
+        monkeypatch,
+        payload={
+            "short_name": "European Park Quarter",
+            "philosophy": {"primary": "garden_city", "secondary": "new_urbanism", "intensity": 0.7},
+            "emphasis": "Prioritize a generous central park with continuous European street walls.",
+            "rule_hints": {"open_space_share": 0.25, "block_target_m": "140", "bogus_key": 9.0},
+            "aesthetic_hint": "parisian",
+        },
+    )
     definition, expansion = await expand_brief_to_definition(BRIEF, "custom_ab12cd34")
 
     assert definition.scenario_id == "custom_ab12cd34"
@@ -86,12 +88,15 @@ async def test_expand_happy_path(monkeypatch):
 async def test_expand_recovers_stringified_nested_payload(monkeypatch):
     """Same tool-use quirk the expert runner handles: nested objects arrive
     JSON-encoded as strings."""
-    _patch_client(monkeypatch, payload={
-        "short_name": "Stringified Quarter",
-        "philosophy": json.dumps({"primary": "climate_resilience", "intensity": 0.9}),
-        "emphasis": "Canopy first.",
-        "rule_hints": json.dumps({"coverage_ratio": 0.4}),
-    })
+    _patch_client(
+        monkeypatch,
+        payload={
+            "short_name": "Stringified Quarter",
+            "philosophy": json.dumps({"primary": "climate_resilience", "intensity": 0.9}),
+            "emphasis": "Canopy first.",
+            "rule_hints": json.dumps({"coverage_ratio": 0.4}),
+        },
+    )
     definition, expansion = await expand_brief_to_definition(BRIEF, "custom_ff00aa11")
 
     assert definition.philosophy.primary == "climate_resilience"
@@ -101,11 +106,14 @@ async def test_expand_recovers_stringified_nested_payload(monkeypatch):
 
 @pytest.mark.anyio
 async def test_expand_coerces_unknown_philosophy(monkeypatch):
-    _patch_client(monkeypatch, payload={
-        "short_name": "Odd One",
-        "philosophy": {"primary": "not_a_real_philosophy", "secondary": "also_fake", "intensity": 7},
-        "emphasis": "x",
-    })
+    _patch_client(
+        monkeypatch,
+        payload={
+            "short_name": "Odd One",
+            "philosophy": {"primary": "not_a_real_philosophy", "secondary": "also_fake", "intensity": 7},
+            "emphasis": "x",
+        },
+    )
     definition, _ = await expand_brief_to_definition(BRIEF, "custom_00000000")
     assert definition.philosophy.primary == "balanced"
     assert definition.philosophy.secondary is None
@@ -130,11 +138,14 @@ async def test_expand_never_fails(monkeypatch):
 @pytest.mark.anyio
 async def test_expand_strips_control_chars_from_label(monkeypatch):
     """Label drives layer identity (`Plan — {label}`) — must be one clean line."""
-    _patch_client(monkeypatch, payload={
-        "short_name": "Two\nLine\tName",
-        "philosophy": {"primary": "balanced"},
-        "emphasis": "x",
-    })
+    _patch_client(
+        monkeypatch,
+        payload={
+            "short_name": "Two\nLine\tName",
+            "philosophy": {"primary": "balanced"},
+            "emphasis": "x",
+        },
+    )
     definition, _ = await expand_brief_to_definition(BRIEF, "custom_12345678")
     assert definition.label == "Custom — Two Line Name [1234]"
 
@@ -143,9 +154,11 @@ async def test_expand_strips_control_chars_from_label(monkeypatch):
 # resolve_rules rule-hint clamps
 # ---------------------------------------------------------------------------
 
+
 def test_resolve_rules_applies_and_clamps_hints():
     profile, notes = resolve_rules(
-        "custom_ab12cd34", {},
+        "custom_ab12cd34",
+        {},
         rule_hints={"open_space_share": 0.5, "coverage_ratio": 0.2, "block_target_m": 140.0},
     )
     # open clamped to the evaluator's own revision ceiling; coverage floored.
@@ -166,7 +179,9 @@ def test_resolve_rules_presets_unaffected_without_hints():
 
 def test_resolve_rules_ignores_non_numeric_hints():
     profile, notes = resolve_rules(
-        "custom_x", {}, rule_hints={"open_space_share": "lots", "coverage_ratio": True},
+        "custom_x",
+        {},
+        rule_hints={"open_space_share": "lots", "coverage_ratio": True},
     )
     assert profile.open_space_share == 0.10  # fallback defaults
     assert profile.coverage_ratio == 0.50
@@ -176,6 +191,7 @@ def test_resolve_rules_ignores_non_numeric_hints():
 # ---------------------------------------------------------------------------
 # Task: definition reconstruction + payload carry-forward
 # ---------------------------------------------------------------------------
+
 
 class _FakeTaskQuery:
     def __init__(self, result):
@@ -282,8 +298,13 @@ def test_run_scenario_still_fails_unknown_noncustom_id(monkeypatch):
     import app.tasks.urban_dna as tasks_module
 
     row = SimpleNamespace(
-        id=uuid.uuid4(), scenario_id="not_a_preset", label="?", status="pending",
-        error=None, payload=None, snapshot_id=uuid.uuid4(),
+        id=uuid.uuid4(),
+        scenario_id="not_a_preset",
+        label="?",
+        status="pending",
+        error=None,
+        payload=None,
+        snapshot_id=uuid.uuid4(),
         snapshot=SimpleNamespace(dna={"city_id": "calgary"}, zone_id=uuid.uuid4()),
     )
     session = _FakeTaskSession(row)
@@ -297,6 +318,7 @@ def test_run_scenario_still_fails_unknown_noncustom_id(monkeypatch):
 # ---------------------------------------------------------------------------
 # API: creation with a brief, spend cap, delete
 # ---------------------------------------------------------------------------
+
 
 def _count_result(value):
     result = MagicMock()
@@ -327,19 +349,22 @@ async def test_create_scenarios_brief_only_queues_single_custom_run(
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),   # auth
-        _scalar_result(zone),        # zone
-        _scalar_result(project),     # permission
-        _scalar_result(snapshot),    # latest snapshot
-        _count_result(0),            # spend guard: no custom rows in flight
-        _count_result(0),            # baseline not in flight -> no blind 75s wait
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),  # auth
+            _scalar_result(zone),  # zone
+            _scalar_result(project),  # permission
+            _scalar_result(snapshot),  # latest snapshot
+            _count_result(0),  # spend guard: no custom rows in flight
+            _count_result(0),  # baseline not in flight -> no blind 75s wait
+        ]
+    )
 
     async def fake_expand(brief, scenario_id):
         return _fake_definition(scenario_id), {"model": "m", "fallback": False}
 
     import app.services.planning_agents.custom_scenario as cs_module
+
     monkeypatch.setattr(cs_module, "expand_brief_to_definition", fake_expand)
 
     # server_default timestamps only exist after a real flush — stamp on add
@@ -351,13 +376,14 @@ async def test_create_scenarios_brief_only_queues_single_custom_run(
     mock_db.add = MagicMock(side_effect=add_with_timestamps)
 
     import app.tasks.urban_dna as tasks_module
+
     apply_mock = MagicMock()
     monkeypatch.setattr(tasks_module.run_urban_dna_scenario, "apply_async", apply_mock)
 
     response = await client.post(
         f"/api/v1/urban-dna/zones/{zone.id}/scenarios",
         headers=auth_headers,
-        json={"custom_brief": BRIEF},   # NO scenario_ids -> presets must NOT run
+        json={"custom_brief": BRIEF},  # NO scenario_ids -> presets must NOT run
     )
     assert response.status_code == 200
     data = response.json()
@@ -373,19 +399,19 @@ async def test_create_scenarios_brief_only_queues_single_custom_run(
 
 
 @pytest.mark.anyio
-async def test_create_scenarios_spend_cap_rejects(
-    client, mock_db, test_user, auth_headers
-):
+async def test_create_scenarios_spend_cap_rejects(client, mock_db, test_user, auth_headers):
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(snapshot),
-        _count_result(4),  # >3 custom rows pending/running
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(snapshot),
+            _count_result(4),  # >3 custom rows pending/running
+        ]
+    )
     response = await client.post(
         f"/api/v1/urban-dna/zones/{zone.id}/scenarios",
         headers=auth_headers,
@@ -395,18 +421,18 @@ async def test_create_scenarios_spend_cap_rejects(
 
 
 @pytest.mark.anyio
-async def test_create_scenarios_rejects_empty_request(
-    client, mock_db, test_user, auth_headers
-):
+async def test_create_scenarios_rejects_empty_request(client, mock_db, test_user, auth_headers):
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(snapshot),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(snapshot),
+        ]
+    )
     response = await client.post(
         f"/api/v1/urban-dna/zones/{zone.id}/scenarios",
         headers=auth_headers,
@@ -416,19 +442,19 @@ async def test_create_scenarios_rejects_empty_request(
 
 
 @pytest.mark.anyio
-async def test_create_scenarios_rejects_whitespace_brief(
-    client, mock_db, test_user, auth_headers
-):
+async def test_create_scenarios_rejects_whitespace_brief(client, mock_db, test_user, auth_headers):
     """A whitespace-only brief must 422, not silently queue all three presets."""
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(snapshot),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(snapshot),
+        ]
+    )
     response = await client.post(
         f"/api/v1/urban-dna/zones/{zone.id}/scenarios",
         headers=auth_headers,
@@ -457,23 +483,21 @@ async def test_delete_scenario_rejects_presets(client, mock_db, test_user, auth_
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
     row = _FakeScenarioRow(scenario_id="as_of_right", label="As-of-Right")
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(row),
-        _scalar_result(snapshot),
-        _scalar_result(zone),
-        _scalar_result(project),
-    ])
-    response = await client.delete(
-        f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(row),
+            _scalar_result(snapshot),
+            _scalar_result(zone),
+            _scalar_result(project),
+        ]
     )
+    response = await client.delete(f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers)
     assert response.status_code == 422
 
 
 @pytest.mark.anyio
-async def test_delete_scenario_removes_row_and_plan_zones(
-    client, mock_db, test_user, auth_headers, monkeypatch
-):
+async def test_delete_scenario_removes_row_and_plan_zones(client, mock_db, test_user, auth_headers, monkeypatch):
     zone = FakeZone()
     zone.properties = {
         "community_3d_landscape": {
@@ -488,18 +512,18 @@ async def test_delete_scenario_removes_row_and_plan_zones(
     plan_zone_a = SimpleNamespace(id=uuid.uuid4())
     plan_zone_b = SimpleNamespace(id=uuid.uuid4())
     monkeypatch.setattr("app.api.v1.urban_dna.flag_modified", lambda *_args: None)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(row),
-        _scalar_result(snapshot),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(project.id),  # project row lock before source mutation
-        _zones_result([plan_zone_a, plan_zone_b]),
-    ])
-    response = await client.delete(
-        f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(row),
+            _scalar_result(snapshot),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),  # project row lock before source mutation
+            _zones_result([plan_zone_a, plan_zone_b]),
+        ]
     )
+    response = await client.delete(f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers)
     assert response.status_code == 204
     deleted = [call.args[0] for call in mock_db.delete.call_args_list]
     assert plan_zone_a in deleted and plan_zone_b in deleted and row in deleted
@@ -513,27 +537,27 @@ async def test_delete_scenario_removes_row_and_plan_zones(
 
 
 @pytest.mark.anyio
-async def test_delete_scenario_409_while_plan_is_drawing(
-    client, mock_db, test_user, auth_headers
-):
+async def test_delete_scenario_409_while_plan_is_drawing(client, mock_db, test_user, auth_headers):
     from datetime import datetime, timezone as tz
 
     zone = FakeZone()
     project = FakeProject(owner_id=test_user.id, id=zone.project_id)
-    row = _FakeScenarioRow(payload={
-        "plan": {"status": "drawing", "queued_at": datetime.now(tz.utc).isoformat()},
-    })
-    snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(row),
-        _scalar_result(snapshot),
-        _scalar_result(zone),
-        _scalar_result(project),
-    ])
-    response = await client.delete(
-        f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers
+    row = _FakeScenarioRow(
+        payload={
+            "plan": {"status": "drawing", "queued_at": datetime.now(tz.utc).isoformat()},
+        }
     )
+    snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(row),
+            _scalar_result(snapshot),
+            _scalar_result(zone),
+            _scalar_result(project),
+        ]
+    )
+    response = await client.delete(f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers)
     assert response.status_code == 409
     mock_db.delete.assert_not_called()
 
@@ -544,15 +568,15 @@ async def test_delete_scenario_404_for_non_member(client, mock_db, test_user, au
     project = FakeProject()  # owned by someone else
     row = _FakeScenarioRow()
     snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(row),
-        _scalar_result(snapshot),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(None),  # no share -> 403 -> masked as 404
-    ])
-    response = await client.delete(
-        f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(row),
+            _scalar_result(snapshot),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(None),  # no share -> 403 -> masked as 404
+        ]
     )
+    response = await client.delete(f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers)
     assert response.status_code == 404

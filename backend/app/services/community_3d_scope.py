@@ -52,8 +52,7 @@ def physical_community_3d_zones(zones: Iterable[Any]) -> list[Any]:
         zone
         for zone in zones
         if getattr(zone, "zone_type", None) != "site_boundary"
-        and (getattr(zone, "properties", None) or {}).get("_plan_role")
-        != "framework_height"
+        and (getattr(zone, "properties", None) or {}).get("_plan_role") != "framework_height"
     ]
 
 
@@ -65,13 +64,9 @@ def _zone_geometry(zone: Any) -> BaseGeometry:
         try:
             shape = to_shape(geometry)
         except (AssertionError, TypeError, ValueError) as exc:
-            raise Community3DScopeError(
-                "The boundary-scoped Community 3D request contains unusable geometry."
-            ) from exc
+            raise Community3DScopeError("The boundary-scoped Community 3D request contains unusable geometry.") from exc
     if shape.is_empty or not shape.is_valid:
-        raise Community3DScopeError(
-            "The boundary-scoped Community 3D request contains unusable geometry."
-        )
+        raise Community3DScopeError("The boundary-scoped Community 3D request contains unusable geometry.")
     return shape
 
 
@@ -96,34 +91,23 @@ def resolve_boundary_community_3d_scope(
         None,
     )
     if boundary is None or getattr(boundary, "zone_type", None) != "site_boundary":
-        raise Community3DScopeError(
-            "The selected Community 3D boundary is not part of this project."
-        )
+        raise Community3DScopeError("The selected Community 3D boundary is not part of this project.")
 
     physical_zones = physical_community_3d_zones(project_zones)
     physical_ids = {str(zone.id) for zone in physical_zones}
     selected_ids = {str(zone_id) for zone_id in selected_zone_ids}
     if selected_ids - physical_ids:
         raise Community3DScopeError(
-            "The selected Community 3D boundary scope references non-physical "
-            "or out-of-project zones."
+            "The selected Community 3D boundary scope references non-physical " "or out-of-project zones."
         )
 
     boundary_shape = _zone_geometry(boundary)
-    intersecting_zones = [
-        zone
-        for zone in physical_zones
-        if boundary_shape.intersects(_zone_geometry(zone))
-    ]
+    intersecting_zones = [zone for zone in physical_zones if boundary_shape.intersects(_zone_geometry(zone))]
     intersecting_ids = {str(zone.id) for zone in intersecting_zones}
     if selected_ids != intersecting_ids:
-        raise Community3DScopeError(
-            "The selected Community 3D boundary scope changed before compilation."
-        )
+        raise Community3DScopeError("The selected Community 3D boundary scope changed before compilation.")
     if not intersecting_zones:
-        raise Community3DScopeError(
-            "The selected Community 3D boundary contains no physical zones."
-        )
+        raise Community3DScopeError("The selected Community 3D boundary contains no physical zones.")
     return intersecting_zones
 
 
@@ -148,8 +132,7 @@ def resolve_community_3d_scope(
     unknown_ids = selected_ids - set(zones_by_id)
     if unknown_ids:
         raise Community3DScopeError(
-            "The selected Community 3D scope references zones outside the "
-            "current physical project."
+            "The selected Community 3D scope references zones outside the " "current physical project."
         )
 
     grouped_ids: dict[tuple[str, ...], set[str]] = defaultdict(set)
@@ -172,19 +155,13 @@ def resolve_community_3d_scope(
                 active_ids.update(grouped_ids[group_key])
     else:
         if not ungrouped_ids.issubset(selected_ids):
-            raise Community3DScopeError(
-                "Every ungrouped authored zone must remain in the Community 3D scope."
-            )
+            raise Community3DScopeError("Every ungrouped authored zone must remain in the Community 3D scope.")
         for member_ids in grouped_ids.values():
             selected_members = selected_ids & member_ids
             if selected_members and selected_members != member_ids:
-                raise Community3DScopeError(
-                    "Imported Community 3D layers must be selected as complete groups."
-                )
+                raise Community3DScopeError("Imported Community 3D layers must be selected as complete groups.")
         active_ids = selected_ids
 
     if not active_ids:
-        raise Community3DScopeError(
-            "The selected Community 3D scope contains no physical zones."
-        )
+        raise Community3DScopeError("The selected Community 3D scope contains no physical zones.")
     return [zone for zone in physical_zones if str(zone.id) in active_ids]

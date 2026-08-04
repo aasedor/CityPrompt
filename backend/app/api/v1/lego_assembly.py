@@ -209,9 +209,7 @@ async def _assert_ai_lego_recipes_are_current(
     db: AsyncSession,
     user: User,
     project_id: uuid.UUID,
-    resolved_items: list[
-        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
-    ],
+    resolved_items: list[tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]],
 ) -> None:
     """Fail closed when an AI recipe no longer matches its locked inventory.
 
@@ -258,11 +256,7 @@ async def _assert_ai_lego_recipes_are_current(
     )
     current_catalog = build_lego_planning_catalog(entries)
     stale_catalog = next(
-        (
-            (zone, expected)
-            for _, zone, expected in protected
-            if expected != current_catalog.fingerprint
-        ),
+        ((zone, expected) for _, zone, expected in protected if expected != current_catalog.fingerprint),
         None,
     )
     if stale_catalog is not None:
@@ -274,11 +268,7 @@ async def _assert_ai_lego_recipes_are_current(
             ),
         )
 
-    descriptors = [
-        descriptor
-        for entry in entries
-        if (descriptor := descriptor_from_library_entry(entry)) is not None
-    ]
+    descriptors = [descriptor for entry in entries if (descriptor := descriptor_from_library_entry(entry)) is not None]
     for item, _, _ in protected:
         recipe = item.recipe
         assert recipe is not None  # established above; keeps type narrowing explicit
@@ -355,9 +345,7 @@ async def _accessible_entries(
     # and persisted by the AI plan task.
     owner_ids = {user.id}
     if project_id is not None:
-        project_result = await db.execute(
-            select(Project).where(Project.id == project_id)
-        )
+        project_result = await db.execute(select(Project).where(Project.id == project_id))
         project = project_result.scalar_one_or_none()
         if project is None:
             raise HTTPException(status_code=404, detail="Project not found")
@@ -365,8 +353,7 @@ async def _accessible_entries(
             share_result = await db.execute(
                 select(ProjectShare).where(
                     ProjectShare.project_id == project_id,
-                    (ProjectShare.user_id == user.id)
-                    | (ProjectShare.email == user.email),
+                    (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
                 )
             )
             if share_result.scalar_one_or_none() is None:
@@ -435,9 +422,7 @@ async def configure_lego_module(
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Mark an existing model-library item as a modular building component."""
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Model-library item not found")
@@ -482,9 +467,7 @@ async def remove_lego_module_configuration(
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Remove LEGO metadata without deleting the underlying library asset."""
-    result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id)
-    )
+    result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.id == item_id))
     entry = result.scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail="Model-library item not found")
@@ -596,7 +579,9 @@ async def import_compiler_manifest(
     validation_status = "unknown"
     if validation_report is not None:
         report_data = await _parse_json_upload(validation_report, "validation_report")
-        validation_status = str((report_data or {}).get("status") or "unknown") if isinstance(report_data, dict) else "unknown"
+        validation_status = (
+            str((report_data or {}).get("status") or "unknown") if isinstance(report_data, dict) else "unknown"
+        )
         if validation_status != "pass" and not force:
             raise HTTPException(
                 status_code=422,
@@ -638,9 +623,7 @@ async def import_compiler_manifest(
     # to monkeypatch app.tasks.processing._upload_to_storage.
     from app.tasks.processing import _file_proxy_url, _upload_to_storage
 
-    existing_result = await db.execute(
-        select(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == user.id)
-    )
+    existing_result = await db.execute(select(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == user.id))
     existing_entries = list(existing_result.scalars().all())
 
     thumbnail_url: str | None = None
@@ -654,8 +637,7 @@ async def import_compiler_manifest(
     # Importable units: manifest modules plus the pre-assembled preview GLB
     # (synthesized as a pseudo-module so it lands in the library disabled).
     units: list[tuple[str, dict[str, Any]]] = [
-        (str(module.get("role") or "").strip().lower(), dict(module))
-        for module in manifest_data["modules"]
+        (str(module.get("role") or "").strip().lower(), dict(module)) for module in manifest_data["modules"]
     ]
     assembled = manifest_data.get("assembled") or {}
     if assembled.get("filename"):
@@ -739,18 +721,23 @@ async def import_compiler_manifest(
             existing_entries.append(entry)
             action = "created"
 
-        imported.append({
-            "id": str(entry.id), "role": role, "variant_key": variant_key,
-            "lod": lod, "action": action, "model_url": model_url,
-        })
+        imported.append(
+            {
+                "id": str(entry.id),
+                "role": role,
+                "variant_key": variant_key,
+                "lod": lod,
+                "action": action,
+                "model_url": model_url,
+            }
+        )
 
     if not imported:
         expected = sorted(_basename(str(m.get("filename") or "")) for _, m in units)
         raise HTTPException(
             status_code=400,
             detail=(
-                "No uploaded files matched the manifest module filenames. "
-                f"Expected any of: {', '.join(expected)}"
+                "No uploaded files matched the manifest module filenames. " f"Expected any of: {', '.join(expected)}"
             ),
         )
 
@@ -810,9 +797,11 @@ async def _get_building_with_access(
         if not share_result.scalar_one_or_none():
             raise HTTPException(
                 status_code=403,
-                detail="Not authorized to edit buildings in this project"
-                if require_editor
-                else "Not authorized to view buildings in this project",
+                detail=(
+                    "Not authorized to edit buildings in this project"
+                    if require_editor
+                    else "Not authorized to view buildings in this project"
+                ),
             )
     return building
 
@@ -846,9 +835,11 @@ async def _get_zone_with_access(
         if not share_result.scalar_one_or_none():
             raise HTTPException(
                 status_code=403,
-                detail="Not authorized to edit zones in this project"
-                if require_editor
-                else "Not authorized to view zones in this project",
+                detail=(
+                    "Not authorized to edit zones in this project"
+                    if require_editor
+                    else "Not authorized to view zones in this project"
+                ),
             )
     return zone
 
@@ -885,18 +876,13 @@ def _public_realm_recipe_for_zone(
     """Compile a canonical V1 recipe, strict only for AI Master Plan zones."""
 
     properties = dict(zone.properties or {})
-    strict = bool(
-        isinstance(properties.get("_plan_scenario"), str)
-        and properties.get("_plan_scenario", "").strip()
-    )
+    strict = bool(isinstance(properties.get("_plan_scenario"), str) and properties.get("_plan_scenario", "").strip())
     source_geometry = _community_source_geometry(zone)
     migrated_variant_id: str | None = None
     centerline_normalized = False
     if kind == "street":
         if strict:
-            properties, migrated_variant_id = (
-                normalize_legacy_ai_street_variant_properties(properties)
-            )
+            properties, migrated_variant_id = normalize_legacy_ai_street_variant_properties(properties)
         # Import lazily: the plan generator owns metric centreline validation
         # and conservative recovery, while this API owns ORM/proof mutation.
         from app.services.plan_geometry.generator import (
@@ -912,9 +898,7 @@ def _public_realm_recipe_for_zone(
             )
         )
         if not centerline_is_valid:
-            recovered_centerline = recover_street_plan_centerline_wgs84(
-                source_geometry
-            )
+            recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
             if recovered_centerline and validate_street_plan_centerline_wgs84(
                 source_geometry,
                 recovered_centerline,
@@ -947,8 +931,7 @@ def _public_realm_recipe_for_zone(
         mark_community_3d_stale(
             zone,
             reason=(
-                "Street source normalized during Community 3D compilation; "
-                "the representation is being rebuilt."
+                "Street source normalized during Community 3D compilation; " "the representation is being rebuilt."
             ),
         )
         flag_modified(zone, "properties")
@@ -1301,9 +1284,7 @@ async def place_community_3d(
     # Resolve and validate the whole request before mutating any linked
     # building. This also closes a subtle hole in the previous endpoint, which
     # allowed one atomic request to span several accessible projects.
-    resolved_items: list[
-        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
-    ] = []
+    resolved_items: list[tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]] = []
     project_id: uuid.UUID | None = None
     for item in body.items:
         zone = await _get_zone_with_access(db, item.zone_id, user, require_editor=True)
@@ -1340,9 +1321,7 @@ async def place_community_3d(
     )
     project_zones = list(project_zones_result.scalars().all())
     zones_by_id = {zone.id: zone for zone in project_zones}
-    refreshed_items: list[
-        tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]
-    ] = []
+    refreshed_items: list[tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]] = []
     for item, previous_zone, previous_kind in resolved_items:
         zone = zones_by_id.get(previous_zone.id)
         if zone is None:
@@ -1360,17 +1339,14 @@ async def place_community_3d(
             raise HTTPException(
                 status_code=409,
                 detail=(
-                    "A Community 3D source zone changed while its 3D recipe was being prepared; "
-                    "refresh and retry."
+                    "A Community 3D source zone changed while its 3D recipe was being prepared; " "refresh and retry."
                 ),
             )
         refreshed_items.append((item, zone, kind))
     resolved_items = refreshed_items
     compile_zone_ids = {str(item.zone_id) for item, _, _ in resolved_items}
     requested_scope_ids = (
-        {str(zone_id) for zone_id in body.scope_zone_ids}
-        if body.scope_zone_ids is not None
-        else compile_zone_ids
+        {str(zone_id) for zone_id in body.scope_zone_ids} if body.scope_zone_ids is not None else compile_zone_ids
     )
     if body.scope_boundary_id is not None and body.scope_zone_ids is None:
         raise HTTPException(
@@ -1398,10 +1374,7 @@ async def place_community_3d(
     except Community3DScopeError as exc:
         raise HTTPException(
             status_code=409,
-            detail=(
-                "The visible Community 3D layer scope changed before compilation; "
-                "refresh and retry."
-            ),
+            detail=("The visible Community 3D layer scope changed before compilation; " "refresh and retry."),
         ) from exc
 
     # AI-bound recipes must still match both the catalogue revision stamped on
@@ -1428,19 +1401,20 @@ async def place_community_3d(
 
     if body.scope_boundary_id is not None:
         scoped_boundary = zones_by_id.get(body.scope_boundary_id)
-        boundaries = [
-            scoped_boundary
-        ] if (
-            scoped_boundary is not None
-            and scoped_boundary.zone_type == "site_boundary"
-            and getattr(scoped_boundary, "is_active_boundary", True)
-        ) else []
+        boundaries = (
+            [scoped_boundary]
+            if (
+                scoped_boundary is not None
+                and scoped_boundary.zone_type == "site_boundary"
+                and getattr(scoped_boundary, "is_active_boundary", True)
+            )
+            else []
+        )
     else:
         boundaries = [
             zone
             for zone in project_zones
-            if zone.zone_type == "site_boundary"
-            and getattr(zone, "is_active_boundary", True)
+            if zone.zone_type == "site_boundary" and getattr(zone, "is_active_boundary", True)
         ]
     if len(boundaries) > 1:
         raise HTTPException(
@@ -1493,17 +1467,11 @@ async def place_community_3d(
     # derived-artifact marker; unmarked/user-authored buildings are
     # intentionally preserved. This remains inside the request transaction,
     # so any later compile failure rolls the cleanup back too.
-    project_buildings_result = await db.execute(
-        select(Building).where(Building.project_id == project_id)
-    )
+    project_buildings_result = await db.execute(select(Building).where(Building.project_id == project_id))
     project_buildings = list(project_buildings_result.scalars().all())
     stale_buildings = stale_community_3d_buildings(
         project_buildings,
-        (
-            zone.id
-            for zone in project_zones
-            if _community_3d_kind(zone) == "building"
-        ),
+        (zone.id for zone in project_zones if _community_3d_kind(zone) == "building"),
     )
     stale_building_ids = {building.id for building in stale_buildings}
     stale_building_id_strings = {str(building_id) for building_id in stale_building_ids}
@@ -1525,10 +1493,9 @@ async def place_community_3d(
     boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
     try:
         for boundary in boundaries:
-            if (
-                (boundary.properties or {}).get("_derived_site_boundary") is True
-                and boundary.name == "Generated Site Boundary"
-            ):
+            if (boundary.properties or {}).get(
+                "_derived_site_boundary"
+            ) is True and boundary.name == "Generated Site Boundary":
                 # Normalize the early pilot label without exposing an
                 # implementation detail in the planning overlay.
                 boundary.name = "Site Boundary"
@@ -1544,15 +1511,17 @@ async def place_community_3d(
                         geometry=to_shape(zone.geometry),
                     )
                 )
-            boundary_recipes.append((
-                boundary,
-                build_residual_landscape_recipe(
-                    to_shape(boundary.geometry),
-                    source_zones,
-                    boundary_id=str(boundary.id),
-                    compiled_at=compiled_at,
-                ),
-            ))
+            boundary_recipes.append(
+                (
+                    boundary,
+                    build_residual_landscape_recipe(
+                        to_shape(boundary.geometry),
+                        source_zones,
+                        boundary_id=str(boundary.id),
+                        compiled_at=compiled_at,
+                    ),
+                )
+            )
     except (TypeError, ValueError) as exc:
         raise HTTPException(
             status_code=422,
@@ -1567,9 +1536,7 @@ async def place_community_3d(
         building_id: str | None = None
         building: Building | None = None
         building_created = False
-        building_generator: Literal[
-            "lego_assembly", "planned_massing", "meshy"
-        ] = "lego_assembly"
+        building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly"
         if kind == "building":
             if item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
@@ -1577,13 +1544,7 @@ async def place_community_3d(
                 building, building_created = await _place_planned_massing_on_zone(db, zone)
                 building_generator = (
                     "meshy"
-                    if (
-                        building.model_url
-                        or (
-                            isinstance(building.lod_urls, dict)
-                            and building.lod_urls.get("0")
-                        )
-                    )
+                    if (building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0")))
                     else "planned_massing"
                 )
             building_id = str(building.id)
@@ -1597,17 +1558,17 @@ async def place_community_3d(
             public_realm_recipe=public_realm_recipes.get(zone.id),
         )
         counts[kind] += 1
-        results.append({
-            "zone_id": str(zone.id),
-            "kind": kind,
-            "building_id": building_id,
-            "building_created": building_created,
-            "generator": (
-                building_generator
-                if kind == "building"
-                else "park_kit" if kind == "park" else "street_section"
-            ),
-        })
+        results.append(
+            {
+                "zone_id": str(zone.id),
+                "kind": kind,
+                "building_id": building_id,
+                "building_created": building_created,
+                "generator": (
+                    building_generator if kind == "building" else "park_kit" if kind == "park" else "street_section"
+                ),
+            }
+        )
 
     for boundary, recipe in boundary_recipes:
         properties = dict(boundary.properties or {})

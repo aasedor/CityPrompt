@@ -48,8 +48,13 @@ PARAMS = {
 
 def _gen(scenario="economic", w=155.9, d=116.5, palette=None):
     return generate_plan_geometry(
-        site_polygon_wgs84=_site(w, d), scenario_id=scenario, scenario_label=scenario,
-        parameters=PARAMS, road_features=[], district_features=[], palette_override=palette,
+        site_polygon_wgs84=_site(w, d),
+        scenario_id=scenario,
+        scenario_label=scenario,
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
     )
 
 
@@ -115,19 +120,39 @@ def _demo_palette():
     spec = MasterPlanSpec(
         design_narrative="varied infill",
         bands={
-            "core": BandPlan(development_type="residential_multifamily", aesthetic="contemporary_urban", floors=6,
-                             typology="perimeter_block",
-                             alternates=[BandAlternate(development_type="mixed_use", aesthetic="contemporary_urban")]),
-            "frontage": BandPlan(development_type="mixed_use", aesthetic="contemporary_urban", floors=5,
-                                 typology="perimeter_block",
-                                 alternates=[BandAlternate(development_type="commercial_retail", aesthetic="historical")]),
-            "mid": BandPlan(development_type="residential_multifamily", aesthetic="minimalist", floors=4,
-                            typology="row_bars",
-                            alternates=[BandAlternate(development_type="residential_duplex", aesthetic="brownstone_rowhouse")]),
-            "edge": BandPlan(development_type="residential_single_family", aesthetic="traditional_vernacular", floors=3,
-                             typology="row_bars"),
-            "anchor": BandPlan(development_type="institutional_education", aesthetic="contemporary_institutional", floors=4,
-                               typology="anchor_mass"),
+            "core": BandPlan(
+                development_type="residential_multifamily",
+                aesthetic="contemporary_urban",
+                floors=6,
+                typology="perimeter_block",
+                alternates=[BandAlternate(development_type="mixed_use", aesthetic="contemporary_urban")],
+            ),
+            "frontage": BandPlan(
+                development_type="mixed_use",
+                aesthetic="contemporary_urban",
+                floors=5,
+                typology="perimeter_block",
+                alternates=[BandAlternate(development_type="commercial_retail", aesthetic="historical")],
+            ),
+            "mid": BandPlan(
+                development_type="residential_multifamily",
+                aesthetic="minimalist",
+                floors=4,
+                typology="row_bars",
+                alternates=[BandAlternate(development_type="residential_duplex", aesthetic="brownstone_rowhouse")],
+            ),
+            "edge": BandPlan(
+                development_type="residential_single_family",
+                aesthetic="traditional_vernacular",
+                floors=3,
+                typology="row_bars",
+            ),
+            "anchor": BandPlan(
+                development_type="institutional_education",
+                aesthetic="contemporary_institutional",
+                floors=4,
+                typology="anchor_mass",
+            ),
         },
         open_space=OpenSpaceProgram(water_feature=False, plaza=True),
         landscape=LandscapePlan(park_structure="naturalistic_grove", courtyard_structure="garden_courtyard"),
@@ -141,8 +166,9 @@ def test_master_plan_is_never_a_monoculture():
     for w, d in [(155.9, 116.5), (95.0, 65.0), (220.0, 140.0)]:
         result = _gen(w=w, d=d, palette=palette)
         buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
-        combos = {(z["properties"].get("development_type"), z["properties"].get("development_aesthetic"))
-                  for z in buildings}
+        combos = {
+            (z["properties"].get("development_type"), z["properties"].get("development_aesthetic")) for z in buildings
+        }
         assert len(combos) >= 2, f"monoculture on {w}x{d}: {combos}"
 
 
@@ -159,11 +185,8 @@ def test_buildings_never_sliver_and_track_archetype_depth():
             for z in buildings:
                 rect = _metric(z, tf).minimum_rotated_rectangle
                 coords = list(rect.exterior.coords)
-                short = min(math.hypot(x2 - x1, y2 - y1)
-                            for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:]))
-                assert short >= 7.5, (
-                    f"{scenario} {w}x{d}: sliver building {short:.1f} m short edge ({z['name']})"
-                )
+                short = min(math.hypot(x2 - x1, y2 - y1) for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:]))
+                assert short >= 7.5, f"{scenario} {w}x{d}: sliver building {short:.1f} m short edge ({z['name']})"
                 target_d = z["properties"].get("target_d_m")
                 if target_d:
                     # Emitted depth is the archetype's, not a crushed number.
@@ -173,6 +196,7 @@ def test_buildings_never_sliver_and_track_archetype_depth():
 def test_block_target_hint_tightens_grain():
     # A fine grain hint must produce more blocks than a coarse one on the same site.
     from app.services.plan_geometry.community_rules import resolve_rules
+
     fine, _ = resolve_rules("economic", PARAMS, rule_hints={"block_target_m": 70.0, "max_block_edge_m": 85.0})
     coarse, _ = resolve_rules("economic", PARAMS, rule_hints={"block_target_m": 160.0, "max_block_edge_m": 180.0})
     assert fine.block_target_m < coarse.block_target_m

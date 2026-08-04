@@ -4,6 +4,7 @@ Revision ID: 020_create_zone_history
 Revises: 019_create_render_audit_logs
 Create Date: 2026-04-06
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -17,11 +18,11 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     # Create action enum
-    op.execute(sa.text(
-        "CREATE TYPE zone_history_action AS ENUM ('create', 'update', 'delete')"
-    ))
+    op.execute(sa.text("CREATE TYPE zone_history_action AS ENUM ('create', 'update', 'delete')"))
 
-    op.execute(sa.text("""
+    op.execute(
+        sa.text(
+            """
         CREATE TABLE IF NOT EXISTS zone_history (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             zone_id UUID NOT NULL,
@@ -36,7 +37,9 @@ def upgrade() -> None:
         CREATE INDEX IF NOT EXISTS ix_zone_history_zone_id ON zone_history(zone_id);
         CREATE INDEX IF NOT EXISTS ix_zone_history_project_id ON zone_history(project_id);
         CREATE INDEX IF NOT EXISTS ix_zone_history_created_at ON zone_history(created_at DESC);
-    """))
+    """
+        )
+    )
 
 
 def downgrade() -> None:

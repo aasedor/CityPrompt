@@ -69,9 +69,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-_PLAN_BOUNDARY_STALE_MESSAGE = (
-    "Site boundary changed; regenerate Site DNA and master-plan scenarios."
-)
+_PLAN_BOUNDARY_STALE_MESSAGE = "Site boundary changed; regenerate Site DNA and master-plan scenarios."
 _PLAN_BOUNDARY_RESTORE_SCHEMA_VERSION = 1
 
 
@@ -93,10 +91,7 @@ def _coordinates_materially_changed(
     right = _open_ring(after)
     if len(left) != len(right):
         return True
-    return any(
-        abs(a[0] - b[0]) > tolerance or abs(a[1] - b[1]) > tolerance
-        for a, b in zip(left, right)
-    )
+    return any(abs(a[0] - b[0]) > tolerance or abs(a[1] - b[1]) > tolerance for a, b in zip(left, right))
 
 
 def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
@@ -120,11 +115,7 @@ def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
             continue
         if not (-180 <= lng <= 180 and -90 <= lat <= 90):
             continue
-        if (
-            not cleaned
-            or abs(lng - cleaned[-1][0]) > 1e-7
-            or abs(lat - cleaned[-1][1]) > 1e-7
-        ):
+        if not cleaned or abs(lng - cleaned[-1][0]) > 1e-7 or abs(lat - cleaned[-1][1]) > 1e-7:
             cleaned.append([lng, lat])
 
     # A last click near the first vertex means "close", not "add a tiny edge".
@@ -174,11 +165,7 @@ async def _active_site_boundary(
 def _boundary_covers_polygon(boundary_geometry, candidate: Polygon) -> bool:
     """Allow sub-decimetre projection drift while enforcing site containment."""
     try:
-        boundary = (
-            boundary_geometry
-            if isinstance(boundary_geometry, Polygon)
-            else to_shape(boundary_geometry)
-        )
+        boundary = boundary_geometry if isinstance(boundary_geometry, Polygon) else to_shape(boundary_geometry)
     except Exception:
         return False
     return bool(boundary.buffer(1e-9).covers(candidate))
@@ -243,9 +230,7 @@ async def _invalidate_boundary_dependents(
     )
     dependents = list(zones_result.scalars().all())
 
-    snapshots_result = await db.execute(
-        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id)
-    )
+    snapshots_result = await db.execute(select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id))
     snapshots = list(snapshots_result.scalars().all())
     snapshot_ids = [snapshot.id for snapshot in snapshots]
     scenarios: list[UrbanDnaScenario] = []
@@ -261,9 +246,7 @@ async def _invalidate_boundary_dependents(
     restore_state = boundary_props.get(PLAN_BOUNDARY_RESTORE_STATE_KEY)
     if not isinstance(restore_state, dict):
         restore_state = None
-    source_fingerprint = (
-        restore_state.get("source_fingerprint") if restore_state is not None else None
-    )
+    source_fingerprint = restore_state.get("source_fingerprint") if restore_state is not None else None
 
     # A reordered/reversed ring has the same canonical identity.  It must not
     # refresh timestamps or destroy an active restore checkpoint.
@@ -315,11 +298,13 @@ async def _invalidate_boundary_dependents(
                 props.pop("_plan_boundary_stale", None)
                 props.pop("_plan_boundary_changed_at", None)
             else:
-                props.update({
-                    "_plan_boundary_stale": True,
-                    "_plan_boundary_zone_id": str(boundary.id),
-                    "_plan_boundary_changed_at": changed_at,
-                })
+                props.update(
+                    {
+                        "_plan_boundary_stale": True,
+                        "_plan_boundary_zone_id": str(boundary.id),
+                        "_plan_boundary_changed_at": changed_at,
+                    }
+                )
             dependent.properties = props
             flag_modified(dependent, "properties")
 
@@ -359,16 +344,12 @@ async def _invalidate_boundary_dependents(
 
     snapshot_fingerprints = {
         str(snapshot.id): plan_boundary_fingerprint(
-            snapshot.dna.get("site_boundary")
-            if isinstance(snapshot.dna, dict)
-            else None
+            snapshot.dna.get("site_boundary") if isinstance(snapshot.dna, dict) else None
         )
         for snapshot in snapshots
     }
     matching_snapshot_ids = [
-        snapshot_id
-        for snapshot_id, fingerprint in snapshot_fingerprints.items()
-        if fingerprint == previous_fingerprint
+        snapshot_id for snapshot_id, fingerprint in snapshot_fingerprints.items() if fingerprint == previous_fingerprint
     ]
     legacy_snapshot_id = matching_snapshot_ids[0] if len(matching_snapshot_ids) == 1 else None
     for dependent in dependents:
@@ -379,11 +360,13 @@ async def _invalidate_boundary_dependents(
             props.setdefault("_plan_boundary_fingerprint", previous_fingerprint)
         if legacy_snapshot_id is not None:
             props.setdefault("_plan_snapshot_id", legacy_snapshot_id)
-        props.update({
-            "_plan_boundary_stale": True,
-            "_plan_boundary_zone_id": str(boundary.id),
-            "_plan_boundary_changed_at": changed_at,
-        })
+        props.update(
+            {
+                "_plan_boundary_stale": True,
+                "_plan_boundary_zone_id": str(boundary.id),
+                "_plan_boundary_changed_at": changed_at,
+            }
+        )
         dependent.properties = props
         flag_modified(dependent, "properties")
 
@@ -418,10 +401,12 @@ async def _invalidate_residual_landscape(
         boundaries = [boundary] if boundary.zone_type == "site_boundary" else []
     else:
         boundaries_result = await db.execute(
-            select(SiteZone).where(
+            select(SiteZone)
+            .where(
                 SiteZone.project_id == project_id,
                 SiteZone.zone_type == "site_boundary",
-            ).execution_options(populate_existing=True)
+            )
+            .execution_options(populate_existing=True)
         )
         boundaries = list(boundaries_result.scalars().all())
 
@@ -518,6 +503,7 @@ def _safe_optional_float(value) -> float | None:
     except (TypeError, ValueError):
         return None
 
+
 def _compact_spec_values(values: dict) -> dict:
     """Drop None/empty-string values while preserving False/0/list/dict payloads."""
     return {
@@ -586,15 +572,17 @@ def _build_neighbor_list(zones: list) -> list[dict]:
         except Exception:
             pass
 
-        neighbors.append({
-            "zone_type": z.zone_type,
-            "name": z.name,
-            "properties": zp,
-            "coordinates": coords,
-            "center": center,
-            "width_m": round(width_m, 1),
-            "depth_m": round(depth_m, 1),
-        })
+        neighbors.append(
+            {
+                "zone_type": z.zone_type,
+                "name": z.name,
+                "properties": zp,
+                "coordinates": coords,
+                "center": center,
+                "width_m": round(width_m, 1),
+                "depth_m": round(depth_m, 1),
+            }
+        )
     return neighbors
 
 
@@ -653,9 +641,7 @@ def _zone_to_response(zone: SiteZone) -> dict:
         "coordinates": coords,
         "color": zone.color,
         "properties": zone.properties,
-        "is_active_boundary": bool(
-            getattr(zone, "is_active_boundary", zone.zone_type == "site_boundary")
-        ),
+        "is_active_boundary": bool(getattr(zone, "is_active_boundary", zone.zone_type == "site_boundary")),
         "sort_order": zone.sort_order,
         "building_id": zone.building_id,
         "building_ids": _normalize_building_ids(zone.building_ids) or None,
@@ -726,9 +712,7 @@ async def _restore_zone_snapshot(
         raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
 
     snapshot_is_boundary = snapshot.get("zone_type") == "site_boundary"
-    snapshot_is_active = bool(
-        snapshot.get("is_active_boundary", snapshot_is_boundary)
-    ) and snapshot_is_boundary
+    snapshot_is_active = bool(snapshot.get("is_active_boundary", snapshot_is_boundary)) and snapshot_is_boundary
     if snapshot_is_active:
         existing_boundary = await _active_site_boundary(
             db,
@@ -825,9 +809,7 @@ async def _ensure_project_access(
         return project
 
     permission_filter = (
-        ProjectShare.permission == "editor"
-        if write
-        else ProjectShare.permission.in_(("viewer", "editor"))
+        ProjectShare.permission == "editor" if write else ProjectShare.permission.in_(("viewer", "editor"))
     )
     share_result = await db.execute(
         select(ProjectShare).where(
@@ -987,6 +969,7 @@ async def create_zone(
 # OSM Context Endpoints
 # =============================================================================
 
+
 @router.post("/{zone_id}/fetch-context", response_model=OSMContextResponse)
 async def fetch_context(
     zone_id: uuid.UUID,
@@ -1015,36 +998,49 @@ async def fetch_context(
 
     # Convert to response schema
     from app.schemas.schemas import OSMContextBuilding, OSMContextRoad, OSMContextFeature
+
     return OSMContextResponse(
-        buildings=[OSMContextBuilding(
-            osm_id=b["osm_id"],
-            coordinates=b["coordinates"],
-            height_m=b.get("height_m"),
-            building_type=b.get("building_type", "yes"),
-            name=b.get("name"),
-            levels=b.get("levels"),
-        ) for b in osm_context.get("buildings", [])],
-        roads=[OSMContextRoad(
-            osm_id=r["osm_id"],
-            coordinates=r["coordinates"],
-            width_m=r.get("width_m", 6.0),
-            road_type=r.get("road_type", "residential"),
-            name=r.get("name"),
-            surface=r.get("surface"),
-            lanes=r.get("lanes"),
-        ) for r in osm_context.get("roads", [])],
-        water=[OSMContextFeature(
-            osm_id=w["osm_id"],
-            coordinates=w["coordinates"],
-            feature_type=w.get("water_type", "water"),
-            name=w.get("name"),
-        ) for w in osm_context.get("water", [])],
-        parks=[OSMContextFeature(
-            osm_id=p["osm_id"],
-            coordinates=p["coordinates"],
-            feature_type=p.get("park_type", "park"),
-            name=p.get("name"),
-        ) for p in osm_context.get("parks", [])],
+        buildings=[
+            OSMContextBuilding(
+                osm_id=b["osm_id"],
+                coordinates=b["coordinates"],
+                height_m=b.get("height_m"),
+                building_type=b.get("building_type", "yes"),
+                name=b.get("name"),
+                levels=b.get("levels"),
+            )
+            for b in osm_context.get("buildings", [])
+        ],
+        roads=[
+            OSMContextRoad(
+                osm_id=r["osm_id"],
+                coordinates=r["coordinates"],
+                width_m=r.get("width_m", 6.0),
+                road_type=r.get("road_type", "residential"),
+                name=r.get("name"),
+                surface=r.get("surface"),
+                lanes=r.get("lanes"),
+            )
+            for r in osm_context.get("roads", [])
+        ],
+        water=[
+            OSMContextFeature(
+                osm_id=w["osm_id"],
+                coordinates=w["coordinates"],
+                feature_type=w.get("water_type", "water"),
+                name=w.get("name"),
+            )
+            for w in osm_context.get("water", [])
+        ],
+        parks=[
+            OSMContextFeature(
+                osm_id=p["osm_id"],
+                coordinates=p["coordinates"],
+                feature_type=p.get("park_type", "park"),
+                name=p.get("name"),
+            )
+            for p in osm_context.get("parks", [])
+        ],
         fetched_at=osm_context.get("fetched_at", ""),
         buffer_m=osm_context.get("buffer_m", 50),
     )
@@ -1105,9 +1101,7 @@ async def update_zone(
                 coords = _validated_polygon_coordinates(raw_coords)
             except ValueError as exc:
                 raise HTTPException(status_code=400, detail=str(exc)) from exc
-            zone_geometry_changed = _coordinates_materially_changed(
-                before_snapshot.get("coordinates"), coords
-            )
+            zone_geometry_changed = _coordinates_materially_changed(before_snapshot.get("coordinates"), coords)
             updated_coordinates = coords
             boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
             candidate_polygon = Polygon(coords)
@@ -1157,10 +1151,7 @@ async def update_zone(
     except (TypeError, ValueError):
         # Invalid historical snapshots still fail closed for the coarse inputs
         # we can compare; current API coordinate validation prevents new ones.
-        compiled_source_changed = bool(
-            zone_geometry_changed
-            or before_snapshot.get("zone_type") != zone.zone_type
-        )
+        compiled_source_changed = bool(zone_geometry_changed or before_snapshot.get("zone_type") != zone.zone_type)
     if compiled_source_changed and mark_community_3d_stale(
         zone,
         reason="Authored zone changed; rebuild Community 3D before Direct rendering.",
@@ -1179,9 +1170,7 @@ async def update_zone(
         before_snapshot.get("zone_type"),
         before_snapshot.get("properties"),
     ) != _residual_source_identity(zone.zone_type, zone.properties)
-    residual_source_changed = bool(
-        zone_geometry_changed or source_identity_changed
-    )
+    residual_source_changed = bool(zone_geometry_changed or source_identity_changed)
     if residual_source_changed:
         await _invalidate_residual_landscape(
             db,
@@ -1190,8 +1179,7 @@ async def update_zone(
             reason="Authored zone changed; rebuild Community 3D landscaping.",
             boundary=(
                 zone
-                if before_snapshot.get("zone_type") == "site_boundary"
-                and zone.zone_type == "site_boundary"
+                if before_snapshot.get("zone_type") == "site_boundary" and zone.zone_type == "site_boundary"
                 else None
             ),
         )
@@ -1263,7 +1251,9 @@ async def delete_zone(
 
     # Record history before deletion (skip during undo/redo)
     if not request.headers.get("x-skip-history"):
-        await _record_zone_history(db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}")
+        await _record_zone_history(
+            db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}"
+        )
 
     if zone.zone_type != "site_boundary":
         await _invalidate_residual_landscape(
@@ -1280,7 +1270,7 @@ def _parse_unit_count_from_text(text: str) -> int:
     """Parse unit count from description text like '10 homes', '5 houses', '20 units'."""
     if not text:
         return 0
-    match = re.search(r'(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)', text, re.I)
+    match = re.search(r"(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)", text, re.I)
     if match:
         return int(match.group(1))
     return 0
@@ -1308,10 +1298,7 @@ def _is_orientation_window_zone(zone: SiteZone, unit_count: int) -> bool:
     props = zone.properties or {}
     zone_type = str(zone.zone_type or "").lower()
     dev_type = str(props.get("development_type", zone_type) or zone_type).lower()
-    return (
-        zone_type in ("residential", "development_area")
-        or dev_type in ("residential", "mixed_use", "park_plaza")
-    )
+    return zone_type in ("residential", "development_area") or dev_type in ("residential", "mixed_use", "park_plaza")
 
 
 def _estimate_zone_area_m2(zone: SiteZone) -> float:
@@ -1394,7 +1381,11 @@ def _make_footprint_polygon(cx: float, cy: float, cell_w: float, cell_h: float, 
 
 
 def _make_rotated_footprint(
-    cx: float, cy: float, half_w_m: float, half_h_m: float, rotation_deg: float,
+    cx: float,
+    cy: float,
+    half_w_m: float,
+    half_h_m: float,
+    rotation_deg: float,
     center_lat: float = 0.0,
 ) -> str:
     """Create a WKT POLYGON for a rotated rectangular footprint centered at (cx, cy).
@@ -1406,9 +1397,9 @@ def _make_rotated_footprint(
     # Build corners in meter space and rotate there
     corners_m = [
         (-half_w_m, -half_h_m),
-        ( half_w_m, -half_h_m),
-        ( half_w_m,  half_h_m),
-        (-half_w_m,  half_h_m),
+        (half_w_m, -half_h_m),
+        (half_w_m, half_h_m),
+        (-half_w_m, half_h_m),
     ]
 
     rad = math.radians(rotation_deg)
@@ -1467,10 +1458,12 @@ async def _generate_layout_for_zone(
         for other in all_zones:
             if other.id == zone.id:
                 continue
-            neighbors.append({
-                "zone_type": other.zone_type,
-                "name": other.name,
-            })
+            neighbors.append(
+                {
+                    "zone_type": other.zone_type,
+                    "name": other.name,
+                }
+            )
 
     planner = LayoutPlanner()
     layout = await planner.generate_layout(
@@ -1486,6 +1479,7 @@ async def _generate_layout_for_zone(
 # =============================================================================
 # Layout Preview + Apply Endpoints
 # =============================================================================
+
 
 @router.post("/{zone_id}/preview-layouts", response_model=LayoutPreviewResponse)
 async def preview_layouts(
@@ -1504,7 +1498,9 @@ async def preview_layouts(
         raise HTTPException(status_code=404, detail="Zone not found")
 
     if zone.zone_type not in ("building", "residential", "development_area"):
-        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones support layout preview")
+        raise HTTPException(
+            status_code=400, detail="Only building, residential, or development_area zones support layout preview"
+        )
 
     # Check editor permission
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
@@ -1626,9 +1622,12 @@ async def render_layout_preview(
 
     try:
         from app.services.layout_planner import _upload_image_to_storage
+
         planner = LayoutPlanner()
         image_bytes = await planner.generate_layout_preview_image(
-            shape, option, props,
+            shape,
+            option,
+            props,
             neighbors=neighbors if neighbors else None,
             reference_context=reference_context,
         )
@@ -1642,7 +1641,8 @@ async def render_layout_preview(
 
         # Save to preview history (include layout data so user can re-apply later)
         await _append_preview_history(
-            zone, db,
+            zone,
+            db,
             image_url=image_url,
             label=option.option_label or f"Option {option.option_index + 1}",
             strategy=option.layout_strategy,
@@ -1651,9 +1651,9 @@ async def render_layout_preview(
             layout_data={
                 "option_index": option.option_index,
                 "option_label": option.option_label,
-                "buildings": [b.dict() if hasattr(b, 'dict') else b for b in option.buildings],
-                "roads": [r.dict() if hasattr(r, 'dict') else r for r in option.roads],
-                "green_spaces": [g.dict() if hasattr(g, 'dict') else g for g in option.green_spaces],
+                "buildings": [b.dict() if hasattr(b, "dict") else b for b in option.buildings],
+                "roads": [r.dict() if hasattr(r, "dict") else r for r in option.roads],
+                "green_spaces": [g.dict() if hasattr(g, "dict") else g for g in option.green_spaces],
                 "layout_strategy": option.layout_strategy,
                 "reasoning": option.reasoning,
                 "density_achieved": option.density_achieved,
@@ -1726,12 +1726,14 @@ async def render_site_preview(
         try:
             option = SiteLayoutOption(**layout_data)
             shape = to_shape(zone_obj.geometry)
-            parsed_layouts.append({
-                "zone": zone_obj,
-                "shape": shape,
-                "option": option,
-                "properties": zone_obj.properties or {},
-            })
+            parsed_layouts.append(
+                {
+                    "zone": zone_obj,
+                    "shape": shape,
+                    "option": option,
+                    "properties": zone_obj.properties or {},
+                }
+            )
         except Exception as e:
             logger.warning("Skipping zone %s: invalid layout data: %s", zid, e)
 
@@ -1746,24 +1748,28 @@ async def render_site_preview(
         if z.zone_type in ("road", "green_space", "water", "parking"):
             try:
                 shape = to_shape(z.geometry)
-                non_buildable.append({
-                    "zone_type": z.zone_type,
-                    "shape": shape,
-                    "properties": z.properties or {},
-                    "name": z.name,
-                    "zone_id": str(z.id),
-                })
+                non_buildable.append(
+                    {
+                        "zone_type": z.zone_type,
+                        "shape": shape,
+                        "properties": z.properties or {},
+                        "name": z.name,
+                        "zone_id": str(z.id),
+                    }
+                )
             except Exception:
                 pass
         elif z.zone_type in ("building", "residential", "development_area") and str(z.id) not in layout_zone_ids:
             # Buildable zone without a generated layout - still include its properties
             try:
                 shape = to_shape(z.geometry)
-                buildable_without_layouts.append({
-                    "zone": z,
-                    "shape": shape,
-                    "properties": z.properties or {},
-                })
+                buildable_without_layouts.append(
+                    {
+                        "zone": z,
+                        "shape": shape,
+                        "properties": z.properties or {},
+                    }
+                )
             except Exception:
                 pass
 
@@ -1783,6 +1789,7 @@ async def render_site_preview(
 
     try:
         from app.services.layout_planner import _upload_image_to_storage
+
         planner = LayoutPlanner()
         image_bytes = await planner.generate_site_preview_image(
             boundary_polygon=boundary_shape,
@@ -1809,9 +1816,9 @@ async def render_site_preview(
                 zone_layouts_for_history[zid] = {
                     "option_index": opt.option_index,
                     "option_label": opt.option_label,
-                    "buildings": [b.dict() if hasattr(b, 'dict') else b for b in opt.buildings],
-                    "roads": [r.dict() if hasattr(r, 'dict') else r for r in opt.roads],
-                    "green_spaces": [g.dict() if hasattr(g, 'dict') else g for g in opt.green_spaces],
+                    "buildings": [b.dict() if hasattr(b, "dict") else b for b in opt.buildings],
+                    "roads": [r.dict() if hasattr(r, "dict") else r for r in opt.roads],
+                    "green_spaces": [g.dict() if hasattr(g, "dict") else g for g in opt.green_spaces],
                     "layout_strategy": opt.layout_strategy,
                     "reasoning": opt.reasoning,
                     "density_achieved": opt.density_achieved,
@@ -1823,7 +1830,8 @@ async def render_site_preview(
 
         # Save to preview history on the boundary zone
         await _append_preview_history(
-            boundary_zone, db,
+            boundary_zone,
+            db,
             image_url=image_url,
             label=f"Site Preview (option {option_index + 1})",
             strategy="site_preview",
@@ -1857,7 +1865,9 @@ async def apply_layout(
         raise HTTPException(status_code=404, detail="Zone not found")
 
     if zone.zone_type not in ("building", "residential", "development_area"):
-        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones can apply layouts")
+        raise HTTPException(
+            status_code=400, detail="Only building, residential, or development_area zones can apply layouts"
+        )
 
     # Check editor permission
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
@@ -1901,7 +1911,9 @@ async def apply_layout(
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
 
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+        footprint_wkt = _make_rotated_footprint(
+            abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+        )
 
         building = Building(
             project_id=zone.project_id,
@@ -1973,7 +1985,9 @@ async def regenerate_layout(
         raise HTTPException(status_code=404, detail="Zone not found")
 
     if zone.zone_type not in ("building", "residential", "development_area"):
-        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones support layout regeneration")
+        raise HTTPException(
+            status_code=400, detail="Only building, residential, or development_area zones support layout regeneration"
+        )
 
     # Check editor permission
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
@@ -2003,7 +2017,9 @@ async def regenerate_layout(
         locked_layers = {
             "roads": [existing_roads[i] for i in body.locked_roads if i < len(existing_roads)],
             "buildings": [],  # Building positions from last applied layout
-            "green_spaces": [existing_green_spaces[i] for i in body.locked_green_spaces if i < len(existing_green_spaces)],
+            "green_spaces": [
+                existing_green_spaces[i] for i in body.locked_green_spaces if i < len(existing_green_spaces)
+            ],
         }
 
     # Gather neighbor context and reference context
@@ -2150,7 +2166,9 @@ async def create_building_from_zone(
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
 
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+        footprint_wkt = _make_rotated_footprint(
+            abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+        )
 
         building = Building(
             project_id=zone.project_id,
@@ -2228,7 +2246,9 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
     type_label = dev_type.replace("_", " ").title()
     if unit_count > 1:
         if aesthetic_label:
-            parts.append(f"A single {aesthetic_label} {type_label} home suitable for a neighborhood of {unit_count} homes")
+            parts.append(
+                f"A single {aesthetic_label} {type_label} home suitable for a neighborhood of {unit_count} homes"
+            )
         else:
             parts.append(f"A single {type_label} home suitable for a neighborhood of {unit_count} homes")
     elif aesthetic_label:
@@ -2281,9 +2301,7 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         bounds = shape.bounds  # (minx, miny, maxx, maxy)
         # Approximate width and depth in meters
         center_lat = (bounds[1] + bounds[3]) / 2
-        meters_per_deg_lon = 111320 * abs(
-            __import__("math").cos(__import__("math").radians(center_lat))
-        )
+        meters_per_deg_lon = 111320 * abs(__import__("math").cos(__import__("math").radians(center_lat)))
         meters_per_deg_lat = 111320
         width_m = abs(bounds[2] - bounds[0]) * meters_per_deg_lon
         depth_m = abs(bounds[3] - bounds[1]) * meters_per_deg_lat
@@ -2301,16 +2319,10 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
     height = props.get("height")
     floor_height = props.get("floor_height", 3)
     if floors and height:
-        parts.append(
-            f"{floors} stories tall ({height}m total height), "
-            f"each floor {floor_height}m high"
-        )
+        parts.append(f"{floors} stories tall ({height}m total height), " f"each floor {floor_height}m high")
     elif floors:
         total = floors * floor_height
-        parts.append(
-            f"{floors} stories tall ({total}m total height), "
-            f"each floor {floor_height}m high"
-        )
+        parts.append(f"{floors} stories tall ({total}m total height), " f"each floor {floor_height}m high")
 
     # 4. Facade material + roof style
     facade = props.get("facade_material")
@@ -2407,9 +2419,8 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
                 if value is not None and key != "description_text"
             ]
             brief = directives["parameters"].get("description_text")
-            directive_text = (
-                f"PLANNING DIRECTIVES (applied scenario '{directives.get('label', '')}'): "
-                + "; ".join(directive_bits)
+            directive_text = f"PLANNING DIRECTIVES (applied scenario '{directives.get('label', '')}'): " + "; ".join(
+                directive_bits
             )
             if brief:
                 directive_text += f". Design brief: {brief}"
@@ -2432,15 +2443,17 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
         if z.id == boundary_zone.id:
             continue
         zp = z.properties or {}
-        sibling_zones.append({
-            "zone_type": z.zone_type,
-            "name": z.name,
-            "aesthetic": zp.get("development_aesthetic"),
-            "height": zp.get("height"),
-            "floors": zp.get("floors"),
-            "facade_material": zp.get("facade_material"),
-            "description": zp.get("description_text"),
-        })
+        sibling_zones.append(
+            {
+                "zone_type": z.zone_type,
+                "name": z.name,
+                "aesthetic": zp.get("development_aesthetic"),
+                "height": zp.get("height"),
+                "floors": zp.get("floors"),
+                "facade_material": zp.get("facade_material"),
+                "description": zp.get("description_text"),
+            }
+        )
 
     # Extract OSM context from boundary properties (stored during creation as _osm_context)
     # Summarize raw arrays into prompt-friendly dicts
@@ -2536,14 +2549,16 @@ async def boundary_analysis(
     type_counts: dict[str, int] = {}
     for z in contained_zones:
         zp = z.properties or {}
-        zone_details.append({
-            "id": str(z.id),
-            "name": z.name,
-            "zone_type": z.zone_type,
-            "color": z.color,
-            "properties": zp,
-            "area_m2": _compute_zone_area(z),
-        })
+        zone_details.append(
+            {
+                "id": str(z.id),
+                "name": z.name,
+                "zone_type": z.zone_type,
+                "color": z.color,
+                "properties": zp,
+                "area_m2": _compute_zone_area(z),
+            }
+        )
         type_counts[z.zone_type] = type_counts.get(z.zone_type, 0) + 1
 
     # OSM context from boundary properties (stored as _osm_context)
@@ -2591,10 +2606,13 @@ async def boundary_analysis(
 # Batch Generate All
 # =============================================================================
 
+
 @router.post("/projects/{project_id}/generate-all")
 async def generate_all(
     project_id: uuid.UUID,
-    boundary_zone_id: Optional[uuid.UUID] = Query(None, description="Scope generation to zones within this site boundary"),
+    boundary_zone_id: Optional[uuid.UUID] = Query(
+        None, description="Scope generation to zones within this site boundary"
+    ),
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -2625,9 +2643,7 @@ async def generate_all(
 
     if boundary_zone_id:
         # Validate boundary zone
-        boundary_result = await db.execute(
-            select(SiteZone).where(SiteZone.id == boundary_zone_id)
-        )
+        boundary_result = await db.execute(select(SiteZone).where(SiteZone.id == boundary_zone_id))
         boundary_zone = boundary_result.scalar_one_or_none()
         if not boundary_zone:
             raise HTTPException(status_code=404, detail="Boundary zone not found")
@@ -2652,9 +2668,7 @@ async def generate_all(
         site_context = _build_site_context(boundary_zone, all_zones)
     else:
         # Fetch all zones for this project (original behavior)
-        zones_result = await db.execute(
-            select(SiteZone).where(SiteZone.project_id == project_id)
-        )
+        zones_result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id))
         all_zones = zones_result.scalars().all()
 
     buildings_created = 0
@@ -2702,7 +2716,8 @@ async def generate_all(
             ref_images = zone_props.get("reference_images") or []
             if isinstance(ref_images, list):
                 ref_images = [
-                    img for img in ref_images
+                    img
+                    for img in ref_images
                     if isinstance(img, str) and img.lower().startswith(("http://", "https://"))
                 ]
             else:
@@ -2775,7 +2790,9 @@ async def generate_all(
                 try:
                     layout = await _generate_layout_for_zone(zone, unit_count, all_zones)
                 except Exception as layout_err:
-                    logger.warning("Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err)
+                    logger.warning(
+                        "Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err
+                    )
                     grid_positions = compute_unit_positions(zone.geometry, unit_count)
                     all_building_ids_fb: list[str] = []
                     first_building_fb = None
@@ -2841,14 +2858,20 @@ async def generate_all(
                 for i, lb in enumerate(layout.buildings):
                     abs_cx = centroid.x + lb.center_x
                     abs_cy = centroid.y + lb.center_y
-                    footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+                    footprint_wkt = _make_rotated_footprint(
+                        abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+                    )
 
                     b = Building(
                         project_id=zone.project_id,
                         name=f"{zone.name or 'Unit'} #{i + 1}",
                         footprint=WKTElement(footprint_wkt, srid=4326),
-                        height_meters=lb.height_m if lb.height_m is not None else _safe_optional_float(zone_props.get("height")),
-                        floor_count=lb.floors if lb.floors is not None else _safe_optional_int(zone_props.get("floors")),
+                        height_meters=(
+                            lb.height_m if lb.height_m is not None else _safe_optional_float(zone_props.get("height"))
+                        ),
+                        floor_count=(
+                            lb.floors if lb.floors is not None else _safe_optional_int(zone_props.get("floors"))
+                        ),
                         roof_type=zone_props.get("roof_style"),
                         rotation_degrees=lb.rotation_deg,
                         specifications={
@@ -2927,6 +2950,7 @@ async def generate_all(
 
 class SaveLayoutRequest(BaseModel):
     """Request to save an edited layout to zone properties."""
+
     layout: SiteLayoutResponse
 
 
@@ -2989,7 +3013,9 @@ async def save_layout(
         # Update footprint geometry
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+        footprint_wkt = _make_rotated_footprint(
+            abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+        )
         building.footprint = WKTElement(footprint_wkt, srid=4326)
 
         # Update building metadata from block editor (always sync all fields)
@@ -2999,7 +3025,11 @@ async def save_layout(
         building.rotation_degrees = lb.rotation_deg
         building.generation_prompt = lb.description or props.get("description_text") or building.generation_prompt or ""
         specs = building.specifications or {}
-        specs.update(_base_building_specifications(props, lb.description or props.get("description_text") or specs.get("description_text")))
+        specs.update(
+            _base_building_specifications(
+                props, lb.description or props.get("description_text") or specs.get("description_text")
+            )
+        )
         specs["style"] = lb.style or specs.get("style")
         specs["building_type"] = lb.building_type
         specs["width_m"] = lb.width_m
@@ -3015,7 +3045,9 @@ async def save_layout(
         lb = layout_buildings[i]
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+        footprint_wkt = _make_rotated_footprint(
+            abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+        )
 
         building = Building(
             project_id=zone.project_id,
@@ -3088,9 +3120,7 @@ async def generate_site_massing(
             raise HTTPException(status_code=403, detail="Access denied")
 
     # Load all zones for this project
-    result = await db.execute(
-        select(SiteZone).where(SiteZone.project_id == project_id)
-    )
+    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id))
     zones_db = result.scalars().all()
     if not zones_db:
         raise HTTPException(status_code=400, detail="No zones defined for this project")
@@ -3100,29 +3130,32 @@ async def generate_site_massing(
     for z in zones_db:
         shape = to_shape(z.geometry) if z.geometry else None
         if not shape or not isinstance(shape, Polygon):
-            logger.warning("Zone %s has no valid Polygon geometry (type=%s), skipping", z.id, type(shape).__name__ if shape else "None")
+            logger.warning(
+                "Zone %s has no valid Polygon geometry (type=%s), skipping",
+                z.id,
+                type(shape).__name__ if shape else "None",
+            )
             continue
         coords = list(shape.exterior.coords)
-        zones_for_planner.append({
-            "id": str(z.id),
-            "zone_type": z.zone_type or "building",
-            "name": z.name or "",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[c[0], c[1]] for c in coords]],
-            },
-            "properties": z.properties or {},
-        })
+        zones_for_planner.append(
+            {
+                "id": str(z.id),
+                "zone_type": z.zone_type or "building",
+                "name": z.name or "",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[c[0], c[1]] for c in coords]],
+                },
+                "properties": z.properties or {},
+            }
+        )
 
     if not zones_for_planner:
         raise HTTPException(status_code=400, detail="No zones with valid geometry")
 
     # Check at least one non-infrastructure zone exists for building placement
     NON_BUILDING_TYPES = {"road", "green_space", "park", "water", "site_boundary"}
-    building_zones = [
-        z for z in zones_for_planner
-        if z["zone_type"] not in NON_BUILDING_TYPES
-    ]
+    building_zones = [z for z in zones_for_planner if z["zone_type"] not in NON_BUILDING_TYPES]
     if not building_zones:
         raise HTTPException(
             status_code=400,
@@ -3148,6 +3181,7 @@ async def generate_site_massing(
 # =============================================================================
 # Zone History / Version Control Endpoints
 # =============================================================================
+
 
 @router.post("/projects/{project_id}/restore-snapshot", response_model=ZoneSnapshotRestoreResponse)
 async def restore_working_snapshot(
@@ -3301,4 +3335,3 @@ async def revert_to_version(
     )
 
     return _zone_to_response(zone)
-

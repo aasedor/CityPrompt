@@ -82,6 +82,7 @@ class TypologyDims:
       row_bars:     brownstone_rowhouse_frontage bar depth 8-12 m
       anchor_mass:  university_academic_complex / hospital slabs up to ~60x45 m
     """
+
     unit_w_m: float
     unit_d_m: float
     gap_m: float
@@ -198,11 +199,7 @@ def _runtime_lego_mass(
     if typology == "perimeter_block" and len(indexed) > 1:
         last_x = len(x_intervals) - 1
         last_y = len(y_intervals) - 1
-        indexed = [
-            item
-            for item in indexed
-            if item[0] in (0, last_x) or item[1] in (0, last_y)
-        ]
+        indexed = [item for item in indexed if item[0] in (0, last_x) or item[1] in (0, last_y)]
 
     # Concave/clipped blocks can miss every centered grid cell. Search a few
     # stable centres and shrink uniformly, never below the strict fit floor.
@@ -279,9 +276,7 @@ def subdivide_block(block_m: Polygon, parcel_width_m: float) -> list[Polygon]:
     return [affinity.rotate(p, angle, origin=origin) for p in merged]
 
 
-def _segment_span(
-    lo: float, hi: float, module_w: float, min_w: float = MODULE_MIN_W_M
-) -> list[tuple[float, float]]:
+def _segment_span(lo: float, hi: float, module_w: float, min_w: float = MODULE_MIN_W_M) -> list[tuple[float, float]]:
     """Split [lo, hi] into equal modules nearest module_w (seam-separated).
 
     Even distribution by construction — no crumb pieces. Module width is
@@ -301,8 +296,10 @@ def _segment_span(
     n = min(n, MAX_MODULES_PER_BAR)
     step = span / n
     return [
-        (lo + k * step + (MODULE_SEAM_M / 2 if k > 0 else 0),
-         lo + (k + 1) * step - (MODULE_SEAM_M / 2 if k < n - 1 else 0))
+        (
+            lo + k * step + (MODULE_SEAM_M / 2 if k > 0 else 0),
+            lo + (k + 1) * step - (MODULE_SEAM_M / 2 if k < n - 1 else 0),
+        )
         for k in range(n)
     ]
 
@@ -343,7 +340,8 @@ def _cross_cut(mass: BaseGeometry, frame_poly: BaseGeometry, center) -> BaseGeom
         box(center.x - diag, center.y - 0.1, center.x + diag, center.y + 0.1).union(
             box(center.x - 0.1, center.y - diag, center.x + 0.1, center.y + diag)
         ),
-        angle, origin=center,
+        angle,
+        origin=center,
     )
     cut = make_valid(mass.difference(cutter))
     return cut if not cut.is_empty else mass
@@ -406,9 +404,7 @@ def _decompose_ring_mass(mass: BaseGeometry, block_m: Polygon) -> BaseGeometry:
     return decompose_holed(mass, block_m)
 
 
-def _perimeter_ring_bars(
-    ring: BaseGeometry, block_m: BaseGeometry, depth: float, module_w: float
-) -> list[Polygon]:
+def _perimeter_ring_bars(ring: BaseGeometry, block_m: BaseGeometry, depth: float, module_w: float) -> list[Polygon]:
     """Butt-jointed rectangular bars around a perimeter ring, module-cut.
 
     Replaces the cross-cut decomposition (whose corner pieces are the
@@ -440,9 +436,7 @@ def _perimeter_ring_bars(
     return [affinity.rotate(p, angle, origin=origin) for p in pieces]
 
 
-def _grid_segment_mass(
-    solid: BaseGeometry, block_m: BaseGeometry, module_w: float, module_d: float
-) -> list[Polygon]:
+def _grid_segment_mass(solid: BaseGeometry, block_m: BaseGeometry, module_w: float, module_d: float) -> list[Polygon]:
     """Tile a (near-)solid mass into a grid of archetype-sized modules.
 
     The perimeter-bar cutter degenerates when the ring closes over the block
@@ -477,10 +471,7 @@ def _grid_segment_mass(
                 # Boundary-clipped edge cells can survive area + rectangularity
                 # while being a narrow strip — the very sliver this fixes.
                 coords = list(rect.exterior.coords)
-                short_edge = min(
-                    math.hypot(x2 - x1, y2 - y1)
-                    for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:])
-                )
+                short_edge = min(math.hypot(x2 - x1, y2 - y1) for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:]))
                 if short_edge < 8.0:
                     continue
                 pieces.append(poly)
@@ -563,9 +554,7 @@ def _perimeter_mass(
     return mass, {"bar_depth_m": round(depth, 1)}
 
 
-def _point_towers(
-    block_m: BaseGeometry, outer: BaseGeometry, dims: TypologyDims, max_footprint: float
-) -> BaseGeometry:
+def _point_towers(block_m: BaseGeometry, outer: BaseGeometry, dims: TypologyDims, max_footprint: float) -> BaseGeometry:
     """Freestanding pads on a centered grid — reads as tower-in-park."""
     angle = _long_axis_angle(block_m)
     origin = block_m.centroid
@@ -582,8 +571,9 @@ def _point_towers(
     pads: list[Polygon] = []
     for j in range(ny):
         for i in range(nx):
-            pad = box(ox + i * pitch_x, oy + j * pitch_y,
-                      ox + i * pitch_x + dims.unit_w_m, oy + j * pitch_y + dims.unit_d_m)
+            pad = box(
+                ox + i * pitch_x, oy + j * pitch_y, ox + i * pitch_x + dims.unit_w_m, oy + j * pitch_y + dims.unit_d_m
+            )
             for poly in iter_polygons(make_valid(pad.intersection(work))):
                 if poly.area >= 200.0:
                     pads.append(poly)
@@ -763,9 +753,7 @@ def building_mass_for_block(
     if typology == "point_towers" and dims:
         # Target overrides the pad envelope; the grid gap stays typological.
         tower_dims = (
-            TypologyDims(unit_w_m=target.width_m, unit_d_m=target.depth_m, gap_m=dims.gap_m)
-            if target
-            else dims
+            TypologyDims(unit_w_m=target.width_m, unit_d_m=target.depth_m, gap_m=dims.gap_m) if target else dims
         )
         mass = _point_towers(block_m, outer, tower_dims, max_footprint)
     elif typology == "row_bars" and dims:

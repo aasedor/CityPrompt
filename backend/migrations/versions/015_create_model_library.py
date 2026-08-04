@@ -4,9 +4,9 @@ Revision ID: 015_create_model_library
 Revises: 014_create_api_usage_logs
 Create Date: 2026-03-07
 """
+
 from typing import Sequence, Union
 
-import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
@@ -17,7 +17,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS model_library (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             owner_id UUID NOT NULL,
@@ -42,20 +43,27 @@ def upgrade() -> None:
             FOREIGN KEY(source_building_id) REFERENCES buildings (id) ON DELETE SET NULL,
             FOREIGN KEY(source_project_id) REFERENCES projects (id) ON DELETE SET NULL
         )
-    """)
+    """
+    )
 
-    op.execute("""
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_model_library_owner_id
         ON model_library (owner_id)
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_model_library_category
         ON model_library (category)
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_model_library_is_public
         ON model_library (is_public)
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

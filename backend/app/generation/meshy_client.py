@@ -223,9 +223,7 @@ class MeshyClient:
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
             source = f"task {input_task_id}" if input_task_id else f"{len(image_urls)} views"
-            logger.info(
-                f"Meshy multi-image-to-3D started: {task_id} ({source})"
-            )
+            logger.info(f"Meshy multi-image-to-3D started: {task_id} ({source})")
             return task_id
 
     async def get_task(self, task_id: str) -> dict:
@@ -341,7 +339,9 @@ class MeshyClient:
                 task_error = result.get("task_error") or {}
                 error_msg = (
                     (task_error.get("message") if isinstance(task_error, dict) else str(task_error))
-                    or result.get("message") or result.get("error") or "Unknown error"
+                    or result.get("message")
+                    or result.get("error")
+                    or "Unknown error"
                 )
                 logger.error("Meshy task %s %s — full payload: %s", task_id, status, result)
                 raise RuntimeError(f"Meshy task {task_id} failed: {error_msg}")

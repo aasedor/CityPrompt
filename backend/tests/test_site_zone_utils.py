@@ -35,11 +35,15 @@ def _query_result(items):
 
 
 def _boundary_dependents_db(plan, manual, snapshot, scenario):
-    return SimpleNamespace(execute=AsyncMock(side_effect=[
-        _query_result([plan, manual]),
-        _query_result([snapshot]),
-        _query_result([scenario]),
-    ]))
+    return SimpleNamespace(
+        execute=AsyncMock(
+            side_effect=[
+                _query_result([plan, manual]),
+                _query_result([snapshot]),
+                _query_result([scenario]),
+            ]
+        )
+    )
 
 
 def test_boundary_coordinate_change_ignores_closing_point_and_float_noise() -> None:
@@ -57,9 +61,7 @@ def test_plan_boundary_fingerprint_is_ring_order_independent() -> None:
     rotated_and_reversed = Polygon([(3, 2), (3, 0), (0, 0), (0, 2)])
     moved = Polygon([(0, 0), (3.00000001, 0), (3, 2), (0, 2)])
 
-    assert plan_boundary_fingerprint(original) == plan_boundary_fingerprint(
-        mapping(rotated_and_reversed)
-    )
+    assert plan_boundary_fingerprint(original) == plan_boundary_fingerprint(mapping(rotated_and_reversed))
     assert plan_boundary_fingerprint(original) != plan_boundary_fingerprint(moved)
     assert plan_boundary_fingerprint(None) is None
 
@@ -102,12 +104,14 @@ def test_polygon_validation_drops_a_near_closing_vertex() -> None:
 
 def test_polygon_validation_rejects_a_material_bow_tie() -> None:
     with pytest.raises(ValueError, match="self-intersects"):
-        _validated_polygon_coordinates([
-            [0.0, 0.0],
-            [1.0, 1.0],
-            [0.0, 1.0],
-            [1.0, 0.0],
-        ])
+        _validated_polygon_coordinates(
+            [
+                [0.0, 0.0],
+                [1.0, 1.0],
+                [0.0, 1.0],
+                [1.0, 0.0],
+            ]
+        )
 
 
 def test_active_boundary_containment_allows_edge_touching_but_rejects_escape() -> None:
@@ -172,10 +176,12 @@ async def test_exact_boundary_undo_restores_only_matching_plan_cohort(monkeypatc
     changed = Polygon([(0, 0), (2.25, 0), (2, 2), (0, 2)])
     boundary = SimpleNamespace(id=uuid.uuid4(), project_id=uuid.uuid4(), properties={})
     plan = SimpleNamespace(properties={"_plan_scenario": "economic"})
-    other_plan = SimpleNamespace(properties={
-        "_plan_scenario": "environmental",
-        "_plan_boundary_fingerprint": plan_boundary_fingerprint(changed),
-    })
+    other_plan = SimpleNamespace(
+        properties={
+            "_plan_scenario": "environmental",
+            "_plan_boundary_fingerprint": plan_boundary_fingerprint(changed),
+        }
+    )
     snapshot = SimpleNamespace(
         id=uuid.uuid4(),
         dna={"site_boundary": mapping(original)},
@@ -199,11 +205,15 @@ async def test_exact_boundary_undo_restores_only_matching_plan_cohort(monkeypatc
     )
     assert plan.properties["_plan_boundary_stale"] is True
 
-    restore_db = SimpleNamespace(execute=AsyncMock(side_effect=[
-        _query_result([plan, other_plan, manual]),
-        _query_result([snapshot]),
-        _query_result([scenario]),
-    ]))
+    restore_db = SimpleNamespace(
+        execute=AsyncMock(
+            side_effect=[
+                _query_result([plan, other_plan, manual]),
+                _query_result([snapshot]),
+                _query_result([scenario]),
+            ]
+        )
+    )
     await _invalidate_boundary_dependents(
         restore_db,
         boundary,
@@ -296,12 +306,14 @@ async def test_snapshot_restore_marks_residual_recipe_stale(monkeypatch) -> None
     first_lock_result = MagicMock()
     invalidation_lock_result = MagicMock()
     db = SimpleNamespace(
-        execute=AsyncMock(side_effect=[
-            first_lock_result,
-            existing_result,
-            invalidation_lock_result,
-            boundaries_result,
-        ]),
+        execute=AsyncMock(
+            side_effect=[
+                first_lock_result,
+                existing_result,
+                invalidation_lock_result,
+                boundaries_result,
+            ]
+        ),
         flush=AsyncMock(),
         refresh=AsyncMock(),
         add=MagicMock(),
@@ -349,13 +361,15 @@ def test_normalize_building_ids_filters_invalid_entries() -> None:
     valid_1 = uuid.uuid4()
     valid_2 = uuid.uuid4()
 
-    normalized = _normalize_building_ids([
-        str(valid_1),
-        valid_2,
-        "not-a-uuid",
-        None,
-        "",
-    ])
+    normalized = _normalize_building_ids(
+        [
+            str(valid_1),
+            valid_2,
+            "not-a-uuid",
+            None,
+            "",
+        ]
+    )
 
     assert normalized == [valid_1, valid_2]
 

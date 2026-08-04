@@ -18,44 +18,59 @@ from app.services.urban_dna.schema import ValidationNote
 # parameter_path -> how it lands in zone properties + what agents should know
 PARAMETER_VOCABULARY: dict[str, dict[str, Any]] = {
     "buildings.development_type": {
-        "maps_to": "development_type", "kind": "enum",
+        "maps_to": "development_type",
+        "kind": "enum",
         "options": ["residential", "mixed_use", "commercial", "institutional"],
         "description": "primary use for building zones",
     },
     "buildings.floors": {
-        "maps_to": "floors", "kind": "number", "unit": "storeys",
+        "maps_to": "floors",
+        "kind": "number",
+        "unit": "storeys",
         "description": "target storeys for building zones",
     },
     "buildings.height_m": {
-        "maps_to": "height", "kind": "number", "unit": "m",
+        "maps_to": "height",
+        "kind": "number",
+        "unit": "m",
         "description": "target building height",
     },
     "buildings.unit_count": {
-        "maps_to": "unit_count", "kind": "number", "unit": "dwellings",
+        "maps_to": "unit_count",
+        "kind": "number",
+        "unit": "dwellings",
         "description": "target dwelling units on the site",
     },
     "buildings.development_aesthetic": {
-        "maps_to": "development_aesthetic", "kind": "string",
+        "maps_to": "development_aesthetic",
+        "kind": "string",
         "description": "architectural character family (e.g. 'contemporary_midrise', 'heritage_brick')",
     },
     "streets.row_width_m": {
-        "maps_to": "width", "kind": "number", "unit": "m",
+        "maps_to": "width",
+        "kind": "number",
+        "unit": "m",
         "description": "right-of-way width for internal streets",
     },
     "landscape.tree_density": {
-        "maps_to": "tree_density", "kind": "number", "unit": "0-1",
+        "maps_to": "tree_density",
+        "kind": "number",
+        "unit": "0-1",
         "description": "canopy/planting intensity from 0 (none) to 1 (dense)",
     },
     "landscape.ground_texture": {
-        "maps_to": "ground_texture", "kind": "string",
+        "maps_to": "ground_texture",
+        "kind": "string",
         "description": "dominant ground-plane treatment (e.g. 'permeable pavers and rain gardens')",
     },
     "layout.strategy": {
-        "maps_to": "_layout_strategy_preference", "kind": "string",
+        "maps_to": "_layout_strategy_preference",
+        "kind": "string",
         "description": "site layout organizing idea (e.g. 'fine-grained grid', 'central green with courtyards')",
     },
     "site.design_brief": {
-        "maps_to": "description_text", "kind": "text",
+        "maps_to": "description_text",
+        "kind": "text",
         "description": "<=60 words of concrete design guidance appended to the site brief",
     },
 }
@@ -95,7 +110,7 @@ class MergedParameter(BaseModel):
     parameter_path: str
     value: Any
     rationale: str
-    contributors: list[str]                 # agent_ids whose recommendation won/joined
+    contributors: list[str]  # agent_ids whose recommendation won/joined
     contested: bool = False
     candidates: list[dict[str, Any]] = Field(default_factory=list)  # all positions, kept for the WHY
 
@@ -104,7 +119,7 @@ class ScenarioDefinition(BaseModel):
     scenario_id: str
     label: str
     philosophy: PhilosophyWeights
-    emphasis: str = ""                      # scenario-specific instruction injected into expert prompts
+    emphasis: str = ""  # scenario-specific instruction injected into expert prompts
     description: str = ""
     # Deterministic geometry overrides extracted from a custom brief
     # (open_space_share / block_target_m / coverage_ratio). Experts have no
@@ -135,7 +150,7 @@ class ScenarioResult(BaseModel):
     trade_offs: list[ValidationNote] = Field(default_factory=list)
     expert_summaries: dict[str, str] = Field(default_factory=dict)
     explanation: Optional[ScenarioExplanation] = None
-    usage: dict[str, Any] = Field(default_factory=dict)      # tokens + estimated cost
+    usage: dict[str, Any] = Field(default_factory=dict)  # tokens + estimated cost
     warnings: list[ValidationNote] = Field(default_factory=list)
     # Derived statistics (plan_metrics.MetricsReport dump). Parameter mode until
     # a plan is drawn; geometry mode supersedes it after plan generation.

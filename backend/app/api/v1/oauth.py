@@ -214,10 +214,12 @@ async def google_callback(
     refresh_token = create_refresh_token(str(user.id))
 
     # Redirect to frontend with tokens as query params
-    redirect_params = urlencode({
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-    })
+    redirect_params = urlencode(
+        {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        }
+    )
     return RedirectResponse(
         url=f"{frontend_origin}/oauth/callback?{redirect_params}",
         status_code=302,
@@ -357,12 +359,13 @@ async def microsoft_callback(
 
     # Redirect to frontend with tokens as query params
     frontend_origin = _resolve_frontend_redirect_origin(state)
-    redirect_params = urlencode({
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-    })
+    redirect_params = urlencode(
+        {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        }
+    )
     return RedirectResponse(
         url=f"{frontend_origin}/oauth/callback?{redirect_params}",
         status_code=302,
     )
-

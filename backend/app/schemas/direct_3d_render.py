@@ -45,14 +45,16 @@ Direct3DStyle = Literal[
 ]
 
 
-DIRECT_3D_REPROJECT_STYLES = frozenset({
-    "site-plan",
-    "site-plan-photo",
-    "blueprint",
-    "site-plan-watercolor",
-    "isometric",
-    "clay-maquette",
-})
+DIRECT_3D_REPROJECT_STYLES = frozenset(
+    {
+        "site-plan",
+        "site-plan-photo",
+        "blueprint",
+        "site-plan-watercolor",
+        "isometric",
+        "clay-maquette",
+    }
+)
 
 
 class Direct3DCaptureClaim(BaseModel):
@@ -188,15 +190,13 @@ class Direct3DRenderRequest(BaseModel):
         min_length=32,
         max_length=20_000_000,
         description=(
-            "Same-size exact instance-ID PNG. Optional for legacy "
-            "source_anchored; required for scene and reproject."
+            "Same-size exact instance-ID PNG. Optional for legacy " "source_anchored; required for scene and reproject."
         ),
     )
     instance_id_manifest: dict[str, Direct3DInstanceDescriptor] | None = Field(
         default=None,
         description=(
-            "Map from #RRGGBB instance colors to exact authored instance, "
-            "semantic, zone, and building identities."
+            "Map from #RRGGBB instance colors to exact authored instance, " "semantic, zone, and building identities."
         ),
     )
     fidelity_policy: Direct3DFidelityPolicy = Field(
@@ -247,9 +247,7 @@ class Direct3DRenderRequest(BaseModel):
         if manifest is None:
             return None
         if not 1 <= len(manifest) <= 2048:
-            raise ValueError(
-                "instance_id_manifest must contain between 1 and 2048 colors"
-            )
+            raise ValueError("instance_id_manifest must contain between 1 and 2048 colors")
 
         normalized: dict[str, Direct3DInstanceDescriptor] = {}
         instance_ids: set[str] = set()
@@ -262,9 +260,7 @@ class Direct3DRenderRequest(BaseModel):
             if normalized_color in normalized:
                 raise ValueError(f"Duplicate instance-ID color {normalized_color}")
             if descriptor.instance_id in instance_ids:
-                raise ValueError(
-                    "instance_id_manifest may contain each instance_id only once"
-                )
+                raise ValueError("instance_id_manifest may contain each instance_id only once")
             normalized[normalized_color] = descriptor
             instance_ids.add(descriptor.instance_id)
         return normalized
@@ -272,47 +268,23 @@ class Direct3DRenderRequest(BaseModel):
     @model_validator(mode="after")
     def validate_object_id_pair(self) -> "Direct3DRenderRequest":
         if self.view_mode == "street" and self.presentation_mode != "scene":
-            raise ValueError(
-                "view_mode='street' requires presentation_mode='scene'"
-            )
+            raise ValueError("view_mode='street' requires presentation_mode='scene'")
         if bool(self.object_id_image_base64) != bool(self.object_id_manifest):
-            raise ValueError(
-                "object_id_image_base64 and object_id_manifest must be supplied together"
-            )
-        if (
-            self.presentation_mode in {"scene", "reproject"}
-            and not self.object_id_image_base64
-        ):
-            raise ValueError(
-                "scene and reproject require object_id_image_base64 and "
-                "object_id_manifest"
-            )
+            raise ValueError("object_id_image_base64 and object_id_manifest must be supplied together")
+        if self.presentation_mode in {"scene", "reproject"} and not self.object_id_image_base64:
+            raise ValueError("scene and reproject require object_id_image_base64 and " "object_id_manifest")
         if bool(self.instance_id_image_base64) != bool(self.instance_id_manifest):
-            raise ValueError(
-                "instance_id_image_base64 and instance_id_manifest must be "
-                "supplied together"
-            )
-        if (
-            self.presentation_mode in {"scene", "reproject"}
-            and not self.instance_id_image_base64
-        ):
-            raise ValueError(
-                "scene and reproject require instance_id_image_base64 and "
-                "instance_id_manifest"
-            )
+            raise ValueError("instance_id_image_base64 and instance_id_manifest must be " "supplied together")
+        if self.presentation_mode in {"scene", "reproject"} and not self.instance_id_image_base64:
+            raise ValueError("scene and reproject require instance_id_image_base64 and " "instance_id_manifest")
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
             raise ValueError("community_3d_claims may contain each zone only once")
         is_reproject_style = self.style in DIRECT_3D_REPROJECT_STYLES
         if self.presentation_mode == "scene" and is_reproject_style:
-            raise ValueError(
-                f"style {self.style!r} requires presentation_mode='reproject'"
-            )
+            raise ValueError(f"style {self.style!r} requires presentation_mode='reproject'")
         if self.presentation_mode == "reproject" and not is_reproject_style:
-            raise ValueError(
-                f"style {self.style!r} requires presentation_mode='scene' or "
-                "'source_anchored'"
-            )
+            raise ValueError(f"style {self.style!r} requires presentation_mode='scene' or " "'source_anchored'")
         return self
 
 
@@ -505,16 +477,19 @@ class Direct3DRenderDiagnostics(BaseModel):
     instance_count: int = 0
     provider_raw_instance_source_presence: dict[str, object] | None = None
     provider_raw_unsupported_structure: dict[str, object] | None = None
-    returned_safety_strategy: Literal[
-        "source_envelope",
-        "source_envelope_all_authored_interiors",
-        "source_envelope_building_interiors",
-        "provider_full_scene",
-        "provider_full_scene_local_repairs",
-        "global_tone_with_safe_building_interiors",
-        "global_tone_only",
-        "authoritative_source",
-    ] | None = None
+    returned_safety_strategy: (
+        Literal[
+            "source_envelope",
+            "source_envelope_all_authored_interiors",
+            "source_envelope_building_interiors",
+            "provider_full_scene",
+            "provider_full_scene_local_repairs",
+            "global_tone_with_safe_building_interiors",
+            "global_tone_only",
+            "authoritative_source",
+        ]
+        | None
+    ) = None
     local_repair_coverage: float | None = None
     maximum_local_repair_coverage: float | None = None
     instance_source_presence: dict[str, object] | None = None
@@ -524,9 +499,7 @@ class Direct3DRenderDiagnostics(BaseModel):
     minimum_scene_lower_context_coverage: float | None = None
     structural_edge_guide_attached: Literal[True] = True
     finish_fusion: Direct3DFinishFusionDiagnostics | None = None
-    provider_raw_structural_edge_fidelity: (
-        Direct3DRawStructuralEdgeFidelityDiagnostics | None
-    ) = None
+    provider_raw_structural_edge_fidelity: Direct3DRawStructuralEdgeFidelityDiagnostics | None = None
     macro_design_fidelity: Direct3DMacroDesignFidelityDiagnostics | None = None
     visual_change: Direct3DVisualChangeDiagnostics | None = None
     reproject_output_sanity: Direct3DReprojectOutputSanityDiagnostics | None = None

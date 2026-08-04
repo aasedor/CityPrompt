@@ -2,12 +2,11 @@
 Admin API endpoints for platform management.
 """
 
-import asyncio
 import logging
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,11 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.email import send_admin_welcome_email, send_cofounder_welcome_email
-from app.core.security import is_admin_or_above, require_admin
+from app.core.security import require_admin
 from app.models.models import Building, Document, Project, RenderAuditLog, User
-from app.services.render_audit_images import get_or_create_thumbnail, thumbnail_key_for
-
-logger = logging.getLogger(__name__)
 from app.schemas.schemas import (
     AdminBuildingListResponse,
     AdminDashboardStats,
@@ -27,6 +23,9 @@ from app.schemas.schemas import (
     AdminUserListResponse,
     AdminUserUpdate,
 )
+from app.services.render_audit_images import get_or_create_thumbnail, thumbnail_key_for
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -38,23 +37,15 @@ async def get_admin_stats(
 ):
     """Get platform-wide statistics."""
     total_users = (await db.execute(select(func.count(User.id)))).scalar() or 0
-    active_users = (
-        await db.execute(select(func.count(User.id)).where(User.is_active.is_(True)))
-    ).scalar() or 0
+    active_users = (await db.execute(select(func.count(User.id)).where(User.is_active.is_(True)))).scalar() or 0
     total_projects = (await db.execute(select(func.count(Project.id)))).scalar() or 0
     total_buildings = (await db.execute(select(func.count(Building.id)))).scalar() or 0
     total_documents = (await db.execute(select(func.count(Document.id)))).scalar() or 0
 
-    role_rows = (
-        await db.execute(select(User.role, func.count(User.id)).group_by(User.role))
-    ).all()
+    role_rows = (await db.execute(select(User.role, func.count(User.id)).group_by(User.role))).all()
     users_by_role = {row[0]: row[1] for row in role_rows}
 
-    status_rows = (
-        await db.execute(
-            select(Project.status, func.count(Project.id)).group_by(Project.status)
-        )
-    ).all()
+    status_rows = (await db.execute(select(Project.status, func.count(Project.id)).group_by(Project.status))).all()
     projects_by_status = {row[0]: row[1] for row in status_rows}
 
     return AdminDashboardStats(
@@ -78,16 +69,18 @@ async def list_users(
     db: AsyncSession = Depends(get_db),
 ):
     """List all users with optional search and role filter."""
-    query = select(
-        User,
-        func.count(Project.id).label("project_count"),
-    ).outerjoin(Project, Project.owner_id == User.id).group_by(User.id)
+    query = (
+        select(
+            User,
+            func.count(Project.id).label("project_count"),
+        )
+        .outerjoin(Project, Project.owner_id == User.id)
+        .group_by(User.id)
+    )
 
     if search:
         pattern = f"%{search}%"
-        query = query.where(
-            or_(User.email.ilike(pattern), User.full_name.ilike(pattern))
-        )
+        query = query.where(or_(User.email.ilike(pattern), User.full_name.ilike(pattern)))
     if role:
         query = query.where(User.role == role)
 
@@ -125,33 +118,21 @@ async def update_user(
 
     if target.id == user.id:
         if update.role is not None and update.role != user.role:
-            raise HTTPException(
-                status_code=400, detail="Cannot change your own role"
-            )
+            raise HTTPException(status_code=400, detail="Cannot change your own role")
         if update.is_active is not None and not update.is_active:
-            raise HTTPException(
-                status_code=400, detail="Cannot deactivate your own account"
-            )
+            raise HTTPException(status_code=400, detail="Cannot deactivate your own account")
 
     # Cofounder-only guards for role changes
     if update.role is not None:
         # Only cofounders can set role to admin or cofounder
         if update.role in ("admin", "cofounder") and user.role != "cofounder":
-            raise HTTPException(
-                status_code=403, detail="Requires cofounder role"
-            )
+            raise HTTPException(status_code=403, detail="Requires cofounder role")
         # Only cofounders can change an admin's or cofounder's role
         if target.role in ("admin", "cofounder") and user.role != "cofounder":
-            raise HTTPException(
-                status_code=403, detail="Requires cofounder role"
-            )
+            raise HTTPException(status_code=403, detail="Requires cofounder role")
 
-    was_promoted_to_admin = (
-        update.role == "admin" and target.role not in ("admin", "cofounder")
-    )
-    was_promoted_to_cofounder = (
-        update.role == "cofounder" and target.role != "cofounder"
-    )
+    was_promoted_to_admin = update.role == "admin" and target.role not in ("admin", "cofounder")
+    was_promoted_to_cofounder = update.role == "cofounder" and target.role != "cofounder"
 
     update_data = update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
@@ -185,9 +166,7 @@ async def update_user(
         except Exception:
             logger.exception("Failed to send admin welcome email to %s", target.email)
 
-    count_result = await db.execute(
-        select(func.count(Project.id)).where(Project.owner_id == target.id)
-    )
+    count_result = await db.execute(select(func.count(Project.id)).where(Project.owner_id == target.id))
     project_count = count_result.scalar() or 0
 
     result_data = AdminUserListResponse(
@@ -204,6 +183,7 @@ async def update_user(
 
     if (was_promoted_to_admin or was_promoted_to_cofounder) and not email_sent:
         from fastapi.responses import JSONResponse
+
         data = result_data.model_dump(mode="json")
         data["_email_failed"] = True
         return JSONResponse(content=data)
@@ -240,6 +220,7 @@ async def delete_user(
 
 class TokenUpdateRequest(BaseModel):
     """Set or add render tokens for a user."""
+
     amount: int = Field(..., description="Token amount (positive to add, or exact value for reset)")
     mode: str = Field("add", pattern="^(add|set)$", description="'add' to increment, 'set' to replace")
 
@@ -264,9 +245,7 @@ async def update_user_tokens(
     db.add(target)
     await db.flush()
 
-    count_result = await db.execute(
-        select(func.count(Project.id)).where(Project.owner_id == target.id)
-    )
+    count_result = await db.execute(select(func.count(Project.id)).where(Project.owner_id == target.id))
     project_count = count_result.scalar() or 0
 
     return AdminUserListResponse(
@@ -287,9 +266,7 @@ async def list_all_buildings(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     search: Optional[str] = Query(None),
-    status: Optional[str] = Query(
-        None, pattern="^(idle|generating|completed|failed)$"
-    ),
+    status: Optional[str] = Query(None, pattern="^(idle|generating|completed|failed)$"),
     engine: Optional[str] = Query(None),
     user: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
@@ -346,9 +323,7 @@ async def list_all_projects(
     skip: int = Query(0, ge=0),
     limit: int | None = Query(None, ge=1),
     search: Optional[str] = Query(None),
-    project_status: Optional[str] = Query(
-        None, alias="status", pattern="^(draft|processing|ready|archived)$"
-    ),
+    project_status: Optional[str] = Query(None, alias="status", pattern="^(draft|processing|ready|archived)$"),
     user: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
@@ -367,9 +342,7 @@ async def list_all_projects(
 
     if search:
         pattern = f"%{search}%"
-        query = query.where(
-            or_(Project.name.ilike(pattern), User.email.ilike(pattern))
-        )
+        query = query.where(or_(Project.name.ilike(pattern), User.email.ilike(pattern)))
     if project_status:
         query = query.where(Project.status == project_status)
 
@@ -401,9 +374,7 @@ async def thumbnail_debug(
     db: AsyncSession = Depends(get_db),
 ):
     """Debug endpoint: show thumbnail status for all completed buildings."""
-    import httpx
 
-    settings = get_settings()
     result = await db.execute(
         select(
             Building.id,
@@ -412,7 +383,9 @@ async def thumbnail_debug(
             Building.generation_engine,
             Building.preview_url,
             Building.model_url,
-        ).where(Building.generation_status == "completed").order_by(Building.created_at.desc())
+        )
+        .where(Building.generation_status == "completed")
+        .order_by(Building.created_at.desc())
     )
     rows = result.all()
 
@@ -422,15 +395,17 @@ async def thumbnail_debug(
         if preview_url and not preview_url.startswith("/api/"):
             status = f"stale_url ({preview_url[:60]}...)"
 
-        buildings.append({
-            "id": str(bid),
-            "name": name,
-            "engine": engine,
-            "meshy_task_id": meshy_id,
-            "preview_url": preview_url,
-            "has_model": bool(model_url),
-            "thumbnail_status": status,
-        })
+        buildings.append(
+            {
+                "id": str(bid),
+                "name": name,
+                "engine": engine,
+                "meshy_task_id": meshy_id,
+                "preview_url": preview_url,
+                "has_model": bool(model_url),
+                "thumbnail_status": status,
+            }
+        )
 
     ok = sum(1 for b in buildings if b["thumbnail_status"] == "ok")
     missing = sum(1 for b in buildings if b["thumbnail_status"] == "missing")
@@ -552,6 +527,7 @@ async def backfill_single_thumbnail(
 
         # Upload to S3
         from app.tasks.processing import _upload_to_storage
+
         thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
         _upload_to_storage(thumb_key, thumb_resp.content, "image/png")
         proxy_url = f"/api/v1/files/{thumb_key}"
@@ -610,9 +586,7 @@ async def backfill_thumbnails(
         select(Building).where(
             Building.generation_status == "completed",
             Building.meshy_task_id.isnot(None),
-            (Building.preview_url.is_(None))
-            | (Building.preview_url == "")
-            | (~Building.preview_url.like("/api/%")),
+            (Building.preview_url.is_(None)) | (Building.preview_url == "") | (~Building.preview_url.like("/api/%")),
         )
     )
     buildings = result.scalars().all()
@@ -623,9 +597,7 @@ async def backfill_thumbnails(
         select(func.count(Building.id)).where(
             Building.generation_status == "completed",
             Building.model_url.isnot(None),
-            (Building.preview_url.is_(None))
-            | (Building.preview_url == "")
-            | (~Building.preview_url.like("/api/%")),
+            (Building.preview_url.is_(None)) | (Building.preview_url == "") | (~Building.preview_url.like("/api/%")),
         )
     )
     total_missing = all_missing_result.scalar() or 0
@@ -780,27 +752,32 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
     # Catches: NULL, empty string, and stale S3 URLs that don't start with /api/
     propagated = 0
     try:
-        siblings = session.query(Building).filter(
-            Building.generation_status == "completed",
-            Building.model_url.isnot(None),
-            ~Building.preview_url.like("/api/%") if Building.preview_url.isnot(None) else True,
-        ).all()
+        siblings = (
+            session.query(Building)
+            .filter(
+                Building.generation_status == "completed",
+                Building.model_url.isnot(None),
+                ~Building.preview_url.like("/api/%") if Building.preview_url.isnot(None) else True,
+            )
+            .all()
+        )
 
         # Filter in Python to handle NULL/empty/stale URLs cleanly
-        siblings = [
-            s for s in siblings
-            if not s.preview_url or not s.preview_url.startswith("/api/")
-        ]
+        siblings = [s for s in siblings if not s.preview_url or not s.preview_url.startswith("/api/")]
 
         logger.info(f"Sibling propagation pass: {len(siblings)} buildings need thumbnails")
 
         # Build a lookup: model_url -> valid preview_url (from buildings that have one)
         if siblings:
             model_urls = {s.model_url for s in siblings if s.model_url}
-            sources = session.query(Building).filter(
-                Building.model_url.in_(model_urls),
-                Building.preview_url.like("/api/%"),
-            ).all()
+            sources = (
+                session.query(Building)
+                .filter(
+                    Building.model_url.in_(model_urls),
+                    Building.preview_url.like("/api/%"),
+                )
+                .all()
+            )
             preview_map = {s.model_url: s.preview_url for s in sources}
 
             for sibling in siblings:
@@ -919,7 +896,9 @@ async def list_render_logs(
             input_image_url=f"/api/v1/admin/render-logs/{log.id}/input" if log.input_image_key else None,
             output_image_url=f"/api/v1/admin/render-logs/{log.id}/output" if log.output_image_key else None,
             input_thumbnail_url=f"/api/v1/admin/render-logs/{log.id}/input-thumbnail" if log.input_image_key else None,
-            output_thumbnail_url=f"/api/v1/admin/render-logs/{log.id}/output-thumbnail" if log.output_image_key else None,
+            output_thumbnail_url=(
+                f"/api/v1/admin/render-logs/{log.id}/output-thumbnail" if log.output_image_key else None
+            ),
             prompt_preview=log.prompt_preview,
             created_at=log.created_at.isoformat(),
         )
@@ -940,7 +919,9 @@ async def get_render_log_image(
     from fastapi.responses import Response
 
     if image_type not in ("input", "output", "input-thumbnail", "output-thumbnail"):
-        raise HTTPException(status_code=400, detail="image_type must be input, output, input-thumbnail, or output-thumbnail")
+        raise HTTPException(
+            status_code=400, detail="image_type must be input, output, input-thumbnail, or output-thumbnail"
+        )
 
     log = await db.get(RenderAuditLog, log_id)
     if not log:

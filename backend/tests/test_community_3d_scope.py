@@ -54,9 +54,7 @@ def test_physical_zones_exclude_boundary_and_height_framework() -> None:
         properties={"_plan_role": "framework_height"},
     )
 
-    assert physical_community_3d_zones(
-        [boundary, building, framework, park]
-    ) == [building, park]
+    assert physical_community_3d_zones([boundary, building, framework, park]) == [building, park]
 
 
 def test_exact_scope_accepts_one_complete_plan_group_and_omits_sibling() -> None:

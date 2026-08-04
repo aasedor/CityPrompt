@@ -78,8 +78,16 @@ manager = ConnectionManager()
 
 # Palette for assigning colors to users
 USER_COLORS = [
-    "#6366f1", "#ec4899", "#f59e0b", "#10b981", "#3b82f6",
-    "#8b5cf6", "#ef4444", "#14b8a6", "#f97316", "#06b6d4",
+    "#6366f1",
+    "#ec4899",
+    "#f59e0b",
+    "#10b981",
+    "#3b82f6",
+    "#8b5cf6",
+    "#ef4444",
+    "#14b8a6",
+    "#f97316",
+    "#06b6d4",
 ]
 
 
@@ -111,11 +119,13 @@ async def project_collaboration(websocket: WebSocket, project_id: str):
 
     try:
         # Send initial presence
-        await websocket.send_json({
-            "type": "welcome",
-            "connectionId": conn_id,
-            "color": user_color,
-        })
+        await websocket.send_json(
+            {
+                "type": "welcome",
+                "connectionId": conn_id,
+                "color": user_color,
+            }
+        )
 
         while True:
             data = await websocket.receive_text()
@@ -132,38 +142,53 @@ async def project_collaboration(websocket: WebSocket, project_id: str):
                 user_info["email"] = msg.get("email", "")
                 manager.rooms[project_id][conn_id]["user"] = user_info
                 # Broadcast updated presence to everyone
-                await manager.broadcast(project_id, {
-                    "type": "presence",
-                    "users": manager.get_presence(project_id),
-                })
+                await manager.broadcast(
+                    project_id,
+                    {
+                        "type": "presence",
+                        "users": manager.get_presence(project_id),
+                    },
+                )
 
             elif msg_type == "cursor":
                 # Broadcast camera position to others
-                await manager.broadcast(project_id, {
-                    "type": "cursor",
-                    "userId": conn_id,
-                    "name": user_info.get("name", "Anonymous"),
-                    "color": user_info.get("color", "#6366f1"),
-                    "position": msg.get("position"),
-                    "target": msg.get("target"),
-                }, exclude_conn=conn_id)
+                await manager.broadcast(
+                    project_id,
+                    {
+                        "type": "cursor",
+                        "userId": conn_id,
+                        "name": user_info.get("name", "Anonymous"),
+                        "color": user_info.get("color", "#6366f1"),
+                        "position": msg.get("position"),
+                        "target": msg.get("target"),
+                    },
+                    exclude_conn=conn_id,
+                )
 
             elif msg_type == "select":
-                await manager.broadcast(project_id, {
-                    "type": "select",
-                    "userId": conn_id,
-                    "name": user_info.get("name", "Anonymous"),
-                    "buildingId": msg.get("buildingId"),
-                }, exclude_conn=conn_id)
+                await manager.broadcast(
+                    project_id,
+                    {
+                        "type": "select",
+                        "userId": conn_id,
+                        "name": user_info.get("name", "Anonymous"),
+                        "buildingId": msg.get("buildingId"),
+                    },
+                    exclude_conn=conn_id,
+                )
 
             elif msg_type == "edit":
-                await manager.broadcast(project_id, {
-                    "type": "edit",
-                    "userId": conn_id,
-                    "name": user_info.get("name", "Anonymous"),
-                    "buildingId": msg.get("buildingId"),
-                    "changes": msg.get("changes", {}),
-                }, exclude_conn=conn_id)
+                await manager.broadcast(
+                    project_id,
+                    {
+                        "type": "edit",
+                        "userId": conn_id,
+                        "name": user_info.get("name", "Anonymous"),
+                        "buildingId": msg.get("buildingId"),
+                        "changes": msg.get("changes", {}),
+                    },
+                    exclude_conn=conn_id,
+                )
 
             elif msg_type == "ping":
                 await websocket.send_json({"type": "pong"})
@@ -176,9 +201,12 @@ async def project_collaboration(websocket: WebSocket, project_id: str):
         manager.disconnect(project_id, conn_id)
         # Broadcast updated presence after disconnect
         try:
-            await manager.broadcast(project_id, {
-                "type": "presence",
-                "users": manager.get_presence(project_id),
-            })
+            await manager.broadcast(
+                project_id,
+                {
+                    "type": "presence",
+                    "users": manager.get_presence(project_id),
+                },
+            )
         except Exception:
             pass

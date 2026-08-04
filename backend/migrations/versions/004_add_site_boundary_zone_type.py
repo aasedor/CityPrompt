@@ -4,6 +4,7 @@ Revision ID: 004_add_site_boundary
 Revises: 003_zone_building_link
 Create Date: 2026-02-18
 """
+
 from typing import Sequence, Union
 
 from alembic import op

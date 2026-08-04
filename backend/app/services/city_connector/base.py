@@ -45,24 +45,24 @@ def note(code: str, message: str, severity: str = "warning", source_phase: str =
 class DatasetSpec:
     """Self-describing dataset registration. Adding a dataset = one literal + one transform fn."""
 
-    id: str                             # "calgary.land_use_districts"
+    id: str  # "calgary.land_use_districts"
     name: str
-    priority: int                       # fetch/importance order within the city
+    priority: int  # fetch/importance order within the city
     geometry_type: Literal["polygon", "line", "point", "table", "document"]
-    refresh_days: int                   # -> cache TTL
-    source_url: str                     # human-facing docs page
-    api_endpoint: str                   # adapter-specific resource locator (Socrata 4x4 id, etc.)
+    refresh_days: int  # -> cache TTL
+    source_url: str  # human-facing docs page
+    api_endpoint: str  # adapter-specific resource locator (Socrata 4x4 id, etc.)
     adapter: Literal["socrata", "osm", "opendatasoft", "arcgis"]
-    dna_fields: tuple[str, ...]         # dotted DNA paths this dataset produces, e.g. "land_use.districts"
-    transform: TransformFn              # normalize raw features into DNA facts
+    dna_fields: tuple[str, ...]  # dotted DNA paths this dataset produces, e.g. "land_use.districts"
+    transform: TransformFn  # normalize raw features into DNA facts
     adapter_params: dict[str, Any] = field(default_factory=dict)  # e.g. {"geo_field": "multipolygon"}
-    field_map: dict[str, str] = field(default_factory=dict)       # source property -> canonical name
-    buffer_m: float = 50.0              # fetch envelope around the site boundary
+    field_map: dict[str, str] = field(default_factory=dict)  # source property -> canonical name
+    buffer_m: float = 50.0  # fetch envelope around the site boundary
     cache_policy: Literal["bbox_ttl", "none"] = "bbox_ttl"
-    dataset_version: str = "v1"         # bump on regime change (part of the cache key)
-    valid_until: date | None = None     # temporal trap guard: stale regime -> warning + degraded confidence
+    dataset_version: str = "v1"  # bump on regime change (part of the cache key)
+    valid_until: date | None = None  # temporal trap guard: stale regime -> warning + degraded confidence
     timeout_s: float = 25.0
-    confidence_weight: float = 1.0      # weight in section confidence math
+    confidence_weight: float = 1.0  # weight in section confidence math
 
 
 @dataclass
@@ -70,7 +70,7 @@ class DatasetFetchResult:
     dataset_id: str
     status: FetchStatus
     features: list[Feature] = field(default_factory=list)
-    facts: dict[str, Any] = field(default_factory=dict)          # DNA-field-path -> value (post transform)
+    facts: dict[str, Any] = field(default_factory=dict)  # DNA-field-path -> value (post transform)
     warnings: list[dict[str, Any]] = field(default_factory=list)
     from_cache: bool = False
     fetched_at: str = ""

@@ -24,7 +24,7 @@ from app.services.plan_geometry.community_rules import RuleProfile
 
 logger = logging.getLogger(__name__)
 
-MIN_SEGMENT_M = 40.0     # drop grid stubs shorter than this
+MIN_SEGMENT_M = 40.0  # drop grid stubs shorter than this
 ENTRY_CONNECTOR_MAX_M = 90.0
 MIN_CONNECTOR_CORRIDOR_COVERAGE = 0.90
 CONNECTION_EPSILON_M = 0.05
@@ -33,12 +33,12 @@ PATH_FRONTAGE_PROXIMITY_M = 24.0
 PATH_CONNECTOR_WIDTH_M = 4.0
 
 # --- curvilinear grid ---------------------------------------------------------
-CURVE_STEP_M = 8.0                 # densification step along a bowed line
-CURVE_AMPLITUDE_MIN_M = 8.0        # below this the curve isn't worth drawing
+CURVE_STEP_M = 8.0  # densification step along a bowed line
+CURVE_AMPLITUDE_MIN_M = 8.0  # below this the curve isn't worth drawing
 CURVE_AMPLITUDE_ABS_MAX_M = 45.0
-CRESCENT_SAGITTA_MIN_M = 6.0       # emission-side crescent qualification
-CURVE_MARGIN_MIN_M = 24.0          # minimum edge-band depth before curving at all
-BLOCK_EDGE_MAX_M = 220.0           # frozen evaluator block_scale bound (plan_evaluator)
+CRESCENT_SAGITTA_MIN_M = 6.0  # emission-side crescent qualification
+CURVE_MARGIN_MIN_M = 24.0  # minimum edge-band depth before curving at all
+BLOCK_EDGE_MAX_M = 220.0  # frozen evaluator block_scale bound (plan_evaluator)
 
 # Closed-form maximum of |sin(pi t) + 0.15 sin(2 pi t)| on [0,1]: stationary
 # cos(pi t) = c solves 0.6 c^2 + c - 0.3 = 0. Normalizing by this makes the
@@ -51,17 +51,18 @@ BOW_PROFILE_MAX = math.sqrt(1.0 - _BOW_C * _BOW_C) * (1.0 + 0.3 * _BOW_C)
 @dataclass
 class StreetSegment:
     """One full-span grid line with its own ROW width (spine vs local)."""
-    line: LineString              # metric, full-span (unclipped, like full_span_kept)
+
+    line: LineString  # metric, full-span (unclipped, like full_span_kept)
     row_width_m: float
-    role: str                     # "spine" | "local" | "path"
-    sagitta_m: float = 0.0        # max chord deviation of the full-span line
+    role: str  # "spine" | "local" | "path"
+    sagitta_m: float = 0.0  # max chord deviation of the full-span line
     context_connection: bool = False
 
 
 @dataclass
 class StreetNetwork:
     centerlines: list[LineString] = field(default_factory=list)
-    street_area: BaseGeometry | None = None       # unioned ROW polygons (metric)
+    street_area: BaseGeometry | None = None  # unioned ROW polygons (metric)
     intersections: list[Point] = field(default_factory=list)
     segments: list[StreetSegment] = field(default_factory=list)
     roundabouts: list[tuple[Point, float]] = field(default_factory=list)  # (center, radius)
@@ -70,7 +71,7 @@ class StreetNetwork:
     path_entries_served: int = 0
     path_entries_total: int = 0
     notes: list[dict[str, Any]] = field(default_factory=list)
-    curve_mode: str = "none"           # "none" | "spine" | "all" ACTUALLY applied
+    curve_mode: str = "none"  # "none" | "spine" | "all" ACTUALLY applied
     curve_skip_reason: str | None = None  # set when a requested curve self-skipped
 
 
@@ -112,9 +113,11 @@ def _entry_points_from_context_lines(
             raise
         except Exception:  # noqa: BLE001 — municipal geometry
             continue
-        points = [crossing] if isinstance(crossing, Point) else [
-            geom for geom in getattr(crossing, "geoms", []) if isinstance(geom, Point)
-        ]
+        points = (
+            [crossing]
+            if isinstance(crossing, Point)
+            else [geom for geom in getattr(crossing, "geoms", []) if isinstance(geom, Point)]
+        )
         for point in points:
             candidates.append((0, 0.0, point.x, point.y, point))
 
@@ -133,8 +136,7 @@ def _entry_points_from_context_lines(
                     edge_frontages.append(edge_hit)
                 else:
                     edge_frontages.extend(
-                        geom for geom in getattr(edge_hit, "geoms", [])
-                        if isinstance(geom, LineString)
+                        geom for geom in getattr(edge_hit, "geoms", []) if isinstance(geom, LineString)
                     )
         except SoftTimeLimitExceeded:
             raise
@@ -144,8 +146,7 @@ def _entry_points_from_context_lines(
         if not pieces:
             # A near-tangent may collapse the band intersection to a point.
             boundary_point, _line_point = nearest_points(exterior, line)
-            candidates.append((1, line.distance(exterior), boundary_point.x,
-                               boundary_point.y, boundary_point))
+            candidates.append((1, line.distance(exterior), boundary_point.x, boundary_point.y, boundary_point))
             continue
         longest = max(pieces, key=lambda piece: (piece.length, -piece.bounds[0], -piece.bounds[1]))
         point = longest.interpolate(0.5, normalized=True)
@@ -163,23 +164,25 @@ def _entry_points_from_context_lines(
     return deduped
 
 
-def entry_points_from_roads(
-    road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8
-) -> list[Point]:
+def entry_points_from_roads(road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8) -> list[Point]:
     """Road access anchors at crossings and adjacent street frontages."""
     return _entry_points_from_context_lines(
-        road_lines_m, boundary_m,
-        proximity_m=ROAD_FRONTAGE_PROXIMITY_M, limit=limit, dedupe_m=20.0,
+        road_lines_m,
+        boundary_m,
+        proximity_m=ROAD_FRONTAGE_PROXIMITY_M,
+        limit=limit,
+        dedupe_m=20.0,
     )
 
 
-def entry_points_from_paths(
-    path_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8
-) -> list[Point]:
+def entry_points_from_paths(path_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8) -> list[Point]:
     """Pedestrian/cycle anchors at crossings and adjacent pathway frontages."""
     return _entry_points_from_context_lines(
-        path_lines_m, boundary_m,
-        proximity_m=PATH_FRONTAGE_PROXIMITY_M, limit=limit, dedupe_m=12.0,
+        path_lines_m,
+        boundary_m,
+        proximity_m=PATH_FRONTAGE_PROXIMITY_M,
+        limit=limit,
+        dedupe_m=12.0,
     )
 
 
@@ -205,11 +208,14 @@ def generate_street_network(
     boundary_m = make_valid(boundary_m)
     inset = boundary_m.buffer(-rules.perimeter_inset_m)
     if inset.is_empty:
-        network.notes.append({
-            "code": "SITE_TOO_SMALL", "severity": "warning",
-            "message": "Site too small for an internal street grid — single-block plan.",
-            "source_phase": "street_graph",
-        })
+        network.notes.append(
+            {
+                "code": "SITE_TOO_SMALL",
+                "severity": "warning",
+                "message": "Site too small for an internal street grid — single-block plan.",
+                "source_phase": "street_graph",
+            }
+        )
         network.street_area = Polygon()
         return network
 
@@ -283,12 +289,10 @@ def generate_street_network(
     for y in ys:
         role = "spine" if spine_y is not None and y == spine_y else "local"
         bow = (
-            requested_mode == "all"
-            or (requested_mode == "spine" and spine_y is not None and y == spine_y)
+            requested_mode == "all" or (requested_mode == "spine" and spine_y is not None and y == spine_y)
         ) and y not in exempt_ys
         if bow:
-            line = _bow_curve(y, minx - spacing, maxx + spacing, minx, maxx,
-                              amplitude, direction, w2_sign)
+            line = _bow_curve(y, minx - spacing, maxx + spacing, minx, maxx, amplitude, direction, w2_sign)
         else:
             line = LineString([(minx - spacing, y), (maxx + spacing, y)])
         lines_work.append((line, role, bow))
@@ -313,11 +317,14 @@ def generate_street_network(
             # The full-span line is stored VERBATIM — emission re-buffers this
             # exact object and roundabout candidacy measures distance to it.
             # Never simplify or re-densify between here and emission.
-            full_span_kept.append(StreetSegment(
-                line=affinity.rotate(line, angle, origin=origin),
-                row_width_m=width, role=role,
-                sagitta_m=_line_sagitta(line) if bow else 0.0,
-            ))
+            full_span_kept.append(
+                StreetSegment(
+                    line=affinity.rotate(line, angle, origin=origin),
+                    row_width_m=width,
+                    role=role,
+                    sagitta_m=_line_sagitta(line) if bow else 0.0,
+                )
+            )
     road_connectors = 0
     path_connectors = 0
     if network.centerlines:
@@ -342,49 +349,53 @@ def generate_street_network(
         network.curve_mode = requested_mode
 
     if not network.centerlines:
-        network.notes.append({
-            "code": "NO_INTERNAL_STREETS", "severity": "info",
-            "message": "Block spacing exceeds site dimensions — no internal streets generated.",
-            "source_phase": "street_graph",
-        })
+        network.notes.append(
+            {
+                "code": "NO_INTERNAL_STREETS",
+                "severity": "info",
+                "message": "Block spacing exceeds site dimensions — no internal streets generated.",
+                "source_phase": "street_graph",
+            }
+        )
         network.street_area = Polygon()
         return network
 
     connected_lines = unary_union(network.centerlines)
     network.entries_served = sum(
-        1 for entry in (entry_points or [])
-        if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
+        1 for entry in (entry_points or []) if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
     )
     network.path_entries_served = sum(
-        1 for entry in (path_entry_points or [])
-        if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
+        1 for entry in (path_entry_points or []) if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
     )
     unserved_roads = network.entries_total - network.entries_served
     unserved_paths = network.path_entries_total - network.path_entries_served
     if unserved_roads or unserved_paths:
-        network.notes.append({
-            "code": "CONTEXT_ENTRIES_UNSERVED", "severity": "info",
-            "message": f"Could not safely reach {unserved_roads} road and {unserved_paths} pathway "
-                       "context anchor(s) from the internal network.",
-            "source_phase": "street_graph",
-        })
+        network.notes.append(
+            {
+                "code": "CONTEXT_ENTRIES_UNSERVED",
+                "severity": "info",
+                "message": f"Could not safely reach {unserved_roads} road and {unserved_paths} pathway "
+                "context anchor(s) from the internal network.",
+                "source_phase": "street_graph",
+            }
+        )
     if network.entries_served or network.path_entries_served:
-        network.notes.append({
-            "code": "CONTEXT_CONNECTIONS_APPLIED", "severity": "info",
-            "message": f"Connected the plan to {network.entries_served} adjacent road and "
-                       f"{network.path_entries_served} pathway anchor(s) "
-                       f"({road_connectors + path_connectors} connector stub(s) added).",
-            "source_phase": "street_graph",
-        })
+        network.notes.append(
+            {
+                "code": "CONTEXT_CONNECTIONS_APPLIED",
+                "severity": "info",
+                "message": f"Connected the plan to {network.entries_served} adjacent road and "
+                f"{network.path_entries_served} pathway anchor(s) "
+                f"({road_connectors + path_connectors} connector stub(s) added).",
+                "source_phase": "street_graph",
+            }
+        )
 
     # Buffer per line THEN union: buffering a merged multiline leaves hairline
     # bridges at the crossings (zero-area slivers) that keep the blocks
     # topologically CONNECTED after the difference — observed as "one block
     # with slits". Per-line bands unioned sever cleanly.
-    bands = [
-        seg.line.buffer(seg.row_width_m / 2, cap_style=2, join_style=2)
-        for seg in full_span_kept
-    ]
+    bands = [seg.line.buffer(seg.row_width_m / 2, cap_style=2, join_style=2) for seg in full_span_kept]
 
     # Intersections: pairwise centerline crossings (grid nodes). Single-Point
     # crossings are guaranteed by construction (horizontals are functions of x,
@@ -393,11 +404,13 @@ def generate_street_network(
     # crutch. Byte-identical results on straight grids.
     seen: list[Point] = []
     for i, a in enumerate(network.centerlines):
-        for b in network.centerlines[i + 1:]:
+        for b in network.centerlines[i + 1 :]:
             crossing = a.intersection(b)
-            points = [crossing] if isinstance(crossing, Point) else [
-                g for g in getattr(crossing, "geoms", []) if isinstance(g, Point)
-            ]
+            points = (
+                [crossing]
+                if isinstance(crossing, Point)
+                else [g for g in getattr(crossing, "geoms", []) if isinstance(g, Point)]
+            )
             for point in points:
                 if all(point.distance(s) > 1.0 for s in seen):
                     seen.append(point)
@@ -461,9 +474,11 @@ def _append_context_connectors(
             raise
         except Exception:  # noqa: BLE001 — defensive against invalid municipal boundaries
             continue
-        pieces = [clipped] if isinstance(clipped, LineString) else [
-            geom for geom in getattr(clipped, "geoms", []) if isinstance(geom, LineString)
-        ]
+        pieces = (
+            [clipped]
+            if isinstance(clipped, LineString)
+            else [geom for geom in getattr(clipped, "geoms", []) if isinstance(geom, LineString)]
+        )
         if not pieces:
             continue
         inside_length = sum(piece.length for piece in pieces)
@@ -473,9 +488,14 @@ def _append_context_connectors(
         # its buffer back to the site, while retaining the boundary endpoint
         # here makes connectivity topological rather than merely visual.
         centerlines.append(raw)
-        segments.append(StreetSegment(
-            line=raw, row_width_m=width_m, role=role, context_connection=True,
-        ))
+        segments.append(
+            StreetSegment(
+                line=raw,
+                row_width_m=width_m,
+                role=role,
+                context_connection=True,
+            )
+        )
         added += 1
     return added
 
@@ -542,16 +562,15 @@ def _shortest_visible_connector(
                 cap_style=2,
                 join_style=2,
             )
-            corridor_coverage = (
-                corridor.intersection(safe_site).area / max(corridor.area, 1e-9)
-            )
+            corridor_coverage = corridor.intersection(safe_site).area / max(corridor.area, 1e-9)
             if corridor_coverage < MIN_CONNECTOR_CORRIDOR_COVERAGE:
                 continue
             clipped = raw.intersection(boundary_m)
-            pieces = [clipped] if isinstance(clipped, LineString) else [
-                geom for geom in getattr(clipped, "geoms", [])
-                if isinstance(geom, LineString)
-            ]
+            pieces = (
+                [clipped]
+                if isinstance(clipped, LineString)
+                else [geom for geom in getattr(clipped, "geoms", []) if isinstance(geom, LineString)]
+            )
             inside_length = sum(piece.length for piece in pieces)
             # A tolerance buffer absorbs projection noise, but must never turn
             # a line running just outside the parcel edge into a valid route.
@@ -564,12 +583,10 @@ def _shortest_visible_connector(
     return None
 
 
-MAX_BLOCKS_PER_AXIS = 12   # runaway guard on very large greenfield sites
+MAX_BLOCKS_PER_AXIS = 12  # runaway guard on very large greenfield sites
 
 
-def _axis_positions(
-    low: float, high: float, spacing: float, max_block_m: float = 0.0
-) -> list[float]:
+def _axis_positions(low: float, high: float, spacing: float, max_block_m: float = 0.0) -> list[float]:
     """Interior gridline positions along [low, high].
 
     n_blocks starts from the preferred spacing (round, not floor — a span 1.4x
@@ -591,9 +608,7 @@ def _axis_positions(
     return [low + span * i / n_blocks for i in range(1, n_blocks)]
 
 
-def _snap_nearest(
-    positions: list[float], target: float, max_shift: float
-) -> tuple[list[float], float | None]:
+def _snap_nearest(positions: list[float], target: float, max_shift: float) -> tuple[list[float], float | None]:
     """Shift the nearest position onto target; returns (positions, snapped value)."""
     if not positions:
         return positions, None
@@ -621,8 +636,14 @@ def _bow_offset(t: float, w2_sign: float) -> float:
 
 
 def _bow_curve(
-    base_y: float, x_lo: float, x_hi: float, span_lo: float, span_hi: float,
-    amplitude: float, direction: float, w2_sign: float,
+    base_y: float,
+    x_lo: float,
+    x_hi: float,
+    span_lo: float,
+    span_hi: float,
+    amplitude: float,
+    direction: float,
+    w2_sign: float,
     step_m: float = CURVE_STEP_M,
 ) -> LineString:
     """Full-span horizontal bowed by amplitude·direction. t is measured over the

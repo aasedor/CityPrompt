@@ -40,13 +40,13 @@ _BANNED_LANGUAGE = {
 
 
 class Citation(BaseModel):
-    doc: str                      # document slug
+    doc: str  # document slug
     title: str = ""
     section: Optional[str] = None
     page: int
     quote: str = Field(..., min_length=10, max_length=400)
     verified: bool = False
-    url: Optional[str] = None     # official document URL (enriched server-side, never model-provided)
+    url: Optional[str] = None  # official document URL (enriched server-side, never model-provided)
 
 
 class Consideration(BaseModel):
@@ -112,7 +112,8 @@ INSIGHT_TOOL = {
         "type": "object",
         "properties": {
             "summaries": {
-                "type": "array", "items": {"type": "string"},
+                "type": "array",
+                "items": {"type": "string"},
                 "description": "1-3 short paragraphs summarizing what applicable policies say about this kind of site",
             },
             "conformance_considerations": {"type": "array", "items": _CONSIDERATION_SCHEMA},
@@ -156,7 +157,7 @@ def _extract_json_object(text: str) -> str:
         elif char == "}":
             depth -= 1
             if depth == 0:
-                return text[start:index + 1]
+                return text[start : index + 1]
     return text[start:]
 
 
@@ -185,8 +186,11 @@ def _coerce_stringified_payload(payload: Any) -> dict[str, Any]:
         payload[key] = decoded
 
     summaries = payload.get("summaries") or []
-    payload["summaries"] = [str(s) for s in summaries if isinstance(s, (str, int, float))] \
-        if isinstance(summaries, list) else [str(summaries)]
+    payload["summaries"] = (
+        [str(s) for s in summaries if isinstance(s, (str, int, float))]
+        if isinstance(summaries, list)
+        else [str(summaries)]
+    )
 
     for key in ("conformance_considerations", "opportunities"):
         items = payload.get(key) or []
@@ -205,8 +209,11 @@ def _compact_site_facts(site_facts: dict[str, Any]) -> dict[str, Any]:
             continue
         if key == "districts" and isinstance(value, list):
             compact[key] = [
-                {"code": d.get("code"), "major": d.get("major"), "area_pct_of_site": d.get("area_pct_of_site")}
-                if isinstance(d, dict) else d
+                (
+                    {"code": d.get("code"), "major": d.get("major"), "area_pct_of_site": d.get("area_pct_of_site")}
+                    if isinstance(d, dict)
+                    else d
+                )
                 for d in value[:8]
             ]
         elif key == "frontage_streets" and isinstance(value, list):
@@ -245,17 +252,13 @@ def _verify_quote(quote: str, chunks_by_doc: dict[str, list[ScoredChunk]], doc: 
         window = max(len(needle), 40)
         step = max(20, window // 2)
         for start in range(0, max(1, len(haystack) - window + 1), step):
-            ratio = difflib.SequenceMatcher(
-                None, needle, haystack[start:start + window]
-            ).ratio()
+            ratio = difflib.SequenceMatcher(None, needle, haystack[start : start + window]).ratio()
             if ratio >= QUOTE_MATCH_THRESHOLD:
                 return True
     return False
 
 
-def apply_guardrails(
-    insight: PolicyInsight, chunks: list[ScoredChunk]
-) -> tuple[PolicyInsight, list[dict[str, Any]]]:
+def apply_guardrails(insight: PolicyInsight, chunks: list[ScoredChunk]) -> tuple[PolicyInsight, list[dict[str, Any]]]:
     """Mechanical post-pass: quote verification + banned-language rewrite."""
     warnings: list[dict[str, Any]] = []
     chunks_by_doc: dict[str, list[ScoredChunk]] = {}
@@ -266,12 +269,14 @@ def apply_guardrails(
     for summary in insight.summaries:
         rewritten, hit = _rewrite_banned_language(summary)
         if hit:
-            warnings.append({
-                "code": "LIABILITY_LANGUAGE_FILTERED",
-                "severity": "info",
-                "message": "Verdict language rewritten in a policy summary.",
-                "source_phase": "policy_intelligence",
-            })
+            warnings.append(
+                {
+                    "code": "LIABILITY_LANGUAGE_FILTERED",
+                    "severity": "info",
+                    "message": "Verdict language rewritten in a policy summary.",
+                    "source_phase": "policy_intelligence",
+                }
+            )
         scrubbed_summaries.append(rewritten)
     insight.summaries = scrubbed_summaries
 
@@ -281,12 +286,14 @@ def apply_guardrails(
             detail, hit = _rewrite_banned_language(item.detail)
             if hit:
                 item.detail = detail
-                warnings.append({
-                    "code": "LIABILITY_LANGUAGE_FILTERED",
-                    "severity": "info",
-                    "message": f"Verdict language rewritten in {kind} '{item.topic}'.",
-                    "source_phase": "policy_intelligence",
-                })
+                warnings.append(
+                    {
+                        "code": "LIABILITY_LANGUAGE_FILTERED",
+                        "severity": "info",
+                        "message": f"Verdict language rewritten in {kind} '{item.topic}'.",
+                        "source_phase": "policy_intelligence",
+                    }
+                )
             verified_citations = []
             for citation in item.citations:
                 if _verify_quote(citation.quote, chunks_by_doc, citation.doc):
@@ -300,21 +307,25 @@ def apply_guardrails(
                     verified_citations.append(citation)
                 else:
                     item.confidence = round(item.confidence * 0.5, 2)
-                    warnings.append({
-                        "code": "CITATION_UNVERIFIED",
-                        "severity": "warning",
-                        "message": f"Dropped a quote in {kind} '{item.topic}' that does not match "
-                                   f"the {citation.doc} corpus text.",
-                        "source_phase": "policy_intelligence",
-                    })
+                    warnings.append(
+                        {
+                            "code": "CITATION_UNVERIFIED",
+                            "severity": "warning",
+                            "message": f"Dropped a quote in {kind} '{item.topic}' that does not match "
+                            f"the {citation.doc} corpus text.",
+                            "source_phase": "policy_intelligence",
+                        }
+                    )
             item.citations = verified_citations
             if not item.citations:
-                warnings.append({
-                    "code": "UNCITED_POLICY_CLAIM",
-                    "severity": "warning",
-                    "message": f"{kind} '{item.topic}' kept as context only — no verifiable citation.",
-                    "source_phase": "policy_intelligence",
-                })
+                warnings.append(
+                    {
+                        "code": "UNCITED_POLICY_CLAIM",
+                        "severity": "warning",
+                        "message": f"{kind} '{item.topic}' kept as context only — no verifiable citation.",
+                        "source_phase": "policy_intelligence",
+                    }
+                )
                 item.framing = "context"
                 item.confidence = round(min(item.confidence, 0.3), 2)
             kept.append(item)
@@ -340,12 +351,14 @@ async def synthesize_policy_insight(
     if not chunks:
         return (
             PolicyInsight(corpus_status="absent", confidence=0.0),
-            [{
-                "code": "POLICY_CORPUS_MISSING",
-                "severity": "warning",
-                "message": "No policy corpus available for this city — planning proceeds philosophy-only.",
-                "source_phase": "policy_intelligence",
-            }],
+            [
+                {
+                    "code": "POLICY_CORPUS_MISSING",
+                    "severity": "warning",
+                    "message": "No policy corpus available for this city — planning proceeds philosophy-only.",
+                    "source_phase": "policy_intelligence",
+                }
+            ],
         )
 
     excerpts = []
@@ -366,7 +379,12 @@ async def synthesize_policy_insight(
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
     try:
         return await _synthesize_with_client(
-            client, model, user_message, corpus_status, documents_consulted, chunks,
+            client,
+            model,
+            user_message,
+            corpus_status,
+            documents_consulted,
+            chunks,
         )
     finally:
         # Close inside the running loop: the Celery task wraps this in
@@ -410,12 +428,14 @@ async def _synthesize_with_client(
             logger.warning("Policy synthesis call failed: %s", exc)
             return (
                 PolicyInsight(corpus_status="partial", documents_consulted=documents_consulted, confidence=0.0),
-                [{
-                    "code": "POLICY_SYNTHESIS_UNAVAILABLE",
-                    "severity": "warning",
-                    "message": f"Policy synthesis unavailable: {exc}",
-                    "source_phase": "policy_intelligence",
-                }],
+                [
+                    {
+                        "code": "POLICY_SYNTHESIS_UNAVAILABLE",
+                        "severity": "warning",
+                        "message": f"Policy synthesis unavailable: {exc}",
+                        "source_phase": "policy_intelligence",
+                    }
+                ],
             )
 
         try:
@@ -430,9 +450,7 @@ async def _synthesize_with_client(
         except Exception as exc:  # noqa: BLE001
             logger.warning("Failed to log policy synthesis usage: %s", exc)
 
-        raw_text = "".join(
-            block.text for block in message.content if getattr(block, "type", None) == "text"
-        )
+        raw_text = "".join(block.text for block in message.content if getattr(block, "type", None) == "text")
 
         try:
             payload = next(
@@ -457,20 +475,19 @@ async def _synthesize_with_client(
     if insight is None:
         return (
             PolicyInsight(corpus_status="partial", documents_consulted=documents_consulted, confidence=0.0),
-            [{
-                "code": "POLICY_SYNTHESIS_UNPARSEABLE",
-                "severity": "warning",
-                "message": f"Policy synthesis output could not be parsed after retry ({last_error[:160]}); "
-                           "policy section degraded.",
-                "source_phase": "policy_intelligence",
-            }],
+            [
+                {
+                    "code": "POLICY_SYNTHESIS_UNPARSEABLE",
+                    "severity": "warning",
+                    "message": f"Policy synthesis output could not be parsed after retry ({last_error[:160]}); "
+                    "policy section degraded.",
+                    "source_phase": "policy_intelligence",
+                }
+            ],
         )
 
     insight, warnings = apply_guardrails(insight, chunks)
-    cited = [
-        c for group in (insight.conformance_considerations, insight.opportunities)
-        for c in group if c.citations
-    ]
+    cited = [c for group in (insight.conformance_considerations, insight.opportunities) for c in group if c.citations]
     total = len(insight.conformance_considerations) + len(insight.opportunities)
     insight.confidence = round(len(cited) / total, 2) if total else 0.3
     return insight, warnings

@@ -14,11 +14,13 @@ from collections.abc import Iterable
 from app.models.models import Building
 
 COMMUNITY_REPRESENTATION_SPEC_KEY = "community3DRepresentation"
-COMMUNITY_BUILDING_GENERATORS = frozenset({
-    "lego_assembly",
-    "planned_massing",
-    "meshy",
-})
+COMMUNITY_BUILDING_GENERATORS = frozenset(
+    {
+        "lego_assembly",
+        "planned_massing",
+        "meshy",
+    }
+)
 
 
 def community_3d_source_zone_id(building: Building) -> uuid.UUID | None:
@@ -65,11 +67,7 @@ def community_3d_buildings_for_zones(
     """Select only derived buildings owned by one of ``zone_ids``."""
 
     owned_zone_ids = set(zone_ids)
-    return [
-        building
-        for building in buildings
-        if community_3d_source_zone_id(building) in owned_zone_ids
-    ]
+    return [building for building in buildings if community_3d_source_zone_id(building) in owned_zone_ids]
 
 
 def stale_community_3d_buildings(

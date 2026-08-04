@@ -36,10 +36,10 @@ from pyproj import CRS, Transformer
 MAX_FEATURES = 2000
 MAX_VERTICES_PER_RING = 20000
 DEFAULT_ZONE_TYPE = "development_area"
-LINE_ZONE_TYPE = "road"      # open polylines become buffered road corridors
-LINE_HALF_WIDTH_M = 3.0      # ~6 m corridor for road / path / contour lines
-POINT_RADIUS_M = 4.0         # points become small marker discs
-SIMPLIFY_TOLERANCE_M = 0.5   # drop sub-0.5 m vertices to lighten dense geometry
+LINE_ZONE_TYPE = "road"  # open polylines become buffered road corridors
+LINE_HALF_WIDTH_M = 3.0  # ~6 m corridor for road / path / contour lines
+POINT_RADIUS_M = 4.0  # points become small marker discs
+SIMPLIFY_TOLERANCE_M = 0.5  # drop sub-0.5 m vertices to lighten dense geometry
 
 
 class ShapefileImportError(ValueError):
@@ -129,18 +129,12 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
                 # Already lon/lat degrees; no projected->geographic transform needed.
                 transformer = None
             else:
-                transformer = Transformer.from_crs(
-                    src_crs, CRS.from_epsg(4326), always_xy=True
-                )
+                transformer = Transformer.from_crs(src_crs, CRS.from_epsg(4326), always_xy=True)
         except Exception as e:  # noqa: BLE001 - pyproj raises varied error types
-            result.warnings.append(
-                f"Could not read .prj CRS ({e}); assuming coordinates are already lon/lat."
-            )
+            result.warnings.append(f"Could not read .prj CRS ({e}); assuming coordinates are already lon/lat.")
             result.detected_crs = "Unreadable .prj — assumed WGS84"
     else:
-        result.warnings.append(
-            "No .prj file found; assuming coordinates are already lon/lat (WGS84)."
-        )
+        result.warnings.append("No .prj file found; assuming coordinates are already lon/lat (WGS84).")
         result.detected_crs = "Assumed WGS84 (no .prj)"
 
     def reproject(ring: list[list[float]]) -> list[list[float]]:
@@ -189,15 +183,11 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
             result.warnings.append("A polygon exceeded the vertex cap and was skipped.")
             result.skipped_count += 1
             return
-        result.features.append(
-            ParsedFeature(coordinates=reproject(ring), zone_type=zone_type, properties=props)
-        )
+        result.features.append(ParsedFeature(coordinates=reproject(ring), zone_type=zone_type, properties=props))
 
     for sr in reader.iterShapeRecords():
         if len(result.features) >= MAX_FEATURES:
-            result.warnings.append(
-                f"Stopped at {MAX_FEATURES} features; the file contains more."
-            )
+            result.warnings.append(f"Stopped at {MAX_FEATURES} features; the file contains more.")
             break
 
         try:
@@ -217,10 +207,10 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
         gt = geom.geom_type
         if gt in ("Polygon", "MultiPolygon"):
             # Footprints / parcels / zoning. MultiPolygons explode; holes drop.
-            for poly in (geom.geoms if gt == "MultiPolygon" else [geom]):
+            for poly in geom.geoms if gt == "MultiPolygon" else [geom]:
                 emit_polygon(poly, DEFAULT_ZONE_TYPE, props)
         elif gt in ("LineString", "MultiLineString"):
-            for line in (geom.geoms if gt == "MultiLineString" else [geom]):
+            for line in geom.geoms if gt == "MultiLineString" else [geom]:
                 pts = list(line.coords)
                 # A closed polyline (a boundary drawn as a line) is filled into an
                 # area zone; an open one (road / path / contour) is buffered into a
@@ -236,10 +226,10 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
                 corridor = line.buffer(line_buf, cap_style=2, join_style=2)
                 if corridor.is_empty:
                     continue
-                for poly in (corridor.geoms if corridor.geom_type == "MultiPolygon" else [corridor]):
+                for poly in corridor.geoms if corridor.geom_type == "MultiPolygon" else [corridor]:
                     emit_polygon(poly, LINE_ZONE_TYPE, props)
         elif gt in ("Point", "MultiPoint"):
-            for pt in (geom.geoms if gt == "MultiPoint" else [geom]):
+            for pt in geom.geoms if gt == "MultiPoint" else [geom]:
                 disc = pt.buffer(point_buf, quad_segs=4)
                 if not disc.is_empty:
                     emit_polygon(disc, DEFAULT_ZONE_TYPE, props)
@@ -249,7 +239,5 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
 
     result.feature_count = len(result.features)
     if result.feature_count == 0 and result.skipped_count > 0:
-        result.warnings.append(
-            "No usable geometry found in the shapefile (only empty or unsupported shapes)."
-        )
+        result.warnings.append("No usable geometry found in the shapefile (only empty or unsupported shapes).")
     return result

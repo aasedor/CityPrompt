@@ -73,7 +73,9 @@ from app.services.site_engine import (
 logger = logging.getLogger(__name__)
 
 PLAN_COLORS = {
-    "road": "#8a8f98", "green_space": "#5fae5f", "building": "#8b5cf6",
+    "road": "#8a8f98",
+    "green_space": "#5fae5f",
+    "building": "#8b5cf6",
     "water": "#4a90c2",
 }
 
@@ -193,9 +195,7 @@ def _principal_street_centerline_m(geometry_m: BaseGeometry) -> LineString | Non
         )
         for _length, index in short_edges
     ]
-    candidates = _line_parts(
-        LineString(midpoints).intersection(geometry_m.buffer(1e-6))
-    )
+    candidates = _line_parts(LineString(midpoints).intersection(geometry_m.buffer(1e-6)))
     if not candidates:
         return None
     candidate = max(candidates, key=lambda line: line.length)
@@ -220,9 +220,7 @@ def _plan_centerline_coordinates(
     if not candidates:
         # Projection can put an endpoint a few floating-point units outside
         # the polygon.  This is roughly a centimetre, far below a street band.
-        candidates = _line_parts(
-            centerline_wgs84.intersection(zone_wgs84.buffer(1e-10))
-        )
+        candidates = _line_parts(centerline_wgs84.intersection(zone_wgs84.buffer(1e-10)))
     if not candidates:
         return None
     line = max(candidates, key=lambda candidate: candidate.length)
@@ -239,9 +237,7 @@ def recover_street_plan_centerline_wgs84(
     metric_crs = local_metric_crs_for_polygon(zone_wgs84)
     to_metric = build_transformer("EPSG:4326", metric_crs)
     to_wgs84 = build_transformer(metric_crs, "EPSG:4326")
-    centerline_m = _principal_street_centerline_m(
-        project_geometry(zone_wgs84, to_metric)
-    )
+    centerline_m = _principal_street_centerline_m(project_geometry(zone_wgs84, to_metric))
     return _plan_centerline_coordinates(
         centerline_m,
         zone_wgs84,
@@ -332,25 +328,17 @@ def validate_street_plan_centerline_wgs84(
         return False
     axis_x = (axis_end[0] - axis_start[0]) / long_axis
     axis_y = (axis_end[1] - axis_start[1]) / long_axis
-    projections = [
-        coordinate[0] * axis_x + coordinate[1] * axis_y
-        for coordinate in centerline_m.coords
-    ]
+    projections = [coordinate[0] * axis_x + coordinate[1] * axis_y for coordinate in centerline_m.coords]
     if max(projections) - min(projections) < long_axis * 0.55:
         return False
 
     recovered_axis = _principal_street_centerline_m(zone_m)
     if recovered_axis is not None:
         short_axis = min(
-            math.dist(
-                rectangle_coordinates[index], rectangle_coordinates[index + 1]
-            )
-            for index in range(4)
+            math.dist(rectangle_coordinates[index], rectangle_coordinates[index + 1]) for index in range(4)
         )
         alignment_tolerance_m = max(0.5, short_axis * 0.35)
-        if not centerline_m.difference(
-            recovered_axis.buffer(alignment_tolerance_m)
-        ).is_empty:
+        if not centerline_m.difference(recovered_axis.buffer(alignment_tolerance_m)).is_empty:
             return False
 
     return True
@@ -378,11 +366,7 @@ def _stable_public_realm_polygons_wgs84(
         parts: list[Polygon] = []
         for polygon in iter_polygons(repaired):
             snapped = make_valid(set_precision(polygon, 1e-3))
-            parts.extend(
-                candidate
-                for candidate in iter_polygons(snapped)
-                if candidate.area >= min_area_m2
-            )
+            parts.extend(candidate for candidate in iter_polygons(snapped) if candidate.area >= min_area_m2)
         return parts
 
     projected: list[Polygon] = []
@@ -520,10 +504,7 @@ def _park_access_points_m(
             if isinstance(hit, LineString):
                 pieces.append(hit)
             else:
-                pieces.extend(
-                    geom for geom in getattr(hit, "geoms", [])
-                    if isinstance(geom, LineString)
-                )
+                pieces.extend(geom for geom in getattr(hit, "geoms", []) if isinstance(geom, LineString))
         usable = [piece for piece in pieces if piece.length > 0.5]
         if usable:
             longest = max(
@@ -533,13 +514,15 @@ def _park_access_points_m(
             park_point = longest.interpolate(0.5, normalized=True)
         else:
             park_point, _street_point = nearest_points(boundary, segment.line)
-        candidates.append((
-            role_priority.get(segment.role, 3),
-            distance,
-            park_point.x,
-            park_point.y,
-            park_point,
-        ))
+        candidates.append(
+            (
+                role_priority.get(segment.role, 3),
+                distance,
+                park_point.x,
+                park_point.y,
+                park_point,
+            )
+        )
 
     candidates.sort(key=lambda item: item[:4])
     gateways: list[Point] = []
@@ -581,12 +564,28 @@ def _feature_lines_m(features: list[dict[str, Any]], to_metric) -> list[LineStri
 
 
 _PATH_CONTEXT_TERMS = (
-    "footway", "path", "pathway", "trail", "cycleway", "bikeway",
-    "pedestrian", "multi-use", "multi use", "shared use",
+    "footway",
+    "path",
+    "pathway",
+    "trail",
+    "cycleway",
+    "bikeway",
+    "pedestrian",
+    "multi-use",
+    "multi use",
+    "shared use",
 )
 _EXCLUDED_ROAD_CONTEXT_TERMS = (
-    "railway", "rail line", "motorway", "freeway", "expressway",
-    "controlled access", "skeletal road", "trunk", "off ramp", "on ramp",
+    "railway",
+    "rail line",
+    "motorway",
+    "freeway",
+    "expressway",
+    "controlled access",
+    "skeletal road",
+    "trunk",
+    "off ramp",
+    "on ramp",
     "slip road",
 )
 
@@ -596,15 +595,31 @@ def _context_feature_text(feature: dict[str, Any]) -> str:
     return " ".join(
         str(value).lower()
         for key, value in props.items()
-        if value is not None and key in {
-            "road_type", "highway", "centerline_type", "functional_class_code",
-            "road_segment_type_description", "street_type", "asset_type",
-            "asset_class", "bicycle_class", "type", "status", "built_status",
+        if value is not None
+        and key
+        in {
+            "road_type",
+            "highway",
+            "centerline_type",
+            "functional_class_code",
+            "road_segment_type_description",
+            "street_type",
+            "asset_type",
+            "asset_class",
+            "bicycle_class",
+            "type",
+            "status",
+            "built_status",
             # Calgary calls its limited-access freeway network "Skeletal Road".
             # Other municipal feeds expose the same distinction through one of
             # these generic classification fields.
-            "ctp_class", "road_class", "classification", "functional_class",
-            "transportation_class", "access", "junction",
+            "ctp_class",
+            "road_class",
+            "classification",
+            "functional_class",
+            "transportation_class",
+            "access",
+            "junction",
         }
     )
 
@@ -621,16 +636,24 @@ def _is_drivable_context_feature(feature: dict[str, Any]) -> bool:
     if any(term in text for term in _EXCLUDED_ROAD_CONTEXT_TERMS):
         return False
     props = feature.get("properties") or {}
-    lifecycle = " ".join(
-        str(props.get(key) or "").strip().lower()
-        for key in ("built_status", "status", "plan_status")
-    )
-    if any(term in lifecycle for term in (
-        "proposed", "planned", "future", "closed", "abandoned", "demolished",
-    )):
+    lifecycle = " ".join(str(props.get(key) or "").strip().lower() for key in ("built_status", "status", "plan_status"))
+    if any(
+        term in lifecycle
+        for term in (
+            "proposed",
+            "planned",
+            "future",
+            "closed",
+            "abandoned",
+            "demolished",
+        )
+    ):
         return False
     if str(props.get("access") or "").strip().lower() in {
-        "no", "private", "emergency", "permit",
+        "no",
+        "private",
+        "emergency",
+        "permit",
     }:
         return False
     return True
@@ -661,9 +684,7 @@ def _param_value(parameters: dict[str, Any], path: str) -> Any:
     return merged
 
 
-def _derive_blocks(
-    boundary_m: BaseGeometry, street_area: BaseGeometry | None
-) -> tuple[list[Polygon], float]:
+def _derive_blocks(boundary_m: BaseGeometry, street_area: BaseGeometry | None) -> tuple[list[Polygon], float]:
     """Streets -> developable blocks, plus the sliver share of gross.
 
     Morphological opening (erode 5 cm, dilate back): the difference can leave
@@ -703,7 +724,7 @@ def _curvilinear_fallback_reason(
     if n_curved < n_straight:
         return "BLOCKS_MERGED"
     if n_curved_large < min(n_straight_large, 2):
-        return "BLOCKS_FRAGMENTED"       # curve shattered buildable blocks into pocket-park chum
+        return "BLOCKS_FRAGMENTED"  # curve shattered buildable blocks into pocket-park chum
     if sliver_curved > sliver_straight + 0.02:
         return "SLIVER_EXCESS_REL"
     if sliver_curved > 0.04:
@@ -759,8 +780,7 @@ def generate_plan_geometry(
     if rule_overrides:
         # The refinement loop revises rule inputs; each override is recorded by
         # the loop itself as {parameter, from, to, reason}.
-        valid_overrides = {k: v for k, v in rule_overrides.items()
-                           if hasattr(rules, k) and isinstance(v, (int, float))}
+        valid_overrides = {k: v for k, v in rule_overrides.items() if hasattr(rules, k) and isinstance(v, (int, float))}
         rules = dataclass_replace(rules, **valid_overrides)
     result.notes.extend(rule_notes)
 
@@ -794,20 +814,25 @@ def generate_plan_geometry(
             spine_row_width_m=18.0,
             local_row_width_m=local_native_row_m,
         )
-        result.notes.append({
-            "code": "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS",
-            "severity": "info",
-            "message": (
-                "The executable street kit set the render-locked 18 m main street and "
-                f"{local_native_row_m:g} m local section before graph generation."
-            ),
-            "source_phase": "street_graph",
-        })
+        result.notes.append(
+            {
+                "code": "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS",
+                "severity": "info",
+                "message": (
+                    "The executable street kit set the render-locked 18 m main street and "
+                    f"{local_native_row_m:g} m local section before graph generation."
+                ),
+                "source_phase": "street_graph",
+            }
+        )
 
     result.rules = {
-        "block_target_m": rules.block_target_m, "row_width_m": rules.row_width_m,
-        "clear_width_m": rules.clear_width_m, "open_space_share": rules.open_space_share,
-        "coverage_ratio": rules.coverage_ratio, "floors": rules.floors,
+        "block_target_m": rules.block_target_m,
+        "row_width_m": rules.row_width_m,
+        "clear_width_m": rules.clear_width_m,
+        "open_space_share": rules.open_space_share,
+        "coverage_ratio": rules.coverage_ratio,
+        "floors": rules.floors,
         "floors_note": rules.floors_note,
         "spine_row_width_m": rules.spine_row_width_m,
         "local_row_width_m": rules.local_row_width_m,
@@ -818,11 +843,14 @@ def generate_plan_geometry(
     if locked_street_area_wgs84 is not None and not locked_street_area_wgs84.is_empty:
         network = StreetNetwork()
         network.street_area = make_valid(project_geometry(make_valid(locked_street_area_wgs84), to_metric))
-        result.notes.append({
-            "code": "STREETS_LOCKED", "severity": "info",
-            "message": "Street network locked by the user — regenerated blocks/massing only.",
-            "source_phase": "street_graph",
-        })
+        result.notes.append(
+            {
+                "code": "STREETS_LOCKED",
+                "severity": "info",
+                "message": "Street network locked by the user — regenerated blocks/massing only.",
+                "source_phase": "street_graph",
+            }
+        )
         blocks, _ = _derive_blocks(boundary_m, network.street_area)
     else:
         raw_roads = road_features or []
@@ -833,16 +861,17 @@ def generate_plan_geometry(
         # Generic OSM's road feed also contains footways/cycleways. Promote
         # those to pedestrian context, alongside explicit city pathway and
         # bikeway datasets supplied by the plan task.
-        raw_paths = list(path_features or []) + [
-            feature for feature in raw_roads if _is_path_context_feature(feature)
-        ]
+        raw_paths = list(path_features or []) + [feature for feature in raw_roads if _is_path_context_feature(feature)]
         path_lines = _feature_lines_m(raw_paths, to_metric)
         entries = entry_points_from_roads(road_lines, boundary_m)
         path_entries = entry_points_from_paths(path_lines, boundary_m)
         # Straight baseline always generated — it is the fallback AND the
         # yardstick the curved candidates are judged against.
         network = generate_street_network(
-            boundary_m, rules, entries, path_entry_points=path_entries,
+            boundary_m,
+            rules,
+            entries,
+            path_entry_points=path_entries,
         )
         blocks, sliver_straight = _derive_blocks(boundary_m, network.street_area)
         if palette.curvilinear and network.segments:
@@ -850,10 +879,14 @@ def generate_plan_geometry(
             n_straight_large = sum(1 for b in straight_blocks if b.area >= 2000.0)
             rejections: list[tuple[str, str]] = []
             applied = False
-            for mode in ("all", "spine"):     # graduated: full vision, then bow, then straight
+            for mode in ("all", "spine"):  # graduated: full vision, then bow, then straight
                 candidate = generate_street_network(
-                    boundary_m, rules, entries, path_entry_points=path_entries,
-                    curve_mode=mode, seed=seed,
+                    boundary_m,
+                    rules,
+                    entries,
+                    path_entry_points=path_entries,
+                    curve_mode=mode,
+                    seed=seed,
                 )
                 if candidate.curve_mode == "none":
                     rejections.append((mode, candidate.curve_skip_reason or "AMPLITUDE_BELOW_MIN"))
@@ -869,64 +902,75 @@ def generate_plan_geometry(
                 )
                 if reason is None:
                     network, blocks = candidate, c_blocks
-                    rejected_suffix = (
-                        "; rejected " + ", ".join(f"{m}:{r}" for m, r in rejections)
-                        if rejections else ""
+                    rejected_suffix = "; rejected " + ", ".join(f"{m}:{r}" for m, r in rejections) if rejections else ""
+                    network.notes.append(
+                        {
+                            "code": "CURVILINEAR_APPLIED",
+                            "severity": "info",
+                            "message": f"Streets follow a gentle curve toward the site's heart "
+                            f"(mode={mode}{rejected_suffix}).",
+                            "source_phase": "street_graph",
+                        }
                     )
-                    network.notes.append({
-                        "code": "CURVILINEAR_APPLIED", "severity": "info",
-                        "message": f"Streets follow a gentle curve toward the site's heart "
-                                   f"(mode={mode}{rejected_suffix}).",
-                        "source_phase": "street_graph",
-                    })
                     applied = True
                     break
                 rejections.append((mode, reason))
             if not applied:
                 # The guard is the SOLE curvature-note authority: exactly one
                 # outcome note for a curvilinear palette on a viable site.
-                guard_rejected = [r for r in rejections
-                                  if r[1] not in ("AMPLITUDE_BELOW_MIN", "NO_LONG_AXIS_ROWS")]
+                guard_rejected = [r for r in rejections if r[1] not in ("AMPLITUDE_BELOW_MIN", "NO_LONG_AXIS_ROWS")]
                 network, blocks = straight_network, straight_blocks
                 if guard_rejected:
-                    network.notes.append({
-                        "code": "CURVILINEAR_FALLBACK", "severity": "info",
-                        "message": "Curved grid rejected ("
-                                   + "; ".join(f"{m}:{r}" for m, r in rejections)
-                                   + "); straight grid kept.",
-                        "source_phase": "street_graph",
-                    })
+                    network.notes.append(
+                        {
+                            "code": "CURVILINEAR_FALLBACK",
+                            "severity": "info",
+                            "message": "Curved grid rejected ("
+                            + "; ".join(f"{m}:{r}" for m, r in rejections)
+                            + "); straight grid kept.",
+                            "source_phase": "street_graph",
+                        }
+                    )
                 elif rejections:
-                    network.notes.append({
-                        "code": "CURVILINEAR_SKIPPED", "severity": "info",
-                        "message": "Site too tight to curve the grid ("
-                                   + "; ".join(f"{m}:{r}" for m, r in rejections)
-                                   + ") — straight grid kept.",
-                        "source_phase": "street_graph",
-                    })
+                    network.notes.append(
+                        {
+                            "code": "CURVILINEAR_SKIPPED",
+                            "severity": "info",
+                            "message": "Site too tight to curve the grid ("
+                            + "; ".join(f"{m}:{r}" for m, r in rejections)
+                            + ") — straight grid kept.",
+                            "source_phase": "street_graph",
+                        }
+                    )
     result.notes.extend(network.notes)
     street_area = network.street_area if network.street_area is not None else Polygon()
 
     # --- open space + placement policy ------------------------------------------
     open_target = rules.open_space_share * gross
     open_plan = select_open_space(
-        blocks=blocks, boundary_m=boundary_m, rules=rules, palette=palette,
-        network=network, seed=seed,
+        blocks=blocks,
+        boundary_m=boundary_m,
+        rules=rules,
+        palette=palette,
+        network=network,
+        seed=seed,
     )
     open_spaces_m = [spec.geom_m for spec in open_plan.specs]
     open_area = open_plan.open_area_m2
     if open_area < open_target * 0.5 and len(blocks) > 1:
-        result.notes.append({
-            "code": "OPEN_SPACE_SHORTFALL", "severity": "warning",
-            "message": f"Open space {open_area:,.0f} m² is under half the "
-                       f"{open_target:,.0f} m² target — block sizes don't divide cleanly.",
-            "source_phase": "civic_distribution",
-        })
+        result.notes.append(
+            {
+                "code": "OPEN_SPACE_SHORTFALL",
+                "severity": "warning",
+                "message": f"Open space {open_area:,.0f} m² is under half the "
+                f"{open_target:,.0f} m² target — block sizes don't divide cleanly.",
+                "source_phase": "civic_distribution",
+            }
+        )
 
     # Landscape structure per green kind (mirrored by the globe's parkScatter):
     # ponds are water, everything else plants to the palette's design intent.
-    _LANDSCAPE_KEY = {"central": "park", "pocket": "pocket",
-                      "greenway": "greenway", "plaza": "plaza"}
+    _LANDSCAPE_KEY = {"central": "park", "pocket": "pocket", "greenway": "greenway", "plaza": "plaza"}
     _PUBLIC_REALM_KEY = {
         "central": "central",
         "pocket": "pocket",
@@ -934,9 +978,7 @@ def generate_plan_geometry(
         "plaza": "plaza",
         "pond": "pond",
     }
-    public_realm_variants = (
-        getattr(palette, "public_realm_variants", None) or {}
-    )
+    public_realm_variants = getattr(palette, "public_realm_variants", None) or {}
     # Parks without a palette/LLM archetype get a catalog fallback so the
     # globe park kit resolves a real furniture recipe (playgrounds/pavilions
     # gate on planting_structure + area downstream, not here). Ponds keep
@@ -967,41 +1009,38 @@ def generate_plan_geometry(
                 if identity is None:
                     continue
                 kind, archetype_id = identity
-            color = (
-                PLAN_COLORS["water"]
-                if kind == "pond"
-                else PLAN_COLORS["green_space"]
-            )
+            color = PLAN_COLORS["water"] if kind == "pond" else PLAN_COLORS["green_space"]
             planting = palette.landscape.get(_LANDSCAPE_KEY.get(kind, ""))
             variant_id = public_realm_variants.get(_PUBLIC_REALM_KEY.get(kind, ""))
             poly = project_geometry(poly_m, to_wgs84)
-            access_points = [
-                project_geometry(point, to_wgs84)
-                for point in _park_access_points_m(poly_m, network)
-            ]
-            result.zones.append({
-                "zone_type": "green_space",
-                "name": f"{scenario_label} · {spec.name_suffix}",
-                "coordinates": _ring(poly),
-                "color": color,
-                "sort_order": zone_sort,
-                "properties": {
-                    "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                    "_plan_role": "open_space", "tree_density": tree_density,
-                    "green_kind": kind,
-                    **({"green_space_archetype_id": archetype_id}
-                       if archetype_id else {}),
-                    **({"green_space_selected_variant_id": variant_id}
-                       if variant_id else {}),
-                    **({"ground_texture": ground_texture} if ground_texture else {}),
-                    **({"planting_structure": planting} if planting else {}),
-                    **({
-                        "park_access_points": [
-                            [float(point.x), float(point.y)] for point in access_points
-                        ],
-                    } if access_points else {}),
-                },
-            })
+            access_points = [project_geometry(point, to_wgs84) for point in _park_access_points_m(poly_m, network)]
+            result.zones.append(
+                {
+                    "zone_type": "green_space",
+                    "name": f"{scenario_label} · {spec.name_suffix}",
+                    "coordinates": _ring(poly),
+                    "color": color,
+                    "sort_order": zone_sort,
+                    "properties": {
+                        "_plan_scenario": scenario_id,
+                        "_imported_from": layer_name,
+                        "_plan_role": "open_space",
+                        "tree_density": tree_density,
+                        "green_kind": kind,
+                        **({"green_space_archetype_id": archetype_id} if archetype_id else {}),
+                        **({"green_space_selected_variant_id": variant_id} if variant_id else {}),
+                        **({"ground_texture": ground_texture} if ground_texture else {}),
+                        **({"planting_structure": planting} if planting else {}),
+                        **(
+                            {
+                                "park_access_points": [[float(point.x), float(point.y)] for point in access_points],
+                            }
+                            if access_points
+                            else {}
+                        ),
+                    },
+                }
+            )
             zone_sort += 1
 
     # --- parcels + masses on the developable blocks ------------------------------
@@ -1011,12 +1050,19 @@ def generate_plan_geometry(
         if index not in open_plan.consumed_indices
     ]
     contexts = compute_block_contexts(
-        blocks=loop_blocks, boundary_m=boundary_m, network=network,
-        district_lookup=district_lookup, signature_green_m=open_plan.central_geom_m,
+        blocks=loop_blocks,
+        boundary_m=boundary_m,
+        network=network,
+        district_lookup=district_lookup,
+        signature_green_m=open_plan.central_geom_m,
     )
     block_plans = plan_blocks(
-        contexts=contexts, palette=palette, rules=rules,
-        base_type=base_development_type, base_aesthetic=base_aesthetic, dna=dna,
+        contexts=contexts,
+        palette=palette,
+        rules=rules,
+        base_type=base_development_type,
+        base_aesthetic=base_aesthetic,
+        dna=dna,
         measured_dims=measured_model_dims,
     )
 
@@ -1051,34 +1097,28 @@ def generate_plan_geometry(
             supported_by_parent = None
             if palette.allowed_archetype_ids is not None:
                 supported_by_parent = {
-                    parent_id: tuple(sorted({
-                        supported_floor
-                        for selectable_id in (
-                            parent_id,
-                            *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+                    parent_id: tuple(
+                        sorted(
+                            {
+                                supported_floor
+                                for selectable_id in (
+                                    parent_id,
+                                    *palette.allowed_variant_ids_by_archetype.get(parent_id, ()),
+                                )
+                                for supported_floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
+                                if supported_floor <= ceiling_floors
+                            }
                         )
-                        for supported_floor in palette.supported_floors_by_selectable_id.get(
-                            selectable_id, ()
-                        )
-                        if supported_floor <= ceiling_floors
-                    }))
+                    )
                     for parent_id in palette.allowed_archetype_ids
                 }
-                supported_by_parent = {
-                    parent_id: values
-                    for parent_id, values in supported_by_parent.items()
-                    if values
-                }
+                supported_by_parent = {parent_id: values for parent_id, values in supported_by_parent.items() if values}
             entry = resolve_building_archetype(
                 plan.development_type,
                 plan.aesthetic,
                 ceiling_floors,
                 prefer_family=palette.style_family,
-                allowed_archetype_ids=(
-                    supported_by_parent.keys()
-                    if supported_by_parent is not None
-                    else None
-                ),
+                allowed_archetype_ids=(supported_by_parent.keys() if supported_by_parent is not None else None),
                 supported_floors_by_archetype=supported_by_parent,
             )
             plan_archetype_id = entry["id"] if entry else None
@@ -1086,9 +1126,7 @@ def generate_plan_geometry(
             plan_variant_id = measured_entry.variant_id if measured_entry else None
             if entry and palette.allowed_archetype_ids is not None:
                 preferred_selectable_id = (
-                    plan.variant_id
-                    if entry["id"] == plan.archetype_id and plan.variant_id
-                    else entry["id"]
+                    plan.variant_id if entry["id"] == plan.archetype_id and plan.variant_id else entry["id"]
                 )
                 candidates = [
                     (
@@ -1101,17 +1139,13 @@ def generate_plan_geometry(
                         entry["id"],
                         *palette.allowed_variant_ids_by_archetype.get(entry["id"], ()),
                     )
-                    for supported_floor in palette.supported_floors_by_selectable_id.get(
-                        selectable_id, ()
-                    )
+                    for supported_floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
                     if supported_floor <= ceiling_floors
                 ]
                 if candidates:
                     _, _, selectable_id, selected_floors = min(candidates)
                     floors = float(selected_floors)
-                    plan_variant_id = (
-                        selectable_id if selectable_id != entry["id"] else None
-                    )
+                    plan_variant_id = selectable_id if selectable_id != entry["id"] else None
                     plan_development_type = entry["development_type"]
                     plan_aesthetic = entry["aesthetic_category"]
             target = selected_target_footprint(
@@ -1126,19 +1160,21 @@ def generate_plan_geometry(
         # (replaces "6-16 storeys" prose with geometry, banded like LAP maps).
         band_ceiling, band_color = _height_band(floors)
         for wpoly in iter_polygons(project_geometry(block, to_wgs84)):
-            result.zones.append({
-                "zone_type": "development_area",
-                "name": f"≤{band_ceiling if band_ceiling != 999 else '27+'} storeys",
-                "coordinates": _ring(wpoly),
-                "color": band_color,
-                "sort_order": 480,
-                "properties": {
-                    "_plan_scenario": scenario_id,
-                    "_imported_from": f"Height framework — {scenario_label}",
-                    "_plan_role": "framework_height",
-                    "max_floors": round(floors, 1),
-                },
-            })
+            result.zones.append(
+                {
+                    "zone_type": "development_area",
+                    "name": f"≤{band_ceiling if band_ceiling != 999 else '27+'} storeys",
+                    "coordinates": _ring(wpoly),
+                    "color": band_color,
+                    "sort_order": 480,
+                    "properties": {
+                        "_plan_scenario": scenario_id,
+                        "_imported_from": f"Height framework — {scenario_label}",
+                        "_plan_role": "framework_height",
+                        "max_floors": round(floors, 1),
+                    },
+                }
+            )
         # Rear laneway: split large row-bar blocks with a mid-block lane so
         # townhouse rows front the street and back onto a lane (masses are
         # built on block − lane; the ORIGINAL block stays in blocks_m so the
@@ -1151,8 +1187,10 @@ def generate_plan_geometry(
         mass_block = make_valid(block.difference(lane)) if lane is not None else block
 
         mass, info = building_mass_for_block(
-            mass_block, rules,
-            typology=plan.typology, dims=TYPOLOGY_DIMS.get(plan.typology),
+            mass_block,
+            rules,
+            typology=plan.typology,
+            dims=TYPOLOGY_DIMS.get(plan.typology),
             target=target,
         )
         if mass is None:
@@ -1178,23 +1216,31 @@ def generate_plan_geometry(
                     wpoly,
                     to_wgs84=to_wgs84,
                 )
-                result.zones.append({
-                    "zone_type": "road",
-                    "name": f"{scenario_label} · Block {index + 1} Lane",
-                    "coordinates": _ring(wpoly),
-                    "color": PLAN_COLORS["road"],
-                    "sort_order": 490,
-                    "properties": {
-                        "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                        "_plan_role": "street", "width": LANE_ROW_M,
-                        "street_role": "lane", "road_archetype_id": "toronto_laneway",
-                        **({"plan_centerline": plan_centerline}
-                           if plan_centerline else {}),
-                        **({
-                            "road_selected_variant_id": public_realm_variants["lane"],
-                        } if public_realm_variants.get("lane") else {}),
-                    },
-                })
+                result.zones.append(
+                    {
+                        "zone_type": "road",
+                        "name": f"{scenario_label} · Block {index + 1} Lane",
+                        "coordinates": _ring(wpoly),
+                        "color": PLAN_COLORS["road"],
+                        "sort_order": 490,
+                        "properties": {
+                            "_plan_scenario": scenario_id,
+                            "_imported_from": layer_name,
+                            "_plan_role": "street",
+                            "width": LANE_ROW_M,
+                            "street_role": "lane",
+                            "road_archetype_id": "toronto_laneway",
+                            **({"plan_centerline": plan_centerline} if plan_centerline else {}),
+                            **(
+                                {
+                                    "road_selected_variant_id": public_realm_variants["lane"],
+                                }
+                                if public_realm_variants.get("lane")
+                                else {}
+                            ),
+                        },
+                    }
+                )
 
         # Model-aware identity: emitting the resolved archetype id makes the
         # frontend resolver keep it (user-override precedence), threads it
@@ -1211,8 +1257,7 @@ def generate_plan_geometry(
         ]
         if not clamp:
             bar_identities.extend(
-                (o.development_type, o.aesthetic, o.archetype_id, o.variant_id)
-                for o in plan.bar_options
+                (o.development_type, o.aesthetic, o.archetype_id, o.variant_id) for o in plan.bar_options
             )
 
         mass_polys = list(iter_polygons(mass))
@@ -1229,11 +1274,7 @@ def generate_plan_geometry(
                 bar_index += 1
                 suffix = f" · Building {_letter(bar_index)}" if len(mass_polys) > 1 else ""
                 compatible_identities = bar_identities
-                if (
-                    palette.allowed_archetype_ids is not None
-                    and target is not None
-                    and target.source == "runtime_lego"
-                ):
+                if palette.allowed_archetype_ids is not None and target is not None and target.source == "runtime_lego":
                     compatible_identities = _runtime_lego_identities_for_cell(
                         bar_identities,
                         cell=poly,
@@ -1258,24 +1299,28 @@ def generate_plan_geometry(
                         archetype_props["target_w_m"] = round(target.width_m, 1)
                         archetype_props["target_d_m"] = round(target.depth_m, 1)
                         archetype_props["archetype_source"] = target.source
-                result.zones.append({
-                    "zone_type": "building",
-                    "name": f"{scenario_label} · Block {index + 1}{suffix}",
-                    "coordinates": _ring(wpoly),
-                    "color": PLAN_COLORS["building"],
-                    "sort_order": zone_sort,
-                    "properties": {
-                        "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                        "_plan_role": "building", "floors": round(floors, 1),
-                        "height": round(floors * FLOOR_HEIGHT_M, 1),
-                        "development_type": dev_out,
-                        "development_aesthetic": aes_out,
-                        "_plan_band": plan.band,
-                        **archetype_props,
-                        **(info or {}),
-                        **({"floors_clamped_by": clamp} if clamp else {}),
-                    },
-                })
+                result.zones.append(
+                    {
+                        "zone_type": "building",
+                        "name": f"{scenario_label} · Block {index + 1}{suffix}",
+                        "coordinates": _ring(wpoly),
+                        "color": PLAN_COLORS["building"],
+                        "sort_order": zone_sort,
+                        "properties": {
+                            "_plan_scenario": scenario_id,
+                            "_imported_from": layer_name,
+                            "_plan_role": "building",
+                            "floors": round(floors, 1),
+                            "height": round(floors * FLOOR_HEIGHT_M, 1),
+                            "development_type": dev_out,
+                            "development_aesthetic": aes_out,
+                            "_plan_band": plan.band,
+                            **archetype_props,
+                            **(info or {}),
+                            **({"floors_clamped_by": clamp} if clamp else {}),
+                        },
+                    }
+                )
                 zone_sort += 1
 
         # The perimeter bars enclose a courtyard the mass ring left unbuilt —
@@ -1284,9 +1329,7 @@ def generate_plan_geometry(
         # metrics and NOT part of the frozen evaluator loop. Perimeter blocks
         # only: tower pads and row bars leave open ground, not a courtyard.
         if typology_used == "perimeter_block" and len(mass_polys) > 1:
-            courtyard = make_valid(
-                block.buffer(-rules.front_setback_m).difference(unary_union(mass_polys))
-            )
+            courtyard = make_valid(block.buffer(-rules.front_setback_m).difference(unary_union(mass_polys)))
             # Hole-free before drawing: a courtyard that wraps an interior bar
             # is a donut, and zone rings are exterior-only app-wide — drawn raw
             # it would fill the hole and paint green UNDER the buildings.
@@ -1304,9 +1347,7 @@ def generate_plan_geometry(
                     )
                 else:
                     # Keep the established Classic serialization path inert.
-                    projected_courtyards = list(iter_polygons(make_valid(
-                        project_geometry(cpoly, to_wgs84)
-                    )))
+                    projected_courtyards = list(iter_polygons(make_valid(project_geometry(cpoly, to_wgs84))))
                 for wpoly in projected_courtyards:
                     metric_courtyard = project_geometry(wpoly, to_metric)
                     if public_realm_variants and not (
@@ -1318,54 +1359,78 @@ def generate_plan_geometry(
                         # A sub-family ribbon is unprogrammed ground, not a
                         # fake park.  The residual landscape pass owns it.
                         continue
-                    result.zones.append({
-                        "zone_type": "green_space",
-                        "name": f"{scenario_label} · Block {index + 1} courtyard",
-                        "coordinates": _ring(wpoly),
-                        "color": PLAN_COLORS["green_space"],
-                        "sort_order": zone_sort,
-                        "properties": {
-                            "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                            "_plan_role": "courtyard", "tree_density": tree_density,
-                            "green_space_archetype_id": "urban_pocket_park",
-                            **({
-                                "green_space_selected_variant_id":
-                                    public_realm_variants["courtyard"],
-                            } if public_realm_variants.get("courtyard") else {}),
-                            **({"planting_structure": palette.landscape["courtyard"]}
-                               if palette.landscape.get("courtyard") else {}),
-                        },
-                    })
+                    result.zones.append(
+                        {
+                            "zone_type": "green_space",
+                            "name": f"{scenario_label} · Block {index + 1} courtyard",
+                            "coordinates": _ring(wpoly),
+                            "color": PLAN_COLORS["green_space"],
+                            "sort_order": zone_sort,
+                            "properties": {
+                                "_plan_scenario": scenario_id,
+                                "_imported_from": layer_name,
+                                "_plan_role": "courtyard",
+                                "tree_density": tree_density,
+                                "green_space_archetype_id": "urban_pocket_park",
+                                **(
+                                    {
+                                        "green_space_selected_variant_id": public_realm_variants["courtyard"],
+                                    }
+                                    if public_realm_variants.get("courtyard")
+                                    else {}
+                                ),
+                                **(
+                                    {"planting_structure": palette.landscape["courtyard"]}
+                                    if palette.landscape.get("courtyard")
+                                    else {}
+                                ),
+                            },
+                        }
+                    )
                     zone_sort += 1
 
     if clamp_notes:
-        result.notes.append({
-            "code": "FLOORS_CLAMPED", "severity": "info",
-            "message": f"{clamp_notes} blocks clamped to their district height ceiling.",
-            "source_phase": "building_placement",
-        })
+        result.notes.append(
+            {
+                "code": "FLOORS_CLAMPED",
+                "severity": "info",
+                "message": f"{clamp_notes} blocks clamped to their district height ceiling.",
+                "source_phase": "building_placement",
+            }
+        )
 
     # --- street zones -------------------------------------------------------------
     _emit_street_zones(
-        result=result, network=network, street_area=street_area, rules=rules,
-        palette=palette, scenario_id=scenario_id, scenario_label=scenario_label,
-        layer_name=layer_name, to_wgs84=to_wgs84, to_metric=to_metric,
+        result=result,
+        network=network,
+        street_area=street_area,
+        rules=rules,
+        palette=palette,
+        scenario_id=scenario_id,
+        scenario_label=scenario_label,
+        layer_name=layer_name,
+        to_wgs84=to_wgs84,
+        to_metric=to_metric,
     )
 
     # --- validation + metrics inputs -----------------------------------------------
-    result.notes.extend(validate_plan(
-        rules=rules, network=network, blocks_m=developable_blocks,
-        parcels_by_block=parcels_by_block, masses_m=masses,
-        open_spaces_m=open_spaces_m,
-    ))
+    result.notes.extend(
+        validate_plan(
+            rules=rules,
+            network=network,
+            blocks_m=developable_blocks,
+            parcels_by_block=parcels_by_block,
+            masses_m=masses,
+            open_spaces_m=open_spaces_m,
+        )
+    )
 
     # Lanes count as ROW: +lane on the street side, −lane on the block side is
     # an exact identity, so the land budget still closes.
     net_block_area = sum(b.area for b in developable_blocks) - lane_area_total
     result.geometry_inputs = {
         "site_area_m2": gross,
-        "row_area_m2": (float(street_area.area) if not street_area.is_empty else 0.0)
-                       + lane_area_total,
+        "row_area_m2": (float(street_area.area) if not street_area.is_empty else 0.0) + lane_area_total,
         "open_space_area_m2": open_area,
         "net_block_area_m2": float(net_block_area),
         "building_footprint_m2": footprint,
@@ -1377,9 +1442,7 @@ def generate_plan_geometry(
         "context_path_anchors": float(network.path_entries_total),
         "context_path_connections": float(network.path_entries_served),
     }
-    result.intersection_density_per_km2 = (
-        len(network.intersections) / (gross / 1_000_000) if gross else 0.0
-    )
+    result.intersection_density_per_km2 = len(network.intersections) / (gross / 1_000_000) if gross else 0.0
     result.block_count = len(developable_blocks)
     result.parcel_count = sum(len(p) for p in parcels_by_block)
     result.building_count = sum(1 for z in result.zones if z["zone_type"] == "building")
@@ -1411,8 +1474,16 @@ def _default_road_archetype_id(role: str, width: float) -> str:
 
 
 def _street_zone(
-    poly_m, *, name: str, width: float, role: str, rules: RuleProfile,
-    scenario_id: str, layer_name: str, to_wgs84, to_metric,
+    poly_m,
+    *,
+    name: str,
+    width: float,
+    role: str,
+    rules: RuleProfile,
+    scenario_id: str,
+    layer_name: str,
+    to_wgs84,
+    to_metric,
     archetype_id: str | None = None,
     variant_id: str | None = None,
     centerline_m: BaseGeometry | None = None,
@@ -1438,26 +1509,28 @@ def _street_zone(
             wpoly,
             to_wgs84=to_wgs84,
         )
-        zones.append({
-            "zone_type": "road",
-            "name": name,
-            "coordinates": _ring(wpoly),
-            "color": PLAN_COLORS["road"],
-            "sort_order": 490,
-            "properties": {
-                "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                "_plan_role": "street", "width": width,
-                "clear_width_m": width if role == "path" else rules.clear_width_m,
-                "street_role": role,
-                **({"plan_centerline": plan_centerline}
-                   if plan_centerline else {}),
-                **({"_plan_street_geometry_source": geometry_source}
-                   if geometry_source else {}),
-                **({"context_connection": True} if context_connection else {}),
-                "road_archetype_id": resolved_archetype_id,
-                **({"road_selected_variant_id": variant_id} if variant_id else {}),
-            },
-        })
+        zones.append(
+            {
+                "zone_type": "road",
+                "name": name,
+                "coordinates": _ring(wpoly),
+                "color": PLAN_COLORS["road"],
+                "sort_order": 490,
+                "properties": {
+                    "_plan_scenario": scenario_id,
+                    "_imported_from": layer_name,
+                    "_plan_role": "street",
+                    "width": width,
+                    "clear_width_m": width if role == "path" else rules.clear_width_m,
+                    "street_role": role,
+                    **({"plan_centerline": plan_centerline} if plan_centerline else {}),
+                    **({"_plan_street_geometry_source": geometry_source} if geometry_source else {}),
+                    **({"context_connection": True} if context_connection else {}),
+                    "road_archetype_id": resolved_archetype_id,
+                    **({"road_selected_variant_id": variant_id} if variant_id else {}),
+                },
+            }
+        )
     return zones
 
 
@@ -1496,18 +1569,12 @@ def _emit_street_zones(
     def _snap(geom):
         return make_valid(set_precision(geom, 1e-3))
 
-    public_realm_variants = (
-        getattr(palette, "public_realm_variants", None) or {}
-    )
+    public_realm_variants = getattr(palette, "public_realm_variants", None) or {}
 
     if street_area.is_empty:
         return
     if not network.segments:
-        public_realm_catalog = (
-            build_public_realm_capability_catalog()
-            if public_realm_variants
-            else None
-        )
+        public_realm_catalog = build_public_realm_capability_catalog() if public_realm_variants else None
         for poly in iter_polygons(street_area):
             pieces = iter_polygons(decompose_holed(poly, poly)) if poly.interiors else [poly]
             for piece in pieces:
@@ -1538,16 +1605,15 @@ def _emit_street_zones(
                             catalog=public_realm_catalog,
                         )
                         if recipe is not None:
-                            compatible_identities.append((
-                                role,
-                                archetype_id,
-                                variant_id,
-                                float(recipe.target.row_width_m),
-                                abs(
-                                    float(recipe.target.row_width_m)
-                                    - float(native_width)
-                                ),
-                            ))
+                            compatible_identities.append(
+                                (
+                                    role,
+                                    archetype_id,
+                                    variant_id,
+                                    float(recipe.target.row_width_m),
+                                    abs(float(recipe.target.row_width_m) - float(native_width)),
+                                )
+                            )
                     if not compatible_identities:
                         # This locked shape has no truthful executable section;
                         # leave it un-authored rather than poisoning conversion.
@@ -1574,15 +1640,23 @@ def _emit_street_zones(
                     archetype_id = None
                     variant_id = None
                     emitted_width = rules.row_width_m
-                result.zones.extend(_street_zone(
-                    piece, name=f"{scenario_label} · Street", width=emitted_width,
-                    role=role, rules=rules, scenario_id=scenario_id,
-                    layer_name=layer_name, to_wgs84=to_wgs84, to_metric=to_metric,
-                    archetype_id=archetype_id,
-                    variant_id=variant_id,
-                    centerline_m=_principal_street_centerline_m(piece),
-                    geometry_source=("locked_area" if public_realm_variants else None),
-                ))
+                result.zones.extend(
+                    _street_zone(
+                        piece,
+                        name=f"{scenario_label} · Street",
+                        width=emitted_width,
+                        role=role,
+                        rules=rules,
+                        scenario_id=scenario_id,
+                        layer_name=layer_name,
+                        to_wgs84=to_wgs84,
+                        to_metric=to_metric,
+                        archetype_id=archetype_id,
+                        variant_id=variant_id,
+                        centerline_m=_principal_street_centerline_m(piece),
+                        geometry_source=("locked_area" if public_realm_variants else None),
+                    )
+                )
         return
 
     remaining = _snap(street_area)
@@ -1591,14 +1665,21 @@ def _emit_street_zones(
         if piece.is_empty:
             continue
         remaining = make_valid(remaining.difference(piece))
-        result.zones.extend(_street_zone(
-            piece, name=f"{scenario_label} · Roundabout {n}",
-            width=rules.spine_row_width_m, role="roundabout", rules=rules,
-            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            to_metric=to_metric,
-            archetype_id="roundabout",
-            variant_id=public_realm_variants.get("roundabout"),
-        ))
+        result.zones.extend(
+            _street_zone(
+                piece,
+                name=f"{scenario_label} · Roundabout {n}",
+                width=rules.spine_row_width_m,
+                role="roundabout",
+                rules=rules,
+                scenario_id=scenario_id,
+                layer_name=layer_name,
+                to_wgs84=to_wgs84,
+                to_metric=to_metric,
+                archetype_id="roundabout",
+                variant_id=public_realm_variants.get("roundabout"),
+            )
+        )
 
     spine_segments = [s for s in network.segments if s.role == "spine"]
     for segment in spine_segments:
@@ -1607,15 +1688,22 @@ def _emit_street_zones(
         if piece.is_empty:
             continue
         remaining = make_valid(remaining.difference(piece))
-        result.zones.extend(_street_zone(
-            piece, name=f"{scenario_label} · Main Street",
-            width=segment.row_width_m, role="spine", rules=rules,
-            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            to_metric=to_metric,
-            archetype_id=getattr(palette, "spine_archetype_id", None),
-            variant_id=public_realm_variants.get("spine"),
-            centerline_m=segment.line,
-        ))
+        result.zones.extend(
+            _street_zone(
+                piece,
+                name=f"{scenario_label} · Main Street",
+                width=segment.row_width_m,
+                role="spine",
+                rules=rules,
+                scenario_id=scenario_id,
+                layer_name=layer_name,
+                to_wgs84=to_wgs84,
+                to_metric=to_metric,
+                archetype_id=getattr(palette, "spine_archetype_id", None),
+                variant_id=public_realm_variants.get("spine"),
+                centerline_m=segment.line,
+            )
+        )
 
     path_counter = 0
     for segment in (s for s in network.segments if s.role == "path"):
@@ -1625,15 +1713,23 @@ def _emit_street_zones(
             continue
         remaining = make_valid(remaining.difference(piece))
         path_counter += 1
-        result.zones.extend(_street_zone(
-            piece, name=f"{scenario_label} · Path Connection {path_counter}",
-            width=segment.row_width_m, role="path", rules=rules,
-            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            to_metric=to_metric,
-            archetype_id="multi_use_trail", context_connection=True,
-            variant_id=public_realm_variants.get("path"),
-            centerline_m=segment.line,
-        ))
+        result.zones.extend(
+            _street_zone(
+                piece,
+                name=f"{scenario_label} · Path Connection {path_counter}",
+                width=segment.row_width_m,
+                role="path",
+                rules=rules,
+                scenario_id=scenario_id,
+                layer_name=layer_name,
+                to_wgs84=to_wgs84,
+                to_metric=to_metric,
+                archetype_id="multi_use_trail",
+                context_connection=True,
+                variant_id=public_realm_variants.get("path"),
+                centerline_m=segment.line,
+            )
+        )
 
     local_archetype = getattr(palette, "local_archetype_id", None)
     crescent_archetype = getattr(palette, "crescent_archetype_id", None)
@@ -1653,17 +1749,26 @@ def _emit_street_zones(
             archetype = crescent_archetype
         segment_name = (
             f"{scenario_label} · Access Connection {counter}"
-            if segment.context_connection else f"{scenario_label} · Street {counter}"
+            if segment.context_connection
+            else f"{scenario_label} · Street {counter}"
         )
-        result.zones.extend(_street_zone(
-            piece, name=segment_name,
-            width=segment.row_width_m, role="local", rules=rules,
-            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            to_metric=to_metric,
-            archetype_id=archetype, context_connection=segment.context_connection,
-            variant_id=public_realm_variants.get("local"),
-            centerline_m=segment.line,
-        ))
+        result.zones.extend(
+            _street_zone(
+                piece,
+                name=segment_name,
+                width=segment.row_width_m,
+                role="local",
+                rules=rules,
+                scenario_id=scenario_id,
+                layer_name=layer_name,
+                to_wgs84=to_wgs84,
+                to_metric=to_metric,
+                archetype_id=archetype,
+                context_connection=segment.context_connection,
+                variant_id=public_realm_variants.get("local"),
+                centerline_m=segment.line,
+            )
+        )
 
     # Numerical crumbs from the subtractions (shouldn't happen, but never
     # silently drop street land — the budget is measured against street_area).
@@ -1673,11 +1778,18 @@ def _emit_street_zones(
         if poly.area < 1.0:
             continue
         counter += 1
-        result.zones.extend(_street_zone(
-            poly, name=f"{scenario_label} · Street {counter}",
-            width=rules.local_row_width_m, role="local", rules=rules,
-            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            to_metric=to_metric,
-            archetype_id=local_archetype,
-            variant_id=public_realm_variants.get("local"),
-        ))
+        result.zones.extend(
+            _street_zone(
+                poly,
+                name=f"{scenario_label} · Street {counter}",
+                width=rules.local_row_width_m,
+                role="local",
+                rules=rules,
+                scenario_id=scenario_id,
+                layer_name=layer_name,
+                to_wgs84=to_wgs84,
+                to_metric=to_metric,
+                archetype_id=local_archetype,
+                variant_id=public_realm_variants.get("local"),
+            )
+        )

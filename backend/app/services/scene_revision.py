@@ -35,6 +35,4 @@ def compiled_scene_revision_sha256(
         "community_3d": claims,
         "residual_landscape": _json_value(residual_landscape_claim),
     }
-    return hashlib.sha256(
-        json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
+    return hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()

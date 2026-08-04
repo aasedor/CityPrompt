@@ -37,8 +37,7 @@ class _TextExtractor(HTMLParser):
     """
 
     _SKIP = {"script", "style", "head", "noscript", "nav", "footer", "template", "svg"}
-    _BLOCK = {"p", "div", "li", "h1", "h2", "h3", "h4", "h5", "h6", "section",
-              "article", "table", "ul", "ol", "br"}
+    _BLOCK = {"p", "div", "li", "h1", "h2", "h3", "h4", "h5", "h6", "section", "article", "table", "ul", "ol", "br"}
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -125,11 +124,7 @@ def ingest_policy_html(
         logger.warning("MinIO upload failed for %s (%s); continuing without storage_url", slug, exc)
         storage_url = None
 
-    existing = (
-        session.query(PolicyDocument)
-        .filter_by(city=city, slug=slug, version=version)
-        .first()
-    )
+    existing = session.query(PolicyDocument).filter_by(city=city, slug=slug, version=version).first()
     if existing is not None:
         session.delete(existing)  # cascades to chunks
         session.flush()
@@ -195,11 +190,7 @@ def ingest_policy_pdf(
         logger.warning("MinIO upload failed for %s (%s); continuing without storage_url", slug, exc)
         storage_url = None
 
-    existing = (
-        session.query(PolicyDocument)
-        .filter_by(city=city, slug=slug, version=version)
-        .first()
-    )
+    existing = session.query(PolicyDocument).filter_by(city=city, slug=slug, version=version).first()
     if existing is not None:
         session.delete(existing)  # cascades to chunks
         session.flush()

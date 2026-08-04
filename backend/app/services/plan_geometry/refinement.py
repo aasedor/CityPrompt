@@ -76,32 +76,40 @@ def run_refinement_loop(
         )
         units_metric = metrics_report.metrics.get("units")
         evaluation = evaluate_plan(
-            result, parameters,
+            result,
+            parameters,
             units_estimate=units_metric.value if units_metric else None,
         )
 
         new_overrides, proposed_revisions = revise_rules(
-            evaluation, overrides, result.rules, locks,
+            evaluation,
+            overrides,
+            result.rules,
+            locks,
         )
         # `revisions` means changes that WILL produce the next drawn plan. On
         # the last allowed pass there is no next plan, so keep any remaining
         # suggestions separately instead of claiming they were applied.
         at_iteration_cap = iteration == MAX_ITERATIONS - 1
         revisions = [] if at_iteration_cap else proposed_revisions
-        iterations.append({
-            "iteration": iteration + 1,
-            "overall_score": evaluation.overall,
-            "scores": {k: s.model_dump() for k, s in evaluation.scores.items()},
-            "overrides_in_effect": dict(overrides),
-            "revisions": revisions,
-            **({"unapplied_revisions": proposed_revisions}
-               if at_iteration_cap and proposed_revisions else {}),
-            "block_count": result.block_count,
-            "building_count": result.building_count,
-        })
+        iterations.append(
+            {
+                "iteration": iteration + 1,
+                "overall_score": evaluation.overall,
+                "scores": {k: s.model_dump() for k, s in evaluation.scores.items()},
+                "overrides_in_effect": dict(overrides),
+                "revisions": revisions,
+                **({"unapplied_revisions": proposed_revisions} if at_iteration_cap and proposed_revisions else {}),
+                "block_count": result.block_count,
+                "building_count": result.building_count,
+            }
+        )
         logger.info(
             "Plan %s iteration %d: score %.3f, %d revision(s)",
-            scenario_id, iteration + 1, evaluation.overall, len(revisions),
+            scenario_id,
+            iteration + 1,
+            evaluation.overall,
+            len(revisions),
         )
         # A proposed bounded revision is part of the plan contract: run it and
         # measure the result. Stopping solely on the weighted average used to

@@ -18,9 +18,14 @@ def _offset(lon_m: float, lat_m: float) -> tuple[float, float]:
 
 
 def _square(size_m: float = 100.0) -> Polygon:
-    return Polygon([
-        _offset(0, 0), _offset(size_m, 0), _offset(size_m, size_m), _offset(0, size_m),
-    ])
+    return Polygon(
+        [
+            _offset(0, 0),
+            _offset(size_m, 0),
+            _offset(size_m, size_m),
+            _offset(0, size_m),
+        ]
+    )
 
 
 def _feature(geom, **props):
@@ -68,8 +73,8 @@ def test_shape_of_rejects_garbage():
 
 def test_nearest_and_count_within():
     frame = se.SiteFrame.from_wgs84(_square(100))
-    near = _feature(Point(_offset(400, 50)), name="near-stop")     # ~300m east of the square
-    far = _feature(Point(_offset(700, 50)), name="far-stop")       # ~600m east
+    near = _feature(Point(_offset(400, 50)), name="near-stop")  # ~300m east of the square
+    far = _feature(Point(_offset(700, 50)), name="far-stop")  # ~600m east
     very_far = _feature(Point(_offset(2000, 50)), name="too-far")  # ~1.9km
 
     ranked = se.nearest(frame, [far, near, very_far], k=2)
@@ -109,7 +114,7 @@ def test_buffer_wgs84_is_metric_accurate_east_west():
     buffered = se.buffer_wgs84(_square(100), 800.0)
     frame = se.SiteFrame.from_wgs84(buffered)
     bounds = frame.site_m.bounds
-    width_m = bounds[2] - bounds[0]    # expected: 100m site + 2 x 800m buffer
+    width_m = bounds[2] - bounds[0]  # expected: 100m site + 2 x 800m buffer
     height_m = bounds[3] - bounds[1]
     assert abs(width_m - 1700) / 1700 < 0.03, f"E-W extent {width_m:.0f}m, want ~1700m"
     assert abs(height_m - 1700) / 1700 < 0.03

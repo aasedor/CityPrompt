@@ -4,6 +4,7 @@ Revision ID: 005_add_building_ids
 Revises: 004_add_site_boundary
 Create Date: 2026-02-23
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -19,10 +20,13 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def _column_exists(table: str, column: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
-        "WHERE table_name = :table AND column_name = :column)"
-    ), {"table": table, "column": column})
+    result = conn.execute(
+        sa.text(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+            "WHERE table_name = :table AND column_name = :column)"
+        ),
+        {"table": table, "column": column},
+    )
     return result.scalar()
 
 

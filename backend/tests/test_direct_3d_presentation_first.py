@@ -42,9 +42,7 @@ def test_presentation_first_is_the_shipped_default():
         ("reproject", "site-plan"),
     ],
 )
-async def test_provider_image_returned_untouched_and_accepted(
-    monkeypatch, presentation_mode, style
-):
+async def test_provider_image_returned_untouched_and_accepted(monkeypatch, presentation_mode, style):
     request = _request(presentation_mode=presentation_mode, style=style)
     beauty, object_id, instance_id = _structured_scene()
     del object_id, instance_id
@@ -65,10 +63,7 @@ async def test_provider_image_returned_untouched_and_accepted(
     returned = _decoded(result.image_base64)
     assert _png_b64(returned) == _png_b64(provider.convert("RGB"))
     assert result.provider_image_base64 is not None
-    assert (
-        hashlib.sha256(base64.b64decode(result.image_base64)).hexdigest()
-        == result.output_fingerprint
-    )
+    assert hashlib.sha256(base64.b64decode(result.image_base64)).hexdigest() == result.output_fingerprint
 
     diagnostics = result.diagnostics
     assert diagnostics["provider_first"] is True
@@ -78,11 +73,7 @@ async def test_provider_image_returned_untouched_and_accepted(
     assert diagnostics["registration"] is None
     assert diagnostics["macro_design_fidelity"] is None
     assert diagnostics["structural_edge_fidelity"] is None
-    expected_view_lock = (
-        "camera_registered"
-        if presentation_mode == "scene"
-        else "not_applicable_layout_guided"
-    )
+    expected_view_lock = "camera_registered" if presentation_mode == "scene" else "not_applicable_layout_guided"
     assert diagnostics["view_lock"] == expected_view_lock
 
 

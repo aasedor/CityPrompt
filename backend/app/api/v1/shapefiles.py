@@ -27,8 +27,7 @@ async def parse_shapefile(
     if not filename.endswith(".zip"):
         raise HTTPException(
             status_code=400,
-            detail="Please upload the shapefile as a .zip containing the "
-            ".shp, .dbf, .shx and .prj files.",
+            detail="Please upload the shapefile as a .zip containing the " ".shp, .dbf, .shx and .prj files.",
         )
 
     data = await file.read()

@@ -37,9 +37,7 @@ _TOKEN_SETTING_BY_DOMAIN = {
 }
 
 
-async def fetch(
-    spec: DatasetSpec, boundary_wgs84: Polygon
-) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
+async def fetch(spec: DatasetSpec, boundary_wgs84: Polygon) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
     settings = get_settings()
     domain = spec.adapter_params.get("domain", "data.calgary.ca")
     geo_field = spec.adapter_params["geo_field"]

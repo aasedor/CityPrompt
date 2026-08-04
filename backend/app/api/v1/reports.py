@@ -2,7 +2,6 @@
 PDF report generation endpoint.
 """
 
-import io
 import uuid
 from datetime import datetime
 
@@ -14,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
-from app.models.models import Project, Building, Document
+from app.models.models import Project
 
 router = APIRouter()
 
@@ -94,17 +93,11 @@ async def generate_project_report(
         ("Documents Processed", str(sum(1 for d in documents if d.processing_status == "completed"))),
     ]
 
-    total_area = sum(
-        (b.specifications or {}).get("total_area_sqm", 0) or 0
-        for b in buildings
-    )
+    total_area = sum((b.specifications or {}).get("total_area_sqm", 0) or 0 for b in buildings)
     if total_area > 0:
         summary_data.append(("Total Area", f"{total_area:,.0f} m\u00b2"))
 
-    total_units = sum(
-        (b.specifications or {}).get("residential_units", 0) or 0
-        for b in buildings
-    )
+    total_units = sum((b.specifications or {}).get("residential_units", 0) or 0 for b in buildings)
     if total_units > 0:
         summary_data.append(("Residential Units", str(total_units)))
 
@@ -205,7 +198,13 @@ async def generate_project_report(
         for phase in sorted(project.construction_phases, key=lambda p: p.get("phase_number", 0)):
             pdf.set_text_color(30, 30, 30)
             pdf.set_font("Helvetica", "B", 10)
-            pdf.cell(0, 7, f"Phase {phase.get('phase_number')}: {phase.get('name', 'Unnamed')}", new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(
+                0,
+                7,
+                f"Phase {phase.get('phase_number')}: {phase.get('name', 'Unnamed')}",
+                new_x="LMARGIN",
+                new_y="NEXT",
+            )
             pdf.set_font("Helvetica", "", 9)
             pdf.set_text_color(100, 100, 100)
             dates = []

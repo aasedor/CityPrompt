@@ -23,10 +23,16 @@ from app.services.residual_landscape import (
 )
 from app.schemas.schemas import (
     ArchitecturalStyleResponse,
-    BuildingCreate, BuildingResponse, BuildingUpdate,
-    GenerateRequest, GenerateFromImageRequest, GenerationStatusResponse, AITemplate,
+    BuildingCreate,
+    BuildingResponse,
+    BuildingUpdate,
+    GenerateRequest,
+    GenerateFromImageRequest,
+    GenerationStatusResponse,
+    AITemplate,
     GenerationEngineInfo,
-    RenderPreviewRequest, RenderPreviewResponse,
+    RenderPreviewRequest,
+    RenderPreviewResponse,
 )
 
 router = APIRouter()
@@ -42,6 +48,7 @@ def _building_to_response(building: Building) -> dict:
             footprint_coordinates = [[c[0], c[1]] for c in shape.exterior.coords[:-1]]
         except Exception as e:
             import logging
+
             logging.getLogger(__name__).warning(f"Failed to convert footprint for building {building.id}: {e}")
 
     return {
@@ -60,7 +67,9 @@ def _building_to_response(building: Building) -> dict:
         "generation_prompt": building.generation_prompt,
         "meshy_task_id": building.meshy_task_id,
         "footprint_coordinates": footprint_coordinates,
-        "rotation_degrees": float(building.rotation_degrees) if getattr(building, 'rotation_degrees', None) is not None else 0,
+        "rotation_degrees": (
+            float(building.rotation_degrees) if getattr(building, "rotation_degrees", None) is not None else 0
+        ),
         "architectural_style": building.architectural_style,
         "preview_url": building.preview_url,
         "preview_status": building.preview_status,
@@ -124,9 +133,7 @@ async def list_buildings(
     db: AsyncSession = Depends(get_db),
 ):
     """List all buildings in a project."""
-    result = await db.execute(
-        select(Building).where(Building.project_id == project_id).order_by(Building.created_at)
-    )
+    result = await db.execute(select(Building).where(Building.project_id == project_id).order_by(Building.created_at))
     return [_building_to_response(b) for b in result.scalars().all()]
 
 
@@ -174,6 +181,7 @@ async def create_building(
 
     if building_in.footprint_coordinates:
         from geoalchemy2.elements import WKTElement
+
         coords = building_in.footprint_coordinates
         # Close the polygon if not already closed
         if coords[0] != coords[-1]:
@@ -187,6 +195,7 @@ async def create_building(
 
     # Log activity
     from app.api.v1.activity import log_activity
+
     await log_activity(db, project_id, "building_created", user_id=user.id, details={"name": building.name})
 
     return _building_to_response(building)
@@ -233,21 +242,23 @@ async def update_building(
             raise HTTPException(status_code=403, detail="Not authorized to edit buildings in this project")
 
     update_data = building_in.model_dump(exclude_unset=True)
-    representation_changed = bool({
-        "name",
-        "height_meters",
-        "floor_count",
-        "floor_height_meters",
-        "roof_type",
-        "specifications",
-        "footprint_coordinates",
-        "rotation_degrees",
-        "architectural_style",
-        # Not currently exposed by BuildingUpdate, but keep the guard aligned
-        # with the generated-model viewer if that schema is expanded later.
-        "model_url",
-        "lod_urls",
-    }.intersection(update_data))
+    representation_changed = bool(
+        {
+            "name",
+            "height_meters",
+            "floor_count",
+            "floor_height_meters",
+            "roof_type",
+            "specifications",
+            "footprint_coordinates",
+            "rotation_degrees",
+            "architectural_style",
+            # Not currently exposed by BuildingUpdate, but keep the guard aligned
+            # with the generated-model viewer if that schema is expanded later.
+            "model_url",
+            "lod_urls",
+        }.intersection(update_data)
+    )
     if representation_changed:
         await lock_residual_landscape_project(db, building.project_id)
         await db.refresh(building)
@@ -257,6 +268,7 @@ async def update_building(
         coords = update_data.pop("footprint_coordinates")
         if coords and len(coords) >= 3:
             from geoalchemy2.elements import WKTElement
+
             if coords[0] != coords[-1]:
                 coords.append(coords[0])
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
@@ -408,6 +420,7 @@ async def get_building_model_file(
 # Architectural Styles
 # =============================================================================
 
+
 @router.get("/ai/styles", response_model=list[ArchitecturalStyleResponse])
 async def get_styles():
     """Get the list of available architectural styles."""
@@ -435,33 +448,81 @@ async def get_styles():
 
 AI_TEMPLATES = [
     # Commercial
-    AITemplate(id="com-office", name="Modern Glass Office Building", category="commercial",
-               prompt="Modern glass office building, 10 stories, curtain wall facade, realistic architectural style"),
-    AITemplate(id="com-retail", name="Retail Storefront with Awning", category="commercial",
-               prompt="Single-story retail storefront with fabric awning, large display windows, brick facade"),
-    AITemplate(id="com-mixed", name="Mixed-Use Building", category="commercial",
-               prompt="Mixed-use building with ground-floor retail and upper residential units, modern facade, 5 stories"),
+    AITemplate(
+        id="com-office",
+        name="Modern Glass Office Building",
+        category="commercial",
+        prompt="Modern glass office building, 10 stories, curtain wall facade, realistic architectural style",
+    ),
+    AITemplate(
+        id="com-retail",
+        name="Retail Storefront with Awning",
+        category="commercial",
+        prompt="Single-story retail storefront with fabric awning, large display windows, brick facade",
+    ),
+    AITemplate(
+        id="com-mixed",
+        name="Mixed-Use Building",
+        category="commercial",
+        prompt="Mixed-use building with ground-floor retail and upper residential units, modern facade, 5 stories",
+    ),
     # Residential
-    AITemplate(id="res-house", name="Two-Story Suburban House", category="residential",
-               prompt="Two-story suburban house with attached garage, gabled roof, vinyl siding, front porch"),
-    AITemplate(id="res-apartment", name="Modern Apartment Building", category="residential",
-               prompt="Modern apartment building, 8 stories, balconies on each floor, flat roof, contemporary design"),
-    AITemplate(id="res-townhouse", name="Townhouse Row", category="residential",
-               prompt="Row of three attached townhouses, brick facade, bay windows, pitched roofs"),
+    AITemplate(
+        id="res-house",
+        name="Two-Story Suburban House",
+        category="residential",
+        prompt="Two-story suburban house with attached garage, gabled roof, vinyl siding, front porch",
+    ),
+    AITemplate(
+        id="res-apartment",
+        name="Modern Apartment Building",
+        category="residential",
+        prompt="Modern apartment building, 8 stories, balconies on each floor, flat roof, contemporary design",
+    ),
+    AITemplate(
+        id="res-townhouse",
+        name="Townhouse Row",
+        category="residential",
+        prompt="Row of three attached townhouses, brick facade, bay windows, pitched roofs",
+    ),
     # Infrastructure
-    AITemplate(id="inf-parking", name="Parking Garage Structure", category="infrastructure",
-               prompt="Multi-level parking garage structure, 4 levels, concrete, open-air design with ramps"),
-    AITemplate(id="inf-busstop", name="Bus Stop Shelter", category="infrastructure",
-               prompt="Modern bus stop shelter with glass walls, metal roof, bench seating, LED lighting"),
-    AITemplate(id="inf-bridge", name="Pedestrian Bridge", category="infrastructure",
-               prompt="Modern pedestrian bridge with steel cable stays, glass railings, covered walkway"),
+    AITemplate(
+        id="inf-parking",
+        name="Parking Garage Structure",
+        category="infrastructure",
+        prompt="Multi-level parking garage structure, 4 levels, concrete, open-air design with ramps",
+    ),
+    AITemplate(
+        id="inf-busstop",
+        name="Bus Stop Shelter",
+        category="infrastructure",
+        prompt="Modern bus stop shelter with glass walls, metal roof, bench seating, LED lighting",
+    ),
+    AITemplate(
+        id="inf-bridge",
+        name="Pedestrian Bridge",
+        category="infrastructure",
+        prompt="Modern pedestrian bridge with steel cable stays, glass railings, covered walkway",
+    ),
     # Landscaping
-    AITemplate(id="land-gazebo", name="Park Gazebo", category="landscaping",
-               prompt="Octagonal park gazebo with white painted wood, shingled roof, built-in benches"),
-    AITemplate(id="land-playground", name="Playground Equipment", category="landscaping",
-               prompt="Children's playground set with slides, swings, climbing frame, colorful design"),
-    AITemplate(id="land-fountain", name="Garden Fountain", category="landscaping",
-               prompt="Circular stone garden fountain with three tiers, water feature, classical style"),
+    AITemplate(
+        id="land-gazebo",
+        name="Park Gazebo",
+        category="landscaping",
+        prompt="Octagonal park gazebo with white painted wood, shingled roof, built-in benches",
+    ),
+    AITemplate(
+        id="land-playground",
+        name="Playground Equipment",
+        category="landscaping",
+        prompt="Children's playground set with slides, swings, climbing frame, colorful design",
+    ),
+    AITemplate(
+        id="land-fountain",
+        name="Garden Fountain",
+        category="landscaping",
+        prompt="Circular stone garden fountain with three tiers, water feature, classical style",
+    ),
 ]
 
 
@@ -497,7 +558,7 @@ async def generate_from_text(
     _check_engine_available(engine)
 
     # Resolve style: request > building > project default
-    style_id = req.style or building.architectural_style or getattr(project, 'default_style', None)
+    style_id = req.style or building.architectural_style or getattr(project, "default_style", None)
     style_changed = bool(style_id and style_id != building.architectural_style)
     if style_changed:
         await lock_residual_landscape_project(db, building.project_id)
@@ -518,10 +579,7 @@ async def generate_from_text(
             db,
             project_id=building.project_id,
             building_id=building.id,
-            reason=(
-                "Linked building display style changed; rebuild Community 3D "
-                "before Direct rendering."
-            ),
+            reason=("Linked building display style changed; rebuild Community 3D " "before Direct rendering."),
         )
     await db.flush()
 
@@ -700,6 +758,7 @@ async def get_ai_templates():
 # Render Preview Endpoints
 # =============================================================================
 
+
 @router.post("/{building_id}/render-preview", response_model=RenderPreviewResponse)
 async def generate_render_preview(
     building_id: uuid.UUID,
@@ -738,13 +797,17 @@ async def generate_render_preview(
     await db.flush()
 
     # Resolve style for prompt enrichment
-    style_id = req.style or building.architectural_style or getattr(project, 'default_style', None)
+    style_id = req.style or building.architectural_style or getattr(project, "default_style", None)
 
     # Queue Celery task
     from app.tasks.render_preview import generate_render_preview as render_task
+
     render_task.delay(
-        str(building_id), req.prompt, req.source_type,
-        req.source_image_url, style_id,
+        str(building_id),
+        req.prompt,
+        req.source_type,
+        req.source_image_url,
+        style_id,
     )
 
     # Return a placeholder response
@@ -767,9 +830,7 @@ async def get_render_previews(
 ):
     """Get all render previews for a building."""
     result = await db.execute(
-        select(RenderPreview)
-        .where(RenderPreview.building_id == building_id)
-        .order_by(RenderPreview.created_at.desc())
+        select(RenderPreview).where(RenderPreview.building_id == building_id).order_by(RenderPreview.created_at.desc())
     )
     return result.scalars().all()
 
@@ -777,6 +838,7 @@ async def get_render_previews(
 # =============================================================================
 # Generation Engines
 # =============================================================================
+
 
 @router.get("/ai/engines", response_model=list[GenerationEngineInfo])
 async def get_engines():

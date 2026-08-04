@@ -73,13 +73,15 @@ async def test_representation_update_locks_project_and_stales_linked_community_z
     project = FakeProject(owner_id=test_user.id)
     building = _building(project.id)
     zone = _compiled_zone(project.id, building.id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building),
-        _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+        ]
+    )
 
     response = await client.put(
         f"/api/v1/buildings/{building.id}",
@@ -106,23 +108,21 @@ async def test_representation_update_locks_project_and_stales_linked_community_z
 
 
 @pytest.mark.anyio
-async def test_building_delete_locks_project_and_stales_linked_community_zone(
-    client, mock_db, test_user, auth_headers
-):
+async def test_building_delete_locks_project_and_stales_linked_community_zone(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     building = _building(project.id)
     zone = _compiled_zone(project.id, building.id)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building),
-        _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-    ])
-
-    response = await client.delete(
-        f"/api/v1/buildings/{building.id}", headers=auth_headers
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+        ]
     )
+
+    response = await client.delete(f"/api/v1/buildings/{building.id}", headers=auth_headers)
 
     assert response.status_code == 204, response.text
     assert zone.properties["community_3d"]["state"] == "stale"
@@ -157,14 +157,16 @@ async def test_library_model_swap_locks_project_and_stales_linked_community_zone
         "_copy_s3_object",
         lambda _source, destination: f"/api/v1/files/{destination}",
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(entry),
-        _scalar_result(building),
-        _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(entry),
+            _scalar_result(building),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+        ]
+    )
 
     response = await client.post(
         f"/api/v1/model-library/items/{entry.id}/apply",

@@ -46,11 +46,16 @@ def _site(width_m=700.0, depth_m=520.0) -> Polygon:
 
 def _l_site(width_m=700.0, depth_m=520.0, notch_w=300.0, notch_d=260.0) -> Polygon:
     """L-shaped site: rectangle minus its upper-right corner notch."""
-    return Polygon([
-        _offset(0, 0), _offset(width_m, 0), _offset(width_m, depth_m - notch_d),
-        _offset(width_m - notch_w, depth_m - notch_d), _offset(width_m - notch_w, depth_m),
-        _offset(0, depth_m),
-    ])
+    return Polygon(
+        [
+            _offset(0, 0),
+            _offset(width_m, 0),
+            _offset(width_m, depth_m - notch_d),
+            _offset(width_m - notch_w, depth_m - notch_d),
+            _offset(width_m - notch_w, depth_m),
+            _offset(0, depth_m),
+        ]
+    )
 
 
 PARAMS = {
@@ -69,9 +74,13 @@ def _metric_boundary(site):
 
 def _generate(scenario_id, site=None, **kwargs):
     return generate_plan_geometry(
-        site_polygon_wgs84=site or _site(), scenario_id=scenario_id,
-        scenario_label=scenario_id, parameters=PARAMS,
-        road_features=[], district_features=[], **kwargs,
+        site_polygon_wgs84=site or _site(),
+        scenario_id=scenario_id,
+        scenario_label=scenario_id,
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        **kwargs,
     )
 
 
@@ -87,6 +96,7 @@ def _curve_notes(result):
 # ---------------------------------------------------------------------------
 # Straight defaults stay byte-identical; palette gating matrix
 # ---------------------------------------------------------------------------
+
 
 def test_default_paths_stay_straight():
     boundary = _metric_boundary(_site())
@@ -140,6 +150,7 @@ def test_spine_mode_bows_only_the_spine():
 # End-to-end invariants on curved plans
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.parametrize("scenario_id", ["economic", "city_policy", "environmental"])
 def test_curved_scenarios_end_to_end_invariants(scenario_id):
     site = _site()
@@ -149,8 +160,11 @@ def test_curved_scenarios_end_to_end_invariants(scenario_id):
     assert len(notes) == 1, [n["code"] for n in notes]
 
     gi = result.geometry_inputs
-    assert abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"]
-               - gi["site_area_m2"]) / gi["site_area_m2"] < 0.06
+    assert (
+        abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"] - gi["site_area_m2"])
+        / gi["site_area_m2"]
+        < 0.06
+    )
 
     # Street partition: road-zone areas (incl. lanes) sum to row_area exactly.
     road_area = sum(_metric_area(z, site) for z in result.zones if z["zone_type"] == "road")
@@ -173,8 +187,10 @@ def test_curved_scenarios_end_to_end_invariants(scenario_id):
     assert "MASS_STREET_COLLISION" not in codes
 
     buildings = [z for z in result.zones if z["zone_type"] == "building"]
-    triples = {(z["properties"]["development_type"], z["properties"]["development_aesthetic"],
-                z["properties"]["floors"]) for z in buildings}
+    triples = {
+        (z["properties"]["development_type"], z["properties"]["development_aesthetic"], z["properties"]["floors"])
+        for z in buildings
+    }
     assert len(triples) <= 6
 
 
@@ -193,14 +209,10 @@ def test_city_beautiful_and_legacy_stay_straight():
         result = _generate(scenario_id)
         assert not _curve_notes(result), scenario_id
         roads = [z for z in result.zones if z["zone_type"] == "road"]
-        assert not any(
-            z["properties"].get("road_archetype_id") == "london_crescent_road" for z in roads
-        )
+        assert not any(z["properties"].get("road_archetype_id") == "london_crescent_road" for z in roads)
     beautiful = _generate("city_beautiful")
     spine = [z for z in beautiful.zones if z["properties"].get("street_role") == "spine"]
-    assert spine and all(
-        z["properties"].get("road_archetype_id") == "haussmann_boulevard" for z in spine
-    )
+    assert spine and all(z["properties"].get("road_archetype_id") == "haussmann_boulevard" for z in spine)
     greens = [z for z in beautiful.zones if z["zone_type"] == "green_space"]
     assert any(z["properties"].get("green_kind") == "pond" for z in greens)
     assert any(z["properties"].get("green_kind") == "plaza" for z in greens)
@@ -210,36 +222,28 @@ def test_crescent_tagging():
     for scenario_id in ("economic", "city_policy"):
         result = _generate(scenario_id)
         locals_ = [z for z in result.zones if z["properties"].get("street_role") == "local"]
-        crescents = [z for z in locals_
-                     if z["properties"].get("road_archetype_id") == "london_crescent_road"]
+        crescents = [z for z in locals_ if z["properties"].get("road_archetype_id") == "london_crescent_road"]
         assert crescents, scenario_id
         assert all(MIN_ROW_M <= z["properties"]["width"] < 15 for z in crescents)
         # Straight cross-streets survive alongside the crescents, and the
         # LEGO-only public-realm contract now gives those ordinary locals a
         # deterministic measured street archetype instead of leaving them
         # untyped for the frontend to infer.
-        assert any(
-            z["properties"].get("road_archetype_id") != "london_crescent_road"
-            for z in locals_
-        ), scenario_id
+        assert any(z["properties"].get("road_archetype_id") != "london_crescent_road" for z in locals_), scenario_id
         assert all(
-            isinstance(z["properties"].get("road_archetype_id"), str)
-            and z["properties"]["road_archetype_id"]
+            isinstance(z["properties"].get("road_archetype_id"), str) and z["properties"]["road_archetype_id"]
             for z in locals_
         ), scenario_id
 
     environmental = _generate("environmental")
     env_locals = [z for z in environmental.zones if z["properties"].get("street_role") == "local"]
-    assert env_locals and all(
-        z["properties"].get("road_archetype_id") == "woonerf_shared_street" for z in env_locals
-    )
+    assert env_locals and all(z["properties"].get("road_archetype_id") == "woonerf_shared_street" for z in env_locals)
 
 
 def test_curved_determinism():
     a = _generate("economic")
     b = _generate("economic")
-    assert [(z["name"], z["properties"]) for z in a.zones] == \
-           [(z["name"], z["properties"]) for z in b.zones]
+    assert [(z["name"], z["properties"]) for z in a.zones] == [(z["name"], z["properties"]) for z in b.zones]
     assert [z["coordinates"] for z in a.zones] == [z["coordinates"] for z in b.zones]
 
 
@@ -247,17 +251,21 @@ def test_curved_determinism():
 # Fallback guard
 # ---------------------------------------------------------------------------
 
+
 def test_fallback_reason_matrix():
-    base = dict(n_curved=8, n_straight=8, n_curved_large=6, n_straight_large=6,
-                sliver_curved=0.005, sliver_straight=0.005)
+    base = dict(
+        n_curved=8, n_straight=8, n_curved_large=6, n_straight_large=6, sliver_curved=0.005, sliver_straight=0.005
+    )
     assert _curvilinear_fallback_reason(**base) is None
     assert _curvilinear_fallback_reason(**{**base, "n_curved": 1}) == "BLOCKS_COLLAPSED"
     assert _curvilinear_fallback_reason(**{**base, "n_curved": 6}) == "BLOCKS_MERGED"
     assert _curvilinear_fallback_reason(**{**base, "n_curved_large": 1}) == "BLOCKS_FRAGMENTED"
-    assert _curvilinear_fallback_reason(
-        **{**base, "sliver_curved": 0.03, "sliver_straight": 0.005}) == "SLIVER_EXCESS_REL"
-    assert _curvilinear_fallback_reason(
-        **{**base, "sliver_curved": 0.05, "sliver_straight": 0.045}) == "SLIVER_EXCESS_ABS"
+    assert (
+        _curvilinear_fallback_reason(**{**base, "sliver_curved": 0.03, "sliver_straight": 0.005}) == "SLIVER_EXCESS_REL"
+    )
+    assert (
+        _curvilinear_fallback_reason(**{**base, "sliver_curved": 0.05, "sliver_straight": 0.045}) == "SLIVER_EXCESS_ABS"
+    )
 
 
 def test_skinny_site_skips_with_exactly_one_note():
@@ -269,8 +277,11 @@ def test_skinny_site_skips_with_exactly_one_note():
     assert len(notes) == 1
     assert notes[0]["code"] == "CURVILINEAR_SKIPPED"
     gi = result.geometry_inputs
-    assert abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"]
-               - gi["site_area_m2"]) / gi["site_area_m2"] < 0.06
+    assert (
+        abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"] - gi["site_area_m2"])
+        / gi["site_area_m2"]
+        < 0.06
+    )
 
 
 def test_l_shaped_site_survives_curving():
@@ -278,8 +289,11 @@ def test_l_shaped_site_survives_curving():
     result = _generate("city_policy", site=site)
     assert len(_curve_notes(result)) == 1
     gi = result.geometry_inputs
-    assert abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"]
-               - gi["site_area_m2"]) / gi["site_area_m2"] < 0.06
+    assert (
+        abs(gi["row_area_m2"] + gi["open_space_area_m2"] + gi["net_block_area_m2"] - gi["site_area_m2"])
+        / gi["site_area_m2"]
+        < 0.06
+    )
     assert result.block_count >= 2
     road_area = sum(_metric_area(z, site) for z in result.zones if z["zone_type"] == "road")
     assert abs(road_area - gi["row_area_m2"]) < 1.0
@@ -287,7 +301,7 @@ def test_l_shaped_site_survives_curving():
 
 def test_tiny_site_stays_note_free():
     result = _generate("economic", site=_site(110, 100))
-    assert not _curve_notes(result)          # degenerate paths never mention curvature
+    assert not _curve_notes(result)  # degenerate paths never mention curvature
     assert result.block_count == 1
 
 
@@ -297,11 +311,10 @@ def test_curved_locked_streets_roundtrip():
     site = _site()
     first = _generate("economic", site=site)
     assert _curve_notes(first)[0]["code"] == "CURVILINEAR_APPLIED"
-    locked = unary_union([Polygon(z["coordinates"]) for z in first.zones
-                          if z["zone_type"] == "road"])
+    locked = unary_union([Polygon(z["coordinates"]) for z in first.zones if z["zone_type"] == "road"])
     second = _generate("economic", site=site, locked_street_area_wgs84=locked)
     assert any(n["code"] == "STREETS_LOCKED" for n in second.notes)
-    assert not _curve_notes(second)          # locked = user froze circulation
+    assert not _curve_notes(second)  # locked = user froze circulation
     roads = [z for z in second.zones if z["zone_type"] == "road"]
     assert roads and not any(z["properties"].get("street_role") == "lane" for z in roads)
     locked_area = sum(_metric_area(z, site) for z in first.zones if z["zone_type"] == "road")
@@ -313,8 +326,7 @@ def test_roundabouts_survive_curved_spine():
     site = _site()
     result = _generate("city_policy", site=site)
     assert _curve_notes(result)[0]["code"] == "CURVILINEAR_APPLIED"
-    roundabouts = [z for z in result.zones
-                   if z["properties"].get("road_archetype_id") == "roundabout"]
+    roundabouts = [z for z in result.zones if z["properties"].get("road_archetype_id") == "roundabout"]
     assert roundabouts
     rules, _ = resolve_rules("city_policy", PARAMS)
     ideal = math.pi * ((rules.spine_row_width_m + 6.0) / 2) ** 2
@@ -325,6 +337,7 @@ def test_roundabouts_survive_curved_spine():
 # ---------------------------------------------------------------------------
 # decompose_holed cumulative ladder
 # ---------------------------------------------------------------------------
+
 
 def test_decompose_holed_offset_hole():
     # The hole sits away from BOTH centroid cut axes — a single centered cross
@@ -354,13 +367,19 @@ def test_decompose_holed_crescent_annulus():
 # Refinement stability
 # ---------------------------------------------------------------------------
 
+
 def test_refinement_stability_curved():
     from app.services.plan_geometry.refinement import run_refinement_loop
 
     def run():
         return run_refinement_loop(
-            site_polygon_wgs84=_site(), scenario_id="economic", scenario_label="Economic",
-            parameters=PARAMS, dna={}, road_features=[], district_features=[],
+            site_polygon_wgs84=_site(),
+            scenario_id="economic",
+            scenario_label="Economic",
+            parameters=PARAMS,
+            dna={},
+            road_features=[],
+            district_features=[],
         )
 
     result_a, _, iterations_a = run()

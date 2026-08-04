@@ -4,6 +4,7 @@ Revision ID: 009_add_generation_engine
 Revises: 008_add_render_previews
 Create Date: 2026-02-25
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -18,10 +19,13 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def _column_exists(table: str, column: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
-        "WHERE table_name = :table AND column_name = :column)"
-    ), {"table": table, "column": column})
+    result = conn.execute(
+        sa.text(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+            "WHERE table_name = :table AND column_name = :column)"
+        ),
+        {"table": table, "column": column},
+    )
     return result.scalar()
 
 

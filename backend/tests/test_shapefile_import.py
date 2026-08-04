@@ -140,6 +140,7 @@ def test_holes_dropped_and_attributes_mapped():
 
 def test_open_line_buffered_to_corridor():
     """An open polyline becomes a buffered 'road' corridor polygon."""
+
     def write(w):
         w.field("NAME", "C")
         w.line([[[-114.07, 51.04], [-114.06, 51.05], [-114.05, 51.045]]])
@@ -174,6 +175,7 @@ def test_closed_line_filled_to_polygon():
 
 def test_point_buffered_to_marker():
     """A point becomes a small buffered marker polygon centred on the point."""
+
     def write(w):
         w.field("NAME", "C")
         w.point(-114.066, 51.045)

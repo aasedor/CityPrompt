@@ -47,9 +47,7 @@ def _get_overpass_lock() -> asyncio.Lock:
     return _overpass_lock_holder[1]
 
 
-async def fetch(
-    spec: DatasetSpec, boundary_wgs84: Polygon
-) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
+async def fetch(spec: DatasetSpec, boundary_wgs84: Polygon) -> tuple[list[Feature], FetchStatus, list[dict[str, Any]]]:
     from app.services.spatial_engine import buffer_wgs84
 
     category = spec.adapter_params["category"]

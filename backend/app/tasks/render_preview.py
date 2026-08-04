@@ -16,6 +16,7 @@ settings = get_settings()
 def _get_sync_session():
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
+
     engine = create_engine(settings.database_url_sync)
     return Session(engine)
 
@@ -23,6 +24,7 @@ def _get_sync_session():
 def _upload_to_storage(key: str, data: bytes, content_type: str) -> str:
     import boto3
     from botocore.config import Config
+
     s3 = boto3.client(
         "s3",
         endpoint_url=settings.s3_endpoint_url,
@@ -85,8 +87,10 @@ def generate_render_preview(
         enriched_prompt = prompt
         if style_id:
             from app.generation.styles import get_style
+
             style = get_style(style_id)
             from app.generation.stability_client import build_architectural_prompt
+
             enriched_prompt = build_architectural_prompt(
                 prompt,
                 style_prefix=style.prompt_prefix,
@@ -97,22 +101,28 @@ def generate_render_preview(
         self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "generating_image"})
 
         from app.generation.stability_client import StabilityClient
+
         client = StabilityClient()
 
         if source_type in ("sketch", "floor_plan") and source_image_url:
             # Download source image first
             import httpx as httpx_sync
+
             source_bytes = httpx_sync.get(source_image_url, timeout=30.0).content
-            image_bytes = asyncio.run(client.image_to_image(
-                source_bytes,
-                enriched_prompt,
-                strength=0.65,
-            ))
+            image_bytes = asyncio.run(
+                client.image_to_image(
+                    source_bytes,
+                    enriched_prompt,
+                    strength=0.65,
+                )
+            )
         else:
-            image_bytes = asyncio.run(client.text_to_image(
-                enriched_prompt,
-                negative_prompt="blurry, low quality, distorted, unrealistic, cartoon",
-            ))
+            image_bytes = asyncio.run(
+                client.text_to_image(
+                    enriched_prompt,
+                    negative_prompt="blurry, low quality, distorted, unrealistic, cartoon",
+                )
+            )
 
         self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "uploading"})
 

@@ -11,7 +11,6 @@ facts + a warning; it never raises (base.py guards regardless).
 from __future__ import annotations
 
 import logging
-from collections import Counter
 from datetime import date
 from typing import Any
 
@@ -61,6 +60,7 @@ def _zone_family(code: str | None) -> str | None:
 # --- 1. Zoning Bylaw Geographical Data (fixa-tstc) ----------------------------
 # Columns: id, zoning, description, agreement_no, dc2_sub_area, date_ext, url,
 #          geometry_multipolygon
+
 
 def zoning(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -139,6 +139,7 @@ def zoning(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list
 # (commercial) in Nov 2021. q7d6-ambg (assessed values) has NO queryable
 # geometry column (verified 2026-07-11), which is why this dataset is primary.
 
+
 def parcel_points(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = [
@@ -204,13 +205,15 @@ def parcel_points(features: list[Feature], site: Polygon) -> tuple[dict[str, Any
 #          effective_start_date, effective_end_date, civic_ward_name, district,
 #          geometry_multipolygon
 
+
 def neighbourhoods(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
 
     today = date.today().isoformat()
     current = [
-        f for f in features
+        f
+        for f in features
         if not (_props(f).get("effective_end_date") or "") or str(_props(f)["effective_end_date"])[:10] >= today
     ]
     coverage = se.coverage_by(frame, current, lambda f: _props(f).get("name"))
@@ -259,6 +262,7 @@ def neighbourhoods(features: list[Feature], site: Polygon) -> tuple[dict[str, An
 # Columns: centerline_type (Road|Alley|Railway), functional_class_code,
 #          street_name_full, street_name, road_segment_type_description, geometry
 # Verified value distribution: functional_class_code is None for Alley/Railway.
+
 
 def roads(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -313,6 +317,7 @@ def roads(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # --- 5. ETS Transit Stops (4vt2-8zrq, GTFS) ---------------------------------------
 # Columns: stop_id, stop_name, location_type (1 = station), geometry_point
 
+
 def transit_stops(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -345,6 +350,7 @@ def transit_stops(features: list[Feature], site: Polygon) -> tuple[dict[str, Any
 # --- 6. Zoning Overlays (6w3s-58pv) -------------------------------------------------
 # Columns: overlay_code, overlay_descr, bylaw_no, special_area, geometry_multipolygon
 
+
 def zoning_overlays(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -368,15 +374,14 @@ def zoning_overlays(features: list[Feature], site: Polygon) -> tuple[dict[str, A
         )
 
     if not overlays:
-        warnings.append(
-            note("NO_ZONING_OVERLAYS", "No zoning overlays apply to this site.", severity="info")
-        )
+        warnings.append(note("NO_ZONING_OVERLAYS", "No zoning overlays apply to this site.", severity="info"))
 
     return {"land_use.overlays": overlays}, warnings
 
 
 # --- 7. Parks (gdd9-eqv9) -------------------------------------------------------------
 # Columns: official_name, common_name, status, type, class, area, geometry_multipolygon
+
 
 def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -386,9 +391,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
         warnings.append(note("PARKS_EMPTY", "No parks within 800m of the site.", severity="info"))
         return {}, warnings
 
-    walkshed_area = se.coverage_by(
-        frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0)
-    )
+    walkshed_area = se.coverage_by(frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0))
     park_area_ha = round(walkshed_area.get("parks", {}).get("area_m2", 0.0) / 10_000.0, 2)
 
     nearest = se.nearest(frame, features, k=1)
@@ -416,6 +419,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # Columns: species, genus, diameter_breast_height, condition_percent, geometry_point
 # NOTE: the `location` column (Socrata location type) 400s on intersects();
 # geometry_point is the verified queryable column.
+
 
 def trees(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)

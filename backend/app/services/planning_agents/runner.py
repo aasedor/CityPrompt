@@ -179,8 +179,13 @@ async def _run_expert(
         },
     ]
 
-    usage_record: dict[str, Any] = {"agent_id": spec.agent_id, "model": spec.model,
-                                    "input_tokens": 0, "output_tokens": 0, "status": "success"}
+    usage_record: dict[str, Any] = {
+        "agent_id": spec.agent_id,
+        "model": spec.model,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "status": "success",
+    }
     try:
         recommendations: list[Recommendation] = []
         summary = ""
@@ -245,7 +250,8 @@ async def _run_expert(
                 if recommendation.parameter_path not in spec.parameter_scope:
                     logger.warning(
                         "Expert %s recommended out-of-scope parameter %s — dropped",
-                        spec.agent_id, recommendation.parameter_path,
+                        spec.agent_id,
+                        recommendation.parameter_path,
                     )
                     continue
                 if recommendation.claim_type == "policy" and not recommendation.citations:
@@ -278,12 +284,14 @@ async def _run_expert(
             ExpertRecommendationSet(
                 agent_id=spec.agent_id,
                 failed=True,
-                validation_notes=[ValidationNote(
-                    code=f"EXPERT_UNAVAILABLE:{spec.agent_id}",
-                    severity="warning",
-                    message=f"{spec.title} unavailable ({exc}); scenario continues without this voice.",
-                    source_phase="agent_deliberation",
-                )],
+                validation_notes=[
+                    ValidationNote(
+                        code=f"EXPERT_UNAVAILABLE:{spec.agent_id}",
+                        severity="warning",
+                        message=f"{spec.title} unavailable ({exc}); scenario continues without this voice.",
+                        source_phase="agent_deliberation",
+                    )
+                ],
             ),
             usage_record,
         )
@@ -302,13 +310,15 @@ async def run_expert_panel(
     budget = float(getattr(settings, "planning_agents_max_usd", 0.0) or 0.0)
     projected = len(experts) * estimate_cost_usd("claude-sonnet-5", 15_000, EXPERT_MAX_TOKENS)
     if budget > 0 and projected > budget:
-        warnings.append(ValidationNote(
-            code="EXPERT_BUDGET_EXCEEDED",
-            severity="warning",
-            message=f"Projected panel cost ${projected:.2f} exceeds planning_agents_max_usd "
-                    f"${budget:.2f}; skipping the expert panel.",
-            source_phase="agent_deliberation",
-        ))
+        warnings.append(
+            ValidationNote(
+                code="EXPERT_BUDGET_EXCEEDED",
+                severity="warning",
+                message=f"Projected panel cost ${projected:.2f} exceeds planning_agents_max_usd "
+                f"${budget:.2f}; skipping the expert panel.",
+                source_phase="agent_deliberation",
+            )
+        )
         return [], [], warnings
 
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)

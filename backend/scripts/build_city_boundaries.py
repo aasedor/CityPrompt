@@ -100,10 +100,15 @@ def _features_union(collection: dict):
 
 def fetch_calgary():
     """Discover the Calgary city-boundary dataset — never hardcode ids from memory."""
-    params = urllib.parse.urlencode({
-        "domains": "data.calgary.ca", "search_context": "data.calgary.ca",
-        "q": "city boundary", "only": "datasets", "limit": 10,
-    })
+    params = urllib.parse.urlencode(
+        {
+            "domains": "data.calgary.ca",
+            "search_context": "data.calgary.ca",
+            "q": "city boundary",
+            "only": "datasets",
+            "limit": 10,
+        }
+    )
     catalog = _get_json(f"https://api.us.socrata.com/api/catalog/v1?{params}")
     for item in catalog.get("results", []):
         res = item.get("resource", {})
@@ -129,8 +134,7 @@ def fetch_edmonton():
 
 def fetch_vancouver():
     collection = _get_json(
-        "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/"
-        "local-area-boundary/exports/geojson"
+        "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/" "local-area-boundary/exports/geojson"
     )
     union = _features_union(collection)
     return union, "opendata.vancouver.ca/local-area-boundary (union of 22 areas)"
@@ -140,13 +144,11 @@ def fetch_toronto():
     # regional-municipal-boundary ships SHP only (probed 2026-07-11); the union of
     # the six former municipalities is the same city boundary, with WGS84 GeoJSON.
     package = _get_json(
-        "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/package_show"
-        "?id=former-municipality-boundaries"
+        "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/package_show" "?id=former-municipality-boundaries"
     )
     resources = package["result"]["resources"]
     candidates = [
-        r for r in resources
-        if "geojson" in (r.get("format") or "").lower() and "4326" in (r.get("name") or "")
+        r for r in resources if "geojson" in (r.get("format") or "").lower() and "4326" in (r.get("name") or "")
     ]
     if not candidates:
         raise RuntimeError(f"no 4326 GeoJSON resource: {[r.get('name') for r in resources]}")
@@ -168,9 +170,7 @@ FETCHERS = {
 
 def _vertex_count(geom) -> int:
     polys = geom.geoms if geom.geom_type == "MultiPolygon" else [geom]
-    return sum(
-        len(p.exterior.coords) + sum(len(r.coords) for r in p.interiors) for p in polys
-    )
+    return sum(len(p.exterior.coords) + sum(len(r.coords) for r in p.interiors) for p in polys)
 
 
 def build(city_id: str) -> None:
@@ -200,8 +200,7 @@ def build(city_id: str) -> None:
     }
     out_path = OUT_DIR / f"{city_id}.geojson"
     out_path.write_text(json.dumps(feature), encoding="utf-8")
-    print(f"  wrote {out_path} ({out_path.stat().st_size / 1024:.0f} KB, "
-          f"{_vertex_count(simplified)} vertices)")
+    print(f"  wrote {out_path} ({out_path.stat().st_size / 1024:.0f} KB, " f"{_vertex_count(simplified)} vertices)")
 
     from shapely.geometry import Point  # local import keeps top import-light
 

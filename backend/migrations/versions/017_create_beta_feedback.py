@@ -16,7 +16,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS beta_feedback (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             author_id UUID NOT NULL,
@@ -29,15 +30,20 @@ def upgrade() -> None:
             PRIMARY KEY (id),
             FOREIGN KEY(author_id) REFERENCES users (id) ON DELETE CASCADE
         )
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_beta_feedback_author_id
         ON beta_feedback (author_id)
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_beta_feedback_status
         ON beta_feedback (status)
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

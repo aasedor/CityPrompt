@@ -3,7 +3,6 @@ Tests for 3D building generation, GLB export, and normalization logic.
 """
 
 import numpy as np
-import pytest
 import trimesh
 
 
@@ -12,19 +11,17 @@ class TestBuildingGenerator:
 
     def _make_generator(self):
         from app.generation.geometry.building_generator import BuildingGenerator
+
         return BuildingGenerator()
 
     def _simple_footprint(self):
-        return np.array([
-            [0, 0], [20, 0], [20, 15], [0, 15], [0, 0]
-        ], dtype=float)
+        return np.array([[0, 0], [20, 0], [20, 15], [0, 15], [0, 0]], dtype=float)
 
     def _edge_dominant_footprint(self, closed=True):
         pts = np.array([[0, 0], [4, 0], [4, 2], [0, 10]], dtype=float)
         if closed:
             pts = np.vstack([pts, pts[0]])
         return pts
-
 
     def test_extrude_footprint_creates_mesh(self):
         gen = self._make_generator()
@@ -103,7 +100,6 @@ class TestBuildingGenerator:
         assert any(n.startswith("window_") for n in names)
         assert any(n.startswith("balcony_") for n in names)
 
-
     def test_generate_building_normalizes_unclosed_footprint(self):
         gen = self._make_generator()
         base_data = {
@@ -113,14 +109,18 @@ class TestBuildingGenerator:
             "roof_type": "flat",
             "features": {"windows": True, "balconies": True},
         }
-        closed_scene = gen.generate_building({
-            **base_data,
-            "footprint": self._edge_dominant_footprint(closed=True).tolist(),
-        })
-        open_scene = gen.generate_building({
-            **base_data,
-            "footprint": self._edge_dominant_footprint(closed=False).tolist(),
-        })
+        closed_scene = gen.generate_building(
+            {
+                **base_data,
+                "footprint": self._edge_dominant_footprint(closed=True).tolist(),
+            }
+        )
+        open_scene = gen.generate_building(
+            {
+                **base_data,
+                "footprint": self._edge_dominant_footprint(closed=False).tolist(),
+            }
+        )
 
         closed_windows = [name for name in closed_scene.geometry if name.startswith("window_")]
         open_windows = [name for name in open_scene.geometry if name.startswith("window_")]
@@ -144,6 +144,7 @@ class TestGLBExporter:
 
     def test_export_to_bytes(self):
         from app.generation.geometry.building_generator import GLBExporter
+
         scene = trimesh.Scene()
         box = trimesh.creation.box(extents=[2, 3, 4])
         scene.add_geometry(box)
@@ -163,12 +164,15 @@ class TestNormalization:
                 self._coords = coords or []
                 self.text_content = txt
                 self.images = []
+
             def to_dict(self):
                 return {"coordinates": self._coords, "text_content": self.text_content}
+
         return MockResult(coordinates, text)
 
     def test_ai_buildings_normalized(self):
         from app.tasks.processing import _normalize_extraction_data
+
         extraction = self._make_mock_extraction()
         interpretation = {
             "buildings": [
@@ -191,7 +195,8 @@ class TestNormalization:
         assert result[0]["specifications"]["ai_confidence"] == 0.85
 
     def test_low_confidence_filtered(self):
-        from app.tasks.processing import _normalize_extraction_data, CONFIDENCE_THRESHOLD
+        from app.tasks.processing import _normalize_extraction_data
+
         extraction = self._make_mock_extraction()
         interpretation = {
             "buildings": [
@@ -207,6 +212,7 @@ class TestNormalization:
 
     def test_fallback_default_building(self):
         from app.tasks.processing import _normalize_extraction_data
+
         extraction = self._make_mock_extraction()
         result = _normalize_extraction_data(extraction, {})
         assert len(result) == 1
@@ -215,6 +221,7 @@ class TestNormalization:
 
     def test_floor_plan_interpretation_normalized(self):
         from app.tasks.processing import _normalize_extraction_data
+
         extraction = self._make_mock_extraction()
         interpretation = {
             "building_dimensions": {
@@ -234,6 +241,7 @@ class TestNormalization:
 
     def test_coordinates_extraction_fallback(self):
         from app.tasks.processing import _normalize_extraction_data
+
         coords = [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]
         extraction = self._make_mock_extraction(coordinates=coords)
         result = _normalize_extraction_data(extraction, {})
@@ -246,6 +254,7 @@ class TestLODGenerator:
 
     def test_generate_lods(self):
         from app.generation.geometry.building_generator import LODGenerator
+
         mesh = trimesh.creation.box(extents=[10, 10, 10])
         # Subdivide to get more faces
         for _ in range(2):

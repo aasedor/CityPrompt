@@ -53,9 +53,7 @@ def upgrade() -> None:
         "site_zones",
         ["project_id"],
         unique=True,
-        postgresql_where=sa.text(
-            "zone_type = 'site_boundary' AND is_active_boundary = true"
-        ),
+        postgresql_where=sa.text("zone_type = 'site_boundary' AND is_active_boundary = true"),
     )
 
 

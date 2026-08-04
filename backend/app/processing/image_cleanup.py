@@ -81,13 +81,15 @@ def clean_reference_image(image_bytes: bytes, level: str = "entourage") -> bytes
             f"?key={settings.gemini_api_key}"
         )
         payload = {
-            "contents": [{
-                "role": "user",
-                "parts": [
-                    {"inline_data": {"mime_type": mime, "data": base64.b64encode(image_bytes).decode()}},
-                    {"text": prompt},
-                ],
-            }],
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [
+                        {"inline_data": {"mime_type": mime, "data": base64.b64encode(image_bytes).decode()}},
+                        {"text": prompt},
+                    ],
+                }
+            ],
             # Temperature 0 for maximum edit fidelity — this is surgical
             # removal, not generation.
             "generationConfig": {"responseModalities": ["TEXT", "IMAGE"], "temperature": 0.0},
@@ -96,7 +98,8 @@ def clean_reference_image(image_bytes: bytes, level: str = "entourage") -> bytes
         if resp.status_code != 200:
             logger.warning(
                 "Image cleanup failed (non-fatal): HTTP %d %s",
-                resp.status_code, resp.text[:200],
+                resp.status_code,
+                resp.text[:200],
             )
             return image_bytes
         for candidate in resp.json().get("candidates", []):
@@ -106,7 +109,9 @@ def clean_reference_image(image_bytes: bytes, level: str = "entourage") -> bytes
                     cleaned = base64.b64decode(inline["data"])
                     logger.info(
                         "Image cleanup (%s): %dKB -> %dKB",
-                        level, len(image_bytes) // 1024, len(cleaned) // 1024,
+                        level,
+                        len(image_bytes) // 1024,
+                        len(cleaned) // 1024,
                     )
                     return cleaned
         logger.warning("Image cleanup returned no image part (non-fatal)")

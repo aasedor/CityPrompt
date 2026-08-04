@@ -62,16 +62,15 @@ def _compare_table(scenarios: list[dict[str, Any]]) -> str:
         )
         rows += f"<tr><td>{_esc(label_for(key))}</td>{cells}</tr>"
     score_cells = "".join(
-        (lambda score: f"<td class='num'>{score:.3f}</td>" if isinstance(score, (int, float)) else "<td class='num'>—</td>")(
-            ((s.get("payload") or {}).get("plan") or {}).get("final_score")
-        )
+        (
+            lambda score: (
+                f"<td class='num'>{score:.3f}</td>" if isinstance(score, (int, float)) else "<td class='num'>—</td>"
+            )
+        )(((s.get("payload") or {}).get("plan") or {}).get("final_score"))
         for s in with_metrics
     )
     rows += f"<tr><td>Plan score</td>{score_cells}</tr>"
-    return (
-        "<h2>Scenario comparison</h2>"
-        f"<table><tr><th>Measure</th>{header}</tr>{rows}</table>"
-    )
+    return "<h2>Scenario comparison</h2>" f"<table><tr><th>Measure</th>{header}</tr>{rows}</table>"
 
 
 def build_hearing_pack(
@@ -90,9 +89,10 @@ def build_hearing_pack(
     plan = payload.get("plan") or {}
     metrics = payload.get("metrics") or {}
 
-    trade_off_items = "".join(
-        f"<li>{_esc(t.get('message'))}</li>" for t in (payload.get("trade_offs") or [])[:8]
-    ) or "<li>No unresolved inter-disciplinary conflicts recorded.</li>"
+    trade_off_items = (
+        "".join(f"<li>{_esc(t.get('message'))}</li>" for t in (payload.get("trade_offs") or [])[:8])
+        or "<li>No unresolved inter-disciplinary conflicts recorded.</li>"
+    )
 
     policy_items = ""
     insight = ((((dna or {}).get("policy") or {}).get("fields") or {}).get("insight") or {}).get("value") or {}
@@ -112,14 +112,17 @@ def build_hearing_pack(
         if key != "lap_storeys_by_category"
     )
 
-    render_figures = "".join(
-        "<figure>"
-        f"<img src='{_data_uri(r['png'])}' alt='AI render'>"
-        f"<figcaption>{_esc(r.get('style') or 'AI render')} · saved {_esc((r.get('created_at') or '')[:10])} — "
-        "illustrative AI-generated concept, watermarked and provenance-tagged.</figcaption>"
-        "</figure>"
-        for r in renders
-    ) or "<p class='meta'>No saved renders for this project yet — generate renders and save them to include imagery.</p>"
+    render_figures = (
+        "".join(
+            "<figure>"
+            f"<img src='{_data_uri(r['png'])}' alt='AI render'>"
+            f"<figcaption>{_esc(r.get('style') or 'AI render')} · saved {_esc((r.get('created_at') or '')[:10])} — "
+            "illustrative AI-generated concept, watermarked and provenance-tagged.</figcaption>"
+            "</figure>"
+            for r in renders
+        )
+        or "<p class='meta'>No saved renders for this project yet — generate renders and save them to include imagery.</p>"
+    )
 
     svg = _drawing_svg(boundary_wgs84, plan_zones)
     gi = plan.get("geometry_inputs") or {}

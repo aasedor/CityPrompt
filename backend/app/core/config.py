@@ -168,9 +168,7 @@ class Settings(BaseSettings):
         """Accept the temporary OPENAI alias while local testing GPT Image 2."""
         if not self.openai_api_key:
             self.openai_api_key = (
-                os.environ.get("OPENAI", "")
-                or _dotenv.get("OPENAI", "")
-                or _root_dotenv.get("OPENAI", "")
+                os.environ.get("OPENAI", "") or _dotenv.get("OPENAI", "") or _root_dotenv.get("OPENAI", "")
             )
         return self
 
@@ -267,13 +265,12 @@ class Settings(BaseSettings):
             raise ValueError("ALLOWED_ORIGINS must be explicitly set in production")
 
         unsafe_origins = [
-            origin for origin in origins
+            origin
+            for origin in origins
             if origin == "*" or any(marker in origin.lower() for marker in _LOCAL_ORIGIN_MARKERS)
         ]
         if unsafe_origins:
-            raise ValueError(
-                "ALLOWED_ORIGINS must not include wildcard or localhost origins in production"
-            )
+            raise ValueError("ALLOWED_ORIGINS must not include wildcard or localhost origins in production")
 
         return self
 

@@ -49,11 +49,7 @@ def _building_design_identity(properties: dict[str, Any]) -> str | None:
     # Resolve it only through the server catalog; never humanize an unknown ID.
     if entry is None:
         entry = next(
-            (
-                candidate
-                for candidate in table.values()
-                if archetype_id in (candidate.get("variant_ids") or ())
-            ),
+            (candidate for candidate in table.values() if archetype_id in (candidate.get("variant_ids") or ())),
             None,
         )
     if not isinstance(entry, dict):
@@ -95,8 +91,7 @@ def _public_realm_design_identity(properties: dict[str, Any]) -> str | None:
         (
             item
             for item in catalog.capabilities
-            if item.family_id == recipe["family_id"]
-            and item.family_version == recipe["family_version"]
+            if item.family_id == recipe["family_id"] and item.family_version == recipe["family_version"]
         ),
         None,
     )
@@ -106,8 +101,7 @@ def _public_realm_design_identity(properties: dict[str, Any]) -> str | None:
         (
             item
             for item in capability.selections
-            if item.archetype_id == recipe["archetype_id"]
-            and item.variant_id == recipe["variant_id"]
+            if item.archetype_id == recipe["archetype_id"] and item.variant_id == recipe["variant_id"]
         ),
         None,
     )

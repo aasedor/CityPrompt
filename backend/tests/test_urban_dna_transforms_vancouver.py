@@ -10,10 +10,14 @@ from shapely.geometry import Polygon
 from app.services.city_connector.cities.vancouver import transforms
 
 # ~110m x 100m site square (lon 0.0015 deg ~= 109m at 49.28N; lat 0.0009 ~= 100m)
-SITE = Polygon([
-    (-123.1210, 49.2800), (-123.1195, 49.2800),
-    (-123.1195, 49.2809), (-123.1210, 49.2809),
-])
+SITE = Polygon(
+    [
+        (-123.1210, 49.2800),
+        (-123.1195, 49.2800),
+        (-123.1195, 49.2809),
+        (-123.1210, 49.2809),
+    ]
+)
 
 
 def _poly(lon0, lat0, lon1, lat1, props):
@@ -32,21 +36,46 @@ def _point(lon, lat, props):
 
 # --- zoning -------------------------------------------------------------------
 
+
 def test_zoning_captures_cd1_and_stays_honest_about_rules():
     features = [
-        _poly(-123.1212, 49.2798, -123.1200, 49.2811, {
-            "zoning_district": "R1-1", "zoning_classification": "Residential Inclusive",
-            "zoning_category": "R1-1", "cd_1_number": None,
-        }),
-        _poly(-123.1200, 49.2798, -123.1193, 49.2811, {
-            "zoning_district": "CD-1 (413)", "zoning_classification": "Comprehensive Development",
-            "zoning_category": "CD-1", "cd_1_number": "413",
-        }),
+        _poly(
+            -123.1212,
+            49.2798,
+            -123.1200,
+            49.2811,
+            {
+                "zoning_district": "R1-1",
+                "zoning_classification": "Residential Inclusive",
+                "zoning_category": "R1-1",
+                "cd_1_number": None,
+            },
+        ),
+        _poly(
+            -123.1200,
+            49.2798,
+            -123.1193,
+            49.2811,
+            {
+                "zoning_district": "CD-1 (413)",
+                "zoning_classification": "Comprehensive Development",
+                "zoning_category": "CD-1",
+                "cd_1_number": "413",
+            },
+        ),
         # Adjacent commercial ~90m east (inside the 200m ring)
-        _poly(-123.1180, 49.2800, -123.1165, 49.2809, {
-            "zoning_district": "C-3A", "zoning_classification": "Commercial",
-            "zoning_category": "C-3A", "cd_1_number": None,
-        }),
+        _poly(
+            -123.1180,
+            49.2800,
+            -123.1165,
+            49.2809,
+            {
+                "zoning_district": "C-3A",
+                "zoning_classification": "Commercial",
+                "zoning_category": "C-3A",
+                "cd_1_number": None,
+            },
+        ),
     ]
     facts, warnings = transforms.zoning(features, SITE)
 
@@ -65,20 +94,41 @@ def test_zoning_captures_cd1_and_stays_honest_about_rules():
 
 # --- parcels -------------------------------------------------------------------
 
+
 def test_parcels_reads_enriched_values_and_flags_strata():
     features = [
-        _poly(-123.1208, 49.2801, -123.1203, 49.2808, {
-            "civic_number": "1100", "streetname": "ROBSON ST", "tax_coord": "111",
-            "tax_folio_count": 1, "tax_land_value_total": 5_000_000,
-            "tax_improvement_value_total": 1_000_000, "tax_year_built": "1950",
-            "tax_zoning_district": "DD",
-        }),
-        _poly(-123.1202, 49.2801, -123.1197, 49.2808, {
-            "civic_number": "1110", "streetname": "ROBSON ST", "tax_coord": "222",
-            "tax_folio_count": 40, "tax_land_value_total": 60_000_000,
-            "tax_improvement_value_total": 20_000_000, "tax_year_built": "1990",
-            "tax_zoning_district": "DD",
-        }),
+        _poly(
+            -123.1208,
+            49.2801,
+            -123.1203,
+            49.2808,
+            {
+                "civic_number": "1100",
+                "streetname": "ROBSON ST",
+                "tax_coord": "111",
+                "tax_folio_count": 1,
+                "tax_land_value_total": 5_000_000,
+                "tax_improvement_value_total": 1_000_000,
+                "tax_year_built": "1950",
+                "tax_zoning_district": "DD",
+            },
+        ),
+        _poly(
+            -123.1202,
+            49.2801,
+            -123.1197,
+            49.2808,
+            {
+                "civic_number": "1110",
+                "streetname": "ROBSON ST",
+                "tax_coord": "222",
+                "tax_folio_count": 40,
+                "tax_land_value_total": 60_000_000,
+                "tax_improvement_value_total": 20_000_000,
+                "tax_year_built": "1990",
+                "tax_zoning_district": "DD",
+            },
+        ),
     ]
     facts, warnings = transforms.parcels(features, SITE)
 
@@ -92,9 +142,17 @@ def test_parcels_reads_enriched_values_and_flags_strata():
 
 def test_parcels_unenriched_notes_missing_values():
     features = [
-        _poly(-123.1208, 49.2801, -123.1203, 49.2808, {
-            "civic_number": "1100", "streetname": "ROBSON ST", "tax_coord": "111",
-        }),
+        _poly(
+            -123.1208,
+            49.2801,
+            -123.1203,
+            49.2808,
+            {
+                "civic_number": "1100",
+                "streetname": "ROBSON ST",
+                "tax_coord": "111",
+            },
+        ),
     ]
     facts, warnings = transforms.parcels(features, SITE)
     assert facts["site.parcel_count"] == 1
@@ -103,6 +161,7 @@ def test_parcels_unenriched_notes_missing_values():
 
 
 # --- local areas / transit / floodplain / view cones / trees ---------------------
+
 
 def test_local_areas_dominant_name():
     features = [
@@ -135,9 +194,16 @@ def test_rapid_transit_empty_still_notes_bus_gap():
 
 def test_floodplain_inside_and_outside():
     inside = [
-        _poly(-123.1250, 49.2780, -123.1150, 49.2830, {
-            "name": "False Creek Flats", "description": "Coastal floodplain, 2100 SLR scenario",
-        }),
+        _poly(
+            -123.1250,
+            49.2780,
+            -123.1150,
+            49.2830,
+            {
+                "name": "False Creek Flats",
+                "description": "Coastal floodplain, 2100 SLR scenario",
+            },
+        ),
     ]
     facts, warnings = transforms.floodplain(inside, SITE)
     assert facts["environment.flood_risk"]["in_designated_floodplain"] is True
@@ -150,10 +216,17 @@ def test_floodplain_inside_and_outside():
 
 def test_view_cones_constraint():
     features = [
-        _poly(-123.1250, 49.2780, -123.1150, 49.2830, {
-            "view_cone_name": "Queen Elizabeth Park", "view_number": "3.1",
-            "description": "Protected mountain view corridor",
-        }),
+        _poly(
+            -123.1250,
+            49.2780,
+            -123.1150,
+            49.2830,
+            {
+                "view_cone_name": "Queen Elizabeth Park",
+                "view_number": "3.1",
+                "description": "Protected mountain view corridor",
+            },
+        ),
     ]
     facts, warnings = transforms.view_cones(features, SITE)
     assert facts["built_form.view_cone_constraint"]["under_view_cone"] is True

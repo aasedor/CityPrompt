@@ -21,6 +21,7 @@ router = APIRouter()
 # Schemas
 # ---------------------------------------------------------------------------
 
+
 class FeedbackCreate(BaseModel):
     category: str = Field(default="suggestion", pattern="^(suggestion|bug|question)$")
     text: str = Field(..., min_length=1, max_length=5000)
@@ -49,6 +50,7 @@ class FeedbackResponse(BaseModel):
 # User endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.post("", response_model=FeedbackResponse, status_code=status.HTTP_201_CREATED)
 async def submit_feedback(
     body: FeedbackCreate,
@@ -75,9 +77,7 @@ async def list_my_feedback(
 ):
     """List feedback submitted by the current user."""
     result = await db.execute(
-        select(BetaFeedback)
-        .where(BetaFeedback.author_id == user.id)
-        .order_by(BetaFeedback.created_at.desc())
+        select(BetaFeedback).where(BetaFeedback.author_id == user.id).order_by(BetaFeedback.created_at.desc())
     )
     return [_to_response(fb, user.email, user.full_name) for fb in result.scalars().all()]
 
@@ -85,6 +85,7 @@ async def list_my_feedback(
 # ---------------------------------------------------------------------------
 # Admin inbox endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/inbox", response_model=list[FeedbackResponse])
 async def list_feedback_inbox(
@@ -117,10 +118,7 @@ async def feedback_counts(
     db: AsyncSession = Depends(get_db),
 ):
     """Get counts by status for badge display."""
-    result = await db.execute(
-        select(BetaFeedback.status, func.count(BetaFeedback.id))
-        .group_by(BetaFeedback.status)
-    )
+    result = await db.execute(select(BetaFeedback.status, func.count(BetaFeedback.id)).group_by(BetaFeedback.status))
     counts = {row[0]: row[1] for row in result.all()}
     return {
         "open": counts.get("open", 0),
@@ -165,9 +163,7 @@ async def delete_feedback(
     db: AsyncSession = Depends(get_db),
 ):
     """Admin: permanently delete a feedback item."""
-    result = await db.execute(
-        select(BetaFeedback).where(BetaFeedback.id == feedback_id)
-    )
+    result = await db.execute(select(BetaFeedback).where(BetaFeedback.id == feedback_id))
     fb = result.scalar_one_or_none()
     if not fb:
         raise HTTPException(status_code=404, detail="Feedback not found")
@@ -177,6 +173,7 @@ async def delete_feedback(
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _to_response(fb: BetaFeedback, email: str | None = None, name: str | None = None) -> FeedbackResponse:
     return FeedbackResponse(

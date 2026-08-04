@@ -10,10 +10,14 @@ from shapely.geometry import Polygon
 from app.services.city_connector.cities.edmonton import transforms
 
 # ~100m x 100m site square (lon 0.0015 deg ~= 99m at 53.5N; lat 0.0009 deg ~= 100m)
-SITE = Polygon([
-    (-113.4948, 53.5415), (-113.4933, 53.5415),
-    (-113.4933, 53.5424), (-113.4948, 53.5424),
-])
+SITE = Polygon(
+    [
+        (-113.4948, 53.5415),
+        (-113.4933, 53.5415),
+        (-113.4933, 53.5424),
+        (-113.4948, 53.5424),
+    ]
+)
 
 
 def _poly(lon0, lat0, lon1, lat1, props):
@@ -36,25 +40,58 @@ def _line(coords, props):
 
 # --- zoning -------------------------------------------------------------------
 
+
 def test_zoning_captures_urls_and_stays_honest_about_rules():
     features = [
-        _poly(-113.4950, 53.5413, -113.4930, 53.5426, {
-            "zoning": "HDR", "description": "High Density Residential Zone",
-            "url": "https://zoningbylaw.edmonton.ca/hdr", "dc2_sub_area": None,
-        }),
-        _poly(-113.4936, 53.5413, -113.4930, 53.5426, {
-            "zoning": "DC2", "description": "Site Specific Development Control Provision",
-            "url": "https://zoningbylaw.edmonton.ca/dc2-1060", "dc2_sub_area": "2",
-        }),
-        _poly(-113.4950, 53.5413, -113.4945, 53.5426, {
-            "zoning": "CMU", "description": "Commercial Mixed Use Zone",
-            "url": "https://zoningbylaw.edmonton.ca/cmu", "dc2_sub_area": None,
-        }),
+        _poly(
+            -113.4950,
+            53.5413,
+            -113.4930,
+            53.5426,
+            {
+                "zoning": "HDR",
+                "description": "High Density Residential Zone",
+                "url": "https://zoningbylaw.edmonton.ca/hdr",
+                "dc2_sub_area": None,
+            },
+        ),
+        _poly(
+            -113.4936,
+            53.5413,
+            -113.4930,
+            53.5426,
+            {
+                "zoning": "DC2",
+                "description": "Site Specific Development Control Provision",
+                "url": "https://zoningbylaw.edmonton.ca/dc2-1060",
+                "dc2_sub_area": "2",
+            },
+        ),
+        _poly(
+            -113.4950,
+            53.5413,
+            -113.4945,
+            53.5426,
+            {
+                "zoning": "CMU",
+                "description": "Commercial Mixed Use Zone",
+                "url": "https://zoningbylaw.edmonton.ca/cmu",
+                "dc2_sub_area": None,
+            },
+        ),
         # Adjacent commercial zone ~90m east of the site (inside the 200m ring)
-        _poly(-113.4920, 53.5415, -113.4900, 53.5424, {
-            "zoning": "CN", "description": "Neighbourhood Commercial Zone",
-            "url": "https://zoningbylaw.edmonton.ca/cn", "dc2_sub_area": None,
-        }),
+        _poly(
+            -113.4920,
+            53.5415,
+            -113.4900,
+            53.5424,
+            {
+                "zoning": "CN",
+                "description": "Neighbourhood Commercial Zone",
+                "url": "https://zoningbylaw.edmonton.ca/cn",
+                "dc2_sub_area": None,
+            },
+        ),
     ]
     facts, warnings = transforms.zoning(features, SITE)
 
@@ -80,20 +117,48 @@ def test_zoning_empty_degrades():
 
 # --- parcel points -------------------------------------------------------------
 
+
 def test_parcel_points_counts_and_flags_missing_fabric():
     features = [
-        _point(-113.4945, 53.5417, {
-            "account_number": "1", "house_number": "10145", "street_name": "104 Street NW",
-            "zoning": "RS", "lot_size": 500, "year_built": 1950, "neighbourhood": "OLIVER",
-        }),
-        _point(-113.4940, 53.5420, {
-            "account_number": "2", "house_number": "10147", "street_name": "104 Street NW",
-            "zoning": "RS", "lot_size": 510, "year_built": 1960, "neighbourhood": "OLIVER",
-        }),
-        _point(-113.4936, 53.5422, {
-            "account_number": "3", "house_number": "10149", "street_name": "104 Street NW",
-            "zoning": "CMU", "lot_size": None, "year_built": None, "neighbourhood": "OLIVER",
-        }),
+        _point(
+            -113.4945,
+            53.5417,
+            {
+                "account_number": "1",
+                "house_number": "10145",
+                "street_name": "104 Street NW",
+                "zoning": "RS",
+                "lot_size": 500,
+                "year_built": 1950,
+                "neighbourhood": "OLIVER",
+            },
+        ),
+        _point(
+            -113.4940,
+            53.5420,
+            {
+                "account_number": "2",
+                "house_number": "10147",
+                "street_name": "104 Street NW",
+                "zoning": "RS",
+                "lot_size": 510,
+                "year_built": 1960,
+                "neighbourhood": "OLIVER",
+            },
+        ),
+        _point(
+            -113.4936,
+            53.5422,
+            {
+                "account_number": "3",
+                "house_number": "10149",
+                "street_name": "104 Street NW",
+                "zoning": "CMU",
+                "lot_size": None,
+                "year_built": None,
+                "neighbourhood": "OLIVER",
+            },
+        ),
         # outside the site — must not count
         _point(-113.4900, 53.5420, {"account_number": "4", "zoning": "RS"}),
     ]
@@ -113,17 +178,34 @@ def test_parcel_points_empty_degrades():
 
 # --- neighbourhoods --------------------------------------------------------------
 
+
 def test_neighbourhoods_district_becomes_plan_and_lap():
     features = [
-        _poly(-113.4960, 53.5410, -113.4920, 53.5430, {
-            "name": "OLIVER", "descriptive_name": "Oliver", "district": "Central",
-            "effective_end_date": None,
-        }),
+        _poly(
+            -113.4960,
+            53.5410,
+            -113.4920,
+            53.5430,
+            {
+                "name": "OLIVER",
+                "descriptive_name": "Oliver",
+                "district": "Central",
+                "effective_end_date": None,
+            },
+        ),
         # historical row must be ignored
-        _poly(-113.4960, 53.5410, -113.4920, 53.5430, {
-            "name": "OLD NAME", "descriptive_name": "Old Name", "district": "Central",
-            "effective_end_date": "2020-01-01T00:00:00",
-        }),
+        _poly(
+            -113.4960,
+            53.5410,
+            -113.4920,
+            53.5430,
+            {
+                "name": "OLD NAME",
+                "descriptive_name": "Old Name",
+                "district": "Central",
+                "effective_end_date": "2020-01-01T00:00:00",
+            },
+        ),
     ]
     facts, warnings = transforms.neighbourhoods(features, SITE)
 
@@ -135,10 +217,18 @@ def test_neighbourhoods_district_becomes_plan_and_lap():
 
 def test_neighbourhoods_without_district_notes_citywide_policy():
     features = [
-        _poly(-113.4960, 53.5410, -113.4920, 53.5430, {
-            "name": "OLIVER", "descriptive_name": "Oliver", "district": None,
-            "effective_end_date": None,
-        }),
+        _poly(
+            -113.4960,
+            53.5410,
+            -113.4920,
+            53.5430,
+            {
+                "name": "OLIVER",
+                "descriptive_name": "Oliver",
+                "district": None,
+                "effective_end_date": None,
+            },
+        ),
     ]
     facts, warnings = transforms.neighbourhoods(features, SITE)
     assert facts["land_use.lap_name"] is None
@@ -148,20 +238,35 @@ def test_neighbourhoods_without_district_notes_citywide_policy():
 
 # --- roads ------------------------------------------------------------------------
 
+
 def test_roads_excludes_railway_and_sorts_alleys_last():
     features = [
-        _line([[-113.4950, 53.54245], [-113.4930, 53.54245]], {
-            "centerline_type": "Road", "functional_class_code": "Local-Residential",
-            "street_name_full": "104 Avenue NW", "road_segment_type_description": "Local",
-        }),
-        _line([[-113.4950, 53.54135], [-113.4930, 53.54135]], {
-            "centerline_type": "Alley", "functional_class_code": None,
-            "street_name_full": None, "road_segment_type_description": None,
-        }),
-        _line([[-113.4950, 53.5440], [-113.4930, 53.5440]], {
-            "centerline_type": "Railway", "functional_class_code": None,
-            "street_name_full": None,
-        }),
+        _line(
+            [[-113.4950, 53.54245], [-113.4930, 53.54245]],
+            {
+                "centerline_type": "Road",
+                "functional_class_code": "Local-Residential",
+                "street_name_full": "104 Avenue NW",
+                "road_segment_type_description": "Local",
+            },
+        ),
+        _line(
+            [[-113.4950, 53.54135], [-113.4930, 53.54135]],
+            {
+                "centerline_type": "Alley",
+                "functional_class_code": None,
+                "street_name_full": None,
+                "road_segment_type_description": None,
+            },
+        ),
+        _line(
+            [[-113.4950, 53.5440], [-113.4930, 53.5440]],
+            {
+                "centerline_type": "Railway",
+                "functional_class_code": None,
+                "street_name_full": None,
+            },
+        ),
     ]
     facts, warnings = transforms.roads(features, SITE)
 
@@ -175,6 +280,7 @@ def test_roads_excludes_railway_and_sorts_alleys_last():
 
 # --- transit / overlays / parks / trees --------------------------------------------
 
+
 def test_transit_stops_counts_and_nearest():
     features = [
         _point(-113.4925, 53.5420, {"stop_name": "104 St / Jasper Ave", "location_type": 0}),
@@ -187,14 +293,30 @@ def test_transit_stops_counts_and_nearest():
 
 def test_zoning_overlays_lists_and_dedupes():
     features = [
-        _poly(-113.4960, 53.5410, -113.4920, 53.5430, {
-            "overlay_code": "PGA", "overlay_descr": "Priority Growth Area Rezoning",
-            "bylaw_no": "20001", "special_area": False,
-        }),
-        _poly(-113.4955, 53.5412, -113.4925, 53.5428, {
-            "overlay_code": "PGA", "overlay_descr": "Priority Growth Area Rezoning",
-            "bylaw_no": "20001", "special_area": False,
-        }),
+        _poly(
+            -113.4960,
+            53.5410,
+            -113.4920,
+            53.5430,
+            {
+                "overlay_code": "PGA",
+                "overlay_descr": "Priority Growth Area Rezoning",
+                "bylaw_no": "20001",
+                "special_area": False,
+            },
+        ),
+        _poly(
+            -113.4955,
+            53.5412,
+            -113.4925,
+            53.5428,
+            {
+                "overlay_code": "PGA",
+                "overlay_descr": "Priority Growth Area Rezoning",
+                "bylaw_no": "20001",
+                "special_area": False,
+            },
+        ),
     ]
     facts, warnings = transforms.zoning_overlays(features, SITE)
     assert len(facts["land_use.overlays"]) == 1
@@ -210,9 +332,17 @@ def test_zoning_overlays_empty_is_informational():
 
 def test_parks_walkshed_and_nearest():
     features = [
-        _poly(-113.4890, 53.5415, -113.4870, 53.5424, {
-            "official_name": "Test Park", "type": "District Park", "status": "Open",
-        }),
+        _poly(
+            -113.4890,
+            53.5415,
+            -113.4870,
+            53.5424,
+            {
+                "official_name": "Test Park",
+                "type": "District Park",
+                "status": "Open",
+            },
+        ),
     ]
     facts, _ = transforms.parks(features, SITE)
     assert facts["public_realm.parks_within_800m"] == 1

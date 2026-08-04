@@ -4,9 +4,9 @@ Revision ID: 014_create_api_usage_logs
 Revises: 013_add_analytics_indexes
 Create Date: 2026-02-28
 """
+
 from typing import Sequence, Union
 
-import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
@@ -19,7 +19,8 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     # Use raw SQL with IF NOT EXISTS to handle the case where the table
     # was already created by a previous create_all() call
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS api_usage_logs (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             provider VARCHAR(30) NOT NULL,
@@ -39,16 +40,21 @@ def upgrade() -> None:
             FOREIGN KEY(document_id) REFERENCES documents (id) ON DELETE SET NULL,
             FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE SET NULL
         )
-    """)
+    """
+    )
 
-    op.execute("""
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_api_usage_logs_provider_created_at
         ON api_usage_logs (provider, created_at)
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_api_usage_logs_user_id_created_at
         ON api_usage_logs (user_id, created_at)
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

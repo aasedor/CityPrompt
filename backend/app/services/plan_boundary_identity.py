@@ -42,10 +42,7 @@ def plan_boundary_fingerprint(value: BaseGeometry | dict[str, Any] | None) -> st
         )
     except (GEOSException, KeyError, TypeError, ValueError):
         return None
-    return hashlib.sha256(
-        f"plan-boundary-v{PLAN_BOUNDARY_FINGERPRINT_VERSION}:".encode("ascii")
-        + payload
-    ).hexdigest()
+    return hashlib.sha256(f"plan-boundary-v{PLAN_BOUNDARY_FINGERPRINT_VERSION}:".encode("ascii") + payload).hexdigest()
 
 
 def stamp_plan_boundary_identity(
@@ -58,11 +55,13 @@ def stamp_plan_boundary_identity(
     """Return generated-zone properties bound to one authoritative boundary."""
 
     stamped = dict(properties or {})
-    stamped.update({
-        "_plan_boundary_fingerprint": fingerprint,
-        "_plan_boundary_zone_id": str(boundary_zone_id),
-        "_plan_snapshot_id": str(snapshot_id),
-    })
+    stamped.update(
+        {
+            "_plan_boundary_fingerprint": fingerprint,
+            "_plan_boundary_zone_id": str(boundary_zone_id),
+            "_plan_snapshot_id": str(snapshot_id),
+        }
+    )
     stamped.pop("_plan_boundary_stale", None)
     stamped.pop("_plan_boundary_changed_at", None)
     return stamped

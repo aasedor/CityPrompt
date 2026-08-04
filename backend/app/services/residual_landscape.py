@@ -77,11 +77,7 @@ def community_3d_kind_for_source(
         return "street"
     if role in {"open_space", "courtyard"} or zone_type in _COMMUNITY_PARK_TYPES:
         return "park"
-    if (
-        role == "building"
-        or zone_type in _COMMUNITY_BUILDING_TYPES
-        or bool(props.get("development_archetype_id"))
-    ):
+    if role == "building" or zone_type in _COMMUNITY_BUILDING_TYPES or bool(props.get("development_archetype_id")):
         return "building"
     return None
 
@@ -119,9 +115,7 @@ def _canonical_semantic_value(value: Any) -> Any:
         return result or None
     if isinstance(value, (list, tuple)):
         result = [
-            canonical
-            for item in value
-            if (canonical := _canonical_semantic_value(item)) not in (None, "", [], {})
+            canonical for item in value if (canonical := _canonical_semantic_value(item)) not in (None, "", [], {})
         ]
         return result or None
     if isinstance(value, bool):
@@ -132,11 +126,7 @@ def _canonical_semantic_value(value: Any) -> Any:
 
 
 def _compact_semantic_mapping(values: dict[str, Any]) -> dict[str, Any]:
-    return {
-        key: value
-        for key, value in values.items()
-        if value not in (None, "", [], {})
-    }
+    return {key: value for key, value in values.items() if value not in (None, "", [], {})}
 
 
 def _semantic_generation_input(properties: dict[str, Any], domain: str) -> dict[str, Any] | None:
@@ -155,26 +145,34 @@ def _semantic_generation_input(properties: dict[str, Any], domain: str) -> dict[
     downstream = raw.get("downstreamHints")
     tags = raw.get("generationTags")
     reuse_keys = downstream.get("reuseKeys") if isinstance(downstream, dict) else None
-    return _compact_semantic_mapping({
-        "archetype_id": _semantic_text(raw.get("archetypeId"), identifier=True),
-        "generation_tags": sorted({
-            tag
-            for value in (tags if isinstance(tags, list) else [])
-            if (tag := _semantic_text(value, identifier=True))
-        }),
-        "style_profile": _canonical_semantic_value(style_profile),
-        "reuse_keys": sorted({
-            key
-            for value in (reuse_keys if isinstance(reuse_keys, list) else [])
-            if (key := _semantic_text(value, identifier=True))
-        }),
-        "allow_setback": (
-            downstream.get("allowSetback")
-            if isinstance(downstream, dict)
-            and isinstance(downstream.get("allowSetback"), bool)
-            else None
-        ),
-    }) or None
+    return (
+        _compact_semantic_mapping(
+            {
+                "archetype_id": _semantic_text(raw.get("archetypeId"), identifier=True),
+                "generation_tags": sorted(
+                    {
+                        tag
+                        for value in (tags if isinstance(tags, list) else [])
+                        if (tag := _semantic_text(value, identifier=True))
+                    }
+                ),
+                "style_profile": _canonical_semantic_value(style_profile),
+                "reuse_keys": sorted(
+                    {
+                        key
+                        for value in (reuse_keys if isinstance(reuse_keys, list) else [])
+                        if (key := _semantic_text(value, identifier=True))
+                    }
+                ),
+                "allow_setback": (
+                    downstream.get("allowSetback")
+                    if isinstance(downstream, dict) and isinstance(downstream.get("allowSetback"), bool)
+                    else None
+                ),
+            }
+        )
+        or None
+    )
 
 
 def _semantic_custom_style(properties: dict[str, Any]) -> dict[str, Any] | None:
@@ -192,15 +190,16 @@ def _semantic_custom_style(properties: dict[str, Any]) -> dict[str, Any] | None:
                 stable_attachments.append({"document_id": document_id, "kind": "photo"})
             if len(stable_attachments) == 3:
                 break
-    return _compact_semantic_mapping({
-        "enabled": True,
-        "domain": _semantic_text(properties.get("custom_style_domain"), identifier=True),
-        "prompt": _semantic_text(
-            properties.get("custom_style_expanded_prompt")
-            or properties.get("custom_style_prompt")
-        ),
-        "attachments": stable_attachments,
-    })
+    return _compact_semantic_mapping(
+        {
+            "enabled": True,
+            "domain": _semantic_text(properties.get("custom_style_domain"), identifier=True),
+            "prompt": _semantic_text(
+                properties.get("custom_style_expanded_prompt") or properties.get("custom_style_prompt")
+            ),
+            "attachments": stable_attachments,
+        }
+    )
 
 
 def _semantic_saved_layout(properties: dict[str, Any]) -> list[dict[str, Any]] | None:
@@ -210,23 +209,33 @@ def _semantic_saved_layout(properties: dict[str, Any]) -> list[dict[str, Any]] |
         return None
     projected = []
     numeric_fields = {
-        "center_x", "center_y", "width_m", "depth_m", "rotation_deg", "height_m",
-        "floors", "block_id", "setback_front_m", "setback_side_m",
+        "center_x",
+        "center_y",
+        "width_m",
+        "depth_m",
+        "rotation_deg",
+        "height_m",
+        "floors",
+        "block_id",
+        "setback_front_m",
+        "setback_side_m",
     }
     text_fields = {"building_type", "building_typology", "description", "style"}
     for building in buildings:
         if not isinstance(building, dict):
             continue
-        item = _compact_semantic_mapping({
-            **{key: _semantic_number(building.get(key)) for key in numeric_fields},
-            **{
-                key: _semantic_text(
-                    building.get(key),
-                    identifier=key in {"building_type", "building_typology"},
-                )
-                for key in text_fields
-            },
-        })
+        item = _compact_semantic_mapping(
+            {
+                **{key: _semantic_number(building.get(key)) for key in numeric_fields},
+                **{
+                    key: _semantic_text(
+                        building.get(key),
+                        identifier=key in {"building_type", "building_typology"},
+                    )
+                    for key in text_fields
+                },
+            }
+        )
         if item:
             projected.append(item)
     projected.sort(key=lambda item: json.dumps(item, sort_keys=True, separators=(",", ":")))
@@ -252,94 +261,147 @@ def community_3d_source_properties(
     if kind == "building":
         profile = props.get("development_style_profile")
         profile_keys = {
-            "materials", "massing", "facadeRhythm", "roofForm", "frontageType",
-            "windowStyle", "heightTendency", "streetRelationship", "articulation",
+            "materials",
+            "massing",
+            "facadeRhythm",
+            "roofForm",
+            "frontageType",
+            "windowStyle",
+            "heightTendency",
+            "streetRelationship",
+            "articulation",
         }
-        return _compact_semantic_mapping({
-            **common,
-            "dimensions": _compact_semantic_mapping({
-                "floors": _semantic_number(props.get("floors"), positive=True),
-                "floor_height": _semantic_number(props.get("floor_height"), positive=True),
-                "height": _semantic_number(
-                    props.get("height_m") if props.get("height_m") is not None else props.get("height"),
-                    positive=True,
+        return _compact_semantic_mapping(
+            {
+                **common,
+                "dimensions": _compact_semantic_mapping(
+                    {
+                        "floors": _semantic_number(props.get("floors"), positive=True),
+                        "floor_height": _semantic_number(props.get("floor_height"), positive=True),
+                        "height": _semantic_number(
+                            props.get("height_m") if props.get("height_m") is not None else props.get("height"),
+                            positive=True,
+                        ),
+                        "unit_count": _semantic_number(props.get("unit_count"), positive=True),
+                    }
                 ),
-                "unit_count": _semantic_number(props.get("unit_count"), positive=True),
-            }),
-            "identity": _compact_semantic_mapping({
-                key: _semantic_text(props.get(key), identifier=True)
-                for key in (
-                    "development_type", "development_aesthetic",
-                    "development_aesthetic_category", "development_subcategory",
-                    "development_archetype_id", "development_selected_variant_id",
-                )
-            }),
-            "generation": _semantic_generation_input(props, "building"),
-            "style_profile": _canonical_semantic_value({
-                key: profile.get(key)
-                for key in profile_keys
-                if isinstance(profile, dict) and key in profile
-            }),
-            "appearance": _compact_semantic_mapping({
-                key: _canonical_semantic_value(props.get(key))
-                for key in (
-                    "development_facade_detail", "development_roof_detail",
-                    "development_palette", "development_variant_shade_id", "facade_material",
-                    "secondary_material", "roof_style", "roof_material", "description_text",
-                )
-            }),
-            "saved_layout": _semantic_saved_layout(props),
-        })
+                "identity": _compact_semantic_mapping(
+                    {
+                        key: _semantic_text(props.get(key), identifier=True)
+                        for key in (
+                            "development_type",
+                            "development_aesthetic",
+                            "development_aesthetic_category",
+                            "development_subcategory",
+                            "development_archetype_id",
+                            "development_selected_variant_id",
+                        )
+                    }
+                ),
+                "generation": _semantic_generation_input(props, "building"),
+                "style_profile": _canonical_semantic_value(
+                    {key: profile.get(key) for key in profile_keys if isinstance(profile, dict) and key in profile}
+                ),
+                "appearance": _compact_semantic_mapping(
+                    {
+                        key: _canonical_semantic_value(props.get(key))
+                        for key in (
+                            "development_facade_detail",
+                            "development_roof_detail",
+                            "development_palette",
+                            "development_variant_shade_id",
+                            "facade_material",
+                            "secondary_material",
+                            "roof_style",
+                            "roof_material",
+                            "description_text",
+                        )
+                    }
+                ),
+                "saved_layout": _semantic_saved_layout(props),
+            }
+        )
     if kind == "park":
-        return _compact_semantic_mapping({
-            **common,
-            "green_space": _compact_semantic_mapping({
-                key.removeprefix("green_space_"): _canonical_semantic_value(props.get(key))
-                for key in (
-                    "green_space_aesthetic", "green_space_aesthetic_category",
-                    "green_space_subcategory", "green_space_archetype_id",
-                    "green_space_selected_variant_id", "green_space_style_profile",
-                    "green_space_palette", "green_space_variant_shade_id",
-                )
-            }),
-            "plaza": _compact_semantic_mapping({
-                key.removeprefix("plaza_"): _canonical_semantic_value(props.get(key))
-                for key in (
-                    "plaza_aesthetic", "plaza_aesthetic_category", "plaza_subcategory",
-                    "plaza_archetype_id", "plaza_selected_variant_id", "plaza_style_profile",
-                    "plaza_palette", "plaza_variant_shade_id",
-                )
-            }),
-            "landscape": _compact_semantic_mapping({
-                "planting_structure": _canonical_semantic_value(props.get("planting_structure")),
-                "tree_density": _semantic_number(props.get("tree_density")),
-                "park_access_points": _canonical_semantic_value(props.get("park_access_points")),
-                "paving_type": _canonical_semantic_value(props.get("paving_type")),
-                "planting_type": _canonical_semantic_value(props.get("planting_type")),
-                "water_features": _canonical_semantic_value(props.get("water_features")),
-            }),
-            "generation_parks": _semantic_generation_input(props, "parks"),
-            "generation_plazas": _semantic_generation_input(props, "plazas"),
-        })
+        return _compact_semantic_mapping(
+            {
+                **common,
+                "green_space": _compact_semantic_mapping(
+                    {
+                        key.removeprefix("green_space_"): _canonical_semantic_value(props.get(key))
+                        for key in (
+                            "green_space_aesthetic",
+                            "green_space_aesthetic_category",
+                            "green_space_subcategory",
+                            "green_space_archetype_id",
+                            "green_space_selected_variant_id",
+                            "green_space_style_profile",
+                            "green_space_palette",
+                            "green_space_variant_shade_id",
+                        )
+                    }
+                ),
+                "plaza": _compact_semantic_mapping(
+                    {
+                        key.removeprefix("plaza_"): _canonical_semantic_value(props.get(key))
+                        for key in (
+                            "plaza_aesthetic",
+                            "plaza_aesthetic_category",
+                            "plaza_subcategory",
+                            "plaza_archetype_id",
+                            "plaza_selected_variant_id",
+                            "plaza_style_profile",
+                            "plaza_palette",
+                            "plaza_variant_shade_id",
+                        )
+                    }
+                ),
+                "landscape": _compact_semantic_mapping(
+                    {
+                        "planting_structure": _canonical_semantic_value(props.get("planting_structure")),
+                        "tree_density": _semantic_number(props.get("tree_density")),
+                        "park_access_points": _canonical_semantic_value(props.get("park_access_points")),
+                        "paving_type": _canonical_semantic_value(props.get("paving_type")),
+                        "planting_type": _canonical_semantic_value(props.get("planting_type")),
+                        "water_features": _canonical_semantic_value(props.get("water_features")),
+                    }
+                ),
+                "generation_parks": _semantic_generation_input(props, "parks"),
+                "generation_plazas": _semantic_generation_input(props, "plazas"),
+            }
+        )
     if kind == "street":
-        return _compact_semantic_mapping({
-            **common,
-            "street": _compact_semantic_mapping({
-                key.removeprefix("road_"): (
-                    _semantic_number(props.get(key), positive=True)
-                    if key in {"width", "lane_count"}
-                    else _canonical_semantic_value(props.get(key))
-                )
-                for key in (
-                    "road_aesthetic", "road_aesthetic_category", "road_subcategory",
-                    "road_archetype_id", "road_selected_variant_id", "street_role", "width",
-                    "lane_count", "road_style_profile", "road_palette",
-                    "road_variant_shade_id", "road_surface", "surface_type", "material",
-                    "plan_centerline",
-                )
-            }),
-            "generation": _semantic_generation_input(props, "streets_paths"),
-        })
+        return _compact_semantic_mapping(
+            {
+                **common,
+                "street": _compact_semantic_mapping(
+                    {
+                        key.removeprefix("road_"): (
+                            _semantic_number(props.get(key), positive=True)
+                            if key in {"width", "lane_count"}
+                            else _canonical_semantic_value(props.get(key))
+                        )
+                        for key in (
+                            "road_aesthetic",
+                            "road_aesthetic_category",
+                            "road_subcategory",
+                            "road_archetype_id",
+                            "road_selected_variant_id",
+                            "street_role",
+                            "width",
+                            "lane_count",
+                            "road_style_profile",
+                            "road_palette",
+                            "road_variant_shade_id",
+                            "road_surface",
+                            "surface_type",
+                            "material",
+                            "plan_centerline",
+                        )
+                    }
+                ),
+                "generation": _semantic_generation_input(props, "streets_paths"),
+            }
+        )
     return {}
 
 
@@ -356,11 +418,13 @@ def mark_community_3d_stale(
     if not isinstance(stored, dict) or stored.get("state") != "compiled":
         return False
     meta = dict(stored)
-    meta.update({
-        "state": "stale",
-        "stale_at": stale_at or datetime.now(timezone.utc).isoformat(),
-        "stale_reason": reason,
-    })
+    meta.update(
+        {
+            "state": "stale",
+            "stale_at": stale_at or datetime.now(timezone.utc).isoformat(),
+            "stale_reason": reason,
+        }
+    )
     properties["community_3d"] = meta
     zone.properties = properties
     return True
@@ -373,9 +437,7 @@ async def lock_residual_landscape_project(db: Any, project_id: Any) -> None:
 
     from app.models.models import Project
 
-    await db.execute(
-        select(Project.id).where(Project.id == project_id).with_for_update()
-    )
+    await db.execute(select(Project.id).where(Project.id == project_id).with_for_update())
 
 
 async def mark_linked_community_3d_stale(
@@ -421,9 +483,7 @@ def lock_residual_landscape_project_sync(session: Any, project_id: Any) -> None:
 
     from app.models.models import Project
 
-    session.execute(
-        select(Project.id).where(Project.id == project_id).with_for_update()
-    )
+    session.execute(select(Project.id).where(Project.id == project_id).with_for_update())
 
 
 def mark_linked_community_3d_stale_sync(
@@ -476,12 +536,14 @@ def mark_residual_landscape_stale(
     if not isinstance(stored, dict) or stored.get("state") != "compiled":
         return False
     recipe = dict(stored)
-    recipe.update({
-        "state": "stale",
-        "stale_at": stale_at or datetime.now(timezone.utc).isoformat(),
-        "stale_reason": reason,
-        "changed_zone_id": str(changed_zone_id),
-    })
+    recipe.update(
+        {
+            "state": "stale",
+            "stale_at": stale_at or datetime.now(timezone.utc).isoformat(),
+            "stale_reason": reason,
+            "changed_zone_id": str(changed_zone_id),
+        }
+    )
     properties["community_3d_landscape"] = recipe
     boundary.properties = properties
     return True
@@ -672,12 +734,8 @@ def community_3d_representation_hash(
             "footprint": footprint,
             "height_meters": _semantic_number(getattr(building, "height_meters", None)),
             "floor_count": _semantic_number(getattr(building, "floor_count", None)),
-            "floor_height_meters": _semantic_number(
-                getattr(building, "floor_height_meters", None)
-            ),
-            "rotation_degrees": _semantic_number(
-                getattr(building, "rotation_degrees", None)
-            ),
+            "floor_height_meters": _semantic_number(getattr(building, "floor_height_meters", None)),
+            "rotation_degrees": _semantic_number(getattr(building, "rotation_degrees", None)),
             "representation": _canonical_semantic_value(representation),
         }
     elif public_realm_recipe is not None:
@@ -689,10 +747,7 @@ def community_3d_representation_hash(
         if identity is None:
             return None
         canonical_recipe = identity["recipe"]
-        if (
-            canonical_recipe.get("kind") != kind
-            or canonical_recipe.get("generator") != generator
-        ):
+        if canonical_recipe.get("kind") != kind or canonical_recipe.get("generator") != generator:
             return None
         payload["public_realm_lego"] = identity
 
@@ -729,9 +784,7 @@ def residual_landscape_source_hash(
             key=lambda item: (item["id"], item["kind"], item["geometry"]),
         ),
     }
-    return hashlib.sha256(
-        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
 def _geojson(geometry: BaseGeometry, to_wgs84) -> dict[str, Any]:
@@ -783,15 +836,15 @@ def _classify_residual(
     bands = [
         (
             "foundation_planting",
-            _repair_polygonal(buildings.buffer(2.25, cap_style=2, join_style=2))
-            if not buildings.is_empty
-            else Polygon(),
+            (
+                _repair_polygonal(buildings.buffer(2.25, cap_style=2, join_style=2))
+                if not buildings.is_empty
+                else Polygon()
+            ),
         ),
         (
             "boulevard_planting",
-            _repair_polygonal(streets.buffer(3.5, cap_style=2, join_style=2))
-            if not streets.is_empty
-            else Polygon(),
+            _repair_polygonal(streets.buffer(3.5, cap_style=2, join_style=2)) if not streets.is_empty else Polygon(),
         ),
         (
             "perimeter_planting",
@@ -808,11 +861,7 @@ def _classify_residual(
         remaining = _repair_polygonal(remaining.difference(selected))
 
     for polygon in _sorted_polygons(remaining):
-        kind = (
-            "lawn"
-            if polygon.area >= 220.0 and _minimum_width(polygon) >= 7.5
-            else "low_groundcover"
-        )
+        kind = "lawn" if polygon.area >= 220.0 and _minimum_width(polygon) >= 7.5 else "low_groundcover"
         classified.append((kind, polygon))
 
     classified.sort(
@@ -852,7 +901,11 @@ def _tree_placements(
     # One canopy per ~260 m² is intentionally restrained. Authored parks own
     # their denser tree recipes, while residual planting should frame the plan.
     target_count = min(48, max(0, int(safe.area / 260.0)))
-    if target_count == 0 and safe.area >= 120.0 and _minimum_width(max(_sorted_polygons(safe), key=lambda p: p.area)) >= 7.5:
+    if (
+        target_count == 0
+        and safe.area >= 120.0
+        and _minimum_width(max(_sorted_polygons(safe), key=lambda p: p.area)) >= 7.5
+    ):
         target_count = 1
     if target_count == 0:
         return []
@@ -937,12 +990,16 @@ def build_residual_landscape_recipe(
 
     occupied_union = _repair_polygonal(unary_union(occupied)) if occupied else Polygon()
     residual = _repair_polygonal(boundary_metric.difference(occupied_union))
-    buildings = _repair_polygonal(
-        unary_union(occupied_by_kind.get("building", []))
-    ) if occupied_by_kind.get("building") else Polygon()
-    streets = _repair_polygonal(
-        unary_union(occupied_by_kind.get("street", []))
-    ) if occupied_by_kind.get("street") else Polygon()
+    buildings = (
+        _repair_polygonal(unary_union(occupied_by_kind.get("building", [])))
+        if occupied_by_kind.get("building")
+        else Polygon()
+    )
+    streets = (
+        _repair_polygonal(unary_union(occupied_by_kind.get("street", [])))
+        if occupied_by_kind.get("street")
+        else Polygon()
+    )
 
     classified = _classify_residual(residual, boundary_metric, buildings, streets)
     kind_counts: dict[str, int] = {}
@@ -993,11 +1050,7 @@ def derive_site_boundary_from_authored_zones(
     parcel, while their interstitial gaps become the residual landscape.
     """
 
-    polygonal = [
-        repaired
-        for geometry in geometries
-        if not (repaired := _repair_polygonal(geometry)).is_empty
-    ]
+    polygonal = [repaired for geometry in geometries if not (repaired := _repair_polygonal(geometry)).is_empty]
     if len(polygonal) < 2:
         raise ValueError("At least two authored polygons are required to infer a site boundary")
     union_wgs84 = _repair_polygonal(unary_union(polygonal))

@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
-from app.core.security import get_current_user, require_auth
+from app.core.security import require_auth
 from app.models.models import Project, ProjectShare, User
 from app.schemas.schemas import (
     ProjectResponse,
@@ -26,6 +26,7 @@ router = APIRouter()
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 async def _get_project_as_owner(
     project_id: uuid.UUID,
@@ -46,6 +47,7 @@ async def _get_project_as_owner(
 # Endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.post(
     "/projects/{project_id}/shares",
     response_model=ShareResponse,
@@ -58,14 +60,14 @@ async def share_project(
     db: AsyncSession = Depends(get_db),
 ):
     """Share a project with another user by email."""
-    project = await _get_project_as_owner(project_id, user, db)
+    await _get_project_as_owner(project_id, user, db)
 
     # Check if already shared with this email
     result = await db.execute(
         select(ProjectShare).where(
             ProjectShare.project_id == project_id,
             ProjectShare.email == body.email,
-            ProjectShare.is_public_link == False,
+            ProjectShare.is_public_link.is_(False),
         )
     )
     existing = result.scalar_one_or_none()
@@ -103,9 +105,7 @@ async def list_shares(
     await _get_project_as_owner(project_id, user, db)
 
     result = await db.execute(
-        select(ProjectShare)
-        .where(ProjectShare.project_id == project_id)
-        .order_by(ProjectShare.created_at)
+        select(ProjectShare).where(ProjectShare.project_id == project_id).order_by(ProjectShare.created_at)
     )
     return result.scalars().all()
 
@@ -149,7 +149,7 @@ async def create_public_link(
     result = await db.execute(
         select(ProjectShare).where(
             ProjectShare.project_id == project_id,
-            ProjectShare.is_public_link == True,
+            ProjectShare.is_public_link.is_(True),
         )
     )
     existing = result.scalar_one_or_none()
@@ -184,7 +184,7 @@ async def revoke_public_link(
     result = await db.execute(
         select(ProjectShare).where(
             ProjectShare.project_id == project_id,
-            ProjectShare.is_public_link == True,
+            ProjectShare.is_public_link.is_(True),
         )
     )
     existing = result.scalar_one_or_none()
@@ -198,9 +198,7 @@ async def get_shared_project(
     db: AsyncSession = Depends(get_db),
 ):
     """Access a project via share token (public link or invite)."""
-    result = await db.execute(
-        select(ProjectShare).where(ProjectShare.invite_token == token)
-    )
+    result = await db.execute(select(ProjectShare).where(ProjectShare.invite_token == token))
     share = result.scalar_one_or_none()
     if not share:
         raise HTTPException(status_code=404, detail="Invalid or expired share link")
@@ -224,11 +222,13 @@ async def list_shared_with_me(
 ):
     """List all projects shared with the current user."""
     result = await db.execute(
-        select(ProjectShare).where(
+        select(ProjectShare)
+        .where(
             or_(
                 ProjectShare.user_id == user.id,
                 ProjectShare.email == user.email,
             )
-        ).order_by(ProjectShare.created_at.desc())
+        )
+        .order_by(ProjectShare.created_at.desc())
     )
     return result.scalars().all()

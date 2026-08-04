@@ -115,6 +115,7 @@ async def refresh_token(
         raise HTTPException(status_code=401, detail="Invalid token payload")
 
     import uuid
+
     result = await db.execute(select(User).where(User.id == uuid.UUID(user_id)))
     user = result.scalar_one_or_none()
 
@@ -178,6 +179,7 @@ async def forgot_password(
         reset_link = f"{settings.frontend_url}/reset-password?token={reset_token}"
         try:
             from app.core.email import send_password_reset_email
+
             await send_password_reset_email(user.email, reset_link)
         except Exception:
             logger.warning("Failed to send reset email for %s", body.email)
@@ -207,6 +209,7 @@ async def reset_password(
         )
 
     import uuid as _uuid
+
     result = await db.execute(select(User).where(User.id == _uuid.UUID(user_id)))
     user = result.scalar_one_or_none()
 

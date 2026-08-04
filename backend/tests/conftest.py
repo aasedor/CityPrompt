@@ -21,8 +21,10 @@ from app.main import app
 # Fake DB session that bypasses the real PostgreSQL dependency
 # ---------------------------------------------------------------------------
 
+
 class FakeUser:
     """Minimal User stand-in for tests that need auth."""
+
     def __init__(self, **kwargs):
         self.id = kwargs.get("id", uuid.uuid4())
         self.email = kwargs.get("email", "test@example.com")
@@ -37,6 +39,7 @@ class FakeUser:
 
 class FakeProject:
     """Minimal Project stand-in for tests."""
+
     def __init__(self, **kwargs):
         self.id = kwargs.get("id", uuid.uuid4())
         self.name = kwargs.get("name", "Test Project")
@@ -54,6 +57,7 @@ class FakeProject:
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def test_user():
@@ -88,6 +92,7 @@ async def client(mock_db):
     HTTPX async client wired to the FastAPI app with the DB dependency
     overridden to return mock_db.
     """
+
     async def override_get_db():
         yield mock_db
 

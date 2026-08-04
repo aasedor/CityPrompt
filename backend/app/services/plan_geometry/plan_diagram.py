@@ -30,7 +30,7 @@ from app.services.site_engine import (
 # them the block centre reads as unplanned white ground).
 DIAGRAM_COLORS = {
     "background": (255, 255, 255),
-    "site": (243, 240, 235),        # faint site tint so the boundary reads
+    "site": (243, 240, 235),  # faint site tint so the boundary reads
     "street": (128, 128, 128),
     "open_space": (124, 179, 66),
     "courtyard": (124, 179, 66),

@@ -111,16 +111,11 @@ def _validate_direct_3d_project_zones(
     """
 
     boundaries = [
-        zone
-        for zone in zones
-        if zone.zone_type == "site_boundary"
-        and getattr(zone, "is_active_boundary", True)
+        zone for zone in zones if zone.zone_type == "site_boundary" and getattr(zone, "is_active_boundary", True)
     ]
     all_physical_zones = physical_community_3d_zones(zones)
     if not all_physical_zones:
-        raise _direct_state_conflict(
-            "This project has no compiled building, park, or street layers to render."
-        )
+        raise _direct_state_conflict("This project has no compiled building, park, or street layers to render.")
 
     claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
     try:
@@ -130,14 +125,11 @@ def _validate_direct_3d_project_zones(
         )
     except Community3DScopeError:
         raise _direct_state_conflict(
-            "The captured 3D layer set no longer matches this project. "
-            "Run Generate to 3D again before rendering."
+            "The captured 3D layer set no longer matches this project. " "Run Generate to 3D again before rendering."
         )
 
     unsupported = [
-        zone
-        for zone in physical_zones
-        if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
+        zone for zone in physical_zones if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
     ]
     if unsupported:
         raise _direct_state_conflict(
@@ -186,38 +178,27 @@ def _validate_direct_3d_project_zones(
             representation_ready = bool(
                 building is not None
                 and (
-                    (generator == "lego_assembly" and isinstance(
-                        (specifications or {}).get("legoAssembly"), dict
-                    ))
-                    or (generator == "planned_massing" and isinstance(
-                        (specifications or {}).get("plannedMassing"), dict
-                    ))
+                    (generator == "lego_assembly" and isinstance((specifications or {}).get("legoAssembly"), dict))
+                    or (
+                        generator == "planned_massing"
+                        and isinstance((specifications or {}).get("plannedMassing"), dict)
+                    )
                     or (
                         generator == "meshy"
                         and bool(
-                            building.model_url
-                            or (
-                                isinstance(building.lod_urls, dict)
-                                and building.lod_urls.get("0")
-                            )
+                            building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0"))
                         )
                     )
                 )
             )
-            if (
-                not linked_building_id
-                or str(claim.building_id or "") != linked_building_id
-                or not representation_ready
-            ):
+            if not linked_building_id or str(claim.building_id or "") != linked_building_id or not representation_ready:
                 missing_buildings.append(zone)
                 continue
         elif claim.building_id is not None:
             stale_or_uncompiled.append(zone)
             continue
 
-        public_realm_recipe = (zone.properties or {}).get(
-            PUBLIC_REALM_RECIPE_PROPERTY
-        )
+        public_realm_recipe = (zone.properties or {}).get(PUBLIC_REALM_RECIPE_PROPERTY)
         plan_scenario = (zone.properties or {}).get("_plan_scenario")
         if (
             kind in {"park", "street"}
@@ -248,10 +229,7 @@ def _validate_direct_3d_project_zones(
             ):
                 stale_or_uncompiled.append(zone)
                 continue
-            if (
-                canonical_recipe is None
-                or canonical_recipe.model_dump(mode="json") != public_realm_recipe
-            ):
+            if canonical_recipe is None or canonical_recipe.model_dump(mode="json") != public_realm_recipe:
                 # The stored recipe may be internally valid while describing a
                 # different metric target. Direct must bind the claimed kit to
                 # the exact locked source geometry, not merely to its own hash.
@@ -289,9 +267,7 @@ def _validate_direct_3d_project_zones(
         )
 
     server_inventory = (
-        _bind_instance_manifest_to_server_zones(req, physical_zones, zones)
-        if bind_capture_instances
-        else []
+        _bind_instance_manifest_to_server_zones(req, physical_zones, zones) if bind_capture_instances else []
     )
     if len(boundaries) > 1:
         raise _direct_state_conflict(
@@ -315,9 +291,7 @@ def _validate_direct_3d_project_zones(
     stored = (boundary.properties or {}).get("community_3d_landscape")
     claim = req.residual_landscape_claim
     if not isinstance(stored, dict) or stored.get("state") != "compiled" or claim is None:
-        raise _direct_state_conflict(
-            "Residual landscaping is not current. Run Generate to 3D again before rendering."
-        )
+        raise _direct_state_conflict("Residual landscaping is not current. Run Generate to 3D again before rendering.")
     stored_hash = stored.get("source_hash")
     stored_boundary_id = stored.get("boundary_id")
     try:
@@ -326,10 +300,7 @@ def _validate_direct_3d_project_zones(
             [
                 ResidualSourceZone(
                     zone_id=str(zone.id),
-                    kind=(
-                        community_3d_kind_for_source(zone.zone_type, zone.properties)
-                        or str(zone.zone_type)
-                    ),
+                    kind=(community_3d_kind_for_source(zone.zone_type, zone.properties) or str(zone.zone_type)),
                     role=(
                         str((zone.properties or {}).get("_plan_role"))
                         if (zone.properties or {}).get("_plan_role") is not None
@@ -387,12 +358,7 @@ def _valid_centerline_points(value: object) -> list[tuple[float, float]] | None:
             latitude = float(candidate[1])
         except (TypeError, ValueError):
             return None
-        if (
-            not math.isfinite(longitude)
-            or not math.isfinite(latitude)
-            or abs(longitude) > 180
-            or abs(latitude) > 90
-        ):
+        if not math.isfinite(longitude) or not math.isfinite(latitude) or abs(longitude) > 180 or abs(latitude) > 90:
             return None
         point = (longitude, latitude)
         if points and all(abs(a - b) < 1e-12 for a, b in zip(points[-1], point)):
@@ -458,11 +424,7 @@ def _street_zone_centerline(zone: SiteZone) -> list[tuple[float, float]] | None:
         if recovered is not None:
             return recovered
     ring = [(float(x), float(y)) for x, y, *_rest in geometry.exterior.coords]
-    if (
-        len(ring) > 2
-        and abs(ring[0][0] - ring[-1][0]) < 1e-10
-        and abs(ring[0][1] - ring[-1][1]) < 1e-10
-    ):
+    if len(ring) > 2 and abs(ring[0][0] - ring[-1][0]) < 1e-10 and abs(ring[0][1] - ring[-1][1]) < 1e-10:
         ring = ring[:-1]
     half = len(ring) // 2
     if half < 2:
@@ -501,10 +463,7 @@ def _effective_street_width(zone: SiteZone) -> float:
             lego.get("archetype_id"),
         )
     )
-    if lanes == 0 or any(
-        token in semantic
-        for token in ("trail", "path", "cycleway", "multi_use", "laneway", "alley")
-    ):
+    if lanes == 0 or any(token in semantic for token in ("trail", "path", "cycleway", "multi_use", "laneway", "alley")):
         return width
     return max(width, lanes * 3.5)
 
@@ -546,7 +505,8 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         or recipe.get("kind") != "street"
         or recipe.get("generator") != "street_section"
         or target.get("target_type") != "street_segment"
-        or recipe.get("family_id") not in {
+        or recipe.get("family_id")
+        not in {
             "street_local_public_realm",
             "street_complete_main_18m",
             "street_complete_main_22m",
@@ -571,8 +531,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         )
     )
     return _effective_street_width(zone) >= 6 and not any(
-        token in semantic
-        for token in ("trail", "path", "laneway", "alley", "roundabout")
+        token in semantic for token in ("trail", "path", "laneway", "alley", "roundabout")
     )
 
 
@@ -604,8 +563,7 @@ def _closest_point_on_segment(
             0.0,
             min(
                 1.0,
-                ((point[0] - start[0]) * dx + (point[1] - start[1]) * dy)
-                / length_squared,
+                ((point[0] - start[0]) * dx + (point[1] - start[1]) * dy) / length_squared,
             ),
         )
         if length_squared > 0
@@ -633,12 +591,7 @@ def _segment_intersection(
     offset_y = second_start[1] - first_start[1]
     first_t = (offset_x * second_dy - offset_y * second_dx) / denominator
     second_t = (offset_x * first_dy - offset_y * first_dx) / denominator
-    if (
-        first_t < -1e-6
-        or first_t > 1 + 1e-6
-        or second_t < -1e-6
-        or second_t > 1 + 1e-6
-    ):
+    if first_t < -1e-6 or first_t > 1 + 1e-6 or second_t < -1e-6 or second_t > 1 + 1e-6:
         return None
     return (
         first_start[0] + first_dx * first_t,
@@ -655,22 +608,16 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
     for zone in street_zones:
         centerline = _street_zone_centerline(zone)
         width = _effective_street_width(zone)
-        if (
-            centerline is None
-            or len(centerline) > 512
-            or not _street_supports_v1_four_way_junction(zone)
-        ):
+        if centerline is None or len(centerline) > 512 or not _street_supports_v1_four_way_junction(zone):
             return False
-        geographic_axes.append({
-            "zone_id": str(zone.id),
-            "width": width,
-            "points": centerline,
-        })
-    all_points = [
-        point
-        for axis in geographic_axes
-        for point in axis["points"]  # type: ignore[union-attr]
-    ]
+        geographic_axes.append(
+            {
+                "zone_id": str(zone.id),
+                "width": width,
+                "points": centerline,
+            }
+        )
+    all_points = [point for axis in geographic_axes for point in axis["points"]]  # type: ignore[union-attr]
     origin_longitude = sum(point[0] for point in all_points) / len(all_points)
     origin_latitude = sum(point[1] for point in all_points) / len(all_points)
     meters_per_longitude = max(
@@ -679,22 +626,24 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
     )
     axes: list[dict[str, object]] = []
     for geographic_axis in geographic_axes:
-        axes.append({
-            **geographic_axis,
-            "points": [
-                (
-                    (point[0] - origin_longitude) * meters_per_longitude,
-                    (point[1] - origin_latitude) * 111_320,
-                )
-                for point in geographic_axis["points"]  # type: ignore[union-attr]
-            ],
-        })
+        axes.append(
+            {
+                **geographic_axis,
+                "points": [
+                    (
+                        (point[0] - origin_longitude) * meters_per_longitude,
+                        (point[1] - origin_latitude) * 111_320,
+                    )
+                    for point in geographic_axis["points"]  # type: ignore[union-attr]
+                ],
+            }
+        )
 
     candidates: list[dict[str, object]] = []
     for first_index, first in enumerate(axes):
         first_points = first["points"]
         first_width = float(first["width"])
-        for second in axes[first_index + 1:]:
+        for second in axes[first_index + 1 :]:
             second_points = second["points"]
             second_width = float(second["width"])
             tolerance = max(first_width, second_width) / 2 + 2
@@ -725,14 +674,16 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
                         second_end,
                     )
                     if intersection is not None:
-                        candidates.append({
-                            "x": intersection[0],
-                            "y": intersection[1],
-                            "zone_ids": {
-                                str(first["zone_id"]),
-                                str(second["zone_id"]),
-                            },
-                        })
+                        candidates.append(
+                            {
+                                "x": intersection[0],
+                                "y": intersection[1],
+                                "zone_ids": {
+                                    str(first["zone_id"]),
+                                    str(second["zone_id"]),
+                                },
+                            }
+                        )
                         continue
                     for endpoint in (first_start, first_end):
                         projected = _closest_point_on_segment(
@@ -741,14 +692,16 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
                             second_end,
                         )
                         if projected[3] <= tolerance:
-                            candidates.append({
-                                "x": projected[0],
-                                "y": projected[1],
-                                "zone_ids": {
-                                    str(first["zone_id"]),
-                                    str(second["zone_id"]),
-                                },
-                            })
+                            candidates.append(
+                                {
+                                    "x": projected[0],
+                                    "y": projected[1],
+                                    "zone_ids": {
+                                        str(first["zone_id"]),
+                                        str(second["zone_id"]),
+                                    },
+                                }
+                            )
                     for endpoint in (second_start, second_end):
                         projected = _closest_point_on_segment(
                             endpoint,
@@ -756,14 +709,16 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
                             first_end,
                         )
                         if projected[3] <= tolerance:
-                            candidates.append({
-                                "x": projected[0],
-                                "y": projected[1],
-                                "zone_ids": {
-                                    str(first["zone_id"]),
-                                    str(second["zone_id"]),
-                                },
-                            })
+                            candidates.append(
+                                {
+                                    "x": projected[0],
+                                    "y": projected[1],
+                                    "zone_ids": {
+                                        str(first["zone_id"]),
+                                        str(second["zone_id"]),
+                                    },
+                                }
+                            )
 
     clusters: list[dict[str, object]] = []
     for candidate in candidates:
@@ -774,25 +729,24 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
                 if math.hypot(
                     float(item["x"]) - float(candidate["x"]),
                     float(item["y"]) - float(candidate["y"]),
-                ) <= 4
+                )
+                <= 4
             ),
             None,
         )
         if cluster is None:
-            clusters.append({
-                "x": candidate["x"],
-                "y": candidate["y"],
-                "count": 1,
-                "zone_ids": set(candidate["zone_ids"]),
-            })
+            clusters.append(
+                {
+                    "x": candidate["x"],
+                    "y": candidate["y"],
+                    "count": 1,
+                    "zone_ids": set(candidate["zone_ids"]),
+                }
+            )
         else:
             count = int(cluster["count"])
-            cluster["x"] = (
-                float(cluster["x"]) * count + float(candidate["x"])
-            ) / (count + 1)
-            cluster["y"] = (
-                float(cluster["y"]) * count + float(candidate["y"])
-            ) / (count + 1)
+            cluster["x"] = (float(cluster["x"]) * count + float(candidate["x"])) / (count + 1)
+            cluster["y"] = (float(cluster["y"]) * count + float(candidate["y"])) / (count + 1)
             cluster["count"] = count + 1
             cluster_zone_ids = cluster["zone_ids"]
             if isinstance(cluster_zone_ids, set):
@@ -808,8 +762,7 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
             *(
                 float(axis["width"]) / 2 + 2
                 for axis in axes
-                if isinstance(cluster_zone_ids, set)
-                and str(axis["zone_id"]) in cluster_zone_ids
+                if isinstance(cluster_zone_ids, set) and str(axis["zone_id"]) in cluster_zone_ids
             ),
         )
         for axis in axes:
@@ -839,10 +792,12 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
             if not at_last_end:
                 arms.append({"bearing": bearing, "width": float(axis["width"])})
             if not at_first_end:
-                arms.append({
-                    "bearing": (bearing + math.pi) % (math.pi * 2),
-                    "width": float(axis["width"]),
-                })
+                arms.append(
+                    {
+                        "bearing": (bearing + math.pi) % (math.pi * 2),
+                        "width": float(axis["width"]),
+                    }
+                )
         if contributing_zone_ids != expected_zone_ids:
             continue
         grouped_arms: list[dict[str, float]] = []
@@ -856,10 +811,12 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
                 None,
             )
             if matching is None:
-                grouped_arms.append({
-                    "bearing": float(arm["bearing"]),
-                    "width": float(arm["width"]),
-                })
+                grouped_arms.append(
+                    {
+                        "bearing": float(arm["bearing"]),
+                        "width": float(arm["width"]),
+                    }
+                )
             else:
                 matching["width"] = max(matching["width"], float(arm["width"]))
         if len(grouped_arms) != 4:
@@ -867,10 +824,7 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
         orientations: list[float] = []
         for arm in grouped_arms:
             orientation = _undirected_angle(arm["bearing"])
-            if not any(
-                _undirected_angle_distance(existing, orientation) < math.pi / 12
-                for existing in orientations
-            ):
+            if not any(_undirected_angle_distance(existing, orientation) < math.pi / 12 for existing in orientations):
                 orientations.append(orientation)
         if len(orientations) != 2:
             continue
@@ -905,14 +859,8 @@ def _bind_instance_manifest_to_server_zones(
             ),
         }
     authorized_zone_ids = set(expected)
-    authorized_zone_ids.update(
-        str(zone.id) for zone in all_zones if zone.zone_type == "site_boundary"
-    )
-    all_zones_by_id = {
-        str(zone.id): zone
-        for zone in all_zones
-        if str(zone.id) in authorized_zone_ids
-    }
+    authorized_zone_ids.update(str(zone.id) for zone in all_zones if zone.zone_type == "site_boundary")
+    all_zones_by_id = {str(zone.id): zone for zone in all_zones if str(zone.id) in authorized_zone_ids}
     all_zone_ids = set(all_zones_by_id)
     allowed_supplemental_surfaces: set[tuple[str, str]] = set()
     for zone_id, zone in all_zones_by_id.items():
@@ -965,8 +913,7 @@ def _bind_instance_manifest_to_server_zones(
         }
         if descriptor.instance_id in seen_instance_ids:
             raise _direct_state_conflict(
-                "The instance inventory repeats a screen-space identity. Refresh "
-                "the scene before rendering."
+                "The instance inventory repeats a screen-space identity. Refresh " "the scene before rendering."
             )
         seen_instance_ids.add(descriptor.instance_id)
         unknown_source_ids = sorted(set(source_zone_ids) - all_zone_ids)
@@ -977,24 +924,15 @@ def _bind_instance_manifest_to_server_zones(
             )
         for source_zone_id in source_zone_ids:
             source_expected = expected.get(source_zone_id)
-            if (
-                descriptor.semantic_class in {"building", "park"}
-                and (
-                    source_expected is None
-                    or source_expected["semantic_class"]
-                    != descriptor.semantic_class
-                )
+            if descriptor.semantic_class in {"building", "park"} and (
+                source_expected is None or source_expected["semantic_class"] != descriptor.semantic_class
             ):
                 raise _direct_state_conflict(
                     "The instance inventory source-zone role no longer matches the "
                     "compiled project. Refresh the scene before rendering."
                 )
-            if (
-                descriptor.semantic_class == "street"
-                and (
-                    source_expected is None
-                    or source_expected["semantic_class"] != "street"
-                )
+            if descriptor.semantic_class == "street" and (
+                source_expected is None or source_expected["semantic_class"] != "street"
             ):
                 raise _direct_state_conflict(
                     "Street topology instances may reference only compiled street "
@@ -1002,14 +940,8 @@ def _bind_instance_manifest_to_server_zones(
                 )
 
         if zone_id is None:
-            is_topology_street = (
-                descriptor.semantic_class == "street"
-                and 2 <= len(source_zone_ids) <= 4
-            )
-            if (
-                descriptor.semantic_class in {"building", "park", "street"}
-                and not is_topology_street
-            ):
+            is_topology_street = descriptor.semantic_class == "street" and 2 <= len(source_zone_ids) <= 4
+            if descriptor.semantic_class in {"building", "park", "street"} and not is_topology_street:
                 raise _direct_state_conflict(
                     "Every building, park, and street instance must identify its "
                     "server-authored zone, except validated street junctions. "
@@ -1041,8 +973,7 @@ def _bind_instance_manifest_to_server_zones(
                 )
             if source_zone_ids:
                 raise _direct_state_conflict(
-                    "Zone-bound instances cannot claim additional source zones. "
-                    "Refresh the scene before rendering."
+                    "Zone-bound instances cannot claim additional source zones. " "Refresh the scene before rendering."
                 )
             canonical_instance_id = f"zone:{zone_id}:{descriptor.semantic_class}"
             if descriptor.instance_id != canonical_instance_id:
@@ -1050,11 +981,7 @@ def _bind_instance_manifest_to_server_zones(
                     "The instance identity does not match its server-authored zone "
                     "and semantic role. Refresh the scene before rendering."
                 )
-            if (
-                is_supplemental_surface
-                and (zone_id, descriptor.semantic_class)
-                not in allowed_supplemental_surfaces
-            ):
+            if is_supplemental_surface and (zone_id, descriptor.semantic_class) not in allowed_supplemental_surfaces:
                 raise _direct_state_conflict(
                     "The supplemental surface is not present in the server-compiled "
                     "scene. Refresh the scene before rendering."
@@ -1072,46 +999,37 @@ def _bind_instance_manifest_to_server_zones(
                     )
                 if descriptor.semantic_class != expected_item["semantic_class"]:
                     raise _direct_state_conflict(
-                        "The instance inventory relabels a server-authored zone. Refresh "
-                        "the scene before rendering."
+                        "The instance inventory relabels a server-authored zone. Refresh " "the scene before rendering."
                     )
                 seen_primary_zone_ids.add(zone_id)
-            expected_building_id = (
-                expected_item["building_id"] if expected_item is not None else None
-            )
-            descriptor_building_id = (
-                str(descriptor.building_id) if descriptor.building_id else None
-            )
+            expected_building_id = expected_item["building_id"] if expected_item is not None else None
+            descriptor_building_id = str(descriptor.building_id) if descriptor.building_id else None
             primary_building = (
                 not is_supplemental_surface
                 and expected_item is not None
                 and expected_item["semantic_class"] == "building"
             )
-            if (
-                (primary_building and descriptor_building_id != expected_building_id)
-                or (
-                    descriptor_building_id is not None
-                    and descriptor_building_id != expected_building_id
-                )
+            if (primary_building and descriptor_building_id != expected_building_id) or (
+                descriptor_building_id is not None and descriptor_building_id != expected_building_id
             ):
                 raise _direct_state_conflict(
                     "The instance inventory building identity no longer matches the "
                     "compiled model. Refresh the scene before rendering."
                 )
-        server_inventory.append({
-            "instance_id": descriptor.instance_id,
-            "semantic_class": descriptor.semantic_class,
-            "zone_id": zone_id,
-            "building_id": (
-                str(descriptor.building_id) if descriptor.building_id else None
-            ),
-            "source_zone_ids": source_zone_ids,
-            "design_identity": (
-                expected_item["design_identity"]
-                if expected_item is not None and not is_supplemental_surface
-                else None
-            ),
-        })
+        server_inventory.append(
+            {
+                "instance_id": descriptor.instance_id,
+                "semantic_class": descriptor.semantic_class,
+                "zone_id": zone_id,
+                "building_id": (str(descriptor.building_id) if descriptor.building_id else None),
+                "source_zone_ids": source_zone_ids,
+                "design_identity": (
+                    expected_item["design_identity"]
+                    if expected_item is not None and not is_supplemental_surface
+                    else None
+                ),
+            }
+        )
 
     if seen_primary_zone_ids != set(expected):
         raise _direct_state_conflict(
@@ -1259,13 +1177,9 @@ async def generate_direct_3d_render(
     await check_project_permission(req.project_id, user, db, required="viewer")
     await lock_residual_landscape_project(db, req.project_id)
     zones_result = await db.execute(
-        select(SiteZone)
-        .where(SiteZone.project_id == req.project_id)
-        .execution_options(populate_existing=True)
+        select(SiteZone).where(SiteZone.project_id == req.project_id).execution_options(populate_existing=True)
     )
-    buildings_result = await db.execute(
-        select(Building).where(Building.project_id == req.project_id)
-    )
+    buildings_result = await db.execute(select(Building).where(Building.project_id == req.project_id))
     current_buildings = list(buildings_result.scalars().all())
     server_inventory = _validate_direct_3d_project_zones(
         req,
@@ -1305,9 +1219,7 @@ async def generate_direct_3d_render(
         user,
         token_cost=token_cost,
         daily_cap=settings.render_global_daily_token_cap,
-        prompt=(
-            f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"
-        ),
+        prompt=(f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"),
         project_id=req.project_id,
     )
     try:
@@ -1319,11 +1231,7 @@ async def generate_direct_3d_render(
     except Direct3DProviderError as exc:
         logger.warning("Direct 3D provider failure: %s", exc)
         if not exc.refund_eligible:
-            status_label = (
-                "billed safety failure"
-                if exc.billing_status == "produced"
-                else "billing unknown"
-            )
+            status_label = "billed safety failure" if exc.billing_status == "produced" else "billing unknown"
             try:
                 await _finalize_direct_audit(
                     db,
@@ -1386,9 +1294,7 @@ async def generate_direct_3d_render(
         ) from exc
 
     try:
-        processing_mode = str(
-            result.diagnostics.get("processing_mode", "source_anchored")
-        )
+        processing_mode = str(result.diagnostics.get("processing_mode", "source_anchored"))
         provider_first = bool(result.diagnostics.get("provider_first", False))
         await _finalize_direct_audit(
             db,
@@ -1400,9 +1306,7 @@ async def generate_direct_3d_render(
                 if provider_first
                 else f"{result.outcome} source-anchored"
             ),
-            detail=(
-                f"[mode={processing_mode} style={req.style}] {req.prompt}"
-            ),
+            detail=(f"[mode={processing_mode} style={req.style}] {req.prompt}"),
         )
     except Exception as audit_exc:
         logger.warning("Failed to save Direct 3D render audit log: %s", audit_exc)
@@ -1424,9 +1328,7 @@ async def generate_direct_3d_render(
                 image_quality="high",
             ),
             variant="final",
-            outcome=(
-                f"{result.outcome} · {strategy}" if strategy else str(result.outcome)
-            ),
+            outcome=(f"{result.outcome} · {strategy}" if strategy else str(result.outcome)),
             scene_revision_sha256=scene_revision_sha256,
         )
         if result.provider_image_base64 and strategy not in (
@@ -1448,9 +1350,7 @@ async def generate_direct_3d_render(
                 scene_revision_sha256=scene_revision_sha256,
             )
     except Exception as gallery_exc:
-        logger.warning(
-            "Failed to auto-save Direct 3D render to gallery: %s", gallery_exc
-        )
+        logger.warning("Failed to auto-save Direct 3D render to gallery: %s", gallery_exc)
 
     return Direct3DRenderResponse(
         image_base64=result.image_base64,

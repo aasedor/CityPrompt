@@ -58,6 +58,7 @@ _OPENAI_RENDER_MODEL = "gpt-image-2"
 
 class ArchetypeImage(BaseModel):
     """An archetype reference image to include in the multi-image payload."""
+
     image_base64: str = Field(..., description="Base64-encoded JPEG/PNG of the archetype card.")
     label: str = Field(..., description="Label for this archetype (e.g., 'Glass Office Tower').")
     zone_color: Optional[str] = Field(default=None, description="Color identifier in the layout (e.g., 'red').")
@@ -71,8 +72,8 @@ class SiteContextAnchor(BaseModel):
     heading: Optional[float] = Field(
         default=None,
         description="Camera compass heading in degrees (0=N, clockwise; any value, normalised "
-                    "server-side). When set, a forward-facing Street View plate at this heading "
-                    "is added as the distant-background reference.",
+        "server-side). When set, a forward-facing Street View plate at this heading "
+        "is added as the distant-background reference.",
     )
 
 
@@ -218,34 +219,29 @@ def _describe_google_auth_failure(exc: Exception, settings) -> str:
         if not creds_path:
             return (
                 "Google credentials are not configured. "
-                "Set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file."
-                + suffix
+                "Set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file." + suffix
             )
         if not Path(creds_path).exists():
             return (
                 f"Credentials file was not found at {creds_path}. "
-                "Check that the path is correct and the file exists."
-                + suffix
+                "Check that the path is correct and the file exists." + suffix
             )
         return (
             f"Credentials file at {creds_path} could not be loaded. "
-            "Ensure it contains valid service-account JSON."
-            + suffix
+            "Ensure it contains valid service-account JSON." + suffix
         )
 
     if isinstance(exc, TransportError):
         return (
             "The server could not reach Google's token service "
-            "(oauth2.googleapis.com). Check network / firewall settings."
-            + suffix
+            "(oauth2.googleapis.com). Check network / firewall settings." + suffix
         )
 
     if isinstance(exc, RuntimeError) and "403" in str(exc):
         return (
             "Google rejected the token request (403). "
             "Verify that the Vertex AI API is enabled on the project "
-            "and the service account has the correct IAM roles."
-            + suffix
+            "and the service account has the correct IAM roles." + suffix
         )
 
     return f"Google auth failed: {exc}" + suffix
@@ -322,10 +318,10 @@ _OPENAI_MODELS = {"gpt-image-2", "gpt-image-2-2026-04-21"}
 
 # Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
 _MODEL_TOKEN_COST: dict[str, int] = {
-    "gemini-2.5-flash-image": 8,        # ~$0.039
-    "gemini-3.1-flash-image": 13,         # ~$0.067 (GA id)
-    "gemini-3.1-flash-image-preview": 13, # ~$0.067 (deprecated alias)
-    "gemini-3-pro-image-preview": 27,     # ~$0.134
+    "gemini-2.5-flash-image": 8,  # ~$0.039
+    "gemini-3.1-flash-image": 13,  # ~$0.067 (GA id)
+    "gemini-3.1-flash-image-preview": 13,  # ~$0.067 (deprecated alias)
+    "gemini-3-pro-image-preview": 27,  # ~$0.134
     "gpt-image-2": 13,
     "gpt-image-2-2026-04-21": 13,
 }
@@ -340,8 +336,9 @@ def _utc_day_start(now: datetime | None = None) -> datetime:
 
 async def _get_tokens_spent_today(db: AsyncSession) -> int:
     result = await db.execute(
-        select(func.coalesce(func.sum(RenderAuditLog.tokens_spent), 0))
-        .where(RenderAuditLog.created_at >= _utc_day_start())
+        select(func.coalesce(func.sum(RenderAuditLog.tokens_spent), 0)).where(
+            RenderAuditLog.created_at >= _utc_day_start()
+        )
     )
     return int(result.scalar() or 0)
 
@@ -406,9 +403,7 @@ def _get_auth_headers(settings) -> dict[str, str]:
         import google.auth
         import google.auth.transport.requests
 
-        credentials, _ = google.auth.default(
-            scopes=["https://www.googleapis.com/auth/cloud-platform"]
-        )
+        credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
         credentials.refresh(google.auth.transport.requests.Request())
         headers["Authorization"] = f"Bearer {credentials.token}"
 
@@ -554,22 +549,26 @@ def _build_openai_files(
     # Semantic zone map rides directly behind the source so the prompt can
     # reference it as "the second attached image".
     if req.semantic_guide_base64:
-        files.append((
-            "image[]",
-            ("semantic-zone-map.png", _decode_base64_payload(req.semantic_guide_base64), "image/png"),
-        ))
+        files.append(
+            (
+                "image[]",
+                ("semantic-zone-map.png", _decode_base64_payload(req.semantic_guide_base64), "image/png"),
+            )
+        )
 
     if req.previous_render_base64:
         previous_mime = _guess_image_mime(req.previous_render_base64)
         previous_ext = _extension_for_mime(previous_mime)
-        files.append((
-            "image[]",
+        files.append(
             (
-                f"previous-street-view-render.{previous_ext}",
-                _decode_base64_payload(req.previous_render_base64),
-                previous_mime,
-            ),
-        ))
+                "image[]",
+                (
+                    f"previous-street-view-render.{previous_ext}",
+                    _decode_base64_payload(req.previous_render_base64),
+                    previous_mime,
+                ),
+            )
+        )
 
     # GPT image edit models support up to 16 input images. Keep slots for the
     # site screenshot, optional previous render, and any real-context photos,
@@ -580,10 +579,12 @@ def _build_openai_files(
         mime = _guess_image_mime(arch_img.image_base64)
         ext = _extension_for_mime(mime)
         safe_idx = str(idx).zfill(2)
-        files.append((
-            "image[]",
-            (f"archetype-reference-{safe_idx}.{ext}", _decode_base64_payload(arch_img.image_base64), mime),
-        ))
+        files.append(
+            (
+                "image[]",
+                (f"archetype-reference-{safe_idx}.{ext}", _decode_base64_payload(arch_img.image_base64), mime),
+            )
+        )
 
     # Real-context photos (Street View + satellite) go last so the prompt can
     # reference them positionally as "the final N attached images".
@@ -591,10 +592,12 @@ def _build_openai_files(
 
     for idx, (_label, mime, b64) in enumerate(context_images, start=1):
         ext = _extension_for_mime(mime)
-        files.append((
-            "image[]",
-            (f"real-context-{str(idx).zfill(2)}.{ext}", _b64.b64decode(b64), mime),
-        ))
+        files.append(
+            (
+                "image[]",
+                (f"real-context-{str(idx).zfill(2)}.{ext}", _b64.b64decode(b64), mime),
+            )
+        )
 
     if include_mask and req.mask_base64:
         files.append(("mask", ("edit-mask.png", _openai_mask_png_bytes(req.mask_base64), "image/png")))
@@ -627,8 +630,7 @@ async def _call_openai_image_edit(
             "this exact site's surroundings, in compass order (north, east, south, west). "
             "Use them ONLY for the appearance of the surroundings - buildings, materials, "
             "signage, vegetation. The camera position, angle and framing must come from "
-            "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n"
-            + site_pack["prompt_block"]
+            "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n" + site_pack["prompt_block"]
         )
     if len(prompt_text) > 32_000:
         prompt_text = prompt_text[:31_900] + "\n\n[Prompt truncated to fit the OpenAI image prompt limit.]"
@@ -688,16 +690,26 @@ async def _generate_openai_render(req: RenderRequest, settings, render_model: st
             }
             logger.info(
                 "Site context attached to OpenAI edit: %d images for %.5f,%.5f",
-                len(site_pack["images"]), req.site_context.lat, req.site_context.lng,
+                len(site_pack["images"]),
+                req.site_context.lat,
+                req.site_context.lng,
             )
 
     resp = await _call_openai_image_edit(
-        req, settings, render_model, include_mask=bool(req.mask_base64), site_pack=site_pack,
+        req,
+        settings,
+        render_model,
+        include_mask=bool(req.mask_base64),
+        site_pack=site_pack,
     )
     if resp.status_code == 400 and req.mask_base64 and "mask" in resp.text.lower():
         logger.warning("OpenAI rejected the edit mask; retrying without mask for comparison render.")
         resp = await _call_openai_image_edit(
-            req, settings, render_model, include_mask=False, site_pack=site_pack,
+            req,
+            settings,
+            render_model,
+            include_mask=False,
+            site_pack=site_pack,
         )
 
     if resp.status_code != 200:
@@ -844,50 +856,58 @@ async def generate_render(
 
     # For dual anchoring: previous render goes first as structural anchor
     if req.previous_render_base64:
-        parts.append({
-            "text": "Image 1 (STRUCTURAL ANCHOR): This is a previously generated render. "
-                    "Preserve its EXACT spatial layout, geometric volumes, camera angle, and "
-                    "proportions. Only modify the specific elements described in the prompt."
-        })
-        parts.append({
-            "inlineData": {
-                "mimeType": "image/png",
-                "data": req.previous_render_base64,
+        parts.append(
+            {
+                "text": "Image 1 (STRUCTURAL ANCHOR): This is a previously generated render. "
+                "Preserve its EXACT spatial layout, geometric volumes, camera angle, and "
+                "proportions. Only modify the specific elements described in the prompt."
             }
-        })
+        )
+        parts.append(
+            {
+                "inlineData": {
+                    "mimeType": "image/png",
+                    "data": req.previous_render_base64,
+                }
+            }
+        )
 
     # Add the primary layout image (clay render, 3D capture, or screenshot)
     if req.image_base64:
         img_index = 2 if req.previous_render_base64 else 1
-        parts.append({
-            "text": _gemini_guide_image_text(req.guide_image_kind, img_index)
-        })
-        parts.append({
-            "inlineData": {
-                "mimeType": "image/png",
-                "data": req.image_base64,
+        parts.append({"text": _gemini_guide_image_text(req.guide_image_kind, img_index)})
+        parts.append(
+            {
+                "inlineData": {
+                    "mimeType": "image/png",
+                    "data": req.image_base64,
+                }
             }
-        })
+        )
 
     # Semantic zone map — same camera as the primary guide, one flat color per
     # proposal zone class. It pins depth ordering (nearer volumes occlude
     # farther ones) and zone containment without competing as a style source.
     if req.image_base64 and req.semantic_guide_base64:
         sem_index = 3 if req.previous_render_base64 else 2
-        parts.append({
-            "text": f"Image {sem_index} (SEMANTIC ZONE MAP): The same camera view as the "
-                    f"previous image with each proposed zone painted one flat color and "
-                    f"the real context left dark. Use it ONLY to resolve which volume is "
-                    f"which, their exact silhouettes, and their depth ordering — nearer "
-                    f"volumes occlude farther ones exactly as shown. Never copy its flat "
-                    f"colors into the output."
-        })
-        parts.append({
-            "inlineData": {
-                "mimeType": "image/png",
-                "data": req.semantic_guide_base64,
+        parts.append(
+            {
+                "text": f"Image {sem_index} (SEMANTIC ZONE MAP): The same camera view as the "
+                f"previous image with each proposed zone painted one flat color and "
+                f"the real context left dark. Use it ONLY to resolve which volume is "
+                f"which, their exact silhouettes, and their depth ordering — nearer "
+                f"volumes occlude farther ones exactly as shown. Never copy its flat "
+                f"colors into the output."
             }
-        })
+        )
+        parts.append(
+            {
+                "inlineData": {
+                    "mimeType": "image/png",
+                    "data": req.semantic_guide_base64,
+                }
+            }
+        )
 
     # Add archetype reference images for multi-image composition.
     # Cap raised from 6 → 48 to support multi-view refs (street-level +
@@ -902,21 +922,25 @@ async def generate_render(
         for i, arch_img in enumerate(req.archetype_images[:48]):  # Max 48 archetype refs
             img_idx = base_index + i
             color_ref = f" Located in the {arch_img.zone_color} zone." if arch_img.zone_color else ""
-            parts.append({
-                "text": f"Image {img_idx} (ARCHETYPE REFERENCE — {arch_img.label}): "
-                        f"Apply the exact architectural style, materials, and textures from "
-                        f"this reference image to the corresponding zone.{color_ref}"
-            })
+            parts.append(
+                {
+                    "text": f"Image {img_idx} (ARCHETYPE REFERENCE — {arch_img.label}): "
+                    f"Apply the exact architectural style, materials, and textures from "
+                    f"this reference image to the corresponding zone.{color_ref}"
+                }
+            )
             # Detect mime type from base64 header or default to jpeg
             mime = "image/jpeg"
             if arch_img.image_base64[:4] == "iVBO":
                 mime = "image/png"
-            parts.append({
-                "inlineData": {
-                    "mimeType": mime,
-                    "data": arch_img.image_base64,
+            parts.append(
+                {
+                    "inlineData": {
+                        "mimeType": mime,
+                        "data": arch_img.image_base64,
+                    }
                 }
-            })
+            )
 
     # Real-world site context: Street View photos + satellite + tenant list.
     # Fetched server-side (keys stay in backend/.env); failure degrades silently.
@@ -928,7 +952,9 @@ async def generate_render(
         if site_pack:
             logger.info(
                 "Site context attached: %d images for %.5f,%.5f",
-                len(site_pack["images"]), req.site_context.lat, req.site_context.lng,
+                len(site_pack["images"]),
+                req.site_context.lat,
+                req.site_context.lng,
             )
             # A top-down satellite ("AERIAL") in the reference stack drags the output
             # camera skyward and washes out eye-level street-view renders. This was
@@ -950,16 +976,20 @@ async def generate_render(
 
     # If a mask is provided, send it as an additional image with explanation
     if req.image_base64 and req.mask_base64:
-        parts.append({
-            "text": "The following black-and-white mask shows the exact area to edit "
-                    "(white = edit, black = keep unchanged):"
-        })
-        parts.append({
-            "inlineData": {
-                "mimeType": "image/png",
-                "data": req.mask_base64,
+        parts.append(
+            {
+                "text": "The following black-and-white mask shows the exact area to edit "
+                "(white = edit, black = keep unchanged):"
             }
-        })
+        )
+        parts.append(
+            {
+                "inlineData": {
+                    "mimeType": "image/png",
+                    "data": req.mask_base64,
+                }
+            }
+        )
 
     # Build the final prompt text
     prompt_text = _prompt_with_negative(req)
@@ -994,8 +1024,7 @@ async def generate_render(
     # Thread the requested aspect ratio through to Gemini. Unset, the LAST
     # image in the payload governs the output frame — a silent geometry
     # distorter for zone polygons.
-    _SUPPORTED_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4",
-                         "9:16", "16:9", "21:9"}
+    _SUPPORTED_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9"}
     if req.aspect_ratio in _SUPPORTED_RATIOS and render_model in _HIRES_MODELS:
         gen_config.setdefault("imageConfig", {})["aspectRatio"] = req.aspect_ratio
 
@@ -1025,8 +1054,7 @@ async def generate_render(
     # --- Logging ---
     auth_mode = "API key" if settings.gemini_api_key else "Vertex AI"
     logger.info(
-        "Render request — model=%s, auth=%s, prompt_length=%d, has_mask=%s, "
-        "imageSize=%s, aspectRatio=%s",
+        "Render request — model=%s, auth=%s, prompt_length=%d, has_mask=%s, " "imageSize=%s, aspectRatio=%s",
         req.model or _GEMINI_RENDER_MODEL,
         auth_mode,
         len(req.prompt),
@@ -1088,9 +1116,7 @@ async def generate_render(
                 text_response or "(none)",
                 len(content_parts),
             )
-            raise ValueError(
-                f"No image in Gemini response. Model said: {text_response or '(no text)'}"
-            )
+            raise ValueError(f"No image in Gemini response. Model said: {text_response or '(no text)'}")
 
         logger.info(
             "Gemini success — image size: %d chars, text: %s",
@@ -1120,7 +1146,13 @@ async def generate_render(
             user.render_credits = max(0, user.render_credits - token_cost)
             db.add(user)
             await db.commit()
-            logger.info("User %s: %d tokens deducted (%s) — %d remaining", user.email, token_cost, render_model, user.render_credits)
+            logger.info(
+                "User %s: %d tokens deducted (%s) — %d remaining",
+                user.email,
+                token_cost,
+                render_model,
+                user.render_credits,
+            )
 
         # Save audit log with input/output images to S3
         try:
@@ -1154,13 +1186,16 @@ async def generate_render(
 # Saved renders (gallery)
 # ---------------------------------------------------------------------------
 
+
 class SaveRenderRequest(BaseModel):
     image_base64: str = Field(..., description="Base64-encoded PNG of the render.")
     prompt: str = Field(..., description="Prompt used for the render.")
     style: Optional[str] = Field(default=None, description="Style preset name.")
     seed: Optional[int] = Field(default=None, description="Seed used for generation.")
     model: Optional[str] = Field(default=None, description="Model used for generation.")
-    image_quality: Optional[str] = Field(default=None, pattern=r"^(auto|low|medium|high)$", description="Image quality used for generation.")
+    image_quality: Optional[str] = Field(
+        default=None, pattern=r"^(auto|low|medium|high)$", description="Image quality used for generation."
+    )
 
 
 class SavedRenderResponse(BaseModel):
@@ -1194,9 +1229,8 @@ def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> b
     try:
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         draw = ImageDraw.Draw(img, "RGBA")
-        text = (
-            "ILLUSTRATIVE — NOT AN APPROVED DESIGN · City Prompt · "
-            + datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        text = "ILLUSTRATIVE — NOT AN APPROVED DESIGN · City Prompt · " + datetime.now(timezone.utc).strftime(
+            "%Y-%m-%d"
         )
         font_size = max(12, img.width // 90)
         try:
@@ -1247,11 +1281,7 @@ async def persist_render_to_gallery(
     path (which persists every paid result, including the untouched provider
     image when a safety fallback replaced it).
     """
-    project_result = await db.execute(
-        select(Project)
-        .where(Project.id == project_id)
-        .with_for_update()
-    )
+    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update())
     project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -1275,6 +1305,7 @@ async def persist_render_to_gallery(
     file_key = f"projects/{project_id}/renders/{render_id}.png"
 
     from app.api.v1.documents import _upload_to_storage
+
     await _upload_to_storage(file_key, image_bytes, "image/png")
 
     image_url = f"/api/v1/files/{file_key}"

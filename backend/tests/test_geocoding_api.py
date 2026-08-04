@@ -39,13 +39,16 @@ async def test_autocomplete_returns_ranked_google_predictions(client, monkeypatc
         "get_settings",
         lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
     )
-    mock_provider(monkeypatch, {
-        "status": "OK",
-        "predictions": [
-            {"place_id": "place-1", "description": "2448 31 Ave SW, Calgary, AB, Canada"},
-            {"place_id": "place-2", "description": "2448 31 Ave NW, Edmonton, AB, Canada"},
-        ],
-    })
+    mock_provider(
+        monkeypatch,
+        {
+            "status": "OK",
+            "predictions": [
+                {"place_id": "place-1", "description": "2448 31 Ave SW, Calgary, AB, Canada"},
+                {"place_id": "place-2", "description": "2448 31 Ave NW, Edmonton, AB, Canada"},
+            ],
+        },
+    )
 
     response = await client.get("/api/v1/geocoding/autocomplete", params={"q": "2448 31"})
 
@@ -65,13 +68,16 @@ async def test_resolve_returns_coordinates_for_selected_place(client, monkeypatc
         "get_settings",
         lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
     )
-    mock_provider(monkeypatch, {
-        "status": "OK",
-        "result": {
-            "formatted_address": "2448 31 Ave SW, Calgary, AB T2T 1T8, Canada",
-            "geometry": {"location": {"lat": 51.0260594, "lng": -114.1169517}},
+    mock_provider(
+        monkeypatch,
+        {
+            "status": "OK",
+            "result": {
+                "formatted_address": "2448 31 Ave SW, Calgary, AB T2T 1T8, Canada",
+                "geometry": {"location": {"lat": 51.0260594, "lng": -114.1169517}},
+            },
         },
-    })
+    )
 
     response = await client.get("/api/v1/geocoding/resolve", params={"place_id": "place-1"})
 
@@ -90,10 +96,13 @@ async def test_autocomplete_surfaces_provider_rejection(client, monkeypatch):
         "get_settings",
         lambda: SimpleNamespace(google_maps_api_key="maps-key", gemini_api_key=""),
     )
-    mock_provider(monkeypatch, {
-        "status": "REQUEST_DENIED",
-        "error_message": "Places API is not enabled.",
-    })
+    mock_provider(
+        monkeypatch,
+        {
+            "status": "REQUEST_DENIED",
+            "error_message": "Places API is not enabled.",
+        },
+    )
 
     response = await client.get("/api/v1/geocoding/autocomplete", params={"q": "2448 31"})
 

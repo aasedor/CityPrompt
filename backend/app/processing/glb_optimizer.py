@@ -70,9 +70,7 @@ def _linear_image_indices(gltf: GLTF2) -> set[int]:
     return linear
 
 
-def _reencode_image(
-    data: bytes, *, is_linear: bool, max_dim: int, jpeg_quality: int
-) -> tuple[bytes, str] | None:
+def _reencode_image(data: bytes, *, is_linear: bool, max_dim: int, jpeg_quality: int) -> tuple[bytes, str] | None:
     """Downscale/re-encode one embedded image. Returns (bytes, mime) or None
     to keep the original."""
     img = Image.open(io.BytesIO(data))
@@ -81,9 +79,7 @@ def _reencode_image(
     if max(img.size) > max_dim:
         img.thumbnail((max_dim, max_dim), Image.LANCZOS)
 
-    has_alpha = img.mode in ("RGBA", "LA") or (
-        img.mode == "P" and "transparency" in img.info
-    )
+    has_alpha = img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info)
 
     out = io.BytesIO()
     if is_linear or has_alpha:

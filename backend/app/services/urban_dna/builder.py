@@ -177,12 +177,14 @@ async def build_dna(
             result: DatasetFetchResult = DatasetFetchResult(
                 dataset_id=spec.id,
                 status="error",
-                warnings=[{
-                    "code": "DATASET_ERROR",
-                    "severity": "warning",
-                    "message": f"{spec.name}: unexpected error during assembly: {outcome}",
-                    "source_phase": "city_connector",
-                }],
+                warnings=[
+                    {
+                        "code": "DATASET_ERROR",
+                        "severity": "warning",
+                        "message": f"{spec.name}: unexpected error during assembly: {outcome}",
+                        "source_phase": "city_connector",
+                    }
+                ],
             )
             age_frac: float | None = None
         else:
@@ -201,12 +203,14 @@ async def build_dna(
         except Exception as exc:  # noqa: BLE001 — never-fail guard
             logger.warning("Policy synthesizer failed: %s", exc)
             policy_fields, policy_confidence = {}, 0.0
-            policy_warnings = [{
-                "code": "POLICY_SYNTHESIS_UNAVAILABLE",
-                "severity": "warning",
-                "message": f"Policy intelligence unavailable: {exc}",
-                "source_phase": "policy_intelligence",
-            }]
+            policy_warnings = [
+                {
+                    "code": "POLICY_SYNTHESIS_UNAVAILABLE",
+                    "severity": "warning",
+                    "message": f"Policy intelligence unavailable: {exc}",
+                    "source_phase": "policy_intelligence",
+                }
+            ]
         for field_name, value in policy_fields.items():
             dna.policy.fields[field_name] = DnaField(
                 value=value,
@@ -304,9 +308,9 @@ def _finalize_confidence(dna: UrbanDNA, section_weights: dict[str, list[tuple[fl
                 section_scores.append(0.0)
             continue
         total_weight = sum(weight for _, weight in contributions)
-        meta.confidence = round(
-            sum(conf * weight for conf, weight in contributions) / total_weight, 2
-        ) if total_weight else 0.0
+        meta.confidence = (
+            round(sum(conf * weight for conf, weight in contributions) / total_weight, 2) if total_weight else 0.0
+        )
         if name != "market":
             section_scores.append(meta.confidence)
 

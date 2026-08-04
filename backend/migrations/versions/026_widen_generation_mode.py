@@ -8,6 +8,7 @@ Revision ID: 026_widen_generation_mode
 Revises: 025_create_archetype_model_cache
 Create Date: 2026-07-11
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -19,12 +20,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute(
-        "ALTER TABLE archetype_model_cache ALTER COLUMN generation_mode TYPE VARCHAR(20)"
-    )
+    op.execute("ALTER TABLE archetype_model_cache ALTER COLUMN generation_mode TYPE VARCHAR(20)")
 
 
 def downgrade() -> None:
-    op.execute(
-        "ALTER TABLE archetype_model_cache ALTER COLUMN generation_mode TYPE VARCHAR(10)"
-    )
+    op.execute("ALTER TABLE archetype_model_cache ALTER COLUMN generation_mode TYPE VARCHAR(10)")

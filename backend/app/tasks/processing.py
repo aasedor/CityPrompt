@@ -227,17 +227,19 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
         # If no buildings list, check for direct building dimensions (floor plan interpretation)
         if not ai_buildings and "building_dimensions" in interpretation_result:
             dims = interpretation_result["building_dimensions"]
-            ai_buildings = [{
-                "name": "Building A",
-                "height_meters": interpretation_result.get("total_height_meters"),
-                "floor_count": interpretation_result.get("floor_count"),
-                "floor_height_meters": interpretation_result.get("floor_height_meters"),
-                "footprint_area_sqm": dims.get("estimated_area_sqm"),
-                "width": dims.get("width_meters", 20),
-                "depth": dims.get("depth_meters", 15),
-                "roof_type": interpretation_result.get("roof_type", "flat"),
-                "_confidence": overall_confidence,
-            }]
+            ai_buildings = [
+                {
+                    "name": "Building A",
+                    "height_meters": interpretation_result.get("total_height_meters"),
+                    "floor_count": interpretation_result.get("floor_count"),
+                    "floor_height_meters": interpretation_result.get("floor_height_meters"),
+                    "footprint_area_sqm": dims.get("estimated_area_sqm"),
+                    "width": dims.get("width_meters", 20),
+                    "depth": dims.get("depth_meters", 15),
+                    "roof_type": interpretation_result.get("roof_type", "flat"),
+                    "_confidence": overall_confidence,
+                }
+            ]
 
     if ai_buildings:
         for i, ab in enumerate(ai_buildings):
@@ -276,43 +278,49 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
                     [offset_x, 0],
                 ]
 
-            buildings.append({
-                "name": ab.get("name", f"Building {chr(65 + i)}"),
-                "height_meters": height,
-                "floor_count": floors,
-                "floor_height_meters": floor_height,
-                "roof_type": ab.get("roof_type", "flat"),
-                "footprint": footprint,
-                "specifications": {
-                    "total_area_sqm": ab.get("total_area_sqm") or ab.get("footprint_area_sqm"),
-                    "residential_units": ab.get("units"),
-                    "use_type": ab.get("use_type"),
-                    "ai_confidence": confidence,
-                },
-            })
+            buildings.append(
+                {
+                    "name": ab.get("name", f"Building {chr(65 + i)}"),
+                    "height_meters": height,
+                    "floor_count": floors,
+                    "floor_height_meters": floor_height,
+                    "roof_type": ab.get("roof_type", "flat"),
+                    "footprint": footprint,
+                    "specifications": {
+                        "total_area_sqm": ab.get("total_area_sqm") or ab.get("footprint_area_sqm"),
+                        "residential_units": ab.get("units"),
+                        "use_type": ab.get("use_type"),
+                        "ai_confidence": confidence,
+                    },
+                }
+            )
     elif extraction_dict.get("coordinates"):
         # No AI interpretation - build from extracted coordinates
         for i, coords in enumerate(extraction_dict["coordinates"]):
-            buildings.append({
-                "name": f"Building {chr(65 + i)}",
+            buildings.append(
+                {
+                    "name": f"Building {chr(65 + i)}",
+                    "height_meters": 10.0,
+                    "floor_count": 3,
+                    "floor_height_meters": 3.33,
+                    "roof_type": "flat",
+                    "footprint": coords,
+                    "specifications": {},
+                }
+            )
+    else:
+        # Minimal fallback - create a single default building
+        buildings.append(
+            {
+                "name": "Building A",
                 "height_meters": 10.0,
                 "floor_count": 3,
                 "floor_height_meters": 3.33,
                 "roof_type": "flat",
-                "footprint": coords,
+                "footprint": [[0, 0], [20, 0], [20, 15], [0, 15], [0, 0]],
                 "specifications": {},
-            })
-    else:
-        # Minimal fallback - create a single default building
-        buildings.append({
-            "name": "Building A",
-            "height_meters": 10.0,
-            "floor_count": 3,
-            "floor_height_meters": 3.33,
-            "roof_type": "flat",
-            "footprint": [[0, 0], [20, 0], [20, 15], [0, 15], [0, 0]],
-            "specifications": {},
-        })
+            }
+        )
 
     return buildings
 
@@ -345,6 +353,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
     try:
         # Load document record
         from app.models.models import Document, Building
+
         document = session.query(Document).filter_by(id=uuid.UUID(document_id)).first()
         if not document:
             raise ValueError(f"Document not found: {document_id}")
@@ -362,9 +371,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
         # Step 2-3: Write to temp file and extract data based on file type
         from app.processing.extractors.document_extractor import extract_from_file
 
-        with tempfile.NamedTemporaryFile(
-            suffix=f".{document.file_type}", delete=False
-        ) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=f".{document.file_type}", delete=False) as tmp:
             tmp.write(file_data)
             tmp_path = tmp.name
 
@@ -379,6 +386,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
             if extract_only:
                 raise _SkipInterpretationError()
             from app.processing.analyzers.claude_interpreter import ClaudeInterpreter
+
             interpreter = ClaudeInterpreter()
 
             if extraction_result.images:
@@ -396,10 +404,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
 
                     # Skip text-only and schedule pages - no architectural drawings
                     if page_type in ("text", "schedule"):
-                        logger.info(
-                            f"Skipping page {img_idx + 1}/{total_images} "
-                            f"(classified as '{page_type}')"
-                        )
+                        logger.info(f"Skipping page {img_idx + 1}/{total_images} " f"(classified as '{page_type}')")
                         continue
 
                     self.update_state(
@@ -440,7 +445,9 @@ def process_document(self, document_id: str, extract_only: bool = False):
                 # Merge all discovered buildings into one result
                 if all_buildings:
                     interpretation_result = {"buildings": all_buildings}
-                    logger.info(f"AI interpretation found {len(all_buildings)} building(s) from {total_images} image(s)")
+                    logger.info(
+                        f"AI interpretation found {len(all_buildings)} building(s) from {total_images} image(s)"
+                    )
 
             elif extraction_result.text_content.strip():
                 # Use text-based dimension extraction
@@ -457,7 +464,9 @@ def process_document(self, document_id: str, extract_only: bool = False):
         # Step 5: Normalize extracted data.
         # extract_only uploads are style references — never create Building
         # records or 3D generation jobs from them.
-        normalized_buildings = [] if extract_only else _normalize_extraction_data(extraction_result, interpretation_result)
+        normalized_buildings = (
+            [] if extract_only else _normalize_extraction_data(extraction_result, interpretation_result)
+        )
 
         self.update_state(state="PROCESSING", meta={"progress": 0.8, "step": "generating_3d"})
 
@@ -479,6 +488,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
             # Set footprint if coordinates available
             if bdata.get("footprint"):
                 from geoalchemy2.elements import WKTElement
+
                 coords = bdata["footprint"]
                 if coords[0] != coords[-1]:
                     coords.append(coords[0])
@@ -514,6 +524,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
         logger.error(f"Document processing failed: {document_id} - {exc}")
         try:
             from app.models.models import Document
+
             document = session.query(Document).filter_by(id=uuid.UUID(document_id)).first()
             if document:
                 document.processing_status = "failed"
@@ -527,6 +538,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
         session.close()
         # Clean up temp file (runs on both success and error paths)
         import os
+
         try:
             os.unlink(tmp_path)
         except (NameError, TypeError):
@@ -535,7 +547,9 @@ def process_document(self, document_id: str, extract_only: bool = False):
             logger.debug("Temp file cleanup: %s", cleanup_err)
 
 
-def _propagate_model_to_siblings(session: Session, building_id: str, model_url: str, lod_urls: dict, preview_url: str | None = None):
+def _propagate_model_to_siblings(
+    session: Session, building_id: str, model_url: str, lod_urls: dict, preview_url: str | None = None
+):
     """Copy generated model to all sibling buildings in the same zone.
 
     Finds the zone that contains this building_id in its building_ids list,
@@ -544,9 +558,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
     from app.models.models import Building, SiteZone
 
     # Find zones where building_ids contains this building_id
-    zones = session.query(SiteZone).filter(
-        SiteZone.building_ids.isnot(None)
-    ).all()
+    zones = session.query(SiteZone).filter(SiteZone.building_ids.isnot(None)).all()
 
     for zone in zones:
         bid_list = zone.building_ids or []
@@ -577,9 +589,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
 
         if sibling_count > 0:
             session.commit()
-            logger.info(
-                f"Propagated model from building {building_id} to {sibling_count} sibling(s)"
-            )
+            logger.info(f"Propagated model from building {building_id} to {sibling_count} sibling(s)")
         break  # A building belongs to at most one zone
 
 
@@ -649,7 +659,10 @@ def _apply_cached_model(session: Session, building_id: str, building, entry, eng
 
     logger.info(
         "Cache hit for building %s: %s/%s -> %s",
-        building_id, entry.archetype_id, entry.variant_id, model_url,
+        building_id,
+        entry.archetype_id,
+        entry.variant_id,
+        model_url,
     )
     return {
         "status": "completed",
@@ -673,9 +686,7 @@ def _find_library_model(session: Session, building, archetype_id: str):
     from app.models.models import Building, ModelLibraryEntry, Project
     from app.services.archetype_model_cache import normalize_cache_key
 
-    owner_id = session.execute(
-        select(Project.owner_id).where(Project.id == building.project_id)
-    ).scalar_one_or_none()
+    owner_id = session.execute(select(Project.owner_id).where(Project.id == building.project_id)).scalar_one_or_none()
     access = [ModelLibraryEntry.is_public.is_(True)]
     if owner_id is not None:
         access.append(ModelLibraryEntry.owner_id == owner_id)
@@ -703,7 +714,9 @@ def _find_library_model(session: Session, building, archetype_id: str):
     return None
 
 
-def _apply_library_model(session: Session, building_id: str, building, entry, archetype_id: str, engine_id: str) -> dict | None:
+def _apply_library_model(
+    session: Session, building_id: str, building, entry, archetype_id: str, engine_id: str
+) -> dict | None:
     """Point a building at a saved model-library entry (zero credits).
 
     Objects are COPIED into the building's project (mirroring the manual
@@ -787,7 +800,10 @@ def _apply_library_model(session: Session, building_id: str, building, entry, ar
 
     logger.info(
         "Model library hit for building %s: %s -> %s (entry %s)",
-        building_id, archetype_id, model_url, entry.id,
+        building_id,
+        archetype_id,
+        model_url,
+        entry.id,
     )
     return {
         "status": "completed",
@@ -808,9 +824,14 @@ def _apply_library_model(session: Session, building_id: str, building, entry, ar
     time_limit=MESHY_MAX_RUNTIME_S + settings.archetype_cache_wait_s + 120,
 )
 def generate_3d_model_ai(
-    self, building_id: str, prompt: str, mode: str = "text",
-    image_url: str = None, refine: bool = True,
-    engine: str = "meshy", style_id: str = None,
+    self,
+    building_id: str,
+    prompt: str,
+    mode: str = "text",
+    image_url: str = None,
+    refine: bool = True,
+    engine: str = "meshy",
+    style_id: str = None,
     negative_prompt: str = None,
 ):
     """
@@ -841,9 +862,7 @@ def generate_3d_model_ai(
         if not provider.is_available():
             raise RuntimeError(f"AI generation engine '{engine}' is not configured")
 
-        style_changed = bool(
-            style_id and building.architectural_style != style_id
-        )
+        style_changed = bool(style_id and building.architectural_style != style_id)
         if style_changed:
             _begin_building_representation_mutation(session, building)
         building.generation_status = "generating"
@@ -903,12 +922,12 @@ def generate_3d_model_ai(
                     if entry.status != "completed":
                         entry = _wait_for_cache_entry(session, entry.id, _progress_callback)
                     if entry is not None and entry.status == "completed":
-                        return _apply_cached_model(
-                            session, building_id, building, entry, provider.engine_id
-                        )
+                        return _apply_cached_model(session, building_id, building, entry, provider.engine_id)
                     logger.info(
                         "Cache unusable for building %s (%s/%s); generating uncached",
-                        building_id, archetype_id, variant_id,
+                        building_id,
+                        archetype_id,
+                        variant_id,
                     )
 
         # --- Model library: library-first, Meshy-fallback -----------------
@@ -926,8 +945,12 @@ def generate_3d_model_ai(
                     library_entry = _find_library_model(session, building, library_key[0])
                     if library_entry is not None:
                         library_result = _apply_library_model(
-                            session, building_id, building, library_entry,
-                            library_key[0], provider.engine_id,
+                            session,
+                            building_id,
+                            building,
+                            library_entry,
+                            library_key[0],
+                            provider.engine_id,
                         )
                 except Exception as lib_err:
                     # Fail-open: the library is an optimization — a lookup
@@ -944,24 +967,24 @@ def generate_3d_model_ai(
 
                             fail_entry(session, cache_claim.id, "released: model library hit")
                         except Exception:
-                            logger.warning(
-                                "Could not release cache claim after library hit", exc_info=True
-                            )
+                            logger.warning("Could not release cache claim after library hit", exc_info=True)
                         finally:
                             cache_claim = None
                     return library_result
 
-        result = asyncio.run(provider.run_generation(
-            prompt=prompt,
-            mode=mode,
-            image_url=image_url,
-            refine=refine,
-            negative_prompt=architectural_negative_prompt,
-            building_id=building_id,
-            progress_callback=_progress_callback,
-            task_callback=_task_callback,
-            preview_callback=_preview_callback,
-        ))
+        result = asyncio.run(
+            provider.run_generation(
+                prompt=prompt,
+                mode=mode,
+                image_url=image_url,
+                refine=refine,
+                negative_prompt=architectural_negative_prompt,
+                building_id=building_id,
+                progress_callback=_progress_callback,
+                task_callback=_task_callback,
+                preview_callback=_preview_callback,
+            )
+        )
 
         _progress_callback(0.85, "uploading")
 
@@ -971,9 +994,7 @@ def generate_3d_model_ai(
         if settings.glb_optimization_enabled:
             from app.processing.glb_optimizer import optimize_glb
 
-            result.glb_data = optimize_glb(
-                result.glb_data, max_texture_dim=settings.glb_max_texture_dim
-            )
+            result.glb_data = optimize_glb(result.glb_data, max_texture_dim=settings.glb_max_texture_dim)
 
         project_id = building.project_id
         if cache_claim is not None:
@@ -1057,6 +1078,7 @@ def generate_3d_model_ai(
         if result.thumbnail_url:
             try:
                 import httpx as httpx_thumb
+
                 thumb_resp = httpx_thumb.get(result.thumbnail_url, timeout=30.0, follow_redirects=True)
                 # A 403 from an expired signed URL must not be stored as a
                 # "PNG" — the cache copy would hand the garbage to every hit.
@@ -1126,9 +1148,7 @@ def generate_3d_model_ai(
         # an exception in the optional tail (thumbnail, sibling propagation)
         # used to flip a completed, uploaded model to "failed".
         if completed_model_url is not None:
-            logger.warning(
-                "Building %s already completed; ignoring post-success error: %s", building_id, exc
-            )
+            logger.warning("Building %s already completed; ignoring post-success error: %s", building_id, exc)
             return {"status": "completed", "building_id": building_id, "model_url": completed_model_url}
 
         try:
@@ -1150,6 +1170,7 @@ def generate_3d_model_ai(
         # Permanent client errors (bad prompt/params) can only fail again —
         # don't retry, just leave the building failed with its captured reason.
         from app.generation.meshy_client import MeshyClientError
+
         if isinstance(exc, MeshyClientError):
             return {"status": "failed", "error": str(exc)[:200]}
         # Running past the ceiling is terminal too. A retry re-runs the ENTIRE
@@ -1159,9 +1180,10 @@ def generate_3d_model_ai(
         if isinstance(exc, (TimeoutError, SoftTimeLimitExceeded)):
             return {"status": "failed", "error": str(exc)[:200]}
         # Exponential backoff for genuinely TRANSIENT failures (network, 5xx).
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
     finally:
         session.close()
+
 
 @celery_app.task(
     bind=True,
@@ -1198,7 +1220,10 @@ def prewarm_archetype_model(
     on every input first (people/vehicles fuse into mutant geometry)."""
     logger.info(
         "Pre-warming archetype model %s/%s (engine=%s, mode=%s)",
-        archetype_id, variant_id, engine, mode,
+        archetype_id,
+        variant_id,
+        engine,
+        mode,
     )
     session = _get_sync_session()
     entry = None
@@ -1213,8 +1238,12 @@ def prewarm_archetype_model(
         )
 
         entry, claimed = claim_entry(
-            session, archetype_id, variant_id, engine,
-            generation_mode=mode, generation_prompt=prompt,
+            session,
+            archetype_id,
+            variant_id,
+            engine,
+            generation_mode=mode,
+            generation_prompt=prompt,
         )
         if not claimed:
             status = entry.status if entry is not None else "missing"
@@ -1237,9 +1266,7 @@ def prewarm_archetype_model(
                     return uri
                 header, _, payload = uri.partition(",")
                 cleaned = clean_reference_image(b64.b64decode(payload), level=clean_images)
-                cleaned_mime = (
-                    "image/png" if cleaned[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
-                )
+                cleaned_mime = "image/png" if cleaned[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
                 return f"data:{cleaned_mime};base64," + b64.b64encode(cleaned).decode()
 
             if image_data_uri:
@@ -1277,36 +1304,34 @@ def prewarm_archetype_model(
         def _progress_callback(progress: float, step: str) -> None:
             self.update_state(state="GENERATING", meta={"progress": progress, "step": step})
 
-        result = asyncio.run(provider.run_generation(
-            prompt=prompt or archetype_id.replace("_", " "),
-            mode=mode,
-            image_url=image_data_uri,
-            image_urls=image_data_uris,
-            target_polycount=target_polycount,
-            multiview_prompt=multiview_prompt,
-            refine=True,
-            negative_prompt=(
-                "blurry, low quality, deformed, floating objects, ground plane, "
-                "background, people, vehicles, cartoon, anime, stylized, miniature"
-            ),
-            building_id=None,
-            progress_callback=_progress_callback,
-        ))
+        result = asyncio.run(
+            provider.run_generation(
+                prompt=prompt or archetype_id.replace("_", " "),
+                mode=mode,
+                image_url=image_data_uri,
+                image_urls=image_data_uris,
+                target_polycount=target_polycount,
+                multiview_prompt=multiview_prompt,
+                refine=True,
+                negative_prompt=(
+                    "blurry, low quality, deformed, floating objects, ground plane, "
+                    "background, people, vehicles, cartoon, anime, stylized, miniature"
+                ),
+                building_id=None,
+                progress_callback=_progress_callback,
+            )
+        )
 
         if settings.glb_optimization_enabled:
             from app.processing.glb_optimizer import optimize_glb
 
-            result.glb_data = optimize_glb(
-                result.glb_data, max_texture_dim=settings.glb_max_texture_dim
-            )
+            result.glb_data = optimize_glb(result.glb_data, max_texture_dim=settings.glb_max_texture_dim)
 
         model_key = cache_storage_key(entry)
         _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
         lod_keys_for_cache: dict[str, str] = {}
         for level, lod_glb_data in (result.lod_glb_data or {}).items():
-            lod_key = (
-                f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_lod{level}.glb"
-            )
+            lod_key = f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_lod{level}.glb"
             _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
             lod_keys_for_cache[str(level)] = lod_key
         from app.processing.glb_measure import measure_glb
@@ -1329,9 +1354,7 @@ def prewarm_archetype_model(
                 thumb_resp = httpx_thumb.get(result.thumbnail_url, timeout=30.0, follow_redirects=True)
                 thumb_resp.raise_for_status()
                 thumb_data = thumb_resp.content
-                thumb_key = (
-                    f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_thumb.png"
-                )
+                thumb_key = f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_thumb.png"
                 _upload_to_storage(thumb_key, thumb_data, "image/png")
                 set_entry_thumbnail(session, entry.id, thumb_key)
             except Exception as thumb_err:
@@ -1378,7 +1401,10 @@ def prewarm_archetype_model(
 
         logger.info(
             "Pre-warmed %s/%s -> %s (%.1fMB)",
-            archetype_id, variant_id, model_key, len(result.glb_data) / 1e6,
+            archetype_id,
+            variant_id,
+            model_key,
+            len(result.glb_data) / 1e6,
         )
         return {
             "status": "completed",
@@ -1440,7 +1466,9 @@ def generate_3d_model(self, building_id: str, building_data: dict):
 
         # Step 1: Generate building geometry
         from app.generation.geometry.building_generator import (
-            BuildingGenerator, GLBExporter, LODGenerator,
+            BuildingGenerator,
+            GLBExporter,
+            LODGenerator,
         )
         import trimesh
 
@@ -1461,9 +1489,12 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         try:
             if building.architectural_style:
                 from app.generation.styles import get_style
+
                 style = get_style(building.architectural_style)
         except Exception as style_err:
-            logger.warning("Failed to load style '%s' for building %s: %s", building.architectural_style, building_id, style_err)
+            logger.warning(
+                "Failed to load style '%s' for building %s: %s", building.architectural_style, building_id, style_err
+            )
 
         scene = generator.generate_building(gen_data, style=style)
 
@@ -1527,10 +1558,7 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         _mark_building_representation_stale(session, building)
         session.commit()
 
-        logger.info(
-            f"3D model generated for building {building_id}: "
-            f"{model_url} ({len(lod_urls)} LOD levels)"
-        )
+        logger.info(f"3D model generated for building {building_id}: " f"{model_url} ({len(lod_urls)} LOD levels)")
         return {
             "status": "completed",
             "building_id": building_id,
@@ -1544,6 +1572,7 @@ def generate_3d_model(self, building_id: str, building_data: dict):
             session.rollback()
             if building is None:
                 from app.models.models import Building
+
                 building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
             if building:
                 building.generation_status = "failed"
@@ -1554,4 +1583,3 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         raise
     finally:
         session.close()
-

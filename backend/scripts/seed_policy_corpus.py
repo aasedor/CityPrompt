@@ -155,8 +155,9 @@ MANIFESTS: dict[str, list[dict]] = {
 
 def _download(url: str) -> bytes | None:
     try:
-        response = httpx.get(url, timeout=120.0, follow_redirects=True,
-                             headers={"User-Agent": "cityprompt-policy-seeder"})
+        response = httpx.get(
+            url, timeout=120.0, follow_redirects=True, headers={"User-Agent": "cityprompt-policy-seeder"}
+        )
         response.raise_for_status()
     except Exception as exc:  # noqa: BLE001
         print(f"    DOWNLOAD FAILED: {exc}")
@@ -220,7 +221,7 @@ def main() -> None:
     parser.add_argument(
         "--from-dir",
         help="ingest <slug>.pdf files from this directory instead of downloading "
-             "(for WAF-blocked portals like vancouver.ca)",
+        "(for WAF-blocked portals like vancouver.ca)",
     )
     args = parser.parse_args()
     cities = list(MANIFESTS) if args.city == "all" else [args.city]

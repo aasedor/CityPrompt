@@ -11,7 +11,6 @@ import asyncio
 import os
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import async_session_factory
 from app.core.security import hash_password
@@ -30,9 +29,7 @@ PROMOTE_EMAILS = [
 async def ensure_admins() -> None:
     async with async_session_factory() as db:
         # 1. Ensure default admin account exists
-        result = await db.execute(
-            select(User).where(User.email == DEFAULT_ADMIN_EMAIL)
-        )
+        result = await db.execute(select(User).where(User.email == DEFAULT_ADMIN_EMAIL))
         admin_user = result.scalar_one_or_none()
 
         if admin_user is None:

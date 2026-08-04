@@ -79,14 +79,16 @@ async def get_context_buildings(
         elif not height:
             height = 9.0  # Default 3-story building
 
-        buildings.append({
-            "osm_id": element["id"],
-            "name": tags.get("name"),
-            "height": height,
-            "levels": levels,
-            "building_type": tags.get("building"),
-            "footprint": coords,
-        })
+        buildings.append(
+            {
+                "osm_id": element["id"],
+                "name": tags.get("name"),
+                "height": height,
+                "levels": levels,
+                "building_type": tags.get("building"),
+                "footprint": coords,
+            }
+        )
 
     return {"buildings": buildings, "count": len(buildings)}
 
@@ -150,13 +152,15 @@ async def get_context_roads(
         # Road width based on highway type
         width = _road_width(highway)
 
-        roads.append({
-            "osm_id": element["id"],
-            "name": tags.get("name"),
-            "highway_type": highway,
-            "width": width,
-            "coords": coords,
-        })
+        roads.append(
+            {
+                "osm_id": element["id"],
+                "name": tags.get("name"),
+                "highway_type": highway,
+                "width": width,
+                "coords": coords,
+            }
+        )
 
     return {"roads": roads, "count": len(roads)}
 

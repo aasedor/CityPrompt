@@ -20,7 +20,6 @@ from datetime import datetime, timezone
 import boto3
 from botocore.config import Config
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.config import get_settings
@@ -35,12 +34,8 @@ settings = get_settings()
 # Key patterns:
 #   projects/{project_id}/layout-previews/{zone_id}_{uuid}.png
 #   projects/{project_id}/site-previews/{zone_id}_{option_index}_{uuid}.png
-LAYOUT_RE = re.compile(
-    r"^projects/[^/]+/layout-previews/([0-9a-f-]{36})_([0-9a-f-]{36})\.png$"
-)
-SITE_RE = re.compile(
-    r"^projects/[^/]+/site-previews/([0-9a-f-]{36})_(\d+)_([0-9a-f-]{36})\.png$"
-)
+LAYOUT_RE = re.compile(r"^projects/[^/]+/layout-previews/([0-9a-f-]{36})_([0-9a-f-]{36})\.png$")
+SITE_RE = re.compile(r"^projects/[^/]+/site-previews/([0-9a-f-]{36})_(\d+)_([0-9a-f-]{36})\.png$")
 
 
 def list_preview_keys() -> list[dict]:
@@ -65,23 +60,27 @@ def list_preview_keys() -> list[dict]:
                 if prefix_type == "layout-previews":
                     m = LAYOUT_RE.match(key)
                     if m:
-                        entries.append({
-                            "key": key,
-                            "zone_id": m.group(1),
-                            "preview_type": "layout",
-                            "option_index": 0,
-                            "last_modified": last_modified,
-                        })
+                        entries.append(
+                            {
+                                "key": key,
+                                "zone_id": m.group(1),
+                                "preview_type": "layout",
+                                "option_index": 0,
+                                "last_modified": last_modified,
+                            }
+                        )
                 else:
                     m = SITE_RE.match(key)
                     if m:
-                        entries.append({
-                            "key": key,
-                            "zone_id": m.group(1),
-                            "preview_type": "site",
-                            "option_index": int(m.group(2)),
-                            "last_modified": last_modified,
-                        })
+                        entries.append(
+                            {
+                                "key": key,
+                                "zone_id": m.group(1),
+                                "preview_type": "site",
+                                "option_index": int(m.group(2)),
+                                "last_modified": last_modified,
+                            }
+                        )
 
     return entries
 
@@ -126,21 +125,25 @@ async def backfill() -> None:
                 if image_url in existing_urls:
                     continue  # already backfilled
 
-                created_at = img["last_modified"].isoformat() if img["last_modified"] else datetime.now(timezone.utc).isoformat()
+                created_at = (
+                    img["last_modified"].isoformat() if img["last_modified"] else datetime.now(timezone.utc).isoformat()
+                )
 
                 if img["preview_type"] == "layout":
-                    label = f"Layout Preview"
+                    label = "Layout Preview"
                 else:
                     label = f"Site Preview (option {img['option_index'] + 1})"
 
-                history.append({
-                    "image_url": image_url,
-                    "label": label,
-                    "strategy": "unknown",
-                    "created_at": created_at,
-                    "preview_type": img["preview_type"],
-                    "option_index": img["option_index"],
-                })
+                history.append(
+                    {
+                        "image_url": image_url,
+                        "label": label,
+                        "strategy": "unknown",
+                        "created_at": created_at,
+                        "preview_type": img["preview_type"],
+                        "option_index": img["option_index"],
+                    }
+                )
                 added += 1
 
             if added > 0:

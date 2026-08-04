@@ -105,6 +105,7 @@ app.include_router(api_router, prefix="/api/v1")
 
 # Include WebSocket routes (no prefix — clean /ws/... URLs)
 from app.api.v1.collaboration import router as ws_router  # noqa: E402
+
 app.include_router(ws_router)
 
 
@@ -114,6 +115,7 @@ async def health_check():
 
 
 if not settings.is_production:
+
     @app.get("/metrics")
     async def metrics():
         """Basic API metrics endpoint."""
@@ -125,6 +127,7 @@ if not settings.is_production:
         queue_info = {"active": 0, "reserved": 0, "scheduled": 0, "available": False}
         try:
             from app.tasks.worker import celery_app
+
             inspector = celery_app.control.inspect(timeout=1.0)
             active = inspector.active() or {}
             reserved = inspector.reserved() or {}

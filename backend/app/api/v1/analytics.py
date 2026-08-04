@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import func, select, case, cast, distinct, Date
+from sqlalchemy import func, select, cast, distinct, Date
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -40,6 +40,7 @@ router = APIRouter()
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def parse_time_range(range_str: str) -> datetime:
     """Convert a range string like '7d' to a UTC start datetime."""
     now = datetime.now(timezone.utc)
@@ -64,6 +65,7 @@ def get_granularity(range_str: str) -> str:
 # Endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.get("/user-growth", response_model=TimeSeriesResponse)
 async def user_growth(
     range: str = Query("30d", pattern="^(7d|30d|90d|1y)$"),
@@ -85,9 +87,7 @@ async def user_growth(
     )
     rows = result.all()
 
-    total = await db.execute(
-        select(func.count()).select_from(User).where(User.created_at >= since)
-    )
+    total = await db.execute(select(func.count()).select_from(User).where(User.created_at >= since))
 
     return TimeSeriesResponse(
         data=[TimeSeriesPoint(period=r.period, count=r.count) for r in rows],
@@ -118,11 +118,7 @@ async def active_users(
     )
     rows = result.all()
 
-    total = await db.execute(
-        select(func.count(distinct(User.id)))
-        .select_from(User)
-        .where(User.last_login_at >= since)
-    )
+    total = await db.execute(select(func.count(distinct(User.id))).select_from(User).where(User.last_login_at >= since))
 
     return TimeSeriesResponse(
         data=[TimeSeriesPoint(period=r.period, count=r.count) for r in rows],
@@ -237,6 +233,7 @@ async def platform_health(
     queue_info = {"active": 0, "reserved": 0, "scheduled": 0, "available": False}
     try:
         from app.tasks.worker import celery_app
+
         inspector = celery_app.control.inspect(timeout=1.0)
         active = inspector.active() or {}
         reserved = inspector.reserved() or {}
@@ -255,8 +252,7 @@ async def platform_health(
         select(
             Document.processing_status,
             func.count().label("count"),
-        )
-        .group_by(Document.processing_status)
+        ).group_by(Document.processing_status)
     )
     doc_rows = doc_result.all()
     doc_pipeline = {row.processing_status: row.count for row in doc_rows}
@@ -372,6 +368,7 @@ async def api_balances(
 ):
     """Fetch current credit balances from all external API providers."""
     from app.core.config import get_settings
+
     cfg = get_settings()
 
     async def _fetch_meshy() -> ProviderBalance:
@@ -379,6 +376,7 @@ async def api_balances(
             return ProviderBalance(provider="meshy", configured=False, unit="credits")
         try:
             from app.generation.meshy_client import MeshyClient
+
             data = await MeshyClient().get_balance()
             return ProviderBalance(
                 provider="meshy",
@@ -394,6 +392,7 @@ async def api_balances(
             return ProviderBalance(provider="tripo", configured=False, unit="credits")
         try:
             from app.generation.tripo_client import TripoClient
+
             data = await TripoClient().get_balance()
             inner = data.get("data", data)
             return ProviderBalance(
@@ -410,6 +409,7 @@ async def api_balances(
             return ProviderBalance(provider="stability", configured=False, unit="credits")
         try:
             from app.generation.stability_client import StabilityClient
+
             data = await StabilityClient().get_balance()
             return ProviderBalance(
                 provider="stability",
@@ -420,9 +420,7 @@ async def api_balances(
         except Exception as exc:
             return ProviderBalance(provider="stability", error=str(exc), unit="credits")
 
-    meshy_bal, tripo_bal, stability_bal = await asyncio.gather(
-        _fetch_meshy(), _fetch_tripo(), _fetch_stability()
-    )
+    meshy_bal, tripo_bal, stability_bal = await asyncio.gather(_fetch_meshy(), _fetch_tripo(), _fetch_stability())
 
     # Anthropic token totals from usage logs (table may not exist yet)
     anthropic_configured = bool(cfg.anthropic_api_key)
@@ -432,8 +430,7 @@ async def api_balances(
                 func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
                 func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
                 func.count().label("total_calls"),
-            )
-            .where(ApiUsageLog.provider == "anthropic")
+            ).where(ApiUsageLog.provider == "anthropic")
         )
         row = anthropic_result.one()
         anthropic_usage = AnthropicTokenUsage(
@@ -454,8 +451,7 @@ async def api_balances(
                 func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
                 func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
                 func.count().label("total_calls"),
-            )
-            .where(ApiUsageLog.provider == "gemini")
+            ).where(ApiUsageLog.provider == "gemini")
         )
         row = gemini_result.one()
         gemini_usage = GeminiTokenUsage(

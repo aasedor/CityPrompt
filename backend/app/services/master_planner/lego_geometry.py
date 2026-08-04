@@ -76,9 +76,7 @@ def _frontend_footprint_analysis(
 
     centroid_lng = sum(point[0] for point in ring) / len(ring)
     centroid_lat = sum(point[1] for point in ring) / len(ring)
-    metres_per_deg_lng = METRES_PER_DEG_LNG_EQUATOR * math.cos(
-        math.radians(centroid_lat)
-    )
+    metres_per_deg_lng = METRES_PER_DEG_LNG_EQUATOR * math.cos(math.radians(centroid_lat))
     local = [
         (
             (lng - centroid_lng) * metres_per_deg_lng,
@@ -111,18 +109,20 @@ def _frontend_footprint_analysis(
     raw_depth = max(1.0, dimensions[1])
     width = math.floor(raw_width * 10 + 0.5) / 10
     depth = math.floor(raw_depth * 10 + 0.5) / 10
-    signed_area = sum(
-        current[0] * following[1] - following[0] * current[1]
-        for current, following in zip(local, local[1:] + local[:1])
-    ) / 2
+    signed_area = (
+        sum(
+            current[0] * following[1] - following[0] * current[1]
+            for current, following in zip(local, local[1:] + local[:1])
+        )
+        / 2
+    )
     orientation = 1 if signed_area >= 0 else -1
     concave_vertices = 0
     for index, current in enumerate(local):
         previous = local[(index - 1) % len(local)]
         following = local[(index + 1) % len(local)]
-        cross = (
-            (current[0] - previous[0]) * (following[1] - current[1])
-            - (current[1] - previous[1]) * (following[0] - current[0])
+        cross = (current[0] - previous[0]) * (following[1] - current[1]) - (current[1] - previous[1]) * (
+            following[0] - current[0]
         )
         if abs(cross) > 1e-6 and (1 if cross > 0 else -1) != orientation:
             concave_vertices += 1
@@ -173,14 +173,9 @@ def bind_building_zones_to_lego(
     """Return zones whose every AI building is proven at its actual footprint."""
 
     descriptors = [
-        descriptor
-        for entry in library_entries
-        if (descriptor := descriptor_from_library_entry(entry)) is not None
+        descriptor for entry in library_entries if (descriptor := descriptor_from_library_entry(entry)) is not None
     ]
-    capability_by_parent = {
-        capability.parent_id: capability
-        for capability in lego_catalog.capabilities
-    }
+    capability_by_parent = {capability.parent_id: capability for capability in lego_catalog.capabilities}
     updated: list[dict[str, Any]] = []
     repairs: list[tuple[str, str, str]] = []
     omissions: list[tuple[str, float, float, int]] = []
@@ -250,8 +245,7 @@ def bind_building_zones_to_lego(
         if (
             capability is None
             or current_selectable not in capability.selectable_ids
-            or lego_catalog.parent_by_selectable_id.get(current_selectable)
-            != parent_id
+            or lego_catalog.parent_by_selectable_id.get(current_selectable) != parent_id
         ):
             current_plan = None
 
@@ -261,9 +255,7 @@ def bind_building_zones_to_lego(
             candidates: list[tuple[tuple[Any, ...], str, str, dict[str, Any]]] = []
             for capability in lego_catalog.capabilities:
                 for selectable_id in capability.selectable_ids:
-                    if floors not in capability.supported_floors_by_selectable_id.get(
-                        selectable_id, ()
-                    ):
+                    if floors not in capability.supported_floors_by_selectable_id.get(selectable_id, ()):
                         continue
                     plan = _plan(
                         selectable_id,
@@ -277,9 +269,7 @@ def bind_building_zones_to_lego(
                     penalties = _style_penalties(
                         current_parent=parent_id or None,
                         current_type=str(properties.get("development_type") or ""),
-                        current_aesthetic=str(
-                            properties.get("development_aesthetic") or ""
-                        ),
+                        current_aesthetic=str(properties.get("development_aesthetic") or ""),
                         candidate_parent=capability.parent_id,
                         candidate_type=capability.development_type,
                         candidate_aesthetic=capability.aesthetic_category,
@@ -287,15 +277,11 @@ def bind_building_zones_to_lego(
                     fit = plan.get("fit") or {}
                     scale_x = max(float(fit.get("scale_x") or 1.0), 1e-6)
                     scale_y = max(float(fit.get("scale_y") or 1.0), 1e-6)
-                    quality_penalty = int(
-                        not (0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20)
-                    ) + int(
+                    quality_penalty = int(not (0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20)) + int(
                         not (0.67 <= scale_x <= 1.50 and 0.67 <= scale_y <= 1.50)
                     )
                     distortion = (
-                        abs(math.log(scale_x))
-                        + abs(math.log(scale_y))
-                        + 0.5 * abs(math.log(scale_x / scale_y))
+                        abs(math.log(scale_x)) + abs(math.log(scale_y)) + 0.5 * abs(math.log(scale_x / scale_y))
                     )
                     fit_score = float(fit.get("score") or 0.0)
                     score = (
@@ -306,9 +292,7 @@ def bind_building_zones_to_lego(
                         capability.parent_id,
                         selectable_id,
                     )
-                    candidates.append(
-                        (score, capability.parent_id, selectable_id, plan)
-                    )
+                    candidates.append((score, capability.parent_id, selectable_id, plan))
             if not candidates:
                 name = str(zone.get("name") or "Planned building")
                 omissions.append((name, width_m, depth_m, floors))
@@ -349,17 +333,12 @@ def bind_building_zones_to_lego(
 
     omitted_count = len(omissions)
     if omitted_count:
-        omitted_footprint_share = omitted_footprint_area / max(
-            measured_footprint_area, 1.0
-        )
+        omitted_footprint_share = omitted_footprint_area / max(measured_footprint_area, 1.0)
         allowed_count = max(
             1,
             math.ceil(building_count * MAX_OMITTED_BUILDING_SHARE),
         )
-        if (
-            omitted_count > allowed_count
-            or omitted_footprint_share > MAX_OMITTED_FOOTPRINT_SHARE
-        ):
+        if omitted_count > allowed_count or omitted_footprint_share > MAX_OMITTED_FOOTPRINT_SHARE:
             name, width_m, depth_m, floors = omissions[0]
             raise LegoGeometryCompatibilityError(
                 f"{name} ({width_m:g} × {depth_m:g} m, {floors} floors) has no "

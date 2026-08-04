@@ -16,9 +16,9 @@ from typing import Any, Optional
 import anthropic
 from PIL import Image, ImageDraw
 import random as _random_module
-from shapely.geometry import Polygon, Point, LineString, MultiPoint, MultiPolygon, box
-from shapely.affinity import rotate, translate
-from shapely.ops import unary_union, split
+from shapely.geometry import Polygon, Point, LineString, MultiPolygon
+from shapely.affinity import rotate
+from shapely.ops import unary_union
 from shapely import minimum_rotated_rectangle
 
 from app.core.config import get_settings
@@ -44,10 +44,18 @@ METERS_PER_DEG_LAT = 111320
 def _zone_requires_district_fabric(zone_type: str, unit_count: int, properties: dict[str, Any]) -> bool:
     dev_type = str(properties.get("development_type") or zone_type or "").strip().lower()
     description = str(properties.get("description_text") or "").strip().lower()
-    aesthetic = str(properties.get("development_aesthetic") or properties.get("development_subcategory") or "").strip().lower()
-    generation_style_input = properties.get("generation_style_input") if isinstance(properties.get("generation_style_input"), dict) else {}
-    generation_style_inputs = properties.get("generation_style_inputs") if isinstance(properties.get("generation_style_inputs"), dict) else {}
-    building_input = generation_style_inputs.get("building") if isinstance(generation_style_inputs.get("building"), dict) else {}
+    aesthetic = (
+        str(properties.get("development_aesthetic") or properties.get("development_subcategory") or "").strip().lower()
+    )
+    generation_style_input = (
+        properties.get("generation_style_input") if isinstance(properties.get("generation_style_input"), dict) else {}
+    )
+    generation_style_inputs = (
+        properties.get("generation_style_inputs") if isinstance(properties.get("generation_style_inputs"), dict) else {}
+    )
+    building_input = (
+        generation_style_inputs.get("building") if isinstance(generation_style_inputs.get("building"), dict) else {}
+    )
     tokens = " ".join(
         filter(
             None,
@@ -55,19 +63,36 @@ def _zone_requires_district_fabric(zone_type: str, unit_count: int, properties: 
                 description,
                 aesthetic,
                 str(properties.get("development_archetype_label") or "").lower(),
-                str(generation_style_input.get("subtype") or generation_style_input.get("buildingSubcategory") or "").lower(),
+                str(
+                    generation_style_input.get("subtype") or generation_style_input.get("buildingSubcategory") or ""
+                ).lower(),
                 str(building_input.get("subcategory") or building_input.get("buildingSubcategory") or "").lower(),
             ],
         )
     )
     try:
-        floors = int(float(properties.get("floors") or properties.get("floor_count") or properties.get("floorCount") or 0))
+        floors = int(
+            float(properties.get("floors") or properties.get("floor_count") or properties.get("floorCount") or 0)
+        )
     except (TypeError, ValueError):
         floors = 0
 
     strong_signals = (
-        "mixed-use", "mixed use", "main street", "district", "precinct", "courtyard", "townhouse",
-        "rowhouse", "podium", "park", "civic", "public realm", "retail", "mews", "woonerf",
+        "mixed-use",
+        "mixed use",
+        "main street",
+        "district",
+        "precinct",
+        "courtyard",
+        "townhouse",
+        "rowhouse",
+        "podium",
+        "park",
+        "civic",
+        "public realm",
+        "retail",
+        "mews",
+        "woonerf",
     )
     if any(token in tokens for token in strong_signals):
         return True
@@ -131,7 +156,6 @@ def _generate_civic_anchor_spaces(
     return spaces
 
 
-
 def _gemini_2d_image_model() -> str:
     """Return the configured Gemini model for AI 2D image previews."""
     model = str(getattr(settings, "gemini_2d_image_model", "") or "").strip()
@@ -149,9 +173,9 @@ def _ensure_image_bytes(data: bytes) -> bytes:
         raise ValueError("Empty image data received from Gemini")
 
     # PNG magic bytes: \x89PNG\r\n\x1a\n
-    PNG_MAGIC = b'\x89PNG\r\n\x1a\n'
+    PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
     # JPEG magic bytes: \xff\xd8\xff
-    JPEG_MAGIC = b'\xff\xd8\xff'
+    JPEG_MAGIC = b"\xff\xd8\xff"
 
     # Already valid image bytes
     if data[:8] == PNG_MAGIC or data[:3] == JPEG_MAGIC:
@@ -162,13 +186,13 @@ def _ensure_image_bytes(data: bytes) -> bytes:
     try:
         # Check if it looks like base64 (only contains valid base64 characters)
         if isinstance(data, bytes):
-            text = data.decode('ascii', errors='strict')
+            text = data.decode("ascii", errors="strict")
         else:
             text = str(data)
 
         # Strip data URL prefix if present
-        if ',' in text[:100]:
-            text = text.split(',', 1)[1]
+        if "," in text[:100]:
+            text = text.split(",", 1)[1]
 
         decoded = base64.b64decode(text, validate=True)
         if decoded[:8] == PNG_MAGIC or decoded[:3] == JPEG_MAGIC:
@@ -180,9 +204,9 @@ def _ensure_image_bytes(data: bytes) -> bytes:
     # If we get here, data might still be a valid image in another format,
     # or it could be corrupt. Log a warning but proceed anyway.
     logger.warning(
-        "Image data (%d bytes) does not have recognized magic bytes "
-        "(first 16 bytes: %s). Uploading as-is.",
-        len(data), data[:16].hex() if data else "empty"
+        "Image data (%d bytes) does not have recognized magic bytes " "(first 16 bytes: %s). Uploading as-is.",
+        len(data),
+        data[:16].hex() if data else "empty",
     )
     return data
 
@@ -233,20 +257,26 @@ def _m_to_deg_lat(m: float) -> float:
 
 
 def _building_footprint(
-    cx_deg: float, cy_deg: float,
-    width_m: float, depth_m: float,
-    rotation_deg: float, mlon: float,
+    cx_deg: float,
+    cy_deg: float,
+    width_m: float,
+    depth_m: float,
+    rotation_deg: float,
+    mlon: float,
 ) -> Polygon:
     """Return the rotated rectangle footprint of a building as a Shapely Polygon in degree-space."""
     hw = (width_m / 2) / mlon
     hd = (depth_m / 2) / METERS_PER_DEG_LAT
-    rect = Polygon([
-        (cx_deg - hw, cy_deg - hd),
-        (cx_deg + hw, cy_deg - hd),
-        (cx_deg + hw, cy_deg + hd),
-        (cx_deg - hw, cy_deg + hd),
-    ])
+    rect = Polygon(
+        [
+            (cx_deg - hw, cy_deg - hd),
+            (cx_deg + hw, cy_deg - hd),
+            (cx_deg + hw, cy_deg + hd),
+            (cx_deg - hw, cy_deg + hd),
+        ]
+    )
     return rotate(rect, -rotation_deg, origin=(cx_deg, cy_deg))
+
 
 # =============================================================================
 # Building typology palette — varied building types by development type
@@ -254,22 +284,106 @@ def _building_footprint(
 
 TYPOLOGY_PALETTE: dict[str, list[dict[str, Any]]] = {
     "residential": [
-        {"type": "mid_rise_apartment", "width": (16, 24), "depth": (14, 20), "floors": (3, 5), "height_per_floor": 3.2, "weight": 0.35},
-        {"type": "townhouse_row", "width": (5, 7), "depth": (10, 14), "floors": (2, 3), "height_per_floor": 3.0, "weight": 0.40},
-        {"type": "apartment_block", "width": (20, 30), "depth": (16, 22), "floors": (4, 6), "height_per_floor": 3.2, "weight": 0.15},
-        {"type": "walk_up", "width": (12, 16), "depth": (10, 14), "floors": (3, 4), "height_per_floor": 3.0, "weight": 0.10},
+        {
+            "type": "mid_rise_apartment",
+            "width": (16, 24),
+            "depth": (14, 20),
+            "floors": (3, 5),
+            "height_per_floor": 3.2,
+            "weight": 0.35,
+        },
+        {
+            "type": "townhouse_row",
+            "width": (5, 7),
+            "depth": (10, 14),
+            "floors": (2, 3),
+            "height_per_floor": 3.0,
+            "weight": 0.40,
+        },
+        {
+            "type": "apartment_block",
+            "width": (20, 30),
+            "depth": (16, 22),
+            "floors": (4, 6),
+            "height_per_floor": 3.2,
+            "weight": 0.15,
+        },
+        {
+            "type": "walk_up",
+            "width": (12, 16),
+            "depth": (10, 14),
+            "floors": (3, 4),
+            "height_per_floor": 3.0,
+            "weight": 0.10,
+        },
     ],
     "mixed_use": [
-        {"type": "mixed_use_podium", "width": (18, 28), "depth": (16, 24), "floors": (4, 8), "height_per_floor": 3.5, "weight": 0.30},
-        {"type": "retail_liner", "width": (8, 14), "depth": (12, 16), "floors": (2, 3), "height_per_floor": 4.0, "weight": 0.20},
-        {"type": "mid_rise_apartment", "width": (16, 24), "depth": (14, 20), "floors": (3, 5), "height_per_floor": 3.2, "weight": 0.25},
-        {"type": "townhouse_row", "width": (5, 7), "depth": (10, 14), "floors": (2, 3), "height_per_floor": 3.0, "weight": 0.15},
-        {"type": "office_block", "width": (20, 30), "depth": (16, 24), "floors": (4, 8), "height_per_floor": 3.5, "weight": 0.10},
+        {
+            "type": "mixed_use_podium",
+            "width": (18, 28),
+            "depth": (16, 24),
+            "floors": (4, 8),
+            "height_per_floor": 3.5,
+            "weight": 0.30,
+        },
+        {
+            "type": "retail_liner",
+            "width": (8, 14),
+            "depth": (12, 16),
+            "floors": (2, 3),
+            "height_per_floor": 4.0,
+            "weight": 0.20,
+        },
+        {
+            "type": "mid_rise_apartment",
+            "width": (16, 24),
+            "depth": (14, 20),
+            "floors": (3, 5),
+            "height_per_floor": 3.2,
+            "weight": 0.25,
+        },
+        {
+            "type": "townhouse_row",
+            "width": (5, 7),
+            "depth": (10, 14),
+            "floors": (2, 3),
+            "height_per_floor": 3.0,
+            "weight": 0.15,
+        },
+        {
+            "type": "office_block",
+            "width": (20, 30),
+            "depth": (16, 24),
+            "floors": (4, 8),
+            "height_per_floor": 3.5,
+            "weight": 0.10,
+        },
     ],
     "commercial": [
-        {"type": "office_block", "width": (20, 35), "depth": (18, 28), "floors": (4, 10), "height_per_floor": 3.5, "weight": 0.40},
-        {"type": "retail_liner", "width": (8, 14), "depth": (12, 16), "floors": (1, 2), "height_per_floor": 4.5, "weight": 0.30},
-        {"type": "mixed_use_podium", "width": (18, 28), "depth": (16, 24), "floors": (3, 6), "height_per_floor": 3.5, "weight": 0.30},
+        {
+            "type": "office_block",
+            "width": (20, 35),
+            "depth": (18, 28),
+            "floors": (4, 10),
+            "height_per_floor": 3.5,
+            "weight": 0.40,
+        },
+        {
+            "type": "retail_liner",
+            "width": (8, 14),
+            "depth": (12, 16),
+            "floors": (1, 2),
+            "height_per_floor": 4.5,
+            "weight": 0.30,
+        },
+        {
+            "type": "mixed_use_podium",
+            "width": (18, 28),
+            "depth": (16, 24),
+            "floors": (3, 6),
+            "height_per_floor": 3.5,
+            "weight": 0.30,
+        },
     ],
 }
 
@@ -320,6 +434,7 @@ def _sample_building_dims(
 # Road network generation — connected streets forming blocks
 # =============================================================================
 
+
 def _generate_road_network(
     zone_polygon: Polygon,
     unit_count: int,
@@ -353,19 +468,25 @@ def _generate_road_network(
     # --- Primary road (collector for large zones, local for small) ---
     primary_width = 8.0 if unit_count > 20 else 6.0
     primary_type = "collector" if unit_count > 20 else "local"
-    p_start = (centroid.x + _m_to_deg_lon(-road_half_len * cos_a, center_lat),
-               centroid.y + _m_to_deg_lat(-road_half_len * sin_a))
-    p_end = (centroid.x + _m_to_deg_lon(road_half_len * cos_a, center_lat),
-             centroid.y + _m_to_deg_lat(road_half_len * sin_a))
+    p_start = (
+        centroid.x + _m_to_deg_lon(-road_half_len * cos_a, center_lat),
+        centroid.y + _m_to_deg_lat(-road_half_len * sin_a),
+    )
+    p_end = (
+        centroid.x + _m_to_deg_lon(road_half_len * cos_a, center_lat),
+        centroid.y + _m_to_deg_lat(road_half_len * sin_a),
+    )
     primary_line = LineString([p_start, p_end]).intersection(zone_polygon)
     if primary_line.is_empty or not isinstance(primary_line, LineString):
         primary_line = LineString([p_start, p_end])
 
-    roads.append({
-        "centerline_deg": list(primary_line.coords),
-        "width_m": primary_width,
-        "road_type": primary_type,
-    })
+    roads.append(
+        {
+            "centerline_deg": list(primary_line.coords),
+            "width_m": primary_width,
+            "road_type": primary_type,
+        }
+    )
 
     # --- Cross streets (perpendicular) ---
     # For medium+ zones, add cross streets at ~70m intervals
@@ -387,18 +508,24 @@ def _generate_road_network(
             cx_m = along_m * cos_a
             cy_m = along_m * sin_a
             # Cross street endpoints
-            c_start = (centroid.x + _m_to_deg_lon(cx_m - cross_half_len * cos_p, center_lat),
-                        centroid.y + _m_to_deg_lat(cy_m - cross_half_len * sin_p))
-            c_end = (centroid.x + _m_to_deg_lon(cx_m + cross_half_len * cos_p, center_lat),
-                      centroid.y + _m_to_deg_lat(cy_m + cross_half_len * sin_p))
+            c_start = (
+                centroid.x + _m_to_deg_lon(cx_m - cross_half_len * cos_p, center_lat),
+                centroid.y + _m_to_deg_lat(cy_m - cross_half_len * sin_p),
+            )
+            c_end = (
+                centroid.x + _m_to_deg_lon(cx_m + cross_half_len * cos_p, center_lat),
+                centroid.y + _m_to_deg_lat(cy_m + cross_half_len * sin_p),
+            )
             cross_line = LineString([c_start, c_end]).intersection(zone_polygon)
             if cross_line.is_empty or not isinstance(cross_line, LineString):
                 continue
-            roads.append({
-                "centerline_deg": list(cross_line.coords),
-                "width_m": cross_width,
-                "road_type": "local",
-            })
+            roads.append(
+                {
+                    "centerline_deg": list(cross_line.coords),
+                    "width_m": cross_width,
+                    "road_type": "local",
+                }
+            )
 
     # --- Subdivide zone into blocks by buffering roads and subtracting ---
     road_corridors = []
@@ -425,7 +552,7 @@ def _generate_road_network(
         for geom in remaining.geoms:
             if isinstance(geom, Polygon) and geom.area > 0:
                 blocks.append(geom)
-    elif hasattr(remaining, 'geoms'):
+    elif hasattr(remaining, "geoms"):
         for geom in remaining.geoms:
             if isinstance(geom, Polygon) and geom.area > 0:
                 blocks.append(geom)
@@ -441,6 +568,7 @@ def _generate_road_network(
 # =============================================================================
 # Block classification — determine role for building type selection
 # =============================================================================
+
 
 def _classify_block(
     block: Polygon,
@@ -475,6 +603,7 @@ def _classify_block(
 # Block-perimeter building placement
 # =============================================================================
 
+
 def _infill_block(
     block: Polygon,
     block_role: str,
@@ -502,8 +631,7 @@ def _infill_block(
     # Find which edges face a road
     road_facing_edges: list[tuple[int, float]] = []  # (edge_index, road_angle)
     for i in range(len(coords) - 1):
-        edge_mid = Point((coords[i][0] + coords[i + 1][0]) / 2,
-                         (coords[i][1] + coords[i + 1][1]) / 2)
+        edge_mid = Point((coords[i][0] + coords[i + 1][0]) / 2, (coords[i][1] + coords[i + 1][1]) / 2)
         edge_dx = (coords[i + 1][0] - coords[i][0]) * mlon
         edge_dy = (coords[i + 1][1] - coords[i][1]) * METERS_PER_DEG_LAT
         edge_len_m = math.hypot(edge_dx, edge_dy)
@@ -606,20 +734,26 @@ def _infill_block(
                 cursor_m += w / 2 + gap_m
                 continue
 
-            buildings.append(LayoutBuilding(
-                center_x=bx_rel,
-                center_y=by_rel,
-                width_m=w,
-                depth_m=d,
-                rotation_deg=building_rot % 360,
-                height_m=h,
-                floors=floors,
-                building_type=dev_type if dev_type in ("residential", "commercial", "mixed_use", "retail", "civic", "institutional") else "residential",
-                building_typology=typology["type"],
-                block_id=block_idx,
-                setback_front_m=setback_m,
-                setback_side_m=1.5,
-            ))
+            buildings.append(
+                LayoutBuilding(
+                    center_x=bx_rel,
+                    center_y=by_rel,
+                    width_m=w,
+                    depth_m=d,
+                    rotation_deg=building_rot % 360,
+                    height_m=h,
+                    floors=floors,
+                    building_type=(
+                        dev_type
+                        if dev_type in ("residential", "commercial", "mixed_use", "retail", "civic", "institutional")
+                        else "residential"
+                    ),
+                    building_typology=typology["type"],
+                    block_id=block_idx,
+                    setback_front_m=setback_m,
+                    setback_side_m=1.5,
+                )
+            )
             placed_footprints.append(footprint)
             cursor_m += w + gap_m
 
@@ -649,14 +783,13 @@ def _infill_block(
             else:
                 space_type = "buffer"
 
-            poly_coords = [
-                [c[0] - centroid_lon, c[1] - centroid_lat]
-                for c in open_poly.exterior.coords
-            ]
-            green_spaces.append(LayoutGreenSpace(
-                polygon=poly_coords,
-                space_type=space_type,
-            ))
+            poly_coords = [[c[0] - centroid_lon, c[1] - centroid_lat] for c in open_poly.exterior.coords]
+            green_spaces.append(
+                LayoutGreenSpace(
+                    polygon=poly_coords,
+                    space_type=space_type,
+                )
+            )
 
     return buildings, green_spaces
 
@@ -664,6 +797,7 @@ def _infill_block(
 # =============================================================================
 # Layout variation strategies
 # =============================================================================
+
 
 def _generate_block_layout(
     zone_polygon: Polygon,
@@ -689,21 +823,23 @@ def _generate_block_layout(
 
     # Generate road network
     roads_raw, blocks = _generate_road_network(
-        zone_polygon, unit_count, primary_angle_rad, center_lat,
+        zone_polygon,
+        unit_count,
+        primary_angle_rad,
+        center_lat,
     )
 
     # Convert roads to LayoutRoad format
     layout_roads = []
     for rd in roads_raw:
-        centerline_rel = [
-            [c[0] - centroid.x, c[1] - centroid.y]
-            for c in rd["centerline_deg"]
-        ]
-        layout_roads.append(LayoutRoad(
-            centerline=centerline_rel,
-            width_m=rd["width_m"],
-            road_type=rd["road_type"],
-        ))
+        centerline_rel = [[c[0] - centroid.x, c[1] - centroid.y] for c in rd["centerline_deg"]]
+        layout_roads.append(
+            LayoutRoad(
+                centerline=centerline_rel,
+                width_m=rd["width_m"],
+                road_type=rd["road_type"],
+            )
+        )
 
     # Classify blocks
     all_buildings: list[LayoutBuilding] = []
@@ -727,14 +863,13 @@ def _generate_block_layout(
                     break
             if park_block:
                 blocks = [b for b in blocks if b != park_block]
-                park_coords = [
-                    [c[0] - centroid.x, c[1] - centroid.y]
-                    for c in park_block.exterior.coords
-                ]
-                all_greens.append(LayoutGreenSpace(
-                    polygon=park_coords,
-                    space_type="park",
-                ))
+                park_coords = [[c[0] - centroid.x, c[1] - centroid.y] for c in park_block.exterior.coords]
+                all_greens.append(
+                    LayoutGreenSpace(
+                        polygon=park_coords,
+                        space_type="park",
+                    )
+                )
 
     # Infill each block with buildings
     buildings_remaining = unit_count
@@ -750,8 +885,13 @@ def _generate_block_layout(
 
         max_in_block = min(buildings_remaining, max(2, int(unit_count * block.area / zone_polygon.area * 1.3)))
         bldgs, greens = _infill_block(
-            block, role, block_dev_type, roads_raw,
-            centroid.x, centroid.y, rng,
+            block,
+            role,
+            block_dev_type,
+            roads_raw,
+            centroid.x,
+            centroid.y,
+            rng,
             max_buildings=max_in_block,
             block_idx=bi,
         )
@@ -777,7 +917,8 @@ def _generate_block_layout(
         roads=layout_roads,
         green_spaces=all_greens,
         layout_strategy=strategy,
-        reasoning=strategy_labels.get(strategy, strategy) + f" — placed {len(all_buildings)} buildings in {len(blocks)} blocks",
+        reasoning=strategy_labels.get(strategy, strategy)
+        + f" — placed {len(all_buildings)} buildings in {len(blocks)} blocks",
         density_achieved=round(len(all_buildings) / max(area_ha, 0.01), 1),
     )
 
@@ -842,9 +983,9 @@ def _site_preview_clean_text(value: Any) -> str | None:
     if isinstance(value, str):
         text = value
     elif isinstance(value, dict):
-        text = ' '.join(str(child) for child in value.values() if child not in (None, ''))
+        text = " ".join(str(child) for child in value.values() if child not in (None, ""))
     elif isinstance(value, (list, tuple, set)):
-        text = ' '.join(str(child) for child in value if child not in (None, ''))
+        text = " ".join(str(child) for child in value if child not in (None, ""))
     else:
         text = str(value)
     text = re.sub(r"\s+", " ", text).strip()
@@ -858,11 +999,12 @@ def _site_preview_sanitize_text(value: Any) -> str | None:
     for pattern, replacement in SITE_PLAN_TEXT_REPLACEMENTS:
         text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     for pattern in SITE_PLAN_DROP_PATTERNS:
-        text = re.sub(pattern, ' ', text, flags=re.IGNORECASE)
+        text = re.sub(pattern, " ", text, flags=re.IGNORECASE)
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"\s+([,.;:])", r"\1", text)
-    text = text.strip(' ,.;:-')
+    text = text.strip(" ,.;:-")
     return text or None
+
 
 def _site_preview_color_name(hex_color: str | None) -> str | None:
     if not hex_color:
@@ -893,6 +1035,7 @@ class LayoutPlanner:
         # Try Redis for runtime toggle
         try:
             import redis as redis_lib
+
             r = redis_lib.from_url(settings.redis_url, decode_responses=True)
             override = r.get("layout_ai_provider")
             if override:
@@ -914,28 +1057,18 @@ class LayoutPlanner:
         Tries AI provider first, falls back to algorithmic layout on any failure.
         """
         provider = self._resolve_provider()
-        centroid = zone_polygon.centroid
-        center_lat = centroid.y
 
         try:
             if provider == "claude" and settings.anthropic_api_key:
-                return await self._generate_with_claude(
-                    zone_polygon, zone_type, unit_count, properties, neighbors
-                )
+                return await self._generate_with_claude(zone_polygon, zone_type, unit_count, properties, neighbors)
             elif provider == "gemini" and settings.gemini_api_key:
-                return await self._generate_with_gemini(
-                    zone_polygon, zone_type, unit_count, properties, neighbors
-                )
+                return await self._generate_with_gemini(zone_polygon, zone_type, unit_count, properties, neighbors)
             else:
                 logger.info("No AI provider configured for layout; using algorithmic fallback")
-                return self._generate_algorithmic_layout(
-                    zone_polygon, zone_type, unit_count, properties
-                )
+                return self._generate_algorithmic_layout(zone_polygon, zone_type, unit_count, properties)
         except Exception as e:
             logger.warning("AI layout generation failed (%s): %s - using algorithmic fallback", provider, e)
-            return self._generate_algorithmic_layout(
-                zone_polygon, zone_type, unit_count, properties
-            )
+            return self._generate_algorithmic_layout(zone_polygon, zone_type, unit_count, properties)
 
     # -------------------------------------------------------------------------
     # Multi-option Preview
@@ -962,20 +1095,30 @@ class LayoutPlanner:
         try:
             if provider == "claude" and settings.anthropic_api_key:
                 return await self._generate_options_with_claude(
-                    zone_polygon, zone_type, unit_count, properties, neighbors, count,
-                    reference_context, locked_layers,
+                    zone_polygon,
+                    zone_type,
+                    unit_count,
+                    properties,
+                    neighbors,
+                    count,
+                    reference_context,
+                    locked_layers,
                 )
             elif provider == "gemini" and settings.gemini_api_key:
                 return await self._generate_options_with_gemini(
-                    zone_polygon, zone_type, unit_count, properties, neighbors, count,
-                    reference_context, locked_layers,
+                    zone_polygon,
+                    zone_type,
+                    unit_count,
+                    properties,
+                    neighbors,
+                    count,
+                    reference_context,
+                    locked_layers,
                 )
         except Exception as e:
             logger.warning("AI layout options failed (%s): %s - using algorithmic variations", provider, e)
 
-        return self._generate_algorithmic_variations(
-            zone_polygon, zone_type, unit_count, properties, count
-        )
+        return self._generate_algorithmic_variations(zone_polygon, zone_type, unit_count, properties, count)
 
     async def _generate_options_with_claude(
         self,
@@ -988,7 +1131,9 @@ class LayoutPlanner:
         reference_context: Optional[dict[str, Any]] = None,
         locked_layers: Optional[dict[str, Any]] = None,
     ) -> list[SiteLayoutOption]:
-        prompt = self._build_multi_layout_prompt(zone_polygon, zone_type, unit_count, properties, neighbors, count, reference_context, locked_layers)
+        prompt = self._build_multi_layout_prompt(
+            zone_polygon, zone_type, unit_count, properties, neighbors, count, reference_context, locked_layers
+        )
         client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
         message = client.messages.create(
             model="claude-sonnet-4-20250514",
@@ -999,6 +1144,7 @@ class LayoutPlanner:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             log_api_usage_sync(
                 provider="anthropic",
                 operation="layout_preview",
@@ -1021,9 +1167,12 @@ class LayoutPlanner:
         reference_context: Optional[dict[str, Any]] = None,
         locked_layers: Optional[dict[str, Any]] = None,
     ) -> list[SiteLayoutOption]:
-        prompt = self._build_multi_layout_prompt(zone_polygon, zone_type, unit_count, properties, neighbors, count, reference_context, locked_layers)
+        prompt = self._build_multi_layout_prompt(
+            zone_polygon, zone_type, unit_count, properties, neighbors, count, reference_context, locked_layers
+        )
 
         import google.generativeai as genai
+
         genai.configure(api_key=settings.gemini_api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(
@@ -1036,6 +1185,7 @@ class LayoutPlanner:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             um = response.usage_metadata
             input_toks = (um.prompt_token_count if um else 0) or 0
             output_toks = (um.candidates_token_count if um else 0) or 0
@@ -1074,10 +1224,12 @@ class LayoutPlanner:
 
         coords_m = []
         for x, y in zone_polygon.exterior.coords:
-            coords_m.append([
-                round((x - centroid.x) * mlon, 1),
-                round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
-            ])
+            coords_m.append(
+                [
+                    round((x - centroid.x) * mlon, 1),
+                    round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
+                ]
+            )
 
         dev_type = properties.get("development_type", zone_type)
         aesthetic = properties.get("development_aesthetic", "")
@@ -1111,9 +1263,13 @@ class LayoutPlanner:
         if neighbors:
             sibling_parts = []
             zone_type_labels = {
-                "road": "Road", "building": "Building", "residential": "Residential",
-                "green_space": "Green Space", "parking": "Parking/Plaza",
-                "water": "Water", "site_boundary": "Site Boundary",
+                "road": "Road",
+                "building": "Building",
+                "residential": "Residential",
+                "green_space": "Green Space",
+                "parking": "Parking/Plaza",
+                "water": "Water",
+                "site_boundary": "Site Boundary",
                 "development_area": "Development Area",
             }
             for n in neighbors:
@@ -1250,13 +1406,21 @@ class LayoutPlanner:
         if locked_layers:
             lock_parts = []
             if locked_layers.get("roads"):
-                lock_parts.append(f"Locked roads ({len(locked_layers['roads'])} elements) - keep these road positions exactly as specified:")
+                lock_parts.append(
+                    f"Locked roads ({len(locked_layers['roads'])} elements) - keep these road positions exactly as specified:"
+                )
                 for i, r in enumerate(locked_layers["roads"]):
-                    lock_parts.append(f"  Road {i}: centerline={json.dumps(r.get('centerline', []))}, width={r.get('width_m', 6)}m")
+                    lock_parts.append(
+                        f"  Road {i}: centerline={json.dumps(r.get('centerline', []))}, width={r.get('width_m', 6)}m"
+                    )
             if locked_layers.get("buildings"):
-                lock_parts.append(f"Locked buildings ({len(locked_layers['buildings'])} elements) - keep these building positions exactly")
+                lock_parts.append(
+                    f"Locked buildings ({len(locked_layers['buildings'])} elements) - keep these building positions exactly"
+                )
             if locked_layers.get("green_spaces"):
-                lock_parts.append(f"Locked green spaces ({len(locked_layers['green_spaces'])} elements) - keep these green space positions exactly")
+                lock_parts.append(
+                    f"Locked green spaces ({len(locked_layers['green_spaces'])} elements) - keep these green space positions exactly"
+                )
 
             if lock_parts:
                 locked_section = f"""
@@ -1386,9 +1550,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 ]"""
         return prompt
 
-    def _parse_multi_ai_response(
-        self, text: str, zone_polygon: Polygon, count: int
-    ) -> list[SiteLayoutOption]:
+    def _parse_multi_ai_response(self, text: str, zone_polygon: Polygon, count: int) -> list[SiteLayoutOption]:
         """Parse AI response containing a JSON array of layout options."""
         text = text.strip()
         if text.startswith("```"):
@@ -1396,7 +1558,9 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             text = text.rsplit("```", 1)[0]
 
         data = json.loads(text)
-        logger.info("AI response parsed: type=%s, len=%s", type(data).__name__, len(data) if isinstance(data, list) else 1)
+        logger.info(
+            "AI response parsed: type=%s, len=%s", type(data).__name__, len(data) if isinstance(data, list) else 1
+        )
 
         if isinstance(data, dict):
             data = [data]
@@ -1407,7 +1571,13 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         for idx, item in enumerate(data[:count]):
             layout = SiteLayoutResponse(**item)
-            logger.info("Option %d: %d buildings, %d roads, strategy=%s", idx, len(layout.buildings), len(layout.roads), layout.layout_strategy)
+            logger.info(
+                "Option %d: %d buildings, %d roads, strategy=%s",
+                idx,
+                len(layout.buildings),
+                len(layout.roads),
+                layout.layout_strategy,
+            )
 
             valid_buildings = []
             for b in layout.buildings:
@@ -1417,8 +1587,18 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 if inside or dist < 0.00001:
                     valid_buildings.append(b)
                 else:
-                    logger.warning("Preview option %d: building at center_x=%f, center_y=%f -> point(%f,%f) outside zone (dist=%f)", idx, b.center_x, b.center_y, pt.x, pt.y, dist)
-            logger.info("Option %d: %d/%d buildings passed validation", idx, len(valid_buildings), len(layout.buildings))
+                    logger.warning(
+                        "Preview option %d: building at center_x=%f, center_y=%f -> point(%f,%f) outside zone (dist=%f)",
+                        idx,
+                        b.center_x,
+                        b.center_y,
+                        pt.x,
+                        pt.y,
+                        dist,
+                    )
+            logger.info(
+                "Option %d: %d/%d buildings passed validation", idx, len(valid_buildings), len(layout.buildings)
+            )
             layout.buildings = valid_buildings
 
             option = SiteLayoutOption(
@@ -1436,6 +1616,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             options.append(option)
 
         return options
+
     def _generate_algorithmic_variations(
         self,
         zone_polygon: Polygon,
@@ -1487,8 +1668,13 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
             for idx, (strategy_key, label) in enumerate(strategy_defs[:count]):
                 layout = _generate_block_layout(
-                    zone_polygon, zone_type, unit_count, properties,
-                    angle_long, strategy_key, seed=idx * 1337,
+                    zone_polygon,
+                    zone_type,
+                    unit_count,
+                    properties,
+                    angle_long,
+                    strategy_key,
+                    seed=idx * 1337,
                 )
                 orientation_deg = (math.degrees(angle_long) + 360.0) % 360.0
                 option = SiteLayoutOption(
@@ -1525,7 +1711,11 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         for idx, (strategy_name, label, orientation_rad) in enumerate(strategies[:count]):
             layout = self._generate_algorithmic_buildings_only(
-                zone_polygon, zone_type, unit_count, properties, orientation_rad,
+                zone_polygon,
+                zone_type,
+                unit_count,
+                properties,
+                orientation_rad,
             )
             orientation_deg = (math.degrees(orientation_rad) + 360.0) % 360.0
             option = SiteLayoutOption(
@@ -1543,6 +1733,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             options.append(option)
 
         return options
+
     def _generate_algorithmic_buildings_only(
         self,
         zone_polygon: Polygon,
@@ -1612,34 +1803,44 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
                 # Check that the building footprint is mostly inside the zone
                 bldg_rect = _building_footprint(
-                    centroid.x + cx, centroid.y + cy,
-                    building_width_m, building_depth_m,
-                    building_rotation, mlon,
+                    centroid.x + cx,
+                    centroid.y + cy,
+                    building_width_m,
+                    building_depth_m,
+                    building_rotation,
+                    mlon,
                 )
                 overlap = bldg_rect.intersection(zone_polygon).area
                 if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
                     continue
 
-                buildings.append(LayoutBuilding(
-                    center_x=cx,
-                    center_y=cy,
-                    width_m=building_width_m,
-                    depth_m=building_depth_m,
-                    rotation_deg=building_rotation % 360,
-                    height_m=properties.get("height"),
-                    floors=properties.get("floors"),
-                    building_type=properties.get("development_type", "residential"),
-                    setback_front_m=setback_front_m,
-                    setback_side_m=setback_side_m,
-                ))
+                buildings.append(
+                    LayoutBuilding(
+                        center_x=cx,
+                        center_y=cy,
+                        width_m=building_width_m,
+                        depth_m=building_depth_m,
+                        rotation_deg=building_rotation % 360,
+                        height_m=properties.get("height"),
+                        floors=properties.get("floors"),
+                        building_type=properties.get("development_type", "residential"),
+                        setback_front_m=setback_front_m,
+                        setback_side_m=setback_side_m,
+                    )
+                )
                 placed += 1
 
         area_ha = zone_polygon.area * mlon * METERS_PER_DEG_LAT / 10000
 
         logger.info(
             "buildings_only: placed %d of %d in zone %.1fx%.1fm (building %.1fx%.1fm, orientation %.1f degrees)",
-            len(buildings), unit_count, zone_width_m, zone_depth_m,
-            building_width_m, building_depth_m, orientation_deg,
+            len(buildings),
+            unit_count,
+            zone_width_m,
+            zone_depth_m,
+            building_width_m,
+            building_depth_m,
+            orientation_deg,
         )
 
         return SiteLayoutResponse(
@@ -1690,18 +1891,17 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         ]
 
         # Clip road to zone
-        road_line = LineString([
-            (centroid.x + road_start[0], centroid.y + road_start[1]),
-            (centroid.x + road_end[0], centroid.y + road_end[1]),
-        ])
+        road_line = LineString(
+            [
+                (centroid.x + road_start[0], centroid.y + road_start[1]),
+                (centroid.x + road_end[0], centroid.y + road_end[1]),
+            ]
+        )
         clipped = road_line.intersection(zone_polygon)
         if clipped.is_empty or clipped.geom_type != "LineString":
             road_centerline = [road_start, road_end]
         else:
-            road_centerline = [
-                [c[0] - centroid.x, c[1] - centroid.y]
-                for c in clipped.coords
-            ]
+            road_centerline = [[c[0] - centroid.x, c[1] - centroid.y] for c in clipped.coords]
 
         road = LayoutRoad(
             centerline=road_centerline,
@@ -1713,10 +1913,8 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         buildings: list[LayoutBuilding] = []
         perpendicular_rad = road_angle_rad + math.pi / 2
         offset_from_road_m = road_width_m / 2 + setback_front_m + building_depth_m / 2
-        spacing_m = building_width_m + setback_side_m * 2
         total_road_len = road_half_len * 2
         buildings_per_side = math.ceil(unit_count / 2)
-        actual_spacing = min(spacing_m, total_road_len / max(buildings_per_side, 1))
 
         placed = 0
         for side in [1, -1]:
@@ -1737,9 +1935,12 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 building_rotation = face_angle + rotation_variation
 
                 bldg_rect = _building_footprint(
-                    centroid.x + cx, centroid.y + cy,
-                    building_width_m, building_depth_m,
-                    building_rotation, mlon,
+                    centroid.x + cx,
+                    centroid.y + cy,
+                    building_width_m,
+                    building_depth_m,
+                    building_rotation,
+                    mlon,
                 )
                 overlap = bldg_rect.intersection(zone_polygon).area
                 if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
@@ -1750,26 +1951,31 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                     cx = _m_to_deg_lon(bx_m, center_lat)
                     cy = _m_to_deg_lat(by_m)
                     bldg_rect = _building_footprint(
-                        centroid.x + cx, centroid.y + cy,
-                        building_width_m, building_depth_m,
-                        building_rotation, mlon,
+                        centroid.x + cx,
+                        centroid.y + cy,
+                        building_width_m,
+                        building_depth_m,
+                        building_rotation,
+                        mlon,
                     )
                     overlap = bldg_rect.intersection(zone_polygon).area
                     if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
                         continue
 
-                buildings.append(LayoutBuilding(
-                    center_x=cx,
-                    center_y=cy,
-                    width_m=building_width_m,
-                    depth_m=building_depth_m,
-                    rotation_deg=building_rotation % 360,
-                    height_m=properties.get("height"),
-                    floors=properties.get("floors"),
-                    building_type=properties.get("development_type", "residential"),
-                    setback_front_m=setback_front_m,
-                    setback_side_m=setback_side_m,
-                ))
+                buildings.append(
+                    LayoutBuilding(
+                        center_x=cx,
+                        center_y=cy,
+                        width_m=building_width_m,
+                        depth_m=building_depth_m,
+                        rotation_deg=building_rotation % 360,
+                        height_m=properties.get("height"),
+                        floors=properties.get("floors"),
+                        building_type=properties.get("development_type", "residential"),
+                        setback_front_m=setback_front_m,
+                        setback_side_m=setback_side_m,
+                    )
+                )
                 placed += 1
 
         # Green buffer strips
@@ -1785,15 +1991,17 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             hw = _m_to_deg_lon(buffer_width_m / 2 * abs(math.cos(perpendicular_rad)), center_lat)
             hh = _m_to_deg_lat(buffer_width_m / 2 * abs(math.sin(perpendicular_rad)))
 
-            green_spaces.append(LayoutGreenSpace(
-                polygon=[
-                    [buf_start_x - hw, buf_start_y - hh],
-                    [buf_end_x - hw, buf_end_y - hh],
-                    [buf_end_x + hw, buf_end_y + hh],
-                    [buf_start_x + hw, buf_start_y + hh],
-                ],
-                space_type="buffer",
-            ))
+            green_spaces.append(
+                LayoutGreenSpace(
+                    polygon=[
+                        [buf_start_x - hw, buf_start_y - hh],
+                        [buf_end_x - hw, buf_end_y - hh],
+                        [buf_end_x + hw, buf_end_y + hh],
+                        [buf_start_x + hw, buf_start_y + hh],
+                    ],
+                    space_type="buffer",
+                )
+            )
 
         if _zone_requires_district_fabric(zone_type, unit_count, properties):
             green_spaces.extend(_generate_civic_anchor_spaces(zone_polygon, properties, center_lat))
@@ -1848,7 +2056,10 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
     # -- Claude provider --
 
     async def _generate_site_massing_with_claude(
-        self, zones: list[dict[str, Any]], project_id: str, count: int,
+        self,
+        zones: list[dict[str, Any]],
+        project_id: str,
+        count: int,
     ) -> SiteMassingResponse:
         prompt = self._build_site_massing_prompt(zones, count)
         client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
@@ -1860,6 +2071,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         )
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             log_api_usage_sync(
                 provider="anthropic",
                 operation="site_massing",
@@ -1874,10 +2086,14 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
     # -- Gemini provider --
 
     async def _generate_site_massing_with_gemini(
-        self, zones: list[dict[str, Any]], project_id: str, count: int,
+        self,
+        zones: list[dict[str, Any]],
+        project_id: str,
+        count: int,
     ) -> SiteMassingResponse:
         prompt = self._build_site_massing_prompt(zones, count)
         import google.generativeai as genai
+
         genai.configure(api_key=settings.gemini_api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(
@@ -1889,6 +2105,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         )
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             um = response.usage_metadata
             input_toks = (um.prompt_token_count if um else 0) or 0
             output_toks = (um.candidates_token_count if um else 0) or 0
@@ -1906,7 +2123,9 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
     # -- Prompt builder --
 
     def _build_site_massing_prompt(
-        self, zones: list[dict[str, Any]], count: int,
+        self,
+        zones: list[dict[str, Any]],
+        count: int,
     ) -> str:
         """Build prompt describing ALL zones so the AI generates holistic site options."""
 
@@ -1936,10 +2155,12 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             # Zone polygon in meters from *its own* centroid
             coords_m = []
             for x, y in poly.exterior.coords:
-                coords_m.append([
-                    round((x - centroid.x) * mlon, 1),
-                    round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
-                ])
+                coords_m.append(
+                    [
+                        round((x - centroid.x) * mlon, 1),
+                        round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
+                    ]
+                )
 
             # Centroid offset from site reference in meters
             cx_m = round((centroid.x - ref_lon) * mlon, 1)
@@ -1973,16 +2194,18 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             if style_prompt:
                 extras.append(f'  Style: "{style_prompt}"')
             if archetype_image:
-                extras.append(f"  Archetype image selected: yes")
+                extras.append("  Archetype image selected: yes")
 
             extras_text = chr(10).join(extras) if extras else "  (no extra properties)"
 
-            zone_descriptions.append(f"""### Zone "{zone_label or zone_id}" (id={zone_id})
+            zone_descriptions.append(
+                f"""### Zone "{zone_label or zone_id}" (id={zone_id})
 - Type: {dev_type}
 - Centroid offset from site center: ({cx_m}, {cy_m}) meters
 - Dimensions: {width_m:.0f}m x {depth_m:.0f}m ({area_m2:.0f} sq m)
 - Polygon (meters from zone centroid): {json.dumps(coords_m)}
-{extras_text}""")
+{extras_text}"""
+            )
 
         zones_text = chr(10).join(zone_descriptions)
 
@@ -2116,7 +2339,10 @@ Return ONLY a JSON array of {count} option objects:
                         else:
                             logger.warning(
                                 "Site massing option %d zone %s: building at (%f,%f) outside zone",
-                                idx, zone_id, bldg.center_x, bldg.center_y,
+                                idx,
+                                zone_id,
+                                bldg.center_x,
+                                bldg.center_y,
                             )
                     else:
                         valid_buildings.append(bldg)
@@ -2138,25 +2364,29 @@ Return ONLY a JSON array of {count} option objects:
                 ]
 
                 total_buildings += len(valid_buildings)
-                massing_zones.append(SiteMassingZone(
-                    zone_id=zone_id,
-                    zone_type=zone_data.get("zone_type", ""),
-                    zone_label=zone_data.get("zone_label", ""),
-                    buildings=valid_buildings,
-                    roads=roads,
-                    green_spaces=green_spaces,
-                ))
+                massing_zones.append(
+                    SiteMassingZone(
+                        zone_id=zone_id,
+                        zone_type=zone_data.get("zone_type", ""),
+                        zone_label=zone_data.get("zone_label", ""),
+                        buildings=valid_buildings,
+                        roads=roads,
+                        green_spaces=green_spaces,
+                    )
+                )
 
             # Always use the computed building count (AI may hallucinate numbers)
-            options.append(SiteMassingOption(
-                option_index=idx,
-                option_label=item.get("option_label", f"Option {idx + 1}"),
-                zones=massing_zones,
-                reasoning=item.get("reasoning", ""),
-                total_building_count=total_buildings,
-                total_floor_area_m2=item.get("total_floor_area_m2"),
-                density_achieved=item.get("density_achieved"),
-            ))
+            options.append(
+                SiteMassingOption(
+                    option_index=idx,
+                    option_label=item.get("option_label", f"Option {idx + 1}"),
+                    zones=massing_zones,
+                    reasoning=item.get("reasoning", ""),
+                    total_building_count=total_buildings,
+                    total_floor_area_m2=item.get("total_floor_area_m2"),
+                    density_achieved=item.get("density_achieved"),
+                )
+            )
 
         return SiteMassingResponse(project_id=project_id, options=options)
 
@@ -2198,16 +2428,17 @@ Return ONLY a JSON array of {count} option objects:
                 if zone_type in ("green_space", "park", "water", "parking"):
                     # Green space, park, water, parking → define as landscape/hardscape polygon
                     gs_coords = [
-                        [round(x - centroid.x, 10), round(y - centroid.y, 10)]
-                        for x, y in poly.exterior.coords
+                        [round(x - centroid.x, 10), round(y - centroid.y, 10)] for x, y in poly.exterior.coords
                     ]
                     space_type = "parking_plaza" if zone_type == "parking" else "park"
-                    massing_zones.append(SiteMassingZone(
-                        zone_id=zone_id,
-                        zone_type=zone_type,
-                        zone_label=zone_label,
-                        green_spaces=[LayoutGreenSpace(polygon=gs_coords, space_type=space_type)],
-                    ))
+                    massing_zones.append(
+                        SiteMassingZone(
+                            zone_id=zone_id,
+                            zone_type=zone_type,
+                            zone_label=zone_label,
+                            green_spaces=[LayoutGreenSpace(polygon=gs_coords, space_type=space_type)],
+                        )
+                    )
                     continue
 
                 if zone_type == "road":
@@ -2218,12 +2449,14 @@ Return ONLY a JSON array of {count} option objects:
                         [bounds[0] - centroid.x, mid_y - centroid.y],
                         [bounds[2] - centroid.x, mid_y - centroid.y],
                     ]
-                    massing_zones.append(SiteMassingZone(
-                        zone_id=zone_id,
-                        zone_type=zone_type,
-                        zone_label=zone_label,
-                        roads=[LayoutRoad(centerline=road_cl, width_m=8.0, road_type="local")],
-                    ))
+                    massing_zones.append(
+                        SiteMassingZone(
+                            zone_id=zone_id,
+                            zone_type=zone_type,
+                            zone_label=zone_label,
+                            roads=[LayoutRoad(centerline=road_cl, width_m=8.0, road_type="local")],
+                        )
+                    )
                     continue
 
                 # Building zones: grid-fill
@@ -2253,31 +2486,37 @@ Return ONLY a JSON array of {count} option objects:
                             continue
 
                         h = height_lo + (height_hi - height_lo) * ((ix + iy) % 3) / 2
-                        buildings.append(LayoutBuilding(
-                            center_x=px_deg,
-                            center_y=py_deg,
-                            width_m=bldg_w,
-                            depth_m=bldg_d,
-                            rotation_deg=0,
-                            height_m=round(h, 1),
-                            building_type=props.get("development_type", "residential"),
-                        ))
+                        buildings.append(
+                            LayoutBuilding(
+                                center_x=px_deg,
+                                center_y=py_deg,
+                                width_m=bldg_w,
+                                depth_m=bldg_d,
+                                rotation_deg=0,
+                                height_m=round(h, 1),
+                                building_type=props.get("development_type", "residential"),
+                            )
+                        )
 
                 total_buildings += len(buildings)
-                massing_zones.append(SiteMassingZone(
-                    zone_id=zone_id,
-                    zone_type=zone_type,
-                    zone_label=zone_label,
-                    buildings=buildings,
-                ))
+                massing_zones.append(
+                    SiteMassingZone(
+                        zone_id=zone_id,
+                        zone_type=zone_type,
+                        zone_label=zone_label,
+                        buildings=buildings,
+                    )
+                )
 
-            options.append(SiteMassingOption(
-                option_index=opt_idx,
-                option_label=cfg["label"],
-                zones=massing_zones,
-                reasoning=f"Algorithmic {cfg['label'].lower()} layout with heights {cfg['height_range'][0]}-{cfg['height_range'][1]}m",
-                total_building_count=total_buildings,
-            ))
+            options.append(
+                SiteMassingOption(
+                    option_index=opt_idx,
+                    option_label=cfg["label"],
+                    zones=massing_zones,
+                    reasoning=f"Algorithmic {cfg['label'].lower()} layout with heights {cfg['height_range'][0]}-{cfg['height_range'][1]}m",
+                    total_building_count=total_buildings,
+                )
+            )
 
         return SiteMassingResponse(project_id=project_id, options=options)
 
@@ -2305,10 +2544,12 @@ Return ONLY a JSON array of {count} option objects:
         # Compute polygon coordinates in local meters for the AI
         coords_m = []
         for x, y in zone_polygon.exterior.coords:
-            coords_m.append([
-                round((x - centroid.x) * mlon, 1),
-                round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
-            ])
+            coords_m.append(
+                [
+                    round((x - centroid.x) * mlon, 1),
+                    round((y - centroid.y) * METERS_PER_DEG_LAT, 1),
+                ]
+            )
 
         dev_type = properties.get("development_type", zone_type)
         aesthetic = properties.get("development_aesthetic", "")
@@ -2321,11 +2562,17 @@ Return ONLY a JSON array of {count} option objects:
         elif dev_type in ("residential",) and unit_count <= 8:
             strategy_hint = "Arrange buildings in a clean cluster or court with shared hardscape and planted edges."
         elif dev_type in ("residential",) and unit_count <= 20:
-            strategy_hint = "Arrange buildings in rows or a small block pattern with clear circulation and landscape structure."
+            strategy_hint = (
+                "Arrange buildings in rows or a small block pattern with clear circulation and landscape structure."
+            )
         elif dev_type in ("residential",):
-            strategy_hint = "Arrange buildings in a coherent block pattern with readable circulation and planted open space."
+            strategy_hint = (
+                "Arrange buildings in a coherent block pattern with readable circulation and planted open space."
+            )
         elif dev_type in ("commercial", "mixed_use", "mixed-use", "mixed use"):
-            strategy_hint = "Use edge-aligned building placement with service access, active frontage, and structured public realm."
+            strategy_hint = (
+                "Use edge-aligned building placement with service access, active frontage, and structured public realm."
+            )
         else:
             strategy_hint = "Use a realistic layout appropriate for the development type, with clear circulation and no undefined residual ground."
 
@@ -2456,6 +2703,7 @@ Return ONLY valid JSON matching this schema:
         # Log usage
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             log_api_usage_sync(
                 provider="anthropic",
                 operation="layout_generation",
@@ -2482,6 +2730,7 @@ Return ONLY valid JSON matching this schema:
         prompt = self._build_layout_prompt(zone_polygon, zone_type, unit_count, properties, neighbors)
 
         import google.generativeai as genai
+
         genai.configure(api_key=settings.gemini_api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(
@@ -2494,10 +2743,13 @@ Return ONLY valid JSON matching this schema:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             um = response.usage_metadata
             input_toks = (um.prompt_token_count if um else 0) or 0
             output_toks = (um.candidates_token_count if um else 0) or 0
-            logger.debug("Gemini layout_generation usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
+            logger.debug(
+                "Gemini layout_generation usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks
+            )
             log_api_usage_sync(
                 provider="gemini",
                 operation="layout_generation",
@@ -2538,6 +2790,7 @@ Return ONLY valid JSON matching this schema:
         layout.buildings = valid_buildings
 
         return layout
+
     # -------------------------------------------------------------------------
     # Algorithmic Fallback (improved over dumb grid)
     # -------------------------------------------------------------------------
@@ -2579,11 +2832,20 @@ Return ONLY valid JSON matching this schema:
 
         if _zone_requires_district_fabric(zone_type, unit_count, properties):
             return _generate_block_layout(
-                zone_polygon, zone_type, unit_count, properties,
-                orientation_rad, "perimeter_courtyard", seed=42,
+                zone_polygon,
+                zone_type,
+                unit_count,
+                properties,
+                orientation_rad,
+                "perimeter_courtyard",
+                seed=42,
             )
         return self._generate_algorithmic_buildings_only(
-            zone_polygon, zone_type, unit_count, properties, orientation_rad,
+            zone_polygon,
+            zone_type,
+            unit_count,
+            properties,
+            orientation_rad,
         )
 
     # -------------------------------------------------------------------------
@@ -2619,8 +2881,7 @@ Return ONLY valid JSON matching this schema:
         for b in option.buildings:
             btype = getattr(b, "building_type", "residential")
             building_desc.append(
-                f"- {btype} building: {b.width_m}m x {b.depth_m}m, "
-                f"{b.floors or properties.get('floors', 2)} floors"
+                f"- {btype} building: {b.width_m}m x {b.depth_m}m, " f"{b.floors or properties.get('floors', 2)} floors"
             )
 
         road_desc = []
@@ -2690,7 +2951,9 @@ Return ONLY valid JSON matching this schema:
             if ref_buildings:
                 heights = [b.get("height_m") for b in ref_buildings if b.get("height_m")]
                 avg_h = round(sum(heights) / len(heights), 1) if heights else None
-                osm_parts.append(f"Existing buildings nearby: {len(ref_buildings)}" + (f" (avg {avg_h}m)" if avg_h else ""))
+                osm_parts.append(
+                    f"Existing buildings nearby: {len(ref_buildings)}" + (f" (avg {avg_h}m)" if avg_h else "")
+                )
             ref_water = reference_context.get("water", [])
             if ref_water:
                 osm_parts.append(f"Water features: {len(ref_water)} nearby")
@@ -2698,7 +2961,7 @@ Return ONLY valid JSON matching this schema:
             if ref_parks:
                 osm_parts.append(f"Parks/green areas: {len(ref_parks)} nearby")
             if osm_parts:
-                osm_text = f"\nReal-world surroundings (OpenStreetMap):\n" + chr(10).join(f"- {p}" for p in osm_parts)
+                osm_text = "\nReal-world surroundings (OpenStreetMap):\n" + chr(10).join(f"- {p}" for p in osm_parts)
 
         prompt = f"""Generate a photoreal orthographic aerial district-fragment view of a proposed {dev_type} development.
 
@@ -2744,10 +3007,13 @@ Requirements:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             um = response.usage_metadata
             input_toks = (um.prompt_token_count if um else 0) or 0
             output_toks = (um.candidates_token_count if um else 0) or 0
-            logger.debug("Gemini layout_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
+            logger.debug(
+                "Gemini layout_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks
+            )
             log_api_usage_sync(
                 provider="gemini",
                 operation="layout_preview_image",
@@ -2777,7 +3043,6 @@ Requirements:
             for p in response.candidates[0].content.parts
         ]
         raise RuntimeError(f"Gemini did not return an image. Parts received: {part_types}")
-
 
     def _site_preview_view_bounds(
         self,
@@ -2815,7 +3080,6 @@ Requirements:
         pad_y = max((maxy - miny) * 0.08, 0.00012)
         return minx - pad_x, miny - pad_y, maxx + pad_x, maxy + pad_y
 
-
     def _site_preview_point_to_pixel(
         self,
         lon: float,
@@ -2839,7 +3103,6 @@ Requirements:
         py = offset_y + (maxy - lat) * scale
         return px, py
 
-
     def _site_preview_meters_per_pixel(
         self,
         view_bounds: tuple[float, float, float, float],
@@ -2854,7 +3117,6 @@ Requirements:
         width_m = abs(maxx - minx) * _meters_per_deg_lon(center_lat)
         height_m = abs(maxy - miny) * METERS_PER_DEG_LAT
         return max(width_m / drawable_w, height_m / drawable_h, 0.25)
-
 
     def _site_preview_draw_polygon(
         self,
@@ -2880,7 +3142,6 @@ Requirements:
         if outline is not None and line_width > 1:
             draw.line(coords, fill=outline, width=line_width)
 
-
     def _site_preview_draw_line(
         self,
         draw: ImageDraw.ImageDraw,
@@ -2902,27 +3163,27 @@ Requirements:
             return
         draw.line(coords, fill=fill, width=line_width, joint="curve")
 
-
     def _absolute_layout_building_polygon(self, zone_shape: Polygon, building: LayoutBuilding) -> Polygon | None:
         centroid = zone_shape.centroid
         cx = float(centroid.x + float(getattr(building, "center_x", 0.0) or 0.0))
         cy = float(centroid.y + float(getattr(building, "center_y", 0.0) or 0.0))
         half_w = _m_to_deg_lon(float(building.width_m) / 2.0, cy)
         half_d = _m_to_deg_lat(float(building.depth_m) / 2.0)
-        polygon = Polygon([
-            (cx - half_w, cy - half_d),
-            (cx + half_w, cy - half_d),
-            (cx + half_w, cy + half_d),
-            (cx - half_w, cy + half_d),
-            (cx - half_w, cy - half_d),
-        ])
+        polygon = Polygon(
+            [
+                (cx - half_w, cy - half_d),
+                (cx + half_w, cy - half_d),
+                (cx + half_w, cy + half_d),
+                (cx - half_w, cy + half_d),
+                (cx - half_w, cy - half_d),
+            ]
+        )
         if float(getattr(building, "rotation_deg", 0.0) or 0.0):
             polygon = rotate(polygon, float(building.rotation_deg), origin=(cx, cy), use_radians=False)
         clipped = polygon.intersection(zone_shape)
         if clipped.is_empty or clipped.geom_type != "Polygon":
             return None
         return clipped
-
 
     def _absolute_layout_road_geometry(self, zone_shape: Polygon, road: LayoutRoad) -> LineString | None:
         centroid = zone_shape.centroid
@@ -2938,7 +3199,6 @@ Requirements:
             return None
         return clipped
 
-
     def _absolute_layout_green_polygon(self, zone_shape: Polygon, green_space: LayoutGreenSpace) -> Polygon | None:
         centroid = zone_shape.centroid
         coords = [
@@ -2953,7 +3213,6 @@ Requirements:
         if clipped.is_empty or clipped.geom_type != "Polygon":
             return None
         return clipped
-
 
     async def _build_site_preview_geometry_guide(
         self,
@@ -2987,36 +3246,91 @@ Requirements:
         for feature in context.get("parks", []):
             coords = feature.get("coordinates") or []
             if len(coords) >= 3:
-                self._site_preview_draw_polygon(draw, Polygon(coords), view_bounds, image_width, image_height, fill=(191, 208, 183, 255))
+                self._site_preview_draw_polygon(
+                    draw, Polygon(coords), view_bounds, image_width, image_height, fill=(191, 208, 183, 255)
+                )
         for feature in context.get("water", []):
             coords = feature.get("coordinates") or []
             if len(coords) >= 3:
-                self._site_preview_draw_polygon(draw, Polygon(coords), view_bounds, image_width, image_height, fill=(149, 176, 194, 255))
+                self._site_preview_draw_polygon(
+                    draw, Polygon(coords), view_bounds, image_width, image_height, fill=(149, 176, 194, 255)
+                )
         for feature in context.get("buildings", []):
             coords = feature.get("coordinates") or []
             if len(coords) >= 3:
-                self._site_preview_draw_polygon(draw, Polygon(coords), view_bounds, image_width, image_height, fill=(188, 190, 191, 220), outline=(168, 171, 173, 255))
+                self._site_preview_draw_polygon(
+                    draw,
+                    Polygon(coords),
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(188, 190, 191, 220),
+                    outline=(168, 171, 173, 255),
+                )
         for feature in context.get("roads", []):
             coords = feature.get("coordinates") or []
             if len(coords) >= 2:
                 width_px = max(2, int(round(float(feature.get("width_m") or 6.0) / meters_per_pixel)))
-                self._site_preview_draw_line(draw, LineString(coords), view_bounds, image_width, image_height, fill=(196, 196, 192, 255), line_width=width_px)
+                self._site_preview_draw_line(
+                    draw,
+                    LineString(coords),
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(196, 196, 192, 255),
+                    line_width=width_px,
+                )
 
-        self._site_preview_draw_polygon(draw, boundary_polygon, view_bounds, image_width, image_height, fill=(236, 232, 224, 80), outline=(211, 205, 191, 255), line_width=3)
+        self._site_preview_draw_polygon(
+            draw,
+            boundary_polygon,
+            view_bounds,
+            image_width,
+            image_height,
+            fill=(236, 232, 224, 80),
+            outline=(211, 205, 191, 255),
+            line_width=3,
+        )
 
         for row in engine_result.get("right_of_way_polygons", []):
             coords = row.get("coordinates") or []
             if len(coords) >= 3:
-                self._site_preview_draw_polygon(draw, Polygon(coords), view_bounds, image_width, image_height, fill=(205, 206, 203, 210), outline=(184, 186, 183, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    Polygon(coords),
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(205, 206, 203, 210),
+                    outline=(184, 186, 183, 255),
+                    line_width=2,
+                )
         for block in engine_result.get("developable_blocks", []):
             coords = block.get("coordinates") or []
             if len(coords) >= 3:
-                self._site_preview_draw_polygon(draw, Polygon(coords), view_bounds, image_width, image_height, fill=(233, 227, 214, 150), outline=(218, 210, 194, 180))
+                self._site_preview_draw_polygon(
+                    draw,
+                    Polygon(coords),
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(233, 227, 214, 150),
+                    outline=(218, 210, 194, 180),
+                )
 
-        for entry in (buildable_without_layouts or []):
+        for entry in buildable_without_layouts or []:
             shape = entry.get("shape")
             if isinstance(shape, Polygon):
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(230, 225, 215, 165), outline=(209, 201, 184, 220), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(230, 225, 215, 165),
+                    outline=(209, 201, 184, 220),
+                    line_width=2,
+                )
 
         for zone in non_buildable_zones:
             shape = zone.get("shape")
@@ -3024,29 +3338,91 @@ Requirements:
                 continue
             zone_type = str(zone.get("zone_type") or "").lower()
             if zone_type == "road":
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(175, 177, 176, 225), outline=(152, 154, 153, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(175, 177, 176, 225),
+                    outline=(152, 154, 153, 255),
+                    line_width=2,
+                )
             elif zone_type == "green_space":
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(157, 187, 140, 225), outline=(124, 153, 110, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(157, 187, 140, 225),
+                    outline=(124, 153, 110, 255),
+                    line_width=2,
+                )
             elif zone_type == "water":
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(118, 155, 176, 235), outline=(96, 132, 152, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(118, 155, 176, 235),
+                    outline=(96, 132, 152, 255),
+                    line_width=2,
+                )
             elif zone_type == "parking":
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(174, 176, 178, 225), outline=(148, 151, 153, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(174, 176, 178, 225),
+                    outline=(148, 151, 153, 255),
+                    line_width=2,
+                )
             else:
-                self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(220, 216, 207, 170), outline=(196, 191, 181, 230), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    shape,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(220, 216, 207, 170),
+                    outline=(196, 191, 181, 230),
+                    line_width=2,
+                )
 
         for zl in zone_layouts:
             shape = zl.get("shape")
             option = zl.get("option")
             if not isinstance(shape, Polygon) or option is None:
                 continue
-            self._site_preview_draw_polygon(draw, shape, view_bounds, image_width, image_height, fill=(237, 233, 224, 92), outline=(215, 207, 191, 180), line_width=2)
+            self._site_preview_draw_polygon(
+                draw,
+                shape,
+                view_bounds,
+                image_width,
+                image_height,
+                fill=(237, 233, 224, 92),
+                outline=(215, 207, 191, 180),
+                line_width=2,
+            )
 
             for road in getattr(option, "roads", []) or []:
                 geometry = self._absolute_layout_road_geometry(shape, road)
                 if geometry is None:
                     continue
                 width_px = max(2, int(round(float(getattr(road, "width_m", 6.0) or 6.0) / meters_per_pixel)))
-                self._site_preview_draw_line(draw, geometry, view_bounds, image_width, image_height, fill=(130, 134, 138, 235), line_width=width_px)
+                self._site_preview_draw_line(
+                    draw,
+                    geometry,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(130, 134, 138, 235),
+                    line_width=width_px,
+                )
 
             for green_space in getattr(option, "green_spaces", []) or []:
                 geometry = self._absolute_layout_green_polygon(shape, green_space)
@@ -3058,13 +3434,24 @@ Requirements:
                 if "pond" in space_type or "water" in space_type:
                     fill = (123, 163, 184, 240)
                     outline = (93, 131, 150, 255)
-                self._site_preview_draw_polygon(draw, geometry, view_bounds, image_width, image_height, fill=fill, outline=outline, line_width=2)
+                self._site_preview_draw_polygon(
+                    draw, geometry, view_bounds, image_width, image_height, fill=fill, outline=outline, line_width=2
+                )
 
             for building in getattr(option, "buildings", []) or []:
                 geometry = self._absolute_layout_building_polygon(shape, building)
                 if geometry is None:
                     continue
-                self._site_preview_draw_polygon(draw, geometry, view_bounds, image_width, image_height, fill=(230, 233, 236, 255), outline=(142, 149, 155, 255), line_width=2)
+                self._site_preview_draw_polygon(
+                    draw,
+                    geometry,
+                    view_bounds,
+                    image_width,
+                    image_height,
+                    fill=(230, 233, 236, 255),
+                    outline=(142, 149, 155, 255),
+                    line_width=2,
+                )
 
         buffer = BytesIO()
         image.convert("RGB").save(buffer, format="PNG")
@@ -3133,9 +3520,15 @@ Requirements:
             zone_type = zone.zone_type
             zone_id = str(zone.id)
             meta = zone_meta.get(zone_id, {})
-            zone_name = _site_preview_sanitize_text(meta.get("name")) or _site_preview_sanitize_text(zone.name) or zone_type.replace("_", " ")
+            zone_name = (
+                _site_preview_sanitize_text(meta.get("name"))
+                or _site_preview_sanitize_text(zone.name)
+                or zone_type.replace("_", " ")
+            )
             zone_color = _site_preview_sanitize_text(meta.get("color")) or ""
-            dev_type = _site_preview_sanitize_text(props.get("development_type")) or ("residential" if zone_type == "residential" else "mixed use")
+            dev_type = _site_preview_sanitize_text(props.get("development_type")) or (
+                "residential" if zone_type == "residential" else "mixed use"
+            )
             aesthetic = _site_preview_sanitize_text(props.get("development_aesthetic")) or "contextual architectural"
             edge_material = _site_preview_sanitize_text(props.get("facade_material")) or ""
             roof = _site_preview_sanitize_text(props.get("roof_style")) or ""
@@ -3147,7 +3540,11 @@ Requirements:
             unit_count = props.get("unit_count")
             if props.get("reference_images"):
                 has_style_reference = True
-            if props.get("development_archetype_id") or props.get("development_archetype_label") or props.get("generation_style_input"):
+            if (
+                props.get("development_archetype_id")
+                or props.get("development_archetype_label")
+                or props.get("generation_style_input")
+            ):
                 has_style_reference = True
 
             z_bounds = shape.bounds
@@ -3168,7 +3565,9 @@ Requirements:
             road_lines = []
             for road in option.roads:
                 road_type = _site_preview_sanitize_text(getattr(road, "road_type", None)) or "internal road"
-                road_lines.append(f"    - {road_type}: {float(getattr(road, 'width_m', 0) or 0):g}m wide, render strictly in plan view")
+                road_lines.append(
+                    f"    - {road_type}: {float(getattr(road, 'width_m', 0) or 0):g}m wide, render strictly in plan view"
+                )
 
             green_lines = []
             for green in option.green_spaces:
@@ -3206,16 +3605,24 @@ Requirements:
     Keep all geometry clipped to the zone boundary and integrated into the unified ground plane."""
             zone_descriptions.append(zone_block)
 
-        for entry in (buildable_without_layouts or []):
+        for entry in buildable_without_layouts or []:
             zone = entry["zone"]
             shape = entry["shape"]
             props = entry["properties"] or {}
             zone_type = zone.zone_type
             zone_id = str(zone.id)
             meta = zone_meta.get(zone_id, {})
-            zone_name = _site_preview_sanitize_text(meta.get("name")) or _site_preview_sanitize_text(zone.name) or zone_type.replace("_", " ")
+            zone_name = (
+                _site_preview_sanitize_text(meta.get("name"))
+                or _site_preview_sanitize_text(zone.name)
+                or zone_type.replace("_", " ")
+            )
             zone_color = _site_preview_sanitize_text(meta.get("color")) or ""
-            if props.get("reference_images") or props.get("development_archetype_id") or props.get("development_archetype_label"):
+            if (
+                props.get("reference_images")
+                or props.get("development_archetype_id")
+                or props.get("development_archetype_label")
+            ):
                 has_style_reference = True
             z_bounds = shape.bounds
             z_w = round(abs(z_bounds[2] - z_bounds[0]) * mlon, 1)
@@ -3224,7 +3631,12 @@ Requirements:
             badge = _zone_badge(zone_name, zone_color, position, z_w, z_d)
             desc_text = _site_preview_sanitize_text(props.get("description_text")) or ""
             style_parts = []
-            for value in [props.get("development_aesthetic"), props.get("facade_material"), props.get("roof_style"), props.get("ground_texture")]:
+            for value in [
+                props.get("development_aesthetic"),
+                props.get("facade_material"),
+                props.get("roof_style"),
+                props.get("ground_texture"),
+            ]:
                 text_value = _site_preview_sanitize_text(value)
                 if text_value:
                     style_parts.append(text_value)
@@ -3240,7 +3652,12 @@ Requirements:
             props = nb["properties"] or {}
             zone_name = _site_preview_sanitize_text(nb.get("name")) or zone_type.replace("_", " ")
             shape = nb["shape"]
-            if props.get("reference_images") or props.get("road_archetype_id") or props.get("green_space_archetype_id") or props.get("plaza_archetype_id"):
+            if (
+                props.get("reference_images")
+                or props.get("road_archetype_id")
+                or props.get("green_space_archetype_id")
+                or props.get("plaza_archetype_id")
+            ):
                 has_style_reference = True
             position = _position_description(shape.centroid, centroid, site_width_m, site_depth_m, mlon)
             details = []
@@ -3262,23 +3679,37 @@ Requirements:
                     details.append("paths")
                 if props.get("has_benches"):
                     details.append("seating")
-                for value in [props.get("green_space_aesthetic"), props.get("park_typology"), props.get("shade_strategy"), props.get("water_feature")]:
+                for value in [
+                    props.get("green_space_aesthetic"),
+                    props.get("park_typology"),
+                    props.get("shade_strategy"),
+                    props.get("water_feature"),
+                ]:
                     text_value = _site_preview_sanitize_text(value)
                     if text_value:
                         details.append(text_value)
             elif zone_type == "water":
                 details.append(_site_preview_sanitize_text(props.get("water_type")) or "flat reflective water element")
             elif zone_type == "parking":
-                for value in [props.get("parking_layout"), props.get("plaza_aesthetic"), props.get("paving_material"), props.get("shade_strategy"), props.get("plaza_program"), props.get("water_feature")]:
+                for value in [
+                    props.get("parking_layout"),
+                    props.get("plaza_aesthetic"),
+                    props.get("paving_material"),
+                    props.get("shade_strategy"),
+                    props.get("plaza_program"),
+                    props.get("water_feature"),
+                ]:
                     text_value = _site_preview_sanitize_text(value)
                     if text_value:
                         details.append(text_value)
                 if props.get("covered"):
                     details.append("covered portions where appropriate")
             desc_text = _site_preview_sanitize_text(props.get("description_text")) or ""
-            detail_text = ', '.join(details) if details else 'render strictly in plan view'
+            detail_text = ", ".join(details) if details else "render strictly in plan view"
             desc_suffix = f" Critical design directive: {desc_text}." if desc_text else ""
-            infra_lines.append(f"[Within {zone_name} ({zone_type}) at {position}]: Render this zone strictly in plan view using {detail_text}. Keep it clipped to the zone boundary and integrated into the continuous ground plane.{desc_suffix}")
+            infra_lines.append(
+                f"[Within {zone_name} ({zone_type}) at {position}]: Render this zone strictly in plan view using {detail_text}. Keep it clipped to the zone boundary and integrated into the continuous ground plane.{desc_suffix}"
+            )
 
         osm_text = ""
         if reference_context:
@@ -3295,7 +3726,9 @@ Requirements:
             if ref_buildings:
                 heights = [item.get("height_m") for item in ref_buildings if item.get("height_m")]
                 avg_h = round(sum(heights) / len(heights), 1) if heights else None
-                osm_parts.append(f"Muted surrounding buildings: {len(ref_buildings)}" + (f" (average {avg_h:g}m)" if avg_h else ""))
+                osm_parts.append(
+                    f"Muted surrounding buildings: {len(ref_buildings)}" + (f" (average {avg_h:g}m)" if avg_h else "")
+                )
             if reference_context.get("water"):
                 osm_parts.append(f"Nearby water bodies: {len(reference_context.get('water', []))}")
             if reference_context.get("parks"):
@@ -3311,14 +3744,20 @@ Requirements:
                 "  - Do not paste, reproduce, or collage any source imagery into the master plan.\n"
             )
 
-        has_water = any(nb["zone_type"] == "water" for nb in non_buildable_zones) or bool((reference_context or {}).get("water"))
-        has_parks = any(nb["zone_type"] == "green_space" for nb in non_buildable_zones) or any(getattr(zl["option"], "green_spaces", None) for zl in zone_layouts)
+        has_water = any(nb["zone_type"] == "water" for nb in non_buildable_zones) or bool(
+            (reference_context or {}).get("water")
+        )
+        has_parks = any(nb["zone_type"] == "green_space" for nb in non_buildable_zones) or any(
+            getattr(zl["option"], "green_spaces", None) for zl in zone_layouts
+        )
         design_guidance = build_site_preview_design_brief(
             has_water=has_water,
             has_parks=has_parks,
             has_reference_images=has_style_reference,
         )
-        design_guidance_text = "MASTER PLAN DESIGN GUIDANCE:\n" + chr(10).join(f"  - {line}" for line in design_guidance)
+        design_guidance_text = "MASTER PLAN DESIGN GUIDANCE:\n" + chr(10).join(
+            f"  - {line}" for line in design_guidance
+        )
 
         prompt = f"""{SITE_PLAN_PROMPT_BASELINE}
 
@@ -3357,7 +3796,9 @@ OUTPUT RULES:
             int(has_style_reference),
         )
         logger.info("Map screenshots: %s", "yes" if map_screenshots else "no")
-        logger.info("Zone meta colors: %s", {m.get("name"): m.get("color") for m in zone_meta.values()} if zone_meta else "none")
+        logger.info(
+            "Zone meta colors: %s", {m.get("name"): m.get("color") for m in zone_meta.values()} if zone_meta else "none"
+        )
         logger.info("Prompt length: %d chars", len(prompt))
         logger.info("Full prompt:\n%s", prompt)
 
@@ -3380,7 +3821,9 @@ OUTPUT RULES:
         contents = []
         if geometry_guide_bytes:
             contents.append(genai.types.Part.from_bytes(data=geometry_guide_bytes, mime_type="image/png"))
-            contents.append("[Authoritative synthetic geometry guide only. Use this image to preserve the site footprint, street hierarchy, developable blocks, and zone arrangement. Do not reproduce aerial photography, map labels, raster basemap textures, or image-within-image artifacts in the final master plan.]")
+            contents.append(
+                "[Authoritative synthetic geometry guide only. Use this image to preserve the site footprint, street hierarchy, developable blocks, and zone arrangement. Do not reproduce aerial photography, map labels, raster basemap textures, or image-within-image artifacts in the final master plan.]"
+            )
         elif map_screenshots:
             geometry_key = "with_zones" if map_screenshots.get("with_zones") else "satellite"
             b64_str = map_screenshots.get(geometry_key, "")
@@ -3394,14 +3837,25 @@ OUTPUT RULES:
                         mime = "image/jpeg"
                     img_bytes = base64.b64decode(b64_data)
                     contents.append(genai.types.Part.from_bytes(data=img_bytes, mime_type=mime))
-                    contents.append("[Fallback geometry guide only. Preserve the site footprint and zone arrangement, but do not reproduce aerial photography, basemap labels, or raster textures in the final master plan.]")
+                    contents.append(
+                        "[Fallback geometry guide only. Preserve the site footprint and zone arrangement, but do not reproduce aerial photography, basemap labels, or raster textures in the final master plan.]"
+                    )
                     geometry_guide_source = "map_screenshot_fallback"
                 except Exception as exc:
                     logger.warning("Failed to decode fallback site geometry screenshot (%s): %s", geometry_key, exc)
 
         contents.append(prompt)
-        image_parts = sum(1 for item in contents if hasattr(item, "inline_data") or (hasattr(item, "_raw_part") and hasattr(item._raw_part, "inline_data")))
-        logger.info("Sending to Gemini: %d geometry guide image parts, source=%s, prompt %d chars", image_parts, geometry_guide_source, len(prompt))
+        image_parts = sum(
+            1
+            for item in contents
+            if hasattr(item, "inline_data") or (hasattr(item, "_raw_part") and hasattr(item._raw_part, "inline_data"))
+        )
+        logger.info(
+            "Sending to Gemini: %d geometry guide image parts, source=%s, prompt %d chars",
+            image_parts,
+            geometry_guide_source,
+            len(prompt),
+        )
 
         model_name = _gemini_2d_image_model()
         logger.info("Generating site preview image with Gemini model: %s", model_name)
@@ -3416,10 +3870,13 @@ OUTPUT RULES:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+
             um = response.usage_metadata
             input_toks = (um.prompt_token_count if um else 0) or 0
             output_toks = (um.candidates_token_count if um else 0) or 0
-            logger.debug("Gemini site_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
+            logger.debug(
+                "Gemini site_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks
+            )
             log_api_usage_sync(
                 provider="gemini",
                 operation="site_preview_image",
@@ -3447,14 +3904,3 @@ OUTPUT RULES:
             for part in response.candidates[0].content.parts
         ]
         raise RuntimeError(f"Gemini did not return an image for site preview. Parts received: {part_types}")
-
-
-
-
-
-
-
-
-
-
-

@@ -48,8 +48,8 @@ async def test_generate_all_handles_invalid_building_ids_payload(client, mock_db
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # require_auth user lookup
-            _scalar_result(project),    # project lookup
-            _scalars_result([zone]),    # zone list lookup
+            _scalar_result(project),  # project lookup
+            _scalars_result([zone]),  # zone list lookup
         ]
     )
 
@@ -85,8 +85,8 @@ async def test_generate_all_returns_failed_zone_instead_of_500(client, mock_db, 
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # require_auth user lookup
-            _scalar_result(project),    # project lookup
-            _scalars_result([zone]),    # zone list lookup
+            _scalar_result(project),  # project lookup
+            _scalars_result([zone]),  # zone list lookup
         ]
     )
 

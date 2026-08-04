@@ -4,6 +4,7 @@ Revision ID: 025_create_archetype_model_cache
 Revises: 024_create_urban_dna_scenarios
 Create Date: 2026-07-10
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -17,7 +18,8 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     # The UNIQUE constraint doubles as the concurrency-control primitive:
     # workers claim a key via INSERT ... ON CONFLICT DO NOTHING.
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS archetype_model_cache (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             archetype_id VARCHAR(120) NOT NULL,
@@ -41,11 +43,14 @@ def upgrade() -> None:
             PRIMARY KEY (id),
             UNIQUE (archetype_id, variant_id, engine)
         )
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_archetype_model_cache_status
         ON archetype_model_cache (status)
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

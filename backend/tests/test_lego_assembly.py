@@ -91,12 +91,14 @@ def test_vertical_plan_reuses_archetype_metadata_and_stacks_modules():
 
 def test_exact_variant_uses_fixed_landmark_at_canonical_size_and_floors():
     raw = entry("assembled", "Tudor quadrangle", "assembled", height=27.6, width=60, depth=25)
-    raw.metadata_["lego"].update({
-        "archetype_ids": ["collegiate_gothic_education", "collegiate_gothic_tudor"],
-        "reuse_keys": ["collegiate_gothic"],
-        "native_floors": 4,
-        "source_variant_id": "collegiate_gothic_tudor",
-    })
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["collegiate_gothic_education", "collegiate_gothic_tudor"],
+            "reuse_keys": ["collegiate_gothic"],
+            "native_floors": 4,
+            "source_variant_id": "collegiate_gothic_tudor",
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -128,19 +130,21 @@ def test_fixed_landmark_absorbs_near_native_drawing_variation():
         width=90,
         depth=65,
     )
-    raw.metadata_["lego"].update({
-        "archetype_ids": ["sculpted_landmark", "sculpted_landmark_variant"],
-        "native_floors": 5,
-        "source_variant_id": "sculpted_landmark_variant",
-        "footprint_compatibility": {
-            "preferredProfiles": ["rectangle"],
-            "fixedLandmarkScaleBand": {
-                "scaleMin": 0.80,
-                "scaleMax": 1.20,
-                "maxAxisRatio": 1.18,
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["sculpted_landmark", "sculpted_landmark_variant"],
+            "native_floors": 5,
+            "source_variant_id": "sculpted_landmark_variant",
+            "footprint_compatibility": {
+                "preferredProfiles": ["rectangle"],
+                "fixedLandmarkScaleBand": {
+                    "scaleMin": 0.80,
+                    "scaleMax": 1.20,
+                    "maxAxisRatio": 1.18,
+                },
             },
-        },
-    })
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -179,19 +183,21 @@ def test_fixed_landmark_rejects_an_unsafe_manifest_scale_band():
         width=90,
         depth=65,
     )
-    raw.metadata_["lego"].update({
-        "archetype_ids": ["unsafe_landmark_variant"],
-        "native_floors": 5,
-        "source_variant_id": "unsafe_landmark_variant",
-        "footprint_compatibility": {
-            "preferredProfiles": ["rectangle"],
-            "fixedLandmarkScaleBand": {
-                "scaleMin": 0.40,
-                "scaleMax": 4.00,
-                "maxAxisRatio": 3.00,
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["unsafe_landmark_variant"],
+            "native_floors": 5,
+            "source_variant_id": "unsafe_landmark_variant",
+            "footprint_compatibility": {
+                "preferredProfiles": ["rectangle"],
+                "fixedLandmarkScaleBand": {
+                    "scaleMin": 0.40,
+                    "scaleMax": 4.00,
+                    "maxAxisRatio": 3.00,
+                },
             },
-        },
-    })
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -215,17 +221,19 @@ def test_fixed_landmark_rejects_an_unsafe_manifest_scale_band():
 
 def test_generation_archetype_id_resolves_to_exact_fixed_landmark():
     raw = entry("assembled", "Tudor quadrangle", "assembled", height=27.6, width=60, depth=25)
-    raw.metadata_["lego"].update({
-        "archetype_ids": [
-            "collegiate_gothic_education",
-            "collegiate_gothic_tudor",
-            "collegiate_gothic_education_variant_0",
-        ],
-        "reuse_keys": ["collegiate_gothic"],
-        "native_floors": 4,
-        "source_variant_id": "collegiate_gothic_tudor",
-        "generation_archetype_id": "collegiate_gothic_education_variant_0",
-    })
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": [
+                "collegiate_gothic_education",
+                "collegiate_gothic_tudor",
+                "collegiate_gothic_education_variant_0",
+            ],
+            "reuse_keys": ["collegiate_gothic"],
+            "native_floors": 4,
+            "source_variant_id": "collegiate_gothic_tudor",
+            "generation_archetype_id": "collegiate_gothic_education_variant_0",
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -245,12 +253,14 @@ def test_generation_archetype_id_resolves_to_exact_fixed_landmark():
 
 def test_exact_variant_landmark_resizes_to_a_small_city_parcel():
     raw = entry("assembled", "Perpendicular chapel", "assembled", height=34.0, width=61.58, depth=42.74)
-    raw.metadata_["lego"].update({
-        "archetype_ids": ["collegiate_gothic_perpendicular"],
-        "reuse_keys": ["collegiate_gothic"],
-        "native_floors": 4,
-        "source_variant_id": "collegiate_gothic_perpendicular",
-    })
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["collegiate_gothic_perpendicular"],
+            "reuse_keys": ["collegiate_gothic"],
+            "native_floors": 4,
+            "source_variant_id": "collegiate_gothic_perpendicular",
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -402,7 +412,11 @@ def test_variant_specific_rooftop_addition_can_start_at_four_floors():
     )
 
     assert [item["role"] for item in plan["instances"]] == [
-        "podium", "floor", "floor", "setback", "roof",
+        "podium",
+        "floor",
+        "floor",
+        "setback",
+        "roof",
     ]
 
 
@@ -483,9 +497,7 @@ def test_manifest_validation_accepts_real_shape():
 
 
 def test_manifest_validation_reports_actionable_errors():
-    errors = manifest_validation_errors(
-        _manifest(manifest_schema=1, family="", reuse_keys=[], modules=[])
-    )
+    errors = manifest_validation_errors(_manifest(manifest_schema=1, family="", reuse_keys=[], modules=[]))
     joined = "; ".join(errors)
     assert "manifest_schema" in joined
     assert "family" in joined
@@ -514,9 +526,7 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
             "",
         ]
     )
-    metadata = lego_metadata_from_manifest(
-        manifest, manifest["modules"][1], validation_status="pass"
-    )
+    metadata = lego_metadata_from_manifest(manifest, manifest["modules"][1], validation_status="pass")
     assert metadata["enabled"] is True
     assert metadata["role"] == "floor"
     assert metadata["family"] == "nordic-timber-midrise"
@@ -615,15 +625,9 @@ def test_requested_archetype_never_substitutes_unrelated_family():
 
 def test_rectangle_plan_quarter_turns_an_exact_narrow_module():
     modules = [
-        descriptor_from_library_entry(
-            entry("narrow-podium", "Narrow podium", "podium", height=4.5, width=8, depth=15)
-        ),
-        descriptor_from_library_entry(
-            entry("narrow-floor", "Narrow floor", "floor", height=3.2, width=8, depth=15)
-        ),
-        descriptor_from_library_entry(
-            entry("narrow-roof", "Narrow roof", "roof", height=1.0, width=8, depth=15)
-        ),
+        descriptor_from_library_entry(entry("narrow-podium", "Narrow podium", "podium", height=4.5, width=8, depth=15)),
+        descriptor_from_library_entry(entry("narrow-floor", "Narrow floor", "floor", height=3.2, width=8, depth=15)),
+        descriptor_from_library_entry(entry("narrow-roof", "Narrow roof", "roof", height=1.0, width=8, depth=15)),
     ]
 
     plan = plan_vertical_assembly(
@@ -640,17 +644,17 @@ def test_rectangle_plan_quarter_turns_an_exact_narrow_module():
     assert plan["fit"]["scale_x"] == 1.0
     assert plan["fit"]["scale_y"] == 1.0
     assert {instance["rotation_degrees"] for instance in plan["instances"]} == {90.0}
-    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {
-        (1.0, 1.0, 1.0)
-    }
-    assert plan["footprint_segments"] == [{
-        "id": "main",
-        "centre_x_m": 0.0,
-        "centre_y_m": 0.0,
-        "length_m": 8,
-        "thickness_m": 15,
-        "rotation_degrees": 90.0,
-    }]
+    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {(1.0, 1.0, 1.0)}
+    assert plan["footprint_segments"] == [
+        {
+            "id": "main",
+            "centre_x_m": 0.0,
+            "centre_y_m": 0.0,
+            "length_m": 8,
+            "thickness_m": 15,
+            "rotation_degrees": 90.0,
+        }
+    ]
 
 
 def test_stack_preserves_authored_relative_footprints_inside_rectangle():
@@ -663,12 +667,8 @@ def test_stack_preserves_authored_relative_footprints_inside_rectangle():
         descriptor_from_library_entry(
             entry("shaped-podium", "Shaped podium", "podium", height=4.5, width=30, depth=20)
         ),
-        descriptor_from_library_entry(
-            entry("shaped-floor", "Narrow floor", "floor", height=3.2, width=24, depth=16)
-        ),
-        descriptor_from_library_entry(
-            entry("shaped-roof", "Shouldered roof", "roof", height=1.0, width=27, depth=18)
-        ),
+        descriptor_from_library_entry(entry("shaped-floor", "Narrow floor", "floor", height=3.2, width=24, depth=16)),
+        descriptor_from_library_entry(entry("shaped-roof", "Shouldered roof", "roof", height=1.0, width=27, depth=18)),
     ]
 
     plan = plan_vertical_assembly(
@@ -684,9 +684,7 @@ def test_stack_preserves_authored_relative_footprints_inside_rectangle():
     assert plan["fit"]["footprint_mode"] == "archetype_contain"
     assert plan["fit"]["scale_x"] == pytest.approx(1.2)
     assert plan["fit"]["scale_y"] == pytest.approx(1.2)
-    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {
-        (1.2, 1.2, 1.0)
-    }
+    assert {tuple(instance["scale"]) for instance in plan["instances"]} == {(1.2, 1.2, 1.0)}
     floor = next(instance for instance in plan["instances"] if instance["role"] == "floor")
     roof = next(instance for instance in plan["instances"] if instance["role"] == "roof")
     assert floor["native_dimensions_m"][0] * floor["scale"][0] == pytest.approx(28.8)
@@ -704,17 +702,19 @@ def test_mismatched_rectangle_preserves_landmark_with_uniform_containment():
         width=42,
         depth=38,
     )
-    assembled_raw.metadata_["lego"].update({
-        "native_floors": 6,
-        "source_variant_id": "nordic-midrise",
-        "footprint_compatibility": {
-            "fixedLandmarkScaleBand": {
-                "scaleMin": 0.8,
-                "scaleMax": 1.2,
-                "maxAxisRatio": 1.18,
+    assembled_raw.metadata_["lego"].update(
+        {
+            "native_floors": 6,
+            "source_variant_id": "nordic-midrise",
+            "footprint_compatibility": {
+                "fixedLandmarkScaleBand": {
+                    "scaleMin": 0.8,
+                    "scaleMax": 1.2,
+                    "maxAxisRatio": 1.18,
+                },
             },
-        },
-    })
+        }
+    )
     modules = [
         descriptor_from_library_entry(assembled_raw),
         descriptor_from_library_entry(
@@ -723,9 +723,7 @@ def test_mismatched_rectangle_preserves_landmark_with_uniform_containment():
         descriptor_from_library_entry(
             entry("fallback-floor", "Fallback floor", "floor", height=3.2, width=42, depth=38)
         ),
-        descriptor_from_library_entry(
-            entry("fallback-roof", "Fallback roof", "roof", height=1.0, width=42, depth=38)
-        ),
+        descriptor_from_library_entry(entry("fallback-roof", "Fallback roof", "roof", height=1.0, width=42, depth=38)),
     ]
 
     plan = plan_vertical_assembly(
@@ -755,21 +753,17 @@ def test_elongated_four_corner_envelope_keeps_complete_landmark_form():
         width=30,
         depth=26,
     )
-    assembled_raw.metadata_["lego"].update({
-        "native_floors": 4,
-        "source_variant_id": "nordic-midrise",
-    })
+    assembled_raw.metadata_["lego"].update(
+        {
+            "native_floors": 4,
+            "source_variant_id": "nordic-midrise",
+        }
+    )
     modules = [
         descriptor_from_library_entry(assembled_raw),
-        descriptor_from_library_entry(
-            entry("cast-iron-podium", "Podium", "podium", height=4.2, width=30, depth=26)
-        ),
-        descriptor_from_library_entry(
-            entry("cast-iron-floor", "Floor", "floor", height=4.2, width=30, depth=26)
-        ),
-        descriptor_from_library_entry(
-            entry("cast-iron-roof", "Roof", "roof", height=1.0, width=30, depth=26)
-        ),
+        descriptor_from_library_entry(entry("cast-iron-podium", "Podium", "podium", height=4.2, width=30, depth=26)),
+        descriptor_from_library_entry(entry("cast-iron-floor", "Floor", "floor", height=4.2, width=30, depth=26)),
+        descriptor_from_library_entry(entry("cast-iron-roof", "Roof", "roof", height=1.0, width=30, depth=26)),
     ]
 
     plan = plan_vertical_assembly(
@@ -800,11 +794,13 @@ def test_larger_site_leaves_setback_instead_of_swelling_landmark_to_edges():
         width=40,
         depth=35,
     )
-    raw.metadata_["lego"].update({
-        "archetype_ids": ["gothic-ruskinian"],
-        "native_floors": 4,
-        "source_variant_id": "gothic-ruskinian",
-    })
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["gothic-ruskinian"],
+            "native_floors": 4,
+            "source_variant_id": "gothic-ruskinian",
+        }
+    )
     landmark = descriptor_from_library_entry(raw)
 
     plan = plan_vertical_assembly(
@@ -874,13 +870,15 @@ def test_family_missing_roof_still_reports_incompatible_with_ranges():
         "floors": 6,
         "footprint_profile": "rectangle",
     }
-    assert error.value.supported_families == [{
-        "family": "nordic-midrise",
-        "widths_m": [24.0],
-        "depths_m": [18.0],
-        "min_floors": 3,
-        "max_floors": 12,
-    }]
+    assert error.value.supported_families == [
+        {
+            "family": "nordic-midrise",
+            "widths_m": [24.0],
+            "depths_m": [18.0],
+            "min_floors": 3,
+            "max_floors": 12,
+        }
+    ]
 
 
 def test_industrial_brick_parent_selects_original_mill_for_30x20_six_floors():
@@ -894,14 +892,15 @@ def test_industrial_brick_parent_selects_original_mill_for_30x20_six_floors():
         min_floors: int,
         max_floors: int,
     ):
-        raw = entry(asset_id, asset_id, role, height=1.0 if role == "roof" else 3.5,
-                    width=width, depth=depth)
-        raw.metadata_["lego"].update({
-            "family": family,
-            "archetype_ids": ["industrial_brick_mixed_use"],
-            "min_floors": min_floors,
-            "max_floors": max_floors,
-        })
+        raw = entry(asset_id, asset_id, role, height=1.0 if role == "roof" else 3.5, width=width, depth=depth)
+        raw.metadata_["lego"].update(
+            {
+                "family": family,
+                "archetype_ids": ["industrial_brick_mixed_use"],
+                "min_floors": min_floors,
+                "max_floors": max_floors,
+            }
+        )
         return descriptor_from_library_entry(raw)
 
     modules = [
@@ -991,7 +990,10 @@ def test_courtyard_plan_places_four_perimeter_segments():
     assert plan["fit"]["segment_count"] == 4
     assert len(plan["footprint_segments"]) == 4
     assert {segment["id"] for segment in plan["footprint_segments"]} == {
-        "front", "rear", "left_return", "right_return",
+        "front",
+        "rear",
+        "left_return",
+        "right_return",
     }
 
 
@@ -1015,13 +1017,13 @@ def _scalars_result(values):
 
 
 @pytest.mark.anyio
-async def test_plan_api_returns_structured_family_not_found_error(
-    client, mock_db, test_user, auth_headers
-):
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result([]),
-    ])
+async def test_plan_api_returns_structured_family_not_found_error(client, mock_db, test_user, auth_headers):
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1051,18 +1053,18 @@ async def test_plan_api_returns_structured_family_not_found_error(
 
 
 @pytest.mark.anyio
-async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(
-    client, mock_db, test_user, auth_headers
-):
+async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(client, mock_db, test_user, auth_headers):
     library_entries = [
         entry("podium", "Podium", "podium", height=4.5),
         entry("floor", "Floor", "floor", height=3.2),
         entry("roof", "Roof", "roof", height=1.0),
     ]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1083,9 +1085,7 @@ async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(
 
 
 @pytest.mark.anyio
-async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
-    client, mock_db, test_user, auth_headers
-):
+async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(client, mock_db, test_user, auth_headers):
     manifest_path = (
         Path(__file__).resolve().parents[2]
         / "frontend"
@@ -1100,20 +1100,18 @@ async def test_wave3_theater_manifest_plans_in_band_and_oversized_via_api(
             id=f"theater-{module['role']}-{module.get('variant_key', 'default')}",
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
-            metadata_={
-                "lego": lego_metadata_from_manifest(
-                    manifest, module, validation_status="pass"
-                )
-            },
+            metadata_={"lego": lego_metadata_from_manifest(manifest, module, validation_status="pass")},
         )
         for module in manifest["modules"]
     ]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
 
     in_band = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1149,12 +1147,7 @@ async def test_wave4_historical_brick_manifest_plans_parent_variant_and_repeat(
 ):
     family = "historical-brick-main-street"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     library_entries = [
@@ -1266,12 +1259,7 @@ async def test_wave4_standard_batch_plans_parent_variant_and_repeat_oversized(
     oversized_width,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     library_entries = [
@@ -1395,12 +1383,7 @@ async def test_wave3_sculpted_landmark_manifests_plan_in_band_and_repeat_oversiz
     oversized_width,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     library_entries = [
@@ -1408,20 +1391,18 @@ async def test_wave3_sculpted_landmark_manifests_plan_in_band_and_repeat_oversiz
             id=f"{family}-{module['role']}-{module.get('variant_key', 'default')}",
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
-            metadata_={
-                "lego": lego_metadata_from_manifest(
-                    manifest, module, validation_status="pass"
-                )
-            },
+            metadata_={"lego": lego_metadata_from_manifest(manifest, module, validation_status="pass")},
         )
         for module in manifest["modules"]
     ]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
 
     in_band = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1469,12 +1450,7 @@ async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
     variant_id,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -1518,12 +1494,14 @@ async def test_wave3_expansion_variants_select_exact_fixed_landmark_via_api(
         for module in manifest["modules"]
     ]
     library_entries = [library_entry, *module_entries]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1578,12 +1556,7 @@ async def test_wave3_fixed_landmarks_accept_near_native_drawn_dimensions(
     variant_id,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -1611,10 +1584,12 @@ async def test_wave3_fixed_landmarks_accept_near_native_drawn_dimensions(
             )
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result([library_entry]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result([library_entry]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -1668,12 +1643,7 @@ async def test_nonresidential_api_plans_drawn_landmark_and_oversized_repeat(
     variant_id,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -1739,10 +1709,7 @@ async def test_nonresidential_api_plans_drawn_landmark_and_oversized_repeat(
     hand_drawn_plan = hand_drawn.json()
     assert hand_drawn_plan["family"] == family
     assert hand_drawn_plan["fit"]["assembly_mode"] == "fixed_landmark"
-    assert (
-        hand_drawn_plan["fit"]["compatibility_source"]
-        == "fixed_landmark_tolerance"
-    )
+    assert hand_drawn_plan["fit"]["compatibility_source"] == "fixed_landmark_tolerance"
     assert oversized.status_code == 200
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
@@ -1771,12 +1738,7 @@ async def test_wave8_api_plans_parent_variant_and_oversized_streetwall(
     variant_id,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -1794,10 +1756,7 @@ async def test_wave8_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -1861,9 +1820,7 @@ async def test_wave8_api_plans_parent_variant_and_oversized_streetwall(
     hand_drawn_plan = hand_drawn_variant.json()
     assert hand_drawn_plan["family"] == family
     assert hand_drawn_plan["fit"]["assembly_mode"] == "fixed_landmark"
-    assert hand_drawn_plan["fit"]["compatibility_source"] == (
-        "fixed_landmark_tolerance"
-    )
+    assert hand_drawn_plan["fit"]["compatibility_source"] == ("fixed_landmark_tolerance")
     assert oversized.status_code == 200
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
@@ -1889,12 +1846,7 @@ async def test_wave9_house_api_plans_parent_variant_and_oversized_streetwall(
     variant_id,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -1912,10 +1864,7 @@ async def test_wave9_house_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -1974,22 +1923,16 @@ async def test_wave9_house_api_plans_parent_variant_and_oversized_streetwall(
     assert native_parent.status_code == 200
     native_plan = native_parent.json()
     assert native_plan["family"] == family
-    assert native_plan["fit"]["compatibility_source"] == (
-        "manifest_shape_matrix"
-    )
+    assert native_plan["fit"]["compatibility_source"] == ("manifest_shape_matrix")
     assert hand_drawn_variant.status_code == 200
     hand_drawn_plan = hand_drawn_variant.json()
     assert hand_drawn_plan["family"] == family
     assert hand_drawn_plan["fit"]["assembly_mode"] == "fixed_landmark"
-    assert hand_drawn_plan["fit"]["compatibility_source"] == (
-        "fixed_landmark_tolerance"
-    )
+    assert hand_drawn_plan["fit"]["compatibility_source"] == ("fixed_landmark_tolerance")
     assert oversized.status_code == 200
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2003,12 +1946,7 @@ async def test_wave10_courtyard_api_plans_shape_matrix_and_oversized_streetwall(
     family = "courtyard-family-brick-mews"
     variant_id = "courtyard_family_brick_modern"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2026,10 +1964,7 @@ async def test_wave10_courtyard_api_plans_shape_matrix_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2093,27 +2028,21 @@ async def test_wave10_courtyard_api_plans_shape_matrix_and_oversized_streetwall(
     assert in_band.status_code == 200
     in_band_plan = in_band.json()
     assert in_band_plan["family"] == family
-    assert in_band_plan["fit"]["compatibility_source"] == (
-        "manifest_shape_matrix"
-    )
+    assert in_band_plan["fit"]["compatibility_source"] == ("manifest_shape_matrix")
     assert in_band_plan["fit"]["segment_count"] == 4
     assert in_band_plan["target"]["footprint_profile"] == "courtyard"
 
     assert hand_drawn.status_code == 200
     hand_drawn_plan = hand_drawn.json()
     assert hand_drawn_plan["family"] == family
-    assert hand_drawn_plan["fit"]["compatibility_source"] == (
-        "manifest_shape_matrix"
-    )
+    assert hand_drawn_plan["fit"]["compatibility_source"] == ("manifest_shape_matrix")
     assert hand_drawn_plan["fit"]["segment_count"] == 4
     assert hand_drawn_plan["target"]["floors"] == 4
 
     assert oversized.status_code == 200
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2127,12 +2056,7 @@ async def test_wave10_townhome_api_plans_parent_variant_and_oversized_streetwall
     family = "rndsqr-cedar-black-townhomes"
     variant_id = "rndsqr_townhome_dark_wood_metal"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2150,10 +2074,7 @@ async def test_wave10_townhome_api_plans_parent_variant_and_oversized_streetwall
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2219,9 +2140,7 @@ async def test_wave10_townhome_api_plans_parent_variant_and_oversized_streetwall
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2235,12 +2154,7 @@ async def test_wave10_school_api_plans_parent_variant_and_oversized_streetwall(
     family = "ecole-republicaine-third-republic"
     variant_id = "ecole-republicaine-third-republic-original"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2258,10 +2172,7 @@ async def test_wave10_school_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2327,9 +2238,7 @@ async def test_wave10_school_api_plans_parent_variant_and_oversized_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2343,12 +2252,7 @@ async def test_wave10_fire_station_api_plans_parent_variant_and_streetwall(
     family = "modern-fire-station-mass-timber"
     variant_id = "fire_mass_timber"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2366,10 +2270,7 @@ async def test_wave10_fire_station_api_plans_parent_variant_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2435,9 +2336,7 @@ async def test_wave10_fire_station_api_plans_parent_variant_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2452,12 +2351,7 @@ async def test_wave10_hospital_api_plans_parent_aliases_and_streetwall(
     variant_id = "healthcare_mass_timber"
     regional_alias = "regional_hospital_biophilic_wellness"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2475,10 +2369,7 @@ async def test_wave10_hospital_api_plans_parent_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2559,9 +2450,7 @@ async def test_wave10_hospital_api_plans_parent_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2576,12 +2465,7 @@ async def test_wave10_aquatic_api_plans_parent_aliases_and_streetwall(
     variant_id = "rec_centre_aquatic"
     alias_id = "aquatic_natatorium_complex"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2599,10 +2483,7 @@ async def test_wave10_aquatic_api_plans_parent_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2683,9 +2564,7 @@ async def test_wave10_aquatic_api_plans_parent_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2700,12 +2579,7 @@ async def test_wave10_gas_station_api_plans_parent_aliases_and_streetwall(
     variant_id = "gas_modern_fuel_bar"
     alias_id = "modern_fuel_bar"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2723,10 +2597,7 @@ async def test_wave10_gas_station_api_plans_parent_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2807,9 +2678,7 @@ async def test_wave10_gas_station_api_plans_parent_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2824,12 +2693,7 @@ async def test_wave10_retail_strip_api_plans_parent_aliases_and_streetwall(
     variant_id = "strip_contemporary_retail"
     alias_id = "contemporary_retail_strip"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2847,10 +2711,7 @@ async def test_wave10_retail_strip_api_plans_parent_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -2931,9 +2792,7 @@ async def test_wave10_retail_strip_api_plans_parent_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -2948,12 +2807,7 @@ async def test_wave10_motor_inn_api_plans_parent_aliases_and_streetwall(
     variant_id = "hotel_two_storey_motor_inn"
     alias_id = "prairie_courtyard_motor_inn"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -2971,10 +2825,7 @@ async def test_wave10_motor_inn_api_plans_parent_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3055,9 +2906,7 @@ async def test_wave10_motor_inn_api_plans_parent_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -3072,12 +2921,7 @@ async def test_wave10_daylight_factory_api_plans_aliases_and_streetwall(
     variant_id = "factory_sawtooth_roof"
     alias_id = "historic_daylight_factory"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3095,10 +2939,7 @@ async def test_wave10_daylight_factory_api_plans_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3179,9 +3020,7 @@ async def test_wave10_daylight_factory_api_plans_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -3196,12 +3035,7 @@ async def test_wave10_corten_library_api_plans_aliases_and_streetwall(
     variant_id = "contemporary_corten_arch"
     alias_id = "corten_arch_university_library"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3219,10 +3053,7 @@ async def test_wave10_corten_library_api_plans_aliases_and_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3303,9 +3134,7 @@ async def test_wave10_corten_library_api_plans_aliases_and_streetwall(
     assert oversized.status_code == 200, oversized.text
     oversized_plan = oversized.json()
     assert oversized_plan["family"] == family
-    assert oversized_plan["fit"]["compatibility_source"] == (
-        "streetwall_repeat"
-    )
+    assert oversized_plan["fit"]["compatibility_source"] == ("streetwall_repeat")
     assert oversized_plan["fit"]["segment_count"] >= 2
 
 
@@ -3334,12 +3163,7 @@ async def test_wave11_diverse_api_plans_parent_variant_and_oversized_streetwall(
     footprint_profile,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3357,10 +3181,7 @@ async def test_wave11_diverse_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3450,12 +3271,7 @@ async def test_wave12_diverse_api_plans_parent_variant_and_oversized_streetwall(
     footprint_profile,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3473,10 +3289,7 @@ async def test_wave12_diverse_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3568,12 +3381,7 @@ async def test_wave13_diverse_api_plans_parent_variant_and_oversized_streetwall(
     footprint_profile,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3591,10 +3399,7 @@ async def test_wave13_diverse_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3692,12 +3497,7 @@ async def test_wave14_variant_api_plans_in_band_and_oversized_streetwall(
     oversized_width,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -3715,10 +3515,7 @@ async def test_wave14_variant_api_plans_in_band_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -3775,19 +3572,19 @@ async def test_wave14_variant_api_plans_in_band_and_oversized_streetwall(
 
 
 @pytest.mark.anyio
-async def test_plan_api_returns_structured_family_incompatible_error(
-    client, mock_db, test_user, auth_headers
-):
+async def test_plan_api_returns_structured_family_incompatible_error(client, mock_db, test_user, auth_headers):
     # A family with no roof module structurally cannot assemble — the
     # structured 422 remains for that case (dimensions never cause it now).
     library_entries = [
         entry("podium", "Podium", "podium", height=4.5),
         entry("floor", "Floor", "floor", height=3.2),
     ]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -3813,13 +3610,15 @@ async def test_plan_api_returns_structured_family_incompatible_error(
             "floors": 6,
             "footprint_profile": "rectangle",
         },
-        "supported_families": [{
-            "family": "nordic-midrise",
-            "widths_m": [24.0],
-            "depths_m": [18.0],
-            "min_floors": 3,
-            "max_floors": 12,
-        }],
+        "supported_families": [
+            {
+                "family": "nordic-midrise",
+                "widths_m": [24.0],
+                "depths_m": [18.0],
+                "min_floors": 3,
+                "max_floors": 12,
+            }
+        ],
     }
 
 
@@ -3834,12 +3633,14 @@ async def test_plan_api_uses_only_project_owner_modules_for_an_authorized_editor
         entry("floor", "Floor", "floor", height=3.2),
         entry("roof", "Roof", "roof", height=1.0),
     ]
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(project),
-        _scalar_result(share),
-        _scalars_result(library_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(project),
+            _scalar_result(share),
+            _scalars_result(library_entries),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/plan",
@@ -3855,21 +3656,12 @@ async def test_plan_api_uses_only_project_owner_modules_for_an_authorized_editor
 
     assert response.status_code == 200
     library_query = mock_db.execute.await_args_list[-1].args[0]
-    owner_values = [
-        value
-        for value in library_query.compile().params.values()
-        if isinstance(value, (list, set, tuple))
-    ]
-    assert any(
-        project.owner_id in values and test_user.id not in values
-        for values in owner_values
-    )
+    owner_values = [value for value in library_query.compile().params.values() if isinstance(value, (list, set, tuple))]
+    assert any(project.owner_id in values and test_user.id not in values for values in owner_values)
 
 
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):
-    parts = [
-        ("manifest", ("manifest.json", json.dumps(manifest_dict).encode(), "application/json"))
-    ]
+    parts = [("manifest", ("manifest.json", json.dumps(manifest_dict).encode(), "application/json"))]
     for name in glb_names:
         parts.append(("files", (name, f"glb-bytes-{name}".encode(), "model/gltf-binary")))
     if thumbnail:
@@ -3911,7 +3703,7 @@ async def test_import_manifest_creates_entries_with_deterministic_keys(
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # require_auth user lookup
-            _scalars_result([]),        # owner's existing library entries
+            _scalars_result([]),  # owner's existing library entries
         ]
     )
 
@@ -4005,10 +3797,15 @@ async def test_reimport_updates_existing_entries_instead_of_duplicating(
         name="Old name",
         category="lego_module",
         model_url="/api/v1/files/old/floor.glb",
-        metadata_={"lego": {
-            "family": "nordic-timber-midrise", "role": "floor", "enabled": True,
-            "variant_key": "typical_a", "lod": 0,
-        }},
+        metadata_={
+            "lego": {
+                "family": "nordic-timber-midrise",
+                "role": "floor",
+                "enabled": True,
+                "variant_key": "typical_a",
+                "lod": 0,
+            }
+        },
     )
     mock_db.execute = AsyncMock(
         side_effect=[
@@ -4040,9 +3837,7 @@ async def test_reimport_updates_existing_entries_instead_of_duplicating(
 
 
 @pytest.mark.anyio
-async def test_failed_validation_report_rejected_unless_forced(
-    client, mock_db, test_user, auth_headers, fake_storage
-):
+async def test_failed_validation_report_rejected_unless_forced(client, mock_db, test_user, auth_headers, fake_storage):
     mock_db.execute = AsyncMock(side_effect=[_scalar_result(test_user)])
     response = await client.post(
         "/api/v1/lego-assembly/import-manifest",
@@ -4054,9 +3849,7 @@ async def test_failed_validation_report_rejected_unless_forced(
     assert fake_storage == {}  # nothing hit storage
 
     # Same payload with ?force=true goes through.
-    mock_db.execute = AsyncMock(
-        side_effect=[_scalar_result(test_user), _scalars_result([])]
-    )
+    mock_db.execute = AsyncMock(side_effect=[_scalar_result(test_user), _scalars_result([])])
     response = await client.post(
         "/api/v1/lego-assembly/import-manifest",
         headers=auth_headers,
@@ -4152,20 +3945,18 @@ async def test_recipe_save_get_roundtrip_preserves_instances(client, mock_db, te
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # POST: require_auth
-            _scalar_result(building),   # POST: building lookup
-            _scalar_result(project),    # POST: project lookup (owner -> no share query)
-            _scalar_result(project.id), # POST: project mutation lock
-            _scalars_result([linked_zone]), # POST: linked Community 3D zones
+            _scalar_result(building),  # POST: building lookup
+            _scalar_result(project),  # POST: project lookup (owner -> no share query)
+            _scalar_result(project.id),  # POST: project mutation lock
+            _scalars_result([linked_zone]),  # POST: linked Community 3D zones
             _scalar_result(test_user),  # GET: require_auth
-            _scalar_result(building),   # GET: building lookup
-            _scalar_result(project),    # GET: project lookup
+            _scalar_result(building),  # GET: building lookup
+            _scalar_result(project),  # GET: project lookup
         ]
     )
 
     body = _recipe_body()
-    response = await client.post(
-        f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers, json=body
-    )
+    response = await client.post(f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers, json=body)
     assert response.status_code == 200, response.text
     assert response.json()["status"] == "saved"
     assert linked_zone.properties["community_3d"]["state"] == "stale"
@@ -4173,9 +3964,7 @@ async def test_recipe_save_get_roundtrip_preserves_instances(client, mock_db, te
     # Untouched workflow fields survive the copy-update-reassign.
     assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"
 
-    response = await client.get(
-        f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers
-    )
+    response = await client.get(f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers)
     assert response.status_code == 200
     saved = response.json()["legoAssembly"]
     assert saved["instances"] == body["instances"]
@@ -4218,9 +4007,7 @@ async def test_recipe_delete_clears_only_lego_key(client, mock_db, test_user, au
         ]
     )
 
-    response = await client.delete(
-        f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers
-    )
+    response = await client.delete(f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers)
     assert response.status_code == 200
     assert response.json()["status"] == "removed"
     assert "legoAssembly" not in building.specifications
@@ -4256,9 +4043,7 @@ async def test_recipe_404_when_building_missing(client, mock_db, test_user, auth
             _scalar_result(None),  # building lookup misses
         ]
     )
-    response = await client.get(
-        f"/api/v1/lego-assembly/recipes/{uuid.uuid4()}", headers=auth_headers
-    )
+    response = await client.get(f"/api/v1/lego-assembly/recipes/{uuid.uuid4()}", headers=auth_headers)
     assert response.status_code == 404
 
 
@@ -4275,6 +4060,7 @@ def _make_zone(
     zone_type="building",
     properties=None,
     geometry="SRID=4326;POLYGON((0 0,1 0,1 1,0 1,0 0))",
+    is_active_boundary=None,
 ):
     from app.models.models import SiteZone
 
@@ -4287,6 +4073,7 @@ def _make_zone(
         properties=properties,
         building_id=building_id,
         building_ids=building_ids,
+        is_active_boundary=(zone_type == "site_boundary" if is_active_boundary is None else is_active_boundary),
         updated_at=datetime(2026, 7, 20, 12, 0, tzinfo=timezone.utc),
     )
 
@@ -4335,9 +4122,7 @@ def _recipe_from_plan(plan, catalog_fingerprint: str):
 
 
 @pytest.mark.anyio
-async def test_place_creates_and_links_building_when_zone_has_none(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_creates_and_links_building_when_zone_has_none(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     zone = _make_zone(project)
     added: list = []
@@ -4345,16 +4130,14 @@ async def test_place_creates_and_links_building_when_zone_has_none(
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # require_auth
-            _scalar_result(zone),       # zone lookup
-            _scalar_result(project),    # project lookup (owner -> no share query)
-            _scalar_result(project.id), # project mutation lock
+            _scalar_result(zone),  # zone lookup
+            _scalar_result(project),  # project lookup (owner -> no share query)
+            _scalar_result(project.id),  # project mutation lock
         ]
     )
 
     body = {**_recipe_body(), "building_name": "Hotel Particulier"}
-    response = await client.post(
-        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=body
-    )
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=body)
     assert response.status_code == 200, response.text
     payload = response.json()
     assert payload["status"] == "placed"
@@ -4383,9 +4166,7 @@ async def test_place_creates_and_links_building_when_zone_has_none(
 
 
 @pytest.mark.anyio
-async def test_place_reuses_existing_building_and_preserves_specifications(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_reuses_existing_building_and_preserves_specifications(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     building = Building(
         id=uuid.uuid4(),
@@ -4398,16 +4179,14 @@ async def test_place_reuses_existing_building_and_preserves_specifications(
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),  # require_auth
-            _scalar_result(zone),       # zone lookup
-            _scalar_result(project),    # project lookup
-            _scalar_result(project.id), # project mutation lock
-            _scalar_result(building),   # existing building lookup
+            _scalar_result(zone),  # zone lookup
+            _scalar_result(project),  # project lookup
+            _scalar_result(project.id),  # project mutation lock
+            _scalar_result(building),  # existing building lookup
         ]
     )
 
-    response = await client.post(
-        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
-    )
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body())
     assert response.status_code == 200, response.text
     payload = response.json()
     assert payload["building_created"] is False
@@ -4441,34 +4220,40 @@ def test_community_artifact_selection_requires_complete_ownership_marker():
             specifications=specifications,
         )
 
-    current = _building({
-        "community3DRepresentation": {
-            "schema_version": 1,
-            "zone_id": str(current_zone_id),
-            "generator": "lego_assembly",
-            "representation_hash": "a" * 64,
-            "compiled_at": "2026-07-21T12:00:00+00:00",
-        },
-    })
-    replaced = _building({
-        "community3DRepresentation": {
-            "schema_version": 1,
-            "zone_id": str(replaced_zone_id),
-            "generator": "planned_massing",
-            "representation_hash": "b" * 64,
-            "compiled_at": "2026-07-21T12:00:00+00:00",
-        },
-    })
+    current = _building(
+        {
+            "community3DRepresentation": {
+                "schema_version": 1,
+                "zone_id": str(current_zone_id),
+                "generator": "lego_assembly",
+                "representation_hash": "a" * 64,
+                "compiled_at": "2026-07-21T12:00:00+00:00",
+            },
+        }
+    )
+    replaced = _building(
+        {
+            "community3DRepresentation": {
+                "schema_version": 1,
+                "zone_id": str(replaced_zone_id),
+                "generator": "planned_massing",
+                "representation_hash": "b" * 64,
+                "compiled_at": "2026-07-21T12:00:00+00:00",
+            },
+        }
+    )
     unmarked = _building({"legoAssembly": {"module_family": "preserve-me"}})
-    malformed = _building({
-        "community3DRepresentation": {
-            "schema_version": 1,
-            "zone_id": str(replaced_zone_id),
-            "generator": "unknown_generator",
-            "representation_hash": "c" * 64,
-            "compiled_at": "2026-07-21T12:00:00+00:00",
-        },
-    })
+    malformed = _building(
+        {
+            "community3DRepresentation": {
+                "schema_version": 1,
+                "zone_id": str(replaced_zone_id),
+                "generator": "unknown_generator",
+                "representation_hash": "c" * 64,
+                "compiled_at": "2026-07-21T12:00:00+00:00",
+            },
+        }
+    )
 
     buildings = [current, replaced, unmarked, malformed]
     assert community_3d_buildings_for_zones(buildings, {replaced_zone_id}) == [replaced]
@@ -4476,9 +4261,7 @@ def test_community_artifact_selection_requires_complete_ownership_marker():
 
 
 @pytest.mark.anyio
-async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     building_zone = _make_zone(project, properties={"_plan_role": "building"})
     park_zone = _make_zone(
@@ -4493,24 +4276,31 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
     )
     added: list = []
     mock_db.add.side_effect = added.append
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building_zone), _scalar_result(project),
-        _scalar_result(park_zone), _scalar_result(project),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),  # serialize project-wide compilation
-        _scalars_result([building_zone, park_zone, street_zone]),
-        _scalars_result([]),  # project buildings: no stale derived artifacts
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building_zone),
+            _scalar_result(project),
+            _scalar_result(park_zone),
+            _scalar_result(project),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),  # serialize project-wide compilation
+            _scalars_result([building_zone, park_zone, street_zone]),
+            _scalars_result([]),  # project buildings: no stale derived artifacts
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [
-            _community_item(building_zone, recipe=_recipe_body()),
-            _community_item(park_zone),
-            _community_item(street_zone),
-        ]},
+        json={
+            "items": [
+                _community_item(building_zone, recipe=_recipe_body()),
+                _community_item(park_zone),
+                _community_item(street_zone),
+            ]
+        },
     )
 
     assert response.status_code == 200, response.text
@@ -4520,10 +4310,7 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
     assert len(payload["items"]) == 3
     assert len(added) == 1
     assert added[0].specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
-    stamps = {
-        zone.properties["community_3d"]["compiled_at"]
-        for zone in (building_zone, park_zone, street_zone)
-    }
+    stamps = {zone.properties["community_3d"]["compiled_at"] for zone in (building_zone, park_zone, street_zone)}
     assert stamps == {payload["compiled_at"]}
     assert park_zone.properties["green_space_archetype_id"] == "neighborhood_park"
     assert street_zone.properties["road_archetype_id"] == "main_street_complete"
@@ -4550,13 +4337,16 @@ async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe
             "width": 22,
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([street_zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([street_zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4631,13 +4421,16 @@ async def test_place_community_recovers_invalid_existing_street_centerline(
             },
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([street_zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([street_zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4652,9 +4445,7 @@ async def test_place_community_recovers_invalid_existing_street_centerline(
         _community_source_geometry(street_zone),
         recovered,
     )
-    assert street_zone.properties["public_realm_lego"]["family_id"] == (
-        "street_complete_main_18m"
-    )
+    assert street_zone.properties["public_realm_lego"]["family_id"] == ("street_complete_main_18m")
     assert street_zone.properties["community_3d"]["state"] == "compiled"
 
 
@@ -4681,12 +4472,15 @@ async def test_place_community_rejects_invalid_centerline_when_recovery_is_unsaf
             "plan_centerline": malformed,
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([street_zone]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([street_zone]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4780,13 +4574,16 @@ async def test_place_community_migrates_known_ai_street_variants_and_backfills_l
             },
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([street_zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([street_zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4825,12 +4622,15 @@ async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
             "green_space_archetype_id": "invented_magic_park",
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(park_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([park_zone]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(park_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([park_zone]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4851,9 +4651,7 @@ async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
 
 
 @pytest.mark.anyio
-async def test_place_community_removes_only_stale_marked_buildings(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_removes_only_stale_marked_buildings(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     current_zone = _make_zone(project, properties={"_plan_role": "building"})
     deleted_zone_id = uuid.uuid4()
@@ -4877,13 +4675,16 @@ async def test_place_community_removes_only_stale_marked_buildings(
         name="unmarked user building",
         specifications={"legoAssembly": {"module_family": "preserve-me"}},
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(current_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([current_zone]),
-        _scalars_result([stale_building, user_building]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(current_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([current_zone]),
+            _scalars_result([stale_building, user_building]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4960,13 +4761,16 @@ async def test_place_community_removes_owned_building_when_source_becomes_public
             "compiled_at": "2026-07-21T12:00:00+00:00",
         },
     }
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(public_realm_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([public_realm_zone]),
-        _scalars_result([derived_building, user_building]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(public_realm_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([public_realm_zone]),
+            _scalars_result([derived_building, user_building]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -4999,12 +4803,15 @@ async def test_place_community_rejects_recipe_planned_from_stale_same_kind_revis
     )
     current_zone.id = browser_zone.id
     current_zone.updated_at = datetime(2026, 7, 20, 12, 5, tzinfo=timezone.utc)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(current_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([current_zone]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(current_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([current_zone]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5028,11 +4835,7 @@ def _ai_recipe_inventory():
 
 
 def _plan_for_ai_recipe(entries):
-    descriptors = [
-        descriptor
-        for item in entries
-        if (descriptor := descriptor_from_library_entry(item)) is not None
-    ]
+    descriptors = [descriptor for item in entries if (descriptor := descriptor_from_library_entry(item)) is not None]
     return plan_vertical_assembly(
         descriptors,
         AssemblyRequest(
@@ -5061,14 +4864,17 @@ async def test_place_community_rejects_stale_ai_catalog_under_locked_inventory(
     )
     recipe = _recipe_body()
     recipe["catalog_fingerprint"] = stale_fingerprint
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-        _scalar_result(project),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5111,14 +4917,17 @@ async def test_place_community_rejects_changed_ai_module_even_when_catalog_shape
         _plan_for_ai_recipe(planned_entries),
         planned_catalog.fingerprint,
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-        _scalar_result(project),
-        _scalars_result(current_entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(current_entries),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5134,9 +4943,7 @@ async def test_place_community_rejects_changed_ai_module_even_when_catalog_shape
 
 
 @pytest.mark.anyio
-async def test_place_community_accepts_current_ai_recipe_before_persisting(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_accepts_current_ai_recipe_before_persisting(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     catalog = build_lego_planning_catalog(entries)
@@ -5149,15 +4956,18 @@ async def test_place_community_accepts_current_ai_recipe_before_persisting(
         },
     )
     recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-        _scalar_result(project),
-        _scalars_result(entries),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5172,9 +4982,7 @@ async def test_place_community_accepts_current_ai_recipe_before_persisting(
 
 
 @pytest.mark.anyio
-async def test_place_one_rejects_stale_ai_catalog_before_mutation(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_one_rejects_stale_ai_catalog_before_mutation(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     stale_fingerprint = "a" * 64
@@ -5187,14 +4995,16 @@ async def test_place_one_rejects_stale_ai_catalog_before_mutation(
         },
     )
     recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), stale_fingerprint)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(project.id),
-        _scalar_result(project),
-        _scalars_result(entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
 
     response = await client.post(
         f"/api/v1/lego-assembly/place/{zone.id}",
@@ -5210,9 +5020,7 @@ async def test_place_one_rejects_stale_ai_catalog_before_mutation(
 
 
 @pytest.mark.anyio
-async def test_place_one_accepts_current_ai_recipe_with_setbacks_disabled(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_one_accepts_current_ai_recipe_with_setbacks_disabled(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     catalog = build_lego_planning_catalog(entries)
@@ -5227,14 +5035,16 @@ async def test_place_one_accepts_current_ai_recipe_with_setbacks_disabled(
     planned = _plan_for_ai_recipe(entries)
     assert all(instance["role"] != "setback" for instance in planned["instances"])
     recipe = _recipe_from_plan(planned, catalog.fingerprint)
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone),
-        _scalar_result(project),
-        _scalar_result(project.id),
-        _scalar_result(project),
-        _scalars_result(entries),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
 
     response = await client.post(
         f"/api/v1/lego-assembly/place/{zone.id}",
@@ -5288,9 +5098,7 @@ async def test_place_community_preserves_all_six_public_realm_archetype_contract
     assert payload["counts"] == {"building": 0, "park": 6, "street": 0}
     assert [item["generator"] for item in payload["items"]] == ["park_kit"] * 6
     assert {item["kind"] for item in payload["items"]} == {"park"}
-    assert {
-        zone.properties["community_3d"]["compiled_at"] for zone in zones
-    } == {payload["compiled_at"]}
+    assert {zone.properties["community_3d"]["compiled_at"] for zone in zones} == {payload["compiled_at"]}
     for zone, (_, property_name, archetype_id) in zip(zones, archetype_specs):
         assert zone.properties[property_name] == archetype_id
         assert zone.properties["community_3d"]["state"] == "compiled"
@@ -5315,13 +5123,16 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
     )
     added: list = []
     mock_db.add.side_effect = added.append
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5378,14 +5189,17 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
             "development_archetype_id": "family_pending",
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([zone]),
-        _scalars_result([]),
-        _scalar_result(building),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([]),
+            _scalar_result(building),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5446,23 +5260,29 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
             },
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building_zone), _scalar_result(project),
-        _scalar_result(park_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([building_zone, park_zone]),
-        _scalars_result([building]),
-        _scalar_result(building),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building_zone),
+            _scalar_result(project),
+            _scalar_result(park_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([building_zone, park_zone]),
+            _scalars_result([building]),
+            _scalar_result(building),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [
-            _community_item(building_zone, recipe=_recipe_body()),
-            _community_item(park_zone),
-        ]},
+        json={
+            "items": [
+                _community_item(building_zone, recipe=_recipe_body()),
+                _community_item(park_zone),
+            ]
+        },
     )
 
     assert response.status_code == 200, response.text
@@ -5476,7 +5296,8 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
     assert building_zone.properties["community_3d"]["generator"] == "lego_assembly"
     assert park_zone.properties["green_space_archetype_id"] == "neighborhood_park"
     assert park_zone.properties["park_access_points"] == [
-        [-114.08, 51.04], [-114.079, 51.041],
+        [-114.08, 51.04],
+        [-114.079, 51.041],
     ]
     assert park_zone.properties["community_3d"]["generator"] == "park_kit"
     assert {
@@ -5488,19 +5309,20 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
 
 
 @pytest.mark.anyio
-async def test_place_community_rejects_framework_overlay_without_mutating_it(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_rejects_framework_overlay_without_mutating_it(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     framework = _make_zone(
         project,
         zone_type="development_area",
         properties={"_plan_role": "framework_height", "floors": 12},
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(framework), _scalar_result(project),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(framework),
+            _scalar_result(project),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5514,9 +5336,7 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(
 
 
 @pytest.mark.anyio
-async def test_place_community_derives_residual_from_all_project_zones(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_derives_residual_from_all_project_zones(client, mock_db, test_user, auth_headers):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
     from shapely.ops import unary_union
@@ -5556,13 +5376,16 @@ async def test_place_community_derives_residual_from_all_project_zones(
             },
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([boundary, building_zone, park_zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([boundary, building_zone, park_zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5581,18 +5404,18 @@ async def test_place_community_derives_residual_from_all_project_zones(
     boundary_shape = to_shape(boundary.geometry)
     metric_crs = local_metric_crs_for_polygon(boundary_shape)
     to_metric = build_transformer(WGS84_CRS, metric_crs)
-    expected_occupied = unary_union([
-        project_geometry(to_shape(building_zone.geometry), to_metric),
-        project_geometry(to_shape(park_zone.geometry), to_metric),
-    ]).area
+    expected_occupied = unary_union(
+        [
+            project_geometry(to_shape(building_zone.geometry), to_metric),
+            project_geometry(to_shape(park_zone.geometry), to_metric),
+        ]
+    ).area
     assert recipe["occupied_area_sqm"] == pytest.approx(expected_occupied, abs=0.2)
     assert recipe["regions"]
 
 
 @pytest.mark.anyio
-async def test_place_community_residual_uses_visible_complete_imported_scope(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_residual_uses_visible_complete_imported_scope(client, mock_db, test_user, auth_headers):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
     from app.services.site_engine import (
@@ -5626,13 +5449,16 @@ async def test_place_community_residual_uses_visible_complete_imported_scope(
             "_imported_from": "Plan — Economic",
         },
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(selected_building), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([boundary, selected_building, hidden_alternative]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(selected_building),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([boundary, selected_building, hidden_alternative]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5689,13 +5515,16 @@ async def test_place_community_accepts_exact_boundary_subset_and_excludes_outsid
         geometry=from_shape(box(-114.0700, 51.0500, -114.0690, 51.0510), srid=4326),
         properties={"_plan_role": "building", "floors": 4},
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(inside), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([boundary, inside, outside]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(inside),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([boundary, inside, outside]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5719,9 +5548,7 @@ async def test_place_community_accepts_exact_boundary_subset_and_excludes_outsid
 
 
 @pytest.mark.anyio
-async def test_place_community_infers_and_persists_boundary_for_legacy_plan(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_infers_and_persists_boundary_for_legacy_plan(client, mock_db, test_user, auth_headers):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
 
@@ -5740,22 +5567,28 @@ async def test_place_community_infers_and_persists_boundary_for_legacy_plan(
     )
     added: list = []
     mock_db.add.side_effect = added.append
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(park_zone), _scalar_result(project),
-        _scalar_result(street_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([park_zone, street_zone]),
-        _scalars_result([]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(park_zone),
+            _scalar_result(project),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([park_zone, street_zone]),
+            _scalars_result([]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [
-            _community_item(park_zone),
-            _community_item(street_zone),
-        ]},
+        json={
+            "items": [
+                _community_item(park_zone),
+                _community_item(street_zone),
+            ]
+        },
     )
 
     assert response.status_code == 200, response.text
@@ -5772,9 +5605,7 @@ async def test_place_community_infers_and_persists_boundary_for_legacy_plan(
 
 
 @pytest.mark.anyio
-async def test_place_community_rejects_ambiguous_multiple_site_boundaries(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_rejects_ambiguous_multiple_site_boundaries(client, mock_db, test_user, auth_headers):
     from geoalchemy2.shape import from_shape
     from shapely.geometry import box
 
@@ -5794,12 +5625,15 @@ async def test_place_community_rejects_ambiguous_multiple_site_boundaries(
         zone_type="site_boundary",
         geometry=from_shape(box(-114.0810, 51.0395, -114.0775, 51.0420), srid=4326),
     )
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(building_zone), _scalar_result(project),
-        _scalar_result(project.id),
-        _scalars_result([first_boundary, building_zone, second_boundary]),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([first_boundary, building_zone, second_boundary]),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
@@ -5814,26 +5648,30 @@ async def test_place_community_rejects_ambiguous_multiple_site_boundaries(
 
 
 @pytest.mark.anyio
-async def test_place_community_rejects_cross_project_batches_before_mutation(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_rejects_cross_project_batches_before_mutation(client, mock_db, test_user, auth_headers):
     first_project = FakeProject(owner_id=test_user.id)
     second_project = FakeProject(owner_id=test_user.id)
     first_zone = _make_zone(first_project, properties={"_plan_role": "building"})
     second_zone = _make_zone(second_project, properties={"_plan_role": "building"})
-    mock_db.execute = AsyncMock(side_effect=[
-        _scalar_result(test_user),
-        _scalar_result(first_zone), _scalar_result(first_project),
-        _scalar_result(second_zone), _scalar_result(second_project),
-    ])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(first_zone),
+            _scalar_result(first_project),
+            _scalar_result(second_zone),
+            _scalar_result(second_project),
+        ]
+    )
 
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [
-            _community_item(first_zone),
-            _community_item(second_zone),
-        ]},
+        json={
+            "items": [
+                _community_item(first_zone),
+                _community_item(second_zone),
+            ]
+        },
     )
 
     assert response.status_code == 422
@@ -5844,12 +5682,13 @@ async def test_place_community_rejects_cross_project_batches_before_mutation(
 
 
 @pytest.mark.anyio
-async def test_place_backfills_missing_footprint_from_zone(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_backfills_missing_footprint_from_zone(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     building = Building(
-        id=uuid.uuid4(), project_id=project.id, footprint=None, floor_count=None,
+        id=uuid.uuid4(),
+        project_id=project.id,
+        footprint=None,
+        floor_count=None,
         specifications=None,
     )
     zone = _make_zone(project, building_id=building.id, building_ids=[str(building.id)])
@@ -5863,9 +5702,7 @@ async def test_place_backfills_missing_footprint_from_zone(
         ]
     )
 
-    response = await client.post(
-        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
-    )
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body())
     assert response.status_code == 200, response.text
     assert building.footprint == zone.geometry
     assert building.floor_count == _recipe_body()["target"]["floors"]
@@ -5884,9 +5721,7 @@ async def test_place_denied_for_non_member(client, mock_db, test_user, auth_head
         ]
     )
 
-    response = await client.post(
-        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
-    )
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body())
     assert response.status_code == 403
     assert zone.building_id is None
     mock_db.add.assert_not_called()
@@ -5928,9 +5763,7 @@ async def test_recipe_delete_also_clears_placed_stamp(client, mock_db, test_user
         ]
     )
 
-    response = await client.delete(
-        f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers
-    )
+    response = await client.delete(f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers)
     assert response.status_code == 200
     assert "legoAssembly" not in building.specifications
     assert "lego_placed" not in building.specifications
@@ -5986,12 +5819,7 @@ async def test_wave15_api_plans_parent_variant_and_oversized_streetwall(
     family,
 ):
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -6009,10 +5837,7 @@ async def test_wave15_api_plans_parent_variant_and_oversized_streetwall(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={
@@ -6084,12 +5909,7 @@ async def test_multifamily_piece1_timber_glass_api_contract(
 ):
     family = "contemporary-timber-glass-midrise"
     manifest_path = (
-        Path(__file__).resolve().parents[2]
-        / "frontend"
-        / "public"
-        / "families"
-        / family
-        / f"{family}_manifest.json"
+        Path(__file__).resolve().parents[2] / "frontend" / "public" / "families" / family / f"{family}_manifest.json"
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assembled = {
@@ -6107,10 +5927,7 @@ async def test_multifamily_piece1_timber_glass_api_contract(
     deliverables = [assembled, *manifest["modules"]]
     library_entries = [
         SimpleNamespace(
-            id=(
-                f"{family}-{module['role']}-"
-                f"{module.get('variant_key', 'default')}"
-            ),
+            id=(f"{family}-{module['role']}-" f"{module.get('variant_key', 'default')}"),
             name=module["filename"],
             model_url=f"https://example.test/{module['filename']}",
             metadata_={

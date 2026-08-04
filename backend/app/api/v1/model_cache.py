@@ -97,16 +97,16 @@ async def prewarm(
         await db.commit()
         logger.info(
             "Force prewarm: superseded completed row %s/%s/%s",
-            req.archetype_id, req.variant_id, req.engine,
+            req.archetype_id,
+            req.variant_id,
+            req.engine,
         )
 
     def _to_data_uri(b64: str, default_mime: str = "image/png") -> str:
         return b64 if b64.startswith("data:") else f"data:{default_mime};base64,{b64}"
 
     image_data_uri = _to_data_uri(req.image_base64) if req.image_base64 else None
-    image_data_uris = (
-        [_to_data_uri(item) for item in req.image_base64s] if req.image_base64s else None
-    )
+    image_data_uris = [_to_data_uri(item) for item in req.image_base64s] if req.image_base64s else None
 
     from app.tasks.processing import prewarm_archetype_model
 

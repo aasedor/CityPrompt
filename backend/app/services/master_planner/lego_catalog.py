@@ -112,11 +112,7 @@ def select_lego_archetype(
         for floors in capability.supported_floors_by_selectable_id.get(selectable_id, ()):
             if at_or_below and floors > target:
                 continue
-            preference = (
-                0 if selectable_id == preferred_selectable_id
-                else 1 if selectable_id == parent_id
-                else 2
-            )
+            preference = 0 if selectable_id == preferred_selectable_id else 1 if selectable_id == parent_id else 2
             distance = target - floors if at_or_below else abs(floors - target)
             candidates.append((distance, preference, selectable_id, floors))
     if not candidates:
@@ -131,11 +127,7 @@ def select_lego_archetype(
 
 def _catalog_parent_maps() -> tuple[dict[str, dict[str, Any]], dict[str, str]]:
     entries = sorted(load_dims_table(), key=lambda entry: str(entry.get("id") or ""))
-    parents = {
-        str(entry["id"]): entry
-        for entry in entries
-        if entry.get("usable") and entry.get("id")
-    }
+    parents = {str(entry["id"]): entry for entry in entries if entry.get("usable") and entry.get("id")}
     parent_by_id: dict[str, str] = {parent_id: parent_id for parent_id in parents}
     for parent_id, entry in parents.items():
         for variant_id in sorted(str(value) for value in (entry.get("variant_ids") or []) if value):
@@ -184,7 +176,8 @@ def _assembled_native_dimensions(
             descriptor
             for descriptor in descriptors
             if descriptor.role == "assembled"
-            and archetype_id in {
+            and archetype_id
+            in {
                 descriptor.source_variant_id,
                 descriptor.generation_archetype_id,
             }
@@ -215,22 +208,12 @@ def _modular_native_dimensions(
         (descriptor for descriptor in descriptors if descriptor.role == "podium"),
         key=lambda descriptor: (descriptor.lod, descriptor.id),
     )
-    matches = [
-        descriptor
-        for descriptor in podiums
-        if archetype_id in _descriptor_identifiers(descriptor)
-    ]
+    matches = [descriptor for descriptor in podiums if archetype_id in _descriptor_identifiers(descriptor)]
     if matches:
-        dimensions = {
-            (float(descriptor.width_m), float(descriptor.depth_m))
-            for descriptor in matches
-        }
+        dimensions = {(float(descriptor.width_m), float(descriptor.depth_m)) for descriptor in matches}
         return next(iter(dimensions)) if len(dimensions) == 1 else None
 
-    dimensions = {
-        (float(descriptor.width_m), float(descriptor.depth_m))
-        for descriptor in podiums
-    }
+    dimensions = {(float(descriptor.width_m), float(descriptor.depth_m)) for descriptor in podiums}
     if len(dimensions) == 1:
         return next(iter(dimensions))
     return None
@@ -328,9 +311,7 @@ def _floor_summary(floors: tuple[int, ...]) -> str:
 
 
 def _prompt_vocabulary(capabilities: tuple[LegoArchetypeCapability, ...]) -> str:
-    lines = [
-        "IMPORTED LEGO BUILDING CATALOG (select only the exact identifiers listed below):"
-    ]
+    lines = ["IMPORTED LEGO BUILDING CATALOG (select only the exact identifiers listed below):"]
     if not capabilities:
         lines.append("- No executable LEGO building families are currently available.")
         return "\n".join(lines)
@@ -346,9 +327,7 @@ def _prompt_vocabulary(capabilities: tuple[LegoArchetypeCapability, ...]) -> str
             "selectable_targets="
             + ", ".join(
                 f"{selectable_id}:{dimensions[0]:g}x{dimensions[1]:g}m"
-                for selectable_id, dimensions in sorted(
-                    capability.target_dimensions_by_selectable_id.items()
-                )
+                for selectable_id, dimensions in sorted(capability.target_dimensions_by_selectable_id.items())
             )
         )
     return "\n".join(lines)
@@ -369,15 +348,11 @@ def _fingerprint_payload(
             "supported_floors": list(capability.supported_floors),
             "supported_floors_by_selectable_id": {
                 selectable_id: list(floors)
-                for selectable_id, floors in sorted(
-                    capability.supported_floors_by_selectable_id.items()
-                )
+                for selectable_id, floors in sorted(capability.supported_floors_by_selectable_id.items())
             },
             "target_dimensions_by_selectable_id": {
                 selectable_id: list(dimensions)
-                for selectable_id, dimensions in sorted(
-                    capability.target_dimensions_by_selectable_id.items()
-                )
+                for selectable_id, dimensions in sorted(capability.target_dimensions_by_selectable_id.items())
             },
             "families": list(capability.families),
         }
@@ -405,9 +380,7 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
     # offline callers without timestamps still get deterministic ID ordering.
     ordered_entries = sorted(list(entries), key=entry_order, reverse=True)
     descriptors = [
-        descriptor
-        for entry in ordered_entries
-        if (descriptor := descriptor_from_library_entry(entry)) is not None
+        descriptor for entry in ordered_entries if (descriptor := descriptor_from_library_entry(entry)) is not None
     ]
     by_family: dict[str, list[ModuleDescriptor]] = {}
     for descriptor in descriptors:
@@ -453,25 +426,23 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
                 )
                 if identifier
             }
-            mapped_exact_ids = {
-                identifier for identifier in family_exact_ids if identifier in parent_by_id
-            }
+            mapped_exact_ids = {identifier for identifier in family_exact_ids if identifier in parent_by_id}
             candidate_ids = mapped_exact_ids or broad_candidate_ids
             probe_floors: Iterable[int] = (
-                range(MIN_PLANNING_FLOORS, MAX_PLANNING_FLOORS + 1)
-                if "floor" in roles
-                else (MIN_PLANNING_FLOORS,)
+                range(MIN_PLANNING_FLOORS, MAX_PLANNING_FLOORS + 1) if "floor" in roles else (MIN_PLANNING_FLOORS,)
             )
         else:
             candidate_ids = assembled_exact
             mapped_exact_ids = set(assembled_exact)
-            native_floors = sorted({
-                int(descriptor.native_floors)
-                for descriptor in family_descriptors
-                if descriptor.role == "assembled"
-                and descriptor.native_floors is not None
-                and MIN_PLANNING_FLOORS <= int(descriptor.native_floors) <= MAX_PLANNING_FLOORS
-            })
+            native_floors = sorted(
+                {
+                    int(descriptor.native_floors)
+                    for descriptor in family_descriptors
+                    if descriptor.role == "assembled"
+                    and descriptor.native_floors is not None
+                    and MIN_PLANNING_FLOORS <= int(descriptor.native_floors) <= MAX_PLANNING_FLOORS
+                }
+            )
             probe_floors = native_floors
 
         for archetype_id in sorted(candidate_ids):
@@ -484,10 +455,9 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
             # that hero asset's native footprint even when modular roles are
             # present; probing it at the parent card dimensions would merely
             # prove that a broad 45%-175% landmark squash is technically legal.
-            native_dimensions = (
-                _assembled_native_dimensions(family_descriptors, archetype_id)
-                or _modular_native_dimensions(family_descriptors, archetype_id)
-            )
+            native_dimensions = _assembled_native_dimensions(
+                family_descriptors, archetype_id
+            ) or _modular_native_dimensions(family_descriptors, archetype_id)
             if native_dimensions is None:
                 continue
             target_width_m, target_depth_m = native_dimensions
@@ -510,16 +480,19 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
             if not supported:
                 continue
 
-            aggregate = proven_by_parent.setdefault(parent_id, {
-                "ids": set(),
-                "variants": set(),
-                "floors": set(),
-                "floors_by_id": {},
-                "dimensions_by_id": {},
-                "families": set(),
-                "exact_ids": set(),
-                "family_by_id": {},
-            })
+            aggregate = proven_by_parent.setdefault(
+                parent_id,
+                {
+                    "ids": set(),
+                    "variants": set(),
+                    "floors": set(),
+                    "floors_by_id": {},
+                    "dimensions_by_id": {},
+                    "families": set(),
+                    "exact_ids": set(),
+                    "family_by_id": {},
+                },
+            )
             # One selectable ID has one target footprint and one floor set in
             # the public contract.  Never union floors from another family at
             # a different native size: that advertised a dimension/floor pair
@@ -554,14 +527,9 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
             aggregate["dimensions_by_id"].pop(parent_id, None)
             aggregate["family_by_id"].pop(parent_id, None)
         aggregate["floors"] = {
-            floor
-            for selectable_id in aggregate["ids"]
-            for floor in aggregate["floors_by_id"][selectable_id]
+            floor for selectable_id in aggregate["ids"] for floor in aggregate["floors_by_id"][selectable_id]
         }
-        aggregate["families"] = {
-            aggregate["family_by_id"][selectable_id]
-            for selectable_id in aggregate["ids"]
-        }
+        aggregate["families"] = {aggregate["family_by_id"][selectable_id] for selectable_id in aggregate["ids"]}
 
     capabilities_list: list[LegoArchetypeCapability] = []
     for parent_id, aggregate in sorted(proven_by_parent.items()):
@@ -569,38 +537,32 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
         if parent_target is None:
             first_selectable_id = min(aggregate["dimensions_by_id"])
             parent_target = aggregate["dimensions_by_id"][first_selectable_id]
-        capabilities_list.append(LegoArchetypeCapability(
-            parent_id=parent_id,
-            title=str(parents[parent_id].get("title") or parent_id),
-            development_type=str(parents[parent_id].get("development_type") or ""),
-            aesthetic_category=str(parents[parent_id].get("aesthetic_category") or ""),
-            target_width_m=float(parent_target[0]),
-            target_depth_m=float(parent_target[1]),
-            selectable_ids=tuple(sorted(aggregate["ids"])),
-            variant_ids=tuple(sorted(aggregate["variants"])),
-            supported_floors=tuple(sorted(aggregate["floors"])),
-            supported_floors_by_selectable_id={
-                selectable_id: tuple(sorted(floors))
-                for selectable_id, floors in sorted(aggregate["floors_by_id"].items())
-            },
-            target_dimensions_by_selectable_id={
-                selectable_id: tuple(dimensions)
-                for selectable_id, dimensions in sorted(
-                    aggregate["dimensions_by_id"].items()
-                )
-            },
-            families=tuple(sorted(aggregate["families"])),
-        ))
+        capabilities_list.append(
+            LegoArchetypeCapability(
+                parent_id=parent_id,
+                title=str(parents[parent_id].get("title") or parent_id),
+                development_type=str(parents[parent_id].get("development_type") or ""),
+                aesthetic_category=str(parents[parent_id].get("aesthetic_category") or ""),
+                target_width_m=float(parent_target[0]),
+                target_depth_m=float(parent_target[1]),
+                selectable_ids=tuple(sorted(aggregate["ids"])),
+                variant_ids=tuple(sorted(aggregate["variants"])),
+                supported_floors=tuple(sorted(aggregate["floors"])),
+                supported_floors_by_selectable_id={
+                    selectable_id: tuple(sorted(floors))
+                    for selectable_id, floors in sorted(aggregate["floors_by_id"].items())
+                },
+                target_dimensions_by_selectable_id={
+                    selectable_id: tuple(dimensions)
+                    for selectable_id, dimensions in sorted(aggregate["dimensions_by_id"].items())
+                },
+                families=tuple(sorted(aggregate["families"])),
+            )
+        )
     capabilities = tuple(capabilities_list)
     parent_ids = tuple(capability.parent_id for capability in capabilities)
-    variants_by_parent = {
-        capability.parent_id: capability.variant_ids
-        for capability in capabilities
-    }
-    supported_floors_by_parent = {
-        capability.parent_id: capability.supported_floors
-        for capability in capabilities
-    }
+    variants_by_parent = {capability.parent_id: capability.variant_ids for capability in capabilities}
+    supported_floors_by_parent = {capability.parent_id: capability.supported_floors for capability in capabilities}
     supported_floors_by_selectable_id = {
         selectable_id: floors
         for capability in capabilities
@@ -609,9 +571,7 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
     target_dimensions_by_selectable_id = {
         selectable_id: dimensions
         for capability in capabilities
-        for selectable_id, dimensions in (
-            capability.target_dimensions_by_selectable_id.items()
-        )
+        for selectable_id, dimensions in (capability.target_dimensions_by_selectable_id.items())
     }
     parent_by_selectable_id = {
         selectable_id: capability.parent_id

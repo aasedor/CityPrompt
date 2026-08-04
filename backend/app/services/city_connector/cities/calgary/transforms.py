@@ -39,6 +39,7 @@ def _props(feature: Feature) -> dict[str, Any]:
 # Columns: lu_bylaw, lu_code, label, description, major, generalize, dc_bylaw,
 #          dc_site_no, density, height, far, multipolygon
 
+
 def land_use_districts(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -72,9 +73,7 @@ def land_use_districts(features: list[Feature], site: Polygon) -> tuple[dict[str
     districts = sorted(by_code.values(), key=lambda d: d["area_pct_of_site"], reverse=True)
     dominant = districts[0]
 
-    adjacent = se.coverage_by(
-        frame, features, lambda f: _props(f).get("major"), zone_m=se.ring_m(frame, 200.0)
-    )
+    adjacent = se.coverage_by(frame, features, lambda f: _props(f).get("major"), zone_m=se.ring_m(frame, 200.0))
     adjacent_uses = {key: entry["pct"] for key, entry in sorted(adjacent.items(), key=lambda kv: -kv[1]["pct"])}
 
     majors_on_site = {d["major"] for d in districts if d["major"]}
@@ -104,6 +103,7 @@ def land_use_districts(features: list[Feature], site: Polygon) -> tuple[dict[str
 # Columns: roll_number, address, assessed_value, assessment_class(_description),
 #          comm_code, comm_name, year_of_construction, land_use_designation,
 #          property_type, land_size_sm, sub_property_use, multipolygon
+
 
 def parcels(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -147,10 +147,10 @@ def parcels(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], lis
         assembly_risk = "high" if assembly_risk != "low" else "medium"
         rationale += f"; mixed assessment classes ({', '.join(sorted(classes))})"
 
-    communities = Counter(
-        _props(f).get("comm_name") for f, _ in on_site if _props(f).get("comm_name")
-    )
-    years = [r["year_of_construction"] for r in records if r["year_of_construction"] and r["year_of_construction"] > 1800]
+    communities = Counter(_props(f).get("comm_name") for f, _ in on_site if _props(f).get("comm_name"))
+    years = [
+        r["year_of_construction"] for r in records if r["year_of_construction"] and r["year_of_construction"] > 1800
+    ]
 
     facts = {
         "site.parcel_count": parcel_count,
@@ -164,6 +164,7 @@ def parcels(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], lis
 
 # --- 3. Policy Plan Boundaries (yi6d-a7q5) -----------------------------------
 # Columns: plan_type, name, status, doc_name, app_date, modified_dt, multipolygon
+
 
 def policy_plans(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -215,6 +216,7 @@ def policy_plans(features: list[Feature], site: Polygon) -> tuple[dict[str, Any]
 # Columns: segment_id, full_name, name, street_type, octant, one_way,
 #          built_status, plan_status, ctp_class, ownership, line
 
+
 def roads(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -264,6 +266,7 @@ def roads(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # --- 6. Calgary Bikeways (jjqk-9b73) ------------------------------------------
 # Columns: status, type, bicycle_class, length, comfort_level, multilinestring
 
+
 def bikeways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -274,7 +277,9 @@ def bikeways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], li
         return {"mobility.bike_network_m_800m": {}, "mobility.bike_frontage": []}, warnings
 
     network = se.length_within_by(
-        frame, active, lambda f: _props(f).get("bicycle_class") or _props(f).get("type") or "Unclassified",
+        frame,
+        active,
+        lambda f: _props(f).get("bicycle_class") or _props(f).get("type") or "Unclassified",
         radius_m=800.0,
     )
     fronting = se.frontage(frame, active, tolerance_m=25.0)
@@ -286,12 +291,14 @@ def bikeways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], li
         if key in seen:
             continue
         seen.add(key)
-        bike_frontage.append({
-            "bicycle_class": props.get("bicycle_class"),
-            "type": props.get("type"),
-            "comfort_level": props.get("comfort_level"),
-            "frontage_m": shared_m,
-        })
+        bike_frontage.append(
+            {
+                "bicycle_class": props.get("bicycle_class"),
+                "type": props.get("type"),
+                "comfort_level": props.get("comfort_level"),
+                "frontage_m": shared_m,
+            }
+        )
 
     facts = {
         "mobility.bike_network_m_800m": network,
@@ -302,6 +309,7 @@ def bikeways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], li
 
 # --- 7. Parks Pathways (qndb-27qm) ---------------------------------------------
 # Columns: asset_class, asset_type, the_geom (multiline), life_cycle_status, ...
+
 
 def pathways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
@@ -333,6 +341,7 @@ def pathways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], li
 # --- 8. Parks Sites (kami-qbfh) --------------------------------------------------
 # Columns: site_name, the_geom (multipolygon), planning_category, type_description, ...
 
+
 def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -341,9 +350,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
         warnings.append(note("PARKS_EMPTY", "No parks within 800m of the site.", severity="info"))
         return {}, warnings
 
-    walkshed_area = se.coverage_by(
-        frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0)
-    )
+    walkshed_area = se.coverage_by(frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0))
     park_area_ha = round(walkshed_area.get("parks", {}).get("area_m2", 0.0) / 10_000.0, 2)
 
     nearest = se.nearest(frame, features, k=1)
@@ -370,6 +377,7 @@ def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
 # Columns: grd_elev_min_z, grd_elev_max_z, rooftop_elev_z, stage, struct_id, polygon
 # Heights are LiDAR-derived: rooftop_elev_z - grd_elev_min_z.
 
+
 def buildings_3d(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
@@ -392,9 +400,9 @@ def buildings_3d(features: list[Feature], site: Polygon) -> tuple[dict[str, Any]
                 ground_elevations.append(elevation)
 
     on_site = se.intersecting(frame, features, min_overlap_m2=5.0)
-    site_coverage_pct = round(
-        100.0 * sum(overlap for _, overlap in on_site) / frame.area_m2, 1
-    ) if frame.area_m2 else None
+    site_coverage_pct = (
+        round(100.0 * sum(overlap for _, overlap in on_site) / frame.area_m2, 1) if frame.area_m2 else None
+    )
 
     ground_range = None
     if ground_elevations:
@@ -418,13 +426,13 @@ def buildings_3d(features: list[Feature], site: Polygon) -> tuple[dict[str, Any]
 # --- 5. Calgary Transit Stops (muzh-c9qc) ------------------------------------
 # Columns: teleride_number, stop_name, status, point
 
+
 def transit_stops(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     frame = se.SiteFrame.from_wgs84(site)
     warnings: list[dict[str, Any]] = []
 
     active = [
-        f for f in features
-        if (_props(f).get("status") or "ACTIVE").upper() not in ("INACTIVE", "CLOSED", "REMOVED")
+        f for f in features if (_props(f).get("status") or "ACTIVE").upper() not in ("INACTIVE", "CLOSED", "REMOVED")
     ]
     if not active:
         warnings.append(note("TRANSIT_EMPTY", "No transit stops found within the fetch envelope."))

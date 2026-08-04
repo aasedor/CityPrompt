@@ -64,9 +64,7 @@ def _normalized_gray(frame: np.ndarray) -> np.ndarray:
 def _translation_align(reference: np.ndarray, candidate: np.ndarray) -> np.ndarray:
     cv = _require_cv2()
     try:
-        (shift_x, shift_y), response = cv.phaseCorrelate(
-            reference.astype(np.float32), candidate.astype(np.float32)
-        )
+        (shift_x, shift_y), response = cv.phaseCorrelate(reference.astype(np.float32), candidate.astype(np.float32))
     except cv.error:
         return candidate
     if response < 0.05 or abs(shift_x) > 24 or abs(shift_y) > 24:
@@ -210,9 +208,7 @@ def score_video_fidelity(
             time_seconds=round(progress * duration_seconds, 1),
             score=score_frame_similarity(reference, generated),
         )
-        for progress, reference, generated in zip(
-            SAMPLE_PROGRESS, reference_frames, generated_frames, strict=True
-        )
+        for progress, reference, generated in zip(SAMPLE_PROGRESS, reference_frames, generated_frames, strict=True)
     )
     score = round(sum(sample.score for sample in samples) / len(samples), 1)
     minimum_score = min(sample.score for sample in samples)

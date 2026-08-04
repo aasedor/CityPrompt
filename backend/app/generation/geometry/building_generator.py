@@ -95,6 +95,7 @@ def _apply_styled_material(mesh: trimesh.Trimesh, material_name: str, style=None
 
 class BuildingGenerator:
     """Generates 3D building geometry from normalized data."""
+
     def _normalize_footprint(self, footprint: Any) -> np.ndarray:
         """Return a closed Nx2+ footprint array for downstream facade iteration.
 
@@ -105,15 +106,10 @@ class BuildingGenerator:
             # Flat list of coordinates — try reshaping to Nx2
             pts = pts.reshape(-1, 2)
         if pts.ndim != 2 or pts.shape[0] < 3 or pts.shape[1] < 2:
-            raise ValueError(
-                f"Invalid footprint: expected Nx2+ array with >=3 points, "
-                f"got shape {pts.shape}"
-            )
+            raise ValueError(f"Invalid footprint: expected Nx2+ array with >=3 points, " f"got shape {pts.shape}")
         if not np.array_equal(pts[0, :2], pts[-1, :2]):
             pts = np.vstack([pts, pts[0]])
         return pts
-
-
 
     def generate_building(self, building_data: dict[str, Any], style=None) -> trimesh.Scene:
         """
@@ -173,8 +169,13 @@ class BuildingGenerator:
             win_height = style.window_height if style else 1.5
             win_density = style.window_density if style else 0.5
             windows = self._generate_windows(
-                footprint, floors, floor_height, features["windows"],
-                win_width=win_width, win_height=win_height, density=win_density,
+                footprint,
+                floors,
+                floor_height,
+                features["windows"],
+                win_width=win_width,
+                win_height=win_height,
+                density=win_density,
             )
             for i, window in enumerate(windows):
                 _apply_styled_material(window, "glass", style)
@@ -216,6 +217,7 @@ class BuildingGenerator:
             footprint = self._normalize_footprint(footprint)
             # Create 2D path and extrude
             from shapely.geometry import Polygon
+
             poly = Polygon(footprint[:, :2])
 
             if not poly.is_valid:
@@ -233,6 +235,7 @@ class BuildingGenerator:
         """Create a thin floor plate at a given elevation."""
         try:
             from shapely.geometry import Polygon
+
             poly = Polygon(footprint[:, :2])
             if not poly.is_valid:
                 poly = poly.buffer(0)
@@ -282,23 +285,27 @@ class BuildingGenerator:
             ridge_height = width * 0.3  # 30% of width
 
             # Create ridge vertices
-            vertices = np.array([
-                [min_pt[0], min_pt[1], base_height],
-                [max_pt[0], min_pt[1], base_height],
-                [max_pt[0], max_pt[1], base_height],
-                [min_pt[0], max_pt[1], base_height],
-                [center_x, min_pt[1], base_height + ridge_height],
-                [center_x, max_pt[1], base_height + ridge_height],
-            ])
+            vertices = np.array(
+                [
+                    [min_pt[0], min_pt[1], base_height],
+                    [max_pt[0], min_pt[1], base_height],
+                    [max_pt[0], max_pt[1], base_height],
+                    [min_pt[0], max_pt[1], base_height],
+                    [center_x, min_pt[1], base_height + ridge_height],
+                    [center_x, max_pt[1], base_height + ridge_height],
+                ]
+            )
 
-            faces = np.array([
-                [0, 1, 4],  # Front left slope
-                [1, 2, 5],  # Right slope front
-                [1, 5, 4],  # Right slope back
-                [2, 3, 5],  # Back right slope
-                [3, 0, 4],  # Left slope front
-                [3, 4, 5],  # Left slope back
-            ])
+            faces = np.array(
+                [
+                    [0, 1, 4],  # Front left slope
+                    [1, 2, 5],  # Right slope front
+                    [1, 5, 4],  # Right slope back
+                    [2, 3, 5],  # Back right slope
+                    [3, 0, 4],  # Left slope front
+                    [3, 4, 5],  # Left slope back
+                ]
+            )
 
             return trimesh.Trimesh(vertices=vertices, faces=faces)
 
@@ -319,20 +326,24 @@ class BuildingGenerator:
                 return None
             ridge_height = width * 0.25
 
-            vertices = np.array([
-                [min_pt[0], min_pt[1], base_height],
-                [max_pt[0], min_pt[1], base_height],
-                [max_pt[0], max_pt[1], base_height],
-                [min_pt[0], max_pt[1], base_height],
-                [center[0], center[1], base_height + ridge_height],
-            ])
+            vertices = np.array(
+                [
+                    [min_pt[0], min_pt[1], base_height],
+                    [max_pt[0], min_pt[1], base_height],
+                    [max_pt[0], max_pt[1], base_height],
+                    [min_pt[0], max_pt[1], base_height],
+                    [center[0], center[1], base_height + ridge_height],
+                ]
+            )
 
-            faces = np.array([
-                [0, 1, 4],
-                [1, 2, 4],
-                [2, 3, 4],
-                [3, 0, 4],
-            ])
+            faces = np.array(
+                [
+                    [0, 1, 4],
+                    [1, 2, 4],
+                    [2, 3, 4],
+                    [3, 0, 4],
+                ]
+            )
 
             return trimesh.Trimesh(vertices=vertices, faces=faces)
 
@@ -340,9 +351,7 @@ class BuildingGenerator:
             logger.error(f"Hipped roof failed: {e}")
             return None
 
-    def _generate_door(
-        self, footprint: np.ndarray, floor_height: float
-    ) -> Optional[trimesh.Trimesh]:
+    def _generate_door(self, footprint: np.ndarray, floor_height: float) -> Optional[trimesh.Trimesh]:
         """Generate a door on the longest ground-floor facade edge."""
         try:
             pts = footprint[:, :2]
@@ -376,11 +385,13 @@ class BuildingGenerator:
             angle = np.arctan2(edge_dir[1], edge_dir[0])
             rot = trimesh.transformations.rotation_matrix(angle, [0, 0, 1])
             door.apply_transform(rot)
-            door.apply_translation([
-                mid[0] + normal[0] * 0.06,
-                mid[1] + normal[1] * 0.06,
-                door_height / 2,
-            ])
+            door.apply_translation(
+                [
+                    mid[0] + normal[0] * 0.06,
+                    mid[1] + normal[1] * 0.06,
+                    door_height / 2,
+                ]
+            )
             return door
 
         except Exception as e:
@@ -432,19 +443,19 @@ class BuildingGenerator:
                         # Create window box
                         z_pos = (floor_idx * floor_height) + floor_height * 0.4
 
-                        window = trimesh.creation.box(
-                            extents=[win_width, win_depth, win_height]
-                        )
+                        window = trimesh.creation.box(extents=[win_width, win_depth, win_height])
 
                         # Transform to position
                         angle = np.arctan2(edge_dir[1], edge_dir[0])
                         rot = trimesh.transformations.rotation_matrix(angle, [0, 0, 1])
                         window.apply_transform(rot)
-                        window.apply_translation([
-                            pos_2d[0] + normal[0] * 0.05,
-                            pos_2d[1] + normal[1] * 0.05,
-                            z_pos,
-                        ])
+                        window.apply_translation(
+                            [
+                                pos_2d[0] + normal[0] * 0.05,
+                                pos_2d[1] + normal[1] * 0.05,
+                                z_pos,
+                            ]
+                        )
 
                         windows.append(window)
 
@@ -491,29 +502,29 @@ class BuildingGenerator:
                 mid = (edge_start + edge_end) / 2
 
                 # Balcony slab
-                slab = trimesh.creation.box(
-                    extents=[balcony_width, balcony_depth, balcony_thickness]
-                )
+                slab = trimesh.creation.box(extents=[balcony_width, balcony_depth, balcony_thickness])
                 angle = np.arctan2(edge_dir[1], edge_dir[0])
                 rot = trimesh.transformations.rotation_matrix(angle, [0, 0, 1])
                 slab.apply_transform(rot)
-                slab.apply_translation([
-                    mid[0] + normal[0] * (balcony_depth / 2),
-                    mid[1] + normal[1] * (balcony_depth / 2),
-                    z_pos,
-                ])
+                slab.apply_translation(
+                    [
+                        mid[0] + normal[0] * (balcony_depth / 2),
+                        mid[1] + normal[1] * (balcony_depth / 2),
+                        z_pos,
+                    ]
+                )
                 balconies.append(slab)
 
                 # Railing (thin box at the outer edge)
-                railing = trimesh.creation.box(
-                    extents=[balcony_width, 0.05, 1.0]
-                )
+                railing = trimesh.creation.box(extents=[balcony_width, 0.05, 1.0])
                 railing.apply_transform(rot)
-                railing.apply_translation([
-                    mid[0] + normal[0] * balcony_depth,
-                    mid[1] + normal[1] * balcony_depth,
-                    z_pos + 0.5,
-                ])
+                railing.apply_translation(
+                    [
+                        mid[0] + normal[0] * balcony_depth,
+                        mid[1] + normal[1] * balcony_depth,
+                        z_pos + 0.5,
+                    ]
+                )
                 balconies.append(railing)
 
         except Exception as e:
@@ -521,9 +532,7 @@ class BuildingGenerator:
 
         return balconies
 
-    def _generate_cornice(
-        self, footprint: np.ndarray, building_height: float
-    ) -> Optional[trimesh.Trimesh]:
+    def _generate_cornice(self, footprint: np.ndarray, building_height: float) -> Optional[trimesh.Trimesh]:
         """Generate a cornice (decorative ledge) around the top perimeter of the building."""
         try:
             pts = footprint[:, :2]
@@ -550,11 +559,13 @@ class BuildingGenerator:
                 angle = np.arctan2(edge_dir[1], edge_dir[0])
                 rot = trimesh.transformations.rotation_matrix(angle, [0, 0, 1])
                 cornice.apply_transform(rot)
-                cornice.apply_translation([
-                    mid[0] + normal[0] * cornice_overhang,
-                    mid[1] + normal[1] * cornice_overhang,
-                    building_height + cornice_height / 2,
-                ])
+                cornice.apply_translation(
+                    [
+                        mid[0] + normal[0] * cornice_overhang,
+                        mid[1] + normal[1] * cornice_overhang,
+                        building_height + cornice_height / 2,
+                    ]
+                )
                 meshes.append(cornice)
 
             if meshes:
@@ -613,8 +624,7 @@ class LODGenerator:
                 simplified = mesh.simplify_quadric_decimation(target_faces)
                 lods[level] = simplified
                 logger.info(
-                    f"LOD {level}: {len(simplified.faces)} faces "
-                    f"(from {original_faces}, target {target_faces})"
+                    f"LOD {level}: {len(simplified.faces)} faces " f"(from {original_faces}, target {target_faces})"
                 )
             except Exception as e:
                 logger.warning(f"LOD {level} generation failed: {e}, using bounding box")

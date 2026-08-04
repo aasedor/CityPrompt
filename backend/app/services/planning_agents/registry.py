@@ -16,9 +16,9 @@ class ExpertSpec:
     agent_id: str
     title: str
     model: str
-    dna_sections: tuple[str, ...]          # sections this expert receives (token control)
-    focus_prompt: str                      # role charter, appended AFTER the shared DNA block
-    parameter_scope: tuple[str, ...]       # PARAMETER_VOCABULARY paths it may recommend
+    dna_sections: tuple[str, ...]  # sections this expert receives (token control)
+    focus_prompt: str  # role charter, appended AFTER the shared DNA block
+    parameter_scope: tuple[str, ...]  # PARAMETER_VOCABULARY paths it may recommend
     philosophy_affinity: dict[str, float] = field(default_factory=dict)
 
 
@@ -35,11 +35,17 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "regulatory frame; flag where the philosophy pushes beyond as-of-right entitlement."
         ),
         parameter_scope=(
-            "buildings.development_type", "buildings.floors", "buildings.height_m",
-            "buildings.unit_count", "buildings.development_aesthetic", "site.design_brief",
+            "buildings.development_type",
+            "buildings.floors",
+            "buildings.height_m",
+            "buildings.unit_count",
+            "buildings.development_aesthetic",
+            "site.design_brief",
         ),
         philosophy_affinity={
-            "missing_middle": 1.3, "developer_feasibility": 1.2, "new_urbanism": 1.1,
+            "missing_middle": 1.3,
+            "developer_feasibility": 1.2,
+            "new_urbanism": 1.1,
             "neighbourhood_context": 1.3,
         },
     ),
@@ -55,7 +61,10 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "width) and goods movement while advancing the philosophy."
         ),
         parameter_scope=(
-            "streets.row_width_m", "layout.strategy", "landscape.ground_texture", "site.design_brief",
+            "streets.row_width_m",
+            "layout.strategy",
+            "landscape.ground_texture",
+            "site.design_brief",
         ),
         philosophy_affinity={"transit_oriented": 1.3, "fifteen_minute": 1.2, "new_urbanism": 1.1},
     ),
@@ -70,11 +79,16 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "ensure transitions to lower-scale neighbours and active frontages."
         ),
         parameter_scope=(
-            "buildings.floors", "buildings.height_m", "buildings.development_aesthetic",
-            "layout.strategy", "site.design_brief",
+            "buildings.floors",
+            "buildings.height_m",
+            "buildings.development_aesthetic",
+            "layout.strategy",
+            "site.design_brief",
         ),
         philosophy_affinity={
-            "new_urbanism": 1.3, "garden_city": 1.1, "landscape_urbanism": 1.1,
+            "new_urbanism": 1.3,
+            "garden_city": 1.1,
+            "landscape_urbanism": 1.1,
             "city_beautiful": 1.5,
         },
     ),
@@ -90,7 +104,10 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "winter-city comfort."
         ),
         parameter_scope=(
-            "landscape.tree_density", "landscape.ground_texture", "layout.strategy", "site.design_brief",
+            "landscape.tree_density",
+            "landscape.ground_texture",
+            "layout.strategy",
+            "site.design_brief",
         ),
         philosophy_affinity={"climate_resilience": 1.4, "landscape_urbanism": 1.3, "garden_city": 1.2},
     ),

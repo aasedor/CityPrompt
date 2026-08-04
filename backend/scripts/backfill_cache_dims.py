@@ -37,11 +37,7 @@ def main() -> None:
     args = parser.parse_args()
 
     session = _get_sync_session()
-    rows = (
-        session.execute(select(ArchetypeModelCache).where(ArchetypeModelCache.status == "completed"))
-        .scalars()
-        .all()
-    )
+    rows = session.execute(select(ArchetypeModelCache).where(ArchetypeModelCache.status == "completed")).scalars().all()
     print(f"{len(rows)} completed cache entries")
 
     for row in rows:

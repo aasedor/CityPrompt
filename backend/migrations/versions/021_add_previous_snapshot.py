@@ -4,6 +4,7 @@ Revision ID: 021_add_previous_snapshot
 Revises: 020_create_zone_history
 Create Date: 2026-04-06
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -16,12 +17,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute(sa.text(
-        "ALTER TABLE zone_history ADD COLUMN IF NOT EXISTS previous_snapshot JSONB"
-    ))
+    op.execute(sa.text("ALTER TABLE zone_history ADD COLUMN IF NOT EXISTS previous_snapshot JSONB"))
 
 
 def downgrade() -> None:
-    op.execute(sa.text(
-        "ALTER TABLE zone_history DROP COLUMN IF EXISTS previous_snapshot"
-    ))
+    op.execute(sa.text("ALTER TABLE zone_history DROP COLUMN IF EXISTS previous_snapshot"))

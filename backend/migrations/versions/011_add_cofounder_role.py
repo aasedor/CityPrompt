@@ -4,6 +4,7 @@ Revision ID: 011_add_cofounder_role
 Revises: 010_add_pending_role_changes
 Create Date: 2026-02-27
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -18,11 +19,14 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def _enum_value_exists(enum_name: str, value: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM pg_enum "
-        "JOIN pg_type ON pg_enum.enumtypid = pg_type.oid "
-        "WHERE pg_type.typname = :enum_name AND pg_enum.enumlabel = :value)"
-    ), {"enum_name": enum_name, "value": value})
+    result = conn.execute(
+        sa.text(
+            "SELECT EXISTS (SELECT 1 FROM pg_enum "
+            "JOIN pg_type ON pg_enum.enumtypid = pg_type.oid "
+            "WHERE pg_type.typname = :enum_name AND pg_enum.enumlabel = :value)"
+        ),
+        {"enum_name": enum_name, "value": value},
+    )
     return result.scalar()
 
 

@@ -38,9 +38,7 @@ class ClaudeInterpreter:
         except Exception as exc:
             logger.warning(f"Failed to log Claude usage for {operation}: {exc}")
 
-    async def interpret_floor_plan(
-        self, image_data: bytes, context: Optional[dict] = None
-    ) -> dict[str, Any]:
+    async def interpret_floor_plan(self, image_data: bytes, context: Optional[dict] = None) -> dict[str, Any]:
         """
         Analyze a floor plan image and extract building dimensions,
         room layouts, and spatial relationships.
@@ -140,9 +138,7 @@ Only return valid JSON, no other text."""
             logger.error(f"Claude API error: {e}")
             return {"error": str(e), "confidence": 0.0}
 
-    async def interpret_elevation(
-        self, image_data: bytes, context: Optional[dict] = None
-    ) -> dict[str, Any]:
+    async def interpret_elevation(self, image_data: bytes, context: Optional[dict] = None) -> dict[str, Any]:
         """Analyze a building elevation drawing to extract height, floor count, and facade details."""
         b64_image = base64.standard_b64encode(image_data).decode("utf-8")
 
@@ -219,9 +215,7 @@ Only return valid JSON."""
             logger.error(f"Elevation interpretation error: {e}")
             return {"error": str(e), "confidence": 0.0}
 
-    async def extract_dimensions_from_text(
-        self, text: str, context: Optional[dict] = None
-    ) -> dict[str, Any]:
+    async def extract_dimensions_from_text(self, text: str, context: Optional[dict] = None) -> dict[str, Any]:
         """Extract building dimensions and specifications from document text."""
         system_prompt = """You are an expert at extracting building specifications from architectural documents.
 Given the text content, extract all building-related dimensions and specifications.
@@ -287,9 +281,7 @@ Only return valid JSON."""
             logger.error(f"Text interpretation error: {e}")
             return {"error": str(e), "confidence": 0.0}
 
-    async def validate_extracted_data(
-        self, extracted: dict, source_type: str
-    ) -> dict[str, Any]:
+    async def validate_extracted_data(self, extracted: dict, source_type: str) -> dict[str, Any]:
         """Cross-reference extracted data for consistency and flag anomalies."""
         system_prompt = """You are a quality control specialist for architectural data.
 Review the extracted building data for consistency and flag any issues.

@@ -42,6 +42,7 @@ def _get_sync_session():
 
     return factory()
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -65,10 +66,12 @@ def _load_project_lego_inventory(session, owner_id):
 
     entries = (
         session.query(ModelLibraryEntry)
-        .filter(or_(
-            ModelLibraryEntry.owner_id == owner_id,
-            ModelLibraryEntry.is_public.is_(True),
-        ))
+        .filter(
+            or_(
+                ModelLibraryEntry.owner_id == owner_id,
+                ModelLibraryEntry.is_public.is_(True),
+            )
+        )
         .order_by(ModelLibraryEntry.created_at.desc(), ModelLibraryEntry.id.desc())
         .execution_options(populate_existing=True)
         .all()
@@ -85,9 +88,7 @@ def _refresh_project_lego_inventory(
 
     entries, catalog = _load_project_lego_inventory(session, owner_id)
     if catalog.fingerprint != expected_fingerprint:
-        raise LegoInventoryChangedDuringPlan(
-            "The executable LEGO inventory changed while the AI plan was drawing."
-        )
+        raise LegoInventoryChangedDuringPlan("The executable LEGO inventory changed while the AI plan was drawing.")
     return entries, catalog
 
 
@@ -109,11 +110,7 @@ def _delete_community_3d_buildings_for_replaced_zones(
     from app.models.models import Building
     from app.services.community_3d_artifacts import community_3d_buildings_for_zones
 
-    project_buildings = (
-        session.query(Building)
-        .filter(Building.project_id == project_id)
-        .all()
-    )
+    project_buildings = session.query(Building).filter(Building.project_id == project_id).all()
     derived_buildings = community_3d_buildings_for_zones(
         project_buildings,
         replaced_zone_ids,
@@ -134,9 +131,7 @@ def _backfill_locked_street_plan_centerline(zone) -> bool:
         recover_street_plan_centerline_wgs84,
     )
 
-    recovered_centerline = recover_street_plan_centerline_wgs84(
-        to_shape(zone.geometry)
-    )
+    recovered_centerline = recover_street_plan_centerline_wgs84(to_shape(zone.geometry))
     if not recovered_centerline:
         return False
 
@@ -235,7 +230,8 @@ def _make_policy_synthesizer(session, snapshot, city_id: str):
             .all()
         )
         effective = [
-            d for d in documents
+            d
+            for d in documents
             if (d.effective_date is None or d.effective_date <= now)
             and (d.repealed_date is None or d.repealed_date > now)
         ]
@@ -243,13 +239,15 @@ def _make_policy_synthesizer(session, snapshot, city_id: str):
         warnings: list[dict] = []
         for document in effective:
             if document.repealed_date is not None and (document.repealed_date - now).days < 365:
-                warnings.append({
-                    "code": "POLICY_INSTRUMENT_SUNSETTING",
-                    "severity": "warning",
-                    "message": f"{document.title} is repealed effective "
-                               f"{document.repealed_date.date().isoformat()} — cite with care.",
-                    "source_phase": "policy_intelligence",
-                })
+                warnings.append(
+                    {
+                        "code": "POLICY_INSTRUMENT_SUNSETTING",
+                        "severity": "warning",
+                        "message": f"{document.title} is repealed effective "
+                        f"{document.repealed_date.date().isoformat()} — cite with care.",
+                        "source_phase": "policy_intelligence",
+                    }
+                )
 
         site_facts = {
             "districts": _field_value(dna.land_use, "districts"),
@@ -263,7 +261,10 @@ def _make_policy_synthesizer(session, snapshot, city_id: str):
 
         if not effective:
             insight, synth_warnings = await synthesize_policy_insight(
-                site_facts=site_facts, chunks=[], corpus_status="absent", documents_consulted=[],
+                site_facts=site_facts,
+                chunks=[],
+                corpus_status="absent",
+                documents_consulted=[],
             )
             return {"insight": insight.model_dump()}, warnings + synth_warnings, insight.confidence
 
@@ -281,11 +282,26 @@ def _make_policy_synthesizer(session, snapshot, city_id: str):
             for document in effective
             for chunk in document.chunks
         ]
-        query_terms = build_query_terms(site_facts, topics=[
-            "density", "height", "setback", "parking", "transit", "pedestrian",
-            "cycling", "tree canopy", "flood", "housing", "affordable", "heritage",
-            "climate", "complete streets", "emergency access",
-        ])
+        query_terms = build_query_terms(
+            site_facts,
+            topics=[
+                "density",
+                "height",
+                "setback",
+                "parking",
+                "transit",
+                "pedestrian",
+                "cycling",
+                "tree canopy",
+                "flood",
+                "housing",
+                "affordable",
+                "heritage",
+                "climate",
+                "complete streets",
+                "emergency access",
+            ],
+        )
         chunks = rank_chunks(records, query_terms)
         corpus_status = "complete" if len(effective) >= 4 else "partial"
 
@@ -347,7 +363,10 @@ def generate_urban_dna(self, snapshot_id: str) -> dict:
         session.commit()
         logger.info(
             "Urban DNA %s complete: city=%s confidence=%.2f missing=%d",
-            snapshot_id, dna.city_id, dna.overall_confidence, len(dna.missing_datasets),
+            snapshot_id,
+            dna.city_id,
+            dna.overall_confidence,
+            len(dna.missing_datasets),
         )
         return {"status": "complete", "overall_confidence": dna.overall_confidence}
 
@@ -451,11 +470,14 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                         for path, merged in (baseline_row.payload.get("plan_parameters") or {}).items()
                     }
                 else:
-                    warnings.append(ValidationNote(
-                        code="BASELINE_UNAVAILABLE", severity="info",
-                        message=f"{BASELINE_SCENARIO_ID} baseline not complete yet; diff shows all parameters.",
-                        source_phase="coordinator",
-                    ))
+                    warnings.append(
+                        ValidationNote(
+                            code="BASELINE_UNAVAILABLE",
+                            severity="info",
+                            message=f"{BASELINE_SCENARIO_ID} baseline not complete yet; diff shows all parameters.",
+                            source_phase="coordinator",
+                        )
+                    )
 
             changed = diff_scenarios(baseline_params, plan_parameters)
             explanation = await write_explanation(definition, changed, trade_offs)
@@ -482,17 +504,18 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                 raise
             except Exception as exc:  # noqa: BLE001 — metrics degrade, run continues
                 logger.warning("Metrics derivation failed for %s: %s", definition.scenario_id, exc)
-                warnings.append(ValidationNote(
-                    code="METRICS_UNAVAILABLE", severity="warning",
-                    message=f"Derived statistics unavailable: {exc}", source_phase="coordinator",
-                ))
+                warnings.append(
+                    ValidationNote(
+                        code="METRICS_UNAVAILABLE",
+                        severity="warning",
+                        message=f"Derived statistics unavailable: {exc}",
+                        source_phase="coordinator",
+                    )
+                )
 
             total_in = sum(u["input_tokens"] for u in usage_records)
             total_out = sum(u["output_tokens"] for u in usage_records)
-            cost = sum(
-                estimate_cost_usd(u["model"], u["input_tokens"], u["output_tokens"])
-                for u in usage_records
-            )
+            cost = sum(estimate_cost_usd(u["model"], u["input_tokens"], u["output_tokens"]) for u in usage_records)
             return ScenarioResult(
                 scenario_id=definition.scenario_id,
                 label=definition.label,
@@ -501,8 +524,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                 trade_offs=trade_offs,
                 expert_summaries={s.agent_id: s.summary for s in expert_sets if not s.failed},
                 explanation=explanation,
-                usage={"input_tokens": total_in, "output_tokens": total_out,
-                       "estimated_cost_usd": round(cost, 3)},
+                usage={"input_tokens": total_in, "output_tokens": total_out, "estimated_cost_usd": round(cost, 3)},
                 warnings=warnings,
                 metrics=metrics_report.model_dump(mode="json") if metrics_report else None,
             )
@@ -523,8 +545,11 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
         session.commit()
         logger.info(
             "Scenario %s (%s) complete: %d parameters, %d trade-offs, ~$%.2f",
-            row.scenario_id, scenario_row_id, len(result.plan_parameters),
-            len(result.trade_offs), result.usage.get("estimated_cost_usd", 0.0),
+            row.scenario_id,
+            scenario_row_id,
+            len(result.plan_parameters),
+            len(result.trade_offs),
+            result.usage.get("estimated_cost_usd", 0.0),
         )
         return {"status": "complete", "parameters": len(result.plan_parameters)}
 
@@ -601,9 +626,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         site_shape = to_shape(zone.geometry)
         site_polygon = site_shape if isinstance(site_shape, ShapelyPolygon) else site_shape.convex_hull
         boundary_fingerprint = plan_boundary_fingerprint(site_polygon)
-        snapshot_boundary_fingerprint = plan_boundary_fingerprint(
-            (snapshot.dna or {}).get("site_boundary")
-        )
+        snapshot_boundary_fingerprint = plan_boundary_fingerprint((snapshot.dna or {}).get("site_boundary"))
         if boundary_fingerprint is None or snapshot_boundary_fingerprint != boundary_fingerprint:
             _set_plan_state(
                 session,
@@ -621,14 +644,13 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
 
         async def _features():
             roads_spec = next(
-                (s for s in connector.datasets.values()
-                 if s.geometry_type == "line" and "road" in s.id),
+                (s for s in connector.datasets.values() if s.geometry_type == "line" and "road" in s.id),
                 None,
             )
             path_specs = [
-                spec for spec in connector.datasets.values()
-                if spec.geometry_type == "line"
-                and any(term in spec.id for term in ("path", "bike", "trail"))
+                spec
+                for spec in connector.datasets.values()
+                if spec.geometry_type == "line" and any(term in spec.id for term in ("path", "bike", "trail"))
             ]
             district_spec = next(
                 (s for s in connector.datasets.values() if s.id.endswith("land_use_districts")),
@@ -675,7 +697,10 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 _PlannerPathConnector.register(fallback_path_spec)
                 fallback_connector = _PlannerPathConnector()
                 fetched, _ = await _fetch_with_cache(
-                    fallback_connector, fallback_path_spec, site_polygon, cache,
+                    fallback_connector,
+                    fallback_path_spec,
+                    site_polygon,
+                    cache,
                 )
                 if fetched.ok:
                     paths.extend(fetched.features)
@@ -699,8 +724,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         locked_street_area = None
         if "streets" in locks:
             street_polys = [
-                to_shape(z.geometry) for z in existing
-                if (z.properties or {}).get("_plan_role") == "street"
+                to_shape(z.geometry) for z in existing if (z.properties or {}).get("_plan_role") == "street"
             ]
             if street_polys:
                 locked_street_area = unary_union(street_polys)
@@ -735,8 +759,11 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             if isinstance(philosophy, dict) and isinstance(philosophy.get("primary"), str):
                 palette_hint = philosophy["primary"]
             # Brief-extracted character, only when no expert emitted one.
-            aesthetic_hint = (row.payload or {}).get("expansion", {}).get("aesthetic_hint") \
-                if isinstance((row.payload or {}).get("expansion"), dict) else None
+            aesthetic_hint = (
+                (row.payload or {}).get("expansion", {}).get("aesthetic_hint")
+                if isinstance((row.payload or {}).get("expansion"), dict)
+                else None
+            )
             if aesthetic_hint and "buildings.development_aesthetic" not in plan_parameters:
                 plan_parameters["buildings.development_aesthetic"] = {"value": str(aesthetic_hint)}
 
@@ -786,11 +813,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         cached_spec = cached_master.get("spec")
         cached_fingerprint = cached_master.get("lego_catalog_fingerprint")
         cached_reusable = cached_master.get("cache_reusable") is True
-        if (
-            isinstance(cached_spec, dict)
-            and cached_fingerprint == lego_catalog.fingerprint
-            and cached_reusable
-        ):
+        if isinstance(cached_spec, dict) and cached_fingerprint == lego_catalog.fingerprint and cached_reusable:
             try:
                 parsed_spec = MasterPlanSpec(**cached_spec)
                 master_spec, repair_notes = validate_spec(
@@ -805,15 +828,17 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 master_spec = None
 
         if isinstance(cached_spec, dict) and cached_fingerprint != lego_catalog.fingerprint:
-            master_notes.append({
-                "code": "MASTER_PLAN_LEGO_CATALOG_CHANGED",
-                "severity": "info",
-                "message": (
-                    "The imported LEGO inventory changed; the cached plan palette "
-                    "was recomposed against the current executable families."
-                ),
-                "source_phase": "master_planner",
-            })
+            master_notes.append(
+                {
+                    "code": "MASTER_PLAN_LEGO_CATALOG_CHANGED",
+                    "severity": "info",
+                    "message": (
+                        "The imported LEGO inventory changed; the cached plan palette "
+                        "was recomposed against the current executable families."
+                    ),
+                    "source_phase": "master_planner",
+                }
+            )
 
         if master_spec is None and settings.master_planner_enabled and settings.anthropic_api_key:
             definition = resolve_scenario_preset(row.scenario_id)
@@ -839,36 +864,39 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 # compose_master_plan never raises, but the event-loop plumbing
                 # around it can — and the draw must never depend on the LLM.
                 try:
-                    composed_spec, master_usage, composition_notes = asyncio.run(compose_master_plan(
-                        dna_json=snapshot.dna,
-                        definition=definition,
-                        site_summary=site_summary,
-                        parameters=plan_parameters,
-                        brief=(row.payload or {}).get("brief"),
-                        api_key=settings.anthropic_api_key,
-                        model=settings.urban_dna_agent_model,
-                        palette_hint=palette_hint,
-                        lego_catalog=lego_catalog,
-                    ))
+                    composed_spec, master_usage, composition_notes = asyncio.run(
+                        compose_master_plan(
+                            dna_json=snapshot.dna,
+                            definition=definition,
+                            site_summary=site_summary,
+                            parameters=plan_parameters,
+                            brief=(row.payload or {}).get("brief"),
+                            api_key=settings.anthropic_api_key,
+                            model=settings.urban_dna_agent_model,
+                            palette_hint=palette_hint,
+                            lego_catalog=lego_catalog,
+                        )
+                    )
                     master_notes.extend(composition_notes)
                     if composed_spec is not None:
                         master_spec = composed_spec
                         master_source = (
-                            "ai_runtime_lego"
-                            if master_usage.get("status") == "success"
-                            else "runtime_lego_fallback"
+                            "ai_runtime_lego" if master_usage.get("status") == "success" else "runtime_lego_fallback"
                         )
                 except SoftTimeLimitExceeded:
                     raise
                 except Exception as exc:  # noqa: BLE001 — preset palette path
                     logger.warning("Master planner composition errored: %s", exc)
                     master_spec = None
-                    master_notes.append({
-                        "code": "MASTER_PLANNER_UNAVAILABLE", "severity": "warning",
-                        "message": f"Master Planner unavailable ({type(exc).__name__}) — "
-                                   "the current imported LEGO catalog drew this plan.",
-                        "source_phase": "master_planner",
-                    })
+                    master_notes.append(
+                        {
+                            "code": "MASTER_PLANNER_UNAVAILABLE",
+                            "severity": "warning",
+                            "message": f"Master Planner unavailable ({type(exc).__name__}) — "
+                            "the current imported LEGO catalog drew this plan.",
+                            "source_phase": "master_planner",
+                        }
+                    )
                 if master_usage is not None:
                     try:
                         log_api_usage_sync(
@@ -889,15 +917,17 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 lego_catalog,
                 palette_hint,
             )
-            master_notes.append({
-                "code": "MASTER_PLAN_RUNTIME_LEGO_FALLBACK",
-                "severity": "info",
-                "message": (
-                    "The plan was deterministically composed from the current imported "
-                    "archetyped LEGO catalog; no unsupported building was substituted."
-                ),
-                "source_phase": "master_planner",
-            })
+            master_notes.append(
+                {
+                    "code": "MASTER_PLAN_RUNTIME_LEGO_FALLBACK",
+                    "severity": "info",
+                    "message": (
+                        "The plan was deterministically composed from the current imported "
+                        "archetyped LEGO catalog; no unsupported building was substituted."
+                    ),
+                    "source_phase": "master_planner",
+                }
+            )
 
         pending_master_plan = {
             "spec": master_spec.model_dump(mode="json"),
@@ -978,9 +1008,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 lego_catalog,
             )
         except LegoGeometryCompatibilityError as exc:
-            message = (
-                f"AI plan could not be bound entirely to the imported LEGO catalog: {exc}"
-            )
+            message = f"AI plan could not be bound entirely to the imported LEGO catalog: {exc}"
             if cached_reusable:
                 failed_payload = dict(row.payload or {})
                 failed_master = dict(failed_payload.get("master_plan") or {})
@@ -1011,25 +1039,16 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 _set_plan_state(session, row, status="failed", error=message)
                 return {"status": "failed", "error": message}
             omitted_indices = set(lego_binding.omitted_building_indices)
-            retained_masses = [
-                mass
-                for index, mass in enumerate(result.masses_m)
-                if index not in omitted_indices
-            ]
+            retained_masses = [mass for index, mass in enumerate(result.masses_m) if index not in omitted_indices]
             retained_floors = [
-                floors
-                for index, floors in enumerate(result.mass_floors)
-                if index not in omitted_indices
+                floors for index, floors in enumerate(result.mass_floors) if index not in omitted_indices
             ]
             result.masses_m = retained_masses
             result.mass_floors = retained_floors
             result.building_count = lego_binding.retained_count
-            result.geometry_inputs["building_footprint_m2"] = sum(
-                float(mass.area) for mass in retained_masses
-            )
+            result.geometry_inputs["building_footprint_m2"] = sum(float(mass.area) for mass in retained_masses)
             result.geometry_inputs["gfa_m2"] = sum(
-                float(mass.area) * floors
-                for mass, floors in zip(retained_masses, retained_floors)
+                float(mass.area) * floors for mass, floors in zip(retained_masses, retained_floors)
             )
 
             from app.services.plan_geometry.plan_evaluator import evaluate_plan
@@ -1050,37 +1069,34 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             )
             if iterations:
                 iterations[-1]["overall_score"] = evaluation.overall
-                iterations[-1]["scores"] = {
-                    key: score.model_dump()
-                    for key, score in evaluation.scores.items()
-                }
+                iterations[-1]["scores"] = {key: score.model_dump() for key, score in evaluation.scores.items()}
                 iterations[-1]["building_count"] = result.building_count
-                iterations[-1]["postprocess"] = {
-                    "omitted_incompatible_lego_footprints": (
-                        lego_binding.omitted_count
-                    )
+                iterations[-1]["postprocess"] = {"omitted_incompatible_lego_footprints": (lego_binding.omitted_count)}
+            result.notes.append(
+                {
+                    "code": "LEGO_INCOMPATIBLE_SLIVER_TO_LANDSCAPE",
+                    "severity": "info",
+                    "message": (
+                        f"{lego_binding.omitted_count} of {lego_binding.building_count} "
+                        "clipped building footprints could not accept any imported LEGO "
+                        "family and were returned to the site-boundary residual landscape."
+                    ),
+                    "source_phase": "building_placement",
                 }
-            result.notes.append({
-                "code": "LEGO_INCOMPATIBLE_SLIVER_TO_LANDSCAPE",
-                "severity": "info",
-                "message": (
-                    f"{lego_binding.omitted_count} of {lego_binding.building_count} "
-                    "clipped building footprints could not accept any imported LEGO "
-                    "family and were returned to the site-boundary residual landscape."
-                ),
-                "source_phase": "building_placement",
-            })
+            )
         if lego_binding.repaired_count:
-            result.notes.append({
-                "code": "LEGO_ACTUAL_FOOTPRINT_REBOUND",
-                "severity": "info",
-                "message": (
-                    f"{lego_binding.repaired_count} of {lego_binding.building_count} "
-                    "building footprints were rebound to a stylistically closest "
-                    "LEGO family proven at their final parcel dimensions."
-                ),
-                "source_phase": "building_placement",
-            })
+            result.notes.append(
+                {
+                    "code": "LEGO_ACTUAL_FOOTPRINT_REBOUND",
+                    "severity": "info",
+                    "message": (
+                        f"{lego_binding.repaired_count} of {lego_binding.building_count} "
+                        "building footprints were rebound to a stylistically closest "
+                        "LEGO family proven at their final parcel dimensions."
+                    ),
+                    "source_phase": "building_placement",
+                }
+            )
         # The planner's own notes (composition + repairs) lead the plan notes.
         result.notes[:0] = master_notes
 
@@ -1135,16 +1151,18 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 boundary_zone_id=zone.id,
                 snapshot_id=snapshot.id,
             )
-            session.add(SiteZone(
-                id=uuid.uuid4(),
-                project_id=snapshot.project_id,
-                name=zone_dict["name"],
-                zone_type=zone_dict["zone_type"],
-                geometry=from_shape(ShapelyPolygon(ring), srid=4326),
-                color=zone_dict["color"],
-                properties=properties,
-                sort_order=zone_dict.get("sort_order", 500),
-            ))
+            session.add(
+                SiteZone(
+                    id=uuid.uuid4(),
+                    project_id=snapshot.project_id,
+                    name=zone_dict["name"],
+                    zone_type=zone_dict["zone_type"],
+                    geometry=from_shape(ShapelyPolygon(ring), srid=4326),
+                    color=zone_dict["color"],
+                    properties=properties,
+                    sort_order=zone_dict.get("sort_order", 500),
+                )
+            )
             inserted += 1
 
         payload = dict(row.payload or {})
@@ -1195,7 +1213,10 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         session.commit()
         logger.info(
             "Plan drawn for %s: %d zones, %d blocks, %d parcels",
-            row.scenario_id, inserted, result.block_count, result.parcel_count,
+            row.scenario_id,
+            inserted,
+            result.block_count,
+            result.parcel_count,
         )
         return {"status": "complete", "zones": inserted}
 
@@ -1216,7 +1237,9 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             session.rollback()
             if row is not None:
                 _set_plan_state(
-                    session, row, status="failed",
+                    session,
+                    row,
+                    status="failed",
                     error=f"plan generation failed ({type(exc).__name__}) — see worker logs",
                 )
         except Exception:  # noqa: BLE001

@@ -49,9 +49,7 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
     first = build_public_realm_capability_catalog()
     second = build_public_realm_capability_catalog()
     parks = build_public_realm_capability_catalog(kinds=["park"])
-    local_only = build_public_realm_capability_catalog(
-        family_ids=["street_local_public_realm"]
-    )
+    local_only = build_public_realm_capability_catalog(family_ids=["street_local_public_realm"])
 
     assert first == second
     assert first.family_ids == tuple(sorted(first.family_ids))
@@ -64,9 +62,7 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
     }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
-    assert local_only.variants_by_archetype["green_alley"] == (
-        "green_alley_v0",
-    )
+    assert local_only.variants_by_archetype["green_alley"] == ("green_alley_v0",)
     assert "EXECUTABLE PUBLIC REALM LEGO CATALOG" in first.prompt_vocabulary
     assert parks.fingerprint != first.fingerprint
     _sha256(first.fingerprint)
@@ -152,9 +148,7 @@ def test_recurring_street_variants_select_semantically_exact_appearance(
 
 @pytest.mark.parametrize("archetype_id", ["yield_street", "woonerf_shared_street"])
 def test_dutch_shared_street_defaults_use_dutch_appearance(archetype_id):
-    recipe = plan_public_realm_recipe(
-        _street_request(archetype_id, 10, variant_id=f"{archetype_id}_v0")
-    )
+    recipe = plan_public_realm_recipe(_street_request(archetype_id, 10, variant_id=f"{archetype_id}_v0"))
 
     assert recipe.appearance_kit_id == "dutch_woonerf_v1"
 
@@ -195,13 +189,9 @@ def test_single_reviewed_local_street_variants_use_honest_appearance(
 )
 def test_unbuilt_street_visual_variants_are_not_advertised(archetype_id):
     catalog = build_public_realm_capability_catalog()
-    assert catalog.variants_by_archetype[archetype_id] == (
-        f"{archetype_id}_v0",
-    )
+    assert catalog.variants_by_archetype[archetype_id] == (f"{archetype_id}_v0",)
     with pytest.raises(PublicRealmPlanningError) as raised:
-        plan_public_realm_recipe(
-            _street_request(archetype_id, 10, variant_id=f"{archetype_id}_v1")
-        )
+        plan_public_realm_recipe(_street_request(archetype_id, 10, variant_id=f"{archetype_id}_v1"))
     assert raised.value.code == "family_incompatible"
 
 
@@ -260,12 +250,8 @@ def test_unknown_ai_street_variant_does_not_enter_legacy_migration_path():
 
 
 def test_main_street_prefers_18m_but_retains_exact_22m_migration_family():
-    canonical = plan_public_realm_recipe(
-        _street_request("main_street_complete", 18)
-    )
-    migrated = plan_public_realm_recipe(
-        _street_request("main_street_complete", 22)
-    )
+    canonical = plan_public_realm_recipe(_street_request("main_street_complete", 18))
+    migrated = plan_public_realm_recipe(_street_request("main_street_complete", 22))
 
     assert canonical.family_id == "street_complete_main_18m"
     assert canonical.target.row_width_m == 18
@@ -276,32 +262,31 @@ def test_main_street_prefers_18m_but_retains_exact_22m_migration_family():
 
 def test_main_street_rejects_noncanonical_intermediate_row_with_structured_error():
     with pytest.raises(PublicRealmPlanningError) as raised:
-        plan_public_realm_recipe(
-            _street_request("main_street_complete", 20)
-        )
+        plan_public_realm_recipe(_street_request("main_street_complete", 20))
 
     error = raised.value
     assert error.code == "family_incompatible"
     assert error.requested["target"]["row_width_m"] == 20
     assert error.supported_families[0]["family_id"] == "street_complete_main_18m"
-    assert {
-        family["family_id"] for family in error.supported_families
-    } == {"street_complete_main_18m", "street_complete_main_22m"}
-    assert error.violations == [{
-        "field": "target.row_width_m",
-        "requested": 20.0,
-        "supported": [17.95, 18.05],
-    }]
+    assert {family["family_id"] for family in error.supported_families} == {
+        "street_complete_main_18m",
+        "street_complete_main_22m",
+    }
+    assert error.violations == [
+        {
+            "field": "target.row_width_m",
+            "requested": 20.0,
+            "supported": [17.95, 18.05],
+        }
+    ]
     assert error.as_detail()["code"] == "family_incompatible"
 
 
 def test_local_row_compatibility_is_source_specific():
-    assert plan_public_realm_recipe(
-        _street_request("woonerf_shared_street", 14)
-    ).family_id == "street_local_public_realm"
-    assert plan_public_realm_recipe(
-        _street_request("multi_use_trail", 4)
-    ).variant_id == "multi_use_trail_v1"
+    assert (
+        plan_public_realm_recipe(_street_request("woonerf_shared_street", 14)).family_id == "street_local_public_realm"
+    )
+    assert plan_public_realm_recipe(_street_request("multi_use_trail", 4)).variant_id == "multi_use_trail_v1"
 
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_recipe(_street_request("multi_use_trail", 7))
@@ -322,18 +307,18 @@ def test_four_way_node_requires_exact_topology_and_reports_supported_arms():
         plan_public_realm_recipe(request)
 
     assert raised.value.code == "family_incompatible"
-    assert raised.value.violations == [{
-        "field": "target.arm_count",
-        "requested": 3,
-        "supported": [4],
-    }]
+    assert raised.value.violations == [
+        {
+            "field": "target.arm_count",
+            "requested": 3,
+            "supported": [4],
+        }
+    ]
 
 
 def test_unknown_archetype_is_family_not_found_without_fallback():
     with pytest.raises(PublicRealmPlanningError) as raised:
-        plan_public_realm_recipe(
-            _street_request("invented_magic_boulevard", 22)
-        )
+        plan_public_realm_recipe(_street_request("invented_magic_boulevard", 22))
 
     assert raised.value.code == "family_not_found"
     assert raised.value.requested["archetype_id"] == "invented_magic_boulevard"
@@ -341,9 +326,7 @@ def test_unknown_archetype_is_family_not_found_without_fallback():
 
 
 def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
-    recipe = plan_public_realm_recipe(
-        _street_request("narrow_residential_street", 12)
-    )
+    recipe = plan_public_realm_recipe(_street_request("narrow_residential_street", 12))
     payload = recipe.model_dump(mode="json")
     original = public_realm_representation_hash(
         source_hash="a" * 64,
@@ -352,17 +335,23 @@ def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
 
     assert original is not None
     assert public_realm_recipe_identity(payload) is not None
-    assert public_realm_representation_hash(
-        source_hash="b" * 64,
-        recipe=payload,
-    ) != original
+    assert (
+        public_realm_representation_hash(
+            source_hash="b" * 64,
+            recipe=payload,
+        )
+        != original
+    )
 
     payload["appearance_kit_id"] = "tampered"
     assert public_realm_recipe_identity(payload) is None
-    assert public_realm_representation_hash(
-        source_hash="a" * 64,
-        recipe=payload,
-    ) is None
+    assert (
+        public_realm_representation_hash(
+            source_hash="a" * 64,
+            recipe=payload,
+        )
+        is None
+    )
 
     # A self-hash proves only payload integrity.  Recomputing it must not turn
     # a non-canonical renderer recipe into an executable catalog identity.
@@ -372,17 +361,21 @@ def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
 
 
 def test_linear_greenway_accepts_compact_corridor_but_rejects_square_pond_lobe():
-    compact_corridor = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id="linear_park_greenway",
-        target=ParkPolygonTarget(width_m=72, depth_m=15, area_m2=1_050),
-    ))
+    compact_corridor = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id="linear_park_greenway",
+            target=ParkPolygonTarget(width_m=72, depth_m=15, area_m2=1_050),
+        )
+    )
 
     assert compact_corridor.family_id == "park_linear_greenway"
     with pytest.raises(PublicRealmPlanningError) as raised:
-        plan_public_realm_recipe(PublicRealmPlanRequest(
-            archetype_id="linear_park_greenway",
-            target=ParkPolygonTarget(width_m=38, depth_m=34, area_m2=1_120),
-        ))
+        plan_public_realm_recipe(
+            PublicRealmPlanRequest(
+                archetype_id="linear_park_greenway",
+                target=ParkPolygonTarget(width_m=38, depth_m=34, area_m2=1_120),
+            )
+        )
     assert raised.value.violations[-1] == {
         "field": "target.aspect_ratio",
         "requested": pytest.approx(1.118, abs=0.001),
@@ -391,10 +384,12 @@ def test_linear_greenway_accepts_compact_corridor_but_rejects_square_pond_lobe()
 
 
 def test_pocket_courtyard_family_accepts_broad_clipped_courtyard_envelope():
-    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id="urban_pocket_park",
-        target=ParkPolygonTarget(width_m=86, depth_m=78, area_m2=2_000),
-    ))
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id="urban_pocket_park",
+            target=ParkPolygonTarget(width_m=86, depth_m=78, area_m2=2_000),
+        )
+    )
 
     assert recipe.family_id == "park_pocket_courtyard"
 
@@ -494,12 +489,15 @@ def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():
         "green_space_archetype_id": "botanical_garden",
     }
 
-    assert plan_public_realm_zone_recipe(
-        "green_space",
-        geometry,
-        properties,
-        strict=False,
-    ) is None
+    assert (
+        plan_public_realm_zone_recipe(
+            "green_space",
+            geometry,
+            properties,
+            strict=False,
+        )
+        is None
+    )
 
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_zone_recipe(
@@ -512,10 +510,14 @@ def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():
 
 
 def test_zone_planner_rejects_non_polygonal_park_without_attribute_error():
-    geometry = _to_wgs84(LineString([
-        (700_000, 5_650_000),
-        (700_030, 5_650_000),
-    ]))
+    geometry = _to_wgs84(
+        LineString(
+            [
+                (700_000, 5_650_000),
+                (700_030, 5_650_000),
+            ]
+        )
+    )
 
     with pytest.raises(ValueError, match="no measurable footprint"):
         plan_public_realm_zone_recipe(
@@ -553,17 +555,21 @@ def test_compact_roundabout_accepts_current_parametric_node():
 
 def test_compact_roundabout_rejects_non_four_arm_topology():
     with pytest.raises(PublicRealmPlanningError) as raised:
-        plan_public_realm_recipe(PublicRealmPlanRequest(
-            archetype_id="roundabout",
-            target=StreetNodeTarget(
-                approach_row_width_m=22,
-                diameter_m=30,
-                arm_count=3,
-            ),
-        ))
+        plan_public_realm_recipe(
+            PublicRealmPlanRequest(
+                archetype_id="roundabout",
+                target=StreetNodeTarget(
+                    approach_row_width_m=22,
+                    diameter_m=30,
+                    arm_count=3,
+                ),
+            )
+        )
 
-    assert raised.value.violations == [{
-        "field": "target.arm_count",
-        "requested": 3,
-        "supported": [4],
-    }]
+    assert raised.value.violations == [
+        {
+            "field": "target.arm_count",
+            "requested": 3,
+            "supported": [4],
+        }
+    ]

@@ -44,40 +44,74 @@ BLOCK_TARGET_MAX_M = 180.0
 # Direct road_archetype_id allowlists (streetPathArchetypes.json). The spine
 # set keeps to >=22 m main-street characters; locals to 10-15 m residential
 # characters — the width bands the resolver would otherwise pick from.
-SPINE_STREET_IDS = frozenset({
-    "arterial_boulevard", "haussmann_boulevard", "main_street_complete",
-    "downtown_thoroughfare", "neighborhood_main_street",
-    "montreal_commercial_boulevard", "toronto_streetcar_street",
-    "light_rail_tram_avenue", "scenic_parkway",
-})
-LOCAL_STREET_IDS = frozenset({
-    "narrow_residential_street", "yield_street", "woonerf_shared_street",
-    "toronto_victorian_residential_street", "montreal_plateau_residential_rue",
-    "new_york_brownstone_side_street", "vancouver_cherry_blossom_street",
-    "london_terrace_street", "green_alley", "toronto_laneway", "calgary_local",
-})
+SPINE_STREET_IDS = frozenset(
+    {
+        "arterial_boulevard",
+        "haussmann_boulevard",
+        "main_street_complete",
+        "downtown_thoroughfare",
+        "neighborhood_main_street",
+        "montreal_commercial_boulevard",
+        "toronto_streetcar_street",
+        "light_rail_tram_avenue",
+        "scenic_parkway",
+    }
+)
+LOCAL_STREET_IDS = frozenset(
+    {
+        "narrow_residential_street",
+        "yield_street",
+        "woonerf_shared_street",
+        "toronto_victorian_residential_street",
+        "montreal_plateau_residential_rue",
+        "new_york_brownstone_side_street",
+        "vancouver_cherry_blossom_street",
+        "london_terrace_street",
+        "green_alley",
+        "toronto_laneway",
+        "calgary_local",
+    }
+)
 CRESCENT_STREET_IDS = frozenset({"london_crescent_road"})
 
-WATER_ARCHETYPE_IDS = frozenset({
-    "fountain_water_feature", "stormwater_retention_pond", "pond_lake",
-    "wetland_rain_garden", "canal_waterway",
-})
+WATER_ARCHETYPE_IDS = frozenset(
+    {
+        "fountain_water_feature",
+        "stormwater_retention_pond",
+        "pond_lake",
+        "wetland_rain_garden",
+        "canal_waterway",
+    }
+)
 # Direct ids safe for the signature central green at any plausible area
 # (openSpaceArchetypes.json) — None lets the frontend resolve by area band.
-CENTRAL_PARK_IDS = frozenset({
-    "neighborhood_park", "community_park", "urban_forest", "botanical_garden",
-    "japanese_garden", "london_garden_square", "parisian_jardin",
-    "amsterdam_vondelpark", "market_square", "amphitheater_lawn",
-})
+CENTRAL_PARK_IDS = frozenset(
+    {
+        "neighborhood_park",
+        "community_park",
+        "urban_forest",
+        "botanical_garden",
+        "japanese_garden",
+        "london_garden_square",
+        "parisian_jardin",
+        "amsterdam_vondelpark",
+        "market_square",
+        "amphitheater_lawn",
+    }
+)
 
 # Public Realm LEGO V1 is deliberately smaller than the visual-card catalog.
 # AI plans may select only executable families; manual projects retain the
 # broader catalog through their existing compatibility path.
 LEGO_SPINE_STREET_IDS = frozenset({"main_street_complete"})
-LEGO_LOCAL_STREET_IDS = frozenset({
-    "narrow_residential_street", "yield_street", "woonerf_shared_street",
-    "calgary_local",
-})
+LEGO_LOCAL_STREET_IDS = frozenset(
+    {
+        "narrow_residential_street",
+        "yield_street",
+        "woonerf_shared_street",
+        "calgary_local",
+    }
+)
 LEGO_CENTRAL_PARK_IDS = frozenset({"neighborhood_park", "community_park"})
 LEGO_WATER_ARCHETYPE_IDS = frozenset({"stormwater_retention_pond"})
 
@@ -108,6 +142,7 @@ PARK_STRUCTURES = ("formal_allee", "naturalistic_grove", "open_meadow", "active_
 COURTYARD_STRUCTURES = ("formal_quad", "garden_courtyard", "paved_plaza")
 LINEAR_STRUCTURES = ("formal_allee", "naturalistic_grove", "buffer_edge")
 POCKET_STRUCTURES = PARK_STRUCTURES + COURTYARD_STRUCTURES
+
 
 class BandAlternate(BaseModel):
     development_type: str
@@ -196,8 +231,7 @@ def known_development_types() -> frozenset[str]:
 
 
 def _note(code: str, message: str) -> dict[str, Any]:
-    return {"code": code, "severity": "info", "message": message,
-            "source_phase": "master_planner"}
+    return {"code": code, "severity": "info", "message": message, "source_phase": "master_planner"}
 
 
 def _public_realm_variant(
@@ -211,11 +245,12 @@ def _public_realm_variant(
     if value in allowed:
         return value
     if value is not None:
-        notes.append(_note(
-            "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED",
-            f"public_realm.{field_name} '{value}' is not compatible with "
-            f"'{archetype_id}' - {allowed[0]} used.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED",
+                f"public_realm.{field_name} '{value}' is not compatible with " f"'{archetype_id}' - {allowed[0]} used.",
+            )
+        )
     return allowed[0]
 
 
@@ -228,14 +263,10 @@ def _validated_public_realm_plan(
     notes: list[dict[str, Any]],
 ) -> PublicRealmPlan:
     spine_id = (
-        spine_archetype_id
-        if spine_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
-        else "main_street_complete"
+        spine_archetype_id if spine_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE else "main_street_complete"
     )
     local_id = (
-        local_archetype_id
-        if local_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
-        else "narrow_residential_street"
+        local_archetype_id if local_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE else "narrow_residential_street"
     )
     central_id = (
         central_park_archetype_id
@@ -304,10 +335,12 @@ def validate_spec(
             return None
         entry = catalog.get(aid)
         if entry is None or not entry.get("usable"):
-            notes.append(_note(
-                "MASTER_PLAN_ID_DROPPED",
-                f"{where} archetype_id '{aid}' is not a usable catalog id — resolved by type/aesthetic instead.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_ID_DROPPED",
+                    f"{where} archetype_id '{aid}' is not a usable catalog id — resolved by type/aesthetic instead.",
+                )
+            )
             return None
         return aid
 
@@ -329,37 +362,48 @@ def validate_spec(
             repaired.development_type = _norm(band.development_type)
             repaired.aesthetic = _norm(band.aesthetic)
         else:
-            notes.append(_note(
-                "MASTER_PLAN_BAND_REPAIRED",
-                f"Band '{key}' development_type '{band.development_type}' is not in the catalog — preset character kept.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_BAND_REPAIRED",
+                    f"Band '{key}' development_type '{band.development_type}' is not in the catalog — preset character kept.",
+                )
+            )
             continue
         repaired.floors = min(MAX_FLOORS, max(1.0, float(band.floors)))
         if repaired.typology not in TYPOLOGIES:
-            notes.append(_note(
-                "MASTER_PLAN_TYPOLOGY_REPAIRED",
-                f"Band '{key}' typology '{band.typology}' unknown — perimeter_block used.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_TYPOLOGY_REPAIRED",
+                    f"Band '{key}' typology '{band.typology}' unknown — perimeter_block used.",
+                )
+            )
             repaired.typology = "perimeter_block"
         kept_alts: list[BandAlternate] = []
         for alt in repaired.alternates[: MAX_ALTERNATES * 2]:
             alt_id = _gate_id(alt.archetype_id, f"Band '{key}' alternate")
             if alt_id:
                 entry = catalog[alt_id]
-                kept_alts.append(BandAlternate(
-                    development_type=_norm(entry["development_type"]),
-                    aesthetic=_norm(entry["aesthetic_category"]),
-                    archetype_id=alt_id,
-                ))
+                kept_alts.append(
+                    BandAlternate(
+                        development_type=_norm(entry["development_type"]),
+                        aesthetic=_norm(entry["aesthetic_category"]),
+                        archetype_id=alt_id,
+                    )
+                )
             elif _norm(alt.development_type) in dev_types:
-                kept_alts.append(BandAlternate(
-                    development_type=_norm(alt.development_type), aesthetic=_norm(alt.aesthetic),
-                ))
+                kept_alts.append(
+                    BandAlternate(
+                        development_type=_norm(alt.development_type),
+                        aesthetic=_norm(alt.aesthetic),
+                    )
+                )
             else:
-                notes.append(_note(
-                    "MASTER_PLAN_ALTERNATE_DROPPED",
-                    f"Band '{key}' alternate '{alt.development_type}' is not in the catalog — dropped.",
-                ))
+                notes.append(
+                    _note(
+                        "MASTER_PLAN_ALTERNATE_DROPPED",
+                        f"Band '{key}' alternate '{alt.development_type}' is not in the catalog — dropped.",
+                    )
+                )
                 continue
             if len(kept_alts) >= MAX_ALTERNATES:
                 break
@@ -370,52 +414,60 @@ def validate_spec(
     families_known = set(load_families().get("families", {}))
     family = spec.style_family if spec.style_family in families_known else None
     if spec.style_family and family is None:
-        notes.append(_note(
-            "MASTER_PLAN_FAMILY_UNKNOWN",
-            f"style_family '{spec.style_family}' is not in the knowledge base — inferring from the palette.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_FAMILY_UNKNOWN",
+                f"style_family '{spec.style_family}' is not in the knowledge base — inferring from the palette.",
+            )
+        )
 
     def _resolved_family(dev: str, aes: str, floors: float, aid: str | None) -> str | None:
         if aid:
             return family_of(aid)
-        entry = resolve_building_archetype(dev, aes, max(1, int(round(floors))),
-                                           prefer_family=family)
+        entry = resolve_building_archetype(dev, aes, max(1, int(round(floors))), prefer_family=family)
         return family_of(entry["id"]) if entry else None
 
     if family is None and bands:
-        votes = [f for f in (
-            _resolved_family(b.development_type, b.aesthetic, b.floors, b.archetype_id)
-            for b in bands.values()
-        ) if f]
+        votes = [
+            f
+            for f in (
+                _resolved_family(b.development_type, b.aesthetic, b.floors, b.archetype_id) for b in bands.values()
+            )
+            if f
+        ]
         if votes:
             family = sorted(set(votes), key=lambda f: (-votes.count(f), f))[0]
-            notes.append(_note(
-                "MASTER_PLAN_FAMILY_INFERRED",
-                f"style_family inferred as '{family}' from the band palette.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_FAMILY_INFERRED",
+                    f"style_family inferred as '{family}' from the band palette.",
+                )
+            )
 
     if family:
         allowed = compatible_families(family)
         for key, band in bands.items():
-            band_fam = _resolved_family(band.development_type, band.aesthetic,
-                                        band.floors, band.archetype_id)
+            band_fam = _resolved_family(band.development_type, band.aesthetic, band.floors, band.archetype_id)
             if band_fam and band_fam not in allowed:
-                notes.append(_note(
-                    "MASTER_PLAN_COHERENCE_REPAIRED",
-                    f"Band '{key}' resolves to family '{band_fam}', incompatible with "
-                    f"'{family}' — explicit id dropped; family-aware resolution applies.",
-                ))
+                notes.append(
+                    _note(
+                        "MASTER_PLAN_COHERENCE_REPAIRED",
+                        f"Band '{key}' resolves to family '{band_fam}', incompatible with "
+                        f"'{family}' — explicit id dropped; family-aware resolution applies.",
+                    )
+                )
                 band.archetype_id = None
             kept: list[BandAlternate] = []
             for alt in band.alternates:
-                alt_fam = _resolved_family(alt.development_type, alt.aesthetic,
-                                           band.floors, alt.archetype_id)
+                alt_fam = _resolved_family(alt.development_type, alt.aesthetic, band.floors, alt.archetype_id)
                 if alt_fam and alt_fam not in allowed:
-                    notes.append(_note(
-                        "MASTER_PLAN_COHERENCE_REPAIRED",
-                        f"Band '{key}' alternate '{alt.archetype_id or alt.development_type}' is "
-                        f"family '{alt_fam}', incompatible with '{family}' — dropped.",
-                    ))
+                    notes.append(
+                        _note(
+                            "MASTER_PLAN_COHERENCE_REPAIRED",
+                            f"Band '{key}' alternate '{alt.archetype_id or alt.development_type}' is "
+                            f"family '{alt_fam}', incompatible with '{family}' — dropped.",
+                        )
+                    )
                     continue
                 kept.append(alt)
             band.alternates = kept
@@ -423,18 +475,24 @@ def validate_spec(
     def _gate(value: str | None, allowed: frozenset[str], what: str) -> str | None:
         if value is None or value in allowed:
             return value
-        notes.append(_note("MASTER_PLAN_ID_DROPPED", f"{what} '{value}' is not an allowed archetype id — band resolution kept."))
+        notes.append(
+            _note("MASTER_PLAN_ID_DROPPED", f"{what} '{value}' is not an allowed archetype id — band resolution kept.")
+        )
         return None
 
     open_space = spec.open_space.model_copy(deep=True)
     if open_space.water_archetype_id not in WATER_ARCHETYPE_IDS:
-        notes.append(_note(
-            "MASTER_PLAN_ID_DROPPED",
-            f"water_archetype_id '{open_space.water_archetype_id}' not allowed — stormwater_retention_pond used.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_ID_DROPPED",
+                f"water_archetype_id '{open_space.water_archetype_id}' not allowed — stormwater_retention_pond used.",
+            )
+        )
         open_space.water_archetype_id = "stormwater_retention_pond"
     open_space.central_park_archetype_id = _gate(
-        open_space.central_park_archetype_id, CENTRAL_PARK_IDS, "central_park_archetype_id",
+        open_space.central_park_archetype_id,
+        CENTRAL_PARK_IDS,
+        "central_park_archetype_id",
     )
 
     landscape = spec.landscape.model_copy(deep=True)
@@ -445,41 +503,56 @@ def validate_spec(
         ("greenway_structure", LINEAR_STRUCTURES, "formal_allee"),
     ):
         if getattr(landscape, attr) not in allowed:
-            notes.append(_note(
-                "MASTER_PLAN_LANDSCAPE_REPAIRED",
-                f"landscape.{attr} '{getattr(landscape, attr)}' unknown — {fallback} used.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_LANDSCAPE_REPAIRED",
+                    f"landscape.{attr} '{getattr(landscape, attr)}' unknown — {fallback} used.",
+                )
+            )
             setattr(landscape, attr, fallback)
 
     single_block = spec.single_block_typology
     if single_block is not None and single_block not in TYPOLOGIES:
-        notes.append(_note(
-            "MASTER_PLAN_TYPOLOGY_REPAIRED",
-            f"single_block_typology '{single_block}' unknown — perimeter courtyard kept.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_TYPOLOGY_REPAIRED",
+                f"single_block_typology '{single_block}' unknown — perimeter courtyard kept.",
+            )
+        )
         single_block = None
 
     strategy = spec.layout_strategy if spec.layout_strategy in LAYOUT_STRATEGIES else "transect_green"
     if strategy != spec.layout_strategy:
-        notes.append(_note("MASTER_PLAN_STRATEGY_REPAIRED",
-                           f"layout_strategy '{spec.layout_strategy}' unknown — transect_green used."))
+        notes.append(
+            _note(
+                "MASTER_PLAN_STRATEGY_REPAIRED",
+                f"layout_strategy '{spec.layout_strategy}' unknown — transect_green used.",
+            )
+        )
 
     block_target = spec.block_target_m
     if block_target is not None:
         clamped = min(BLOCK_TARGET_MAX_M, max(BLOCK_TARGET_MIN_M, float(block_target)))
         if clamped != float(block_target):
-            notes.append(_note("MASTER_PLAN_GRAIN_CLAMPED",
-                               f"block_target_m {block_target:g} clamped to {clamped:g} m."))
+            notes.append(
+                _note("MASTER_PLAN_GRAIN_CLAMPED", f"block_target_m {block_target:g} clamped to {clamped:g} m.")
+            )
         block_target = clamped
 
     spine_archetype_id = _gate(
-        spec.spine_archetype_id, SPINE_STREET_IDS, "spine_archetype_id",
+        spec.spine_archetype_id,
+        SPINE_STREET_IDS,
+        "spine_archetype_id",
     )
     local_archetype_id = _gate(
-        spec.local_archetype_id, LOCAL_STREET_IDS, "local_archetype_id",
+        spec.local_archetype_id,
+        LOCAL_STREET_IDS,
+        "local_archetype_id",
     )
     crescent_archetype_id = _gate(
-        spec.crescent_archetype_id, CRESCENT_STREET_IDS, "crescent_archetype_id",
+        spec.crescent_archetype_id,
+        CRESCENT_STREET_IDS,
+        "crescent_archetype_id",
     )
     # The broad/Classic contract carries no executable family promise. Keep
     # the optional block inert here; LEGO validation below owns defaults and
@@ -509,11 +582,7 @@ def validate_spec(
 
 def _preset_band_plan(preset: Palette, key: str) -> BandPlan:
     band = preset.bands[key]
-    floors = (
-        float(band.floors_abs)
-        if band.floors_abs is not None
-        else max(1.0, 4.0 + float(band.floors_delta or 0.0))
-    )
+    floors = float(band.floors_abs) if band.floors_abs is not None else max(1.0, 4.0 + float(band.floors_delta or 0.0))
     return BandPlan(
         development_type=band.development_type,
         aesthetic=band.aesthetic,
@@ -527,10 +596,7 @@ def _preset_band_plan(preset: Palette, key: str) -> BandPlan:
 def _lego_capability_maps(
     lego_catalog: LegoPlanningCatalog,
 ) -> dict[str, LegoArchetypeCapability]:
-    by_parent = {
-        capability.parent_id: capability
-        for capability in lego_catalog.capabilities
-    }
+    by_parent = {capability.parent_id: capability for capability in lego_catalog.capabilities}
     return by_parent
 
 
@@ -547,9 +613,7 @@ def _select_lego_character(
 
     by_parent = _lego_capability_maps(lego_catalog)
     if not by_parent:
-        raise ValueError(
-            "No executable LEGO building families are available for Master Planner."
-        )
+        raise ValueError("No executable LEGO building families are available for Master Planner.")
 
     requested_selectable = variant_id
     parent_id = archetype_id if archetype_id in by_parent else None
@@ -571,11 +635,7 @@ def _select_lego_character(
 
     capability = by_parent[parent_id]
     if requested_selectable not in capability.selectable_ids:
-        requested_selectable = (
-            archetype_id
-            if archetype_id in capability.selectable_ids
-            else None
-        )
+        requested_selectable = archetype_id if archetype_id in capability.selectable_ids else None
     selection = select_lego_archetype(
         lego_catalog,
         parent_id,
@@ -583,9 +643,7 @@ def _select_lego_character(
         preferred_selectable_id=requested_selectable,
     )
     if selection is None:
-        raise ValueError(
-            f"LEGO archetype '{parent_id}' has no executable identity and floor pair."
-        )
+        raise ValueError(f"LEGO archetype '{parent_id}' has no executable identity and floor pair.")
     return capability, selection.variant_id, selection.floors
 
 
@@ -598,9 +656,7 @@ def _validate_spec_with_lego(
     """Validate common plan fields, then hard-bind every band to LEGO."""
 
     if not lego_catalog.capabilities:
-        raise ValueError(
-            "No executable LEGO building families are available for Master Planner."
-        )
+        raise ValueError("No executable LEGO building families are available for Master Planner.")
 
     # Preserve the established validation contract for streets, landscape,
     # open space, strategy and grain. Building bands are rebuilt below from
@@ -611,21 +667,24 @@ def _validate_spec_with_lego(
     spine_archetype_id = common.spine_archetype_id
     if spine_archetype_id not in LEGO_SPINE_STREET_IDS:
         if spine_archetype_id is not None:
-            notes.append(_note(
-                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                f"AI Public Realm LEGO cannot execute spine '{spine_archetype_id}' - "
-                "main_street_complete used.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                    f"AI Public Realm LEGO cannot execute spine '{spine_archetype_id}' - " "main_street_complete used.",
+                )
+            )
         spine_archetype_id = "main_street_complete"
 
     local_archetype_id = common.local_archetype_id
     if local_archetype_id not in LEGO_LOCAL_STREET_IDS:
         if local_archetype_id is not None:
-            notes.append(_note(
-                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                f"AI Public Realm LEGO cannot execute local street '{local_archetype_id}' - "
-                "narrow_residential_street used.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                    f"AI Public Realm LEGO cannot execute local street '{local_archetype_id}' - "
+                    "narrow_residential_street used.",
+                )
+            )
         local_archetype_id = (
             preset.local_archetype_id
             if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS
@@ -634,19 +693,23 @@ def _validate_spec_with_lego(
 
     open_space = common.open_space.model_copy(deep=True)
     if open_space.water_archetype_id not in LEGO_WATER_ARCHETYPE_IDS:
-        notes.append(_note(
-            "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-            f"AI Public Realm LEGO cannot execute water feature "
-            f"'{open_space.water_archetype_id}' - stormwater_retention_pond used.",
-        ))
+        notes.append(
+            _note(
+                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                f"AI Public Realm LEGO cannot execute water feature "
+                f"'{open_space.water_archetype_id}' - stormwater_retention_pond used.",
+            )
+        )
         open_space.water_archetype_id = "stormwater_retention_pond"
     if open_space.central_park_archetype_id not in LEGO_CENTRAL_PARK_IDS:
         if open_space.central_park_archetype_id is not None:
-            notes.append(_note(
-                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                f"AI Public Realm LEGO cannot execute central park "
-                f"'{open_space.central_park_archetype_id}' - neighborhood_park used.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
+                    f"AI Public Realm LEGO cannot execute central park "
+                    f"'{open_space.central_park_archetype_id}' - neighborhood_park used.",
+                )
+            )
         open_space.central_park_archetype_id = "neighborhood_park"
 
     public_realm = _validated_public_realm_plan(
@@ -663,10 +726,12 @@ def _validate_spec_with_lego(
         requested = spec.bands.get(key)
         if requested is None:
             requested = _preset_band_plan(preset, key)
-            notes.append(_note(
-                "MASTER_PLAN_LEGO_BAND_FILLED",
-                f"Band '{key}' was missing — an imported LEGO family was selected deterministically.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_LEGO_BAND_FILLED",
+                    f"Band '{key}' was missing — an imported LEGO family was selected deterministically.",
+                )
+            )
 
         capability, selected_variant, selected_floor = _select_lego_character(
             development_type=requested.development_type,
@@ -677,26 +742,21 @@ def _validate_spec_with_lego(
             lego_catalog=lego_catalog,
         )
         entry = dimensions[capability.parent_id]
-        typology = (
-            requested.typology
-            if requested.typology in TYPOLOGIES
-            else preset.bands[key].typology
-        )
-        if (
-            requested.archetype_id != capability.parent_id
-            or requested.variant_id != selected_variant
-        ):
-            notes.append(_note(
-                "MASTER_PLAN_LEGO_ARCHETYPE_REPAIRED",
-                f"Band '{key}' now uses imported LEGO archetype "
-                f"'{selected_variant or capability.parent_id}'.",
-            ))
+        typology = requested.typology if requested.typology in TYPOLOGIES else preset.bands[key].typology
+        if requested.archetype_id != capability.parent_id or requested.variant_id != selected_variant:
+            notes.append(
+                _note(
+                    "MASTER_PLAN_LEGO_ARCHETYPE_REPAIRED",
+                    f"Band '{key}' now uses imported LEGO archetype " f"'{selected_variant or capability.parent_id}'.",
+                )
+            )
         if float(requested.floors) != float(selected_floor):
-            notes.append(_note(
-                "MASTER_PLAN_LEGO_FLOORS_SNAPPED",
-                f"Band '{key}' floors {requested.floors:g} snapped to the proven "
-                f"LEGO height {selected_floor}.",
-            ))
+            notes.append(
+                _note(
+                    "MASTER_PLAN_LEGO_FLOORS_SNAPPED",
+                    f"Band '{key}' floors {requested.floors:g} snapped to the proven " f"LEGO height {selected_floor}.",
+                )
+            )
 
         alternates: list[BandAlternate] = []
         for alternate in requested.alternates[:MAX_ALTERNATES]:
@@ -728,27 +788,23 @@ def _validate_spec_with_lego(
             alternates=alternates,
         )
 
-    family_votes = [
-        family_of(band.archetype_id)
-        for band in repaired_bands.values()
-        if family_of(band.archetype_id)
-    ]
+    family_votes = [family_of(band.archetype_id) for band in repaired_bands.values() if family_of(band.archetype_id)]
     style_family = (
-        sorted(set(family_votes), key=lambda family: (-family_votes.count(family), family))[0]
-        if family_votes
-        else None
+        sorted(set(family_votes), key=lambda family: (-family_votes.count(family), family))[0] if family_votes else None
     )
-    validated = common.model_copy(update={
-        "bands": repaired_bands,
-        "style_family": style_family,
-        "spine_archetype_id": spine_archetype_id,
-        "local_archetype_id": local_archetype_id,
-        # The initial network-node kit supports ordinary graph intersections
-        # and compact roundabouts, not a culturally styled crescent street.
-        "crescent_archetype_id": None,
-        "open_space": open_space,
-        "public_realm": public_realm,
-    })
+    validated = common.model_copy(
+        update={
+            "bands": repaired_bands,
+            "style_family": style_family,
+            "spine_archetype_id": spine_archetype_id,
+            "local_archetype_id": local_archetype_id,
+            # The initial network-node kit supports ordinary graph intersections
+            # and compact roundabouts, not a culturally styled crescent street.
+            "crescent_archetype_id": None,
+            "open_space": open_space,
+            "public_realm": public_realm,
+        }
+    )
     return validated, notes
 
 
@@ -762,9 +818,7 @@ def lego_fallback_spec(
     """Create a complete zero-LLM plan constrained to executable families."""
 
     if not lego_catalog.capabilities:
-        raise ValueError(
-            "No executable LEGO building families are available for Master Planner."
-        )
+        raise ValueError("No executable LEGO building families are available for Master Planner.")
     preset = palette_for(scenario_id, palette_hint)
     raw = MasterPlanSpec(
         design_narrative=narrative,
@@ -826,8 +880,7 @@ def palette_from_spec(
     alternates: dict[
         str,
         tuple[
-            tuple[str, str, str | None]
-            | tuple[str, str, str | None, str | None],
+            tuple[str, str, str | None] | tuple[str, str, str | None, str | None],
             ...,
         ],
     ] = {}
@@ -845,39 +898,31 @@ def palette_from_spec(
             archetype_id=band.archetype_id,
             variant_id=band.variant_id,
         )
-        characters = tuple(dict.fromkeys(
-            (
-                alt.development_type,
-                alt.aesthetic,
-                alt.archetype_id,
-                alt.variant_id,
+        characters = tuple(
+            dict.fromkeys(
+                (
+                    (
+                        alt.development_type,
+                        alt.aesthetic,
+                        alt.archetype_id,
+                        alt.variant_id,
+                    )
+                    if lego_catalog is not None
+                    else (alt.development_type, alt.aesthetic, alt.archetype_id)
+                )
+                for alt in band.alternates
             )
-            if lego_catalog is not None
-            else (alt.development_type, alt.aesthetic, alt.archetype_id)
-            for alt in band.alternates
-        ))
+        )
         if characters:
             alternates[key] = characters
 
-    allowed_archetype_ids = (
-        frozenset(lego_catalog.parent_ids)
-        if lego_catalog is not None
-        else None
-    )
-    allowed_variant_ids_by_archetype = (
-        dict(lego_catalog.variants_by_parent)
-        if lego_catalog is not None
-        else {}
-    )
+    allowed_archetype_ids = frozenset(lego_catalog.parent_ids) if lego_catalog is not None else None
+    allowed_variant_ids_by_archetype = dict(lego_catalog.variants_by_parent) if lego_catalog is not None else {}
     supported_floors_by_selectable_id = (
-        dict(lego_catalog.supported_floors_by_selectable_id)
-        if lego_catalog is not None
-        else {}
+        dict(lego_catalog.supported_floors_by_selectable_id) if lego_catalog is not None else {}
     )
     target_dimensions_by_selectable_id = (
-        dict(lego_catalog.target_dimensions_by_selectable_id)
-        if lego_catalog is not None
-        else {}
+        dict(lego_catalog.target_dimensions_by_selectable_id) if lego_catalog is not None else {}
     )
 
     return Palette(

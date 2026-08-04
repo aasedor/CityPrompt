@@ -6,8 +6,6 @@ import logging
 import uuid
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
-
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
 from fastapi.responses import Response
 from sqlalchemy import select
@@ -19,6 +17,8 @@ from app.core.security import get_current_user, require_auth
 from app.models.models import Document, Project, ProjectShare, User
 from app.schemas.schemas import DocumentResponse, ProcessingStatusResponse
 from app.tasks.worker import celery_app
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 settings = get_settings()
@@ -115,12 +115,20 @@ async def upload_document(
 
     # Log activity
     from app.api.v1.activity import log_activity
-    await log_activity(db, project_id, "document_uploaded", user_id=user.id if user else None, details={"filename": file.filename, "file_type": file_ext})
+
+    await log_activity(
+        db,
+        project_id,
+        "document_uploaded",
+        user_id=user.id if user else None,
+        details={"filename": file.filename, "file_type": file_ext},
+    )
 
     # Trigger async processing. Reference PDFs get extraction only — no AI
     # interpretation, no Building records, no 3D generation.
     if not skip_processing:
         from app.tasks.processing import process_document
+
         process_document.delay(str(document.id), extract_only=is_reference)
 
     return document
@@ -157,6 +165,7 @@ async def trigger_processing(
 
     # Queue processing task
     from app.tasks.processing import process_document
+
     task = process_document.delay(str(document.id))
 
     return ProcessingStatusResponse(

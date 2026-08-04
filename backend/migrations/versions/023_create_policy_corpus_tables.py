@@ -4,9 +4,9 @@ Revision ID: 023_create_policy_corpus_tables
 Revises: 022_create_urban_dna_tables
 Create Date: 2026-07-05
 """
+
 from typing import Sequence, Union
 
-import sqlalchemy as sa
 from alembic import op
 
 revision: str = "023_create_policy_corpus_tables"
@@ -16,7 +16,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS policy_documents (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             city VARCHAR(40) NOT NULL,
@@ -33,16 +34,22 @@ def upgrade() -> None:
             created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
             PRIMARY KEY (id)
         )
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_policy_documents_city ON policy_documents (city)
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE UNIQUE INDEX IF NOT EXISTS ix_policy_documents_city_slug_version
         ON policy_documents (city, slug, version)
-    """)
+    """
+    )
 
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS policy_chunks (
             id UUID DEFAULT gen_random_uuid() NOT NULL,
             policy_document_id UUID NOT NULL,
@@ -55,11 +62,14 @@ def upgrade() -> None:
             PRIMARY KEY (id),
             FOREIGN KEY(policy_document_id) REFERENCES policy_documents (id) ON DELETE CASCADE
         )
-    """)
-    op.execute("""
+    """
+    )
+    op.execute(
+        """
         CREATE INDEX IF NOT EXISTS ix_policy_chunks_document_id
         ON policy_chunks (policy_document_id)
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

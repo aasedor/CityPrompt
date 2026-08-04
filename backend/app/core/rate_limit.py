@@ -44,6 +44,7 @@ def rate_limit(max_requests: int, window_seconds: int = 60):
     Usage:
         @router.post("/login", dependencies=[Depends(rate_limit(5, 60))])
     """
+
     async def _check_rate_limit(request: Request):
         ip = _get_client_ip(request)
         key = f"rate_limit:{request.url.path}:{ip}"
@@ -67,7 +68,9 @@ def rate_limit(max_requests: int, window_seconds: int = 60):
             request_count = results[1]
 
             if request_count >= max_requests:
-                logger.warning("Rate limit exceeded for %s on %s (%d/%d)", ip, request.url.path, request_count, max_requests)
+                logger.warning(
+                    "Rate limit exceeded for %s on %s (%d/%d)", ip, request.url.path, request_count, max_requests
+                )
                 raise HTTPException(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                     detail="Too many requests. Please try again later.",

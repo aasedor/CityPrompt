@@ -69,10 +69,7 @@ def normalize_cache_key(specs: dict | None) -> tuple[str, str] | None:
 def cache_storage_key(entry: ArchetypeModelCache) -> str:
     """Immutable MinIO key for a cache entry's GLB. Includes the row id so a
     future regeneration writes a NEW key — existing buildings keep working."""
-    return (
-        f"archetype-cache/{entry.archetype_id}/{entry.variant_id}/"
-        f"{entry.engine}/{entry.id}.glb"
-    )
+    return f"archetype-cache/{entry.archetype_id}/{entry.variant_id}/" f"{entry.engine}/{entry.id}.glb"
 
 
 # --- sync API (Celery worker) ------------------------------------------------
@@ -149,10 +146,7 @@ def claim_entry(
         .where(
             ArchetypeModelCache.id == entry.id,
             (ArchetypeModelCache.status == "failed")
-            | (
-                (ArchetypeModelCache.status == "generating")
-                & (ArchetypeModelCache.claimed_at < stale_before)
-            ),
+            | ((ArchetypeModelCache.status == "generating") & (ArchetypeModelCache.claimed_at < stale_before)),
         )
         .values(
             status="generating",
@@ -195,9 +189,7 @@ def complete_entry(
     }
     if metadata is not None:
         values["metadata_"] = metadata
-    session.execute(
-        update(ArchetypeModelCache).where(ArchetypeModelCache.id == cache_id).values(**values)
-    )
+    session.execute(update(ArchetypeModelCache).where(ArchetypeModelCache.id == cache_id).values(**values))
     session.commit()
 
 
@@ -212,9 +204,7 @@ def fail_entry(session: Session, cache_id: uuid.UUID, error: str) -> None:
 
 def set_entry_thumbnail(session: Session, cache_id: uuid.UUID, thumbnail_key: str) -> None:
     session.execute(
-        update(ArchetypeModelCache)
-        .where(ArchetypeModelCache.id == cache_id)
-        .values(thumbnail_key=thumbnail_key)
+        update(ArchetypeModelCache).where(ArchetypeModelCache.id == cache_id).values(thumbnail_key=thumbnail_key)
     )
     session.commit()
 
@@ -231,9 +221,7 @@ def bump_use_count(session: Session, cache_id: uuid.UUID) -> None:
 # --- async API (FastAPI request path) ----------------------------------------
 
 
-async def has_completed_entry(
-    db: AsyncSession, archetype_id: str, variant_id: str, engine: str
-) -> bool:
+async def has_completed_entry(db: AsyncSession, archetype_id: str, variant_id: str, engine: str) -> bool:
     """Advisory probe used at enqueue time (generate-all stagger bypass).
     The worker re-checks authoritatively."""
     result = await db.execute(

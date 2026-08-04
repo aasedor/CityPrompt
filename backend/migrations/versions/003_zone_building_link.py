@@ -4,6 +4,7 @@ Revision ID: 003_zone_building_link
 Revises: 002_dev_area_generation
 Create Date: 2026-02-18
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -19,19 +20,22 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def _column_exists(table: str, column: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
-        "WHERE table_name = :table AND column_name = :column)"
-    ), {"table": table, "column": column})
+    result = conn.execute(
+        sa.text(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+            "WHERE table_name = :table AND column_name = :column)"
+        ),
+        {"table": table, "column": column},
+    )
     return result.scalar()
 
 
 def _constraint_exists(constraint: str) -> bool:
     conn = op.get_bind()
-    result = conn.execute(sa.text(
-        "SELECT EXISTS (SELECT 1 FROM information_schema.table_constraints "
-        "WHERE constraint_name = :name)"
-    ), {"name": constraint})
+    result = conn.execute(
+        sa.text("SELECT EXISTS (SELECT 1 FROM information_schema.table_constraints " "WHERE constraint_name = :name)"),
+        {"name": constraint},
+    )
     return result.scalar()
 
 
