@@ -8,6 +8,7 @@ import {
   isExecutableParkLegoFamily,
   resolveParkLegoAppearance,
   resolveParkLegoContract,
+  resolveParkDressingFamily,
   resolveParkProgramAnchorLayout,
 } from './parkLegoFamilies';
 
@@ -32,6 +33,12 @@ function trustedRecipe(selection: Record<string, unknown>): Record<string, unkno
 }
 
 describe('Public Realm LEGO V1 park families', () => {
+  it('weights unsupported picnic groves toward real tables without claiming a compiler family', () => {
+    const candidate = zone({ green_space_archetype_id: 'estate_picnic_grove' });
+    expect(resolveParkLegoContract(candidate)).toBeNull();
+    expect(resolveParkDressingFamily(candidate)).toBe('park_neighborhood_community');
+  });
+
   it('prefers and validates the canonical nested compiler contract', () => {
     const candidate = zone({
       green_space_archetype_id: 'community_park',

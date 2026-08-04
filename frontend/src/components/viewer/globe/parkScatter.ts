@@ -43,6 +43,16 @@ export interface PropPlacement {
   scale: number;
 }
 
+/** Local-metre areas/corridors authored by the completed ground design.
+ * Standing props must clear these after the drape topology is fixed. */
+export interface ParkPlacementExclusion {
+  points: ReadonlyArray<{ x: number; y: number }>;
+  closed?: boolean;
+  isArea?: boolean;
+  widthM?: number;
+  bufferM?: number;
+}
+
 interface ScatterZone {
   id: string;
   coordinates: number[][];
@@ -269,6 +279,54 @@ function distanceToBoundary(pts: number[][], x: number, y: number): number {
     best = Math.min(best, Math.hypot(x - (a[0] + dx * t), y - (a[1] + dy * t)));
   }
   return best;
+}
+
+function distanceToExclusionSegments(
+  points: ReadonlyArray<{ x: number; y: number }>,
+  x: number,
+  y: number,
+  closed: boolean,
+): number {
+  if (points.length === 0) return Infinity;
+  if (points.length === 1) return Math.hypot(x - points[0].x, y - points[0].y);
+  let best = Infinity;
+  const segmentCount = closed ? points.length : points.length - 1;
+  for (let index = 0; index < segmentCount; index += 1) {
+    const start = points[index];
+    const end = points[(index + 1) % points.length];
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const lengthSquared = dx * dx + dy * dy;
+    const t = lengthSquared > 0
+      ? Math.max(0, Math.min(1, ((x - start.x) * dx + (y - start.y) * dy) / lengthSquared))
+      : 0;
+    best = Math.min(best, Math.hypot(x - (start.x + dx * t), y - (start.y + dy * t)));
+  }
+  return best;
+}
+
+/** True only when the complete standing-object footprint clears every
+ * circulation, water and fixed-program guide in the finished ground plan. */
+export function parkPlacementClearsExclusions(
+  x: number,
+  y: number,
+  footprintRadiusM: number,
+  exclusions: readonly ParkPlacementExclusion[],
+): boolean {
+  return exclusions.every((exclusion) => {
+    if (exclusion.points.length === 0) return true;
+    const ring = exclusion.points.map((point) => [point.x, point.y]);
+    if (exclusion.isArea && ring.length >= 3 && pointInPolygon(x, y, ring)) return false;
+    const corridorRadius = Math.max(0, exclusion.widthM ?? 0) / 2
+      + Math.max(0, exclusion.bufferM ?? 0)
+      + Math.max(0, footprintRadiusM);
+    return distanceToExclusionSegments(
+      exclusion.points,
+      x,
+      y,
+      exclusion.closed === true || exclusion.isArea === true,
+    ) >= corridorRadius;
+  });
 }
 
 interface ParkProgramExclusion {
@@ -932,6 +990,7 @@ export function computeParkPlacements(
   recipe: ParkKitRecipe,
   plantingStructure?: string,
   programAnchors?: Readonly<ParkProgramAnchorLayout>,
+  groundExclusions: readonly ParkPlacementExclusion[] = [],
 ): PropPlacement[] {
   const ring = zone.coordinates;
   if (!ring || ring.length < 3) return [];
@@ -968,8 +1027,10 @@ export function computeParkPlacements(
     lng: lng0 + x / mPerLon,
     lat: lat0 + y / METERS_PER_DEG_LAT,
   });
-  const blocked = (x: number, y: number) =>
-    clearances.some((c) => Math.hypot(x - c.x, y - c.y) < c.r);
+  const blocked = (x: number, y: number, footprintRadiusM = 0) => (
+    clearances.some((c) => Math.hypot(x - c.x, y - c.y) < c.r + footprintRadiusM)
+    || !parkPlacementClearsExclusions(x, y, footprintRadiusM, groundExclusions)
+  );
 
   // bbox for interior rejection sampling
   let minX = Infinity;
@@ -1061,7 +1122,7 @@ export function computeParkPlacements(
     for (const st of perimeterStations(local, count)) {
       const x = st.x + st.nx * rule.edgeInset_m;
       const y = st.y + st.ny * rule.edgeInset_m;
-      if (!pointInPolygon(x, y, local) || blocked(x, y)) continue;
+      if (!pointInPolygon(x, y, local) || blocked(x, y, 0.9)) continue;
       placements.push({
         propId: 'bench',
         ...toLngLat(x, y),
@@ -1086,7 +1147,7 @@ export function computeParkPlacements(
     target,
     bbox: { minX, minY, maxX, maxY },
     canPlace: (x, y) => {
-      if (!pointInPolygon(x, y, local) || blocked(x, y)) return false;
+      if (!pointInPolygon(x, y, local) || blocked(x, y, 1.6)) return false;
       if (
         structure === 'botanical_collection'
         && botanicalProgramBlocks({ minX, minY, maxX, maxY }, x, y)

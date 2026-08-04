@@ -617,6 +617,50 @@ export function isExecutableParkLegoFamily(zone: ParkLegoZone): boolean {
   return resolveParkLegoContract(zone)?.supported === true;
 }
 
+/** Choose a lightweight scene-dressing family even when an archetype does
+ * not yet have a full compiler family. This never claims LEGO compatibility:
+ * it only weights safe procedural props after the ground drape is complete. */
+export function resolveParkDressingFamily(zone: ParkLegoZone): ParkLegoFamilyId {
+  const contract = resolveParkLegoContract(zone);
+  if (contract?.supported) return contract.familyId;
+  const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const archetypeId = normalizeId(
+    props.green_space_archetype_id
+      ?? props.plaza_archetype_id
+      ?? props.green_space_aesthetic
+      ?? props.plaza_aesthetic,
+  );
+  const role = normalizeId(props._plan_role);
+  const zoneType = normalizeId(zone.zone_type);
+  if (
+    zoneType === 'plaza'
+    || zoneType === 'parking'
+    || role === 'plaza'
+    || archetypeId.includes('plaza')
+    || archetypeId.includes('square')
+  ) return 'park_civic_plaza';
+  if (
+    archetypeId.includes('pond')
+    || archetypeId.includes('wetland')
+    || archetypeId.includes('reservoir')
+    || archetypeId.includes('watershed')
+    || archetypeId.includes('riparian')
+  ) return 'park_water_ecology';
+  if (
+    archetypeId.includes('linear')
+    || archetypeId.includes('greenway')
+    || archetypeId.includes('promenade')
+    || archetypeId.includes('riverfront')
+  ) return 'park_linear_greenway';
+  if (
+    role === 'courtyard'
+    || archetypeId.includes('pocket')
+    || archetypeId.includes('courtyard')
+    || archetypeId.includes('garden')
+  ) return 'park_pocket_courtyard';
+  return 'park_neighborhood_community';
+}
+
 export function resolveParkProgramAnchorLayout(
   zone: ParkLegoZone,
 ): Readonly<ParkProgramAnchorLayout> | undefined {

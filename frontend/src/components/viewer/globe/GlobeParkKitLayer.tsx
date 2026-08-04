@@ -66,8 +66,8 @@ import {
   CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
   PARK_PROGRAM_MODULE_SPEC,
   isExecutableParkLegoFamily,
+  resolveParkDressingFamily,
   resolveParkLegoAppearance,
-  resolveParkLegoContract,
   resolveParkProgramAnchorLayout,
   type ParkLegoAppearance,
   type ParkLegoFamilyId,
@@ -1679,61 +1679,53 @@ function ParkKitInstance({
     [zone.properties, zone.zone_type],
   );
 
-  const { placements, centroid } = useMemo(() => {
-    const list = computeParkPlacements(
-      { id: zone.id, coordinates: zone.coordinates },
-      recipe,
-      plantingStructure,
-      programAnchors,
-    ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId));
+  const centroid = useMemo(() => {
     let lng = 0;
     let lat = 0;
     for (const c of zone.coordinates) {
       lng += c[0];
       lat += c[1];
     }
-    return {
-      placements: list,
-      centroid: { lng: lng / zone.coordinates.length, lat: lat / zone.coordinates.length },
-    };
-    // updated_at covers geometry edits committed by the edit mode
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    zone.id,
-    zone.coordinates,
-    zone.updated_at,
-    recipe,
-    plantingStructure,
-    programAnchors,
-    hasCurrentParkGround,
-  ]);
+    return { lng: lng / zone.coordinates.length, lat: lat / zone.coordinates.length };
+  }, [zone.coordinates]);
 
   const localProgramFrame = useMemo(
     () => buildLocalParkProgramFrame(zone.coordinates, centroid),
     [centroid, zone.coordinates],
   );
-  const parkContract = useMemo(
-    () => resolveParkLegoContract(zone),
+  const dressingFamilyId = useMemo(
+    () => resolveParkDressingFamily(zone),
     [zone.properties, zone.zone_type],
   );
   const fittedProgramGuides = useMemo(() => {
-    if (!parkContract?.supported && !specialtyStructureKind) return [];
     return fitParkGroundGuides(
       resolveParkGroundProfile(zone).guides,
       { width: localProgramFrame.width, height: localProgramFrame.height },
       localProgramFrame.normalizedRing,
     ).guides;
-  }, [localProgramFrame, parkContract, specialtyStructureKind, zone]);
+  }, [localProgramFrame, zone]);
   const fittedMicrodetailGuides = useMemo(() => {
-    if (!parkContract?.supported) return [];
-    return parkMicrodetailGuides(fittedProgramGuides, localProgramFrame, parkContract.familyId);
-  }, [fittedProgramGuides, localProgramFrame, parkContract]);
+    return parkMicrodetailGuides(fittedProgramGuides, localProgramFrame, dressingFamilyId);
+  }, [dressingFamilyId, fittedProgramGuides, localProgramFrame]);
+  const placements = useMemo(() => computeParkPlacements(
+    { id: zone.id, coordinates: zone.coordinates },
+    recipe,
+    plantingStructure,
+    programAnchors,
+    fittedMicrodetailGuides,
+  ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
+    fittedMicrodetailGuides,
+    hasCurrentParkGround,
+    plantingStructure,
+    programAnchors,
+    recipe,
+    zone,
+  ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
-    if (!parkContract?.supported) return [];
     const mPerLon = metersPerDegLon(centroid.lat);
     return buildParkMicrodetailFamily({
       zoneId: zone.id,
-      familyId: parkContract.familyId,
+      familyId: dressingFamilyId,
       boundary: localProgramFrame.points,
       guides: fittedMicrodetailGuides,
       primaryPlacements: placements.map((placement) => ({
@@ -1754,7 +1746,7 @@ function ParkKitInstance({
       maxPlacements: 72,
       collisionClearanceM: 0.22,
     });
-  }, [centroid, fittedMicrodetailGuides, localProgramFrame.points, parkContract, placements, zone.id]);
+  }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, zone.id]);
 
   const specialtyTerrainAnchors = useMemo(() => buildParkSpecialtyTerrainAnchors(
     specialtyStructureKind,

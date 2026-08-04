@@ -6,6 +6,7 @@ import {
   resolveParkRecipeForZone,
   PLANTING_STRUCTURES,
   type PropPlacement,
+  type ParkPlacementExclusion,
 } from './parkScatter';
 import {
   BOTANICAL_GARDEN,
@@ -112,6 +113,32 @@ function meanNearestNeighborM(trees: PropPlacement[]): number {
 }
 
 describe('computeParkPlacements', () => {
+  it('keeps complete tree and bench footprints out of completed drape pathways', () => {
+    const exclusion: ParkPlacementExclusion = {
+      points: [{ x: 0, y: -50 }, { x: 0, y: 50 }],
+      widthM: 4,
+      bufferM: 0.5,
+    };
+    const placements = computeParkPlacements(
+      { id: 'path-clearance', coordinates: localRingToLngLat(rotatedRectangleLocal(100, 100, 0)) },
+      NEIGHBORHOOD,
+      'naturalistic_grove',
+      undefined,
+      [exclusion],
+    );
+    const local = placements.map((placement) => ({
+      ...placement,
+      x: (placement.lng - LNG) * M_PER_LON,
+      y: (placement.lat - LAT) * METERS_PER_DEG_LAT,
+    }));
+
+    expect(local.filter(({ propId }) => propId === 'tree').length).toBeGreaterThan(0);
+    expect(local.filter(({ propId }) => propId === 'tree')
+      .every(({ x }) => Math.abs(x) >= 4.1)).toBe(true);
+    expect(local.filter(({ propId }) => propId === 'bench')
+      .every(({ x }) => Math.abs(x) >= 3.4)).toBe(true);
+  });
+
   it('is deterministic for the same zone id', () => {
     const zone = { id: 'zone-abc', coordinates: squareRing(100) };
     const a = computeParkPlacements(zone, NEIGHBORHOOD);

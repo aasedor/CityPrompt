@@ -202,6 +202,23 @@ export function GlobeParkMicrodetailInstances({
       sz: 0.11 * placement.scale,
     }))
   ));
+  const picnicLegTransforms = (byKind.get('picnic_table') ?? []).flatMap((placement) => (
+    ([-0.58, 0.58] as const).flatMap((along) => (
+      ([-0.26, 0.26] as const).map((across) => ({
+        x: placement.x
+          + Math.cos(placement.yawRad) * along * placement.scale
+          - Math.sin(placement.yawRad) * across * placement.scale,
+        y: placement.y
+          + Math.sin(placement.yawRad) * along * placement.scale
+          + Math.cos(placement.yawRad) * across * placement.scale,
+        z: baseZ(placement.z) + 0.34 * placement.scale,
+        yaw: placement.yawRad,
+        sx: 0.12 * placement.scale,
+        sy: 0.12 * placement.scale,
+        sz: 0.68 * placement.scale,
+      }))
+    ))
+  ));
   const grateTransforms = (byKind.get('tree_grate') ?? []).map((placement) => ({
     x: placement.x, y: placement.y, z: baseZ(placement.z) + 0.006,
     yaw: placement.yawRad, sx: placement.footprintRadiusM, sy: placement.footprintRadiusM, sz: 1,
@@ -225,6 +242,7 @@ export function GlobeParkMicrodetailInstances({
       <ParkInstancedPart geometry={poleGeometry} transforms={bollardTransforms} color={colorFor('bollard', palette)} roughness={0.56} metalness={0.42} renderOrder={renderOrder + 1} />
       <ParkInstancedPart geometry={boxGeometry} transforms={picnicTopTransforms} color={colorFor('picnic_table', palette)} roughness={0.84} renderOrder={renderOrder + 1} />
       <ParkInstancedPart geometry={boxGeometry} transforms={picnicBenchTransforms} color={colorFor('picnic_table', palette)} roughness={0.86} renderOrder={renderOrder + 1} />
+      <ParkInstancedPart geometry={boxGeometry} transforms={picnicLegTransforms} color={palette?.benchFrame ?? '#3f403b'} roughness={0.62} metalness={0.2} renderOrder={renderOrder + 1} />
       <ParkInstancedPart geometry={grateGeometry} transforms={grateTransforms} color={colorFor('tree_grate', palette)} roughness={0.58} metalness={0.5} renderOrder={renderOrder} />
     </>
   );
