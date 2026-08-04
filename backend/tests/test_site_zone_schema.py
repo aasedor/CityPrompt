@@ -62,9 +62,7 @@ def test_multi_use_trail_uses_road_type_metadata() -> None:
 
 
 @pytest.mark.asyncio
-async def test_create_zone_api_returns_422_for_path_before_database(
-    client, mock_db, test_user
-) -> None:
+async def test_create_zone_api_returns_422_for_path_before_database(client, mock_db, test_user) -> None:
     app.dependency_overrides[require_auth] = lambda: test_user
 
     response = await client.post(
