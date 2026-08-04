@@ -25,6 +25,7 @@ from app.services.community_3d_artifacts import (
 )
 from app.services.community_3d_scope import (
     Community3DScopeError,
+    community_3d_building_overlaps,
     resolve_boundary_community_3d_scope,
     resolve_community_3d_scope,
 )
@@ -1376,6 +1377,25 @@ async def place_community_3d(
             status_code=409,
             detail=("The visible Community 3D layer scope changed before compilation; " "refresh and retry."),
         ) from exc
+
+    building_overlaps = community_3d_building_overlaps(
+        zone for zone in residual_scope_zones if _community_3d_kind(zone) == "building"
+    )
+    if building_overlaps:
+        total_area = sum(overlap["area_sqm"] for overlap in building_overlaps)
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "code": "building_polygon_overlap",
+                "message": (
+                    f"The plan contains {len(building_overlaps)} overlapping building "
+                    f"pair{'s' if len(building_overlaps) != 1 else ''}, covering "
+                    f"{total_area:,.0f} m². Edit the plan before Generate to 3D so buildings "
+                    "do not stack. Shared boundary edges are allowed."
+                ),
+                "overlaps": building_overlaps,
+            },
+        )
 
     # AI-bound recipes must still match both the catalogue revision stamped on
     # their source zones and the exact project-visible modules.  This runs

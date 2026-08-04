@@ -5,6 +5,7 @@ from shapely.geometry import box
 
 from app.services.community_3d_scope import (
     Community3DScopeError,
+    community_3d_building_overlaps,
     physical_community_3d_zones,
     resolve_boundary_community_3d_scope,
     resolve_community_3d_scope,
@@ -55,6 +56,20 @@ def test_physical_zones_exclude_boundary_and_height_framework() -> None:
     )
 
     assert physical_community_3d_zones([boundary, building, framework, park]) == [building, park]
+
+
+def test_building_overlap_guard_rejects_area_collisions_but_allows_party_walls() -> None:
+    first = _zone("first", geometry=box(-114.0000, 51.0000, -113.9990, 51.0010))
+    overlapping = _zone("overlap", geometry=box(-113.9995, 51.0000, -113.9985, 51.0010))
+    edge_touching = _zone("touching", geometry=box(-113.9985, 51.0000, -113.9975, 51.0010))
+
+    overlaps = community_3d_building_overlaps([first, overlapping, edge_touching])
+
+    assert [(item["left_zone_id"], item["right_zone_id"]) for item in overlaps] == [
+        ("first", "overlap"),
+    ]
+    assert overlaps[0]["area_sqm"] > 1
+    assert community_3d_building_overlaps([overlapping, edge_touching]) == []
 
 
 def test_exact_scope_accepts_one_complete_plan_group_and_omits_sibling() -> None:

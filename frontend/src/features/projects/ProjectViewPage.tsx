@@ -44,12 +44,18 @@ import {
   type CityPromptWorkflowStep,
 } from '@/features/workflow/cityPromptWorkflow';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
+import { filterBuildingsForVisibleCommunity3DScope } from '@/features/community3d/community3d';
 import type {
   Direct3DCaptureBundle,
   Direct3DCaptureOptions,
 } from '@/components/viewer/globe/direct3dCapture';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
+const PLAN_LAYER_PREFIX = 'Plan — ';
+
+function planLayerStorageKey(projectId: string): string {
+  return `cityprompt:active-plan-layer:${projectId}`;
+}
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
@@ -212,6 +218,55 @@ export function ProjectViewPage() {
     });
   }, [siteZones, hiddenLayers]);
 
+  const visiblePlanLayers = useMemo(() => [...new Set(visibleZones.flatMap((zone) => {
+    const source = zone.properties?._imported_from;
+    return typeof source === 'string' && source.startsWith(PLAN_LAYER_PREFIX) ? [source] : [];
+  }))], [visibleZones]);
+
+  // Multiple Master Planner alternatives are comparison layers, not one
+  // physical community. Restore the last active alternative after refresh;
+  // on an older project with no saved choice, select the most recently drawn
+  // layer. Users can still choose All for 2D comparison, but compilation below
+  // will require them to return to one physical scenario.
+  const initializedPlanVisibilityProjectRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!id || siteZones.length === 0 || initializedPlanVisibilityProjectRef.current === id) return;
+    const grouped = new Map<string, SiteZone[]>();
+    for (const zone of siteZones) {
+      const source = zone.properties?._imported_from;
+      if (typeof source !== 'string' || !source.startsWith(PLAN_LAYER_PREFIX)) continue;
+      grouped.set(source, [...(grouped.get(source) ?? []), zone]);
+    }
+    if (grouped.size < 2) {
+      initializedPlanVisibilityProjectRef.current = id;
+      return;
+    }
+    const stored = window.localStorage.getItem(planLayerStorageKey(id));
+    const active = stored && grouped.has(stored)
+      ? stored
+      : [...grouped.entries()].sort(([, left], [, right]) => {
+        const newest = (zones: SiteZone[]) => Math.max(...zones.map((zone) => (
+          Date.parse(zone.updated_at || zone.created_at) || 0
+        )));
+        return newest(right) - newest(left);
+      })[0][0];
+    initializedPlanVisibilityProjectRef.current = id;
+    window.localStorage.setItem(planLayerStorageKey(id), active);
+    setHiddenLayers((previous) => {
+      const next = new Set(previous);
+      for (const layer of grouped.keys()) {
+        if (layer === active) next.delete(layer);
+        else next.add(layer);
+      }
+      return next;
+    });
+  }, [id, siteZones]);
+
+  useEffect(() => {
+    if (!id || initializedPlanVisibilityProjectRef.current !== id || visiblePlanLayers.length !== 1) return;
+    window.localStorage.setItem(planLayerStorageKey(id), visiblePlanLayers[0]);
+  }, [id, visiblePlanLayers]);
+
   // Height-framework layers are reference overlays (LAP-style storey bands
   // covering whole blocks) — visible by default they bury the actual plan
   // under one giant polygon. Hide each ONCE on first sight; a user re-show
@@ -241,15 +296,19 @@ export function ProjectViewPage() {
     // stripped them out of hiddenLayers on every solo/All, and the auto-hide
     // effect (one-shot per name) never re-hid them, flooding the plan with
     // giant storey-band polygons.
-    const isPlanLayer = (name: string) => name.startsWith('Plan — ');
+    const isPlanLayer = (name: string) => name.startsWith(PLAN_LAYER_PREFIX);
     const onSolo = (event: Event) => {
       const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
+      if (id) {
+        if (label) window.localStorage.setItem(planLayerStorageKey(id), `${PLAN_LAYER_PREFIX}${label}`);
+        else window.localStorage.removeItem(planLayerStorageKey(id));
+      }
       setHiddenLayers((prev) => {
         const next = new Set([...prev].filter((n) => !isPlanLayer(n)));
         if (!label) return next; // "All" — show every plan (frameworks untouched)
         for (const zone of siteZones) {
           const src = zone.properties?._imported_from;
-          if (typeof src === 'string' && isPlanLayer(src) && src !== `Plan — ${label}`) {
+          if (typeof src === 'string' && isPlanLayer(src) && src !== `${PLAN_LAYER_PREFIX}${label}`) {
             next.add(src);
           }
         }
@@ -258,7 +317,7 @@ export function ProjectViewPage() {
     };
     window.addEventListener('cityprompt:solo-plan-layer', onSolo);
     return () => window.removeEventListener('cityprompt:solo-plan-layer', onSolo);
-  }, [siteZones]);
+  }, [id, siteZones]);
 
   const deleteLayer = useCallback(async (name: string) => {
     const zones = siteZones.filter((z) => {
@@ -462,13 +521,17 @@ export function ProjectViewPage() {
       toast(cityPromptWorkflow.generationReason, { icon: '🏗️' });
       return;
     }
+    if (visiblePlanLayers.length > 1) {
+      toast('Choose one Master Planner scenario before generating 3D. “All” is for comparing alternatives, not building them on top of each other.', { icon: '🧭' });
+      return;
+    }
     setShowHistory(false);
     setMeasureActive(false);
     setShowGlobeRender(false);
     setShowVideoRender(false);
     selectZone(null);
     setShowLegoBuilder(true);
-  }, [cityPromptWorkflow, selectZone]);
+  }, [cityPromptWorkflow, selectZone, visiblePlanLayers]);
 
   const handleOpenGlobeRender = useCallback(() => {
     if (!cityPromptWorkflow.canRender) {
@@ -769,6 +832,15 @@ export function ProjectViewPage() {
     },
   });
 
+  const visibleBuildings = useMemo(
+    () => filterBuildingsForVisibleCommunity3DScope(
+      project?.buildings ?? [],
+      siteZones,
+      visibleZones,
+    ),
+    [project?.buildings, siteZones, visibleZones],
+  );
+
   const deleteModeledBuilding = useMutation({
     mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
     onSuccess: async (_result, buildingId) => {
@@ -805,7 +877,7 @@ export function ProjectViewPage() {
 
   const globeRenderZones = withModeledBuildingRenderZones(
     visibleZones,
-    project.buildings ?? [],
+    visibleBuildings,
     modeledBuildingIds,
     project.id,
   );
@@ -818,7 +890,7 @@ export function ProjectViewPage() {
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}
           siteZones={visibleZones}
-          buildings={project.buildings}
+          buildings={visibleBuildings}
           onZoneCreated={handleZoneCreated}
           onZoneUpdated={handleZoneUpdated}
           onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
@@ -966,7 +1038,7 @@ export function ProjectViewPage() {
                 camera={globeRefs?.camera ?? null}
                 siteZones={globeRenderZones}
                 communitySourceZones={visibleZones}
-                buildings={project?.buildings ?? []}
+                buildings={visibleBuildings}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
                 selectedZoneId={selectedZoneId}
@@ -991,7 +1063,7 @@ export function ProjectViewPage() {
             projectId={id}
             canvas={globeRefs?.canvas ?? null}
             siteZones={visibleZones}
-            buildings={project.buildings ?? []}
+            buildings={visibleBuildings}
             waitForTilesSettled={globeRefs?.waitForTilesSettled}
             onBeforeCapture={prepareForVideoCapture}
             captureAerialFrame={captureVideoAerialFrame}
@@ -1024,10 +1096,10 @@ export function ProjectViewPage() {
         />
 
         <StreetViewPanel
-          siteZones={siteZones}
+          siteZones={visibleZones}
           projectId={project?.id}
           globeCapture={handleGlobeStreetCapture}
-          buildings={project?.buildings ?? []}
+          buildings={visibleBuildings}
           onRenderSaved={rememberSavedRender}
         />
 
@@ -1162,7 +1234,7 @@ export function ProjectViewPage() {
         {/* LEGO builder — the whole plan assembled from archetype modules */}
         {showLegoBuilder && (
           <LegoBuilderPanel
-            zones={siteZones}
+            zones={visibleZones}
             autoGenerate
             onClose={() => setShowLegoBuilder(false)}
           />
@@ -1446,7 +1518,7 @@ export function ProjectViewPage() {
           {/* LEGO builder — the whole plan assembled from archetype modules */}
           {showLegoBuilder && (
             <LegoBuilderPanel
-              zones={siteZones}
+              zones={visibleZones}
               autoGenerate
               onClose={() => setShowLegoBuilder(false)}
             />

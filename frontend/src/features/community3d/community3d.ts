@@ -39,6 +39,65 @@ export interface Community3DBuildingRepresentation {
   compiled_at: string;
 }
 
+const COMMUNITY_BUILDING_GENERATORS = new Set<Community3DGenerator>([
+  'lego_assembly',
+  'planned_massing',
+  'meshy',
+]);
+
+/** Return the source polygon explicitly owned by a compiled proposal model. */
+export function getCommunity3DBuildingSourceZoneId(building: Building): string | null {
+  const marker = building.specifications?.community3DRepresentation as
+    | Partial<Community3DBuildingRepresentation>
+    | undefined;
+  return marker?.schema_version === 1
+    && typeof marker.zone_id === 'string'
+    && marker.zone_id.trim().length > 0
+    && typeof marker.generator === 'string'
+    && COMMUNITY_BUILDING_GENERATORS.has(marker.generator as Community3DGenerator)
+    ? marker.zone_id
+    : null;
+}
+
+function linkedBuildingIds(zones: SiteZone[]): Set<string> {
+  const ids = new Set<string>();
+  for (const zone of zones) {
+    if (zone.building_id) ids.add(zone.building_id);
+    for (const buildingId of zone.building_ids ?? []) {
+      if (buildingId) ids.add(buildingId);
+    }
+  }
+  return ids;
+}
+
+/**
+ * Keep the globe and render pipelines inside the same visible plan scope as
+ * the editable polygons. Community-generated models are owned by their source
+ * zone, so hidden or deleted source polygons hide those models too. Unmarked,
+ * zone-less Buildings are retained as genuine existing/imported context.
+ */
+export function filterBuildingsForVisibleCommunity3DScope(
+  buildings: Building[],
+  allZones: SiteZone[],
+  visibleZones: SiteZone[],
+): Building[] {
+  const allZoneIds = new Set(allZones.map((zone) => zone.id));
+  const visibleZoneIds = new Set(visibleZones.map((zone) => zone.id));
+  const allLinkedBuildingIds = linkedBuildingIds(allZones);
+  const visibleLinkedBuildingIds = linkedBuildingIds(visibleZones);
+
+  return buildings.filter((building) => {
+    const ownedSourceZoneId = getCommunity3DBuildingSourceZoneId(building);
+    if (ownedSourceZoneId) {
+      return allZoneIds.has(ownedSourceZoneId) && visibleZoneIds.has(ownedSourceZoneId);
+    }
+    if (allLinkedBuildingIds.has(building.id)) {
+      return visibleLinkedBuildingIds.has(building.id);
+    }
+    return true;
+  });
+}
+
 /**
  * True only when a mounted Building is the exact representation owned by the
  * current persisted source zone. Older model-only records remain useful

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Building, SiteZone } from '@/types';
 import {
+  filterBuildingsForVisibleCommunity3DScope,
   getCommunity3DCaptureClaims,
+  getCommunity3DBuildingSourceZoneId,
   getCommunity3DMeta,
   getCurrentCommunity3DBuildingIds,
   hasCommunity3DSourceFingerprint,
@@ -86,6 +88,63 @@ function localStreetRecipe(): Record<string, unknown> {
 }
 
 describe('community 3D plan contract', () => {
+  it('shows compiled proposal buildings only with their visible source polygons', () => {
+    const visible = { ...zone('building'), id: 'visible-zone', building_id: 'visible-building' };
+    const hidden = { ...zone('building'), id: 'hidden-zone', building_id: 'hidden-building' };
+    const compiledBuilding = (id: string, sourceZoneId: string): Building => ({
+      id,
+      project_id: 'project-1',
+      footprint_coordinates: visible.coordinates,
+      specifications: {
+        community3DRepresentation: {
+          schema_version: 1,
+          zone_id: sourceZoneId,
+          generator: 'lego_assembly',
+          representation_hash: SHA_A,
+          compiled_at: '2026-07-20T01:00:00Z',
+        },
+      },
+      created_at: '2026-07-20T00:00:00Z',
+    });
+    const visibleBuilding = compiledBuilding('visible-building', visible.id);
+    const hiddenBuilding = compiledBuilding('hidden-building', hidden.id);
+    const orphanedGeneratedBuilding = compiledBuilding('orphaned-building', 'deleted-zone');
+    const existingBuilding: Building = {
+      id: 'existing-building',
+      project_id: 'project-1',
+      footprint_coordinates: visible.coordinates,
+      model_url: '/existing.glb',
+      created_at: '2026-07-20T00:00:00Z',
+    };
+
+    expect(getCommunity3DBuildingSourceZoneId(hiddenBuilding)).toBe(hidden.id);
+    expect(filterBuildingsForVisibleCommunity3DScope(
+      [visibleBuilding, hiddenBuilding, orphanedGeneratedBuilding, existingBuilding],
+      [visible, hidden],
+      [visible],
+    )).toEqual([visibleBuilding, existingBuilding]);
+  });
+
+  it('uses legacy zone links for visibility while preserving zone-less existing buildings', () => {
+    const visible = { ...zone('building'), id: 'visible-zone', building_ids: ['visible-legacy'] };
+    const hidden = { ...zone('building'), id: 'hidden-zone', building_ids: ['hidden-legacy'] };
+    const building = (id: string): Building => ({
+      id,
+      project_id: 'project-1',
+      footprint_coordinates: visible.coordinates,
+      created_at: '2026-07-20T00:00:00Z',
+    });
+    const visibleLegacy = building('visible-legacy');
+    const hiddenLegacy = building('hidden-legacy');
+    const existing = building('unlinked-existing');
+
+    expect(filterBuildingsForVisibleCommunity3DScope(
+      [visibleLegacy, hiddenLegacy, existing],
+      [visible, hidden],
+      [visible],
+    )).toEqual([visibleLegacy, existing]);
+  });
+
   it('classifies buildings, parks, and streets while excluding framework overlays', () => {
     expect(resolveCommunity3DKind(zone('building', { _plan_role: 'building' }))).toBe('building');
     expect(resolveCommunity3DKind(zone('green_space', { _plan_role: 'open_space' }))).toBe('park');

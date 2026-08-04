@@ -269,20 +269,29 @@ export function LegoBuilderPanel({
             .map((item) => item.zone.id),
         );
         const replacedCount = replaced.filter((result) => result.status === 'fulfilled').length;
-        setItems((prev) => prev.map((item) => (
-          failedIds.has(item.zone.id) ? { ...item, placeState: 'failed' } : item
-        )));
         setSaveResult(
           failedIds.size > 0
             ? `Rebuilt ${replacedCount} of ${replaceable.length} placed building${replaceable.length === 1 ? '' : 's'}`
             : `Rebuilt ${replacedCount} placed building${replacedCount === 1 ? '' : 's'} with the latest family assets`,
         );
         await refetchPlacedData();
+        // Placing the refreshed recipe intentionally marks its owning source
+        // zone stale, which advances zone.updated_at. Carry that authoritative
+        // revision into the next atomic Community 3D request; otherwise the
+        // immediately-following "Rebuild current 3D scene" deterministically
+        // fails optimistic concurrency with the pre-place timestamp.
+        const refreshedZones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
+        const refreshedById = new Map((refreshedZones ?? []).map((zone) => [zone.id, zone]));
+        setItems(plannedItems.map((item) => ({
+          ...item,
+          zone: refreshedById.get(item.zone.id) ?? item.zone,
+          ...(failedIds.has(item.zone.id) ? { placeState: 'failed' as const } : {}),
+        })));
       }
     }
     setPlanning(false);
     setInitialPlanningComplete(true);
-  }, [refetchPlacedData, zones]);
+  }, [projectId, queryClient, refetchPlacedData, zones]);
 
   // Plan every buildable zone once when the panel opens; "Rebuild all" re-runs it.
   useEffect(() => {

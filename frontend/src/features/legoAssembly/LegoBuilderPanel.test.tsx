@@ -5,8 +5,8 @@ import type { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // The panel calls useQueryClient (Place invalidates the project/zone queries).
-const render = (ui: ReactElement) => rtlRender(
-  <QueryClientProvider client={new QueryClient()}>{ui}</QueryClientProvider>,
+const render = (ui: ReactElement, client = new QueryClient()) => rtlRender(
+  <QueryClientProvider client={client}>{ui}</QueryClientProvider>,
 );
 import { LegoBuilderPanel } from './LegoBuilderPanel';
 import type { LegoAssemblyPlan } from './legoAssemblyApi';
@@ -577,10 +577,20 @@ describe('LegoBuilderPanel', () => {
           data: { status: 'placed', zone_id: 'zone-placed', building_id: 'building-1', building_created: false },
         });
       }
+      if (url === '/api/v1/lego-assembly/place-community') {
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: '2026-08-04T01:00:00Z',
+            counts: { building: 1, park: 0, street: 0 },
+            items: [],
+          },
+        });
+      }
       return Promise.reject(new Error(`unexpected POST ${url}`));
     });
 
-    render(<LegoBuilderPanel zones={[makeZone({
+    const placedZone = makeZone({
       id: 'zone-placed',
       building_id: 'building-1',
       properties: {
@@ -593,7 +603,13 @@ describe('LegoBuilderPanel', () => {
           compiled_at: '2026-07-19T00:00:00Z',
         },
       },
-    })]} onClose={vi.fn()} />);
+    });
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'proj-1'], [{
+      ...placedZone,
+      updated_at: '2026-08-04T00:30:00Z',
+    }]);
+    render(<LegoBuilderPanel zones={[placedZone]} onClose={vi.fn()} />, client);
 
     expect(await screen.findByText('placed')).toBeInTheDocument();
     expect(apiPost).not.toHaveBeenCalledWith(
@@ -610,5 +626,16 @@ describe('LegoBuilderPanel', () => {
       }),
     ));
     expect(await screen.findByText(/latest family assets/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /rebuild current 3d scene/i }));
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place-community',
+      {
+        items: [expect.objectContaining({
+          zone_id: 'zone-placed',
+          source_updated_at: '2026-08-04T00:30:00Z',
+        })],
+      },
+    ));
   });
 });

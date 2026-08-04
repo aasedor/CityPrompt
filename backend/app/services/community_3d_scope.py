@@ -10,10 +10,18 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Iterable
+from itertools import combinations
 from typing import Any
 
 from geoalchemy2.shape import to_shape
 from shapely.geometry.base import BaseGeometry
+
+from app.services.site_engine import (
+    WGS84_CRS,
+    build_transformer,
+    local_metric_crs_for_polygon,
+    project_geometry,
+)
 
 
 class Community3DScopeError(ValueError):
@@ -68,6 +76,43 @@ def _zone_geometry(zone: Any) -> BaseGeometry:
     if shape.is_empty or not shape.is_valid:
         raise Community3DScopeError("The boundary-scoped Community 3D request contains unusable geometry.")
     return shape
+
+
+def community_3d_building_overlaps(
+    building_zones: Iterable[Any],
+    *,
+    material_area_sqm: float = 1.0,
+) -> list[dict[str, Any]]:
+    """Report material pairwise overlaps inside one visible compile scope.
+
+    Alternative Master Planner scenarios may legitimately cover the same land,
+    but only one scenario is passed here. Within that physical community, two
+    building source polygons cannot occupy the same ground: otherwise exact
+    footprint LEGO placement produces the stacked buildings seen in the globe.
+    Shared party-wall edges have zero area and remain valid.
+    """
+
+    zones = list(building_zones)
+    if len(zones) < 2:
+        return []
+    wgs84_geometries = [_zone_geometry(zone) for zone in zones]
+    extent = wgs84_geometries[0]
+    for geometry in wgs84_geometries[1:]:
+        extent = extent.union(geometry)
+    to_metric = build_transformer(WGS84_CRS, local_metric_crs_for_polygon(extent))
+    metric_geometries = [project_geometry(geometry, to_metric) for geometry in wgs84_geometries]
+    overlaps: list[dict[str, Any]] = []
+    for (left_zone, left), (right_zone, right) in combinations(zip(zones, metric_geometries), 2):
+        area = float(left.intersection(right).area)
+        if area > material_area_sqm:
+            overlaps.append(
+                {
+                    "left_zone_id": str(left_zone.id),
+                    "right_zone_id": str(right_zone.id),
+                    "area_sqm": round(area, 2),
+                }
+            )
+    return overlaps
 
 
 def resolve_boundary_community_3d_scope(
