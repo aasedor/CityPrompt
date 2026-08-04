@@ -176,6 +176,46 @@ describe('LegoBuilderPanel', () => {
     expect(screen.getByText('2 buildings · 0 parks · 1 streets')).toBeInTheDocument();
   });
 
+  it('runs the complete atomic compile without a second click from the top-level workflow', async () => {
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-08-03T01:00:00Z',
+              counts: { building: 1, park: 0, street: 0 },
+              residual_landscape: {
+                boundary_count: 1,
+                derived_boundary_count: 0,
+                area_sqm: 400,
+                placement_count: 2,
+              },
+              items: [],
+            },
+          })
+        : Promise.resolve({ data: planFixture })
+    ));
+
+    render(
+      <LegoBuilderPanel
+        zones={[makeZone({ id: 'auto-building' })]}
+        autoGenerate
+        onClose={vi.fn()}
+      />,
+    );
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place-community',
+      {
+        items: [expect.objectContaining({
+          zone_id: 'auto-building',
+          recipe: expect.any(Object),
+        })],
+      },
+    ));
+    expect(await screen.findByText(/landscaped 400 m² of residual site with 2 trees/i)).toBeInTheDocument();
+  });
+
   it('compiles planner parks and streets without treating framework overlays as buildings', async () => {
     apiPost.mockImplementation((url: string) => (
       url === '/api/v1/lego-assembly/place-community'
@@ -227,7 +267,7 @@ describe('LegoBuilderPanel', () => {
     await waitFor(() => expect(apiPost).toHaveBeenCalledTimes(1));
     expect(screen.getByText('1 buildings · 2 parks · 1 streets')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
     await waitFor(() => expect(screen.getByText(
       'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers; landscaped 1,234 m² of residual site with 3 trees',
     )).toBeInTheDocument());
@@ -350,7 +390,7 @@ describe('LegoBuilderPanel', () => {
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
     expect(await screen.findByText(/No family 1/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText(
       'Built 0 detailed buildings, 1 family-pending mass, and 1 park/street layer',
@@ -448,7 +488,7 @@ describe('LegoBuilderPanel', () => {
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
     expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText(
       'Built 2 detailed buildings, 0 family-pending masses, and 0 park/street layers',
@@ -487,7 +527,7 @@ describe('LegoBuilderPanel', () => {
     ]} onClose={vi.fn()} />);
     expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText('One zone could not be compiled; no changes were saved.')).toBeInTheDocument());
     expect(screen.getByRole('button', { name: /retry place/i })).toBeInTheDocument();

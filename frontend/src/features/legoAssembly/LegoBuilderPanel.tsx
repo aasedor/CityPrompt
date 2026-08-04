@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
@@ -67,15 +67,26 @@ function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   );
 }
 
-export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClose: () => void }) {
+export function LegoBuilderPanel({
+  zones,
+  onClose,
+  autoGenerate = false,
+}: {
+  zones: SiteZone[];
+  onClose: () => void;
+  /** Top-level workflow entry: plan, then compile the complete scene once. */
+  autoGenerate?: boolean;
+}) {
   const [items, setItems] = useState<ZoneBuildItem[]>(() => deriveItems(zones));
   const [groundItems, setGroundItems] = useState<GroundBuildItem[]>(() => deriveGroundItems(zones));
   const [planning, setPlanning] = useState(false);
   const [saving, setSaving] = useState(false);
   const [placingAll, setPlacingAll] = useState(false);
+  const [initialPlanningComplete, setInitialPlanningComplete] = useState(false);
   const [saveResult, setSaveResult] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
+  const autoGenerateStartedRef = useRef(false);
   const projectId = zones[0]?.project_id;
 
   // The globe reads buildings from the project query and links from the zone
@@ -105,16 +116,16 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
     }
   }, [refetchPlacedData, setPlaceState]);
 
-  const handlePlaceAll = useCallback(async () => {
+  const handlePlaceAll = useCallback(async (forceRebuild = false) => {
     const placeable = items.filter(
       (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => (
-        Boolean(item.plan) && item.placeState !== 'placed'
+        Boolean(item.plan) && (forceRebuild || item.placeState !== 'placed')
       ),
     );
     const massingOnly = items.filter((item) => (
-      !item.plan && Boolean(item.offset) && item.massingState !== 'compiled'
+      !item.plan && Boolean(item.offset) && (forceRebuild || item.massingState !== 'compiled')
     ));
-    const groundToCompile = groundItems.filter((item) => item.state !== 'compiled');
+    const groundToCompile = groundItems.filter((item) => forceRebuild || item.state !== 'compiled');
     if (
       (placeable.length === 0 && massingOnly.length === 0 && groundToCompile.length === 0)
       || placingAll
@@ -205,7 +216,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
     setItems(base);
     setGroundItems(deriveGroundItems(zones));
     setSaveResult(null);
-    if (base.length === 0) return;
+    setInitialPlanningComplete(false);
+    if (base.length === 0) {
+      setInitialPlanningComplete(true);
+      return;
+    }
     setPlanning(true);
     const results = await allSettledWithConcurrency(
       base,
@@ -266,6 +281,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
       }
     }
     setPlanning(false);
+    setInitialPlanningComplete(true);
   }, [refetchPlacedData, zones]);
 
   // Plan every buildable zone once when the panel opens; "Rebuild all" re-runs it.
@@ -273,6 +289,15 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
     void runBatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // The main City Prompt button is intentionally a single action. The panel
+  // remains visible as progress/reporting UI while planning completes, then
+  // atomically rebuilds buildings, public realm, and residual landscaping.
+  useEffect(() => {
+    if (!autoGenerate || !initialPlanningComplete || autoGenerateStartedRef.current) return;
+    autoGenerateStartedRef.current = true;
+    void handlePlaceAll(true);
+  }, [autoGenerate, handlePlaceAll, initialPlanningComplete]);
 
   const assembledCount = items.filter((item) => item.plan).length;
   const noFamilyCount = items.filter((item) => item.familyMissing).length;
@@ -351,7 +376,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           <div className="border-b-2 border-[#151515]/15 p-4 pb-3">
             <div className="mb-2 flex items-center gap-2">
               <Blocks className="h-5 w-5" />
-              <h2 className="text-sm font-black uppercase">Community 3D Builder</h2>
+              <h2 className="text-sm font-black uppercase">Generate to 3D</h2>
             </div>
             <p className="text-xs font-bold">
               {`${items.length} buildings · ${parkCount} parks · ${streetCount} streets`}
@@ -544,15 +569,15 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
 
             <button
               type="button"
-              onClick={() => void handlePlaceAll()}
-              disabled={!canBuildCommunity || placingAll || planning || saving}
-              title={!canBuildCommunity
-                ? 'This community is already built in 3D.'
-                : 'Compile every plan zone: supported buildings use real LEGO families, unsupported families use exact-footprint neutral massing, and parks/streets become generated ground systems.'}
+              onClick={() => void handlePlaceAll(!canBuildCommunity)}
+              disabled={(items.length === 0 && groundItems.length === 0) || placingAll || planning || saving}
+              title={canBuildCommunity
+                ? 'Compile every plan zone: supported buildings use real LEGO families, unsupported families use exact-footprint neutral massing, and parks/streets become generated ground systems.'
+                : 'Rebuild every current building, public-realm system, and residual landscape in one atomic scene revision.'}
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
             >
               {placingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
-              Build community in 3D
+              {canBuildCommunity ? 'Generate to 3D' : 'Rebuild current 3D scene'}
             </button>
 
             <button
@@ -584,7 +609,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
             type="button"
             onClick={onClose}
             className="absolute right-3 top-3 z-10 rounded bg-black/60 p-2 text-white hover:bg-black"
-            aria-label="Close LEGO builder"
+            aria-label="Close Generate to 3D"
           >
             <X className="h-4 w-4" />
           </button>

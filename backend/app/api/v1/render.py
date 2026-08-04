@@ -1177,6 +1177,10 @@ class SavedRenderResponse(BaseModel):
     # fallback replaced it). Manual gallery saves leave these unset.
     variant: Optional[str] = None
     outcome: Optional[str] = None
+    scene_revision_sha256: Optional[str] = Field(
+        default=None,
+        pattern=r"^[a-fA-F0-9]{64}$",
+    )
 
 
 def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> bytes:
@@ -1235,6 +1239,7 @@ async def persist_render_to_gallery(
     *,
     variant: Optional[str] = None,
     outcome: Optional[str] = None,
+    scene_revision_sha256: Optional[str] = None,
 ) -> SavedRenderResponse:
     """Core gallery save: watermark, dedupe, upload, append to project metadata.
 
@@ -1287,6 +1292,7 @@ async def persist_render_to_gallery(
         "created_at": now,
         "variant": variant,
         "outcome": outcome,
+        "scene_revision_sha256": scene_revision_sha256,
     }
 
     renders.insert(0, entry)

@@ -39,6 +39,10 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import {
+  deriveCityPromptWorkflow,
+  type CityPromptWorkflowStep,
+} from '@/features/workflow/cityPromptWorkflow';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
 import type {
   Direct3DCaptureBundle,
@@ -283,9 +287,19 @@ export function ProjectViewPage() {
     }
   }, [siteZones, queryClient, id]);
 
-  const hasEditableZones = siteZones.some((z) =>
-    z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3
+  const cityPromptWorkflow = useMemo(
+    () => deriveCityPromptWorkflow(
+      siteZones,
+      savedRenders.length > 0 || savedVideos.length > 0,
+    ),
+    [savedRenders.length, savedVideos.length, siteZones],
   );
+
+  useEffect(() => {
+    if (!siteZonesLoading && workflowStep === 2 && !cityPromptWorkflow.canRender) {
+      setWorkflowStep(1);
+    }
+  }, [cityPromptWorkflow.canRender, setWorkflowStep, siteZonesLoading, workflowStep]);
 
   // Activate the planner immediately; the first drawing tool is selected only
   // after the project's zones have loaded so a new site starts with its
@@ -429,21 +443,78 @@ export function ProjectViewPage() {
   const masterPlanActive =
     workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
 
+  const handleOpenGenerate3D = useCallback(() => {
+    if (!cityPromptWorkflow.canGenerate3D) {
+      toast(cityPromptWorkflow.generationReason, { icon: '🏗️' });
+      return;
+    }
+    setShowHistory(false);
+    setMeasureActive(false);
+    setShowGlobeRender(false);
+    setShowVideoRender(false);
+    selectZone(null);
+    setShowLegoBuilder(true);
+  }, [cityPromptWorkflow, selectZone]);
+
   const handleOpenGlobeRender = useCallback(() => {
+    if (!cityPromptWorkflow.canRender) {
+      toast(cityPromptWorkflow.renderReason, { icon: '🧱' });
+      return;
+    }
     setShowHistory(false);
     setMeasureActive(false);
     setShowVideoRender(false);
     setGlobeRenderPosition(null);
     setShowGlobeRender(true);
-  }, []);
+  }, [cityPromptWorkflow]);
 
   const handleOpenVideoRender = useCallback(() => {
+    if (!cityPromptWorkflow.canRender) {
+      toast(cityPromptWorkflow.renderReason, { icon: '🧱' });
+      return;
+    }
     setShowHistory(false);
     setMeasureActive(false);
     setShowGlobeRender(false);
     selectZone(null);
     setShowVideoRender(true);
-  }, [selectZone]);
+  }, [cityPromptWorkflow, selectZone]);
+
+  const handleWorkflowStepClick = useCallback((step: CityPromptWorkflowStep) => {
+    if (step === 1) {
+      setWorkflowStep(1);
+      setShowGlobeRender(false);
+      setShowVideoRender(false);
+      const boundary = cityPromptWorkflow.activeBoundary;
+      if (boundary) {
+        setActiveSitePlannerTool(null);
+        selectZone(boundary.id);
+      } else {
+        selectZone(null);
+        setActiveSitePlannerTool('site_boundary');
+      }
+      return;
+    }
+    if (step === 2) {
+      handleMasterPlan();
+      return;
+    }
+    if (step === 3) {
+      handleOpenGenerate3D();
+      return;
+    }
+    if (settings.mapMode === 'globe') handleOpenGlobeRender();
+    else setWorkflowStep(2);
+  }, [
+    cityPromptWorkflow.activeBoundary,
+    handleMasterPlan,
+    handleOpenGenerate3D,
+    handleOpenGlobeRender,
+    selectZone,
+    setActiveSitePlannerTool,
+    setWorkflowStep,
+    settings.mapMode,
+  ]);
 
   const prepareForAIRenderCapture = useCallback(async () => {
     const tilesSettled = await globeRefs?.waitForTilesSettled?.();
@@ -773,27 +844,41 @@ export function ProjectViewPage() {
               bottomSlot={
                 !showGlobeRender && !showVideoRender ? (
                   <div className="flex flex-col gap-2">
+                    <WorkflowStepper
+                      state={cityPromptWorkflow}
+                      activeStep={showLegoBuilder ? 3 : cityPromptWorkflow.currentStep}
+                      onStepClick={handleWorkflowStepClick}
+                      compact
+                    />
                     <button
-                      onClick={handleOpenGlobeRender}
-                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
-                    >
-                      <Camera size={16} />
-                      Render
-                    </button>
-                    <button
-                      onClick={handleOpenVideoRender}
-                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#151515] px-3 py-2.5 text-sm font-black uppercase text-white shadow-[4px_4px_0_0_#28c7e8] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#28c7e8]"
-                    >
-                      <Video size={16} />
-                      Video Render
-                    </button>
-                    <button
-                      onClick={() => setShowLegoBuilder(true)}
-                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                      onClick={handleOpenGenerate3D}
+                      disabled={!cityPromptWorkflow.canGenerate3D}
+                      title={cityPromptWorkflow.generationReason}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <Blocks size={16} />
                       Generate to 3D
                     </button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={handleOpenGlobeRender}
+                        disabled={!cityPromptWorkflow.canRender}
+                        title={cityPromptWorkflow.renderReason}
+                        className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#fff9ec] disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <Camera size={14} />
+                        Render
+                      </button>
+                      <button
+                        onClick={handleOpenVideoRender}
+                        disabled={!cityPromptWorkflow.canRender}
+                        title={cityPromptWorkflow.renderReason}
+                        className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#151515] px-2 py-2 text-xs font-black uppercase text-white shadow-[3px_3px_0_0_#28c7e8] transition hover:bg-[#2b2b2b] disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <Video size={14} />
+                        Video
+                      </button>
+                    </div>
                   </div>
                 ) : null
               }
@@ -891,6 +976,7 @@ export function ProjectViewPage() {
             projectId={id}
             canvas={globeRefs?.canvas ?? null}
             siteZones={visibleZones}
+            buildings={project.buildings ?? []}
             waitForTilesSettled={globeRefs?.waitForTilesSettled}
             onBeforeCapture={prepareForVideoCapture}
             captureAerialFrame={captureVideoAerialFrame}
@@ -1060,7 +1146,11 @@ export function ProjectViewPage() {
 
         {/* LEGO builder — the whole plan assembled from archetype modules */}
         {showLegoBuilder && (
-          <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
+          <LegoBuilderPanel
+            zones={siteZones}
+            autoGenerate
+            onClose={() => setShowLegoBuilder(false)}
+          />
         )}
       </div>
     );
@@ -1109,9 +1199,9 @@ export function ProjectViewPage() {
       <section className="relative left-1/2 mt-6 w-screen max-w-none -translate-x-1/2 overflow-hidden border-y border-primary-950/[0.08] shadow-card sm:rounded-xl sm:border">
         {/* Workflow Stepper bar */}
         <WorkflowStepper
-          currentStep={workflowStep}
-          onStepClick={setWorkflowStep}
-          hasRender={!!aiRenderResult}
+          state={cityPromptWorkflow}
+          activeStep={workflowStep === 2 ? 4 : cityPromptWorkflow.currentStep}
+          onStepClick={handleWorkflowStepClick}
         />
 
         <div className="relative h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh]">
@@ -1223,24 +1313,24 @@ export function ProjectViewPage() {
             />
           </div>
 
-          {/* Step 1: LEGO builder + Render button to advance to step 2 */}
+          {/* Plan editing actions: compile the scene before image rendering. */}
           {workflowStep === 1 && (
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setShowLegoBuilder(true)}
-                disabled={!hasEditableZones}
+                onClick={handleOpenGenerate3D}
+                disabled={!cityPromptWorkflow.canGenerate3D}
                 className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                title={hasEditableZones ? 'Assemble the whole plan from LEGO archetype modules' : 'Draw zones first (buildings, parks, or streets)'}
+                title={cityPromptWorkflow.generationReason}
               >
                 <Blocks size={16} />
-                LEGO BUILDER
+                Generate to 3D
               </button>
               <button
                 data-tour="ai-render-btn"
                 onClick={() => setWorkflowStep(2)}
-                disabled={!hasEditableZones}
+                disabled={!cityPromptWorkflow.canRender}
                 className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                title={hasEditableZones ? 'Generate AI render from current view' : 'Draw zones first (buildings, parks, or streets)'}
+                title={cityPromptWorkflow.renderReason}
               >
                 <Sparkles size={16} />
                 AI Render
@@ -1339,7 +1429,11 @@ export function ProjectViewPage() {
           )}
           {/* LEGO builder — the whole plan assembled from archetype modules */}
           {showLegoBuilder && (
-            <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
+            <LegoBuilderPanel
+              zones={siteZones}
+              autoGenerate
+              onClose={() => setShowLegoBuilder(false)}
+            />
           )}
         </div>
 

@@ -19,6 +19,10 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import ApiUsageLog, Building, Project, SiteZone, User
+from app.schemas.direct_3d_render import (
+    Direct3DCommunityZoneClaim,
+    Direct3DResidualLandscapeClaim,
+)
 from app.services.internal_video import (
     INTERNAL_VIDEO_MODEL,
     build_internal_video_contract,
@@ -41,6 +45,7 @@ from app.services.seedance_video import (
     request_seedance_video_once,
     seedance_runtime_error,
 )
+from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
 
 logger = logging.getLogger(__name__)
@@ -114,6 +119,11 @@ class VideoPilotRequest(BaseModel):
         min_length=20,
         max_length=12_000,
     )
+    community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(
+        default_factory=list,
+        max_length=2000,
+    )
+    residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None
 
 
 class VideoGenerateRequest(VideoPilotRequest):
@@ -135,6 +145,7 @@ class VideoPreflightResponse(BaseModel):
     estimated_cost_usd: float
     model: str
     reference_image_count: int
+    scene_revision_sha256: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
 
 
 class VideoAttemptResponse(BaseModel):
@@ -171,6 +182,10 @@ class VideoAttemptResponse(BaseModel):
     resource_strategy: str | None = None
     processing_seconds: float | None = None
     enhancement_warning: str | None = None
+    scene_revision_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[a-fA-F0-9]{64}$",
+    )
 
 
 class VideoGenerateResponse(BaseModel):
@@ -332,6 +347,73 @@ async def _locked_project(db: AsyncSession, project_id: uuid.UUID) -> Project:
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
+
+
+def _video_scene_conflict(message: str) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail={
+            "code": "video_project_state_changed",
+            "billed": False,
+            "message": message,
+        },
+    )
+
+
+async def _validate_video_scene_revision(
+    req: VideoPilotRequest,
+    db: AsyncSession,
+) -> str:
+    """Bind a video route to the same current compiled scene as Direct image render.
+
+    This runs again while the project row is locked immediately before a run
+    is reserved, so a changed plan cannot spend against an older browser
+    capture. The returned digest is persisted with the durable attempt.
+    """
+
+    if not req.community_3d_claims or req.residual_landscape_claim is None:
+        raise _video_scene_conflict(
+            "Generate the current site in 3D again before Video Render."
+        )
+
+    zones_result = await db.execute(
+        select(SiteZone).where(SiteZone.project_id == req.project_id)
+    )
+    zones = list(zones_result.scalars().all())
+    buildings_result = await db.execute(
+        select(Building).where(Building.project_id == req.project_id)
+    )
+    buildings = {
+        str(building.id): building
+        for building in buildings_result.scalars().all()
+    }
+
+    # Import locally to keep the video module's schema/service dependencies
+    # independent from the image-render router at import time.
+    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones
+
+    try:
+        _validate_direct_3d_project_zones(
+            req,  # Shared Community 3D and residual-landscape claim contract.
+            zones,
+            buildings,
+            bind_capture_instances=False,
+        )
+    except HTTPException as exc:
+        if exc.status_code != status.HTTP_409_CONFLICT:
+            raise
+        detail = exc.detail
+        message = (
+            detail.get("message")
+            if isinstance(detail, dict)
+            else str(detail)
+        )
+        raise _video_scene_conflict(message) from exc
+
+    return compiled_scene_revision_sha256(
+        req.community_3d_claims,
+        req.residual_landscape_claim,
+    )
 
 
 async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: str, **updates) -> dict:
@@ -522,6 +604,7 @@ async def preflight_video(
         )
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
+    scene_revision_sha256 = await _validate_video_scene_revision(req, db)
     project = await db.get(Project, req.project_id)
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     usage = _provider_usage(attempts, req.provider)
@@ -558,6 +641,7 @@ async def preflight_video(
         estimated_cost_usd=estimated_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
         reference_image_count=len(keyframes),
+        scene_revision_sha256=scene_revision_sha256,
     )
 
 
@@ -697,6 +781,8 @@ async def generate_video(
                 ),
             )
 
+    scene_revision_sha256 = await _validate_video_scene_revision(req, db)
+
     usage = _provider_usage(attempts, req.provider)
     active_reservations = sum(
         1
@@ -762,6 +848,7 @@ async def generate_video(
         "prompt": prompt,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
+        "scene_revision_sha256": scene_revision_sha256,
         "reference_image_count": len(keyframes),
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,

@@ -22,7 +22,9 @@ import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
 
 import { getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
+import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
+import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 import {
   appendRoutePoint,
   normalizedRoutePoint,
@@ -83,6 +85,19 @@ function providerOrigin(provider?: VideoProvider): string {
   return 'Gemini Omni';
 }
 
+function sceneClaimsSignature(
+  claims: PreparedVideoRequest['community_3d_claims'] | null,
+  residual: PreparedVideoRequest['residual_landscape_claim'] | null,
+): string {
+  if (!claims || claims.length === 0 || !residual) return 'scene-not-current';
+  return [
+    ...claims
+      .map((claim) => `${claim.zone_id}:${claim.source_hash}:${claim.representation_hash}:${claim.building_id ?? ''}`)
+      .sort(),
+    `${residual.boundary_id}:${residual.source_hash}`,
+  ].join('|');
+}
+
 export interface VideoAttempt {
   id: string;
   request_id: string;
@@ -117,6 +132,7 @@ export interface VideoAttempt {
   resource_strategy?: string | null;
   processing_seconds?: number | null;
   enhancement_warning?: string | null;
+  scene_revision_sha256?: string | null;
 }
 
 function fidelityTone(status: VideoAttempt['fidelity_status']): string {
@@ -170,6 +186,7 @@ interface PreflightResult {
   estimated_cost_usd: number;
   model: string;
   reference_image_count: number;
+  scene_revision_sha256: string;
 }
 
 interface VideoCaptureProfile {
@@ -207,12 +224,23 @@ interface PreparedVideoRequest {
   camera_motion: MotionId;
   duration_seconds: 8;
   scene_brief: string;
+  community_3d_claims: Array<{
+    zone_id: string;
+    source_hash: string;
+    representation_hash: string;
+    building_id?: string;
+  }>;
+  residual_landscape_claim: {
+    boundary_id: string;
+    source_hash: string;
+  };
 }
 
 interface VideoGeneratePanelProps {
   projectId: string;
   canvas: HTMLCanvasElement | null;
   siteZones: SiteZone[];
+  buildings: Building[];
   waitForTilesSettled?: () => Promise<boolean>;
   onBeforeCapture?: () => Promise<void>;
   captureAerialFrame?: () => Promise<string | null>;
@@ -297,6 +325,7 @@ export function VideoGeneratePanel({
   projectId,
   canvas,
   siteZones,
+  buildings,
   waitForTilesSettled,
   onBeforeCapture,
   captureAerialFrame,
@@ -337,17 +366,29 @@ export function VideoGeneratePanel({
   const captureStarted = useRef(false);
   const captureSequence = useRef(0);
   const sceneContract = useMemo(() => buildVideoSceneContract(siteZones), [siteZones]);
+  const community3DClaims = useMemo(
+    () => getCommunity3DCaptureClaims(siteZones, buildings),
+    [buildings, siteZones],
+  );
+  const residualLandscapeClaim = useMemo(
+    () => getCurrentResidualLandscapeClaim(siteZones),
+    [siteZones],
+  );
+  const currentSceneRevisionSignature = useMemo(
+    () => sceneClaimsSignature(community3DClaims, residualLandscapeClaim),
+    [community3DClaims, residualLandscapeClaim],
+  );
   const routeCaptureSignature = useMemo(
     () => `${renderQuality}:${motion}:${routeSignature(routePoints)}`,
     [motion, renderQuality, routePoints],
   );
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}`,
-    [controlMode, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
+    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -446,6 +487,9 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
+    if (!community3DClaims || community3DClaims.length === 0 || !residualLandscapeClaim) {
+      throw new Error('The compiled scene changed. Close Video Render, run Generate to 3D, and capture it again.');
+    }
     let activeControls = routeControls?.signature === routeCaptureSignature ? routeControls : null;
     if (controlMode !== 'single_frame' && !activeControls) {
       if (!captureRouteControls) throw new Error('This 3D view cannot prepare route controls yet.');
@@ -529,8 +573,10 @@ export function VideoGeneratePanel({
       camera_motion: motion,
       duration_seconds: 8,
       scene_brief: sceneBrief,
+      community_3d_claims: community3DClaims,
+      residual_landscape_claim: residualLandscapeClaim,
     };
-  }, [captureRouteControls, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
+  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -1022,7 +1068,12 @@ export function VideoGeneratePanel({
                           </span>
                         )}
                       </div>
-                      <p className="text-[9px] text-[#151515]/45">8 sec · {selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project</p>
+                      <p className="text-[9px] text-[#151515]/45">
+                        8 sec · {selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
+                        {selectedAttempt.scene_revision_sha256
+                          ? ` · scene ${selectedAttempt.scene_revision_sha256.slice(0, 10)}`
+                          : ''}
+                      </p>
                     </div>
                     {selectedAttempt.provider === 'omni' && !selectedAttempt.is_benchmark && (
                       <button type="button" onClick={() => void setBenchmark(selectedAttempt)} disabled={isBenchmarking} className="inline-flex items-center gap-1 rounded-full border-2 border-[#151515] px-2.5 py-2 text-[9px] font-black uppercase hover:bg-[#f7f2e8] disabled:opacity-40" aria-label="Set as Omni benchmark" title="Set as Omni benchmark">

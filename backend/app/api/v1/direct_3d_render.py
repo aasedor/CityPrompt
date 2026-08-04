@@ -52,6 +52,7 @@ from app.services.public_realm_lego import (
     public_realm_recipe_identity,
 )
 from app.services.render_audit_images import put_image_with_thumbnail
+from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.residual_landscape import (
     ResidualSourceZone,
     community_3d_kind_for_source,
@@ -98,8 +99,16 @@ def _validate_direct_3d_project_zones(
     req: Direct3DRenderRequest,
     zones: list[SiteZone],
     available_buildings: dict[str, Building],
+    *,
+    bind_capture_instances: bool = True,
 ) -> list[dict[str, object]]:
-    """Validate a paid capture against the locked, server-current parcel state."""
+    """Validate a paid capture against the locked, server-current parcel state.
+
+    Image renders additionally bind every color-coded capture instance. Video
+    uses the same scene-revision claims before reserving a run, but its browser
+    route capture has its own temporal control manifest instead of one static
+    instance-ID frame.
+    """
 
     boundaries = [
         zone
@@ -121,8 +130,8 @@ def _validate_direct_3d_project_zones(
         )
     except Community3DScopeError:
         raise _direct_state_conflict(
-            "The captured Community 3D layer set no longer matches this project. "
-            "Refresh the scene before rendering."
+            "The captured 3D layer set no longer matches this project. "
+            "Run Generate to 3D again before rendering."
         )
 
     unsupported = [
@@ -268,37 +277,37 @@ def _validate_direct_3d_project_zones(
 
     if stale_or_uncompiled:
         raise _direct_state_conflict(
-            f"{len(stale_or_uncompiled)} Community 3D layer"
+            f"{len(stale_or_uncompiled)} compiled 3D layer"
             f"{'s are' if len(stale_or_uncompiled) != 1 else ' is'} stale or missing a "
-            "source fingerprint. Rebuild Community 3D before rendering."
+            "source fingerprint. Run Generate to 3D again before rendering."
         )
     if missing_buildings:
         raise _direct_state_conflict(
             f"{len(missing_buildings)} compiled building model"
             f"{'s are' if len(missing_buildings) != 1 else ' is'} no longer available. "
-            "Rebuild Community 3D before rendering."
+            "Run Generate to 3D again before rendering."
         )
 
-    server_inventory = _bind_instance_manifest_to_server_zones(
-        req,
-        physical_zones,
-        zones,
+    server_inventory = (
+        _bind_instance_manifest_to_server_zones(req, physical_zones, zones)
+        if bind_capture_instances
+        else []
     )
     if len(boundaries) > 1:
         raise _direct_state_conflict(
             "Direct 3D requires one authoritative site boundary. Resolve duplicate "
-            "boundaries and rebuild Community 3D before rendering."
+            "boundaries and run Generate to 3D again before rendering."
         )
     if not boundaries:
         if len(physical_zones) > 1:
             raise _direct_state_conflict(
                 "This multi-zone project no longer has its compiled site boundary. "
-                "Rebuild Community 3D before rendering."
+                "Run Generate to 3D again before rendering."
             )
         if req.residual_landscape_claim is not None:
             raise _direct_state_conflict(
                 "The compiled site boundary changed after capture. Refresh and rebuild "
-                "Community 3D before rendering."
+                "the scene with Generate to 3D before rendering."
             )
         return server_inventory
 
@@ -307,7 +316,7 @@ def _validate_direct_3d_project_zones(
     claim = req.residual_landscape_claim
     if not isinstance(stored, dict) or stored.get("state") != "compiled" or claim is None:
         raise _direct_state_conflict(
-            "Residual landscaping is not current. Rebuild Community 3D before rendering."
+            "Residual landscaping is not current. Run Generate to 3D again before rendering."
         )
     stored_hash = stored.get("source_hash")
     stored_boundary_id = stored.get("boundary_id")
@@ -333,8 +342,8 @@ def _validate_direct_3d_project_zones(
         )
     except (TypeError, ValueError, AttributeError):
         raise _direct_state_conflict(
-            "The parcel geometry changed after capture. Refresh and rebuild "
-            "Community 3D before spending on a Direct render."
+            "The parcel geometry changed after capture. Refresh and rebuild the scene "
+            "with Generate to 3D before spending on a Direct render."
         )
     if (
         stored_boundary_id != str(boundary.id)
@@ -344,7 +353,7 @@ def _validate_direct_3d_project_zones(
         or claim.source_hash.lower() != current_residual_hash.lower()
     ):
         raise _direct_state_conflict(
-            "The parcel changed after capture. Refresh and rebuild Community 3D before "
+            "The parcel changed after capture. Refresh and run Generate to 3D again before "
             "spending on a Direct render."
         )
     return server_inventory
@@ -1263,6 +1272,14 @@ async def generate_direct_3d_render(
         list(zones_result.scalars().all()),
         {str(building.id): building for building in current_buildings},
     )
+    scene_revision_sha256 = (
+        compiled_scene_revision_sha256(
+            req.community_3d_claims,
+            req.residual_landscape_claim,
+        )
+        if req.residual_landscape_claim is not None
+        else None
+    )
 
     if not settings.openai_api_key:
         raise HTTPException(
@@ -1410,6 +1427,7 @@ async def generate_direct_3d_render(
             outcome=(
                 f"{result.outcome} · {strategy}" if strategy else str(result.outcome)
             ),
+            scene_revision_sha256=scene_revision_sha256,
         )
         if result.provider_image_base64 and strategy not in (
             None,
@@ -1427,6 +1445,7 @@ async def generate_direct_3d_render(
                 ),
                 variant="provider_original",
                 outcome="review_required",
+                scene_revision_sha256=scene_revision_sha256,
             )
     except Exception as gallery_exc:
         logger.warning(

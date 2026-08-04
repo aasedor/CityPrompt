@@ -58,6 +58,14 @@ import {
 } from './useDirect3DRender';
 import { buildPublicRealmSceneContextPrompt } from './publicRealmGenerationContext';
 
+// Community compilation now has one canonical top-level entry point. Keep the
+// former render-panel controls available only as an explicit recovery switch
+// for older deployments while avoiding a second competing Generate action.
+const SHOW_LEGACY_COMMUNITY_3D_TOOLS =
+  import.meta.env.VITE_ENABLE_RENDER_PANEL_COMMUNITY_3D_TOOLS === 'true';
+const SHOW_LEGACY_CLASSIC_RENDER =
+  import.meta.env.VITE_ENABLE_CLASSIC_POLYGON_RENDER === 'true';
+
 // Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
 // samples of one engine give a real A/B choice; labels keep them apart.
@@ -271,7 +279,9 @@ export function GlobeAIRenderPanel({
   const [customPrompt, setCustomPrompt] = useState('');
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>('classic');
+  const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>(
+    SHOW_LEGACY_CLASSIC_RENDER ? 'classic' : 'direct3d',
+  );
   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
@@ -386,11 +396,11 @@ export function GlobeAIRenderPanel({
     : !projectId
       ? 'Save this project before using Direct 3D.'
     : !hasCompiledCommunity
-      ? 'Generate or complete Community 3D first.'
+      ? 'Run Generate to 3D first.'
     : !hasAllCompiledSourceFingerprints
-      ? 'Rebuild Community 3D once to verify every layer against its current source geometry and design settings.'
+      ? 'Run Generate to 3D again to verify every layer against its current source geometry and design settings.'
     : !hasCurrentResidualLandscape
-        ? 'Rebuild Community 3D to refresh residual landscaping before a Direct render.'
+        ? 'Run Generate to 3D again to refresh residual landscaping before a Direct render.'
         : unsupportedDirect3DZones.length > 0
           ? `${unsupportedDirect3DZones.length} authored polygon${unsupportedDirect3DZones.length === 1 ? '' : 's'} need a supported building, park/plaza, or street/path type.`
         : !hasAllCompiledBuildingMassing
@@ -1211,8 +1221,8 @@ export function GlobeAIRenderPanel({
       </div>
       <div className="border-b-2 border-white/10 px-4 py-2">
         <div className="mb-1 text-[10px] font-black uppercase text-white/50">Render pipeline</div>
-        <div className="grid grid-cols-2 gap-2">
-          <button
+        <div className={`grid gap-2 ${SHOW_LEGACY_CLASSIC_RENDER ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          {SHOW_LEGACY_CLASSIC_RENDER && <button
             type="button"
             onClick={() => {
               pipelineChoiceTouchedRef.current = true;
@@ -1236,7 +1246,7 @@ export function GlobeAIRenderPanel({
             <span className="mt-0.5 block text-[9px] font-semibold leading-snug opacity-65">
               Established colored-zone pipeline and A/B previews.
             </span>
-          </button>
+          </button>}
           <button
             type="button"
             disabled={!direct3DAvailable}
@@ -1299,7 +1309,7 @@ export function GlobeAIRenderPanel({
                         }}
                         disabled={disabled}
                         title={disabled
-                          ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
+                          ? 'Development mode needs placed 3D massing — run Generate to 3D first.'
                           : renderPipeline === 'direct3d' && presentationMode === 'reproject'
                             ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
                             : s.id === 'development'
@@ -1691,7 +1701,7 @@ export function GlobeAIRenderPanel({
       )}
 
       {/* 3D building models — generate from archetype-assigned zones + render mode */}
-      {projectId && communityZones.length > 0 && (
+      {SHOW_LEGACY_COMMUNITY_3D_TOOLS && projectId && communityZones.length > 0 && (
         <div className="border-t-2 border-white/10 px-4 py-3">
           <div className="flex items-center gap-1.5 text-xs font-black uppercase text-white/55">
             <Boxes size={13} />

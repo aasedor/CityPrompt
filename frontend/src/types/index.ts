@@ -71,6 +71,7 @@ export interface SavedRender {
   seed?: number;
   model?: string;
   image_quality?: 'auto' | 'low' | 'medium' | 'high';
+  scene_revision_sha256?: string;
   created_at: string;
 }
 

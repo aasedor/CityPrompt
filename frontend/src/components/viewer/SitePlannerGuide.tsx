@@ -11,8 +11,8 @@ const STEPS = [
   },
   {
     Icon: Layers,
-    title: 'Add Zones Inside',
-    description: 'Use Buildings, Streets and Paths, and Parks / Plazas to lay out the community inside the boundary.',
+    title: 'Understand & Plan',
+    description: 'Generate Site DNA, then draw buildings, streets, and parks manually or draw a Master Planner scenario.',
   },
   {
     Icon: Settings,
@@ -21,13 +21,13 @@ const STEPS = [
   },
   {
     Icon: Sparkles,
-    title: 'Generate Community',
-    description: 'Select the Site Boundary and click "Generate Community" to generate the integrated 3D community.',
+    title: 'Generate to 3D',
+    description: 'Build the complete scene in one action: LEGO buildings, public realm, props, and residual landscaping.',
   },
   {
     Icon: Eye,
-    title: 'View & Explore',
-    description: 'View in 3D or walk through your neighborhood at street level.',
+    title: 'Render & Explore',
+    description: 'Create stylistic image or video renders from the compiled scene and its Google-tile context.',
   },
 ] as const;
 
