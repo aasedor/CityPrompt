@@ -122,6 +122,13 @@ type DevelopmentAestheticOption = {
   maxDepth_m?: number;
   aspectRatio?: string;
   variants?: CatalogArchetypeVariant[];
+  standardSection?: {
+    sectionSvgUrl: string | null;
+    standardFamily: string;
+    citation: string | null;
+    rowM: number | null;
+    targetSpeedKmh: number | null;
+  };
 };
 
 const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = BUILDING_AESTHETIC_CATEGORIES_V2;
@@ -660,6 +667,14 @@ const clearDomainStyleFields = (
     delete nextMap[domainInputKey];
     target.generation_style_inputs = Object.keys(nextMap).length > 0 ? nextMap : undefined;
   }
+
+  if (key === 'road_aesthetic') {
+    target.road_standard_section_svg_url = undefined;
+    target.road_standard_family = undefined;
+    target.road_standard_citation = undefined;
+    target.road_standard_row_m = undefined;
+    target.road_standard_target_speed_kmh = undefined;
+  }
 };
 
 const buildAestheticSelectionProps = (
@@ -690,7 +705,9 @@ const buildAestheticSelectionProps = (
     const inputMapKey = DOMAIN_STYLE_INPUT_KEY[key];
     const generationDomain = DOMAIN_GENERATION_DOMAIN[key];
     const archetypeImages = Array.isArray(selectedOption.archetypeImages) ? selectedOption.archetypeImages : [];
-    const frontDayArchetype = getFrontDayArchetypeImage(archetypeImages);
+    const frontDayArchetype = selectedOption.standardSection
+      ? archetypeImages[0]
+      : getFrontDayArchetypeImage(archetypeImages);
     const resolvedArchetype = archetypeImages.find((image) => image.id === selectedArchetypeImageId) || frontDayArchetype || archetypeImages[0];
     const resolvedArchetypeImage = resolvedArchetype?.imageUrl || selectedOption.photoUrl;
 
@@ -749,6 +766,14 @@ const buildAestheticSelectionProps = (
       lighting: resolvedArchetype?.lighting,
       prompt: resolvedArchetype?.prompt,
     };
+
+    if (key === 'road_aesthetic') {
+      nextProps.road_standard_section_svg_url = selectedOption.standardSection?.sectionSvgUrl;
+      nextProps.road_standard_family = selectedOption.standardSection?.standardFamily;
+      nextProps.road_standard_citation = selectedOption.standardSection?.citation;
+      nextProps.road_standard_row_m = selectedOption.standardSection?.rowM;
+      nextProps.road_standard_target_speed_kmh = selectedOption.standardSection?.targetSpeedKmh;
+    }
 
     if (resolvedStyleProfile) {
       nextProps[`${stylePrefix}_style_profile`] = resolvedStyleProfile;
@@ -3016,7 +3041,9 @@ function AestheticOptionCard({
   const sources = buildAestheticImageSources(option);
   const archetypeImages = Array.isArray(option.archetypeImages) ? option.archetypeImages : [];
   const variants = Array.isArray(option.variants) ? option.variants : [];
-  const defaultArchetype = getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
+  const defaultArchetype = option.standardSection
+    ? archetypeImages[0]
+    : getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
 
   // If a variant is selected, use its authored reference as the hero. Family
   // source photos are fallbacks only; generated 3D model previews never enter
@@ -3041,6 +3068,7 @@ function AestheticOptionCard({
     ...sources,
   ]);
   const isSelected = value === option.id;
+  const isStandardSection = Boolean(option.standardSection?.sectionSvgUrl);
   const areaFit = showSiteFit ? getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0) : null;
 
   // Determine thumbnail slot content from authored references only.
@@ -3097,7 +3125,7 @@ function AestheticOptionCard({
           <AestheticImage
             sources={heroSources}
             alt={option.label}
-            className="h-full w-full object-cover"
+            className={`h-full w-full ${isStandardSection ? 'bg-white object-contain p-1' : 'object-cover'}`}
             onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
@@ -3118,6 +3146,16 @@ function AestheticOptionCard({
         </div>
         <div className="px-2 py-1.5">
           <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+          {option.standardSection && (
+            <div className="mt-1.5 rounded border border-sky-700/20 bg-sky-50 px-1.5 py-1 text-[9px] font-semibold leading-tight text-sky-950/70">
+              <span className="font-black uppercase">Manual section</span>
+              {option.standardSection.rowM ? ` · ${option.standardSection.rowM} m ROW` : ''}
+              {option.standardSection.targetSpeedKmh ? ` · ${option.standardSection.targetSpeedKmh} km/h` : ''}
+              {option.standardSection.citation ? (
+                <span className="mt-0.5 block font-medium opacity-75">{option.standardSection.citation}</span>
+              ) : null}
+            </div>
+          )}
           {showSiteFit && (
             <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
               areaFit
@@ -3178,6 +3216,7 @@ function AestheticOptionCard({
               variant.thumbnailUrl,
               authoredVariantReference?.imageUrl,
               authoredVariantReference?.thumbnailUrl,
+              option.standardSection?.sectionSvgUrl ? option.photoUrl : undefined,
             ]);
             return (
               <button

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
@@ -195,6 +196,29 @@ interface StreetNetworkDiagram {
   dataUrl: string;
   placement: StreetNetworkPlacement;
   archetypeIds: string[];
+  standards: TransportStandardEntry[];
+}
+
+const STREET_STANDARD_BY_ARCHETYPE = new Map(
+  TRANSPORT_STANDARDS.map((standard) => [standard.archetypeId, standard]),
+);
+
+/** Engineering sections represented by the active street network, in stable order. */
+export function getStreetNetworkStandards(zones: SiteZone[]): TransportStandardEntry[] {
+  const placement = buildStreetNetworkPlacement(zones);
+  if (!placement) return [];
+  const seen = new Set<string>();
+  const standards: TransportStandardEntry[] = [];
+  selectStreetNetworkZones(zones, placement.boundary_zone_id).forEach((road) => {
+    const archetypeId = String(
+      (road.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '',
+    );
+    const standard = STREET_STANDARD_BY_ARCHETYPE.get(archetypeId);
+    if (!standard?.sectionSvgUrl || seen.has(standard.archetypeId)) return;
+    seen.add(standard.archetypeId);
+    standards.push(standard);
+  });
+  return standards;
 }
 
 function polygonPoints(
@@ -331,14 +355,29 @@ export function buildStreetNetworkDiagram(zones: SiteZone[]): StreetNetworkDiagr
   const archetypeIds = [...new Set(roads.map((road) => (
     String((road.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? 'urban-local-street')
   )))];
-  return { dataUrl: canvas.toDataURL('image/png'), placement, archetypeIds };
+  return {
+    dataUrl: canvas.toDataURL('image/png'),
+    placement,
+    archetypeIds,
+    standards: getStreetNetworkStandards(zones),
+  };
 }
 
 function streetNetworkPrompt(diagram: StreetNetworkDiagram): string {
+  const sectionContract = diagram.standards.length > 0
+    ? diagram.standards.map((standard) => [
+        standard.title,
+        standard.rowM ? `${standard.rowM} m ROW` : null,
+        standard.targetSpeedKmh ? `${standard.targetSpeedKmh} km/h target speed` : null,
+        standard.citation,
+      ].filter(Boolean).join(' — ')).join('; ')
+    : 'No authored engineering section supplied; follow the selected family and exact footprint.';
   return [
     'Create one photorealistic north-up orthographic ground-material atlas for the connected street and pathway network in Image 1.',
     `The immutable site is approximately ${Math.round(diagram.placement.size_m.width)} by ${Math.round(diagram.placement.size_m.height)} metres.`,
     `Respect these selected street families: ${diagram.archetypeIds.join(', ')}.`,
+    `ENGINEERING CROSS-SECTION CONTRACT: ${sectionContract}`,
+    'Use each attached manual section to preserve its lane count, lane direction, median, parking, bicycle facility, sidewalk and planted-boulevard allocation. Translate that section continuously along its matching plan footprint without changing the footprint.',
     'Image 1 is the exact, to-scale geometry contract. Preserve every footprint, width, right angle, connection, junction, curb edge, pathway and roundabout pixel-for-pixel.',
     'Make all streets work with the adjacent building pads and green park polygons as one coordinated development.',
     'Replace semantic colours with realistic restrained urban materials: locally plausible medium-grey asphalt with fine aggregate and subtle wear, pale cast-in-place concrete sidewalks with correctly scaled joints, curb-and-gutter bands, planted boulevards, and crisp slightly weathered markings.',
@@ -346,6 +385,49 @@ function streetNetworkPrompt(diagram: StreetNetworkDiagram): string {
     'GROUND MATERIALS ONLY. Do not add buildings, roofs, tree canopies, vehicles, people, benches, lights, signs, equipment or shadows from vertical objects; City Prompt places those as separate 3D models afterward.',
     'Camera exactly 90-degree nadir, zero perspective, even overcast midday lighting. Output must register pixel-for-pixel to Image 1.',
   ].join(' ');
+}
+
+function resolvePublicAssetUrl(path: string): string {
+  if (!path.startsWith('/')) return path;
+  const base = import.meta.env.BASE_URL || '/';
+  return `${base.endsWith('/') ? base : `${base}/`}${path.slice(1)}`;
+}
+
+async function rasterizeStreetSection(standard: TransportStandardEntry): Promise<{
+  image_base64: string;
+  label: string;
+} | null> {
+  if (!standard.sectionSvgUrl || typeof document === 'undefined') return null;
+  const sectionSvgUrl = standard.sectionSvgUrl;
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => {
+      const scale = Math.min(1, 1536 / Math.max(1, image.naturalWidth));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const context = canvas.getContext('2d');
+      if (!context) {
+        resolve(null);
+        return;
+      }
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      resolve({
+        image_base64: canvas.toDataURL('image/png').split(',')[1] ?? '',
+        label: [
+          `ENGINEERING SECTION for ${standard.archetypeId}: ${standard.title}`,
+          standard.rowM ? `${standard.rowM} m ROW` : null,
+          standard.targetSpeedKmh ? `${standard.targetSpeedKmh} km/h target speed` : null,
+          standard.citation,
+          'Preserve the depicted cross-section allocation along matching roads in Image 1.',
+        ].filter(Boolean).join(' — '),
+      });
+    };
+    image.onerror = () => resolve(null);
+    image.src = resolvePublicAssetUrl(sectionSvgUrl);
+  });
 }
 
 function base64ImageFile(value: string, name: string): File {
@@ -363,16 +445,23 @@ export async function generateStreetNetworkGroundTexture(
 ): Promise<StreetNetworkGroundTextureMeta> {
   const diagram = buildStreetNetworkDiagram(zones);
   if (!diagram) throw new Error('A saved site boundary and street network are required.');
-  const { image_base64: imageBase64 } = await rendersApi.generateEdit({
-    image_base64: diagram.dataUrl.split(',')[1] ?? '',
-    mask_base64: '',
-    prompt: streetNetworkPrompt(diagram),
-    archetype_images: options.sceneContextImageBase64
+  const sectionReferences = (await Promise.all(
+    diagram.standards.slice(0, 6).map(rasterizeStreetSection),
+  )).filter((reference): reference is NonNullable<typeof reference> => Boolean(reference?.image_base64));
+  const archetypeImages = [
+    ...sectionReferences,
+    ...(options.sceneContextImageBase64
       ? [{
           image_base64: options.sceneContextImageBase64,
           label: 'LIVE GOOGLE-TILE SITE CONTEXT: use only for local material character, grade and edge relationships; Image 1 remains the immutable geometry contract',
         }]
-      : undefined,
+      : []),
+  ];
+  const { image_base64: imageBase64 } = await rendersApi.generateEdit({
+    image_base64: diagram.dataUrl.split(',')[1] ?? '',
+    mask_base64: '',
+    prompt: streetNetworkPrompt(diagram),
+    archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
     model: STREET_NETWORK_GROUND_MODEL,
     image_quality: 'high',
     project_id: projectId,

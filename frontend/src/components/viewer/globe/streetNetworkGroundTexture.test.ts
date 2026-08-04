@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import {
   buildStreetNetworkPlacement,
   getCurrentStreetNetworkGroundMeta,
+  getStreetNetworkStandards,
   getStreetNetworkGroundMeta,
   streetZoneSourceSignature,
   type StreetNetworkGroundTextureMeta,
@@ -94,5 +95,30 @@ describe('connected street-network ground atlas', () => {
     });
     expect(getStreetNetworkGroundMeta(edited)).toBeNull();
     expect(getCurrentStreetNetworkGroundMeta([boundary, edited])).toBeNull();
+  });
+
+  it('carries selected Calgary engineering sections into the shared street atlas contract', () => {
+    const calgaryLocal = zone({
+      properties: {
+        ...zone({}).properties,
+        road_archetype_id: 'calgary_local',
+      },
+    });
+    const duplicateLocal = zone({
+      id: '220fd97c-bd94-4e0b-aff7-67ba239e531f',
+      properties: {
+        ...zone({}).properties,
+        road_archetype_id: 'calgary_local',
+      },
+    });
+    const standards = getStreetNetworkStandards([boundary, calgaryLocal, duplicateLocal]);
+
+    expect(standards).toHaveLength(1);
+    expect(standards[0]).toMatchObject({
+      archetypeId: 'calgary_local',
+      sectionSvgUrl: '/archetypes/streets/calgary-local/section.svg',
+      rowM: 16,
+      targetSpeedKmh: 30,
+    });
   });
 });

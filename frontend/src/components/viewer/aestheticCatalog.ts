@@ -4,6 +4,7 @@ import buildingArchetypeLibrary from '@/data/buildingArchetypes.json';
 import streetPathArchetypeLibrary from '@/data/streetPathArchetypes.json';
 import openSpaceArchetypeLibrary from '@/data/openSpaceArchetypes.json';
 import archetypeVisualSystem from '@/data/archetypeVisualSystem.json';
+import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
 
 export type AestheticCategory = {
   id: string;
@@ -169,6 +170,9 @@ export type AestheticOption = {
   footprintCompatibility?: FootprintCompatibility;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
+  /** Authored engineering section used as both picker preview and AI drape guidance. */
+  standardSection?: Pick<TransportStandardEntry,
+    'sectionSvgUrl' | 'standardFamily' | 'citation' | 'rowM' | 'targetSpeedKmh'>;
 };
 
 type ArchetypeVisualVariant = {
@@ -469,9 +473,62 @@ export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_LIBRARY
 // — e.g. "Calgary Street Manual" — appear in the picker automatically instead of
 // being silently dropped by a hardcoded list.
 export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = ROAD_LIBRARY.categories;
-export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('street_pathway', 'streets', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
+const TRANSPORT_STANDARD_BY_ARCHETYPE = new Map(
+  TRANSPORT_STANDARDS.map((standard) => [standard.archetypeId, standard]),
 );
+
+export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) => {
+  const option = toAestheticOption(
+    'street_pathway',
+    'streets',
+    VISUAL_SYSTEM,
+    ROAD_LIBRARY.categories,
+    seed,
+  );
+  const standard = TRANSPORT_STANDARD_BY_ARCHETYPE.get(seed.id);
+  if (!standard?.sectionSvgUrl) return option;
+
+  const sectionUrl = resolvePublicAssetUrl(standard.sectionSvgUrl);
+  const sectionImage: ArchetypeImage = {
+    id: `${seed.id}_manual_section`,
+    label: `${standard.title} — Manual cross-section`,
+    description: [
+      `${standard.standardFamily} engineering section`,
+      standard.rowM ? `${standard.rowM} m right-of-way` : null,
+      standard.targetSpeedKmh ? `${standard.targetSpeedKmh} km/h target speed` : null,
+    ].filter(Boolean).join(' · '),
+    camera: 'street',
+    imageUrl: sectionUrl,
+    imagePath: standard.sectionSvgUrl,
+    lighting: 'engineering diagram',
+  };
+
+  return {
+    ...option,
+    photoUrl: sectionUrl,
+    photoUrls: dedupeStrings([sectionUrl, ...(option.photoUrls ?? [])]),
+    archetypeImages: [
+      sectionImage,
+      ...(option.archetypeImages ?? []).filter((image) => image.imageUrl !== sectionUrl),
+    ],
+    standardSection: {
+      sectionSvgUrl: standard.sectionSvgUrl,
+      standardFamily: standard.standardFamily,
+      citation: standard.citation,
+      rowM: standard.rowM,
+      targetSpeedKmh: standard.targetSpeedKmh,
+    },
+    generationStyleInput: {
+      ...option.generationStyleInput,
+      archetypeImageUrl: sectionUrl,
+      archetypeImagePath: standard.sectionSvgUrl,
+      archetypeImageIds: [
+        sectionImage.id,
+        ...(option.generationStyleInput?.archetypeImageIds ?? []),
+      ],
+    },
+  };
+});
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
   toAestheticOption('park_plaza', 'openspaces', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
