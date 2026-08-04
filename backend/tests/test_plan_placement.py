@@ -2,7 +2,9 @@
 tagging, density transect, street hierarchy, park mix, typology massing,
 laneways/pond/roundabouts, and graceful degradation on locked streets."""
 
+import json
 import math
+from pathlib import Path
 
 from shapely.geometry import Polygon
 
@@ -10,6 +12,7 @@ from app.services.plan_geometry.community_rules import LANE_ROW_M, MIN_ROW_M
 from app.services.plan_geometry.generator import generate_plan_geometry
 from app.services.plan_geometry.placement import (
     CATALOG_DEV_TYPES,
+    PALETTES,
     Palette,
     runtime_lego_rectangle_fit,
     selected_target_footprint,
@@ -54,6 +57,14 @@ def _metric_area(zone, site) -> float:
     return project_geometry(Polygon(zone["coordinates"]), tf).area
 
 
+def _catalog_ids(filename: str) -> set[str]:
+    repo_root = Path(__file__).resolve().parents[2]
+    payload = json.loads(
+        (repo_root / "frontend" / "src" / "data" / filename).read_text(encoding="utf-8")
+    )
+    return {str(item["id"]) for item in payload["archetypes"]}
+
+
 def test_block_plans_resolve_archetypes_before_massing():
     from app.services.plan_geometry.archetypes import load_dims_table
 
@@ -65,6 +76,39 @@ def test_block_plans_resolve_archetypes_before_massing():
     for z in buildings:
         arch = z["properties"].get("development_archetype_id")
         assert arch in known_ids, f"unresolved archetype for {z['name']}: {arch!r}"
+
+
+def test_every_generated_public_realm_zone_has_a_valid_catalog_archetype():
+    street_ids = _catalog_ids("streetPathArchetypes.json")
+    open_space_ids = _catalog_ids("openSpaceArchetypes.json")
+    courtyard_count = 0
+
+    for scenario_id in sorted(PALETTES):
+        result = _generate(scenario_id, scenario_id.replace("_", " ").title())
+        roads = [zone for zone in result.zones if zone["zone_type"] == "road"]
+        greens = [zone for zone in result.zones if zone["zone_type"] == "green_space"]
+        assert roads, scenario_id
+        assert greens, scenario_id
+
+        for zone in roads:
+            archetype_id = zone["properties"].get("road_archetype_id")
+            assert archetype_id in street_ids, (
+                scenario_id,
+                zone["name"],
+                archetype_id,
+            )
+
+        for zone in greens:
+            archetype_id = zone["properties"].get("green_space_archetype_id")
+            assert archetype_id in open_space_ids, (
+                scenario_id,
+                zone["name"],
+                archetype_id,
+            )
+            if zone["properties"].get("_plan_role") == "courtyard":
+                courtyard_count += 1
+
+    assert courtyard_count > 0
 
 
 def test_measured_dims_change_target_not_archetype():

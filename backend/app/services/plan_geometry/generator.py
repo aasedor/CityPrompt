@@ -1389,7 +1389,11 @@ def generate_plan_geometry(
 
 
 def _default_road_archetype_id(role: str, width: float) -> str:
-    """Persist the same measured street identity the frontend would infer."""
+    """Persist the same measured street identity the frontend would infer.
+
+    This covers locked networks and precision residue that have no source
+    segment from which to inherit an explicit catalog identity.
+    """
 
     if role == "path":
         return "multi_use_trail"
@@ -1415,6 +1419,7 @@ def _street_zone(
     context_connection: bool = False,
     geometry_source: str | None = None,
 ) -> list[dict[str, Any]]:
+    resolved_archetype_id = archetype_id or _default_road_archetype_id(role, width)
     zones = []
     resolved_archetype_id = archetype_id or _default_road_archetype_id(role, width)
     projected_polygons = (
