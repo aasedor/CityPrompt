@@ -107,6 +107,11 @@ import {
   parkSpecialtyGuideRoute,
   resolveStormwaterInfrastructureGuides,
 } from './parkSpecialtyGeometry';
+import {
+  resolveParkBenchStyle,
+  resolveParkTreeVariant,
+  type PublicRealmBenchStyle,
+} from './publicRealmPropPalettes';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -389,6 +394,12 @@ function ProceduralParkFinishingProps({
       + (propId === 'bench' ? PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS : 0),
     yawRad: placement.yawRad,
     scale: propId === 'tree' ? Math.max(0.72, placement.scale) : placement.scale,
+    ...(propId === 'tree' && appearance
+      ? { treeVariant: resolveParkTreeVariant(
+        appearance.materialPattern,
+        `${appearance.archetypeId}:${placement.lng.toFixed(7)}:${placement.lat.toFixed(7)}:${index}`,
+      ) }
+      : {}),
   }));
   if (propId === 'tree') {
     return <GlobeLandscapeTreeStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
@@ -403,6 +414,7 @@ function ProceduralParkFinishingProps({
           key={`${Math.round(placement.x * 10)}-${Math.round(placement.y * 10)}-${index}`}
           placement={placement}
           palette={appearance.palette}
+          style={resolveParkBenchStyle(appearance.materialPattern)}
         />
       ))}
     </>
@@ -412,10 +424,36 @@ function ProceduralParkFinishingProps({
 function ParkFamilyBench({
   placement,
   palette,
+  style,
 }: {
   placement: { x: number; y: number; z: number; yawRad: number; scale: number };
   palette: ParkLegoPalette;
+  style: PublicRealmBenchStyle;
 }) {
+  if (style === 'minimal_slab') {
+    return (
+      <group
+        position={[placement.x, placement.y, placement.z]}
+        rotation={[0, 0, placement.yawRad]}
+        scale={[placement.scale, placement.scale, placement.scale]}
+        renderOrder={RENDER_ORDER_PROPS}
+      >
+        <mesh position={[0, 0, 0.48]} renderOrder={RENDER_ORDER_PROPS}>
+          <boxGeometry args={[1.95, 0.5, 0.14]} />
+          <meshStandardMaterial color={palette.pavilionPad} roughness={0.9} />
+        </mesh>
+        {[-0.58, 0.58].map((legX) => (
+          <mesh key={legX} position={[legX, 0, 0.24]} renderOrder={RENDER_ORDER_PROPS}>
+            <boxGeometry args={[0.18, 0.38, 0.48]} />
+            <meshStandardMaterial color={palette.benchFrame} metalness={0.28} roughness={0.62} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  const hasBack = style !== 'backless_timber';
+  const isHeritage = style === 'heritage_cast_iron';
   return (
     <group
       position={[placement.x, placement.y, placement.z]}
@@ -429,7 +467,7 @@ function ParkFamilyBench({
           <meshStandardMaterial color={palette.benchSeat} roughness={0.82} />
         </mesh>
       ))}
-      {[0.68, 0.81, 0.94].map((slatZ) => (
+      {hasBack && [0.68, 0.81, 0.94].map((slatZ) => (
         <mesh key={`back-${slatZ}`} position={[0, 0.255, slatZ]} rotation={[Math.PI / 18, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
           <boxGeometry args={[1.86, 0.055, 0.075]} />
           <meshStandardMaterial color={palette.timberDark} roughness={0.84} />
@@ -444,6 +482,18 @@ function ParkFamilyBench({
           <mesh position={[legX, -0.28, 0.72]} renderOrder={RENDER_ORDER_PROPS}>
             <boxGeometry args={[0.075, 0.075, 0.56]} />
             <meshStandardMaterial color={palette.benchFrame} metalness={0.54} roughness={0.48} />
+          </mesh>
+        </group>
+      ))}
+      {isHeritage && [-0.84, 0.84].map((armX) => (
+        <group key={`arm-${armX}`}>
+          <mesh position={[armX, -0.02, 0.72]} renderOrder={RENDER_ORDER_PROPS}>
+            <cylinderGeometry args={[0.035, 0.035, 0.5, 8]} />
+            <meshStandardMaterial color={palette.benchFrame} metalness={0.62} roughness={0.42} />
+          </mesh>
+          <mesh position={[armX, -0.12, 0.93]} rotation={[Math.PI / 2, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
+            <torusGeometry args={[0.16, 0.035, 6, 12, Math.PI]} />
+            <meshStandardMaterial color={palette.benchFrame} metalness={0.62} roughness={0.42} />
           </mesh>
         </group>
       ))}

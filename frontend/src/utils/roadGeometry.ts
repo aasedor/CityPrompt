@@ -64,6 +64,33 @@ export function extractZoneCenterline(
     ?? extractCenterline(zone.coordinates);
 }
 
+/** Centerline used by the compiled 3D street renderer.
+ *
+ * A clipped connector polygon is no longer the reversible output of the
+ * buffer helper: subtraction may reorder vertices, add parcel corners and
+ * leave a tapered wedge. Pairing opposite ring vertices in that case creates
+ * a diagonal or self-crossing "centerline" whose section ribbon can extend
+ * far beyond the authored polygon. Compiled recipes therefore require their
+ * authoritative pre-buffer line. When it is unavailable, the polygon-clipped
+ * textured base remains the safe and visually honest fallback.
+ *
+ * Editable/legacy planning polygons continue to use extractZoneCenterline so
+ * width editing remains backwards compatible.
+ */
+export function extractRenderableStreetCenterline(
+  zone: Pick<SiteZone, 'coordinates' | 'properties'>,
+): number[][] {
+  const persisted = parsePersistedCenterline(zone.properties?.plan_centerline);
+  if (persisted) return persisted;
+
+  const community = zone.properties?.community_3d;
+  const compiledStreet = community
+    && typeof community === 'object'
+    && String((community as Record<string, unknown>).state ?? '').toLowerCase() === 'compiled'
+    && String((community as Record<string, unknown>).kind ?? '').toLowerCase() === 'street';
+  return compiledStreet ? [] : extractCenterline(zone.coordinates);
+}
+
 /**
  * Buffer a polyline into a polygon strip of given width in meters.
  * Coordinates are [lng, lat].

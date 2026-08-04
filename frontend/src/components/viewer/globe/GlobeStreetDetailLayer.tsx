@@ -21,7 +21,7 @@ import {
   resolveCommunity3DKind,
   shouldRenderCommunityGround,
 } from '@/features/community3d/community3d';
-import { extractZoneCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
+import { extractRenderableStreetCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import {
@@ -231,7 +231,7 @@ function StreetRibbonDetail({
 
   // Centerline in lng/lat, densified so stations follow terrain.
   const { centerLngLat, centroid, halfWidth, sectionScale } = useMemo(() => {
-    const center = extractZoneCenterline(zone);
+    const center = extractRenderableStreetCenterline(zone);
     if (center.length < 2) return {
       centerLngLat: null, centroid: null, halfWidth: 0, sectionScale: 1,
     };

@@ -21,6 +21,8 @@ export interface LandscapeTreePlacement {
   scale: number;
   /** Optional archetype-owned silhouette constraint. */
   canopyClass?: LandscapeTreeCanopyClass;
+  /** Optional explicit catalog selection supplied by an appearance family. */
+  treeVariant?: LandscapeTreeVariant;
 }
 
 interface TreeVariantInstancesProps {
@@ -387,7 +389,7 @@ function LandscapeTreeStandContent({
       tropical_palm: [],
     };
     placements.forEach((placement, index) => {
-      groups[selectLandscapeTreeVariant(placement, index)].push(placement);
+      groups[placement.treeVariant ?? selectLandscapeTreeVariant(placement, index)].push(placement);
     });
     return groups;
   }, [placements]);

@@ -3,6 +3,7 @@ import {
   bufferLineToPolygon,
   effectiveRoadWidth,
   extractCenterline,
+  extractRenderableStreetCenterline,
   extractZoneCenterline,
 } from './roadGeometry';
 
@@ -59,6 +60,31 @@ describe('road centerline extraction', () => {
       coordinates: polygon,
       properties: { plan_centerline: [['bad', 51.047]] },
     })).toEqual(extractCenterline(polygon));
+  });
+
+  it('does not invent a ribbon centerline from an irregular compiled connector polygon', () => {
+    const clippedConnector = [
+      [-114.1512, 51.0469], [-114.1508, 51.0477], [-114.1502, 51.0476],
+      [-114.1492, 51.0473], [-114.1494, 51.0469], [-114.1505, 51.0470],
+      [-114.1512, 51.0469],
+    ];
+    expect(extractRenderableStreetCenterline({
+      coordinates: clippedConnector,
+      properties: {
+        community_3d: { state: 'compiled', kind: 'street' },
+      },
+    })).toEqual([]);
+  });
+
+  it('keeps the authoritative centerline for a compiled clipped street', () => {
+    const source = [[-114.151, 51.047], [-114.1504, 51.0474]];
+    expect(extractRenderableStreetCenterline({
+      coordinates: bufferLineToPolygon(source, 12),
+      properties: {
+        plan_centerline: source,
+        community_3d: { state: 'compiled', kind: 'street' },
+      },
+    })).toEqual(source);
   });
 });
 

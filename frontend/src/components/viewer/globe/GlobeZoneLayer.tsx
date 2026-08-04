@@ -65,6 +65,11 @@ import {
   direct3DProposalUserData,
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
+import {
+  createMetricSurfaceGeometry,
+  createStreetSurfaceAlbedoTexture,
+  type StreetSurfaceMaterialKind,
+} from './streetSurfaceMaterials';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -500,6 +505,38 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     [isWoonerfGround, zone.id],
   );
   useDeferredDisposable(woonerfGroundTexture);
+
+  const publicRealmBaseKind = useMemo((): StreetSurfaceMaterialKind | null => {
+    if (!isCompiledGround || isWoonerfGround) return null;
+    if (communityKind === 'park') return isPlazaGround ? 'unit_pavers' : 'planting_grass';
+    const lego = zoneProps?.public_realm_lego && typeof zoneProps.public_realm_lego === 'object'
+      ? zoneProps.public_realm_lego as Record<string, unknown>
+      : undefined;
+    const appearanceKitId = String(lego?.appearance_kit_id ?? '').toLowerCase();
+    return appearanceKitId.includes('european_cobblestone') ? 'buffer_stone' : 'asphalt';
+  }, [communityKind, isCompiledGround, isPlazaGround, isWoonerfGround, zoneProps]);
+  const publicRealmBaseGeo = useMemo(
+    () => (
+      publicRealmBaseKind && geoData?.flatTopGeo
+        ? createMetricSurfaceGeometry(geoData.flatTopGeo)
+        : null
+    ),
+    [geoData, publicRealmBaseKind],
+  );
+  useDeferredDisposable(publicRealmBaseGeo);
+  const publicRealmBaseTexture = useMemo(
+    () => (
+      publicRealmBaseKind
+        ? createStreetSurfaceAlbedoTexture(publicRealmBaseKind, {
+          seed: `public-realm-base:${zone.id}`,
+          size: 128,
+          anisotropy: 8,
+        })
+        : null
+    ),
+    [publicRealmBaseKind, zone.id],
+  );
+  useDeferredDisposable(publicRealmBaseTexture);
 
   const replacementGroundData = useMemo(
     () => (
@@ -976,6 +1013,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
   if (!geoData) return null;
 
+  const authoredGroundTexture = drapeActive
+    ? groundTexture
+    : woonerfGroundTexture ?? publicRealmBaseTexture;
+  const hasAuthoredGroundTexture = Boolean(authoredGroundTexture);
+
   return (
     <EastNorthUpFrame
       lat={centroid[1] * DEG_TO_RAD}
@@ -993,7 +1035,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? geoData.flatTopGeo}
+          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? geoData.flatTopGeo}
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
@@ -1010,23 +1052,39 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           {/* key remounts the material when the ground drape toggles so the
               map define recompiles (toggling `map` in place leaves it white) */}
           {isPreparedBoundary ? (
-            <meshBasicMaterial
+            <meshStandardMaterial
               key="prepared-site"
-              color="#ffffff"
+              color="#d5d0c6"
               map={preparedSiteTexture ?? undefined}
+              roughness={0.98}
+              metalness={0}
               side={THREE.DoubleSide}
               depthTest
               depthWrite
-              toneMapped={false}
               polygonOffset
               polygonOffsetFactor={4}
               polygonOffsetUnits={8}
             />
+          ) : isCompiledGround || drapeActive || isWoonerfGround ? (
+            <meshStandardMaterial
+              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : `compiled-${publicRealmBaseKind ?? 'plain'}`}
+              color={hasAuthoredGroundTexture ? '#ffffff' : compiledSurfaceColor}
+              map={authoredGroundTexture ?? undefined}
+              roughness={communityKind === 'street' ? 0.94 : 0.98}
+              metalness={0}
+              transparent={publicRealmDepthPolicy.transparent}
+              opacity={1}
+              side={THREE.DoubleSide}
+              depthTest={publicRealmDepthPolicy.depthTest}
+              depthWrite={publicRealmDepthPolicy.depthWrite}
+              polygonOffset
+              polygonOffsetFactor={FLAT_ZONE_DEPTH_OFFSET_FACTOR}
+              polygonOffsetUnits={FLAT_ZONE_DEPTH_OFFSET_UNITS}
+            />
           ) : (
             <meshBasicMaterial
-              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : 'plain'}
-              color={drapeActive || isWoonerfGround ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
-              map={drapeActive ? groundTexture : woonerfGroundTexture ?? undefined}
+              key="plain"
+              color={isSiteBoundary ? '#ffffff' : color}
               transparent={publicRealmDepthPolicy.transparent}
               opacity={isSiteBoundary ? 0.15 : 1.0}
               side={THREE.DoubleSide}

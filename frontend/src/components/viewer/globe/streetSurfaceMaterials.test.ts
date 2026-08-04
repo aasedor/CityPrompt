@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import {
   STREET_SURFACE_MATERIAL_SPECS,
+  createMetricSurfaceGeometry,
   createStreetSurfacePaletteTint,
   createStreetSurfaceAlbedoTexture,
   createStreetSurfaceMaterialResources,
@@ -27,6 +28,26 @@ function uniqueRgbCount(texture: THREE.DataTexture): number {
   }
   return colors.size;
 }
+
+describe('metric public-realm base geometry', () => {
+  it('maps local ENU metres directly to repeatable UV coordinates', () => {
+    const source = new THREE.BufferGeometry();
+    source.setAttribute('position', new THREE.Float32BufferAttribute([
+      -6, -2, 0,
+      9, -2, 0,
+      9, 4, 0,
+    ], 3));
+    const metric = createMetricSurfaceGeometry(source);
+    expect(Array.from(metric.getAttribute('uv').array)).toEqual([
+      -6, -2,
+      9, -2,
+      9, 4,
+    ]);
+    expect(source.getAttribute('uv')).toBeUndefined();
+    metric.dispose();
+    source.dispose();
+  });
+});
 
 describe('street surface semantic resolution', () => {
   it('uses stone setts across the European carriageway and pedestrian realm without changing other variants', () => {

@@ -768,6 +768,41 @@ function drawParkGuides(
     ctx.beginPath();
     ctx.ellipse(x, y, width / 2, height / 2, 0, 0, Math.PI * 2);
     ctx.fill();
+    if (mode === 'procedural' && guide.kind === 'ellipse') {
+      // Give generic landscape rooms fine-grained planting/turf variation.
+      // Solid coloured discs and fully opaque outlines read as a diagram from
+      // the Omni camera even when their geometry is correct.
+      const guideSeed = `${archetypeId}:${Math.round(x)}:${Math.round(y)}:${Math.round(width)}:${Math.round(height)}`;
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(x, y, width / 2, height / 2, 0, 0, Math.PI * 2);
+      ctx.clip();
+      const patchCount = Math.max(18, Math.round((width * height) / Math.max(1, pxPerM * pxPerM) * 0.035));
+      for (let index = 0; index < patchCount; index += 1) {
+        const angle = seededUnit(guideSeed, index * 5) * Math.PI * 2;
+        const radius = Math.sqrt(seededUnit(guideSeed, index * 5 + 1));
+        const patchX = x + Math.cos(angle) * width * 0.44 * radius;
+        const patchY = y + Math.sin(angle) * height * 0.44 * radius;
+        const patchRadius = (0.3 + seededUnit(guideSeed, index * 5 + 2) * 1.35) * pxPerM;
+        ctx.beginPath();
+        ctx.ellipse(
+          patchX,
+          patchY,
+          patchRadius,
+          patchRadius * (0.55 + seededUnit(guideSeed, index * 5 + 3) * 0.75),
+          seededUnit(guideSeed, index * 5 + 4) * Math.PI,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fillStyle = index % 4 === 0
+          ? 'rgba(226, 220, 174, 0.10)'
+          : index % 3 === 0
+            ? 'rgba(38, 65, 35, 0.13)'
+            : 'rgba(105, 123, 73, 0.09)';
+        ctx.fill();
+      }
+      ctx.restore();
+    }
     if (isBotanicalGarden && guide.kind === 'ellipse') {
       ctx.save();
       ctx.clip();
@@ -812,7 +847,9 @@ function drawParkGuides(
     }
     ctx.strokeStyle = guide.strokeColor ?? guide.color;
     ctx.lineWidth = Math.max(1, (guide.strokeWidthM ?? 0.4) * pxPerM);
+    ctx.globalAlpha = mode === 'procedural' ? 0.58 : 1;
     ctx.stroke();
+    ctx.globalAlpha = 1;
     if (guide.kind === 'track') {
       ctx.beginPath();
       ctx.ellipse(x, y, width * 0.37, height * 0.31, 0, 0, Math.PI * 2);
@@ -1395,6 +1432,25 @@ export function buildParkDiagram(
       : MARKER_COLORS.pavilion;
     ctx.fillRect(x - half, y - half, half * 2, half * 2);
     markers.pavilion += 1;
+  }
+
+  if (mode === 'procedural') {
+    // Context grade the deterministic surface toward the warm, moderately
+    // desaturated aerial palette of the surrounding Google Tiles. Archetype
+    // geometry and material hierarchy remain intact; only the board-like
+    // saturation is restrained for the shared 3D/Omni source scene.
+    ctx.save();
+    traceRing(ctx, ringPx);
+    ctx.clip();
+    ctx.globalCompositeOperation = 'saturation';
+    ctx.globalAlpha = 0.12;
+    ctx.fillStyle = '#7e7e7e';
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    ctx.globalCompositeOperation = 'soft-light';
+    ctx.globalAlpha = 0.06;
+    ctx.fillStyle = '#a28f70';
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    ctx.restore();
   }
 
   return {

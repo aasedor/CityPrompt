@@ -16,6 +16,7 @@ import {
   getResidualLandscapeRecipe,
   type ResidualLandscapeRecipe,
 } from './residualLandscape';
+import { resolveParkTreeVariant } from './publicRealmPropPalettes';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_INTERVAL_FRAMES = 30;
@@ -92,6 +93,10 @@ function ResidualLandscapeInstance({
       z: zOffsets[index] ?? 0,
       yawRad: placement.yaw_rad,
       scale: placement.scale,
+      treeVariant: resolveParkTreeVariant(
+        'native_meadow',
+        `${zone.id}:${placement.id}:${index}`,
+      ),
     }));
   }, [centroid, recipe.placements, zOffsets]);
 

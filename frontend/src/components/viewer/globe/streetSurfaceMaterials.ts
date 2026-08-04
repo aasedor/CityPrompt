@@ -47,6 +47,25 @@ export interface StreetSurfaceMaterialResources {
   dispose: () => void;
 }
 
+/** Clone a local-ENU ground mesh and express its UVs directly in metres.
+ * Procedural public-realm textures then retain a stable construction scale
+ * across a pocket connector, a local street and a district boulevard instead
+ * of stretching one image across each polygon's bounding box. */
+export function createMetricSurfaceGeometry(
+  source: THREE.BufferGeometry,
+): THREE.BufferGeometry {
+  const geometry = source.clone();
+  const positions = geometry.getAttribute('position') as THREE.BufferAttribute | undefined;
+  if (!positions) return geometry;
+  const uvs = new Float32Array(positions.count * 2);
+  for (let index = 0; index < positions.count; index += 1) {
+    uvs[index * 2] = positions.getX(index);
+    uvs[index * 2 + 1] = positions.getY(index);
+  }
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+  return geometry;
+}
+
 /** Appearance variants may change finish while preserving the locked metric
  * cross-section. European setts are the one intentional semantic override:
  * the same motor/parking/path/sidewalk bands become stone paving instead of
@@ -185,7 +204,11 @@ function asphaltPixel(
   const coarse = (noise(seed, Math.floor(x / 7), Math.floor(y / 7), 1) - 0.5) * 8;
   const aggregate = noise(seed, x, y, 2);
   const fleck = aggregate > 0.986 ? 24 : aggregate < 0.012 ? -18 : 0;
-  const base = parking ? [88, 88, 85] : [75, 78, 79];
+  // Calibrated against the neighbouring Google photogrammetry rather than a
+  // presentation-board charcoal. The proposal remains distinguishable by its
+  // construction detail, but no longer reads as a near-black overlay beside
+  // the existing municipal asphalt.
+  const base = parking ? [108, 108, 104] : [94, 97, 98];
   return [
     base[0] + fine + coarse + fleck,
     base[1] + fine + coarse + fleck,

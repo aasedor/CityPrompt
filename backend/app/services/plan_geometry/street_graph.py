@@ -164,14 +164,21 @@ def _entry_points_from_context_lines(
     return deduped
 
 
-def entry_points_from_roads(road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8) -> list[Point]:
-    """Road access anchors at crossings and adjacent street frontages."""
+def entry_points_from_roads(road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 4) -> list[Point]:
+    """Road access anchors at crossings and adjacent street frontages.
+
+    A context feed often splits one real frontage into many short source
+    features. Treating every fragment as a vehicle entrance creates a fan of
+    overlapping connector streets at the parcel edge. Four well-separated
+    gateways are enough for a district-scale plan; pedestrian/cycle context
+    remains independently connected by entry_points_from_paths.
+    """
     return _entry_points_from_context_lines(
         road_lines_m,
         boundary_m,
         proximity_m=ROAD_FRONTAGE_PROXIMITY_M,
         limit=limit,
-        dedupe_m=20.0,
+        dedupe_m=50.0,
     )
 
 
