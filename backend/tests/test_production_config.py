@@ -1,6 +1,35 @@
 import pytest
 
-from app.core.config import Settings
+from app.core.config import Settings, _git_common_dir, _settings_env_files
+
+
+def test_primary_checkout_resolves_one_shared_and_two_local_env_files(tmp_path):
+    project_root = tmp_path / "city-prompt"
+    backend_root = project_root / "backend"
+    common_dir = project_root / ".git"
+    backend_root.mkdir(parents=True)
+    common_dir.mkdir()
+
+    assert _git_common_dir(project_root) == common_dir.resolve()
+    assert _settings_env_files(backend_root) == (
+        str(common_dir / ".env"),
+        str(project_root / ".env"),
+        str(backend_root / ".env"),
+    )
+
+
+def test_linked_worktree_resolves_primary_checkout_shared_env(tmp_path):
+    common_dir = tmp_path / "primary" / ".git"
+    admin_dir = common_dir / "worktrees" / "workflow"
+    project_root = tmp_path / "workflow"
+    backend_root = project_root / "backend"
+    admin_dir.mkdir(parents=True)
+    backend_root.mkdir(parents=True)
+    (project_root / ".git").write_text(f"gitdir: {admin_dir}\n", encoding="utf-8")
+    (admin_dir / "commondir").write_text("../..\n", encoding="utf-8")
+
+    assert _git_common_dir(project_root) == common_dir.resolve()
+    assert _settings_env_files(backend_root)[0] == str(common_dir / ".env")
 
 
 def test_production_rejects_default_jwt_secret():

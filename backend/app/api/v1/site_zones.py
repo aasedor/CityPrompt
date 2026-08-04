@@ -928,25 +928,10 @@ async def create_zone(
     await db.flush()
     await db.refresh(zone)
 
-    # Auto-fetch OSM context when creating a site_boundary zone
-    if zone_in.zone_type == "site_boundary":
-        try:
-            shape = to_shape(zone.geometry)
-            fetcher = OSMContextFetcher()
-            osm_context = await fetcher.fetch(shape)
-            updated_props = dict(zone.properties or {})
-            updated_props["_osm_context"] = osm_context
-            zone.properties = updated_props
-            await db.flush()
-            await db.refresh(zone)
-            logger.info(
-                "Auto-fetched OSM context for site_boundary %s: %d buildings, %d roads",
-                zone.id,
-                len(osm_context.get("buildings", [])),
-                len(osm_context.get("roads", [])),
-            )
-        except Exception as e:
-            logger.warning("Failed to auto-fetch OSM context for zone %s: %s", zone.id, e)
+    # Keep boundary creation atomic and fast. Surrounding OSM context is useful
+    # enrichment, but Overpass can take tens of seconds or be unavailable. The
+    # client starts that independent request after this authoritative boundary
+    # has been saved, so enrichment can never make the core action look failed.
     await _invalidate_residual_landscape(
         db,
         project_id,

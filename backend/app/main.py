@@ -19,6 +19,10 @@ settings = get_settings()
 
 # Configure logging
 logging.basicConfig(level=getattr(logging, settings.log_level))
+# Provider request URLs can contain API keys in their query string. Keep
+# ordinary application logs useful without echoing those credentials.
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Initialize Sentry if DSN is configured

@@ -99,6 +99,28 @@ describe('useSiteZones temp-id guards', () => {
     });
   });
 
+  it('loads boundary context independently after the boundary is saved', async () => {
+    const context = {
+      buildings: [],
+      roads: [],
+      water: [],
+      parks: [],
+      fetched_at: '2026-08-03T00:00:00Z',
+      buffer_m: 50,
+    };
+    vi.mocked(siteZonesApi.create).mockResolvedValue(makeZone(REAL_ZONE_ID));
+    vi.mocked(siteZonesApi.fetchContext).mockResolvedValue(context);
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+
+    result.current.createZone.mutate({
+      zone_type: 'site_boundary',
+      coordinates: [[0, 0], [0, 1], [1, 1]],
+    });
+
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    await waitFor(() => expect(siteZonesApi.fetchContext).toHaveBeenCalledWith(REAL_ZONE_ID));
+  });
+
   it('reuses boundary context returned by create instead of fetching it twice', async () => {
     const context = {
       buildings: [],

@@ -440,6 +440,20 @@ export function ProjectViewPage() {
     }
   }, [siteZones, selectZone, setActiveSitePlannerTool, setWorkflowStep]);
 
+  const handleSiteBoundary = useCallback(() => {
+    setMeasureActive(false);
+    setShowHistory(false);
+    setWorkflowStep(1);
+    const boundary = getActiveSiteBoundary(siteZones);
+    if (boundary) {
+      setActiveSitePlannerTool(null);
+      selectZone(boundary.id);
+      return;
+    }
+    selectZone(null);
+    setActiveSitePlannerTool('site_boundary');
+  }, [siteZones, selectZone, setActiveSitePlannerTool, setWorkflowStep]);
+
   const masterPlanActive =
     workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
 
@@ -834,6 +848,7 @@ export function ProjectViewPage() {
               onMeasureModeChange={handleMeasureModeChange}
               onMasterPlan={handleMasterPlan}
               masterPlanActive={masterPlanActive}
+              onSiteBoundary={handleSiteBoundary}
               uploadSlot={
                 <ShapefileImportButton
                   projectId={project.id}
@@ -1310,6 +1325,7 @@ export function ProjectViewPage() {
               historyOpen={showHistory}
               onMasterPlan={handleMasterPlan}
               masterPlanActive={masterPlanActive}
+              onSiteBoundary={handleSiteBoundary}
             />
           </div>
 

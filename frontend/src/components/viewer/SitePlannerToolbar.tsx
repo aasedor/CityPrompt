@@ -68,6 +68,8 @@ interface SitePlannerToolbarProps {
   onMasterPlan?: () => void;
   /** Highlights the Master Plan card (site boundary currently selected). */
   masterPlanActive?: boolean;
+  /** Selects the authoritative boundary when one exists, otherwise starts it. */
+  onSiteBoundary?: () => void;
 }
 
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -97,6 +99,7 @@ export function SitePlannerToolbar({
   uploadSlot,
   onMasterPlan,
   masterPlanActive = false,
+  onSiteBoundary,
 }: SitePlannerToolbarProps) {
   const {
     activeSitePlannerTool,
@@ -128,6 +131,10 @@ export function SitePlannerToolbar({
     // Deactivate street view when switching to a drawing tool
     if (streetViewPegman) setStreetViewActive(false);
     onMeasureModeChange?.(false);
+    if (id === 'siteBoundary' && onSiteBoundary) {
+      onSiteBoundary();
+      return;
+    }
     const zoneType = resolveZoneTypeForCoreTool(id, parksSubtype);
     if (activeSitePlannerTool === zoneType) {
       setActiveSitePlannerTool(null);

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { siteZonesApi } from '@/services/api';
+import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -61,8 +61,6 @@ export function useSiteZones(projectId: string | undefined) {
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
       }
-      // Boundary creation already fetches context atomically on the backend.
-      // Reuse that response instead of issuing a duplicate Overpass request.
       if (createdZone.zone_type === 'site_boundary') {
         const ctx = createdZone.properties?._osm_context;
         if (ctx) {
@@ -70,15 +68,31 @@ export function useSiteZones(projectId: string | undefined) {
           setOSMContext(ctx);
           const total = ctx.buildings.length + ctx.roads.length + ctx.water.length + ctx.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
+          return;
         }
+
+        // The boundary is authoritative as soon as create returns. Enrich it
+        // independently so a slow or unavailable Overpass service cannot leave
+        // the user waiting or tempt them to submit a duplicate boundary.
+        toast.success('Site boundary saved. Loading surrounding context…');
+        void siteZonesApi.fetchContext(createdZone.id).then((context) => {
+          const { setOSMContext } = useViewerStore.getState();
+          setOSMContext(context);
+          void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+          const total = context.buildings.length + context.roads.length + context.water.length + context.parks.length;
+          toast.success(`Site ready with ${total} nearby context features`);
+        }).catch((error: unknown) => {
+          const message = getApiErrorMessage(error, 'context service unavailable');
+          toast.error(`Site boundary saved, but surrounding context could not load: ${message}`);
+        });
       }
     },
-    onError: (err: Error, _vars, context) => {
+    onError: (error: unknown, _vars, context) => {
       // Roll back to previous state on failure
       if (context?.previous) {
         queryClient.setQueryData(['site-zones', projectId], context.previous);
       }
-      toast.error(`Failed to create zone: ${err.message}`);
+      toast.error(`Failed to create zone: ${getApiErrorMessage(error)}`);
     },
   });
 

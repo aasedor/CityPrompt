@@ -13,6 +13,8 @@ from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
+_PROJECT_ROOT = _BACKEND_ROOT.parent
+_SHARED_ENV_FILENAME = ".env"
 _UNSAFE_JWT_SECRET_VALUES = {
     "",
     "change-this-in-production",
@@ -26,21 +28,68 @@ _LOCAL_ORIGIN_MARKERS = (
     "::1",
 )
 
-# Pre-load GOOGLE_APPLICATION_CREDENTIALS from .env into os.environ so that
+def _git_common_dir(project_root: Path) -> Path | None:
+    """Return the repository's shared Git directory for any worktree."""
+    dot_git = project_root / ".git"
+    if dot_git.is_dir():
+        return dot_git.resolve()
+    if not dot_git.is_file():
+        return None
+
+    try:
+        pointer = dot_git.read_text(encoding="utf-8").strip()
+        if not pointer.lower().startswith("gitdir:"):
+            return None
+        admin_value = pointer.split(":", 1)[1].strip()
+        admin_dir = Path(admin_value)
+        if not admin_dir.is_absolute():
+            admin_dir = (project_root / admin_dir).resolve()
+        common_file = admin_dir / "commondir"
+        if common_file.is_file():
+            common_value = common_file.read_text(encoding="utf-8").strip()
+            return (admin_dir / common_value).resolve()
+        return admin_dir.resolve()
+    except (OSError, ValueError):
+        return None
+
+
+def _settings_env_files(backend_root: Path) -> tuple[str, ...]:
+    """Resolve shared, repository, and backend dotenv files in override order."""
+    project_root = backend_root.parent
+    candidates: list[Path] = []
+    if common_dir := _git_common_dir(project_root):
+        candidates.append(common_dir / _SHARED_ENV_FILENAME)
+    candidates.extend((project_root / ".env", backend_root / ".env"))
+    return tuple(str(candidate) for candidate in candidates)
+
+
+_SETTINGS_ENV_FILES = _settings_env_files(_BACKEND_ROOT)
+
+# Pre-load GOOGLE_APPLICATION_CREDENTIALS from the same dotenv chain so that
 # google.auth.default() can discover it before Settings is constructed.
-_dotenv = dotenv_values(_BACKEND_ROOT / ".env")
-_root_dotenv = dotenv_values(_BACKEND_ROOT.parent / ".env")
+_dotenv: dict[str, str | None] = {}
+for _env_file in _SETTINGS_ENV_FILES:
+    _dotenv.update(dotenv_values(_env_file))
 if _gac := _dotenv.get("GOOGLE_APPLICATION_CREDENTIALS"):
     # Resolve relative paths against the backend root directory
     _gac_path = Path(_gac)
     if not _gac_path.is_absolute():
-        _gac_path = (_BACKEND_ROOT / _gac_path).resolve()
+        backend_candidate = (_BACKEND_ROOT / _gac_path).resolve()
+        common_dir = _git_common_dir(_PROJECT_ROOT)
+        shared_candidate = (
+            (common_dir / _gac_path).resolve() if common_dir is not None else None
+        )
+        _gac_path = (
+            backend_candidate
+            if backend_candidate.is_file() or shared_candidate is None
+            else shared_candidate
+        )
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(_gac_path)
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=str(Path(__file__).resolve().parent.parent.parent / ".env"),
+        env_file=_SETTINGS_ENV_FILES,
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -168,7 +217,7 @@ class Settings(BaseSettings):
         """Accept the temporary OPENAI alias while local testing GPT Image 2."""
         if not self.openai_api_key:
             self.openai_api_key = (
-                os.environ.get("OPENAI", "") or _dotenv.get("OPENAI", "") or _root_dotenv.get("OPENAI", "")
+                os.environ.get("OPENAI", "") or _dotenv.get("OPENAI", "") or ""
             )
         return self
 
@@ -186,7 +235,7 @@ class Settings(BaseSettings):
             self.google_maps_api_key = (
                 os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
                 or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
-                or _root_dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
+                or ""
             )
         return self
 
