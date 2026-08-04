@@ -347,12 +347,27 @@ class AnnotationResponse(BaseModel):
 # =============================================================================
 
 
+SiteZoneType = Literal[
+    "site_boundary",
+    "building",
+    "residential",
+    "road",
+    "green_space",
+    "parking",
+    "water",
+    "development_area",
+]
+
+
 class SiteZoneCreate(BaseModel):
     """Create a site zone within a project."""
 
     name: Optional[str] = Field(None, description="Zone label")
-    zone_type: str = Field(
-        description="Zone type: building, residential, road, green_space, parking, water, development_area"
+    zone_type: SiteZoneType = Field(
+        description=(
+            "Zone type: site_boundary, building, residential, road, green_space, parking, water, "
+            "development_area. Paths and trails use road with road_type metadata."
+        )
     )
     coordinates: list[list[float]] = Field(description="Polygon vertices as [[lng, lat], ...]")
     color: str = Field(default="#9b59b6", description="Hex color for the zone")
@@ -366,7 +381,9 @@ class SiteZoneUpdate(BaseModel):
     """Update a site zone. All fields are optional."""
 
     name: Optional[str] = Field(None, description="Updated zone label")
-    zone_type: Optional[str] = Field(None, description="Updated zone type")
+    zone_type: Optional[SiteZoneType] = Field(
+        None, description="Updated zone type; paths and trails use road with road_type metadata"
+    )
     coordinates: Optional[list[list[float]]] = Field(None, description="Updated polygon vertices")
     color: Optional[str] = Field(None, description="Updated hex color")
     properties: Optional[dict[str, Any]] = Field(None, description="Updated type-specific properties")

@@ -833,7 +833,7 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
           style={{
             top: 'clamp(5rem, 22dvh, 17rem)',
           }}
