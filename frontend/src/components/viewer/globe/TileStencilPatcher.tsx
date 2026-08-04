@@ -20,6 +20,7 @@ import {
   patchMaterialForSpatialMask,
   unpatchMaterialSpatialMask,
 } from './TileSpatialMaskPlugin';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 interface TileStencilPatcherProps {
   /** Only patch when there are zones that need tile masking. */
@@ -32,7 +33,7 @@ export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherP
   const patchedMaterials = useRef(new Set<THREE.Material>());
   const spatialMask = useMemo(
     () => {
-      const siteBoundary = zones.find((zone) => zone.zone_type === 'site_boundary');
+      const siteBoundary = getActiveSiteBoundary(zones);
       return createTileSpatialMaskSetConfig(
         siteBoundary ? [siteBoundary] : zones,
         terrainHeight,

@@ -180,6 +180,9 @@ class SiteZone(Base):
     geometry = mapped_column(Geography("POLYGON", srid=4326), nullable=False)
     color: Mapped[str] = mapped_column(String(7), nullable=False, default="#9b59b6")
     properties: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    is_active_boundary: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
+    )
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     building_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True

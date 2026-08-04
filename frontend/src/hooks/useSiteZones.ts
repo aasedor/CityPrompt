@@ -18,7 +18,7 @@ export function useSiteZones(projectId: string | undefined) {
   const queryClient = useQueryClient();
   const { selectZone } = useViewerStore();
 
-  const { data: siteZones = [] } = useQuery({
+  const { data: siteZones = [], isLoading: siteZonesLoading } = useQuery({
     queryKey: ['site-zones', projectId],
     queryFn: () => siteZonesApi.list(projectId!),
     enabled: !!projectId,
@@ -31,6 +31,7 @@ export function useSiteZones(projectId: string | undefined) {
         coordinates: vars.coordinates,
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
         properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
+        is_active_boundary: vars.zone_type === 'site_boundary',
       }),
     onMutate: async (vars) => {
       // Cancel outgoing refetches so they don't overwrite optimistic update
@@ -60,17 +61,15 @@ export function useSiteZones(projectId: string | undefined) {
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
       }
-      // Auto-fetch OSM context when a site_boundary is created
+      // Boundary creation already fetches context atomically on the backend.
+      // Reuse that response instead of issuing a duplicate Overpass request.
       if (createdZone.zone_type === 'site_boundary') {
-        try {
-          const ctx = await siteZonesApi.fetchContext(createdZone.id);
+        const ctx = createdZone.properties?._osm_context;
+        if (ctx) {
           const { setOSMContext } = useViewerStore.getState();
           setOSMContext(ctx);
           const total = ctx.buildings.length + ctx.roads.length + ctx.water.length + ctx.parks.length;
-          toast.success(`Fetched ${total} OSM features (${ctx.buildings.length} buildings, ${ctx.roads.length} roads)`);
-          queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
-        } catch (e) {
-          console.warn('Failed to auto-fetch OSM context:', e);
+          toast.success(`Site ready with ${total} nearby context features`);
         }
       }
     },
@@ -168,6 +167,7 @@ export function useSiteZones(projectId: string | undefined) {
 
   return {
     siteZones,
+    siteZonesLoading,
     createZone,
     updateZone,
     deleteZone,

@@ -607,6 +607,7 @@ export const siteZonesApi = {
     color: string;
     properties?: SiteZoneProperties;
     sort_order?: number;
+    is_active_boundary?: boolean;
   }): Promise<SiteZone> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/zones`, zone);
     return data;

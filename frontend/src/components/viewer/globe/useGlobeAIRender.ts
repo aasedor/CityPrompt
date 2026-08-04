@@ -16,6 +16,7 @@ import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { api, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { getCustomZoneStyle } from '../customZoneStyle';
 import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
 import {
@@ -613,7 +614,7 @@ function generateMask(
   ctx.fillRect(0, 0, width, height);
 
   // If site boundary exists, clip all zone rendering to within it
-  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  const siteBoundary = getActiveSiteBoundary(zones);
   if (siteBoundary) {
     const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
     const boundaryPixels = siteBoundary.coordinates
@@ -2034,7 +2035,7 @@ async function clipRenderToZones(
   // the site boundary, but building hulls are NOT — a tall tower's painted top
   // legitimately projects past the site edge, and raw boundary clipping would
   // amputate it. Net mask = (ground zones ∩ site boundary) ∪ building hulls.
-  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  const siteBoundary = getActiveSiteBoundary(zones);
   let boundaryPath: Path2D | null = null;
   if (siteBoundary) {
     const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
@@ -2183,7 +2184,7 @@ function generateSingleZoneMask(
   ctx.fillRect(0, 0, width, height);
 
   // Clip to site boundary if present
-  const siteBoundary = allZones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  const siteBoundary = getActiveSiteBoundary(allZones);
   if (siteBoundary) {
     const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
     const boundaryPixels = siteBoundary.coordinates

@@ -32,6 +32,7 @@ function makeZone(id: string): SiteZone {
     coordinates: [[0, 0], [0, 1], [1, 1]],
     color: '#ff0000',
     properties: {},
+    is_active_boundary: true,
     sort_order: 0,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -96,5 +97,29 @@ describe('useSiteZones temp-id guards', () => {
     await waitFor(() => {
       expect(siteZonesApi.delete).toHaveBeenCalledWith(REAL_ZONE_ID);
     });
+  });
+
+  it('reuses boundary context returned by create instead of fetching it twice', async () => {
+    const context = {
+      buildings: [],
+      roads: [],
+      water: [],
+      parks: [],
+      fetched_at: '2026-08-03T00:00:00Z',
+      buffer_m: 50,
+    };
+    vi.mocked(siteZonesApi.create).mockResolvedValue({
+      ...makeZone(REAL_ZONE_ID),
+      properties: { _osm_context: context },
+    });
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+
+    result.current.createZone.mutate({
+      zone_type: 'site_boundary',
+      coordinates: [[0, 0], [0, 1], [1, 1]],
+    });
+
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    expect(siteZonesApi.fetchContext).not.toHaveBeenCalled();
   });
 });

@@ -6,6 +6,7 @@ import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
 import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
 import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
+import siteBoundaryIcon from '@/assets/site-planner-tools/site-boundary.svg';
 
 type CoreToolId = 'siteBoundary' | 'buildings' | 'streetsPaths' | 'parksPlazas';
 type ParksSubtype = 'park' | 'plaza';
@@ -19,6 +20,13 @@ interface CoreToolDef {
 }
 
 const CORE_TOOLS: CoreToolDef[] = [
+  {
+    id: 'siteBoundary',
+    label: 'Site Boundary',
+    drawType: 'Polygon',
+    description: 'Define and prepare the redevelopment site',
+    icon: siteBoundaryIcon,
+  },
   {
     id: 'streetsPaths',
     label: 'Streets and Paths',
@@ -153,9 +161,9 @@ export function SitePlannerToolbar({
       <div className={`site-planner-core-grid grid gap-1.5 sm:gap-2 ${
         isSidebar
           ? compactDrawingDock
-            ? `${onMasterPlan ? 'grid-cols-4' : 'grid-cols-3'} sm:grid-cols-1`
+            ? `${onMasterPlan ? 'grid-cols-5' : 'grid-cols-4'} sm:grid-cols-1`
             : 'grid-cols-2 sm:grid-cols-1'
-          : onMasterPlan ? 'grid-cols-4' : 'grid-cols-3'
+          : onMasterPlan ? 'grid-cols-5' : 'grid-cols-4'
       }`}>
         {CORE_TOOLS.map((tool) => {
           const isActive = activeCoreTool === tool.id;
@@ -323,7 +331,7 @@ export function SitePlannerToolbar({
             data-tour="more-tools-btn"
             onClick={() => setShowAdvanced((v) => !v)}
             className={`site-planner-tool-button ${smallToolButtonBase} ${
-              showAdvanced || activeCoreTool === 'siteBoundary'
+              showAdvanced
                 ? smallToolButtonActive
                 : smallToolButtonIdle
             }`}
@@ -374,14 +382,6 @@ export function SitePlannerToolbar({
       {showAdvanced && (
         <div className={`site-planner-advanced-row rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
           <span className="text-[10px] font-black uppercase text-[#151515]/55">Advanced</span>
-          <button
-            data-tour="tool-siteBoundary"
-            onClick={() => activateCoreTool('siteBoundary')}
-            className={advancedToolButtonClass(activeCoreTool === 'siteBoundary')}
-            title="Site Boundary (Polygon)"
-          >
-            Site Boundary
-          </button>
           <button
             onClick={() => {
               onMeasureModeChange?.(false);

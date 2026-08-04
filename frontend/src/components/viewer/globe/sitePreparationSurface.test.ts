@@ -52,17 +52,26 @@ describe('compiled site preparation', () => {
     expect(shouldRenderReplacementFootprintGround(clearedLotBuilding, true, false)).toBe(false);
   });
 
-  it('activates only when a compilable community zone has been built', () => {
-    const boundary = zone('boundary', 'site_boundary');
+  it('prepares the active boundary immediately, before community compilation', () => {
+    const boundary = {
+      ...zone('boundary', 'site_boundary'),
+      is_active_boundary: true,
+    };
     const planningPark = zone('park', 'green_space', { _plan_role: 'open_space' });
     expect(hasCompiledCommunity([boundary, planningPark])).toBe(false);
-    expect(getPreparedSiteBoundaryIds([boundary, planningPark]).size).toBe(0);
+    expect(getPreparedSiteBoundaryIds([boundary, planningPark])).toEqual(new Set(['boundary']));
 
     const prepared = getPreparedSiteBoundaryIds([
       boundary,
       zone('park', 'green_space', { _plan_role: 'open_space', ...compiledPark }),
     ]);
     expect(prepared).toEqual(new Set(['boundary']));
+
+    const inactive = {
+      ...zone('old-boundary', 'site_boundary'),
+      is_active_boundary: false,
+    };
+    expect(getPreparedSiteBoundaryIds([inactive, boundary])).toEqual(new Set(['boundary']));
   });
 
   it('adds deterministic natural variation without mutating source geometry', () => {

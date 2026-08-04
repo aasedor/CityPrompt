@@ -161,7 +161,9 @@ export function getResidualLandscapeRecipe(zone: SiteZone): ResidualLandscapeRec
  * current. Boundary-less legacy/single-zone scenes retain their historical
  * direct-render path because they have no residual parcel contract to stale. */
 export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[]): boolean {
-  const boundaries = zones.filter((zone) => zone.zone_type === 'site_boundary');
+  const boundaries = zones.filter((zone) => (
+    zone.zone_type === 'site_boundary' && zone.is_active_boundary !== false
+  ));
   if (boundaries.length === 0) {
     const physicalZones = zones.filter((zone) => (
       zone.zone_type !== 'site_boundary'
@@ -175,7 +177,9 @@ export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[]): boolean {
 export function getCurrentResidualLandscapeClaim(
   zones: SiteZone[],
 ): ResidualLandscapeClaim | null {
-  const boundaries = zones.filter((zone) => zone.zone_type === 'site_boundary');
+  const boundaries = zones.filter((zone) => (
+    zone.zone_type === 'site_boundary' && zone.is_active_boundary !== false
+  ));
   if (boundaries.length !== 1) return null;
   const recipe = getResidualLandscapeRecipe(boundaries[0]);
   return recipe

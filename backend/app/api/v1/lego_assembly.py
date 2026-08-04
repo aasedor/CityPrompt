@@ -1428,9 +1428,20 @@ async def place_community_3d(
 
     if body.scope_boundary_id is not None:
         scoped_boundary = zones_by_id.get(body.scope_boundary_id)
-        boundaries = [scoped_boundary] if scoped_boundary is not None else []
+        boundaries = [
+            scoped_boundary
+        ] if (
+            scoped_boundary is not None
+            and scoped_boundary.zone_type == "site_boundary"
+            and getattr(scoped_boundary, "is_active_boundary", True)
+        ) else []
     else:
-        boundaries = [zone for zone in project_zones if zone.zone_type == "site_boundary"]
+        boundaries = [
+            zone
+            for zone in project_zones
+            if zone.zone_type == "site_boundary"
+            and getattr(zone, "is_active_boundary", True)
+        ]
     if len(boundaries) > 1:
         raise HTTPException(
             status_code=422,
@@ -1467,6 +1478,7 @@ async def place_community_3d(
                         "_derived_site_boundary": True,
                         "_derived_site_boundary_method": "authored_plan_metric_convex_hull",
                     },
+                    is_active_boundary=True,
                     sort_order=-1000,
                 )
                 db.add(boundary)

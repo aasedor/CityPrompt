@@ -330,6 +330,7 @@ class SiteZoneResponse(BaseModel):
     coordinates: list[list[float]] = Field(default=[], description="Polygon vertices as [[lng, lat], ...]")
     color: str
     properties: Optional[dict[str, Any]]
+    is_active_boundary: bool = False
     sort_order: int
     building_id: Optional[uuid.UUID] = None
     building_ids: Optional[list[uuid.UUID]] = None

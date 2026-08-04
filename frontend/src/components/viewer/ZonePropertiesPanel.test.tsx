@@ -221,7 +221,7 @@ vi.mock('@/services/api', async (importOriginal) => {
 });
 
 import { ZonePropertiesPanel } from './ZonePropertiesPanel';
-import type { LayoutOption, SiteZone } from '@/types';
+import type { SiteZone } from '@/types';
 import { modelLibraryApi, siteZonesApi, urbanDnaApi } from '@/services/api';
 import { useViewerStore } from '@/store';
 
@@ -612,7 +612,7 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(breweryCourtyard).toHaveAttribute('data-lego-ready', 'false');
   });
 
-  it('routes the purple Site Boundary action through LEGO Community 3D instead of legacy bulk Meshy', async () => {
+  it('keeps legacy bulk generation out of the canonical Site DNA boundary panel', async () => {
     const boundary = siteBoundaryZone();
     const child = industrialZone();
     const legacyBulkMeshy = vi.spyOn(siteZonesApi, 'generateForBoundary');
@@ -647,78 +647,10 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
       />,
     );
 
-    fireEvent.click(await screen.findByRole('button', { name: /^Generate Community$/ }));
-
-    await waitFor(() => {
-      expect(compileBoundaryCommunity3DMock).toHaveBeenCalledWith(boundary.project_id, boundary.id);
-    });
+    await screen.findByRole('button', { name: /^Generate Site DNA$/ });
+    expect(screen.queryByRole('button', { name: /^Generate Community$/ })).not.toBeInTheDocument();
+    expect(compileBoundaryCommunity3DMock).not.toHaveBeenCalled();
     expect(legacyBulkMeshy).not.toHaveBeenCalled();
   });
 
-  it('rejects a multi-building preview before applying any layout or compiling Community 3D', async () => {
-    const boundary = siteBoundaryZone();
-    const child = industrialZone();
-    const invalidLayout: LayoutOption = {
-      option_index: 0,
-      option_label: 'Two-building preview',
-      buildings: [
-        {
-          center_x: 0, center_y: 0, width_m: 20, depth_m: 12, rotation_deg: 0,
-          building_type: 'mixed_use', setback_front_m: 0, setback_side_m: 0,
-        },
-        {
-          center_x: 25, center_y: 0, width_m: 20, depth_m: 12, rotation_deg: 0,
-          building_type: 'mixed_use', setback_front_m: 0, setback_side_m: 0,
-        },
-      ],
-      roads: [],
-      green_spaces: [],
-      layout_strategy: 'test',
-      reasoning: 'Regression fixture',
-    };
-    useViewerStore.getState().setSitePreview(boundary.id, { [child.id]: [invalidLayout] });
-    const applyLayout = vi.spyOn(siteZonesApi, 'applyLayout');
-    vi.spyOn(siteZonesApi, 'renderSitePreview').mockResolvedValue({
-      image_url: '/site-preview.png',
-      zone_id: boundary.id,
-      option_index: 0,
-    });
-    vi.spyOn(siteZonesApi, 'getBoundaryAnalysis').mockResolvedValue({
-      boundary_zone_id: boundary.id,
-      contained_zones: [{
-        id: child.id,
-        name: child.name,
-        zone_type: child.zone_type,
-        color: child.color,
-        properties: child.properties ?? {},
-        area_m2: 600,
-      }],
-      zone_summary: { building: 1 },
-      total_contained: 1,
-      osm_context: {},
-    });
-    vi.spyOn(urbanDnaApi, 'getLatest').mockRejectedValue({ response: { status: 404 } });
-    vi.spyOn(urbanDnaApi, 'listScenarios').mockResolvedValue({
-      scenarios: [],
-      available_presets: [],
-      stale: false,
-    });
-
-    renderPanel(
-      <ZonePropertiesPanel
-        zone={boundary}
-        allZones={[boundary, child]}
-        onUpdate={vi.fn()}
-        onDelete={vi.fn()}
-        onClose={vi.fn()}
-      />,
-    );
-
-    fireEvent.click(await screen.findByRole('button', { name: /^Generate Community$/ }));
-
-    await waitFor(() => {
-      expect(applyLayout).not.toHaveBeenCalled();
-      expect(compileBoundaryCommunity3DMock).not.toHaveBeenCalled();
-    });
-  });
 });

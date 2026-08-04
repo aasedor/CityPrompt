@@ -44,6 +44,9 @@ import {
   type TransportModeKey as CatalogTransportModeKey,
 } from './aestheticCatalog';
 
+const SHOW_LEGACY_SITE_BOUNDARY_TOOLS =
+  import.meta.env.VITE_ENABLE_LEGACY_SITE_BOUNDARY_TOOLS === 'true';
+
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
   onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
@@ -1313,11 +1316,13 @@ const resolveOptionCategory = (
         {zone.zone_type === 'site_boundary' && (
           <>
             <SiteIntelligencePanel zone={zone} />
-            <SiteBoundarySection
-              zone={zone}
-              allZones={allZones}
-              onOpenBlockEditor={onOpenBlockEditor ? handleOpenBlockEditor : undefined}
-            />
+            {SHOW_LEGACY_SITE_BOUNDARY_TOOLS && (
+              <SiteBoundarySection
+                zone={zone}
+                allZones={allZones}
+                onOpenBlockEditor={onOpenBlockEditor ? handleOpenBlockEditor : undefined}
+              />
+            )}
           </>
         )}
 

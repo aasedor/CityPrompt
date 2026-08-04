@@ -20,6 +20,7 @@ import streetPathCatalogData from '@/data/streetPathArchetypes.json';
 import { resolveApiFileUrl } from '@/services/api';
 import { getCustomZoneStyle } from './customZoneStyle';
 import { prepareZonesForRender } from './resolvePlanZoneArchetypes';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -576,7 +577,8 @@ function generateBinaryMask(
   let drawnCount = 0;
 
   const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
-  const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary');
+  const activeBoundary = getActiveSiteBoundary(siteZones);
+  const boundaries = activeBoundary ? [activeBoundary] : [];
   const others = siteZones.filter(z => z.zone_type !== 'site_boundary');
 
   for (const zone of [...boundaries, ...others]) {
@@ -685,7 +687,8 @@ async function stitchWithBoundaryMask(
 
   ctx.drawImage(originalImg, 0, 0, w, h);
 
-  const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
+  const activeBoundary = getActiveSiteBoundary(siteZones);
+  const boundaries = activeBoundary ? [activeBoundary] : [];
   const clipZones = boundaries.length > 0 ? boundaries : siteZones.filter(z => z.coordinates && z.coordinates.length >= 3);
 
   const BUILDING_TYPES_STITCH = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
@@ -3257,7 +3260,7 @@ export function useAIRender(): UseAIRenderReturn {
         }
 
         // Clip final composite to site boundary so nothing bleeds outside
-        const siteBoundaryZone = zones.find(z => z.zone_type === 'site_boundary');
+        const siteBoundaryZone = getActiveSiteBoundary(zones);
         if (siteBoundaryZone?.coordinates?.length) {
           cumulativeDataUri = await clipToSiteBoundary(cumulativeDataUri, map, siteBoundaryZone);
         }

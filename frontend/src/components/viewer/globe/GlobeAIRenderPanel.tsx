@@ -16,6 +16,7 @@ import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import {
   buildParkDiagram,
   capturePublicRealmSceneReference,
@@ -316,9 +317,7 @@ export function GlobeAIRenderPanel({
         highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
       );
 
-  const boundaryZone3D = authoritativeZones.find(
-    (z) => z.zone_type === 'site_boundary' && z.coordinates.length >= 3,
-  );
+  const boundaryZone3D = getActiveSiteBoundary(authoritativeZones);
   const buildableZones = useMemo(
     () => deriveCommunityBuildingItems(authoritativeZones)
       .map((item) => item.zone)
@@ -739,9 +738,7 @@ export function GlobeAIRenderPanel({
     );
     // Threaded separately so the post-render clip can intersect ground zones
     // with the site boundary (building hulls exempt) — see clipRenderToZones.
-    const siteBoundaryZone = siteZones.find(z =>
-      z.zone_type === 'site_boundary' && z.coordinates.length >= 3
-    );
+    const siteBoundaryZone = getActiveSiteBoundary(siteZones);
 
     if (editableZones.length === 0) {
       setError('Draw some zones first before rendering');
@@ -792,7 +789,7 @@ export function GlobeAIRenderPanel({
         style: selectedStyle,
         projectId,
         customPrompt: customPrompt.trim() || undefined,
-        siteBoundaryZone,
+        siteBoundaryZone: siteBoundaryZone ?? undefined,
         highFidelity,
         modeledBuildingIds: renderModeledIds,
         variants: compareRenderVariants,

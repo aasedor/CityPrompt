@@ -38,6 +38,7 @@ import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
 import type {
   Direct3DCaptureBundle,
@@ -175,11 +176,14 @@ export function ProjectViewPage() {
 
   const {
     siteZones,
+    siteZonesLoading,
     updateZone,
     deleteZone,
     handleZoneCreated,
     handleZoneUpdated,
   } = useSiteZones(id);
+
+  const initializedSiteToolProjectRef = useRef<string | null>(null);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
 
@@ -283,7 +287,9 @@ export function ProjectViewPage() {
     z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3
   );
 
-  // Activate site planner on mount, pre-select buildings tool, reset workflow step
+  // Activate the planner immediately; the first drawing tool is selected only
+  // after the project's zones have loaded so a new site starts with its
+  // boundary while an existing site opens in neutral selection mode.
   // Load saved renders for this project
   useEffect(() => {
     if (!id) return;
@@ -296,7 +302,7 @@ export function ProjectViewPage() {
 
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool(window.matchMedia('(min-width: 640px)').matches ? 'building' : null);
+    setActiveSitePlannerTool(null);
     setWorkflowStep(1);
     return () => {
       setSitePlannerActive(false);
@@ -305,6 +311,14 @@ export function ProjectViewPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setSitePlannerActive, setActiveSitePlannerTool, selectZone, setWorkflowStep, id]);
+
+  useEffect(() => {
+    if (!id || siteZonesLoading || initializedSiteToolProjectRef.current === id) return;
+    initializedSiteToolProjectRef.current = id;
+    const boundary = getActiveSiteBoundary(siteZones);
+    selectZone(null);
+    setActiveSitePlannerTool(boundary ? null : 'site_boundary');
+  }, [id, selectZone, setActiveSitePlannerTool, siteZones, siteZonesLoading]);
 
   const handleZoneSelected = useCallback((zoneId: string | null) => {
     selectZone(zoneId);
@@ -401,7 +415,7 @@ export function ProjectViewPage() {
     setMeasureActive(false);
     setShowHistory(false);
     setWorkflowStep(1);
-    const boundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    const boundary = getActiveSiteBoundary(siteZones);
     if (boundary) {
       setActiveSitePlannerTool(null);
       selectZone(boundary.id);
@@ -778,7 +792,7 @@ export function ProjectViewPage() {
                       className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
                     >
                       <Blocks size={16} />
-                      LEGO Builder
+                      Generate to 3D
                     </button>
                   </div>
                 ) : null

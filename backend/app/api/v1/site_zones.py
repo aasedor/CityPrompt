@@ -12,7 +12,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
-from geoalchemy2.functions import ST_Intersects
+from geoalchemy2.functions import ST_CoveredBy
 from geoalchemy2.shape import to_shape
 from pydantic import BaseModel
 from shapely.geometry import Polygon
@@ -148,6 +148,75 @@ def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
     if polygon.area <= 0:
         raise ValueError("Polygon must enclose a non-zero area")
     return [*cleaned, cleaned[0]]
+
+
+async def _active_site_boundary(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    *,
+    exclude_zone_id: uuid.UUID | None = None,
+    for_update: bool = False,
+) -> SiteZone | None:
+    """Return the project's one authoritative redevelopment boundary."""
+    statement = select(SiteZone).where(
+        SiteZone.project_id == project_id,
+        SiteZone.zone_type == "site_boundary",
+        SiteZone.is_active_boundary.is_(True),
+    )
+    if exclude_zone_id is not None:
+        statement = statement.where(SiteZone.id != exclude_zone_id)
+    if for_update:
+        statement = statement.with_for_update()
+    result = await db.execute(statement)
+    return result.scalar_one_or_none()
+
+
+def _boundary_covers_polygon(boundary_geometry, candidate: Polygon) -> bool:
+    """Allow sub-decimetre projection drift while enforcing site containment."""
+    try:
+        boundary = (
+            boundary_geometry
+            if isinstance(boundary_geometry, Polygon)
+            else to_shape(boundary_geometry)
+        )
+    except Exception:
+        return False
+    return bool(boundary.buffer(1e-9).covers(candidate))
+
+
+async def _assert_boundary_covers_existing_zones(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    candidate_boundary: Polygon,
+    *,
+    exclude_zone_id: uuid.UUID | None = None,
+) -> None:
+    statement = select(SiteZone).where(
+        SiteZone.project_id == project_id,
+        SiteZone.zone_type != "site_boundary",
+    )
+    if exclude_zone_id is not None:
+        statement = statement.where(SiteZone.id != exclude_zone_id)
+    result = await db.execute(statement)
+    outside: list[str] = []
+    buffered = candidate_boundary.buffer(1e-9)
+    for existing in result.scalars().all():
+        try:
+            covered = buffered.covers(to_shape(existing.geometry))
+        except Exception:
+            covered = False
+        if not covered:
+            outside.append(existing.name or str(existing.id))
+    if outside:
+        preview = ", ".join(outside[:3])
+        suffix = "" if len(outside) <= 3 else f" and {len(outside) - 3} more"
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "The site boundary must contain every authored zone. "
+                f"Outside the proposed boundary: {preview}{suffix}."
+            ),
+        )
 
 
 async def _invalidate_boundary_dependents(
@@ -584,6 +653,9 @@ def _zone_to_response(zone: SiteZone) -> dict:
         "coordinates": coords,
         "color": zone.color,
         "properties": zone.properties,
+        "is_active_boundary": bool(
+            getattr(zone, "is_active_boundary", zone.zone_type == "site_boundary")
+        ),
         "sort_order": zone.sort_order,
         "building_id": zone.building_id,
         "building_ids": _normalize_building_ids(zone.building_ids) or None,
@@ -653,12 +725,30 @@ async def _restore_zone_snapshot(
     if zone and zone.project_id != project_id:
         raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
 
+    snapshot_is_boundary = snapshot.get("zone_type") == "site_boundary"
+    snapshot_is_active = bool(
+        snapshot.get("is_active_boundary", snapshot_is_boundary)
+    ) and snapshot_is_boundary
+    if snapshot_is_active:
+        existing_boundary = await _active_site_boundary(
+            db,
+            project_id,
+            exclude_zone_id=zone_id,
+            for_update=True,
+        )
+        if existing_boundary is not None:
+            raise HTTPException(
+                status_code=409,
+                detail="Cannot restore a second active site boundary.",
+            )
+
     if zone:
         zone.name = snapshot.get("name")
         zone.zone_type = snapshot["zone_type"]
         zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
         zone.color = snapshot.get("color", "#9b59b6")
         zone.properties = snapshot.get("properties")
+        zone.is_active_boundary = snapshot_is_active
         zone.sort_order = snapshot.get("sort_order", 0)
         zone.building_id = _optional_uuid(snapshot.get("building_id"))
         zone.building_ids = building_ids
@@ -671,6 +761,7 @@ async def _restore_zone_snapshot(
             geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
             color=snapshot.get("color", "#9b59b6"),
             properties=snapshot.get("properties"),
+            is_active_boundary=snapshot_is_active,
             sort_order=snapshot.get("sort_order", 0),
             building_id=_optional_uuid(snapshot.get("building_id")),
             building_ids=building_ids,
@@ -761,7 +852,7 @@ async def list_zones(
     result = await db.execute(
         select(SiteZone)
         .where(SiteZone.project_id == project_id)
-        .order_by(SiteZone.sort_order, SiteZone.created_at)
+        .order_by(SiteZone.is_active_boundary.desc(), SiteZone.sort_order, SiteZone.created_at)
     )
     zones = result.scalars().all()
     return [_zone_to_response(z) for z in zones]
@@ -806,6 +897,38 @@ async def create_zone(
         coords = _validated_polygon_coordinates(zone_in.coordinates)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    candidate_polygon = Polygon(coords)
+    active_boundary = await _active_site_boundary(
+        db,
+        project_id,
+        for_update=True,
+    )
+    if zone_in.zone_type == "site_boundary":
+        if active_boundary is not None:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "This project already has an active site boundary. Edit or delete "
+                    "that boundary before drawing a replacement."
+                ),
+            )
+        await _assert_boundary_covers_existing_zones(
+            db,
+            project_id,
+            candidate_polygon,
+        )
+    else:
+        if active_boundary is None:
+            raise HTTPException(
+                status_code=409,
+                detail="Draw the site boundary before adding buildings, parks, streets, or other zones.",
+            )
+        if not _boundary_covers_polygon(active_boundary.geometry, candidate_polygon):
+            raise HTTPException(
+                status_code=409,
+                detail="The new zone must stay completely inside the active site boundary.",
+            )
+
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
     zone = SiteZone(
@@ -815,6 +938,7 @@ async def create_zone(
         geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
         color=zone_in.color,
         properties=zone_in.properties,
+        is_active_boundary=zone_in.zone_type == "site_boundary",
         sort_order=zone_in.sort_order,
     )
 
@@ -961,6 +1085,14 @@ async def update_zone(
     before_snapshot = _snapshot_from_zone(zone)
 
     update_data = zone_in.model_dump(exclude_unset=True)
+    requested_zone_type = update_data.get("zone_type", zone.zone_type)
+    if requested_zone_type != zone.zone_type and (
+        requested_zone_type == "site_boundary" or zone.zone_type == "site_boundary"
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail="A site's boundary role cannot be changed. Delete and redraw the boundary instead.",
+        )
     zone_geometry_changed = False
     boundary_geometry_changed = False
     updated_coordinates: list[list[float]] | None = None
@@ -978,6 +1110,30 @@ async def update_zone(
             )
             updated_coordinates = coords
             boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
+            candidate_polygon = Polygon(coords)
+            if zone.zone_type == "site_boundary":
+                await _assert_boundary_covers_existing_zones(
+                    db,
+                    zone.project_id,
+                    candidate_polygon,
+                    exclude_zone_id=zone.id,
+                )
+            else:
+                active_boundary = await _active_site_boundary(
+                    db,
+                    zone.project_id,
+                    for_update=True,
+                )
+                if active_boundary is None:
+                    raise HTTPException(
+                        status_code=409,
+                        detail="Draw the site boundary before moving authored zones.",
+                    )
+                if not _boundary_covers_polygon(active_boundary.geometry, candidate_polygon):
+                    raise HTTPException(
+                        status_code=409,
+                        detail="The updated zone must stay completely inside the active site boundary.",
+                    )
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
 
@@ -2361,13 +2517,16 @@ async def boundary_analysis(
         raise HTTPException(status_code=404, detail="Zone not found")
     if boundary.zone_type != "site_boundary":
         raise HTTPException(status_code=400, detail="Zone is not a site_boundary")
+    if not getattr(boundary, "is_active_boundary", True):
+        raise HTTPException(status_code=409, detail="Zone is not the active site boundary")
 
-    # Find all zones that intersect this boundary (same project, exclude self)
+    # The site plan is a strict boundary-owned composition. Merely crossing the
+    # edge is not enough to participate in analysis or downstream generation.
     contained_result = await db.execute(
         select(SiteZone).where(
             SiteZone.project_id == boundary.project_id,
             SiteZone.id != boundary.id,
-            ST_Intersects(boundary.geometry, SiteZone.geometry),
+            ST_CoveredBy(SiteZone.geometry, boundary.geometry),
         )
     )
     contained_zones = contained_result.scalars().all()
@@ -2474,6 +2633,8 @@ async def generate_all(
             raise HTTPException(status_code=404, detail="Boundary zone not found")
         if boundary_zone.zone_type != "site_boundary":
             raise HTTPException(status_code=400, detail="Specified zone is not a site_boundary")
+        if not getattr(boundary_zone, "is_active_boundary", True):
+            raise HTTPException(status_code=409, detail="Specified zone is not the active site boundary")
         if boundary_zone.project_id != project_id:
             raise HTTPException(status_code=400, detail="Boundary zone does not belong to this project")
 
@@ -2482,7 +2643,7 @@ async def generate_all(
             select(SiteZone).where(
                 SiteZone.project_id == project_id,
                 SiteZone.id != boundary_zone_id,
-                ST_Intersects(boundary_zone.geometry, SiteZone.geometry),
+                ST_CoveredBy(SiteZone.geometry, boundary_zone.geometry),
             )
         )
         all_zones = zones_result.scalars().all()

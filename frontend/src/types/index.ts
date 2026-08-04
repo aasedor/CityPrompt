@@ -541,6 +541,8 @@ export interface SiteZone {
   coordinates: number[][]; // [[lng, lat], ...]
   color: string;
   properties?: SiteZoneProperties;
+  /** The one authoritative redevelopment boundary for this project. */
+  is_active_boundary?: boolean;
   sort_order: number;
   building_id?: string;
   building_ids?: string[];

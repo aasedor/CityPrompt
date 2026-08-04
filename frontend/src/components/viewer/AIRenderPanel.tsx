@@ -18,6 +18,7 @@ import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 // ---------------------------------------------------------------------------
 // UI grouping for the style picker
@@ -201,7 +202,7 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
       : { archetypePrompt: undefined, archetypeNegative: undefined };
 
     // Find the site boundary zone to pass for masking
-    const siteBoundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    const siteBoundary = getActiveSiteBoundary(siteZones);
     const siteBoundaryCoords = siteBoundary?.coordinates?.length
       ? siteBoundary.coordinates
       : undefined;

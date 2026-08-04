@@ -24,6 +24,7 @@ import {
 } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { createTileSpatialMaskSetConfig } from './TileSpatialMaskPlugin';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -136,7 +137,7 @@ function TileMaskVolume({ zone, terrainHeight }: { zone: SiteZone; terrainHeight
 
 export function GlobeTileMaskLayer({ zones, terrainHeight }: GlobeTileMaskLayerProps) {
   const spatialMask = useMemo(() => {
-    const siteBoundary = zones.find((zone) => zone.zone_type === 'site_boundary');
+    const siteBoundary = getActiveSiteBoundary(zones);
     return createTileSpatialMaskSetConfig(
       siteBoundary ? [siteBoundary] : zones,
       terrainHeight,

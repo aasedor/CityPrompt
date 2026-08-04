@@ -1,5 +1,6 @@
 import type { SiteZone } from '@/types';
 import { pointInPolygon } from '@/utils/coordTransform';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 // Metric planning geometry is projected back to WGS84 before persistence.
 // Shared edges can then differ by ~1-3 cm through round-trip precision even
@@ -95,9 +96,7 @@ export interface PlanBoundaryAlignment {
  * overlays and hand-drawn zones are excluded; this gate protects paid 3D and
  * render actions for deterministic master-plan proposal zones. */
 export function analyzePlanBoundaryAlignment(siteZones: SiteZone[]): PlanBoundaryAlignment {
-  const boundary = siteZones.find(
-    (zone) => zone.zone_type === 'site_boundary' && zone.coordinates.length >= 3,
-  ) ?? null;
+  const boundary = getActiveSiteBoundary(siteZones);
   const planZones = siteZones.filter((zone) => {
     const props = zone.properties as Record<string, unknown> | undefined;
     return zone.zone_type !== 'site_boundary'

@@ -8,6 +8,7 @@ import pytest
 from shapely.geometry import Polygon, mapping
 
 from app.api.v1.site_zones import (
+    _boundary_covers_polygon,
     _coordinates_materially_changed,
     _invalidate_boundary_dependents,
     _invalidate_residual_landscape,
@@ -107,6 +108,15 @@ def test_polygon_validation_rejects_a_material_bow_tie() -> None:
             [0.0, 1.0],
             [1.0, 0.0],
         ])
+
+
+def test_active_boundary_containment_allows_edge_touching_but_rejects_escape() -> None:
+    boundary = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+    touching = Polygon([(0, 2), (4, 2), (4, 6), (0, 6)])
+    escaped = Polygon([(-0.01, 2), (4, 2), (4, 6), (-0.01, 6)])
+
+    assert _boundary_covers_polygon(boundary, touching)
+    assert not _boundary_covers_polygon(boundary, escaped)
 
 
 @pytest.mark.asyncio

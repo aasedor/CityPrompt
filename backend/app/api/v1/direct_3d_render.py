@@ -101,7 +101,12 @@ def _validate_direct_3d_project_zones(
 ) -> list[dict[str, object]]:
     """Validate a paid capture against the locked, server-current parcel state."""
 
-    boundaries = [zone for zone in zones if zone.zone_type == "site_boundary"]
+    boundaries = [
+        zone
+        for zone in zones
+        if zone.zone_type == "site_boundary"
+        and getattr(zone, "is_active_boundary", True)
+    ]
     all_physical_zones = physical_community_3d_zones(zones)
     if not all_physical_zones:
         raise _direct_state_conflict(

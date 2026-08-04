@@ -29,6 +29,7 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
@@ -2132,9 +2133,10 @@ export function GlobeSitePlannerMap({
     if (hasUserInteractedRef.current) return;
     if (lastAutoFramedProjectKeyRef.current === projectZoneFocusKey) return;
 
-    const focusZones = siteZones
-      .filter((zone) => zone.zone_type === 'site_boundary')
-      .map((zone) => ({ coordinates: zone.coordinates as [number, number][] }));
+    const activeBoundary = getActiveSiteBoundary(siteZones);
+    const focusZones = activeBoundary
+      ? [{ coordinates: activeBoundary.coordinates as [number, number][] }]
+      : [];
     const renderZones = focusZones.length > 0
       ? focusZones
       : siteZones.map((zone) => ({ coordinates: zone.coordinates as [number, number][] }));

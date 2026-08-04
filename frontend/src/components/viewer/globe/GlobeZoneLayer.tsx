@@ -43,7 +43,7 @@ import {
   createSitePreparationGeometry,
   createSitePreparationTexture,
   createWoonerfPaverTexture,
-  hasCompiledCommunity,
+  getPreparedSiteBoundaryIds,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
@@ -1144,9 +1144,7 @@ export function GlobeZoneLayer({
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const sitePrepared = useMemo(
-    () => hasCompiledCommunity(zones) && zones.some((zone) => (
-      zone.zone_type === 'site_boundary' && zone.coordinates.length >= 3
-    )),
+    () => getPreparedSiteBoundaryIds(zones).size > 0,
     [zones],
   );
   // Big layers (e.g. an imported shapefile) switch every zone to a cheaper path.

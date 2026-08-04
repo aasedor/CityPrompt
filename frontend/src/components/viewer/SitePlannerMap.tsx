@@ -15,6 +15,7 @@ import {
 } from './aestheticCatalog';
 import { getViewConePolygon } from './useStreetViewRender';
 import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from './cameraAngles';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -716,9 +717,8 @@ export function SitePlannerMap({
   }, [buildZoneFeatures]);
 
   const getZoneBounds = useCallback((zones: SiteZone[]): mapboxgl.LngLatBounds | null => {
-    const sourceZones = zones.some((zone) => zone.zone_type === 'site_boundary')
-      ? zones.filter((zone) => zone.zone_type === 'site_boundary')
-      : zones;
+    const boundary = getActiveSiteBoundary(zones);
+    const sourceZones = boundary ? [boundary] : zones;
     const bounds = new mapboxgl.LngLatBounds();
     let validPointCount = 0;
 

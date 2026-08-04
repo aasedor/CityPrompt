@@ -1,21 +1,16 @@
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
-/** A compiled redevelopment clears the existing Google-tile site as one
- * construction parcel. Individual buildings/streets alone leave source
- * warehouses visible in setbacks and courtyards. */
+/** Whether this scene already contains compiled authored 3D content. */
 export function hasCompiledCommunity(zones: SiteZone[]): boolean {
   return zones.some((zone) => isCommunity3DCompiled(zone));
 }
 
 export function getPreparedSiteBoundaryIds(zones: SiteZone[]): Set<string> {
-  if (!hasCompiledCommunity(zones)) return new Set();
-  return new Set(
-    zones
-      .filter((zone) => zone.zone_type === 'site_boundary' && zone.coordinates.length >= 3)
-      .map((zone) => zone.id),
-  );
+  const activeBoundary = getActiveSiteBoundary(zones);
+  return activeBoundary ? new Set([activeBoundary.id]) : new Set();
 }
 
 /** A standalone replacement building still clips the source Google mesh, but
