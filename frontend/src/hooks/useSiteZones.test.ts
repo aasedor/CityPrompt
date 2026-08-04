@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useSiteZones } from './useSiteZones';
 import { siteZonesApi } from '@/services/api';
 import type { SiteZone } from '@/types';
+import { useViewerStore } from '@/store';
 
 vi.mock('@/services/api', () => ({
   siteZonesApi: {
@@ -39,7 +40,7 @@ function makeZone(id: string): SiteZone {
   } as SiteZone;
 }
 
-describe('useSiteZones temp-id guards', () => {
+describe('useSiteZones', () => {
   let queryClient: QueryClient;
 
   const wrapper = ({ children }: { children: React.ReactNode }) =>
@@ -47,6 +48,10 @@ describe('useSiteZones temp-id guards', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    useViewerStore.setState({
+      selectedZoneId: null,
+      activeSitePlannerTool: 'site_boundary',
+    });
     queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
     });
@@ -119,6 +124,33 @@ describe('useSiteZones temp-id guards', () => {
 
     await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
     await waitFor(() => expect(siteZonesApi.fetchContext).toHaveBeenCalledWith(REAL_ZONE_ID));
+  });
+
+  it('reconciles the saved boundary and opens its Site DNA panel', async () => {
+    const context = {
+      buildings: [],
+      roads: [],
+      water: [],
+      parks: [],
+      fetched_at: '2026-08-03T00:00:00Z',
+      buffer_m: 50,
+    };
+    vi.mocked(siteZonesApi.list).mockImplementation(() => new Promise(() => {}));
+    vi.mocked(siteZonesApi.create).mockResolvedValue(makeZone(REAL_ZONE_ID));
+    vi.mocked(siteZonesApi.fetchContext).mockResolvedValue(context);
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+
+    result.current.createZone.mutate({
+      zone_type: 'site_boundary',
+      coordinates: [[0, 0], [0, 1], [1, 1]],
+    });
+
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBeNull();
+    expect(useViewerStore.getState().selectedZoneId).toBe(REAL_ZONE_ID);
+    expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])).toEqual([
+      expect.objectContaining({ id: REAL_ZONE_ID, zone_type: 'site_boundary' }),
+    ]);
   });
 
   it('reuses boundary context returned by create instead of fetching it twice', async () => {

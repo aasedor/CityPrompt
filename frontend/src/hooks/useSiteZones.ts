@@ -38,8 +38,9 @@ export function useSiteZones(projectId: string | undefined) {
       await queryClient.cancelQueries({ queryKey: ['site-zones', projectId] });
       const previous = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
       // Optimistic zone so the map renders it immediately
+      const optimisticId = `temp-${Date.now()}`;
       const optimistic: SiteZone = {
-        id: `temp-${Date.now()}`,
+        id: optimisticId,
         project_id: projectId!,
         zone_type: vars.zone_type,
         coordinates: vars.coordinates,
@@ -50,10 +51,17 @@ export function useSiteZones(projectId: string | undefined) {
         updated_at: new Date().toISOString(),
       };
       queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => [...(old ?? []), optimistic]);
-      return { previous };
+      return { previous, optimisticId };
     },
-    onSuccess: async (createdZone) => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+    onSuccess: (createdZone, _vars, context) => {
+      // Replace the exact optimistic polygon with the authoritative response
+      // before refetching. This removes the temp-id gap so selection-dependent
+      // panels can open as soon as the create request succeeds.
+      queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => {
+        const withoutOptimistic = (old ?? []).filter((zone) => zone.id !== context?.optimisticId);
+        return [...withoutOptimistic.filter((zone) => zone.id !== createdZone.id), createdZone];
+      });
+      void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone created');
       // Push undo action (skip if this was triggered by undo/redo system)
       if (!useUndoRedoStore.getState()._isSystemAction && projectId) {
@@ -62,10 +70,14 @@ export function useSiteZones(projectId: string | undefined) {
         );
       }
       if (createdZone.zone_type === 'site_boundary') {
+        // A project can have only one active boundary. Leave drawing mode and
+        // hand the user directly into the boundary-owned Site DNA panel.
+        const viewer = useViewerStore.getState();
+        viewer.setActiveSitePlannerTool(null);
+        viewer.selectZone(createdZone.id);
         const ctx = createdZone.properties?._osm_context;
         if (ctx) {
-          const { setOSMContext } = useViewerStore.getState();
-          setOSMContext(ctx);
+          viewer.setOSMContext(ctx);
           const total = ctx.buildings.length + ctx.roads.length + ctx.water.length + ctx.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
           return;
