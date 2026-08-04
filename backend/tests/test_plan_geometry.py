@@ -357,6 +357,42 @@ def test_context_connector_uses_inward_route_instead_of_half_width_edge_route():
     assert corridor.intersection(boundary.buffer(0.05)).area / corridor.area >= 0.9
 
 
+def test_vehicle_connector_prefers_grid_aligned_right_angle():
+    boundary = Polygon([(0, 0), (200, 0), (200, 200), (0, 200)])
+    entry = Point(0, 25)
+    centerlines = [LineString([(60, 50), (60, 175)])]
+    segments = []
+
+    added = _append_context_connectors(
+        boundary_m=boundary,
+        entries=[entry],
+        role="local",
+        width_m=14.0,
+        centerlines=centerlines,
+        segments=segments,
+        grid_angle_deg=0.0,
+    )
+
+    assert added == 1
+    coords = list(segments[0].line.coords)
+    assert len(coords) == 3
+    first = (coords[1][0] - coords[0][0], coords[1][1] - coords[0][1])
+    second = (coords[2][0] - coords[1][0], coords[2][1] - coords[1][1])
+    assert abs(first[0] * second[0] + first[1] * second[1]) < 1e-6
+    assert all(abs(value) < 1e-6 for value in (first[1], second[0]))
+
+
+def test_roundabouts_require_an_explicit_network_option():
+    boundary = Polygon([(0, 0), (500, 0), (500, 340), (0, 340)])
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+
+    ordinary = generate_street_network(boundary, rules, [])
+    specialized = generate_street_network(boundary, rules, [], include_roundabouts=True)
+
+    assert ordinary.roundabouts == []
+    assert specialized.roundabouts
+
+
 def test_context_connector_leaves_edge_only_half_width_route_unserved():
     boundary = Polygon([(0, 0), (100, 0), (100, 100), (0, 100)])
     centerlines = [LineString([(30, 0), (100, 0)])]

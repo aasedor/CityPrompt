@@ -219,6 +219,10 @@ class Palette:
     # resolve to a crescent street archetype; None = keep width-band/local id.
     curvilinear: bool = False
     crescent_archetype_id: str | None = None
+    # Roundabouts are specialized junction archetypes, never generic nodes.
+    # Keep them opt-in so ordinary master plans use conventional right-angle
+    # T- and cross-intersections.
+    automatic_roundabouts: bool = False
     # ── Master Planner extensions ────────────────────────────────────────────
     # Declared style family (archetype_families.json): family-aware resolution
     # keeps every pick coherent. None = legacy resolution.
@@ -397,6 +401,9 @@ PALETTES: dict[str, Palette] = {
         },
         spine_archetype_id=None,
         water_feature=True,
+        # Preserve legacy redraws created when Climate First explicitly
+        # included a central traffic-calming roundabout.
+        automatic_roundabouts=True,
         plaza=False,
         laneways=True,
         landscape={

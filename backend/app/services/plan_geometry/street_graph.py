@@ -199,10 +199,16 @@ def generate_street_network(
     entry_points: list[Point] | None = None,
     *,
     path_entry_points: list[Point] | None = None,
+    include_roundabouts: bool = False,
     curve_mode: str = "none",
     seed: int = 0,
 ) -> StreetNetwork:
-    """curve_mode="none" is byte-identical to the historic straight grid. "spine"
+    """Generate the site's connected street graph.
+
+    Ordinary plans use rectilinear T- and cross-intersections. Roundabouts are
+    opt-in because they are a distinct junction archetype rather than generic
+    connective tissue. ``curve_mode="none"`` is byte-identical to the historic
+    straight grid. ``"spine"``
     bows only the main street; "all" translates the same bow to every long-axis
     row (exact spacing between interior rows). A requested curve that fails its
     feasibility caps returns a cheap sentinel network (curve_mode="none" +
@@ -342,6 +348,7 @@ def generate_street_network(
             width_m=rules.local_row_width_m,
             centerlines=network.centerlines,
             segments=full_span_kept,
+            grid_angle_deg=angle,
         )
         path_connectors = _append_context_connectors(
             boundary_m=boundary_m,
@@ -428,7 +435,7 @@ def generate_street_network(
     # cleanly (an overlay after the fact would double-count land).
     spine_segs = [s for s in full_span_kept if s.role == "spine"]
     circles: list[BaseGeometry] = []
-    if spine_segs and seen:
+    if include_roundabouts and spine_segs and seen:
         spine_line = spine_segs[0].line
         candidates = sorted(
             (p for p in seen if p.distance(spine_line) < 0.5),
@@ -451,13 +458,16 @@ def _append_context_connectors(
     width_m: float,
     centerlines: list[LineString],
     segments: list[StreetSegment],
+    grid_angle_deg: float = 0.0,
 ) -> int:
     """Join boundary anchors exactly to the nearest generated centreline.
 
     The historic phase shift aligned only the first anchor and merely checked
     whether the remainder were within 60 m.  These short, clipped stubs make
     every feasible connection topological: their ROW/path band participates in
-    block carving and is emitted as real proposal geometry.
+    block carving and is emitted as real proposal geometry. Vehicle streets
+    try grid-aligned orthogonal approaches before a direct fallback; pedestrian
+    paths retain the shortest visible route.
     """
     added = 0
     for entry in entries:
@@ -472,6 +482,8 @@ def _append_context_connectors(
             centerlines,
             boundary_m,
             corridor_width_m=width_m,
+            grid_angle_deg=grid_angle_deg,
+            prefer_orthogonal=role != "path",
         )
         if raw is None:
             continue
@@ -513,8 +525,10 @@ def _shortest_visible_connector(
     boundary_m: Polygon,
     *,
     corridor_width_m: float,
+    grid_angle_deg: float = 0.0,
+    prefer_orthogonal: bool = False,
 ) -> LineString | None:
-    """Return the shortest direct connection whose usable ROW fits the parcel.
+    """Return the shortest connection whose usable ROW fits the parcel.
 
     On a concave site, the nearest network point may sit across a notch. The
     one-shot nearest-point approach rejected that unsafe shortcut and stopped,
@@ -530,7 +544,7 @@ def _shortest_visible_connector(
     the context anchor truthfully unserved. The small uncovered allowance is
     for an oblique entrance's clipped portal and projection/overlay noise.
     """
-    candidates: list[tuple[float, float, float, LineString]] = []
+    candidates: list[tuple[int, float, float, float, LineString]] = []
     seen: set[tuple[float, float]] = set()
     for line in centerlines:
         # Grid centreline endpoints normally land on the parcel boundary. A
@@ -554,13 +568,21 @@ def _shortest_visible_connector(
             if key in seen:
                 continue
             seen.add(key)
-            raw = LineString([anchor.coords[0], target.coords[0]])
-            if raw.length <= CONNECTION_EPSILON_M or raw.length > ENTRY_CONNECTOR_MAX_M:
+            direct = LineString([anchor.coords[0], target.coords[0]])
+            if direct.length <= CONNECTION_EPSILON_M:
                 continue
-            candidates.append((raw.length, target.x, target.y, raw))
+            if prefer_orthogonal:
+                for raw in _orthogonal_connectors(anchor, target, grid_angle_deg):
+                    if raw.length <= ENTRY_CONNECTOR_MAX_M:
+                        candidates.append((0, raw.length, target.x, target.y, raw))
+            if direct.length <= ENTRY_CONNECTOR_MAX_M:
+                # Direct geometry is a resilience fallback for concave or
+                # extremely tight parcels. Priority keeps every feasible
+                # right-angle solution ahead of it, even when slightly longer.
+                candidates.append((1 if prefer_orthogonal else 0, direct.length, target.x, target.y, direct))
 
     safe_site = boundary_m.buffer(CONNECTION_EPSILON_M)
-    for _length, _x, _y, raw in sorted(candidates, key=lambda item: item[:3]):
+    for _priority, _length, _x, _y, raw in sorted(candidates, key=lambda item: item[:4]):
         try:
             if not safe_site.covers(raw):
                 continue
@@ -588,6 +610,38 @@ def _shortest_visible_connector(
         except Exception:  # noqa: BLE001 - invalid municipal boundaries
             continue
     return None
+
+
+def _orthogonal_connectors(anchor: Point, target: Point, grid_angle_deg: float) -> list[LineString]:
+    """Return deterministic one-elbow routes aligned to the internal grid.
+
+    Both Manhattan orders are emitted because one elbow can hug a parcel edge
+    or cross a concavity while the other provides a full-width, buildable ROW.
+    Axis-aligned anchors naturally collapse to a straight two-point segment.
+    """
+    angle = math.radians(grid_angle_deg)
+    ux, uy = math.cos(angle), math.sin(angle)
+    vx, vy = -uy, ux
+    dx, dy = target.x - anchor.x, target.y - anchor.y
+    along_u = dx * ux + dy * uy
+    along_v = dx * vx + dy * vy
+    elbows = [
+        (anchor.x + along_u * ux, anchor.y + along_u * uy),
+        (anchor.x + along_v * vx, anchor.y + along_v * vy),
+    ]
+    routes: list[LineString] = []
+    signatures: set[tuple[tuple[float, float], ...]] = set()
+    for elbow in elbows:
+        coords = [anchor.coords[0]]
+        if Point(elbow).distance(anchor) > CONNECTION_EPSILON_M and Point(elbow).distance(target) > CONNECTION_EPSILON_M:
+            coords.append(elbow)
+        coords.append(target.coords[0])
+        signature = tuple((round(x, 6), round(y, 6)) for x, y in coords)
+        if signature in signatures:
+            continue
+        signatures.add(signature)
+        routes.append(LineString(coords))
+    return routes
 
 
 MAX_BLOCKS_PER_AXIS = 12  # runaway guard on very large greenfield sites

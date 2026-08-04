@@ -899,6 +899,7 @@ def generate_plan_geometry(
             rules,
             entries,
             path_entry_points=path_entries,
+            include_roundabouts=palette.automatic_roundabouts,
         )
         blocks, sliver_straight = _derive_blocks(boundary_m, network.street_area)
         if palette.curvilinear and network.segments:
@@ -912,6 +913,7 @@ def generate_plan_geometry(
                     rules,
                     entries,
                     path_entry_points=path_entries,
+                    include_roundabouts=palette.automatic_roundabouts,
                     curve_mode=mode,
                     seed=seed,
                 )

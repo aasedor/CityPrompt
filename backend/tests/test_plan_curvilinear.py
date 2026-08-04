@@ -5,7 +5,7 @@ Covers: byte-identical straight defaults, bow geometry + intersection parity,
 scenario gating (curvilinear palettes vs city_beautiful/legacy straight),
 crescent archetype tagging, end-to-end invariants on curved plans (budget,
 partition, hole-free massing), the pure fallback predicate, degenerate/skinny/
-L-shaped sites, locked-street round-trips, roundabouts on the bowed spine,
+L-shaped sites, locked-street round-trips, opt-in roundabouts on a bowed spine,
 decompose_holed's cumulative ladder, and refinement stability."""
 
 import math
@@ -322,16 +322,27 @@ def test_curved_locked_streets_roundtrip():
     assert abs(second_area - locked_area) / locked_area < 0.02
 
 
-def test_roundabouts_survive_curved_spine():
+def test_roundabouts_are_opt_in_and_survive_curved_spine():
     site = _site()
     result = _generate("city_policy", site=site)
     assert _curve_notes(result)[0]["code"] == "CURVILINEAR_APPLIED"
     roundabouts = [z for z in result.zones if z["properties"].get("road_archetype_id") == "roundabout"]
-    assert roundabouts
+    assert not roundabouts
+
+    boundary = _metric_boundary(site)
     rules, _ = resolve_rules("city_policy", PARAMS)
-    ideal = math.pi * ((rules.spine_row_width_m + 6.0) / 2) ** 2
-    for zone in roundabouts:
-        assert abs(_metric_area(zone, site) - ideal) / ideal < 0.15
+    network = generate_street_network(
+        boundary,
+        rules,
+        [],
+        include_roundabouts=True,
+        curve_mode="spine",
+        seed=site_hash(boundary),
+    )
+    assert network.curve_mode == "spine"
+    assert network.roundabouts
+    spine = next(segment.line for segment in network.segments if segment.role == "spine")
+    assert all(point.distance(spine) < 0.5 for point, _radius in network.roundabouts)
 
 
 # ---------------------------------------------------------------------------

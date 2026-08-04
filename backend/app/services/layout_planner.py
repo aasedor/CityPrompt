@@ -1490,6 +1490,7 @@ IMPORTANT:
 - Construct a coherent district or precinct, not isolated building objects
 - Never leave major white space. If an area is not building footprint, make it road, hardscape, planted landscape, water, or civic space
 - Align buildings parallel to the nearest road segment or site boundary where possible; prefer disciplined orthogonal geometry and 90-degree increments unless the site edge clearly demands otherwise
+- Use straight urban street approaches and conventional square T- or cross-intersections by default. Do not create diagonal connector fans, slip lanes, channelized right turns, ramps, sweeping corner geometry, traffic circles, or roundabouts unless the selected street archetype or the user's brief explicitly requests that specialized junction
 - Every building must be serviced by a realistic road, shared street, mews, or hardscape apron
 - Anchor larger layouts with at least one primary civic or landscape space
 - Keep all building positions inside the zone polygon and coordinate new roads to connect to existing roads when present
