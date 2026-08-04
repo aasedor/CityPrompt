@@ -4,8 +4,9 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { compileBoundaryCommunity3DMock } = vi.hoisted(() => ({
+const { compileBoundaryCommunity3DMock, listLegoModulesMock } = vi.hoisted(() => ({
   compileBoundaryCommunity3DMock: vi.fn(),
+  listLegoModulesMock: vi.fn(),
 }));
 
 vi.mock('@/features/legoAssembly/communityCompiler', async (importOriginal) => {
@@ -13,6 +14,17 @@ vi.mock('@/features/legoAssembly/communityCompiler', async (importOriginal) => {
   return {
     ...actual,
     compileBoundaryCommunity3D: compileBoundaryCommunity3DMock,
+  };
+});
+
+vi.mock('@/features/legoAssembly/legoAssemblyApi', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/features/legoAssembly/legoAssemblyApi')>();
+  return {
+    ...actual,
+    legoAssemblyApi: {
+      ...actual.legoAssemblyApi,
+      listModules: listLegoModulesMock,
+    },
   };
 });
 
@@ -28,13 +40,36 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
     suggestedDepth_m: 20,
     minFloors: 4,
     maxFloors: 8,
-    archetypeImages: [{
-      id: 'industrial_brick_mixed_use_variant_0',
-      label: 'Industrial Brick Mixed Use — Front Day',
-      imageUrl: '/industrial/front-day.png',
-      imagePath: '/industrial/front-day.png',
-      prompt: 'Industrial brick mixed use',
-    }],
+    archetypeImages: [
+      {
+        id: 'industrial_brick_mixed_use_variant_0',
+        label: 'Industrial Brick Mixed Use — Front Day',
+        imageUrl: '/industrial/front-day.png',
+        imagePath: '/industrial/front-day.png',
+        prompt: 'Industrial brick mixed use',
+      },
+      {
+        id: 'industrial_brick_brewery_reference',
+        label: 'Brewery reference',
+        imageUrl: '/industrial/brewery-reference.png',
+        imagePath: '/industrial/brewery-reference.png',
+        prompt: 'Industrial brick brewery',
+      },
+      {
+        id: 'industrial_brick_brewery_variant_0_reference',
+        label: 'Brewery night reference',
+        imageUrl: '/industrial/brewery-night-reference.png',
+        imagePath: '/industrial/brewery-night-reference.png',
+        prompt: 'Industrial brick brewery at night',
+      },
+      {
+        id: 'industrial_brick_brewery_variant_1_reference',
+        label: 'Brewery courtyard reference',
+        imageUrl: '/industrial/brewery-courtyard-reference.png',
+        imagePath: '/industrial/brewery-courtyard-reference.png',
+        prompt: 'Industrial brick brewery courtyard',
+      },
+    ],
     generationStyleInput: {
       developmentType: 'mixed_use',
       buildingSubcategory: 'industrial_brick_mixed_use',
@@ -59,6 +94,20 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
         facadeDetail: { primaryMaterial: 'Red brick' },
         roofDetail: { form: 'Sawtooth roof' },
         palette: { primary: '#8f3c2f' },
+      },
+      {
+        id: 'industrial_brick_brewery_variant_0',
+        label: 'Brewery Night',
+        thumbnailUrl: '/industrial/brewery-night.png',
+        minFloors: 2,
+        maxFloors: 5,
+      },
+      {
+        id: 'industrial_brick_brewery_variant_1',
+        label: 'Brewery Courtyard',
+        thumbnailUrl: '/industrial/brewery-courtyard.png',
+        minFloors: 2,
+        maxFloors: 5,
       },
     ],
   };
@@ -173,7 +222,7 @@ vi.mock('@/services/api', async (importOriginal) => {
 
 import { ZonePropertiesPanel } from './ZonePropertiesPanel';
 import type { LayoutOption, SiteZone } from '@/types';
-import { siteZonesApi, urbanDnaApi } from '@/services/api';
+import { modelLibraryApi, siteZonesApi, urbanDnaApi } from '@/services/api';
 import { useViewerStore } from '@/store';
 
 function renderPanel(ui: ReactElement) {
@@ -285,6 +334,19 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
       parks: 1,
       streets: 1,
     });
+    listLegoModulesMock.mockResolvedValue([{
+      id: 'industrial-brick-brewery-floor',
+      name: 'Industrial Brick Brewery Floor',
+      model_url: '/families/industrial-brick-brewery/floor.glb',
+      family: 'industrial-brick-brewery',
+      role: 'floor',
+      width_m: 40,
+      depth_m: 26,
+      height_m: 3.5,
+      archetype_ids: ['industrial_brick_brewery'],
+      reuse_keys: [],
+      repeatable_z: true,
+    }]);
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
       configurable: true,
       value: vi.fn(),
@@ -482,6 +544,72 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(draft.properties?.development_subcategory).toBe('industrial_brick_mixed_use');
     expect(draft.properties?.development_selected_variant_id).toBeUndefined();
     expect(draft.properties?.floors).toBe(6);
+  });
+
+  it('shows live LEGO readiness on the exact archetype variant and falls back through authored references', async () => {
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const card = container.querySelector('[data-aesthetic-option-id="industrial_brick_mixed_use"]');
+    const brewery = screen.getByTitle(/^Brewery — click to select/);
+    const originalMill = screen.getByTitle(/^Original Mill — click to select/);
+
+    await waitFor(() => expect(brewery).toHaveAttribute('data-lego-ready', 'true'));
+    expect(card).not.toHaveAttribute('data-lego-family-available');
+    expect(originalMill).toHaveAttribute('data-lego-ready', 'false');
+    expect(screen.getByAltText('Industrial Brick Mixed Use').parentElement).not.toHaveAttribute('data-lego-ready');
+    expect(modelLibraryApi.archetypePreviews).not.toHaveBeenCalled();
+
+    const breweryImage = screen.getByAltText('Brewery');
+    expect(breweryImage).toHaveAttribute('src', '/industrial/brewery.png');
+    fireEvent.error(breweryImage);
+    expect(breweryImage).toHaveAttribute(
+      'src',
+      '/industrial/brewery-reference.png',
+    );
+  });
+
+  it('does not collapse numeric variant suffixes when marking exact LEGO readiness', async () => {
+    listLegoModulesMock.mockResolvedValue([{
+      id: 'industrial-brick-brewery-night-floor',
+      name: 'Industrial Brick Brewery Night Floor',
+      model_url: '/families/industrial-brick-brewery/night-floor.glb',
+      family: 'industrial-brick-brewery-night',
+      role: 'floor',
+      width_m: 40,
+      depth_m: 26,
+      height_m: 3.5,
+      archetype_ids: ['industrial_brick_brewery_variant_0'],
+      reuse_keys: [],
+      repeatable_z: true,
+    }]);
+
+    renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const brewery = screen.getByTitle(/^Brewery — click to select/);
+    const breweryNight = screen.getByTitle(/^Brewery Night — click to select/);
+    const breweryCourtyard = screen.getByTitle(/^Brewery Courtyard — click to select/);
+
+    await waitFor(() => expect(breweryNight).toHaveAttribute('data-lego-ready', 'true'));
+    expect(brewery).toHaveAttribute('data-lego-ready', 'false');
+    expect(breweryCourtyard).toHaveAttribute('data-lego-ready', 'false');
   });
 
   it('routes the purple Site Boundary action through LEGO Community 3D instead of legacy bulk Meshy', async () => {

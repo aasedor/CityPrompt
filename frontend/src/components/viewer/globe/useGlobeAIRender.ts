@@ -47,6 +47,10 @@ import {
 } from '@/features/community3d/community3d';
 import { projectedBoundsIntersectFrame } from './renderZoneVisibility';
 import { selectRenderLabelIds } from './renderLabelBudget';
+import {
+  buildPublicRealmContextPrompt,
+  buildPublicRealmSceneContextPrompt,
+} from './publicRealmGenerationContext';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
@@ -1663,6 +1667,11 @@ export function buildPrompt(
     ? `DISTRICT ASSIGNMENT: Preserve the exact on-screen location, footprint, separation, orientation and occlusion of every individual proposal. Apply each grouped archetype consistently to all matching polygon instances without collapsing a row of buildings into one slab, filling courtyards, moving parks, or simplifying street/path networks. The image geometry and mask override any typical archetype dimensions.`
     : `ZONE ASSIGNMENT: Each zone line in the ZONES list above begins with "@ SCREEN-POSITION" (values: UPPER-LEFT, UPPER-CENTER, UPPER-RIGHT, MIDDLE-LEFT, CENTER, MIDDLE-RIGHT, LOWER-LEFT, LOWER-CENTER, LOWER-RIGHT) — this is the location of that zone's polygon within THIS image's 2D frame. It is a THIRD identification axis alongside color and text label. Verify color, label, AND screen position all match before rendering an archetype at a polygon. If a line says "[magenta] @ LOWER-RIGHT | Grand Magasin", render the Grand Magasin archetype at the polygon in the lower-right region of the frame — NOT at a polygon elsewhere even if its color looks similar. Never swap archetypes between polygons. When two zones have similar fill colors, the SCREEN-POSITION resolves the ambiguity — trust the position anchor over color similarity.`;
 
+  const publicRealmContextClause = buildPublicRealmSceneContextPrompt(
+    renderZones,
+    { sceneReferenceAttached: true },
+  );
+
   // --- ASSEMBLE SCHEMA PROMPT ---
   // Artistic styles drop the photoreal-specific clauses (color temp matching,
   // atmospheric perspective, "match adjacent real buildings") that otherwise
@@ -1731,6 +1740,7 @@ export function buildPrompt(
     zoneSchemaClause,
     zoneIdentificationClause,
     zoneAssignmentClause,
+    publicRealmContextClause || null,
     mandatoryClause,
     prohibitionsClause,
     siteBoundaryClause,
@@ -3393,6 +3403,10 @@ export function useGlobeAIRender() {
             `TASK: Render ONE ground zone in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
             `ZONE: ${info.archetypeTitle || zoneName}${footprint ? `, drawn footprint ${footprint}` : ''}${dimHint}`,
             features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, 400)}` : '',
+            buildPublicRealmContextPrompt(zone, visibleZones, {
+              sceneReferenceAttached: true,
+              compact: true,
+            }),
             `CONTEXT: Preserve ALL existing photographic context outside the mask. Match lighting and atmosphere.`,
             `MANDATORY: Replace the colored polygon with photorealistic ground materials. Render ONLY within the masked area; the drawn footprint is authoritative.`,
             customPrompt ? `ADDITIONAL: ${customPrompt}` : '',

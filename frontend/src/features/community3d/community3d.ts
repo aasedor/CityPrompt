@@ -291,19 +291,25 @@ export function shouldRenderCommunityProps(zone: SiteZone): boolean {
 }
 
 /**
- * Public-realm ground normally drapes directly over Google terrain. Cutting a
- * separate stencil hole beneath it can expose the pale scene background when
- * the independently sampled mask and drape anchors differ by even a few
- * metres. Enable destructive tile replacement only for a zone that explicitly
- * declares source geometry must be removed; prepared site-boundary masks and
- * replacement buildings use their existing dedicated paths.
+ * An authored park texture is a replacement ground surface, not a translucent
+ * planning overlay. Remove the source Google mesh below it by default so
+ * photogrammetry trees, roofs, and terrain cannot pierce the new park as the
+ * camera moves. The renderer's world-coordinate mask keeps this replacement
+ * camera-independent; legacy projects can still opt out explicitly.
+ *
+ * Procedural public realm without an authored texture retains the conservative
+ * opt-in contract because its geometry may intentionally preserve source
+ * terrain or street context.
  */
 export function shouldMaskCommunityGroundTiles(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return false;
   const props = propertiesOf(zone);
-  return props.community_3d_mask_existing_tiles === true
-    && (isCommunity3DCompiled(zone) || (kind === 'park' && Boolean(props.park_ground_texture)));
+  const hasAuthoredParkGround = kind === 'park' && Boolean(props.park_ground_texture);
+  if (hasAuthoredParkGround) {
+    return props.community_3d_mask_existing_tiles !== false;
+  }
+  return props.community_3d_mask_existing_tiles === true && isCommunity3DCompiled(zone);
 }
 
 export function generatorForKind(

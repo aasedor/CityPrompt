@@ -37,6 +37,14 @@ describe('world-coordinate tile masking', () => {
     expect(createTileSpatialMaskConfig(building, 1045)).not.toBeNull();
   });
 
+  it('uses the camera-independent mask for authored parks and legacy plazas', () => {
+    const park = { ...boundary(), zone_type: 'green_space' as const };
+    const plaza = { ...boundary(), id: 'plaza-1', zone_type: 'parking' as const };
+    expect(shouldUseSpatialTileMask(park)).toBe(true);
+    expect(shouldUseSpatialTileMask(plaza)).toBe(true);
+    expect(createTileSpatialMaskSetConfig([park, plaza], 1045)?.maskCount).toBe(2);
+  });
+
   it('builds a convex demolition envelope and clips only points inside its height band', () => {
     const config = createTileSpatialMaskConfig(boundary(), 1045);
     expect(config).not.toBeNull();

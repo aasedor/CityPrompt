@@ -223,6 +223,7 @@ describe('Direct 3D presentation adapter', () => {
       customPrompt: 'Natural spring planting.',
       projectId: 'project-1',
       community3DClaims,
+      publicRealmContext: 'PUBLIC-REALM EDGE COORDINATION:\n- park touches Main Street.',
       residualLandscapeClaim: {
         boundary_id: 'boundary-1',
         source_hash: 'c'.repeat(64),
@@ -249,6 +250,8 @@ describe('Direct 3D presentation adapter', () => {
     }));
     expect(vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0].prompt)
       .toContain('Natural spring planting.');
+    expect(vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0].prompt)
+      .toContain('park touches Main Street');
     expect(direct.render.imageUrl).toBe('data:image/png;base64,rendered');
     expect(direct.diagnostics.provider_first).toBe(true);
     expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);

@@ -131,11 +131,25 @@ describe('community 3D plan contract', () => {
     expect(shouldRenderCommunityProps(compiled)).toBe(true);
   });
 
-  it('does not cut a pale tile hole beneath public realm unless explicitly requested', () => {
+  it('replaces source tiles beneath authored park ground unless explicitly disabled', () => {
     const park = zone('green_space', {
       green_space_archetype_id: 'reservoir_watershed_park',
       park_ground_texture: { document_id: 'rendered-ground' },
     });
+    const compiled = {
+      ...park,
+      properties: withCommunity3DMeta(park, 'park_kit', '2026-07-17T01:00:00Z'),
+    };
+    expect(shouldMaskCommunityGroundTiles(park)).toBe(true);
+    expect(shouldMaskCommunityGroundTiles(compiled)).toBe(true);
+    expect(shouldMaskCommunityGroundTiles({
+      ...compiled,
+      properties: { ...compiled.properties, community_3d_mask_existing_tiles: false },
+    })).toBe(false);
+  });
+
+  it('keeps procedural public realm on the explicit replacement contract', () => {
+    const park = zone('green_space', { green_space_archetype_id: 'neighborhood_park' });
     const compiled = {
       ...park,
       properties: withCommunity3DMeta(park, 'park_kit', '2026-07-17T01:00:00Z'),

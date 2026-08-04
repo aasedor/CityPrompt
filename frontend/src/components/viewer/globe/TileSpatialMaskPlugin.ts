@@ -22,15 +22,22 @@ export interface TileSpatialMaskConfig {
   cacheKey: string;
 }
 
-/** A single replacement footprint can use true world-coordinate clipping.
- * Unlike the projected stencil volume, this never erases Google context that
- * merely sits behind the new building in the camera view. */
+/** Replacement footprints use true world-coordinate clipping. Unlike the
+ * projected stencil volume, this never erases Google context that merely sits
+ * behind a building or authored public-realm surface in the camera view. */
 export function shouldUseSpatialTileMask(zone: SiteZone): boolean {
   return [
     'site_boundary',
     'building',
     'residential',
     'development_area',
+    'road',
+    'street',
+    'path',
+    'green_space',
+    'park',
+    'plaza',
+    'parking',
   ].includes(zone.zone_type) && zone.coordinates.length >= 3;
 }
 

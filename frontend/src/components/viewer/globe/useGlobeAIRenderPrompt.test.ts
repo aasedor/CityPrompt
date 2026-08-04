@@ -125,6 +125,8 @@ describe('globe render prompt scale', () => {
     const prompt = buildPrompt([building(1), park(1)], 'photorealistic');
     expect(prompt).toContain('NUMERICAL INVENTORY: This scene contains exactly 2 zones');
     expect(prompt).toContain('ZONES:\n');
+    expect(prompt).toContain('PUBLIC-REALM EDGE COORDINATION');
+    expect(prompt).toContain('captured Google-tile scene and mounted 3D buildings');
     expect(prompt).not.toContain('DISTRICT ZONE GROUPS');
   });
 

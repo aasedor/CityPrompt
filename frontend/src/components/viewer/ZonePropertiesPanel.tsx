@@ -1,6 +1,6 @@
-﻿import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
@@ -16,6 +16,8 @@ import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
+import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
+import legoFamilySignatures from '@/data/legoFamilySignatures.json';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -2817,39 +2819,95 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
 const AESTHETIC_EXAMPLE_COUNT = 4;
 
-// ---------------------------------------------------------------------------
-// Archetype model previews — cached fetch of real 3D model thumbnails
-// ---------------------------------------------------------------------------
+type LegoFamilyReferenceSignature = {
+  archetypeId?: string;
+  elevationUrl?: string;
+};
 
-type ArchetypeModelPreview = { id: string; name: string; preview_url: string; model_url: string; project_id?: string };
+const LEGO_FAMILY_SIGNATURES = (
+  legoFamilySignatures as { families?: Record<string, LegoFamilyReferenceSignature> }
+).families ?? {};
 
-let _archetypePreviewsCache: Record<string, ArchetypeModelPreview[]> | null = null;
-let _archetypePreviewsFetching = false;
+function normalizeExactLegoArchetypeId(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
 
-function useArchetypeModelPreviews(): Record<string, ArchetypeModelPreview[]> {
-  const [previews, setPreviews] = useState<Record<string, ArchetypeModelPreview[]>>(_archetypePreviewsCache || {});
+function normalizeLegoFamilyReferenceId(value: string): string {
+  return normalizeExactLegoArchetypeId(value).replace(/_variant_\d+$/, '');
+}
 
-  useEffect(() => {
-    if (_archetypePreviewsCache) {
-      setPreviews(_archetypePreviewsCache);
-      return;
+const LEGO_SIGNATURE_BY_ID = new Map<string, LegoFamilyReferenceSignature>();
+for (const [key, signature] of Object.entries(LEGO_FAMILY_SIGNATURES)) {
+  for (const candidate of [key, signature.archetypeId]) {
+    if (!candidate) continue;
+    const normalized = normalizeLegoFamilyReferenceId(candidate);
+    if (normalized && !LEGO_SIGNATURE_BY_ID.has(normalized)) {
+      LEGO_SIGNATURE_BY_ID.set(normalized, signature);
     }
-    if (_archetypePreviewsFetching) return;
-    _archetypePreviewsFetching = true;
-    modelLibraryApi.archetypePreviews()
-      .then((data) => {
-        _archetypePreviewsCache = data;
-        setPreviews(data);
-      })
-      .catch(() => {
-        // Silently fail — just means no model thumbnails
-      })
-      .finally(() => {
-        _archetypePreviewsFetching = false;
-      });
-  }, []);
+  }
+}
 
-  return previews;
+function dedupeImageSources(sources: Array<string | null | undefined>): string[] {
+  const deduped: string[] = [];
+  for (const source of sources) {
+    if (source && !deduped.includes(source)) deduped.push(source);
+  }
+  return deduped;
+}
+
+/**
+ * Reference-only fallback for authored LEGO families. These are the source
+ * photos/boards used to model the family, never screenshots of the GLB.
+ */
+function buildLegoFamilyReferenceSources(archetypeIds: Array<string | null | undefined>): string[] {
+  const sources: string[] = [];
+  for (const archetypeId of archetypeIds) {
+    if (!archetypeId) continue;
+    const signature = LEGO_SIGNATURE_BY_ID.get(normalizeLegoFamilyReferenceId(archetypeId));
+    const elevationUrl = signature?.elevationUrl;
+    if (!elevationUrl) continue;
+    const familyBase = elevationUrl.replace(/\/elevation\.[^/?]+(?:\?.*)?$/i, '');
+    if (familyBase !== elevationUrl) {
+      sources.push(`${familyBase}/textures/source/street-hero-source-v1.png`);
+      sources.push(`${familyBase}/textures/source/archetype-goalpost.png`);
+    }
+    sources.push(elevationUrl);
+  }
+  return dedupeImageSources(sources);
+}
+
+function useLegoReadyArchetypeIds(): ReadonlySet<string> {
+  const { data: modules = [] } = useQuery({
+    queryKey: ['lego-assembly', 'modules'],
+    queryFn: () => legoAssemblyApi.listModules(),
+    staleTime: 15_000,
+    retry: 1,
+  });
+
+  return useMemo(() => {
+    const ids = new Set<string>();
+    for (const module of modules) {
+      for (const archetypeId of module.archetype_ids) {
+        const normalized = normalizeExactLegoArchetypeId(archetypeId);
+        if (normalized) ids.add(normalized);
+      }
+    }
+    return ids;
+  }, [modules]);
+}
+
+function isLegoReady(
+  legoReadyArchetypeIds: ReadonlySet<string> | undefined,
+  archetypeId: string | null | undefined,
+): boolean {
+  return Boolean(
+    legoReadyArchetypeIds
+    && archetypeId
+    && legoReadyArchetypeIds.has(normalizeExactLegoArchetypeId(archetypeId)),
+  );
 }
 
 function buildAestheticImageSources(option: DevelopmentAestheticOption): string[] {
@@ -2873,14 +2931,7 @@ function buildAestheticImageSources(option: DevelopmentAestheticOption): string[
     rawSources.unshift(option.photoUrl);
   }
 
-  const deduped: string[] = [];
-  for (const source of rawSources) {
-    if (source && !deduped.includes(source)) {
-      deduped.push(source);
-    }
-  }
-
-  return deduped;
+  return dedupeImageSources(rawSources);
 }
 function AestheticImage({
   sources,
@@ -2943,7 +2994,7 @@ function AestheticOptionCard({
   selectedReferenceId,
   selectedVariantId,
   onSelect,
-  modelPreviews,
+  legoReadyArchetypeIds,
   areaSqm,
   showSiteFit = true,
 }: {
@@ -2952,7 +3003,7 @@ function AestheticOptionCard({
   selectedReferenceId?: string;
   selectedVariantId?: string;
   onSelect: (id: string, archetypeImageId?: string, variantId?: string) => void;
-  modelPreviews?: ArchetypeModelPreview[];
+  legoReadyArchetypeIds?: ReadonlySet<string>;
   areaSqm?: number;
   showSiteFit?: boolean;
 }) {
@@ -2962,7 +3013,9 @@ function AestheticOptionCard({
   const variants = Array.isArray(option.variants) ? option.variants : [];
   const defaultArchetype = getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
 
-  // If a variant is selected, use its thumbnailUrl as hero override
+  // If a variant is selected, use its authored reference as the hero. Family
+  // source photos are fallbacks only; generated 3D model previews never enter
+  // this source list.
   const activeVariant = value === option.id && selectedVariantId
     ? variants.find((v) => v.id === selectedVariantId)
     : undefined;
@@ -2971,17 +3024,22 @@ function AestheticOptionCard({
     ? archetypeImages.find((image) => image.id === selectedReferenceId) || defaultArchetype
     : defaultArchetype;
 
-  const heroSources = activeVariant?.thumbnailUrl
-    ? [activeVariant.thumbnailUrl, ...(selectedArchetype ? [selectedArchetype.imageUrl] : []), ...sources]
-    : selectedArchetype
-      ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
-      : sources.slice(0, Math.max(1, sources.length));
+  const familyReferenceSources = buildLegoFamilyReferenceSources([
+    activeVariant?.id,
+    option.id,
+    selectedArchetype?.id,
+  ]);
+  const heroSources = dedupeImageSources([
+    activeVariant?.thumbnailUrl,
+    ...familyReferenceSources,
+    selectedArchetype?.imageUrl,
+    ...sources,
+  ]);
   const isSelected = value === option.id;
   const areaFit = showSiteFit ? getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0) : null;
 
-  // Determine thumbnail slot content: prefer design variants, fall back to lighting variants
+  // Determine thumbnail slot content from authored references only.
   const hasDesignVariants = variants.length > 0;
-  const modelSlots = (modelPreviews || []).slice(0, AESTHETIC_EXAMPLE_COUNT);
   const archetypeSlots = hasDesignVariants
     ? [] // design variants replace archetype lighting slots
     : archetypeImages.length > 0
@@ -2993,9 +3051,9 @@ function AestheticOptionCard({
       }));
 
   const totalSlots = AESTHETIC_EXAMPLE_COUNT;
-  const remainingArchetypeSlots = archetypeSlots.slice(0, totalSlots - modelSlots.length);
+  const remainingArchetypeSlots = archetypeSlots.slice(0, totalSlots);
   const variantSlots = hasDesignVariants
-    ? variants.slice(0, totalSlots - modelSlots.length)
+    ? variants.slice(0, totalSlots)
     : [];
 
   const openImageLightbox = (imageUrl: string, label: string) => {
@@ -3027,7 +3085,10 @@ function AestheticOptionCard({
         className="block w-full text-left"
         aria-label={`Select ${option.label} with Automatic / best-fitting family`}
       >
-        <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
+        <div
+          className="relative aspect-[4/3] bg-primary-950/[0.06]"
+          title="Double-click image to enlarge"
+        >
           <AestheticImage
             sources={heroSources}
             alt={option.label}
@@ -3103,71 +3164,44 @@ function AestheticOptionCard({
           </button>
         )}
         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
-          {/* Model preview thumbnails (from real Meshy-generated buildings) */}
-          {modelSlots.map((model, idx) => (
-            <button
-              key={`${option.id}-model-${idx}`}
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                openImageLightbox(model.preview_url, model.name || option.label);
-              }}
-              className="relative h-14 overflow-hidden rounded border border-amber-500/40 bg-primary-950/[0.06] hover:border-amber-500/70"
-              title={`${model.name || 'Generated model'} — click to preview`}
-            >
-              <img
-                src={resolveApiFileUrl(model.preview_url)}
-                alt={model.name || 'Model preview'}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-              <span className="absolute inset-x-0 bottom-0 bg-black/55 px-1 py-0.5 text-[8px] font-semibold leading-tight text-white">
-                {model.name || '3D preview'}
-              </span>
-              {/* 3D badge */}
-              <span className="absolute bottom-0 right-0 rounded-tl bg-amber-500/80 px-0.5 text-[7px] font-bold leading-tight text-white">
-                3D
-              </span>
-            </button>
-          ))}
-
           {/* Design variant thumbnails (if option has variants[]) */}
-          {variantSlots.map((variant) => {
+          {variantSlots.map((variant, variantIndex) => {
             const isActive = value === option.id && selectedVariantId === variant.id;
+            const variantLegoReady = isLegoReady(legoReadyArchetypeIds, variant.id);
+            const authoredVariantReference = archetypeImages[variantIndex];
+            const variantSources = dedupeImageSources([
+              variant.thumbnailUrl,
+              authoredVariantReference?.imageUrl,
+              authoredVariantReference?.thumbnailUrl,
+            ]);
             return (
               <button
                 key={`${option.id}-variant-${variant.id}`}
                 type="button"
                 aria-pressed={isActive}
+                data-variant-id={variant.id}
+                data-lego-ready={variantLegoReady ? 'true' : 'false'}
                 onClick={(event) => {
                   event.stopPropagation();
                   onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id, variant.id);
                 }}
-                onDoubleClick={(event) => {
-                  event.stopPropagation();
-                  if (variant.thumbnailUrl) {
-                    openImageLightbox(variant.thumbnailUrl, `${option.label} — ${variant.label}`);
-                  }
-                }}
                 className={`relative h-14 overflow-hidden rounded border ${
                   isActive
-                    ? 'border-primary-500 ring-2 ring-primary-500/35'
-                    : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
+                    ? variantLegoReady
+                      ? 'border-emerald-500 ring-2 ring-primary-500/40'
+                      : 'border-primary-500 ring-2 ring-primary-500/35'
+                    : variantLegoReady
+                      ? 'border-emerald-500 bg-primary-950/[0.06] hover:border-emerald-600'
+                      : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
                 }`}
                 title={`${variant.label} — click to select, double-click to enlarge`}
               >
-                {variant.thumbnailUrl ? (
-                  <img
-                    src={resolveApiFileUrl(variant.thumbnailUrl)}
-                    alt={variant.label}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="flex h-full w-full items-center justify-center text-[7px] text-primary-950/40 leading-tight px-0.5 text-center">
-                    {variant.label}
-                  </span>
-                )}
+                <AestheticImage
+                  sources={variantSources}
+                  alt={variant.label}
+                  className="h-full w-full object-cover"
+                  onDoubleClick={(activeSource) => openImageLightbox(activeSource, `${option.label} — ${variant.label}`)}
+                />
                 <span className="absolute inset-x-0 bottom-0 bg-black/55 px-1 py-0.5 text-[8px] font-semibold leading-tight text-white">
                   {variant.label}
                 </span>
@@ -3238,7 +3272,7 @@ function DevelopmentAestheticPicker({
     return a.label.localeCompare(b.label);
   });
   const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
-  const archetypeModelPreviews = useArchetypeModelPreviews();
+  const legoReadyArchetypeIds = useLegoReadyArchetypeIds();
 
   return (
     <div className="space-y-2">
@@ -3256,6 +3290,13 @@ function DevelopmentAestheticPicker({
       )}
 
       {rankedOptions.length > 0 && (
+        <div className="flex items-center gap-1.5 rounded border border-emerald-500/25 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] font-semibold text-emerald-900">
+          <span className="h-3 w-4 shrink-0 rounded border-2 border-emerald-500" aria-hidden="true" />
+          Green frame = this exact variant has an imported LEGO family
+        </div>
+      )}
+
+      {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {rankedOptions.map((option) => (
             <AestheticOptionCard
@@ -3265,7 +3306,7 @@ function DevelopmentAestheticPicker({
               selectedReferenceId={selectedReferenceId}
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
-              modelPreviews={archetypeModelPreviews[option.id]}
+              legoReadyArchetypeIds={legoReadyArchetypeIds}
               areaSqm={areaSqm}
             />
           ))}

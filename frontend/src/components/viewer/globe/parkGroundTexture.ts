@@ -35,6 +35,10 @@ import {
   resolveParkProgramAnchorLayout,
   type ParkLegoAppearance,
 } from './parkLegoFamilies';
+import {
+  buildPublicRealmContextPrompt,
+  buildPublicRealmGenerationContext,
+} from './publicRealmGenerationContext';
 
 const CANVAS = 1024;
 const PROCEDURAL_CANVAS = 512;
@@ -86,6 +90,18 @@ export interface ParkGroundTextureMeta {
   /** Persisted image-model output or the zero-call live fallback. Older
    * persisted metadata omits this field and is therefore treated as AI. */
   source?: 'ai' | 'procedural';
+  /** Context contract used for the paid material pass. Optional for older
+   * textures created before surrounding-site conditioning was introduced. */
+  context_version?: 1;
+  context_neighbor_ids?: string[];
+  google_tile_context_attached?: boolean;
+}
+
+export interface ParkGroundGenerationOptions {
+  /** Current project-visible proposal zones used to measure edge adjacency. */
+  siteZones?: SiteZone[];
+  /** Compressed current globe frame containing Google tiles and mounted 3D. */
+  sceneContextImageBase64?: string | null;
 }
 
 /** Public-realm polygons that can own an authored park/plaza ground drape.
@@ -1407,6 +1423,7 @@ export function buildParkGroundPrompt(
   sizeM: { width: number; height: number },
   markers: ParkDiagram['markers'],
   hasAppearanceReference = false,
+  surroundingContextPrompt = '',
 ): string {
   const profile = resolveParkGroundProfile(zone);
   const guideFit = resolveParkGroundGuideFit(zone, sizeM);
@@ -1455,6 +1472,7 @@ export function buildParkGroundPrompt(
     + accessBlock
     + markerBlock
     + appearanceBlock
+    + (surroundingContextPrompt ? `${surroundingContextPrompt}\n` : '')
     + "Render this as a photorealistic straight-down TOP-DOWN AERIAL (nadir) orthophoto of the park's "
     + `GROUND PLANE in summer, in the style of high-resolution aerial imagery. PROGRAM: ${profile.programDescription} `
     + `GROUND MATERIALS: ${profile.groundDescription} `
@@ -1475,6 +1493,33 @@ export function buildParkGroundPrompt(
       : '')
     + (fitInstruction ? ` ${fitInstruction}` : '')
   );
+}
+
+/** Create a bounded current-view reference for a park material call. The
+ * exact north-up diagram remains Image 1 and controls topology; this frame is
+ * attached only so the model can see Google grade, adjacent streets and the
+ * proposal buildings that meet the park edge. */
+export function capturePublicRealmSceneReference(
+  source: HTMLCanvasElement | null,
+  maxWidth = 1280,
+  quality = 0.82,
+): string | null {
+  if (!source || source.width <= 0 || source.height <= 0 || typeof document === 'undefined') {
+    return null;
+  }
+  try {
+    const scale = Math.min(1, maxWidth / source.width);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(source.width * scale));
+    canvas.height = Math.max(1, Math.round(source.height * scale));
+    const context = canvas.getContext('2d');
+    if (!context) return null;
+    context.drawImage(source, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', quality).split(',')[1] || null;
+  } catch (error) {
+    console.warn('[parkGroundTexture] live globe context capture unavailable', error);
+    return null;
+  }
 }
 
 export function selectLatestParkRenderReference<T extends { id: string; created_at: string }>(
@@ -1705,13 +1750,35 @@ async function optimizedParkGroundFile(
  * Generate, upload, and persist a ground texture for one green_space zone.
  * Returns the stored meta. Costs one Gemini render call.
  */
-export async function generateParkGroundTexture(zone: SiteZone): Promise<ParkGroundTextureMeta> {
+export async function generateParkGroundTexture(
+  zone: SiteZone,
+  options: ParkGroundGenerationOptions = {},
+): Promise<ParkGroundTextureMeta> {
   const diagram = buildParkDiagram(zone);
   if (!diagram) throw new Error('Zone has no usable polygon');
   const profile = resolveParkGroundProfile(zone);
   const props = (zone.properties ?? {}) as Record<string, unknown>;
   const legoContract = resolveParkLegoContract(zone);
   const appearanceReference = await latestParkRenderAppearanceReference(zone);
+  const siteZones = options.siteZones?.length ? options.siteZones : [zone];
+  const surroundingContext = buildPublicRealmGenerationContext(zone, siteZones);
+  const surroundingContextPrompt = buildPublicRealmContextPrompt(zone, siteZones, {
+    sceneReferenceAttached: Boolean(options.sceneContextImageBase64),
+  });
+  const archetypeImages = [
+    ...(appearanceReference
+      ? [{
+        image_base64: appearanceReference.imageBase64,
+        label: `PHOTOREAL PARK APPEARANCE TARGET for ${profile.title}; transpose materials and landscape maturity into the exact top-down tracing diagram`,
+      }]
+      : []),
+    ...(options.sceneContextImageBase64
+      ? [{
+        image_base64: options.sceneContextImageBase64,
+        label: `LIVE GOOGLE-TILE AND PROPOSAL CONTEXT for ${profile.title}; use only for terrain grade, adjacent road/building relationships, scale, light and edge materials; never copy its camera or override the diagram topology`,
+      }]
+      : []),
+  ];
 
   const { image_base64 } = await rendersApi.generateEdit({
     image_base64: diagram.dataUrl.split(',')[1],
@@ -1723,13 +1790,9 @@ export async function generateParkGroundTexture(zone: SiteZone): Promise<ParkGro
       diagram.sizeM,
       diagram.markers,
       Boolean(appearanceReference),
+      surroundingContextPrompt,
     ),
-    archetype_images: appearanceReference
-      ? [{
-        image_base64: appearanceReference.imageBase64,
-        label: `PHOTOREAL PARK APPEARANCE TARGET for ${profile.title}; transpose materials and landscape maturity into the exact top-down tracing diagram`,
-      }]
-      : undefined,
+    archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
     model: PARK_GROUND_MODEL,
     project_id: zone.project_id,
   });
@@ -1771,6 +1834,9 @@ export async function generateParkGroundTexture(zone: SiteZone): Promise<ParkGro
     ...(appearanceReference
       ? { appearance_reference_render_id: appearanceReference.id }
       : {}),
+    context_version: 1,
+    context_neighbor_ids: surroundingContext?.neighbors.map((neighbor) => neighbor.id) ?? [],
+    google_tile_context_attached: Boolean(options.sceneContextImageBase64),
   };
   await siteZonesApi.update(zone.id, {
     properties: {

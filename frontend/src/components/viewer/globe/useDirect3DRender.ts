@@ -302,6 +302,7 @@ export function buildDirect3DVisualPrompt(
   customPrompt: string | undefined,
   _capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
   _fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
+  publicRealmContext?: string,
 ): string {
   const custom = customPrompt?.trim();
   const resolvedStyle = DIRECT_3D_ALLOWED_STYLES.has(style)
@@ -312,9 +313,12 @@ export function buildDirect3DVisualPrompt(
   // project cue such as "New York brownstone multifamily." Defaults carry the
   // full art direction (palette-agnostic), so a custom brief refines material
   // and project intent without recreating the former constraint wall.
-  return custom
+  const artDirection = custom
     ? `${styleDirection}\nPROJECT-SPECIFIC ART DIRECTION: ${custom}`
     : styleDirection;
+  return publicRealmContext?.trim()
+    ? `${artDirection}\n${publicRealmContext.trim()}`
+    : artDirection;
 }
 
 export function useDirect3DRender() {
@@ -333,6 +337,8 @@ export function useDirect3DRender() {
       /** Authored archetype artwork (facade sheets, catalogue cards) the
        *  provider applies to the named buildings. Max 8, server-enforced. */
       archetypeReferences?: Array<{ image_base64: string; label: string }>;
+      /** Measured park/street/building interfaces derived from source zones. */
+      publicRealmContext?: string;
     },
   ): Promise<Direct3DRenderResult> => {
     if (!DIRECT_3D_ALLOWED_STYLES.has(options.style)) {
@@ -351,6 +357,7 @@ export function useDirect3DRender() {
       options.customPrompt,
       capture,
       fidelityPolicy,
+      options.publicRealmContext,
     );
     const viewMode = options.viewMode ?? 'aerial';
     const presentationMode = viewMode === 'street'
