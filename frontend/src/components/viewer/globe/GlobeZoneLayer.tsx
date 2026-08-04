@@ -15,6 +15,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
+import { useStreetNetworkGroundTexture } from './streetNetworkGroundTexture';
 import {
   resolveZoneColor,
   resolveZoneLabel,
@@ -606,9 +607,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   );
   useDeferredDisposable(replacementGroundTexture);
 
-  // AI park ground texture on the green_space fill mesh (per-zone meta in
-  // zone.properties.park_ground_texture; see parkGroundTexture.ts).
-  const { meta: groundMeta, texture: groundTexture } = useParkGroundTexture(zone);
+  // Authored public-realm material on the zone fill. Parks own a per-zone
+  // texture; streets share one north-up atlas so intersections have no seams.
+  const parkGround = useParkGroundTexture(zone);
+  const streetGround = useStreetNetworkGroundTexture(zone);
+  const groundMeta = streetGround.meta ?? parkGround.meta;
+  const groundTexture = streetGround.texture ?? parkGround.texture;
   const [bakedElevations, setBakedElevations] = useState<number[] | null>(null);
   // Buildings never use flat fill geometry, and compiled parks/streets must
   // follow the live Google tile surface. Reserve the external bare-earth bake
@@ -651,8 +655,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     terrainHeight,
   );
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
-  const hasParkGroundTextureMeta = Boolean(zoneProps?.park_ground_texture);
-  const terrainScheduleDelay = isPreparedBoundary || isSelected || hasParkGroundTextureMeta
+  const hasAuthoredGroundTextureMeta = Boolean(
+    zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
+  );
+  const terrainScheduleDelay = isPreparedBoundary || isSelected || hasAuthoredGroundTextureMeta
     ? 400
     : isCompiledGround
       ? 300 + stableDelay(zone.id, 6_000)

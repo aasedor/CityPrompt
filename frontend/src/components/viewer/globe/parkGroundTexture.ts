@@ -2068,7 +2068,7 @@ export function useParkGroundTexture(zone: SiteZone): {
 export function applyParkGroundUVs(
   geometry: THREE.BufferGeometry,
   fillCoords: number[][],
-  meta: ParkGroundTextureMeta,
+  meta: Pick<ParkGroundTextureMeta, 'bbox' | 'uv_rect'>,
 ): void {
   const { bbox, uv_rect: uv } = meta;
   const du = (uv.u1 - uv.u0) / (bbox.east - bbox.west || 1);

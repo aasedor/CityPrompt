@@ -104,6 +104,7 @@ import {
   type StreetSurfaceMaterialResources,
 } from './streetSurfaceMaterials';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -167,6 +168,7 @@ function StreetRibbonDetail({
     () => resolvePilotStreetSectionProfile(zone),
     [zone.properties],
   );
+  const hasAuthoredNetworkGround = Boolean(getStreetNetworkGroundMeta(zone));
   const bandMaterials = useMemo(() => {
     if (!sectionProfile) return [];
     const resourcesByKey = new Map<string, StreetSurfaceMaterialResources>();
@@ -618,7 +620,7 @@ function StreetRibbonDetail({
       lon={centroid.lng * DEG_TO_RAD}
       height={frameElevation}
     >
-      {geometries.bands.map(({ band, geometry }, index) => (
+      {!hasAuthoredNetworkGround && geometries.bands.map(({ band, geometry }, index) => (
         <mesh
           key={`${band.sourceType}-${band.startM}`}
           geometry={geometry}
@@ -854,6 +856,7 @@ function RoundaboutDetail({
     () => resolvePilotStreetSectionProfile(zone),
     [zone.properties],
   );
+  const hasAuthoredNetworkGround = Boolean(getStreetNetworkGroundMeta(zone));
   const appearance = sectionProfile?.appearance
     ?? STREET_APPEARANCE_KITS.classic_tree_lined_v1;
   const roundaboutMaterials = useMemo(() => {
@@ -1088,12 +1091,19 @@ function RoundaboutDetail({
       height={terrain}
     >
       <group position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}>
-        <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.ring.material} attach="material" />
-        </mesh>
-        <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
-        </mesh>
+        {!hasAuthoredNetworkGround && (
+          <>
+            <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+              <primitive object={roundaboutMaterials.ring.material} attach="material" />
+            </mesh>
+            <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+            </mesh>
+            <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+            </mesh>
+          </>
+        )}
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
           <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
@@ -1102,9 +1112,6 @@ function RoundaboutDetail({
         </mesh>
         <mesh geometry={geometry.splitterPlanting} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
           <primitive object={roundaboutMaterials.planting.material} attach="material" />
-        </mesh>
-        <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
           <meshBasicMaterial

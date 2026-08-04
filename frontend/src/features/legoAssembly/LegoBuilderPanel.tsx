@@ -1,11 +1,12 @@
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Route, Save, Trees, X } from 'lucide-react';
+import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Route, Save, Trees, Upload, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone } from '@/types';
+import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import {
   legoArchetypeContextFromZone,
@@ -28,6 +29,10 @@ import {
   type GroundBuildItem,
   type ZoneBuildItem,
 } from './communityCompiler';
+import {
+  getStreetNetworkGroundMeta,
+  importStreetNetworkGroundTexture,
+} from '@/components/viewer/globe/streetNetworkGroundTexture';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -87,7 +92,15 @@ export function LegoBuilderPanel({
   const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
   const autoGenerateStartedRef = useRef(false);
+  const streetAtlasInputRef = useRef<HTMLInputElement | null>(null);
+  const [streetAtlasStatus, setStreetAtlasStatus] = useState<{
+    kind: 'success' | 'error';
+    message: string;
+  } | null>(null);
+  const [importingStreetAtlas, setImportingStreetAtlas] = useState(false);
   const projectId = zones[0]?.project_id;
+  const streetZones = zones.filter((zone) => resolveCommunity3DKind(zone) === 'street');
+  const streetsWithAtlas = streetZones.filter((zone) => getStreetNetworkGroundMeta(zone)).length;
 
   // The globe reads buildings from the project query and links from the zone
   // query — both must refetch for the placed stack to appear.
@@ -375,6 +388,32 @@ export function LegoBuilderPanel({
     }
   };
 
+  const handleStreetAtlasImport = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = '';
+    if (!file || !projectId || importingStreetAtlas) return;
+    setImportingStreetAtlas(true);
+    setStreetAtlasStatus(null);
+    try {
+      const meta = await importStreetNetworkGroundTexture(projectId, zones, file, {
+        model: 'gpt-image-2',
+        provider: 'openai',
+      });
+      await refetchPlacedData();
+      setStreetAtlasStatus({
+        kind: 'success',
+        message: `Applied one connected atlas to ${meta.road_zone_ids.length} streets. No image call was made during import.`,
+      });
+    } catch (error) {
+      setStreetAtlasStatus({
+        kind: 'error',
+        message: getApiErrorMessage(error, 'Could not import the connected street atlas.'),
+      });
+    } finally {
+      setImportingStreetAtlas(false);
+    }
+  };
+
   return createPortal(
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/75 p-4" onClick={onClose}>
       <div
@@ -564,6 +603,40 @@ export function LegoBuilderPanel({
               <p className="mb-2 rounded border-2 border-emerald-600 bg-emerald-50 p-2 text-[11px] font-bold text-emerald-800">
                 {saveResult}
               </p>
+            )}
+
+            {import.meta.env.DEV && streetZones.length > 0 && (
+              <div className="mb-2 rounded border-2 border-sky-300 bg-sky-50 p-2 text-[10px] text-sky-950">
+                <p className="font-black uppercase">Connected street drape pilot</p>
+                <p className="mt-0.5">
+                  {streetsWithAtlas > 0
+                    ? `${streetsWithAtlas}/${streetZones.length} streets use the reviewed shared atlas.`
+                    : 'Import one reviewed north-up atlas for the complete street network.'}
+                </p>
+                <input
+                  ref={streetAtlasInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  className="hidden"
+                  onChange={(event) => void handleStreetAtlasImport(event)}
+                />
+                <button
+                  type="button"
+                  onClick={() => streetAtlasInputRef.current?.click()}
+                  disabled={importingStreetAtlas}
+                  className="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded border border-sky-800 bg-white px-2 py-1 font-black uppercase hover:bg-sky-100 disabled:opacity-50"
+                >
+                  {importingStreetAtlas
+                    ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    : <Upload className="h-3.5 w-3.5" />}
+                  {importingStreetAtlas ? 'Applying atlas…' : 'Import reviewed street atlas'}
+                </button>
+                {streetAtlasStatus && (
+                  <p className={`mt-1 font-bold ${streetAtlasStatus.kind === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>
+                    {streetAtlasStatus.message}
+                  </p>
+                )}
+              </div>
             )}
 
             <button
