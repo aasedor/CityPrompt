@@ -30,6 +30,10 @@ def test_internal_runtime_prefers_configured_upscaler(monkeypatch, tmp_path):
 def test_gpu_detail_reports_when_the_optional_model_is_missing(monkeypatch):
     monkeypatch.delenv("INTERNAL_VIDEO_UPSCALER_PATH", raising=False)
     monkeypatch.setattr("app.services.internal_video._configured_upscaler", lambda: None)
+    monkeypatch.setattr(
+        "app.services.internal_video.shutil.which",
+        lambda executable: "ffmpeg" if executable == "ffmpeg" else None,
+    )
 
     assert "not installed" in (internal_video_runtime_error(require_upscaler=True) or "")
 

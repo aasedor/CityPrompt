@@ -1,7 +1,7 @@
 """Add site_zones table
 
 Revision ID: 001_site_zones
-Revises: None
+Revises: 000_core_schema
 Create Date: 2026-02-16
 """
 
@@ -14,7 +14,7 @@ import geoalchemy2
 
 # revision identifiers, used by Alembic.
 revision: str = "001_site_zones"
-down_revision: Union[str, None] = None
+down_revision: Union[str, None] = "000_core_schema"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -46,7 +46,14 @@ def upgrade() -> None:
         ),
         sa.Column("name", sa.String(255), nullable=True),
         sa.Column("zone_type", zone_type_enum, nullable=False),
-        sa.Column("geometry", geoalchemy2.Geography("POLYGON", srid=4326), nullable=False),
+        # This migration creates the stable index name explicitly below.
+        # Disable GeoAlchemy's automatic spatial index to avoid creating the
+        # same PostgreSQL relation twice on a fresh database.
+        sa.Column(
+            "geometry",
+            geoalchemy2.Geography("POLYGON", srid=4326, spatial_index=False),
+            nullable=False,
+        ),
         sa.Column("color", sa.String(7), nullable=False, server_default="#9b59b6"),
         sa.Column("properties", JSONB, nullable=True),
         sa.Column("sort_order", sa.Integer, nullable=False, server_default="0"),

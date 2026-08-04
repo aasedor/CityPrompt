@@ -125,6 +125,10 @@ cd backend
 alembic upgrade head
 ```
 
+The migration chain now includes the historical core-schema baseline, so the
+same command provisions both a brand-new PostGIS database and an existing City
+Prompt database. Existing installations at revision 027 are unaffected.
+
 The production-default workflow requires no new frontend feature flags. These
 flags only expose superseded or advanced surfaces:
 

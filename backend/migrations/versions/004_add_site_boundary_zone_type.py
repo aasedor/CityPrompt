@@ -17,7 +17,12 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("ALTER TYPE zone_type ADD VALUE IF NOT EXISTS 'site_boundary'")
+    # PostgreSQL requires a newly added enum value to be committed before a
+    # later migration can compare rows against it.  Fresh databases apply the
+    # entire historical chain in one Alembic invocation, so add the value in an
+    # explicit autocommit block.
+    with op.get_context().autocommit_block():
+        op.execute("ALTER TYPE zone_type ADD VALUE IF NOT EXISTS 'site_boundary'")
 
 
 def downgrade() -> None:
