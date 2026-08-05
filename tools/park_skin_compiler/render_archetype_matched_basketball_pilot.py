@@ -100,8 +100,17 @@ def brick_material(name: str, primary, secondary):
     return mat
 
 
-def image_pbr_material(name: str, directory: Path, repeat: float, *, roughness=0.82):
+def image_pbr_material(name: str, directory: Path, metres_per_tile: float, *, roughness=0.82):
+    """Build a stationary PBR material at a real-world texture scale.
+
+    Procedural park meshes vary from a bench pad to a 230 m site plate. UV
+    coordinates normalize both to the same 0..1 range, which made large park
+    surfaces read as one blurred colour. The mesh helpers now write authored
+    metre dimensions into UV0 so the maps retain consistent grain after glTF
+    export.
+    """
     mat = bpy.data.materials.new(name)
+    mat["park_metres_per_tile"] = float(metres_per_tile)
     mat.use_nodes = True
     nodes = mat.node_tree.nodes
     links = mat.node_tree.links
@@ -112,7 +121,7 @@ def image_pbr_material(name: str, directory: Path, repeat: float, *, roughness=0
     coords = nodes.new("ShaderNodeTexCoord")
     scale = nodes.new("ShaderNodeVectorMath")
     scale.operation = "MULTIPLY"
-    scale.inputs[1].default_value = (repeat, repeat, repeat)
+    scale.inputs[1].default_value = (1.0, 1.0, 1.0)
     albedo = nodes.new("ShaderNodeTexImage")
     albedo.image = bpy.data.images.load(str(directory / "albedo.jpg"), check_existing=True)
     albedo.image.colorspace_settings.name = "sRGB"
@@ -127,6 +136,8 @@ def image_pbr_material(name: str, directory: Path, repeat: float, *, roughness=0
     normal_tex.extension = "REPEAT"
     normal = nodes.new("ShaderNodeNormalMap")
     normal.inputs["Strength"].default_value = 0.42
+    # Metric UVs are authored on the mesh so the texture scale survives glTF
+    # export and matches the Blender review render in City Prompt/Three.js.
     links.new(coords.outputs["UV"], scale.inputs[0])
     for texture in (albedo, rough, normal_tex):
         links.new(scale.outputs["Vector"], texture.inputs["Vector"])

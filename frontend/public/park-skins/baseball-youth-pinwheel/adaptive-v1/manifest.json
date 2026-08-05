@@ -38,16 +38,16 @@
     "lawn": {
       "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg",
       "cropNormalized": [
-        0.38,
-        0.0,
-        1.0,
-        0.48
+        0.52,
+        0.06,
+        0.94,
+        0.36
       ],
       "cropPixels": [
-        389,
-        0,
-        1024,
-        492
+        532,
+        61,
+        963,
+        369
       ],
       "metresPerTile": 5.0,
       "pattern": "lawn",
@@ -110,16 +110,16 @@
     "safety": {
       "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg",
       "cropNormalized": [
-        0.36,
-        0.43,
-        1.0,
-        0.92
+        0.49,
+        0.5,
+        0.76,
+        0.64
       ],
       "cropPixels": [
-        369,
-        440,
-        1024,
-        942
+        502,
+        512,
+        778,
+        655
       ],
       "metresPerTile": 3.0,
       "pattern": "safety",

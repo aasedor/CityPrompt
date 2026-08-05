@@ -26,6 +26,11 @@ interface is needed.
 - Each `*-comparison.png` file pairs the hero, 60-degree, and nadir archetype
   references with the same three authored LEGO camera angles. This makes
   geometry, spacing, edge conditions, and missing detail directly auditable.
+- `baseball-youth-pinwheel-skin-v2-comparison.png` records the texture-corrected
+  baseball pilot: multi-angle reference crops now drive distinct red infield
+  clay, warning track, mown turf passes, concrete, and planted-edge materials.
+- `baseball-youth-pinwheel-skin-v2-city-prompt.png` records the promoted GLB in
+  the live City Prompt viewer with its trusted baseball LEGO-family recipe.
 - Each `cityprompt-*-building-pilot.png` records a live City Prompt trial with
   exactly one park and one separately compiled building LEGO family. No Master
   Planner was used.
@@ -34,6 +39,12 @@ The reference photographs are comparison evidence and role-specific skin
 sources. Their pixels are not projected onto the generated geometry: each
 material role derives its own repeatable PBR maps from an intentional crop of
 the hero, 60-degree, or nadir reference.
+
+Baseball skin v2 also writes metre-scaled UV0 coordinates into every textured
+mesh before glTF export. This prevents the 230 m site plate and field polygons
+from collapsing to a few blurred repeats or losing their textures in Three.js.
+`verify_park_glb_materials.py` checks the promoted GLB for textured meshes that
+lost UV0 during export.
 
 ## City Prompt verification
 

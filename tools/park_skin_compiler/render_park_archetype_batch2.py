@@ -19,7 +19,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from render_adaptive_park_shapes import cube, reset_scene  # noqa: E402
+from render_adaptive_park_shapes import apply_planar_metric_uv, cube, reset_scene  # noqa: E402
 from render_archetype_matched_basketball_pilot import (  # noqa: E402
     add_bench,
     add_tree,
@@ -43,8 +43,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def tinted_skin(name: str, directory: Path, repeat: float, tint) -> object:
-    mat = image_pbr_material(name, directory, repeat)
+def tinted_skin(
+    name: str,
+    directory: Path,
+    metres_per_tile: float,
+    tint,
+    *,
+    strength: float = 0.76,
+) -> object:
+    mat = image_pbr_material(name, directory, metres_per_tile)
     nodes = mat.node_tree.nodes
     links = mat.node_tree.links
     shader = next(node for node in nodes if node.bl_idname == "ShaderNodeBsdfPrincipled")
@@ -53,7 +60,7 @@ def tinted_skin(name: str, directory: Path, repeat: float, tint) -> object:
     links.remove(source_link)
     mix = nodes.new("ShaderNodeMixRGB")
     mix.blend_type = "COLOR"
-    mix.inputs[0].default_value = 0.76
+    mix.inputs[0].default_value = strength
     mix.inputs[2].default_value = (*tint, 1.0)
     links.new(source_socket, mix.inputs[1])
     links.new(mix.outputs[0], shader.inputs["Base Color"])
@@ -67,6 +74,27 @@ def materials(skin_root: Path, slug: str) -> dict:
     lawn = image_pbr_material(f"{slug} lawn", skin / "lawn", 4.0, roughness=0.95)
     planting = image_pbr_material(f"{slug} planting", skin / "planting", 3.0, roughness=0.97)
     timber = image_pbr_material(f"{slug} timber", skin / "timber", 2.8, roughness=0.84)
+    infield_clay = tinted_skin(
+        f"{slug} archetype red infield clay",
+        skin / "safety",
+        2.4,
+        (0.58, 0.20, 0.075),
+        strength=0.44,
+    )
+    warning_track = tinted_skin(
+        f"{slug} archetype red warning track",
+        skin / "safety",
+        2.8,
+        (0.43, 0.13, 0.055),
+        strength=0.56,
+    )
+    turf_alt = tinted_skin(
+        f"{slug} alternate mowing pass",
+        skin / "lawn",
+        5.0,
+        (0.19, 0.34, 0.12),
+        strength=0.18,
+    )
     mats = {
         "concrete": paver,
         "dark_concrete": asphalt,
@@ -74,6 +102,9 @@ def materials(skin_root: Path, slug: str) -> dict:
         "soil": asphalt,
         "grass": lawn,
         "turf": lawn,
+        "turf_alt": turf_alt,
+        "infield_clay": infield_clay,
+        "warning_track": warning_track,
         "rubber_blue": tinted_skin(f"{slug} rubber blue", skin / "safety", 3.0, (0.34, 0.70, 0.92)),
         "rubber_green": tinted_skin(f"{slug} rubber green", skin / "safety", 3.0, (0.48, 0.83, 0.48)),
         "rubber_orange": tinted_skin(f"{slug} rubber orange", skin / "safety", 3.0, (0.95, 0.52, 0.26)),
@@ -140,6 +171,7 @@ def sphere(name: str, location, radius: float, mat, scale=(1, 1, 1)):
 def disc(name: str, location, radius: float, depth: float, mat, scale=(1, 1, 1)):
     obj = cylinder(name, location, radius, depth, mat, vertices=64)
     obj.scale = scale
+    apply_planar_metric_uv(obj, mat)
     return obj
 
 

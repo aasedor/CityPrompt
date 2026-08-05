@@ -89,6 +89,26 @@ def solid_material(name: str, colour, roughness: float = 0.85, metallic: float =
     return material
 
 
+def apply_planar_metric_uv(object_, material) -> None:
+    """Write metre-scaled XY coordinates into UV0 for portable park skins."""
+    if object_.type != "MESH":
+        return
+    metres_per_tile = float(material.get("park_metres_per_tile", 0.0))
+    if metres_per_tile <= 0:
+        return
+    mesh = object_.data
+    uv_layer = mesh.uv_layers.get("ParkMetricUV") or mesh.uv_layers.new(name="ParkMetricUV")
+    scale_x = float(object_.scale.x)
+    scale_y = float(object_.scale.y)
+    for polygon in mesh.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            uv_layer.data[loop_index].uv = (
+                vertex.x * scale_x / metres_per_tile,
+                vertex.y * scale_y / metres_per_tile,
+            )
+
+
 def triangle_mesh(name: str, triangles, z: float, material, thickness: float = 0.16):
     vertex_index: dict[tuple[float, float], int] = {}
     vertices: list[tuple[float, float, float]] = []
@@ -129,6 +149,8 @@ def cube(name: str, location, dimensions, material, bevel_width: float = 0.1):
     bevel.width = bevel_width
     bevel.segments = 3
     object_.data.materials.append(material)
+    if dimensions[2] <= 0.6:
+        apply_planar_metric_uv(object_, material)
     return object_
 
 

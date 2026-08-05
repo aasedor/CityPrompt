@@ -111,14 +111,21 @@ def main() -> None:
     parser.add_argument("--reference-root", type=Path, required=True)
     parser.add_argument("--render-root", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--park", help="Generate only one render slug, for a pilot review")
     args = parser.parse_args()
+
+    parks = PARKS
+    if args.park:
+        parks = tuple(park for park in PARKS if park[3] == args.park)
+        if not parks:
+            raise SystemExit(f"unknown park slug: {args.park}")
 
     width, margin, gap = 1600, 34, 14
     cell_w, cell_h = 500, 300
     title_h, row_h, row_gap = 118, 62 + 2 * cell_h + gap, 30
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    for title, source_slug, source_name, render_slug, note in PARKS:
+    for title, source_slug, source_name, render_slug, note in parks:
         height = title_h + row_h + 30
         sheet = Image.new("RGB", (width, height), "#f3f2ed")
         draw = ImageDraw.Draw(sheet)
@@ -142,13 +149,13 @@ def main() -> None:
         sheet.save(output, optimize=True)
         print(f"wrote {output}")
 
-    height = title_h + len(PARKS) * (row_h + row_gap) + 24
+    height = title_h + len(parks) * (row_h + row_gap) + 24
     sheet = Image.new("RGB", (width, height), "#f3f2ed")
     draw = ImageDraw.Draw(sheet)
     draw.text((margin, 22), "ARCHETYPE-OWNED PARK LEGO - BATCH 3", font=font(34, True), fill="#1e2c27")
     draw.text((margin, 67), "Hero + 60 degree + nadir references -> matching LEGO views", font=font(20), fill="#52615b")
     y = title_h
-    for title, source_slug, source_name, render_slug, note in PARKS:
+    for title, source_slug, source_name, render_slug, note in parks:
         source = args.reference_root / "frontend/public/archetypes/openspaces" / source_slug / source_name
         y = draw_park_row(
             sheet,

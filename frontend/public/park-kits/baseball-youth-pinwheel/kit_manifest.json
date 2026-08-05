@@ -13,7 +13,15 @@
   "people": false,
   "largeBuildings": false,
   "skin": "park-skins/baseball-youth-pinwheel/adaptive-v1",
-  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "skinMethod": "multi_angle_reference_pbr_plus_metric_uv_v2",
+  "surfaceRoles": [
+    "mown_outfield_turf",
+    "alternate_mowing_pass",
+    "red_infield_clay",
+    "red_warning_track",
+    "concrete_forecourt",
+    "planted_site_edge"
+  ],
   "depthAssets": [
     "baseball-backstop.glb",
     "batting-cage.glb",

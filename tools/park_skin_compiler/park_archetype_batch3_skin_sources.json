@@ -57,10 +57,10 @@
       "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"},
       "crops": {
         "paver": [0.00, 0.38, 0.56, 0.82],
-        "lawn": [0.38, 0.00, 1.00, 0.48],
+        "lawn": [0.52, 0.06, 0.94, 0.36],
         "asphalt": [0.00, 0.52, 0.48, 0.96],
         "planting": [0.74, 0.00, 1.00, 0.52],
-        "safety": [0.36, 0.43, 1.00, 0.92],
+        "safety": [0.49, 0.50, 0.76, 0.64],
         "timber": [0.16, 0.34, 0.72, 0.72]
       }
     },

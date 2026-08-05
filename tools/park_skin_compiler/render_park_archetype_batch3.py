@@ -19,7 +19,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from render_adaptive_park_shapes import cube, reset_scene  # noqa: E402
+from render_adaptive_park_shapes import apply_planar_metric_uv, cube, reset_scene  # noqa: E402
 from render_archetype_matched_basketball_pilot import (  # noqa: E402
     add_bench,
     add_tree,
@@ -56,6 +56,7 @@ def polygon_surface(name: str, vertices, z: float, mat):
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.scene.collection.objects.link(obj)
     obj.data.materials.append(mat)
+    apply_planar_metric_uv(obj, mat)
     return obj
 
 
@@ -321,11 +322,38 @@ def add_diamond(home, yaw: float, mats: dict, assets: dict, *, radius=72.0, base
     outer_fan = [(0, 0)] + [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * radius) for i in range(65)]
     inner_radius = radius - 4.0
     inner_fan = [(0, 0)] + [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * inner_radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * inner_radius) for i in range(65)]
-    warning = polygon_surface("Clay warning track sector", outer_fan, 0.12, mats["rubber_orange"])
+    warning = polygon_surface("Textured red-clay warning track sector", outer_fan, 0.12, mats["warning_track"])
     outfield = polygon_surface("Striped mown outfield sector", inner_fan, 0.15, mats["turf"])
     b = base / math.sqrt(2)
-    dirt = polygon_surface("Dirt infield", [(0, 0), (b, -b), (2 * b, 0), (b, b)], 0.19, mats["rubber_sand"])
-    parts = [warning, outfield, dirt]
+    parts = [warning, outfield]
+    # Parallel mowing passes are clipped to the 90-degree outfield sector.
+    # Their subtle alternate tint preserves the archetype's striped turf
+    # character without projecting any source photograph onto the geometry.
+    stripe_width = 9.0
+    for stripe_index, x0 in enumerate(range(0, math.ceil(inner_radius), round(stripe_width))):
+        if stripe_index % 2 == 0:
+            continue
+        x1 = min(inner_radius, x0 + stripe_width)
+        samples = [x0 + (x1 - x0) * index / 12 for index in range(13)]
+        upper = [
+            (x, min(x, math.sqrt(max(0.0, inner_radius * inner_radius - x * x))))
+            for x in samples
+        ]
+        lower = [(x, -y) for x, y in reversed(upper)]
+        parts.append(polygon_surface("Alternating outfield mowing pass", upper + lower, 0.17, mats["turf_alt"]))
+    dirt = polygon_surface(
+        "Textured red-clay infield",
+        [(0, 0), (b, -b), (2 * b, 0), (b, b)],
+        0.19,
+        mats["infield_clay"],
+    )
+    inner_grass = polygon_surface(
+        "Grass infield centre",
+        [(4.2, 0), (b, -b + 3.2), (2 * b - 4.2, 0), (b, b - 3.2)],
+        0.215,
+        mats["turf_alt"],
+    )
+    parts.extend([dirt, inner_grass])
     white = mats["white"]
     parts.append(line("First-base foul line", (0, 0), (radius / math.sqrt(2), -radius / math.sqrt(2)), 0.08, 0.24, white))
     parts.append(line("Third-base foul line", (0, 0), (radius / math.sqrt(2), radius / math.sqrt(2)), 0.08, 0.24, white))
@@ -337,7 +365,7 @@ def add_diamond(home, yaw: float, mats: dict, assets: dict, *, radius=72.0, base
         parts.append(cylinder("Outfield fence post", (math.cos(angle) * radius, math.sin(angle) * radius, 1.0), 0.045, 2.0, mats["black_steel"], 8))
     for index, (x, y) in enumerate(((0, 0), (b, -b), (2 * b, 0), (b, b))):
         parts.append(cube(f"Base {index}", (x, y, 0.27), (0.38, 0.38, 0.08), white, 0.04))
-    parts.append(disc("Pitching mound", (2 * b * 0.52, 0, 0.23), 1.6, 0.08, mats["rubber_sand"]))
+    parts.append(disc("Pitching mound", (2 * b * 0.52, 0, 0.23), 1.6, 0.08, mats["infield_clay"]))
     for side in (-1, 1):
         dugout_y = side * 14.5
         parts.extend([
@@ -504,6 +532,16 @@ def enrich_manifest(kit_root: Path, archetype_id: str, slug: str) -> None:
     }
     payload["largeBuildingInterface"] = "reserved pad and forecourt only"
     payload["fullAssembly"] = "full-park-assembly.glb"
+    if archetype_id == "baseball_softball_diamond":
+        payload["skinMethod"] = "multi_angle_reference_pbr_plus_metric_uv_v2"
+        payload["surfaceRoles"] = [
+            "mown_outfield_turf",
+            "alternate_mowing_pass",
+            "red_infield_clay",
+            "red_warning_track",
+            "concrete_forecourt",
+            "planted_site_edge",
+        ]
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
