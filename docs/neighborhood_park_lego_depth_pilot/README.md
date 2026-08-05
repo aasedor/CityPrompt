@@ -9,6 +9,15 @@ basketball kit on that surface at metric scale.
 
 [Mobile comparison sheet](lego-depth-pilot-comparison-mobile.png)
 
+[Archetype-matched v2 comparison](basketball-archetype-matched-v2-mobile.png)
+
+The v2 acceptance pass moves beyond the first tabletop proof. It renders the
+same metric kit in a reference-matched urban scene with a dark asphalt court,
+complete linework, galvanized enclosure, brick street walls, benches, people,
+street trees, cars, and base/60-degree/90-degree cameras paired to the
+catalogue views. These elements are generated as 3D geometry and PBR materials;
+the archetype photographs are used only as visual targets in the comparison.
+
 The pilot works. The split is clean:
 
 - the LEGO park grammar owns the parcel, paths, lawn, planting, pavilion pad,
