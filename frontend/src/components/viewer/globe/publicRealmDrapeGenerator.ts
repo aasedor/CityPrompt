@@ -7,6 +7,7 @@ import {
   getParkGroundMeta,
   MAX_PARK_GROUND_BATCH_CALLS,
 } from './parkGroundTexture';
+import { usesArchetypeOwnedParkSurface } from './parkLegoFamilies';
 import {
   generateStreetNetworkGroundTexture,
   getCurrentStreetNetworkGroundMeta,
@@ -45,7 +46,9 @@ export function planPublicRealmDrapes(zones: SiteZone[]): PublicRealmDrapePlan {
     && zone.coordinates.length >= 3
     && isPersistedZoneId(zone.id)
   ));
-  const parksNeedingDrape = parkZones.filter((zone) => !getParkGroundMeta(zone));
+  const parksNeedingDrape = parkZones.filter((zone) => (
+    !usesArchetypeOwnedParkSurface(zone) && !getParkGroundMeta(zone)
+  ));
   const streetNetworkNeedsDrape = (
     streetZones.length > 0 && !getCurrentStreetNetworkGroundMeta(zones)
   );

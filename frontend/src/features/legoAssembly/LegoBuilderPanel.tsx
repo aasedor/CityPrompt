@@ -37,6 +37,7 @@ import {
   generatePublicRealmDrapes,
   planPublicRealmDrapes,
 } from '@/components/viewer/globe/publicRealmDrapeGenerator';
+import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -647,7 +648,9 @@ export function LegoBuilderPanel({
                       </div>
                       <p className="mt-0.5 text-black/55">
                         {item.kind === 'park'
-                          ? 'AI-draped archetype ground, then programmed 3D trees, structures, planting and seating'
+                          ? usesArchetypeOwnedParkSurface(item.zone)
+                            ? 'Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing'
+                            : 'AI-draped archetype ground, then programmed 3D trees, structures, planting and seating'
                           : 'One connected AI road atlas, then 3D curbs, markings, trees, lights, furniture and vehicles'}
                       </p>
                     </div>

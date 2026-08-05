@@ -3,6 +3,7 @@ import {
   type ParkGroundGuide,
   type ParkSpecialtyStructureKind,
 } from './parkGroundProfiles';
+import { fitSkateParkV0Program } from './skateParkFit';
 
 export interface ParkSpecialtyPoint {
   x: number;
@@ -16,6 +17,7 @@ export interface ParkSpecialtyProgramFrame {
   maxY: number;
   width: number;
   height: number;
+  points?: ParkSpecialtyPoint[];
 }
 
 export interface ParkSpecialtyRectangle {
@@ -171,7 +173,21 @@ export function buildParkSpecialtyTerrainAnchors(
     || guide.kind === 'path_loop'
   ));
 
-  if (structureKind === 'greenway_edge_assembly') {
+  if (structureKind === 'skate_park_v0_assembly') {
+    const boundary = frame.points ?? [
+      { x: frame.minX, y: frame.minY },
+      { x: frame.maxX, y: frame.minY },
+      { x: frame.maxX, y: frame.maxY },
+      { x: frame.minX, y: frame.maxY },
+    ];
+    const fit = fitSkateParkV0Program(boundary);
+    if (fit) points.push(...rectangleAnchors(
+      fit.center,
+      fit.widthM,
+      fit.depthM,
+      fit.rotationRad,
+    ));
+  } else if (structureKind === 'greenway_edge_assembly') {
     const guide = linearGuides[0];
     if (guide) {
       const route = parkSpecialtyGuideRoute(guide, frame);

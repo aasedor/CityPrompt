@@ -33,6 +33,7 @@ import {
   resolveParkLegoAppearance,
   resolveParkLegoContract,
   resolveParkProgramAnchorLayout,
+  usesArchetypeOwnedParkSurface,
   type ParkLegoAppearance,
 } from './parkLegoFamilies';
 import {
@@ -192,6 +193,9 @@ export type ParkGroundSurfaceSource = 'ai' | 'procedural' | 'none';
  * orthophoto always wins; compiled parks otherwise receive the deterministic
  * archetype surface produced locally in the browser. */
 export function resolveParkGroundSurfaceSource(zone: SiteZone): ParkGroundSurfaceSource {
+  // Exact archetype kits own their surface. A stale AI document from an older
+  // workflow must never cover the metric bowls and reference-derived slab.
+  if (usesArchetypeOwnedParkSurface(zone)) return 'procedural';
   if (getParkGroundMeta(zone)) return 'ai';
   if (isParkGroundZone(zone) && isCommunity3DCompiled(zone)) return 'procedural';
   return 'none';

@@ -58,6 +58,7 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_linear_greenway",
         "park_neighborhood_community",
         "park_pocket_courtyard",
+        "park_skate_archetype_v0",
         "park_water_ecology",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
@@ -88,6 +89,28 @@ def test_canonical_park_recipe_is_persistable_and_stable():
     _sha256(first.catalog_fingerprint)
     _sha256(first.capability_fingerprint)
     _sha256(first.recipe_hash)
+
+
+def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id="skate_park",
+            variant_id="skate_park_v0",
+            target=ParkPolygonTarget(width_m=44, depth_m=36, area_m2=1_579),
+        )
+    )
+
+    assert recipe.family_id == "park_skate_archetype_v0"
+    assert recipe.appearance_kit_id == "skate_park_v0_reference_skin"
+    assert recipe.planting_structure == "skate_archetype_v0"
+    assert recipe.component_set_ids == (
+        "skate_park_v0_ground_program",
+        "skate_bowl_module_v1",
+        "skate_stair_hubba_module_v1",
+        "skate_rail_v1",
+        "skate_ledge_v1",
+        "skate_spectator_bench_v1",
+    )
 
 
 @pytest.mark.parametrize(
@@ -419,6 +442,51 @@ def test_zone_planner_measures_metric_geometry_and_defaults_exact_variant():
     assert recipe.target.length_m == pytest.approx(200, abs=0.1)
     assert recipe.variant_id == "main_street_complete_v0"
     assert recipe.family_id == "street_complete_main_22m"
+
+
+def test_skate_zone_planner_requires_complete_unscaled_program_inside_polygon():
+    fitting = _to_wgs84(box(700_000, 5_650_000, 700_044, 5_650_036))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        fitting,
+        {
+            "green_space_archetype_id": "skate_park",
+            "green_space_selected_variant_id": "skate_park_v0",
+        },
+        strict=True,
+    )
+
+    assert recipe is not None
+    assert recipe.family_id == "park_skate_archetype_v0"
+    assert recipe.target.width_m == pytest.approx(44, abs=0.1)
+    assert recipe.target.depth_m == pytest.approx(36, abs=0.1)
+
+    # The bounding box and area still pass the catalog envelope, but this
+    # centre cutout makes a complete 40 x 30 m placement impossible.
+    clipped_metric = box(700_000, 5_650_000, 700_044, 5_650_036).difference(
+        box(700_016, 5_650_000, 700_028, 5_650_026)
+    )
+    clipped = _to_wgs84(clipped_metric)
+    with pytest.raises(PublicRealmPlanningError) as raised:
+        plan_public_realm_zone_recipe(
+            "green_space",
+            clipped,
+            {
+                "green_space_archetype_id": "skate_park",
+                "green_space_selected_variant_id": "skate_park_v0",
+            },
+            strict=True,
+        )
+    assert raised.value.violations[0]["field"] == "target.polygon_fit"
+    assert plan_public_realm_zone_recipe(
+        "green_space",
+        clipped,
+        {
+            "green_space_archetype_id": "skate_park",
+            "green_space_selected_variant_id": "skate_park_v0",
+        },
+        strict=False,
+    ) is None
 
 
 def test_strict_street_attestation_rejects_claimed_width_that_geometry_disproves():

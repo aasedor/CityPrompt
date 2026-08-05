@@ -8,6 +8,7 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_neighborhood_community',
   'park_civic_plaza',
   'park_linear_greenway',
+  'park_skate_archetype_v0',
   'park_water_ecology',
 ] as const;
 
@@ -420,7 +421,7 @@ function fourVariantMappings(
   })));
 }
 
-/** Exact frontend mirror of the backend's five executable park-family
+/** Exact frontend mirror of the backend's executable park-family
  * selections. Nested recipes are never repaired here: incompatible identities
  * remain unsupported so the live scene cannot claim a different program than
  * the compiler persisted. */
@@ -460,6 +461,13 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       plantingStructure: 'naturalistic_grove',
     })]),
   }),
+  park_skate_archetype_v0: Object.freeze({
+    skate_park: Object.freeze([Object.freeze({
+      variantId: 'skate_park_v0',
+      appearanceKitId: 'skate_park_v0_reference_skin',
+      plantingStructure: 'skate_archetype_v0',
+    })]),
+  }),
   park_water_ecology: Object.freeze({
     stormwater_retention_pond: Object.freeze([Object.freeze({
       variantId: 'stormwater_retention_pond_v0',
@@ -495,6 +503,7 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   }
   if (archetypeId.startsWith('formal_civic_plaza')) return 'park_civic_plaza';
   if (archetypeId.startsWith('linear_park_greenway')) return 'park_linear_greenway';
+  if (archetypeId === 'skate_park') return 'park_skate_archetype_v0';
   if (archetypeId.startsWith('stormwater_retention_pond')) return 'park_water_ecology';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
@@ -506,6 +515,7 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_neighborhood_community': return 'neighborhood_park';
     case 'park_civic_plaza': return 'formal_civic_plaza';
     case 'park_linear_greenway': return 'linear_park_greenway';
+    case 'park_skate_archetype_v0': return 'skate_park';
     case 'park_water_ecology': return 'stormwater_retention_pond';
   }
 }
@@ -600,13 +610,16 @@ export function resolveParkLegoContract(zone: ParkLegoZone): ParkLegoContract | 
     archetypeId,
     props.green_space_selected_variant_id ?? props.plaza_selected_variant_id,
   );
+  const legacySelection = PARK_FAMILY_SELECTIONS[familyId][archetypeId]?.find(
+    (candidate) => candidate.variantId === variant.id,
+  );
   return {
     familyId,
     familyVersion: PARK_LEGO_FAMILY_VERSION,
     archetypeId,
     variantId: variant.id,
     source: 'legacy',
-    supported: true,
+    supported: Boolean(legacySelection),
   };
 }
 
@@ -654,6 +667,16 @@ export function resolveParkLegoAppearance(zone: ParkLegoZone): ParkLegoAppearanc
 
 export function isExecutableParkLegoFamily(zone: ParkLegoZone): boolean {
   return resolveParkLegoContract(zone)?.supported === true;
+}
+
+/** Archetype-owned surface and depth kits bypass the paid AI drape. Their
+ * exact material bundle and fixed geometry are the visual source of truth. */
+export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
+  const contract = resolveParkLegoContract(zone);
+  return contract?.supported === true
+    && contract.familyId === 'park_skate_archetype_v0'
+    && contract.archetypeId === 'skate_park'
+    && contract.variantId === 'skate_park_v0';
 }
 
 /** Choose a lightweight scene-dressing family even when an archetype does

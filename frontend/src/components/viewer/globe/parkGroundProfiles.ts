@@ -1333,6 +1333,7 @@ export type ParkSpecialtyStructureKind =
   | 'stormwater_control_assembly'
   | 'japanese_garden_bridge'
   | 'cricket_ground_assembly'
+  | 'skate_park_v0_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
@@ -1413,6 +1414,11 @@ export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
   const legoContract = resolveParkLegoContract(zone);
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_skate_archetype_v0'
+  ) return 'skate_park_v0_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

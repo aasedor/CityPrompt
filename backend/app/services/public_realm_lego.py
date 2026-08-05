@@ -22,6 +22,8 @@ from dataclasses import dataclass
 from typing import Annotated, Any, Iterable, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+from shapely import affinity
+from shapely.geometry import box
 from shapely.geometry.base import BaseGeometry
 
 from app.services.site_engine import (
@@ -326,6 +328,19 @@ _STORMWATER_ENVELOPE = _park_envelope(
     depth=(15.0, 80.0),
     area=(300.0, 9_600.0),
 )
+_SKATE_PARK_V0_ENVELOPE = _park_envelope(
+    nominal=(40.0, 30.0),
+    # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
+    # describe only the receiving parcel; the geometry preflight below also
+    # proves that the complete rectangle fits inside irregular polygons.
+    width=(40.0, 52.0),
+    depth=(30.0, 44.0),
+    area=(1_200.0, 2_288.0),
+)
+
+_SKATE_PARK_V0_WIDTH_M = 40.0
+_SKATE_PARK_V0_DEPTH_M = 30.0
+_SKATE_PARK_V0_CLEARANCE_M = 0.5
 
 _PARK_COMPONENTS = (
     "park_ground_program_v1",
@@ -471,6 +486,31 @@ def _street_variants(
 
 
 _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
+    PublicRealmFamilyCapability(
+        family_id="park_skate_archetype_v0",
+        kind="park",
+        title="Skate Park / Professional Grade v0",
+        generator="park_kit",
+        selections=(
+            _selection(
+                "skate_park",
+                "skate_park_v0",
+                profile_id="skate-park-archetype-v1",
+                appearance_kit_id="skate_park_v0_reference_skin",
+                planting_structure="skate_archetype_v0",
+                compatibility=_SKATE_PARK_V0_ENVELOPE,
+                components=(
+                    "skate_park_v0_ground_program",
+                    "skate_bowl_module_v1",
+                    "skate_stair_hubba_module_v1",
+                    "skate_rail_v1",
+                    "skate_ledge_v1",
+                    "skate_spectator_bench_v1",
+                ),
+                default=True,
+            ),
+        ),
+    ),
     PublicRealmFamilyCapability(
         family_id="park_pocket_courtyard",
         kind="park",
@@ -1167,6 +1207,56 @@ def _target_from_metric_geometry(
     )
 
 
+def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
+    """Prove that the fixed Skate Park v0 rectangle fits without scaling.
+
+    The capability envelope rejects obviously wrong parcels cheaply. This
+    geometry-aware pass handles concave and clipped sites whose rotated bounds
+    look large enough even though the complete archetype program is not.
+    Candidate orientations come from real parcel edges; candidate centres use
+    a bounded deterministic grid so API compilation and Direct revalidation
+    make the same decision.
+    """
+
+    receiving = geometry.buffer(-_SKATE_PARK_V0_CLEARANCE_M)
+    if receiving.is_empty:
+        return False
+    min_x, min_y, max_x, max_y = receiving.bounds
+    if max_x - min_x < _SKATE_PARK_V0_DEPTH_M or max_y - min_y < _SKATE_PARK_V0_DEPTH_M:
+        return False
+
+    angles: set[float] = {0.0, 90.0}
+    exterior = getattr(geometry, "exterior", None)
+    coordinates = list(exterior.coords) if exterior is not None else []
+    for index in range(max(0, len(coordinates) - 1)):
+        start = coordinates[index]
+        end = coordinates[index + 1]
+        length = math.dist(start, end)
+        if length < 2.0:
+            continue
+        angle = math.degrees(math.atan2(end[1] - start[1], end[0] - start[0])) % 180.0
+        angles.add(round(angle, 6))
+        angles.add(round((angle + 90.0) % 180.0, 6))
+
+    centroid = receiving.centroid
+    x_values = [centroid.x] + [min_x + (max_x - min_x) * index / 8 for index in range(9)]
+    y_values = [centroid.y] + [min_y + (max_y - min_y) * index / 8 for index in range(9)]
+    base = box(
+        -_SKATE_PARK_V0_WIDTH_M / 2,
+        -_SKATE_PARK_V0_DEPTH_M / 2,
+        _SKATE_PARK_V0_WIDTH_M / 2,
+        _SKATE_PARK_V0_DEPTH_M / 2,
+    )
+    for angle in sorted(angles):
+        rotated = affinity.rotate(base, angle, origin=(0, 0), use_radians=False)
+        for center_x in x_values:
+            for center_y in y_values:
+                candidate = affinity.translate(rotated, xoff=center_x, yoff=center_y)
+                if receiving.covers(candidate):
+                    return True
+    return False
+
+
 def public_realm_park_archetype_supports_metric_geometry(
     archetype_id: str,
     geometry_metric: BaseGeometry,
@@ -1323,6 +1413,35 @@ def plan_public_realm_zone_recipe(
         # and Direct's later canonical replan cannot disagree.
         attest_segment_width=True,
     )
+    if archetype_id == "skate_park" and (variant_id in {None, "skate_park_v0"}):
+        if not _metric_polygon_contains_skate_park_v0(metric_geometry):
+            error = PublicRealmPlanningError(
+                "Skate Park v0 requires one complete, unscaled 40 x 30 m program inside the parcel.",
+                code="family_incompatible",
+                requested={
+                    "archetype_id": archetype_id,
+                    "variant_id": variant_id or "skate_park_v0",
+                    "target": target.model_dump(mode="json"),
+                },
+                supported_families=[
+                    _family_summary(capability)
+                    for capability, selection in matching
+                    if selection.variant_id == "skate_park_v0"
+                ],
+                violations=[{
+                    "field": "target.polygon_fit",
+                    "requested": "irregular polygon",
+                    "supported": {
+                        "program_width_m": _SKATE_PARK_V0_WIDTH_M,
+                        "program_depth_m": _SKATE_PARK_V0_DEPTH_M,
+                        "minimum_clearance_m": _SKATE_PARK_V0_CLEARANCE_M,
+                        "scale": 1.0,
+                    },
+                }],
+            )
+            if strict:
+                raise error
+            return None
     try:
         return plan_public_realm_recipe(
             PublicRealmPlanRequest(

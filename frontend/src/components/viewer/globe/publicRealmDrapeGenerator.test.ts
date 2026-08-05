@@ -81,6 +81,20 @@ describe('publicRealmDrapeGenerator', () => {
     }));
   });
 
+  it('does not spend an image call on the archetype-owned Skate Park v0 kit', () => {
+    const skate = zone(PARK_ID, 'green_space', 'open_space');
+    skate.properties = {
+      green_space_archetype_id: 'skate_park',
+      green_space_selected_variant_id: 'skate_park_v0',
+    };
+
+    expect(planPublicRealmDrapes([skate])).toEqual(expect.objectContaining({
+      parkZones: [skate],
+      parksNeedingDrape: [],
+      totalImageCalls: 0,
+    }));
+  });
+
   it('saves the street atlas and park drape before returning refreshed compile revisions', async () => {
     const zones = [
       zone(PARK_ID, 'green_space', 'open_space'),

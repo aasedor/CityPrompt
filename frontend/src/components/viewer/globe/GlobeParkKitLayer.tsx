@@ -115,6 +115,7 @@ import {
   type PublicRealmBenchStyle,
 } from './publicRealmPropPalettes';
 import { GlobeCricketGroundAssembly } from './GlobeCricketGroundAssembly';
+import { GlobeSkateParkAssembly } from './GlobeSkateParkAssembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -819,6 +820,16 @@ function ParkSpecialtyStructures({
       ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y)
       : 0
   );
+
+  if (structureKind === 'skate_park_v0_assembly') {
+    return (
+      <SilentKitBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+        </Suspense>
+      </SilentKitBoundary>
+    );
+  }
 
   if (structureKind === 'civic_fountain_assembly') {
     const spec = CIVIC_FOUNTAIN_ASSEMBLY_SPEC;

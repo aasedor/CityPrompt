@@ -52,6 +52,24 @@ describe('park specialty geometry', () => {
     }], frame);
     expect(stormwater.length).toBeGreaterThanOrEqual(10);
     expect(stormwater.length).toBeLessThanOrEqual(MAX_PARK_SPECIALTY_TERRAIN_ANCHORS);
+
+    const skate = buildParkSpecialtyTerrainAnchors('skate_park_v0_assembly', [], {
+      minX: -22,
+      maxX: 22,
+      minY: -18,
+      maxY: 18,
+      width: 44,
+      height: 36,
+      points: [
+        { x: -22, y: -18 },
+        { x: 22, y: -18 },
+        { x: 22, y: 18 },
+        { x: -22, y: 18 },
+      ],
+    });
+    expect(skate).toHaveLength(5);
+    expect(skate).toContainEqual({ x: -20, y: -15 });
+    expect(skate).toContainEqual({ x: 20, y: 15 });
   });
 
   it('keeps fitted stormwater inlet and outlet centers and dimensions authoritative', () => {

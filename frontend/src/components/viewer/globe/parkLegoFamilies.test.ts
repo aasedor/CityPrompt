@@ -11,6 +11,7 @@ import {
   resolveParkLegoContract,
   resolveParkDressingFamily,
   resolveParkProgramAnchorLayout,
+  usesArchetypeOwnedParkSurface,
 } from './parkLegoFamilies';
 
 function zone(properties: Record<string, unknown>): Pick<SiteZone, 'properties' | 'zone_type'> {
@@ -162,6 +163,7 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_neighborhood_community', 'neighborhood_park', 'neighborhood_park_v0', 'rustic_timber_gravel_v1', 'active_recreation'],
     ['park_civic_plaza', 'formal_civic_plaza', 'formal_civic_plaza_v0', 'neoclassical_stone_v1', 'paved_plaza'],
     ['park_linear_greenway', 'linear_park_greenway', 'linear_park_greenway_v0', 'rail_trail_v1', 'naturalistic_grove'],
+    ['park_skate_archetype_v0', 'skate_park', 'skate_park_v0', 'skate_park_v0_reference_skin', 'skate_archetype_v0'],
     ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v0', 'naturalistic_pond_v1', 'reservoir_perimeter'],
   ])('recognizes exact backend family mapping %s', (
     familyId,
@@ -209,6 +211,32 @@ describe('Public Realm LEGO V1 park families', () => {
       supported: false,
     });
     expect(resolveParkLegoAppearance(candidate)).toBeNull();
+  });
+
+  it('keeps Skate Park v0 on its archetype-owned surface in legacy and compiled states', () => {
+    const legacy = zone({
+      green_space_archetype_id: 'skate_park',
+      green_space_selected_variant_id: 'skate_park_v0',
+    });
+    expect(resolveParkLegoContract(legacy)).toMatchObject({
+      familyId: 'park_skate_archetype_v0',
+      variantId: 'skate_park_v0',
+      supported: true,
+    });
+    expect(resolveParkLegoAppearance(legacy)).toBeNull();
+    expect(usesArchetypeOwnedParkSurface(legacy)).toBe(true);
+
+    const compiled = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: 'park_skate_archetype_v0',
+        family_version: 1,
+        archetype_id: 'skate_park',
+        variant_id: 'skate_park_v0',
+        appearance_kit_id: 'skate_park_v0_reference_skin',
+        planting_structure: 'skate_archetype_v0',
+      }),
+    });
+    expect(usesArchetypeOwnedParkSurface(compiled)).toBe(true);
   });
 
   it('does not normalize nested compiler identities or fall back to legacy fields', () => {

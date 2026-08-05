@@ -299,6 +299,21 @@ describe('park ground pilot profiles', () => {
       }),
     };
     expect(resolveParkSpecialtyStructureKind(greenway)).toBe('greenway_edge_assembly');
+
+    const skate = zone('skate_park');
+    skate.properties = {
+      ...skate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_skate_archetype_v0',
+        family_version: 1,
+        archetype_id: 'skate_park',
+        variant_id: 'skate_park_v0',
+        appearance_kit_id: 'skate_park_v0_reference_skin',
+        planting_structure: 'skate_archetype_v0',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(skate)).toBe('skate_park_v0_assembly');
+    expect(resolveParkPlantingStructure(skate)).toBe('skate_archetype_v0');
   });
 
   it('compiles every open-space catalog entry and variant to an explicit 3D ground contract', () => {
@@ -758,6 +773,29 @@ describe('park ground pilot profiles', () => {
       },
     } satisfies SiteZone;
     expect(resolveParkGroundSurfaceSource(upgraded)).toBe('ai');
+  });
+
+  it('lets the exact Skate Park v0 surface override a stale AI drape', () => {
+    const skate = zone('skate_park');
+    skate.properties = {
+      ...skate.properties,
+      green_space_selected_variant_id: 'skate_park_v0',
+      park_ground_texture: {
+        url: '/old-flat-drape.png',
+        document_id: 'old-doc',
+        bbox: { west: -114.071, south: 51.041, east: -114.069, north: 51.042 },
+        uv_rect: { u0: 0, v0: 0, u1: 1, v1: 1 },
+        size_m: { width: 44, height: 36 },
+        model: 'gemini-3.1-flash-image',
+        generated_at: '2026-07-17T00:00:00Z',
+        source_signature: parkGroundSourceSignature(skate),
+        profile_id: 'legacy',
+        profile_version: 1,
+        archetype_id: 'skate_park',
+      },
+    };
+    expect(resolveParkGroundSurfaceSource(skate)).toBe('procedural');
+    expect(hasCurrentParkGroundSurface(skate)).toBe(true);
   });
 
   it('gives all six recurring public-realm archetypes a zero-call compiled ground contract', () => {

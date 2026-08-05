@@ -305,6 +305,10 @@ function familyTargets(
 ): Target[] {
   const target = (kind: ParkMicrodetailKind, count: number): Target => ({ kind, count });
   switch (familyId) {
+    case 'park_skate_archetype_v0':
+      // Benches, grass edge and all fixed objects belong to the exact
+      // archetype kit. Generic microdetail would corrupt its authored layout.
+      return [];
     case 'park_pocket_courtyard':
       return [
         target('shrub', cappedCount(areaM2 / 115, 3, 16)),

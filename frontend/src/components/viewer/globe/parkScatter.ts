@@ -77,6 +77,7 @@ export const PLANTING_STRUCTURES = [
   'nature_play_grove',
   'paved_plaza',
   'buffer_edge',
+  'skate_archetype_v0',
 ] as const;
 
 export type PlantingStructure = (typeof PLANTING_STRUCTURES)[number];
@@ -107,6 +108,7 @@ const STRUCTURE_FURNITURE: Record<
   nature_play_grove: { playground: false, pavilion: false, benches: true },
   paved_plaza: { playground: false, pavilion: false, benches: true },
   buffer_edge: { playground: false, pavilion: false, benches: false },
+  skate_archetype_v0: { playground: false, pavilion: false, benches: false },
 };
 
 const LEGACY_FURNITURE = { playground: true, pavilion: true, benches: true };
@@ -1225,6 +1227,10 @@ export function computeParkPlacements(
         break;
       case 'buffer_edge':
         placeBufferEdge(ctx);
+        break;
+      case 'skate_archetype_v0':
+        // The exact Skate Park v0 assembly owns its spectator bench and
+        // perimeter. Do not add generic trees, furniture or program modules.
         break;
       default:
         placeLegacyScatter(ctx);
