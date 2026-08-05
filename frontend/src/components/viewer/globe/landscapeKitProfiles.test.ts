@@ -8,14 +8,17 @@ import {
 } from './landscapeKitProfiles';
 
 describe('landscape tree kit profiles', () => {
-  it('provides core species plus three archetype-owned crown silhouettes', () => {
-    expect(LANDSCAPE_TREE_VARIANTS).toHaveLength(6);
+  it('provides core species plus archetype-owned crown silhouettes', () => {
+    expect(LANDSCAPE_TREE_VARIANTS).toHaveLength(7);
     expect(new Set(LANDSCAPE_TREE_VARIANTS.map((id) => LANDSCAPE_TREE_PROFILES[id].textureUrl)).size).toBe(3);
     expect(LANDSCAPE_TREE_PROFILES.maple.crownWidthM).toBeGreaterThan(
       LANDSCAPE_TREE_PROFILES.ornamental_pear.crownWidthM,
     );
     expect(LANDSCAPE_TREE_PROFILES.ornamental_pear.crownHeightM).toBeGreaterThan(
       LANDSCAPE_TREE_PROFILES.maple.crownHeightM,
+    );
+    expect(LANDSCAPE_TREE_PROFILES.mature_oak.crownWidthM).toBeGreaterThan(
+      LANDSCAPE_TREE_PROFILES.maple.crownWidthM,
     );
   });
 

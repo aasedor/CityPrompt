@@ -383,6 +383,7 @@ function LandscapeTreeStandContent({
     const groups: Record<LandscapeTreeVariant, LandscapeTreePlacement[]> = {
       honey_locust: [],
       maple: [],
+      mature_oak: [],
       ornamental_pear: [],
       columnar_hornbeam: [],
       pollarded_plane: [],

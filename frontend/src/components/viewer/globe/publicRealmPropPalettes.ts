@@ -15,7 +15,7 @@ const PARK_TREE_POOLS = {
   modern_turf: ['columnar_hornbeam', 'columnar_hornbeam', 'ornamental_pear'],
   native_meadow: ['honey_locust', 'honey_locust', 'maple'],
   urban_pavers: ['ornamental_pear', 'columnar_hornbeam', 'columnar_hornbeam'],
-  english_pastoral: ['maple', 'maple', 'honey_locust', 'ornamental_pear'],
+  english_pastoral: ['mature_oak', 'mature_oak', 'mature_oak', 'maple', 'honey_locust'],
   modern_minimal: ['columnar_hornbeam', 'columnar_hornbeam', 'ornamental_pear'],
   mediterranean_xeriscape: ['ornamental_pear', 'ornamental_pear', 'honey_locust'],
   tropical_lush: ['tropical_palm', 'tropical_palm', 'ornamental_pear'],

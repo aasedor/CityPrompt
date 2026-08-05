@@ -6,6 +6,7 @@ import {
   PARK_LEGO_FAMILY_VERSION,
   PARK_PROGRAM_MODULE_SPEC,
   isExecutableParkLegoFamily,
+  resolveParkDressingAppearance,
   resolveParkLegoAppearance,
   resolveParkLegoContract,
   resolveParkDressingFamily,
@@ -37,6 +38,31 @@ describe('Public Realm LEGO V1 park families', () => {
     const candidate = zone({ green_space_archetype_id: 'estate_picnic_grove' });
     expect(resolveParkLegoContract(candidate)).toBeNull();
     expect(resolveParkDressingFamily(candidate)).toBe('park_neighborhood_community');
+  });
+
+  it.each([
+    [0, 'Village Green', 'english_pastoral', 'thatched'],
+    [1, 'Municipal Oval', 'modern_minimal', 'steel_canopy'],
+    [2, 'South Asian Ground', 'urban_pavers', 'fabric_sail'],
+    [3, 'Caribbean Beach Pitch', 'tropical_lush', 'thatched'],
+  ] as const)('gives cricket variant %s archetype-bound perimeter dressing', (
+    index,
+    label,
+    materialPattern,
+    shadeStyle,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: 'cricket_pitch_oval',
+      green_space_selected_variant_id: `cricket_pitch_oval_v${index}`,
+    });
+    expect(resolveParkLegoContract(candidate)).toBeNull();
+    expect(resolveParkLegoAppearance(candidate)).toBeNull();
+    expect(resolveParkDressingAppearance(candidate)).toMatchObject({
+      label,
+      materialPattern,
+      shadeStyle,
+      variantIndex: index,
+    });
   });
 
   it('prefers and validates the canonical nested compiler contract', () => {

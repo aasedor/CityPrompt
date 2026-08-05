@@ -363,6 +363,45 @@ const COMMUNITY_VARIANTS: readonly AppearanceDefinition[] = Object.freeze([
   },
 ]);
 
+/** Appearance-only kits for cricket variants that do not yet claim a full
+ * compiler family. The dedicated cricket assembly owns the playable program;
+ * these definitions only select compatible perimeter trees, benches and
+ * materials after the drape is complete. */
+const CRICKET_DRESSING_VARIANTS: readonly AppearanceDefinition[] = Object.freeze([
+  {
+    label: 'Village Green',
+    plantingStructure: 'naturalistic_grove',
+    materialPattern: 'english_pastoral',
+    playgroundStyle: 'timber',
+    shadeStyle: 'thatched',
+    palette: PASTORAL,
+  },
+  {
+    label: 'Municipal Oval',
+    plantingStructure: 'active_recreation',
+    materialPattern: 'modern_minimal',
+    playgroundStyle: 'steel',
+    shadeStyle: 'steel_canopy',
+    palette: MODERN,
+  },
+  {
+    label: 'South Asian Ground',
+    plantingStructure: 'open_meadow',
+    materialPattern: 'urban_pavers',
+    playgroundStyle: 'contemporary',
+    shadeStyle: 'fabric_sail',
+    palette: CONTEMPORARY,
+  },
+  {
+    label: 'Caribbean Beach Pitch',
+    plantingStructure: 'open_meadow',
+    materialPattern: 'tropical_lush',
+    playgroundStyle: 'timber',
+    shadeStyle: 'thatched',
+    palette: TROPICAL,
+  },
+]);
+
 interface ParkSelectionMapping {
   variantId: string;
   appearanceKitId: string;
@@ -659,6 +698,36 @@ export function resolveParkDressingFamily(zone: ParkLegoZone): ParkLegoFamilyId 
     || archetypeId.includes('garden')
   ) return 'park_pocket_courtyard';
   return 'park_neighborhood_community';
+}
+
+/** Resolve an archetype-specific visual kit for post-drape scene dressing.
+ * Unlike `resolveParkLegoAppearance`, this function does not imply that the
+ * archetype has a compiler-owned LEGO family or authorize generic program
+ * modules such as playgrounds and picnic shelters. */
+export function resolveParkDressingAppearance(
+  zone: ParkLegoZone,
+): ParkLegoAppearance | null {
+  const executableAppearance = resolveParkLegoAppearance(zone);
+  if (executableAppearance) return executableAppearance;
+  const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const archetypeId = normalizeId(
+    props.green_space_archetype_id ?? props.plaza_archetype_id,
+  );
+  if (!archetypeId.startsWith('cricket_pitch_oval')) return null;
+  const variant = canonicalVariantId(
+    'cricket_pitch_oval',
+    props.green_space_selected_variant_id ?? props.plaza_selected_variant_id,
+  );
+  const definition = CRICKET_DRESSING_VARIANTS[variant.index]
+    ?? CRICKET_DRESSING_VARIANTS[0];
+  return {
+    familyId: 'park_neighborhood_community',
+    familyVersion: PARK_LEGO_FAMILY_VERSION,
+    archetypeId: 'cricket_pitch_oval',
+    variantId: variant.id,
+    variantIndex: variant.index,
+    ...definition,
+  };
 }
 
 export function resolveParkProgramAnchorLayout(

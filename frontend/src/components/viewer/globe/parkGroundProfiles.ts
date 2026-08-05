@@ -1332,6 +1332,7 @@ export type ParkSpecialtyStructureKind =
   | 'greenway_edge_assembly'
   | 'stormwater_control_assembly'
   | 'japanese_garden_bridge'
+  | 'cricket_ground_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
@@ -1429,6 +1430,7 @@ export function resolveParkSpecialtyStructureKind(
   ) return 'stormwater_control_assembly';
   const archetypeId = resolveParkGroundProfile(zone).archetypeId;
   if (archetypeId.startsWith('japanese_garden')) return 'japanese_garden_bridge';
+  if (archetypeId.startsWith('cricket_pitch_oval')) return 'cricket_ground_assembly';
   if (archetypeId.startsWith('sports_field_complex')) return 'sports_field_furniture';
   if (archetypeId.startsWith('tennis_court_cluster')) return 'tennis_court_furniture';
   if (archetypeId.startsWith('wetland_rain_garden')) return 'wetland_boardwalk';

@@ -67,6 +67,7 @@ import {
   CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
   PARK_PROGRAM_MODULE_SPEC,
   isExecutableParkLegoFamily,
+  resolveParkDressingAppearance,
   resolveParkDressingFamily,
   resolveParkLegoAppearance,
   resolveParkProgramAnchorLayout,
@@ -113,6 +114,7 @@ import {
   resolveParkTreeVariant,
   type PublicRealmBenchStyle,
 } from './publicRealmPropPalettes';
+import { GlobeCricketGroundAssembly } from './GlobeCricketGroundAssembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -801,11 +803,16 @@ function ParkSpecialtyStructures({
     [centroid, coordinates],
   );
 
-  const fittedProgramGuides = useMemo(() => fitParkGroundGuides(
+  const programGuideFit = useMemo(() => fitParkGroundGuides(
     resolveParkGroundProfile(zone).guides,
     { width: programFrame.width, height: programFrame.height },
     programFrame.normalizedRing,
-  ).guides, [programFrame, zone]);
+  ), [programFrame, zone]);
+  const fittedProgramGuides = programGuideFit.guides;
+  const placementProgramGuides = useMemo(
+    () => resolveParkPlacementGuides(programGuideFit),
+    [programGuideFit],
+  );
 
   const terrainZ = (x: number, y: number): number => (
     terrainPlane
@@ -1326,6 +1333,19 @@ function ParkSpecialtyStructures({
     );
   }
 
+  if (structureKind === 'cricket_ground_assembly') {
+    const ovalGuide = placementProgramGuides.find((guide) => guide.kind === 'track');
+    if (!ovalGuide) return null;
+    return (
+      <GlobeCricketGroundAssembly
+        zone={zone}
+        guide={ovalGuide}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+
   if (structureKind === 'tennis_court_furniture') {
     const courtCenters = fittedProgramGuides
       .filter((guide) => guide.kind === 'tennis_court')
@@ -1667,6 +1687,10 @@ function ParkKitInstance({
     () => resolveParkLegoAppearance(zone),
     [zone.properties, zone.zone_type],
   );
+  const dressingAppearance = useMemo(
+    () => resolveParkDressingAppearance(zone),
+    [zone.properties, zone.zone_type],
+  );
   const programAnchors = useMemo(
     () => resolveParkProgramAnchorLayout(zone),
     [zone.properties, zone.zone_type],
@@ -1728,6 +1752,7 @@ function ParkKitInstance({
     zone,
   ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
+    if (specialtyStructureKind === 'cricket_ground_assembly') return [];
     const mPerLon = metersPerDegLon(centroid.lat);
     return buildParkMicrodetailFamily({
       zoneId: zone.id,
@@ -1752,13 +1777,20 @@ function ParkKitInstance({
       maxPlacements: 72,
       collisionClearanceM: 0.22,
     });
-  }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, zone.id]);
+  }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, specialtyStructureKind, zone.id]);
+
+  const specialtyProgramGuides = useMemo(
+    () => specialtyStructureKind === 'cricket_ground_assembly'
+      ? resolveParkPlacementGuides(programGuideFit)
+      : fittedProgramGuides,
+    [fittedProgramGuides, programGuideFit, specialtyStructureKind],
+  );
 
   const specialtyTerrainAnchors = useMemo(() => buildParkSpecialtyTerrainAnchors(
     specialtyStructureKind,
-    fittedProgramGuides,
+    specialtyProgramGuides,
     localProgramFrame,
-  ), [fittedProgramGuides, localProgramFrame, specialtyStructureKind]);
+  ), [localProgramFrame, specialtyProgramGuides, specialtyStructureKind]);
 
   const terrainTargets = useMemo(() => {
     const mPerLon = metersPerDegLon(centroid.lat);
@@ -1991,7 +2023,7 @@ function ParkKitInstance({
       <GlobeParkMicrodetailInstances
         placements={microdetailPlacements}
         terrainOffsets={microdetailZ}
-        palette={legoAppearance?.palette}
+        palette={dressingAppearance?.palette}
         renderOrder={RENDER_ORDER_PROPS}
       />
       {[...byProp.entries()].map(([propId, group]) => {
@@ -2008,7 +2040,7 @@ function ParkKitInstance({
               placements={group}
               centroid={centroid}
               instanceZ={groupZ}
-              appearance={legoAppearance}
+              appearance={dressingAppearance}
             />
           );
         }

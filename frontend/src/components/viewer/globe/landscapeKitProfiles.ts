@@ -1,6 +1,7 @@
 export type LandscapeTreeVariant =
   | 'honey_locust'
   | 'maple'
+  | 'mature_oak'
   | 'ornamental_pear'
   | 'columnar_hornbeam'
   | 'pollarded_plane'
@@ -50,6 +51,20 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
     crownHeightM: 5.5,
     foliageTint: '#e3ead7',
     barkColor: '#5d5045',
+  },
+  mature_oak: {
+    // Reuse the reviewed broadleaf crown map, but give the oak its own
+    // metric trunk/crown assembly. This creates the spreading village-green
+    // silhouette without adding a runtime image/model-generation dependency.
+    textureUrl: '/assets/landscape/tree-crown-maple.png',
+    crownGeometry: 'billboard_cluster',
+    trunkHeightM: 4.2,
+    trunkRadiusM: 0.38,
+    crownWidthM: 10.2,
+    crownDepthM: 9.4,
+    crownHeightM: 5.4,
+    foliageTint: '#d5e1c7',
+    barkColor: '#51463a',
   },
   ornamental_pear: {
     textureUrl: '/assets/landscape/tree-crown-ornamental-pear.png',
@@ -121,7 +136,7 @@ export function selectLandscapeTreeVariant(
   }
   const variants: readonly LandscapeTreeVariant[] = (() => {
     switch (tree.canopyClass) {
-      case 'mature_deciduous': return ['honey_locust', 'maple'];
+      case 'mature_deciduous': return ['honey_locust', 'maple', 'mature_oak'];
       case 'columnar_deciduous': return ['columnar_hornbeam'];
       case 'pollarded_deciduous': return ['pollarded_plane'];
       case 'tropical_palm': return ['tropical_palm'];

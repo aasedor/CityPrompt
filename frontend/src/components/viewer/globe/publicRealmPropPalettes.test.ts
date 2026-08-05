@@ -14,8 +14,9 @@ describe('public-realm archetype-weighted prop palettes', () => {
     )));
     expect(variants.size).toBeGreaterThan(1);
     expect([...variants].every((variant) => (
-      ['maple', 'honey_locust', 'ornamental_pear'].includes(variant)
+      ['mature_oak', 'maple', 'honey_locust'].includes(variant)
     ))).toBe(true);
+    expect(variants.has('mature_oak')).toBe(true);
   });
 
   it('uses tropical palms and selects family-specific bench construction', () => {

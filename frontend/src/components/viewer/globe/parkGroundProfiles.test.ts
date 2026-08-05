@@ -106,6 +106,8 @@ describe('park ground pilot profiles', () => {
       .toBe('japanese_garden_bridge');
     expect(resolveParkSpecialtyStructureKind(zone('japanese_garden_variant_2')))
       .toBe('japanese_garden_bridge');
+    expect(resolveParkSpecialtyStructureKind(zone('cricket_pitch_oval')))
+      .toBe('cricket_ground_assembly');
     expect(resolveParkSpecialtyStructureKind(zone('sports_field_complex')))
       .toBe('sports_field_furniture');
     expect(resolveParkSpecialtyStructureKind(zone('tennis_court_cluster')))
@@ -117,6 +119,7 @@ describe('park ground pilot profiles', () => {
     expect(resolveParkSpecialtyStructureKind(zone('neighborhood_park'))).toBeNull();
     expect(shouldMountParkProgramFrame(zone('japanese_garden'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('sports_field_complex'), 0)).toBe(true);
+    expect(shouldMountParkProgramFrame(zone('cricket_pitch_oval'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('wetland_rain_garden'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('botanical_garden'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('neighborhood_park'), 0)).toBe(false);
