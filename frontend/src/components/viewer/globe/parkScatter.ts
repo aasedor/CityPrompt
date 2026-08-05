@@ -20,9 +20,11 @@
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { pointInPolygon } from '@/utils/coordTransform';
 import { seededRandom } from '@/utils/seededRandom';
+import type { SiteZone } from '@/types';
 import {
   NEIGHBORHOOD_PARK,
   PAVED_PLAZA,
+  SPORTS_FIELD_COMPLEX,
   URBAN_POCKET_PARK,
   isDefaultParkRecipe,
   resolveParkRecipe,
@@ -32,6 +34,7 @@ import {
   resolveParkLegoContract,
   type ParkProgramAnchorLayout,
 } from './parkLegoFamilies';
+import { resolveParkPlantingStructure } from './parkGroundProfiles';
 
 export type ParkPropId = 'tree' | 'bench' | 'playground' | 'pavilion';
 
@@ -970,6 +973,15 @@ export function resolveParkRecipeForZone(zone: {
     : props.green_space_archetype_id ?? props.plaza_archetype_id;
   const byId = resolveParkRecipe(typeof id === 'string' ? id : undefined);
   if (!isDefaultParkRecipe(byId)) return byId;
+  // The open-space catalog contains many sports ids (cricket, basketball,
+  // pickleball, athletics, etc.) that intentionally share one executable
+  // sparse-perimeter recipe rather than each maintaining duplicate rules.
+  if (resolveParkPlantingStructure({
+    properties: zone.properties as SiteZone['properties'],
+    zone_type: zone.zone_type as SiteZone['zone_type'] | undefined,
+  }) === 'sports_perimeter') {
+    return SPORTS_FIELD_COMPLEX;
+  }
   const role = props._plan_role;
   if (role === 'courtyard') return URBAN_POCKET_PARK;
   if (role === 'open_space') {

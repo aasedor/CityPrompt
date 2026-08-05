@@ -10,6 +10,7 @@ import {
   parkGroundSourceSignature,
   resolveParkGuideDimensionsM,
   resolveParkGroundProfile,
+  resolveParkPlacementGuides,
   resolveParkPlantingStructure,
   resolveParkSpecialtyStructureKind,
   shouldMountParkProgramFrame,
@@ -205,7 +206,9 @@ describe('park ground pilot profiles', () => {
       expect(profile.guides.some((guide) => guide.kind === 'soccer_field'), id).toBe(false);
     }
     expect(resolveParkGroundProfile(zone('pickleball_courts')).plantingStructure)
-      .toBe('sports_recreation');
+      .toBe('sports_perimeter');
+    expect(resolveParkPlantingStructure(zone('cricket_pitch_oval')))
+      .toBe('sports_perimeter');
   });
 
   it('prefers the nested Public Realm LEGO selection and records its family contract', () => {
@@ -573,6 +576,23 @@ describe('park ground pilot profiles', () => {
 
     expect(fit.guides).toHaveLength(0);
     expect(fit.omittedGuides).toHaveLength(2);
+  });
+
+  it('keeps an omitted cricket oval as clearance-only placement geometry', () => {
+    const cricket = resolveParkGroundProfile(zone('cricket_pitch_oval')).guides;
+    const fit = fitParkGroundGuides(cricket, { width: 137, height: 71 });
+    const placementGuides = resolveParkPlacementGuides(fit);
+
+    expect(fit.guides).toHaveLength(0);
+    expect(placementGuides).toHaveLength(1);
+    expect(placementGuides[0]).toMatchObject({
+      kind: 'track',
+      width: 0.86,
+      height: 0.76,
+      fitPolicy: 'clip',
+    });
+    expect(placementGuides[0].widthM).toBeUndefined();
+    expect(placementGuides[0].heightM).toBeUndefined();
   });
 
   it('tells the image model to keep only complete parcel-compatible elements', () => {

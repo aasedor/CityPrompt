@@ -52,6 +52,7 @@ import {
   fitParkGroundGuides,
   resolveParkGuideDimensionsM,
   resolveParkGroundProfile,
+  resolveParkPlacementGuides,
   resolveParkPlantingStructure,
   resolveParkSpecialtyStructureKind,
   shouldMountParkProgramFrame,
@@ -1697,16 +1698,21 @@ function ParkKitInstance({
     () => resolveParkDressingFamily(zone),
     [zone.properties, zone.zone_type],
   );
-  const fittedProgramGuides = useMemo(() => {
+  const programGuideFit = useMemo(() => {
     return fitParkGroundGuides(
       resolveParkGroundProfile(zone).guides,
       { width: localProgramFrame.width, height: localProgramFrame.height },
       localProgramFrame.normalizedRing,
-    ).guides;
+    );
   }, [localProgramFrame, zone]);
+  const fittedProgramGuides = programGuideFit.guides;
   const fittedMicrodetailGuides = useMemo(() => {
-    return parkMicrodetailGuides(fittedProgramGuides, localProgramFrame, dressingFamilyId);
-  }, [dressingFamilyId, fittedProgramGuides, localProgramFrame]);
+    return parkMicrodetailGuides(
+      resolveParkPlacementGuides(programGuideFit),
+      localProgramFrame,
+      dressingFamilyId,
+    );
+  }, [dressingFamilyId, localProgramFrame, programGuideFit]);
   const placements = useMemo(() => computeParkPlacements(
     { id: zone.id, coordinates: zone.coordinates },
     recipe,

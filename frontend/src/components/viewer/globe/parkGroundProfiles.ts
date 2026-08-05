@@ -72,6 +72,35 @@ export interface ParkGroundGuideFitResult {
   fittedCounts: Partial<Record<ParkGuideKind, number>>;
 }
 
+const SEMANTIC_PLAY_SURFACE_KINDS = new Set<ParkGuideKind>([
+  'soccer_field',
+  'tennis_court',
+  'track',
+]);
+
+/** Guides used only to keep post-drape 3D dressing off active play surfaces.
+ *
+ * Exact metric programs still obey `fitParkGroundGuides`: an undersized site
+ * never gains a squeezed regulation field. Image models can nevertheless
+ * interpret a sports archetype as a compact informal play surface even when
+ * its regulation guide was omitted (a village-green cricket oval is the
+ * common case). Preserve that accepted drape's semantic open room by using
+ * the catalog's normalized footprint as a clearance-only guide. This does not
+ * render or claim that the omitted regulation program fitted the parcel. */
+export function resolveParkPlacementGuides(
+  fit: ParkGroundGuideFitResult,
+): ParkGroundGuide[] {
+  const semanticClearances = fit.omittedGuides
+    .filter((guide) => SEMANTIC_PLAY_SURFACE_KINDS.has(guide.kind))
+    .map((guide): ParkGroundGuide => ({
+      ...guide,
+      widthM: undefined,
+      heightM: undefined,
+      fitPolicy: 'clip',
+    }));
+  return [...fit.guides, ...semanticClearances];
+}
+
 function pointOnNormalizedSegment(
   point: [number, number],
   start: [number, number],
@@ -1264,7 +1293,10 @@ function fallbackProfile(
       `Follow the selected ${entry?.title ?? archetypeId} archetype and variant rather than a generic neighborhood lawn park. ${familyConstraint[family]} Keep every large program element completely inside the parcel; if the parcel cannot fit a regulation element, report the incompatibility instead of scaling it down.`,
     canopyDescription:
       `${style?.plantingType ?? 'Regionally appropriate mature canopy and understory planting'}; ${style?.opennessEnclosure ?? 'balance enclosed canopy rooms with legible open clearings according to the selected archetype'}.`,
-    plantingStructure: family,
+    // Catalog family ids describe the park's use. The scatter engine uses a
+    // smaller executable vocabulary; sports surfaces require its dedicated
+    // perimeter pattern so generic trees never fill the field interior.
+    plantingStructure: family === 'sports_recreation' ? 'sports_perimeter' : family,
     guides: program.guides,
     guideLegend: program.legend,
     includeCentralPlaza: false,

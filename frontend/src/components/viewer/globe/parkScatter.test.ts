@@ -689,6 +689,17 @@ describe('resolveParkRecipeForZone', () => {
     expect(recipe).toBe(URBAN_POCKET_PARK);
   });
 
+  it('catalog cricket parks use the sparse sports recipe', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { green_space_archetype_id: 'cricket_pitch_oval' },
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(SPORTS_FIELD_COMPLEX);
+    expect(recipe.trees.perHectare).toBe(8);
+    expect(recipe.playground).toBeUndefined();
+    expect(recipe.pavilion).toBeUndefined();
+  });
+
   it('uses the canonical nested family selection ahead of stale legacy fields', () => {
     const recipe = resolveParkRecipeForZone({
       properties: {
