@@ -450,7 +450,6 @@ def setup_scene(repo_root: Path) -> None:
     add_court(mats["marking"], mats["court"])
     add_depth_assets(repo_root)
     add_context(mats)
-    add_people(mats)
 
 
 def configure_render() -> None:

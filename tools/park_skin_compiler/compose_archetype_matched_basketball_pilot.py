@@ -70,9 +70,9 @@ def main() -> None:
     draw.rounded_rectangle((32, result_y, width - 32, height - 30), radius=16, fill="#172820")
     draw.text((56, result_y + 24), "PILOT RESULT", font=font(20, True), fill="#d4a775")
     draw.text((56, result_y + 62), "The generated scene now carries the same urban-court identity: dark asphalt, full white linework,", font=font(17), fill="#e7eee9")
-    draw.text((56, result_y + 92), "galvanized enclosure, paired hoops, lights, brick street walls, people, benches, trees and reference-matched cameras.", font=font(17), fill="#e7eee9")
+    draw.text((56, result_y + 92), "galvanized enclosure, paired hoops, lights, brick street walls, benches, trees and reference-matched cameras.", font=font(17), fill="#e7eee9")
     draw.text((56, result_y + 132), "Catalogue boundary remains clean: LEGO owns horizontal surfaces; reusable GLBs own standing depth.", font=font(17, True), fill="#e7eee9")
-    draw.text((56, result_y + 172), "Remaining photoreal entourage refinement belongs to the final render stage—not the reusable park asset.", font=font(16), fill="#b9c8c0")
+    draw.text((56, result_y + 172), "People are intentionally excluded from the reusable park-model acceptance bar.", font=font(16), fill="#b9c8c0")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(args.output, optimize=True)
