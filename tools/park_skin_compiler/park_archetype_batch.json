@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "batchId": "five_park_lego_depth_v1",
+  "method": "lego_surface_plus_metric_program_assets",
+  "apiCalls": 0,
+  "renderPolicy": {
+    "referenceViews": ["base", "angle_60", "angle_90"],
+    "people": false,
+    "largeBuildings": false,
+    "largeBuildingLayer": "rendered_separately"
+  },
+  "archetypes": [
+    {
+      "id": "inclusive_playground",
+      "slug": "inclusive-accessible-playground",
+      "label": "Inclusive Accessible Playground",
+      "envelopeM": [50, 40],
+      "surfaceOwner": "lego_park_grammar",
+      "depthAssets": [
+        "accessible-play-structure.glb",
+        "accessible-swing-bay.glb",
+        "inclusive-spinner.glb",
+        "sensory-panel.glb",
+        "shade-canopy.glb"
+      ]
+    },
+    {
+      "id": "skate_park",
+      "slug": "skate-park",
+      "label": "Skate Park",
+      "envelopeM": [40, 30],
+      "surfaceOwner": "lego_park_grammar",
+      "depthAssets": [
+        "skate-bowl-module.glb",
+        "stair-hubba-module.glb",
+        "skate-rail.glb",
+        "skate-ledge.glb"
+      ]
+    },
+    {
+      "id": "dog_park",
+      "slug": "dog-park",
+      "label": "Dog Park",
+      "envelopeM": [80, 50],
+      "surfaceOwner": "lego_park_grammar",
+      "depthAssets": [
+        "timber-rail-fence.glb",
+        "dog-park-gate.glb",
+        "shade-shelter.glb",
+        "boulder-cluster.glb"
+      ]
+    },
+    {
+      "id": "splash_pad_area",
+      "slug": "splash-pad-water-play",
+      "label": "Splash Pad / Water Play",
+      "envelopeM": [30, 25],
+      "surfaceOwner": "lego_park_grammar",
+      "depthAssets": [
+        "timber-water-tower.glb",
+        "spray-arch.glb",
+        "ground-jet.glb",
+        "split-rail-fence.glb"
+      ]
+    },
+    {
+      "id": "community_garden",
+      "slug": "community-garden-allotments",
+      "label": "Community Garden / Allotments",
+      "envelopeM": [50, 50],
+      "surfaceOwner": "lego_park_grammar",
+      "depthAssets": [
+        "raised-growing-bed.glb",
+        "garden-greenhouse.glb",
+        "garden-trellis.glb",
+        "compost-bins.glb",
+        "split-rail-fence.glb"
+      ]
+    }
+  ]
+}

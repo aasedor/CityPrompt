@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "skate_park",
+  "slug": "skate-park",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    40.0,
+    30.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "depthAssets": [
+    "skate-bowl-module.glb",
+    "skate-ledge.glb",
+    "skate-rail.glb",
+    "stair-hubba-module.glb"
+  ]
+}

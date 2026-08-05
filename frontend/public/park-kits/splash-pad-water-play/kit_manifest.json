@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "splash_pad_area",
+  "slug": "splash-pad-water-play",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    30.0,
+    25.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "depthAssets": [
+    "ground-jet.glb",
+    "split-rail-fence.glb",
+    "spray-arch.glb",
+    "timber-water-tower.glb"
+  ]
+}

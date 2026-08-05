@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "dog_park",
+  "slug": "dog-park",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    80.0,
+    50.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "depthAssets": [
+    "boulder-cluster.glb",
+    "dog-park-gate.glb",
+    "shade-shelter.glb",
+    "timber-rail-fence.glb"
+  ]
+}

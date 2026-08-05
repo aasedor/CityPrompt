@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "inclusive_playground",
+  "slug": "inclusive-accessible-playground",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    50.0,
+    40.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "depthAssets": [
+    "accessible-play-structure.glb",
+    "accessible-swing-bay.glb",
+    "inclusive-spinner.glb",
+    "sensory-panel.glb",
+    "shade-canopy.glb"
+  ]
+}

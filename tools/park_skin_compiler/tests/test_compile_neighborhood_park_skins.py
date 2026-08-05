@@ -10,6 +10,7 @@ from tools.park_skin_compiler import compile_neighborhood_park_skins as compiler
 from tools.park_skin_compiler import generate_adaptive_park_layouts as adaptive_layouts
 from tools.park_skin_compiler import generate_adaptive_urban_materials as adaptive_materials
 from tools.park_skin_compiler import generate_lego_depth_asset_pilot as lego_depth_pilot
+from tools.park_skin_compiler import generate_park_archetype_batch as park_batch
 
 
 def load_schedule() -> dict:
@@ -83,3 +84,41 @@ def test_lego_depth_pilot_keeps_surface_and_depth_ownership_separate() -> None:
     assert layout["court"]["playingSurfaceM"] == [28.0, 15.0]
     assert layout["surfaceAreasM2"]["court"] == 608.0
     assert len(layout["trees"]) >= 20
+
+
+def test_five_park_batch_is_bounded_people_free_and_building_free() -> None:
+    contract = park_batch.load_contract()
+
+    assert park_batch.validate_contract(contract) == []
+    assert contract["method"] == "lego_surface_plus_metric_program_assets"
+    assert contract["apiCalls"] == 0
+    assert len(contract["archetypes"]) == 5
+    assert contract["renderPolicy"]["people"] is False
+    assert contract["renderPolicy"]["largeBuildings"] is False
+    assert sum(len(item["depthAssets"]) for item in contract["archetypes"]) == 22
+    assert {item["id"] for item in contract["archetypes"]} == {
+        "inclusive_playground",
+        "skate_park",
+        "dog_park",
+        "splash_pad_area",
+        "community_garden",
+    }
+
+
+def test_five_park_batch_promotes_complete_metric_glb_kits() -> None:
+    contract = park_batch.load_contract()
+    kit_root = park_batch.REPO_ROOT / "frontend/public/park-kits"
+
+    for item in contract["archetypes"]:
+        archetype_root = kit_root / item["slug"]
+        manifest = json.loads((archetype_root / "kit_manifest.json").read_text(encoding="utf-8"))
+        assert manifest["metricScale"] == 1.0
+        assert manifest["groundContactOriginZM"] == 0.0
+        assert manifest["surfaceOwner"] == "lego_park_grammar"
+        assert manifest["people"] is False
+        assert manifest["largeBuildings"] is False
+        assert manifest["depthAssets"] == sorted(item["depthAssets"])
+        for filename in item["depthAssets"]:
+            asset = archetype_root / filename
+            assert asset.exists()
+            assert asset.read_bytes()[:4] == b"glTF"

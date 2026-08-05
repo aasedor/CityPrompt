@@ -70,3 +70,33 @@ The checked-in contract is
 [`tools/park_skin_compiler/lego_depth_asset_pilot.json`](../../tools/park_skin_compiler/lego_depth_asset_pilot.json).
 Heavy render intermediates remain ignored under `artifacts/`; only the reviewed
 comparison sheet is promoted.
+
+## Five-archetype batch
+
+The next bounded batch applies the same registered LEGO-surface plus reusable
+metric-depth methodology to five distinct catalogue archetypes. People and
+large buildings are intentionally excluded from the generated park layer;
+large buildings remain a separate downstream render.
+
+[Five-park mobile overview](five-park-overview-mobile.png)
+
+- [Inclusive accessible playground comparison](inclusive-accessible-playground-comparison-mobile.png)
+- [Skate park comparison](skate-park-comparison-mobile.png)
+- [Dog park comparison](dog-park-comparison-mobile.png)
+- [Splash pad / water play comparison](splash-pad-water-play-comparison-mobile.png)
+- [Community garden / allotments comparison](community-garden-allotments-comparison-mobile.png)
+
+The batch contributes 22 reviewed module GLBs under
+`frontend/public/park-kits/<archetype>/`, with one manifest per archetype. The
+modules include accessible play equipment, recessed skate bowls and street
+features, dog-park enclosures and shelters, water-play fixtures, raised growing
+beds, a greenhouse, trellis, compost bins, and reusable split-rail fencing.
+
+The skate park is the one intentional surface exception to the simple overlay
+rule: each bowl replaces a registered opening in the LEGO slab. The compiler
+does not place a duplicate ground plane under it, preserving the bowl depth and
+preventing z-fighting. All other kits sit directly on the registered park
+surface at `metricScale: 1.0`.
+
+The batch contract is
+[`tools/park_skin_compiler/park_archetype_batch.json`](../../tools/park_skin_compiler/park_archetype_batch.json).
