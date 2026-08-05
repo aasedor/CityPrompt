@@ -32,6 +32,19 @@ export interface ParkSkinAtlas {
   sourceReference: string;
 }
 
+export interface ParkSkinTextureSet {
+  albedo: string;
+  normal: string;
+  roughness: string;
+  ao: string;
+  metresPerTile: number;
+}
+
+export interface ParkSkinMaterialKit {
+  base: Readonly<ParkSkinTextureSet>;
+  materials: Readonly<Record<ParkSkinMaterialRole, ParkSkinTextureSet>>;
+}
+
 export interface ParkKitSkin {
   id: string;
   version: number;
@@ -41,6 +54,7 @@ export interface ParkKitSkin {
   baseGround: string;
   grainPalette: readonly string[];
   atlas: Readonly<ParkSkinAtlas>;
+  materialKit?: Readonly<ParkSkinMaterialKit>;
   materials: Readonly<Record<ParkSkinMaterialRole, ParkSkinMaterial>>;
 }
 
@@ -55,6 +69,29 @@ function atlas(variant: string): ParkSkinAtlas {
     sourceReference: `${sourceRoot}/${variant}_angle_90.jpg`,
   };
 }
+
+function adaptiveUrbanTexture(role: string, metresPerTile: number): ParkSkinTextureSet {
+  const root = `/park-skins/neighborhood-park/adaptive-urban/${role}`;
+  return {
+    albedo: `${root}/albedo.jpg`,
+    normal: `${root}/normal.png`,
+    roughness: `${root}/roughness.jpg`,
+    ao: `${root}/ao.jpg`,
+    metresPerTile,
+  };
+}
+
+const ADAPTIVE_URBAN_MATERIAL_KIT: ParkSkinMaterialKit = {
+  base: adaptiveUrbanTexture('paver', 5),
+  materials: {
+    lawn: adaptiveUrbanTexture('lawn', 6),
+    path: adaptiveUrbanTexture('asphalt', 4),
+    meadow: adaptiveUrbanTexture('planting', 3),
+    rain_garden: adaptiveUrbanTexture('planting', 3),
+    playground: adaptiveUrbanTexture('safety', 3),
+    pavilion: adaptiveUrbanTexture('timber', 3),
+  },
+};
 
 const SKINS = {
   neighborhood_park_v0: {
@@ -120,6 +157,7 @@ const SKINS = {
     baseGround: '#667466',
     grainPalette: ['#6e7e6c', '#59695d', '#778477', '#526159'],
     atlas: atlas('variant_3'),
+    materialKit: ADAPTIVE_URBAN_MATERIAL_KIT,
     materials: {
       lawn: { fill: '#5d8260', edge: '#45684f' },
       path: { fill: '#9d9d95', edge: '#515b5b' },

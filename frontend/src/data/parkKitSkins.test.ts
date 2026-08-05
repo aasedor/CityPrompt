@@ -27,6 +27,9 @@ describe('neighborhood park LEGO skin pilot', () => {
     expect(new Set(skins.map((skin) => skin?.materials.path.fill)).size).toBe(4);
     expect(new Set(skins.map((skin) => skin?.atlas.albedo)).size).toBe(4);
     expect(skins.every((skin) => skin?.atlas.sourceReference.endsWith('_angle_90.jpg'))).toBe(true);
+    const adaptive = skins.find((skin) => skin?.label === 'Urban Contemporary');
+    expect(adaptive?.materialKit?.base.metresPerTile).toBe(5);
+    expect(adaptive?.materialKit?.materials.path.albedo).toContain('/adaptive-urban/asphalt/');
   });
 
   it('keeps the pilot bounded to the neighborhood-park family', () => {

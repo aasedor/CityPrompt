@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "skin": "urban_contemporary",
+  "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_3_angle_90.jpg",
+  "method": "reference_statistics_plus_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "cropNormalized": [
+        0.52,
+        0.02,
+        0.72,
+        0.11
+      ],
+      "cropPixels": [
+        621,
+        18,
+        860,
+        99
+      ],
+      "metresPerTile": 5.0,
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "cropNormalized": [
+        0.5,
+        0.22,
+        0.68,
+        0.42
+      ],
+      "cropPixels": [
+        598,
+        197,
+        813,
+        376
+      ],
+      "metresPerTile": 6.0,
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "cropNormalized": [
+        0.39,
+        0.14,
+        0.62,
+        0.19
+      ],
+      "cropPixels": [
+        466,
+        125,
+        741,
+        170
+      ],
+      "metresPerTile": 4.0,
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "cropNormalized": [
+        0.78,
+        0.62,
+        0.83,
+        0.76
+      ],
+      "cropPixels": [
+        932,
+        556,
+        992,
+        681
+      ],
+      "metresPerTile": 3.0,
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "cropNormalized": [
+        0.5,
+        0.62,
+        0.57,
+        0.72
+      ],
+      "cropPixels": [
+        598,
+        556,
+        681,
+        645
+      ],
+      "metresPerTile": 3.0,
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "cropNormalized": [
+        0.74,
+        0.64,
+        0.78,
+        0.78
+      ],
+      "cropPixels": [
+        884,
+        573,
+        932,
+        699
+      ],
+      "metresPerTile": 3.0,
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

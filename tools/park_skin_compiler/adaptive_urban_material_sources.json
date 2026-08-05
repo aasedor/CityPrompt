@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "skin": "urban_contemporary",
+  "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_3_angle_90.jpg",
+  "method": "reference_statistics_plus_procedural_structure",
+  "notes": "Crops calibrate colour, contrast and grain only. Source pixels are not stretched or projected onto the parcel. Crop boxes are normalized [left, top, right, bottom].",
+  "materials": {
+    "paver": { "crop": [0.52, 0.02, 0.72, 0.11], "roughness": 0.84, "normalStrength": 2.0, "metresPerTile": 5.0 },
+    "lawn": { "crop": [0.50, 0.22, 0.68, 0.42], "roughness": 0.95, "normalStrength": 2.2, "metresPerTile": 6.0 },
+    "asphalt": { "crop": [0.39, 0.14, 0.62, 0.19], "roughness": 0.89, "normalStrength": 1.7, "metresPerTile": 4.0 },
+    "planting": { "crop": [0.78, 0.62, 0.83, 0.76], "roughness": 0.98, "normalStrength": 3.2, "metresPerTile": 3.0 },
+    "safety": { "crop": [0.50, 0.62, 0.57, 0.72], "roughness": 0.92, "normalStrength": 2.5, "metresPerTile": 3.0 },
+    "timber": { "crop": [0.74, 0.64, 0.78, 0.78], "roughness": 0.80, "normalStrength": 2.1, "metresPerTile": 3.0 }
+  }
+}

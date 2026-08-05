@@ -4,8 +4,11 @@ import json
 from pathlib import Path
 
 from PIL import Image
+from shapely.geometry import Point, Polygon
 
 from tools.park_skin_compiler import compile_neighborhood_park_skins as compiler
+from tools.park_skin_compiler import generate_adaptive_park_layouts as adaptive_layouts
+from tools.park_skin_compiler import generate_adaptive_urban_materials as adaptive_materials
 
 
 def load_schedule() -> dict:
@@ -39,3 +42,27 @@ def test_compiler_writes_one_pbr_atlas_per_variant(tmp_path: Path, monkeypatch) 
             output = public_out / variant_id / filename
             assert output.exists()
             assert Image.open(output).size == (128, 128)
+
+
+def test_adaptive_material_kit_uses_reference_statistics_not_photo_projection(monkeypatch) -> None:
+    schedule = json.loads(adaptive_materials.SCHEDULE_PATH.read_text(encoding="utf-8"))
+    assert schedule["method"] == "reference_statistics_plus_procedural_structure"
+    assert set(schedule["materials"]) == set(adaptive_materials.ROLES)
+    monkeypatch.setattr(adaptive_materials, "SIZE", 64)
+    source = Image.open(adaptive_materials.REPO_ROOT / schedule["source"]).convert("RGB")
+    for index, role in enumerate(adaptive_materials.ROLES):
+        spec = schedule["materials"][role]
+        crop = source.crop(adaptive_materials.crop_pixels(source, spec["crop"]))
+        generated = adaptive_materials.synthesize(role, crop, 100 + index)
+        assert generated.size == (64, 64)
+        assert generated.tobytes() != crop.resize((64, 64)).tobytes()
+
+
+def test_adaptive_layout_recomposes_and_clips_to_irregular_parcel() -> None:
+    parcel = Polygon([(-18, -8), (-10, -12), (7, -11), (18, -4), (14, 10), (2, 13), (-13, 8), (-19, 1)])
+    layout = adaptive_layouts.build_layout("irregular", "Irregular", parcel)
+    assert layout["areaM2"] == round(parcel.area, 1)
+    assert layout["surfaceAreasM2"]["asphalt"] > 0
+    assert layout["surfaceAreasM2"]["lawn"] > 0
+    assert len(layout["trees"]) >= 6
+    assert all(parcel.buffer(0.01).covers(Point(point)) for point in layout["trees"])
