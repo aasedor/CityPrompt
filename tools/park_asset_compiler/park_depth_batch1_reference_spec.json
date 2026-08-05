@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "batch_id": "park_depth_kits_batch1",
+  "status": "staging_not_integrated",
+  "drape_surface_lift_m": 0.32,
+  "kits": [
+    {
+      "archetype_id": "tennis_court_cluster",
+      "variant_id": "tennis_court_cluster_v0",
+      "catalogue_root": "frontend/public/archetypes/openspaces/tennis-court-cluster",
+      "views": ["variant_0.png", "variant_0_angle_60.jpg", "variant_0_angle_90.jpg"],
+      "surface_mode": "depth_only",
+      "footprint_m": [42.0, 78.0],
+      "runtime_surface": "ai_drape",
+      "depth_features": ["four nets", "perimeter and divider fencing", "windscreens", "player benches", "floodlights"]
+    },
+    {
+      "archetype_id": "skate_park",
+      "variant_id": "skate_park_v3",
+      "catalogue_root": "frontend/public/archetypes/openspaces/skate-park",
+      "views": ["variant_3.png", "variant_3_angle_60.jpg", "variant_3_angle_90.jpg"],
+      "surface_mode": "sculptural_overlay",
+      "footprint_m": [52.0, 42.0],
+      "runtime_surface": "3d_program_overlay",
+      "depth_features": ["two bowls", "quarter pipes", "bank ramps", "stair and ledge set", "grind rails", "corten perimeter"]
+    },
+    {
+      "archetype_id": "dog_park",
+      "variant_id": "dog_park_v1",
+      "catalogue_root": "frontend/public/archetypes/openspaces/dog-park",
+      "views": ["variant_1.png", "variant_1_angle_60.jpg", "variant_1_angle_90.jpg"],
+      "surface_mode": "depth_only",
+      "footprint_m": [42.0, 30.0],
+      "runtime_surface": "ai_drape",
+      "depth_features": ["perimeter and zone fencing", "double-gate vestibules", "shade canopies", "agility ramp", "agility tunnel", "benches", "bollards"]
+    }
+  ],
+  "modeling_contract": {
+    "reference_rule": "Reconcile every listed angle before authoring. Use renders for silhouette, feature count, material family and relative placement; use metric program standards where perspective images disagree.",
+    "ground_contact_origin_z_m": 0.0,
+    "metric_scale": 1.0,
+    "preview_surfaces_are_runtime_geometry": false,
+    "pilot_required_before_viewer_integration": true
+  }
+}

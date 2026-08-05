@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "batch_id": "park_depth_kits_batch1",
+  "status": "staging_not_integrated",
+  "assets": [
+    {
+      "archetype_id": "tennis_court_cluster",
+      "variant_id": "tennis_court_cluster_v0",
+      "status": "staging_not_integrated",
+      "file": "tennis-court-cluster-v0-depth-kit.glb",
+      "bytes": 636056,
+      "sha256": "19307a06960f76776eebb8943e844ce001688b1c911910b46f66b4947e7f7a1a",
+      "triangles": 12828,
+      "mesh_parts": 7,
+      "height_m": 10.101,
+      "footprint_m": [
+        42.0,
+        78.0
+      ],
+      "surface_mode": "depth_only",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "reference_views": [
+        "variant_0.png",
+        "variant_0_angle_60.jpg",
+        "variant_0_angle_90.jpg"
+      ]
+    },
+    {
+      "archetype_id": "skate_park",
+      "variant_id": "skate_park_v3",
+      "status": "staging_not_integrated",
+      "file": "skate-park-v3-depth-kit.glb",
+      "bytes": 239168,
+      "sha256": "a1d07ffd3a69eb5f222812a66a32d1801f31e3c0700904b27515248646649862",
+      "triangles": 6336,
+      "mesh_parts": 4,
+      "height_m": 2.52,
+      "footprint_m": [
+        52.0,
+        42.0
+      ],
+      "surface_mode": "sculptural_overlay",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "reference_views": [
+        "variant_3.png",
+        "variant_3_angle_60.jpg",
+        "variant_3_angle_90.jpg"
+      ]
+    },
+    {
+      "archetype_id": "dog_park",
+      "variant_id": "dog_park_v1",
+      "status": "staging_not_integrated",
+      "file": "dog-park-v1-depth-kit.glb",
+      "bytes": 845224,
+      "sha256": "f6dd077d6f1683086cf5f6e2cc52cb2df87290b3728a8f8524954a83eaa7b0d2",
+      "triangles": 15556,
+      "mesh_parts": 8,
+      "height_m": 3.511,
+      "footprint_m": [
+        42.0,
+        30.0
+      ],
+      "surface_mode": "depth_only",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "reference_views": [
+        "variant_1.png",
+        "variant_1_angle_60.jpg",
+        "variant_1_angle_90.jpg"
+      ]
+    }
+  ]
+}
