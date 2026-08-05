@@ -1,0 +1,27 @@
+export interface ViteEnvDirCandidates {
+  explicitEnvDir?: string;
+  projectRoot: string;
+  projectEnvExists: boolean;
+  projectEnvHasAssignments: boolean;
+  sharedGitDir: string | null;
+  sharedEnvExists: boolean;
+  fallbackEnvDir: string;
+}
+
+/** Select one Vite env directory without reading or exposing secret values. */
+export function selectViteEnvDir({
+  explicitEnvDir,
+  projectRoot,
+  projectEnvExists,
+  projectEnvHasAssignments,
+  sharedGitDir,
+  sharedEnvExists,
+  fallbackEnvDir,
+}: ViteEnvDirCandidates): string {
+  if (explicitEnvDir) return explicitEnvDir;
+  if (projectEnvHasAssignments) return projectRoot;
+  if (sharedGitDir && sharedEnvExists) return sharedGitDir;
+  // Preserve mode-specific worktree env discovery when no shared store exists.
+  if (projectEnvExists) return projectRoot;
+  return fallbackEnvDir;
+}

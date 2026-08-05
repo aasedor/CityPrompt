@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'node:fs';
 import path from 'path';
+import { selectViteEnvDir } from './src/config/viteEnvDir';
 
 function gitCommonDir(projectRoot: string): string | null {
   const dotGit = path.join(projectRoot, '.git');
@@ -27,18 +28,37 @@ function gitCommonDir(projectRoot: string): string | null {
   }
 }
 
-function resolveEnvDir(): string {
-  if (process.env.VITE_ENV_DIR) return path.resolve(process.env.VITE_ENV_DIR);
-
-  const projectRoot = path.resolve(__dirname, '..');
-  if (fs.existsSync(path.join(projectRoot, '.env'))) return projectRoot;
-
-  const sharedGitDir = gitCommonDir(projectRoot);
-  if (sharedGitDir && fs.existsSync(path.join(sharedGitDir, '.env'))) {
-    return sharedGitDir;
+function hasEnvAssignments(filePath: string): boolean {
+  try {
+    return fs.readFileSync(filePath, 'utf8')
+      .split(/\r?\n/)
+      .some((line) => /^\s*[A-Za-z_][A-Za-z0-9_]*\s*=/.test(line));
+  } catch {
+    return false;
   }
+}
 
-  return __dirname;
+function resolveEnvDir(): string {
+  const explicitEnvDir = process.env.VITE_ENV_DIR
+    ? path.resolve(process.env.VITE_ENV_DIR)
+    : undefined;
+  const projectRoot = path.resolve(__dirname, '..');
+  const projectEnv = path.join(projectRoot, '.env');
+  // An interrupted recovery can leave an empty placeholder .env at the
+  // worktree root. Existence alone must not shadow the repository's shared,
+  // ignored key store and boot Vite without Maps/API credentials.
+  const sharedGitDir = gitCommonDir(projectRoot);
+  return selectViteEnvDir({
+    explicitEnvDir,
+    projectRoot,
+    projectEnvExists: fs.existsSync(projectEnv),
+    projectEnvHasAssignments: hasEnvAssignments(projectEnv),
+    sharedGitDir,
+    sharedEnvExists: Boolean(
+      sharedGitDir && fs.existsSync(path.join(sharedGitDir, '.env')),
+    ),
+    fallbackEnvDir: __dirname,
+  });
 }
 
 export default defineConfig({
