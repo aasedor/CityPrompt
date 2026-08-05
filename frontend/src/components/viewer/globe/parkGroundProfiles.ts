@@ -1392,6 +1392,7 @@ export type ParkSpecialtyStructureKind =
   | 'pump_track_v0_assembly'
   | 'outdoor_fitness_v0_assembly'
   | 'memorial_garden_v0_assembly'
+  | 'archetype_full_park_assembly'
   | 'caged_soccer_v0_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
@@ -1488,6 +1489,11 @@ export function resolveParkSpecialtyStructureKind(
       case 'pump_track': return 'pump_track_v0_assembly';
       case 'outdoor_fitness': return 'outdoor_fitness_v0_assembly';
       case 'memorial_garden': return 'memorial_garden_v0_assembly';
+      case 'pickleball_community':
+      case 'track_oval_school':
+      case 'baseball_club_hub':
+      case 'cricket_village_green':
+      case 'sports_complex_tournament': return 'archetype_full_park_assembly';
     }
   }
   if (

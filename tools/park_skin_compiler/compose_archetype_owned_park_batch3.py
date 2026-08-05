@@ -9,11 +9,11 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 PARKS = (
     (
-        "Pickleball / Community Eight-Court Bank",
+        "Pickleball / Community Five-Court Hub",
         "pickleball-courts",
         "variant_1.png",
         "pickleball-community-bank",
-        "Two banks of four courts with a shaded social spine",
+        "One 2x2 bank plus a separate court, playground, and shaded social edge",
     ),
     (
         "Running Track / School Athletic Oval",
@@ -23,11 +23,11 @@ PARKS = (
         "Eight lanes, regulation soccer infield, field events, and spectator edge",
     ),
     (
-        "Baseball / Youth League Pinwheel",
+        "Baseball / Three-Field Club Hub",
         "baseball-softball-diamond",
         "variant_1.png",
         "baseball-youth-pinwheel",
-        "Four outward-facing youth diamonds around one shared operations hub",
+        "Three youth diamonds around a shared club forecourt, cages, and reserved building pad",
     ),
     (
         "Cricket / Traditional Village Green",
@@ -45,7 +45,10 @@ PARKS = (
     ),
 )
 VIEWS = ("generated_base.png", "generated_angle_60.png", "generated_angle_90.png")
-LABELS = ("ARCHETYPE", "LEGO OBLIQUE", "LEGO 60 DEG", "LEGO NADIR")
+LABELS = (
+    "REFERENCE HERO", "REFERENCE 60 DEG", "REFERENCE NADIR",
+    "LEGO OBLIQUE", "LEGO 60 DEG", "LEGO NADIR",
+)
 
 
 def font(size: int, bold: bool = False):
@@ -85,14 +88,22 @@ def draw_park_row(
     draw.text((margin, y), title, font=font(24, True), fill="#24342d")
     draw.text((margin, y + 31), note, font=font(16), fill="#596760")
     y += 62
-    images = [Image.open(source)] + [Image.open(render_dir / view) for view in VIEWS]
+    source_stem = source.with_suffix("")
+    images = [
+        Image.open(source),
+        Image.open(source_stem.with_name(f"{source_stem.name}_angle_60.jpg")),
+        Image.open(source_stem.with_name(f"{source_stem.name}_angle_90.jpg")),
+        *[Image.open(render_dir / view) for view in VIEWS],
+    ]
     for index, image in enumerate(images):
-        x = margin + index * (cell_w + gap)
-        sheet.paste(panel(image, (cell_w, cell_h)), (x, y))
+        column, row = index % 3, index // 3
+        x = margin + column * (cell_w + gap)
+        image_y = y + row * (cell_h + gap)
+        sheet.paste(panel(image, (cell_w, cell_h)), (x, image_y))
         label_w = len(LABELS[index]) * 9 + 24
-        draw.rounded_rectangle((x + 10, y + 10, x + 10 + label_w, y + 42), radius=8, fill="#17231f")
-        draw.text((x + 20, y + 15), LABELS[index], font=font(14, True), fill="white")
-    return y + cell_h
+        draw.rounded_rectangle((x + 10, image_y + 10, x + 10 + label_w, image_y + 42), radius=8, fill="#17231f")
+        draw.text((x + 20, image_y + 15), LABELS[index], font=font(14, True), fill="white")
+    return y + 2 * cell_h + gap
 
 
 def main() -> None:
@@ -103,8 +114,8 @@ def main() -> None:
     args = parser.parse_args()
 
     width, margin, gap = 1600, 34, 14
-    cell_w, cell_h = 372, 280
-    title_h, row_h, row_gap = 118, 62 + cell_h, 30
+    cell_w, cell_h = 500, 300
+    title_h, row_h, row_gap = 118, 62 + 2 * cell_h + gap, 30
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     for title, source_slug, source_name, render_slug, note in PARKS:
@@ -135,7 +146,7 @@ def main() -> None:
     sheet = Image.new("RGB", (width, height), "#f3f2ed")
     draw = ImageDraw.Draw(sheet)
     draw.text((margin, 22), "ARCHETYPE-OWNED PARK LEGO - BATCH 3", font=font(34, True), fill="#1e2c27")
-    draw.text((margin, 67), "Archetype reference -> LEGO oblique -> 60 degree -> near-nadir", font=font(20), fill="#52615b")
+    draw.text((margin, 67), "Hero + 60 degree + nadir references -> matching LEGO views", font=font(20), fill="#52615b")
     y = title_h
     for title, source_slug, source_name, render_slug, note in PARKS:
         source = args.reference_root / "frontend/public/archetypes/openspaces" / source_slug / source_name

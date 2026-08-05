@@ -25,6 +25,11 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_pump_track_v0',
   'park_outdoor_fitness_v0',
   'park_memorial_garden_v0',
+  'park_pickleball_community_v1',
+  'park_track_oval_school_v2',
+  'park_baseball_club_hub_v1',
+  'park_cricket_village_green_v0',
+  'park_sports_complex_tournament_v0',
   'park_water_ecology',
 ] as const;
 
@@ -539,6 +544,31 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       variantId: 'memorial_garden_v0', appearanceKitId: 'memorial_garden_v0_reference_skin', plantingStructure: 'memorial_garden_v0',
     })]),
   }),
+  park_pickleball_community_v1: Object.freeze({
+    pickleball_courts: Object.freeze([Object.freeze({
+      variantId: 'pickleball_courts_v1', appearanceKitId: 'pickleball_courts_v1_multi_angle_skin', plantingStructure: 'pickleball_community_v1',
+    })]),
+  }),
+  park_track_oval_school_v2: Object.freeze({
+    running_track_oval: Object.freeze([Object.freeze({
+      variantId: 'running_track_oval_v2', appearanceKitId: 'running_track_oval_v2_multi_angle_skin', plantingStructure: 'track_oval_school_v2',
+    })]),
+  }),
+  park_baseball_club_hub_v1: Object.freeze({
+    baseball_softball_diamond: Object.freeze([Object.freeze({
+      variantId: 'baseball_softball_diamond_v1', appearanceKitId: 'baseball_softball_diamond_v1_multi_angle_skin', plantingStructure: 'baseball_club_hub_v1',
+    })]),
+  }),
+  park_cricket_village_green_v0: Object.freeze({
+    cricket_pitch_oval: Object.freeze([Object.freeze({
+      variantId: 'cricket_pitch_oval_v0', appearanceKitId: 'cricket_pitch_oval_v0_multi_angle_skin', plantingStructure: 'cricket_village_green_v0',
+    })]),
+  }),
+  park_sports_complex_tournament_v0: Object.freeze({
+    sports_field_complex: Object.freeze([Object.freeze({
+      variantId: 'sports_field_complex_v0', appearanceKitId: 'sports_field_complex_v0_multi_angle_skin', plantingStructure: 'sports_complex_tournament_v0',
+    })]),
+  }),
   park_water_ecology: Object.freeze({
     stormwater_retention_pond: Object.freeze([Object.freeze({
       variantId: 'stormwater_retention_pond_v0',
@@ -586,6 +616,11 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'pump_track') return 'park_pump_track_v0';
   if (archetypeId === 'outdoor_fitness_circuit') return 'park_outdoor_fitness_v0';
   if (archetypeId === 'memorial_garden') return 'park_memorial_garden_v0';
+  if (archetypeId === 'pickleball_courts') return 'park_pickleball_community_v1';
+  if (archetypeId === 'running_track_oval') return 'park_track_oval_school_v2';
+  if (archetypeId === 'baseball_softball_diamond') return 'park_baseball_club_hub_v1';
+  if (archetypeId === 'cricket_pitch_oval') return 'park_cricket_village_green_v0';
+  if (archetypeId === 'sports_field_complex') return 'park_sports_complex_tournament_v0';
   if (archetypeId.startsWith('stormwater_retention_pond')) return 'park_water_ecology';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
@@ -609,6 +644,11 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_pump_track_v0': return 'pump_track';
     case 'park_outdoor_fitness_v0': return 'outdoor_fitness_circuit';
     case 'park_memorial_garden_v0': return 'memorial_garden';
+    case 'park_pickleball_community_v1': return 'pickleball_courts';
+    case 'park_track_oval_school_v2': return 'running_track_oval';
+    case 'park_baseball_club_hub_v1': return 'baseball_softball_diamond';
+    case 'park_cricket_village_green_v0': return 'cricket_pitch_oval';
+    case 'park_sports_complex_tournament_v0': return 'sports_field_complex';
     case 'park_water_ecology': return 'stormwater_retention_pond';
   }
 }

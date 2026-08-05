@@ -49,9 +49,11 @@ def validate_schedule(schedule: dict, source_root: Path = REPO_ROOT) -> list[str
     if len(schedule.get("archetypes", {})) != 5:
         errors.append("expected five archetype skin schedules")
     for slug, item in schedule.get("archetypes", {}).items():
-        source = source_root / item.get("source", "")
-        if not source.exists():
-            errors.append(f"{slug}: missing source")
+        sources = {item.get("source", ""), *item.get("roleSources", {}).values()}
+        for source_name in sources:
+            source = source_root / source_name
+            if not source.exists():
+                errors.append(f"{slug}: missing source {source_name}")
         if set(item.get("crops", {})) != set(ROLES):
             errors.append(f"{slug}: every adaptive role requires a crop")
         for role, crop in item.get("crops", {}).items():
@@ -99,18 +101,29 @@ def generate(
             raise SystemExit(f"unknown archetype slug: {selected}")
         items = [(selected, schedule["archetypes"][selected])]
     for archetype_index, (slug, item) in enumerate(items):
-        source = Image.open(source_root / item["source"]).convert("RGB")
+        source_cache: dict[str, Image.Image] = {}
+
+        def source_image(source_name: str) -> Image.Image:
+            if source_name not in source_cache:
+                source_cache[source_name] = Image.open(source_root / source_name).convert("RGB")
+            return source_cache[source_name]
+
         target = output_root / slug / "adaptive-v1"
+        role_sources = item.get("roleSources", {})
+        cited_sources = sorted({item["source"], *role_sources.values()})
         manifest = {
             "schemaVersion": 1,
             "archetype": slug,
             "source": item["source"],
+            "sources": cited_sources,
             "method": schedule["method"],
             "apiCalls": 0,
             "sourcePixelsProjected": False,
             "materials": {},
         }
         for role_index, role in enumerate(ROLES):
+            role_source = role_sources.get(role, item["source"])
+            source = source_image(role_source)
             crop_box = item["crops"][role]
             pixels = crop_pixels(source, crop_box)
             crop = source.crop(pixels)
@@ -129,6 +142,7 @@ def generate(
             roughness.save(role_dir / "roughness.jpg", quality=90, optimize=True)
             ao.save(role_dir / "ao.jpg", quality=90, optimize=True)
             manifest["materials"][role] = {
+                "source": role_source,
                 "cropNormalized": crop_box,
                 "cropPixels": pixels,
                 "metresPerTile": spec["metresPerTile"],

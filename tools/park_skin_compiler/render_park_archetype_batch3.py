@@ -19,7 +19,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from render_adaptive_park_shapes import cube  # noqa: E402
+from render_adaptive_park_shapes import cube, reset_scene  # noqa: E402
 from render_archetype_matched_basketball_pilot import (  # noqa: E402
     add_bench,
     add_tree,
@@ -31,6 +31,7 @@ from render_park_archetype_batch2 import (  # noqa: E402
     attach,
     cylinder,
     disc,
+    export_root,
     materials,
     render_archetype,
     root,
@@ -92,19 +93,32 @@ def fence_section(name: str, location, yaw: float, mats: dict, assets: dict, *, 
     return r
 
 
-def fence_rectangle(width: float, depth: float, mats: dict, assets: dict, filename: str, height=3.0):
+def fence_rectangle(width: float, depth: float, mats: dict, assets: dict, filename: str, height=3.0, center=(0.0, 0.0)):
+    cx, cy = center
     for y in (-depth / 2, depth / 2):
         count = max(1, math.ceil(width / 6))
         section = width / count
         for index in range(count):
             x = -width / 2 + section * (index + 0.5)
-            fence_section("Shared perimeter fence", (x, y, 0.14), 0, mats, assets, filename=filename, height=height, length=section)
+            fence_section("Shared perimeter fence", (cx + x, cy + y, 0.14), 0, mats, assets, filename=filename, height=height, length=section)
     for x in (-width / 2, width / 2):
         count = max(1, math.ceil(depth / 6))
         section = depth / count
         for index in range(count):
             y = -depth / 2 + section * (index + 0.5)
-            fence_section("Shared perimeter fence", (x, y, 0.14), math.pi / 2, mats, assets, filename=filename, height=height, length=section)
+            fence_section("Shared perimeter fence", (cx + x, cy + y, 0.14), math.pi / 2, mats, assets, filename=filename, height=height, length=section)
+
+
+def low_perimeter_fence(width: float, depth: float, mats: dict, *, center=(0.0, 0.0), height=1.1):
+    cx, cy = center
+    for y in (-depth / 2, depth / 2):
+        cylinder_between("Low fence rail", (cx - width / 2, cy + y, height), (cx + width / 2, cy + y, height), 0.035, mats["white"], 8)
+        for x in range(-round(width / 2), round(width / 2) + 1, 4):
+            cylinder("Low fence picket", (cx + x, cy + y, height / 2), 0.028, height, mats["white"], 8)
+    for x in (-width / 2, width / 2):
+        cylinder_between("Low fence rail", (cx + x, cy - depth / 2, height), (cx + x, cy + depth / 2, height), 0.035, mats["white"], 8)
+        for y in range(-round(depth / 2), round(depth / 2) + 1, 4):
+            cylinder("Low fence picket", (cx + x, cy + y, height / 2), 0.028, height, mats["white"], 8)
 
 
 def shade_sail(name: str, location, mats: dict, assets: dict):
@@ -148,27 +162,58 @@ def add_pickleball_lines(cx: float, cy: float, mats: dict) -> None:
 
 
 def build_pickleball(mats: dict):
-    width, depth = 50.0, 56.0
+    width, depth = 78.0, 66.0
     assets = {}
-    cube("Community pickleball receiving lawn", (0, 0, 0), (width, depth, 0.18), mats["grass"], 1.2)
-    cube("Shared court compound", (0, 0, 0.11), (40.0, 48.0, 0.10), mats["court_green"], 0.4)
-    cube("Central social promenade", (0, 0, 0.18), (40.0, 7.6, 0.08), mats["concrete"], 0.25)
-    x_positions = (-13.71, -4.57, 4.57, 13.71)
-    y_positions = (-13.145, 13.145)
-    for row, cy in enumerate(y_positions):
-        for col, cx in enumerate(x_positions):
-            cube("Pickleball safety envelope", (cx, cy, 0.16), (9.14, 18.29, 0.06), mats["court_blue"], 0.18)
-            add_pickleball_lines(cx, cy, mats)
-            net = pickleball_net(f"Pickleball net {row}-{col}", (cx, cy, 0.2), mats, assets)
-            net.rotation_euler[2] = math.pi / 2
-    fence_rectangle(40.0, 48.0, mats, assets, "pickleball-fence-6m.glb", height=3.0)
-    for x in (-10.5, 10.5):
-        shade_sail("Promenade shade sail", (x, 0, 0.22), mats, assets)
-        add_bench("Promenade bench", (x, 2.8, 0.2), 0, mats["timber_light"], mats["steel"])
-    for x, y in ((-19, -22), (0, -22), (19, -22), (-19, 22), (0, 22), (19, 22)):
+    cube("Community recreation lawn", (0, 0, 0), (width, depth, 0.18), mats["grass"], 1.2)
+    cube("Public arrival walk", (0, -28, 0.13), (70, 5.5, 0.08), mats["concrete"], 0.35)
+    cube("Court and play connector", (-2, 3, 0.13), (5.5, 56, 0.08), mats["concrete"], 0.35)
+    cube("Four-court compound", (16.5, 7.5, 0.11), (23.0, 40.0, 0.10), mats["court_green"], 0.4)
+    cube("Single-court compound", (-24, 17, 0.11), (11.5, 20.5, 0.10), mats["court_green"], 0.4)
+    court_centres = ((11, -2), (22, -2), (11, 17), (22, 17), (-24, 17))
+    for index, (cx, cy) in enumerate(court_centres):
+        cube("Pickleball safety envelope", (cx, cy, 0.16), (9.14, 18.29, 0.06), mats["court_blue"], 0.18)
+        add_pickleball_lines(cx, cy, mats)
+        net = pickleball_net(f"Pickleball net {index}", (cx, cy, 0.2), mats, assets)
+        net.rotation_euler[2] = math.pi / 2
+    fence_rectangle(23.0, 40.0, mats, assets, "pickleball-fence-6m.glb", height=3.0, center=(16.5, 7.5))
+    fence_rectangle(11.5, 20.5, mats, assets, "pickleball-fence-6m.glb", height=3.0, center=(-24, 17))
+
+    cube("Playground safety surface", (-22, -8, 0.16), (27, 26, 0.06), mats["rubber_sand"], 2.2)
+    play = root("Neighbourhood play structure", (-22, -8, 0.2))
+    play_parts = [
+        cube("Play tower deck", (0, 0, 1.45), (4.6, 4.6, 0.32), mats["timber"], 0.25),
+        cube("Play tower roof", (0, 0, 4.0), (5.4, 5.4, 0.30), mats["rubber_orange"], 0.35),
+        cube("Wide slide", (4.4, 0, 1.1), (5.5, 2.0, 0.26), mats["green_steel"], 0.55),
+    ]
+    for x in (-1.8, 1.8):
+        for y in (-1.8, 1.8):
+            play_parts.append(cylinder("Play tower post", (x, y, 1.9), 0.11, 3.8, mats["blue_steel"], 12))
+    attach(play, play_parts)
+    assets["play-structure.glb"] = play
+    swings = root("Four-seat swing bay", (-22, 2, 0.2))
+    swing_parts = [
+        cylinder_between("Swing top rail", (-5, 0, 3.3), (5, 0, 3.3), 0.10, mats["blue_steel"], 12),
+        cylinder_between("Swing leg", (-5, 0, 3.3), (-4, -1.4, 0), 0.09, mats["blue_steel"], 12),
+        cylinder_between("Swing leg", (5, 0, 3.3), (4, -1.4, 0), 0.09, mats["blue_steel"], 12),
+    ]
+    for x in (-3.5, -1.2, 1.2, 3.5):
+        swing_parts.extend([
+            cylinder_between("Swing chain", (x - 0.24, 0, 3.25), (x - 0.24, 0, 1.0), 0.018, mats["steel"], 8),
+            cylinder_between("Swing chain", (x + 0.24, 0, 3.25), (x + 0.24, 0, 1.0), 0.018, mats["steel"], 8),
+            cube("Swing seat", (x, 0, 0.94), (0.65, 0.40, 0.10), mats["rubber_blue"], 0.06),
+        ])
+    attach(swings, swing_parts)
+    assets["swing-bay.glb"] = swings
+
+    for x in (8, 22):
+        shade_sail("Social edge shade sail", (x, -25, 0.22), mats, assets)
+        add_bench("Social edge bench", (x, -22.3, 0.2), 0, mats["timber_light"], mats["steel"])
+    for x, y in ((5, -15), (28, -15), (5, 27), (28, 27), (-30, 27), (-18, 27)):
         pole = root("Shared court floodlight", (x, y, 0.2))
         attach(pole, [cylinder("Light mast", (0, 0, 4.5), 0.08, 9.0, mats["steel"], 12), cube("LED head", (0, 0, 9.0), (1.6, 0.3, 0.3), mats["white"], 0.03)])
         assets.setdefault("pickleball-floodlight.glb", pole)
+    for x, y, scale in ((-35, -26, 0.9), (-35, 5, 1.0), (-35, 28, 0.9), (35, -25, 0.95), (35, 28, 1.0)):
+        add_tree("Community park edge tree", (x, y), scale, mats["trunk"], mats["foliage"], mats["foliage_light"])
     return (width, depth), assets
 
 
@@ -197,6 +242,11 @@ def add_soccer_field(
 ):
     cube("Striped soccer field", (cx, cy, base_z), (width, depth, 0.10), mats["turf"], 0.4)
     z, white = line_z, mats["white"]
+    stripe_width = width / 10
+    for index in range(10):
+        if index % 2:
+            x = cx - width / 2 + stripe_width * (index + 0.5)
+            cube("Mown soccer stripe", (x, cy, base_z + 0.056), (stripe_width, depth, 0.018), mats["court_green"], 0.12)
     for x in (-width / 2, width / 2): line("Touchline", (cx + x, cy - depth / 2), (cx + x, cy + depth / 2), 0.1, z, white)
     for y in (-depth / 2, depth / 2): line("Goal line", (cx - width / 2, cy + y), (cx + width / 2, cy + y), 0.1, z, white)
     line("Halfway line", (cx, cy - depth / 2), (cx, cy + depth / 2), 0.1, z, white)
@@ -253,10 +303,13 @@ def build_track_oval(mats: dict):
 def baseball_backstop(name: str, location, yaw: float, mats: dict, assets: dict, filename="baseball-backstop.glb"):
     r = root(name, location, yaw)
     parts = []
-    for angle in (-0.52, 0, 0.52):
-        x, y = -5.5 * math.cos(angle), 5.5 * math.sin(angle)
+    for angle in (-0.60, -0.30, 0, 0.30, 0.60):
+        x, y = -6.2 * math.cos(angle), 6.2 * math.sin(angle)
         parts.append(cylinder("Backstop post", (x, y, 2.8), 0.075, 5.6, mats["black_steel"], 12))
-    parts.append(curve_line("Backstop top rail", [(-4.8, -2.7, 5.6), (-5.5, 0, 5.6), (-4.8, 2.7, 5.6)], 0.06, mats["black_steel"]))
+    for z in (1.0, 2.2, 3.4, 4.6, 5.6):
+        parts.append(curve_line("Backstop mesh horizontal", [
+            (-5.1, -3.5, z), (-5.9, -1.9, z), (-6.2, 0, z), (-5.9, 1.9, z), (-5.1, 3.5, z),
+        ], 0.018, mats["black_steel"]))
     attach(r, parts)
     assets.setdefault(filename, r)
     return r
@@ -265,19 +318,38 @@ def baseball_backstop(name: str, location, yaw: float, mats: dict, assets: dict,
 def add_diamond(home, yaw: float, mats: dict, assets: dict, *, radius=72.0, base=18.29, filename="baseball-backstop.glb"):
     hx, hy = home
     r = root("Youth baseball diamond", (hx, hy, 0), yaw)
-    fan = [(0, 0)] + [(math.cos(-math.pi / 4 + math.pi / 2 * i / 40) * radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 40) * radius) for i in range(41)]
-    outfield = polygon_surface("Mown outfield sector", fan, 0.13, mats["turf"])
+    outer_fan = [(0, 0)] + [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * radius) for i in range(65)]
+    inner_radius = radius - 4.0
+    inner_fan = [(0, 0)] + [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * inner_radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * inner_radius) for i in range(65)]
+    warning = polygon_surface("Clay warning track sector", outer_fan, 0.12, mats["rubber_orange"])
+    outfield = polygon_surface("Striped mown outfield sector", inner_fan, 0.15, mats["turf"])
     b = base / math.sqrt(2)
     dirt = polygon_surface("Dirt infield", [(0, 0), (b, -b), (2 * b, 0), (b, b)], 0.19, mats["rubber_sand"])
-    parts = [outfield, dirt]
+    parts = [warning, outfield, dirt]
     white = mats["white"]
     parts.append(line("First-base foul line", (0, 0), (radius / math.sqrt(2), -radius / math.sqrt(2)), 0.08, 0.24, white))
     parts.append(line("Third-base foul line", (0, 0), (radius / math.sqrt(2), radius / math.sqrt(2)), 0.08, 0.24, white))
-    arc = [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * radius, 0.24) for i in range(65)]
-    parts.append(curve_line("Outfield fence line", arc, 0.05, mats["black_steel"]))
+    for z in (0.55, 1.25, 2.0):
+        arc = [(math.cos(-math.pi / 4 + math.pi / 2 * i / 64) * radius, math.sin(-math.pi / 4 + math.pi / 2 * i / 64) * radius, z) for i in range(65)]
+        parts.append(curve_line("Outfield fence rail", arc, 0.028, mats["black_steel"]))
+    for i in range(0, 65, 4):
+        angle = -math.pi / 4 + math.pi / 2 * i / 64
+        parts.append(cylinder("Outfield fence post", (math.cos(angle) * radius, math.sin(angle) * radius, 1.0), 0.045, 2.0, mats["black_steel"], 8))
     for index, (x, y) in enumerate(((0, 0), (b, -b), (2 * b, 0), (b, b))):
         parts.append(cube(f"Base {index}", (x, y, 0.27), (0.38, 0.38, 0.08), white, 0.04))
     parts.append(disc("Pitching mound", (2 * b * 0.52, 0, 0.23), 1.6, 0.08, mats["rubber_sand"]))
+    for side in (-1, 1):
+        dugout_y = side * 14.5
+        parts.extend([
+            cube("Covered dugout slab", (10.5, dugout_y, 0.18), (10, 3.2, 0.10), mats["concrete"], 0.25),
+            cube("Covered dugout roof", (10.5, dugout_y, 2.65), (10.5, 3.5, 0.22), mats["steel"], 0.18),
+            cube("Dugout bench", (10.5, dugout_y, 0.60), (8.0, 0.55, 0.18), mats["timber_light"], 0.08),
+        ])
+    for lx, ly in ((8, -25), (8, 25), (46, -42), (46, 42)):
+        parts.extend([
+            cylinder("Field light mast", (lx, ly, 6.0), 0.11, 12.0, mats["steel"], 12),
+            cube("Field light bank", (lx, ly, 12.0), (2.8, 0.35, 0.32), mats["white"], 0.04),
+        ])
     attach(r, parts)
     backstop = baseball_backstop("Diamond backstop", (hx, hy, 0.2), yaw, mats, assets, filename)
     return r, backstop
@@ -293,22 +365,39 @@ def shared_bleacher(name: str, location, yaw: float, mats: dict, assets: dict, f
     return r
 
 
-def build_baseball_pinwheel(mats: dict):
-    width, depth = 230.0, 230.0
+def build_baseball_hub(mats: dict):
+    width, depth = 230.0, 210.0
     assets = {}
-    cube("Tournament park lawn", (0, 0, 0), (width, depth, 0.18), mats["grass"], 2.0)
-    disc("Shared central operations plaza", (0, 0, 0.14), 17, 0.08, mats["concrete"])
-    cube("South arrival promenade", (0, -67, 0.14), (8, 96, 0.08), mats["concrete"], 0.25)
-    for index, yaw in enumerate((math.pi / 4, 3 * math.pi / 4, 5 * math.pi / 4, 7 * math.pi / 4)):
-        home = (math.cos(yaw) * 25, math.sin(yaw) * 25)
-        add_diamond(home, yaw, mats, assets)
-        shared_bleacher("Central shared bleacher", (math.cos(yaw) * 18, math.sin(yaw) * 18, 0.2), yaw + math.pi / 2, mats, assets)
-    for yaw in (0, math.pi / 2, math.pi, 3 * math.pi / 2):
-        x, y = math.cos(yaw) * 44, math.sin(yaw) * 44
-        cage = root("Shared batting cage", (x, y, 0.18), yaw)
-        attach(cage, [cube("Batting cage lane", (0, 0, 0.05), (20, 4, 0.08), mats["dark_concrete"], 0.2), cube("Batting cage mesh", (0, 0, 2.0), (20, 4, 4), mats["steel"], 0)])
+    cube("Three-field baseball complex lawn", (0, 0, 0), (width, depth, 0.18), mats["grass"], 2.0)
+    disc("Shared club forecourt", (0, 0, 0.14), 20, 0.08, mats["concrete"])
+    cube("Reserved separate clubhouse pad", (0, 0, 0.19), (22, 15, 0.10), mats["dark_concrete"], 0.45)
+    cube("South arrival promenade", (0, -64, 0.14), (8, 82, 0.08), mats["concrete"], 0.25)
+    diamonds = (
+        ((27, 0), 0.0, 72.0),
+        ((-13, 24), math.radians(120), 66.0),
+        ((-13, -24), math.radians(240), 72.0),
+    )
+    for index, (home, yaw, radius) in enumerate(diamonds):
+        add_diamond(home, yaw, mats, assets, radius=radius)
+        for side in (-1, 1):
+            lx, ly = 8.0, side * 20.0
+            cos, sin = math.cos(yaw), math.sin(yaw)
+            bx = home[0] + lx * cos - ly * sin
+            by = home[1] + lx * sin + ly * cos
+            shared_bleacher(f"Diamond {index} spectator bleacher", (bx, by, 0.2), yaw, mats, assets)
+    for index, y in enumerate((40, 47)):
+        cage = root("Shared batting cage", (2, y, 0.18), 0)
+        cage_parts = [cube("Batting cage lane", (0, 0, 0.05), (22, 4.5, 0.08), mats["dark_concrete"], 0.2)]
+        for x in (-11, 11):
+            for side in (-2.25, 2.25):
+                cage_parts.append(cylinder("Batting cage post", (x, side, 2.2), 0.045, 4.4, mats["black_steel"], 8))
+        cage_parts.extend([
+            cylinder_between("Batting cage roof rail", (-11, -2.25, 4.4), (11, -2.25, 4.4), 0.035, mats["black_steel"], 8),
+            cylinder_between("Batting cage roof rail", (-11, 2.25, 4.4), (11, 2.25, 4.4), 0.035, mats["black_steel"], 8),
+        ])
+        attach(cage, cage_parts)
         assets.setdefault("batting-cage.glb", cage)
-    add_boundary_planting(width - 12, depth - 12, mats, 16)
+    add_boundary_planting(width - 12, depth - 12, mats, 18)
     return (width, depth), assets
 
 
@@ -324,8 +413,13 @@ def build_cricket_green(mats: dict):
     width, depth = 190.0, 170.0
     assets = {}
     cube("Village green landscape", (0, 0, 0), (width, depth, 0.18), mats["grass"], 1.6)
-    disc("Pastoral perimeter walk", (0, 0, 0.12), 81, 0.08, mats["concrete"], (1, 74 / 81, 1))
+    disc("Pastoral perimeter walk", (0, 0, 0.12), 79, 0.08, mats["concrete"], (1, 72 / 79, 1))
     disc("Cricket outfield", (0, 0, 0.18), 75, 0.08, mats["turf"], (1, 68.5 / 75, 1))
+    stripe_width = 10.0
+    for index, x in enumerate(range(-65, 66, 10)):
+        if index % 2:
+            half_depth = 68.5 * math.sqrt(max(0.0, 1 - (x / 75.0) ** 2))
+            cube("Cricket mowing stripe", (x, 0, 0.225), (stripe_width, half_depth * 2, 0.018), mats["court_green"], 0.15)
     ellipse_line("Boundary rope", 72.5, 66.0, 0.26, 0.10, mats["white"])
     cube("Central wicket strip", (0, 0, 0.24), (22.56, 3.05, 0.08), mats["rubber_sand"], 0.12)
     for x in (-10.06, 10.06):
@@ -334,8 +428,15 @@ def build_cricket_green(mats: dict):
     sight_screen("East sight screen", (67, 0, 0.22), mats, assets)
     cube("Reserved pavilion pad", (84, 0, 0.15), (15, 10, 0.08), mats["concrete"], 0.35)
     cube("Pavilion forecourt", (77, 0, 0.15), (8, 18, 0.08), mats["concrete"], 0.25)
+    low_perimeter_fence(182, 158, mats, height=1.05)
     practice = root("Cricket practice nets", (58, 63, 0.2))
-    attach(practice, [cube("Practice strip", (0, 0, 0.04), (22, 7, 0.08), mats["rubber_sand"], 0.2), cube("Practice net enclosure", (0, 0, 2.0), (22, 7, 4), mats["steel"], 0)])
+    practice_parts = [cube("Practice strip", (0, 0, 0.04), (22, 7, 0.08), mats["rubber_sand"], 0.2)]
+    for x in (-11, 11):
+        for y in (-3.5, 0, 3.5):
+            practice_parts.append(cylinder("Practice net post", (x, y, 2.0), 0.045, 4.0, mats["black_steel"], 8))
+    for y in (-3.5, 0, 3.5):
+        practice_parts.append(cylinder_between("Practice net top rail", (-11, y, 4.0), (11, y, 4.0), 0.03, mats["black_steel"], 8))
+    attach(practice, practice_parts)
     assets["cricket-practice-nets.glb"] = practice
     for x, y, scale in ((-85, -68, 1.2), (-83, 64, 1.1), (79, -66, 1.15), (-50, 75, 1.0), (45, -76, 1.1)):
         add_tree("Village green specimen tree", (x, y), scale, mats["trunk"], mats["foliage"], mats["foliage_light"])
@@ -350,10 +451,21 @@ def build_mixed_complex(mats: dict):
     cube("Cross-site service spine", (0, 0, 0.14), (width - 18, 7, 0.08), mats["dark_concrete"], 0.25)
     cube("Reserved operations pad", (0, 0, 0.18), (22, 17, 0.10), mats["concrete"], 0.35)
     for cy in (-47, 47):
+        cube("Soccer warning apron", (-82, cy, 0.11), (108, 72, 0.10), mats["rubber_orange"], 0.32)
         add_soccer_field(-82, cy, 100, 64, mats, assets)
         shared_bleacher("Soccer shared bleacher", (-25, cy, 0.2), math.pi / 2, mats, assets, "sports-bleacher.glb")
+        fence_rectangle(108, 72, mats, assets, "sports-field-fence.glb", height=2.4, center=(-82, cy))
+        for x in (-132, -32):
+            for y in (cy - 34, cy + 34):
+                light = root("Tournament floodlight", (x, y, 0.2))
+                attach(light, [
+                    cylinder("Floodlight mast", (0, 0, 7.0), 0.12, 14.0, mats["steel"], 12),
+                    cube("Floodlight bank", (0, 0, 14.0), (3.0, 0.4, 0.35), mats["white"], 0.05),
+                ])
+                assets.setdefault("sports-floodlight.glb", light)
     for home, yaw in (((45, 24), math.pi / 4), ((45, -24), -math.pi / 4)):
         add_diamond(home, yaw, mats, assets, radius=62, base=18.29, filename="softball-backstop.glb")
+    cube("Tournament spectator walk", (-82, 0, 0.18), (116, 7, 0.08), mats["concrete"], 0.25)
     add_boundary_planting(width - 16, depth - 16, mats, 20)
     return (width, depth), assets
 
@@ -361,15 +473,15 @@ def build_mixed_complex(mats: dict):
 BUILDERS = {
     "pickleball_courts": ("pickleball-community-bank", build_pickleball),
     "running_track_oval": ("track-oval-school-athletic", build_track_oval),
-    "baseball_softball_diamond": ("baseball-youth-pinwheel", build_baseball_pinwheel),
+    "baseball_softball_diamond": ("baseball-youth-pinwheel", build_baseball_hub),
     "cricket_pitch_oval": ("cricket-village-green", build_cricket_green),
     "sports_field_complex": ("sports-complex-tournament", build_mixed_complex),
 }
 
 GRAMMAR = {
-    "pickleball_courts": {"variantId": "pickleball_courts_v1", "topology": "parallel_banks_4_plus_4", "moduleCount": 8},
+    "pickleball_courts": {"variantId": "pickleball_courts_v1", "topology": "five_courts_plus_play_social_edge", "moduleCount": 6},
     "running_track_oval": {"variantId": "running_track_oval_v2", "topology": "oval_anchor", "moduleCount": 1},
-    "baseball_softball_diamond": {"variantId": "baseball_softball_diamond_v1", "topology": "radial_pinwheel_4", "moduleCount": 4},
+    "baseball_softball_diamond": {"variantId": "baseball_softball_diamond_v1", "topology": "triangular_three_field_club_hub", "moduleCount": 3},
     "cricket_pitch_oval": {"variantId": "cricket_pitch_oval_v0", "topology": "oval_anchor", "moduleCount": 1},
     "sports_field_complex": {"variantId": "sports_field_complex_v0", "topology": "mixed_blocks_cross_spines", "moduleCount": 4},
 }
@@ -391,7 +503,19 @@ def enrich_manifest(kit_root: Path, archetype_id: str, slug: str) -> None:
         "authorityLimit": "observational only; regulation and accessibility dimensions remain deterministic",
     }
     payload["largeBuildingInterface"] = "reserved pad and forecourt only"
+    payload["fullAssembly"] = "full-park-assembly.glb"
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def export_full_assembly(slug: str, builder, kit_root: Path, skin_root: Path) -> None:
+    """Export the complete reviewed LEGO scene without render-only context."""
+    reset_scene()
+    mats = materials(skin_root, slug)
+    builder(mats)
+    assembly = root(f"{slug} complete park assembly")
+    top_level = [obj for obj in list(bpy.context.scene.objects) if obj is not assembly and obj.parent is None]
+    attach(assembly, top_level)
+    export_root(assembly, kit_root / slug / "full-park-assembly.glb")
 
 
 def main() -> None:
@@ -407,6 +531,7 @@ def main() -> None:
             args.kit_output.resolve(),
             skin_root,
         )
+        export_full_assembly(slug, builder, args.kit_output.resolve(), skin_root)
         enrich_manifest(args.kit_output.resolve(), archetype_id, slug)
 
 

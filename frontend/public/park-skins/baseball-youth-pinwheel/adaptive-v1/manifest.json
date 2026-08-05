@@ -2,22 +2,28 @@
   "schemaVersion": 1,
   "archetype": "baseball-youth-pinwheel",
   "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1.png",
+    "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_60.jpg",
+    "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg"
+  ],
   "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
   "apiCalls": 0,
   "sourcePixelsProjected": false,
   "materials": {
     "paver": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.63,
-        0.55,
-        0.98
+        0.38,
+        0.56,
+        0.82
       ],
       "cropPixels": [
         0,
-        484,
-        563,
-        753
+        389,
+        573,
+        840
       ],
       "metresPerTile": 4.0,
       "pattern": "paver",
@@ -30,17 +36,18 @@
       }
     },
     "lawn": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg",
       "cropNormalized": [
-        0.42,
-        0.4,
+        0.38,
+        0.0,
         1.0,
-        0.8
+        0.48
       ],
       "cropPixels": [
-        430,
-        307,
+        389,
+        0,
         1024,
-        614
+        492
       ],
       "metresPerTile": 5.0,
       "pattern": "lawn",
@@ -53,17 +60,18 @@
       }
     },
     "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_60.jpg",
       "cropNormalized": [
         0.0,
-        0.6,
-        0.56,
+        0.52,
+        0.48,
         0.96
       ],
       "cropPixels": [
         0,
-        461,
-        573,
-        737
+        466,
+        574,
+        860
       ],
       "metresPerTile": 4.0,
       "pattern": "asphalt",
@@ -76,17 +84,18 @@
       }
     },
     "planting": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_60.jpg",
       "cropNormalized": [
+        0.74,
         0.0,
-        0.25,
-        0.42,
-        0.64
+        1.0,
+        0.52
       ],
       "cropPixels": [
+        884,
         0,
-        192,
-        430,
-        492
+        1195,
+        466
       ],
       "metresPerTile": 3.0,
       "pattern": "planting",
@@ -99,17 +108,18 @@
       }
     },
     "safety": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_90.jpg",
       "cropNormalized": [
-        0.48,
-        0.47,
+        0.36,
+        0.43,
         1.0,
         0.92
       ],
       "cropPixels": [
-        492,
-        361,
+        369,
+        440,
         1024,
-        707
+        942
       ],
       "metresPerTile": 3.0,
       "pattern": "safety",
@@ -122,17 +132,18 @@
       }
     },
     "timber": {
+      "source": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_1_angle_60.jpg",
       "cropNormalized": [
-        0.18,
-        0.45,
-        0.58,
-        0.78
+        0.16,
+        0.34,
+        0.72,
+        0.72
       ],
       "cropPixels": [
-        184,
-        346,
-        594,
-        599
+        191,
+        305,
+        860,
+        645
       ],
       "metresPerTile": 2.5,
       "pattern": "timber",

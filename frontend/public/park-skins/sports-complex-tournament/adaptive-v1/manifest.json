@@ -2,22 +2,28 @@
   "schemaVersion": 1,
   "archetype": "sports-complex-tournament",
   "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/sports-field-complex/variant_0.png",
+    "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_60.jpg",
+    "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_90.jpg"
+  ],
   "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
   "apiCalls": 0,
   "sourcePixelsProjected": false,
   "materials": {
     "paver": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_90.jpg",
       "cropNormalized": [
+        0.28,
         0.32,
-        0.45,
-        0.7,
-        0.78
+        0.76,
+        0.72
       ],
       "cropPixels": [
-        328,
-        346,
-        717,
-        599
+        335,
+        287,
+        908,
+        645
       ],
       "metresPerTile": 4.0,
       "pattern": "paver",
@@ -30,17 +36,18 @@
       }
     },
     "lawn": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.4,
-        0.5,
-        0.78
+        0.3,
+        0.58,
+        1.0
       ],
       "cropPixels": [
         0,
-        307,
-        512,
-        599
+        269,
+        693,
+        896
       ],
       "metresPerTile": 5.0,
       "pattern": "lawn",
@@ -53,17 +60,18 @@
       }
     },
     "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_90.jpg",
       "cropNormalized": [
-        0.3,
-        0.46,
-        0.72,
-        0.82
+        0.24,
+        0.32,
+        0.74,
+        0.74
       ],
       "cropPixels": [
-        307,
-        353,
-        737,
-        630
+        287,
+        287,
+        884,
+        663
       ],
       "metresPerTile": 4.0,
       "pattern": "asphalt",
@@ -76,17 +84,18 @@
       }
     },
     "planting": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_60.jpg",
       "cropNormalized": [
         0.0,
-        0.18,
-        0.44,
-        0.58
+        0.0,
+        0.24,
+        0.34
       ],
       "cropPixels": [
         0,
-        138,
-        451,
-        445
+        0,
+        287,
+        305
       ],
       "metresPerTile": 3.0,
       "pattern": "planting",
@@ -99,17 +108,18 @@
       }
     },
     "safety": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_60.jpg",
       "cropNormalized": [
         0.0,
-        0.36,
-        0.98,
+        0.28,
+        1.0,
         0.78
       ],
       "cropPixels": [
         0,
-        276,
-        1004,
-        599
+        251,
+        1195,
+        699
       ],
       "metresPerTile": 3.0,
       "pattern": "lawn",
@@ -122,17 +132,18 @@
       }
     },
     "timber": {
+      "source": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0_angle_60.jpg",
       "cropNormalized": [
         0.3,
-        0.42,
-        0.7,
-        0.7
+        0.34,
+        0.76,
+        0.68
       ],
       "cropPixels": [
-        307,
-        323,
-        717,
-        538
+        358,
+        305,
+        908,
+        609
       ],
       "metresPerTile": 2.5,
       "pattern": "timber",

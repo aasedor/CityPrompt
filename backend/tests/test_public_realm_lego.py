@@ -70,6 +70,11 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_pump_track_v0",
         "park_outdoor_fitness_v0",
         "park_memorial_garden_v0",
+        "park_pickleball_community_v1",
+        "park_track_oval_school_v2",
+        "park_baseball_club_hub_v1",
+        "park_cricket_village_green_v0",
+        "park_sports_complex_tournament_v0",
         "park_water_ecology",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
@@ -136,6 +141,11 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
     ("pump_track", "pump_track_v0", "park_pump_track_v0", "pump_track_v0_reference_skin", 55, 35),
     ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0", "park_outdoor_fitness_v0", "outdoor_fitness_circuit_v0_reference_skin", 35, 30),
     ("memorial_garden", "memorial_garden_v0", "park_memorial_garden_v0", "memorial_garden_v0_reference_skin", 55, 45),
+    ("pickleball_courts", "pickleball_courts_v1", "park_pickleball_community_v1", "pickleball_courts_v1_multi_angle_skin", 85, 72),
+    ("running_track_oval", "running_track_oval_v2", "park_track_oval_school_v2", "running_track_oval_v2_multi_angle_skin", 230, 145),
+    ("baseball_softball_diamond", "baseball_softball_diamond_v1", "park_baseball_club_hub_v1", "baseball_softball_diamond_v1_multi_angle_skin", 240, 220),
+    ("cricket_pitch_oval", "cricket_pitch_oval_v0", "park_cricket_village_green_v0", "cricket_pitch_oval_v0_multi_angle_skin", 200, 180),
+    ("sports_field_complex", "sports_field_complex_v0", "park_sports_complex_tournament_v0", "sports_field_complex_v0_multi_angle_skin", 340, 255),
 ))
 def test_archetype_owned_batch_recipes_keep_exact_identity(
     archetype_id, variant_id, family_id, appearance_id, width, depth,
@@ -150,6 +160,11 @@ def test_archetype_owned_batch_recipes_keep_exact_identity(
     expected_planting = {
         "park_caged_soccer_v0": "caged_soccer_v0",
         "park_athletics_fields_v0": "athletics_fields_v0",
+        "park_pickleball_community_v1": "pickleball_community_v1",
+        "park_track_oval_school_v2": "track_oval_school_v2",
+        "park_baseball_club_hub_v1": "baseball_club_hub_v1",
+        "park_cricket_village_green_v0": "cricket_village_green_v0",
+        "park_sports_complex_tournament_v0": "sports_complex_tournament_v0",
     }.get(family_id, variant_id)
     assert recipe.planting_structure == expected_planting
 

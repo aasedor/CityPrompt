@@ -56,7 +56,11 @@ describe('Public Realm LEGO V1 park families', () => {
       green_space_archetype_id: 'cricket_pitch_oval',
       green_space_selected_variant_id: `cricket_pitch_oval_v${index}`,
     });
-    expect(resolveParkLegoContract(candidate)).toBeNull();
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId: 'park_cricket_village_green_v0',
+      variantId: `cricket_pitch_oval_v${index}`,
+      supported: index === 0,
+    });
     expect(resolveParkLegoAppearance(candidate)).toBeNull();
     expect(resolveParkDressingAppearance(candidate)).toMatchObject({
       label,

@@ -34,5 +34,6 @@
     "peopleGenerated": false,
     "authorityLimit": "observational only; regulation and accessibility dimensions remain deterministic"
   },
-  "largeBuildingInterface": "reserved pad and forecourt only"
+  "largeBuildingInterface": "reserved pad and forecourt only",
+  "fullAssembly": "full-park-assembly.glb"
 }

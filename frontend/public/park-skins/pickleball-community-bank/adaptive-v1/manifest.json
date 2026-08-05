@@ -2,22 +2,28 @@
   "schemaVersion": 1,
   "archetype": "pickleball-community-bank",
   "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/pickleball-courts/variant_1.png",
+    "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_60.jpg",
+    "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_90.jpg"
+  ],
   "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
   "apiCalls": 0,
   "sourcePixelsProjected": false,
   "materials": {
     "paver": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.67,
-        0.52,
+        0.63,
+        0.62,
         1.0
       ],
       "cropPixels": [
         0,
-        515,
-        532,
-        768
+        564,
+        741,
+        896
       ],
       "metresPerTile": 4.0,
       "pattern": "paver",
@@ -30,17 +36,18 @@
       }
     },
     "lawn": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_90.jpg",
       "cropNormalized": [
+        0.74,
         0.64,
-        0.48,
         1.0,
-        0.88
+        1.0
       ],
       "cropPixels": [
-        655,
-        369,
-        1024,
-        676
+        884,
+        573,
+        1195,
+        896
       ],
       "metresPerTile": 5.0,
       "pattern": "lawn",
@@ -53,17 +60,18 @@
       }
     },
     "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.6,
-        0.44,
-        0.95
+        0.0,
+        0.24,
+        0.52
       ],
       "cropPixels": [
         0,
-        461,
-        451,
-        730
+        0,
+        287,
+        466
       ],
       "metresPerTile": 4.0,
       "pattern": "asphalt",
@@ -76,17 +84,18 @@
       }
     },
     "planting": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.34,
-        0.45,
-        0.75
+        0.3,
+        0.28,
+        0.92
       ],
       "cropPixels": [
         0,
-        261,
-        461,
-        576
+        269,
+        335,
+        824
       ],
       "metresPerTile": 3.0,
       "pattern": "planting",
@@ -99,17 +108,18 @@
       }
     },
     "safety": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_60.jpg",
       "cropNormalized": [
-        0.38,
-        0.43,
-        0.99,
-        0.82
+        0.37,
+        0.3,
+        1.0,
+        0.72
       ],
       "cropPixels": [
-        389,
-        330,
-        1014,
-        630
+        442,
+        269,
+        1195,
+        645
       ],
       "metresPerTile": 3.0,
       "pattern": "safety",
@@ -122,17 +132,18 @@
       }
     },
     "timber": {
+      "source": "frontend/public/archetypes/openspaces/pickleball-courts/variant_1_angle_60.jpg",
       "cropNormalized": [
-        0.0,
-        0.48,
-        0.42,
-        0.84
+        0.04,
+        0.54,
+        0.36,
+        0.78
       ],
       "cropPixels": [
-        0,
-        369,
+        48,
+        484,
         430,
-        645
+        699
       ],
       "metresPerTile": 2.5,
       "pattern": "timber",

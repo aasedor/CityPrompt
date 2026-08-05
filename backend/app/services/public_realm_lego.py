@@ -358,6 +358,11 @@ _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("pump_track", "pump_track_v0"): (50.0, 30.0, 0.5),
     ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0"): (30.0, 25.0, 0.5),
     ("memorial_garden", "memorial_garden_v0"): (50.0, 40.0, 0.5),
+    ("pickleball_courts", "pickleball_courts_v1"): (78.0, 66.0, 0.5),
+    ("running_track_oval", "running_track_oval_v2"): (220.0, 135.0, 0.5),
+    ("baseball_softball_diamond", "baseball_softball_diamond_v1"): (230.0, 210.0, 0.5),
+    ("cricket_pitch_oval", "cricket_pitch_oval_v0"): (190.0, 170.0, 0.5),
+    ("sports_field_complex", "sports_field_complex_v0"): (330.0, 245.0, 0.5),
 }
 
 _INCLUSIVE_PLAYGROUND_V0_ENVELOPE = _park_envelope(
@@ -392,6 +397,21 @@ _OUTDOOR_FITNESS_V0_ENVELOPE = _park_envelope(
 )
 _MEMORIAL_GARDEN_V0_ENVELOPE = _park_envelope(
     nominal=(50.0, 40.0), width=(50.0, 70.0), depth=(40.0, 55.0), area=(2_000.0, 3_850.0),
+)
+_PICKLEBALL_COMMUNITY_V1_ENVELOPE = _park_envelope(
+    nominal=(78.0, 66.0), width=(78.0, 100.0), depth=(66.0, 88.0), area=(5_148.0, 8_800.0),
+)
+_TRACK_OVAL_SCHOOL_V2_ENVELOPE = _park_envelope(
+    nominal=(220.0, 135.0), width=(220.0, 270.0), depth=(135.0, 175.0), area=(29_700.0, 47_250.0),
+)
+_BASEBALL_CLUB_HUB_V1_ENVELOPE = _park_envelope(
+    nominal=(230.0, 210.0), width=(230.0, 285.0), depth=(210.0, 260.0), area=(48_300.0, 74_100.0),
+)
+_CRICKET_VILLAGE_GREEN_V0_ENVELOPE = _park_envelope(
+    nominal=(190.0, 170.0), width=(190.0, 240.0), depth=(170.0, 220.0), area=(32_300.0, 52_800.0),
+)
+_SPORTS_COMPLEX_TOURNAMENT_V0_ENVELOPE = _park_envelope(
+    nominal=(330.0, 245.0), width=(330.0, 400.0), depth=(245.0, 310.0), area=(80_850.0, 124_000.0),
 )
 
 _PARK_COMPONENTS = (
@@ -674,6 +694,56 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
             appearance_kit_id="memorial_garden_v0_reference_skin", planting_structure="memorial_garden_v0",
             compatibility=_MEMORIAL_GARDEN_V0_ENVELOPE,
             components=("memorial_garden_v0_ground_program", "reflecting_pool_v1", "tiered_fountain_v1", "memorial_wall_v1", "topiary_urn_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_pickleball_community_v1", kind="park",
+        title="Pickleball Courts / Community Five-Court Hub v1", generator="park_kit",
+        selections=(_selection(
+            "pickleball_courts", "pickleball_courts_v1", profile_id="pickleball-community-five-court-v1",
+            appearance_kit_id="pickleball_courts_v1_multi_angle_skin", planting_structure="pickleball_community_v1",
+            compatibility=_PICKLEBALL_COMMUNITY_V1_ENVELOPE,
+            components=("pickleball_community_v1_full_assembly", "pickleball_court_v1", "playground_social_edge_v1", "shade_seating_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_track_oval_school_v2", kind="park",
+        title="Running Track / School Athletics Oval v2", generator="park_kit",
+        selections=(_selection(
+            "running_track_oval", "running_track_oval_v2", profile_id="track-oval-school-athletic-v2",
+            appearance_kit_id="running_track_oval_v2_multi_angle_skin", planting_structure="track_oval_school_v2",
+            compatibility=_TRACK_OVAL_SCHOOL_V2_ENVELOPE,
+            components=("track_oval_school_v2_full_assembly", "regulation_track_v1", "soccer_infield_v1", "field_events_v1", "spectator_bleacher_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_baseball_club_hub_v1", kind="park",
+        title="Baseball / Three-Field Club Hub v1", generator="park_kit",
+        selections=(_selection(
+            "baseball_softball_diamond", "baseball_softball_diamond_v1", profile_id="baseball-three-field-club-hub-v1",
+            appearance_kit_id="baseball_softball_diamond_v1_multi_angle_skin", planting_structure="baseball_club_hub_v1",
+            compatibility=_BASEBALL_CLUB_HUB_V1_ENVELOPE,
+            components=("baseball_club_hub_v1_full_assembly", "three_regulation_diamonds_v1", "dugout_backstop_bleacher_v1", "batting_cages_v1", "reserved_clubhouse_pad_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cricket_village_green_v0", kind="park",
+        title="Cricket / Village Green Oval v0", generator="park_kit",
+        selections=(_selection(
+            "cricket_pitch_oval", "cricket_pitch_oval_v0", profile_id="cricket-village-green-v1",
+            appearance_kit_id="cricket_pitch_oval_v0_multi_angle_skin", planting_structure="cricket_village_green_v0",
+            compatibility=_CRICKET_VILLAGE_GREEN_V0_ENVELOPE,
+            components=("cricket_village_green_v0_full_assembly", "regulation_wicket_v1", "oval_boundary_v1", "practice_nets_v1", "white_perimeter_fence_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_sports_complex_tournament_v0", kind="park",
+        title="Sports Field Complex / Tournament Grounds v0", generator="park_kit",
+        selections=(_selection(
+            "sports_field_complex", "sports_field_complex_v0", profile_id="sports-complex-tournament-v1",
+            appearance_kit_id="sports_field_complex_v0_multi_angle_skin", planting_structure="sports_complex_tournament_v0",
+            compatibility=_SPORTS_COMPLEX_TOURNAMENT_V0_ENVELOPE,
+            components=("sports_complex_tournament_v0_full_assembly", "regulation_soccer_fields_v1", "softball_fields_v1", "spectator_service_spine_v1", "field_lighting_v1"), default=True,
         ),),
     ),
     PublicRealmFamilyCapability(

@@ -20,7 +20,12 @@ type ExactParkFamilyId =
   | 'park_nature_play_v0'
   | 'park_pump_track_v0'
   | 'park_outdoor_fitness_v0'
-  | 'park_memorial_garden_v0';
+  | 'park_memorial_garden_v0'
+  | 'park_pickleball_community_v1'
+  | 'park_track_oval_school_v2'
+  | 'park_baseball_club_hub_v1'
+  | 'park_cricket_village_green_v0'
+  | 'park_sports_complex_tournament_v0';
 
 interface MaterialMaps {
   map: THREE.Texture;
@@ -345,6 +350,14 @@ function ExactSurface({ kit }: { kit: ArchetypeOwnedParkKitDefinition }) {
   const safety = useSkinMaterial(kit.slug, 'safety', [kit.widthM / 4, kit.depthM / 4]);
   const planting = useSkinMaterial(kit.slug, 'planting', [kit.widthM / 3, kit.depthM / 3]);
   const asset = (name: string) => `/park-kits/${kit.slug}/${kit.assets[name]}`;
+
+  if (
+    kit.surfaceKind === 'pickleball_community'
+    || kit.surfaceKind === 'track_oval_school'
+    || kit.surfaceKind === 'baseball_club_hub'
+    || kit.surfaceKind === 'cricket_village_green'
+    || kit.surfaceKind === 'sports_complex_tournament'
+  ) return <MetricGlb url={asset('assembly')} />;
 
   if (kit.surfaceKind === 'inclusive_playground') return <>
     <TexturedRect width={50} depth={40} z={0} maps={paver} />

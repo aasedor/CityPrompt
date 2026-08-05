@@ -2,22 +2,28 @@
   "schemaVersion": 1,
   "archetype": "track-oval-school-athletic",
   "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2.png",
+    "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_60.jpg",
+    "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_90.jpg"
+  ],
   "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
   "apiCalls": 0,
   "sourcePixelsProjected": false,
   "materials": {
     "paver": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.72,
-        0.5,
+        0.68,
+        0.32,
         1.0
       ],
       "cropPixels": [
         0,
-        553,
-        512,
-        768
+        609,
+        382,
+        896
       ],
       "metresPerTile": 4.0,
       "pattern": "paver",
@@ -30,17 +36,18 @@
       }
     },
     "lawn": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_90.jpg",
       "cropNormalized": [
-        0.0,
-        0.42,
+        0.1,
+        0.14,
         0.58,
-        0.82
+        0.74
       ],
       "cropPixels": [
-        0,
-        323,
-        594,
-        630
+        120,
+        125,
+        693,
+        663
       ],
       "metresPerTile": 5.0,
       "pattern": "lawn",
@@ -53,17 +60,18 @@
       }
     },
     "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_60.jpg",
       "cropNormalized": [
-        0.44,
-        0.56,
+        0.42,
+        0.12,
         1.0,
-        0.96
+        0.44
       ],
       "cropPixels": [
-        451,
-        430,
-        1024,
-        737
+        502,
+        108,
+        1195,
+        394
       ],
       "metresPerTile": 4.0,
       "pattern": "asphalt",
@@ -76,17 +84,18 @@
       }
     },
     "planting": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_90.jpg",
       "cropNormalized": [
         0.0,
-        0.18,
-        0.44,
-        0.56
+        0.0,
+        0.24,
+        0.58
       ],
       "cropPixels": [
         0,
-        138,
-        451,
-        430
+        0,
+        287,
+        520
       ],
       "metresPerTile": 3.0,
       "pattern": "planting",
@@ -99,17 +108,18 @@
       }
     },
     "safety": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_60.jpg",
       "cropNormalized": [
-        0.3,
-        0.54,
-        1.0,
-        0.9
+        0.08,
+        0.66,
+        0.92,
+        0.99
       ],
       "cropPixels": [
-        307,
-        415,
-        1024,
-        691
+        96,
+        591,
+        1099,
+        887
       ],
       "metresPerTile": 3.0,
       "pattern": "safety",
@@ -122,17 +132,18 @@
       }
     },
     "timber": {
+      "source": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_2_angle_60.jpg",
       "cropNormalized": [
-        0.6,
-        0.46,
+        0.62,
+        0.38,
         0.99,
-        0.78
+        0.72
       ],
       "cropPixels": [
-        614,
-        353,
-        1014,
-        599
+        741,
+        340,
+        1183,
+        645
       ],
       "metresPerTile": 2.5,
       "pattern": "timber",

@@ -10,7 +10,9 @@ export interface ArchetypeOwnedParkKitDefinition {
   depthM: number;
   clearanceM: number;
   surfaceKind: 'skate' | 'inclusive_playground' | 'dog_park' | 'splash_pad' | 'community_garden'
-    | 'tennis_cluster' | 'nature_play' | 'pump_track' | 'outdoor_fitness' | 'memorial_garden';
+    | 'tennis_cluster' | 'nature_play' | 'pump_track' | 'outdoor_fitness' | 'memorial_garden'
+    | 'pickleball_community' | 'track_oval_school' | 'baseball_club_hub' | 'cricket_village_green'
+    | 'sports_complex_tournament';
   assets: Readonly<Record<string, string>>;
   people: false;
   largeBuildings: false;
@@ -220,6 +222,76 @@ export const ARCHETYPE_OWNED_PARK_KITS = Object.freeze({
       wall: 'memorial-wall.glb',
       urn: 'topiary-urn.glb',
     },
+  }),
+  park_pickleball_community_v1: kit({
+    familyId: 'park_pickleball_community_v1',
+    archetypeId: 'pickleball_courts',
+    variantId: 'pickleball_courts_v1',
+    title: 'Pickleball Courts / Community Five-Court Hub',
+    appearanceKitId: 'pickleball_courts_v1_multi_angle_skin',
+    plantingStructure: 'pickleball_community_v1',
+    slug: 'pickleball-community-bank',
+    widthM: 78,
+    depthM: 66,
+    clearanceM: 0.5,
+    surfaceKind: 'pickleball_community',
+    assets: { assembly: 'full-park-assembly.glb' },
+  }),
+  park_track_oval_school_v2: kit({
+    familyId: 'park_track_oval_school_v2',
+    archetypeId: 'running_track_oval',
+    variantId: 'running_track_oval_v2',
+    title: 'Running Track / School Athletics Oval',
+    appearanceKitId: 'running_track_oval_v2_multi_angle_skin',
+    plantingStructure: 'track_oval_school_v2',
+    slug: 'track-oval-school-athletic',
+    widthM: 220,
+    depthM: 135,
+    clearanceM: 0.5,
+    surfaceKind: 'track_oval_school',
+    assets: { assembly: 'full-park-assembly.glb' },
+  }),
+  park_baseball_club_hub_v1: kit({
+    familyId: 'park_baseball_club_hub_v1',
+    archetypeId: 'baseball_softball_diamond',
+    variantId: 'baseball_softball_diamond_v1',
+    title: 'Baseball / Three-Field Club Hub',
+    appearanceKitId: 'baseball_softball_diamond_v1_multi_angle_skin',
+    plantingStructure: 'baseball_club_hub_v1',
+    slug: 'baseball-youth-pinwheel',
+    widthM: 230,
+    depthM: 210,
+    clearanceM: 0.5,
+    surfaceKind: 'baseball_club_hub',
+    assets: { assembly: 'full-park-assembly.glb' },
+  }),
+  park_cricket_village_green_v0: kit({
+    familyId: 'park_cricket_village_green_v0',
+    archetypeId: 'cricket_pitch_oval',
+    variantId: 'cricket_pitch_oval_v0',
+    title: 'Cricket / Village Green Oval',
+    appearanceKitId: 'cricket_pitch_oval_v0_multi_angle_skin',
+    plantingStructure: 'cricket_village_green_v0',
+    slug: 'cricket-village-green',
+    widthM: 190,
+    depthM: 170,
+    clearanceM: 0.5,
+    surfaceKind: 'cricket_village_green',
+    assets: { assembly: 'full-park-assembly.glb' },
+  }),
+  park_sports_complex_tournament_v0: kit({
+    familyId: 'park_sports_complex_tournament_v0',
+    archetypeId: 'sports_field_complex',
+    variantId: 'sports_field_complex_v0',
+    title: 'Sports Field Complex / Tournament Grounds',
+    appearanceKitId: 'sports_field_complex_v0_multi_angle_skin',
+    plantingStructure: 'sports_complex_tournament_v0',
+    slug: 'sports-complex-tournament',
+    widthM: 330,
+    depthM: 245,
+    clearanceM: 0.5,
+    surfaceKind: 'sports_complex_tournament',
+    assets: { assembly: 'full-park-assembly.glb' },
   }),
 });
 

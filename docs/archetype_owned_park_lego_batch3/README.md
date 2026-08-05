@@ -14,20 +14,35 @@ interface is needed.
 
 | Pilot | Composition grammar | Regulation / standard anchors |
 | --- | --- | --- |
-| Community pickleball bank | Two parallel banks of four around a shaded social spine | Eight 6.10 m x 13.41 m courts within 9.14 m x 18.29 m safety envelopes |
+| Community pickleball hub | One four-court bank plus a separate court, playground, and shaded social edge | Five 6.10 m x 13.41 m courts within 9.14 m x 18.29 m safety envelopes |
 | School athletic oval | One track anchor with compatible soccer infield and field events | Eight marked lanes, 100 m x 64 m soccer pitch, long jump, shot put |
-| Youth baseball pinwheel | Four outward-facing diamonds around one shared hub | Four 18.29 m base paths with 72 m youth outfields |
+| Three-field baseball club hub | Three diamonds around a shared club forecourt, batting cages, and a reserved building pad | Three 18.29 m base paths with 66-72 m youth outfields |
 | Traditional cricket green | One open oval with central wicket and quiet pavilion edge | 22.56 m wicket, boundary rope, sight screens, practice nets |
 | Mixed tournament campus | Two soccer and two softball blocks divided by public and service spines | Two 100 m x 64 m soccer pitches and two 18.29 m softball diamonds |
 
 ## Review images
 
 - `comparison-mobile.png` is the complete mobile-friendly catalogue sheet.
-- Each `*-comparison.png` file pairs the selected archetype image with three
-  authored LEGO camera angles.
+- Each `*-comparison.png` file pairs the hero, 60-degree, and nadir archetype
+  references with the same three authored LEGO camera angles. This makes
+  geometry, spacing, edge conditions, and missing detail directly auditable.
+- Each `cityprompt-*-building-pilot.png` records a live City Prompt trial with
+  exactly one park and one separately compiled building LEGO family. No Master
+  Planner was used.
 
-The reference photographs are comparison evidence only. Their pixels are not
-projected onto the generated geometry.
+The reference photographs are comparison evidence and role-specific skin
+sources. Their pixels are not projected onto the generated geometry: each
+material role derives its own repeatable PBR maps from an intentional crop of
+the hero, 60-degree, or nadir reference.
+
+## City Prompt verification
+
+All five park families compiled in the `Regulation Park LEGO Trials` project
+one at a time. Each run reported one assembled detailed building, zero missing
+building families, and one compiled archetype-owned park layer. The paired
+building uses the existing `contemporary-midrise-brick-bronze-renderlocked-v1`
+family. Large park-support buildings remain reserved pads or forecourts and are
+not included in the park GLBs.
 
 ## Reproduction
 

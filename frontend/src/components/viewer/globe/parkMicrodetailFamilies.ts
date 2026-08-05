@@ -317,6 +317,11 @@ function familyTargets(
     case 'park_pump_track_v0':
     case 'park_outdoor_fitness_v0':
     case 'park_memorial_garden_v0':
+    case 'park_pickleball_community_v1':
+    case 'park_track_oval_school_v2':
+    case 'park_baseball_club_hub_v1':
+    case 'park_cricket_village_green_v0':
+    case 'park_sports_complex_tournament_v0':
       // Benches, grass edge and all fixed objects belong to the exact
       // archetype kit. Generic microdetail would corrupt its authored layout.
       return [];

@@ -878,6 +878,16 @@ function ParkSpecialtyStructures({
               : structureKind === 'pump_track_v0_assembly' ? 'park_pump_track_v0'
                 : structureKind === 'outdoor_fitness_v0_assembly' ? 'park_outdoor_fitness_v0'
                   : structureKind === 'memorial_garden_v0_assembly' ? 'park_memorial_garden_v0'
+                    : structureKind === 'archetype_full_park_assembly'
+                      && profileFamilyId === 'park_pickleball_community_v1' ? 'park_pickleball_community_v1'
+                    : structureKind === 'archetype_full_park_assembly'
+                      && profileFamilyId === 'park_track_oval_school_v2' ? 'park_track_oval_school_v2'
+                    : structureKind === 'archetype_full_park_assembly'
+                      && profileFamilyId === 'park_baseball_club_hub_v1' ? 'park_baseball_club_hub_v1'
+                    : structureKind === 'archetype_full_park_assembly'
+                      && profileFamilyId === 'park_cricket_village_green_v0' ? 'park_cricket_village_green_v0'
+                    : structureKind === 'archetype_full_park_assembly'
+                      && profileFamilyId === 'park_sports_complex_tournament_v0' ? 'park_sports_complex_tournament_v0'
                     : null;
   if (exactFamily) {
     return (
