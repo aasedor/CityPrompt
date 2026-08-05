@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
+import { ROADWAY_AESTHETIC_OPTIONS_V2 } from '../aestheticCatalog';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
@@ -13,6 +14,7 @@ const STREET_NETWORK_ATLAS_CANVAS_SIZE = 1024;
 const STREET_NETWORK_GROUND_MODEL = 'gpt-image-2';
 const STREET_TEXTURE_TIMEOUT_MS = 60_000;
 const STREET_TEXTURE_FETCH_ATTEMPTS = 2;
+const STREET_REFERENCE_LIBRARY_VERSION = 'cityprompt-streets-2026-07-22-v1';
 
 export interface StreetNetworkGroundBBox {
   west: number;
@@ -92,6 +94,7 @@ export function streetZoneSourceSignature(zone: SiteZone): string {
     plan_centerline: properties.plan_centerline ?? null,
     road_archetype_id: properties.road_archetype_id ?? null,
     road_selected_variant_id: properties.road_selected_variant_id ?? null,
+    reference_library: STREET_REFERENCE_LIBRARY_VERSION,
     plan_boundary_zone_id: properties._plan_boundary_zone_id ?? null,
   }));
 }
@@ -197,10 +200,30 @@ interface StreetNetworkDiagram {
   placement: StreetNetworkPlacement;
   archetypeIds: string[];
   standards: TransportStandardEntry[];
+  aestheticReferences: StreetNetworkAestheticReference[];
+}
+
+export interface StreetNetworkAestheticReference {
+  archetypeId: string;
+  label: string;
+  imageUrl: string;
 }
 
 const STREET_STANDARD_BY_ARCHETYPE = new Map(
   TRANSPORT_STANDARDS.map((standard) => [standard.archetypeId, standard]),
+);
+
+const STREET_AESTHETIC_REFERENCE_BY_ARCHETYPE = new Map(
+  ROADWAY_AESTHETIC_OPTIONS_V2.flatMap((option) => {
+    const reference = option.archetypeImages?.find((image) => image.imageUrl.endsWith('.webp'));
+    return reference
+      ? [[option.id, {
+          archetypeId: option.id,
+          label: option.label,
+          imageUrl: reference.imageUrl,
+        } satisfies StreetNetworkAestheticReference] as const]
+      : [];
+  }),
 );
 
 /** Engineering sections represented by the active street network, in stable order. */
@@ -219,6 +242,27 @@ export function getStreetNetworkStandards(zones: SiteZone[]): TransportStandardE
     standards.push(standard);
   });
   return standards;
+}
+
+/** Current CityPrompt visual references represented by the active street
+ * network, deduplicated in stable road order for the shared drape call. */
+export function getStreetNetworkAestheticReferences(
+  zones: SiteZone[],
+): StreetNetworkAestheticReference[] {
+  const placement = buildStreetNetworkPlacement(zones);
+  if (!placement) return [];
+  const seen = new Set<string>();
+  const references: StreetNetworkAestheticReference[] = [];
+  selectStreetNetworkZones(zones, placement.boundary_zone_id).forEach((road) => {
+    const archetypeId = String(
+      (road.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '',
+    );
+    const reference = STREET_AESTHETIC_REFERENCE_BY_ARCHETYPE.get(archetypeId);
+    if (!reference || seen.has(reference.archetypeId)) return;
+    seen.add(reference.archetypeId);
+    references.push(reference);
+  });
+  return references;
 }
 
 function polygonPoints(
@@ -360,6 +404,7 @@ export function buildStreetNetworkDiagram(zones: SiteZone[]): StreetNetworkDiagr
     placement,
     archetypeIds,
     standards: getStreetNetworkStandards(zones),
+    aestheticReferences: getStreetNetworkAestheticReferences(zones),
   };
 }
 
@@ -378,6 +423,7 @@ function streetNetworkPrompt(diagram: StreetNetworkDiagram): string {
     `Respect these selected street families: ${diagram.archetypeIds.join(', ')}.`,
     `ENGINEERING CROSS-SECTION CONTRACT: ${sectionContract}`,
     'Use each attached manual section to preserve its lane count, lane direction, median, parking, bicycle facility, sidewalk and planted-boulevard allocation. Translate that section continuously along its matching plan footprint without changing the footprint.',
+    'Use the attached CURRENT CITY PROMPT STREET REFERENCE images for the selected families\' material character, lane treatment, sidewalk, boulevard and planting language. Do not copy their buildings, vehicles, people, camera angle or shadows.',
     'Image 1 is the exact, to-scale geometry contract. Preserve every footprint, width, right angle, connection, junction, curb edge, pathway and roundabout pixel-for-pixel.',
     'Make all streets work with the adjacent building pads and green park polygons as one coordinated development.',
     'Replace semantic colours with realistic restrained urban materials: locally plausible medium-grey asphalt with fine aggregate and subtle wear, pale cast-in-place concrete sidewalks with correctly scaled joints, curb-and-gutter bands, planted boulevards, and crisp slightly weathered markings.',
@@ -385,6 +431,33 @@ function streetNetworkPrompt(diagram: StreetNetworkDiagram): string {
     'GROUND MATERIALS ONLY. Do not add buildings, roofs, tree canopies, vehicles, people, benches, lights, signs, equipment or shadows from vertical objects; City Prompt places those as separate 3D models afterward.',
     'Camera exactly 90-degree nadir, zero perspective, even overcast midday lighting. Output must register pixel-for-pixel to Image 1.',
   ].join(' ');
+}
+
+async function loadStreetAestheticReference(reference: StreetNetworkAestheticReference): Promise<{
+  image_base64: string;
+  label: string;
+} | null> {
+  try {
+    const response = await fetch(resolvePublicAssetUrl(reference.imageUrl));
+    if (!response.ok) return null;
+    const blob = await response.blob();
+    const imageBase64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result ?? '').split(',')[1] ?? '');
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+    if (!imageBase64) return null;
+    return {
+      image_base64: imageBase64,
+      label: [
+        `CURRENT CITY PROMPT STREET REFERENCE for ${reference.archetypeId}: ${reference.label}`,
+        'Use its public-realm materials and selected family character only; preserve Image 1 geometry exactly.',
+      ].join(' — '),
+    };
+  } catch {
+    return null;
+  }
 }
 
 function resolvePublicAssetUrl(path: string): string {
@@ -448,8 +521,12 @@ export async function generateStreetNetworkGroundTexture(
   const sectionReferences = (await Promise.all(
     diagram.standards.slice(0, 6).map(rasterizeStreetSection),
   )).filter((reference): reference is NonNullable<typeof reference> => Boolean(reference?.image_base64));
+  const aestheticReferences = (await Promise.all(
+    diagram.aestheticReferences.slice(0, 6).map(loadStreetAestheticReference),
+  )).filter((reference): reference is NonNullable<typeof reference> => Boolean(reference?.image_base64));
   const archetypeImages = [
     ...sectionReferences,
+    ...aestheticReferences,
     ...(options.sceneContextImageBase64
       ? [{
           image_base64: options.sceneContextImageBase64,

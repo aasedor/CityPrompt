@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import {
   buildStreetNetworkPlacement,
   getCurrentStreetNetworkGroundMeta,
+  getStreetNetworkAestheticReferences,
   getStreetNetworkStandards,
   getStreetNetworkGroundMeta,
   streetZoneSourceSignature,
@@ -120,5 +121,38 @@ describe('connected street-network ground atlas', () => {
       rowM: 16,
       targetSpeedKmh: 30,
     });
+  });
+
+  it('uses current CityPrompt street images as deduplicated drape references', () => {
+    const first = zone({
+      properties: {
+        ...zone({}).properties,
+        road_archetype_id: 'narrow_residential_street',
+      },
+    });
+    const duplicate = zone({
+      id: '220fd97c-bd94-4e0b-aff7-67ba239e531f',
+      properties: first.properties,
+    });
+    const second = zone({
+      id: '330fd97c-bd94-4e0b-aff7-67ba239e531f',
+      properties: {
+        ...zone({}).properties,
+        road_archetype_id: 'main_street_complete',
+      },
+    });
+
+    expect(getStreetNetworkAestheticReferences([boundary, first, duplicate, second])).toEqual([
+      {
+        archetypeId: 'narrow_residential_street',
+        label: 'Narrow Residential Street',
+        imageUrl: '/archetypes/streets/narrow-residential-street/variant_0.webp',
+      },
+      {
+        archetypeId: 'main_street_complete',
+        label: 'Main Street Complete',
+        imageUrl: '/archetypes/streets/main-street-complete/variant_0.webp',
+      },
+    ]);
   });
 });

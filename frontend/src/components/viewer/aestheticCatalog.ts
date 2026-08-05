@@ -323,24 +323,42 @@ function buildImagePrompt(
 
 const FRONT_DAY_VARIANT_ID = 'variant_0';
 
+function resolveArchetypeFolderSlug(seed: ArchetypeSeed): string {
+  return seed.thumbnailUrl
+    ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
+    : seed.id;
+}
+
+function replaceAssetExtension(path: string, extension: string): string {
+  return path.replace(/\.[a-z0-9]+(?:[?#].*)?$/i, extension);
+}
+
 function toArchetypeImages(
   domainPath: string,
   visualSystem: ArchetypeVisualSystem,
   seed: ArchetypeSeed,
 ): ArchetypeImage[] {
-  const variants = visualSystem.cardVariants || [];
+  const variants = domainPath === 'streets' && Array.isArray(seed.variants)
+    ? (visualSystem.cardVariants || []).slice(0, seed.variants.length)
+    : visualSystem.cardVariants || [];
   // Derive the folder from the authored thumbnail path whenever one exists.
   // Building ids and asset folders are not always the same slug (for example
   // contemporary_midrise_residential vs contemporary_mid_rise_residential),
   // so falling back to the catalogue id merely because a folder uses
   // underscores produces valid-looking URLs that 404 in the picker.
-  const thumbSlug = seed.thumbnailUrl
-    ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
-    : undefined;
-  const folderSlug = thumbSlug || seed.id;
-  return variants.map((variant) => {
-    const imagePath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
-    const thumbPath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
+  const folderSlug = resolveArchetypeFolderSlug(seed);
+  return variants.map((variant, index) => {
+    const authoredStreetVariantPath = domainPath === 'streets'
+      ? seed.variants?.[index]?.thumbnailUrl
+      : undefined;
+    const imagePath = domainPath === 'streets'
+      ? authoredStreetVariantPath
+        ? replaceAssetExtension(authoredStreetVariantPath, '.webp')
+        : `/archetypes/${domainPath}/${folderSlug}/${variant.id}.webp`
+      : `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
+    const thumbPath = domainPath === 'streets'
+      ? imagePath
+      : `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
     return {
       id: `${seed.id}_${variant.id}`,
       label: variant.title,
@@ -391,12 +409,29 @@ function toAestheticOption(
   const resolvedVariantHero = heroFromVariant
     ? resolvePublicAssetUrl(heroFromVariant)
     : undefined;
-  const heroUrl = authoredHero || resolvedVariantHero || primary?.imageUrl || '';
-  const photoUrls = [
-    authoredHero,
-    resolvedVariantHero,
-    ...orderedArchetypeImages.map((image) => image.imageUrl),
-  ].filter((url, index, values): url is string => Boolean(url) && values.indexOf(url) === index);
+  const heroUrl = domain === 'street_pathway'
+    ? primary?.imageUrl || resolvedVariantHero || authoredHero || ''
+    : authoredHero || resolvedVariantHero || primary?.imageUrl || '';
+  const photoUrls = (domain === 'street_pathway'
+    ? [
+        ...orderedArchetypeImages.map((image) => image.imageUrl),
+        resolvedVariantHero,
+        authoredHero,
+      ]
+    : [
+        authoredHero,
+        resolvedVariantHero,
+        ...orderedArchetypeImages.map((image) => image.imageUrl),
+      ]
+  ).filter((url, index, values): url is string => Boolean(url) && values.indexOf(url) === index);
+  const resolvedVariants = domain === 'street_pathway'
+    ? seed.variants?.map((variant) => ({
+        ...variant,
+        thumbnailUrl: variant.thumbnailUrl
+          ? resolvePublicAssetUrl(replaceAssetExtension(variant.thumbnailUrl, '.webp'))
+          : undefined,
+      }))
+    : seed.variants;
 
   return {
     id: seed.id,
@@ -427,7 +462,7 @@ function toAestheticOption(
     aspectRatio: seed.aspectRatio,
     footprintCompatibility: seed.footprintCompatibility,
     propertyPresets: seed.propertyPresets,
-    variants: seed.variants,
+    variants: resolvedVariants,
     generationStyleInput: {
       domain,
       buildingSubcategory: seed.buildingSubcategory || seed.id,

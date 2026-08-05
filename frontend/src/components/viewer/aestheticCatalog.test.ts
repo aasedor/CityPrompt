@@ -54,3 +54,34 @@ describe('Calgary Street Manual reference assets', () => {
     }
   });
 });
+
+describe('current street catalogue reference assets', () => {
+  it('uses the current CityPrompt variants instead of legacy hero images', () => {
+    const option = ROADWAY_AESTHETIC_OPTIONS_V2.find(
+      (candidate) => candidate.id === 'narrow_residential_street',
+    );
+
+    expect(option).toBeDefined();
+    expect(option?.photoUrl).toBe(
+      '/archetypes/streets/narrow-residential-street/variant_0.webp',
+    );
+    expect(option?.variants?.map((variant) => variant.thumbnailUrl)).toEqual([
+      '/archetypes/streets/narrow-residential-street/variant_0.webp',
+      '/archetypes/streets/narrow-residential-street/variant_1.webp',
+      '/archetypes/streets/narrow-residential-street/variant_2.webp',
+      '/archetypes/streets/narrow-residential-street/variant_3.webp',
+    ]);
+  });
+
+  it('exposes only the variants authored for each street archetype', () => {
+    const diagram = ROADWAY_AESTHETIC_OPTIONS_V2.find(
+      (candidate) => candidate.id === 'speed_hump_diagram',
+    );
+
+    expect(diagram?.variants).toHaveLength(1);
+    expect(diagram?.archetypeImages).toHaveLength(1);
+    expect(diagram?.archetypeImages?.[0]?.imageUrl).toBe(
+      '/archetypes/streets/speed-hump-diagram/variant_0.webp',
+    );
+  });
+});
