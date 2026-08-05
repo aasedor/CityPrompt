@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "batch_id": "park_depth_kits_batch2",
+  "status": "staging_not_integrated",
+  "drape_surface_lift_m": 0.32,
+  "kits": [
+    {
+      "archetype_id": "inclusive_playground",
+      "variant_id": "inclusive_playground_v0",
+      "catalogue_root": "frontend/public/archetypes/openspaces/inclusive-accessible-playground",
+      "views": ["variant_0.png", "variant_0_angle_60.jpg", "variant_0_angle_90.jpg"],
+      "surface_mode": "program_overlay",
+      "footprint_m": [50.0, 40.0],
+      "runtime_surface": "ai_drape",
+      "depth_features": ["accessible ramp network", "twin play towers", "slides", "adaptive swing set", "wheelchair spinner", "sensory panels", "shade canopies"]
+    },
+    {
+      "archetype_id": "community_garden",
+      "variant_id": "community_garden_v0",
+      "catalogue_root": "frontend/public/archetypes/openspaces/community-garden-allotments",
+      "views": ["variant_0.png", "variant_0_angle_60.jpg", "variant_0_angle_90.jpg"],
+      "surface_mode": "depth_only",
+      "footprint_m": [50.0, 50.0],
+      "runtime_surface": "ai_drape",
+      "depth_features": ["twenty raised beds", "crop clusters", "timber greenhouse", "split-rail fence", "trellises", "compost bins", "boulder benches"]
+    },
+    {
+      "archetype_id": "splash_pad_area",
+      "variant_id": "splash_pad_area_v1",
+      "catalogue_root": "frontend/public/archetypes/openspaces/splash-pad-water-play",
+      "views": ["variant_1.png", "variant_1_angle_60.jpg", "variant_1_angle_90.jpg"],
+      "surface_mode": "depth_only",
+      "footprint_m": [30.0, 25.0],
+      "runtime_surface": "ai_drape",
+      "depth_features": ["tipping bucket tower", "spray arch", "curved shower arm", "mushroom sprayers", "ground jets", "perimeter benches"]
+    }
+  ],
+  "modeling_contract": {
+    "reference_rule": "Reconcile the base, 60-degree and 90-degree catalogue views before authoring. Match feature count, silhouette, material family and relative placement; use the catalogue dimensions where perspective views disagree.",
+    "ground_contact_origin_z_m": 0.0,
+    "metric_scale": 1.0,
+    "preview_surfaces_are_runtime_geometry": false,
+    "runtime_glb_includes_draped_ground_surface": false,
+    "pilot_required_before_bounded_scale": true,
+    "pilot_required_before_viewer_integration": true
+  }
+}

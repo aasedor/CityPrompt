@@ -1,3 +1,5 @@
 docs/park-kit-pilot/basketball/*.png filter=lfs diff=lfs merge=lfs -text
 docs/park-depth-kit-batch1/*.png filter=lfs diff=lfs merge=lfs -text
 assets/park-depth-kits/staging/*.glb filter=lfs diff=lfs merge=lfs -text
+docs/park-depth-kit-batch2/*.png filter=lfs diff=lfs merge=lfs -text
+assets/park-depth-kits/staging-batch2/*.glb filter=lfs diff=lfs merge=lfs -text

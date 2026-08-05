@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "batch_id": "park_depth_kits_batch2",
+  "status": "staging_not_integrated",
+  "assets": [
+    {
+      "archetype_id": "inclusive_playground",
+      "variant_id": "inclusive_playground_v0",
+      "status": "staging_not_integrated",
+      "file": "inclusive-playground-v0-depth-kit.glb",
+      "bytes": 178424,
+      "sha256": "8c6147df083ac882ae90ae3e1a324c8274d46b2a606caf04c2e6e9f355a91a9e",
+      "triangles": 3324,
+      "mesh_parts": 11,
+      "height_m": 4.719,
+      "footprint_m": [
+        50.0,
+        40.0
+      ],
+      "surface_mode": "program_overlay",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "runtime_glb_includes_draped_ground_surface": false,
+      "reference_views": [
+        "variant_0.png",
+        "variant_0_angle_60.jpg",
+        "variant_0_angle_90.jpg"
+      ]
+    },
+    {
+      "archetype_id": "community_garden",
+      "variant_id": "community_garden_v0",
+      "status": "staging_not_integrated",
+      "file": "community-garden-v0-depth-kit.glb",
+      "bytes": 482428,
+      "sha256": "5ae8ca0f8fd72416ae805904ecc198256a5672e01a3823fd28aad17e2a10b552",
+      "triangles": 6764,
+      "mesh_parts": 11,
+      "height_m": 4.705,
+      "footprint_m": [
+        50.0,
+        50.0
+      ],
+      "surface_mode": "depth_only",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "runtime_glb_includes_draped_ground_surface": false,
+      "reference_views": [
+        "variant_0.png",
+        "variant_0_angle_60.jpg",
+        "variant_0_angle_90.jpg"
+      ]
+    },
+    {
+      "archetype_id": "splash_pad_area",
+      "variant_id": "splash_pad_area_v1",
+      "status": "staging_not_integrated",
+      "file": "splash-pad-area-v1-depth-kit.glb",
+      "bytes": 325716,
+      "sha256": "8559881315aa0e609e63a2f4a3412c5facc8ea7bf05641d68873cad4d637025b",
+      "triangles": 5396,
+      "mesh_parts": 5,
+      "height_m": 6.04,
+      "footprint_m": [
+        30.0,
+        25.0
+      ],
+      "surface_mode": "depth_only",
+      "metric_scale": 1.0,
+      "ground_contact_origin_z_m": 0.0,
+      "runtime_glb_includes_draped_ground_surface": false,
+      "reference_views": [
+        "variant_1.png",
+        "variant_1_angle_60.jpg",
+        "variant_1_angle_90.jpg"
+      ]
+    }
+  ]
+}
