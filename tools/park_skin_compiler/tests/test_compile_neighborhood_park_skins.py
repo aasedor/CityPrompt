@@ -11,6 +11,7 @@ from tools.park_skin_compiler import generate_adaptive_park_layouts as adaptive_
 from tools.park_skin_compiler import generate_adaptive_urban_materials as adaptive_materials
 from tools.park_skin_compiler import generate_lego_depth_asset_pilot as lego_depth_pilot
 from tools.park_skin_compiler import generate_park_archetype_batch as park_batch
+from tools.park_skin_compiler import generate_park_archetype_skins as park_skins
 
 
 def load_schedule() -> dict:
@@ -122,3 +123,30 @@ def test_five_park_batch_promotes_complete_metric_glb_kits() -> None:
             asset = archetype_root / filename
             assert asset.exists()
             assert asset.read_bytes()[:4] == b"glTF"
+
+
+def test_five_park_skin_schedule_is_reference_calibrated_not_projected() -> None:
+    schedule = park_skins.load_schedule()
+
+    assert park_skins.validate_schedule(schedule) == []
+    assert schedule["method"] == "reference_statistics_plus_procedural_structure"
+    assert schedule["apiCalls"] == 0
+    assert schedule["sourcePixelsProjected"] is False
+    assert len(schedule["archetypes"]) == 5
+    for item in schedule["archetypes"].values():
+        assert set(item["crops"]) == set(park_skins.ROLES)
+
+
+def test_five_park_batch_promotes_complete_pbr_skin_sets() -> None:
+    schedule = park_skins.load_schedule()
+    skin_root = compiler.REPO_ROOT / "frontend" / "public" / "park-skins"
+
+    for slug in schedule["archetypes"]:
+        archetype_root = skin_root / slug / "adaptive-v1"
+        manifest = json.loads((archetype_root / "manifest.json").read_text(encoding="utf-8"))
+        assert manifest["method"] == "reference_statistics_plus_procedural_structure"
+        assert manifest["sourcePixelsProjected"] is False
+        for role in park_skins.ROLES:
+            role_root = archetype_root / role
+            for filename in ("albedo.jpg", "ao.jpg", "normal.png", "roughness.jpg"):
+                assert (role_root / filename).is_file()

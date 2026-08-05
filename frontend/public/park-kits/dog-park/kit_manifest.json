@@ -12,6 +12,8 @@
   "surfaceOwner": "lego_park_grammar",
   "people": false,
   "largeBuildings": false,
+  "skin": "park-skins/dog-park/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
   "depthAssets": [
     "boulder-cluster.glb",
     "dog-park-gate.glb",

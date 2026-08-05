@@ -27,8 +27,8 @@ from render_archetype_matched_basketball_pilot import (  # noqa: E402
     configure_render,
     curve_line,
     cylinder_between,
+    image_pbr_material,
     material,
-    noise_material,
 )
 
 
@@ -37,35 +37,59 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--kit-output", type=Path, required=True)
+    parser.add_argument("--skin-root", type=Path)
     parser.add_argument("--archetype", default="all")
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     return parser.parse_args(argv)
 
 
-def materials() -> dict:
+def tinted_skin(name: str, directory: Path, repeat: float, tint) -> object:
+    mat = image_pbr_material(name, directory, repeat)
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    shader = next(node for node in nodes if node.bl_idname == "ShaderNodeBsdfPrincipled")
+    source_link = shader.inputs["Base Color"].links[0]
+    source_socket = source_link.from_socket
+    links.remove(source_link)
+    mix = nodes.new("ShaderNodeMixRGB")
+    mix.blend_type = "COLOR"
+    mix.inputs[0].default_value = 0.76
+    mix.inputs[2].default_value = (*tint, 1.0)
+    links.new(source_socket, mix.inputs[1])
+    links.new(mix.outputs[0], shader.inputs["Base Color"])
+    return mat
+
+
+def materials(skin_root: Path, slug: str) -> dict:
+    skin = skin_root / slug / "adaptive-v1"
+    paver = image_pbr_material(f"{slug} aggregate", skin / "paver", 3.0, roughness=0.90)
+    asphalt = image_pbr_material(f"{slug} dark surface", skin / "asphalt", 3.5, roughness=0.91)
+    lawn = image_pbr_material(f"{slug} lawn", skin / "lawn", 4.0, roughness=0.95)
+    planting = image_pbr_material(f"{slug} planting", skin / "planting", 3.0, roughness=0.97)
+    timber = image_pbr_material(f"{slug} timber", skin / "timber", 2.8, roughness=0.84)
     mats = {
-        "concrete": noise_material("Warm concrete", (0.34, 0.33, 0.30, 1), (0.62, 0.60, 0.55, 1), scale=2.1, roughness=0.9, bump_strength=0.25),
-        "dark_concrete": noise_material("Bowl concrete", (0.11, 0.12, 0.13, 1), (0.27, 0.28, 0.28, 1), scale=2.4, roughness=0.88, bump_strength=0.2),
-        "gravel": noise_material("Warm gravel", (0.20, 0.14, 0.085, 1), (0.48, 0.36, 0.22, 1), scale=5.0, roughness=0.96, bump_strength=0.55),
-        "soil": noise_material("Garden soil", (0.045, 0.022, 0.010, 1), (0.16, 0.075, 0.028, 1), scale=4.0, roughness=0.98, bump_strength=0.48),
-        "grass": material("Grass", (0.12, 0.28, 0.075, 1), 0.94),
-        "turf": material("Dog turf", (0.075, 0.23, 0.095, 1), 0.92),
-        "rubber_blue": material("Rubber blue", (0.08, 0.34, 0.45, 1), 0.86),
-        "rubber_green": material("Rubber green", (0.24, 0.48, 0.25, 1), 0.86),
-        "rubber_orange": material("Rubber orange", (0.64, 0.25, 0.09, 1), 0.86),
-        "rubber_sand": material("Rubber sand", (0.65, 0.54, 0.34, 1), 0.88),
-        "timber": material("Weathered timber", (0.30, 0.14, 0.055, 1), 0.86),
-        "timber_light": material("Light timber", (0.50, 0.28, 0.10, 1), 0.82),
+        "concrete": paver,
+        "dark_concrete": asphalt,
+        "gravel": paver,
+        "soil": asphalt,
+        "grass": lawn,
+        "turf": lawn,
+        "rubber_blue": tinted_skin(f"{slug} rubber blue", skin / "safety", 3.0, (0.34, 0.70, 0.92)),
+        "rubber_green": tinted_skin(f"{slug} rubber green", skin / "safety", 3.0, (0.48, 0.83, 0.48)),
+        "rubber_orange": tinted_skin(f"{slug} rubber orange", skin / "safety", 3.0, (0.95, 0.52, 0.26)),
+        "rubber_sand": tinted_skin(f"{slug} rubber sand", skin / "safety", 3.0, (0.88, 0.76, 0.50)),
+        "timber": timber,
+        "timber_light": timber,
         "steel": material("Galvanized steel", (0.34, 0.38, 0.39, 1), 0.32, 0.72),
         "green_steel": material("Play accent green", (0.18, 0.48, 0.10, 1), 0.48, 0.25),
         "blue_steel": material("Play accent blue", (0.035, 0.18, 0.48, 1), 0.48, 0.25),
         "yellow": material("Play accent yellow", (0.78, 0.50, 0.04, 1), 0.54),
         "rope": material("Rope", (0.12, 0.09, 0.055, 1), 0.93),
-        "rock": noise_material("Boulder", (0.20, 0.18, 0.15, 1), (0.47, 0.42, 0.34, 1), scale=1.4, roughness=0.96, bump_strength=0.36),
+        "rock": paver,
         "water": material("Water", (0.22, 0.62, 0.80, 1), 0.12, 0.12),
         "glass": material("Greenhouse glass", (0.22, 0.42, 0.37, 1), 0.12, 0.08),
-        "foliage": material("Foliage", (0.08, 0.30, 0.055, 1), 0.94),
-        "foliage_light": material("Foliage light", (0.28, 0.48, 0.08, 1), 0.94),
+        "foliage": planting,
+        "foliage_light": planting,
         "flower": material("Flowers", (0.75, 0.31, 0.08, 1), 0.86),
         "flower_alt": material("Flowers alternate", (0.58, 0.12, 0.42, 1), 0.86),
         "trunk": material("Tree trunk", (0.16, 0.075, 0.025, 1), 0.95),
@@ -512,22 +536,22 @@ BUILDERS = {
 }
 
 
-def render_archetype(archetype_id: str, slug: str, builder, output_root: Path, kit_root: Path) -> None:
+def render_archetype(archetype_id: str, slug: str, builder, output_root: Path, kit_root: Path, skin_root: Path) -> None:
     reset_scene()
-    mats = materials()
+    mats = materials(skin_root, slug)
     (width, depth), assets = builder(mats)
     # Large buildings are a separate downstream layer, but the park still needs
     # a neutral receiving landscape so standalone QA does not fall into black.
     if archetype_id == "skate_park":
         # Keep the context receiver outside the registered skate envelope so it
         # cannot fill the authored bowl openings.
-        outer_w, outer_d, band = width + 120, depth + 120, 60
+        outer_w, outer_d, band = width + 400, depth + 400, 200
         cube("Context ground north", (0, depth / 2 + band / 2, -0.20), (outer_w, band, 0.22), mats["grass"], 1.0)
         cube("Context ground south", (0, -depth / 2 - band / 2, -0.20), (outer_w, band, 0.22), mats["grass"], 1.0)
         cube("Context ground west", (-width / 2 - band / 2, 0, -0.20), (band, depth, 0.22), mats["grass"], 1.0)
         cube("Context ground east", (width / 2 + band / 2, 0, -0.20), (band, depth, 0.22), mats["grass"], 1.0)
     else:
-        cube("Separate-building-layer receiving ground", (0, 0, -0.20), (width + 120, depth + 120, 0.22), mats["grass"], 1.0)
+        cube("Separate-building-layer receiving ground", (0, 0, -0.20), (width + 400, depth + 400, 0.22), mats["grass"], 1.0)
     out = output_root / slug
     out.mkdir(parents=True, exist_ok=True)
     kit_dir = kit_root / slug
@@ -545,6 +569,8 @@ def render_archetype(archetype_id: str, slug: str, builder, output_root: Path, k
         "surfaceOwner": "lego_park_grammar",
         "people": False,
         "largeBuildings": False,
+        "skin": f"park-skins/{slug}/adaptive-v1",
+        "skinMethod": "reference_statistics_plus_procedural_structure",
         "depthAssets": sorted(assets),
     }
     (kit_dir / "kit_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -575,9 +601,10 @@ def render_archetype(archetype_id: str, slug: str, builder, output_root: Path, k
 
 def main() -> None:
     args = parse_args()
+    skin_root = (args.skin_root or (args.repo_root / "frontend/public/park-skins")).resolve()
     selected = BUILDERS if args.archetype == "all" else {args.archetype: BUILDERS[args.archetype]}
     for archetype_id, (slug, builder) in selected.items():
-        render_archetype(archetype_id, slug, builder, args.output.resolve(), args.kit_output.resolve())
+        render_archetype(archetype_id, slug, builder, args.output.resolve(), args.kit_output.resolve(), skin_root)
 
 
 if __name__ == "__main__":

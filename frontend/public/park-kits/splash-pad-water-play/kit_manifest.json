@@ -12,6 +12,8 @@
   "surfaceOwner": "lego_park_grammar",
   "people": false,
   "largeBuildings": false,
+  "skin": "park-skins/splash-pad-water-play/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
   "depthAssets": [
     "ground-jet.glb",
     "split-rail-fence.glb",

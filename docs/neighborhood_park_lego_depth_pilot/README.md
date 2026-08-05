@@ -78,6 +78,13 @@ metric-depth methodology to five distinct catalogue archetypes. People and
 large buildings are intentionally excluded from the generated park layer;
 large buildings remain a separate downstream render.
 
+Each archetype now has its own six-role PBR skin set (paver, lawn, asphalt,
+planting, safety surface, and timber). The skins are calibrated from the
+catalogue reference renders and then rebuilt as seamless procedural material
+structure; source pixels are not projected onto the geometry. The same skins
+are applied to the LEGO surfaces and embedded in the exported GLB modules, so
+the surface-to-depth handoff retains a consistent archetype palette.
+
 [Five-park mobile overview](five-park-overview-mobile.png)
 
 - [Inclusive accessible playground comparison](inclusive-accessible-playground-comparison-mobile.png)
@@ -91,6 +98,8 @@ The batch contributes 22 reviewed module GLBs under
 modules include accessible play equipment, recessed skate bowls and street
 features, dog-park enclosures and shelters, water-play fixtures, raised growing
 beds, a greenhouse, trellis, compost bins, and reusable split-rail fencing.
+The corresponding material maps are under
+`frontend/public/park-skins/<archetype>/adaptive-v1/`.
 
 The skate park is the one intentional surface exception to the simple overlay
 rule: each bowl replaces a registered opening in the LEGO slab. The compiler

@@ -12,6 +12,8 @@
   "surfaceOwner": "lego_park_grammar",
   "people": false,
   "largeBuildings": false,
+  "skin": "park-skins/inclusive-accessible-playground/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
   "depthAssets": [
     "accessible-play-structure.glb",
     "accessible-swing-bay.glb",
