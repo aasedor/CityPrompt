@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "studyId": "park-composition-api-study-2026-08-05",
+  "purpose": "Paired flat-image composition references for the deterministic park LEGO compiler. These images are study evidence only and are not City Prompt production renders.",
+  "referenceInterpretation": {
+    "archetypePeoplePolicy": "Read people in source archetype images as approximate human-scale, occupancy, circulation, supervision, and use-pattern evidence; never reproduce them in the park LEGO geometry or skins.",
+    "humanScaleSignals": [
+      "feature and furniture scale",
+      "child versus adult use",
+      "walking, queuing, play, coaching, and spectator zones",
+      "gathering capacity and social intensity",
+      "entrances, desire lines, pause points, and conflicts",
+      "clearance from active play, paths, fences, and planting",
+      "shade, seating, visibility, and supervision needs"
+    ],
+    "limits": "People are approximate observational cues and never replace regulation dimensions, accessibility requirements, or deterministic collision checks."
+  },
+  "targetApiCalls": 20,
+  "providers": [
+    {
+      "id": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "imageSize": "1K",
+      "aspectRatio": "3:2"
+    },
+    {
+      "id": "openai",
+      "model": "gpt-image-2",
+      "size": "1536x1024",
+      "quality": "low",
+      "outputFormat": "jpeg"
+    }
+  ],
+  "basePrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park. Show the entire park parcel clearly from a consistent high drone camera looking about 55 degrees downward. The parcel must read as a complete bounded composition. Preserve regulation sports geometry and safe run-off; never stretch a court or field to fill the site. Show realistic paving, turf, fencing, paths, planting, spectator aprons and service access. This is a spatial-planning reference, not a beauty shot.",
+  "negativePrompt": "No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a clubhouse or pavilion belongs, show only an empty reserved building pad and its connecting forecourt. No surrounding city skyline. No roads through the park. Do not overlap facilities. Do not invent oversized courts or fields. Do not crop the parcel.",
+  "scenes": [
+    {
+      "id": "01_tennis_professional_bank",
+      "title": "Professional four-court tennis bank",
+      "archetypeId": "tennis_court_cluster_v0",
+      "site": "A level rectangular 92 by 60 metre parcel with the public entrance at the middle of one short edge.",
+      "compositionBrief": "Arrange exactly four regulation tennis court envelopes as one efficient shared compound: two courts side by side and two directly behind them, all long axes parallel. Use one shared perimeter fence with internal divider fences rather than four isolated cages. Place a continuous central pedestrian and player spine between the two court rows, a compact spectator terrace beside the spine, shared lighting at compound edges, and a narrow service route along one outer long edge. Use clipped lawn and a formal tree row only outside the technical run-off envelope.",
+      "studyFocus": ["shared-fence compound", "court-bank spacing", "central player spine", "shared spectator and lighting zones"]
+    },
+    {
+      "id": "02_tennis_naturalized_pods",
+      "title": "Naturalized tennis garden pods",
+      "archetypeId": "tennis_court_cluster_v2",
+      "site": "An irregular gently sloping trapezoidal 130 by 90 metre park parcel, wider at the west end.",
+      "compositionBrief": "Place exactly three regulation tennis courts as separate fenced pods without distorting their dimensions. Keep all long axes parallel, but step the pods with the slope instead of forcing a rigid super-grid. Connect them with a curving accessible path and small timber spectator decks. Preserve broad meadow and rain-garden bands between pods, a hedgerow windbreak along the exposed edge, and one generous shared gathering node near the entrance. The landscape must remain visually dominant over leftover hardscape.",
+      "studyFocus": ["irregular-site adaptation", "separate court pods", "landscape reserve", "accessible connecting path"]
+    },
+    {
+      "id": "03_pickleball_community_bank",
+      "title": "Community eight-court pickleball park",
+      "archetypeId": "pickleball_courts_v1",
+      "site": "A rectangular 88 by 62 metre neighbourhood park parcel with entry from one long edge.",
+      "compositionBrief": "Arrange exactly eight regulation pickleball courts as two parallel banks of four. Use a shared fenced compound, not eight standalone cages. Put a broad shaded social and spectator promenade between the banks with benches, drinking fountains and two shade sails. Provide accessible gates at both ends of the promenade, a small warm-up apron near the entrance, and perimeter planting that gives shade without placing trees inside court run-off or blocking play.",
+      "studyFocus": ["two-bank organization", "social spine", "shared enclosure", "shade outside technical envelopes"]
+    },
+    {
+      "id": "04_caged_soccer_pair",
+      "title": "Two-pitch urban soccer cage",
+      "archetypeId": "soccer_pitch_caged_v1",
+      "site": "A constrained rectangular 82 by 46 metre urban recreation parcel with a hard public edge on the south side.",
+      "compositionBrief": "Arrange exactly two equal small-sided soccer pitches side by side inside one elongated steel-mesh compound. Preserve correct pitch proportions; do not create one oversized pitch. Use a shared internal divider fence, one continuous spectator and bench apron along the public south edge, rebound boards, compact end clearances, paired entrances from the apron, and lighting concentrated on the outer compound perimeter. Keep the remaining surface as simple urban hardscape with only a narrow planted buffer outside the cage.",
+      "studyFocus": ["repeat rather than stretch", "shared urban cage", "single spectator edge", "tight hardscape interface"]
+    },
+    {
+      "id": "05_parallel_soccer_fields",
+      "title": "Parallel district soccer fields",
+      "archetypeId": "athletics_precinct_sports_fields_variant_0",
+      "site": "A level rectangular 235 by 155 metre district park parcel with primary arrival at the centre of the south edge.",
+      "compositionBrief": "Place exactly two matching full-size regulation soccer fields side by side with their long axes parallel. Separate them with one shared technical and spectator corridor containing team benches, a modest bleacher zone and lighting access. Create a strong entrance walk that meets the midpoint of this corridor. Keep goals away from the main gathering route. Reserve an empty clubhouse pad and forecourt at the south entrance, and use tree belts plus mown lawn around the outer perimeter rather than inserting a third field.",
+      "studyFocus": ["parallel field pair", "shared technical corridor", "arrival hierarchy", "reserved clubhouse interface"]
+    },
+    {
+      "id": "06_irregular_single_soccer",
+      "title": "Single field in a naturalized wedge park",
+      "archetypeId": "athletics_precinct_sports_fields_variant_0",
+      "site": "An oversized wedge-shaped 190 by 150 metre parcel narrowing sharply toward the northeast, with a drainage low point along the west boundary.",
+      "compositionBrief": "Fit exactly one full-size regulation soccer field in the widest buildable portion and rotate it to follow the parcel's dominant axis. Do not add a second field merely because residual land exists. Form a clear spectator and team edge along one long side, reserve an empty clubhouse pad at the nearest entrance, and turn the narrowing land into a naturalized meadow, bioswale, looping trail and windbreak tree belt. The formal rectangle of the field should sit calmly inside a visibly irregular landscape framework.",
+      "studyFocus": ["one field versus forced second field", "rotation within irregular polygon", "bioswale and meadow residual", "formal-to-natural transition"]
+    },
+    {
+      "id": "07_track_oval_anchor",
+      "title": "Track-and-field oval anchor",
+      "archetypeId": "running_track_oval_v2",
+      "site": "A rectangular 220 by 135 metre school or district athletics parcel with arrival along one long edge.",
+      "compositionBrief": "Use one standard 400 metre running-track oval as the dominant site anchor with a regulation rectangular soccer field centred in the infield. Organize long jump, shot put and warm-up areas outside one straightaway without interrupting the continuous track. Place bleachers and an empty fieldhouse pad along the opposite straightaway, connected by a broad forecourt. Maintain a continuous perimeter service path and concentrate trees at corners and outer edges, never inside the athletic safety envelope.",
+      "studyFocus": ["single oval anchor", "compatible infield use", "field-event zoning", "grandstand and fieldhouse edge"]
+    },
+    {
+      "id": "08_baseball_pinwheel",
+      "title": "Four-diamond youth baseball pinwheel",
+      "archetypeId": "baseball_softball_diamond_v1",
+      "site": "A broad roughly square 260 by 250 metre tournament parcel with arrival from the south.",
+      "compositionBrief": "Arrange exactly four equal youth baseball or softball diamonds in a traditional pinwheel cluster, with home plates and backstops gathered around a shared central operations and spectator hub and the outfields radiating outward. Preserve foul territory and outfield safety space; do not overlap active play. Put shared batting cages and warm-up strips between selected outer edges, connect the central hub to the entrance with a direct promenade, and use perimeter tree belts and lawn outside the radiating outfields.",
+      "studyFocus": ["pinwheel geometry", "shared central hub", "foul and outfield separation", "radial circulation"]
+    },
+    {
+      "id": "09_cricket_village_green",
+      "title": "Traditional cricket village green",
+      "archetypeId": "cricket_pitch_oval_v0",
+      "site": "A generous irregular oval 190 by 170 metre green with the primary public edge on the east side.",
+      "compositionBrief": "Compose one traditional cricket ground: a large uninterrupted oval outfield, one precisely centred wicket strip on the main axis, a simple boundary rope, sight-screen clear zones, and practice nets tucked outside the active oval near the service edge. Reserve an empty pavilion pad with a shaded forecourt on the east boundary. Use a white low boundary fence, mature specimen trees outside the ball-safety area, and a restrained pastoral perimeter path. The open green must dominate the composition.",
+      "studyFocus": ["oval landscape geometry", "central wicket alignment", "pavilion social edge", "traditional pastoral boundary"]
+    },
+    {
+      "id": "10_mixed_tournament_complex",
+      "title": "Mixed tournament field complex",
+      "archetypeId": "sports_field_complex_v0",
+      "site": "A large rectangular 330 by 245 metre regional sports parcel with entry from the midpoint of the south side.",
+      "compositionBrief": "Create a hierarchical mixed complex rather than greedy packing. Put two matching full-size soccer fields as a parallel pair in the western half and two matching softball diamonds as a coordinated pair in the eastern half. Establish one strong north-south public promenade from the entrance and one cross-site service spine between the sports blocks. Group shared bleachers and support aprons along those spines, reserve an empty operations-building pad at their intersection, and wrap the facility with a continuous planted buffer and perimeter trail. Preserve all safety zones and leave intentional landscape between incompatible field edges.",
+      "studyFocus": ["mixed-sport hierarchy", "orthogonal circulation spines", "sport-block grouping", "intentional incompatibility buffers"]
+    }
+  ]
+}

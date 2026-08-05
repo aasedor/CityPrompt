@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "studyId": "park-composition-api-study-2026-08-05",
+  "apiCalls": {
+    "target": 20,
+    "attempted": 20,
+    "succeeded": 20,
+    "retried": 0
+  },
+  "authority": {
+    "generatedImagesAre": "composition evidence",
+    "generatedImagesAreNot": [
+      "production assets",
+      "regulation geometry",
+      "metric measurement sources",
+      "site-specific construction layouts"
+    ],
+    "humanReferencePolicy": {
+      "sourcePeopleAre": "approximate evidence for human scale, occupancy, circulation, supervision, and likely use",
+      "translateInto": [
+        "dimensions and clearances",
+        "occupancy envelopes",
+        "access and desire-line paths",
+        "spectator, coaching, play, and social edge roles",
+        "shade, seating, visibility, and supervision placement"
+      ],
+      "doNotGenerate": [
+        "3D people",
+        "people baked into skins",
+        "literal copies of source-person positions"
+      ],
+      "notAuthoritativeFor": [
+        "regulation dimensions",
+        "accessibility standards",
+        "collision and safety requirements"
+      ]
+    }
+  },
+  "crossProviderRules": [
+    "compound assets share fencing, lighting, gates, and social spines",
+    "parallel fields share a technical and spectator corridor",
+    "irregular residual land receives intentional landscape and drainage roles",
+    "ovals and tracks are primary anchors rather than residual modules",
+    "diamond clusters use radial pinwheel topology around a shared hub",
+    "mixed complexes use compatible sport blocks joined by circulation spines",
+    "large separately rendered buildings require reserved edge pads and forecourts"
+  ],
+  "rejectedInferences": [
+    "measure dimensions or clearances from generated pixels",
+    "accept generated module adjacency without deterministic validation",
+    "add perimeter tree rows or loop paths to every sports park",
+    "fill every residual area with another play module",
+    "treat provider agreement as a regulation standard"
+  ],
+  "scenes": {
+    "01_tennis_professional_bank": {
+      "topology": "grid_2x2",
+      "retain": ["shared perimeter fence", "internal dividers", "central social spine", "consolidated lights"],
+      "warning": "Gemini returned a four-across arrangement; topology must be explicit and compiler-owned"
+    },
+    "02_tennis_naturalized_pods": {
+      "topology": "podded",
+      "retain": ["separate regulation pods", "accessible connector", "shared gathering node", "meadow reserve"],
+      "warning": "landscape-dominant residual treatment is variant-specific"
+    },
+    "03_pickleball_community_bank": {
+      "topology": "parallel_banks_4_plus_4",
+      "retain": ["two banks", "central shaded promenade", "shared enclosure", "perimeter planting"],
+      "warning": "gate, run-off, and shade offsets require deterministic dimensions"
+    },
+    "04_caged_soccer_pair": {
+      "topology": "parallel_pair_shared_cage",
+      "retain": ["equal pitches", "shared divider", "continuous spectator edge", "outer-perimeter lighting"],
+      "warning": "do not recover cage height or pitch scale from imagery"
+    },
+    "05_parallel_soccer_fields": {
+      "topology": "parallel_pair",
+      "retain": ["shared orientation", "central technical corridor", "midpoint arrival", "reserved clubhouse edge"],
+      "warning": "landscape buffer is intentional capacity, not an invitation for another field"
+    },
+    "06_irregular_single_soccer": {
+      "topology": "single_anchor_in_wedge",
+      "retain": ["rotate exact module", "meadow residual", "bioswale edge", "looping trail"],
+      "warning": "actual fit must be solved against the real polygon"
+    },
+    "07_track_oval_anchor": {
+      "topology": "oval_anchor",
+      "retain": ["compatible infield", "events outside straightaway", "continuous perimeter access", "single spectator edge"],
+      "warning": "lane and field-event geometry require standards data"
+    },
+    "08_baseball_pinwheel": {
+      "topology": "radial_pinwheel_4",
+      "retain": ["central home-plate hub", "outward outfields", "radial circulation", "shared warm-up zones"],
+      "warning": "foul territory and outfield safety require collision validation"
+    },
+    "09_cricket_village_green": {
+      "topology": "oval_anchor",
+      "retain": ["open oval dominance", "central wicket axis", "pavilion edge", "external practice nets"],
+      "warning": "Gemini invented multiple central strips; wicket count is variant-owned"
+    },
+    "10_mixed_tournament_complex": {
+      "topology": "mixed_blocks_cross_spines",
+      "retain": ["soccer block", "diamond block", "public spine", "service spine", "central support node"],
+      "warning": "formal symmetry yields to real terrain, access, and archetype evidence"
+    }
+  }
+}
