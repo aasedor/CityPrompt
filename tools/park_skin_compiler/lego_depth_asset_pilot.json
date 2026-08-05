@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "pilotId": "neighborhood_park_basketball_lego_depth_v1",
+  "baseCheckpoint": "b5ad07d6",
+  "surface": {
+    "owner": "lego_park_grammar",
+    "parcelM": [72.0, 54.0],
+    "programEnvelopeM": [32.0, 19.0],
+    "playingSurfaceM": [28.0, 15.0],
+    "materials": "adaptive_urban_v1",
+    "includesCourtAndMarkings": true
+  },
+  "depth": {
+    "owner": "archetype_authored_glbs",
+    "archetypeId": "basketball_court",
+    "referenceViews": ["base", "angle_60", "angle_90"],
+    "metricScale": 1.0,
+    "groundContactOriginZM": 0.0,
+    "includesHorizontalSurface": false,
+    "assets": [
+      "basketball-hoop.glb",
+      "chainlink-fence-4m.glb",
+      "chainlink-gate-3m.glb",
+      "basketball-floodlight.glb"
+    ]
+  },
+  "pilotGate": {
+    "boundedParcels": 1,
+    "apiCalls": 0,
+    "requiredViews": ["surface_only_overview", "combined_overview", "combined_top"]
+  }
+}

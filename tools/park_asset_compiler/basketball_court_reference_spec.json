@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "archetype_id": "basketball_court",
+  "catalogue_root": "frontend/public/archetypes/openspaces/basketball-court",
+  "hero": "hero.png",
+  "reference_sets": [
+    {
+      "variant_id": "basketball_court_v0",
+      "views": {
+        "base": "variant_0.png",
+        "angle_60": "variant_0_angle_60.jpg",
+        "angle_90": "variant_0_angle_90.jpg"
+      }
+    },
+    {
+      "variant_id": "basketball_court_v1",
+      "views": {
+        "base": "variant_1.png",
+        "angle_60": "variant_1_angle_60.jpg",
+        "angle_90": "variant_1_angle_90.jpg"
+      }
+    },
+    {
+      "variant_id": "basketball_court_v2",
+      "views": {
+        "base": "variant_2.png",
+        "angle_60": "variant_2_angle_60.jpg",
+        "angle_90": "variant_2_angle_90.jpg"
+      }
+    },
+    {
+      "variant_id": "basketball_court_v3",
+      "views": {
+        "base": "variant_3.png",
+        "angle_60": "variant_3_angle_60.jpg",
+        "angle_90": "variant_3_angle_90.jpg"
+      }
+    }
+  ],
+  "modeling_contract": {
+    "geometry_reference": "Use every available view to reconcile silhouette, equipment count, support structure, materials, and relative placement. Metric sports dimensions remain authoritative where perspective renders disagree.",
+    "runtime_surface": "ai_drape",
+    "runtime_glb_includes_court_surface": false,
+    "runtime_depth_assets": [
+      "basketball_hoop",
+      "chainlink_fence",
+      "chainlink_gate",
+      "basketball_floodlight"
+    ],
+    "ground_contact_origin_z_m": 0,
+    "drape_surface_lift_m": 0.32,
+    "preview_surface_only": true
+  }
+}

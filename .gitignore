@@ -58,6 +58,10 @@ htmlcov/
 # Generated models
 *.glb
 *.gltf
+!frontend/public/park-kits/basketball-hoop.glb
+!frontend/public/park-kits/chainlink-fence-4m.glb
+!frontend/public/park-kits/chainlink-gate-3m.glb
+!frontend/public/park-kits/basketball-floodlight.glb
 uploads/
 nul
 docx_extracted.txt

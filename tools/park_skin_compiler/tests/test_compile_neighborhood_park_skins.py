@@ -9,6 +9,7 @@ from shapely.geometry import Point, Polygon
 from tools.park_skin_compiler import compile_neighborhood_park_skins as compiler
 from tools.park_skin_compiler import generate_adaptive_park_layouts as adaptive_layouts
 from tools.park_skin_compiler import generate_adaptive_urban_materials as adaptive_materials
+from tools.park_skin_compiler import generate_lego_depth_asset_pilot as lego_depth_pilot
 
 
 def load_schedule() -> dict:
@@ -66,3 +67,19 @@ def test_adaptive_layout_recomposes_and_clips_to_irregular_parcel() -> None:
     assert layout["surfaceAreasM2"]["lawn"] > 0
     assert len(layout["trees"]) >= 6
     assert all(parcel.buffer(0.01).covers(Point(point)) for point in layout["trees"])
+
+
+def test_lego_depth_pilot_keeps_surface_and_depth_ownership_separate() -> None:
+    contract_path = lego_depth_pilot.REPO_ROOT / "tools/park_skin_compiler/lego_depth_asset_pilot.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    layout = lego_depth_pilot.build_layout()
+
+    assert contract["baseCheckpoint"] == "b5ad07d6"
+    assert contract["surface"]["includesCourtAndMarkings"] is True
+    assert contract["depth"]["includesHorizontalSurface"] is False
+    assert contract["depth"]["metricScale"] == 1.0
+    assert contract["depth"]["referenceViews"] == ["base", "angle_60", "angle_90"]
+    assert layout["court"]["envelopeM"] == [32.0, 19.0]
+    assert layout["court"]["playingSurfaceM"] == [28.0, 15.0]
+    assert layout["surfaceAreasM2"]["court"] == 608.0
+    assert len(layout["trees"]) >= 20
