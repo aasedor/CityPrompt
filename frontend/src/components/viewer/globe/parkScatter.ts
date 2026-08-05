@@ -36,7 +36,12 @@ import {
 } from './parkLegoFamilies';
 import { resolveParkPlantingStructure } from './parkGroundProfiles';
 
-export type ParkPropId = 'tree' | 'bench' | 'playground' | 'pavilion';
+export type ParkPropId =
+  | 'tree'
+  | 'bench'
+  | 'playground'
+  | 'pavilion'
+  | 'basketball_hoop_regulation';
 
 export interface PropPlacement {
   propId: ParkPropId;
@@ -44,6 +49,9 @@ export interface PropPlacement {
   lat: number;
   yawRad: number;
   scale: number;
+  /** Exact program equipment can sit above the sampled terrain by the same
+   * small lift as its authored LEGO surface. */
+  surfaceOffsetM?: number;
 }
 
 /** Local-metre areas/corridors authored by the completed ground design.

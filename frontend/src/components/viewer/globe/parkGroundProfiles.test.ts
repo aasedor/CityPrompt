@@ -395,6 +395,7 @@ describe('park ground pilot profiles', () => {
         .toEqual({ width: 18.29, height: 9.14 });
     }
     const basketball = resolveParkGroundProfile(zone('basketball_court')).guides[0];
+    expect(basketball.kind).toBe('basketball_court');
     expect(resolveParkGuideDimensionsM(basketball, { width: 40, height: 30 }))
       .toEqual({ width: 32, height: 19 });
     const track = resolveParkGroundProfile(zone('running_track_oval')).guides[0];

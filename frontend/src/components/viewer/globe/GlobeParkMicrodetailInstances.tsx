@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useGLTF } from '@react-three/drei';
 
 import type { ParkLegoPalette } from './parkLegoFamilies';
 import type {
@@ -8,6 +9,7 @@ import type {
 } from './parkMicrodetailFamilies';
 import { buildParkMicrodetailElementOffsets } from './parkMicrodetailFamilies';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { SHARED_PARK_EQUIPMENT } from '@/data/sharedParkEquipment';
 
 interface PartTransform {
   x: number;
@@ -19,6 +21,88 @@ interface PartTransform {
   sz: number;
 }
 
+type ResolvedMicrodetailPlacement = ParkMicrodetailPlacement & { z: number };
+
+const SHARED_EQUIPMENT = {
+  bin: {
+    url: SHARED_PARK_EQUIPMENT.dual_stream_bin.url,
+    targetHeightM: SHARED_PARK_EQUIPMENT.dual_stream_bin.targetHeightM,
+  },
+  bike_rack: {
+    url: SHARED_PARK_EQUIPMENT.bike_rack_three_stall.url,
+    targetHeightM: SHARED_PARK_EQUIPMENT.bike_rack_three_stall.targetHeightM,
+  },
+  picnic_table: {
+    url: SHARED_PARK_EQUIPMENT.picnic_table_accessible.url,
+    targetHeightM: SHARED_PARK_EQUIPMENT.picnic_table_accessible.targetHeightM,
+  },
+  drinking_fountain: {
+    url: SHARED_PARK_EQUIPMENT.drinking_fountain_accessible.url,
+    targetHeightM: SHARED_PARK_EQUIPMENT.drinking_fountain_accessible.targetHeightM,
+  },
+} as const;
+
+function ParkMicrodetailGlbInstances({
+  url,
+  targetHeightM,
+  placements,
+  renderOrder,
+}: {
+  url: string;
+  targetHeightM: number;
+  placements: ResolvedMicrodetailPlacement[];
+  renderOrder: number;
+}) {
+  const { scene } = useGLTF(url);
+  const parts = useMemo(() => {
+    const bounds = new THREE.Box3().setFromObject(scene);
+    const size = bounds.getSize(new THREE.Vector3());
+    const center = bounds.getCenter(new THREE.Vector3());
+    const scale = size.y > 0 ? targetHeightM / size.y : 1;
+    const normalization = new THREE.Matrix4()
+      .makeRotationX(Math.PI / 2)
+      .multiply(new THREE.Matrix4().makeScale(scale, scale, scale))
+      .multiply(new THREE.Matrix4().makeTranslation(-center.x, -bounds.min.y, -center.z));
+    const collected: Array<{ geometry: THREE.BufferGeometry; material: THREE.Material }> = [];
+    scene.updateMatrixWorld(true);
+    scene.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const geometry = mesh.geometry.clone();
+      geometry.applyMatrix4(mesh.matrixWorld);
+      geometry.applyMatrix4(normalization);
+      const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
+      collected.push({ geometry, material });
+    });
+    return collected;
+  }, [scene, targetHeightM]);
+  useEffect(() => () => parts.forEach(({ geometry }) => geometry.dispose()), [parts]);
+  const transforms = useMemo<PartTransform[]>(() => placements.map((placement) => ({
+    x: placement.x,
+    y: placement.y,
+    z: placement.z + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
+    yaw: placement.yawRad,
+    sx: placement.scale,
+    sy: placement.scale,
+    sz: placement.scale,
+  })), [placements]);
+  return (
+    <>
+      {parts.map((part, index) => (
+        <ParkInstancedPart
+          key={index}
+          geometry={part.geometry}
+          transforms={transforms}
+          color="#ffffff"
+          roughness={0.6}
+          renderOrder={renderOrder}
+          material={part.material}
+        />
+      ))}
+    </>
+  );
+}
+
 function ParkInstancedPart({
   geometry,
   transforms,
@@ -26,6 +110,7 @@ function ParkInstancedPart({
   roughness,
   metalness = 0,
   renderOrder,
+  material,
 }: {
   geometry: THREE.BufferGeometry;
   transforms: PartTransform[];
@@ -33,6 +118,7 @@ function ParkInstancedPart({
   roughness: number;
   metalness?: number;
   renderOrder: number;
+  material?: THREE.Material;
 }) {
   const ref = useRef<THREE.InstancedMesh>(null);
   useEffect(() => {
@@ -57,16 +143,18 @@ function ParkInstancedPart({
   return (
     <instancedMesh
       ref={ref}
-      args={[geometry, undefined, transforms.length]}
+      args={[geometry, material, transforms.length]}
       renderOrder={renderOrder}
       frustumCulled={false}
     >
-      <meshStandardMaterial
-        color={color}
-        roughness={roughness}
-        metalness={metalness}
-        side={THREE.DoubleSide}
-      />
+      {!material && (
+        <meshStandardMaterial
+          color={color}
+          roughness={roughness}
+          metalness={metalness}
+          side={THREE.DoubleSide}
+        />
+      )}
     </instancedMesh>
   );
 }
@@ -82,7 +170,8 @@ function colorFor(kind: ParkMicrodetailKind, palette?: ParkLegoPalette | null): 
     case 'light':
     case 'bin':
     case 'bike_rack':
-    case 'bollard': return palette?.metal ?? '#384242';
+    case 'bollard':
+    case 'drinking_fountain': return palette?.metal ?? '#384242';
     case 'picnic_table': return palette?.timber ?? '#8c6040';
     case 'tree_grate': return '#585f5d';
   }
@@ -112,12 +201,6 @@ export function GlobeParkMicrodetailInstances({
     geometry.rotateX(Math.PI / 2);
     return geometry;
   }, []);
-  const rackGeometry = useMemo(() => {
-    const geometry = new THREE.TorusGeometry(0.4, 0.045, 8, 18, Math.PI);
-    geometry.rotateX(Math.PI / 2);
-    geometry.translate(0, 0, 0.4);
-    return geometry;
-  }, []);
   const grateGeometry = useMemo(() => new THREE.RingGeometry(0.26, 1, 24), []);
   useEffect(() => () => {
     shrubGeometry.dispose();
@@ -125,12 +208,11 @@ export function GlobeParkMicrodetailInstances({
     stoneGeometry.dispose();
     boxGeometry.dispose();
     poleGeometry.dispose();
-    rackGeometry.dispose();
     grateGeometry.dispose();
-  }, [boxGeometry, grateGeometry, poleGeometry, rackGeometry, shrubGeometry, stoneGeometry, tuftGeometry]);
+  }, [boxGeometry, grateGeometry, poleGeometry, shrubGeometry, stoneGeometry, tuftGeometry]);
 
   const byKind = useMemo(() => {
-    const result = new Map<ParkMicrodetailKind, Array<ParkMicrodetailPlacement & { z: number }>>();
+    const result = new Map<ParkMicrodetailKind, ResolvedMicrodetailPlacement[]>();
     placements.forEach((placement, index) => {
       const list = result.get(placement.kind) ?? [];
       list.push({ ...placement, z: terrainOffsets?.[index] ?? 0 });
@@ -157,18 +239,6 @@ export function GlobeParkMicrodetailInstances({
       });
     })
   );
-  const simpleBoxTransforms = (
-    kind: ParkMicrodetailKind,
-    dimensions: [number, number, number],
-  ): PartTransform[] => (byKind.get(kind) ?? []).map((placement) => ({
-    x: placement.x,
-    y: placement.y,
-    z: baseZ(placement.z) + dimensions[2] * placement.scale / 2,
-    yaw: placement.yawRad,
-    sx: dimensions[0] * placement.scale,
-    sy: dimensions[1] * placement.scale,
-    sz: dimensions[2] * placement.scale,
-  }));
   const lightPoleTransforms = (byKind.get('light') ?? []).map((placement) => ({
     x: placement.x, y: placement.y, z: baseZ(placement.z) + 1.8,
     yaw: placement.yawRad, sx: 0.065, sy: 0.065, sz: 3.6,
@@ -177,48 +247,10 @@ export function GlobeParkMicrodetailInstances({
     x: placement.x, y: placement.y, z: baseZ(placement.z) + 3.65,
     yaw: placement.yawRad, sx: 0.34, sy: 0.24, sz: 0.16,
   }));
-  const rackTransforms = (byKind.get('bike_rack') ?? []).flatMap((placement) => (
-    [-0.62, 0, 0.62].map((shift) => ({
-      x: placement.x + Math.cos(placement.yawRad) * shift,
-      y: placement.y + Math.sin(placement.yawRad) * shift,
-      z: baseZ(placement.z), yaw: placement.yawRad,
-      sx: placement.scale, sy: placement.scale, sz: placement.scale,
-    }))
-  ));
   const bollardTransforms = (byKind.get('bollard') ?? []).map((placement) => ({
     x: placement.x, y: placement.y, z: baseZ(placement.z) + 0.42,
     yaw: placement.yawRad, sx: 0.09, sy: 0.09, sz: 0.84,
   }));
-  const picnicTopTransforms = simpleBoxTransforms('picnic_table', [1.8, 0.82, 0.12])
-    .map((part) => ({ ...part, z: part.z + 0.68 }));
-  const picnicBenchTransforms = (byKind.get('picnic_table') ?? []).flatMap((placement) => (
-    [-0.82, 0.82].map((side) => ({
-      x: placement.x - Math.sin(placement.yawRad) * side * placement.scale,
-      y: placement.y + Math.cos(placement.yawRad) * side * placement.scale,
-      z: baseZ(placement.z) + 0.46 * placement.scale,
-      yaw: placement.yawRad,
-      sx: 1.9 * placement.scale,
-      sy: 0.28 * placement.scale,
-      sz: 0.11 * placement.scale,
-    }))
-  ));
-  const picnicLegTransforms = (byKind.get('picnic_table') ?? []).flatMap((placement) => (
-    ([-0.58, 0.58] as const).flatMap((along) => (
-      ([-0.26, 0.26] as const).map((across) => ({
-        x: placement.x
-          + Math.cos(placement.yawRad) * along * placement.scale
-          - Math.sin(placement.yawRad) * across * placement.scale,
-        y: placement.y
-          + Math.sin(placement.yawRad) * along * placement.scale
-          + Math.cos(placement.yawRad) * across * placement.scale,
-        z: baseZ(placement.z) + 0.34 * placement.scale,
-        yaw: placement.yawRad,
-        sx: 0.12 * placement.scale,
-        sy: 0.12 * placement.scale,
-        sz: 0.68 * placement.scale,
-      }))
-    ))
-  ));
   const grateTransforms = (byKind.get('tree_grate') ?? []).map((placement) => ({
     x: placement.x, y: placement.y, z: baseZ(placement.z) + 0.006,
     yaw: placement.yawRad, sx: placement.footprintRadiusM, sy: placement.footprintRadiusM, sz: 1,
@@ -237,12 +269,22 @@ export function GlobeParkMicrodetailInstances({
       ))}
       <ParkInstancedPart geometry={poleGeometry} transforms={lightPoleTransforms} color={colorFor('light', palette)} roughness={0.48} metalness={0.52} renderOrder={renderOrder + 1} />
       <ParkInstancedPart geometry={boxGeometry} transforms={lightHeadTransforms} color="#e4d7ae" roughness={0.35} renderOrder={renderOrder + 2} />
-      <ParkInstancedPart geometry={boxGeometry} transforms={simpleBoxTransforms('bin', [0.5, 0.46, 0.86])} color={colorFor('bin', palette)} roughness={0.58} metalness={0.24} renderOrder={renderOrder + 1} />
-      <ParkInstancedPart geometry={rackGeometry} transforms={rackTransforms} color={colorFor('bike_rack', palette)} roughness={0.44} metalness={0.56} renderOrder={renderOrder + 1} />
       <ParkInstancedPart geometry={poleGeometry} transforms={bollardTransforms} color={colorFor('bollard', palette)} roughness={0.56} metalness={0.42} renderOrder={renderOrder + 1} />
-      <ParkInstancedPart geometry={boxGeometry} transforms={picnicTopTransforms} color={colorFor('picnic_table', palette)} roughness={0.84} renderOrder={renderOrder + 1} />
-      <ParkInstancedPart geometry={boxGeometry} transforms={picnicBenchTransforms} color={colorFor('picnic_table', palette)} roughness={0.86} renderOrder={renderOrder + 1} />
-      <ParkInstancedPart geometry={boxGeometry} transforms={picnicLegTransforms} color={palette?.benchFrame ?? '#3f403b'} roughness={0.62} metalness={0.2} renderOrder={renderOrder + 1} />
+      {(Object.keys(SHARED_EQUIPMENT) as Array<keyof typeof SHARED_EQUIPMENT>).map((kind) => {
+        const asset = SHARED_EQUIPMENT[kind];
+        const equipmentPlacements = byKind.get(kind) ?? [];
+        if (equipmentPlacements.length === 0) return null;
+        return (
+          <Suspense key={kind} fallback={null}>
+            <ParkMicrodetailGlbInstances
+              url={asset.url}
+              targetHeightM={asset.targetHeightM}
+              placements={equipmentPlacements}
+              renderOrder={renderOrder + 1}
+            />
+          </Suspense>
+        );
+      })}
       <ParkInstancedPart geometry={grateGeometry} transforms={grateTransforms} color={colorFor('tree_grate', palette)} roughness={0.58} metalness={0.5} renderOrder={renderOrder} />
     </>
   );

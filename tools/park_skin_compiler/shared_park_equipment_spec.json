@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "kitId": "shared-park-equipment-v1",
+  "method": "archetype_observation_plus_metric_authored_geometry",
+  "surfaceOwner": "lego_park_grammar",
+  "peopleGenerated": false,
+  "referencePolicy": {
+    "basketball": {
+      "archetypeId": "basketball_court",
+      "catalogueRoot": "frontend/public/archetypes/openspaces/basketball-court",
+      "views": ["hero.png", "variant_0.png", "variant_1.png", "variant_2.png", "variant_3.png"],
+      "observedFor": ["support silhouette", "backboard and rim visibility", "court-edge placement", "material character"]
+    },
+    "picnic": {
+      "archetypeId": "estate_picnic_grove",
+      "catalogueMetadata": "frontend/src/data/openSpaceArchetypes.json",
+      "observedFor": ["timber furniture character", "cluster use", "human scale", "accessible gathering layout"]
+    },
+    "authority": "Archetype views govern visible character and use cues; regulation, accessibility, clearances, and manufacturer-like dimensions remain metric and deterministic."
+  },
+  "assets": [
+    {
+      "id": "basketball_hoop_regulation",
+      "filename": "basketball-hoop-regulation.glb",
+      "heightM": 3.95,
+      "groundContactOriginZM": 0,
+      "placementAnchor": "post_base",
+      "rimHeightM": 3.05,
+      "backboardM": [1.8, 1.05],
+      "clearanceM": 2.0
+    },
+    {
+      "id": "picnic_table_accessible",
+      "filename": "picnic-table-accessible.glb",
+      "heightM": 0.78,
+      "groundContactOriginZM": 0,
+      "placementAnchor": "assembly_center",
+      "footprintM": [2.8, 1.62],
+      "wheelchairEndClearanceM": 0.76
+    },
+    {
+      "id": "dual_stream_bin",
+      "filename": "dual-stream-bin.glb",
+      "heightM": 1.08,
+      "groundContactOriginZM": 0,
+      "placementAnchor": "assembly_center",
+      "footprintM": [0.86, 0.52]
+    },
+    {
+      "id": "bike_rack_three_stall",
+      "filename": "bike-rack-three-stall.glb",
+      "heightM": 0.86,
+      "groundContactOriginZM": 0,
+      "placementAnchor": "assembly_center",
+      "footprintM": [1.8, 0.78]
+    },
+    {
+      "id": "drinking_fountain_accessible",
+      "filename": "drinking-fountain-accessible.glb",
+      "heightM": 1.04,
+      "groundContactOriginZM": 0,
+      "placementAnchor": "assembly_center",
+      "footprintM": [0.84, 0.62]
+    }
+  ]
+}

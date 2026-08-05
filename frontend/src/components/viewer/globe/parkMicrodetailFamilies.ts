@@ -30,6 +30,7 @@ export type ParkMicrodetailKind =
   | 'bike_rack'
   | 'bollard'
   | 'picnic_table'
+  | 'drinking_fountain'
   | 'tree_grate';
 
 export interface ParkMicrodetailPoint {
@@ -51,7 +52,7 @@ export function resolveParkMicrodetailGuideKind(
   if (['line', 'axis', 'polyline', 'path_loop'].includes(authoredGuideKind)) {
     return 'circulation';
   }
-  if (['soccer_field', 'tennis_court', 'track'].includes(authoredGuideKind)) {
+  if (['soccer_field', 'tennis_court', 'track', 'basketball_court'].includes(authoredGuideKind)) {
     return 'fixed_program';
   }
   if (familyId === 'park_civic_plaza' && authoredGuideKind === 'ellipse') {
@@ -141,6 +142,7 @@ const FOOTPRINT_RADIUS_M: Record<ParkMicrodetailKind, number> = {
   bike_rack: 0.78,
   bollard: 0.22,
   picnic_table: 1.42,
+  drinking_fountain: 0.56,
   tree_grate: 1.05,
 };
 
@@ -305,6 +307,14 @@ function familyTargets(
 ): Target[] {
   const target = (kind: ParkMicrodetailKind, count: number): Target => ({ kind, count });
   switch (familyId) {
+    case 'park_basketball_court_v0':
+      return [
+        target('light', cappedCount(perimeterM / 34, 2, 4)),
+        target('bin', cappedCount(areaM2 / 1800, 1, 2)),
+        target('bike_rack', 1),
+        target('picnic_table', cappedCount(areaM2 / 1400, 1, 3)),
+        target('drinking_fountain', 1),
+      ];
     case 'park_skate_archetype_v0':
     case 'park_inclusive_playground_v0':
     case 'park_dog_archetype_v0':
@@ -346,6 +356,7 @@ function familyTargets(
         target('bike_rack', cappedCount(areaM2 / 1500, 1, 4)),
         target('bollard', cappedCount(perimeterM / 38, 2, 8)),
         target('picnic_table', cappedCount(areaM2 / 720, 2, 8)),
+        target('drinking_fountain', areaM2 >= 500 ? cappedCount(areaM2 / 2600, 1, 2) : 0),
       ];
     case 'park_civic_plaza':
       return [
@@ -367,6 +378,7 @@ function familyTargets(
         target('bike_rack', cappedCount(areaM2 / 1450, 1, 4)),
         target('bollard', cappedCount(perimeterM / 28, 4, 12)),
         target('picnic_table', cappedCount(areaM2 / 1200, 1, 5)),
+        target('drinking_fountain', areaM2 >= 1000 ? cappedCount(areaM2 / 4200, 1, 2) : 0),
       ];
     case 'park_water_ecology':
       return [

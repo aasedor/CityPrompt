@@ -17,7 +17,8 @@ export type ParkGuideKind =
   | 'path_loop'
   | 'track'
   | 'soccer_field'
-  | 'tennis_court';
+  | 'tennis_court'
+  | 'basketball_court';
 
 export interface ParkGroundGuide {
   kind: ParkGuideKind;
@@ -77,6 +78,7 @@ const SEMANTIC_PLAY_SURFACE_KINDS = new Set<ParkGuideKind>([
   'soccer_field',
   'tennis_court',
   'track',
+  'basketball_court',
 ]);
 
 /** Guides used only to keep post-drape 3D dressing off active play surfaces.
@@ -270,7 +272,12 @@ function resolveGuideOrientationPolicy(
   if (guide.kind === 'soccer_field' || guide.kind === 'tennis_court' || guide.kind === 'track') {
     return 'flexible';
   }
-  if (guide.kind === 'rectangle' || guide.kind === 'rounded_rectangle' || guide.kind === 'ellipse') {
+  if (
+    guide.kind === 'rectangle'
+    || guide.kind === 'rounded_rectangle'
+    || guide.kind === 'ellipse'
+    || guide.kind === 'basketball_court'
+  ) {
     return 'orthogonal';
   }
   return 'fixed';
@@ -1193,7 +1200,7 @@ function sportGuides(archetypeId: string, accent: string): {
   if (archetypeId.includes('basketball')) {
     return {
       guides: [
-        { kind: 'rectangle', x: 0.5, y: 0.5, width: 0.72, height: 0.62, widthM: 32, heightM: 19, color: accent, strokeColor: white, strokeWidthM: 0.1 },
+        { kind: 'basketball_court', x: 0.5, y: 0.5, width: 0.72, height: 0.62, widthM: 32, heightM: 19, color: accent, strokeColor: white, strokeWidthM: 0.1 },
       ],
       legend: ['the marked 32 by 19 metre envelope contains a regulation 28 by 15 metre basketball court plus two-metre safety run-off'],
     };

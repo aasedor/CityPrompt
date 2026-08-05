@@ -95,8 +95,9 @@ describe('park microdetail families', () => {
   });
 
   it.each([
+    ['park_basketball_court_v0', ['light', 'bin', 'bike_rack', 'picnic_table', 'drinking_fountain']],
     ['park_pocket_courtyard', ['shrub', 'perennial', 'light', 'bin', 'bike_rack', 'bollard', 'tree_grate']],
-    ['park_neighborhood_community', ['shrub', 'ornamental_grass', 'boulder', 'light', 'bike_rack', 'picnic_table']],
+    ['park_neighborhood_community', ['shrub', 'ornamental_grass', 'boulder', 'light', 'bike_rack', 'picnic_table', 'drinking_fountain']],
     ['park_civic_plaza', ['perennial', 'light', 'bin', 'bike_rack', 'bollard', 'tree_grate']],
     ['park_linear_greenway', ['shrub', 'ornamental_grass', 'boulder', 'light', 'bollard', 'picnic_table']],
     ['park_water_ecology', ['reed', 'ornamental_grass', 'riprap', 'boulder', 'bollard']],
@@ -151,6 +152,8 @@ describe('park microdetail families', () => {
       .toBe('fixed_program');
     expect(resolveParkMicrodetailGuideKind('park_neighborhood_community', 'rectangle'))
       .toBeNull();
+    expect(resolveParkMicrodetailGuideKind('park_neighborhood_community', 'basketball_court'))
+      .toBe('fixed_program');
   });
 
   it('preserves preferred candidate tiers while bounding huge candidate sets', () => {

@@ -348,6 +348,7 @@ _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
+    ("basketball_court", "basketball_court_v0"): (32.0, 19.0, 0.5),
     # Adaptive regulation families prove that at least one complete module can
     # fit. The renderer then keeps the maximum count of whole modules inside
     # the actual polygon; these values must never describe a stretched field.
@@ -379,6 +380,9 @@ _COMMUNITY_GARDEN_V0_ENVELOPE = _park_envelope(
 )
 _TENNIS_CLUSTER_V0_ENVELOPE = _park_envelope(
     nominal=(82.0, 46.0), width=(36.58, 120.0), depth=(18.29, 100.0), area=(669.0, 12_000.0),
+)
+_BASKETBALL_COURT_V0_ENVELOPE = _park_envelope(
+    nominal=(32.0, 19.0), width=(32.0, 80.0), depth=(19.0, 70.0), area=(608.0, 5_600.0),
 )
 _CAGED_SOCCER_V0_ENVELOPE = _park_envelope(
     nominal=(66.0, 24.0), width=(30.0, 100.0), depth=(18.0, 70.0), area=(540.0, 7_000.0),
@@ -624,6 +628,16 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
             appearance_kit_id="community_garden_v0_reference_skin", planting_structure="community_garden_v0",
             compatibility=_COMMUNITY_GARDEN_V0_ENVELOPE,
             components=("community_garden_v0_ground_program", "raised_growing_bed_v1", "garden_greenhouse_v1", "garden_trellis_v1", "compost_bins_v1", "split_rail_fence_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_basketball_court_v0", kind="park",
+        title="Basketball Court / Classic Asphalt v0", generator="park_kit",
+        selections=(_selection(
+            "basketball_court", "basketball_court_v0", profile_id="basketball-court-archetype-v1",
+            appearance_kit_id="basketball_court_v0_reference_skin", planting_structure="basketball_court_v0",
+            compatibility=_BASKETBALL_COURT_V0_ENVELOPE,
+            components=("basketball_court_v0_ground_program", "basketball_hoop_regulation_v1", "shared_park_equipment_v1"), default=True,
         ),),
     ),
     PublicRealmFamilyCapability(

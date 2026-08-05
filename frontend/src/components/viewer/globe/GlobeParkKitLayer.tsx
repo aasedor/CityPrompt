@@ -96,6 +96,7 @@ import {
   type ParkMicrodetailPlacement,
 } from './parkMicrodetailFamilies';
 import { GlobeParkMicrodetailInstances } from './GlobeParkMicrodetailInstances';
+import { computeParkProgramAssetPlacements } from './parkProgramAssets';
 import {
   fitTerrainContactPlane,
   resolveTerrainContactElevation,
@@ -292,12 +293,14 @@ class SilentKitBoundary extends Component<
 function GLBInstancedProp({
   url,
   targetHeight,
+  preserveHorizontalOrigin,
   placements,
   centroid,
   instanceZ,
 }: {
   url: string;
   targetHeight: number;
+  preserveHorizontalOrigin: boolean;
   placements: PropPlacement[];
   centroid: { lng: number; lat: number };
   instanceZ: number[] | null;
@@ -309,11 +312,16 @@ function GLBInstancedProp({
     const size = bbox.getSize(new THREE.Vector3());
     const center = bbox.getCenter(new THREE.Vector3());
     const normScale = size.y > 0 ? targetHeight / size.y : 1;
-    // model-space: recenter XZ, base at min Y, swizzle Y-up -> Z-up, scale
+    // Generic entourage is recentered. Exact program assets retain an
+    // authored horizontal anchor such as a basketball post base.
     const norm = new THREE.Matrix4()
       .makeRotationX(Math.PI / 2)
       .multiply(new THREE.Matrix4().makeScale(normScale, normScale, normScale))
-      .multiply(new THREE.Matrix4().makeTranslation(-center.x, -bbox.min.y, -center.z));
+      .multiply(new THREE.Matrix4().makeTranslation(
+        preserveHorizontalOrigin ? 0 : -center.x,
+        -bbox.min.y,
+        preserveHorizontalOrigin ? 0 : -center.z,
+      ));
 
     const collected: Array<{ geometry: THREE.BufferGeometry; material: THREE.Material }> = [];
     scene.updateMatrixWorld(true);
@@ -327,7 +335,7 @@ function GLBInstancedProp({
       collected.push({ geometry, material });
     });
     return collected;
-  }, [scene, targetHeight]);
+  }, [preserveHorizontalOrigin, scene, targetHeight]);
 
   // The clones above are full geometry copies per zone — dispose them on
   // recompute/unmount (materials stay owned by the drei GLTF cache).
@@ -353,7 +361,7 @@ function GLBInstancedProp({
         pos.set(
           (p.lng - centroid.lng) * mPerLon,
           (p.lat - centroid.lat) * METERS_PER_DEG_LAT,
-          instanceZ?.[i] ?? 0,
+          (instanceZ?.[i] ?? 0) + (p.surfaceOffsetM ?? 0),
         );
         q.setFromAxisAngle(zAxis, p.yawRad);
         scl.setScalar(p.scale);
@@ -1702,12 +1710,15 @@ function liveProgrammedParkPlacements(zone: SiteZone): PropPlacement[] {
     zone_type: zone.zone_type,
   });
   const plantingStructure = resolveParkPlantingStructure(zone);
-  return computeParkPlacements(
-    { id: zone.id, coordinates: zone.coordinates },
-    recipe,
-    plantingStructure,
-    resolveParkProgramAnchorLayout(zone),
-  ).filter((placement) => {
+  return [
+    ...computeParkPlacements(
+      { id: zone.id, coordinates: zone.coordinates },
+      recipe,
+      plantingStructure,
+      resolveParkProgramAnchorLayout(zone),
+    ),
+    ...computeParkProgramAssetPlacements(zone),
+  ].filter((placement) => {
     const asset = PARK_KIT_MANIFEST[placement.propId];
     const hasProceduralFallback = placement.propId === 'tree'
       || placement.propId === 'bench'
@@ -1816,13 +1827,16 @@ function ParkKitInstance({
       dressingFamilyId,
     );
   }, [dressingFamilyId, localProgramFrame, programGuideFit]);
-  const placements = useMemo(() => computeParkPlacements(
-    { id: zone.id, coordinates: zone.coordinates },
-    recipe,
-    plantingStructure,
-    programAnchors,
-    fittedMicrodetailGuides,
-  ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
+  const placements = useMemo(() => [
+    ...computeParkPlacements(
+      { id: zone.id, coordinates: zone.coordinates },
+      recipe,
+      plantingStructure,
+      programAnchors,
+      fittedMicrodetailGuides,
+    ),
+    ...computeParkProgramAssetPlacements(zone),
+  ].filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
     fittedMicrodetailGuides,
     hasCurrentParkGround,
     plantingStructure,
@@ -1847,11 +1861,15 @@ function ParkKitInstance({
             ? Math.max(0.8, placement.scale * 1.15)
             : placement.propId === 'playground'
               ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
+              : placement.propId === 'basketball_hoop_regulation'
+                ? 1.45
               : Math.hypot(
                 PARK_PROGRAM_MODULE_SPEC.pavilion.widthM,
                 PARK_PROGRAM_MODULE_SPEC.pavilion.depthM,
               ) / 2,
-        kind: placement.propId,
+        kind: placement.propId === 'basketball_hoop_regulation'
+          ? 'fixed_program'
+          : placement.propId,
       })),
       maxPlacements: 72,
       collisionClearanceM: 0.22,
@@ -2145,6 +2163,7 @@ function ParkKitInstance({
               <GLBInstancedProp
                 url={asset.url}
                 targetHeight={asset.targetHeight_m}
+                preserveHorizontalOrigin={Boolean(asset.preserveHorizontalOrigin)}
                 placements={group}
                 centroid={centroid}
                 instanceZ={groupZ}

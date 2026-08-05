@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kitId": "shared-park-equipment-v1",
+  "method": "archetype_observation_plus_metric_authored_geometry",
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "meshyUsed": false,
+  "meshyDecision": "Precise hard-surface equipment is more reliable and lower-cost as authored Blender geometry; reserve Meshy for later organic or sculptural objects.",
+  "assets": [
+    {
+      "id": "basketball_hoop_regulation",
+      "file": "basketball-hoop-regulation.glb",
+      "dimensionsM": [2.037, 1.82, 3.95],
+      "triangles": 1752,
+      "placementAnchor": "post_base",
+      "rimHeightM": 3.05
+    },
+    {
+      "id": "picnic_table_accessible",
+      "file": "picnic-table-accessible.glb",
+      "dimensionsM": [2.76, 1.73, 0.78],
+      "triangles": 3376,
+      "placementAnchor": "assembly_center",
+      "wheelchairEndClearanceM": 0.76
+    },
+    {
+      "id": "dual_stream_bin",
+      "file": "dual-stream-bin.glb",
+      "dimensionsM": [0.84, 0.537, 1.08],
+      "triangles": 752,
+      "placementAnchor": "assembly_center"
+    },
+    {
+      "id": "bike_rack_three_stall",
+      "file": "bike-rack-three-stall.glb",
+      "dimensionsM": [1.946, 0.15, 0.861],
+      "triangles": 1104,
+      "placementAnchor": "assembly_center"
+    },
+    {
+      "id": "drinking_fountain_accessible",
+      "file": "drinking-fountain-accessible.glb",
+      "dimensionsM": [0.925, 0.68, 1.04],
+      "triangles": 800,
+      "placementAnchor": "assembly_center"
+    }
+  ]
+}

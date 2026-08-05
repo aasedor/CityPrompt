@@ -329,6 +329,7 @@ function drawParkGuides(
   pxPerM: number,
   mode: ParkDiagramMode,
   archetypeId: string,
+  variantId?: string,
 ): void {
   if (guides.length === 0) return;
   const [centroidX, centroidY] = ringPx.reduce(
@@ -382,7 +383,9 @@ function drawParkGuides(
     const sizeM = resolveParkGuideDimensionsM(guide, parkSizeM);
     const width = sizeM.width * pxPerM;
     const height = sizeM.height * pxPerM;
-    const isMarkedSportsSurface = guide.kind === 'soccer_field' || guide.kind === 'tennis_court';
+    const isMarkedSportsSurface = guide.kind === 'soccer_field'
+      || guide.kind === 'tennis_court'
+      || guide.kind === 'basketball_court';
     if (mode === 'procedural' && !isMarkedSportsSurface) {
       const material = ctx.createLinearGradient(
         x - width / 2,
@@ -509,6 +512,70 @@ function drawParkGuides(
       ctx.ellipse(x, y, width / 2, height / 2, 0, 0, Math.PI * 2);
       ctx.strokeStyle = guide.color;
       ctx.lineWidth = Math.max(2, (guide.strokeWidthM ?? 2) * pxPerM);
+      ctx.stroke();
+      continue;
+    }
+
+    if (guide.kind === 'basketball_court') {
+      const playingWidth = 28 * pxPerM;
+      const playingHeight = 15 * pxPerM;
+      const halfW = playingWidth / 2;
+      const halfH = playingHeight / 2;
+      const lineWidth = Math.max(1, (guide.strokeWidthM ?? 0.08) * pxPerM);
+      // The 32 x 19 m guide is the safety envelope. Give it a restrained
+      // charcoal apron, then draw the complete regulation 28 x 15 m surface.
+      const proSurface = variantId?.endsWith('_v1') === true;
+      const muralSurface = variantId?.endsWith('_v2') === true;
+      const streetArtSurface = variantId?.endsWith('_v3') === true;
+      const apronColor = proSurface ? '#a95643'
+        : muralSurface ? '#1f3957'
+          : streetArtSurface ? '#4b4b49'
+            : '#4a4c49';
+      const courtColor = proSurface ? '#315d68'
+        : muralSurface ? '#253e61'
+          : streetArtSurface ? '#3f4240'
+            : '#363938';
+      const laneColor = proSurface ? '#a95643'
+        : muralSurface ? '#d59a43'
+          : streetArtSurface ? '#8a604e'
+            : courtColor;
+      ctx.fillStyle = apronColor;
+      ctx.fillRect(x - width / 2, y - height / 2, width, height);
+      ctx.fillStyle = courtColor;
+      ctx.fillRect(x - halfW, y - halfH, playingWidth, playingHeight);
+      const laneDepth = 5.8 * pxPerM;
+      const laneWidth = 4.9 * pxPerM;
+      ctx.fillStyle = laneColor;
+      ctx.fillRect(x - halfW, y - laneWidth / 2, laneDepth, laneWidth);
+      ctx.fillRect(x + halfW - laneDepth, y - laneWidth / 2, laneDepth, laneWidth);
+      ctx.strokeStyle = guide.strokeColor ?? '#f4f2df';
+      ctx.lineWidth = lineWidth;
+      ctx.strokeRect(x - halfW, y - halfH, playingWidth, playingHeight);
+      ctx.beginPath();
+      ctx.moveTo(x, y - halfH);
+      ctx.lineTo(x, y + halfH);
+      ctx.moveTo(x + 1.8 * pxPerM, y);
+      ctx.arc(x, y, 1.8 * pxPerM, 0, Math.PI * 2);
+      for (const direction of [-1, 1]) {
+        const baselineX = x + direction * halfW;
+        const freeThrowX = baselineX - direction * laneDepth;
+        ctx.rect(
+          Math.min(baselineX, freeThrowX),
+          y - laneWidth / 2,
+          laneDepth,
+          laneWidth,
+        );
+        ctx.moveTo(freeThrowX + 1.8 * pxPerM, y);
+        ctx.arc(freeThrowX, y, 1.8 * pxPerM, 0, Math.PI * 2);
+        const basketX = baselineX - direction * 1.575 * pxPerM;
+        const startAngle = direction < 0 ? -1.18 : Math.PI - 1.18;
+        const endAngle = direction < 0 ? 1.18 : Math.PI + 1.18;
+        ctx.moveTo(
+          basketX + Math.cos(startAngle) * 6.75 * pxPerM,
+          y + Math.sin(startAngle) * 6.75 * pxPerM,
+        );
+        ctx.arc(basketX, y, 6.75 * pxPerM, startAngle, endAngle);
+      }
       ctx.stroke();
       continue;
     }
@@ -1368,6 +1435,8 @@ export function buildParkDiagram(
     pxPerM,
     mode,
     profile.archetypeId,
+    String((zone.properties as Record<string, unknown> | undefined)
+      ?.green_space_selected_variant_id ?? ''),
   );
 
   const playgrounds = fixedProgramPlacements.filter((p) => p.propId === 'playground');
