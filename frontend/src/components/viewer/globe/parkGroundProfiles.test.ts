@@ -314,6 +314,19 @@ describe('park ground pilot profiles', () => {
     };
     expect(resolveParkSpecialtyStructureKind(skate)).toBe('skate_park_v0_assembly');
     expect(resolveParkPlantingStructure(skate)).toBe('skate_archetype_v0');
+
+    for (const [family_id, archetype_id, variant_id, appearance_kit_id, planting_structure, expected] of [
+      ['park_inclusive_playground_v0', 'inclusive_playground', 'inclusive_playground_v0', 'inclusive_playground_v0_reference_skin', 'inclusive_playground_v0', 'inclusive_playground_v0_assembly'],
+      ['park_dog_archetype_v0', 'dog_park', 'dog_park_v0', 'dog_park_v0_reference_skin', 'dog_park_v0', 'dog_park_v0_assembly'],
+      ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v0', 'splash_pad_area_v0_reference_skin', 'splash_pad_area_v0', 'splash_pad_v0_assembly'],
+      ['park_community_garden_v0', 'community_garden', 'community_garden_v0', 'community_garden_v0_reference_skin', 'community_garden_v0', 'community_garden_v0_assembly'],
+    ]) {
+      const exact = zone(archetype_id);
+      exact.properties = { ...exact.properties, public_realm_lego: trustedParkRecipe({
+        family_id, family_version: 1, archetype_id, variant_id, appearance_kit_id, planting_structure,
+      }) };
+      expect(resolveParkSpecialtyStructureKind(exact)).toBe(expected);
+    }
   });
 
   it('compiles every open-space catalog entry and variant to an explicit 3D ground contract', () => {

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "community_garden",
+  "slug": "community-garden-allotments",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    50.0,
+    50.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/community-garden-allotments/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "compost-bins.glb",
+    "garden-greenhouse.glb",
+    "garden-trellis.glb",
+    "raised-growing-bed.glb",
+    "split-rail-fence.glb"
+  ]
+}

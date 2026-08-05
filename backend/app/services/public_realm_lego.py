@@ -342,6 +342,27 @@ _SKATE_PARK_V0_WIDTH_M = 40.0
 _SKATE_PARK_V0_DEPTH_M = 30.0
 _SKATE_PARK_V0_CLEARANCE_M = 0.5
 
+_EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
+    ("skate_park", "skate_park_v0"): (40.0, 30.0, 0.5),
+    ("inclusive_playground", "inclusive_playground_v0"): (50.0, 40.0, 0.5),
+    ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
+    ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
+    ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
+}
+
+_INCLUSIVE_PLAYGROUND_V0_ENVELOPE = _park_envelope(
+    nominal=(50.0, 40.0), width=(50.0, 65.0), depth=(40.0, 55.0), area=(2_000.0, 3_575.0),
+)
+_DOG_PARK_V0_ENVELOPE = _park_envelope(
+    nominal=(80.0, 50.0), width=(80.0, 100.0), depth=(50.0, 65.0), area=(4_000.0, 6_500.0),
+)
+_SPLASH_PAD_V0_ENVELOPE = _park_envelope(
+    nominal=(30.0, 25.0), width=(30.0, 42.0), depth=(25.0, 35.0), area=(750.0, 1_470.0),
+)
+_COMMUNITY_GARDEN_V0_ENVELOPE = _park_envelope(
+    nominal=(50.0, 50.0), width=(50.0, 65.0), depth=(50.0, 65.0), area=(2_500.0, 4_225.0),
+)
+
 _PARK_COMPONENTS = (
     "park_ground_program_v1",
     "landscape_instances_v1",
@@ -510,6 +531,49 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
                 default=True,
             ),
         ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_inclusive_playground_v0", kind="park",
+        title="Inclusive Playground / Universal Access v0", generator="park_kit",
+        selections=(_selection(
+            "inclusive_playground", "inclusive_playground_v0",
+            profile_id="inclusive-playground-archetype-v1",
+            appearance_kit_id="inclusive_playground_v0_reference_skin",
+            planting_structure="inclusive_playground_v0",
+            compatibility=_INCLUSIVE_PLAYGROUND_V0_ENVELOPE,
+            components=("inclusive_playground_v0_ground_program", "accessible_play_structure_v1", "accessible_swing_bay_v1", "inclusive_spinner_v1", "sensory_panel_v1", "shade_canopy_v1"),
+            default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_dog_archetype_v0", kind="park",
+        title="Dog Park / Natural Exercise Enclosures v0", generator="park_kit",
+        selections=(_selection(
+            "dog_park", "dog_park_v0", profile_id="dog-park-archetype-v1",
+            appearance_kit_id="dog_park_v0_reference_skin", planting_structure="dog_park_v0",
+            compatibility=_DOG_PARK_V0_ENVELOPE,
+            components=("dog_park_v0_ground_program", "dog_park_gate_v1", "timber_rail_fence_v1", "shade_shelter_v1", "boulder_cluster_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_splash_pad_v0", kind="park",
+        title="Splash Pad / Timber Water Play v0", generator="park_kit",
+        selections=(_selection(
+            "splash_pad_area", "splash_pad_area_v0", profile_id="splash-pad-archetype-v1",
+            appearance_kit_id="splash_pad_area_v0_reference_skin", planting_structure="splash_pad_area_v0",
+            compatibility=_SPLASH_PAD_V0_ENVELOPE,
+            components=("splash_pad_v0_ground_program", "timber_water_tower_v1", "spray_arch_v1", "ground_jet_v1", "split_rail_fence_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_community_garden_v0", kind="park",
+        title="Community Garden / Allotments v0", generator="park_kit",
+        selections=(_selection(
+            "community_garden", "community_garden_v0", profile_id="community-garden-archetype-v1",
+            appearance_kit_id="community_garden_v0_reference_skin", planting_structure="community_garden_v0",
+            compatibility=_COMMUNITY_GARDEN_V0_ENVELOPE,
+            components=("community_garden_v0_ground_program", "raised_growing_bed_v1", "garden_greenhouse_v1", "garden_trellis_v1", "compost_bins_v1", "split_rail_fence_v1"), default=True,
+        ),),
     ),
     PublicRealmFamilyCapability(
         family_id="park_pocket_courtyard",
@@ -1207,8 +1271,14 @@ def _target_from_metric_geometry(
     )
 
 
-def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
-    """Prove that the fixed Skate Park v0 rectangle fits without scaling.
+def _metric_polygon_contains_fixed_park_program(
+    geometry: BaseGeometry,
+    *,
+    width_m: float,
+    depth_m: float,
+    clearance_m: float,
+) -> bool:
+    """Prove that a fixed park program rectangle fits without scaling.
 
     The capability envelope rejects obviously wrong parcels cheaply. This
     geometry-aware pass handles concave and clipped sites whose rotated bounds
@@ -1218,11 +1288,11 @@ def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
     make the same decision.
     """
 
-    receiving = geometry.buffer(-_SKATE_PARK_V0_CLEARANCE_M)
+    receiving = geometry.buffer(-clearance_m)
     if receiving.is_empty:
         return False
     min_x, min_y, max_x, max_y = receiving.bounds
-    if max_x - min_x < _SKATE_PARK_V0_DEPTH_M or max_y - min_y < _SKATE_PARK_V0_DEPTH_M:
+    if max_x - min_x < min(width_m, depth_m) or max_y - min_y < min(width_m, depth_m):
         return False
 
     angles: set[float] = {0.0, 90.0}
@@ -1242,10 +1312,10 @@ def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
     x_values = [centroid.x] + [min_x + (max_x - min_x) * index / 8 for index in range(9)]
     y_values = [centroid.y] + [min_y + (max_y - min_y) * index / 8 for index in range(9)]
     base = box(
-        -_SKATE_PARK_V0_WIDTH_M / 2,
-        -_SKATE_PARK_V0_DEPTH_M / 2,
-        _SKATE_PARK_V0_WIDTH_M / 2,
-        _SKATE_PARK_V0_DEPTH_M / 2,
+        -width_m / 2,
+        -depth_m / 2,
+        width_m / 2,
+        depth_m / 2,
     )
     for angle in sorted(angles):
         rotated = affinity.rotate(base, angle, origin=(0, 0), use_radians=False)
@@ -1255,6 +1325,16 @@ def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
                 if receiving.covers(candidate):
                     return True
     return False
+
+
+def _metric_polygon_contains_skate_park_v0(geometry: BaseGeometry) -> bool:
+    """Backward-compatible wrapper retained for focused callers/tests."""
+    return _metric_polygon_contains_fixed_park_program(
+        geometry,
+        width_m=_SKATE_PARK_V0_WIDTH_M,
+        depth_m=_SKATE_PARK_V0_DEPTH_M,
+        clearance_m=_SKATE_PARK_V0_CLEARANCE_M,
+    )
 
 
 def public_realm_park_archetype_supports_metric_geometry(
@@ -1413,28 +1493,40 @@ def plan_public_realm_zone_recipe(
         # and Direct's later canonical replan cannot disagree.
         attest_segment_width=True,
     )
-    if archetype_id == "skate_park" and (variant_id in {None, "skate_park_v0"}):
-        if not _metric_polygon_contains_skate_park_v0(metric_geometry):
+    exact_variant_id = variant_id or next((
+        candidate_variant
+        for candidate_archetype, candidate_variant in _EXACT_PARK_PROGRAMS
+        if candidate_archetype == archetype_id
+    ), None)
+    exact_program = _EXACT_PARK_PROGRAMS.get((archetype_id, exact_variant_id or ""))
+    if exact_program is not None:
+        program_width_m, program_depth_m, clearance_m = exact_program
+        if not _metric_polygon_contains_fixed_park_program(
+            metric_geometry,
+            width_m=program_width_m,
+            depth_m=program_depth_m,
+            clearance_m=clearance_m,
+        ):
             error = PublicRealmPlanningError(
-                "Skate Park v0 requires one complete, unscaled 40 x 30 m program inside the parcel.",
+                f"{archetype_id} requires one complete, unscaled {program_width_m:g} x {program_depth_m:g} m program inside the parcel.",
                 code="family_incompatible",
                 requested={
                     "archetype_id": archetype_id,
-                    "variant_id": variant_id or "skate_park_v0",
+                    "variant_id": exact_variant_id,
                     "target": target.model_dump(mode="json"),
                 },
                 supported_families=[
                     _family_summary(capability)
                     for capability, selection in matching
-                    if selection.variant_id == "skate_park_v0"
+                    if selection.variant_id == exact_variant_id
                 ],
                 violations=[{
                     "field": "target.polygon_fit",
                     "requested": "irregular polygon",
                     "supported": {
-                        "program_width_m": _SKATE_PARK_V0_WIDTH_M,
-                        "program_depth_m": _SKATE_PARK_V0_DEPTH_M,
-                        "minimum_clearance_m": _SKATE_PARK_V0_CLEARANCE_M,
+                        "program_width_m": program_width_m,
+                        "program_depth_m": program_depth_m,
+                        "minimum_clearance_m": clearance_m,
                         "scale": 1.0,
                     },
                 }],

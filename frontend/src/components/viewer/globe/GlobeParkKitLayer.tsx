@@ -116,6 +116,7 @@ import {
 } from './publicRealmPropPalettes';
 import { GlobeCricketGroundAssembly } from './GlobeCricketGroundAssembly';
 import { GlobeSkateParkAssembly } from './GlobeSkateParkAssembly';
+import { GlobeArchetypeOwnedParkAssembly } from './GlobeArchetypeOwnedParkAssembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -826,6 +827,21 @@ function ParkSpecialtyStructures({
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
           <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+        </Suspense>
+      </SilentKitBoundary>
+    );
+  }
+
+  const exactFamily = structureKind === 'inclusive_playground_v0_assembly' ? 'park_inclusive_playground_v0'
+    : structureKind === 'dog_park_v0_assembly' ? 'park_dog_archetype_v0'
+      : structureKind === 'splash_pad_v0_assembly' ? 'park_splash_pad_v0'
+        : structureKind === 'community_garden_v0_assembly' ? 'park_community_garden_v0'
+          : null;
+  if (exactFamily) {
+    return (
+      <SilentKitBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <GlobeArchetypeOwnedParkAssembly familyId={exactFamily} boundary={programFrame.points} terrainZ={terrainZ} />
         </Suspense>
       </SilentKitBoundary>
     );

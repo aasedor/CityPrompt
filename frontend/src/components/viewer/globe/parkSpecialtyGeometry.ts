@@ -3,7 +3,7 @@ import {
   type ParkGroundGuide,
   type ParkSpecialtyStructureKind,
 } from './parkGroundProfiles';
-import { fitSkateParkV0Program } from './skateParkFit';
+import { fitFixedParkProgram, fitSkateParkV0Program } from './skateParkFit';
 
 export interface ParkSpecialtyPoint {
   x: number;
@@ -173,14 +173,21 @@ export function buildParkSpecialtyTerrainAnchors(
     || guide.kind === 'path_loop'
   ));
 
-  if (structureKind === 'skate_park_v0_assembly') {
+  const exactProgram = structureKind === 'inclusive_playground_v0_assembly' ? { widthM: 50, depthM: 40, clearanceM: 0.5 }
+    : structureKind === 'dog_park_v0_assembly' ? { widthM: 80, depthM: 50, clearanceM: 0.5 }
+      : structureKind === 'splash_pad_v0_assembly' ? { widthM: 30, depthM: 25, clearanceM: 0.5 }
+        : structureKind === 'community_garden_v0_assembly' ? { widthM: 50, depthM: 50, clearanceM: 0.5 }
+          : null;
+  if (structureKind === 'skate_park_v0_assembly' || exactProgram) {
     const boundary = frame.points ?? [
       { x: frame.minX, y: frame.minY },
       { x: frame.maxX, y: frame.minY },
       { x: frame.maxX, y: frame.maxY },
       { x: frame.minX, y: frame.maxY },
     ];
-    const fit = fitSkateParkV0Program(boundary);
+    const fit = exactProgram
+      ? fitFixedParkProgram(boundary, exactProgram)
+      : fitSkateParkV0Program(boundary);
     if (fit) points.push(...rectangleAnchors(
       fit.center,
       fit.widthM,

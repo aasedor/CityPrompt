@@ -59,6 +59,10 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_neighborhood_community",
         "park_pocket_courtyard",
         "park_skate_archetype_v0",
+        "park_inclusive_playground_v0",
+        "park_dog_archetype_v0",
+        "park_splash_pad_v0",
+        "park_community_garden_v0",
         "park_water_ecology",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
@@ -111,6 +115,25 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
         "skate_ledge_v1",
         "skate_spectator_bench_v1",
     )
+
+
+@pytest.mark.parametrize(("archetype_id", "variant_id", "family_id", "appearance_id", "width", "depth"), (
+    ("inclusive_playground", "inclusive_playground_v0", "park_inclusive_playground_v0", "inclusive_playground_v0_reference_skin", 55, 45),
+    ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),
+    ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
+    ("community_garden", "community_garden_v0", "park_community_garden_v0", "community_garden_v0_reference_skin", 55, 55),
+))
+def test_archetype_owned_batch_recipes_keep_exact_identity(
+    archetype_id, variant_id, family_id, appearance_id, width, depth,
+):
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        variant_id=variant_id,
+        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+    ))
+    assert recipe.family_id == family_id
+    assert recipe.appearance_kit_id == appearance_id
+    assert recipe.planting_structure == variant_id
 
 
 @pytest.mark.parametrize(

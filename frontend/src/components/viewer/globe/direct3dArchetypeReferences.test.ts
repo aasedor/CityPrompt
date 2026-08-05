@@ -40,9 +40,12 @@ function publicRealmZone(
 }
 
 function imageResponse(type = 'image/jpeg') {
+  const bytes = type === 'image/jpeg'
+    ? new Uint8Array([0xff, 0xd8, 0xff, 0xe0])
+    : new Uint8Array([1, 2, 3]);
   return {
     ok: true,
-    blob: async () => new Blob([new Uint8Array([1, 2, 3])], { type }),
+    blob: async () => new Blob([bytes], { type }),
   };
 }
 
@@ -109,6 +112,18 @@ describe('collectDirect3DArchetypeReferences', () => {
     ]);
 
     expect(references).toHaveLength(0);
+  });
+
+  it('skips a Git LFS pointer even when the dev server labels it image/png', async () => {
+    const pointer = new TextEncoder().encode('version https://git-lfs.github.com/spec/v1\noid sha256:abc\nsize 123\n');
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      ok: true,
+      blob: async () => new Blob([pointer], { type: 'image/png' }),
+    })));
+
+    expect(await collectDirect3DArchetypeReferences([
+      publicRealmZone('Playground', 'park', 'inclusive_playground', 'inclusive_playground_v0'),
+    ])).toHaveLength(0);
   });
 
   it('deduplicates repeated archetypes and names each styled building', async () => {

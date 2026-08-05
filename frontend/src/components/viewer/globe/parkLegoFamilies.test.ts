@@ -164,6 +164,10 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_civic_plaza', 'formal_civic_plaza', 'formal_civic_plaza_v0', 'neoclassical_stone_v1', 'paved_plaza'],
     ['park_linear_greenway', 'linear_park_greenway', 'linear_park_greenway_v0', 'rail_trail_v1', 'naturalistic_grove'],
     ['park_skate_archetype_v0', 'skate_park', 'skate_park_v0', 'skate_park_v0_reference_skin', 'skate_archetype_v0'],
+    ['park_inclusive_playground_v0', 'inclusive_playground', 'inclusive_playground_v0', 'inclusive_playground_v0_reference_skin', 'inclusive_playground_v0'],
+    ['park_dog_archetype_v0', 'dog_park', 'dog_park_v0', 'dog_park_v0_reference_skin', 'dog_park_v0'],
+    ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v0', 'splash_pad_area_v0_reference_skin', 'splash_pad_area_v0'],
+    ['park_community_garden_v0', 'community_garden', 'community_garden_v0', 'community_garden_v0_reference_skin', 'community_garden_v0'],
     ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v0', 'naturalistic_pond_v1', 'reservoir_perimeter'],
   ])('recognizes exact backend family mapping %s', (
     familyId,
@@ -237,6 +241,18 @@ describe('Public Realm LEGO V1 park families', () => {
       }),
     });
     expect(usesArchetypeOwnedParkSurface(compiled)).toBe(true);
+  });
+
+  it.each([
+    ['inclusive_playground', 'inclusive_playground_v0'],
+    ['dog_park', 'dog_park_v0'],
+    ['splash_pad_area', 'splash_pad_area_v0'],
+    ['community_garden', 'community_garden_v0'],
+  ])('keeps %s/%s on its exact surface without a drape', (archetypeId, variantId) => {
+    expect(usesArchetypeOwnedParkSurface(zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    }))).toBe(true);
   });
 
   it('does not normalize nested compiler identities or fall back to legacy fields', () => {

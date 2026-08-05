@@ -127,6 +127,22 @@ async function fetchImageBase64(url: string): Promise<string | null> {
       console.warn(`[Direct3D refs] Skipping non-image response (${blob.type || 'unknown'}):`, url);
       return null;
     }
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    const isPng = bytes.length >= 8
+      && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
+      && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a;
+    const isJpeg = bytes.length >= 3
+      && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    const isWebp = bytes.length >= 12
+      && String.fromCharCode(...bytes.slice(0, 4)) === 'RIFF'
+      && String.fromCharCode(...bytes.slice(8, 12)) === 'WEBP';
+    // Static servers infer Content-Type from the .png/.jpg suffix. A Git LFS
+    // pointer or other text payload therefore arrives as image/* even though
+    // the provider cannot decode it. Prove the file signature before billing.
+    if (!isPng && !isJpeg && !isWebp) {
+      console.warn('[Direct3D refs] Skipping invalid image payload:', url);
+      return null;
+    }
     return await new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -134,7 +150,7 @@ async function fetchImageBase64(url: string): Promise<string | null> {
         resolve(dataUrl.includes(',') ? dataUrl.split(',')[1] : null);
       };
       reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
+      reader.readAsDataURL(new Blob([bytes], { type: blob.type }));
     });
   } catch (err) {
     console.warn('[Direct3D refs] Failed to fetch reference image:', url, err);

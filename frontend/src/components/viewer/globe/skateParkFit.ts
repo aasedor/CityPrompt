@@ -3,14 +3,22 @@ export interface SkateParkPoint {
   y: number;
 }
 
-export interface SkateParkProgramFit {
+export interface FixedParkProgramSpec {
+  widthM: number;
+  depthM: number;
+  clearanceM: number;
+}
+
+export interface FixedParkProgramFit {
   center: SkateParkPoint;
   rotationRad: number;
-  widthM: 40;
-  depthM: 30;
-  clearanceM: 0.5;
+  widthM: number;
+  depthM: number;
+  clearanceM: number;
   scale: 1;
 }
+
+export type SkateParkProgramFit = FixedParkProgramFit;
 
 export const SKATE_PARK_V0_PROGRAM = Object.freeze({
   widthM: 40 as const,
@@ -146,22 +154,37 @@ function edgeSamples(
   return points;
 }
 
-export function fitSkateParkV0Program(
+export function fitFixedParkProgram(
   ring: readonly SkateParkPoint[],
-): SkateParkProgramFit | null {
+  program: FixedParkProgramSpec,
+): FixedParkProgramFit | null {
   if (ring.length < 3 || ring.some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y))) {
     return null;
   }
-  const { widthM, depthM, clearanceM, scale } = SKATE_PARK_V0_PROGRAM;
+  const { widthM, depthM, clearanceM } = program;
+  if (
+    !Number.isFinite(widthM)
+    || !Number.isFinite(depthM)
+    || !Number.isFinite(clearanceM)
+    || widthM <= 0
+    || depthM <= 0
+    || clearanceM < 0
+  ) return null;
   for (const center of candidateCenters(ring)) {
     for (const rotationRad of candidateAngles(ring)) {
       const samples = edgeSamples(center, rotationRad, widthM, depthM);
       if (samples.every((point) => (
         pointInRing(point, ring) && distanceToRing(point, ring) + EPSILON >= clearanceM
       ))) {
-        return { center, rotationRad, widthM, depthM, clearanceM, scale };
+        return { center, rotationRad, widthM, depthM, clearanceM, scale: 1 };
       }
     }
   }
   return null;
+}
+
+export function fitSkateParkV0Program(
+  ring: readonly SkateParkPoint[],
+): SkateParkProgramFit | null {
+  return fitFixedParkProgram(ring, SKATE_PARK_V0_PROGRAM);
 }

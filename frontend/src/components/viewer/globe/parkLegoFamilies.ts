@@ -1,3 +1,8 @@
+import {
+  archetypeOwnedParkKitForFamily,
+  archetypeOwnedParkKitForSelection,
+} from './parkArchetypeOwnedKits';
+
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
  * ids: one executable family can serve more than one compatible archetype. */
@@ -9,6 +14,10 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_civic_plaza',
   'park_linear_greenway',
   'park_skate_archetype_v0',
+  'park_inclusive_playground_v0',
+  'park_dog_archetype_v0',
+  'park_splash_pad_v0',
+  'park_community_garden_v0',
   'park_water_ecology',
 ] as const;
 
@@ -468,6 +477,26 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       plantingStructure: 'skate_archetype_v0',
     })]),
   }),
+  park_inclusive_playground_v0: Object.freeze({
+    inclusive_playground: Object.freeze([Object.freeze({
+      variantId: 'inclusive_playground_v0', appearanceKitId: 'inclusive_playground_v0_reference_skin', plantingStructure: 'inclusive_playground_v0',
+    })]),
+  }),
+  park_dog_archetype_v0: Object.freeze({
+    dog_park: Object.freeze([Object.freeze({
+      variantId: 'dog_park_v0', appearanceKitId: 'dog_park_v0_reference_skin', plantingStructure: 'dog_park_v0',
+    })]),
+  }),
+  park_splash_pad_v0: Object.freeze({
+    splash_pad_area: Object.freeze([Object.freeze({
+      variantId: 'splash_pad_area_v0', appearanceKitId: 'splash_pad_area_v0_reference_skin', plantingStructure: 'splash_pad_area_v0',
+    })]),
+  }),
+  park_community_garden_v0: Object.freeze({
+    community_garden: Object.freeze([Object.freeze({
+      variantId: 'community_garden_v0', appearanceKitId: 'community_garden_v0_reference_skin', plantingStructure: 'community_garden_v0',
+    })]),
+  }),
   park_water_ecology: Object.freeze({
     stormwater_retention_pond: Object.freeze([Object.freeze({
       variantId: 'stormwater_retention_pond_v0',
@@ -504,6 +533,10 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId.startsWith('formal_civic_plaza')) return 'park_civic_plaza';
   if (archetypeId.startsWith('linear_park_greenway')) return 'park_linear_greenway';
   if (archetypeId === 'skate_park') return 'park_skate_archetype_v0';
+  if (archetypeId === 'inclusive_playground') return 'park_inclusive_playground_v0';
+  if (archetypeId === 'dog_park') return 'park_dog_archetype_v0';
+  if (archetypeId === 'splash_pad_area') return 'park_splash_pad_v0';
+  if (archetypeId === 'community_garden') return 'park_community_garden_v0';
   if (archetypeId.startsWith('stormwater_retention_pond')) return 'park_water_ecology';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
@@ -516,6 +549,10 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_civic_plaza': return 'formal_civic_plaza';
     case 'park_linear_greenway': return 'linear_park_greenway';
     case 'park_skate_archetype_v0': return 'skate_park';
+    case 'park_inclusive_playground_v0': return 'inclusive_playground';
+    case 'park_dog_archetype_v0': return 'dog_park';
+    case 'park_splash_pad_v0': return 'splash_pad_area';
+    case 'park_community_garden_v0': return 'community_garden';
     case 'park_water_ecology': return 'stormwater_retention_pond';
   }
 }
@@ -673,10 +710,10 @@ export function isExecutableParkLegoFamily(zone: ParkLegoZone): boolean {
  * exact material bundle and fixed geometry are the visual source of truth. */
 export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   const contract = resolveParkLegoContract(zone);
-  return contract?.supported === true
-    && contract.familyId === 'park_skate_archetype_v0'
-    && contract.archetypeId === 'skate_park'
-    && contract.variantId === 'skate_park_v0';
+  if (contract?.supported !== true) return false;
+  const kit = archetypeOwnedParkKitForFamily(contract.familyId);
+  const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
+  return kit !== null && selection?.familyId === kit.familyId;
 }
 
 /** Choose a lightweight scene-dressing family even when an archetype does

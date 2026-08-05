@@ -5,6 +5,7 @@ import {
   resolveParkLegoContract,
   type ParkLegoFamilyId,
 } from './parkLegoFamilies';
+import { archetypeOwnedParkKitForFamily } from './parkArchetypeOwnedKits';
 
 export type ParkGuideKind =
   | 'ellipse'
@@ -1334,6 +1335,10 @@ export type ParkSpecialtyStructureKind =
   | 'japanese_garden_bridge'
   | 'cricket_ground_assembly'
   | 'skate_park_v0_assembly'
+  | 'inclusive_playground_v0_assembly'
+  | 'dog_park_v0_assembly'
+  | 'splash_pad_v0_assembly'
+  | 'community_garden_v0_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
@@ -1414,6 +1419,18 @@ export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
   const legoContract = resolveParkLegoContract(zone);
+  const exactKit = legoContract?.supported
+    ? archetypeOwnedParkKitForFamily(legoContract.familyId)
+    : null;
+  if (legoContract?.source === 'public_realm_lego' && exactKit) {
+    switch (exactKit.surfaceKind) {
+      case 'skate': return 'skate_park_v0_assembly';
+      case 'inclusive_playground': return 'inclusive_playground_v0_assembly';
+      case 'dog_park': return 'dog_park_v0_assembly';
+      case 'splash_pad': return 'splash_pad_v0_assembly';
+      case 'community_garden': return 'community_garden_v0_assembly';
+    }
+  }
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported
