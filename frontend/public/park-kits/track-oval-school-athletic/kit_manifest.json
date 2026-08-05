@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "running_track_oval",
+  "slug": "track-oval-school-athletic",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    220.0,
+    135.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/track-oval-school-athletic/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "soccer-goal.glb",
+    "track-bleacher.glb"
+  ],
+  "compositionGrammar": {
+    "variantId": "running_track_oval_v2",
+    "topology": "oval_anchor",
+    "moduleCount": 1
+  },
+  "humanReferencePolicy": {
+    "sourcePeopleUsedFor": [
+      "approximate feature scale",
+      "occupancy and use patterns",
+      "circulation and desire lines",
+      "spectator and social edge placement",
+      "clearance, shade, visibility, and supervision cues"
+    ],
+    "peopleGenerated": false,
+    "authorityLimit": "observational only; regulation and accessibility dimensions remain deterministic"
+  },
+  "largeBuildingInterface": "reserved pad and forecourt only"
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "baseball_softball_diamond",
+  "slug": "baseball-youth-pinwheel",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    230.0,
+    230.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/baseball-youth-pinwheel/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "baseball-backstop.glb",
+    "batting-cage.glb",
+    "shared-bleacher.glb"
+  ],
+  "compositionGrammar": {
+    "variantId": "baseball_softball_diamond_v1",
+    "topology": "radial_pinwheel_4",
+    "moduleCount": 4
+  },
+  "humanReferencePolicy": {
+    "sourcePeopleUsedFor": [
+      "approximate feature scale",
+      "occupancy and use patterns",
+      "circulation and desire lines",
+      "spectator and social edge placement",
+      "clearance, shade, visibility, and supervision cues"
+    ],
+    "peopleGenerated": false,
+    "authorityLimit": "observational only; regulation and accessibility dimensions remain deterministic"
+  },
+  "largeBuildingInterface": "reserved pad and forecourt only"
+}

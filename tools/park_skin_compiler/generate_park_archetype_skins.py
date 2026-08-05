@@ -42,14 +42,14 @@ def load_schedule() -> dict:
     return json.loads(SCHEDULE_PATH.read_text(encoding="utf-8"))
 
 
-def validate_schedule(schedule: dict) -> list[str]:
+def validate_schedule(schedule: dict, source_root: Path = REPO_ROOT) -> list[str]:
     errors: list[str] = []
     if schedule.get("sourcePixelsProjected") is not False:
         errors.append("source photographs must not be projected onto geometry")
     if len(schedule.get("archetypes", {})) != 5:
         errors.append("expected five archetype skin schedules")
     for slug, item in schedule.get("archetypes", {}).items():
-        source = REPO_ROOT / item.get("source", "")
+        source = source_root / item.get("source", "")
         if not source.exists():
             errors.append(f"{slug}: missing source")
         if set(item.get("crops", {})) != set(ROLES):
@@ -86,7 +86,12 @@ def synthesize_role(role: str, crop: Image.Image, seed: int, pattern: str) -> Im
     return Image.fromarray(np.clip(array, 0, 255).astype(np.uint8), mode="RGB")
 
 
-def generate(schedule: dict, output_root: Path, selected: str = "all") -> None:
+def generate(
+    schedule: dict,
+    output_root: Path,
+    selected: str = "all",
+    source_root: Path = REPO_ROOT,
+) -> None:
     defaults = schedule["materialDefaults"]
     items = schedule["archetypes"].items()
     if selected != "all":
@@ -94,7 +99,7 @@ def generate(schedule: dict, output_root: Path, selected: str = "all") -> None:
             raise SystemExit(f"unknown archetype slug: {selected}")
         items = [(selected, schedule["archetypes"][selected])]
     for archetype_index, (slug, item) in enumerate(items):
-        source = Image.open(REPO_ROOT / item["source"]).convert("RGB")
+        source = Image.open(source_root / item["source"]).convert("RGB")
         target = output_root / slug / "adaptive-v1"
         manifest = {
             "schemaVersion": 1,
@@ -145,16 +150,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--archetype", default="all")
+    parser.add_argument("--source-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     schedule = load_schedule()
-    errors = validate_schedule(schedule)
+    source_root = args.source_root.resolve()
+    errors = validate_schedule(schedule, source_root)
     if errors:
         raise SystemExit("\n".join(errors))
     if args.dry_run:
         print(f"archetypes={len(schedule['archetypes'])} roles={len(ROLES)} api_calls=0 source_pixels_projected=false")
         return
-    generate(schedule, args.out, args.archetype)
+    generate(schedule, args.out, args.archetype, source_root)
 
 
 if __name__ == "__main__":
