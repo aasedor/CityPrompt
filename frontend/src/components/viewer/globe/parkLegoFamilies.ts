@@ -18,6 +18,11 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_dog_archetype_v0',
   'park_splash_pad_v0',
   'park_community_garden_v0',
+  'park_tennis_cluster_v0',
+  'park_nature_play_v0',
+  'park_pump_track_v0',
+  'park_outdoor_fitness_v0',
+  'park_memorial_garden_v0',
   'park_water_ecology',
 ] as const;
 
@@ -497,6 +502,31 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       variantId: 'community_garden_v0', appearanceKitId: 'community_garden_v0_reference_skin', plantingStructure: 'community_garden_v0',
     })]),
   }),
+  park_tennis_cluster_v0: Object.freeze({
+    tennis_court_cluster: Object.freeze([Object.freeze({
+      variantId: 'tennis_court_cluster_v0', appearanceKitId: 'tennis_court_cluster_v0_reference_skin', plantingStructure: 'tennis_court_cluster_v0',
+    })]),
+  }),
+  park_nature_play_v0: Object.freeze({
+    nature_play_area: Object.freeze([Object.freeze({
+      variantId: 'nature_play_area_v0', appearanceKitId: 'nature_play_area_v0_reference_skin', plantingStructure: 'nature_play_area_v0',
+    })]),
+  }),
+  park_pump_track_v0: Object.freeze({
+    pump_track: Object.freeze([Object.freeze({
+      variantId: 'pump_track_v0', appearanceKitId: 'pump_track_v0_reference_skin', plantingStructure: 'pump_track_v0',
+    })]),
+  }),
+  park_outdoor_fitness_v0: Object.freeze({
+    outdoor_fitness_circuit: Object.freeze([Object.freeze({
+      variantId: 'outdoor_fitness_circuit_v0', appearanceKitId: 'outdoor_fitness_circuit_v0_reference_skin', plantingStructure: 'outdoor_fitness_circuit_v0',
+    })]),
+  }),
+  park_memorial_garden_v0: Object.freeze({
+    memorial_garden: Object.freeze([Object.freeze({
+      variantId: 'memorial_garden_v0', appearanceKitId: 'memorial_garden_v0_reference_skin', plantingStructure: 'memorial_garden_v0',
+    })]),
+  }),
   park_water_ecology: Object.freeze({
     stormwater_retention_pond: Object.freeze([Object.freeze({
       variantId: 'stormwater_retention_pond_v0',
@@ -537,6 +567,11 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'dog_park') return 'park_dog_archetype_v0';
   if (archetypeId === 'splash_pad_area') return 'park_splash_pad_v0';
   if (archetypeId === 'community_garden') return 'park_community_garden_v0';
+  if (archetypeId === 'tennis_court_cluster') return 'park_tennis_cluster_v0';
+  if (archetypeId === 'nature_play_area') return 'park_nature_play_v0';
+  if (archetypeId === 'pump_track') return 'park_pump_track_v0';
+  if (archetypeId === 'outdoor_fitness_circuit') return 'park_outdoor_fitness_v0';
+  if (archetypeId === 'memorial_garden') return 'park_memorial_garden_v0';
   if (archetypeId.startsWith('stormwater_retention_pond')) return 'park_water_ecology';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
@@ -553,6 +588,11 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_dog_archetype_v0': return 'dog_park';
     case 'park_splash_pad_v0': return 'splash_pad_area';
     case 'park_community_garden_v0': return 'community_garden';
+    case 'park_tennis_cluster_v0': return 'tennis_court_cluster';
+    case 'park_nature_play_v0': return 'nature_play_area';
+    case 'park_pump_track_v0': return 'pump_track';
+    case 'park_outdoor_fitness_v0': return 'outdoor_fitness_circuit';
+    case 'park_memorial_garden_v0': return 'memorial_garden';
     case 'park_water_ecology': return 'stormwater_retention_pond';
   }
 }

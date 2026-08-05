@@ -1339,6 +1339,11 @@ export type ParkSpecialtyStructureKind =
   | 'dog_park_v0_assembly'
   | 'splash_pad_v0_assembly'
   | 'community_garden_v0_assembly'
+  | 'tennis_cluster_v0_assembly'
+  | 'nature_play_v0_assembly'
+  | 'pump_track_v0_assembly'
+  | 'outdoor_fitness_v0_assembly'
+  | 'memorial_garden_v0_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
@@ -1429,6 +1434,11 @@ export function resolveParkSpecialtyStructureKind(
       case 'dog_park': return 'dog_park_v0_assembly';
       case 'splash_pad': return 'splash_pad_v0_assembly';
       case 'community_garden': return 'community_garden_v0_assembly';
+      case 'tennis_cluster': return 'tennis_cluster_v0_assembly';
+      case 'nature_play': return 'nature_play_v0_assembly';
+      case 'pump_track': return 'pump_track_v0_assembly';
+      case 'outdoor_fitness': return 'outdoor_fitness_v0_assembly';
+      case 'memorial_garden': return 'memorial_garden_v0_assembly';
     }
   }
   if (

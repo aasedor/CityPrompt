@@ -23,3 +23,4 @@ frontend/public/archetypes/streets/**/*.webp filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/textures_worldclass_v7/**/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/textures_worldclass_v7/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/video-pilots/*.mp4 filter=lfs diff=lfs merge=lfs -text
+docs/archetype_owned_park_lego_batch2/*.png filter=lfs diff=lfs merge=lfs -text

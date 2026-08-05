@@ -79,8 +79,19 @@ function kinds(placements: readonly ParkMicrodetailPlacement[]): Set<string> {
 }
 
 describe('park microdetail families', () => {
-  it('leaves the exact Skate Park v0 kit free of generic microdetail', () => {
-    expect(buildParkMicrodetailFamily(input('park_skate_archetype_v0'))).toEqual([]);
+  it.each([
+    'park_skate_archetype_v0',
+    'park_inclusive_playground_v0',
+    'park_dog_archetype_v0',
+    'park_splash_pad_v0',
+    'park_community_garden_v0',
+    'park_tennis_cluster_v0',
+    'park_nature_play_v0',
+    'park_pump_track_v0',
+    'park_outdoor_fitness_v0',
+    'park_memorial_garden_v0',
+  ] as const)('leaves exact kit %s free of generic microdetail', (familyId) => {
+    expect(buildParkMicrodetailFamily(input(familyId))).toEqual([]);
   });
 
   it.each([

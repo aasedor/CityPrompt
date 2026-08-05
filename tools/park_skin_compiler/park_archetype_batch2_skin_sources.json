@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "tennis-court-professional": {
+      "source": "frontend/public/archetypes/openspaces/tennis-court-cluster/variant_0.png",
+      "patterns": {"paver": "asphalt", "safety": "asphalt", "timber": "paver"},
+      "crops": {
+        "paver": [0.03, 0.64, 0.35, 0.93],
+        "lawn": [0.00, 0.50, 0.28, 0.88],
+        "asphalt": [0.28, 0.55, 0.82, 0.90],
+        "planting": [0.00, 0.35, 0.30, 0.78],
+        "safety": [0.25, 0.40, 0.82, 0.78],
+        "timber": [0.30, 0.42, 0.67, 0.66]
+      }
+    },
+    "nature-play-forest-adventure": {
+      "source": "frontend/public/archetypes/openspaces/nature-play-area/variant_0.png",
+      "patterns": {"paver": "safety", "lawn": "planting", "asphalt": "timber", "safety": "paver"},
+      "crops": {
+        "paver": [0.20, 0.62, 0.74, 0.96],
+        "lawn": [0.02, 0.04, 0.46, 0.43],
+        "asphalt": [0.04, 0.50, 0.45, 0.82],
+        "planting": [0.50, 0.04, 0.98, 0.54],
+        "safety": [0.66, 0.57, 0.98, 0.91],
+        "timber": [0.02, 0.50, 0.50, 0.87]
+      }
+    },
+    "pump-track-asphalt-competition": {
+      "source": "frontend/public/archetypes/openspaces/pump-track/variant_0.png",
+      "patterns": {"paver": "asphalt", "safety": "asphalt", "timber": "paver"},
+      "crops": {
+        "paver": [0.02, 0.68, 0.42, 0.98],
+        "lawn": [0.00, 0.34, 0.34, 0.69],
+        "asphalt": [0.12, 0.40, 0.83, 0.91],
+        "planting": [0.00, 0.25, 0.35, 0.64],
+        "safety": [0.14, 0.42, 0.84, 0.93],
+        "timber": [0.72, 0.18, 0.99, 0.66]
+      }
+    },
+    "outdoor-fitness-calisthenics": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-fitness-circuit/variant_0.png",
+      "patterns": {"paver": "asphalt", "safety": "asphalt", "timber": "paver"},
+      "crops": {
+        "paver": [0.02, 0.65, 0.44, 0.98],
+        "lawn": [0.62, 0.36, 0.98, 0.76],
+        "asphalt": [0.12, 0.42, 0.86, 0.93],
+        "planting": [0.62, 0.34, 0.99, 0.77],
+        "safety": [0.10, 0.42, 0.86, 0.94],
+        "timber": [0.02, 0.66, 0.45, 0.96]
+      }
+    },
+    "memorial-garden-classical-formal": {
+      "source": "frontend/public/archetypes/openspaces/memorial-garden/variant_0.png",
+      "patterns": {"paver": "paver", "lawn": "planting", "asphalt": "asphalt", "safety": "paver", "timber": "paver"},
+      "crops": {
+        "paver": [0.22, 0.63, 0.78, 0.98],
+        "lawn": [0.02, 0.46, 0.46, 0.86],
+        "asphalt": [0.14, 0.27, 0.86, 0.62],
+        "planting": [0.02, 0.40, 0.98, 0.82],
+        "safety": [0.06, 0.24, 0.94, 0.82],
+        "timber": [0.04, 0.50, 0.96, 0.93]
+      }
+    }
+  },
+  "materialDefaults": {
+    "paver": {"roughness": 0.88, "normalStrength": 2.0, "metresPerTile": 4.0},
+    "lawn": {"roughness": 0.95, "normalStrength": 2.2, "metresPerTile": 5.0},
+    "asphalt": {"roughness": 0.91, "normalStrength": 1.8, "metresPerTile": 4.0},
+    "planting": {"roughness": 0.98, "normalStrength": 3.0, "metresPerTile": 3.0},
+    "safety": {"roughness": 0.90, "normalStrength": 2.4, "metresPerTile": 3.0},
+    "timber": {"roughness": 0.84, "normalStrength": 2.2, "metresPerTile": 2.5}
+  }
+}

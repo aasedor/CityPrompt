@@ -836,7 +836,12 @@ function ParkSpecialtyStructures({
     : structureKind === 'dog_park_v0_assembly' ? 'park_dog_archetype_v0'
       : structureKind === 'splash_pad_v0_assembly' ? 'park_splash_pad_v0'
         : structureKind === 'community_garden_v0_assembly' ? 'park_community_garden_v0'
-          : null;
+          : structureKind === 'tennis_cluster_v0_assembly' ? 'park_tennis_cluster_v0'
+            : structureKind === 'nature_play_v0_assembly' ? 'park_nature_play_v0'
+              : structureKind === 'pump_track_v0_assembly' ? 'park_pump_track_v0'
+                : structureKind === 'outdoor_fitness_v0_assembly' ? 'park_outdoor_fitness_v0'
+                  : structureKind === 'memorial_garden_v0_assembly' ? 'park_memorial_garden_v0'
+                    : null;
   if (exactFamily) {
     return (
       <SilentKitBoundary fallback={null}>

@@ -15,7 +15,12 @@ type ExactParkFamilyId =
   | 'park_inclusive_playground_v0'
   | 'park_dog_archetype_v0'
   | 'park_splash_pad_v0'
-  | 'park_community_garden_v0';
+  | 'park_community_garden_v0'
+  | 'park_tennis_cluster_v0'
+  | 'park_nature_play_v0'
+  | 'park_pump_track_v0'
+  | 'park_outdoor_fitness_v0'
+  | 'park_memorial_garden_v0';
 
 interface MaterialMaps {
   map: THREE.Texture;
@@ -115,6 +120,29 @@ function SimpleBench({ x, y, yaw = 0 }: { x: number; y: number; yaw?: number }) 
   );
 }
 
+function GroundLine({ x = 0, y = 0, width, depth, color = '#f1f0e8' }: {
+  x?: number; y?: number; width: number; depth: number; color?: string;
+}) {
+  return <mesh position={[x, y, 0.075]} renderOrder={RENDER_ORDER + 2}>
+    <boxGeometry args={[width, depth, 0.025]} />
+    <meshStandardMaterial color={color} roughness={0.78} />
+  </mesh>;
+}
+
+function ExactTree({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {
+  return <group position={[x, y, 0.12]} scale={scale}>
+    <mesh position={[0, 0, 1.8]} castShadow><cylinderGeometry args={[0.18, 0.25, 3.6, 10]} /><meshStandardMaterial color="#563920" roughness={0.94} /></mesh>
+    <mesh position={[0, 0, 4.6]} castShadow><icosahedronGeometry args={[2.2, 2]} /><meshStandardMaterial color="#405b2c" roughness={0.96} /></mesh>
+  </group>;
+}
+
+function FormalEvergreen({ x, y }: { x: number; y: number }) {
+  return <group position={[x, y, 0.12]}>
+    <mesh position={[0, 0, 1.6]}><cylinderGeometry args={[0.14, 0.18, 3.2, 10]} /><meshStandardMaterial color="#4b3422" roughness={0.94} /></mesh>
+    <mesh position={[0, 0, 4.2]} castShadow><coneGeometry args={[1.8, 5.5, 28]} /><meshStandardMaterial color="#1f3a20" roughness={0.96} /></mesh>
+  </group>;
+}
+
 function ExactSurface({ kit }: { kit: ArchetypeOwnedParkKitDefinition }) {
   const paver = useSkinMaterial(kit.slug, 'paver', [kit.widthM / 4, kit.depthM / 4]);
   const lawn = useSkinMaterial(kit.slug, 'lawn', [kit.widthM / 5, kit.depthM / 5]);
@@ -157,6 +185,80 @@ function ExactSurface({ kit }: { kit: ArchetypeOwnedParkKitDefinition }) {
     {[[-5, 4], [-3, 6], [0, -5], [5, -3], [7, 3]].map(([x, y]) => <MetricGlb key={`${x}-${y}`} url={asset('groundJet')} position={[x, y, 0.18]} />)}
     <FenceRectangle url={asset('fence')} width={27.5} depth={21} section={4.5} />
     <SimpleBench x={12} y={-7} yaw={2.094} />
+  </>;
+
+  if (kit.surfaceKind === 'tennis_cluster') {
+    const courts = [[-19.6, -10], [19.6, -10], [-19.6, 10], [19.6, 10]];
+    return <>
+      <TexturedRect width={82} depth={46} z={0} maps={lawn} color="#315a32" />
+      {courts.map(([x, y]) => <group key={`${x}-${y}`} position={[x, y, 0.02]}>
+        <TexturedRect width={36.58} depth={18.29} z={0} maps={safety} color="#315b85" />
+        <GroundLine width={36.58} depth={0.055} y={-9.145} /><GroundLine width={36.58} depth={0.055} y={9.145} />
+        <GroundLine width={0.055} depth={18.29} x={-18.29} /><GroundLine width={0.055} depth={18.29} x={18.29} />
+        <GroundLine width={36.58} depth={0.055} y={-6.4} /><GroundLine width={36.58} depth={0.055} y={6.4} />
+        <GroundLine width={0.055} depth={12.8} x={-6.4} /><GroundLine width={0.055} depth={12.8} x={6.4} />
+        <GroundLine width={12.8} depth={0.055} />
+        <MetricGlb url={asset('net')} position={[0, 0, 0.12]} yaw={Math.PI / 2} />
+      </group>)}
+      <FenceRectangle url={asset('fence')} width={82} depth={46} section={6} />
+      <MetricGlb url={asset('bleacher')} position={[-19.6, 0, 0.12]} />
+      <MetricGlb url={asset('bleacher')} position={[19.6, 0, 0.12]} />
+      {[[-39, -21], [0, -21], [39, -21], [-39, 21], [0, 21], [39, 21]].map(([x, y]) => (
+        <MetricGlb key={`${x}-${y}`} url={asset('floodlight')} position={[x, y, 0.12]} />
+      ))}
+    </>;
+  }
+
+  if (kit.surfaceKind === 'nature_play') return <>
+    <TexturedRect width={40} depth={30} z={0} maps={paver} color="#866f52" />
+    <TexturedEllipse x={12} y={-6} rx={7.2} ry={4.8} z={0.035} maps={safety} color="#bda477" />
+    <MetricGlb url={asset('rill')} position={[0, 0, 0.02]} />
+    {[[-12, -6, 0.2], [-6, -9, -0.35], [-3, 9, 0.55]].map(([x, y, yaw]) => (
+      <MetricGlb key={`${x}-${y}`} url={asset('balanceLog')} position={[x, y, 0.12]} yaw={yaw} />
+    ))}
+    <MetricGlb url={asset('logFort')} position={[9, 7, 0.12]} />
+    <MetricGlb url={asset('willowTunnel')} position={[-10, 7, 0.12]} />
+    {[[-2, -4], [0, -5], [2, -4], [4, -2], [6, -1]].map(([x, y]) => (
+      <MetricGlb key={`${x}-${y}`} url={asset('steppingStump')} position={[x, y, 0.12]} />
+    ))}
+    <MetricGlb url={asset('boulders')} position={[12, -6, 0.12]} />
+    {[[-16, -11], [-7, -13], [7, -13], [16, -11], [-16, 11], [-7, 13], [7, 13], [16, 11]].map(([x, y], index) => (
+      <ExactTree key={`${x}-${y}`} x={x} y={y} scale={0.72 + (index % 3) * 0.08} />
+    ))}
+  </>;
+
+  if (kit.surfaceKind === 'pump_track') return <>
+    <TexturedRect width={50} depth={30} z={0} maps={lawn} />
+    <MetricGlb url={asset('loop')} position={[0, 0, 0.12]} />
+    <MetricGlb url={asset('startMound')} position={[-18, -2, 0.12]} />
+    <SimpleBench x={0} y={-13} />
+  </>;
+
+  if (kit.surfaceKind === 'outdoor_fitness') return <>
+    <TexturedRect width={30} depth={25} z={0} maps={paver} color="#d0ccc2" />
+    {[[-7, 4, 6, 4.5], [6, 3, 6, 4.5], [-5, -7, 5, 3.5], [7, -6, 5, 3.5]].map(([x, y, rx, ry]) => (
+      <TexturedEllipse key={`${x}-${y}`} x={x} y={y} rx={rx} ry={ry} z={0.035} maps={safety} color="#313a3d" />
+    ))}
+    <MetricGlb url={asset('rig')} position={[-6, 4, 0.12]} />
+    <MetricGlb url={asset('parallelBars')} position={[6, 3, 0.12]} />
+    <MetricGlb url={asset('situpBench')} position={[-5, -7, 0.12]} />
+    <MetricGlb url={asset('rings')} position={[7, -6, 0.12]} />
+    <SimpleBench x={0} y={-11} />
+  </>;
+
+  if (kit.surfaceKind === 'memorial_garden') return <>
+    <TexturedRect width={50} depth={40} z={0} maps={paver} color="#d4cbc0" />
+    {[[-15, -11], [15, -11], [-15, 8], [15, 8]].map(([x, y]) => <group key={`${x}-${y}`} position={[x, y, 0.02]}>
+      <mesh position={[0, 0, 0.28]} castShadow><boxGeometry args={[13, 7, 0.58]} /><meshStandardMaterial color="#17391c" roughness={0.96} /></mesh>
+      <TexturedRect width={9} depth={3} z={0.59} maps={paver} color="#c9c1b5" />
+    </group>)}
+    <MetricGlb url={asset('pool')} position={[0, 4, 0.12]} />
+    <MetricGlb url={asset('fountain')} position={[0, -10, 0.12]} />
+    <MetricGlb url={asset('wall')} position={[0, 18, 0.12]} />
+    {[[-20, -13], [-20, 13], [20, -13], [20, 13]].map(([x, y]) => (
+      <MetricGlb key={`${x}-${y}`} url={asset('urn')} position={[x, y, 0.12]} />
+    ))}
+    {[-22, 22].flatMap((x) => [-15, -5, 5, 15].map((y) => <FormalEvergreen key={`${x}-${y}`} x={x} y={y} />))}
   </>;
 
   const beds = [-15, -7.5, 0, 7.5, 15].flatMap((y, row) => [-15, -7.5, 0, 7.5]

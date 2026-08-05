@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "tennis_court_cluster",
+  "slug": "tennis-court-professional",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    82.0,
+    46.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/tennis-court-professional/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "spectator-bleacher.glb",
+    "tennis-fence-6m.glb",
+    "tennis-floodlight.glb",
+    "tennis-net.glb"
+  ]
+}

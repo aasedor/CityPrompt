@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "nature_play_area",
+  "slug": "nature-play-forest-adventure",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    40.0,
+    30.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/nature-play-forest-adventure/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "balance-log.glb",
+    "log-fort.glb",
+    "play-boulders.glb",
+    "stepping-stump.glb",
+    "water-rill.glb",
+    "willow-tunnel.glb"
+  ]
+}

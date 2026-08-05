@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "memorial_garden",
+  "slug": "memorial-garden-classical-formal",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    50.0,
+    40.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/memorial-garden-classical-formal/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "memorial-wall.glb",
+    "reflecting-pool.glb",
+    "tiered-fountain.glb",
+    "topiary-urn.glb"
+  ]
+}

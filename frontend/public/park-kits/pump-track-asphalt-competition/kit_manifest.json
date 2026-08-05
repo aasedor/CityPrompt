@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "pump_track",
+  "slug": "pump-track-asphalt-competition",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    50.0,
+    30.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/pump-track-asphalt-competition/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "pump-track-loop.glb",
+    "start-mound.glb"
+  ]
+}

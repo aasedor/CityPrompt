@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "outdoor_fitness_circuit",
+  "slug": "outdoor-fitness-calisthenics",
+  "method": "lego_surface_plus_metric_program_assets",
+  "envelopeM": [
+    30.0,
+    25.0
+  ],
+  "metricScale": 1.0,
+  "groundContactOriginZM": 0.0,
+  "surfaceOwner": "lego_park_grammar",
+  "people": false,
+  "largeBuildings": false,
+  "skin": "park-skins/outdoor-fitness-calisthenics/adaptive-v1",
+  "skinMethod": "reference_statistics_plus_procedural_structure",
+  "depthAssets": [
+    "calisthenics-rig.glb",
+    "parallel-bars.glb",
+    "rings-frame.glb",
+    "situp-bench.glb"
+  ]
+}

@@ -168,6 +168,11 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_dog_archetype_v0', 'dog_park', 'dog_park_v0', 'dog_park_v0_reference_skin', 'dog_park_v0'],
     ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v0', 'splash_pad_area_v0_reference_skin', 'splash_pad_area_v0'],
     ['park_community_garden_v0', 'community_garden', 'community_garden_v0', 'community_garden_v0_reference_skin', 'community_garden_v0'],
+    ['park_tennis_cluster_v0', 'tennis_court_cluster', 'tennis_court_cluster_v0', 'tennis_court_cluster_v0_reference_skin', 'tennis_court_cluster_v0'],
+    ['park_nature_play_v0', 'nature_play_area', 'nature_play_area_v0', 'nature_play_area_v0_reference_skin', 'nature_play_area_v0'],
+    ['park_pump_track_v0', 'pump_track', 'pump_track_v0', 'pump_track_v0_reference_skin', 'pump_track_v0'],
+    ['park_outdoor_fitness_v0', 'outdoor_fitness_circuit', 'outdoor_fitness_circuit_v0', 'outdoor_fitness_circuit_v0_reference_skin', 'outdoor_fitness_circuit_v0'],
+    ['park_memorial_garden_v0', 'memorial_garden', 'memorial_garden_v0', 'memorial_garden_v0_reference_skin', 'memorial_garden_v0'],
     ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v0', 'naturalistic_pond_v1', 'reservoir_perimeter'],
   ])('recognizes exact backend family mapping %s', (
     familyId,

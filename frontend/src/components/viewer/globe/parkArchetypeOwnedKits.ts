@@ -9,7 +9,8 @@ export interface ArchetypeOwnedParkKitDefinition {
   widthM: number;
   depthM: number;
   clearanceM: number;
-  surfaceKind: 'skate' | 'inclusive_playground' | 'dog_park' | 'splash_pad' | 'community_garden';
+  surfaceKind: 'skate' | 'inclusive_playground' | 'dog_park' | 'splash_pad' | 'community_garden'
+    | 'tennis_cluster' | 'nature_play' | 'pump_track' | 'outdoor_fitness' | 'memorial_garden';
   assets: Readonly<Record<string, string>>;
   people: false;
   largeBuildings: false;
@@ -123,6 +124,101 @@ export const ARCHETYPE_OWNED_PARK_KITS = Object.freeze({
       trellis: 'garden-trellis.glb',
       raisedBed: 'raised-growing-bed.glb',
       fence: 'split-rail-fence.glb',
+    },
+  }),
+  park_tennis_cluster_v0: kit({
+    familyId: 'park_tennis_cluster_v0',
+    archetypeId: 'tennis_court_cluster',
+    variantId: 'tennis_court_cluster_v0',
+    title: 'Tennis Court Cluster / Professional Grade',
+    appearanceKitId: 'tennis_court_cluster_v0_reference_skin',
+    plantingStructure: 'tennis_court_cluster_v0',
+    slug: 'tennis-court-professional',
+    widthM: 82,
+    depthM: 46,
+    clearanceM: 0.5,
+    surfaceKind: 'tennis_cluster',
+    assets: {
+      net: 'tennis-net.glb',
+      fence: 'tennis-fence-6m.glb',
+      floodlight: 'tennis-floodlight.glb',
+      bleacher: 'spectator-bleacher.glb',
+    },
+  }),
+  park_nature_play_v0: kit({
+    familyId: 'park_nature_play_v0',
+    archetypeId: 'nature_play_area',
+    variantId: 'nature_play_area_v0',
+    title: 'Nature Play Area / Forest Adventure',
+    appearanceKitId: 'nature_play_area_v0_reference_skin',
+    plantingStructure: 'nature_play_area_v0',
+    slug: 'nature-play-forest-adventure',
+    widthM: 40,
+    depthM: 30,
+    clearanceM: 0.5,
+    surfaceKind: 'nature_play',
+    assets: {
+      rill: 'water-rill.glb',
+      balanceLog: 'balance-log.glb',
+      logFort: 'log-fort.glb',
+      willowTunnel: 'willow-tunnel.glb',
+      steppingStump: 'stepping-stump.glb',
+      boulders: 'play-boulders.glb',
+    },
+  }),
+  park_pump_track_v0: kit({
+    familyId: 'park_pump_track_v0',
+    archetypeId: 'pump_track',
+    variantId: 'pump_track_v0',
+    title: 'Pump Track / Asphalt Competition',
+    appearanceKitId: 'pump_track_v0_reference_skin',
+    plantingStructure: 'pump_track_v0',
+    slug: 'pump-track-asphalt-competition',
+    widthM: 50,
+    depthM: 30,
+    clearanceM: 0.5,
+    surfaceKind: 'pump_track',
+    assets: {
+      loop: 'pump-track-loop.glb',
+      startMound: 'start-mound.glb',
+    },
+  }),
+  park_outdoor_fitness_v0: kit({
+    familyId: 'park_outdoor_fitness_v0',
+    archetypeId: 'outdoor_fitness_circuit',
+    variantId: 'outdoor_fitness_circuit_v0',
+    title: 'Outdoor Fitness Circuit / Urban Calisthenics',
+    appearanceKitId: 'outdoor_fitness_circuit_v0_reference_skin',
+    plantingStructure: 'outdoor_fitness_circuit_v0',
+    slug: 'outdoor-fitness-calisthenics',
+    widthM: 30,
+    depthM: 25,
+    clearanceM: 0.5,
+    surfaceKind: 'outdoor_fitness',
+    assets: {
+      rig: 'calisthenics-rig.glb',
+      parallelBars: 'parallel-bars.glb',
+      situpBench: 'situp-bench.glb',
+      rings: 'rings-frame.glb',
+    },
+  }),
+  park_memorial_garden_v0: kit({
+    familyId: 'park_memorial_garden_v0',
+    archetypeId: 'memorial_garden',
+    variantId: 'memorial_garden_v0',
+    title: 'Memorial Garden / Classical Formal',
+    appearanceKitId: 'memorial_garden_v0_reference_skin',
+    plantingStructure: 'memorial_garden_v0',
+    slug: 'memorial-garden-classical-formal',
+    widthM: 50,
+    depthM: 40,
+    clearanceM: 0.5,
+    surfaceKind: 'memorial_garden',
+    assets: {
+      pool: 'reflecting-pool.glb',
+      fountain: 'tiered-fountain.glb',
+      wall: 'memorial-wall.glb',
+      urn: 'topiary-urn.glb',
     },
   }),
 });

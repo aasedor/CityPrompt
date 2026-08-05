@@ -63,6 +63,11 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_dog_archetype_v0",
         "park_splash_pad_v0",
         "park_community_garden_v0",
+        "park_tennis_cluster_v0",
+        "park_nature_play_v0",
+        "park_pump_track_v0",
+        "park_outdoor_fitness_v0",
+        "park_memorial_garden_v0",
         "park_water_ecology",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
@@ -122,6 +127,11 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
     ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),
     ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
     ("community_garden", "community_garden_v0", "park_community_garden_v0", "community_garden_v0_reference_skin", 55, 55),
+    ("tennis_court_cluster", "tennis_court_cluster_v0", "park_tennis_cluster_v0", "tennis_court_cluster_v0_reference_skin", 90, 50),
+    ("nature_play_area", "nature_play_area_v0", "park_nature_play_v0", "nature_play_area_v0_reference_skin", 45, 35),
+    ("pump_track", "pump_track_v0", "park_pump_track_v0", "pump_track_v0_reference_skin", 55, 35),
+    ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0", "park_outdoor_fitness_v0", "outdoor_fitness_circuit_v0_reference_skin", 35, 30),
+    ("memorial_garden", "memorial_garden_v0", "park_memorial_garden_v0", "memorial_garden_v0_reference_skin", 55, 45),
 ))
 def test_archetype_owned_batch_recipes_keep_exact_identity(
     archetype_id, variant_id, family_id, appearance_id, width, depth,

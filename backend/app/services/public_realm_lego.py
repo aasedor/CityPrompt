@@ -348,6 +348,11 @@ _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
+    ("tennis_court_cluster", "tennis_court_cluster_v0"): (82.0, 46.0, 0.5),
+    ("nature_play_area", "nature_play_area_v0"): (40.0, 30.0, 0.5),
+    ("pump_track", "pump_track_v0"): (50.0, 30.0, 0.5),
+    ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0"): (30.0, 25.0, 0.5),
+    ("memorial_garden", "memorial_garden_v0"): (50.0, 40.0, 0.5),
 }
 
 _INCLUSIVE_PLAYGROUND_V0_ENVELOPE = _park_envelope(
@@ -361,6 +366,21 @@ _SPLASH_PAD_V0_ENVELOPE = _park_envelope(
 )
 _COMMUNITY_GARDEN_V0_ENVELOPE = _park_envelope(
     nominal=(50.0, 50.0), width=(50.0, 65.0), depth=(50.0, 65.0), area=(2_500.0, 4_225.0),
+)
+_TENNIS_CLUSTER_V0_ENVELOPE = _park_envelope(
+    nominal=(82.0, 46.0), width=(82.0, 100.0), depth=(46.0, 60.0), area=(3_772.0, 6_000.0),
+)
+_NATURE_PLAY_V0_ENVELOPE = _park_envelope(
+    nominal=(40.0, 30.0), width=(40.0, 60.0), depth=(30.0, 45.0), area=(1_200.0, 2_700.0),
+)
+_PUMP_TRACK_V0_ENVELOPE = _park_envelope(
+    nominal=(50.0, 30.0), width=(50.0, 70.0), depth=(30.0, 45.0), area=(1_500.0, 3_150.0),
+)
+_OUTDOOR_FITNESS_V0_ENVELOPE = _park_envelope(
+    nominal=(30.0, 25.0), width=(30.0, 45.0), depth=(25.0, 40.0), area=(750.0, 1_800.0),
+)
+_MEMORIAL_GARDEN_V0_ENVELOPE = _park_envelope(
+    nominal=(50.0, 40.0), width=(50.0, 70.0), depth=(40.0, 55.0), area=(2_000.0, 3_850.0),
 )
 
 _PARK_COMPONENTS = (
@@ -573,6 +593,56 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
             appearance_kit_id="community_garden_v0_reference_skin", planting_structure="community_garden_v0",
             compatibility=_COMMUNITY_GARDEN_V0_ENVELOPE,
             components=("community_garden_v0_ground_program", "raised_growing_bed_v1", "garden_greenhouse_v1", "garden_trellis_v1", "compost_bins_v1", "split_rail_fence_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_tennis_cluster_v0", kind="park",
+        title="Tennis Court Cluster / Professional Grade v0", generator="park_kit",
+        selections=(_selection(
+            "tennis_court_cluster", "tennis_court_cluster_v0", profile_id="tennis-cluster-archetype-v1",
+            appearance_kit_id="tennis_court_cluster_v0_reference_skin", planting_structure="tennis_court_cluster_v0",
+            compatibility=_TENNIS_CLUSTER_V0_ENVELOPE,
+            components=("tennis_cluster_v0_ground_program", "tennis_net_v1", "tennis_fence_v1", "tennis_floodlight_v1", "spectator_bleacher_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_nature_play_v0", kind="park",
+        title="Nature Play Area / Forest Adventure v0", generator="park_kit",
+        selections=(_selection(
+            "nature_play_area", "nature_play_area_v0", profile_id="nature-play-archetype-v1",
+            appearance_kit_id="nature_play_area_v0_reference_skin", planting_structure="nature_play_area_v0",
+            compatibility=_NATURE_PLAY_V0_ENVELOPE,
+            components=("nature_play_v0_ground_program", "water_rill_v1", "balance_log_v1", "log_fort_v1", "willow_tunnel_v1", "stepping_stump_v1", "play_boulders_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_pump_track_v0", kind="park",
+        title="Pump Track / Asphalt Competition v0", generator="park_kit",
+        selections=(_selection(
+            "pump_track", "pump_track_v0", profile_id="pump-track-archetype-v1",
+            appearance_kit_id="pump_track_v0_reference_skin", planting_structure="pump_track_v0",
+            compatibility=_PUMP_TRACK_V0_ENVELOPE,
+            components=("pump_track_v0_ground_program", "pump_track_loop_v1", "pump_track_start_mound_v1", "spectator_bench_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_outdoor_fitness_v0", kind="park",
+        title="Outdoor Fitness Circuit / Urban Calisthenics v0", generator="park_kit",
+        selections=(_selection(
+            "outdoor_fitness_circuit", "outdoor_fitness_circuit_v0", profile_id="outdoor-fitness-archetype-v1",
+            appearance_kit_id="outdoor_fitness_circuit_v0_reference_skin", planting_structure="outdoor_fitness_circuit_v0",
+            compatibility=_OUTDOOR_FITNESS_V0_ENVELOPE,
+            components=("outdoor_fitness_v0_ground_program", "calisthenics_rig_v1", "parallel_bars_v1", "situp_bench_v1", "rings_frame_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_memorial_garden_v0", kind="park",
+        title="Memorial Garden / Classical Formal v0", generator="park_kit",
+        selections=(_selection(
+            "memorial_garden", "memorial_garden_v0", profile_id="memorial-garden-archetype-v1",
+            appearance_kit_id="memorial_garden_v0_reference_skin", planting_structure="memorial_garden_v0",
+            compatibility=_MEMORIAL_GARDEN_V0_ENVELOPE,
+            components=("memorial_garden_v0_ground_program", "reflecting_pool_v1", "tiered_fountain_v1", "memorial_wall_v1", "topiary_urn_v1"), default=True,
         ),),
     ),
     PublicRealmFamilyCapability(
