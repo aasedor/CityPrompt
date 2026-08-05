@@ -12,6 +12,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import { resolveParkKitSkin, type ParkKitSkin } from '@/data/parkKitSkins';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
@@ -303,6 +304,7 @@ function drawParkGuides(
   pxPerM: number,
   mode: ParkDiagramMode,
   archetypeId: string,
+  skin: ParkKitSkin | null,
 ): void {
   if (guides.length === 0) return;
   const [centroidX, centroidY] = ringPx.reduce(
@@ -356,6 +358,11 @@ function drawParkGuides(
     const sizeM = resolveParkGuideDimensionsM(guide, parkSizeM);
     const width = sizeM.width * pxPerM;
     const height = sizeM.height * pxPerM;
+    const skinMaterial = mode === 'procedural' && guide.materialRole
+      ? skin?.materials[guide.materialRole]
+      : undefined;
+    const guideFillColor = skinMaterial?.fill ?? guide.color;
+    const guideStrokeColor = skinMaterial?.edge ?? guide.strokeColor ?? guide.color;
     const isMarkedSportsSurface = guide.kind === 'soccer_field' || guide.kind === 'tennis_court';
     if (mode === 'procedural' && !isMarkedSportsSurface) {
       const material = ctx.createLinearGradient(
@@ -364,14 +371,14 @@ function drawParkGuides(
         x + width / 2,
         y + height / 2,
       );
-      material.addColorStop(0, guide.color);
-      material.addColorStop(0.55, guide.color);
-      material.addColorStop(1, guide.strokeColor ?? guide.color);
+      material.addColorStop(0, guideFillColor);
+      material.addColorStop(0.55, guideFillColor);
+      material.addColorStop(1, guideStrokeColor);
       ctx.fillStyle = material;
     } else {
-      ctx.fillStyle = guide.color;
+      ctx.fillStyle = guideFillColor;
     }
-    ctx.strokeStyle = guide.strokeColor ?? guide.color;
+    ctx.strokeStyle = guideStrokeColor;
     ctx.lineWidth = Math.max(1, (guide.strokeWidthM ?? 0.4) * pxPerM);
 
     if (guide.kind === 'line') {
@@ -422,14 +429,14 @@ function drawParkGuides(
       };
       if (mode === 'procedural') {
         trace();
-        ctx.strokeStyle = guide.strokeColor ?? '#6e5435';
+        ctx.strokeStyle = guideStrokeColor;
         ctx.lineWidth = Math.max(3, ((guide.strokeWidthM ?? 2.4) + 0.7) * pxPerM);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.stroke();
       }
       trace();
-      ctx.strokeStyle = guide.color;
+      ctx.strokeStyle = guideFillColor;
       ctx.lineWidth = Math.max(2, (guide.strokeWidthM ?? 2.4) * pxPerM);
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -788,7 +795,7 @@ function drawParkGuides(
       }
       ctx.restore();
     }
-    ctx.strokeStyle = guide.strokeColor ?? guide.color;
+    ctx.strokeStyle = guideStrokeColor;
     ctx.lineWidth = Math.max(1, (guide.strokeWidthM ?? 0.4) * pxPerM);
     ctx.stroke();
     if (guide.kind === 'track') {
@@ -839,10 +846,62 @@ function paintProceduralGroundMaterial(
   isPavedPlaza: boolean,
   seed: string,
   archetypeId: string,
+  skin: ParkKitSkin | null,
 ): void {
   ctx.save();
   traceRing(ctx, ringPx);
   ctx.clip();
+
+  if (skin) {
+    ctx.fillStyle = skin.baseGround;
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    const patchCount = Math.round(canvasSize * 0.8);
+    for (let index = 0; index < patchCount; index += 1) {
+      const x = seededUnit(seed, index * 4) * canvasSize;
+      const y = seededUnit(seed, index * 4 + 1) * canvasSize;
+      const rx = (0.35 + seededUnit(seed, index * 4 + 2) * 2.2) * pxPerM;
+      const ry = rx * (0.5 + seededUnit(seed, index * 4 + 3) * 0.9);
+      ctx.beginPath();
+      ctx.ellipse(x, y, rx, ry, seededUnit(seed, index + 60_000) * Math.PI, 0, Math.PI * 2);
+      ctx.globalAlpha = skin.groundPattern === 'natural_meadow' ? 0.34 : 0.18;
+      ctx.fillStyle = skin.grainPalette[index % skin.grainPalette.length];
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    if (skin.groundPattern === 'synthetic_turf_grid') {
+      const modulePx = Math.max(5, 2.4 * pxPerM);
+      ctx.strokeStyle = 'rgba(218, 228, 217, 0.11)';
+      ctx.lineWidth = 0.65;
+      for (let x = 0; x < canvasSize; x += modulePx) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvasSize);
+        ctx.stroke();
+      }
+    } else if (skin.groundPattern === 'permeable_paver') {
+      const modulePx = Math.max(5, 1.8 * pxPerM);
+      ctx.strokeStyle = 'rgba(56, 67, 62, 0.13)';
+      ctx.lineWidth = 0.6;
+      for (let x = -canvasSize; x < canvasSize * 2; x += modulePx) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + canvasSize * 0.12, canvasSize);
+        ctx.stroke();
+      }
+    } else if (skin.groundPattern === 'natural_meadow') {
+      for (let index = 0; index < Math.round(canvasSize * 0.75); index += 1) {
+        const x = seededUnit(seed, 120_000 + index * 2) * canvasSize;
+        const y = seededUnit(seed, 120_001 + index * 2) * canvasSize;
+        ctx.beginPath();
+        ctx.arc(x, y, 0.35 + (index % 3) * 0.25, 0, Math.PI * 2);
+        ctx.fillStyle = index % 2 === 0 ? 'rgba(225, 201, 111, 0.34)' : 'rgba(225, 228, 184, 0.24)';
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+    return;
+  }
 
   if (archetypeId.startsWith('urban_forest')) {
     ctx.fillStyle = '#43513a';
@@ -997,6 +1056,7 @@ function drawProceduralPathNetwork(
   seed: string,
   isPavedPlaza: boolean,
   plantingStructure: string | undefined,
+  skin: ParkKitSkin | null,
 ): void {
   if (isPavedPlaza || accessPointsPx.length === 0) return;
   ctx.save();
@@ -1005,7 +1065,7 @@ function drawProceduralPathNetwork(
   // Muted compacted aggregate reads as a real path against Google imagery;
   // near-white diagram lines dominate small parks and look like star symbols
   // at district scale.
-  ctx.strokeStyle = '#a99f86';
+  ctx.strokeStyle = skin?.materials.path.fill ?? '#a99f86';
   ctx.lineWidth = Math.max(1.5, 2.15 * pxPerM);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -1133,17 +1193,18 @@ export function buildParkDiagram(
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
   const profile = resolveParkGroundProfile(zone);
+  const parkKitSkin = resolveParkKitSkin(zone);
   const guideFit = resolveParkGroundGuideFit(zone, { width: widthM, height: heightM });
   const fitInstruction = describeParkGroundGuideFit(guideFit);
   const plantingStructure = resolveParkPlantingStructure(zone);
   const isPavedPlaza = plantingStructure === 'paved_plaza';
-  const parcelBaseColor = isPavedPlaza
+  const parcelBaseColor = parkKitSkin?.baseGround ?? (isPavedPlaza
     ? '#aaa69d'
     : plantingStructure === 'reservoir_perimeter'
       ? '#66775b'
       : plantingStructure === 'water_ecology'
         ? '#6f7857'
-      : '#71865f';
+      : '#71865f');
   // The source diagram is also an image-generation conditioning input. A
   // white letterbox taught Gemini to preserve blank illustration paper, which
   // then appeared as bright seams in the live terrain drape. Continue the
@@ -1206,6 +1267,7 @@ export function buildParkDiagram(
       isPavedPlaza,
       parkGroundSourceSignature(zone),
       profile.archetypeId,
+      parkKitSkin,
     );
     drawProceduralPathNetwork(
       ctx,
@@ -1216,6 +1278,7 @@ export function buildParkDiagram(
       parkGroundSourceSignature(zone),
       isPavedPlaza,
       plantingStructure,
+      parkKitSkin,
     );
   }
   drawParkGuides(
@@ -1229,10 +1292,13 @@ export function buildParkDiagram(
     pxPerM,
     mode,
     profile.archetypeId,
+    parkKitSkin,
   );
 
   const playgrounds = fixedProgramPlacements.filter((p) => p.propId === 'playground');
   const pavilions = fixedProgramPlacements.filter((p) => p.propId === 'pavilion');
+  const guideOwnsPlayground = guideFit.guides.some((guide) => guide.materialRole === 'playground');
+  const guideOwnsPavilion = guideFit.guides.some((guide) => guide.materialRole === 'pavilion');
   const markers = { playground: 0, pavilion: 0, bench: 0, plaza: 0, access: 0 };
 
   // Exact pedestrian gateways computed from the master planner's street/path
@@ -1273,7 +1339,7 @@ export function buildParkDiagram(
   }
 
   // Playground: one sand pad covering the equipment cluster.
-  if (playgrounds.length > 0) {
+  if (playgrounds.length > 0 && !guideOwnsPlayground) {
     const pts = playgrounds.map((p) => toPx(p.lng, p.lat));
     const cx = pts.reduce((s, [x]) => s + x, 0) / pts.length;
     const cy = pts.reduce((s, [, y]) => s + y, 0) / pts.length;
@@ -1281,16 +1347,20 @@ export function buildParkDiagram(
     const padR = Math.max(6 * pxPerM, spreadPx + 4 * pxPerM);
     ctx.beginPath();
     ctx.arc(cx, cy, padR, 0, Math.PI * 2);
-    ctx.fillStyle = MARKER_COLORS.playground;
+    ctx.fillStyle = mode === 'procedural'
+      ? parkKitSkin?.materials.playground.fill ?? MARKER_COLORS.playground
+      : MARKER_COLORS.playground;
     ctx.fill();
     markers.playground = playgrounds.length;
   }
 
   // Pavilion: brown pad square, ~5 m.
-  for (const p of pavilions) {
+  for (const p of guideOwnsPavilion ? [] : pavilions) {
     const [x, y] = toPx(p.lng, p.lat);
     const half = 2.5 * pxPerM;
-    ctx.fillStyle = MARKER_COLORS.pavilion;
+    ctx.fillStyle = mode === 'procedural'
+      ? parkKitSkin?.materials.pavilion.fill ?? MARKER_COLORS.pavilion
+      : MARKER_COLORS.pavilion;
     ctx.fillRect(x - half, y - half, half * 2, half * 2);
     markers.pavilion += 1;
   }

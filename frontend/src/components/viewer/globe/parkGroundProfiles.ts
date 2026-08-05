@@ -1,4 +1,5 @@
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
+import type { ParkSkinMaterialRole } from '@/data/parkKitSkins';
 import type { SiteZone } from '@/types';
 
 export type ParkGuideKind =
@@ -48,6 +49,9 @@ export interface ParkGroundGuide {
    * test their authored direction plus its orthogonal alternative; topology-
    * critical linear structures retain their authored direction. */
   orientationPolicy?: 'fixed' | 'orthogonal' | 'flexible';
+  /** Optional semantic material socket. Park LEGO skins may restyle this
+   * surface, but cannot move or resize it. */
+  materialRole?: ParkSkinMaterialRole;
 }
 
 export function resolveParkGuideDimensionsM(
@@ -553,31 +557,32 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
       'Mature deciduous shade trees form irregular overlapping clusters along the perimeter, path junctions and activity nodes, with a few specimen trees framing the open lawn; retain clear sightlines and do not fill the usable center with canopy.',
     plantingStructure: 'active_recreation',
     guides: [
-      { kind: 'ellipse', x: 0.50, y: 0.49, width: 0.46, height: 0.43, color: '#7da15e', strokeColor: '#637e4e', strokeWidthM: 0.5 },
+      { kind: 'ellipse', x: 0.50, y: 0.49, width: 0.46, height: 0.43, color: '#7da15e', strokeColor: '#637e4e', strokeWidthM: 0.5, materialRole: 'lawn' },
       {
         kind: 'polyline', x: 0.50, y: 0.50, width: 0.76, height: 0.60,
         color: '#c7b89b', strokeColor: '#806e55', strokeWidthM: 3.0, closed: true,
         points: [[0.28, 0.28], [0.48, 0.20], [0.66, 0.26], [0.75, 0.42], [0.70, 0.62], [0.55, 0.74], [0.35, 0.70], [0.24, 0.54], [0.28, 0.28]],
+        materialRole: 'path',
       },
       {
         kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1,
         color: '#c7b89b', strokeColor: '#806e55', strokeWidthM: 3.0,
-        points: [[0.50, 0.00], [0.48, 0.20]],
+        points: [[0.50, 0.00], [0.48, 0.20]], materialRole: 'path',
       },
       {
         kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1,
         color: '#c7b89b', strokeColor: '#806e55', strokeWidthM: 3.0,
-        points: [[0.00, 0.50], [0.24, 0.54], [0.50, 1.00]],
+        points: [[0.00, 0.50], [0.24, 0.54], [0.50, 1.00]], materialRole: 'path',
       },
       {
         kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1,
         color: '#c7b89b', strokeColor: '#806e55', strokeWidthM: 3.0,
-        points: [[0.75, 0.42], [1.00, 0.40]],
+        points: [[0.75, 0.42], [1.00, 0.40]], materialRole: 'path',
       },
-      { kind: 'ellipse', x: 0.18, y: 0.25, width: 0.25, height: 0.18, color: '#7f9460', strokeColor: '#596e45', strokeWidthM: 0.6 },
-      { kind: 'ellipse', x: 0.82, y: 0.70, width: 0.25, height: 0.20, color: '#6f8960', strokeColor: '#4f6947', strokeWidthM: 0.6 },
-      { kind: 'ellipse', x: 0.82, y: 0.22, width: 0.20, height: 0.15, color: '#b28b5e', strokeColor: '#75684d', strokeWidthM: 0.5 },
-      { kind: 'rectangle', x: 0.77, y: 0.58, width: 0.11, height: 0.10, color: '#b8ad96', strokeColor: '#756f63', strokeWidthM: 0.5 },
+      { kind: 'ellipse', x: 0.18, y: 0.25, width: 0.25, height: 0.18, color: '#7f9460', strokeColor: '#596e45', strokeWidthM: 0.6, materialRole: 'meadow' },
+      { kind: 'ellipse', x: 0.82, y: 0.70, width: 0.25, height: 0.20, color: '#6f8960', strokeColor: '#4f6947', strokeWidthM: 0.6, materialRole: 'rain_garden' },
+      { kind: 'ellipse', x: 0.82, y: 0.22, width: 0.20, height: 0.15, color: '#b28b5e', strokeColor: '#75684d', strokeWidthM: 0.5, materialRole: 'playground' },
+      { kind: 'rectangle', x: 0.77, y: 0.58, width: 0.11, height: 0.10, color: '#b8ad96', strokeColor: '#756f63', strokeWidthM: 0.5, materialRole: 'pavilion' },
     ],
     guideLegend: [
       'the LARGE MID-GREEN ellipse is the exact uninterrupted social lawn and must remain entirely grass with no paving or objects inside it',
