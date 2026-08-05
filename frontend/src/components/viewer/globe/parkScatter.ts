@@ -29,7 +29,15 @@ import {
   type ParkKitRecipe,
 } from '@/data/parkKitRecipes';
 
-export type ParkPropId = 'tree' | 'bench' | 'playground' | 'pavilion';
+export type ParkPropId =
+  | 'tree'
+  | 'bench'
+  | 'playground'
+  | 'pavilion'
+  | 'basketball_hoop'
+  | 'chainlink_fence_4m'
+  | 'chainlink_gate_3m'
+  | 'basketball_floodlight';
 
 export interface PropPlacement {
   propId: ParkPropId;
@@ -37,6 +45,9 @@ export interface PropPlacement {
   lat: number;
   yawRad: number;
   scale: number;
+  /** Vertical offset above sampled terrain. Exact program assets use the
+   * shared park-drape lift so their z=0 ground contact sits on the mask. */
+  surfaceOffsetM?: number;
 }
 
 interface ScatterZone {

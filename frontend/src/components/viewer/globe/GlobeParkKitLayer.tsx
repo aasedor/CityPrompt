@@ -45,6 +45,7 @@ import {
   type ParkPropId,
   type PropPlacement,
 } from './parkScatter';
+import { computeParkProgramAssetPlacements } from './parkProgramAssets';
 import { NeighborhoodParkLegoSurface } from './NeighborhoodParkLegoSurface';
 import {
   JAPANESE_GARDEN_BRIDGE_DIMENSIONS_M,
@@ -103,12 +104,14 @@ class SilentKitBoundary extends Component<
 function GLBInstancedProp({
   url,
   targetHeight,
+  preserveHorizontalOrigin,
   placements,
   centroid,
   instanceZ,
 }: {
   url: string;
   targetHeight: number;
+  preserveHorizontalOrigin: boolean;
   placements: PropPlacement[];
   centroid: { lng: number; lat: number };
   instanceZ: number[] | null;
@@ -120,11 +123,16 @@ function GLBInstancedProp({
     const size = bbox.getSize(new THREE.Vector3());
     const center = bbox.getCenter(new THREE.Vector3());
     const normScale = size.y > 0 ? targetHeight / size.y : 1;
-    // model-space: recenter XZ, base at min Y, swizzle Y-up -> Z-up, scale
+    // Generic entourage is recentered. Exact program assets may retain their
+    // authored horizontal origin (for example the base of a hoop post).
     const norm = new THREE.Matrix4()
       .makeRotationX(Math.PI / 2)
       .multiply(new THREE.Matrix4().makeScale(normScale, normScale, normScale))
-      .multiply(new THREE.Matrix4().makeTranslation(-center.x, -bbox.min.y, -center.z));
+      .multiply(new THREE.Matrix4().makeTranslation(
+        preserveHorizontalOrigin ? 0 : -center.x,
+        -bbox.min.y,
+        preserveHorizontalOrigin ? 0 : -center.z,
+      ));
 
     const collected: Array<{ geometry: THREE.BufferGeometry; material: THREE.Material }> = [];
     scene.updateMatrixWorld(true);
@@ -138,7 +146,7 @@ function GLBInstancedProp({
       collected.push({ geometry, material });
     });
     return collected;
-  }, [scene, targetHeight]);
+  }, [scene, targetHeight, preserveHorizontalOrigin]);
 
   // The clones above are full geometry copies per zone — dispose them on
   // recompute/unmount (materials stay owned by the drei GLTF cache).
@@ -164,7 +172,7 @@ function GLBInstancedProp({
         pos.set(
           (p.lng - centroid.lng) * mPerLon,
           (p.lat - centroid.lat) * METERS_PER_DEG_LAT,
-          instanceZ?.[i] ?? 0,
+          (instanceZ?.[i] ?? 0) + (p.surfaceOffsetM ?? 0),
         );
         q.setFromAxisAngle(zAxis, p.yawRad);
         scl.setScalar(p.scale);
@@ -636,8 +644,13 @@ function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
     const asset = PARK_KIT_MANIFEST[placement.propId];
     return shouldRenderLiveParkProp(zone, placement.propId, Boolean(asset));
   }).length;
-  return resolveParkKitSkin(zone) !== null
-    || shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
+  const exactProgramPlacementCount = computeParkProgramAssetPlacements(zone)
+    .filter((placement) => Boolean(PARK_KIT_MANIFEST[placement.propId]))
+    .length;
+  return resolveParkKitSkin(zone) !== null || shouldMountParkProgramFrame(
+    zone,
+    liveAssetPlacementCount + exactProgramPlacementCount,
+  );
 }
 
 function ParkKitInstance({
@@ -684,11 +697,14 @@ function ParkKitInstance({
   );
 
   const { placements, centroid } = useMemo(() => {
-    const list = computeParkPlacements(
-      { id: zone.id, coordinates: zone.coordinates },
-      recipe,
-      plantingStructure,
-    ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId));
+    const list = [
+      ...computeParkPlacements(
+        { id: zone.id, coordinates: zone.coordinates },
+        recipe,
+        plantingStructure,
+      ).filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)),
+      ...computeParkProgramAssetPlacements(zone),
+    ];
     let lng = 0;
     let lat = 0;
     for (const c of zone.coordinates) {
@@ -863,6 +879,7 @@ function ParkKitInstance({
               <GLBInstancedProp
                 url={asset.url}
                 targetHeight={asset.targetHeight_m}
+                preserveHorizontalOrigin={Boolean(asset.preserveHorizontalOrigin)}
                 placements={group}
                 centroid={centroid}
                 instanceZ={groupZ}

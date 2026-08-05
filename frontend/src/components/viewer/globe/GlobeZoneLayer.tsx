@@ -46,6 +46,7 @@ import {
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
+import { PARK_DRAPE_SURFACE_LIFT_METERS } from './parkSurfaceContract';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -53,7 +54,7 @@ const REPLACEMENT_GROUND_SAMPLE_RADII_METERS = [8, 20, 36] as const;
 // Keep proposal ground just above the noisy photogrammetry skin. A curb-scale
 // clearance avoids flicker/disappearance without recreating the former
 // metre-scale floating parks that buried building and prop bases.
-const FLAT_ZONE_SURFACE_LIFT_METERS = 0.32;
+const FLAT_ZONE_SURFACE_LIFT_METERS = PARK_DRAPE_SURFACE_LIFT_METERS;
 const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.4;
 const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 12;
 const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
