@@ -64,6 +64,8 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_splash_pad_v0",
         "park_community_garden_v0",
         "park_tennis_cluster_v0",
+        "park_caged_soccer_v0",
+        "park_athletics_fields_v0",
         "park_nature_play_v0",
         "park_pump_track_v0",
         "park_outdoor_fitness_v0",
@@ -128,6 +130,8 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
     ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
     ("community_garden", "community_garden_v0", "park_community_garden_v0", "community_garden_v0_reference_skin", 55, 55),
     ("tennis_court_cluster", "tennis_court_cluster_v0", "park_tennis_cluster_v0", "tennis_court_cluster_v0_reference_skin", 90, 50),
+    ("soccer_pitch_caged", "soccer_pitch_caged_v0", "park_caged_soccer_v0", "soccer_pitch_caged_v0_reference_skin", 66, 24),
+    ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_0", "park_athletics_fields_v0", "athletics_precinct_sports_fields_v0_reference_skin", 220, 80),
     ("nature_play_area", "nature_play_area_v0", "park_nature_play_v0", "nature_play_area_v0_reference_skin", 45, 35),
     ("pump_track", "pump_track_v0", "park_pump_track_v0", "pump_track_v0_reference_skin", 55, 35),
     ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0", "park_outdoor_fitness_v0", "outdoor_fitness_circuit_v0_reference_skin", 35, 30),
@@ -143,7 +147,11 @@ def test_archetype_owned_batch_recipes_keep_exact_identity(
     ))
     assert recipe.family_id == family_id
     assert recipe.appearance_kit_id == appearance_id
-    assert recipe.planting_structure == variant_id
+    expected_planting = {
+        "park_caged_soccer_v0": "caged_soccer_v0",
+        "park_athletics_fields_v0": "athletics_fields_v0",
+    }.get(family_id, variant_id)
+    assert recipe.planting_structure == expected_planting
 
 
 @pytest.mark.parametrize(

@@ -19,6 +19,8 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_splash_pad_v0',
   'park_community_garden_v0',
   'park_tennis_cluster_v0',
+  'park_caged_soccer_v0',
+  'park_athletics_fields_v0',
   'park_nature_play_v0',
   'park_pump_track_v0',
   'park_outdoor_fitness_v0',
@@ -507,6 +509,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       variantId: 'tennis_court_cluster_v0', appearanceKitId: 'tennis_court_cluster_v0_reference_skin', plantingStructure: 'tennis_court_cluster_v0',
     })]),
   }),
+  park_caged_soccer_v0: Object.freeze({
+    soccer_pitch_caged: Object.freeze([Object.freeze({
+      variantId: 'soccer_pitch_caged_v0', appearanceKitId: 'soccer_pitch_caged_v0_reference_skin', plantingStructure: 'caged_soccer_v0',
+    })]),
+  }),
+  park_athletics_fields_v0: Object.freeze({
+    athletics_precinct_sports_fields: Object.freeze([Object.freeze({
+      variantId: 'athletics_precinct_sports_fields_variant_0', appearanceKitId: 'athletics_precinct_sports_fields_v0_reference_skin', plantingStructure: 'athletics_fields_v0',
+    })]),
+  }),
   park_nature_play_v0: Object.freeze({
     nature_play_area: Object.freeze([Object.freeze({
       variantId: 'nature_play_area_v0', appearanceKitId: 'nature_play_area_v0_reference_skin', plantingStructure: 'nature_play_area_v0',
@@ -568,6 +580,8 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'splash_pad_area') return 'park_splash_pad_v0';
   if (archetypeId === 'community_garden') return 'park_community_garden_v0';
   if (archetypeId === 'tennis_court_cluster') return 'park_tennis_cluster_v0';
+  if (archetypeId === 'soccer_pitch_caged') return 'park_caged_soccer_v0';
+  if (archetypeId === 'athletics_precinct_sports_fields') return 'park_athletics_fields_v0';
   if (archetypeId === 'nature_play_area') return 'park_nature_play_v0';
   if (archetypeId === 'pump_track') return 'park_pump_track_v0';
   if (archetypeId === 'outdoor_fitness_circuit') return 'park_outdoor_fitness_v0';
@@ -589,6 +603,8 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_splash_pad_v0': return 'splash_pad_area';
     case 'park_community_garden_v0': return 'community_garden';
     case 'park_tennis_cluster_v0': return 'tennis_court_cluster';
+    case 'park_caged_soccer_v0': return 'soccer_pitch_caged';
+    case 'park_athletics_fields_v0': return 'athletics_precinct_sports_fields';
     case 'park_nature_play_v0': return 'nature_play_area';
     case 'park_pump_track_v0': return 'pump_track';
     case 'park_outdoor_fitness_v0': return 'outdoor_fitness_circuit';
@@ -601,7 +617,12 @@ function canonicalVariantId(archetypeId: string, raw: unknown): { id: string; in
   const normalized = normalizeId(raw);
   const match = normalized.match(/(?:_variant_|_v)([0-3])$/);
   const index = match ? Number(match[1]) : 0;
-  return { id: `${archetypeId}_v${index}`, index };
+  return {
+    id: archetypeId === 'athletics_precinct_sports_fields'
+      ? `${archetypeId}_variant_${index}`
+      : `${archetypeId}_v${index}`,
+    index,
+  };
 }
 
 /** Resolve the nested compiler contract first, then legacy archetype fields.
@@ -751,6 +772,10 @@ export function isExecutableParkLegoFamily(zone: ParkLegoZone): boolean {
 export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   const contract = resolveParkLegoContract(zone);
   if (contract?.supported !== true) return false;
+  if (
+    contract.familyId === 'park_caged_soccer_v0'
+    || contract.familyId === 'park_athletics_fields_v0'
+  ) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

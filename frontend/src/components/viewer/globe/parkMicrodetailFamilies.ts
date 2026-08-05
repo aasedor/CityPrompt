@@ -311,6 +311,8 @@ function familyTargets(
     case 'park_splash_pad_v0':
     case 'park_community_garden_v0':
     case 'park_tennis_cluster_v0':
+    case 'park_caged_soccer_v0':
+    case 'park_athletics_fields_v0':
     case 'park_nature_play_v0':
     case 'park_pump_track_v0':
     case 'park_outdoor_fitness_v0':

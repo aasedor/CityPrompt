@@ -116,7 +116,11 @@ import {
 } from './publicRealmPropPalettes';
 import { GlobeCricketGroundAssembly } from './GlobeCricketGroundAssembly';
 import { GlobeSkateParkAssembly } from './GlobeSkateParkAssembly';
-import { GlobeArchetypeOwnedParkAssembly } from './GlobeArchetypeOwnedParkAssembly';
+import {
+  GlobeArchetypeOwnedParkAssembly,
+  GlobeRegulationParkAssembly,
+  type RegulationParkFamilyId,
+} from './GlobeArchetypeOwnedParkAssembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -832,12 +836,45 @@ function ParkSpecialtyStructures({
     );
   }
 
+  const profileFamilyId = resolveParkGroundProfile(zone).legoFamilyId;
+  const regulationFamily: RegulationParkFamilyId | null = structureKind === 'tennis_cluster_v0_assembly'
+    ? 'park_tennis_cluster_v0'
+    : structureKind === 'caged_soccer_v0_assembly'
+      ? 'park_caged_soccer_v0'
+      : structureKind === 'sports_field_furniture' && profileFamilyId === 'park_athletics_fields_v0'
+        ? 'park_athletics_fields_v0'
+        : null;
+  if (regulationFamily) {
+    const guideKind = regulationFamily === 'park_tennis_cluster_v0' ? 'tennis_court' : 'soccer_field';
+    const modules = fittedProgramGuides
+      .filter((guide) => guide.kind === guideKind)
+      .map((guide) => {
+        const dimensions = resolveParkGuideDimensionsM(guide, {
+          width: programFrame.width,
+          height: programFrame.height,
+        });
+        return {
+          x: programFrame.minX + programFrame.width * guide.x,
+          y: programFrame.maxY - programFrame.height * guide.y,
+          rotationZ: -((guide.rotationDeg ?? 0) * Math.PI) / 180,
+          widthM: dimensions.width,
+          depthM: dimensions.height,
+        };
+      });
+    return (
+      <SilentKitBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <GlobeRegulationParkAssembly familyId={regulationFamily} modules={modules} terrainZ={terrainZ} />
+        </Suspense>
+      </SilentKitBoundary>
+    );
+  }
+
   const exactFamily = structureKind === 'inclusive_playground_v0_assembly' ? 'park_inclusive_playground_v0'
     : structureKind === 'dog_park_v0_assembly' ? 'park_dog_archetype_v0'
       : structureKind === 'splash_pad_v0_assembly' ? 'park_splash_pad_v0'
         : structureKind === 'community_garden_v0_assembly' ? 'park_community_garden_v0'
-          : structureKind === 'tennis_cluster_v0_assembly' ? 'park_tennis_cluster_v0'
-            : structureKind === 'nature_play_v0_assembly' ? 'park_nature_play_v0'
+          : structureKind === 'nature_play_v0_assembly' ? 'park_nature_play_v0'
               : structureKind === 'pump_track_v0_assembly' ? 'park_pump_track_v0'
                 : structureKind === 'outdoor_fitness_v0_assembly' ? 'park_outdoor_fitness_v0'
                   : structureKind === 'memorial_garden_v0_assembly' ? 'park_memorial_garden_v0'

@@ -72,6 +72,8 @@ describe('park ground pilot profiles', () => {
     ['stormwater_retention_pond', 'reservoir_perimeter'],
     ['pond_lake', 'formal_water_edge'],
     ['tennis_court_cluster', 'sports_perimeter'],
+    ['soccer_pitch_caged', 'caged_soccer_v0'],
+    ['athletics_precinct_sports_fields', 'athletics_fields_v0'],
     ['wetland_rain_garden', 'water_ecology'],
     ['japanese_garden', 'japanese_stroll_garden'],
     ['sports_field_complex', 'sports_perimeter'],
@@ -93,6 +95,8 @@ describe('park ground pilot profiles', () => {
     expect(resolveParkGroundProfile(zone('botanical_garden')).guides).toHaveLength(5);
     expect(resolveParkGroundProfile(zone('nature_play_area')).guides).toHaveLength(5);
     expect(resolveParkGroundProfile(zone('tennis_court_cluster')).guides).toHaveLength(5);
+    expect(resolveParkGroundProfile(zone('soccer_pitch_caged')).guides).toHaveLength(2);
+    expect(resolveParkGroundProfile(zone('athletics_precinct_sports_fields')).guides).toHaveLength(2);
     expect(resolveParkGroundProfile(zone('wetland_rain_garden')).guides).toHaveLength(6);
     expect(resolveParkGroundProfile(zone('pond_lake_variant_0')).guides[0].kind)
       .toBe('rounded_rectangle');
@@ -110,6 +114,10 @@ describe('park ground pilot profiles', () => {
       .toBe('cricket_ground_assembly');
     expect(resolveParkSpecialtyStructureKind(zone('sports_field_complex')))
       .toBe('sports_field_furniture');
+    expect(resolveParkSpecialtyStructureKind(zone('athletics_precinct_sports_fields')))
+      .toBe('sports_field_furniture');
+    expect(resolveParkSpecialtyStructureKind(zone('soccer_pitch_caged')))
+      .toBe('caged_soccer_v0_assembly');
     expect(resolveParkSpecialtyStructureKind(zone('tennis_court_cluster')))
       .toBe('tennis_court_furniture');
     expect(resolveParkSpecialtyStructureKind(zone('wetland_rain_garden')))
@@ -392,6 +400,14 @@ describe('park ground pilot profiles', () => {
     const track = resolveParkGroundProfile(zone('running_track_oval')).guides[0];
     expect(resolveParkGuideDimensionsM(track, { width: 220, height: 130 }))
       .toEqual({ width: 176.91, height: 92.52 });
+    for (const pitch of resolveParkGroundProfile(zone('soccer_pitch_caged')).guides) {
+      expect(resolveParkGuideDimensionsM(pitch, { width: 90, height: 40 }))
+        .toEqual({ width: 30, height: 18 });
+    }
+    for (const field of resolveParkGroundProfile(zone('athletics_precinct_sports_fields')).guides) {
+      expect(resolveParkGuideDimensionsM(field, { width: 260, height: 150 }))
+        .toEqual({ width: 100, height: 64 });
+    }
   });
 
   it('keeps toolbar plazas hardscaped instead of falling back to a lawn park', () => {
@@ -555,6 +571,32 @@ describe('park ground pilot profiles', () => {
     expect(fit.guides.filter((guide) => guide.kind === 'tennis_court')).toHaveLength(1);
     expect(fit.omittedGuides.filter((guide) => guide.kind === 'tennis_court')).toHaveLength(3);
     expect(describeParkGroundGuideFit(fit)).toContain('1 complete tennis court fits out of 4');
+  });
+
+  it('adds a second complete caged pitch instead of stretching one on an oversized site', () => {
+    const pitches = resolveParkGroundProfile(zone('soccer_pitch_caged')).guides;
+    const compact = fitParkGroundGuides(pitches, { width: 38, height: 24 });
+    const oversized = fitParkGroundGuides(pitches, { width: 75, height: 24 });
+
+    expect(compact.guides.filter((guide) => guide.kind === 'soccer_field')).toHaveLength(1);
+    expect(oversized.guides.filter((guide) => guide.kind === 'soccer_field')).toHaveLength(2);
+    for (const pitch of [...compact.guides, ...oversized.guides]) {
+      expect(resolveParkGuideDimensionsM(pitch, { width: 75, height: 24 }))
+        .toEqual({ width: 30, height: 18 });
+    }
+  });
+
+  it('adapts a full-size athletics precinct by complete 100 x 64 metre fields', () => {
+    const fields = resolveParkGroundProfile(zone('athletics_precinct_sports_fields')).guides;
+    const compact = fitParkGroundGuides(fields, { width: 120, height: 80 });
+    const oversized = fitParkGroundGuides(fields, { width: 230, height: 80 });
+
+    expect(compact.guides.filter((guide) => guide.kind === 'soccer_field')).toHaveLength(1);
+    expect(oversized.guides.filter((guide) => guide.kind === 'soccer_field')).toHaveLength(2);
+    for (const field of [...compact.guides, ...oversized.guides]) {
+      expect(resolveParkGuideDimensionsM(field, { width: 230, height: 80 }))
+        .toEqual({ width: 100, height: 64 });
+    }
   });
 
   it('finds orientations for the field and all three whole courts in the current sloped trial parcel', () => {

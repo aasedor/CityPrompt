@@ -238,11 +238,11 @@ function guideEnvelopesOverlap(
 
 const GUIDE_REPOSITION_OFFSETS = (() => {
   const offsets: Array<[number, number]> = [];
-  // Fixed programs may move modestly inside the parcel so a tiny sloped edge
-  // does not delete an otherwise valid court or field. Dimensions never
-  // change, and the nearest valid position always wins.
-  for (let xStep = -12; xStep <= 12; xStep += 1) {
-    for (let yStep = -12; yStep <= 12; yStep += 1) {
+  // Fixed programs may move inside the parcel so the first module in a
+  // multi-field archetype can recenter when later modules are omitted.
+  // Dimensions never change, and the nearest valid position always wins.
+  for (let xStep = -25; xStep <= 25; xStep += 1) {
+    for (let yStep = -25; yStep <= 25; yStep += 1) {
       offsets.push([xStep * 0.01, yStep * 0.01]);
     }
   }
@@ -840,6 +840,30 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
       'tennis cluster preserving the maximum parcel-compatible count of complete regulation court/run-off envelopes, accurate linework and a clear central circulation spine',
     isPilot: true,
   },
+  soccer_pitch_caged: {
+    id: 'caged-soccer-pitch-v1',
+    version: 1,
+    programDescription:
+      'An archetype-matched European street football cage containing up to two complete 30 by 18 metre 5-a-side pitches. Use the maximum number of whole pitch modules that fit the parcel; an oversized site receives two pitches rather than one stretched pitch.',
+    groundDescription:
+      'Deep green striped artificial turf with crisp white five-a-side markings, dark galvanized steel mesh, weathered white rebound boards, a narrow concrete gate apron and restrained spectator seating outside the cage. The material palette follows the selected archetype render rather than a generic sports skin.',
+    criticalConstraints:
+      'Every retained pitch is exactly 30 by 18 metres with two 3 by 2 metre goals. Never stretch, crop or overlap a pitch. Each pitch keeps its complete rebound-board and 3-to-4-metre mesh enclosure, gate, four-corner lighting and unobstructed playing surface. Omit coaching decks, storage buildings and people; larger buildings are rendered separately.',
+    canopyDescription:
+      'No trees or canopy overhang the cage. Any planting remains outside the concrete spectator apron and clear of gates, mesh and floodlights.',
+    plantingStructure: 'caged_soccer_v0',
+    guides: [
+      { kind: 'soccer_field', x: 0.30, y: 0.50, width: 0.40, height: 0.72, widthM: 30, heightM: 18, color: '#286b38', strokeColor: '#f4f2df', strokeWidthM: 0.08, orientationPolicy: 'orthogonal' },
+      { kind: 'soccer_field', x: 0.70, y: 0.50, width: 0.40, height: 0.72, widthM: 30, heightM: 18, color: '#286b38', strokeColor: '#f4f2df', strokeWidthM: 0.08, orientationPolicy: 'orthogonal' },
+    ],
+    guideLegend: [
+      'each retained DARK-GREEN rectangle is one exact 30 by 18 metre caged 5-a-side pitch; keep complete regulation markings, goals, rebound boards and mesh enclosure',
+    ],
+    includeCentralPlaza: false,
+    renderSummary:
+      'European street-cage soccer park preserving the maximum parcel-compatible count of complete 30 by 18 metre pitches with exact goals, rebound boards, mesh and floodlights',
+    isPilot: true,
+  },
   wetland_rain_garden: {
     id: 'wetland-rain-garden-v2',
     version: 2,
@@ -932,6 +956,30 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
     includeCentralPlaza: false,
     renderSummary:
       'sports-field complex preserving one full-size 100 x 64 metre football pitch when compatible and the maximum parcel-compatible count of complete regulation doubles tennis courts at exact real-world scale',
+    isPilot: true,
+  },
+  athletics_precinct_sports_fields: {
+    id: 'athletics-precinct-sports-fields-v1',
+    version: 1,
+    programDescription:
+      'A regulation outdoor playing-field precinct containing up to two complete 100 by 64 metre community soccer pitches. Use the maximum count of whole fields that fits the actual polygon; leftover land becomes access, meadow buffer and spectator edge rather than a stretched or invented field.',
+    groundDescription:
+      'Closely mown striped sports turf with crisp white regulation markings, subdued meadow and gravel spectator margins, galvanized goals, modest aluminum bleachers and tall floodlight masts. Match the selected athletics archetype render while reserving clubhouses, grandstands and other large buildings for the separate building pipeline.',
+    criticalConstraints:
+      'Every retained soccer field is exactly 100 by 64 metres, within the regulation adult-field dimensional range, and stays level, complete and unobstructed. Never scale, crop, overlap or distort a field to fill the parcel. Keep goals, touchline run-off, lighting and bleachers outside play. Do not generate a clubhouse, grandstand, fieldhouse, parking lot, road or people as part of this park LEGO family.',
+    canopyDescription:
+      'The playing fields remain completely open. Sparse perimeter trees and meadow occur only beyond the touchline safety and spectator zones, leaving all goals and floodlight sightlines clear.',
+    plantingStructure: 'athletics_fields_v0',
+    guides: [
+      { kind: 'soccer_field', x: 0.27, y: 0.50, width: 0.43, height: 0.72, widthM: 100, heightM: 64, color: '#5f8c54', strokeColor: '#f4f2df', strokeWidthM: 0.12, orientationPolicy: 'orthogonal' },
+      { kind: 'soccer_field', x: 0.73, y: 0.50, width: 0.43, height: 0.72, widthM: 100, heightM: 64, color: '#5f8c54', strokeColor: '#f4f2df', strokeWidthM: 0.12, orientationPolicy: 'orthogonal' },
+    ],
+    guideLegend: [
+      'each retained GREEN rectangle is one exact 100 by 64 metre regulation community soccer field; retain only complete fields and never enlarge one to consume an oversized site',
+    ],
+    includeCentralPlaza: false,
+    renderSummary:
+      'athletics precinct preserving the maximum parcel-compatible count of complete 100 by 64 metre soccer fields with archetype-matched turf, goals, bleachers and floodlights but no large buildings',
     isPilot: true,
   },
   urban_forest: {
@@ -1344,6 +1392,7 @@ export type ParkSpecialtyStructureKind =
   | 'pump_track_v0_assembly'
   | 'outdoor_fitness_v0_assembly'
   | 'memorial_garden_v0_assembly'
+  | 'caged_soccer_v0_assembly'
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
@@ -1461,10 +1510,22 @@ export function resolveParkSpecialtyStructureKind(
     && legoContract.supported
     && legoContract.familyId === 'park_water_ecology'
   ) return 'stormwater_control_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_caged_soccer_v0'
+  ) return 'caged_soccer_v0_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_athletics_fields_v0'
+  ) return 'sports_field_furniture';
   const archetypeId = resolveParkGroundProfile(zone).archetypeId;
   if (archetypeId.startsWith('japanese_garden')) return 'japanese_garden_bridge';
   if (archetypeId.startsWith('cricket_pitch_oval')) return 'cricket_ground_assembly';
   if (archetypeId.startsWith('sports_field_complex')) return 'sports_field_furniture';
+  if (archetypeId.startsWith('athletics_precinct_sports_fields')) return 'sports_field_furniture';
+  if (archetypeId.startsWith('soccer_pitch_caged')) return 'caged_soccer_v0_assembly';
   if (archetypeId.startsWith('tennis_court_cluster')) return 'tennis_court_furniture';
   if (archetypeId.startsWith('wetland_rain_garden')) return 'wetland_boardwalk';
   if (archetypeId.startsWith('botanical_garden')) return 'botanical_conservatory';

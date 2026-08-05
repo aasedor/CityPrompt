@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "archetype": "caged-soccer-european",
+  "source": "frontend/public/archetypes/openspaces/caged-soccer-pitch/variant_0.png",
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "cropNormalized": [
+        0.0,
+        0.78,
+        0.4,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        599,
+        410,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "cropNormalized": [
+        0.08,
+        0.54,
+        0.8,
+        0.92
+      ],
+      "cropPixels": [
+        82,
+        415,
+        819,
+        707
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "safety",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "cropNormalized": [
+        0.0,
+        0.78,
+        0.4,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        599,
+        410,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "cropNormalized": [
+        0.18,
+        0.08,
+        0.58,
+        0.48
+      ],
+      "cropPixels": [
+        184,
+        61,
+        594,
+        369
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "cropNormalized": [
+        0.08,
+        0.54,
+        0.8,
+        0.92
+      ],
+      "cropPixels": [
+        82,
+        415,
+        819,
+        707
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "cropNormalized": [
+        0.68,
+        0.58,
+        0.99,
+        0.9
+      ],
+      "cropPixels": [
+        696,
+        445,
+        1014,
+        691
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

@@ -348,7 +348,12 @@ _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
-    ("tennis_court_cluster", "tennis_court_cluster_v0"): (82.0, 46.0, 0.5),
+    # Adaptive regulation families prove that at least one complete module can
+    # fit. The renderer then keeps the maximum count of whole modules inside
+    # the actual polygon; these values must never describe a stretched field.
+    ("tennis_court_cluster", "tennis_court_cluster_v0"): (36.58, 18.29, 0.5),
+    ("soccer_pitch_caged", "soccer_pitch_caged_v0"): (30.0, 18.0, 0.5),
+    ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_0"): (100.0, 64.0, 0.5),
     ("nature_play_area", "nature_play_area_v0"): (40.0, 30.0, 0.5),
     ("pump_track", "pump_track_v0"): (50.0, 30.0, 0.5),
     ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0"): (30.0, 25.0, 0.5),
@@ -368,7 +373,13 @@ _COMMUNITY_GARDEN_V0_ENVELOPE = _park_envelope(
     nominal=(50.0, 50.0), width=(50.0, 65.0), depth=(50.0, 65.0), area=(2_500.0, 4_225.0),
 )
 _TENNIS_CLUSTER_V0_ENVELOPE = _park_envelope(
-    nominal=(82.0, 46.0), width=(82.0, 100.0), depth=(46.0, 60.0), area=(3_772.0, 6_000.0),
+    nominal=(82.0, 46.0), width=(36.58, 120.0), depth=(18.29, 100.0), area=(669.0, 12_000.0),
+)
+_CAGED_SOCCER_V0_ENVELOPE = _park_envelope(
+    nominal=(66.0, 24.0), width=(30.0, 100.0), depth=(18.0, 70.0), area=(540.0, 7_000.0),
+)
+_ATHLETICS_FIELDS_V0_ENVELOPE = _park_envelope(
+    nominal=(210.0, 76.0), width=(100.0, 350.0), depth=(64.0, 230.0), area=(6_400.0, 80_000.0),
 )
 _NATURE_PLAY_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0), width=(40.0, 60.0), depth=(30.0, 45.0), area=(1_200.0, 2_700.0),
@@ -603,6 +614,26 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
             appearance_kit_id="tennis_court_cluster_v0_reference_skin", planting_structure="tennis_court_cluster_v0",
             compatibility=_TENNIS_CLUSTER_V0_ENVELOPE,
             components=("tennis_cluster_v0_ground_program", "tennis_net_v1", "tennis_fence_v1", "tennis_floodlight_v1", "spectator_bleacher_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_caged_soccer_v0", kind="park",
+        title="Caged Soccer Pitch / European Street Cage v0", generator="park_kit",
+        selections=(_selection(
+            "soccer_pitch_caged", "soccer_pitch_caged_v0", profile_id="caged-soccer-pitch-v1",
+            appearance_kit_id="soccer_pitch_caged_v0_reference_skin", planting_structure="caged_soccer_v0",
+            compatibility=_CAGED_SOCCER_V0_ENVELOPE,
+            components=("caged_soccer_v0_ground_program", "five_a_side_goal_v1", "soccer_rebound_board_v1", "soccer_cage_mesh_v1", "soccer_floodlight_v1", "player_bench_v1"), default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_athletics_fields_v0", kind="park",
+        title="Athletics Precinct / Regulation Playing Fields v0", generator="park_kit",
+        selections=(_selection(
+            "athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_0", profile_id="athletics-precinct-sports-fields-v1",
+            appearance_kit_id="athletics_precinct_sports_fields_v0_reference_skin", planting_structure="athletics_fields_v0",
+            compatibility=_ATHLETICS_FIELDS_V0_ENVELOPE,
+            components=("athletics_fields_v0_ground_program", "regulation_soccer_goal_v1", "field_floodlight_v1", "spectator_bleacher_v1"), default=True,
         ),),
     ),
     PublicRealmFamilyCapability(

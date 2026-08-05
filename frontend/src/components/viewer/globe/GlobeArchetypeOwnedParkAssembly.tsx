@@ -129,6 +129,202 @@ function GroundLine({ x = 0, y = 0, width, depth, color = '#f1f0e8' }: {
   </mesh>;
 }
 
+function GroundDot({ x, y = 0, radius = 0.12, color = '#f1f0e8' }: {
+  x: number; y?: number; radius?: number; color?: string;
+}) {
+  return <mesh position={[x, y, 0.077]} renderOrder={RENDER_ORDER + 2}>
+    <circleGeometry args={[radius, 20]} />
+    <meshStandardMaterial color={color} roughness={0.78} side={THREE.DoubleSide} />
+  </mesh>;
+}
+
+function MowingStripes({ widthM, depthM }: { widthM: number; depthM: number }) {
+  const stripeWidth = widthM / 10;
+  return <>{Array.from({ length: 10 }, (_, index) => (
+    <mesh
+      key={index}
+      position={[-widthM / 2 + stripeWidth * (index + 0.5), 0, 0.024]}
+      renderOrder={RENDER_ORDER + 1}
+    >
+      <planeGeometry args={[stripeWidth, depthM]} />
+      <meshStandardMaterial
+        color={index % 2 ? '#d7e4c8' : '#76955f'}
+        transparent
+        opacity={index % 2 ? 0.08 : 0.05}
+        roughness={0.96}
+        depthWrite={false}
+      />
+    </mesh>
+  ))}</>;
+}
+
+function SoccerMarkings({ widthM, depthM, smallSided = false }: {
+  widthM: number; depthM: number; smallSided?: boolean;
+}) {
+  const halfLength = widthM / 2;
+  const halfWidth = depthM / 2;
+  const penaltyDepth = smallSided ? 5 : 16.5;
+  const penaltyWidth = smallSided ? 10 : 40.32;
+  const goalAreaDepth = 5.5;
+  const goalAreaWidth = 18.32;
+  const circleRadius = smallSided ? 3 : 9.15;
+  const line = 0.1;
+  return <>
+    <GroundLine x={-halfLength} width={line} depth={depthM} />
+    <GroundLine x={halfLength} width={line} depth={depthM} />
+    <GroundLine y={-halfWidth} width={widthM} depth={line} />
+    <GroundLine y={halfWidth} width={widthM} depth={line} />
+    <GroundLine width={line} depth={depthM} />
+    {[-1, 1].map((side) => <group key={side} position={[side * (halfLength - penaltyDepth / 2), 0, 0]}>
+      <GroundLine width={penaltyDepth} depth={line} y={-penaltyWidth / 2} />
+      <GroundLine width={penaltyDepth} depth={line} y={penaltyWidth / 2} />
+      <GroundLine width={line} depth={penaltyWidth} x={-side * penaltyDepth / 2} />
+    </group>)}
+    {!smallSided && [-1, 1].map((side) => <group key={`goal-area-${side}`} position={[side * (halfLength - goalAreaDepth / 2), 0, 0]}>
+      <GroundLine width={goalAreaDepth} depth={line} y={-goalAreaWidth / 2} />
+      <GroundLine width={goalAreaDepth} depth={line} y={goalAreaWidth / 2} />
+      <GroundLine width={line} depth={goalAreaWidth} x={-side * goalAreaDepth / 2} />
+      <GroundDot x={-side * (goalAreaDepth / 2 + 5.5)} />
+    </group>)}
+    <mesh position={[0, 0, 0.076]} renderOrder={RENDER_ORDER + 2}>
+      <ringGeometry args={[circleRadius - line, circleRadius, 48]} />
+      <meshStandardMaterial color="#f1f0e8" roughness={0.78} side={THREE.DoubleSide} />
+    </mesh>
+  </>;
+}
+
+function SoccerGoal({ x, goalWidthM, goalHeightM }: {
+  x: number; goalWidthM: number; goalHeightM: number;
+}) {
+  return <group position={[x, 0, 0.08]}>
+    {[-goalWidthM / 2, goalWidthM / 2].map((y) => <mesh key={y} position={[0, y, goalHeightM / 2]}>
+      <boxGeometry args={[0.1, 0.1, goalHeightM]} />
+      <meshStandardMaterial color="#eef0ea" roughness={0.66} />
+    </mesh>)}
+    <mesh position={[0, 0, goalHeightM]}><boxGeometry args={[0.1, goalWidthM, 0.1]} /><meshStandardMaterial color="#eef0ea" roughness={0.66} /></mesh>
+    <mesh position={[0.55 * Math.sign(x), 0, goalHeightM / 2]} rotation={[0, Math.PI / 2, 0]}>
+      <planeGeometry args={[goalWidthM, Math.hypot(goalHeightM, 1.1), 12, 5]} />
+      <meshStandardMaterial color="#e3e7df" wireframe transparent opacity={0.32} side={THREE.DoubleSide} depthWrite={false} />
+    </mesh>
+  </group>;
+}
+
+function Floodlight({ x, y, heightM = 10 }: { x: number; y: number; heightM?: number }) {
+  return <group position={[x, y, 0.08]}>
+    <mesh position={[0, 0, heightM / 2]}><cylinderGeometry args={[0.08, 0.13, heightM, 10]} /><meshStandardMaterial color="#50595a" metalness={0.54} roughness={0.5} /></mesh>
+    <mesh position={[0, 0, heightM]}><boxGeometry args={[2.2, 0.22, 0.22]} /><meshStandardMaterial color="#51595b" metalness={0.48} roughness={0.5} /></mesh>
+    {[-0.72, 0, 0.72].map((lampX) => <mesh key={lampX} position={[lampX, 0.16, heightM]}><boxGeometry args={[0.4, 0.24, 0.3]} /><meshStandardMaterial color="#d9ddd4" roughness={0.38} /></mesh>)}
+  </group>;
+}
+
+function CagedPitchEnclosure({ widthM, depthM }: { widthM: number; depthM: number }) {
+  const heightM = 3.6;
+  const boardHeightM = 1.05;
+  const panels = Math.max(4, Math.ceil(widthM / 4));
+  const endPanels = Math.max(3, Math.ceil(depthM / 4));
+  const meshMaterial = <meshStandardMaterial color="#313b39" wireframe transparent opacity={0.42} side={THREE.DoubleSide} depthWrite={false} />;
+  return <>
+    {[-1, 1].map((side) => <group key={`long-${side}`} position={[0, side * depthM / 2, 0]}>
+      <mesh position={[0, 0, boardHeightM / 2]}><boxGeometry args={[widthM, 0.09, boardHeightM]} /><meshStandardMaterial color="#e4e1d5" roughness={0.78} /></mesh>
+      <mesh position={[0, 0, boardHeightM + (heightM - boardHeightM) / 2]}><planeGeometry args={[widthM, heightM - boardHeightM, panels * 3, 6]} />{meshMaterial}</mesh>
+    </group>)}
+    {[-1, 1].map((side) => <group key={`end-${side}`} position={[side * widthM / 2, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+      <mesh position={[0, 0, boardHeightM / 2]}><boxGeometry args={[depthM, 0.09, boardHeightM]} /><meshStandardMaterial color="#e4e1d5" roughness={0.78} /></mesh>
+      <mesh position={[0, 0, boardHeightM + (heightM - boardHeightM) / 2]}><planeGeometry args={[depthM, heightM - boardHeightM, endPanels * 3, 6]} />{meshMaterial}</mesh>
+    </group>)}
+    {[-widthM / 2, 0, widthM / 2].flatMap((x) => [-depthM / 2, depthM / 2].map((y) => <mesh key={`${x}-${y}`} position={[x, y, heightM / 2]}><boxGeometry args={[0.11, 0.11, heightM]} /><meshStandardMaterial color="#303938" metalness={0.42} roughness={0.56} /></mesh>))}
+  </>;
+}
+
+export interface RegulationParkModule {
+  x: number;
+  y: number;
+  rotationZ: number;
+  widthM: number;
+  depthM: number;
+}
+
+export type RegulationParkFamilyId =
+  | 'park_tennis_cluster_v0'
+  | 'park_caged_soccer_v0'
+  | 'park_athletics_fields_v0';
+
+/** Regulation surfaces are archetype-skinned LEGO modules. Their dimensions
+ * come from fitted metric guides, so larger polygons receive more complete
+ * modules rather than one distorted court or field. */
+export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ }: {
+  familyId: RegulationParkFamilyId;
+  modules: readonly RegulationParkModule[];
+  terrainZ: (x: number, y: number) => number;
+}) {
+  const slug = familyId === 'park_tennis_cluster_v0' ? 'tennis-court-professional'
+    : familyId === 'park_caged_soccer_v0' ? 'caged-soccer-european'
+      : 'athletics-fields-regulation';
+  const surface = useSkinMaterial(slug, familyId === 'park_athletics_fields_v0' ? 'lawn' : 'safety', [8, 5]);
+  const edgeRole = familyId === 'park_caged_soccer_v0' ? 'asphalt'
+    : familyId === 'park_athletics_fields_v0' ? 'lawn'
+      : 'planting';
+  const edge = useSkinMaterial(slug, edgeRole, [6, 4]);
+  const tennisKit = archetypeOwnedParkKitForFamily('park_tennis_cluster_v0');
+  const tennisAsset = (name: string) => tennisKit ? `/park-kits/${tennisKit.slug}/${tennisKit.assets[name]}` : '';
+  if (modules.length === 0) return null;
+
+  return <group renderOrder={RENDER_ORDER}>
+    {modules.map((module, index) => {
+      const cos = Math.cos(module.rotationZ);
+      const sin = Math.sin(module.rotationZ);
+      const sampleOffsets = [-0.5, 0, 0.5];
+      const terrainSamples = sampleOffsets.flatMap((unitX) => sampleOffsets.map((unitY) => {
+        const localX = unitX * module.widthM;
+        const localY = unitY * module.depthM;
+        return terrainZ(
+          module.x + localX * cos - localY * sin,
+          module.y + localX * sin + localY * cos,
+        );
+      }));
+      // Regulation courts and pitches must remain planar. Seat the complete
+      // module above the highest sampled terrain point so a sloping tile or
+      // residual landscape cannot clip through half of the playing surface.
+      const baseZ = Math.max(...terrainSamples) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
+      if (familyId === 'park_tennis_cluster_v0') return <group key={index} position={[module.x, module.y, baseZ]} rotation={[0, 0, module.rotationZ]}>
+        <TexturedRect width={module.widthM + 2} depth={module.depthM + 2} z={-0.01} maps={edge} color="#315a32" />
+        <TexturedRect width={module.widthM} depth={module.depthM} z={0.02} maps={surface} color="#315b85" />
+        <GroundLine x={-11.885} width={0.055} depth={10.97} /><GroundLine x={11.885} width={0.055} depth={10.97} />
+        <GroundLine y={-5.485} width={23.77} depth={0.055} /><GroundLine y={5.485} width={23.77} depth={0.055} />
+        <GroundLine y={-4.115} width={23.77} depth={0.055} /><GroundLine y={4.115} width={23.77} depth={0.055} />
+        <GroundLine x={-6.4} width={0.055} depth={10.97} /><GroundLine x={6.4} width={0.055} depth={10.97} />
+        <GroundLine width={12.8} depth={0.055} />
+        {tennisKit && <><MetricGlb url={tennisAsset('net')} position={[0, 0, 0.12]} yaw={Math.PI / 2} />
+          <FenceRectangle url={tennisAsset('fence')} width={module.widthM + 1.2} depth={module.depthM + 1.2} section={6} />
+          <MetricGlb url={tennisAsset('bleacher')} position={[0, module.depthM / 2 + 1.7, 0.12]} />
+          {[[-module.widthM / 2, -module.depthM / 2], [-module.widthM / 2, module.depthM / 2], [module.widthM / 2, -module.depthM / 2], [module.widthM / 2, module.depthM / 2]].map(([x, y]) => <MetricGlb key={`${x}-${y}`} url={tennisAsset('floodlight')} position={[x, y, 0.12]} />)}</>}
+      </group>;
+
+      const smallSided = familyId === 'park_caged_soccer_v0';
+      const apron = smallSided ? 2 : 4;
+      const goalWidth = smallSided ? 3 : 7.32;
+      const goalHeight = smallSided ? 2 : 2.44;
+      return <group key={index} position={[module.x, module.y, baseZ]} rotation={[0, 0, module.rotationZ]}>
+        {!smallSided && <mesh position={[0, 0, -0.48]} receiveShadow renderOrder={RENDER_ORDER - 1}>
+          <boxGeometry args={[module.widthM + apron * 2, module.depthM + apron * 2, 0.96]} />
+          <meshStandardMaterial color="#536745" roughness={0.98} />
+        </mesh>}
+        <TexturedRect width={module.widthM + apron * 2} depth={module.depthM + apron * 2} z={-0.01} maps={edge} color={smallSided ? '#77736b' : '#b5c59c'} />
+        <TexturedRect width={module.widthM} depth={module.depthM} z={0.02} maps={surface} color={smallSided ? '#2e713b' : '#ffffff'} />
+        {!smallSided && <MowingStripes widthM={module.widthM} depthM={module.depthM} />}
+        <SoccerMarkings widthM={module.widthM} depthM={module.depthM} smallSided={smallSided} />
+        <SoccerGoal x={-module.widthM / 2} goalWidthM={goalWidth} goalHeightM={goalHeight} />
+        <SoccerGoal x={module.widthM / 2} goalWidthM={goalWidth} goalHeightM={goalHeight} />
+        {smallSided ? <CagedPitchEnclosure widthM={module.widthM + 0.5} depthM={module.depthM + 0.5} /> : <>
+          {[-1, 1].flatMap((side) => [0, 1, 2].map((row) => <mesh key={`${side}-${row}`} position={[0, side * (module.depthM / 2 + 2 + row * 0.75), 0.18 + row * 0.3]}><boxGeometry args={[24, 0.68, 0.28]} /><meshStandardMaterial color={row % 2 ? '#808888' : '#9ba2a1'} metalness={0.34} roughness={0.6} /></mesh>))}
+        </>}
+        {[[-module.widthM / 2 + 4, -module.depthM / 2 - apron + 0.5], [-module.widthM / 2 + 4, module.depthM / 2 + apron - 0.5], [module.widthM / 2 - 4, -module.depthM / 2 - apron + 0.5], [module.widthM / 2 - 4, module.depthM / 2 + apron - 0.5]].map(([x, y]) => <Floodlight key={`${x}-${y}`} x={x} y={y} heightM={smallSided ? 8 : 14} />)}
+        {smallSided && <SimpleBench x={0} y={module.depthM / 2 + 1.4} />}
+      </group>;
+    })}
+  </group>;
+}
+
 function ExactTree({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {
   return <group position={[x, y, 0.12]} scale={scale}>
     <mesh position={[0, 0, 1.8]} castShadow><cylinderGeometry args={[0.18, 0.25, 3.6, 10]} /><meshStandardMaterial color="#563920" roughness={0.94} /></mesh>

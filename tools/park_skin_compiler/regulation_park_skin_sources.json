@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "caged-soccer-european": {
+      "source": "frontend/public/archetypes/openspaces/caged-soccer-pitch/variant_0.png",
+      "patterns": {"paver": "asphalt", "lawn": "safety", "asphalt": "asphalt", "planting": "planting", "safety": "lawn", "timber": "paver"},
+      "crops": {
+        "paver": [0.00, 0.78, 0.40, 1.00],
+        "lawn": [0.08, 0.54, 0.80, 0.92],
+        "asphalt": [0.00, 0.78, 0.40, 1.00],
+        "planting": [0.18, 0.08, 0.58, 0.48],
+        "safety": [0.08, 0.54, 0.80, 0.92],
+        "timber": [0.68, 0.58, 0.99, 0.90]
+      }
+    },
+    "athletics-fields-regulation": {
+      "source": "frontend/public/archetypes/openspaces/athletics-precinct-sports-fields/variant_0.png",
+      "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "lawn", "timber": "timber"},
+      "crops": {
+        "paver": [0.00, 0.76, 0.58, 1.00],
+        "lawn": [0.44, 0.42, 0.99, 0.82],
+        "asphalt": [0.04, 0.76, 0.62, 1.00],
+        "planting": [0.00, 0.34, 0.48, 0.80],
+        "safety": [0.44, 0.42, 0.99, 0.82],
+        "timber": [0.29, 0.72, 0.57, 0.96]
+      }
+    }
+  },
+  "materialDefaults": {
+    "paver": {"roughness": 0.88, "normalStrength": 2.0, "metresPerTile": 4.0},
+    "lawn": {"roughness": 0.95, "normalStrength": 2.2, "metresPerTile": 5.0},
+    "asphalt": {"roughness": 0.91, "normalStrength": 1.8, "metresPerTile": 4.0},
+    "planting": {"roughness": 0.98, "normalStrength": 3.0, "metresPerTile": 3.0},
+    "safety": {"roughness": 0.90, "normalStrength": 2.4, "metresPerTile": 3.0},
+    "timber": {"roughness": 0.84, "normalStrength": 2.2, "metresPerTile": 2.5}
+  }
+}

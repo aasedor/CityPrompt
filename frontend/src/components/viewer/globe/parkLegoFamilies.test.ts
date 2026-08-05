@@ -169,6 +169,8 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v0', 'splash_pad_area_v0_reference_skin', 'splash_pad_area_v0'],
     ['park_community_garden_v0', 'community_garden', 'community_garden_v0', 'community_garden_v0_reference_skin', 'community_garden_v0'],
     ['park_tennis_cluster_v0', 'tennis_court_cluster', 'tennis_court_cluster_v0', 'tennis_court_cluster_v0_reference_skin', 'tennis_court_cluster_v0'],
+    ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v0', 'soccer_pitch_caged_v0_reference_skin', 'caged_soccer_v0'],
+    ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_0', 'athletics_precinct_sports_fields_v0_reference_skin', 'athletics_fields_v0'],
     ['park_nature_play_v0', 'nature_play_area', 'nature_play_area_v0', 'nature_play_area_v0_reference_skin', 'nature_play_area_v0'],
     ['park_pump_track_v0', 'pump_track', 'pump_track_v0', 'pump_track_v0_reference_skin', 'pump_track_v0'],
     ['park_outdoor_fitness_v0', 'outdoor_fitness_circuit', 'outdoor_fitness_circuit_v0', 'outdoor_fitness_circuit_v0_reference_skin', 'outdoor_fitness_circuit_v0'],
@@ -220,6 +222,25 @@ describe('Public Realm LEGO V1 park families', () => {
       supported: false,
     });
     expect(resolveParkLegoAppearance(candidate)).toBeNull();
+  });
+
+  it.each([
+    ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v0', 'soccer_pitch_caged_v0_reference_skin', 'caged_soccer_v0'],
+    ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_0', 'athletics_precinct_sports_fields_v0_reference_skin', 'athletics_fields_v0'],
+  ])('treats regulation family %s as an archetype-owned no-drape surface', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
   it('keeps Skate Park v0 on its archetype-owned surface in legacy and compiled states', () => {
