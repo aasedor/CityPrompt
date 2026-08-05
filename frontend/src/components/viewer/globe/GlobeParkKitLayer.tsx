@@ -38,12 +38,14 @@ import {
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import { PARK_KIT_MANIFEST } from '@/data/parkKitManifest';
+import { resolveParkKitSkin } from '@/data/parkKitSkins';
 import {
   computeParkPlacements,
   resolveParkRecipeForZone,
   type ParkPropId,
   type PropPlacement,
 } from './parkScatter';
+import { NeighborhoodParkLegoSurface } from './NeighborhoodParkLegoSurface';
 import {
   JAPANESE_GARDEN_BRIDGE_DIMENSIONS_M,
   WETLAND_BOARDWALK_PATHS,
@@ -634,7 +636,8 @@ function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
     const asset = PARK_KIT_MANIFEST[placement.propId];
     return shouldRenderLiveParkProp(zone, placement.propId, Boolean(asset));
   }).length;
-  return shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
+  return resolveParkKitSkin(zone) !== null
+    || shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
 }
 
 function ParkKitInstance({
@@ -847,6 +850,7 @@ function ParkKitInstance({
         zone={zone}
         centroid={centroid}
       />
+      <NeighborhoodParkLegoSurface zone={zone} centroid={centroid} />
       {[...byProp.entries()].map(([propId, group]) => {
         const groupZ = instanceZ
           ? group.map((g) => instanceZ[placements.indexOf(g)] ?? 0)
