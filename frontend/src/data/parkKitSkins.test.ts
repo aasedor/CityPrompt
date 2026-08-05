@@ -25,6 +25,8 @@ describe('neighborhood park LEGO skin pilot', () => {
     expect(new Set(skins.map((skin) => skin?.id)).size).toBe(4);
     expect(new Set(skins.map((skin) => skin?.baseGround)).size).toBe(4);
     expect(new Set(skins.map((skin) => skin?.materials.path.fill)).size).toBe(4);
+    expect(new Set(skins.map((skin) => skin?.atlas.albedo)).size).toBe(4);
+    expect(skins.every((skin) => skin?.atlas.sourceReference.endsWith('_angle_90.jpg'))).toBe(true);
   });
 
   it('keeps the pilot bounded to the neighborhood-park family', () => {

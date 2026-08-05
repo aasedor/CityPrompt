@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-05T02:05:48.751200+00:00",
+  "method": "reference_crop_rectify_atlas_pbr",
+  "apiCalls": 0,
+  "atlasSize": 1024,
+  "variants": {
+    "variant_0": {
+      "label": "Rustic Timber & Gravel",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0_angle_90.jpg",
+      "atlasCropNormalized": [
+        0.15,
+        0.02,
+        0.87,
+        0.98
+      ],
+      "atlasCropPixels": [
+        179,
+        18,
+        1040,
+        878
+      ],
+      "roughnessAnchor": 0.91,
+      "normalStrength": 2.4,
+      "meanRgb": [
+        107.3,
+        102.8,
+        66.2
+      ],
+      "projection": "single non-repeating XY atlas across common park bounds",
+      "files": {
+        "albedo": "variant_0/albedo.jpg",
+        "normal": "variant_0/normal.png",
+        "roughness": "variant_0/roughness.jpg",
+        "ao": "variant_0/ao.jpg"
+      }
+    },
+    "variant_1": {
+      "label": "Modern Steel & Turf",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_1_angle_90.jpg",
+      "atlasCropNormalized": [
+        0.08,
+        0.0,
+        0.83,
+        1.0
+      ],
+      "atlasCropPixels": [
+        96,
+        0,
+        992,
+        896
+      ],
+      "roughnessAnchor": 0.86,
+      "normalStrength": 2.0,
+      "meanRgb": [
+        106.5,
+        108.4,
+        74.3
+      ],
+      "projection": "single non-repeating XY atlas across common park bounds",
+      "files": {
+        "albedo": "variant_1/albedo.jpg",
+        "normal": "variant_1/normal.png",
+        "roughness": "variant_1/roughness.jpg",
+        "ao": "variant_1/ao.jpg"
+      }
+    },
+    "variant_2": {
+      "label": "Natural Meadow",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_2_angle_90.jpg",
+      "atlasCropNormalized": [
+        0.2,
+        0.0,
+        0.95,
+        1.0
+      ],
+      "atlasCropPixels": [
+        239,
+        0,
+        1135,
+        896
+      ],
+      "roughnessAnchor": 0.94,
+      "normalStrength": 2.7,
+      "meanRgb": [
+        106.7,
+        103.9,
+        51.9
+      ],
+      "projection": "single non-repeating XY atlas across common park bounds",
+      "files": {
+        "albedo": "variant_2/albedo.jpg",
+        "normal": "variant_2/normal.png",
+        "roughness": "variant_2/roughness.jpg",
+        "ao": "variant_2/ao.jpg"
+      }
+    },
+    "variant_3": {
+      "label": "Urban Contemporary",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_3_angle_90.jpg",
+      "atlasCropNormalized": [
+        0.12,
+        0.0,
+        0.87,
+        1.0
+      ],
+      "atlasCropPixels": [
+        143,
+        0,
+        1040,
+        896
+      ],
+      "roughnessAnchor": 0.84,
+      "normalStrength": 2.1,
+      "meanRgb": [
+        112.4,
+        113.6,
+        94.6
+      ],
+      "projection": "single non-repeating XY atlas across common park bounds",
+      "files": {
+        "albedo": "variant_3/albedo.jpg",
+        "normal": "variant_3/normal.png",
+        "roughness": "variant_3/roughness.jpg",
+        "ao": "variant_3/ao.jpg"
+      }
+    }
+  }
+}

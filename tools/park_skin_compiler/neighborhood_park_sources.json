@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "method": "reference_crop_rectify_atlas_pbr",
+  "notes": "One audited full-park crop per existing 90-degree archetype reference. Crop boxes are normalized [left, top, right, bottom]. The atlas is not tiled; it is projected once across the common LEGO park bounds.",
+  "variants": {
+    "variant_0": {
+      "label": "Rustic Timber & Gravel",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0_angle_90.jpg",
+      "atlasCrop": [0.15, 0.02, 0.87, 0.98],
+      "atlasRoughness": 0.91,
+      "atlasNormalStrength": 2.4
+    },
+    "variant_1": {
+      "label": "Modern Steel & Turf",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_1_angle_90.jpg",
+      "atlasCrop": [0.08, 0.00, 0.83, 1.00],
+      "atlasRoughness": 0.86,
+      "atlasNormalStrength": 2.0
+    },
+    "variant_2": {
+      "label": "Natural Meadow",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_2_angle_90.jpg",
+      "atlasCrop": [0.20, 0.00, 0.95, 1.00],
+      "atlasRoughness": 0.94,
+      "atlasNormalStrength": 2.7
+    },
+    "variant_3": {
+      "label": "Urban Contemporary",
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_3_angle_90.jpg",
+      "atlasCrop": [0.12, 0.00, 0.87, 1.00],
+      "atlasRoughness": 0.84,
+      "atlasNormalStrength": 2.1
+    }
+  }
+}

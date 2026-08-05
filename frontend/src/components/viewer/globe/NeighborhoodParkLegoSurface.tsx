@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
-import { resolveParkKitSkin } from '@/data/parkKitSkins';
+import { resolveParkKitSkin, type ParkKitSkin } from '@/data/parkKitSkins';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import {
   fitParkGroundGuides,
@@ -88,16 +89,44 @@ function ParkLegoPath({
  * variant supplies only the interchangeable material skin. The shallow pieces
  * overlay the existing terrain-conforming park base, so no image API is used.
  */
-export function NeighborhoodParkLegoSurface({
+function NeighborhoodParkLegoSurfaceWithSkin({
   zone,
   centroid,
+  skin,
 }: {
   zone: SiteZone;
   centroid: { lng: number; lat: number };
+  skin: ParkKitSkin;
 }) {
-  const skin = resolveParkKitSkin(zone);
+  const [loadedAlbedoMap, loadedNormalMap, loadedRoughnessMap] = useLoader(THREE.TextureLoader, [
+    skin.atlas.albedo,
+    skin.atlas.normal,
+    skin.atlas.roughness,
+  ]);
+  const [albedoMap, normalMap, roughnessMap] = useMemo(() => [
+    loadedAlbedoMap.clone(),
+    loadedNormalMap.clone(),
+    loadedRoughnessMap.clone(),
+  ], [loadedAlbedoMap, loadedNormalMap, loadedRoughnessMap]);
+  useEffect(() => {
+    return () => {
+      albedoMap.dispose();
+      normalMap.dispose();
+      roughnessMap.dispose();
+    };
+  }, [albedoMap, normalMap, roughnessMap]);
+  useEffect(() => {
+    albedoMap.colorSpace = THREE.SRGBColorSpace;
+    normalMap.colorSpace = THREE.NoColorSpace;
+    roughnessMap.colorSpace = THREE.NoColorSpace;
+    for (const texture of [albedoMap, normalMap, roughnessMap]) {
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.anisotropy = 8;
+      texture.needsUpdate = true;
+    }
+  }, [albedoMap, normalMap, roughnessMap]);
   const program = useMemo(() => {
-    if (!skin) return null;
     const mPerLon = metersPerDegLon(centroid.lat);
     const ring = zone.coordinates.map(([lng, lat]) => ([
       (lng - centroid.lng) * mPerLon,
@@ -127,7 +156,24 @@ export function NeighborhoodParkLegoSurface({
     return { minX, maxY, width, height, guides, baseShape };
   }, [centroid.lat, centroid.lng, skin, zone]);
 
-  if (!skin || !program) return null;
+  useEffect(() => {
+    if (!program || program.width <= 0 || program.height <= 0) return;
+    for (const texture of [albedoMap, normalMap, roughnessMap]) {
+      texture.matrixAutoUpdate = false;
+      texture.matrix.setUvTransform(
+        -program.minX / program.width,
+        program.maxY / program.height,
+        1 / program.width,
+        -1 / program.height,
+        0,
+        0,
+        0,
+      );
+      texture.needsUpdate = true;
+    }
+  }, [albedoMap, normalMap, program, roughnessMap]);
+
+  if (!program) return null;
   const toLocal = (x: number, y: number): [number, number] => ([
     program.minX + x * program.width,
     program.maxY - y * program.height,
@@ -137,7 +183,13 @@ export function NeighborhoodParkLegoSurface({
     <group name={`ParkLegoSurface_${skin.id}`}>
       <mesh position={[0, 0, 0.028]} renderOrder={RENDER_ORDER_SURFACE} receiveShadow>
         <shapeGeometry args={[program.baseShape]} />
-        <meshStandardMaterial color={skin.baseGround} roughness={0.96} />
+        <meshStandardMaterial
+          map={albedoMap}
+          normalMap={normalMap}
+          normalScale={new THREE.Vector2(0.24, 0.24)}
+          roughnessMap={roughnessMap}
+          roughness={0.96}
+        />
       </mesh>
       {program.guides.map((guide, index) => {
         if (!guide.materialRole) return null;
@@ -179,4 +231,16 @@ export function NeighborhoodParkLegoSurface({
       })}
     </group>
   );
+}
+
+export function NeighborhoodParkLegoSurface({
+  zone,
+  centroid,
+}: {
+  zone: SiteZone;
+  centroid: { lng: number; lat: number };
+}) {
+  const skin = resolveParkKitSkin(zone);
+  if (!skin) return null;
+  return <NeighborhoodParkLegoSurfaceWithSkin zone={zone} centroid={centroid} skin={skin} />;
 }

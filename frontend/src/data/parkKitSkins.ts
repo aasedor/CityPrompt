@@ -24,6 +24,14 @@ export interface ParkSkinMaterial {
   edge: string;
 }
 
+export interface ParkSkinAtlas {
+  albedo: string;
+  normal: string;
+  roughness: string;
+  ao: string;
+  sourceReference: string;
+}
+
 export interface ParkKitSkin {
   id: string;
   version: number;
@@ -32,7 +40,20 @@ export interface ParkKitSkin {
   groundPattern: ParkSkinGroundPattern;
   baseGround: string;
   grainPalette: readonly string[];
+  atlas: Readonly<ParkSkinAtlas>;
   materials: Readonly<Record<ParkSkinMaterialRole, ParkSkinMaterial>>;
+}
+
+function atlas(variant: string): ParkSkinAtlas {
+  const root = `/park-skins/neighborhood-park/${variant}`;
+  const sourceRoot = '/archetypes/openspaces/neighborhood-park';
+  return {
+    albedo: `${root}/albedo.jpg`,
+    normal: `${root}/normal.png`,
+    roughness: `${root}/roughness.jpg`,
+    ao: `${root}/ao.jpg`,
+    sourceReference: `${sourceRoot}/${variant}_angle_90.jpg`,
+  };
 }
 
 const SKINS = {
@@ -44,6 +65,7 @@ const SKINS = {
     groundPattern: 'rustic_aggregate',
     baseGround: '#697651',
     grainPalette: ['#7f8358', '#5d6c49', '#8a7750', '#596142'],
+    atlas: atlas('variant_0'),
     materials: {
       lawn: { fill: '#74865a', edge: '#526642' },
       path: { fill: '#b29a70', edge: '#715f43' },
@@ -61,6 +83,7 @@ const SKINS = {
     groundPattern: 'synthetic_turf_grid',
     baseGround: '#607761',
     grainPalette: ['#66866a', '#56705d', '#748878', '#4e6656'],
+    atlas: atlas('variant_1'),
     materials: {
       lawn: { fill: '#4f825c', edge: '#3d664b' },
       path: { fill: '#a7aaa6', edge: '#596361' },
@@ -78,6 +101,7 @@ const SKINS = {
     groundPattern: 'natural_meadow',
     baseGround: '#768052',
     grainPalette: ['#92905a', '#68764b', '#a18c4f', '#566b47'],
+    atlas: atlas('variant_2'),
     materials: {
       lawn: { fill: '#748b59', edge: '#556d47' },
       path: { fill: '#b5a983', edge: '#746848' },
@@ -95,6 +119,7 @@ const SKINS = {
     groundPattern: 'permeable_paver',
     baseGround: '#667466',
     grainPalette: ['#6e7e6c', '#59695d', '#778477', '#526159'],
+    atlas: atlas('variant_3'),
     materials: {
       lawn: { fill: '#5d8260', edge: '#45684f' },
       path: { fill: '#9d9d95', edge: '#515b5b' },
