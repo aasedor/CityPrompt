@@ -531,6 +531,16 @@ function familyTargets(
       return [target('shrub', 24), target('boulder', 16), target('riprap', 12), target('bin', 4), target('drinking_fountain', 2)];
     case 'park_montreal_neighbourhood_square_v3':
       return [target('shrub', 16), target('perennial', 18), target('light', 6), target('bin', 3), target('bike_rack', 3)];
+    case 'park_paris_place_royale_v2': return [target('light',8),target('bin',4),target('bollard',8),target('bike_rack',4)];
+    case 'park_paris_square_tree_grid_v3': return [target('shrub',12),target('perennial',14),target('light',6),target('bin',3)];
+    case 'park_london_circus_planted_v1': return [target('shrub',16),target('perennial',16),target('light',7),target('bike_rack',5),target('bin',3)];
+    case 'park_newyork_pocket_water_v0': return [target('shrub',14),target('perennial',18),target('light',4),target('bin',2)];
+    case 'park_newyork_community_greenhouse_v3': return [target('shrub',12),target('perennial',20),target('bin',2),target('drinking_fountain',1)];
+    case 'park_vancouver_seawall_cycle_v2': return [target('light',10),target('bike_rack',8),target('bin',6),target('drinking_fountain',2),target('bollard',8)];
+    case 'park_vancouver_beach_pavilion_v0': return [target('ornamental_grass',20),target('shrub',14),target('bike_rack',6),target('bin',5),target('drinking_fountain',2)];
+    case 'park_toronto_ravine_creek_v1': return [target('shrub',24),target('boulder',14),target('riprap',12),target('bin',3)];
+    case 'park_toronto_urban_market_v1': return [target('ornamental_grass',16),target('light',8),target('bike_rack',6),target('bin',4),target('bollard',8)];
+    case 'park_halifax_coastal_fog_path_v2': return [target('shrub',22),target('boulder',16),target('riprap',12),target('bin',3)];
   }
 }
 

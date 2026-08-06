@@ -1,0 +1,15 @@
+{
+  "schemaVersion":1,"validatedAt":"2026-08-06","projectId":"20c08c19-8bf3-48ab-b9d1-62482b46a66e","parkZoneId":"f00b58c7-6277-4617-a5d5-0bc4ff21db0b","buildingZoneId":"74ccecf5-afa2-44b9-9fd0-60464579be86","procedure":"one_park_at_a_time_with_separate_lego_building_and_fresh_server_snapshot","paidImageApiCalls":0,"meshyCalls":0,"expectedGenerateSummary":"1 buildings · 1 parks · 0 streets","expectedGroundContract":"Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+  "trials":[
+    {"order":1,"archetypeId":"parisian_place","variantId":"parisian_place_v2","familyId":"park_paris_place_royale_v2","result":"pass"},
+    {"order":2,"archetypeId":"parisian_square","variantId":"parisian_square_v3","familyId":"park_paris_square_tree_grid_v3","result":"pass"},
+    {"order":3,"archetypeId":"london_circus","variantId":"london_circus_v1","familyId":"park_london_circus_planted_v1","result":"pass"},
+    {"order":4,"archetypeId":"newyork_pocket_park","variantId":"newyork_pocket_park_v0","familyId":"park_newyork_pocket_water_v0","result":"pass"},
+    {"order":5,"archetypeId":"newyork_community_garden","variantId":"newyork_community_garden_v3","familyId":"park_newyork_community_greenhouse_v3","result":"pass"},
+    {"order":6,"archetypeId":"vancouver_seawall","variantId":"vancouver_seawall_v2","familyId":"park_vancouver_seawall_cycle_v2","result":"pass"},
+    {"order":7,"archetypeId":"vancouver_beach_park","variantId":"vancouver_beach_park_v0","familyId":"park_vancouver_beach_pavilion_v0","result":"pass"},
+    {"order":8,"archetypeId":"toronto_ravine","variantId":"toronto_ravine_v1","familyId":"park_toronto_ravine_creek_v1","result":"pass"},
+    {"order":9,"archetypeId":"toronto_urban_square","variantId":"toronto_urban_square_v1","familyId":"park_toronto_urban_market_v1","result":"pass"},
+    {"order":10,"archetypeId":"halifax_coastal_park","variantId":"halifax_coastal_park_v2","familyId":"park_halifax_coastal_fog_path_v2","result":"pass"}
+  ]
+}

@@ -4467,7 +4467,7 @@
       "aspectRatio": "1.5:1",
       "shape": "rectangular",
       "title": "Place Royale",
-      "aestheticCategory": "parisian_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Formal Parisian plaza with uniform facades, central monument or fountain, and paved surface",
       "generationTags": [
@@ -4548,7 +4548,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Square Parisien",
-      "aestheticCategory": "parisian_garden",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Small fenced Parisian garden square with gravel paths, green benches, iron fence, and mature trees",
       "generationTags": [
@@ -5277,7 +5277,7 @@
       "aspectRatio": "1:1",
       "shape": "circular",
       "title": "London Circus",
-      "aestheticCategory": "london_georgian",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "park",
       "description": "Circular arrangement of grand terrace houses facing inward to a round garden with large trees",
       "generationTags": [
@@ -5358,7 +5358,7 @@
       "aspectRatio": "1:1",
       "shape": "rectangular",
       "title": "New York Pocket Park",
-      "aestheticCategory": "newyork_urban",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
       "description": "Tiny urban oasis between buildings with waterfall wall, moveable chairs, and honey locust shade",
       "generationTags": [
@@ -5439,7 +5439,7 @@
       "aspectRatio": "1.2:1",
       "shape": "rectangular",
       "title": "New York Community Garden",
-      "aestheticCategory": "newyork_urban",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Fenced community garden on a former vacant lot with raised beds, murals, casita shed, and volunteer-run plots",
       "generationTags": [
@@ -5683,7 +5683,7 @@
       "aspectRatio": "12:1",
       "shape": "linear",
       "title": "Vancouver Seawall Promenade",
-      "aestheticCategory": "vancouver_waterfront",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "Continuous waterfront seawall path with ocean on one side, forest or city on the other, and mountain views across the in",
       "generationTags": [
@@ -5765,7 +5765,7 @@
       "aspectRatio": "1.9:1",
       "shape": "irregular",
       "title": "Vancouver Beach Park",
-      "aestheticCategory": "vancouver_waterfront",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "West Coast beach park with sandy beach, drift logs, grassy slope, outdoor pool, and mountain/ocean views",
       "generationTags": [
@@ -5847,7 +5847,7 @@
       "aspectRatio": "3:1",
       "shape": "linear",
       "title": "Toronto Ravine Park",
-      "aestheticCategory": "toronto_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Deep glacial ravine cutting through the urban grid, dense deciduous forest, unpaved trails, wooden bridges, 20-30m below",
       "generationTags": [
@@ -5929,7 +5929,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Toronto Urban Square",
-      "aestheticCategory": "toronto_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Hard-surfaced Toronto civic plaza with ice rink in winter, public art, reflecting pool, surrounded by towers",
       "generationTags": [
@@ -6257,7 +6257,7 @@
       "aspectRatio": "2.5:1",
       "shape": "irregular",
       "title": "Halifax Coastal Forest Park",
-      "aestheticCategory": "halifax_natural",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Coastal forest park meeting the Atlantic Ocean with hiking trails, ruined fortifications, rocky shoreline, and salt-wind",
       "generationTags": [

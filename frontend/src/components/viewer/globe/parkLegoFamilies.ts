@@ -9,6 +9,7 @@ import { batch7ParkSkinForSelection } from './parkBatch7Skins';
 import { batch8ParkSkinForSelection } from './parkBatch8Skins';
 import { batch9ParkSkinForSelection } from './parkBatch9Skins';
 import { batch10ParkSkinForSelection } from './parkBatch10Skins';
+import { batch11ParkSkinForSelection } from './parkBatch11Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -103,6 +104,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_calgary_princes_island_festival_v0',
   'park_montreal_mount_royal_grove_v2',
   'park_montreal_neighbourhood_square_v3',
+  'park_paris_place_royale_v2',
+  'park_paris_square_tree_grid_v3',
+  'park_london_circus_planted_v1',
+  'park_newyork_pocket_water_v0',
+  'park_newyork_community_greenhouse_v3',
+  'park_vancouver_seawall_cycle_v2',
+  'park_vancouver_beach_pavilion_v0',
+  'park_toronto_ravine_creek_v1',
+  'park_toronto_urban_market_v1',
+  'park_halifax_coastal_fog_path_v2',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -877,6 +888,36 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_montreal_neighbourhood_square_v3: Object.freeze({
     montreal_square: Object.freeze([Object.freeze({ variantId: 'montreal_square_v3', appearanceKitId: 'montreal_square_v3_neighbourhood_skin', plantingStructure: 'montreal_square_v3' })]),
   }),
+  park_paris_place_royale_v2: Object.freeze({
+    parisian_place: Object.freeze([Object.freeze({ variantId: 'parisian_place_v2', appearanceKitId: 'parisian_place_v2_royale_skin', plantingStructure: 'paris_place_royale_v2' })]),
+  }),
+  park_paris_square_tree_grid_v3: Object.freeze({
+    parisian_square: Object.freeze([Object.freeze({ variantId: 'parisian_square_v3', appearanceKitId: 'parisian_square_v3_tree_grid_skin', plantingStructure: 'paris_square_tree_grid_v3' })]),
+  }),
+  park_london_circus_planted_v1: Object.freeze({
+    london_circus: Object.freeze([Object.freeze({ variantId: 'london_circus_v1', appearanceKitId: 'london_circus_v1_planted_skin', plantingStructure: 'london_circus_planted_v1' })]),
+  }),
+  park_newyork_pocket_water_v0: Object.freeze({
+    newyork_pocket_park: Object.freeze([Object.freeze({ variantId: 'newyork_pocket_park_v0', appearanceKitId: 'newyork_pocket_park_v0_water_skin', plantingStructure: 'newyork_pocket_water_v0' })]),
+  }),
+  park_newyork_community_greenhouse_v3: Object.freeze({
+    newyork_community_garden: Object.freeze([Object.freeze({ variantId: 'newyork_community_garden_v3', appearanceKitId: 'newyork_community_garden_v3_greenhouse_skin', plantingStructure: 'newyork_community_greenhouse_v3' })]),
+  }),
+  park_vancouver_seawall_cycle_v2: Object.freeze({
+    vancouver_seawall: Object.freeze([Object.freeze({ variantId: 'vancouver_seawall_v2', appearanceKitId: 'vancouver_seawall_v2_cycle_skin', plantingStructure: 'vancouver_seawall_cycle_v2' })]),
+  }),
+  park_vancouver_beach_pavilion_v0: Object.freeze({
+    vancouver_beach_park: Object.freeze([Object.freeze({ variantId: 'vancouver_beach_park_v0', appearanceKitId: 'vancouver_beach_park_v0_pavilion_skin', plantingStructure: 'vancouver_beach_pavilion_v0' })]),
+  }),
+  park_toronto_ravine_creek_v1: Object.freeze({
+    toronto_ravine: Object.freeze([Object.freeze({ variantId: 'toronto_ravine_v1', appearanceKitId: 'toronto_ravine_v1_creek_skin', plantingStructure: 'toronto_ravine_creek_v1' })]),
+  }),
+  park_toronto_urban_market_v1: Object.freeze({
+    toronto_urban_square: Object.freeze([Object.freeze({ variantId: 'toronto_urban_square_v1', appearanceKitId: 'toronto_urban_square_v1_market_skin', plantingStructure: 'toronto_urban_market_v1' })]),
+  }),
+  park_halifax_coastal_fog_path_v2: Object.freeze({
+    halifax_coastal_park: Object.freeze([Object.freeze({ variantId: 'halifax_coastal_park_v2', appearanceKitId: 'halifax_coastal_park_v2_fog_path_skin', plantingStructure: 'halifax_coastal_fog_path_v2' })]),
+  }),
 });
 
 function normalizeId(value: unknown): string {
@@ -975,6 +1016,16 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'research_garden_teaching_arboretum') return 'park_research_arboretum_v0';
   if (archetypeId === 'rewilding_ecological_restoration_zone') return 'park_rewilding_reforestation_v1';
   if (archetypeId === 'stormwater_resilience_park') return 'park_stormwater_arid_channel_v3';
+  if (archetypeId === 'parisian_place') return 'park_paris_place_royale_v2';
+  if (archetypeId === 'parisian_square') return 'park_paris_square_tree_grid_v3';
+  if (archetypeId === 'london_circus') return 'park_london_circus_planted_v1';
+  if (archetypeId === 'newyork_pocket_park') return 'park_newyork_pocket_water_v0';
+  if (archetypeId === 'newyork_community_garden') return 'park_newyork_community_greenhouse_v3';
+  if (archetypeId === 'vancouver_seawall') return 'park_vancouver_seawall_cycle_v2';
+  if (archetypeId === 'vancouver_beach_park') return 'park_vancouver_beach_pavilion_v0';
+  if (archetypeId === 'toronto_ravine') return 'park_toronto_ravine_creek_v1';
+  if (archetypeId === 'toronto_urban_square') return 'park_toronto_urban_market_v1';
+  if (archetypeId === 'halifax_coastal_park') return 'park_halifax_coastal_fog_path_v2';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -1068,6 +1119,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_calgary_princes_island_festival_v0': return 'calgary_princes_island';
     case 'park_montreal_mount_royal_grove_v2': return 'montreal_mount_royal';
     case 'park_montreal_neighbourhood_square_v3': return 'montreal_square';
+    case 'park_paris_place_royale_v2': return 'parisian_place';
+    case 'park_paris_square_tree_grid_v3': return 'parisian_square';
+    case 'park_london_circus_planted_v1': return 'london_circus';
+    case 'park_newyork_pocket_water_v0': return 'newyork_pocket_park';
+    case 'park_newyork_community_greenhouse_v3': return 'newyork_community_garden';
+    case 'park_vancouver_seawall_cycle_v2': return 'vancouver_seawall';
+    case 'park_vancouver_beach_pavilion_v0': return 'vancouver_beach_park';
+    case 'park_toronto_ravine_creek_v1': return 'toronto_ravine';
+    case 'park_toronto_urban_market_v1': return 'toronto_urban_square';
+    case 'park_halifax_coastal_fog_path_v2': return 'halifax_coastal_park';
   }
 }
 
@@ -1253,6 +1314,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch8ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch9ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch10ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch11ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

@@ -2134,6 +2134,53 @@ PROFILES.montreal_square_v3 = {
   renderSummary: 'Montréal neighbourhood square with geometric gravel walks, central fountain, iron perimeter, mature maples and benches', isPilot: true,
 };
 
+PROFILES.parisian_place_v2 = {
+  id: 'paris-place-royale-lego-v1', version: 1,
+  programDescription: 'A ceremonial Parisian place with an uninterrupted cobbled centre, disciplined edge tree bays, removable café clusters and four clear approaches.',
+  groundDescription: 'Variegated pale cobble, limestone edging, clipped green and dark iron sampled from exact Variant 3.',
+  criticalConstraints: 'Keep the civic centre open and all approaches legible; do not emit surrounding façades or people.',
+  canopyDescription: 'Small formal tree groups stay at the perimeter.', plantingStructure: 'paris_place_royale_v2',
+  guides: [{ kind:'rounded_rectangle',x:.5,y:.5,width:.78,height:.66,color:'#a9a095',orientationPolicy:'orthogonal' },{ kind:'axis',x:.5,y:.5,width:0,height:.86,color:'#c1b8a8',strokeWidthM:4 },{ kind:'axis',x:.5,y:.5,width:0,height:.86,color:'#c1b8a8',strokeWidthM:4,rotationDeg:90 }],
+  guideLegend:['PALE centre is open cobbled civic space','cross axes preserve four approaches'], includeCentralPlaza:true, renderSummary:'Paris place royale with open cobbled centre, formal edge trees and removable café bays', isPilot:true,
+};
+PROFILES.parisian_square_v3 = {
+  id:'paris-square-tree-grid-lego-v1',version:1,programDescription:'An intimate Parisian square with a gravel social room, ordered tree grid, complete bench bays and a low perimeter.',
+  groundDescription:'Pale gravel, limestone, mature plane-tree green and dark metal sampled from exact Variant 4.',criticalConstraints:'Preserve a shaded centre and clear gates; exclude enclosing buildings and people.',canopyDescription:'A regular plane-tree grid creates a high shaded ceiling.',plantingStructure:'paris_square_tree_grid_v3',
+  guides:[{kind:'rounded_rectangle',x:.5,y:.5,width:.78,height:.68,color:'#ac9d83',orientationPolicy:'orthogonal'},{kind:'path_loop',x:.5,y:.5,width:.86,height:.76,color:'#beb39e',strokeWidthM:2.4,fitPolicy:'clip'}],guideLegend:['TAN room is social gravel','loop is the shaded circulation edge'],includeCentralPlaza:true,renderSummary:'Paris square with gravel room, ordered tree grid, perimeter and whole bench bays',isPilot:true,
+};
+PROFILES.london_circus_v1 = {
+  id:'london-circus-planted-lego-v1',version:1,programDescription:'A rounded London circus public room with radial pedestrian spokes, a planted central island, curved seating and a clear cycle ring.',groundDescription:'Warm stone, brick, clipped planting and dark metal sampled from exact Variant 2.',criticalConstraints:'Keep the circular geometry and complete radial routes; do not emit surrounding crescent buildings or people.',canopyDescription:'Trees reinforce the circular edge and central planted room.',plantingStructure:'london_circus_planted_v1',
+  guides:[{kind:'ellipse',x:.5,y:.5,width:.68,height:.68,color:'#9ba079'},{kind:'path_loop',x:.5,y:.5,width:.82,height:.82,color:'#aaa092',strokeWidthM:3,fitPolicy:'clip'},{kind:'axis',x:.5,y:.5,width:0,height:.88,color:'#c1b6a3',strokeWidthM:3,rotationDeg:45},{kind:'axis',x:.5,y:.5,width:0,height:.88,color:'#c1b6a3',strokeWidthM:3,rotationDeg:-45}],guideLegend:['GREEN disc is planted island','TAN ring and spokes stay clear'],includeCentralPlaza:true,renderSummary:'London circus with planted centre, radial paths, curved benches and cycle ring',isPilot:true,
+};
+PROFILES.newyork_pocket_park_v0 = {
+  id:'newyork-pocket-water-lego-v1',version:1,programDescription:'A compact Manhattan pocket park with one linear water rill, complete seat-planter bays, dense shade planting and a modest open pergola.',groundDescription:'Dark stone, weathered timber, layered green and reflective water sampled from exact Variant 1.',criticalConstraints:'Protect the entry-to-water route and add whole bays rather than stretched furniture; no people or enclosing towers.',canopyDescription:'Layered small trees enclose the room while keeping the entry visible.',plantingStructure:'newyork_pocket_water_v0',
+  guides:[{kind:'rectangle',x:.5,y:.5,width:.72,height:.14,color:'#5f8588',orientationPolicy:'flexible'},{kind:'axis',x:.5,y:.5,width:0,height:.82,color:'#a49988',strokeWidthM:2.6},{kind:'rectangle',x:.2,y:.5,width:.18,height:.64,color:'#536c49',orientationPolicy:'orthogonal'},{kind:'rectangle',x:.8,y:.5,width:.18,height:.64,color:'#536c49',orientationPolicy:'orthogonal'}],guideLegend:['BLUE rill is the water spine','GREEN bands are whole seat-planter bays'],includeCentralPlaza:false,renderSummary:'New York pocket park with water rill, planted seat bays and compact pergola',isPilot:true,
+};
+PROFILES.newyork_community_garden_v3 = {
+  id:'newyork-community-greenhouse-lego-v1',version:1,programDescription:'A productive community garden with whole raised-bed rows, central accessible path, tool/compost bay and one modest greenhouse.',groundDescription:'Brick paths, dark soil, varied crop green, timber and translucent greenhouse panels sampled from exact Variant 4.',criticalConstraints:'Use repeatable complete beds with service access; the greenhouse is a small park utility, never a large building.',canopyDescription:'Fruit trees and vines stay along edges so crop beds receive sun.',plantingStructure:'newyork_community_greenhouse_v3',
+  guides:[{kind:'axis',x:.5,y:.5,width:0,height:.88,color:'#a98b6e',strokeWidthM:2.4},{kind:'rectangle',x:.25,y:.5,width:.28,height:.70,color:'#5c734c',orientationPolicy:'orthogonal'},{kind:'rectangle',x:.75,y:.5,width:.28,height:.70,color:'#66794e',orientationPolicy:'orthogonal'},{kind:'rectangle',x:.78,y:.18,width:.18,height:.18,color:'#9aa19b',orientationPolicy:'orthogonal'}],guideLegend:['TAN axis is accessible path','GREEN zones contain whole crop beds','GREY block is one modest greenhouse'],includeCentralPlaza:false,renderSummary:'New York community garden with raised beds, accessible path, compost bay and modest greenhouse',isPilot:true,
+};
+PROFILES.vancouver_seawall_v2 = {
+  id:'vancouver-seawall-cycle-lego-v1',version:1,programDescription:'A linear waterfront promenade with separated walking and cycling lanes, continuous seawall edge, view benches and sparse salt-tolerant planting.',groundDescription:'Grey concrete, muted asphalt, timber seating, dark rail and coastal green sampled from exact Variant 3.',criticalConstraints:'Keep both routes continuous and parallel; repeat whole rest bays, never waterfront buildings or people.',canopyDescription:'Sparse wind-shaped trees mark rest bays without blocking views.',plantingStructure:'vancouver_seawall_cycle_v2',
+  guides:[{kind:'axis',x:.5,y:.38,width:0,height:.90,color:'#7f8583',strokeWidthM:4.2,rotationDeg:90},{kind:'axis',x:.5,y:.62,width:0,height:.90,color:'#aaa39a',strokeWidthM:3.2,rotationDeg:90}],guideLegend:['DARK lane is continuous cycle route','PALE lane is continuous promenade'],includeCentralPlaza:false,renderSummary:'Vancouver seawall with separated cycle and walking lanes, seawall edge and view bays',isPilot:true,
+};
+PROFILES.vancouver_beach_park_v0 = {
+  id:'vancouver-beach-pavilion-lego-v1',version:1,programDescription:'A beach-edge park with paired cycle/walk routes, dune planting drifts, view lawns, complete rest bays and one modest open pavilion.',groundDescription:'Pale concrete, sand, coastal grass, cedar and blue-grey accents sampled from exact Variant 1.',criticalConstraints:'Preserve shoreline-parallel movement and view corridors; emit no apartment buildings, vehicles or people.',canopyDescription:'Wind-tolerant trees and dune grasses frame open water views.',plantingStructure:'vancouver_beach_pavilion_v0',
+  guides:[{kind:'polyline',x:.5,y:.5,width:1,height:1,points:[[.04,.64],[.30,.58],[.62,.52],[.96,.44]],color:'#aaa28f',strokeWidthM:4},{kind:'ellipse',x:.55,y:.72,width:.62,height:.24,color:'#728957',fitPolicy:'clip'},{kind:'rectangle',x:.22,y:.24,width:.20,height:.15,color:'#80634b',orientationPolicy:'flexible'}],guideLegend:['TAN route follows the beach','GREEN is dune planting','BROWN is one modest pavilion'],includeCentralPlaza:false,renderSummary:'Vancouver beach park with paired routes, dune planting, view lawn and modest pavilion',isPilot:true,
+};
+PROFILES.toronto_ravine_v1 = {
+  id:'toronto-ravine-creek-lego-v1',version:1,programDescription:'A Toronto ravine corridor with a meandering creek, continuous valley trail, whole footbridge crossings, native understory and deciduous grove cohorts.',groundDescription:'Pale gravel, creek stone, layered green and weathered timber sampled from Summer Creek Shade.',criticalConstraints:'Keep creek and trail continuous and terrain-seated; no houses, skyline buildings or people.',canopyDescription:'Dense maple, oak and cedar cohorts shade the creek with small openings at crossings.',plantingStructure:'toronto_ravine_creek_v1',
+  guides:[{kind:'polyline',x:.5,y:.5,width:1,height:1,points:[[.04,.68],[.25,.55],[.48,.62],[.72,.40],[.96,.34]],color:'#587f82',strokeWidthM:4},{kind:'polyline',x:.5,y:.5,width:1,height:1,points:[[.04,.40],[.28,.46],[.55,.34],[.78,.50],[.96,.44]],color:'#a3967f',strokeWidthM:3}],guideLegend:['BLUE line is creek','TAN line is valley trail'],includeCentralPlaza:false,renderSummary:'Toronto ravine with creek, continuous trail, bridge crossings and native grove cohorts',isPilot:true,
+};
+PROFILES.toronto_urban_square_v1 = {
+  id:'toronto-urban-market-lego-v1',version:1,programDescription:'A flexible Toronto civic square with open market centre, complete vendor bays, rain-planter seating and four clear pedestrian approaches.',groundDescription:'Variegated grey paver, warm timber, rain-garden green and dark metal sampled from Summer Market Plaza.',criticalConstraints:'Keep the event centre open and add whole vendor bays only; exclude surrounding buildings and people.',canopyDescription:'Shade trees sit in perimeter rain-planter bays.',plantingStructure:'toronto_urban_market_v1',
+  guides:[{kind:'rounded_rectangle',x:.5,y:.52,width:.76,height:.58,color:'#a8a49b',orientationPolicy:'orthogonal'},{kind:'rectangle',x:.5,y:.16,width:.78,height:.14,color:'#667a55',orientationPolicy:'orthogonal'}],guideLegend:['GREY centre remains flexible','GREEN edge contains whole rain-planter and vendor bays'],includeCentralPlaza:true,renderSummary:'Toronto urban square with flexible market centre, rain planters and whole vendor bays',isPilot:true,
+};
+PROFILES.halifax_coastal_park_v2 = {
+  id:'halifax-coastal-fog-path-lego-v1',version:1,programDescription:'A fog-coast forest park with granite gravel path, spruce/fir grove cohorts, low heath planting, whole timber boardwalk bays and one lookout.',groundDescription:'Cool granite, pale gravel, spruce green, fog-muted grass and weathered timber sampled from Foggy Morning Path.',criticalConstraints:'Keep one continuous path and terrain contact; exclude houses, skyline buildings and people.',canopyDescription:'Wind-shaped spruce and fir groups alternate with low coastal openings.',plantingStructure:'halifax_coastal_fog_path_v2',
+  guides:[{kind:'polyline',x:.5,y:.5,width:1,height:1,points:[[.04,.72],[.24,.58],[.48,.62],[.70,.42],[.96,.30]],color:'#a39987',strokeWidthM:3.2},{kind:'rectangle',x:.82,y:.24,width:.20,height:.15,color:'#80644a',orientationPolicy:'flexible'}],guideLegend:['TAN line is granite-gravel path','BROWN block is a whole timber lookout'],includeCentralPlaza:false,renderSummary:'Halifax coastal forest park with fog path, spruce cohorts, heath planting and timber lookout',isPilot:true,
+};
+
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -2506,7 +2553,8 @@ export type ParkSpecialtyStructureKind =
   | 'batch7_archetype_assembly'
   | 'batch8_archetype_assembly'
   | 'batch9_archetype_assembly'
-  | 'batch10_archetype_assembly';
+  | 'batch10_archetype_assembly'
+  | 'batch11_archetype_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -2748,6 +2796,10 @@ export function resolveParkSpecialtyStructureKind(
       'park_montreal_neighbourhood_square_v3',
     ].includes(legoContract.familyId)
   ) return 'batch10_archetype_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego' && legoContract.supported
+    && ['park_paris_place_royale_v2','park_paris_square_tree_grid_v3','park_london_circus_planted_v1','park_newyork_pocket_water_v0','park_newyork_community_greenhouse_v3','park_vancouver_seawall_cycle_v2','park_vancouver_beach_pavilion_v0','park_toronto_ravine_creek_v1','park_toronto_urban_market_v1','park_halifax_coastal_fog_path_v2'].includes(legoContract.familyId)
+  ) return 'batch11_archetype_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

@@ -472,6 +472,16 @@ _CALGARY_PRAIRIE_MARKET_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(2
 _CALGARY_PRINCES_ISLAND_ENVELOPE = _park_envelope(nominal=(400.0, 200.0), width=(40.0, 800.0), depth=(30.0, 430.0), area=(1_200.0, 344_000.0))
 _MONTREAL_MOUNT_ROYAL_ENVELOPE = _park_envelope(nominal=(500.0, 400.0), width=(45.0, 950.0), depth=(30.0, 720.0), area=(1_350.0, 684_000.0))
 _MONTREAL_SQUARE_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_PARIS_PLACE_ROYALE_ENVELOPE = _park_envelope(nominal=(85.0, 65.0), width=(25.0, 210.0), depth=(20.0, 150.0), area=(500.0, 31_500.0))
+_PARIS_SQUARE_TREE_GRID_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(24.0, 180.0), depth=(20.0, 125.0), area=(480.0, 22_500.0))
+_LONDON_CIRCUS_PLANTED_ENVELOPE = _park_envelope(nominal=(75.0, 60.0), width=(24.0, 190.0), depth=(20.0, 140.0), area=(480.0, 26_600.0))
+_NEWYORK_POCKET_WATER_ENVELOPE = _park_envelope(nominal=(32.0, 24.0), width=(12.0, 100.0), depth=(10.0, 75.0), area=(120.0, 7_500.0))
+_NEWYORK_COMMUNITY_GREENHOUSE_ENVELOPE = _park_envelope(nominal=(45.0, 32.0), width=(18.0, 130.0), depth=(14.0, 95.0), area=(252.0, 12_350.0))
+_VANCOUVER_SEAWALL_CYCLE_ENVELOPE = _park_envelope(nominal=(140.0, 24.0), width=(45.0, 650.0), depth=(14.0, 60.0), area=(630.0, 39_000.0), min_aspect_ratio=1.8)
+_VANCOUVER_BEACH_PAVILION_ENVELOPE = _park_envelope(nominal=(130.0, 70.0), width=(35.0, 320.0), depth=(25.0, 180.0), area=(875.0, 57_600.0))
+_TORONTO_RAVINE_CREEK_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(35.0, 600.0), depth=(24.0, 260.0), area=(840.0, 156_000.0))
+_TORONTO_URBAN_MARKET_ENVELOPE = _park_envelope(nominal=(90.0, 65.0), width=(25.0, 220.0), depth=(20.0, 150.0), area=(500.0, 33_000.0))
+_HALIFAX_COASTAL_FOG_PATH_ENVELOPE = _park_envelope(nominal=(180.0, 100.0), width=(35.0, 500.0), depth=(24.0, 280.0), area=(840.0, 140_000.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1416,6 +1426,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_montreal_neighbourhood_square_v3", kind="park", title="Montreal Neighbourhood Square v3", generator="park_kit",
         selections=(_selection("montreal_square", "montreal_square_v3", profile_id="montreal-neighbourhood-square-lego-v1", appearance_kit_id="montreal_square_v3_neighbourhood_skin", planting_structure="montreal_square_v3", compatibility=_MONTREAL_SQUARE_ENVELOPE, components=("montreal_square_ground_program_v1", "central_fountain_monument_v1", "low_iron_perimeter_v1", "whole_maple_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_paris_place_royale_v2", kind="park", title="Paris Place Royale v2", generator="park_kit",
+        selections=(_selection("parisian_place", "parisian_place_v2", profile_id="paris-place-royale-lego-v1", appearance_kit_id="parisian_place_v2_royale_skin", planting_structure="paris_place_royale_v2", compatibility=_PARIS_PLACE_ROYALE_ENVELOPE, components=("place_royale_ground_program_v1", "clear_ceremonial_centre_v1", "corner_tree_bays_v1", "removable_cafe_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_paris_square_tree_grid_v3", kind="park", title="Paris Square Tree Grid v3", generator="park_kit",
+        selections=(_selection("parisian_square", "parisian_square_v3", profile_id="paris-square-tree-grid-lego-v1", appearance_kit_id="parisian_square_v3_tree_grid_skin", planting_structure="paris_square_tree_grid_v3", compatibility=_PARIS_SQUARE_TREE_GRID_ENVELOPE, components=("paris_square_ground_program_v1", "ordered_tree_grid_v1", "gravel_social_room_v1", "whole_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_london_circus_planted_v1", kind="park", title="London Circus Planted v1", generator="park_kit",
+        selections=(_selection("london_circus", "london_circus_v1", profile_id="london-circus-planted-lego-v1", appearance_kit_id="london_circus_v1_planted_skin", planting_structure="london_circus_planted_v1", compatibility=_LONDON_CIRCUS_PLANTED_ENVELOPE, components=("circus_radial_ground_program_v1", "central_planted_island_v1", "curved_bench_bays_v1", "clear_cycle_ring_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_newyork_pocket_water_v0", kind="park", title="New York Pocket Water v0", generator="park_kit",
+        selections=(_selection("newyork_pocket_park", "newyork_pocket_park_v0", profile_id="newyork-pocket-water-lego-v1", appearance_kit_id="newyork_pocket_park_v0_water_skin", planting_structure="newyork_pocket_water_v0", compatibility=_NEWYORK_POCKET_WATER_ENVELOPE, components=("ny_pocket_ground_program_v1", "linear_water_rill_v1", "whole_seat_planter_bays_v1", "compact_pergola_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_newyork_community_greenhouse_v3", kind="park", title="New York Community Greenhouse v3", generator="park_kit",
+        selections=(_selection("newyork_community_garden", "newyork_community_garden_v3", profile_id="newyork-community-greenhouse-lego-v1", appearance_kit_id="newyork_community_garden_v3_greenhouse_skin", planting_structure="newyork_community_greenhouse_v3", compatibility=_NEWYORK_COMMUNITY_GREENHOUSE_ENVELOPE, components=("ny_community_garden_ground_v1", "whole_raised_bed_grid_v1", "modest_greenhouse_v1", "compost_tool_bay_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_vancouver_seawall_cycle_v2", kind="park", title="Vancouver Seawall Cycle v2", generator="park_kit",
+        selections=(_selection("vancouver_seawall", "vancouver_seawall_v2", profile_id="vancouver-seawall-cycle-lego-v1", appearance_kit_id="vancouver_seawall_v2_cycle_skin", planting_structure="vancouver_seawall_cycle_v2", compatibility=_VANCOUVER_SEAWALL_CYCLE_ENVELOPE, components=("seawall_ground_program_v1", "separated_cycle_walk_pair_v1", "continuous_seawall_edge_v1", "view_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_vancouver_beach_pavilion_v0", kind="park", title="Vancouver Beach Pavilion v0", generator="park_kit",
+        selections=(_selection("vancouver_beach_park", "vancouver_beach_park_v0", profile_id="vancouver-beach-pavilion-lego-v1", appearance_kit_id="vancouver_beach_park_v0_pavilion_skin", planting_structure="vancouver_beach_pavilion_v0", compatibility=_VANCOUVER_BEACH_PAVILION_ENVELOPE, components=("beach_park_ground_program_v1", "continuous_cycle_walk_pair_v1", "drift_planting_bays_v1", "modest_open_pavilion_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_toronto_ravine_creek_v1", kind="park", title="Toronto Ravine Creek v1", generator="park_kit",
+        selections=(_selection("toronto_ravine", "toronto_ravine_v1", profile_id="toronto-ravine-creek-lego-v1", appearance_kit_id="toronto_ravine_v1_creek_skin", planting_structure="toronto_ravine_creek_v1", compatibility=_TORONTO_RAVINE_CREEK_ENVELOPE, components=("ravine_ground_program_v1", "meandering_creek_v1", "continuous_valley_trail_v1", "whole_bridge_and_grove_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_toronto_urban_market_v1", kind="park", title="Toronto Urban Market v1", generator="park_kit",
+        selections=(_selection("toronto_urban_square", "toronto_urban_square_v1", profile_id="toronto-urban-market-lego-v1", appearance_kit_id="toronto_urban_square_v1_market_skin", planting_structure="toronto_urban_market_v1", compatibility=_TORONTO_URBAN_MARKET_ENVELOPE, components=("toronto_square_ground_program_v1", "flexible_market_centre_v1", "whole_vendor_bays_v1", "rain_planter_seat_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_halifax_coastal_fog_path_v2", kind="park", title="Halifax Coastal Fog Path v2", generator="park_kit",
+        selections=(_selection("halifax_coastal_park", "halifax_coastal_park_v2", profile_id="halifax-coastal-fog-path-lego-v1", appearance_kit_id="halifax_coastal_park_v2_fog_path_skin", planting_structure="halifax_coastal_fog_path_v2", compatibility=_HALIFAX_COASTAL_FOG_PATH_ENVELOPE, components=("coastal_forest_ground_program_v1", "granite_gravel_path_v1", "spruce_fir_grove_cohorts_v1", "whole_boardwalk_lookout_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

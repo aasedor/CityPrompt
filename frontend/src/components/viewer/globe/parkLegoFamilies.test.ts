@@ -127,6 +127,24 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['park_paris_place_royale_v2','parisian_place','parisian_place_v2','parisian_place_v2_royale_skin','paris_place_royale_v2'],
+    ['park_paris_square_tree_grid_v3','parisian_square','parisian_square_v3','parisian_square_v3_tree_grid_skin','paris_square_tree_grid_v3'],
+    ['park_london_circus_planted_v1','london_circus','london_circus_v1','london_circus_v1_planted_skin','london_circus_planted_v1'],
+    ['park_newyork_pocket_water_v0','newyork_pocket_park','newyork_pocket_park_v0','newyork_pocket_park_v0_water_skin','newyork_pocket_water_v0'],
+    ['park_newyork_community_greenhouse_v3','newyork_community_garden','newyork_community_garden_v3','newyork_community_garden_v3_greenhouse_skin','newyork_community_greenhouse_v3'],
+    ['park_vancouver_seawall_cycle_v2','vancouver_seawall','vancouver_seawall_v2','vancouver_seawall_v2_cycle_skin','vancouver_seawall_cycle_v2'],
+    ['park_vancouver_beach_pavilion_v0','vancouver_beach_park','vancouver_beach_park_v0','vancouver_beach_park_v0_pavilion_skin','vancouver_beach_pavilion_v0'],
+    ['park_toronto_ravine_creek_v1','toronto_ravine','toronto_ravine_v1','toronto_ravine_v1_creek_skin','toronto_ravine_creek_v1'],
+    ['park_toronto_urban_market_v1','toronto_urban_square','toronto_urban_square_v1','toronto_urban_square_v1_market_skin','toronto_urban_market_v1'],
+    ['park_halifax_coastal_fog_path_v2','halifax_coastal_park','halifax_coastal_park_v2','halifax_coastal_park_v2_fog_path_skin','halifax_coastal_fog_path_v2'],
+  ] as const)('executes the exact reviewed Batch 11 selection %s', (familyId, archetypeId, variantId, appearanceKitId, plantingStructure) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({ family_id: familyId, family_version: 1, archetype_id: archetypeId, variant_id: variantId, appearance_kit_id: appearanceKitId, planting_structure: plantingStructure }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
     [0, 'Village Green', 'english_pastoral', 'thatched'],
     [1, 'Municipal Oval', 'modern_minimal', 'steel_canopy'],
     [2, 'South Asian Ground', 'urban_pavers', 'fabric_sail'],

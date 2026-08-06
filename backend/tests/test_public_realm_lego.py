@@ -141,6 +141,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_calgary_princes_island_festival_v0",
             "park_montreal_mount_royal_grove_v2",
             "park_montreal_neighbourhood_square_v3",
+            "park_paris_place_royale_v2",
+            "park_paris_square_tree_grid_v3",
+            "park_london_circus_planted_v1",
+            "park_newyork_pocket_water_v0",
+            "park_newyork_community_greenhouse_v3",
+            "park_vancouver_seawall_cycle_v2",
+            "park_vancouver_beach_pavilion_v0",
+            "park_toronto_ravine_creek_v1",
+            "park_toronto_urban_market_v1",
+            "park_halifax_coastal_fog_path_v2",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1130,6 +1140,16 @@ def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
         ("park_calgary_princes_island_festival_v0", "calgary_princes_island", "calgary_princes_island_v0", "calgary_princes_island_v0_festival_skin", 400.0, 200.0),
         ("park_montreal_mount_royal_grove_v2", "montreal_mount_royal", "montreal_mount_royal_v2", "montreal_mount_royal_v2_grove_skin", 500.0, 400.0),
         ("park_montreal_neighbourhood_square_v3", "montreal_square", "montreal_square_v3", "montreal_square_v3_neighbourhood_skin", 70.0, 55.0),
+        ("park_paris_place_royale_v2", "parisian_place", "parisian_place_v2", "parisian_place_v2_royale_skin", 85.0, 65.0),
+        ("park_paris_square_tree_grid_v3", "parisian_square", "parisian_square_v3", "parisian_square_v3_tree_grid_skin", 70.0, 55.0),
+        ("park_london_circus_planted_v1", "london_circus", "london_circus_v1", "london_circus_v1_planted_skin", 75.0, 60.0),
+        ("park_newyork_pocket_water_v0", "newyork_pocket_park", "newyork_pocket_park_v0", "newyork_pocket_park_v0_water_skin", 32.0, 24.0),
+        ("park_newyork_community_greenhouse_v3", "newyork_community_garden", "newyork_community_garden_v3", "newyork_community_garden_v3_greenhouse_skin", 45.0, 32.0),
+        ("park_vancouver_seawall_cycle_v2", "vancouver_seawall", "vancouver_seawall_v2", "vancouver_seawall_v2_cycle_skin", 140.0, 24.0),
+        ("park_vancouver_beach_pavilion_v0", "vancouver_beach_park", "vancouver_beach_park_v0", "vancouver_beach_park_v0_pavilion_skin", 130.0, 70.0),
+        ("park_toronto_ravine_creek_v1", "toronto_ravine", "toronto_ravine_v1", "toronto_ravine_v1_creek_skin", 220.0, 90.0),
+        ("park_toronto_urban_market_v1", "toronto_urban_square", "toronto_urban_square_v1", "toronto_urban_square_v1_market_skin", 90.0, 65.0),
+        ("park_halifax_coastal_fog_path_v2", "halifax_coastal_park", "halifax_coastal_park_v2", "halifax_coastal_park_v2_fog_path_skin", 180.0, 100.0),
     ],
 )
 def test_batch10_exact_families_compile_without_image_calls(
