@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "community-park-english-pastoral": {
+      "source": "frontend/public/archetypes/openspaces/community-park/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.12,0.52,0.60,0.92],"lawn":[0.38,0.18,0.92,0.72],"asphalt":[0.04,0.62,0.42,0.96],"planting":[0.00,0.08,0.44,0.66],"safety":[0.56,0.48,0.92,0.82],"timber":[0.34,0.36,0.74,0.70]}
+    },
+    "pond-lake-naturalistic": {
+      "source": "frontend/public/archetypes/openspaces/pond-lake/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.08,0.56,0.48,0.92],"lawn":[0.54,0.52,0.96,0.92],"asphalt":[0.04,0.62,0.44,0.96],"planting":[0.00,0.10,0.42,0.72],"safety":[0.28,0.30,0.72,0.70],"timber":[0.44,0.40,0.78,0.72]}
+    },
+    "wetland-rain-garden-native": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.06,0.56,0.46,0.94],"lawn":[0.58,0.48,0.96,0.90],"asphalt":[0.04,0.62,0.44,0.96],"planting":[0.08,0.18,0.92,0.80],"safety":[0.34,0.28,0.78,0.70],"timber":[0.18,0.36,0.82,0.70]}
+    },
+    "japanese-stroll-garden": {
+      "source": "frontend/public/archetypes/openspaces/japanese-garden/hero.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"paver","timber":"timber"},
+      "crops": {"paver":[0.10,0.78,0.50,1.00],"lawn":[0.00,0.68,0.25,0.96],"asphalt":[0.14,0.72,0.54,0.98],"planting":[0.66,0.56,1.00,0.94],"safety":[0.26,0.76,0.72,1.00],"timber":[0.66,0.38,1.00,0.58]}
+    },
+    "botanical-collection-garden": {
+      "source": "frontend/public/archetypes/openspaces/botanical-garden/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.12,0.58,0.60,0.94],"lawn":[0.58,0.54,0.94,0.90],"asphalt":[0.08,0.64,0.46,0.96],"planting":[0.02,0.10,0.96,0.78],"safety":[0.20,0.28,0.82,0.78],"timber":[0.36,0.38,0.72,0.70]}
+    },
+    "urban-forest-native": {
+      "source": "frontend/public/archetypes/openspaces/urban-forest/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.12,0.58,0.54,0.94],"lawn":[0.54,0.54,0.94,0.92],"asphalt":[0.10,0.62,0.48,0.96],"planting":[0.00,0.02,1.00,0.76],"safety":[0.20,0.20,0.80,0.72],"timber":[0.22,0.48,0.76,0.82]}
+    },
+    "reservoir-watershed-concrete-edge": {
+      "source": "frontend/public/archetypes/openspaces/reservoir-watershed-park/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"},
+      "crops": {"paver":[0.02,0.56,0.48,0.96],"lawn":[0.62,0.50,0.98,0.92],"asphalt":[0.04,0.62,0.46,0.98],"planting":[0.00,0.10,0.40,0.68],"safety":[0.22,0.48,0.78,0.88],"timber":[0.52,0.38,0.84,0.70]}
+    },
+    "amphitheater-lawn-terraced": {
+      "source": "frontend/public/archetypes/openspaces/amphitheater-performance-lawn/hero.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.04,0.62,0.46,0.96],"lawn":[0.14,0.22,0.92,0.84],"asphalt":[0.02,0.64,0.42,0.98],"planting":[0.00,0.04,0.98,0.52],"safety":[0.18,0.24,0.88,0.82],"timber":[0.38,0.52,0.72,0.78]}
+    },
+    "riparian-buffer-native": {
+      "source": "frontend/public/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.72,0.78,1.00,0.96],"lawn":[0.00,0.66,0.30,1.00],"asphalt":[0.68,0.80,1.00,0.98],"planting":[0.00,0.62,0.36,1.00],"safety":[0.70,0.78,1.00,0.98],"timber":[0.50,0.64,0.72,0.78]}
+    },
+    "playground-adventure-timber": {
+      "source": "frontend/public/archetypes/openspaces/playground-adventure-play/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.68,0.34,1.00],"lawn":[0.58,0.72,1.00,1.00],"asphalt":[0.02,0.70,0.34,0.98],"planting":[0.55,0.70,1.00,1.00],"safety":[0.36,0.48,0.76,0.80],"timber":[0.54,0.16,0.94,0.56]}
+    }
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}

@@ -46,8 +46,9 @@ def validate_schedule(schedule: dict, source_root: Path = REPO_ROOT) -> list[str
     errors: list[str] = []
     if schedule.get("sourcePixelsProjected") is not False:
         errors.append("source photographs must not be projected onto geometry")
-    if len(schedule.get("archetypes", {})) != 5:
-        errors.append("expected five archetype skin schedules")
+    expected_count = int(schedule.get("expectedArchetypeCount", 5))
+    if len(schedule.get("archetypes", {})) != expected_count:
+        errors.append(f"expected {expected_count} archetype skin schedules")
     for slug, item in schedule.get("archetypes", {}).items():
         sources = {item.get("source", ""), *item.get("roleSources", {}).values()}
         for source_name in sources:

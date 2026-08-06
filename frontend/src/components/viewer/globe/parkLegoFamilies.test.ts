@@ -78,24 +78,24 @@ describe('Public Realm LEGO V1 park families', () => {
         family_id: 'park_neighborhood_community',
         family_version: 1,
         archetype_id: 'community_park',
-        variant_id: 'community_park_v3',
+        variant_id: 'community_park_v0',
         planting_structure: 'naturalistic_grove',
-        appearance_kit_id: 'tropical_lush_v1',
+        appearance_kit_id: 'english_pastoral_v1',
       }),
     });
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_neighborhood_community',
       familyVersion: PARK_LEGO_FAMILY_VERSION,
       archetypeId: 'community_park',
-      variantId: 'community_park_v3',
+      variantId: 'community_park_v0',
       plantingStructure: 'naturalistic_grove',
       source: 'public_realm_lego',
       supported: true,
     });
     expect(resolveParkLegoAppearance(candidate)).toMatchObject({
-      label: 'Tropical Lush',
-      materialPattern: 'tropical_lush',
-      shadeStyle: 'thatched',
+      label: 'English Pastoral',
+      materialPattern: 'english_pastoral',
+      shadeStyle: 'timber_pergola',
     });
   });
 
@@ -279,6 +279,33 @@ describe('Public Realm LEGO V1 park families', () => {
       }),
     });
     expect(usesArchetypeOwnedParkSurface(compiled)).toBe(true);
+  });
+
+  it.each([
+    ['community_park', 'community_park_v0', 'park_neighborhood_community'],
+    ['pond_lake', 'pond_lake_v0', 'park_water_ecology'],
+    ['wetland_rain_garden', 'wetland_rain_garden_v0', 'park_water_ecology'],
+    ['japanese_garden', 'japanese_garden_v0', 'park_cultural_gardens'],
+    ['botanical_garden', 'botanical_garden_v0', 'park_cultural_gardens'],
+    ['urban_forest', 'urban_forest_v0', 'park_urban_forest'],
+    ['reservoir_watershed_park', 'reservoir_watershed_park_v0', 'park_water_ecology'],
+    ['amphitheater_lawn', 'amphitheater_lawn_v0', 'park_amphitheater_lawn_v0'],
+    ['riparian_buffer', 'riparian_buffer_v0', 'park_water_ecology'],
+    ['playground_adventure', 'playground_adventure_v0', 'park_playground_adventure_v0'],
+  ] as const)('compiles batch-4 %s/%s to an owned zero-call surface', (
+    archetypeId, variantId, familyId,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId,
+      archetypeId,
+      variantId,
+      supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
   it.each([

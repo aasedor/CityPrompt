@@ -1144,17 +1144,104 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
   },
 };
 
-// Community Park shares the same executable metric program as Neighborhood
-// Park in Public Realm LEGO V1. Its catalog variants still provide distinct
-// planting/material kits, while topology and fixed-program count stay locked.
+// Batch 4 replaces generic catalog fallbacks with exact v0 LEGO programs.
+// These programs are topology contracts: reference imagery supplies material
+// hierarchy and spatial relationships, while the parcel fit may rotate or
+// omit whole metric elements but may never stretch them.
+PROFILES.pond_lake = {
+  id: 'pond-lake-lego-v1', version: 1,
+  programDescription: 'A naturalistic neighborhood pond with one coherent open-water basin, a continuous dry walking loop, a small timber viewing dock and layered willow, sedge and fieldstone shoreline rooms.',
+  groundDescription: 'Deep variegated blue-green water, irregular fieldstone edge, dark organic wet shelf, yellow-green sedges, warm fine gravel and muted meadow turf derived from the Naturalistic Pond reference.',
+  criticalConstraints: 'Preserve exactly one pond, one complete dry loop and one small dock. The dock touches the water edge but never becomes a marina. Do not turn the pond into a formal pool, treatment-cell network, fountain, sports field or generic lawn.',
+  canopyDescription: 'Irregular willow and deciduous clusters frame roughly half the shoreline, with open views from the dock and path and no trees in open water.',
+  plantingStructure: 'pond_lake_v0',
+  guides: [
+    { kind: 'ellipse', x: 0.48, y: 0.51, width: 0.62, height: 0.48, color: '#315b63', strokeColor: '#69785d', strokeWidthM: 2.2 },
+    { kind: 'path_loop', x: 0.48, y: 0.51, width: 0.78, height: 0.70, color: '#b5a47f', strokeColor: '#786a50', strokeWidthM: 2.6 },
+    { kind: 'line', x: 0.77, y: 0.52, width: 0.15, height: 0, widthM: 9, color: '#8d6842', strokeColor: '#60462f', strokeWidthM: 2.4, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['the BLUE-GREEN ellipse is the single naturalistic pond and emergent shoreline shelf', 'the TAN loop is the exact continuous dry walking path', 'the BROWN bar is the exact small timber viewing dock alignment'],
+  includeCentralPlaza: false,
+  renderSummary: 'naturalistic pond preserving one coherent basin, irregular planted shoreline, continuous dry loop and small timber dock',
+  isPilot: true,
+};
+
+PROFILES.amphitheater_lawn = {
+  id: 'amphitheater-lawn-lego-v1', version: 1,
+  programDescription: 'A grass performance bowl with four shallow concentric lawn terraces focused on one 18 by 8 metre timber stage and an accessible path along the upper rim.',
+  groundDescription: 'Variegated closely mown turf, darker terrace risers, weathered timber stage boards, pale compacted-gravel rim path and muted native-meadow shoulders.',
+  criticalConstraints: 'Keep every terrace focused on the stage and preserve clear sightlines. The stage is a small park structure, not a building. No acoustic shell, grandstand, road, parking, people or trees inside the seating fan.',
+  canopyDescription: 'Varied mature shade trees remain only on the upper perimeter behind the rim path.',
+  plantingStructure: 'amphitheater_lawn_v0',
+  guides: [
+    { kind: 'ellipse', x: 0.50, y: 0.55, width: 0.76, height: 0.66, color: '#668552', strokeColor: '#4e6d44', strokeWidthM: 0.8 },
+    { kind: 'ellipse', x: 0.50, y: 0.56, width: 0.62, height: 0.52, color: '#728f5b', strokeColor: '#4e6d44', strokeWidthM: 0.8 },
+    { kind: 'ellipse', x: 0.50, y: 0.58, width: 0.48, height: 0.38, color: '#78965f', strokeColor: '#4e6d44', strokeWidthM: 0.8 },
+    { kind: 'ellipse', x: 0.50, y: 0.60, width: 0.34, height: 0.24, color: '#809d66', strokeColor: '#4e6d44', strokeWidthM: 0.8 },
+    { kind: 'rectangle', x: 0.50, y: 0.76, width: 0.27, height: 0.12, widthM: 18, heightM: 8, color: '#8d6540', strokeColor: '#5d402b', strokeWidthM: 0.5 },
+    { kind: 'path_loop', x: 0.50, y: 0.54, width: 0.88, height: 0.80, color: '#b6aa8c', strokeWidthM: 2.8 },
+  ],
+  guideLegend: ['the four nested GREEN ellipses are the shallow terraced lawn-seating bowl', 'the BROWN rectangle is the exact 18 by 8 metre timber stage', 'the PALE outer loop is the accessible upper-rim path'],
+  includeCentralPlaza: false,
+  renderSummary: 'terraced grass amphitheater preserving four lawn tiers, one timber stage, an accessible rim path and open sightlines',
+  isPilot: true,
+};
+
+PROFILES.riparian_buffer = {
+  id: 'riparian-buffer-lego-v1', version: 1,
+  programDescription: 'A narrow restored creek corridor with one continuous sinuous channel, broad planted banks, a parallel multi-use trail on dry ground and one small timber crossing at a central pinch point.',
+  groundDescription: 'Shallow blue-grey water, gravel and cobble bars, dark moist bank soil, layered willow and emergent planting, tawny meadow and warm compacted gravel.',
+  criticalConstraints: 'Keep the creek continuous from end to end and preserve vegetated buffers on both banks. The dry trail parallels rather than replaces the creek. Use one modest crossing only; no ornamental pond, lawn carpet, hard canal, road or buildings.',
+  canopyDescription: 'Willows and varied riparian trees form irregular staggered groups rather than cloned rows, preserving trail and water views.',
+  plantingStructure: 'riparian_buffer_v0',
+  guides: [
+    { kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1, points: [[0.02, 0.43], [0.18, 0.58], [0.36, 0.40], [0.54, 0.55], [0.72, 0.39], [0.98, 0.52]], color: '#466f75', strokeColor: '#6f8060', strokeWidthM: 6.5 },
+    { kind: 'polyline', x: 0.50, y: 0.73, width: 1, height: 1, points: [[0.02, 0.72], [0.22, 0.82], [0.44, 0.68], [0.66, 0.78], [0.98, 0.68]], color: '#b2a27f', strokeColor: '#75684e', strokeWidthM: 3.2 },
+    { kind: 'line', x: 0.52, y: 0.58, width: 0, height: 0, widthM: 14, heightM: 0, color: '#8d6842', strokeColor: '#60462f', strokeWidthM: 2.2, rotationDeg: 90, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['the BLUE-GREEN sinuous route is the continuous creek channel and planted bank shelf', 'the TAN route is the exact dry 3.2-metre multi-use trail', 'the BROWN crossing is one small timber bridge'],
+  includeCentralPlaza: false,
+  renderSummary: 'restored riparian corridor preserving a continuous creek, layered native banks, parallel dry trail and one timber crossing',
+  isPilot: true,
+};
+
+PROFILES.playground_adventure = {
+  id: 'playground-adventure-lego-v1', version: 1,
+  programDescription: 'A rustic adventure playground with interconnected rough-hewn timber towers, rope bridges and climbing nets, a separate swing bay, two linked gravel and engineered-wood-fibre safety rooms, split-rail fencing and a clear perimeter circulation loop.',
+  groundDescription: 'Complex warm-grey compacted gravel, tan engineered wood fibre, weathered timber, galvanized slide metal, dark rope, meadow grasses and wildflower margins sampled from the exact Rustic Timber & Gravel v0 reference.',
+  criticalConstraints: 'Preserve two distinct safety rooms and complete fall zones. Keep timber towers, rope routes, slides and swings at child-scaled real dimensions. Fencing, boulders and meadow stay outside moving-equipment clearances. No people, large buildings, colored rubber mosaic, fabric shade sails or monocolour surface.',
+  canopyDescription: 'Sparse shade trees and meadow remain outside the split-rail fence and fall zones; the timber climbing network stays fully legible.',
+  plantingStructure: 'playground_adventure_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.43, y: 0.48, width: 0.55, height: 0.58, widthM: 24, heightM: 24, color: '#8a806f', strokeColor: '#b4a47e', strokeWidthM: 1.0 },
+    { kind: 'rounded_rectangle', x: 0.76, y: 0.58, width: 0.24, height: 0.40, widthM: 10, heightM: 16, color: '#9a896d', strokeColor: '#b4a47e', strokeWidthM: 1.0 },
+    { kind: 'path_loop', x: 0.52, y: 0.52, width: 0.90, height: 0.82, color: '#c2b59c', strokeWidthM: 2.4 },
+  ],
+  guideLegend: ['the WARM-GREY and TAN rounded rectangles are distinct gravel/wood-fibre tower and swing safety rooms with complete fall zones', 'the PALE loop is the exact clear perimeter circulation and split-rail-fence access route'],
+  includeCentralPlaza: false,
+  renderSummary: 'rustic adventure playground preserving rough timber towers, rope climbing, distinct gravel and wood-fibre safety rooms, split-rail fencing and a clear perimeter route',
+  isPilot: true,
+};
+
 PROFILES.community_park = {
-  ...PROFILES.neighborhood_park,
   id: 'community-park-lego-v1',
   version: 1,
-  programDescription: PROFILES.neighborhood_park.programDescription
-    .replace('contemporary neighborhood park', 'community park'),
-  renderSummary: PROFILES.neighborhood_park.renderSummary
-    .replace('neighborhood park', 'community park'),
+  programDescription: 'A large English-pastoral community park organized around one complete 100 by 64 metre recreation field, a naturalistic pond, a continuous serpentine walking circuit, a picnic grove and one modest pavilion pad. Irregular residual land remains meadow and shade grove.',
+  groundDescription: 'Varied mown turf, darker striped field grass, deep blue-green pond water, warm compacted-gravel paths, native meadow, weathered timber and small pale concrete pads.',
+  criticalConstraints: 'Retain the complete regulation field only when it fits; never stretch or crop it. Keep pond, field and picnic/social edge separate and connected by the walking circuit. No large buildings, roads, parking or people.',
+  canopyDescription: 'Irregular mature deciduous groups frame the pond, picnic grove and outer path while keeping the complete field open.',
+  plantingStructure: 'naturalistic_grove',
+  guides: [
+    { kind: 'soccer_field', x: 0.35, y: 0.55, width: 0.45, height: 0.50, widthM: 100, heightM: 64, color: '#668b53', strokeColor: '#eeeade', strokeWidthM: 0.10, orientationPolicy: 'orthogonal' },
+    { kind: 'ellipse', x: 0.76, y: 0.34, width: 0.27, height: 0.25, color: '#3c6870', strokeColor: '#72815f', strokeWidthM: 2.0 },
+    { kind: 'path_loop', x: 0.50, y: 0.50, width: 0.88, height: 0.78, color: '#b6a785', strokeColor: '#786a50', strokeWidthM: 3.0 },
+    { kind: 'ellipse', x: 0.76, y: 0.72, width: 0.20, height: 0.16, color: '#8d9c61', strokeColor: '#68764e', strokeWidthM: 0.6 },
+    { kind: 'rectangle', x: 0.79, y: 0.64, width: 0.08, height: 0.08, widthM: 8, heightM: 7, color: '#9c8a70', strokeColor: '#665b4b', strokeWidthM: 0.5 },
+  ],
+  guideLegend: ['the large GREEN rectangle is one complete 100 by 64 metre recreation field and is omitted rather than stretched', 'the BLUE-GREEN ellipse is the naturalistic community pond and planted shelf', 'the TAN loop is the continuous serpentine walking circuit', 'the SAGE picnic grove and SMALL BROWN pavilion pad form one connected social edge'],
+  includeCentralPlaza: false,
+  renderSummary: 'English-pastoral community park preserving a complete recreation field, naturalistic pond, serpentine loop and picnic/pavilion social edge',
+  isPilot: true,
 };
 
 function normalizeId(value: unknown): string {
@@ -1518,7 +1605,12 @@ export type ParkSpecialtyStructureKind =
   | 'sports_field_furniture'
   | 'tennis_court_furniture'
   | 'wetland_boardwalk'
-  | 'botanical_conservatory';
+  | 'botanical_conservatory'
+  | 'pond_dock_assembly'
+  | 'riparian_bridge_assembly'
+  | 'reservoir_edge_assembly'
+  | 'amphitheater_lawn_assembly'
+  | 'adventure_play_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -1640,7 +1732,23 @@ export function resolveParkSpecialtyStructureKind(
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported
     && legoContract.familyId === 'park_water_ecology'
-  ) return 'stormwater_control_assembly';
+  ) {
+    if (legoContract.archetypeId === 'pond_lake') return 'pond_dock_assembly';
+    if (legoContract.archetypeId === 'wetland_rain_garden') return 'wetland_boardwalk';
+    if (legoContract.archetypeId === 'riparian_buffer') return 'riparian_bridge_assembly';
+    if (legoContract.archetypeId === 'reservoir_watershed_park') return 'reservoir_edge_assembly';
+    return 'stormwater_control_assembly';
+  }
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_amphitheater_lawn_v0'
+  ) return 'amphitheater_lawn_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_playground_adventure_v0'
+  ) return 'adventure_play_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

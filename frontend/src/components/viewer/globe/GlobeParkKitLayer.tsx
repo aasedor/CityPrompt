@@ -1098,6 +1098,154 @@ function ParkSpecialtyStructures({
     );
   }
 
+  if (structureKind === 'pond_dock_assembly' || structureKind === 'riparian_bridge_assembly') {
+    const authoredLine = fittedProgramGuides.find((guide) => guide.kind === 'line');
+    if (!authoredLine) return null;
+    const route = parkSpecialtyGuideRoute(authoredLine, programFrame);
+    const from = route[0];
+    const to = route[route.length - 1];
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const length = Math.max(2, Math.hypot(dx, dy));
+    const x = (from.x + to.x) / 2;
+    const y = (from.y + to.y) / 2;
+    const width = structureKind === 'pond_dock_assembly' ? 2.4 : 2.2;
+    const yaw = Math.atan2(dy, dx);
+    const rail = structureKind === 'riparian_bridge_assembly';
+    return (
+      <group position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.32]} rotation={[0, 0, yaw]}>
+        <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
+          <boxGeometry args={[length, width, 0.24]} />
+          <meshStandardMaterial color="#8b6846" roughness={0.88} />
+        </mesh>
+        <mesh position={[0, 0, 0.13]} renderOrder={RENDER_ORDER_PROPS + 3}>
+          <planeGeometry args={[length - 0.15, width - 0.10, Math.max(2, Math.ceil(length / 0.45)), 1]} />
+          <meshStandardMaterial color="#ad8258" wireframe roughness={0.94} />
+        </mesh>
+        {Array.from({ length: Math.max(3, Math.ceil(length / 3.2)) }, (_, index) => (
+          [-1, 1].map((side) => {
+            const along = -length / 2 + (index / Math.max(1, Math.ceil(length / 3.2) - 1)) * length;
+            return (
+              <mesh key={`${index}-${side}`} position={[along, side * width * 0.43, -0.25]} renderOrder={RENDER_ORDER_PROPS + 1}>
+                <cylinderGeometry args={[0.09, 0.12, 1.15, 8]} />
+                <meshStandardMaterial color="#5f4935" roughness={0.94} />
+              </mesh>
+            );
+          })
+        ))}
+        {rail && [-1, 1].map((side) => (
+          <group key={side} position={[0, side * width * 0.48, 0.72]}>
+            <mesh renderOrder={RENDER_ORDER_PROPS + 3}>
+              <boxGeometry args={[length, 0.08, 0.10]} />
+              <meshStandardMaterial color="#684b32" roughness={0.9} />
+            </mesh>
+            {[-length / 2, 0, length / 2].map((along) => (
+              <mesh key={along} position={[along, 0, -0.34]} renderOrder={RENDER_ORDER_PROPS + 2}>
+                <boxGeometry args={[0.09, 0.09, 0.78]} />
+                <meshStandardMaterial color="#684b32" roughness={0.9} />
+              </mesh>
+            ))}
+          </group>
+        ))}
+      </group>
+    );
+  }
+
+  if (structureKind === 'reservoir_edge_assembly') {
+    const water = fittedProgramGuides.find((guide) => guide.kind === 'rectangle' || guide.kind === 'rounded_rectangle');
+    const dam = fittedProgramGuides.find((guide) => guide.kind === 'line');
+    if (!water || !dam) return null;
+    const waterCenter = guideCenter(water, programFrame);
+    const waterSize = resolveParkGuideDimensionsM(water, programFrame);
+    const damRoute = parkSpecialtyGuideRoute(dam, programFrame);
+    const from = damRoute[0];
+    const to = damRoute[damRoute.length - 1];
+    const length = Math.max(8, Math.hypot(to.x - from.x, to.y - from.y));
+    const x = (from.x + to.x) / 2;
+    const y = (from.y + to.y) / 2;
+    const yaw = Math.atan2(to.y - from.y, to.x - from.x);
+    return (
+      <group renderOrder={RENDER_ORDER_PROPS}>
+        <mesh position={[waterCenter.x, waterCenter.y, terrainZ(waterCenter.x, waterCenter.y) + 0.025]} renderOrder={RENDER_ORDER_PROPS + 1}>
+          <planeGeometry args={[waterSize.width, waterSize.height]} />
+          <meshPhysicalMaterial color="#315f6a" roughness={0.18} transparent opacity={0.84} />
+        </mesh>
+        <group position={[x, y, terrainZ(x, y) + 0.48]} rotation={[0, 0, yaw]}>
+          <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
+            <boxGeometry args={[length, 1.8, 0.96]} />
+            <meshStandardMaterial color="#92928c" roughness={0.9} />
+          </mesh>
+          <mesh position={[0, -1.15, 0.22]} renderOrder={RENDER_ORDER_PROPS + 3}>
+            <boxGeometry args={[Math.min(8, length * 0.2), 1.0, 0.42]} />
+            <meshStandardMaterial color="#a7a49b" roughness={0.86} />
+          </mesh>
+          {Array.from({ length: Math.max(4, Math.ceil(length / 6)) }, (_, index) => {
+            const along = -length / 2 + index * (length / Math.max(1, Math.ceil(length / 6) - 1));
+            return <mesh key={index} position={[along, 0.85, 1.15]}><boxGeometry args={[0.08, 0.08, 1.4]} /><meshStandardMaterial color="#4e5656" metalness={0.5} roughness={0.55} /></mesh>;
+          })}
+          <mesh position={[0, 0.85, 1.78]}><boxGeometry args={[length, 0.07, 0.07]} /><meshStandardMaterial color="#4e5656" metalness={0.5} roughness={0.55} /></mesh>
+        </group>
+      </group>
+    );
+  }
+
+  if (structureKind === 'amphitheater_lawn_assembly') {
+    const tiers = fittedProgramGuides.filter((guide) => guide.kind === 'ellipse').slice(0, 4);
+    const stage = fittedProgramGuides.find((guide) => guide.kind === 'rectangle');
+    if (tiers.length === 0 || !stage) return null;
+    const stageCenter = guideCenter(stage, programFrame);
+    const stageSize = resolveParkGuideDimensionsM(stage, programFrame);
+    return (
+      <group renderOrder={RENDER_ORDER_PROPS}>
+        {tiers.map((tier, index) => {
+          const center = guideCenter(tier, programFrame);
+          const dimensions = resolveParkGuideDimensionsM(tier, programFrame);
+          return (
+            <mesh key={index} position={[center.x, center.y, terrainZ(center.x, center.y) + 0.06 + index * 0.18]} scale={[dimensions.width / 2, dimensions.height / 2, 1]} renderOrder={RENDER_ORDER_PROPS + index}>
+              <ringGeometry args={[0.92, 1, 64]} />
+              <meshStandardMaterial color={index % 2 === 0 ? '#657f4f' : '#75915a'} roughness={0.98} />
+            </mesh>
+          );
+        })}
+        <mesh position={[stageCenter.x, stageCenter.y, terrainZ(stageCenter.x, stageCenter.y) + 0.28]} renderOrder={RENDER_ORDER_PROPS + 5}>
+          <boxGeometry args={[stageSize.width, stageSize.height, 0.52]} />
+          <meshStandardMaterial color="#8b623e" roughness={0.86} />
+        </mesh>
+      </group>
+    );
+  }
+
+  if (structureKind === 'adventure_play_assembly') {
+    const pads = fittedProgramGuides.filter((guide) => guide.kind === 'rounded_rectangle');
+    if (pads.length < 2) return null;
+    const towerPad = guideCenter(pads[0], programFrame);
+    const swingPad = guideCenter(pads[1], programFrame);
+    const towerOffsets = [[-5, -3, 2.6], [0, 2, 3.5], [5, -1, 3.0]] as const;
+    return (
+      <group renderOrder={RENDER_ORDER_PROPS}>
+        {towerOffsets.map(([offsetX, offsetY, deckHeight], index) => (
+          <group key={index} position={[towerPad.x + offsetX, towerPad.y + offsetY, terrainZ(towerPad.x + offsetX, towerPad.y + offsetY)]}>
+            {[-1.2, 1.2].flatMap((x) => [-1.2, 1.2].map((y) => <mesh key={`${x}-${y}`} position={[x, y, deckHeight / 2]}><cylinderGeometry args={[0.16, 0.22, deckHeight, 9]} /><meshStandardMaterial color={index % 2 === 0 ? '#705841' : '#80664b'} roughness={0.94} /></mesh>))}
+            <mesh position={[0, 0, deckHeight]}><boxGeometry args={[3.0, 3.0, 0.24]} /><meshStandardMaterial color="#8b6c4d" roughness={0.92} /></mesh>
+            <mesh position={[0, 0, deckHeight + 1.25]} rotation={[0, 0, Math.PI / 4]}><coneGeometry args={[2.55, 1.2, 4]} /><meshStandardMaterial color="#67513d" roughness={0.95} /></mesh>
+            <mesh position={[2.2, 0, deckHeight - 0.8]} rotation={[0, -0.52, 0]}><boxGeometry args={[4.8, 0.72, 0.18]} /><meshStandardMaterial color="#a9aaa5" metalness={0.48} roughness={0.44} /></mesh>
+          </group>
+        ))}
+        <group position={[swingPad.x, swingPad.y, terrainZ(swingPad.x, swingPad.y)]}>
+          {[-3.8, 3.8].map((x) => <mesh key={x} position={[x, 0, 2.3]} rotation={[0, 0, x < 0 ? -0.16 : 0.16]}><cylinderGeometry args={[0.16, 0.22, 4.7, 9]} /><meshStandardMaterial color="#705841" roughness={0.94} /></mesh>)}
+          <mesh position={[0, 0, 4.5]} rotation={[0, 0, Math.PI / 2]}><cylinderGeometry args={[0.16, 0.20, 8.2, 9]} /><meshStandardMaterial color="#705841" roughness={0.94} /></mesh>
+          {[-2.2, 0, 2.2].map((x) => <group key={x}><mesh position={[x, 0, 3.0]}><boxGeometry args={[0.035, 0.035, 2.8]} /><meshStandardMaterial color="#4e4940" metalness={0.12} roughness={0.86} /></mesh><mesh position={[x, 0, 1.58]}><boxGeometry args={[0.7, 0.35, 0.10]} /><meshStandardMaterial color="#6d563f" roughness={0.92} /></mesh></group>)}
+        </group>
+        {[[-7, 6, 1.1], [7, 6, 0.9], [-8, -7, 0.75], [8, -6, 1.0]].map(([offsetX, offsetY, scale], index) => (
+          <mesh key={index} position={[towerPad.x + offsetX, towerPad.y + offsetY, terrainZ(towerPad.x + offsetX, towerPad.y + offsetY) + scale * 0.34]} scale={[scale * 1.2, scale, scale * 0.72]} rotation={[index * 0.15, index * 0.09, index * 0.62]}>
+            <dodecahedronGeometry args={[0.82, 0]} />
+            <meshStandardMaterial color={index % 2 === 0 ? '#85847d' : '#9a9588'} roughness={0.98} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
   if (structureKind === 'stormwater_control_assembly') {
     const waterGuide = fittedProgramGuides
       .filter((guide) => guide.kind === 'ellipse')

@@ -77,6 +77,10 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_cricket_village_green_v0",
         "park_sports_complex_tournament_v0",
         "park_water_ecology",
+        "park_cultural_gardens",
+        "park_urban_forest",
+        "park_amphitheater_lawn_v0",
+        "park_playground_adventure_v0",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -178,6 +182,32 @@ def test_archetype_owned_batch_recipes_keep_exact_identity(
         "park_sports_complex_tournament_v0": "sports_complex_tournament_v0",
     }.get(family_id, variant_id)
     assert recipe.planting_structure == expected_planting
+
+
+@pytest.mark.parametrize(("archetype_id", "family_id", "appearance_id", "width", "depth"), (
+    ("community_park", "park_neighborhood_community", "english_pastoral_v1", 250, 160),
+    ("pond_lake", "park_water_ecology", "pond_lake_v0_naturalistic_skin", 80, 60),
+    ("wetland_rain_garden", "park_water_ecology", "wetland_rain_garden_v0_native_restoration_skin", 80, 60),
+    ("japanese_garden", "park_cultural_gardens", "japanese_garden_v0_stroll_skin", 90, 70),
+    ("botanical_garden", "park_cultural_gardens", "botanical_garden_v0_collection_skin", 200, 150),
+    ("urban_forest", "park_urban_forest", "urban_forest_v0_native_restoration_skin", 250, 200),
+    ("reservoir_watershed_park", "park_water_ecology", "reservoir_watershed_park_v0_concrete_edge_skin", 140, 80),
+    ("amphitheater_lawn", "park_amphitheater_lawn_v0", "amphitheater_lawn_v0_terraced_performance_skin", 80, 60),
+    ("riparian_buffer", "park_water_ecology", "riparian_buffer_v0_native_restoration_skin", 200, 50),
+    ("playground_adventure", "park_playground_adventure_v0", "playground_adventure_v0_rustic_timber_skin", 45, 40),
+))
+def test_batch4_park_recipes_keep_exact_v0_identity(
+    archetype_id, family_id, appearance_id, width, depth,
+):
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        variant_id=f"{archetype_id}_v0",
+        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+    ))
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == f"{archetype_id}_v0"
+    assert recipe.appearance_kit_id == appearance_id
+    assert recipe.planting_structure in {"naturalistic_grove", f"{archetype_id}_v0"}
 
 
 @pytest.mark.parametrize(
@@ -641,7 +671,7 @@ def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():
             {**properties, "_plan_scenario": "community_wellbeing"},
             strict=True,
         )
-    assert raised.value.code == "family_not_found"
+    assert raised.value.code == "family_incompatible"
 
 
 def test_zone_planner_rejects_non_polygonal_park_without_attribute_error():

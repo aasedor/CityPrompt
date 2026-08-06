@@ -2,6 +2,7 @@ import {
   archetypeOwnedParkKitForFamily,
   archetypeOwnedParkKitForSelection,
 } from './parkArchetypeOwnedKits';
+import { batch4ParkSkinForSelection } from './parkBatch4Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -32,6 +33,10 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_cricket_village_green_v0',
   'park_sports_complex_tournament_v0',
   'park_water_ecology',
+  'park_cultural_gardens',
+  'park_urban_forest',
+  'park_amphitheater_lawn_v0',
+  'park_playground_adventure_v0',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -463,11 +468,9 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       ['rustic_timber_gravel_v1', 'modern_steel_turf_v1', 'natural_meadow_v1', 'urban_contemporary_v1'],
       ['active_recreation', 'active_recreation', 'naturalistic_grove', 'active_recreation'],
     ),
-    community_park: fourVariantMappings(
-      'community_park',
-      ['english_pastoral_v1', 'modern_minimalist_v1', 'mediterranean_xeriscape_v1', 'tropical_lush_v1'],
-      ['naturalistic_grove', 'active_recreation', 'naturalistic_grove', 'naturalistic_grove'],
-    ),
+    community_park: Object.freeze([Object.freeze({
+      variantId: 'community_park_v0', appearanceKitId: 'english_pastoral_v1', plantingStructure: 'naturalistic_grove',
+    })]),
   }),
   park_civic_plaza: Object.freeze({
     formal_civic_plaza: Object.freeze([Object.freeze({
@@ -592,6 +595,41 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       appearanceKitId: 'naturalistic_pond_v1',
       plantingStructure: 'reservoir_perimeter',
     })]),
+    pond_lake: Object.freeze([Object.freeze({
+      variantId: 'pond_lake_v0', appearanceKitId: 'pond_lake_v0_naturalistic_skin', plantingStructure: 'pond_lake_v0',
+    })]),
+    wetland_rain_garden: Object.freeze([Object.freeze({
+      variantId: 'wetland_rain_garden_v0', appearanceKitId: 'wetland_rain_garden_v0_native_restoration_skin', plantingStructure: 'wetland_rain_garden_v0',
+    })]),
+    riparian_buffer: Object.freeze([Object.freeze({
+      variantId: 'riparian_buffer_v0', appearanceKitId: 'riparian_buffer_v0_native_restoration_skin', plantingStructure: 'riparian_buffer_v0',
+    })]),
+    reservoir_watershed_park: Object.freeze([Object.freeze({
+      variantId: 'reservoir_watershed_park_v0', appearanceKitId: 'reservoir_watershed_park_v0_concrete_edge_skin', plantingStructure: 'reservoir_watershed_park_v0',
+    })]),
+  }),
+  park_cultural_gardens: Object.freeze({
+    japanese_garden: Object.freeze([Object.freeze({
+      variantId: 'japanese_garden_v0', appearanceKitId: 'japanese_garden_v0_stroll_skin', plantingStructure: 'japanese_garden_v0',
+    })]),
+    botanical_garden: Object.freeze([Object.freeze({
+      variantId: 'botanical_garden_v0', appearanceKitId: 'botanical_garden_v0_collection_skin', plantingStructure: 'botanical_garden_v0',
+    })]),
+  }),
+  park_urban_forest: Object.freeze({
+    urban_forest: Object.freeze([Object.freeze({
+      variantId: 'urban_forest_v0', appearanceKitId: 'urban_forest_v0_native_restoration_skin', plantingStructure: 'urban_forest_v0',
+    })]),
+  }),
+  park_amphitheater_lawn_v0: Object.freeze({
+    amphitheater_lawn: Object.freeze([Object.freeze({
+      variantId: 'amphitheater_lawn_v0', appearanceKitId: 'amphitheater_lawn_v0_terraced_performance_skin', plantingStructure: 'amphitheater_lawn_v0',
+    })]),
+  }),
+  park_playground_adventure_v0: Object.freeze({
+    playground_adventure: Object.freeze([Object.freeze({
+      variantId: 'playground_adventure_v0', appearanceKitId: 'playground_adventure_v0_rustic_timber_skin', plantingStructure: 'playground_adventure_v0',
+    })]),
   }),
 });
 
@@ -639,7 +677,19 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'baseball_softball_diamond') return 'park_baseball_club_hub_v1';
   if (archetypeId === 'cricket_pitch_oval') return 'park_cricket_village_green_v0';
   if (archetypeId === 'sports_field_complex') return 'park_sports_complex_tournament_v0';
-  if (archetypeId.startsWith('stormwater_retention_pond')) return 'park_water_ecology';
+  if (
+    archetypeId.startsWith('stormwater_retention_pond')
+    || archetypeId === 'pond_lake'
+    || archetypeId === 'wetland_rain_garden'
+    || archetypeId === 'riparian_buffer'
+    || archetypeId === 'reservoir_watershed_park'
+  ) return 'park_water_ecology';
+  if (archetypeId === 'japanese_garden' || archetypeId === 'botanical_garden') {
+    return 'park_cultural_gardens';
+  }
+  if (archetypeId === 'urban_forest') return 'park_urban_forest';
+  if (archetypeId === 'amphitheater_lawn') return 'park_amphitheater_lawn_v0';
+  if (archetypeId === 'playground_adventure') return 'park_playground_adventure_v0';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -669,6 +719,10 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_cricket_village_green_v0': return 'cricket_pitch_oval';
     case 'park_sports_complex_tournament_v0': return 'sports_field_complex';
     case 'park_water_ecology': return 'stormwater_retention_pond';
+    case 'park_cultural_gardens': return 'japanese_garden';
+    case 'park_urban_forest': return 'urban_forest';
+    case 'park_amphitheater_lawn_v0': return 'amphitheater_lawn';
+    case 'park_playground_adventure_v0': return 'playground_adventure';
   }
 }
 
@@ -836,6 +890,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
     || contract.familyId === 'park_caged_soccer_v0'
     || contract.familyId === 'park_athletics_fields_v0'
   ) return true;
+  if (batch4ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

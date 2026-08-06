@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "archetype": "wetland-rain-garden-native",
+  "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png"
+  ],
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.06,
+        0.56,
+        0.46,
+        0.94
+      ],
+      "cropPixels": [
+        61,
+        430,
+        471,
+        722
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.58,
+        0.48,
+        0.96,
+        0.9
+      ],
+      "cropPixels": [
+        594,
+        369,
+        983,
+        691
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.04,
+        0.62,
+        0.44,
+        0.96
+      ],
+      "cropPixels": [
+        41,
+        476,
+        451,
+        737
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.08,
+        0.18,
+        0.92,
+        0.8
+      ],
+      "cropPixels": [
+        82,
+        138,
+        942,
+        614
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.34,
+        0.28,
+        0.78,
+        0.7
+      ],
+      "cropPixels": [
+        348,
+        215,
+        799,
+        538
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "safety",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "cropNormalized": [
+        0.18,
+        0.36,
+        0.82,
+        0.7
+      ],
+      "cropPixels": [
+        184,
+        276,
+        840,
+        538
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

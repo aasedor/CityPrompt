@@ -332,6 +332,7 @@ function familyTargets(
     case 'park_baseball_club_hub_v1':
     case 'park_cricket_village_green_v0':
     case 'park_sports_complex_tournament_v0':
+    case 'park_playground_adventure_v0':
       // Benches, grass edge and all fixed objects belong to the exact
       // archetype kit. Generic microdetail would corrupt its authored layout.
       return [];
@@ -388,6 +389,27 @@ function familyTargets(
         target('riprap', cappedCount(perimeterM / 22, 4, 16)),
         target('boulder', cappedCount(areaM2 / 700, 2, 8)),
         target('bollard', cappedCount(perimeterM / 55, 2, 8)),
+      ];
+    case 'park_cultural_gardens':
+      return [
+        target('shrub', cappedCount(areaM2 / 180, 6, 24)),
+        target('perennial', cappedCount(areaM2 / 150, 8, 28)),
+        target('ornamental_grass', cappedCount(areaM2 / 260, 3, 14)),
+        target('boulder', cappedCount(areaM2 / 900, 1, 6)),
+        target('bin', cappedCount(areaM2 / 1800, 1, 3)),
+      ];
+    case 'park_urban_forest':
+      return [
+        target('shrub', cappedCount(areaM2 / 240, 8, 28)),
+        target('ornamental_grass', cappedCount(areaM2 / 360, 4, 18)),
+        target('boulder', cappedCount(areaM2 / 1200, 2, 8)),
+        target('bin', cappedCount(areaM2 / 4200, 1, 3)),
+      ];
+    case 'park_amphitheater_lawn_v0':
+      return [
+        target('light', cappedCount(perimeterM / 34, 3, 10)),
+        target('bin', cappedCount(areaM2 / 1600, 1, 4)),
+        target('bollard', cappedCount(perimeterM / 42, 2, 8)),
       ];
   }
 }

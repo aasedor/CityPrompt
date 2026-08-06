@@ -1358,6 +1358,9 @@ function styleExecutableParkGuides(
   appearance: ParkLegoAppearance | null,
 ): ParkGroundGuide[] {
   if (!appearance) return guides;
+  // Community Park owns pond/field/path roles whose order does not match the
+  // older neighborhood palette indices. Preserve its authored skin colors.
+  if (appearance.archetypeId === 'community_park') return guides;
   const palette = appearance.palette;
   if (appearance.familyId === 'park_pocket_courtyard') {
     return guides.map((guide, index) => index === 0

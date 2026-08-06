@@ -98,7 +98,7 @@ describe('park ground pilot profiles', () => {
     ['formal_civic_plaza', 'paved_plaza'],
     ['fountain_water_feature', 'paved_plaza'],
     ['stormwater_retention_pond', 'reservoir_perimeter'],
-    ['pond_lake', 'formal_water_edge'],
+    ['pond_lake', 'pond_lake_v0'],
     ['tennis_court_cluster', 'sports_perimeter'],
     ['soccer_pitch_caged', 'caged_soccer_v0'],
     ['athletics_precinct_sports_fields', 'athletics_fields_v0'],
@@ -109,6 +109,9 @@ describe('park ground pilot profiles', () => {
     ['botanical_garden', 'botanical_collection'],
     ['nature_play_area', 'nature_play_grove'],
     ['reservoir_watershed_park', 'reservoir_perimeter'],
+    ['amphitheater_lawn', 'amphitheater_lawn_v0'],
+    ['riparian_buffer', 'riparian_buffer_v0'],
+    ['playground_adventure', 'playground_adventure_v0'],
   ])('resolves %s with its coordinated planting structure', (id, planting) => {
     const candidate = zone(id);
     expect(resolveParkGroundProfile(candidate).isPilot).toBe(true);
@@ -127,7 +130,7 @@ describe('park ground pilot profiles', () => {
     expect(resolveParkGroundProfile(zone('athletics_precinct_sports_fields')).guides).toHaveLength(2);
     expect(resolveParkGroundProfile(zone('wetland_rain_garden')).guides).toHaveLength(6);
     expect(resolveParkGroundProfile(zone('pond_lake_variant_0')).guides[0].kind)
-      .toBe('rounded_rectangle');
+      .toBe('ellipse');
     expect(resolveParkGroundProfile(zone('japanese_garden')).includeCentralPlaza).toBe(false);
     expect(resolveParkGroundProfile(zone('sports_field_complex')).includeCentralPlaza).toBe(false);
     expect(resolveParkGroundProfile(zone('neighborhood_park')).includeCentralPlaza).toBe(false);
@@ -160,6 +163,31 @@ describe('park ground pilot profiles', () => {
     expect(shouldMountParkProgramFrame(zone('botanical_garden'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('neighborhood_park'), 0)).toBe(false);
     expect(shouldMountParkProgramFrame(zone('neighborhood_park'), 1)).toBe(true);
+  });
+
+  it.each([
+    ['park_water_ecology', 'pond_lake', 'pond_lake_v0', 'pond_lake_v0_naturalistic_skin', 'pond_lake_v0', 'pond_dock_assembly'],
+    ['park_water_ecology', 'wetland_rain_garden', 'wetland_rain_garden_v0', 'wetland_rain_garden_v0_native_restoration_skin', 'wetland_rain_garden_v0', 'wetland_boardwalk'],
+    ['park_water_ecology', 'riparian_buffer', 'riparian_buffer_v0', 'riparian_buffer_v0_native_restoration_skin', 'riparian_buffer_v0', 'riparian_bridge_assembly'],
+    ['park_water_ecology', 'reservoir_watershed_park', 'reservoir_watershed_park_v0', 'reservoir_watershed_park_v0_concrete_edge_skin', 'reservoir_watershed_park_v0', 'reservoir_edge_assembly'],
+    ['park_amphitheater_lawn_v0', 'amphitheater_lawn', 'amphitheater_lawn_v0', 'amphitheater_lawn_v0_terraced_performance_skin', 'amphitheater_lawn_v0', 'amphitheater_lawn_assembly'],
+    ['park_playground_adventure_v0', 'playground_adventure', 'playground_adventure_v0', 'playground_adventure_v0_rustic_timber_skin', 'playground_adventure_v0', 'adventure_play_assembly'],
+  ] as const)('resolves the batch-4 depth kit for %s/%s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure, expected,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe(expected);
   });
 
   it('gives every recurring master-planner public realm an authoritative layout guide', () => {
@@ -258,19 +286,19 @@ describe('park ground pilot profiles', () => {
         family_id: 'park_neighborhood_community',
         family_version: 1,
         archetype_id: 'community_park',
-        variant_id: 'community_park_v2',
+        variant_id: 'community_park_v0',
         planting_structure: 'naturalistic_grove',
-        appearance_kit_id: 'mediterranean_xeriscape_v1',
+        appearance_kit_id: 'english_pastoral_v1',
       }),
     };
     const profile = resolveParkGroundProfile(candidate);
     expect(profile.archetypeId).toBe('community_park');
-    expect(profile.title).toContain('Mediterranean Xeriscape');
+    expect(profile.title).toContain('English Pastoral');
     expect(profile.legoFamilyId).toBe('park_neighborhood_community');
     expect(profile.legoFamilyVersion).toBe(1);
-    expect(profile.variantId).toBe('community_park_v2');
+    expect(profile.variantId).toBe('community_park_v0');
     expect(resolveParkPlantingStructure(candidate)).toBe('naturalistic_grove');
-    expect(profile.guides).toHaveLength(9);
+    expect(profile.guides).toHaveLength(5);
     const changedRecipe = {
       ...candidate,
       properties: {

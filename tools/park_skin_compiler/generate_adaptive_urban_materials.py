@@ -60,9 +60,9 @@ def reference_statistics(crop: Image.Image, role: str) -> tuple[np.ndarray, np.n
     red, green, blue = pixels[:, 0], pixels[:, 1], pixels[:, 2]
     role_filters = {
         "paver": (saturation < 0.22) & (luminance > 75) & (luminance < 215),
-        "lawn": (green > red * 1.06) & (green > blue * 1.10),
+        "lawn": (green > red * 1.06) & (green > blue * 1.10) & (red > blue * 1.12),
         "asphalt": (saturation < 0.34) & (luminance < 105),
-        "planting": (green > red * 1.02) & (green > blue * 1.05) & (luminance < 190),
+        "planting": (green > red * 1.02) & (green > blue * 1.05) & (red > blue * 1.08) & (luminance < 190),
         "safety": (red > green * 1.04) & (green > blue * 1.10) & (luminance > 85),
         "timber": (red > green * 1.04) & (green > blue * 1.04) & (luminance > 55) & (luminance < 205),
     }

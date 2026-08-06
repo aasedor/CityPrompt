@@ -328,6 +328,30 @@ _STORMWATER_ENVELOPE = _park_envelope(
     depth=(15.0, 80.0),
     area=(300.0, 9_600.0),
 )
+_POND_LAKE_ENVELOPE = _park_envelope(
+    nominal=(80.0, 60.0), width=(35.0, 180.0), depth=(28.0, 140.0), area=(980.0, 25_200.0),
+)
+_WETLAND_GARDEN_ENVELOPE = _park_envelope(
+    nominal=(80.0, 60.0), width=(45.0, 180.0), depth=(35.0, 140.0), area=(1_575.0, 25_200.0),
+)
+_RIPARIAN_BUFFER_ENVELOPE = _park_envelope(
+    nominal=(200.0, 50.0), width=(70.0, 600.0), depth=(24.0, 100.0), area=(1_680.0, 60_000.0), min_aspect_ratio=2.0,
+)
+_RESERVOIR_PARK_ENVELOPE = _park_envelope(
+    nominal=(140.0, 80.0), width=(90.0, 420.0), depth=(60.0, 280.0), area=(5_400.0, 117_600.0),
+)
+_CULTURAL_GARDEN_ENVELOPE = _park_envelope(
+    nominal=(90.0, 70.0), width=(45.0, 260.0), depth=(40.0, 210.0), area=(1_800.0, 54_600.0),
+)
+_URBAN_FOREST_ENVELOPE = _park_envelope(
+    nominal=(250.0, 200.0), width=(80.0, 500.0), depth=(70.0, 420.0), area=(5_600.0, 210_000.0),
+)
+_AMPHITHEATER_LAWN_ENVELOPE = _park_envelope(
+    nominal=(80.0, 60.0), width=(55.0, 140.0), depth=(45.0, 120.0), area=(2_475.0, 16_800.0),
+)
+_ADVENTURE_PLAY_ENVELOPE = _park_envelope(
+    nominal=(40.0, 35.0), width=(40.0, 65.0), depth=(35.0, 58.0), area=(1_400.0, 3_770.0),
+)
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -855,22 +879,13 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
                     "active_recreation",
                 ),
             ),
-            *_park_variants(
-                "community_park",
+            _selection(
+                "community_park", "community_park_v0",
                 profile_id="community-park-lego-v1",
+                appearance_kit_id="english_pastoral_v1",
+                planting_structure="naturalistic_grove",
                 compatibility=_COMMUNITY_ENVELOPE,
-                appearances=(
-                    "english_pastoral_v1",
-                    "modern_minimalist_v1",
-                    "mediterranean_xeriscape_v1",
-                    "tropical_lush_v1",
-                ),
-                structures=(
-                    "naturalistic_grove",
-                    "active_recreation",
-                    "naturalistic_grove",
-                    "naturalistic_grove",
-                ),
+                components=("community_park_ground_program_v1", "regulation_recreation_field_v1", "naturalistic_pond_v1", "picnic_social_edge_v1"),
             ),
         ),
     ),
@@ -938,7 +953,109 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
                 ),
                 default=True,
             ),
+            _selection(
+                "pond_lake", "pond_lake_v0",
+                profile_id="pond-lake-lego-v1",
+                appearance_kit_id="pond_lake_v0_naturalistic_skin",
+                planting_structure="pond_lake_v0",
+                compatibility=_POND_LAKE_ENVELOPE,
+                components=("pond_lake_ground_program_v1", "natural_stone_shore_v1", "timber_dock_v1", "riparian_planting_v1"),
+            ),
+            _selection(
+                "wetland_rain_garden", "wetland_rain_garden_v0",
+                profile_id="wetland-rain-garden-v2",
+                appearance_kit_id="wetland_rain_garden_v0_native_restoration_skin",
+                planting_structure="wetland_rain_garden_v0",
+                compatibility=_WETLAND_GARDEN_ENVELOPE,
+                components=("wetland_cells_ground_program_v2", "accessible_boardwalk_network_v1", "interpretive_overlook_v1", "riparian_planting_v1"),
+            ),
+            _selection(
+                "riparian_buffer", "riparian_buffer_v0",
+                profile_id="riparian-buffer-lego-v1",
+                appearance_kit_id="riparian_buffer_v0_native_restoration_skin",
+                planting_structure="riparian_buffer_v0",
+                compatibility=_RIPARIAN_BUFFER_ENVELOPE,
+                components=("riparian_corridor_ground_program_v1", "creek_channel_v1", "parallel_access_trail_v1", "small_timber_bridge_v1"),
+            ),
+            _selection(
+                "reservoir_watershed_park", "reservoir_watershed_park_v0",
+                profile_id="reservoir-watershed-park-v3",
+                appearance_kit_id="reservoir_watershed_park_v0_concrete_edge_skin",
+                planting_structure="reservoir_watershed_park_v0",
+                compatibility=_RESERVOIR_PARK_ENVELOPE,
+                components=("reservoir_ground_program_v3", "concrete_dam_spillway_v1", "perimeter_fence_v1", "viewing_deck_v1"),
+            ),
         ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cultural_gardens",
+        kind="park",
+        title="Cultural and Botanical Gardens",
+        generator="park_kit",
+        selections=(
+            _selection(
+                "japanese_garden", "japanese_garden_v0",
+                profile_id="japanese-garden-v4",
+                appearance_kit_id="japanese_garden_v0_stroll_skin",
+                planting_structure="japanese_garden_v0",
+                compatibility=_CULTURAL_GARDEN_ENVELOPE,
+                components=("japanese_stroll_ground_program_v4", "lacquer_bridge_v1", "raked_gravel_v1", "stepping_stone_route_v1"),
+                default=True,
+            ),
+            _selection(
+                "botanical_garden", "botanical_garden_v0",
+                profile_id="botanical-garden-v5",
+                appearance_kit_id="botanical_garden_v0_collection_skin",
+                planting_structure="botanical_garden_v0",
+                compatibility=_CULTURAL_GARDEN_ENVELOPE,
+                components=("botanical_collection_ground_program_v5", "compact_conservatory_v1", "collection_beds_v1", "interpretive_loop_v1"),
+            ),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_urban_forest",
+        kind="park",
+        title="Urban Forest / Native Woodland",
+        generator="park_kit",
+        selections=(_selection(
+            "urban_forest", "urban_forest_v0",
+            profile_id="urban-forest-v2",
+            appearance_kit_id="urban_forest_v0_native_restoration_skin",
+            planting_structure="urban_forest_v0",
+            compatibility=_URBAN_FOREST_ENVELOPE,
+            components=("urban_forest_ground_program_v2", "multi_age_canopy_v1", "understory_layer_v1", "low_impact_trail_v1"),
+            default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amphitheater_lawn_v0",
+        kind="park",
+        title="Amphitheater Lawn / Terraced Performance",
+        generator="park_kit",
+        selections=(_selection(
+            "amphitheater_lawn", "amphitheater_lawn_v0",
+            profile_id="amphitheater-lawn-lego-v1",
+            appearance_kit_id="amphitheater_lawn_v0_terraced_performance_skin",
+            planting_structure="amphitheater_lawn_v0",
+            compatibility=_AMPHITHEATER_LAWN_ENVELOPE,
+            components=("amphitheater_lawn_ground_program_v1", "terraced_lawn_bowl_v1", "timber_stage_v1", "upper_rim_path_v1"),
+            default=True,
+        ),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_playground_adventure_v0",
+        kind="park",
+        title="Adventure Playground / Modular Towers",
+        generator="park_kit",
+        selections=(_selection(
+            "playground_adventure", "playground_adventure_v0",
+            profile_id="playground-adventure-lego-v1",
+            appearance_kit_id="playground_adventure_v0_rustic_timber_skin",
+            planting_structure="playground_adventure_v0",
+            compatibility=_ADVENTURE_PLAY_ENVELOPE,
+            components=("adventure_play_ground_program_v1", "rough_hewn_timber_towers_v1", "rope_climbing_network_v1", "swing_bay_v1", "split_rail_fence_v1", "play_boulders_v1"),
+            default=True,
+        ),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",
