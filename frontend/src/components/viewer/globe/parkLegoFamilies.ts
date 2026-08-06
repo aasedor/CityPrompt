@@ -6,6 +6,7 @@ import { batch4ParkSkinForSelection } from './parkBatch4Skins';
 import { batch5ParkSkinForSelection } from './parkBatch5Skins';
 import { batch6ParkSkinForSelection } from './parkBatch6Skins';
 import { batch7ParkSkinForSelection } from './parkBatch7Skins';
+import { batch8ParkSkinForSelection } from './parkBatch8Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -70,6 +71,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_natural_swimming_pond_v0',
   'park_nature_preserve_prairie_v1',
   'park_riverfront_lake_beach_v1',
+  'park_reclaimed_wharf_v0',
+  'park_quarry_tier_cascade_v2',
+  'park_estate_oak_picnic_v1',
+  'park_constructed_wetland_boardwalk_v0',
+  'park_academic_planted_court_v0',
+  'park_campus_green_spine_v0',
+  'park_botanical_rose_garden_v3',
+  'park_research_arboretum_v0',
+  'park_rewilding_reforestation_v1',
+  'park_stormwater_arid_channel_v3',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -754,6 +765,36 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_riverfront_lake_beach_v1: Object.freeze({
     riverfront_park_beach: Object.freeze([Object.freeze({ variantId: 'riverfront_park_beach_v1', appearanceKitId: 'riverfront_park_beach_v1_lake_swimming_skin', plantingStructure: 'riverfront_lake_beach_v1' })]),
   }),
+  park_reclaimed_wharf_v0: Object.freeze({
+    reclaimed_industrial_park: Object.freeze([Object.freeze({ variantId: 'reclaimed_industrial_park_v0', appearanceKitId: 'reclaimed_industrial_park_v0_wharf_skin', plantingStructure: 'reclaimed_wharf_v0' })]),
+  }),
+  park_quarry_tier_cascade_v2: Object.freeze({
+    quarry_sunken_garden_park: Object.freeze([Object.freeze({ variantId: 'quarry_sunken_garden_park_v2', appearanceKitId: 'quarry_sunken_garden_park_v2_tier_cascade_skin', plantingStructure: 'quarry_tier_cascade_v2' })]),
+  }),
+  park_estate_oak_picnic_v1: Object.freeze({
+    estate_picnic_grove: Object.freeze([Object.freeze({ variantId: 'estate_picnic_grove_v1', appearanceKitId: 'estate_picnic_grove_v1_oak_skin', plantingStructure: 'estate_oak_picnic_v1' })]),
+  }),
+  park_constructed_wetland_boardwalk_v0: Object.freeze({
+    constructed_wetland_eco_park: Object.freeze([Object.freeze({ variantId: 'constructed_wetland_eco_park_variant_0', appearanceKitId: 'constructed_wetland_eco_park_v0_boardwalk_skin', plantingStructure: 'constructed_wetland_boardwalk_v0' })]),
+  }),
+  park_academic_planted_court_v0: Object.freeze({
+    academic_courtyard: Object.freeze([Object.freeze({ variantId: 'academic_courtyard_variant_0', appearanceKitId: 'academic_courtyard_v0_planted_skin', plantingStructure: 'academic_planted_court_v0' })]),
+  }),
+  park_campus_green_spine_v0: Object.freeze({
+    campus_pedestrian_spine: Object.freeze([Object.freeze({ variantId: 'campus_pedestrian_spine_variant_0', appearanceKitId: 'campus_pedestrian_spine_v0_green_skin', plantingStructure: 'campus_green_spine_v0' })]),
+  }),
+  park_botanical_rose_garden_v3: Object.freeze({
+    botanical_garden: Object.freeze([Object.freeze({ variantId: 'botanical_garden_v3', appearanceKitId: 'botanical_garden_v3_rose_skin', plantingStructure: 'botanical_rose_garden_v3' })]),
+  }),
+  park_research_arboretum_v0: Object.freeze({
+    research_garden_teaching_arboretum: Object.freeze([Object.freeze({ variantId: 'research_garden_teaching_arboretum_variant_0', appearanceKitId: 'research_garden_teaching_arboretum_v0_skin', plantingStructure: 'research_arboretum_v0' })]),
+  }),
+  park_rewilding_reforestation_v1: Object.freeze({
+    rewilding_ecological_restoration_zone: Object.freeze([Object.freeze({ variantId: 'rewilding_ecological_restoration_zone_variant_1', appearanceKitId: 'rewilding_ecological_restoration_zone_v1_skin', plantingStructure: 'rewilding_reforestation_v1' })]),
+  }),
+  park_stormwater_arid_channel_v3: Object.freeze({
+    stormwater_resilience_park: Object.freeze([Object.freeze({ variantId: 'stormwater_resilience_park_variant_3', appearanceKitId: 'stormwater_resilience_park_v3_arid_skin', plantingStructure: 'stormwater_arid_channel_v3' })]),
+  }),
 });
 
 function normalizeId(value: unknown): string {
@@ -843,6 +884,15 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'swimming_pool_complex') return 'park_natural_swimming_pond_v0';
   if (archetypeId === 'nature_preserve') return 'park_nature_preserve_prairie_v1';
   if (archetypeId === 'riverfront_park_beach') return 'park_riverfront_lake_beach_v1';
+  if (archetypeId === 'reclaimed_industrial_park') return 'park_reclaimed_wharf_v0';
+  if (archetypeId === 'quarry_sunken_garden_park') return 'park_quarry_tier_cascade_v2';
+  if (archetypeId === 'estate_picnic_grove') return 'park_estate_oak_picnic_v1';
+  if (archetypeId === 'constructed_wetland_eco_park') return 'park_constructed_wetland_boardwalk_v0';
+  if (archetypeId === 'academic_courtyard') return 'park_academic_planted_court_v0';
+  if (archetypeId === 'campus_pedestrian_spine') return 'park_campus_green_spine_v0';
+  if (archetypeId === 'research_garden_teaching_arboretum') return 'park_research_arboretum_v0';
+  if (archetypeId === 'rewilding_ecological_restoration_zone') return 'park_rewilding_reforestation_v1';
+  if (archetypeId === 'stormwater_resilience_park') return 'park_stormwater_arid_channel_v3';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -906,6 +956,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_natural_swimming_pond_v0': return 'swimming_pool_complex';
     case 'park_nature_preserve_prairie_v1': return 'nature_preserve';
     case 'park_riverfront_lake_beach_v1': return 'riverfront_park_beach';
+    case 'park_reclaimed_wharf_v0': return 'reclaimed_industrial_park';
+    case 'park_quarry_tier_cascade_v2': return 'quarry_sunken_garden_park';
+    case 'park_estate_oak_picnic_v1': return 'estate_picnic_grove';
+    case 'park_constructed_wetland_boardwalk_v0': return 'constructed_wetland_eco_park';
+    case 'park_academic_planted_court_v0': return 'academic_courtyard';
+    case 'park_campus_green_spine_v0': return 'campus_pedestrian_spine';
+    case 'park_botanical_rose_garden_v3': return 'botanical_garden';
+    case 'park_research_arboretum_v0': return 'research_garden_teaching_arboretum';
+    case 'park_rewilding_reforestation_v1': return 'rewilding_ecological_restoration_zone';
+    case 'park_stormwater_arid_channel_v3': return 'stormwater_resilience_park';
   }
 }
 
@@ -919,6 +979,12 @@ function canonicalVariantId(archetypeId: string, raw: unknown): { id: string; in
       'campus_central_quad',
       'velodrome_cycling_track',
       'mountain_bike_park',
+      'constructed_wetland_eco_park',
+      'academic_courtyard',
+      'campus_pedestrian_spine',
+      'research_garden_teaching_arboretum',
+      'rewilding_ecological_restoration_zone',
+      'stormwater_resilience_park',
     ].includes(archetypeId)
       ? `${archetypeId}_variant_${index}`
       : `${archetypeId}_v${index}`,
@@ -1082,6 +1148,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch5ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch6ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch7ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch8ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

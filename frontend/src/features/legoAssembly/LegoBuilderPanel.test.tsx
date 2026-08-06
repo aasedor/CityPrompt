@@ -646,7 +646,7 @@ describe('LegoBuilderPanel', () => {
           data: {
             status: 'compiled',
             compiled_at: '2026-08-04T01:00:00Z',
-            counts: { building: 1, park: 0, street: 0 },
+            counts: { building: 1, park: 1, street: 0 },
             items: [],
           },
         });
@@ -669,11 +669,29 @@ describe('LegoBuilderPanel', () => {
       },
     });
     const client = new QueryClient();
-    client.setQueryData(['site-zones', 'proj-1'], [{
-      ...placedZone,
-      updated_at: '2026-08-04T00:30:00Z',
-    }]);
-    render(<LegoBuilderPanel zones={[placedZone]} onClose={vi.fn()} />, client);
+    const refreshedPark = makeZone({
+      id: 'park-refreshed-with-building',
+      zone_type: 'green_space',
+      updated_at: '2026-08-04T00:31:00Z',
+      properties: { _plan_role: 'open_space' },
+    });
+    client.setQueryData(['site-zones', 'proj-1'], [
+      {
+        ...placedZone,
+        updated_at: '2026-08-04T00:30:00Z',
+      },
+      refreshedPark,
+    ]);
+    render(
+      <LegoBuilderPanel
+        zones={[
+          placedZone,
+          { ...refreshedPark, updated_at: '2026-07-13T00:00:00Z' },
+        ]}
+        onClose={vi.fn()}
+      />,
+      client,
+    );
 
     expect(await screen.findByText('placed')).toBeInTheDocument();
     expect(apiPost).not.toHaveBeenCalledWith(
@@ -691,14 +709,14 @@ describe('LegoBuilderPanel', () => {
     ));
     expect(await screen.findByText(/latest family assets/i)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /rebuild current 3d scene/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
     await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
-        items: [expect.objectContaining({
-          zone_id: 'zone-placed',
-          source_updated_at: '2026-08-04T00:30:00Z',
-        })],
+        items: [{
+          zone_id: 'park-refreshed-with-building',
+          source_updated_at: '2026-08-04T00:31:00Z',
+        }],
       },
     ));
   });

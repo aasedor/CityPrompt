@@ -1720,6 +1720,127 @@ PROFILES.riverfront_park_beach_v1 = {
   renderSummary: 'lake swimming beach with crescent sand, picnic lawn, T dock, swim float, kayak rack and reserved bathhouse pad', isPilot: true,
 };
 
+PROFILES.reclaimed_industrial_park_v0 = {
+  id: 'reclaimed-industrial-wharf-lego-v1', version: 1,
+  programDescription: 'A linear reclaimed wharf with a continuous timber-and-concrete promenade, native planting strips, water-play pad and a row of whole cor-ten dock-crane relic modules.',
+  groundDescription: 'Reclaimed grey timber and concrete bands, rust-orange steel, deep river tones and tawny native grasses sampled from the Domino-style wharf reference.',
+  criticalConstraints: 'The pedestrian route stays continuous and keeps a clear accessible width. Repeat one to four complete crane modules as length permits; never stretch a crane or let its base interrupt circulation. Surrounding warehouses, boats and people are excluded.',
+  canopyDescription: 'Low grasses and sparse riverside trees preserve long views and crane silhouettes.', plantingStructure: 'reclaimed_wharf_v0',
+  guides: [{ kind: 'polyline', x: 0.5, y: 0.55, width: 1, height: 1, points: [[0.04,0.62],[0.24,0.56],[0.48,0.58],[0.72,0.50],[0.96,0.52]], color: '#816c55', strokeWidthM: 5.5 }],
+  guideLegend: ['wide BROWN route is the uninterrupted reclaimed wharf walk', 'whole rust crane modules repeat landward as available length increases'], includeCentralPlaza: false,
+  renderSummary: 'reclaimed industrial wharf with textured promenade, native grasses and whole cor-ten crane relics', isPilot: true,
+};
+
+PROFILES.quarry_sunken_garden_park_v2 = {
+  id: 'quarry-tier-cascade-lego-v1', version: 1,
+  programDescription: 'A limestone quarry bowl resolved as three to five complete garden terraces, a side cascade and two linked reflecting basins.',
+  groundDescription: 'Warm limestone, gravel, clipped green parterre, flowering shrub colour and blue-green water sampled from the tiered quarry reference.',
+  criticalConstraints: 'Terraces remain readable whole levels and descend in order. Add a complete terrace on oversized sites rather than enlarging one step. Keep every public route clear of basin edges. No surrounding hilltown buildings or people.',
+  canopyDescription: 'Low clipped planting occupies upper tiers; specimen trees stay on the rim.', plantingStructure: 'quarry_tier_cascade_v2',
+  guides: [
+    { kind: 'rectangle', x: 0.50, y: 0.63, width: 0.34, height: 0.13, color: '#668b8c', orientationPolicy: 'flexible' },
+    { kind: 'rectangle', x: 0.50, y: 0.42, width: 0.25, height: 0.10, color: '#668b8c', orientationPolicy: 'flexible' },
+  ], guideLegend: ['BLUE rectangles are linked water terraces', 'the remaining bowl is complete limestone garden tiers'], includeCentralPlaza: false,
+  renderSummary: 'terraced limestone quarry garden with whole level bands, formal planting and cascading pools', isPilot: true,
+};
+
+PROFILES.estate_picnic_grove_v1 = {
+  id: 'estate-oak-picnic-lego-v1', version: 1,
+  programDescription: 'A broad mown play lawn ringed by a crushed-stone loop and a matrix of mature oak shade modules, each paired with one picnic table and one fixed grill.',
+  groundDescription: 'Variegated green turf, pale compacted stone, dark oak canopy, weathered timber and charcoal steel sampled from the oak-grove reference.',
+  criticalConstraints: 'Every picnic station is a complete oak-table-grill module. Oversized sites receive more modules and retain the central play clear; tables and grills never scale with the parcel. No people.',
+  canopyDescription: 'Widely spaced mature oaks create dappled shade without closing the canopy.', plantingStructure: 'estate_oak_picnic_v1',
+  guides: [{ kind: 'path_loop', x: 0.5, y: 0.5, width: 0.82, height: 0.74, color: '#b7a379', strokeWidthM: 2.4, fitPolicy: 'clip' }],
+  guideLegend: ['TAN loop is the crushed-stone walk', 'open centre remains casual-play turf; complete oak picnic stations occupy the outer lawn'], includeCentralPlaza: false,
+  renderSummary: 'wide-spaced oak grove with repeated whole picnic stations, central play lawn and crushed-stone loop', isPilot: true,
+};
+
+PROFILES.constructed_wetland_eco_park_variant_0 = {
+  id: 'constructed-wetland-boardwalk-lego-v1', version: 1,
+  programDescription: 'An urban wetland mosaic of three to five complete planted water cells linked by a zig-zag timber boardwalk and viewing deck.',
+  groundDescription: 'Dark reflective water, reed green, tawny wet meadow and weathered timber sampled from the urban boardwalk wetland reference.',
+  criticalConstraints: 'Water cells remain discrete habitat basins and the dry boardwalk remains continuous. Add whole cells and deck bays for large sites. The nature pavilion and surrounding buildings are reserved or excluded; no people.',
+  canopyDescription: 'Reeds dominate cells; only sparse bank trees occur at the perimeter.', plantingStructure: 'constructed_wetland_boardwalk_v0',
+  guides: [
+    { kind: 'ellipse', x: 0.28, y: 0.45, width: 0.34, height: 0.28, color: '#557b73', fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.68, y: 0.57, width: 0.40, height: 0.30, color: '#4f716c', fitPolicy: 'clip' },
+    { kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.05,0.72],[0.25,0.56],[0.43,0.64],[0.62,0.44],[0.82,0.52],[0.95,0.31]], color: '#81674e', strokeWidthM: 2.2 },
+  ], guideLegend: ['BLUE-GREEN ellipses are whole wetland cells', 'BROWN zig-zag is the continuous raised boardwalk'], includeCentralPlaza: false,
+  renderSummary: 'urban constructed wetland with discrete reed cells and continuous zig-zag timber boardwalk', isPilot: true,
+};
+
+PROFILES.academic_courtyard_variant_0 = {
+  id: 'academic-planted-courtyard-lego-v1', version: 1,
+  programDescription: 'A compact paved study court with crisp raised perennial planters, built-in timber ledges and clear short routes between implied entrances.',
+  groundDescription: 'Warm pale paving, fieldstone planter bases, rich grasses and weathered timber sampled from the modern planted courtyard reference.',
+  criticalConstraints: 'Keep accessible cross routes and whole raised beds. Add a whole bed on wider courts rather than enlarging furniture. Seat ledges stay at human height and never obstruct entrances. The enclosing academic buildings and people are excluded.',
+  canopyDescription: 'A few multi-stem trees rise from planted beds; the courtyard centre remains open.', plantingStructure: 'academic_planted_court_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.27, y: 0.35, width: 0.30, height: 0.22, color: '#65754f', orientationPolicy: 'orthogonal' },
+    { kind: 'rounded_rectangle', x: 0.68, y: 0.62, width: 0.34, height: 0.24, color: '#596d4b', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.66, y: 0.27, width: 0.22, height: 0.16, color: '#6a7b55', orientationPolicy: 'orthogonal' },
+  ], guideLegend: ['GREEN blocks are complete raised perennial beds with seat ledges', 'unmarked pale ground is the accessible study court'], includeCentralPlaza: true,
+  renderSummary: 'compact modern academic courtyard with raised planted beds, seating ledges and clear cross routes', isPilot: true,
+};
+
+PROFILES.campus_pedestrian_spine_variant_0 = {
+  id: 'campus-green-spine-lego-v1', version: 1,
+  programDescription: 'A long central pedestrian walk with paired rain-garden bands, a regular tree allee and complete bench-light bays that repeat with corridor length.',
+  groundDescription: 'Warm light paving, deep meadow greens, flowering perennials and timber seat ledges sampled from the green campus-spine reference.',
+  criticalConstraints: 'Preserve one continuous accessible axis. Add whole tree and furnishing bays for additional length; do not broaden the path into a plaza or permit planting to pinch its clear width. Flanking buildings and people are excluded.',
+  canopyDescription: 'Two regular tree rows reinforce the corridor without closing the central sky view.', plantingStructure: 'campus_green_spine_v0',
+  guides: [{ kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.50,0.03],[0.49,0.26],[0.51,0.51],[0.49,0.75],[0.50,0.97]], color: '#aaa59a', strokeWidthM: 5.2 }],
+  guideLegend: ['PALE central route is one continuous pedestrian spine', 'paired green bands and tree bays repeat along both sides'], includeCentralPlaza: false,
+  renderSummary: 'green campus pedestrian spine with continuous walk, rain gardens and repeating tree bays', isPilot: true,
+};
+
+PROFILES.botanical_garden_v3 = {
+  id: 'botanical-rose-garden-lego-v1', version: 1,
+  programDescription: 'A romantic botanical rose garden of complete flower-bed rooms connected by brick-and-stone paths and a short sequence of human-scale timber rose arbors.',
+  groundDescription: 'Weathered brick and stone, layered rose pinks, perennial blues, deep foliage and aged timber sampled from the cottage botanical reference.',
+  criticalConstraints: 'Beds remain complete garden rooms and paths stay continuous. Add whole bed-and-arbor bays for large sites. The glass conservatory is edge context only and is not generated here; no people.',
+  canopyDescription: 'Small flowering trees and rose arbors create framed views without obscuring the garden-room sequence.', plantingStructure: 'botanical_rose_garden_v3',
+  guides: [
+    { kind: 'ellipse', x: 0.28, y: 0.39, width: 0.27, height: 0.24, color: '#8b5660', fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.66, y: 0.37, width: 0.30, height: 0.25, color: '#9a6970', fitPolicy: 'clip' },
+    { kind: 'rounded_rectangle', x: 0.48, y: 0.70, width: 0.36, height: 0.23, color: '#765b63', orientationPolicy: 'flexible' },
+  ], guideLegend: ['ROSE shapes are complete planted garden rooms', 'timber arbors punctuate the connecting walk'], includeCentralPlaza: false,
+  renderSummary: 'romantic rose botanical garden with complete flower rooms, textured paths and timber arbors', isPilot: true,
+};
+
+PROFILES.research_garden_teaching_arboretum_variant_0 = {
+  id: 'research-arboretum-lego-v1', version: 1,
+  programDescription: 'A labelled specimen-tree collection arranged as varied whole tree groups along an interpretive loop, with boulder outcrops and small identification plaques.',
+  groundDescription: 'Meadow and mown-lawn variation, pale aggregate paths, fieldstone, mixed specimen foliage and weathered sign timber sampled from the arboretum reference.',
+  criticalConstraints: 'Tree species and maturity vary by complete specimens, never by stretching. Keep the interpretive loop clear, signs modest and every boulder outside the accessible route. Campus buildings and people are excluded.',
+  canopyDescription: 'Open-spaced specimen crowns allow every collection tree to read individually.', plantingStructure: 'research_arboretum_v0',
+  guides: [{ kind: 'path_loop', x: 0.5, y: 0.52, width: 0.78, height: 0.68, color: '#b0a17f', strokeWidthM: 2.6, fitPolicy: 'clip' }],
+  guideLegend: ['TAN loop is the interpretive path', 'varied whole specimen trees, plaques and boulders occupy the surrounding meadow'], includeCentralPlaza: false,
+  renderSummary: 'teaching arboretum with varied specimen trees, interpretive loop, plaques and boulder outcrops', isPilot: true,
+};
+
+PROFILES.rewilding_ecological_restoration_zone_variant_1 = {
+  id: 'rewilding-reforestation-lego-v1', version: 1,
+  programDescription: 'A young reforestation field of dense but irregular sapling cohorts, native understory, retained rubble islands and whole habitat-log piles.',
+  groundDescription: 'Pioneer birch green, dark mulch, wildflower flecks, weathered logs and mineral rubble sampled from the reforestation reference.',
+  criticalConstraints: 'Regeneration habitat dominates. Add complete sapling cohorts and log piles as area grows; keep access paths narrow, retain irregular succession gaps and do not introduce manicured lawn, buildings or people.',
+  canopyDescription: 'Young uneven saplings form an establishing canopy with visible gaps and succession layers.', plantingStructure: 'rewilding_reforestation_v1',
+  guides: [{ kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.05,0.70],[0.28,0.58],[0.48,0.62],[0.70,0.43],[0.95,0.36]], color: '#a79a7c', strokeWidthM: 2.0 }],
+  guideLegend: ['thin TAN line is the restrained access trail', 'all other ground is irregular sapling cohorts, understory and habitat debris'], includeCentralPlaza: false,
+  renderSummary: 'brownfield reforestation zone with young pioneer cohorts, wild understory and habitat log piles', isPilot: true,
+};
+
+PROFILES.stormwater_resilience_park_variant_3 = {
+  id: 'stormwater-arid-channel-lego-v1', version: 1,
+  programDescription: 'A dry-climate resilience park centred on a rock-lined ephemeral channel, gravel detention pockets, drought planting and repeated small shade bays.',
+  groundDescription: 'Layered tan gravel, ochre stone, dusty green xeric planting and dark weathered timber sampled from the arid stormwater reference.',
+  criticalConstraints: 'The conveyance channel remains continuous and unobstructed. Repeat whole gravel basins and shade bays as room permits; do not fill the channel with permanent blue water. No surrounding buildings or people.',
+  canopyDescription: 'Sparse desert trees and pergolas provide targeted shade while leaving the waterway open.', plantingStructure: 'stormwater_arid_channel_v3',
+  guides: [{ kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.04,0.68],[0.22,0.54],[0.40,0.61],[0.58,0.42],[0.76,0.49],[0.96,0.30]], color: '#99866d', strokeWidthM: 6.5 }],
+  guideLegend: ['wide OCHRE route is the dry rock conveyance channel', 'xeric planting and complete shade bays occupy higher ground'], includeCentralPlaza: false,
+  renderSummary: 'arid stormwater park with continuous dry rock channel, gravel basins and drought planting', isPilot: true,
+};
+
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -2089,7 +2210,8 @@ export type ParkSpecialtyStructureKind =
   | 'adventure_play_assembly'
   | 'batch5_archetype_assembly'
   | 'batch6_archetype_assembly'
-  | 'batch7_archetype_assembly';
+  | 'batch7_archetype_assembly'
+  | 'batch8_archetype_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -2280,6 +2402,22 @@ export function resolveParkSpecialtyStructureKind(
       'park_riverfront_lake_beach_v1',
     ].includes(legoContract.familyId)
   ) return 'batch7_archetype_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && [
+      'park_reclaimed_wharf_v0',
+      'park_quarry_tier_cascade_v2',
+      'park_estate_oak_picnic_v1',
+      'park_constructed_wetland_boardwalk_v0',
+      'park_academic_planted_court_v0',
+      'park_campus_green_spine_v0',
+      'park_botanical_rose_garden_v3',
+      'park_research_arboretum_v0',
+      'park_rewilding_reforestation_v1',
+      'park_stormwater_arid_channel_v3',
+    ].includes(legoContract.familyId)
+  ) return 'batch8_archetype_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

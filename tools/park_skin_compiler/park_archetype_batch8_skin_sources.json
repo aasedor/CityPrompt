@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "reclaimed-industrial-wharf-v0": {"source":"frontend/public/archetypes/openspaces/reclaimed-industrial-park/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.55,0.72,1.00],"lawn":[0.00,0.42,0.74,0.88],"asphalt":[0.00,0.56,0.72,1.00],"planting":[0.00,0.40,1.00,0.88],"safety":[0.12,0.18,0.95,0.62],"timber":[0.00,0.54,0.92,1.00]}},
+    "quarry-limestone-tier-cascade-v2": {"source":"frontend/public/archetypes/openspaces/quarry-sunken-garden-park/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"paver"},"crops":{"paver":[0.00,0.48,1.00,1.00],"lawn":[0.24,0.46,0.78,0.92],"asphalt":[0.00,0.52,1.00,1.00],"planting":[0.00,0.26,1.00,0.88],"safety":[0.22,0.26,0.92,0.86],"timber":[0.00,0.48,1.00,1.00]}},
+    "estate-oak-picnic-grove-v1": {"source":"frontend/public/archetypes/openspaces/estate-picnic-grove/variant_1.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.72,1.00,1.00],"lawn":[0.00,0.44,1.00,0.96],"asphalt":[0.00,0.72,1.00,1.00],"planting":[0.00,0.02,1.00,0.70],"safety":[0.16,0.40,0.92,0.86],"timber":[0.08,0.38,0.92,0.90]}},
+    "constructed-urban-boardwalk-wetland-v0": {"source":"frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png","patterns":{"paver":"timber","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.42,1.00,1.00],"lawn":[0.00,0.20,1.00,0.90],"asphalt":[0.00,0.58,1.00,1.00],"planting":[0.00,0.22,1.00,0.96],"safety":[0.00,0.32,1.00,0.84],"timber":[0.00,0.42,1.00,0.96]}},
+    "academic-modern-planted-courtyard-v0": {"source":"frontend/public/archetypes/openspaces/academic-courtyard/variant_0.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.58,1.00,1.00],"lawn":[0.00,0.34,1.00,0.84],"asphalt":[0.00,0.62,1.00,1.00],"planting":[0.00,0.26,1.00,0.90],"safety":[0.14,0.42,0.92,0.90],"timber":[0.00,0.48,1.00,0.96]}},
+    "campus-green-planted-spine-v0": {"source":"frontend/public/archetypes/openspaces/campus-pedestrian-spine/variant_0.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.26,1.00,0.88],"asphalt":[0.00,0.58,1.00,1.00],"planting":[0.00,0.22,1.00,0.92],"safety":[0.16,0.42,0.90,0.88],"timber":[0.00,0.46,1.00,0.94]}},
+    "botanical-romantic-rose-garden-v3": {"source":"frontend/public/archetypes/openspaces/botanical-garden/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.56,1.00,1.00],"lawn":[0.08,0.38,0.92,0.86],"asphalt":[0.00,0.60,1.00,1.00],"planting":[0.00,0.22,1.00,0.92],"safety":[0.14,0.38,0.92,0.88],"timber":[0.00,0.48,1.00,0.94]}},
+    "research-tree-collection-arboretum-v0": {"source":"frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.58,1.00,1.00],"lawn":[0.00,0.36,1.00,0.94],"asphalt":[0.00,0.62,1.00,1.00],"planting":[0.00,0.20,1.00,0.88],"safety":[0.10,0.40,0.92,0.90],"timber":[0.00,0.50,1.00,0.96]}},
+    "rewilding-reforestation-zone-v1": {"source":"frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},"crops":{"paver":[0.00,0.62,1.00,1.00],"lawn":[0.00,0.26,1.00,0.92],"asphalt":[0.00,0.66,1.00,1.00],"planting":[0.00,0.18,1.00,0.94],"safety":[0.00,0.24,1.00,0.92],"timber":[0.00,0.48,1.00,0.94]}},
+    "stormwater-arid-rock-channel-v3": {"source":"frontend/public/archetypes/openspaces/stormwater-resilience-park/variant_3.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.32,1.00,0.92],"asphalt":[0.00,0.60,1.00,1.00],"planting":[0.00,0.24,1.00,0.94],"safety":[0.00,0.38,1.00,0.92],"timber":[0.00,0.42,1.00,0.88]}}
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}

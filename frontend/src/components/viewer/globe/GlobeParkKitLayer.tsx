@@ -125,6 +125,7 @@ import {
 import { GlobeParkBatch5Assembly } from './GlobeParkBatch5Assembly';
 import { GlobeParkBatch6Assembly } from './GlobeParkBatch6Assembly';
 import { GlobeParkBatch7Assembly } from './GlobeParkBatch7Assembly';
+import { GlobeParkBatch8Assembly } from './GlobeParkBatch8Assembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -871,6 +872,16 @@ function ParkSpecialtyStructures({
   if (structureKind === 'batch7_archetype_assembly' && profileFamilyId) {
     return (
       <GlobeParkBatch7Assembly
+        familyId={profileFamilyId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch8_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch8Assembly
         familyId={profileFamilyId}
         guides={fittedProgramGuides}
         frame={programFrame}

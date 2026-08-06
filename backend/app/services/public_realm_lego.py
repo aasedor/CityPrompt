@@ -442,6 +442,16 @@ _NATURE_PRESERVE_PRAIRIE_ENVELOPE = _park_envelope(
 _RIVERFRONT_LAKE_BEACH_ENVELOPE = _park_envelope(
     nominal=(130.0, 90.0), width=(80.0, 350.0), depth=(60.0, 220.0), area=(4_800.0, 77_000.0),
 )
+_RECLAIMED_WHARF_ENVELOPE = _park_envelope(nominal=(100.0, 50.0), width=(50.0, 280.0), depth=(24.0, 110.0), area=(1_200.0, 30_800.0), min_aspect_ratio=1.4)
+_QUARRY_TIER_CASCADE_ENVELOPE = _park_envelope(nominal=(200.0, 150.0), width=(35.0, 360.0), depth=(30.0, 300.0), area=(1_200.0, 108_000.0))
+_ESTATE_OAK_PICNIC_ENVELOPE = _park_envelope(nominal=(120.0, 100.0), width=(30.0, 320.0), depth=(30.0, 260.0), area=(900.0, 83_200.0))
+_CONSTRUCTED_WETLAND_BOARDWALK_ENVELOPE = _park_envelope(nominal=(180.0, 110.0), width=(35.0, 400.0), depth=(28.0, 250.0), area=(1_200.0, 100_000.0))
+_ACADEMIC_PLANTED_COURT_ENVELOPE = _park_envelope(nominal=(40.0, 38.0), width=(25.0, 72.0), depth=(25.0, 120.0), area=(625.0, 8_640.0))
+_CAMPUS_GREEN_SPINE_ENVELOPE = _park_envelope(nominal=(30.0, 240.0), width=(15.0, 55.0), depth=(60.0, 500.0), area=(900.0, 27_500.0), min_aspect_ratio=2.0)
+_BOTANICAL_ROSE_GARDEN_ENVELOPE = _park_envelope(nominal=(120.0, 90.0), width=(30.0, 260.0), depth=(31.0, 210.0), area=(930.0, 54_600.0))
+_RESEARCH_ARBORETUM_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 700.0), depth=(30.0, 520.0), area=(1_200.0, 364_000.0))
+_REWILDING_REFORESTATION_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 800.0), depth=(30.0, 650.0), area=(1_200.0, 520_000.0))
+_STORMWATER_ARID_CHANNEL_ENVELOPE = _park_envelope(nominal=(200.0, 125.0), width=(35.0, 450.0), depth=(24.0, 300.0), area=(900.0, 135_000.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1266,6 +1276,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_riverfront_lake_beach_v1", kind="park", title="Riverfront / Lake Swimming Beach v1", generator="park_kit",
         selections=(_selection("riverfront_park_beach", "riverfront_park_beach_v1", profile_id="riverfront-lake-beach-lego-v1", appearance_kit_id="riverfront_park_beach_v1_lake_swimming_skin", planting_structure="riverfront_lake_beach_v1", compatibility=_RIVERFRONT_LAKE_BEACH_ENVELOPE, components=("lake_beach_ground_program_v1", "crescent_sand_beach_v1", "t_swimming_dock_v1", "kayak_rack_v1", "bathhouse_reservation_pad_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_reclaimed_wharf_v0", kind="park", title="Reclaimed Industrial Wharf v0", generator="park_kit",
+        selections=(_selection("reclaimed_industrial_park", "reclaimed_industrial_park_v0", profile_id="reclaimed-industrial-wharf-lego-v1", appearance_kit_id="reclaimed_industrial_park_v0_wharf_skin", planting_structure="reclaimed_wharf_v0", compatibility=_RECLAIMED_WHARF_ENVELOPE, components=("reclaimed_wharf_ground_program_v1", "continuous_wharf_walk_v1", "whole_dock_crane_modules_v1", "native_planting_strip_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_quarry_tier_cascade_v2", kind="park", title="Quarry Limestone Tier Cascade v2", generator="park_kit",
+        selections=(_selection("quarry_sunken_garden_park", "quarry_sunken_garden_park_v2", profile_id="quarry-tier-cascade-lego-v1", appearance_kit_id="quarry_sunken_garden_park_v2_tier_cascade_skin", planting_structure="quarry_tier_cascade_v2", compatibility=_QUARRY_TIER_CASCADE_ENVELOPE, components=("quarry_bowl_ground_program_v1", "whole_garden_terraces_v1", "linked_reflecting_basins_v1", "limestone_cascade_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_estate_oak_picnic_v1", kind="park", title="Estate Oak Picnic Grove v1", generator="park_kit",
+        selections=(_selection("estate_picnic_grove", "estate_picnic_grove_v1", profile_id="estate-oak-picnic-lego-v1", appearance_kit_id="estate_picnic_grove_v1_oak_skin", planting_structure="estate_oak_picnic_v1", compatibility=_ESTATE_OAK_PICNIC_ENVELOPE, components=("oak_grove_ground_program_v1", "complete_oak_picnic_station_v1", "central_play_lawn_v1", "crushed_stone_loop_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_constructed_wetland_boardwalk_v0", kind="park", title="Constructed Urban Boardwalk Wetland v0", generator="park_kit",
+        selections=(_selection("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0", profile_id="constructed-wetland-boardwalk-lego-v1", appearance_kit_id="constructed_wetland_eco_park_v0_boardwalk_skin", planting_structure="constructed_wetland_boardwalk_v0", compatibility=_CONSTRUCTED_WETLAND_BOARDWALK_ENVELOPE, components=("wetland_mosaic_ground_program_v1", "complete_treatment_cells_v1", "zigzag_boardwalk_v1", "viewing_deck_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_academic_planted_court_v0", kind="park", title="Academic Modern Planted Courtyard v0", generator="park_kit",
+        selections=(_selection("academic_courtyard", "academic_courtyard_variant_0", profile_id="academic-planted-courtyard-lego-v1", appearance_kit_id="academic_courtyard_v0_planted_skin", planting_structure="academic_planted_court_v0", compatibility=_ACADEMIC_PLANTED_COURT_ENVELOPE, components=("academic_court_ground_program_v1", "whole_raised_planters_v1", "integrated_seat_ledges_v1", "clear_cross_routes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_campus_green_spine_v0", kind="park", title="Campus Green Pedestrian Spine v0", generator="park_kit",
+        selections=(_selection("campus_pedestrian_spine", "campus_pedestrian_spine_variant_0", profile_id="campus-green-spine-lego-v1", appearance_kit_id="campus_pedestrian_spine_v0_green_skin", planting_structure="campus_green_spine_v0", compatibility=_CAMPUS_GREEN_SPINE_ENVELOPE, components=("campus_spine_ground_program_v1", "continuous_accessible_axis_v1", "rain_garden_bands_v1", "repeating_tree_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_botanical_rose_garden_v3", kind="park", title="Botanical Romantic Rose Garden v3", generator="park_kit",
+        selections=(_selection("botanical_garden", "botanical_garden_v3", profile_id="botanical-rose-garden-lego-v1", appearance_kit_id="botanical_garden_v3_rose_skin", planting_structure="botanical_rose_garden_v3", compatibility=_BOTANICAL_ROSE_GARDEN_ENVELOPE, components=("rose_garden_ground_program_v1", "complete_flower_rooms_v1", "timber_rose_arbors_v1", "brick_stone_walk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_research_arboretum_v0", kind="park", title="Research Teaching Arboretum v0", generator="park_kit",
+        selections=(_selection("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0", profile_id="research-arboretum-lego-v1", appearance_kit_id="research_garden_teaching_arboretum_v0_skin", planting_structure="research_arboretum_v0", compatibility=_RESEARCH_ARBORETUM_ENVELOPE, components=("arboretum_ground_program_v1", "specimen_tree_collection_v1", "interpretive_loop_v1", "label_and_boulder_nodes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_rewilding_reforestation_v1", kind="park", title="Rewilding Reforestation Zone v1", generator="park_kit",
+        selections=(_selection("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1", profile_id="rewilding-reforestation-lego-v1", appearance_kit_id="rewilding_ecological_restoration_zone_v1_skin", planting_structure="rewilding_reforestation_v1", compatibility=_REWILDING_REFORESTATION_ENVELOPE, components=("reforestation_ground_program_v1", "sapling_cohort_matrix_v1", "native_understory_v1", "habitat_log_piles_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_stormwater_arid_channel_v3", kind="park", title="Stormwater Arid Rock Channel v3", generator="park_kit",
+        selections=(_selection("stormwater_resilience_park", "stormwater_resilience_park_variant_3", profile_id="stormwater-arid-channel-lego-v1", appearance_kit_id="stormwater_resilience_park_v3_arid_skin", planting_structure="stormwater_arid_channel_v3", compatibility=_STORMWATER_ARID_CHANNEL_ENVELOPE, components=("arid_resilience_ground_program_v1", "continuous_ephemeral_channel_v1", "gravel_detention_pockets_v1", "xeric_planting_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

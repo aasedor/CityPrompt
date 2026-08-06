@@ -46,7 +46,7 @@ export function resolveParkMicrodetailGuideKind(
   familyId: ParkLegoFamilyId,
   authoredGuideKind: string,
 ): ParkMicrodetailGuideKind | null {
-  if (familyId === 'park_water_ecology') {
+  if (familyId === 'park_water_ecology' || familyId === 'park_constructed_wetland_boardwalk_v0') {
     return authoredGuideKind === 'ellipse' ? 'water' : 'fixed_program';
   }
   if (['line', 'axis', 'polyline', 'path_loop'].includes(authoredGuideKind)) {
@@ -471,6 +471,26 @@ function familyTargets(
       return [target('ornamental_grass', 30), target('perennial', 24), target('shrub', 8), target('boulder', 6)];
     case 'park_riverfront_lake_beach_v1':
       return [target('ornamental_grass', 14), target('picnic_table', 6), target('bike_rack', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_reclaimed_wharf_v0':
+      return [target('ornamental_grass', 18), target('light', 8), target('bin', 4), target('bike_rack', 3), target('bollard', 8)];
+    case 'park_quarry_tier_cascade_v2':
+      return [target('shrub', 18), target('perennial', 18), target('ornamental_grass', 12), target('light', 6), target('bin', 3)];
+    case 'park_estate_oak_picnic_v1':
+      return [target('ornamental_grass', 8), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_constructed_wetland_boardwalk_v0':
+      return [target('reed', 32), target('ornamental_grass', 22), target('riprap', 10), target('bin', 3)];
+    case 'park_academic_planted_court_v0':
+      return [target('perennial', 14), target('ornamental_grass', 16), target('light', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_campus_green_spine_v0':
+      return [target('perennial', 22), target('ornamental_grass', 24), target('light', 10), target('bin', 4), target('bike_rack', 5)];
+    case 'park_botanical_rose_garden_v3':
+      return [target('shrub', 18), target('perennial', 28), target('light', 6), target('bin', 3)];
+    case 'park_research_arboretum_v0':
+      return [target('shrub', 12), target('perennial', 16), target('boulder', 8), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_rewilding_reforestation_v1':
+      return [target('shrub', 24), target('perennial', 18), target('ornamental_grass', 20), target('boulder', 8)];
+    case 'park_stormwater_arid_channel_v3':
+      return [target('ornamental_grass', 24), target('boulder', 18), target('riprap', 16), target('bin', 3), target('drinking_fountain', 2)];
   }
 }
 

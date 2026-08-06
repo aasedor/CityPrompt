@@ -111,6 +111,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_natural_swimming_pond_v0",
             "park_nature_preserve_prairie_v1",
             "park_riverfront_lake_beach_v1",
+            "park_reclaimed_wharf_v0",
+            "park_quarry_tier_cascade_v2",
+            "park_estate_oak_picnic_v1",
+            "park_constructed_wetland_boardwalk_v0",
+            "park_academic_planted_court_v0",
+            "park_campus_green_spine_v0",
+            "park_botanical_rose_garden_v3",
+            "park_research_arboretum_v0",
+            "park_rewilding_reforestation_v1",
+            "park_stormwater_arid_channel_v3",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -930,5 +940,85 @@ def test_batch7_nominal_sites_compile_without_image_calls(
     )
     assert recipe is not None
     assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_reclaimed_wharf_v0", "reclaimed_industrial_park", "reclaimed_industrial_park_v0", "reclaimed_industrial_park_v0_wharf_skin", 100.0, 50.0),
+        ("park_quarry_tier_cascade_v2", "quarry_sunken_garden_park", "quarry_sunken_garden_park_v2", "quarry_sunken_garden_park_v2_tier_cascade_skin", 200.0, 150.0),
+        ("park_estate_oak_picnic_v1", "estate_picnic_grove", "estate_picnic_grove_v1", "estate_picnic_grove_v1_oak_skin", 120.0, 100.0),
+        ("park_constructed_wetland_boardwalk_v0", "constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0", "constructed_wetland_eco_park_v0_boardwalk_skin", 180.0, 110.0),
+        ("park_academic_planted_court_v0", "academic_courtyard", "academic_courtyard_variant_0", "academic_courtyard_v0_planted_skin", 40.0, 38.0),
+        ("park_campus_green_spine_v0", "campus_pedestrian_spine", "campus_pedestrian_spine_variant_0", "campus_pedestrian_spine_v0_green_skin", 30.0, 240.0),
+        ("park_botanical_rose_garden_v3", "botanical_garden", "botanical_garden_v3", "botanical_garden_v3_rose_skin", 120.0, 90.0),
+        ("park_research_arboretum_v0", "research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0", "research_garden_teaching_arboretum_v0_skin", 300.0, 220.0),
+        ("park_rewilding_reforestation_v1", "rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1", "rewilding_ecological_restoration_zone_v1_skin", 300.0, 220.0),
+        ("park_stormwater_arid_channel_v3", "stormwater_resilience_park", "stormwater_resilience_park_variant_3", "stormwater_resilience_park_v3_arid_skin", 200.0, 125.0),
+    ],
+)
+def test_batch8_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    selection = catalog.capabilities[0].selections[0]
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v0"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v2"),
+        ("estate_picnic_grove", "estate_picnic_grove_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0"),
+        ("academic_courtyard", "academic_courtyard_variant_0"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_0"),
+        ("botanical_garden", "botanical_garden_v3"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_3"),
+    ],
+)
+def test_batch8_families_adapt_to_compact_urban_park_polygon(
+    archetype_id: str,
+    variant_id: str,
+):
+    """The reference acreage guides composition; it must not be a literal site requirement."""
+
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": archetype_id,
+            "green_space_selected_variant_id": variant_id,
+        },
+        strict=True,
+    )
+    assert recipe is not None
     assert recipe.variant_id == variant_id
     assert recipe.generator == "park_kit"

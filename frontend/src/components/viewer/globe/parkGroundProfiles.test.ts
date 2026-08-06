@@ -313,6 +313,38 @@ describe('park ground pilot profiles', () => {
   });
 
   it.each([
+    ['park_reclaimed_wharf_v0', 'reclaimed_industrial_park', 'reclaimed_industrial_park_v0', 'reclaimed_industrial_park_v0_wharf_skin', 'reclaimed_wharf_v0'],
+    ['park_quarry_tier_cascade_v2', 'quarry_sunken_garden_park', 'quarry_sunken_garden_park_v2', 'quarry_sunken_garden_park_v2_tier_cascade_skin', 'quarry_tier_cascade_v2'],
+    ['park_estate_oak_picnic_v1', 'estate_picnic_grove', 'estate_picnic_grove_v1', 'estate_picnic_grove_v1_oak_skin', 'estate_oak_picnic_v1'],
+    ['park_constructed_wetland_boardwalk_v0', 'constructed_wetland_eco_park', 'constructed_wetland_eco_park_variant_0', 'constructed_wetland_eco_park_v0_boardwalk_skin', 'constructed_wetland_boardwalk_v0'],
+    ['park_academic_planted_court_v0', 'academic_courtyard', 'academic_courtyard_variant_0', 'academic_courtyard_v0_planted_skin', 'academic_planted_court_v0'],
+    ['park_campus_green_spine_v0', 'campus_pedestrian_spine', 'campus_pedestrian_spine_variant_0', 'campus_pedestrian_spine_v0_green_skin', 'campus_green_spine_v0'],
+    ['park_botanical_rose_garden_v3', 'botanical_garden', 'botanical_garden_v3', 'botanical_garden_v3_rose_skin', 'botanical_rose_garden_v3'],
+    ['park_research_arboretum_v0', 'research_garden_teaching_arboretum', 'research_garden_teaching_arboretum_variant_0', 'research_garden_teaching_arboretum_v0_skin', 'research_arboretum_v0'],
+    ['park_rewilding_reforestation_v1', 'rewilding_ecological_restoration_zone', 'rewilding_ecological_restoration_zone_variant_1', 'rewilding_ecological_restoration_zone_v1_skin', 'rewilding_reforestation_v1'],
+    ['park_stormwater_arid_channel_v3', 'stormwater_resilience_park', 'stormwater_resilience_park_variant_3', 'stormwater_resilience_park_v3_arid_skin', 'stormwater_arid_channel_v3'],
+  ] as const)('resolves the batch-8 exact depth kit for %s/%s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch8_archetype_assembly');
+    const profile = resolveParkGroundProfile(candidate);
+    expect(profile.id).toContain('lego-v1');
+    expect(profile.guides.length).toBeGreaterThan(0);
+  });
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 64, 38],
     ['kayak_launch_dock', 'kayak_launch_dock_v0', 80, 35],
     ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 150, 100],

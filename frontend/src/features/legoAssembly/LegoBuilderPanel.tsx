@@ -318,6 +318,14 @@ export function LegoBuilderPanel({
           zone: refreshedById.get(item.zone.id) ?? item.zone,
           ...(failedIds.has(item.zone.id) ? { placeState: 'failed' as const } : {}),
         })));
+        // Replacing a building can invalidate residual-landscape and public-
+        // realm representations in the same project transaction. Carry those
+        // refreshed ground-zone revisions forward as well, or the immediately
+        // following complete-scene rebuild submits stale park/street timestamps.
+        setGroundItems((current) => current.map((item) => ({
+          ...item,
+          zone: refreshedById.get(item.zone.id) ?? item.zone,
+        })));
       }
     }
     setPlanning(false);
