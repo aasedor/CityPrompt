@@ -13,6 +13,7 @@ import { batch11ParkSkinForSelection } from './parkBatch11Skins';
 import { batch12ParkSkinForSelection } from './parkBatch12Skins';
 import { batch13ParkSkinForSelection } from './parkBatch13Skins';
 import { batch14ParkSkinForSelection } from './parkBatch14Skins';
+import { batch15ParkSkinForSelection } from './parkBatch15Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -558,6 +559,18 @@ function fourVariantMappings(
   })));
 }
 
+function fourNamedVariantMappings(
+  archetypeId: string,
+  appearanceKitIds: readonly string[],
+  plantingStructures: readonly string[],
+): readonly ParkSelectionMapping[] {
+  return Object.freeze(appearanceKitIds.map((appearanceKitId, index) => Object.freeze({
+    variantId: `${archetypeId}_variant_${index}`,
+    appearanceKitId,
+    plantingStructure: plantingStructures[index],
+  })));
+}
+
 /** Exact frontend mirror of the backend's executable park-family
  * selections. Nested recipes are never repaired here: incompatible identities
  * remain unsupported so the live scene cannot claim a different program than
@@ -971,16 +984,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_lighthouse_pacific_headland_v2: Object.freeze({ lighthouse_point_park: Object.freeze([Object.freeze({variantId:'lighthouse_point_park_v2',appearanceKitId:'lighthouse_point_park_v2_pacific_skin',plantingStructure:'lighthouse_pacific_headland_v2'})]) }),
   park_lake_edge_timber_deck_v2: Object.freeze({ lake_edge_plaza: Object.freeze([Object.freeze({variantId:'lake_edge_plaza_v2',appearanceKitId:'lake_edge_plaza_v2_timber_skin',plantingStructure:'lake_edge_timber_deck_v2'})]) }),
   park_stormwater_natural_creek_v0: Object.freeze({ stormwater_naturalized_drainage_corridor: Object.freeze([Object.freeze({variantId:'stormwater_naturalized_drainage_corridor_variant_0',appearanceKitId:'stormwater_naturalized_drainage_corridor_v0_creek_skin',plantingStructure:'stormwater_natural_creek_v0'})]) }),
-  park_surface_parking_standard_v0: Object.freeze({ surface_parking_lot: Object.freeze([Object.freeze({variantId:'surface_parking_lot_v0',appearanceKitId:'surface_parking_lot_v0_standard_skin',plantingStructure:'surface_parking_standard_v0'})]) }),
-  park_structured_parking_urban_v2: Object.freeze({ structured_parking_garage: Object.freeze([Object.freeze({variantId:'structured_parking_garage_v2',appearanceKitId:'structured_parking_garage_v2_urban_skin',plantingStructure:'structured_parking_urban_v2'})]) }),
-  park_underground_parking_green_v1: Object.freeze({ underground_parking_entry: Object.freeze([Object.freeze({variantId:'underground_parking_entry_v1',appearanceKitId:'underground_parking_entry_v1_green_skin',plantingStructure:'underground_parking_green_v1'})]) }),
-  park_green_parking_infrastructure_v1: Object.freeze({ green_parking_lot: Object.freeze([Object.freeze({variantId:'green_parking_lot_v1',appearanceKitId:'green_parking_lot_v1_infrastructure_skin',plantingStructure:'green_parking_infrastructure_v1'})]) }),
-  park_airport_general_aviation_v2: Object.freeze({ airport_airfield: Object.freeze([Object.freeze({variantId:'airport_airfield_variant_2',appearanceKitId:'airport_airfield_v2_general_aviation_skin',plantingStructure:'airport_general_aviation_v2'})]) }),
-  park_equestrian_working_stable_v1: Object.freeze({ equestrian_center: Object.freeze([Object.freeze({variantId:'equestrian_center_variant_1',appearanceKitId:'equestrian_center_v1_working_stable_skin',plantingStructure:'equestrian_working_stable_v1'})]) }),
-  park_golf_seaside_links_v0: Object.freeze({ golf_course_18_hole: Object.freeze([Object.freeze({variantId:'golf_course_18_hole_variant_0',appearanceKitId:'golf_course_18_hole_v0_links_skin',plantingStructure:'golf_seaside_links_v0'})]) }),
-  park_driving_range_single_tier_v0: Object.freeze({ golf_driving_range: Object.freeze([Object.freeze({variantId:'golf_driving_range_variant_0',appearanceKitId:'golf_driving_range_v0_single_tier_skin',plantingStructure:'driving_range_single_tier_v0'})]) }),
-  park_multi_sport_track_field_v3: Object.freeze({ multi_sport_complex: Object.freeze([Object.freeze({variantId:'multi_sport_complex_variant_3',appearanceKitId:'multi_sport_complex_v3_track_field_skin',plantingStructure:'multi_sport_track_field_v3'})]) }),
-  park_retail_parking_landscaped_v1: Object.freeze({ suburban_retail_parking_lot: Object.freeze([Object.freeze({variantId:'suburban_retail_parking_lot_v1',appearanceKitId:'suburban_retail_parking_lot_v1_landscaped_skin',plantingStructure:'retail_parking_landscaped_v1'})]) }),
+  park_surface_parking_standard_v0: Object.freeze({ surface_parking_lot: fourVariantMappings('surface_parking_lot', ['surface_parking_lot_v0_standard_skin','surface_parking_lot_v1_green_skin','surface_parking_lot_v2_urban_skin','surface_parking_lot_v3_screened_skin'], ['surface_parking_standard_v0','surface_parking_green_v1','surface_parking_urban_v2','surface_parking_screened_v3']) }),
+  park_structured_parking_urban_v2: Object.freeze({ structured_parking_garage: fourVariantMappings('structured_parking_garage', ['structured_parking_garage_v0_standard_skin','structured_parking_garage_v1_green_skin','structured_parking_garage_v2_urban_skin','structured_parking_garage_v3_screened_skin'], ['structured_parking_standard_v0','structured_parking_green_v1','structured_parking_urban_v2','structured_parking_screened_v3']) }),
+  park_underground_parking_green_v1: Object.freeze({ underground_parking_entry: fourVariantMappings('underground_parking_entry', ['underground_parking_entry_v0_standard_skin','underground_parking_entry_v1_green_skin','underground_parking_entry_v2_urban_skin','underground_parking_entry_v3_screened_skin'], ['underground_parking_standard_v0','underground_parking_green_v1','underground_parking_urban_v2','underground_parking_screened_v3']) }),
+  park_green_parking_infrastructure_v1: Object.freeze({ green_parking_lot: fourVariantMappings('green_parking_lot', ['green_parking_lot_v0_standard_skin','green_parking_lot_v1_infrastructure_skin','green_parking_lot_v2_urban_skin','green_parking_lot_v3_screened_skin'], ['green_parking_standard_v0','green_parking_infrastructure_v1','green_parking_urban_v2','green_parking_screened_v3']) }),
+  park_airport_general_aviation_v2: Object.freeze({ airport_airfield: fourNamedVariantMappings('airport_airfield', ['airport_airfield_v0_major_hub_skin','airport_airfield_v1_regional_skin','airport_airfield_v2_general_aviation_skin','airport_airfield_v3_mid_size_skin'], ['airport_major_hub_v0','airport_regional_v1','airport_general_aviation_v2','airport_mid_size_v3']) }),
+  park_equestrian_working_stable_v1: Object.freeze({ equestrian_center: fourNamedVariantMappings('equestrian_center', ['equestrian_center_v0_boarding_skin','equestrian_center_v1_working_stable_skin','equestrian_center_v2_competition_skin','equestrian_center_v3_academy_skin'], ['equestrian_boarding_v0','equestrian_working_stable_v1','equestrian_competition_v2','equestrian_academy_v3']) }),
+  park_golf_seaside_links_v0: Object.freeze({ golf_course_18_hole: fourNamedVariantMappings('golf_course_18_hole', ['golf_course_18_hole_v0_links_skin','golf_course_18_hole_v1_parkland_skin','golf_course_18_hole_v2_desert_skin','golf_course_18_hole_v3_modern_club_skin'], ['golf_seaside_links_v0','golf_parkland_v1','golf_desert_v2','golf_modern_club_v3']) }),
+  park_driving_range_single_tier_v0: Object.freeze({ golf_driving_range: fourNamedVariantMappings('golf_driving_range', ['golf_driving_range_v0_single_tier_skin','golf_driving_range_v1_entertainment_skin','golf_driving_range_v2_parkland_skin','golf_driving_range_v3_modern_skin'], ['driving_range_single_tier_v0','driving_range_entertainment_v1','driving_range_parkland_v2','driving_range_modern_v3']) }),
+  park_multi_sport_track_field_v3: Object.freeze({ multi_sport_complex: fourNamedVariantMappings('multi_sport_complex', ['multi_sport_complex_v0_community_skin','multi_sport_complex_v1_stadium_skin','multi_sport_complex_v2_dome_skin','multi_sport_complex_v3_track_field_skin'], ['multi_sport_community_v0','multi_sport_stadium_v1','multi_sport_dome_v2','multi_sport_track_field_v3']) }),
+  park_retail_parking_landscaped_v1: Object.freeze({ suburban_retail_parking_lot: fourVariantMappings('suburban_retail_parking_lot', ['suburban_retail_parking_lot_v0_big_box_skin','suburban_retail_parking_lot_v1_landscaped_skin','suburban_retail_parking_lot_v2_gravel_skin','suburban_retail_parking_lot_v3_plaza_skin'], ['retail_parking_big_box_v0','retail_parking_landscaped_v1','retail_parking_gravel_v2','retail_parking_plaza_v3']) }),
 });
 
 function normalizeId(value: unknown): string {
@@ -1447,6 +1460,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch12ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch13ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch14ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch15ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

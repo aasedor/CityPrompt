@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "parkZoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "buildingZoneId": "eaf42f58-2b36-4b7c-8902-f0c0a1a4dea7",
+  "method": "one park at a time beside one separately compiled building on the existing 40 m x 31 m pilot parcel",
+  "expectedContract": {
+    "summary": "1 buildings · 1 parks · 0 streets",
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "parkState": "compiled",
+    "groundSystem": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+    "persistedRecipeRequired": true
+  },
+  "environmentCorrection": "The frontend at port 5175 proxies to port 8002. The stale 8002 worker was replaced with the current branch before acceptance testing.",
+  "trials": [
+    {
+      "archetypeId": "surface_parking_lot",
+      "variantId": "surface_parking_lot_v3",
+      "familyId": "park_surface_parking_standard_v0",
+      "appearanceKitId": "surface_parking_lot_v3_screened_skin",
+      "plantingStructure": "surface_parking_screened_v3",
+      "passed": true
+    },
+    {
+      "archetypeId": "green_parking_lot",
+      "variantId": "green_parking_lot_v2",
+      "familyId": "park_green_parking_infrastructure_v1",
+      "appearanceKitId": "green_parking_lot_v2_urban_skin",
+      "plantingStructure": "green_parking_urban_v2",
+      "passed": true
+    },
+    {
+      "archetypeId": "suburban_retail_parking_lot",
+      "variantId": "suburban_retail_parking_lot_v2",
+      "familyId": "park_retail_parking_landscaped_v1",
+      "appearanceKitId": "suburban_retail_parking_lot_v2_gravel_skin",
+      "plantingStructure": "retail_parking_gravel_v2",
+      "passed": true,
+      "visualFinding": "Reference albedo was initially multiplied by dark gray; corrected to a neutral/light material tint so gravel reads as tan textured aggregate."
+    }
+  ]
+}

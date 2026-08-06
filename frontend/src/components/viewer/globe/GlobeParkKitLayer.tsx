@@ -67,6 +67,7 @@ import {
   CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
   PARK_PROGRAM_MODULE_SPEC,
   isExecutableParkLegoFamily,
+  resolveParkLegoContract,
   resolveParkDressingAppearance,
   resolveParkDressingFamily,
   resolveParkLegoAppearance,
@@ -925,7 +926,9 @@ function ParkSpecialtyStructures({
     return <GlobeParkBatch13Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch14_archetype_assembly' && profileFamilyId) {
-    return <GlobeParkBatch14Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+    const contract = resolveParkLegoContract(zone);
+    if (!contract) return null;
+    return <GlobeParkBatch14Assembly familyId={profileFamilyId} archetypeId={contract.archetypeId} variantId={contract.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
     ? 'park_basketball_court_v0'

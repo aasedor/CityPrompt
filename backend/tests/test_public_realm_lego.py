@@ -1109,7 +1109,11 @@ def test_batch9_exact_families_compile_without_image_calls(
 ):
     catalog = build_public_realm_capability_catalog(family_ids=[family_id])
     assert catalog.family_ids == (family_id,)
-    selection = catalog.capabilities[0].selections[0]
+    selection = next(
+        candidate
+        for candidate in catalog.capabilities[0].selections
+        if candidate.variant_id == variant_id
+    )
     assert selection.archetype_id == archetype_id
     assert selection.variant_id == variant_id
     assert selection.appearance_kit_id == appearance_kit_id
@@ -1221,7 +1225,11 @@ def test_batch10_exact_families_compile_without_image_calls(
     depth_m: float,
 ):
     catalog = build_public_realm_capability_catalog(family_ids=[family_id])
-    selection = catalog.capabilities[0].selections[0]
+    selection = next(
+        candidate
+        for candidate in catalog.capabilities[0].selections
+        if candidate.variant_id == variant_id
+    )
     assert selection.archetype_id == archetype_id
     assert selection.variant_id == variant_id
     assert selection.appearance_kit_id == appearance_kit_id
@@ -1238,6 +1246,42 @@ def test_batch10_exact_families_compile_without_image_calls(
     assert recipe.variant_id == variant_id
     assert recipe.appearance_kit_id == appearance_kit_id
     assert recipe.generator == "park_kit"
+
+
+def test_batch15_closes_all_four_variants_for_the_final_ten_parents():
+    expected = {
+        "park_surface_parking_standard_v0": "surface_parking_lot",
+        "park_structured_parking_urban_v2": "structured_parking_garage",
+        "park_underground_parking_green_v1": "underground_parking_entry",
+        "park_green_parking_infrastructure_v1": "green_parking_lot",
+        "park_airport_general_aviation_v2": "airport_airfield",
+        "park_equestrian_working_stable_v1": "equestrian_center",
+        "park_golf_seaside_links_v0": "golf_course_18_hole",
+        "park_driving_range_single_tier_v0": "golf_driving_range",
+        "park_multi_sport_track_field_v3": "multi_sport_complex",
+        "park_retail_parking_landscaped_v1": "suburban_retail_parking_lot",
+    }
+    named_variant_parents = {
+        "airport_airfield",
+        "equestrian_center",
+        "golf_course_18_hole",
+        "golf_driving_range",
+        "multi_sport_complex",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        expected_variants = {
+            f"{archetype_id}_variant_{index}" if archetype_id in named_variant_parents else f"{archetype_id}_v{index}"
+            for index in range(4)
+        }
+        assert {selection.variant_id for selection in capability.selections} == expected_variants
+        assert {selection.archetype_id for selection in capability.selections} == {archetype_id}
+        assert len({selection.appearance_kit_id for selection in capability.selections}) == 4
+        assert len({selection.planting_structure for selection in capability.selections}) == 4
+        assert all(selection.component_set_ids for selection in capability.selections)
+        assert sum(selection.is_default for selection in capability.selections) == 1
 
 
 @pytest.mark.parametrize(
