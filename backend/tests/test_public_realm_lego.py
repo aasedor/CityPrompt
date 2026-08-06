@@ -151,6 +151,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_toronto_ravine_creek_v1",
             "park_toronto_urban_market_v1",
             "park_halifax_coastal_fog_path_v2",
+            "park_city_hall_modernist_fountain_v2",
+            "park_cathedral_courtyard_fountain_v3",
+            "park_cultural_museum_terrace_v0",
+            "park_transit_green_civic_v2",
+            "park_amphitheater_terraced_v0",
+            "park_concert_timber_lawn_v2",
+            "park_night_market_hawker_v0",
+            "park_parade_national_mall_v3",
+            "park_canal_ecological_wetland_v3",
+            "park_custom_biophilic_urban_v1",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1150,6 +1160,16 @@ def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
         ("park_toronto_ravine_creek_v1", "toronto_ravine", "toronto_ravine_v1", "toronto_ravine_v1_creek_skin", 220.0, 90.0),
         ("park_toronto_urban_market_v1", "toronto_urban_square", "toronto_urban_square_v1", "toronto_urban_square_v1_market_skin", 90.0, 65.0),
         ("park_halifax_coastal_fog_path_v2", "halifax_coastal_park", "halifax_coastal_park_v2", "halifax_coastal_park_v2_fog_path_skin", 180.0, 100.0),
+        ("park_city_hall_modernist_fountain_v2", "city_hall_government_plaza", "city_hall_government_plaza_v2", "city_hall_government_plaza_v2_modernist_skin", 80.0, 60.0),
+        ("park_cathedral_courtyard_fountain_v3", "cathedral_religious_forecourt", "cathedral_religious_forecourt_v3", "cathedral_religious_forecourt_v3_courtyard_skin", 70.0, 55.0),
+        ("park_cultural_museum_terrace_v0", "cultural_institution_forecourt", "cultural_institution_forecourt_v0", "cultural_institution_forecourt_v0_museum_terrace_skin", 95.0, 65.0),
+        ("park_transit_green_civic_v2", "transit_plaza", "transit_plaza_v2", "transit_plaza_v2_green_civic_skin", 75.0, 48.0),
+        ("park_amphitheater_terraced_v0", "amphitheater_performance_space", "amphitheater_performance_space_v0", "amphitheater_performance_space_v0_terraced_skin", 90.0, 70.0),
+        ("park_concert_timber_lawn_v2", "concert_pavilion_lawn", "concert_pavilion_lawn_v2", "concert_pavilion_lawn_v2_timber_skin", 140.0, 95.0),
+        ("park_night_market_hawker_v0", "night_market", "night_market_v0", "night_market_v0_hawker_skin", 85.0, 40.0),
+        ("park_parade_national_mall_v3", "parade_ground", "parade_ground_v3", "parade_ground_v3_national_mall_skin", 220.0, 90.0),
+        ("park_canal_ecological_wetland_v3", "canal_waterway", "canal_waterway_v3", "canal_waterway_v3_ecological_skin", 180.0, 75.0),
+        ("park_custom_biophilic_urban_v1", "custom_parks_plazas", "custom_parks_plazas_v1", "custom_parks_plazas_v1_biophilic_skin", 75.0, 60.0),
     ],
 )
 def test_batch10_exact_families_compile_without_image_calls(

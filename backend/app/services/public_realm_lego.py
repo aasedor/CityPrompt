@@ -482,6 +482,16 @@ _VANCOUVER_BEACH_PAVILION_ENVELOPE = _park_envelope(nominal=(130.0, 70.0), width
 _TORONTO_RAVINE_CREEK_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(35.0, 600.0), depth=(24.0, 260.0), area=(840.0, 156_000.0))
 _TORONTO_URBAN_MARKET_ENVELOPE = _park_envelope(nominal=(90.0, 65.0), width=(25.0, 220.0), depth=(20.0, 150.0), area=(500.0, 33_000.0))
 _HALIFAX_COASTAL_FOG_PATH_ENVELOPE = _park_envelope(nominal=(180.0, 100.0), width=(35.0, 500.0), depth=(24.0, 280.0), area=(840.0, 140_000.0))
+_CITY_HALL_MODERNIST_FOUNTAIN_ENVELOPE = _park_envelope(nominal=(80.0, 60.0), width=(20.0, 240.0), depth=(16.0, 180.0), area=(320.0, 43_200.0))
+_CATHEDRAL_MOSQUE_COURTYARD_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(18.0, 210.0), depth=(16.0, 160.0), area=(288.0, 33_600.0))
+_CULTURAL_MUSEUM_TERRACE_ENVELOPE = _park_envelope(nominal=(95.0, 65.0), width=(22.0, 260.0), depth=(18.0, 180.0), area=(396.0, 46_800.0))
+_TRANSIT_GREEN_CIVIC_ENVELOPE = _park_envelope(nominal=(75.0, 48.0), width=(18.0, 220.0), depth=(14.0, 140.0), area=(252.0, 30_800.0))
+_AMPHITHEATER_TERRACED_ENVELOPE = _park_envelope(nominal=(90.0, 70.0), width=(24.0, 260.0), depth=(20.0, 210.0), area=(480.0, 54_600.0))
+_CONCERT_TIMBER_LAWN_ENVELOPE = _park_envelope(nominal=(140.0, 95.0), width=(30.0, 360.0), depth=(24.0, 260.0), area=(720.0, 93_600.0))
+_NIGHT_MARKET_HAWKER_ENVELOPE = _park_envelope(nominal=(85.0, 40.0), width=(24.0, 260.0), depth=(14.0, 110.0), area=(336.0, 28_600.0), min_aspect_ratio=1.3)
+_PARADE_NATIONAL_MALL_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(40.0, 600.0), depth=(24.0, 260.0), area=(960.0, 156_000.0), min_aspect_ratio=1.4)
+_CANAL_ECOLOGICAL_WETLAND_ENVELOPE = _park_envelope(nominal=(180.0, 75.0), width=(32.0, 520.0), depth=(22.0, 220.0), area=(704.0, 114_400.0), min_aspect_ratio=1.4)
+_CUSTOM_BIOPHILIC_URBAN_ENVELOPE = _park_envelope(nominal=(75.0, 60.0), width=(18.0, 230.0), depth=(16.0, 180.0), area=(288.0, 41_400.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1466,6 +1476,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_halifax_coastal_fog_path_v2", kind="park", title="Halifax Coastal Fog Path v2", generator="park_kit",
         selections=(_selection("halifax_coastal_park", "halifax_coastal_park_v2", profile_id="halifax-coastal-fog-path-lego-v1", appearance_kit_id="halifax_coastal_park_v2_fog_path_skin", planting_structure="halifax_coastal_fog_path_v2", compatibility=_HALIFAX_COASTAL_FOG_PATH_ENVELOPE, components=("coastal_forest_ground_program_v1", "granite_gravel_path_v1", "spruce_fir_grove_cohorts_v1", "whole_boardwalk_lookout_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_city_hall_modernist_fountain_v2", kind="park", title="City Hall Modernist Fountain Plaza v2", generator="park_kit",
+        selections=(_selection("city_hall_government_plaza", "city_hall_government_plaza_v2", profile_id="city-hall-modernist-fountain-lego-v1", appearance_kit_id="city_hall_government_plaza_v2_modernist_skin", planting_structure="city_hall_modernist_fountain_v2", compatibility=_CITY_HALL_MODERNIST_FOUNTAIN_ENVELOPE, components=("modernist_civic_ground_program_v1", "linear_reflecting_pool_v1", "whole_planter_bays_v1", "ceremonial_axes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cathedral_courtyard_fountain_v3", kind="park", title="Mosque Courtyard Fountain v3", generator="park_kit",
+        selections=(_selection("cathedral_religious_forecourt", "cathedral_religious_forecourt_v3", profile_id="cathedral-courtyard-fountain-lego-v1", appearance_kit_id="cathedral_religious_forecourt_v3_courtyard_skin", planting_structure="cathedral_courtyard_fountain_v3", compatibility=_CATHEDRAL_MOSQUE_COURTYARD_ENVELOPE, components=("patterned_courtyard_ground_v1", "central_ablution_fountain_v1", "shade_tree_bays_v1", "clear_processional_axes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cultural_museum_terrace_v0", kind="park", title="Modern Museum Terrace v0", generator="park_kit",
+        selections=(_selection("cultural_institution_forecourt", "cultural_institution_forecourt_v0", profile_id="cultural-museum-terrace-lego-v1", appearance_kit_id="cultural_institution_forecourt_v0_museum_terrace_skin", planting_structure="cultural_museum_terrace_v0", compatibility=_CULTURAL_MUSEUM_TERRACE_ENVELOPE, components=("museum_forecourt_ground_v1", "broad_terrace_steps_v1", "sculpture_lawn_v1", "seat_planter_edges_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_transit_green_civic_v2", kind="park", title="Green Civic Transit Plaza v2", generator="park_kit",
+        selections=(_selection("transit_plaza", "transit_plaza_v2", profile_id="transit-green-civic-lego-v1", appearance_kit_id="transit_plaza_v2_green_civic_skin", planting_structure="transit_green_civic_v2", compatibility=_TRANSIT_GREEN_CIVIC_ENVELOPE, components=("transit_plaza_ground_v1", "clear_access_spine_v1", "rain_planter_bays_v1", "modest_transit_shelters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amphitheater_terraced_v0", kind="park", title="Terraced Performance Amphitheater v0", generator="park_kit",
+        selections=(_selection("amphitheater_performance_space", "amphitheater_performance_space_v0", profile_id="amphitheater-terraced-lego-v1", appearance_kit_id="amphitheater_performance_space_v0_terraced_skin", planting_structure="amphitheater_terraced_v0", compatibility=_AMPHITHEATER_TERRACED_ENVELOPE, components=("performance_bowl_ground_v1", "concentric_seating_tiers_v1", "modest_stage_platform_v1", "accessible_rim_route_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_concert_timber_lawn_v2", kind="park", title="Timber Concert Lawn v2", generator="park_kit",
+        selections=(_selection("concert_pavilion_lawn", "concert_pavilion_lawn_v2", profile_id="concert-timber-lawn-lego-v1", appearance_kit_id="concert_pavilion_lawn_v2_timber_skin", planting_structure="concert_timber_lawn_v2", compatibility=_CONCERT_TIMBER_LAWN_ENVELOPE, components=("concert_lawn_ground_v1", "audience_lawn_room_v1", "modest_open_timber_stage_v1", "perimeter_path_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_night_market_hawker_v0", kind="park", title="Hawker Stall Night Market v0", generator="park_kit",
+        selections=(_selection("night_market", "night_market_v0", profile_id="night-market-hawker-lego-v1", appearance_kit_id="night_market_v0_hawker_skin", planting_structure="night_market_hawker_v0", compatibility=_NIGHT_MARKET_HAWKER_ENVELOPE, components=("night_market_ground_v1", "clear_market_lane_v1", "whole_hawker_stall_bays_v1", "lantern_cable_rows_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_parade_national_mall_v3", kind="park", title="National Mall Ceremonial Axis v3", generator="park_kit",
+        selections=(_selection("parade_ground", "parade_ground_v3", profile_id="parade-national-mall-lego-v1", appearance_kit_id="parade_ground_v3_national_mall_skin", planting_structure="parade_national_mall_v3", compatibility=_PARADE_NATIONAL_MALL_ENVELOPE, components=("ceremonial_mall_ground_v1", "continuous_central_lawn_v1", "reflecting_water_axis_v1", "formal_tree_allies_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_canal_ecological_wetland_v3", kind="park", title="Ecological Wetland Canal v3", generator="park_kit",
+        selections=(_selection("canal_waterway", "canal_waterway_v3", profile_id="canal-ecological-wetland-lego-v1", appearance_kit_id="canal_waterway_v3_ecological_skin", planting_structure="canal_ecological_wetland_v3", compatibility=_CANAL_ECOLOGICAL_WETLAND_ENVELOPE, components=("wetland_canal_ground_v1", "continuous_water_channel_v1", "whole_marsh_cells_v1", "boardwalk_crossings_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_custom_biophilic_urban_v1", kind="park", title="Biophilic Urban Park v1", generator="park_kit",
+        selections=(_selection("custom_parks_plazas", "custom_parks_plazas_v1", profile_id="custom-biophilic-urban-lego-v1", appearance_kit_id="custom_parks_plazas_v1_biophilic_skin", planting_structure="custom_biophilic_urban_v1", compatibility=_CUSTOM_BIOPHILIC_URBAN_ENVELOPE, components=("biophilic_ground_program_v1", "layered_garden_rooms_v1", "meandering_accessible_paths_v1", "whole_seat_planter_bays_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

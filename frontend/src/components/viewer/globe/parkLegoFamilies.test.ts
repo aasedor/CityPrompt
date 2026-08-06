@@ -145,6 +145,23 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['park_city_hall_modernist_fountain_v2','city_hall_government_plaza','city_hall_government_plaza_v2','city_hall_government_plaza_v2_modernist_skin','city_hall_modernist_fountain_v2'],
+    ['park_cathedral_courtyard_fountain_v3','cathedral_religious_forecourt','cathedral_religious_forecourt_v3','cathedral_religious_forecourt_v3_courtyard_skin','cathedral_courtyard_fountain_v3'],
+    ['park_cultural_museum_terrace_v0','cultural_institution_forecourt','cultural_institution_forecourt_v0','cultural_institution_forecourt_v0_museum_terrace_skin','cultural_museum_terrace_v0'],
+    ['park_transit_green_civic_v2','transit_plaza','transit_plaza_v2','transit_plaza_v2_green_civic_skin','transit_green_civic_v2'],
+    ['park_amphitheater_terraced_v0','amphitheater_performance_space','amphitheater_performance_space_v0','amphitheater_performance_space_v0_terraced_skin','amphitheater_terraced_v0'],
+    ['park_concert_timber_lawn_v2','concert_pavilion_lawn','concert_pavilion_lawn_v2','concert_pavilion_lawn_v2_timber_skin','concert_timber_lawn_v2'],
+    ['park_night_market_hawker_v0','night_market','night_market_v0','night_market_v0_hawker_skin','night_market_hawker_v0'],
+    ['park_parade_national_mall_v3','parade_ground','parade_ground_v3','parade_ground_v3_national_mall_skin','parade_national_mall_v3'],
+    ['park_canal_ecological_wetland_v3','canal_waterway','canal_waterway_v3','canal_waterway_v3_ecological_skin','canal_ecological_wetland_v3'],
+    ['park_custom_biophilic_urban_v1','custom_parks_plazas','custom_parks_plazas_v1','custom_parks_plazas_v1_biophilic_skin','custom_biophilic_urban_v1'],
+  ] as const)('executes the exact reviewed Batch 12 selection %s', (familyId,archetypeId,variantId,appearanceKitId,plantingStructure) => {
+    const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});
+    expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true); expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
     [0, 'Village Green', 'english_pastoral', 'thatched'],
     [1, 'Municipal Oval', 'modern_minimal', 'steel_canopy'],
     [2, 'South Asian Ground', 'urban_pavers', 'fabric_sail'],

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "20c08c19-8bf3-48ab-b9d1-62482b46a66e",
+  "parkZoneId": "f00b58c7-6277-4617-a5d5-0bc4ff21db0b",
+  "buildingZoneId": "74ccecf5-afa2-44b9-9fd0-60464579be86",
+  "procedure": "one_park_at_a_time_with_separate_lego_building_and_fresh_server_snapshot",
+  "paidImageApiCalls": 0,
+  "meshyCalls": 0,
+  "expectedGenerateSummary": "1 buildings · 1 parks · 0 streets",
+  "expectedGroundContract": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+  "trials": [
+    {"order":1,"archetypeId":"city_hall_government_plaza","variantId":"city_hall_government_plaza_v2","familyId":"park_city_hall_modernist_fountain_v2","result":"pass"},
+    {"order":2,"archetypeId":"cathedral_religious_forecourt","variantId":"cathedral_religious_forecourt_v3","familyId":"park_cathedral_courtyard_fountain_v3","result":"pass"},
+    {"order":3,"archetypeId":"cultural_institution_forecourt","variantId":"cultural_institution_forecourt_v0","familyId":"park_cultural_museum_terrace_v0","result":"pass"},
+    {"order":4,"archetypeId":"transit_plaza","variantId":"transit_plaza_v2","familyId":"park_transit_green_civic_v2","result":"pass"},
+    {"order":5,"archetypeId":"amphitheater_performance_space","variantId":"amphitheater_performance_space_v0","familyId":"park_amphitheater_terraced_v0","result":"pass"},
+    {"order":6,"archetypeId":"concert_pavilion_lawn","variantId":"concert_pavilion_lawn_v2","familyId":"park_concert_timber_lawn_v2","result":"pass"},
+    {"order":7,"archetypeId":"night_market","variantId":"night_market_v0","familyId":"park_night_market_hawker_v0","result":"pass"},
+    {"order":8,"archetypeId":"parade_ground","variantId":"parade_ground_v3","familyId":"park_parade_national_mall_v3","result":"pass"},
+    {"order":9,"archetypeId":"canal_waterway","variantId":"canal_waterway_v3","familyId":"park_canal_ecological_wetland_v3","result":"pass"},
+    {"order":10,"archetypeId":"custom_parks_plazas","variantId":"custom_parks_plazas_v1","familyId":"park_custom_biophilic_urban_v1","result":"pass"}
+  ]
+}

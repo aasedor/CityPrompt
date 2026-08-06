@@ -541,6 +541,16 @@ function familyTargets(
     case 'park_toronto_ravine_creek_v1': return [target('shrub',24),target('boulder',14),target('riprap',12),target('bin',3)];
     case 'park_toronto_urban_market_v1': return [target('ornamental_grass',16),target('light',8),target('bike_rack',6),target('bin',4),target('bollard',8)];
     case 'park_halifax_coastal_fog_path_v2': return [target('shrub',22),target('boulder',16),target('riprap',12),target('bin',3)];
+    case 'park_city_hall_modernist_fountain_v2': return [target('light',10),target('bollard',10),target('bin',4),target('bike_rack',4)];
+    case 'park_cathedral_courtyard_fountain_v3': return [target('shrub',12),target('light',8),target('bin',3)];
+    case 'park_cultural_museum_terrace_v0': return [target('ornamental_grass',18),target('light',8),target('bollard',8),target('bike_rack',4)];
+    case 'park_transit_green_civic_v2': return [target('ornamental_grass',20),target('light',10),target('bollard',12),target('bike_rack',8),target('bin',5)];
+    case 'park_amphitheater_terraced_v0': return [target('light',8),target('bin',4),target('drinking_fountain',2)];
+    case 'park_concert_timber_lawn_v2': return [target('shrub',16),target('light',8),target('bin',5),target('drinking_fountain',2)];
+    case 'park_night_market_hawker_v0': return [target('light',16),target('bin',8),target('bollard',10),target('bike_rack',6)];
+    case 'park_parade_national_mall_v3': return [target('light',12),target('bollard',10),target('bin',6)];
+    case 'park_canal_ecological_wetland_v3': return [target('reed',28),target('shrub',18),target('boulder',10),target('riprap',14),target('bin',3)];
+    case 'park_custom_biophilic_urban_v1': return [target('shrub',22),target('perennial',28),target('ornamental_grass',18),target('light',7),target('bin',4)];
   }
 }
 
