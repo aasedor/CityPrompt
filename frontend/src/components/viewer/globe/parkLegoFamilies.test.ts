@@ -434,6 +434,37 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
+  it.each([
+    ['park_disc_golf_wooded_v0', 'disc_golf_course', 'disc_golf_course_v2', 'disc_golf_course_v2_hillside_terrain_skin', 'disc_golf_hillside_v2'],
+    ['park_bocce_piazza_v0', 'bocce_petanque_court', 'bocce_petanque_court_v3', 'bocce_petanque_court_v3_community_senior_skin', 'bocce_community_senior_v3'],
+    ['park_climbing_competition_v0', 'climbing_bouldering_wall', 'climbing_bouldering_wall_v1', 'climbing_bouldering_wall_v1_natural_rock_skin', 'climbing_natural_rock_v1'],
+    ['park_mini_golf_classic_v0', 'mini_golf_course', 'mini_golf_course_v2', 'mini_golf_course_v2_urban_art_skin', 'mini_golf_urban_art_v2'],
+    ['park_beach_volleyball_competition_v0', 'beach_volleyball_courts', 'beach_volleyball_courts_v1', 'beach_volleyball_courts_v1_beachside_skin', 'beach_volleyball_beachside_v1'],
+    ['park_pollinator_prairie_v0', 'pollinator_meadow', 'pollinator_meadow_v3', 'pollinator_meadow_v3_formal_border_skin', 'pollinator_formal_border_v3'],
+    ['park_orchard_heritage_v0', 'urban_orchard_food_forest', 'urban_orchard_food_forest_v2', 'urban_orchard_food_forest_v2_pick_your_own_skin', 'orchard_pick_your_own_v2'],
+    ['park_bioswale_streetside_v0', 'bioswale_rain_garden', 'bioswale_rain_garden_v1', 'bioswale_rain_garden_v1_park_rain_garden_skin', 'bioswale_park_rain_garden_v1'],
+    ['park_sculpture_museum_court_v0', 'sculpture_garden', 'sculpture_garden_v2', 'sculpture_garden_v2_interactive_kinetic_skin', 'sculpture_kinetic_v2'],
+    ['park_labyrinth_classical_v0', 'labyrinth_meditation', 'labyrinth_meditation_v3', 'labyrinth_meditation_v3_modern_mindfulness_skin', 'labyrinth_modern_v3'],
+  ] as const)('executes the explicit Batch 18 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
   it('keeps Skate Park v0 on its archetype-owned surface in legacy and compiled states', () => {
     const legacy = zone({
       green_space_archetype_id: 'skate_park',
@@ -510,7 +541,7 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
-  it('does not borrow the v0 labyrinth program or skin for an unreviewed variant', () => {
+  it('uses the reviewed zen-rock identity instead of borrowing the v0 labyrinth skin', () => {
     const candidate = zone({
       green_space_archetype_id: 'labyrinth_meditation',
       green_space_selected_variant_id: 'labyrinth_meditation_v1',
@@ -518,9 +549,9 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_labyrinth_classical_v0',
       variantId: 'labyrinth_meditation_v1',
-      supported: false,
+      supported: true,
     });
-    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
   it.each([

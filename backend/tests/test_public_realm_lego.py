@@ -342,11 +342,11 @@ def test_batch5_park_recipes_keep_exact_v0_identity(
     "urban_orchard_food_forest", "bioswale_rain_garden", "sculpture_garden",
     "labyrinth_meditation",
 ))
-def test_batch5_unreviewed_variants_fail_closed(archetype_id):
+def test_batch5_unknown_variants_still_fail_closed(archetype_id):
     with pytest.raises(PublicRealmPlanningError) as exc:
         plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=archetype_id,
-            variant_id=f"{archetype_id}_v1",
+            variant_id=f"{archetype_id}_v99",
             target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
         ))
     assert exc.value.code == "family_incompatible"
@@ -1344,6 +1344,37 @@ def test_batch17_closes_thirty_variants_across_ten_activity_families():
         "park_inclusive_playground_v0": "inclusive_playground",
         "park_pump_track_v0": "pump_track",
         "park_splash_pad_v0": "splash_pad_area",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch18_closes_thirty_variants_across_ten_specialty_families():
+    expected = {
+        "park_disc_golf_wooded_v0": "disc_golf_course",
+        "park_bocce_piazza_v0": "bocce_petanque_court",
+        "park_climbing_competition_v0": "climbing_bouldering_wall",
+        "park_mini_golf_classic_v0": "mini_golf_course",
+        "park_beach_volleyball_competition_v0": "beach_volleyball_courts",
+        "park_pollinator_prairie_v0": "pollinator_meadow",
+        "park_orchard_heritage_v0": "urban_orchard_food_forest",
+        "park_bioswale_streetside_v0": "bioswale_rain_garden",
+        "park_sculpture_museum_court_v0": "sculpture_garden",
+        "park_labyrinth_classical_v0": "labyrinth_meditation",
     }
     catalog = build_public_realm_capability_catalog(family_ids=list(expected))
     assert len(catalog.capabilities) == 10

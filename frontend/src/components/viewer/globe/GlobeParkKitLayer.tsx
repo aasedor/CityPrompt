@@ -861,6 +861,8 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch5Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}

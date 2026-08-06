@@ -1999,6 +1999,96 @@ def _apply_batch17_variant_closures(
 _CAPABILITIES = tuple(_apply_batch17_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+# Batch 18 closes ten specialty and contemplative park families. Each closure
+# reuses the reviewed anchor grammar while preserving the selected catalogue
+# identity through an exact appearance kit, planting language, and program
+# marker derived from that variant's archetype references.
+_BATCH18_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_disc_golf_wooded_v0": (
+        ("disc_golf_course", "disc_golf_course_v1", "disc_golf_course_v1_open_park_skin", "disc_golf_open_park_v1", "open_park_disc_golf_program_v1"),
+        ("disc_golf_course", "disc_golf_course_v2", "disc_golf_course_v2_hillside_terrain_skin", "disc_golf_hillside_v2", "hillside_disc_golf_program_v1"),
+        ("disc_golf_course", "disc_golf_course_v3", "disc_golf_course_v3_urban_short_skin", "disc_golf_urban_short_v3", "urban_short_disc_golf_program_v1"),
+    ),
+    "park_bocce_piazza_v0": (
+        ("bocce_petanque_court", "bocce_petanque_court_v1", "bocce_petanque_court_v1_french_petanque_skin", "bocce_french_v1", "french_petanque_program_v1"),
+        ("bocce_petanque_court", "bocce_petanque_court_v2", "bocce_petanque_court_v2_modern_park_skin", "bocce_modern_park_v2", "modern_park_bocce_program_v1"),
+        ("bocce_petanque_court", "bocce_petanque_court_v3", "bocce_petanque_court_v3_community_senior_skin", "bocce_community_senior_v3", "community_senior_bocce_program_v1"),
+    ),
+    "park_climbing_competition_v0": (
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v1", "climbing_bouldering_wall_v1_natural_rock_skin", "climbing_natural_rock_v1", "natural_rock_climbing_program_v1"),
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v2", "climbing_bouldering_wall_v2_kids_adventure_skin", "climbing_kids_adventure_v2", "kids_adventure_climbing_program_v1"),
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v3", "climbing_bouldering_wall_v3_urban_art_skin", "climbing_urban_art_v3", "urban_art_climbing_program_v1"),
+    ),
+    "park_mini_golf_classic_v0": (
+        ("mini_golf_course", "mini_golf_course_v1", "mini_golf_course_v1_garden_putting_skin", "mini_golf_garden_putting_v1", "garden_putting_program_v1"),
+        ("mini_golf_course", "mini_golf_course_v2", "mini_golf_course_v2_urban_art_skin", "mini_golf_urban_art_v2", "urban_art_mini_golf_program_v1"),
+        ("mini_golf_course", "mini_golf_course_v3", "mini_golf_course_v3_nature_adventure_skin", "mini_golf_nature_adventure_v3", "nature_adventure_mini_golf_program_v1"),
+    ),
+    "park_beach_volleyball_competition_v0": (
+        ("beach_volleyball_courts", "beach_volleyball_courts_v1", "beach_volleyball_courts_v1_beachside_skin", "beach_volleyball_beachside_v1", "beachside_volleyball_program_v1"),
+        ("beach_volleyball_courts", "beach_volleyball_courts_v2", "beach_volleyball_courts_v2_park_sand_skin", "beach_volleyball_park_sand_v2", "park_sand_volleyball_program_v1"),
+        ("beach_volleyball_courts", "beach_volleyball_courts_v3", "beach_volleyball_courts_v3_indoor_outdoor_skin", "beach_volleyball_hybrid_v3", "indoor_outdoor_volleyball_program_v1"),
+    ),
+    "park_pollinator_prairie_v0": (
+        ("pollinator_meadow", "pollinator_meadow_v1", "pollinator_meadow_v1_butterfly_garden_skin", "pollinator_butterfly_v1", "butterfly_garden_program_v1"),
+        ("pollinator_meadow", "pollinator_meadow_v2", "pollinator_meadow_v2_urban_strip_skin", "pollinator_urban_strip_v2", "urban_pollinator_strip_program_v1"),
+        ("pollinator_meadow", "pollinator_meadow_v3", "pollinator_meadow_v3_formal_border_skin", "pollinator_formal_border_v3", "formal_pollinator_border_program_v1"),
+    ),
+    "park_orchard_heritage_v0": (
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v1", "urban_orchard_food_forest_v1_permaculture_skin", "orchard_permaculture_v1", "permaculture_orchard_program_v1"),
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v2", "urban_orchard_food_forest_v2_pick_your_own_skin", "orchard_pick_your_own_v2", "pick_your_own_orchard_program_v1"),
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v3", "urban_orchard_food_forest_v3_citrus_grove_skin", "orchard_citrus_grove_v3", "citrus_grove_program_v1"),
+    ),
+    "park_bioswale_streetside_v0": (
+        ("bioswale_rain_garden", "bioswale_rain_garden_v1", "bioswale_rain_garden_v1_park_rain_garden_skin", "bioswale_park_rain_garden_v1", "park_rain_garden_program_v1"),
+        ("bioswale_rain_garden", "bioswale_rain_garden_v2", "bioswale_rain_garden_v2_terraced_steps_skin", "bioswale_terraced_steps_v2", "terraced_rain_steps_program_v1"),
+        ("bioswale_rain_garden", "bioswale_rain_garden_v3", "bioswale_rain_garden_v3_parking_lot_skin", "bioswale_parking_lot_v3", "parking_lot_bioswale_program_v1"),
+    ),
+    "park_sculpture_museum_court_v0": (
+        ("sculpture_garden", "sculpture_garden_v1", "sculpture_garden_v1_landscape_art_skin", "sculpture_landscape_art_v1", "landscape_art_program_v1"),
+        ("sculpture_garden", "sculpture_garden_v2", "sculpture_garden_v2_interactive_kinetic_skin", "sculpture_kinetic_v2", "interactive_kinetic_art_program_v1"),
+        ("sculpture_garden", "sculpture_garden_v3", "sculpture_garden_v3_rotating_exhibition_skin", "sculpture_rotating_v3", "rotating_exhibition_program_v1"),
+    ),
+    "park_labyrinth_classical_v0": (
+        ("labyrinth_meditation", "labyrinth_meditation_v1", "labyrinth_meditation_v1_zen_rock_skin", "labyrinth_zen_rock_v1", "zen_rock_labyrinth_program_v1"),
+        ("labyrinth_meditation", "labyrinth_meditation_v2", "labyrinth_meditation_v2_healing_garden_skin", "labyrinth_healing_garden_v2", "healing_garden_labyrinth_program_v1"),
+        ("labyrinth_meditation", "labyrinth_meditation_v3", "labyrinth_meditation_v3_modern_mindfulness_skin", "labyrinth_modern_v3", "modern_mindfulness_program_v1"),
+    ),
+}
+
+
+def _apply_batch18_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH18_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch18_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

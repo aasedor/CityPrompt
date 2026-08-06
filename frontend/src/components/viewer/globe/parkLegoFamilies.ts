@@ -16,6 +16,7 @@ import { batch14ParkSkinForSelection } from './parkBatch14Skins';
 import { batch15ParkSkinForSelection } from './parkBatch15Skins';
 import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 import { batch17ParkSkinForSelection } from './parkBatch17Skins';
+import { batch18ParkSkinForSelection } from './parkBatch18Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -793,34 +794,74 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     })]),
   }),
   park_disc_golf_wooded_v0: Object.freeze({
-    disc_golf_course: Object.freeze([Object.freeze({ variantId: 'disc_golf_course_v0', appearanceKitId: 'disc_golf_course_v0_wooded_championship_skin', plantingStructure: 'disc_golf_wooded_v0' })]),
+    disc_golf_course: fourVariantMappings(
+      'disc_golf_course',
+      ['disc_golf_course_v0_wooded_championship_skin', 'disc_golf_course_v1_open_park_skin', 'disc_golf_course_v2_hillside_terrain_skin', 'disc_golf_course_v3_urban_short_skin'],
+      ['disc_golf_wooded_v0', 'disc_golf_open_park_v1', 'disc_golf_hillside_v2', 'disc_golf_urban_short_v3'],
+    ),
   }),
   park_bocce_piazza_v0: Object.freeze({
-    bocce_petanque_court: Object.freeze([Object.freeze({ variantId: 'bocce_petanque_court_v0', appearanceKitId: 'bocce_petanque_court_v0_italian_piazza_skin', plantingStructure: 'bocce_piazza_v0' })]),
+    bocce_petanque_court: fourVariantMappings(
+      'bocce_petanque_court',
+      ['bocce_petanque_court_v0_italian_piazza_skin', 'bocce_petanque_court_v1_french_petanque_skin', 'bocce_petanque_court_v2_modern_park_skin', 'bocce_petanque_court_v3_community_senior_skin'],
+      ['bocce_piazza_v0', 'bocce_french_v1', 'bocce_modern_park_v2', 'bocce_community_senior_v3'],
+    ),
   }),
   park_climbing_competition_v0: Object.freeze({
-    climbing_bouldering_wall: Object.freeze([Object.freeze({ variantId: 'climbing_bouldering_wall_v0', appearanceKitId: 'climbing_bouldering_wall_v0_competition_skin', plantingStructure: 'climbing_competition_v0' })]),
+    climbing_bouldering_wall: fourVariantMappings(
+      'climbing_bouldering_wall',
+      ['climbing_bouldering_wall_v0_competition_skin', 'climbing_bouldering_wall_v1_natural_rock_skin', 'climbing_bouldering_wall_v2_kids_adventure_skin', 'climbing_bouldering_wall_v3_urban_art_skin'],
+      ['climbing_competition_v0', 'climbing_natural_rock_v1', 'climbing_kids_adventure_v2', 'climbing_urban_art_v3'],
+    ),
   }),
   park_mini_golf_classic_v0: Object.freeze({
-    mini_golf_course: Object.freeze([Object.freeze({ variantId: 'mini_golf_course_v0', appearanceKitId: 'mini_golf_course_v0_classic_skin', plantingStructure: 'mini_golf_classic_v0' })]),
+    mini_golf_course: fourVariantMappings(
+      'mini_golf_course',
+      ['mini_golf_course_v0_classic_skin', 'mini_golf_course_v1_garden_putting_skin', 'mini_golf_course_v2_urban_art_skin', 'mini_golf_course_v3_nature_adventure_skin'],
+      ['mini_golf_classic_v0', 'mini_golf_garden_putting_v1', 'mini_golf_urban_art_v2', 'mini_golf_nature_adventure_v3'],
+    ),
   }),
   park_beach_volleyball_competition_v0: Object.freeze({
-    beach_volleyball_courts: Object.freeze([Object.freeze({ variantId: 'beach_volleyball_courts_v0', appearanceKitId: 'beach_volleyball_courts_v0_competition_skin', plantingStructure: 'beach_volleyball_competition_v0' })]),
+    beach_volleyball_courts: fourVariantMappings(
+      'beach_volleyball_courts',
+      ['beach_volleyball_courts_v0_competition_skin', 'beach_volleyball_courts_v1_beachside_skin', 'beach_volleyball_courts_v2_park_sand_skin', 'beach_volleyball_courts_v3_indoor_outdoor_skin'],
+      ['beach_volleyball_competition_v0', 'beach_volleyball_beachside_v1', 'beach_volleyball_park_sand_v2', 'beach_volleyball_hybrid_v3'],
+    ),
   }),
   park_pollinator_prairie_v0: Object.freeze({
-    pollinator_meadow: Object.freeze([Object.freeze({ variantId: 'pollinator_meadow_v0', appearanceKitId: 'pollinator_meadow_v0_prairie_skin', plantingStructure: 'pollinator_prairie_v0' })]),
+    pollinator_meadow: fourVariantMappings(
+      'pollinator_meadow',
+      ['pollinator_meadow_v0_prairie_skin', 'pollinator_meadow_v1_butterfly_garden_skin', 'pollinator_meadow_v2_urban_strip_skin', 'pollinator_meadow_v3_formal_border_skin'],
+      ['pollinator_prairie_v0', 'pollinator_butterfly_v1', 'pollinator_urban_strip_v2', 'pollinator_formal_border_v3'],
+    ),
   }),
   park_orchard_heritage_v0: Object.freeze({
-    urban_orchard_food_forest: Object.freeze([Object.freeze({ variantId: 'urban_orchard_food_forest_v0', appearanceKitId: 'urban_orchard_food_forest_v0_heritage_apple_skin', plantingStructure: 'orchard_heritage_v0' })]),
+    urban_orchard_food_forest: fourVariantMappings(
+      'urban_orchard_food_forest',
+      ['urban_orchard_food_forest_v0_heritage_apple_skin', 'urban_orchard_food_forest_v1_permaculture_skin', 'urban_orchard_food_forest_v2_pick_your_own_skin', 'urban_orchard_food_forest_v3_citrus_grove_skin'],
+      ['orchard_heritage_v0', 'orchard_permaculture_v1', 'orchard_pick_your_own_v2', 'orchard_citrus_grove_v3'],
+    ),
   }),
   park_bioswale_streetside_v0: Object.freeze({
-    bioswale_rain_garden: Object.freeze([Object.freeze({ variantId: 'bioswale_rain_garden_v0', appearanceKitId: 'bioswale_rain_garden_v0_streetside_skin', plantingStructure: 'bioswale_streetside_v0' })]),
+    bioswale_rain_garden: fourVariantMappings(
+      'bioswale_rain_garden',
+      ['bioswale_rain_garden_v0_streetside_skin', 'bioswale_rain_garden_v1_park_rain_garden_skin', 'bioswale_rain_garden_v2_terraced_steps_skin', 'bioswale_rain_garden_v3_parking_lot_skin'],
+      ['bioswale_streetside_v0', 'bioswale_park_rain_garden_v1', 'bioswale_terraced_steps_v2', 'bioswale_parking_lot_v3'],
+    ),
   }),
   park_sculpture_museum_court_v0: Object.freeze({
-    sculpture_garden: Object.freeze([Object.freeze({ variantId: 'sculpture_garden_v0', appearanceKitId: 'sculpture_garden_v0_museum_court_skin', plantingStructure: 'sculpture_museum_court_v0' })]),
+    sculpture_garden: fourVariantMappings(
+      'sculpture_garden',
+      ['sculpture_garden_v0_museum_court_skin', 'sculpture_garden_v1_landscape_art_skin', 'sculpture_garden_v2_interactive_kinetic_skin', 'sculpture_garden_v3_rotating_exhibition_skin'],
+      ['sculpture_museum_court_v0', 'sculpture_landscape_art_v1', 'sculpture_kinetic_v2', 'sculpture_rotating_v3'],
+    ),
   }),
   park_labyrinth_classical_v0: Object.freeze({
-    labyrinth_meditation: Object.freeze([Object.freeze({ variantId: 'labyrinth_meditation_v0', appearanceKitId: 'labyrinth_meditation_v0_classical_stone_skin', plantingStructure: 'labyrinth_classical_v0' })]),
+    labyrinth_meditation: fourVariantMappings(
+      'labyrinth_meditation',
+      ['labyrinth_meditation_v0_classical_stone_skin', 'labyrinth_meditation_v1_zen_rock_skin', 'labyrinth_meditation_v2_healing_garden_skin', 'labyrinth_meditation_v3_modern_mindfulness_skin'],
+      ['labyrinth_classical_v0', 'labyrinth_zen_rock_v1', 'labyrinth_healing_garden_v2', 'labyrinth_modern_v3'],
+    ),
   }),
   park_ice_rink_multipurpose_v3: Object.freeze({
     outdoor_ice_rink: Object.freeze([Object.freeze({ variantId: 'outdoor_ice_rink_v3', appearanceKitId: 'outdoor_ice_rink_v3_multipurpose_pad_skin', plantingStructure: 'ice_rink_multipurpose_v3' })]),
@@ -1505,6 +1546,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch15ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch16ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch17ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch18ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

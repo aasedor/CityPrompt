@@ -8,29 +8,29 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 33,
-    "partialParents": 97,
+    "completeMappedParents": 43,
+    "partialParents": 87,
     "uncoveredParents": 0,
-    "exactVariants": 95,
-    "sharedMappedVariants": 134,
-    "unmappedVariants": 291,
+    "exactVariants": 85,
+    "sharedMappedVariants": 174,
+    "unmappedVariants": 261,
     "parkCapabilities": 127
   },
   "categorySummary": {
     "civic_plazas:partial": 19,
     "custom:partial": 1,
-    "ecological_resilience:complete_mapped": 1,
-    "ecological_resilience:partial": 11,
+    "ecological_resilience:complete_mapped": 4,
+    "ecological_resilience:partial": 8,
     "landscape_parks:complete_mapped": 2,
     "landscape_parks:partial": 12,
     "neighborhood_public_realm:complete_mapped": 6,
     "neighborhood_public_realm:partial": 6,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:partial": 10,
-    "specialty_gardens:complete_mapped": 3,
-    "specialty_gardens:partial": 11,
-    "sports_recreation:complete_mapped": 15,
-    "sports_recreation:partial": 9,
+    "specialty_gardens:complete_mapped": 5,
+    "specialty_gardens:partial": 9,
+    "sports_recreation:complete_mapped": 20,
+    "sports_recreation:partial": 4,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:partial": 5,
     "waterfront_spaces:partial": 13
@@ -5199,16 +5199,16 @@
       "title": "Disc Golf Course",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "disc_golf_course_v0",
           "label": "Wooded Championship",
           "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_disc_golf_wooded_v0",
@@ -5220,7 +5220,7 @@
                 "disc_basket_targets_v1",
                 "wooded_fairway_clearings_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5228,22 +5228,64 @@
           "id": "disc_golf_course_v1",
           "label": "Open Park Layout",
           "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_disc_golf_wooded_v0",
+              "profileId": "disc-golf-wooded-lego-v1",
+              "appearanceKitId": "disc_golf_course_v1_open_park_skin",
+              "componentSetIds": [
+                "disc_golf_ground_program_v1",
+                "nine_tee_pad_route_v1",
+                "disc_basket_targets_v1",
+                "wooded_fairway_clearings_v1",
+                "open_park_disc_golf_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "disc_golf_course_v2",
           "label": "Hillside Terrain",
           "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_disc_golf_wooded_v0",
+              "profileId": "disc-golf-wooded-lego-v1",
+              "appearanceKitId": "disc_golf_course_v2_hillside_terrain_skin",
+              "componentSetIds": [
+                "disc_golf_ground_program_v1",
+                "nine_tee_pad_route_v1",
+                "disc_basket_targets_v1",
+                "wooded_fairway_clearings_v1",
+                "hillside_disc_golf_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "disc_golf_course_v3",
           "label": "Urban Short Course",
           "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_disc_golf_wooded_v0",
+              "profileId": "disc-golf-wooded-lego-v1",
+              "appearanceKitId": "disc_golf_course_v3_urban_short_skin",
+              "componentSetIds": [
+                "disc_golf_ground_program_v1",
+                "nine_tee_pad_route_v1",
+                "disc_basket_targets_v1",
+                "wooded_fairway_clearings_v1",
+                "urban_short_disc_golf_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5252,16 +5294,16 @@
       "title": "Bocce / Pétanque Court",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "bocce_petanque_court_v0",
           "label": "Italian Piazza Style",
           "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_bocce_piazza_v0",
@@ -5273,7 +5315,7 @@
                 "stone_border_v1",
                 "vine_pergola_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5281,22 +5323,64 @@
           "id": "bocce_petanque_court_v1",
           "label": "French Pétanque Terrain",
           "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bocce_piazza_v0",
+              "profileId": "bocce-piazza-lego-v1",
+              "appearanceKitId": "bocce_petanque_court_v1_french_petanque_skin",
+              "componentSetIds": [
+                "bocce_ground_program_v1",
+                "regulation_bocce_lane_v1",
+                "stone_border_v1",
+                "vine_pergola_v1",
+                "french_petanque_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "bocce_petanque_court_v2",
           "label": "Modern Park Court",
           "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bocce_piazza_v0",
+              "profileId": "bocce-piazza-lego-v1",
+              "appearanceKitId": "bocce_petanque_court_v2_modern_park_skin",
+              "componentSetIds": [
+                "bocce_ground_program_v1",
+                "regulation_bocce_lane_v1",
+                "stone_border_v1",
+                "vine_pergola_v1",
+                "modern_park_bocce_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "bocce_petanque_court_v3",
           "label": "Community Senior Court",
           "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bocce_piazza_v0",
+              "profileId": "bocce-piazza-lego-v1",
+              "appearanceKitId": "bocce_petanque_court_v3_community_senior_skin",
+              "componentSetIds": [
+                "bocce_ground_program_v1",
+                "regulation_bocce_lane_v1",
+                "stone_border_v1",
+                "vine_pergola_v1",
+                "community_senior_bocce_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5305,16 +5389,16 @@
       "title": "Outdoor Climbing & Bouldering Wall",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "climbing_bouldering_wall_v0",
           "label": "Competition Boulder",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_climbing_competition_v0",
@@ -5326,7 +5410,7 @@
                 "route_hold_set_v1",
                 "continuous_fall_zone_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5334,22 +5418,64 @@
           "id": "climbing_bouldering_wall_v1",
           "label": "Natural Rock Feature",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_climbing_competition_v0",
+              "profileId": "climbing-competition-lego-v1",
+              "appearanceKitId": "climbing_bouldering_wall_v1_natural_rock_skin",
+              "componentSetIds": [
+                "climbing_ground_program_v1",
+                "angular_boulder_walls_v1",
+                "route_hold_set_v1",
+                "continuous_fall_zone_v1",
+                "natural_rock_climbing_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "climbing_bouldering_wall_v2",
           "label": "Kids Adventure Climb",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_climbing_competition_v0",
+              "profileId": "climbing-competition-lego-v1",
+              "appearanceKitId": "climbing_bouldering_wall_v2_kids_adventure_skin",
+              "componentSetIds": [
+                "climbing_ground_program_v1",
+                "angular_boulder_walls_v1",
+                "route_hold_set_v1",
+                "continuous_fall_zone_v1",
+                "kids_adventure_climbing_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "climbing_bouldering_wall_v3",
           "label": "Urban Art Wall",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_climbing_competition_v0",
+              "profileId": "climbing-competition-lego-v1",
+              "appearanceKitId": "climbing_bouldering_wall_v3_urban_art_skin",
+              "componentSetIds": [
+                "climbing_ground_program_v1",
+                "angular_boulder_walls_v1",
+                "route_hold_set_v1",
+                "continuous_fall_zone_v1",
+                "urban_art_climbing_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5568,16 +5694,16 @@
       "title": "Mini Golf / Putting Course",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "mini_golf_course_v0",
           "label": "Classic Themed",
           "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_mini_golf_classic_v0",
@@ -5589,7 +5715,7 @@
                 "classic_obstacles_v1",
                 "lane_edge_masonry_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5597,22 +5723,64 @@
           "id": "mini_golf_course_v1",
           "label": "Garden Putting Green",
           "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mini_golf_classic_v0",
+              "profileId": "mini-golf-classic-lego-v1",
+              "appearanceKitId": "mini_golf_course_v1_garden_putting_skin",
+              "componentSetIds": [
+                "mini_golf_ground_program_v1",
+                "nine_putting_lanes_v1",
+                "classic_obstacles_v1",
+                "lane_edge_masonry_v1",
+                "garden_putting_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "mini_golf_course_v2",
           "label": "Urban Art Course",
           "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mini_golf_classic_v0",
+              "profileId": "mini-golf-classic-lego-v1",
+              "appearanceKitId": "mini_golf_course_v2_urban_art_skin",
+              "componentSetIds": [
+                "mini_golf_ground_program_v1",
+                "nine_putting_lanes_v1",
+                "classic_obstacles_v1",
+                "lane_edge_masonry_v1",
+                "urban_art_mini_golf_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "mini_golf_course_v3",
           "label": "Nature Adventure",
           "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mini_golf_classic_v0",
+              "profileId": "mini-golf-classic-lego-v1",
+              "appearanceKitId": "mini_golf_course_v3_nature_adventure_skin",
+              "componentSetIds": [
+                "mini_golf_ground_program_v1",
+                "nine_putting_lanes_v1",
+                "classic_obstacles_v1",
+                "lane_edge_masonry_v1",
+                "nature_adventure_mini_golf_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5621,16 +5789,16 @@
       "title": "Pollinator Meadow & Wildflower Garden",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "pollinator_meadow_v0",
           "label": "Prairie Restoration",
           "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_pollinator_prairie_v0",
@@ -5642,7 +5810,7 @@
                 "prairie_drift_matrix_v1",
                 "interpretive_nodes_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5650,22 +5818,64 @@
           "id": "pollinator_meadow_v1",
           "label": "Butterfly Garden",
           "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pollinator_prairie_v0",
+              "profileId": "pollinator-prairie-lego-v1",
+              "appearanceKitId": "pollinator_meadow_v1_butterfly_garden_skin",
+              "componentSetIds": [
+                "pollinator_ground_program_v1",
+                "mown_loop_v1",
+                "prairie_drift_matrix_v1",
+                "interpretive_nodes_v1",
+                "butterfly_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pollinator_meadow_v2",
           "label": "Urban Meadow Strip",
           "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pollinator_prairie_v0",
+              "profileId": "pollinator-prairie-lego-v1",
+              "appearanceKitId": "pollinator_meadow_v2_urban_strip_skin",
+              "componentSetIds": [
+                "pollinator_ground_program_v1",
+                "mown_loop_v1",
+                "prairie_drift_matrix_v1",
+                "interpretive_nodes_v1",
+                "urban_pollinator_strip_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pollinator_meadow_v3",
           "label": "Formal Wildflower Border",
           "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pollinator_prairie_v0",
+              "profileId": "pollinator-prairie-lego-v1",
+              "appearanceKitId": "pollinator_meadow_v3_formal_border_skin",
+              "componentSetIds": [
+                "pollinator_ground_program_v1",
+                "mown_loop_v1",
+                "prairie_drift_matrix_v1",
+                "interpretive_nodes_v1",
+                "formal_pollinator_border_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5674,16 +5884,16 @@
       "title": "Urban Orchard & Food Forest",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "urban_orchard_food_forest_v0",
           "label": "Heritage Apple Orchard",
           "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_orchard_heritage_v0",
@@ -5695,7 +5905,7 @@
                 "harvest_spine_v1",
                 "cider_press_shed_pad_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5703,22 +5913,64 @@
           "id": "urban_orchard_food_forest_v1",
           "label": "Permaculture Food Forest",
           "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_orchard_heritage_v0",
+              "profileId": "orchard-heritage-lego-v1",
+              "appearanceKitId": "urban_orchard_food_forest_v1_permaculture_skin",
+              "componentSetIds": [
+                "orchard_ground_program_v1",
+                "heritage_tree_rows_v1",
+                "harvest_spine_v1",
+                "cider_press_shed_pad_v1",
+                "permaculture_orchard_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_orchard_food_forest_v2",
           "label": "Community Pick-Your-Own",
           "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_orchard_heritage_v0",
+              "profileId": "orchard-heritage-lego-v1",
+              "appearanceKitId": "urban_orchard_food_forest_v2_pick_your_own_skin",
+              "componentSetIds": [
+                "orchard_ground_program_v1",
+                "heritage_tree_rows_v1",
+                "harvest_spine_v1",
+                "cider_press_shed_pad_v1",
+                "pick_your_own_orchard_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_orchard_food_forest_v3",
           "label": "Citrus Grove Park",
           "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_orchard_heritage_v0",
+              "profileId": "orchard-heritage-lego-v1",
+              "appearanceKitId": "urban_orchard_food_forest_v3_citrus_grove_skin",
+              "componentSetIds": [
+                "orchard_ground_program_v1",
+                "heritage_tree_rows_v1",
+                "harvest_spine_v1",
+                "cider_press_shed_pad_v1",
+                "citrus_grove_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5727,16 +5979,16 @@
       "title": "Bioswale & Rain Garden Corridor",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "bioswale_rain_garden_v0",
           "label": "Streetside Bioswale",
           "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_bioswale_streetside_v0",
@@ -5748,7 +6000,7 @@
                 "curb_inlets_v1",
                 "overflow_check_dams_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5756,22 +6008,64 @@
           "id": "bioswale_rain_garden_v1",
           "label": "Park Rain Garden",
           "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bioswale_streetside_v0",
+              "profileId": "bioswale-streetside-lego-v1",
+              "appearanceKitId": "bioswale_rain_garden_v1_park_rain_garden_skin",
+              "componentSetIds": [
+                "bioswale_ground_program_v1",
+                "linear_treatment_cells_v1",
+                "curb_inlets_v1",
+                "overflow_check_dams_v1",
+                "park_rain_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "bioswale_rain_garden_v2",
           "label": "Terraced Rain Steps",
           "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bioswale_streetside_v0",
+              "profileId": "bioswale-streetside-lego-v1",
+              "appearanceKitId": "bioswale_rain_garden_v2_terraced_steps_skin",
+              "componentSetIds": [
+                "bioswale_ground_program_v1",
+                "linear_treatment_cells_v1",
+                "curb_inlets_v1",
+                "overflow_check_dams_v1",
+                "terraced_rain_steps_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "bioswale_rain_garden_v3",
           "label": "Parking Lot Bioswale",
           "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_bioswale_streetside_v0",
+              "profileId": "bioswale-streetside-lego-v1",
+              "appearanceKitId": "bioswale_rain_garden_v3_parking_lot_skin",
+              "componentSetIds": [
+                "bioswale_ground_program_v1",
+                "linear_treatment_cells_v1",
+                "curb_inlets_v1",
+                "overflow_check_dams_v1",
+                "parking_lot_bioswale_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5833,16 +6127,16 @@
       "title": "Sculpture Garden & Art Park",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "sculpture_garden_v0",
           "label": "Museum Sculpture Court",
           "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_sculpture_museum_court_v0",
@@ -5854,7 +6148,7 @@
                 "abstract_sculpture_set_v1",
                 "gravel_gallery_route_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5862,22 +6156,64 @@
           "id": "sculpture_garden_v1",
           "label": "Landscape Art Park",
           "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sculpture_museum_court_v0",
+              "profileId": "sculpture-museum-court-lego-v1",
+              "appearanceKitId": "sculpture_garden_v1_landscape_art_skin",
+              "componentSetIds": [
+                "sculpture_court_ground_program_v1",
+                "curated_display_plinths_v1",
+                "abstract_sculpture_set_v1",
+                "gravel_gallery_route_v1",
+                "landscape_art_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "sculpture_garden_v2",
           "label": "Interactive & Kinetic",
           "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sculpture_museum_court_v0",
+              "profileId": "sculpture-museum-court-lego-v1",
+              "appearanceKitId": "sculpture_garden_v2_interactive_kinetic_skin",
+              "componentSetIds": [
+                "sculpture_court_ground_program_v1",
+                "curated_display_plinths_v1",
+                "abstract_sculpture_set_v1",
+                "gravel_gallery_route_v1",
+                "interactive_kinetic_art_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "sculpture_garden_v3",
           "label": "Rotating Exhibition",
           "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sculpture_museum_court_v0",
+              "profileId": "sculpture-museum-court-lego-v1",
+              "appearanceKitId": "sculpture_garden_v3_rotating_exhibition_skin",
+              "componentSetIds": [
+                "sculpture_court_ground_program_v1",
+                "curated_display_plinths_v1",
+                "abstract_sculpture_set_v1",
+                "gravel_gallery_route_v1",
+                "rotating_exhibition_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5886,16 +6222,16 @@
       "title": "Labyrinth & Meditation Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "labyrinth_meditation_v0",
           "label": "Classical Stone Labyrinth",
           "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_labyrinth_classical_v0",
@@ -5907,7 +6243,7 @@
                 "central_stone_bench_v1",
                 "formal_hedge_frame_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5915,22 +6251,64 @@
           "id": "labyrinth_meditation_v1",
           "label": "Zen Rock Garden",
           "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_labyrinth_classical_v0",
+              "profileId": "labyrinth-classical-lego-v1",
+              "appearanceKitId": "labyrinth_meditation_v1_zen_rock_skin",
+              "componentSetIds": [
+                "labyrinth_ground_program_v1",
+                "chartres_ring_path_v1",
+                "central_stone_bench_v1",
+                "formal_hedge_frame_v1",
+                "zen_rock_labyrinth_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "labyrinth_meditation_v2",
           "label": "Healing Garden",
           "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_labyrinth_classical_v0",
+              "profileId": "labyrinth-classical-lego-v1",
+              "appearanceKitId": "labyrinth_meditation_v2_healing_garden_skin",
+              "componentSetIds": [
+                "labyrinth_ground_program_v1",
+                "chartres_ring_path_v1",
+                "central_stone_bench_v1",
+                "formal_hedge_frame_v1",
+                "healing_garden_labyrinth_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "labyrinth_meditation_v3",
           "label": "Modern Mindfulness",
           "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_labyrinth_classical_v0",
+              "profileId": "labyrinth-classical-lego-v1",
+              "appearanceKitId": "labyrinth_meditation_v3_modern_mindfulness_skin",
+              "componentSetIds": [
+                "labyrinth_ground_program_v1",
+                "chartres_ring_path_v1",
+                "central_stone_bench_v1",
+                "formal_hedge_frame_v1",
+                "modern_mindfulness_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6140,16 +6518,16 @@
       "title": "Beach Volleyball Courts",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "beach_volleyball_courts_v0",
           "label": "Competition Standard",
           "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_beach_volleyball_competition_v0",
@@ -6161,7 +6539,7 @@
                 "competition_net_v1",
                 "referee_stand_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6169,22 +6547,64 @@
           "id": "beach_volleyball_courts_v1",
           "label": "Beachside Recreation",
           "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_beach_volleyball_competition_v0",
+              "profileId": "beach-volleyball-competition-lego-v1",
+              "appearanceKitId": "beach_volleyball_courts_v1_beachside_skin",
+              "componentSetIds": [
+                "beach_volleyball_ground_program_v1",
+                "regulation_sand_court_v1",
+                "competition_net_v1",
+                "referee_stand_v1",
+                "beachside_volleyball_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "beach_volleyball_courts_v2",
           "label": "Park Sand Courts",
           "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_beach_volleyball_competition_v0",
+              "profileId": "beach-volleyball-competition-lego-v1",
+              "appearanceKitId": "beach_volleyball_courts_v2_park_sand_skin",
+              "componentSetIds": [
+                "beach_volleyball_ground_program_v1",
+                "regulation_sand_court_v1",
+                "competition_net_v1",
+                "referee_stand_v1",
+                "park_sand_volleyball_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "beach_volleyball_courts_v3",
           "label": "Indoor-Outdoor Complex",
           "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_beach_volleyball_competition_v0",
+              "profileId": "beach-volleyball-competition-lego-v1",
+              "appearanceKitId": "beach_volleyball_courts_v3_indoor_outdoor_skin",
+              "componentSetIds": [
+                "beach_volleyball_ground_program_v1",
+                "regulation_sand_court_v1",
+                "competition_net_v1",
+                "referee_stand_v1",
+                "indoor_outdoor_volleyball_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
