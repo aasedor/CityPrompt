@@ -344,29 +344,27 @@ export function shouldRenderCommunityProps(zone: SiteZone): boolean {
 }
 
 /**
- * An authored park texture is a replacement ground surface, not a translucent
- * planning overlay. Remove the source Google mesh below it by default so
- * photogrammetry trees, roofs, and terrain cannot pierce the new park as the
- * camera moves. The renderer's world-coordinate mask keeps this replacement
- * camera-independent; legacy projects can still opt out explicitly.
+ * Every park surface is a replacement ground surface, not a translucent layer.
+ * Remove the source Google mesh below it by default so photogrammetry trees,
+ * roofs, and terrain cannot pierce either a planning polygon or a generated
+ * LEGO park as the camera moves. The world-coordinate mask makes the cleared
+ * footprint camera-independent; legacy projects can still opt out explicitly.
  *
- * Procedural public realm without an authored texture retains the conservative
- * opt-in contract because its geometry may intentionally preserve source
- * terrain or street context.
+ * Compiled streets retain the conservative opt-in contract because their
+ * sections may intentionally preserve adjoining source terrain and context.
  */
 export function shouldMaskCommunityGroundTiles(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return false;
   const props = propertiesOf(zone);
+  if (kind === 'park') {
+    return props.community_3d_mask_existing_tiles !== false;
+  }
   // The editable plan polygon is still a deliberate replacement for the
   // source tile inside its footprint. Masking the tile is what keeps that
   // plain colour wash visible on an oblique photogrammetry globe; it does not
   // opt the zone into any generated ground, texture, or standing LEGO parts.
   if (!isCommunity3DCompiled(zone)) {
-    return props.community_3d_mask_existing_tiles !== false;
-  }
-  const hasAuthoredParkGround = kind === 'park' && Boolean(props.park_ground_texture);
-  if (hasAuthoredParkGround) {
     return props.community_3d_mask_existing_tiles !== false;
   }
   return props.community_3d_mask_existing_tiles === true;

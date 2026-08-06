@@ -215,16 +215,27 @@ describe('community 3D plan contract', () => {
     }))).toBe(false);
   });
 
-  it('keeps procedural public realm on the explicit replacement contract', () => {
+  it('clears source tiles beneath procedural parks while compiled streets remain opt-in', () => {
     const park = zone('green_space', { green_space_archetype_id: 'neighborhood_park' });
-    const compiled = {
+    const compiledPark = {
       ...park,
       properties: withCommunity3DMeta(park, 'park_kit', '2026-07-17T01:00:00Z'),
     };
-    expect(shouldMaskCommunityGroundTiles(compiled)).toBe(false);
+    expect(shouldMaskCommunityGroundTiles(compiledPark)).toBe(true);
     expect(shouldMaskCommunityGroundTiles({
-      ...compiled,
-      properties: { ...compiled.properties, community_3d_mask_existing_tiles: true },
+      ...compiledPark,
+      properties: { ...compiledPark.properties, community_3d_mask_existing_tiles: false },
+    })).toBe(false);
+
+    const street = zone('road');
+    const compiledStreet = {
+      ...street,
+      properties: withCommunity3DMeta(street, 'street_section', '2026-07-17T01:00:00Z'),
+    };
+    expect(shouldMaskCommunityGroundTiles(compiledStreet)).toBe(false);
+    expect(shouldMaskCommunityGroundTiles({
+      ...compiledStreet,
+      properties: { ...compiledStreet.properties, community_3d_mask_existing_tiles: true },
     })).toBe(true);
   });
 
