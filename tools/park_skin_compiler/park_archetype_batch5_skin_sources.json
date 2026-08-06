@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "disc-golf-wooded-championship": {
+      "source": "frontend/public/archetypes/openspaces/disc-golf-course/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.12,0.70,0.42,0.98],"lawn":[0.48,0.55,0.84,0.88],"asphalt":[0.38,0.60,0.72,0.92],"planting":[0.00,0.04,0.98,0.70],"safety":[0.44,0.54,0.82,0.90],"timber":[0.02,0.08,0.42,0.76]}
+    },
+    "bocce-italian-piazza": {
+      "source": "frontend/public/archetypes/openspaces/bocce-pétanque-court/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.22,0.64,0.72,0.98],"lawn":[0.00,0.20,0.36,0.66],"asphalt":[0.18,0.72,0.64,0.98],"planting":[0.00,0.16,0.34,0.74],"safety":[0.48,0.66,0.98,0.98],"timber":[0.02,0.10,0.62,0.56]}
+    },
+    "climbing-competition-boulder": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.68,0.40,1.00],"lawn":[0.00,0.20,0.26,0.54],"asphalt":[0.08,0.66,0.82,0.96],"planting":[0.00,0.20,0.30,0.56],"safety":[0.10,0.58,0.90,0.92],"timber":[0.70,0.72,1.00,1.00]}
+    },
+    "mini-golf-classic-themed": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.00,0.70,0.96,1.00],"lawn":[0.18,0.54,0.84,0.92],"asphalt":[0.08,0.68,0.78,0.98],"planting":[0.18,0.34,0.72,0.72],"safety":[0.24,0.52,0.80,0.90],"timber":[0.36,0.08,0.62,0.58]}
+    },
+    "beach-volleyball-competition": {
+      "source": "frontend/public/archetypes/openspaces/beach-volleyball-courts/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.68,0.36,1.00],"lawn":[0.80,0.78,1.00,1.00],"asphalt":[0.02,0.66,0.36,0.96],"planting":[0.78,0.76,1.00,1.00],"safety":[0.22,0.40,0.90,0.88],"timber":[0.00,0.72,0.32,1.00]}
+    },
+    "pollinator-prairie-restoration": {
+      "source": "frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.28,0.50,0.76,0.90],"lawn":[0.48,0.48,0.94,0.84],"asphalt":[0.34,0.54,0.78,0.90],"planting":[0.00,0.48,1.00,1.00],"safety":[0.08,0.50,0.90,0.96],"timber":[0.48,0.48,0.76,0.68]}
+    },
+    "urban-orchard-heritage-apple": {
+      "source": "frontend/public/archetypes/openspaces/urban-orchard-food-forest/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.20,0.66,0.72,1.00],"lawn":[0.06,0.62,0.56,0.98],"asphalt":[0.18,0.66,0.66,0.98],"planting":[0.00,0.20,1.00,0.88],"safety":[0.02,0.54,0.70,0.94],"timber":[0.24,0.24,0.78,0.76]}
+    },
+    "bioswale-streetside": {
+      "source": "frontend/public/archetypes/openspaces/bioswale-rain-garden-corridor/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"},
+      "crops": {"paver":[0.18,0.50,0.92,0.86],"lawn":[0.00,0.52,0.82,0.96],"asphalt":[0.00,0.70,0.40,1.00],"planting":[0.00,0.50,1.00,0.94],"safety":[0.14,0.58,0.88,0.90],"timber":[0.52,0.34,0.90,0.68]}
+    },
+    "sculpture-museum-court": {
+      "source": "frontend/public/archetypes/openspaces/sculpture-garden-art-park/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"paver","timber":"timber"},
+      "crops": {"paver":[0.12,0.42,0.88,0.94],"lawn":[0.00,0.62,1.00,1.00],"asphalt":[0.10,0.48,0.90,0.96],"planting":[0.00,0.54,1.00,1.00],"safety":[0.14,0.48,0.88,0.94],"timber":[0.00,0.70,0.42,1.00]}
+    },
+    "labyrinth-classical-stone": {
+      "source": "frontend/public/archetypes/openspaces/labyrinth-meditation-garden/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.08,0.58,0.92,0.98],"lawn":[0.08,0.52,0.92,0.96],"asphalt":[0.10,0.60,0.90,0.98],"planting":[0.00,0.44,1.00,0.78],"safety":[0.10,0.54,0.90,0.96],"timber":[0.38,0.54,0.64,0.74]}
+    }
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}

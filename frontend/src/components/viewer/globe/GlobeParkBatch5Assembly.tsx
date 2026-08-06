@@ -1,0 +1,195 @@
+import { useEffect, useMemo } from 'react';
+import { useTexture } from '@react-three/drei';
+import * as THREE from 'three';
+import type { ParkLegoFamilyId } from './parkLegoFamilies';
+import {
+  resolveParkGuideDimensionsM,
+  type ParkGroundGuide,
+} from './parkGroundProfiles';
+import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+
+export interface Batch5ProgramFrame {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  width: number;
+  height: number;
+}
+
+interface Point { x: number; y: number }
+
+type Batch5FamilyId = Extract<ParkLegoFamilyId,
+  | 'park_disc_golf_wooded_v0' | 'park_bocce_piazza_v0'
+  | 'park_climbing_competition_v0' | 'park_mini_golf_classic_v0'
+  | 'park_beach_volleyball_competition_v0' | 'park_pollinator_prairie_v0'
+  | 'park_orchard_heritage_v0' | 'park_bioswale_streetside_v0'
+  | 'park_sculpture_museum_court_v0' | 'park_labyrinth_classical_v0'>;
+
+const SKIN_SLUG: Record<Batch5FamilyId, string> = {
+  park_disc_golf_wooded_v0: 'disc-golf-wooded-championship',
+  park_bocce_piazza_v0: 'bocce-italian-piazza',
+  park_climbing_competition_v0: 'climbing-competition-boulder',
+  park_mini_golf_classic_v0: 'mini-golf-classic-themed',
+  park_beach_volleyball_competition_v0: 'beach-volleyball-competition',
+  park_pollinator_prairie_v0: 'pollinator-prairie-restoration',
+  park_orchard_heritage_v0: 'urban-orchard-heritage-apple',
+  park_bioswale_streetside_v0: 'bioswale-streetside',
+  park_sculpture_museum_court_v0: 'sculpture-museum-court',
+  park_labyrinth_classical_v0: 'labyrinth-classical-stone',
+};
+
+interface MaterialMaps {
+  map: THREE.Texture; normalMap: THREE.Texture; roughnessMap: THREE.Texture; aoMap: THREE.Texture;
+}
+
+function useRoleMaps(slug: string, role: string): MaterialMaps {
+  const root = `/park-skins/${slug}/adaptive-v1/${role}`;
+  const source = useTexture({
+    map: `${root}/albedo.jpg`, normalMap: `${root}/normal.png`,
+    roughnessMap: `${root}/roughness.jpg`, aoMap: `${root}/ao.jpg`,
+  });
+  const maps = useMemo(() => Object.fromEntries(Object.entries(source).map(([key, value]) => {
+    const texture = value.clone();
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(3, 3);
+    texture.needsUpdate = true;
+    return [key, texture];
+  })) as unknown as MaterialMaps, [source]);
+  maps.map.colorSpace = THREE.SRGBColorSpace;
+  useEffect(() => () => Object.values(maps).forEach((texture) => texture.dispose()), [maps]);
+  return maps;
+}
+
+function center(guide: ParkGroundGuide, frame: Batch5ProgramFrame): Point {
+  return { x: frame.minX + frame.width * guide.x, y: frame.maxY - frame.height * guide.y };
+}
+
+function route(guide: ParkGroundGuide, frame: Batch5ProgramFrame): Point[] {
+  if (guide.points && guide.points.length > 1) {
+    return guide.points.map(([x, y]) => ({
+      x: frame.minX + frame.width * x,
+      y: frame.maxY - frame.height * y,
+    }));
+  }
+  const c = center(guide, frame);
+  const width = guide.widthM ?? guide.width * frame.width;
+  const height = guide.heightM ?? guide.height * frame.height;
+  const angle = ((guide.rotationDeg ?? 0) * Math.PI) / 180;
+  const dx = (width || height) * 0.5 * Math.cos(angle);
+  const dy = (width || height) * 0.5 * Math.sin(angle);
+  return [{ x: c.x - dx, y: c.y - dy }, { x: c.x + dx, y: c.y + dy }];
+}
+
+function Segment({
+  from, to, width, height, z, color,
+}: { from: Point; to: Point; width: number; height: number; z: number; color: string }) {
+  const length = Math.max(0.05, Math.hypot(to.x - from.x, to.y - from.y));
+  return (
+    <mesh position={[(from.x + to.x) / 2, (from.y + to.y) / 2, z + height / 2]} rotation={[0, 0, Math.atan2(to.y - from.y, to.x - from.x)]} renderOrder={146}>
+      <boxGeometry args={[length, width, height]} />
+      <meshStandardMaterial color={color} roughness={0.86} metalness={0.02} />
+    </mesh>
+  );
+}
+
+export function GlobeParkBatch5Assembly({
+  familyId,
+  guides,
+  frame,
+  terrainZ,
+}: {
+  familyId: ParkLegoFamilyId;
+  guides: ParkGroundGuide[];
+  frame: Batch5ProgramFrame;
+  terrainZ: (x: number, y: number) => number;
+}) {
+  const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
+  const slug = SKIN_SLUG[familyId as Batch5FamilyId];
+  const paverMaps = useRoleMaps(slug, 'paver');
+  const lawnMaps = useRoleMaps(slug, 'lawn');
+  const safetyMaps = useRoleMaps(slug, 'safety');
+  const timberMaps = useRoleMaps(slug, 'timber');
+
+  if (familyId === 'park_disc_golf_wooded_v0') {
+    const tees = guides.filter((guide) => guide.kind === 'rectangle');
+    const targets = guides.filter((guide) => guide.kind === 'ellipse');
+    return <group>{tees.map((tee, index) => {
+      const c = center(tee, frame); const size = resolveParkGuideDimensionsM(tee, frame);
+      return <mesh key={`tee-${index}`} position={[c.x, c.y, terrainZ(c.x, c.y) + lift + 0.06]} rotation={[0, 0, -((tee.rotationDeg ?? 0) * Math.PI) / 180]}><boxGeometry args={[size.width, size.height, 0.12]} /><meshStandardMaterial {...paverMaps} color="#d5d1c7" roughness={0.94} /></mesh>;
+    })}{targets.map((target, index) => {
+      const c = center(target, frame); const z = terrainZ(c.x, c.y) + lift;
+      return <group key={`basket-${index}`} position={[c.x, c.y, z]}>
+        <mesh position={[0, 0, 0.78]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.035, 0.045, 1.56, 8]} /><meshStandardMaterial color="#6d7470" metalness={0.65} roughness={0.35} /></mesh>
+        <mesh position={[0, 0, 1.18]}><torusGeometry args={[0.31, 0.025, 8, 24]} /><meshStandardMaterial color="#d0b43c" metalness={0.5} roughness={0.38} /></mesh>
+        <mesh position={[0, 0, 1.56]}><torusGeometry args={[0.18, 0.02, 8, 20]} /><meshStandardMaterial color="#d0b43c" metalness={0.5} roughness={0.38} /></mesh>
+        {Array.from({ length: 10 }, (_, chain) => { const a = chain * Math.PI * 0.2; return <mesh key={chain} position={[Math.cos(a) * 0.24, Math.sin(a) * 0.24, 1.37]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.008, 0.008, 0.38, 5]} /><meshStandardMaterial color="#a6aaa6" metalness={0.8} roughness={0.25} /></mesh>; })}
+      </group>;
+    })}</group>;
+  }
+
+  if (familyId === 'park_bocce_piazza_v0') {
+    const lane = guides.find((guide) => guide.kind === 'rounded_rectangle');
+    const pergola = guides.find((guide) => guide.kind === 'line');
+    if (!lane) return null;
+    const c = center(lane, frame); const size = resolveParkGuideDimensionsM(lane, frame); const z = terrainZ(c.x, c.y) + lift;
+    const pRoute = pergola ? route(pergola, frame) : [];
+    return <group>
+      <mesh position={[c.x, c.y, z + 0.025]}><planeGeometry args={[size.width, size.height]} /><meshStandardMaterial {...safetyMaps} color="#ded4b8" roughness={0.94} /></mesh>
+      {[-1, 1].map((side) => <mesh key={`long-${side}`} position={[c.x, c.y + side * size.height / 2, z + 0.22]}><boxGeometry args={[size.width, 0.34, 0.44]} /><meshStandardMaterial color="#94836a" roughness={0.94} /></mesh>)}
+      {[-1, 1].map((side) => <mesh key={`short-${side}`} position={[c.x + side * size.width / 2, c.y, z + 0.22]}><boxGeometry args={[0.34, size.height, 0.44]} /><meshStandardMaterial color="#94836a" roughness={0.94} /></mesh>)}
+      {pRoute.length === 2 && <>{Array.from({ length: 6 }, (_, index) => { const t = index / 5; const x = pRoute[0].x + (pRoute[1].x - pRoute[0].x) * t; const y = pRoute[0].y + (pRoute[1].y - pRoute[0].y) * t; return <mesh key={index} position={[x, y, terrainZ(x, y) + lift + 1.45]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.10, 0.13, 2.9, 8]} /><meshStandardMaterial {...timberMaps} color="#9e7850" roughness={0.9} /></mesh>; })}<Segment from={pRoute[0]} to={pRoute[1]} width={3.2} height={0.15} z={Math.max(terrainZ(pRoute[0].x,pRoute[0].y),terrainZ(pRoute[1].x,pRoute[1].y))+lift+2.82} color="#7d5d3c" /></>}
+    </group>;
+  }
+
+  if (familyId === 'park_climbing_competition_v0') {
+    const walls = guides.filter((guide) => guide.kind === 'rectangle');
+    return <group>{walls.map((wall, index) => { const c = center(wall, frame); const size = resolveParkGuideDimensionsM(wall, frame); const height = [3.2,4.4,3.6][index] ?? 3.4; const yaw = (index - 1) * 0.24; const z = terrainZ(c.x,c.y)+lift; return <group key={index} position={[c.x,c.y,z]} rotation={[0,0,yaw]}>
+      <mesh position={[0,0,height/2]} rotation={[0,index===1?0.18:-0.10,0]}><boxGeometry args={[size.width, Math.max(1.0,size.height*0.28), height]} /><meshStandardMaterial {...paverMaps} color={index%2?'#aaada9':'#d0c2a8'} roughness={0.84} /></mesh>
+      {Array.from({length:12},(_,hold)=>{const hx=-size.width*0.38+(hold%4)*size.width*0.25; const hz=0.6+Math.floor(hold/4)*0.95; return <mesh key={hold} position={[hx,-Math.max(0.55,size.height*0.15),hz]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.10+(hold%3)*0.03,0.15,0.12,8]} /><meshStandardMaterial color={['#e2bb25','#2785b7','#dc6e28'][hold%3]} roughness={0.64} /></mesh>;})}
+    </group>;})}</group>;
+  }
+
+  if (familyId === 'park_mini_golf_classic_v0') {
+    const lanes = guides.filter((guide) => guide.kind === 'rounded_rectangle');
+    return <group>{lanes.map((lane,index)=>{const c=center(lane,frame);const s=resolveParkGuideDimensionsM(lane,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]} rotation={[0,0,-((lane.rotationDeg??0)*Math.PI)/180]}>
+      <mesh position={[0,0,0.025]}><planeGeometry args={[s.width,s.height]}/><meshStandardMaterial {...lawnMaps} color="#7da067" roughness={0.94}/></mesh>{[-1,1].map(side=><mesh key={side} position={[0,side*s.height/2,0.16]}><boxGeometry args={[s.width,0.22,0.32]}/><meshStandardMaterial {...paverMaps} color="#aaa396" roughness={0.91}/></mesh>)}
+      {index===1&&<><mesh position={[0,0,1.1]}><coneGeometry args={[0.8,2.2,8]}/><meshStandardMaterial {...timberMaps} color="#bd6557" roughness={0.82}/></mesh>{[0,Math.PI/2].map(a=><mesh key={a} position={[0,0,1.7]} rotation={[0,0,a]}><boxGeometry args={[3.2,0.12,0.22]}/><meshStandardMaterial {...timberMaps} color="#c6a56f" roughness={0.9}/></mesh>)}</>}
+      {index===4&&<mesh position={[0,0,0.8]} rotation={[Math.PI/2,0,0]}><torusGeometry args={[0.65,0.13,10,28]}/><meshStandardMaterial color="#d8a52a" roughness={0.72}/></mesh>}
+      {index===6&&<><mesh position={[0,0,0.7]}><boxGeometry args={[2.2,0.7,1.4]}/><meshStandardMaterial color="#8d3c30" roughness={0.82}/></mesh><mesh position={[0,-0.42,0.5]}><circleGeometry args={[0.28,16]}/><meshStandardMaterial color="#252a28"/></mesh></>}
+    </group>;})}</group>;
+  }
+
+  if (familyId === 'park_beach_volleyball_competition_v0') {
+    const net = guides.find((guide)=>guide.kind==='line'); if(!net)return null; const r=route(net,frame); if(r.length<2)return null; const mid={x:(r[0].x+r[1].x)/2,y:(r[0].y+r[1].y)/2}; const yaw=Math.atan2(r[1].y-r[0].y,r[1].x-r[0].x); const length=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y); const z=terrainZ(mid.x,mid.y)+lift;
+    return <group position={[mid.x,mid.y,z]} rotation={[0,0,yaw]}>{[-1,1].map(side=><mesh key={side} position={[side*length/2,0,1.35]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.07,0.09,2.7,10]}/><meshStandardMaterial color="#253f67" roughness={0.54}/></mesh>)}<mesh position={[0,0,1.55]}><planeGeometry args={[length,1.0,16,4]}/><meshStandardMaterial color="#e5e7e2" wireframe side={THREE.DoubleSide}/></mesh><group position={[length/2+0.8,-1.0,0]}><mesh position={[0,0,1.0]}><boxGeometry args={[0.7,0.7,2.0]}/><meshStandardMaterial {...safetyMaps} color="#e2d4ae" roughness={0.88}/></mesh><mesh position={[0.45,0,1.7]}><boxGeometry args={[0.9,0.5,0.12]}/><meshStandardMaterial color="#c7c3b6" roughness={0.8}/></mesh></group></group>;
+  }
+
+  if (familyId === 'park_pollinator_prairie_v0') {
+    const nodes = [{x:frame.minX+frame.width*0.16,y:frame.minY+frame.height*0.20},{x:frame.minX+frame.width*0.82,y:frame.minY+frame.height*0.72}];
+    return <group>{nodes.map((p,index)=>{const z=terrainZ(p.x,p.y)+lift;return <group key={index} position={[p.x,p.y,z]}><mesh position={[0,0,0.55]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.05,0.07,1.1,8]}/><meshStandardMaterial {...timberMaps} color="#7a6248" roughness={0.88}/></mesh><mesh position={[0,0,1.05]} rotation={[0.65,0,0]}><boxGeometry args={[1.15,0.08,0.7]}/><meshStandardMaterial {...paverMaps} color="#a79673" roughness={0.82}/></mesh></group>;})}</group>;
+  }
+
+  if (familyId === 'park_orchard_heritage_v0') {
+    const rows=guides.filter((guide)=>guide.kind==='line').slice(1,6);
+    return <group>{rows.flatMap((row,rowIndex)=>{const r=route(row,frame);if(r.length<2)return[];const length=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y);const count=Math.max(4,Math.min(14,Math.floor(length/7)));return Array.from({length:count},(_,index)=>{const t=(index+0.5)/count;const x=r[0].x+(r[1].x-r[0].x)*t;const y=r[0].y+(r[1].y-r[0].y)*t;const z=terrainZ(x,y)+lift;return <group key={`${rowIndex}-${index}`} position={[x,y,z]}><mesh position={[0,0,1.25]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.13,0.18,2.5,9]}/><meshStandardMaterial {...timberMaps} color="#7b5a3e" roughness={0.95}/></mesh><mesh position={[0,0,2.7]} scale={[1.3,1.1,0.9]}><sphereGeometry args={[1.25,12,8]}/><meshStandardMaterial {...lawnMaps} color={rowIndex%2?'#6a8054':'#74875b'} roughness={0.98}/></mesh>{[-0.6,0.2,0.65].map((offset,fruit)=><mesh key={fruit} position={[offset,fruit*0.25,2.8+fruit*0.15]}><sphereGeometry args={[0.09,8,6]}/><meshStandardMaterial color="#a34532" roughness={0.75}/></mesh>)}</group>;});})}</group>;
+  }
+
+  if (familyId === 'park_bioswale_streetside_v0') {
+    const crossings=guides.filter((guide)=>guide.kind==='line');
+    return <group>{crossings.map((guide,index)=>{const r=route(guide,frame);if(r.length<2)return null;const z=Math.max(terrainZ(r[0].x,r[0].y),terrainZ(r[1].x,r[1].y))+lift+0.12;return <group key={index}><Segment from={r[0]} to={r[1]} width={1.4} height={0.20} z={z} color="#8a775d"/>{[-1,1].map(side=>{const p=r[side===-1?0:1];return <mesh key={side} position={[p.x,p.y,terrainZ(p.x,p.y)+lift+0.04]}><boxGeometry args={[1.2,0.8,0.08]}/><meshStandardMaterial {...paverMaps} color="#756650" metalness={0.2} roughness={0.72}/></mesh>;})}</group>;})}</group>;
+  }
+
+  if (familyId === 'park_sculpture_museum_court_v0') {
+    const plinths=guides.filter((guide)=>guide.kind==='rectangle');
+    return <group>{plinths.map((guide,index)=>{const c=center(guide,frame);const s=resolveParkGuideDimensionsM(guide,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]}><mesh position={[0,0,0.25]}><boxGeometry args={[s.width,s.height,0.5]}/><meshStandardMaterial {...paverMaps} color="#aaa295" roughness={0.86}/></mesh>{index%3===0?<><mesh position={[-0.45,0,2.0]} rotation={[0.1,0.2,0.25]}><boxGeometry args={[0.38,0.55,3.4]}/><meshStandardMaterial color="#714332" metalness={0.38} roughness={0.72}/></mesh><mesh position={[0.45,0,1.8]} rotation={[-0.2,0.4,-0.25]}><boxGeometry args={[0.34,0.5,3.0]}/><meshStandardMaterial color="#714332" metalness={0.38} roughness={0.72}/></mesh></>:index%3===1?<mesh position={[0,0,1.7]} rotation={[0.2,0.3,0]}><torusKnotGeometry args={[0.72,0.22,64,10]}/><meshStandardMaterial color="#5b554c" metalness={0.45} roughness={0.5}/></mesh>:<mesh position={[0,0,1.55]}><dodecahedronGeometry args={[1.25,0]}/><meshStandardMaterial color="#9d9484" roughness={0.75}/></mesh>}</group>;})}</group>;
+  }
+
+  if (familyId === 'park_labyrinth_classical_v0') {
+    const rings=guides.filter((guide)=>guide.kind==='ellipse'); if(rings.length===0)return null; const c=center(rings[0],frame); const z=terrainZ(c.x,c.y)+lift;
+    return <group position={[c.x,c.y,z]}>{rings.filter((_,index)=>index%2===1).map((ring,index)=>{const s=resolveParkGuideDimensionsM(ring,frame);return <mesh key={index} position={[0,0,0.32]} scale={[s.width/Math.max(s.height,0.1),1,1]}><torusGeometry args={[s.height/2,0.24,8,64]}/><meshStandardMaterial {...lawnMaps} color="#5b764a" roughness={0.97}/></mesh>})}<group position={[0,0,0.45]}><mesh><boxGeometry args={[2.4,0.48,0.18]}/><meshStandardMaterial {...paverMaps} color="#b9b09d" roughness={0.9}/></mesh>{[-0.85,0.85].map(x=><mesh key={x} position={[x,0,-0.26]}><boxGeometry args={[0.24,0.40,0.52]}/><meshStandardMaterial {...paverMaps} color="#a79d89" roughness={0.9}/></mesh>)}</group></group>;
+  }
+
+  return null;
+}

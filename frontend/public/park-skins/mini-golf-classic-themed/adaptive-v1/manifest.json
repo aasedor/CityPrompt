@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "archetype": "mini-golf-classic-themed",
+  "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png"
+  ],
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.0,
+        0.7,
+        0.96,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        538,
+        983,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.18,
+        0.54,
+        0.84,
+        0.92
+      ],
+      "cropPixels": [
+        184,
+        415,
+        860,
+        707
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.08,
+        0.68,
+        0.78,
+        0.98
+      ],
+      "cropPixels": [
+        82,
+        522,
+        799,
+        753
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.18,
+        0.34,
+        0.72,
+        0.72
+      ],
+      "cropPixels": [
+        184,
+        261,
+        737,
+        553
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.24,
+        0.52,
+        0.8,
+        0.9
+      ],
+      "cropPixels": [
+        246,
+        399,
+        819,
+        691
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "cropNormalized": [
+        0.36,
+        0.08,
+        0.62,
+        0.58
+      ],
+      "cropPixels": [
+        369,
+        61,
+        635,
+        445
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

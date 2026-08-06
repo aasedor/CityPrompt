@@ -112,6 +112,16 @@ describe('park ground pilot profiles', () => {
     ['amphitheater_lawn', 'amphitheater_lawn_v0'],
     ['riparian_buffer', 'riparian_buffer_v0'],
     ['playground_adventure', 'playground_adventure_v0'],
+    ['disc_golf_course', 'disc_golf_wooded_v0'],
+    ['bocce_petanque_court', 'bocce_piazza_v0'],
+    ['climbing_bouldering_wall', 'climbing_competition_v0'],
+    ['mini_golf_course', 'mini_golf_classic_v0'],
+    ['beach_volleyball_courts', 'beach_volleyball_competition_v0'],
+    ['pollinator_meadow', 'pollinator_prairie_v0'],
+    ['urban_orchard_food_forest', 'orchard_heritage_v0'],
+    ['bioswale_rain_garden', 'bioswale_streetside_v0'],
+    ['sculpture_garden', 'sculpture_museum_court_v0'],
+    ['labyrinth_meditation', 'labyrinth_classical_v0'],
   ])('resolves %s with its coordinated planting structure', (id, planting) => {
     const candidate = zone(id);
     expect(resolveParkGroundProfile(candidate).isPilot).toBe(true);
@@ -188,6 +198,56 @@ describe('park ground pilot profiles', () => {
       }),
     };
     expect(resolveParkSpecialtyStructureKind(candidate)).toBe(expected);
+  });
+
+  it.each([
+    ['park_disc_golf_wooded_v0', 'disc_golf_course', 'disc_golf_course_v0_wooded_championship_skin', 'disc_golf_wooded_v0'],
+    ['park_bocce_piazza_v0', 'bocce_petanque_court', 'bocce_petanque_court_v0_italian_piazza_skin', 'bocce_piazza_v0'],
+    ['park_climbing_competition_v0', 'climbing_bouldering_wall', 'climbing_bouldering_wall_v0_competition_skin', 'climbing_competition_v0'],
+    ['park_mini_golf_classic_v0', 'mini_golf_course', 'mini_golf_course_v0_classic_skin', 'mini_golf_classic_v0'],
+    ['park_beach_volleyball_competition_v0', 'beach_volleyball_courts', 'beach_volleyball_courts_v0_competition_skin', 'beach_volleyball_competition_v0'],
+    ['park_pollinator_prairie_v0', 'pollinator_meadow', 'pollinator_meadow_v0_prairie_skin', 'pollinator_prairie_v0'],
+    ['park_orchard_heritage_v0', 'urban_orchard_food_forest', 'urban_orchard_food_forest_v0_heritage_apple_skin', 'orchard_heritage_v0'],
+    ['park_bioswale_streetside_v0', 'bioswale_rain_garden', 'bioswale_rain_garden_v0_streetside_skin', 'bioswale_streetside_v0'],
+    ['park_sculpture_museum_court_v0', 'sculpture_garden', 'sculpture_garden_v0_museum_court_skin', 'sculpture_museum_court_v0'],
+    ['park_labyrinth_classical_v0', 'labyrinth_meditation', 'labyrinth_meditation_v0_classical_stone_skin', 'labyrinth_classical_v0'],
+  ] as const)('resolves the batch-5 depth kit for %s/%s', (
+    familyId, archetypeId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: `${archetypeId}_v0`,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch5_archetype_assembly');
+    expect(resolveParkGroundProfile(candidate).guides.length).toBeGreaterThan(1);
+  });
+
+  it.each([
+    ['disc_golf_course', 300, 200],
+    ['bocce_petanque_court', 28, 16],
+    ['climbing_bouldering_wall', 25, 20],
+    ['mini_golf_course', 50, 30],
+    ['beach_volleyball_courts', 24, 16],
+    ['pollinator_meadow', 80, 60],
+    ['urban_orchard_food_forest', 60, 50],
+    ['bioswale_rain_garden', 60, 15],
+    ['sculpture_garden', 60, 50],
+    ['labyrinth_meditation', 20, 20],
+  ] as const)('fits the complete %s v0 program inside its catalogue nominal parcel', (
+    archetypeId, width, height,
+  ) => {
+    const profile = resolveParkGroundProfile(zone(archetypeId));
+    const fit = fitParkGroundGuides(profile.guides, { width, height });
+    expect(fit.omittedGuides, `${archetypeId}: ${JSON.stringify(fit.omittedGuides)}`).toHaveLength(0);
+    expect(fit.guides, archetypeId).toHaveLength(profile.guides.length);
   });
 
   it('gives every recurring master-planner public realm an authoritative layout guide', () => {

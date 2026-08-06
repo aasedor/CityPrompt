@@ -122,6 +122,7 @@ import {
   GlobeRegulationParkAssembly,
   type RegulationParkFamilyId,
 } from './GlobeArchetypeOwnedParkAssembly';
+import { GlobeParkBatch5Assembly } from './GlobeParkBatch5Assembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -845,6 +846,16 @@ function ParkSpecialtyStructures({
   }
 
   const profileFamilyId = resolveParkGroundProfile(zone).legoFamilyId;
+  if (structureKind === 'batch5_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch5Assembly
+        familyId={profileFamilyId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
   const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
     ? 'park_basketball_court_v0'
     : structureKind === 'tennis_cluster_v0_assembly'

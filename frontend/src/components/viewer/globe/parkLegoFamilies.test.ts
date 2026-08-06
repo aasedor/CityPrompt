@@ -309,6 +309,42 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['disc_golf_course', 'park_disc_golf_wooded_v0'],
+    ['bocce_petanque_court', 'park_bocce_piazza_v0'],
+    ['climbing_bouldering_wall', 'park_climbing_competition_v0'],
+    ['mini_golf_course', 'park_mini_golf_classic_v0'],
+    ['beach_volleyball_courts', 'park_beach_volleyball_competition_v0'],
+    ['pollinator_meadow', 'park_pollinator_prairie_v0'],
+    ['urban_orchard_food_forest', 'park_orchard_heritage_v0'],
+    ['bioswale_rain_garden', 'park_bioswale_streetside_v0'],
+    ['sculpture_garden', 'park_sculpture_museum_court_v0'],
+    ['labyrinth_meditation', 'park_labyrinth_classical_v0'],
+  ] as const)('compiles batch-5 %s v0 to exact zero-call family %s', (archetypeId, familyId) => {
+    const variantId = `${archetypeId}_v0`;
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it('does not borrow the v0 labyrinth program or skin for an unreviewed variant', () => {
+    const candidate = zone({
+      green_space_archetype_id: 'labyrinth_meditation',
+      green_space_selected_variant_id: 'labyrinth_meditation_v1',
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId: 'park_labyrinth_classical_v0',
+      variantId: 'labyrinth_meditation_v1',
+      supported: false,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+  });
+
+  it.each([
     ['inclusive_playground', 'inclusive_playground_v0'],
     ['dog_park', 'dog_park_v0'],
     ['splash_pad_area', 'splash_pad_area_v0'],

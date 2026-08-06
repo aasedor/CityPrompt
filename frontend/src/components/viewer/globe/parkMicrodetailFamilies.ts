@@ -411,6 +411,26 @@ function familyTargets(
         target('bin', cappedCount(areaM2 / 1600, 1, 4)),
         target('bollard', cappedCount(perimeterM / 42, 2, 8)),
       ];
+    case 'park_disc_golf_wooded_v0':
+      return [target('shrub', 18), target('ornamental_grass', 10), target('boulder', 8), target('bin', 3), target('drinking_fountain', 1)];
+    case 'park_bocce_piazza_v0':
+      return [target('perennial', 8), target('light', 4), target('bin', 2), target('bike_rack', 1)];
+    case 'park_climbing_competition_v0':
+      return [target('light', 5), target('bin', 2), target('bike_rack', 2), target('bollard', 5)];
+    case 'park_mini_golf_classic_v0':
+      return [target('shrub', 12), target('perennial', 10), target('light', 6), target('bin', 2)];
+    case 'park_beach_volleyball_competition_v0':
+      return [target('light', 4), target('bin', 2), target('bike_rack', 1), target('drinking_fountain', 1)];
+    case 'park_pollinator_prairie_v0':
+      return [target('perennial', 28), target('ornamental_grass', 28), target('shrub', 8), target('boulder', 4)];
+    case 'park_orchard_heritage_v0':
+      return [target('perennial', 16), target('ornamental_grass', 12), target('picnic_table', 4), target('bin', 2), target('drinking_fountain', 1)];
+    case 'park_bioswale_streetside_v0':
+      return [target('reed', 24), target('ornamental_grass', 22), target('perennial', 14), target('riprap', 10), target('bollard', 6)];
+    case 'park_sculpture_museum_court_v0':
+      return [target('ornamental_grass', 14), target('perennial', 10), target('light', 7), target('bin', 2)];
+    case 'park_labyrinth_classical_v0':
+      return [target('shrub', 14), target('perennial', 8), target('light', 4), target('bin', 1)];
   }
 }
 

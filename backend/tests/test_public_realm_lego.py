@@ -81,6 +81,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_urban_forest",
         "park_amphitheater_lawn_v0",
         "park_playground_adventure_v0",
+        "park_disc_golf_wooded_v0",
+        "park_bocce_piazza_v0",
+        "park_climbing_competition_v0",
+        "park_mini_golf_classic_v0",
+        "park_beach_volleyball_competition_v0",
+        "park_pollinator_prairie_v0",
+        "park_orchard_heritage_v0",
+        "park_bioswale_streetside_v0",
+        "park_sculpture_museum_court_v0",
+        "park_labyrinth_classical_v0",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -208,6 +218,48 @@ def test_batch4_park_recipes_keep_exact_v0_identity(
     assert recipe.variant_id == f"{archetype_id}_v0"
     assert recipe.appearance_kit_id == appearance_id
     assert recipe.planting_structure in {"naturalistic_grove", f"{archetype_id}_v0"}
+
+
+@pytest.mark.parametrize(("archetype_id", "family_id", "appearance_id", "planting", "width", "depth"), (
+    ("disc_golf_course", "park_disc_golf_wooded_v0", "disc_golf_course_v0_wooded_championship_skin", "disc_golf_wooded_v0", 300, 200),
+    ("bocce_petanque_court", "park_bocce_piazza_v0", "bocce_petanque_court_v0_italian_piazza_skin", "bocce_piazza_v0", 28, 16),
+    ("climbing_bouldering_wall", "park_climbing_competition_v0", "climbing_bouldering_wall_v0_competition_skin", "climbing_competition_v0", 25, 20),
+    ("mini_golf_course", "park_mini_golf_classic_v0", "mini_golf_course_v0_classic_skin", "mini_golf_classic_v0", 50, 30),
+    ("beach_volleyball_courts", "park_beach_volleyball_competition_v0", "beach_volleyball_courts_v0_competition_skin", "beach_volleyball_competition_v0", 24, 16),
+    ("pollinator_meadow", "park_pollinator_prairie_v0", "pollinator_meadow_v0_prairie_skin", "pollinator_prairie_v0", 80, 60),
+    ("urban_orchard_food_forest", "park_orchard_heritage_v0", "urban_orchard_food_forest_v0_heritage_apple_skin", "orchard_heritage_v0", 60, 50),
+    ("bioswale_rain_garden", "park_bioswale_streetside_v0", "bioswale_rain_garden_v0_streetside_skin", "bioswale_streetside_v0", 60, 15),
+    ("sculpture_garden", "park_sculpture_museum_court_v0", "sculpture_garden_v0_museum_court_skin", "sculpture_museum_court_v0", 60, 50),
+    ("labyrinth_meditation", "park_labyrinth_classical_v0", "labyrinth_meditation_v0_classical_stone_skin", "labyrinth_classical_v0", 20, 20),
+))
+def test_batch5_park_recipes_keep_exact_v0_identity(
+    archetype_id, family_id, appearance_id, planting, width, depth,
+):
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        variant_id=f"{archetype_id}_v0",
+        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+    ))
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == f"{archetype_id}_v0"
+    assert recipe.appearance_kit_id == appearance_id
+    assert recipe.planting_structure == planting
+
+
+@pytest.mark.parametrize("archetype_id", (
+    "disc_golf_course", "bocce_petanque_court", "climbing_bouldering_wall",
+    "mini_golf_course", "beach_volleyball_courts", "pollinator_meadow",
+    "urban_orchard_food_forest", "bioswale_rain_garden", "sculpture_garden",
+    "labyrinth_meditation",
+))
+def test_batch5_unreviewed_variants_fail_closed(archetype_id):
+    with pytest.raises(PublicRealmPlanningError) as exc:
+        plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=f"{archetype_id}_v1",
+            target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
+        ))
+    assert exc.value.code == "family_incompatible"
 
 
 @pytest.mark.parametrize(

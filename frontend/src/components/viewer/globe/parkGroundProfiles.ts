@@ -1244,6 +1244,162 @@ PROFILES.community_park = {
   isPilot: true,
 };
 
+// Batch 5 exact v0 programs. These are reference-owned composition grammars,
+// not generic category fallbacks. Repetition is intentional and metric: whole
+// lanes/courts/tees are omitted when a site cannot contain them.
+PROFILES.disc_golf_course = {
+  id: 'disc-golf-wooded-lego-v1', version: 1,
+  programDescription: 'A compact nine-hole wooded championship disc-golf route. Nine concrete tee pads address nine separate metal basket targets through alternating fairway clearings, with one continuous wayfinding trail and small spectator clearings at the longest holes.',
+  groundDescription: 'Dark woodland floor, layered native understory, pale weathered concrete tees, warm fine-gravel trail, irregular mown fairway openings and galvanized target baskets sampled from the exact Wooded Championship v0 reference.',
+  criticalConstraints: 'Keep every tee paired to one visible basket and maintain a safe non-crossing throwing corridor. Tee pads remain 4 by 2 metres and targets remain human-scaled; do not enlarge one fairway to consume an oversized site. People and surrounding buildings are reference-only scale cues.',
+  canopyDescription: 'Dense mixed-age deciduous and pine canopy frames rather than fills each throwing corridor; fairway sightlines and the trail remain open.',
+  plantingStructure: 'disc_golf_wooded_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.5, y: 0.5, width: 0.88, height: 0.78, color: '#ab9b7c', strokeWidthM: 2.4 },
+    ...[[0.15,0.22],[0.38,0.16],[0.68,0.20],[0.84,0.36],[0.70,0.50],[0.84,0.70],[0.58,0.80],[0.32,0.72],[0.16,0.52]].flatMap(([x,y], index): ParkGroundGuide[] => [
+      { kind: 'rectangle', x, y, width: 0.025, height: 0.035, widthM: 4, heightM: 2, color: '#b5b2a8', strokeColor: '#78766e', strokeWidthM: 0.15, orientationPolicy: 'flexible', atomicGroup: `disc-hole-${index}` },
+      { kind: 'ellipse', x: Math.min(0.93, x + (index % 2 === 0 ? 0.12 : -0.11)), y: Math.min(0.91, y + 0.08), width: 0.018, height: 0.018, widthM: 2.4, heightM: 2.4, color: '#8d963f', atomicGroup: `disc-hole-${index}` },
+    ]),
+  ],
+  guideLegend: ['the TAN loop is the continuous nine-hole wayfinding route', 'each GREY tee rectangle is paired with one GREEN target circle and one protected wooded fairway sightline'],
+  includeCentralPlaza: false, renderSummary: 'nine-hole wooded disc-golf course with exact tee pads, galvanized basket targets, non-crossing fairway clearings and a continuous trail', isPilot: true,
+};
+
+PROFILES.bocce_petanque_court = {
+  id: 'bocce-piazza-lego-v1', version: 1,
+  programDescription: 'One traditional Italian-piazza bocce lane with a 27.5 by 4 metre oyster-shell playing bed, low stone containment, an accessible side walk and a vine-covered timber pergola with shaded spectator seating.',
+  groundDescription: 'Variegated pale oyster shell, honey-grey stone borders, warm sun-aged timber, terracotta accents and muted Mediterranean planting drawn from the Italian Piazza v0 reference.',
+  criticalConstraints: 'Preserve the complete lane and level playing bed. Stone edges, balls, pergola posts and seating remain outside the playing rectangle. Large surrounding buildings and people are excluded.',
+  canopyDescription: 'Olive-like small trees and vines stay on the social edge; the playing lane remains fully open.', plantingStructure: 'bocce_piazza_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.56, width: 0.78, height: 0.30, widthM: 27.5, heightM: 4, color: '#d1c5a5', strokeColor: '#8a7c63', strokeWidthM: 0.25, orientationPolicy: 'orthogonal' },
+    { kind: 'line', x: 0.50, y: 0.25, width: 0.72, height: 0, color: '#8b6848', strokeWidthM: 3.2, orientationPolicy: 'orthogonal' },
+  ],
+  guideLegend: ['the PALE lane is one exact regulation bocce playing bed with complete stone containment', 'the BROWN side band is the pergola, accessible walk and spectator edge'], includeCentralPlaza: false,
+  renderSummary: 'Italian-piazza bocce court with oyster-shell lane, low stone containment, vine pergola and shaded social edge', isPilot: true,
+};
+
+PROFILES.climbing_bouldering_wall = {
+  id: 'climbing-competition-lego-v1', version: 1,
+  programDescription: 'A competition bouldering park with one continuous 22 by 17 metre black fall-zone mat and five angular wall volumes of varied height and overhang, carrying sparse colour-coded climbing routes and a clear spectator deck.',
+  groundDescription: 'Black segmented impact mats, warm-grey and pale-plywood wall faces, charcoal undersides, bright yellow/blue/orange holds, board-formed concrete and timber spectator decking sampled from Competition Boulder v0.',
+  criticalConstraints: 'Keep all walls within the continuous fall zone, maximum climbing height 4.5 metres, and preserve open landing clearance around every face. Holds are route cues, not random confetti. Do not render climbers or surrounding buildings.',
+  canopyDescription: 'Minimal edge planting only; no trees over fall mats or climbing faces.', plantingStructure: 'climbing_competition_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.52, width: 0.78, height: 0.72, widthM: 22, heightM: 17, color: '#272927', strokeColor: '#131413', strokeWidthM: 0.4, orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.26, y: 0.48, width: 0.18, height: 0.35, widthM: 5.5, heightM: 8, color: '#a99e8b' },
+    { kind: 'rectangle', x: 0.52, y: 0.43, width: 0.22, height: 0.42, widthM: 7, heightM: 9, color: '#898d89' },
+    { kind: 'rectangle', x: 0.78, y: 0.55, width: 0.16, height: 0.32, widthM: 5, heightM: 7, color: '#c5b79e' },
+  ],
+  guideLegend: ['the BLACK rounded rectangle is the complete impact-safety room', 'the three faceted rectangles locate the interlocking competition wall volumes and remain inside the fall zone'], includeCentralPlaza: false,
+  renderSummary: 'competition bouldering park with angular overhanging walls, colour-coded routes, continuous fall mat and spectator edge', isPilot: true,
+};
+
+PROFILES.mini_golf_course = {
+  id: 'mini-golf-classic-lego-v1', version: 1,
+  programDescription: 'A compact nine-hole classic miniature-golf course. Narrow artificial-turf putting lanes follow a connected serpentine sequence around a windmill, castle gate, loop and small ship obstacle, with low masonry lane edges and one clear accessible circuit.',
+  groundDescription: 'Variegated green putting turf, red-brown brick walks, warm-grey block edging, painted timber obstacles and trimmed evergreen planting drawn from Classic Themed v0.',
+  criticalConstraints: 'Build nine individually legible lanes in order, not one oversized putting green. Keep obstacle footprints and masonry edges outside each ball route and preserve accessible circulation. People and perimeter buildings are omitted.',
+  canopyDescription: 'Low clipped shrubs and small ornamental trees frame lanes without covering putting surfaces.', plantingStructure: 'mini_golf_classic_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.5, y: 0.5, width: 0.90, height: 0.80, color: '#a8654b', strokeWidthM: 2.0 },
+    ...[[0.20,0.22],[0.50,0.20],[0.80,0.23],[0.75,0.43],[0.43,0.42],[0.20,0.48],[0.24,0.70],[0.53,0.70],[0.80,0.72]].map(([x,y], index): ParkGroundGuide => ({ kind: 'rounded_rectangle', x, y, width: 0.18, height: 0.12, widthM: 7.5, heightM: 2.4, color: index % 2 ? '#557b47' : '#63864f', strokeColor: '#8b8476', strokeWidthM: 0.30, orientationPolicy: 'flexible' })),
+  ],
+  guideLegend: ['the RED-BRICK loop is the connected accessible circuit', 'the nine GREEN rounded lanes are whole putting holes with low masonry edges and distinct classic obstacles'], includeCentralPlaza: false,
+  renderSummary: 'nine-hole classic mini-golf course with individually legible turf lanes, masonry edges, windmill, castle, loop and ship obstacles', isPilot: true,
+};
+
+PROFILES.beach_volleyball_courts = {
+  id: 'beach-volleyball-competition-lego-v1', version: 1,
+  programDescription: 'One complete competition beach-volleyball court: an exact 16 by 8 metre playing rectangle centered in a 24 by 16 metre sand-and-free-zone envelope, with a 2.43 metre net, referee stand, restrained spectator edge and tournament lighting kept outside run-off.',
+  groundDescription: 'Fine variegated pale sand with subtle rake and footprint texture, deep-blue boundary tape, white net mesh, dark navy padded posts and warm-grey concrete spectator edges sampled from Competition Standard v0.',
+  criticalConstraints: 'Never stretch the playing rectangle or free zone. Nets, referee stand, lights and seating stay outside boundary tape and required run-off. A larger parcel may host additional whole envelopes only; no oversized single court. No people or large buildings.',
+  canopyDescription: 'Only low coastal planting outside the free zone; no canopy shadows on the competition court.', plantingStructure: 'beach_volleyball_competition_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.50, width: 0.88, height: 0.78, widthM: 24, heightM: 16, color: '#d8c99e', strokeColor: '#294d7c', strokeWidthM: 0, orientationPolicy: 'orthogonal', atomicGroup: 'volleyball-1' },
+    { kind: 'line', x: 0.50, y: 0.50, width: 0, height: 0, widthM: 8, color: '#e9ebe6', strokeColor: '#294d7c', strokeWidthM: 0.12, rotationDeg: 90, orientationPolicy: 'fixed', atomicGroup: 'volleyball-1' },
+  ],
+  guideLegend: ['the SAND rectangle is one complete 24 by 16 metre play-and-free-zone envelope', 'the WHITE-BLUE centre bar is the exact competition net alignment'], includeCentralPlaza: false,
+  renderSummary: 'competition beach-volleyball court with exact sand envelope, blue boundary, padded net posts, referee stand and clear spectator edge', isPilot: true,
+};
+
+PROFILES.pollinator_meadow = {
+  id: 'pollinator-prairie-lego-v1', version: 1,
+  programDescription: 'A prairie-restoration pollinator meadow organized as four interlocking native-grass and wildflower drifts around one continuously mown walking loop, two interpretive nodes and a deliberately open sunny interior.',
+  groundDescription: 'Complex tawny-green prairie matrix with purple coneflower, yellow rudbeckia and pale seed-head flecks, narrow mown turf edges and warm compacted-earth path tones sampled from Prairie Restoration v0.',
+  criticalConstraints: 'Preserve broad contiguous habitat rather than flower confetti or ornamental beds. The loop remains continuous; interpretation stays on small shoulders. No generic lawn, buildings or people.',
+  canopyDescription: 'Very sparse perimeter trees only; the meadow interior stays sunlit and structurally varied.', plantingStructure: 'pollinator_prairie_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.50, y: 0.52, width: 0.80, height: 0.68, color: '#b7a47e', strokeWidthM: 2.2 },
+    { kind: 'ellipse', x: 0.30, y: 0.36, width: 0.40, height: 0.30, color: '#8b8551' },
+    { kind: 'ellipse', x: 0.68, y: 0.35, width: 0.42, height: 0.30, color: '#766f46' },
+    { kind: 'ellipse', x: 0.34, y: 0.69, width: 0.44, height: 0.28, color: '#8c774c' },
+    { kind: 'ellipse', x: 0.72, y: 0.66, width: 0.38, height: 0.30, color: '#777f4e' },
+  ],
+  guideLegend: ['the TAN loop is the exact continuously mown route', 'the four overlapping GREEN-GOLD fields are contiguous native prairie drifts with different flowering and grass structure'], includeCentralPlaza: false,
+  renderSummary: 'prairie-restoration pollinator meadow with four habitat drifts, continuous mown loop and restrained interpretive nodes', isPilot: true,
+};
+
+PROFILES.urban_orchard_food_forest = {
+  id: 'orchard-heritage-lego-v1', version: 1,
+  programDescription: 'A heritage apple orchard with five staggered fruit-tree rows, a central harvest path, wildflower understory, a small cider-press shed pad and a timber picnic pergola on the social edge.',
+  groundDescription: 'Mixed orchard grass and wildflower understory, warm gravel, weathered timber, red-green apple accents and muted autumn foliage sampled from Heritage Apple Orchard v0.',
+  criticalConstraints: 'Tree rows adapt by adding or removing whole regularly spaced trees; never scale one tree or shed to fill the site. Keep harvest path and row-end turning space clear. The shed is a small park kit, not a large building.',
+  canopyDescription: 'Low broad fruit crowns vary subtly in size and colour while retaining productive row spacing.', plantingStructure: 'orchard_heritage_v0',
+  guides: [
+    { kind: 'line', x: 0.50, y: 0.52, width: 0.84, height: 0, color: '#b4a17b', strokeWidthM: 2.8 },
+    ...[0.22,0.36,0.50,0.64,0.78].map((y): ParkGroundGuide => ({ kind: 'line', x: 0.50, y, width: 0.78, height: 0, color: '#607344', strokeWidthM: 4.0 })),
+    { kind: 'rectangle', x: 0.76, y: 0.82, width: 0.13, height: 0.14, widthM: 6, heightM: 5, color: '#775439', strokeColor: '#4c3627', strokeWidthM: 0.3 },
+    { kind: 'line', x: 0.30, y: 0.83, width: 0.22, height: 0, color: '#8b6949', strokeWidthM: 4.0 },
+  ],
+  guideLegend: ['the PALE central line is the clear harvest spine', 'five GREEN bands are productive tree rows with meadow understory', 'the SMALL BROWN pad and bar are the cider-press shed and picnic pergola social edge'], includeCentralPlaza: false,
+  renderSummary: 'heritage apple orchard with adaptive whole-tree rows, meadow understory, clear harvest spine, cider-press shed and picnic pergola', isPilot: true,
+};
+
+PROFILES.bioswale_rain_garden = {
+  id: 'bioswale-streetside-lego-v1', version: 1,
+  programDescription: 'A linear streetside bioswale composed of three hydraulically connected planting cells, repeated curb-cut inlets, two stone check dams, a dry parallel sidewalk and two narrow accessible crossings.',
+  groundDescription: 'Dark moist soil, layered sedge and flowering-rush planting, river cobble, rusted-steel inlet grates, pale concrete curb and asphalt edge sampled from Streetside Bioswale v0.',
+  criticalConstraints: 'Maintain downhill hydraulic continuity through all three cells. Curb cuts face the street edge, overflow remains clear and every crossing spans rather than fills the swale. No decorative pond, buildings or people.',
+  canopyDescription: 'Small multi-stem trees appear only in wider dry shoulders; wet cells remain low and legible.', plantingStructure: 'bioswale_streetside_v0',
+  guides: [
+    { kind: 'polyline', x: 0.50, y: 0.56, width: 1, height: 1, points: [[0.03,0.58],[0.22,0.46],[0.42,0.60],[0.62,0.45],[0.82,0.58],[0.97,0.48]], color: '#526b46', strokeColor: '#6f7f58', strokeWidthM: 6.0 },
+    { kind: 'polyline', x: 0.50, y: 0.20, width: 1, height: 1, points: [[0.02,0.20],[0.98,0.20]], color: '#c0b9aa', strokeWidthM: 2.4 },
+    { kind: 'line', x: 0.34, y: 0.50, width: 0, height: 0, widthM: 10, color: '#8d795d', strokeWidthM: 1.4, rotationDeg: 90, orientationPolicy: 'fixed' },
+    { kind: 'line', x: 0.70, y: 0.50, width: 0, height: 0, widthM: 10, color: '#8d795d', strokeWidthM: 1.4, rotationDeg: 90, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['the GREEN sinuous band is the connected three-cell treatment swale', 'the PALE parallel line is the dry sidewalk', 'the two BROWN crossbars are narrow accessible bridges/check-dam points'], includeCentralPlaza: false,
+  renderSummary: 'streetside bioswale with three connected treatment cells, curb-cut inlets, check dams, dry parallel walk and accessible crossings', isPilot: true,
+};
+
+PROFILES.sculpture_garden = {
+  id: 'sculpture-museum-court-lego-v1', version: 1,
+  programDescription: 'A formal museum sculpture court with a branching white-gravel gallery route, five separate display plinths, restrained geometric planting islands and a varied set of abstract metal and stone sculptures sized to pedestrian viewing distance.',
+  groundDescription: 'Complex white-grey gravel, dark weathering steel, pale limestone, bronze-black metal, warm timber benches and silvery-green ornamental planting sampled from Museum Sculpture Court v0.',
+  criticalConstraints: 'Keep clear 360-degree viewing space around every sculpture and preserve distinct objects rather than one oversized monument. Gallery buildings and people remain outside the park model.',
+  canopyDescription: 'A few narrow specimen trees and low ornamental grasses define rooms without hiding sculpture silhouettes.', plantingStructure: 'sculpture_museum_court_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.50, y: 0.52, width: 0.84, height: 0.72, color: '#d3d0c8', strokeWidthM: 3.2 },
+    ...[[0.22,0.30],[0.48,0.28],[0.74,0.34],[0.34,0.68],[0.68,0.70]].map(([x,y], index): ParkGroundGuide => ({ kind: 'rectangle', x, y, width: 0.08, height: 0.08, widthM: index === 0 ? 4 : 3, heightM: index === 0 ? 4 : 3, color: '#918779', strokeColor: '#625d56', strokeWidthM: 0.25, orientationPolicy: 'flexible' })),
+  ],
+  guideLegend: ['the WHITE-GREY loop is the connected gallery route', 'five STONE squares are separate sculpture plinths with complete viewing clearances'], includeCentralPlaza: false,
+  renderSummary: 'museum sculpture court with branching gravel route, five curated abstract works, separate viewing rooms and restrained planting', isPilot: true,
+};
+
+PROFILES.labyrinth_meditation = {
+  id: 'labyrinth-classical-lego-v1', version: 1,
+  programDescription: 'A classical Chartres-inspired walking labyrinth formed by seven concentric stone-and-turf rings with one legible winding entrance route, a central stone bench and a clipped formal hedge frame.',
+  groundDescription: 'Variegated pale limestone set into dense green turf, honey-grey stone bench, dark clipped boxwood and fine gravel thresholds sampled from Classical Stone Labyrinth v0.',
+  criticalConstraints: 'The rings must read as one continuous walking labyrinth, not a target or decorative circles. Preserve a clear entrance, accessible path width and quiet center. No people or surrounding buildings.',
+  canopyDescription: 'Clipped hedge and sparse corner trees frame but never shade or obstruct the labyrinth.', plantingStructure: 'labyrinth_classical_v0',
+  guides: [
+    ...[0.82,0.72,0.62,0.52,0.42,0.32,0.22].map((size, index): ParkGroundGuide => ({ kind: 'ellipse', x: 0.50, y: 0.50, width: size, height: size, widthM: 18 - index * 2, heightM: 18 - index * 2, color: index % 2 === 0 ? '#d0c9b8' : '#62804f', strokeColor: '#a49c89', strokeWidthM: 0.65, atomicGroup: 'labyrinth', orientationPolicy: 'fixed' })),
+    { kind: 'line', x: 0.50, y: 0.86, width: 0, height: 0, widthM: 5, color: '#d0c9b8', strokeWidthM: 1.2, rotationDeg: 90, orientationPolicy: 'fixed', atomicGroup: 'labyrinth' },
+  ],
+  guideLegend: ['the alternating STONE and TURF rings form one continuous seven-circuit labyrinth with a single southern entrance', 'the center remains a quiet destination with one stone bench'], includeCentralPlaza: false,
+  renderSummary: 'classical seven-circuit stone-and-turf labyrinth with clear entrance, central stone bench and clipped hedge frame', isPilot: true,
+};
+
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -1610,7 +1766,8 @@ export type ParkSpecialtyStructureKind =
   | 'riparian_bridge_assembly'
   | 'reservoir_edge_assembly'
   | 'amphitheater_lawn_assembly'
-  | 'adventure_play_assembly';
+  | 'adventure_play_assembly'
+  | 'batch5_archetype_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -1749,6 +1906,22 @@ export function resolveParkSpecialtyStructureKind(
     && legoContract.supported
     && legoContract.familyId === 'park_playground_adventure_v0'
   ) return 'adventure_play_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && [
+      'park_disc_golf_wooded_v0',
+      'park_bocce_piazza_v0',
+      'park_climbing_competition_v0',
+      'park_mini_golf_classic_v0',
+      'park_beach_volleyball_competition_v0',
+      'park_pollinator_prairie_v0',
+      'park_orchard_heritage_v0',
+      'park_bioswale_streetside_v0',
+      'park_sculpture_museum_court_v0',
+      'park_labyrinth_classical_v0',
+    ].includes(legoContract.familyId)
+  ) return 'batch5_archetype_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported
