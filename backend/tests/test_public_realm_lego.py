@@ -161,6 +161,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_parade_national_mall_v3",
             "park_canal_ecological_wetland_v3",
             "park_custom_biophilic_urban_v1",
+            "park_rooftop_intensive_garden_v0",
+            "park_community_healing_garden_v2",
+            "park_greenbelt_rail_trail_v1",
+            "park_foothill_heathland_trail_v2",
+            "park_marina_pacific_dock_v2",
+            "park_working_pier_brooklyn_park_v3",
+            "park_floating_meadow_loop_v2",
+            "park_lighthouse_pacific_headland_v2",
+            "park_lake_edge_timber_deck_v2",
+            "park_stormwater_natural_creek_v0",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1170,6 +1180,16 @@ def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
         ("park_parade_national_mall_v3", "parade_ground", "parade_ground_v3", "parade_ground_v3_national_mall_skin", 220.0, 90.0),
         ("park_canal_ecological_wetland_v3", "canal_waterway", "canal_waterway_v3", "canal_waterway_v3_ecological_skin", 180.0, 75.0),
         ("park_custom_biophilic_urban_v1", "custom_parks_plazas", "custom_parks_plazas_v1", "custom_parks_plazas_v1_biophilic_skin", 75.0, 60.0),
+        ("park_rooftop_intensive_garden_v0", "rooftop_garden", "rooftop_garden_v0", "rooftop_garden_v0_intensive_skin", 25.0, 20.0),
+        ("park_community_healing_garden_v2", "community_garden_enhanced", "garden_healing", "community_garden_enhanced_healing_skin", 60.0, 50.0),
+        ("park_greenbelt_rail_trail_v1", "greenbelt_buffer_park", "greenbelt_buffer_park_v1", "greenbelt_buffer_park_v1_rail_trail_skin", 600.0, 180.0),
+        ("park_foothill_heathland_trail_v2", "foothill_trail_park", "foothill_trail_park_v2", "foothill_trail_park_v2_heathland_skin", 400.0, 400.0),
+        ("park_marina_pacific_dock_v2", "marina_yacht_harbor", "marina_yacht_harbor_v2", "marina_yacht_harbor_v2_pacific_skin", 140.0, 120.0),
+        ("park_working_pier_brooklyn_park_v3", "working_pier_wharf_conversion", "working_pier_wharf_conversion_v3", "working_pier_wharf_conversion_v3_park_skin", 180.0, 100.0),
+        ("park_floating_meadow_loop_v2", "floating_park_pool", "floating_park_pool_v2", "floating_park_pool_v2_meadow_skin", 80.0, 70.0),
+        ("park_lighthouse_pacific_headland_v2", "lighthouse_point_park", "lighthouse_point_park_v2", "lighthouse_point_park_v2_pacific_skin", 180.0, 180.0),
+        ("park_lake_edge_timber_deck_v2", "lake_edge_plaza", "lake_edge_plaza_v2", "lake_edge_plaza_v2_timber_skin", 200.0, 40.0),
+        ("park_stormwater_natural_creek_v0", "stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", "stormwater_naturalized_drainage_corridor_v0_creek_skin", 375.0, 40.0),
     ],
 )
 def test_batch10_exact_families_compile_without_image_calls(

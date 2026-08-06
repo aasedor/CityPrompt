@@ -551,6 +551,16 @@ function familyTargets(
     case 'park_parade_national_mall_v3': return [target('light',12),target('bollard',10),target('bin',6)];
     case 'park_canal_ecological_wetland_v3': return [target('reed',28),target('shrub',18),target('boulder',10),target('riprap',14),target('bin',3)];
     case 'park_custom_biophilic_urban_v1': return [target('shrub',22),target('perennial',28),target('ornamental_grass',18),target('light',7),target('bin',4)];
+    case 'park_rooftop_intensive_garden_v0': return [target('shrub',18),target('perennial',24),target('ornamental_grass',16),target('light',5),target('bin',2)];
+    case 'park_community_healing_garden_v2': return [target('shrub',18),target('perennial',28),target('ornamental_grass',14),target('drinking_fountain',2),target('bin',3)];
+    case 'park_greenbelt_rail_trail_v1': return [target('shrub',24),target('boulder',10),target('bike_rack',6),target('bin',5),target('drinking_fountain',2)];
+    case 'park_foothill_heathland_trail_v2': return [target('shrub',18),target('boulder',22),target('riprap',12),target('bin',3)];
+    case 'park_marina_pacific_dock_v2': return [target('bollard',14),target('light',10),target('bin',6),target('bike_rack',6)];
+    case 'park_working_pier_brooklyn_park_v3': return [target('ornamental_grass',18),target('light',10),target('bin',6),target('bike_rack',6),target('bollard',12)];
+    case 'park_floating_meadow_loop_v2': return [target('ornamental_grass',26),target('perennial',22),target('light',6),target('bin',4)];
+    case 'park_lighthouse_pacific_headland_v2': return [target('shrub',22),target('boulder',20),target('riprap',12),target('bin',3)];
+    case 'park_lake_edge_timber_deck_v2': return [target('ornamental_grass',20),target('light',10),target('bin',6),target('bike_rack',5),target('bollard',10)];
+    case 'park_stormwater_natural_creek_v0': return [target('reed',28),target('shrub',22),target('boulder',14),target('riprap',16),target('bin',3)];
   }
 }
 

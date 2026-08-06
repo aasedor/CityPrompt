@@ -11,6 +11,7 @@ import { batch9ParkSkinForSelection } from './parkBatch9Skins';
 import { batch10ParkSkinForSelection } from './parkBatch10Skins';
 import { batch11ParkSkinForSelection } from './parkBatch11Skins';
 import { batch12ParkSkinForSelection } from './parkBatch12Skins';
+import { batch13ParkSkinForSelection } from './parkBatch13Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -125,6 +126,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_parade_national_mall_v3',
   'park_canal_ecological_wetland_v3',
   'park_custom_biophilic_urban_v1',
+  'park_rooftop_intensive_garden_v0',
+  'park_community_healing_garden_v2',
+  'park_greenbelt_rail_trail_v1',
+  'park_foothill_heathland_trail_v2',
+  'park_marina_pacific_dock_v2',
+  'park_working_pier_brooklyn_park_v3',
+  'park_floating_meadow_loop_v2',
+  'park_lighthouse_pacific_headland_v2',
+  'park_lake_edge_timber_deck_v2',
+  'park_stormwater_natural_creek_v0',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -939,6 +950,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_parade_national_mall_v3: Object.freeze({ parade_ground: Object.freeze([Object.freeze({ variantId:'parade_ground_v3', appearanceKitId:'parade_ground_v3_national_mall_skin', plantingStructure:'parade_national_mall_v3' })]) }),
   park_canal_ecological_wetland_v3: Object.freeze({ canal_waterway: Object.freeze([Object.freeze({ variantId:'canal_waterway_v3', appearanceKitId:'canal_waterway_v3_ecological_skin', plantingStructure:'canal_ecological_wetland_v3' })]) }),
   park_custom_biophilic_urban_v1: Object.freeze({ custom_parks_plazas: Object.freeze([Object.freeze({ variantId:'custom_parks_plazas_v1', appearanceKitId:'custom_parks_plazas_v1_biophilic_skin', plantingStructure:'custom_biophilic_urban_v1' })]) }),
+  park_rooftop_intensive_garden_v0: Object.freeze({ rooftop_garden: Object.freeze([Object.freeze({variantId:'rooftop_garden_v0',appearanceKitId:'rooftop_garden_v0_intensive_skin',plantingStructure:'rooftop_intensive_garden_v0'})]) }),
+  park_community_healing_garden_v2: Object.freeze({ community_garden_enhanced: Object.freeze([Object.freeze({variantId:'garden_healing',appearanceKitId:'community_garden_enhanced_healing_skin',plantingStructure:'community_healing_garden_v2'})]) }),
+  park_greenbelt_rail_trail_v1: Object.freeze({ greenbelt_buffer_park: Object.freeze([Object.freeze({variantId:'greenbelt_buffer_park_v1',appearanceKitId:'greenbelt_buffer_park_v1_rail_trail_skin',plantingStructure:'greenbelt_rail_trail_v1'})]) }),
+  park_foothill_heathland_trail_v2: Object.freeze({ foothill_trail_park: Object.freeze([Object.freeze({variantId:'foothill_trail_park_v2',appearanceKitId:'foothill_trail_park_v2_heathland_skin',plantingStructure:'foothill_heathland_trail_v2'})]) }),
+  park_marina_pacific_dock_v2: Object.freeze({ marina_yacht_harbor: Object.freeze([Object.freeze({variantId:'marina_yacht_harbor_v2',appearanceKitId:'marina_yacht_harbor_v2_pacific_skin',plantingStructure:'marina_pacific_dock_v2'})]) }),
+  park_working_pier_brooklyn_park_v3: Object.freeze({ working_pier_wharf_conversion: Object.freeze([Object.freeze({variantId:'working_pier_wharf_conversion_v3',appearanceKitId:'working_pier_wharf_conversion_v3_park_skin',plantingStructure:'working_pier_brooklyn_park_v3'})]) }),
+  park_floating_meadow_loop_v2: Object.freeze({ floating_park_pool: Object.freeze([Object.freeze({variantId:'floating_park_pool_v2',appearanceKitId:'floating_park_pool_v2_meadow_skin',plantingStructure:'floating_meadow_loop_v2'})]) }),
+  park_lighthouse_pacific_headland_v2: Object.freeze({ lighthouse_point_park: Object.freeze([Object.freeze({variantId:'lighthouse_point_park_v2',appearanceKitId:'lighthouse_point_park_v2_pacific_skin',plantingStructure:'lighthouse_pacific_headland_v2'})]) }),
+  park_lake_edge_timber_deck_v2: Object.freeze({ lake_edge_plaza: Object.freeze([Object.freeze({variantId:'lake_edge_plaza_v2',appearanceKitId:'lake_edge_plaza_v2_timber_skin',plantingStructure:'lake_edge_timber_deck_v2'})]) }),
+  park_stormwater_natural_creek_v0: Object.freeze({ stormwater_naturalized_drainage_corridor: Object.freeze([Object.freeze({variantId:'stormwater_naturalized_drainage_corridor_variant_0',appearanceKitId:'stormwater_naturalized_drainage_corridor_v0_creek_skin',plantingStructure:'stormwater_natural_creek_v0'})]) }),
 });
 
 function normalizeId(value: unknown): string {
@@ -1057,6 +1078,16 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'parade_ground') return 'park_parade_national_mall_v3';
   if (archetypeId === 'canal_waterway') return 'park_canal_ecological_wetland_v3';
   if (archetypeId === 'custom_parks_plazas') return 'park_custom_biophilic_urban_v1';
+  if (archetypeId === 'rooftop_garden') return 'park_rooftop_intensive_garden_v0';
+  if (archetypeId === 'community_garden_enhanced') return 'park_community_healing_garden_v2';
+  if (archetypeId === 'greenbelt_buffer_park') return 'park_greenbelt_rail_trail_v1';
+  if (archetypeId === 'foothill_trail_park') return 'park_foothill_heathland_trail_v2';
+  if (archetypeId === 'marina_yacht_harbor') return 'park_marina_pacific_dock_v2';
+  if (archetypeId === 'working_pier_wharf_conversion') return 'park_working_pier_brooklyn_park_v3';
+  if (archetypeId === 'floating_park_pool') return 'park_floating_meadow_loop_v2';
+  if (archetypeId === 'lighthouse_point_park') return 'park_lighthouse_pacific_headland_v2';
+  if (archetypeId === 'lake_edge_plaza') return 'park_lake_edge_timber_deck_v2';
+  if (archetypeId === 'stormwater_naturalized_drainage_corridor') return 'park_stormwater_natural_creek_v0';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -1170,11 +1201,27 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_parade_national_mall_v3': return 'parade_ground';
     case 'park_canal_ecological_wetland_v3': return 'canal_waterway';
     case 'park_custom_biophilic_urban_v1': return 'custom_parks_plazas';
+    case 'park_rooftop_intensive_garden_v0': return 'rooftop_garden';
+    case 'park_community_healing_garden_v2': return 'community_garden_enhanced';
+    case 'park_greenbelt_rail_trail_v1': return 'greenbelt_buffer_park';
+    case 'park_foothill_heathland_trail_v2': return 'foothill_trail_park';
+    case 'park_marina_pacific_dock_v2': return 'marina_yacht_harbor';
+    case 'park_working_pier_brooklyn_park_v3': return 'working_pier_wharf_conversion';
+    case 'park_floating_meadow_loop_v2': return 'floating_park_pool';
+    case 'park_lighthouse_pacific_headland_v2': return 'lighthouse_point_park';
+    case 'park_lake_edge_timber_deck_v2': return 'lake_edge_plaza';
+    case 'park_stormwater_natural_creek_v0': return 'stormwater_naturalized_drainage_corridor';
   }
 }
 
 function canonicalVariantId(archetypeId: string, raw: unknown): { id: string; index: number } {
   const normalized = normalizeId(raw);
+  const exactFamilyId = familyForArchetype(archetypeId, '');
+  const exactSelections = exactFamilyId
+    ? PARK_FAMILY_SELECTIONS[exactFamilyId][archetypeId] ?? []
+    : [];
+  const exactIndex = exactSelections.findIndex((candidate) => candidate.variantId === normalized);
+  if (exactIndex >= 0) return { id: normalized, index: exactIndex };
   const match = normalized.match(/(?:_variant_|_v)([0-3])$/);
   const index = match ? Number(match[1]) : 0;
   return {
@@ -1357,6 +1404,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch10ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch11ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch12ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch13ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

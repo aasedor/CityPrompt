@@ -492,6 +492,16 @@ _NIGHT_MARKET_HAWKER_ENVELOPE = _park_envelope(nominal=(85.0, 40.0), width=(24.0
 _PARADE_NATIONAL_MALL_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(40.0, 600.0), depth=(24.0, 260.0), area=(960.0, 156_000.0), min_aspect_ratio=1.4)
 _CANAL_ECOLOGICAL_WETLAND_ENVELOPE = _park_envelope(nominal=(180.0, 75.0), width=(32.0, 520.0), depth=(22.0, 220.0), area=(704.0, 114_400.0), min_aspect_ratio=1.4)
 _CUSTOM_BIOPHILIC_URBAN_ENVELOPE = _park_envelope(nominal=(75.0, 60.0), width=(18.0, 230.0), depth=(16.0, 180.0), area=(288.0, 41_400.0))
+_ROOFTOP_INTENSIVE_GARDEN_ENVELOPE = _park_envelope(nominal=(25.0, 20.0), width=(10.0, 70.0), depth=(8.0, 55.0), area=(80.0, 3_850.0))
+_COMMUNITY_HEALING_GARDEN_ENVELOPE = _park_envelope(nominal=(60.0, 50.0), width=(20.0, 160.0), depth=(16.0, 130.0), area=(320.0, 20_800.0))
+_GREENBELT_RAIL_TRAIL_ENVELOPE = _park_envelope(nominal=(600.0, 180.0), width=(45.0, 1_500.0), depth=(20.0, 400.0), area=(900.0, 600_000.0), min_aspect_ratio=1.8)
+_FOOTHILL_HEATHLAND_TRAIL_ENVELOPE = _park_envelope(nominal=(400.0, 400.0), width=(35.0, 900.0), depth=(28.0, 900.0), area=(980.0, 810_000.0))
+_MARINA_PACIFIC_DOCK_ENVELOPE = _park_envelope(nominal=(140.0, 120.0), width=(35.0, 360.0), depth=(28.0, 320.0), area=(980.0, 115_200.0))
+_WORKING_PIER_BROOKLYN_PARK_ENVELOPE = _park_envelope(nominal=(180.0, 100.0), width=(35.0, 430.0), depth=(24.0, 260.0), area=(840.0, 111_800.0), min_aspect_ratio=1.3)
+_FLOATING_MEADOW_LOOP_ENVELOPE = _park_envelope(nominal=(80.0, 70.0), width=(22.0, 180.0), depth=(18.0, 150.0), area=(396.0, 27_000.0))
+_LIGHTHOUSE_PACIFIC_HEADLAND_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(35.0, 360.0), depth=(28.0, 340.0), area=(980.0, 122_400.0))
+_LAKE_EDGE_TIMBER_DECK_ENVELOPE = _park_envelope(nominal=(200.0, 40.0), width=(45.0, 620.0), depth=(14.0, 100.0), area=(630.0, 62_000.0), min_aspect_ratio=1.8)
+_STORMWATER_NATURAL_CREEK_ENVELOPE = _park_envelope(nominal=(375.0, 40.0), width=(45.0, 700.0), depth=(16.0, 120.0), area=(720.0, 84_000.0), min_aspect_ratio=1.8)
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1516,6 +1526,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_custom_biophilic_urban_v1", kind="park", title="Biophilic Urban Park v1", generator="park_kit",
         selections=(_selection("custom_parks_plazas", "custom_parks_plazas_v1", profile_id="custom-biophilic-urban-lego-v1", appearance_kit_id="custom_parks_plazas_v1_biophilic_skin", planting_structure="custom_biophilic_urban_v1", compatibility=_CUSTOM_BIOPHILIC_URBAN_ENVELOPE, components=("biophilic_ground_program_v1", "layered_garden_rooms_v1", "meandering_accessible_paths_v1", "whole_seat_planter_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_rooftop_intensive_garden_v0", kind="park", title="Rooftop Intensive Garden v0", generator="park_kit",
+        selections=(_selection("rooftop_garden", "rooftop_garden_v0", profile_id="rooftop-intensive-garden-lego-v1", appearance_kit_id="rooftop_garden_v0_intensive_skin", planting_structure="rooftop_intensive_garden_v0", compatibility=_ROOFTOP_INTENSIVE_GARDEN_ENVELOPE, components=("roof_garden_ground_program_v1", "whole_raised_planter_rooms_v1", "modest_pergola_v1", "wind_screen_edge_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_community_healing_garden_v2", kind="park", title="Community Healing Garden v2", generator="park_kit",
+        selections=(_selection("community_garden_enhanced", "garden_healing", profile_id="community-healing-garden-lego-v1", appearance_kit_id="community_garden_enhanced_healing_skin", planting_structure="community_healing_garden_v2", compatibility=_COMMUNITY_HEALING_GARDEN_ENVELOPE, components=("healing_garden_ground_program_v1", "accessible_loop_v1", "whole_therapeutic_beds_v1", "modest_open_pergola_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_greenbelt_rail_trail_v1", kind="park", title="Forested Greenbelt Rail-Trail v1", generator="park_kit",
+        selections=(_selection("greenbelt_buffer_park", "greenbelt_buffer_park_v1", profile_id="greenbelt-rail-trail-lego-v1", appearance_kit_id="greenbelt_buffer_park_v1_rail_trail_skin", planting_structure="greenbelt_rail_trail_v1", compatibility=_GREENBELT_RAIL_TRAIL_ENVELOPE, components=("greenbelt_ground_program_v1", "continuous_multiuse_trail_v1", "woodland_buffer_cohorts_v1", "whole_rest_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_foothill_heathland_trail_v2", kind="park", title="Heathland Foothill Trail v2", generator="park_kit",
+        selections=(_selection("foothill_trail_park", "foothill_trail_park_v2", profile_id="foothill-heathland-trail-lego-v1", appearance_kit_id="foothill_trail_park_v2_heathland_skin", planting_structure="foothill_heathland_trail_v2", compatibility=_FOOTHILL_HEATHLAND_TRAIL_ENVELOPE, components=("heathland_ground_program_v1", "terrain_seated_trail_v1", "whole_heather_drift_cells_v1", "stone_viewpoint_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_marina_pacific_dock_v2", kind="park", title="Pacific Floating-Dock Marina v2", generator="park_kit",
+        selections=(_selection("marina_yacht_harbor", "marina_yacht_harbor_v2", profile_id="marina-pacific-dock-lego-v1", appearance_kit_id="marina_yacht_harbor_v2_pacific_skin", planting_structure="marina_pacific_dock_v2", compatibility=_MARINA_PACIFIC_DOCK_ENVELOPE, components=("marina_water_ground_program_v1", "continuous_quay_spine_v1", "whole_floating_dock_fingers_v1", "utility_pedestal_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_working_pier_brooklyn_park_v3", kind="park", title="Brooklyn Park Pier v3", generator="park_kit",
+        selections=(_selection("working_pier_wharf_conversion", "working_pier_wharf_conversion_v3", profile_id="working-pier-brooklyn-park-lego-v1", appearance_kit_id="working_pier_wharf_conversion_v3_park_skin", planting_structure="working_pier_brooklyn_park_v3", compatibility=_WORKING_PIER_BROOKLYN_PARK_ENVELOPE, components=("pier_park_ground_program_v1", "continuous_pier_deck_v1", "whole_lawn_planting_rooms_v1", "edge_rail_view_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_floating_meadow_loop_v2", kind="park", title="Floating Meadow Loop v2", generator="park_kit",
+        selections=(_selection("floating_park_pool", "floating_park_pool_v2", profile_id="floating-meadow-loop-lego-v1", appearance_kit_id="floating_park_pool_v2_meadow_skin", planting_structure="floating_meadow_loop_v2", compatibility=_FLOATING_MEADOW_LOOP_ENVELOPE, components=("floating_park_ground_program_v1", "continuous_boardwalk_loop_v1", "whole_meadow_islands_v1", "water_edge_rail_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_lighthouse_pacific_headland_v2", kind="park", title="Pacific Lighthouse Headland v2", generator="park_kit",
+        selections=(_selection("lighthouse_point_park", "lighthouse_point_park_v2", profile_id="lighthouse-pacific-headland-lego-v1", appearance_kit_id="lighthouse_point_park_v2_pacific_skin", planting_structure="lighthouse_pacific_headland_v2", compatibility=_LIGHTHOUSE_PACIFIC_HEADLAND_ENVELOPE, components=("headland_ground_program_v1", "cliff_setback_loop_v1", "whole_wind_grove_cells_v1", "lighthouse_building_reservation_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_lake_edge_timber_deck_v2", kind="park", title="Modern Timber Lake-Edge Deck v2", generator="park_kit",
+        selections=(_selection("lake_edge_plaza", "lake_edge_plaza_v2", profile_id="lake-edge-timber-deck-lego-v1", appearance_kit_id="lake_edge_plaza_v2_timber_skin", planting_structure="lake_edge_timber_deck_v2", compatibility=_LAKE_EDGE_TIMBER_DECK_ENVELOPE, components=("lake_edge_ground_program_v1", "continuous_timber_promenade_v1", "whole_step_seat_bays_v1", "rain_planter_edge_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_stormwater_natural_creek_v0", kind="park", title="Naturalized Stormwater Creek v0", generator="park_kit",
+        selections=(_selection("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", profile_id="stormwater-natural-creek-lego-v1", appearance_kit_id="stormwater_naturalized_drainage_corridor_v0_creek_skin", planting_structure="stormwater_natural_creek_v0", compatibility=_STORMWATER_NATURAL_CREEK_ENVELOPE, components=("natural_creek_ground_program_v1", "continuous_low_flow_channel_v1", "whole_floodplain_cells_v1", "bridge_crossing_bays_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

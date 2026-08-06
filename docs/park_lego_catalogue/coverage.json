@@ -9,23 +9,20 @@
     "catalogueVariants": 520,
     "completeExactParents": 0,
     "completeMappedParents": 3,
-    "partialParents": 107,
-    "uncoveredParents": 20,
-    "exactVariants": 102,
+    "partialParents": 117,
+    "uncoveredParents": 10,
+    "exactVariants": 112,
     "sharedMappedVariants": 18,
-    "unmappedVariants": 400,
-    "parkCapabilities": 107
+    "unmappedVariants": 390,
+    "parkCapabilities": 117
   },
   "categorySummary": {
     "civic_plazas:partial": 19,
     "custom:partial": 1,
-    "ecological_resilience:partial": 11,
-    "ecological_resilience:uncovered": 1,
-    "landscape_parks:partial": 12,
-    "landscape_parks:uncovered": 2,
+    "ecological_resilience:partial": 12,
+    "landscape_parks:partial": 14,
     "neighborhood_public_realm:complete_mapped": 2,
-    "neighborhood_public_realm:partial": 8,
-    "neighborhood_public_realm:uncovered": 2,
+    "neighborhood_public_realm:partial": 10,
     "parking_areas:uncovered": 5,
     "social_event_spaces:partial": 10,
     "specialty_gardens:partial": 14,
@@ -34,8 +31,7 @@
     "sports_recreation:uncovered": 4,
     "transport_infrastructure:uncovered": 1,
     "water_features:partial": 5,
-    "waterfront_spaces:partial": 8,
-    "waterfront_spaces:uncovered": 5
+    "waterfront_spaces:partial": 13
   },
   "parents": [
     {
@@ -2394,17 +2390,30 @@
       "title": "Rooftop Garden",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "rooftop_garden_v0",
           "label": "Intensive Garden",
           "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_rooftop_intensive_garden_v0",
+              "profileId": "rooftop-intensive-garden-lego-v1",
+              "appearanceKitId": "rooftop_garden_v0_intensive_skin",
+              "componentSetIds": [
+                "roof_garden_ground_program_v1",
+                "whole_raised_planter_rooms_v1",
+                "modest_pergola_v1",
+                "wind_screen_edge_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "rooftop_garden_v1",
@@ -2541,10 +2550,10 @@
       "title": "Community Garden (Design Variants)",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "garden_classic_allotment",
@@ -2564,8 +2573,21 @@
           "id": "garden_healing",
           "label": "Healing Garden",
           "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_community_healing_garden_v2",
+              "profileId": "community-healing-garden-lego-v1",
+              "appearanceKitId": "community_garden_enhanced_healing_skin",
+              "componentSetIds": [
+                "healing_garden_ground_program_v1",
+                "accessible_loop_v1",
+                "whole_therapeutic_beds_v1",
+                "modest_open_pergola_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "garden_intercultural",
@@ -5451,10 +5473,10 @@
       "title": "Greenbelt Buffer Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "greenbelt_buffer_park_v0",
@@ -5467,8 +5489,21 @@
           "id": "greenbelt_buffer_park_v1",
           "label": "Forested Commuter Rail-Trail Buffer",
           "thumbnailUrl": "/archetypes/openspaces/greenbelt-buffer-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_greenbelt_rail_trail_v1",
+              "profileId": "greenbelt-rail-trail-lego-v1",
+              "appearanceKitId": "greenbelt_buffer_park_v1_rail_trail_skin",
+              "componentSetIds": [
+                "greenbelt_ground_program_v1",
+                "continuous_multiuse_trail_v1",
+                "woodland_buffer_cohorts_v1",
+                "whole_rest_bays_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "greenbelt_buffer_park_v2",
@@ -5491,10 +5526,10 @@
       "title": "Foothill Trail Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "foothill_trail_park_v0",
@@ -5514,8 +5549,21 @@
           "id": "foothill_trail_park_v2",
           "label": "UK Heathland Moor Trail",
           "thumbnailUrl": "/archetypes/openspaces/foothill-trail-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_foothill_heathland_trail_v2",
+              "profileId": "foothill-heathland-trail-lego-v1",
+              "appearanceKitId": "foothill_trail_park_v2_heathland_skin",
+              "componentSetIds": [
+                "heathland_ground_program_v1",
+                "terrain_seated_trail_v1",
+                "whole_heather_drift_cells_v1",
+                "stone_viewpoint_bays_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "foothill_trail_park_v3",
@@ -5796,10 +5844,10 @@
       "title": "Marina / Yacht Harbor",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "marina_yacht_harbor_v0",
@@ -5819,8 +5867,21 @@
           "id": "marina_yacht_harbor_v2",
           "label": "Pacific-Style Floating-Dock Marina",
           "thumbnailUrl": "/archetypes/openspaces/marina-yacht-harbor/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_marina_pacific_dock_v2",
+              "profileId": "marina-pacific-dock-lego-v1",
+              "appearanceKitId": "marina_yacht_harbor_v2_pacific_skin",
+              "componentSetIds": [
+                "marina_water_ground_program_v1",
+                "continuous_quay_spine_v1",
+                "whole_floating_dock_fingers_v1",
+                "utility_pedestal_bays_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "marina_yacht_harbor_v3",
@@ -5836,10 +5897,10 @@
       "title": "Working Pier / Wharf Conversion",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "working_pier_wharf_conversion_v0",
@@ -5866,8 +5927,21 @@
           "id": "working_pier_wharf_conversion_v3",
           "label": "Brooklyn-Bridge-Park Pier",
           "thumbnailUrl": "/archetypes/openspaces/working-pier-wharf-conversion/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_working_pier_brooklyn_park_v3",
+              "profileId": "working-pier-brooklyn-park-lego-v1",
+              "appearanceKitId": "working_pier_wharf_conversion_v3_park_skin",
+              "componentSetIds": [
+                "pier_park_ground_program_v1",
+                "continuous_pier_deck_v1",
+                "whole_lawn_planting_rooms_v1",
+                "edge_rail_view_bays_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         }
       ]
     },
@@ -5876,10 +5950,10 @@
       "title": "Floating Park / Pool",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "floating_park_pool_v0",
@@ -5899,8 +5973,21 @@
           "id": "floating_park_pool_v2",
           "label": "Floating-Boardwalk Meadow Loop",
           "thumbnailUrl": "/archetypes/openspaces/floating-park-pool/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_floating_meadow_loop_v2",
+              "profileId": "floating-meadow-loop-lego-v1",
+              "appearanceKitId": "floating_park_pool_v2_meadow_skin",
+              "componentSetIds": [
+                "floating_park_ground_program_v1",
+                "continuous_boardwalk_loop_v1",
+                "whole_meadow_islands_v1",
+                "water_edge_rail_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "floating_park_pool_v3",
@@ -5916,10 +6003,10 @@
       "title": "Lighthouse Point / Headland Park",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "lighthouse_point_park_v0",
@@ -5939,8 +6026,21 @@
           "id": "lighthouse_point_park_v2",
           "label": "Pacific Cliff Promontory Light",
           "thumbnailUrl": "/archetypes/openspaces/lighthouse-point-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_lighthouse_pacific_headland_v2",
+              "profileId": "lighthouse-pacific-headland-lego-v1",
+              "appearanceKitId": "lighthouse_point_park_v2_pacific_skin",
+              "componentSetIds": [
+                "headland_ground_program_v1",
+                "cliff_setback_loop_v1",
+                "whole_wind_grove_cells_v1",
+                "lighthouse_building_reservation_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "lighthouse_point_park_v3",
@@ -6009,10 +6109,10 @@
       "title": "Lake Edge Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "lake_edge_plaza_v0",
@@ -6032,8 +6132,21 @@
           "id": "lake_edge_plaza_v2",
           "label": "Modern Timber Lakefront Deck",
           "thumbnailUrl": "/archetypes/openspaces/lake-edge-plaza/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_lake_edge_timber_deck_v2",
+              "profileId": "lake-edge-timber-deck-lego-v1",
+              "appearanceKitId": "lake_edge_plaza_v2_timber_skin",
+              "componentSetIds": [
+                "lake_edge_ground_program_v1",
+                "continuous_timber_promenade_v1",
+                "whole_step_seat_bays_v1",
+                "rain_planter_edge_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "lake_edge_plaza_v3",
@@ -6673,17 +6786,30 @@
       "title": "Stormwater Naturalized Drainage Corridor",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "uncovered",
+      "parentStatus": "partial",
       "variantCount": 4,
-      "mappedVariantCount": 0,
-      "exactVariantCount": 0,
+      "mappedVariantCount": 1,
+      "exactVariantCount": 1,
       "variants": [
         {
           "id": "stormwater_naturalized_drainage_corridor_variant_0",
           "label": "Naturalized Creek",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "exact_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_natural_creek_v0",
+              "profileId": "stormwater-natural-creek-lego-v1",
+              "appearanceKitId": "stormwater_naturalized_drainage_corridor_v0_creek_skin",
+              "componentSetIds": [
+                "natural_creek_ground_program_v1",
+                "continuous_low_flow_channel_v1",
+                "whole_floodplain_cells_v1",
+                "bridge_crossing_bays_v1"
+              ],
+              "oneSelectionFamily": true
+            }
+          ]
         },
         {
           "id": "stormwater_naturalized_drainage_corridor_variant_1",

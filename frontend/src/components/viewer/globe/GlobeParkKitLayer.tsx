@@ -130,6 +130,7 @@ import { GlobeParkBatch9Assembly } from './GlobeParkBatch9Assembly';
 import { GlobeParkBatch10Assembly } from './GlobeParkBatch10Assembly';
 import { GlobeParkBatch11Assembly } from './GlobeParkBatch11Assembly';
 import { GlobeParkBatch12Assembly } from './GlobeParkBatch12Assembly';
+import { GlobeParkBatch13Assembly } from './GlobeParkBatch13Assembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -918,6 +919,9 @@ function ParkSpecialtyStructures({
   }
   if (structureKind === 'batch12_archetype_assembly' && profileFamilyId) {
     return <GlobeParkBatch12Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+  }
+  if (structureKind === 'batch13_archetype_assembly' && profileFamilyId) {
+    return <GlobeParkBatch13Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
     ? 'park_basketball_court_v0'

@@ -443,6 +443,19 @@ describe('park ground pilot profiles', () => {
   });
 
   it.each([
+    ['park_rooftop_intensive_garden_v0','rooftop_garden','rooftop_garden_v0','rooftop_garden_v0_intensive_skin','rooftop_intensive_garden_v0'],
+    ['park_community_healing_garden_v2','community_garden_enhanced','garden_healing','community_garden_enhanced_healing_skin','community_healing_garden_v2'],
+    ['park_greenbelt_rail_trail_v1','greenbelt_buffer_park','greenbelt_buffer_park_v1','greenbelt_buffer_park_v1_rail_trail_skin','greenbelt_rail_trail_v1'],
+    ['park_foothill_heathland_trail_v2','foothill_trail_park','foothill_trail_park_v2','foothill_trail_park_v2_heathland_skin','foothill_heathland_trail_v2'],
+    ['park_marina_pacific_dock_v2','marina_yacht_harbor','marina_yacht_harbor_v2','marina_yacht_harbor_v2_pacific_skin','marina_pacific_dock_v2'],
+    ['park_working_pier_brooklyn_park_v3','working_pier_wharf_conversion','working_pier_wharf_conversion_v3','working_pier_wharf_conversion_v3_park_skin','working_pier_brooklyn_park_v3'],
+    ['park_floating_meadow_loop_v2','floating_park_pool','floating_park_pool_v2','floating_park_pool_v2_meadow_skin','floating_meadow_loop_v2'],
+    ['park_lighthouse_pacific_headland_v2','lighthouse_point_park','lighthouse_point_park_v2','lighthouse_point_park_v2_pacific_skin','lighthouse_pacific_headland_v2'],
+    ['park_lake_edge_timber_deck_v2','lake_edge_plaza','lake_edge_plaza_v2','lake_edge_plaza_v2_timber_skin','lake_edge_timber_deck_v2'],
+    ['park_stormwater_natural_creek_v0','stormwater_naturalized_drainage_corridor','stormwater_naturalized_drainage_corridor_variant_0','stormwater_naturalized_drainage_corridor_v0_creek_skin','stormwater_natural_creek_v0'],
+  ] as const)('resolves the batch-13 exact depth kit for %s/%s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone(archetypeId);candidate.properties={...candidate.properties,public_realm_lego:trustedParkRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})};expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch13_archetype_assembly');const profile=resolveParkGroundProfile(candidate);expect(profile.id).toContain('lego-v1');expect(profile.guides.length).toBeGreaterThan(0);expect(profile.criticalConstraints).toMatch(/do not|no |never |exclude/i)});
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 64, 38],
     ['kayak_launch_dock', 'kayak_launch_dock_v0', 80, 35],
     ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 150, 100],

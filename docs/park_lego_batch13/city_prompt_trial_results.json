@@ -1,0 +1,15 @@
+{
+  "schemaVersion":1,"validatedAt":"2026-08-06","projectId":"20c08c19-8bf3-48ab-b9d1-62482b46a66e","parkZoneId":"f00b58c7-6277-4617-a5d5-0bc4ff21db0b","buildingZoneId":"74ccecf5-afa2-44b9-9fd0-60464579be86","procedure":"one_park_at_a_time_with_separate_lego_building_and_fresh_server_snapshot","paidImageApiCalls":0,"meshyCalls":0,"expectedGenerateSummary":"1 buildings · 1 parks · 0 streets","expectedGroundContract":"Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+  "trials":[
+    {"order":1,"archetypeId":"rooftop_garden","variantId":"rooftop_garden_v0","familyId":"park_rooftop_intensive_garden_v0","result":"pass"},
+    {"order":2,"archetypeId":"community_garden_enhanced","variantId":"garden_healing","familyId":"park_community_healing_garden_v2","result":"pass_after_generic_variant_id_fix"},
+    {"order":3,"archetypeId":"greenbelt_buffer_park","variantId":"greenbelt_buffer_park_v1","familyId":"park_greenbelt_rail_trail_v1","result":"pass"},
+    {"order":4,"archetypeId":"foothill_trail_park","variantId":"foothill_trail_park_v2","familyId":"park_foothill_heathland_trail_v2","result":"pass"},
+    {"order":5,"archetypeId":"marina_yacht_harbor","variantId":"marina_yacht_harbor_v2","familyId":"park_marina_pacific_dock_v2","result":"pass"},
+    {"order":6,"archetypeId":"working_pier_wharf_conversion","variantId":"working_pier_wharf_conversion_v3","familyId":"park_working_pier_brooklyn_park_v3","result":"pass"},
+    {"order":7,"archetypeId":"floating_park_pool","variantId":"floating_park_pool_v2","familyId":"park_floating_meadow_loop_v2","result":"pass"},
+    {"order":8,"archetypeId":"lighthouse_point_park","variantId":"lighthouse_point_park_v2","familyId":"park_lighthouse_pacific_headland_v2","result":"pass"},
+    {"order":9,"archetypeId":"lake_edge_plaza","variantId":"lake_edge_plaza_v2","familyId":"park_lake_edge_timber_deck_v2","result":"pass"},
+    {"order":10,"archetypeId":"stormwater_naturalized_drainage_corridor","variantId":"stormwater_naturalized_drainage_corridor_variant_0","familyId":"park_stormwater_natural_creek_v0","result":"pass"}
+  ]
+}
