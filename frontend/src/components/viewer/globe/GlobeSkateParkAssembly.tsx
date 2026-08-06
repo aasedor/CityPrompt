@@ -4,10 +4,10 @@ import * as THREE from 'three';
 
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { fitSkateParkV0Program, type SkateParkPoint } from './skateParkFit';
+import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 
 const SKATE_RENDER_ORDER = 148;
 const ASSET_ROOT = '/park-kits/skate-park';
-const SKIN_ROOT = '/park-skins/skate-park/adaptive-v1';
 
 const ASSETS = Object.freeze({
   bowl: `${ASSET_ROOT}/skate-bowl-module.glb`,
@@ -23,12 +23,13 @@ interface SkateMaterialMaps {
   aoMap: THREE.Texture;
 }
 
-function useArchetypeMaterial(role: 'paver' | 'lawn', metresPerTile: number): SkateMaterialMaps {
+function useArchetypeMaterial(skinSlug: string, role: 'paver' | 'lawn', metresPerTile: number): SkateMaterialMaps {
+  const skinRoot = `/park-skins/${skinSlug}/adaptive-v1`;
   const source = useTexture({
-    map: `${SKIN_ROOT}/${role}/albedo.jpg`,
-    normalMap: `${SKIN_ROOT}/${role}/normal.png`,
-    roughnessMap: `${SKIN_ROOT}/${role}/roughness.jpg`,
-    aoMap: `${SKIN_ROOT}/${role}/ao.jpg`,
+    map: `${skinRoot}/${role}/albedo.jpg`,
+    normalMap: `${skinRoot}/${role}/normal.png`,
+    roughnessMap: `${skinRoot}/${role}/roughness.jpg`,
+    aoMap: `${skinRoot}/${role}/ao.jpg`,
   });
   const tiled = useMemo(() => {
     const entries = Object.entries(source).map(([key, texture]) => {
@@ -162,13 +163,15 @@ function LoadedSkatePark({
   boundary,
   fit,
   terrainZ,
+  skinSlug,
 }: {
   boundary: readonly SkateParkPoint[];
   fit: NonNullable<ReturnType<typeof fitSkateParkV0Program>>;
   terrainZ: (x: number, y: number) => number;
+  skinSlug: string;
 }) {
-  const concrete = useArchetypeMaterial('paver', 4);
-  const lawn = useArchetypeMaterial('lawn', 5);
+  const concrete = useArchetypeMaterial(skinSlug, 'paver', 4);
+  const lawn = useArchetypeMaterial(skinSlug, 'lawn', 5);
   const deckGeometry = useMemo(buildSkateDeckGeometry, []);
   const grassGeometry = useMemo(
     () => buildGrassBufferGeometry(boundary, fit),
@@ -205,13 +208,16 @@ function LoadedSkatePark({
 export function GlobeSkateParkAssembly({
   boundary,
   terrainZ,
+  variantId,
 }: {
   boundary: readonly SkateParkPoint[];
   terrainZ: (x: number, y: number) => number;
+  variantId?: string;
 }) {
   const fit = useMemo(() => fitSkateParkV0Program(boundary), [boundary]);
+  const skinSlug = batch16ParkSkinForSelection('skate_park', variantId ?? '')?.slug ?? 'skate-park';
   if (!fit) return null;
-  return <LoadedSkatePark boundary={boundary} fit={fit} terrainZ={terrainZ} />;
+  return <LoadedSkatePark boundary={boundary} fit={fit} terrainZ={terrainZ} skinSlug={skinSlug} />;
 }
 
 Object.values(ASSETS).forEach((url) => useGLTF.preload(url));

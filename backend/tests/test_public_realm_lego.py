@@ -957,8 +957,11 @@ def test_batch7_park_families_are_exact_executable_selections(
     capability = catalog.capabilities[0]
     assert capability.kind == "park"
     assert capability.generator == "park_kit"
-    assert len(capability.selections) == 1
-    selection = capability.selections[0]
+    selection = next(
+        candidate
+        for candidate in capability.selections
+        if candidate.variant_id == variant_id
+    )
     assert selection.archetype_id == archetype_id
     assert selection.variant_id == variant_id
     assert selection.appearance_kit_id == appearance_kit_id
@@ -1282,6 +1285,51 @@ def test_batch15_closes_all_four_variants_for_the_final_ten_parents():
         assert len({selection.planting_structure for selection in capability.selections}) == 4
         assert all(selection.component_set_ids for selection in capability.selections)
         assert sum(selection.is_default for selection in capability.selections) == 1
+
+
+def test_batch16_closes_twenty_nine_variants_across_ten_shared_families():
+    expected = {
+        "park_neighborhood_community": {"community_park": 4},
+        "park_regional_english_landscape_v0": {"regional_park": 4},
+        "park_dog_archetype_v0": {"dog_park": 4},
+        "park_skate_archetype_v0": {"skate_park": 4},
+        "park_sports_complex_tournament_v0": {"sports_field_complex": 4},
+        "park_tennis_cluster_v0": {"tennis_court_cluster": 4},
+        "park_cultural_gardens": {"botanical_garden": 3, "japanese_garden": 4},
+        "park_memorial_garden_v0": {"memorial_garden": 4},
+        "park_urban_forest": {"urban_forest": 4},
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 9
+    for capability in catalog.capabilities:
+        for archetype_id, count in expected[capability.family_id].items():
+            selections = [
+                selection
+                for selection in capability.selections
+                if selection.archetype_id == archetype_id
+            ]
+            assert len(selections) == count
+            assert len({selection.variant_id for selection in selections}) == count
+            assert len({selection.appearance_kit_id for selection in selections}) == count
+            assert len({selection.planting_structure for selection in selections}) == count
+            assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch16_dog_park_uses_a_whole_compact_program_on_smaller_parcels():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_040, 5_650_030))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "dog_park",
+            "green_space_selected_variant_id": "dog_park_v3",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_dog_archetype_v0"
+    assert recipe.variant_id == "dog_park_v3"
+    assert recipe.appearance_kit_id == "dog_park_v3_urban_contemporary_skin"
 
 
 @pytest.mark.parametrize(

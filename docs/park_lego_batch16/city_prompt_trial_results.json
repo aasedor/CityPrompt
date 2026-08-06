@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "parkZoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "buildingZoneId": "eaf42f58-2b36-4b7c-8902-f0c0a1a4dea7",
+  "method": "one park at a time beside one separately compiled Parisian Boulevard building on the existing approximately 40 m by 31 m pilot parcel",
+  "expectedContract": {
+    "summary": "1 buildings · 1 parks · 0 streets",
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "parkState": "compiled",
+    "groundSystem": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+    "persistedRecipeRequired": true,
+    "peopleRendered": false,
+    "largeBuildingEmbeddedInPark": false
+  },
+  "trials": [
+    {
+      "archetypeId": "tennis_court_cluster",
+      "variantId": "tennis_court_cluster_v2",
+      "familyId": "park_tennis_cluster_v0",
+      "appearanceKitId": "tennis_court_cluster_v2_naturalized_active_skin",
+      "plantingStructure": "tennis_naturalized_v2",
+      "passed": true
+    },
+    {
+      "archetypeId": "tennis_court_cluster",
+      "variantId": "tennis_court_cluster_v1",
+      "familyId": "park_tennis_cluster_v0",
+      "appearanceKitId": "tennis_court_cluster_v1_community_recreation_skin",
+      "plantingStructure": "tennis_community_v1",
+      "passed": true
+    },
+    {
+      "archetypeId": "tennis_court_cluster",
+      "variantId": "tennis_court_cluster_v3",
+      "familyId": "park_tennis_cluster_v0",
+      "appearanceKitId": "tennis_court_cluster_v3_urban_athletic_skin",
+      "plantingStructure": "tennis_urban_v3",
+      "passed": true,
+      "visualFinding": "The reference albedo was initially multiplied by a dark tint. A neutral near-white tint restored the textured tan and green court surface while preserving regulation markings."
+    },
+    {
+      "archetypeId": "dog_park",
+      "variantId": "dog_park_v3",
+      "familyId": "park_dog_archetype_v0",
+      "appearanceKitId": "dog_park_v3_urban_contemporary_skin",
+      "plantingStructure": "dog_urban_contemporary_v3",
+      "targetWidthM": 39.723,
+      "targetDepthM": 31.185,
+      "passed": true,
+      "visualFinding": "The parcel-adaptive family selected a complete compact two-pen program instead of uniformly shrinking the larger five-pen layout. The exact LEGO surface now suppresses the duplicate generic oval diagram while the zone polygon continues to mask the Google tiles."
+    }
+  ],
+  "pipelineRulesConfirmed": [
+    "Use exact archetype and variant skin slugs in the live material lookup.",
+    "Use regulation or whole-program modules and change their count or arrangement as parcel size changes; do not stretch them.",
+    "Keep the compiled polygon as the terrain-replacement mask.",
+    "Do not render a generic procedural park diagram beneath an archetype-owned LEGO surface.",
+    "Use people in reference photographs only as scale and use cues; do not emit people in the LEGO model."
+  ]
+}

@@ -844,12 +844,13 @@ function ParkSpecialtyStructures({
       ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y)
       : 0
   );
+  const legoContract = resolveParkLegoContract(zone);
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} variantId={legoContract?.variantId} />
         </Suspense>
       </SilentKitBoundary>
     );
@@ -880,6 +881,8 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch7Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}
@@ -926,9 +929,8 @@ function ParkSpecialtyStructures({
     return <GlobeParkBatch13Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch14_archetype_assembly' && profileFamilyId) {
-    const contract = resolveParkLegoContract(zone);
-    if (!contract) return null;
-    return <GlobeParkBatch14Assembly familyId={profileFamilyId} archetypeId={contract.archetypeId} variantId={contract.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+    if (!legoContract) return null;
+    return <GlobeParkBatch14Assembly familyId={profileFamilyId} archetypeId={legoContract.archetypeId} variantId={legoContract.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
     ? 'park_basketball_court_v0'
@@ -996,7 +998,7 @@ function ParkSpecialtyStructures({
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeArchetypeOwnedParkAssembly familyId={exactFamily} boundary={programFrame.points} terrainZ={terrainZ} />
+          <GlobeArchetypeOwnedParkAssembly familyId={exactFamily} boundary={programFrame.points} terrainZ={terrainZ} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} />
         </Suspense>
       </SilentKitBoundary>
     );

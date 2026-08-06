@@ -8,26 +8,29 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 13,
-    "partialParents": 117,
+    "completeMappedParents": 23,
+    "partialParents": 107,
     "uncoveredParents": 0,
-    "exactVariants": 112,
-    "sharedMappedVariants": 58,
-    "unmappedVariants": 350,
+    "exactVariants": 105,
+    "sharedMappedVariants": 94,
+    "unmappedVariants": 321,
     "parkCapabilities": 127
   },
   "categorySummary": {
     "civic_plazas:partial": 19,
     "custom:partial": 1,
-    "ecological_resilience:partial": 12,
-    "landscape_parks:partial": 14,
-    "neighborhood_public_realm:complete_mapped": 2,
-    "neighborhood_public_realm:partial": 10,
+    "ecological_resilience:complete_mapped": 1,
+    "ecological_resilience:partial": 11,
+    "landscape_parks:complete_mapped": 2,
+    "landscape_parks:partial": 12,
+    "neighborhood_public_realm:complete_mapped": 3,
+    "neighborhood_public_realm:partial": 9,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:partial": 10,
-    "specialty_gardens:partial": 14,
-    "sports_recreation:complete_mapped": 5,
-    "sports_recreation:partial": 19,
+    "specialty_gardens:complete_mapped": 3,
+    "specialty_gardens:partial": 11,
+    "sports_recreation:complete_mapped": 8,
+    "sports_recreation:partial": 16,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:partial": 5,
     "waterfront_spaces:partial": 13
@@ -238,9 +241,9 @@
       "title": "Community Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
+      "mappedVariantCount": 4,
       "exactVariantCount": 0,
       "variants": [
         {
@@ -267,22 +270,64 @@
           "id": "community_park_v1",
           "label": "Modern Minimalist",
           "thumbnailUrl": "/archetypes/openspaces/community-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_neighborhood_community",
+              "profileId": "community-park-lego-v1",
+              "appearanceKitId": "community_park_v1_modern_minimalist_skin",
+              "componentSetIds": [
+                "community_park_ground_program_v1",
+                "regulation_recreation_field_v1",
+                "naturalistic_pond_v1",
+                "picnic_social_edge_v1",
+                "modern_recreation_water_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "community_park_v2",
           "label": "Mediterranean Xeriscape",
           "thumbnailUrl": "/archetypes/openspaces/community-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_neighborhood_community",
+              "profileId": "community-park-lego-v1",
+              "appearanceKitId": "community_park_v2_mediterranean_xeriscape_skin",
+              "componentSetIds": [
+                "community_park_ground_program_v1",
+                "regulation_recreation_field_v1",
+                "naturalistic_pond_v1",
+                "picnic_social_edge_v1",
+                "xeric_recreation_water_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "community_park_v3",
           "label": "Tropical Lush",
           "thumbnailUrl": "/archetypes/openspaces/community-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_neighborhood_community",
+              "profileId": "community-park-lego-v1",
+              "appearanceKitId": "community_park_v3_tropical_lush_skin",
+              "componentSetIds": [
+                "community_park_ground_program_v1",
+                "regulation_recreation_field_v1",
+                "naturalistic_pond_v1",
+                "picnic_social_edge_v1",
+                "tropical_recreation_water_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -291,16 +336,16 @@
       "title": "Regional Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "regional_park_v0",
           "label": "English Pastoral",
           "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_regional_english_landscape_v0",
@@ -313,7 +358,7 @@
                 "romantic_bridge_v1",
                 "specimen_tree_matrix_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -321,22 +366,67 @@
           "id": "regional_park_v1",
           "label": "Modern Minimalist",
           "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_regional_english_landscape_v0",
+              "profileId": "regional-english-landscape-lego-v1",
+              "appearanceKitId": "regional_park_v1_modern_minimalist_skin",
+              "componentSetIds": [
+                "regional_landscape_ground_program_v1",
+                "serpentine_walk_network_v1",
+                "naturalistic_pond_v1",
+                "romantic_bridge_v1",
+                "specimen_tree_matrix_v1",
+                "modern_regional_landscape_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "regional_park_v2",
           "label": "Mediterranean Xeriscape",
           "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_regional_english_landscape_v0",
+              "profileId": "regional-english-landscape-lego-v1",
+              "appearanceKitId": "regional_park_v2_mediterranean_xeriscape_skin",
+              "componentSetIds": [
+                "regional_landscape_ground_program_v1",
+                "serpentine_walk_network_v1",
+                "naturalistic_pond_v1",
+                "romantic_bridge_v1",
+                "specimen_tree_matrix_v1",
+                "xeric_regional_landscape_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "regional_park_v3",
           "label": "Tropical Lush",
           "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_regional_english_landscape_v0",
+              "profileId": "regional-english-landscape-lego-v1",
+              "appearanceKitId": "regional_park_v3_tropical_lush_skin",
+              "componentSetIds": [
+                "regional_landscape_ground_program_v1",
+                "serpentine_walk_network_v1",
+                "naturalistic_pond_v1",
+                "romantic_bridge_v1",
+                "specimen_tree_matrix_v1",
+                "tropical_regional_landscape_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -345,16 +435,16 @@
       "title": "Dog Park",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "dog_park_v0",
           "label": "Rustic Timber & Gravel",
           "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_dog_archetype_v0",
@@ -367,7 +457,7 @@
                 "shade_shelter_v1",
                 "boulder_cluster_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -375,22 +465,67 @@
           "id": "dog_park_v1",
           "label": "Modern Steel & Turf",
           "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_dog_archetype_v0",
+              "profileId": "dog-park-archetype-v1",
+              "appearanceKitId": "dog_park_v1_modern_steel_turf_skin",
+              "componentSetIds": [
+                "dog_park_v0_ground_program",
+                "dog_park_gate_v1",
+                "timber_rail_fence_v1",
+                "shade_shelter_v1",
+                "boulder_cluster_v1",
+                "dog_multi_pen_modern_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "dog_park_v2",
           "label": "Natural Meadow",
           "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_dog_archetype_v0",
+              "profileId": "dog-park-archetype-v1",
+              "appearanceKitId": "dog_park_v2_natural_meadow_skin",
+              "componentSetIds": [
+                "dog_park_v0_ground_program",
+                "dog_park_gate_v1",
+                "timber_rail_fence_v1",
+                "shade_shelter_v1",
+                "boulder_cluster_v1",
+                "dog_meadow_loop_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "dog_park_v3",
           "label": "Urban Contemporary",
           "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_dog_archetype_v0",
+              "profileId": "dog-park-archetype-v1",
+              "appearanceKitId": "dog_park_v3_urban_contemporary_skin",
+              "componentSetIds": [
+                "dog_park_v0_ground_program",
+                "dog_park_gate_v1",
+                "timber_rail_fence_v1",
+                "shade_shelter_v1",
+                "boulder_cluster_v1",
+                "dog_urban_social_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -399,16 +534,16 @@
       "title": "Skate Park",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "skate_park_v0",
           "label": "Professional Grade",
           "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_skate_archetype_v0",
@@ -422,7 +557,7 @@
                 "skate_ledge_v1",
                 "skate_spectator_bench_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -430,22 +565,70 @@
           "id": "skate_park_v1",
           "label": "Community Recreation",
           "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_skate_archetype_v0",
+              "profileId": "skate-park-archetype-v1",
+              "appearanceKitId": "skate_park_v1_community_recreation_skin",
+              "componentSetIds": [
+                "skate_park_v0_ground_program",
+                "skate_bowl_module_v1",
+                "skate_stair_hubba_module_v1",
+                "skate_rail_v1",
+                "skate_ledge_v1",
+                "skate_spectator_bench_v1",
+                "community_skate_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "skate_park_v2",
           "label": "Naturalized Active",
           "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_skate_archetype_v0",
+              "profileId": "skate-park-archetype-v1",
+              "appearanceKitId": "skate_park_v2_naturalized_active_skin",
+              "componentSetIds": [
+                "skate_park_v0_ground_program",
+                "skate_bowl_module_v1",
+                "skate_stair_hubba_module_v1",
+                "skate_rail_v1",
+                "skate_ledge_v1",
+                "skate_spectator_bench_v1",
+                "naturalized_skate_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "skate_park_v3",
           "label": "Urban Athletic",
           "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_skate_archetype_v0",
+              "profileId": "skate-park-archetype-v1",
+              "appearanceKitId": "skate_park_v3_urban_athletic_skin",
+              "componentSetIds": [
+                "skate_park_v0_ground_program",
+                "skate_bowl_module_v1",
+                "skate_stair_hubba_module_v1",
+                "skate_rail_v1",
+                "skate_ledge_v1",
+                "skate_spectator_bench_v1",
+                "urban_skate_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -454,16 +637,16 @@
       "title": "Sports Field Complex",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "sports_field_complex_v0",
           "label": "Professional Grade",
           "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_sports_complex_tournament_v0",
@@ -476,7 +659,7 @@
                 "spectator_service_spine_v1",
                 "field_lighting_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -484,22 +667,67 @@
           "id": "sports_field_complex_v1",
           "label": "Community Recreation",
           "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sports_complex_tournament_v0",
+              "profileId": "sports-complex-tournament-v1",
+              "appearanceKitId": "sports_field_complex_v1_community_recreation_skin",
+              "componentSetIds": [
+                "sports_complex_tournament_v0_full_assembly",
+                "regulation_soccer_fields_v1",
+                "softball_fields_v1",
+                "spectator_service_spine_v1",
+                "field_lighting_v1",
+                "community_field_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "sports_field_complex_v2",
           "label": "Naturalized Active",
           "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sports_complex_tournament_v0",
+              "profileId": "sports-complex-tournament-v1",
+              "appearanceKitId": "sports_field_complex_v2_naturalized_active_skin",
+              "componentSetIds": [
+                "sports_complex_tournament_v0_full_assembly",
+                "regulation_soccer_fields_v1",
+                "softball_fields_v1",
+                "spectator_service_spine_v1",
+                "field_lighting_v1",
+                "naturalized_field_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "sports_field_complex_v3",
           "label": "Urban Athletic",
           "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_sports_complex_tournament_v0",
+              "profileId": "sports-complex-tournament-v1",
+              "appearanceKitId": "sports_field_complex_v3_urban_athletic_skin",
+              "componentSetIds": [
+                "sports_complex_tournament_v0_full_assembly",
+                "regulation_soccer_fields_v1",
+                "softball_fields_v1",
+                "spectator_service_spine_v1",
+                "field_lighting_v1",
+                "urban_field_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -508,16 +736,16 @@
       "title": "Tennis Court Cluster",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "tennis_court_cluster_v0",
           "label": "Professional Grade",
           "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_tennis_cluster_v0",
@@ -530,7 +758,7 @@
                 "tennis_floodlight_v1",
                 "spectator_bleacher_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -538,22 +766,67 @@
           "id": "tennis_court_cluster_v1",
           "label": "Community Recreation",
           "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tennis_cluster_v0",
+              "profileId": "tennis-cluster-archetype-v1",
+              "appearanceKitId": "tennis_court_cluster_v1_community_recreation_skin",
+              "componentSetIds": [
+                "tennis_cluster_v0_ground_program",
+                "tennis_net_v1",
+                "tennis_fence_v1",
+                "tennis_floodlight_v1",
+                "spectator_bleacher_v1",
+                "community_tennis_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "tennis_court_cluster_v2",
           "label": "Naturalized Active",
           "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tennis_cluster_v0",
+              "profileId": "tennis-cluster-archetype-v1",
+              "appearanceKitId": "tennis_court_cluster_v2_naturalized_active_skin",
+              "componentSetIds": [
+                "tennis_cluster_v0_ground_program",
+                "tennis_net_v1",
+                "tennis_fence_v1",
+                "tennis_floodlight_v1",
+                "spectator_bleacher_v1",
+                "naturalized_tennis_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "tennis_court_cluster_v3",
           "label": "Urban Athletic",
           "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tennis_cluster_v0",
+              "profileId": "tennis-cluster-archetype-v1",
+              "appearanceKitId": "tennis_court_cluster_v3_urban_athletic_skin",
+              "componentSetIds": [
+                "tennis_cluster_v0_ground_program",
+                "tennis_net_v1",
+                "tennis_fence_v1",
+                "tennis_floodlight_v1",
+                "spectator_bleacher_v1",
+                "urban_tennis_cluster_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -562,9 +835,9 @@
       "title": "Botanical Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 2,
+      "mappedVariantCount": 4,
       "exactVariantCount": 1,
       "variants": [
         {
@@ -591,15 +864,43 @@
           "id": "botanical_garden_v1",
           "label": "Woodland Naturalistic",
           "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cultural_gardens",
+              "profileId": "botanical-garden-v5",
+              "appearanceKitId": "botanical_garden_v1_woodland_naturalistic_skin",
+              "componentSetIds": [
+                "botanical_collection_ground_program_v5",
+                "compact_conservatory_v1",
+                "collection_beds_v1",
+                "interpretive_loop_v1",
+                "woodland_collection_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "botanical_garden_v2",
           "label": "Contemporary Sculptural",
           "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cultural_gardens",
+              "profileId": "botanical-garden-v5",
+              "appearanceKitId": "botanical_garden_v2_contemporary_sculptural_skin",
+              "componentSetIds": [
+                "botanical_collection_ground_program_v5",
+                "compact_conservatory_v1",
+                "collection_beds_v1",
+                "interpretive_loop_v1",
+                "sculptural_collection_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "botanical_garden_v3",
@@ -628,9 +929,9 @@
       "title": "Japanese Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
+      "mappedVariantCount": 4,
       "exactVariantCount": 0,
       "variants": [
         {
@@ -657,22 +958,64 @@
           "id": "japanese_garden_v1",
           "label": "Woodland Naturalistic",
           "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cultural_gardens",
+              "profileId": "japanese-garden-v4",
+              "appearanceKitId": "japanese_garden_v1_woodland_naturalistic_skin",
+              "componentSetIds": [
+                "japanese_stroll_ground_program_v4",
+                "lacquer_bridge_v1",
+                "raked_gravel_v1",
+                "stepping_stone_route_v1",
+                "woodland_stroll_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "japanese_garden_v2",
           "label": "Contemporary Sculptural",
           "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cultural_gardens",
+              "profileId": "japanese-garden-v4",
+              "appearanceKitId": "japanese_garden_v2_contemporary_sculptural_skin",
+              "componentSetIds": [
+                "japanese_stroll_ground_program_v4",
+                "lacquer_bridge_v1",
+                "raked_gravel_v1",
+                "stepping_stone_route_v1",
+                "sculptural_stroll_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "japanese_garden_v3",
           "label": "Cottage Romantic",
           "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cultural_gardens",
+              "profileId": "japanese-garden-v4",
+              "appearanceKitId": "japanese_garden_v3_cottage_romantic_skin",
+              "componentSetIds": [
+                "japanese_stroll_ground_program_v4",
+                "lacquer_bridge_v1",
+                "raked_gravel_v1",
+                "stepping_stone_route_v1",
+                "romantic_stroll_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -681,16 +1024,16 @@
       "title": "Memorial Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "memorial_garden_v0",
           "label": "Classical Formal",
           "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_memorial_garden_v0",
@@ -703,7 +1046,7 @@
                 "memorial_wall_v1",
                 "topiary_urn_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -711,22 +1054,67 @@
           "id": "memorial_garden_v1",
           "label": "Woodland Naturalistic",
           "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_memorial_garden_v0",
+              "profileId": "memorial-garden-archetype-v1",
+              "appearanceKitId": "memorial_garden_v1_woodland_naturalistic_skin",
+              "componentSetIds": [
+                "memorial_garden_v0_ground_program",
+                "reflecting_pool_v1",
+                "tiered_fountain_v1",
+                "memorial_wall_v1",
+                "topiary_urn_v1",
+                "woodland_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "memorial_garden_v2",
           "label": "Contemporary Sculptural",
           "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_memorial_garden_v0",
+              "profileId": "memorial-garden-archetype-v1",
+              "appearanceKitId": "memorial_garden_v2_contemporary_sculptural_skin",
+              "componentSetIds": [
+                "memorial_garden_v0_ground_program",
+                "reflecting_pool_v1",
+                "tiered_fountain_v1",
+                "memorial_wall_v1",
+                "topiary_urn_v1",
+                "sculptural_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "memorial_garden_v3",
           "label": "Cottage Romantic",
           "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_memorial_garden_v0",
+              "profileId": "memorial-garden-archetype-v1",
+              "appearanceKitId": "memorial_garden_v3_cottage_romantic_skin",
+              "componentSetIds": [
+                "memorial_garden_v0_ground_program",
+                "reflecting_pool_v1",
+                "tiered_fountain_v1",
+                "memorial_wall_v1",
+                "topiary_urn_v1",
+                "romantic_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -735,16 +1123,16 @@
       "title": "Urban Forest",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "urban_forest_v0",
           "label": "Native Restoration",
           "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_urban_forest",
@@ -756,7 +1144,7 @@
                 "understory_layer_v1",
                 "low_impact_trail_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -764,22 +1152,64 @@
           "id": "urban_forest_v1",
           "label": "Bioengineered Infrastructure",
           "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_forest",
+              "profileId": "urban-forest-v2",
+              "appearanceKitId": "urban_forest_v1_bioengineered_infrastructure_skin",
+              "componentSetIds": [
+                "urban_forest_ground_program_v2",
+                "multi_age_canopy_v1",
+                "understory_layer_v1",
+                "low_impact_trail_v1",
+                "bioengineered_forest_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_forest_v2",
           "label": "Rewilded Urban",
           "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_forest",
+              "profileId": "urban-forest-v2",
+              "appearanceKitId": "urban_forest_v2_rewilded_urban_skin",
+              "componentSetIds": [
+                "urban_forest_ground_program_v2",
+                "multi_age_canopy_v1",
+                "understory_layer_v1",
+                "low_impact_trail_v1",
+                "rewilded_forest_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_forest_v3",
           "label": "Resilient Coastal",
           "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_forest",
+              "profileId": "urban-forest-v2",
+              "appearanceKitId": "urban_forest_v3_resilient_coastal_skin",
+              "componentSetIds": [
+                "urban_forest_ground_program_v2",
+                "multi_age_canopy_v1",
+                "understory_layer_v1",
+                "low_impact_trail_v1",
+                "coastal_forest_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },

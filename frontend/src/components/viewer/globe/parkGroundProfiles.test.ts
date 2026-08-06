@@ -30,6 +30,7 @@ import {
   shouldRenderLiveParkProp,
   takeParkGroundBatch,
 } from './parkGroundTexture';
+import { usesArchetypeOwnedParkSurface } from './parkLegoFamilies';
 
 function zone(archetypeId: string): SiteZone {
   return {
@@ -1273,7 +1274,7 @@ describe('park ground pilot profiles', () => {
         compiled_at: '2026-07-17T01:00:00Z',
       },
     };
-    expect(resolveParkGroundSurfaceSource(skate)).toBe('procedural');
+    expect(resolveParkGroundSurfaceSource(skate)).toBe('archetype');
     expect(hasCurrentParkGroundSurface(skate)).toBe(true);
   });
 
@@ -1295,7 +1296,7 @@ describe('park ground pilot profiles', () => {
         compiled_at: '2026-07-17T01:00:00Z',
       },
     };
-    expect(resolveParkGroundSurfaceSource(basketball)).toBe('procedural');
+    expect(resolveParkGroundSurfaceSource(basketball)).toBe('archetype');
   });
 
   it('gives all six recurring public-realm archetypes a zero-call compiled ground contract', () => {
@@ -1323,7 +1324,9 @@ describe('park ground pilot profiles', () => {
         },
       } satisfies SiteZone;
       expect(resolveParkGroundProfile(compiled).isPilot, archetypeId).toBe(true);
-      expect(resolveParkGroundSurfaceSource(compiled), archetypeId).toBe('procedural');
+      expect(resolveParkGroundSurfaceSource(compiled), archetypeId).toBe(
+        usesArchetypeOwnedParkSurface(compiled) ? 'archetype' : 'procedural',
+      );
       expect(hasCurrentParkGroundSurface(compiled), archetypeId).toBe(true);
       expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(false);
       expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(false);

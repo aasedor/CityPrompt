@@ -3,6 +3,7 @@ import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 import { fitFixedParkProgram, type SkateParkPoint } from './skateParkFit';
 import {
   archetypeOwnedParkKitForFamily,
@@ -390,8 +391,15 @@ export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ, varia
     'basketball-community-mural',
     'basketball-urban-streetball',
   ][basketballVariantIndex] ?? 'basketball-classic-asphalt';
+  const batch16Slug = batch16ParkSkinForSelection(
+    familyId === 'park_tennis_cluster_v0' ? 'tennis_court_cluster' : '',
+    variantId ?? '',
+  )?.slug;
+  const tennisVariantIndex = familyId === 'park_tennis_cluster_v0'
+    ? Number(variantId?.match(/_v([0-3])$/)?.[1] ?? 0)
+    : 0;
   const slug = familyId === 'park_basketball_court_v0' ? basketballSlug
-    : familyId === 'park_tennis_cluster_v0' ? 'tennis-court-professional'
+    : familyId === 'park_tennis_cluster_v0' ? (batch16Slug ?? 'tennis-court-professional')
     : familyId === 'park_caged_soccer_v0' ? 'caged-soccer-european'
       : 'athletics-fields-regulation';
   const basketballSurfaceRole = basketballVariantIndex === 0 || basketballVariantIndex === 3
@@ -473,8 +481,10 @@ export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ, varia
         </group>;
       }
       if (familyId === 'park_tennis_cluster_v0') return <group key={index} position={[module.x, module.y, baseZ]} rotation={[0, 0, module.rotationZ]}>
-        <TexturedRect width={module.widthM + 2} depth={module.depthM + 2} z={-0.01} maps={edge} color="#315a32" />
-        <TexturedRect width={module.widthM} depth={module.depthM} z={0.02} maps={surface} color="#315b85" />
+        {/* `color` multiplies the source albedo. Keep these near-white so the
+            card-derived aggregate, turf and weathering remain legible. */}
+        <TexturedRect width={module.widthM + 2} depth={module.depthM + 2} z={-0.01} maps={edge} color={['#d9e6d2', '#e2ead8', '#e8e4d5', '#d9dde1'][tennisVariantIndex]} />
+        <TexturedRect width={module.widthM} depth={module.depthM} z={0.02} maps={surface} color={['#cfdfeb', '#dcead2', '#e7e3d5', '#dce2eb'][tennisVariantIndex]} />
         <GroundLine x={-11.885} width={0.055} depth={10.97} /><GroundLine x={11.885} width={0.055} depth={10.97} />
         <GroundLine y={-5.485} width={23.77} depth={0.055} /><GroundLine y={5.485} width={23.77} depth={0.055} />
         <GroundLine y={-4.115} width={23.77} depth={0.055} /><GroundLine y={4.115} width={23.77} depth={0.055} />
@@ -525,11 +535,11 @@ function FormalEvergreen({ x, y }: { x: number; y: number }) {
   </group>;
 }
 
-function ExactSurface({ kit }: { kit: ArchetypeOwnedParkKitDefinition }) {
-  const paver = useSkinMaterial(kit.slug, 'paver', [kit.widthM / 4, kit.depthM / 4]);
-  const lawn = useSkinMaterial(kit.slug, 'lawn', [kit.widthM / 5, kit.depthM / 5]);
-  const safety = useSkinMaterial(kit.slug, 'safety', [kit.widthM / 4, kit.depthM / 4]);
-  const planting = useSkinMaterial(kit.slug, 'planting', [kit.widthM / 3, kit.depthM / 3]);
+function ExactSurface({ kit, materialSlug = kit.slug }: { kit: ArchetypeOwnedParkKitDefinition; materialSlug?: string }) {
+  const paver = useSkinMaterial(materialSlug, 'paver', [kit.widthM / 4, kit.depthM / 4]);
+  const lawn = useSkinMaterial(materialSlug, 'lawn', [kit.widthM / 5, kit.depthM / 5]);
+  const safety = useSkinMaterial(materialSlug, 'safety', [kit.widthM / 4, kit.depthM / 4]);
+  const planting = useSkinMaterial(materialSlug, 'planting', [kit.widthM / 3, kit.depthM / 3]);
   const asset = (name: string) => `/park-kits/${kit.slug}/${kit.assets[name]}`;
 
   if (
@@ -556,13 +566,27 @@ function ExactSurface({ kit }: { kit: ArchetypeOwnedParkKitDefinition }) {
   </>;
 
   if (kit.surfaceKind === 'dog_park') {
-    const pens = [[-24, 13, 18, 12], [0, 13, 18, 12], [24, 13, 18, 12], [-18, -13, 24, 14], [18, -13, 24, 14]];
+    const compact = kit.widthM < 55 || kit.depthM < 40;
+    const penDepth = compact ? Math.max(8, kit.depthM - 7) : Math.max(10, (kit.depthM - 9) / 2);
+    const pens = compact
+      ? [
+        [-kit.widthM * 0.23, 1, Math.max(10, kit.widthM * 0.42), penDepth],
+        [kit.widthM * 0.23, 1, Math.max(10, kit.widthM * 0.42), penDepth],
+      ]
+      : [
+        [-kit.widthM * 0.30, kit.depthM * 0.25, kit.widthM * 0.27, penDepth],
+        [0, kit.depthM * 0.25, kit.widthM * 0.27, penDepth],
+        [kit.widthM * 0.30, kit.depthM * 0.25, kit.widthM * 0.27, penDepth],
+        [-kit.widthM * 0.22, -kit.depthM * 0.25, kit.widthM * 0.40, penDepth],
+        [kit.widthM * 0.22, -kit.depthM * 0.25, kit.widthM * 0.40, penDepth],
+      ];
     return <>
-      <TexturedRect width={80} depth={50} z={0} maps={paver} />
+      <TexturedRect width={kit.widthM} depth={kit.depthM} z={0} maps={paver} />
       {pens.map(([x, y, width, depth]) => <group key={`${x}-${y}`} position={[x, y, 0.03]}><TexturedRect width={width} depth={depth} z={0} maps={lawn} /><FenceRectangle url={asset('fence')} width={width} depth={depth} section={6} /></group>)}
-      <FenceRectangle url={asset('fence')} width={72} depth={43} section={6} />
-      <MetricGlb url={asset('gate')} position={[0, -21.5, 0]} />
-      {[-25, 0, 25].map((x) => <MetricGlb key={x} url={asset('shade')} position={[x, 13, 0.15]} />)}
+      <FenceRectangle url={asset('fence')} width={Math.max(26, kit.widthM - 3)} depth={Math.max(21, kit.depthM - 3)} section={6} />
+      <MetricGlb url={asset('gate')} position={[0, -kit.depthM / 2 + 1.5, 0]} />
+      {(compact ? [-kit.widthM * 0.23, kit.widthM * 0.23] : [-kit.widthM * 0.30, 0, kit.widthM * 0.30])
+        .map((x) => <MetricGlb key={x} url={asset('shade')} position={[x, compact ? 1 : kit.depthM * 0.25, 0.15]} />)}
       <MetricGlb url={asset('boulders')} position={[-2, -2, 0.15]} />
     </>;
   }
@@ -680,20 +704,43 @@ function buildGrassBuffer(boundary: readonly SkateParkPoint[], fit: NonNullable<
   return geometry;
 }
 
-export function GlobeArchetypeOwnedParkAssembly({ familyId, boundary, terrainZ }: {
+export function GlobeArchetypeOwnedParkAssembly({ familyId, boundary, terrainZ, archetypeId, variantId }: {
   familyId: ExactParkFamilyId; boundary: readonly SkateParkPoint[]; terrainZ: (x: number, y: number) => number;
+  archetypeId?: string; variantId?: string;
 }) {
   const kit = archetypeOwnedParkKitForFamily(familyId);
-  const fit = useMemo(() => kit ? fitFixedParkProgram(boundary, kit) : null, [boundary, kit]);
+  const adaptiveProgram = useMemo(() => {
+    if (!kit || kit.surfaceKind !== 'dog_park') {
+      return { kit, fit: kit ? fitFixedParkProgram(boundary, kit) : null };
+    }
+    const xs = boundary.map(({ x }) => x);
+    const ys = boundary.map(({ y }) => y);
+    const availableWidth = Math.max(...xs) - Math.min(...xs) - 1;
+    const availableDepth = Math.max(...ys) - Math.min(...ys) - 1;
+    for (const fraction of [1, 0.88, 0.76, 0.64]) {
+      const candidate = {
+        ...kit,
+        widthM: Math.max(30, Math.min(80, availableWidth * fraction)),
+        depthM: Math.max(25, Math.min(50, availableDepth * fraction)),
+      };
+      const candidateFit = fitFixedParkProgram(boundary, candidate);
+      if (candidateFit) return { kit: candidate, fit: candidateFit };
+    }
+    const minimumKit = { ...kit, widthM: 30, depthM: 25 };
+    return { kit: minimumKit, fit: fitFixedParkProgram(boundary, minimumKit) };
+  }, [boundary, kit]);
+  const adaptiveKit = adaptiveProgram.kit;
+  const materialSlug = batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug ?? adaptiveKit?.slug;
+  const fit = adaptiveProgram.fit;
   const grassGeometry = useMemo(() => fit ? buildGrassBuffer(boundary, fit) : null, [boundary, fit]);
   useEffect(() => () => grassGeometry?.dispose(), [grassGeometry]);
-  const lawn = useSkinMaterial(kit?.slug ?? 'skate-park', 'lawn', [8, 8]);
-  if (!kit || !fit || !grassGeometry) return null;
+  const lawn = useSkinMaterial(materialSlug ?? 'skate-park', 'lawn', [8, 8]);
+  if (!adaptiveKit || !fit || !grassGeometry) return null;
   const baseZ = terrainZ(fit.center.x, fit.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
   return <group renderOrder={RENDER_ORDER}>
     <mesh geometry={grassGeometry} position={[0, 0, baseZ - 0.015]} receiveShadow><meshStandardMaterial {...lawn} roughness={0.96} /></mesh>
     <group position={[fit.center.x, fit.center.y, baseZ]} rotation={[0, 0, fit.rotationRad]}>
-      <ExactSurface kit={kit} />
+      <ExactSurface kit={adaptiveKit} materialSlug={materialSlug} />
     </group>
   </group>;
 }

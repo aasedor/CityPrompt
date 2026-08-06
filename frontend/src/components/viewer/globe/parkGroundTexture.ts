@@ -188,19 +188,22 @@ export function getParkGroundMeta(zone: SiteZone): ParkGroundTextureMeta | null 
   return meta;
 }
 
-export type ParkGroundSurfaceSource = 'ai' | 'procedural' | 'none';
+export type ParkGroundSurfaceSource = 'ai' | 'procedural' | 'archetype' | 'none';
 
-/** Choose the best current live surface without spending credits. A valid AI
- * orthophoto always wins; compiled parks otherwise receive the deterministic
- * archetype surface produced locally in the browser. */
+/** Choose the best current live surface without spending credits. Exact LEGO
+ * families own their surface geometry and material pack, while other compiled
+ * parks receive the deterministic site diagram produced locally in-browser. */
 export function resolveParkGroundSurfaceSource(zone: SiteZone): ParkGroundSurfaceSource {
   // Archetype selection belongs to the flat planning phase. This compile gate
   // is deliberately first: exact procedural families (basketball, skate, etc.)
   // must not leak a 3D preview onto the globe before Generate to 3D.
   if (!isCommunity3DCompiled(zone)) return 'none';
-  // Exact archetype kits own their surface. A stale AI document from an older
-  // workflow must never cover the metric bowls and reference-derived slab.
-  if (usesArchetypeOwnedParkSurface(zone)) return 'procedural';
+  // Exact archetype kits own their surface. Do not also paint the generic
+  // procedural diagram onto the polygon mask beneath them: that produces two
+  // courts/fields or a visible oval around a compact program. The compiled
+  // zone fill still masks the Google tiles and the LEGO layer supplies the
+  // reference-derived surface and depth kit.
+  if (usesArchetypeOwnedParkSurface(zone)) return 'archetype';
   if (getParkGroundMeta(zone)) return 'ai';
   if (isParkGroundZone(zone)) return 'procedural';
   return 'none';

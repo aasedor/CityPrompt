@@ -529,7 +529,10 @@ _SKATE_PARK_V0_CLEARANCE_M = 0.5
 _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("skate_park", "skate_park_v0"): (40.0, 30.0, 0.5),
     ("inclusive_playground", "inclusive_playground_v0"): (50.0, 40.0, 0.5),
-    ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
+    ("dog_park", "dog_park_v0"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v1"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v2"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v3"): (30.0, 25.0, 0.5),
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
     ("basketball_court", "basketball_court_v0"): (32.0, 19.0, 0.5),
@@ -557,7 +560,7 @@ _INCLUSIVE_PLAYGROUND_V0_ENVELOPE = _park_envelope(
     nominal=(50.0, 40.0), width=(50.0, 65.0), depth=(40.0, 55.0), area=(2_000.0, 3_575.0),
 )
 _DOG_PARK_V0_ENVELOPE = _park_envelope(
-    nominal=(80.0, 50.0), width=(80.0, 100.0), depth=(50.0, 65.0), area=(4_000.0, 6_500.0),
+    nominal=(80.0, 50.0), width=(30.0, 100.0), depth=(25.0, 65.0), area=(750.0, 6_500.0),
 )
 _SPLASH_PAD_V0_ENVELOPE = _park_envelope(
     nominal=(30.0, 25.0), width=(30.0, 42.0), depth=(25.0, 35.0), area=(750.0, 1_470.0),
@@ -1815,6 +1818,95 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
         ),
     ),
 )
+
+
+# Batch 16 closes the non-anchor variants for ten established park LEGO
+# families.  These are intentional shared-geometry mappings: the anchor
+# family keeps its measured parcel-fitting grammar and physical kit, while
+# every source card receives its own archetype-derived material identity,
+# planting structure and explicit program marker.  This avoids duplicating a
+# working family merely to change its landscape language.
+_BATCH16_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_neighborhood_community": (
+        ("community_park", "community_park_v1", "community_park_v1_modern_minimalist_skin", "community_modern_minimalist_v1", "modern_recreation_water_program_v1"),
+        ("community_park", "community_park_v2", "community_park_v2_mediterranean_xeriscape_skin", "community_mediterranean_xeriscape_v2", "xeric_recreation_water_program_v1"),
+        ("community_park", "community_park_v3", "community_park_v3_tropical_lush_skin", "community_tropical_lush_v3", "tropical_recreation_water_program_v1"),
+    ),
+    "park_regional_english_landscape_v0": (
+        ("regional_park", "regional_park_v1", "regional_park_v1_modern_minimalist_skin", "regional_modern_minimalist_v1", "modern_regional_landscape_program_v1"),
+        ("regional_park", "regional_park_v2", "regional_park_v2_mediterranean_xeriscape_skin", "regional_mediterranean_xeriscape_v2", "xeric_regional_landscape_program_v1"),
+        ("regional_park", "regional_park_v3", "regional_park_v3_tropical_lush_skin", "regional_tropical_lush_v3", "tropical_regional_landscape_program_v1"),
+    ),
+    "park_dog_archetype_v0": (
+        ("dog_park", "dog_park_v1", "dog_park_v1_modern_steel_turf_skin", "dog_modern_steel_turf_v1", "dog_multi_pen_modern_program_v1"),
+        ("dog_park", "dog_park_v2", "dog_park_v2_natural_meadow_skin", "dog_natural_meadow_v2", "dog_meadow_loop_program_v1"),
+        ("dog_park", "dog_park_v3", "dog_park_v3_urban_contemporary_skin", "dog_urban_contemporary_v3", "dog_urban_social_program_v1"),
+    ),
+    "park_skate_archetype_v0": (
+        ("skate_park", "skate_park_v1", "skate_park_v1_community_recreation_skin", "skate_community_recreation_v1", "community_skate_program_v1"),
+        ("skate_park", "skate_park_v2", "skate_park_v2_naturalized_active_skin", "skate_naturalized_active_v2", "naturalized_skate_program_v1"),
+        ("skate_park", "skate_park_v3", "skate_park_v3_urban_athletic_skin", "skate_urban_athletic_v3", "urban_skate_program_v1"),
+    ),
+    "park_sports_complex_tournament_v0": (
+        ("sports_field_complex", "sports_field_complex_v1", "sports_field_complex_v1_community_recreation_skin", "sports_complex_community_v1", "community_field_cluster_program_v1"),
+        ("sports_field_complex", "sports_field_complex_v2", "sports_field_complex_v2_naturalized_active_skin", "sports_complex_naturalized_v2", "naturalized_field_cluster_program_v1"),
+        ("sports_field_complex", "sports_field_complex_v3", "sports_field_complex_v3_urban_athletic_skin", "sports_complex_urban_v3", "urban_field_cluster_program_v1"),
+    ),
+    "park_tennis_cluster_v0": (
+        ("tennis_court_cluster", "tennis_court_cluster_v1", "tennis_court_cluster_v1_community_recreation_skin", "tennis_community_v1", "community_tennis_cluster_program_v1"),
+        ("tennis_court_cluster", "tennis_court_cluster_v2", "tennis_court_cluster_v2_naturalized_active_skin", "tennis_naturalized_v2", "naturalized_tennis_cluster_program_v1"),
+        ("tennis_court_cluster", "tennis_court_cluster_v3", "tennis_court_cluster_v3_urban_athletic_skin", "tennis_urban_v3", "urban_tennis_cluster_program_v1"),
+    ),
+    "park_cultural_gardens": (
+        ("botanical_garden", "botanical_garden_v1", "botanical_garden_v1_woodland_naturalistic_skin", "botanical_woodland_v1", "woodland_collection_program_v1"),
+        ("botanical_garden", "botanical_garden_v2", "botanical_garden_v2_contemporary_sculptural_skin", "botanical_sculptural_v2", "sculptural_collection_program_v1"),
+        ("japanese_garden", "japanese_garden_v1", "japanese_garden_v1_woodland_naturalistic_skin", "japanese_woodland_v1", "woodland_stroll_program_v1"),
+        ("japanese_garden", "japanese_garden_v2", "japanese_garden_v2_contemporary_sculptural_skin", "japanese_sculptural_v2", "sculptural_stroll_program_v1"),
+        ("japanese_garden", "japanese_garden_v3", "japanese_garden_v3_cottage_romantic_skin", "japanese_romantic_v3", "romantic_stroll_program_v1"),
+    ),
+    "park_memorial_garden_v0": (
+        ("memorial_garden", "memorial_garden_v1", "memorial_garden_v1_woodland_naturalistic_skin", "memorial_woodland_v1", "woodland_memorial_program_v1"),
+        ("memorial_garden", "memorial_garden_v2", "memorial_garden_v2_contemporary_sculptural_skin", "memorial_sculptural_v2", "sculptural_memorial_program_v1"),
+        ("memorial_garden", "memorial_garden_v3", "memorial_garden_v3_cottage_romantic_skin", "memorial_romantic_v3", "romantic_memorial_program_v1"),
+    ),
+    "park_urban_forest": (
+        ("urban_forest", "urban_forest_v1", "urban_forest_v1_bioengineered_infrastructure_skin", "urban_forest_bioengineered_v1", "bioengineered_forest_program_v1"),
+        ("urban_forest", "urban_forest_v2", "urban_forest_v2_rewilded_urban_skin", "urban_forest_rewilded_v2", "rewilded_forest_program_v1"),
+        ("urban_forest", "urban_forest_v3", "urban_forest_v3_resilient_coastal_skin", "urban_forest_coastal_v3", "coastal_forest_program_v1"),
+    ),
+}
+
+
+def _apply_batch16_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH16_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch16_variant_closures(capability) for capability in _CAPABILITIES)
 
 
 def public_realm_capability_fingerprint(

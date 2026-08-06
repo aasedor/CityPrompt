@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 
 export interface Batch7ProgramFrame {
   minX: number;
@@ -124,14 +125,17 @@ function WaterJet({ x, y, z, height = 1.8 }: { x: number; y: number; z: number; 
   </group>;
 }
 
-export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ }: {
+export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, archetypeId, variantId }: {
   familyId: ParkLegoFamilyId;
   guides: ParkGroundGuide[];
   frame: Batch7ProgramFrame;
   terrainZ: (x: number, y: number) => number;
+  archetypeId?: string;
+  variantId?: string;
 }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
-  const slug = SKIN_SLUG[familyId as Batch7FamilyId];
+  const slug = batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
+    ?? SKIN_SLUG[familyId as Batch7FamilyId];
   const paverMaps = useRoleMaps(slug, 'paver');
   const asphaltMaps = useRoleMaps(slug, 'asphalt');
   const plantingMaps = useRoleMaps(slug, 'planting', 5);

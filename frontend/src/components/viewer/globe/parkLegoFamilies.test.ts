@@ -541,7 +541,6 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
-    ['regional_park', 'regional_park_v1'],
     ['beer_garden', 'beer_garden_v2'],
     ['stepped_terraced_plaza', 'stepped_terraced_plaza_v2'],
     ['market_square', 'market_square_v0'],
