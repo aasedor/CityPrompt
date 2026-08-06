@@ -369,6 +369,46 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['regional_park', 'regional_park_v0', 'park_regional_english_landscape_v0'],
+    ['beer_garden', 'beer_garden_v0', 'park_beer_garden_munich_v0'],
+    ['sunken_plaza', 'sunken_plaza_v0', 'park_sunken_courtyard_v0'],
+    ['stepped_terraced_plaza', 'stepped_terraced_plaza_v3', 'park_terraced_cascade_v3'],
+    ['market_square', 'market_square_v1', 'park_market_festival_lawn_v1'],
+    ['promenade_boardwalk', 'promenade_boardwalk_v0', 'park_boardwalk_maritime_v0'],
+    ['fountain_water_feature', 'fountain_water_feature_v1', 'park_fountain_formal_pool_v1'],
+    ['swimming_pool_complex', 'swimming_pool_complex_v0', 'park_natural_swimming_pond_v0'],
+    ['nature_preserve', 'nature_preserve_v1', 'park_nature_preserve_prairie_v1'],
+    ['riverfront_park_beach', 'riverfront_park_beach_v1', 'park_riverfront_lake_beach_v1'],
+  ] as const)('compiles batch-7 %s/%s to exact zero-call family %s', (
+    archetypeId, variantId, familyId,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['regional_park', 'regional_park_v1'],
+    ['beer_garden', 'beer_garden_v2'],
+    ['stepped_terraced_plaza', 'stepped_terraced_plaza_v2'],
+    ['market_square', 'market_square_v0'],
+    ['nature_preserve', 'nature_preserve_v0'],
+    ['riverfront_park_beach', 'riverfront_park_beach_v0'],
+  ] as const)('fails closed for unreviewed batch-7 selection %s/%s', (archetypeId, variantId) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)?.supported).toBe(false);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+  });
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v2'],
     ['outdoor_cinema_lawn', 'outdoor_cinema_lawn_v0'],
     ['campus_central_quad', 'campus_central_quad_variant_1'],

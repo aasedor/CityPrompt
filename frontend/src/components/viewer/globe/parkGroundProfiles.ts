@@ -1568,6 +1568,158 @@ PROFILES.mountain_bike_park = {
   renderSummary: 'skills and dirt bike park with connected pump loop, three-jump progression, beginner return, technical features and small shelter pad', isPilot: true,
 };
 
+PROFILES.regional_park_v0 = {
+  id: 'regional-english-landscape-lego-v1', version: 1,
+  programDescription: 'An English landscape park organized around one naturalistic pond, a serpentine circuit, a small romantic bridge, broad rolling meadow rooms and irregular specimen-tree groups. The number of meadow rooms and secondary path branches responds to site area without enlarging any single feature out of scale.',
+  groundDescription: 'Layered emerald and olive turf, darker pond-edge reeds, pale warm gravel, weathered grey stone and black-green iron sampled from Regional Park v0.',
+  criticalConstraints: 'Keep one legible pond and one continuous circuit. On oversized sites add whole meadow rooms, tree groups and secondary loops; never inflate the pond, bridge or path width. Buildings, roads and people visible beyond the reference park are excluded.',
+  canopyDescription: 'Irregular mature deciduous groups frame long meadow views, with isolated specimen trees and a denser woodland edge; the pond foreground remains visually open.', plantingStructure: 'regional_english_landscape_v0',
+  guides: [
+    { kind: 'ellipse', x: 0.42, y: 0.60, width: 0.28, height: 0.24, color: '#667f75', strokeColor: '#657650', strokeWidthM: 4, fitPolicy: 'clip' },
+    { kind: 'path_loop', x: 0.48, y: 0.53, width: 0.78, height: 0.68, color: '#b9aa87', strokeWidthM: 3.2, fitPolicy: 'clip' },
+    { kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1, points: [[0.06,0.72],[0.22,0.62],[0.40,0.54],[0.58,0.42],[0.76,0.36],[0.94,0.25]], color: '#b9aa87', strokeWidthM: 2.8 },
+    { kind: 'line', x: 0.42, y: 0.52, width: 0, height: 0, widthM: 14, color: '#7d7567', strokeWidthM: 2.4, rotationDeg: -12, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['BLUE-GREEN oval is the single naturalistic pond', 'PALE loops are a connected serpentine walking network', 'short GREY crossing is one human-scale romantic bridge'], includeCentralPlaza: false,
+  renderSummary: 'English regional landscape with pond, serpentine gravel circuit, romantic bridge, rolling meadow rooms and irregular specimen trees', isPilot: true,
+};
+
+PROFILES.beer_garden_v0 = {
+  id: 'beer-garden-munich-lego-v1', version: 1,
+  programDescription: 'A Munich-style beer garden with a pale gravel dining floor, parallel two-sided trestle-table rows, a regular mature chestnut canopy, clipped perimeter hedge, small self-service kiosk and overhead Bavarian pennant strings.',
+  groundDescription: 'Mottled pale compacted gravel, honey and weathered timber, dark green steel, dense chestnut foliage and clipped hedge green sampled from Beer Garden v0.',
+  criticalConstraints: 'Dining rows remain parallel and preserve 1.5 metre service aisles. Add or remove complete table-and-bench modules according to site size; never stretch furniture. Keep the kiosk small and park-serving. Render no patrons or surrounding buildings.',
+  canopyDescription: 'A regular chestnut grid shades the dining field while trunks stay between table rows and out of the central service aisle.', plantingStructure: 'beer_garden_munich_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.50, width: 0.84, height: 0.80, color: '#c1b69a', strokeColor: '#526443', strokeWidthM: 1.1, fitPolicy: 'clip' },
+    { kind: 'rectangle', x: 0.50, y: 0.12, width: 0.18, height: 0.12, widthM: 6, heightM: 4, color: '#7f5b3c', strokeColor: '#4d392a', strokeWidthM: 0.2, orientationPolicy: 'orthogonal' },
+  ],
+  guideLegend: ['PALE rectangle is the gravel dining room', 'small BROWN pad is the self-service kiosk', '3D assembly calculates whole trestle rows and chestnut bays from available width'], includeCentralPlaza: false,
+  renderSummary: 'Munich beer garden with scalable whole trestle-table rows, chestnut canopy, hedge frame, service aisle, kiosk and pennant strings', isPilot: true,
+};
+
+PROFILES.sunken_plaza_v0 = {
+  id: 'sunken-courtyard-lego-v1', version: 1,
+  programDescription: 'A compact stone sunken court reached by broad shallow steps from three sides, focused on one low bronze fountain and framed at the rim by clipped hedges. Café frontage remains a clear edge reservation for separately rendered buildings.',
+  groundDescription: 'Warm limestone flags with fine tonal variation, pale stone risers, dark bronze, restrained water blue and clipped boxwood sampled from Sunken Plaza v0.',
+  criticalConstraints: 'Keep the lower court central and visibly below the rim, with three usable step approaches and one accessible side route. The central fountain must not block circulation. Do not generate surrounding mixed-use blocks, cafés, awnings or people.',
+  canopyDescription: 'No canopy in the lower court; low clipped hedge only at the upper rim.', plantingStructure: 'sunken_courtyard_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.54, width: 0.62, height: 0.58, color: '#c9c0ae', strokeColor: '#9f9788', strokeWidthM: 5, fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.50, y: 0.54, width: 0.14, height: 0.14, widthM: 4.5, heightM: 4.5, color: '#718a8c', strokeColor: '#857f72', strokeWidthM: 0.45, orientationPolicy: 'fixed' },
+    { kind: 'line', x: 0.50, y: 0.89, width: 0, height: 0, widthM: 12, color: '#b6ae9f', strokeWidthM: 5.0, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['inner STONE court sits below the rim', 'BLUE centre is one low fountain', 'three sides become broad seat-steps while one edge remains an accessible clear route'], includeCentralPlaza: true,
+  renderSummary: 'intimate three-sided sunken limestone courtyard with broad steps, clipped rim hedge and one low bronze fountain', isPilot: true,
+};
+
+PROFILES.stepped_terraced_plaza_v3 = {
+  id: 'terraced-cascade-lego-v1', version: 1,
+  programDescription: 'A Robson-style modernist civic terrace descending in broad concrete seat-steps beside a three-basin waterfall axis, heavy planted side terraces and a continuous accessible ramp wrapping one edge.',
+  groundDescription: 'Variegated warm-grey concrete, charcoal joints, dark reflective basin water, weathered steel rails and layered deep-green conifers and maples sampled from Stepped Plaza v3.',
+  criticalConstraints: 'Preserve a continuous high-to-low sequence, three catch basins and a non-stair accessible route. Add or remove complete terrace bands for site depth; never stretch riser height or place planting across the ramp. Surrounding civic buildings and people are separate.',
+  canopyDescription: 'Dense tree and conifer planters occupy side terraces only, leaving the cascade, steps and accessible route legible.', plantingStructure: 'terraced_cascade_v3',
+  guides: [
+    { kind: 'axis', x: 0.50, y: 0.50, width: 0, height: 0, widthM: 62, color: '#73959a', strokeWidthM: 4.2, rotationDeg: 90, orientationPolicy: 'fixed' },
+    { kind: 'polyline', x: 0.82, y: 0.50, width: 1, height: 1, points: [[0.84,0.08],[0.92,0.22],[0.88,0.40],[0.94,0.58],[0.88,0.76],[0.82,0.92]], color: '#aaa79f', strokeWidthM: 3.2 },
+    { kind: 'rectangle', x: 0.50, y: 0.28, width: 0.12, height: 0.08, widthM: 12, heightM: 7, color: '#607f84', orientationPolicy: 'fixed' },
+    { kind: 'rectangle', x: 0.50, y: 0.50, width: 0.12, height: 0.08, widthM: 12, heightM: 7, color: '#607f84', orientationPolicy: 'fixed' },
+    { kind: 'rectangle', x: 0.50, y: 0.72, width: 0.12, height: 0.08, widthM: 12, heightM: 7, color: '#607f84', orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['central BLUE axis is a continuous three-basin cascade', 'GREY edge line is the accessible wrap ramp', '3D assembly derives whole seat-step bands from site depth'], includeCentralPlaza: true,
+  renderSummary: 'modernist terraced plaza with broad seat-steps, three-basin waterfall, planted side terraces and accessible wrap ramp', isPilot: true,
+};
+
+PROFILES.market_square_v1 = {
+  id: 'market-festival-lawn-lego-v1', version: 1,
+  programDescription: 'A flat open festival lawn framed by a hard service loop, removable vendor pads, power bollards and shade-sail anchor points. The everyday model remains uncluttered and ready for temporary programming.',
+  groundDescription: 'Subtly striped event turf, warm speckled gravel, pale service concrete, galvanized utility hardware and dark perimeter planting sampled from Market Square v1.',
+  criticalConstraints: 'Keep one contiguous central lawn. Add or remove complete vendor pads and utility points with perimeter length; never subdivide the field or generate temporary tents, crowds or large buildings.',
+  canopyDescription: 'Sparse edge trees and low planting only; the entire central lawn and emergency/service route remain clear.', plantingStructure: 'market_festival_lawn_v1',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.50, y: 0.49, width: 0.72, height: 0.66, color: '#68834c', fitPolicy: 'clip' },
+    { kind: 'path_loop', x: 0.50, y: 0.49, width: 0.88, height: 0.82, color: '#b6a98b', strokeWidthM: 4.2, fitPolicy: 'clip' },
+    { kind: 'rectangle', x: 0.18, y: 0.86, width: 0.10, height: 0.08, widthM: 7, heightM: 5, color: '#aaa398', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.82, y: 0.86, width: 0.10, height: 0.08, widthM: 7, heightM: 5, color: '#aaa398', orientationPolicy: 'orthogonal' },
+  ],
+  guideLegend: ['GREEN centre is one uninterrupted event lawn', 'TAN loop is the service and strolling route', 'small PALE pads are removable vendor hookups'], includeCentralPlaza: false,
+  renderSummary: 'open festival lawn with service loop, scalable vendor hookups, power bollards, shade anchors and clear everyday state', isPilot: true,
+};
+
+PROFILES.promenade_boardwalk_v0 = {
+  id: 'boardwalk-maritime-lego-v1', version: 1,
+  programDescription: 'A linear maritime timber promenade with rope rail on the water side, regularly spaced nautical lamps, view benches, weathered bollards and a narrow band of coastal planting on the land side.',
+  groundDescription: 'Variegated weathered timber boards, dark rope, blackened steel, salt-grey concrete and blue-green coastal planting sampled from Promenade v0.',
+  criticalConstraints: 'Maintain one continuous accessible promenade and an unbroken water-side safety rail. Furniture repeats by complete bays as length grows; board width, rail height and bench size stay human-scaled. No boats, waterfront buildings or people.',
+  canopyDescription: 'Low salt-tolerant grasses stay landward; no tree canopy obstructs the water view or accessible clear width.', plantingStructure: 'boardwalk_maritime_v0',
+  guides: [
+    { kind: 'polyline', x: 0.50, y: 0.48, width: 1, height: 1, points: [[0.03,0.54],[0.22,0.48],[0.42,0.52],[0.62,0.44],[0.82,0.48],[0.97,0.42]], color: '#876f55', strokeWidthM: 7.0 },
+    { kind: 'rectangle', x: 0.72, y: 0.40, width: 0.10, height: 0.18, widthM: 10, heightM: 5, color: '#897259', orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['wide BROWN route is the continuous timber promenade', 'water side receives rope rail, lights and spaced view bays', 'small BROWN pad is a cantilevered lookout'], includeCentralPlaza: false,
+  renderSummary: 'weathered maritime boardwalk with continuous rope rail, nautical lights, view benches, bollards, lookout and landward coastal planting', isPilot: true,
+};
+
+PROFILES.fountain_water_feature_v1 = {
+  id: 'fountain-formal-pool-lego-v1', version: 1,
+  programDescription: 'A long formal reflecting pool with polished granite coping, two symmetric rows of water jets, a clear ceremonial walk and clipped hedges and urns framing the long sides.',
+  groundDescription: 'Dark blue-grey reflective water, charcoal and warm-grey granite, pale jet foam, clipped boxwood and off-white stone urns sampled from Fountain v1.',
+  criticalConstraints: 'Keep the basin complete, level and centered. Jets stay symmetrically paired and coping remains continuous. Add or remove whole jet pairs for basin length; do not scale nozzles or render surrounding pavilions and people.',
+  canopyDescription: 'Low clipped hedges and paired topiary punctuate the exterior only; no canopy crosses the reflecting pool.', plantingStructure: 'fountain_formal_pool_v1',
+  guides: [
+    { kind: 'rectangle', x: 0.50, y: 0.50, width: 0.64, height: 0.36, widthM: 36, heightM: 12, color: '#58767e', strokeColor: '#414746', strokeWidthM: 1.2, atomicGroup: 'formal-pool', orientationPolicy: 'flexible' },
+    { kind: 'axis', x: 0.50, y: 0.50, width: 0, height: 0, widthM: 32, color: '#d4e1dc', strokeWidthM: 0.35, atomicGroup: 'formal-pool', orientationPolicy: 'flexible' },
+  ],
+  guideLegend: ['BLUE-GREY rectangle is one complete formal pool', 'PALE axis becomes symmetric paired water jets', 'dark continuous edge is polished granite coping'], includeCentralPlaza: true,
+  renderSummary: 'formal reflecting pool with continuous granite coping, scalable paired jet rows, ceremonial walk, clipped hedges and classical urns', isPilot: true,
+};
+
+PROFILES.swimming_pool_complex_v0 = {
+  id: 'natural-swimming-pond-lego-v1', version: 1,
+  programDescription: 'A natural swimming landscape combining one rectilinear lap basin and pale sun deck inside a larger organic regeneration pond, with a short timber dock and planted biological filtration edge.',
+  groundDescription: 'Layered turquoise and deep olive water, pale limestone deck, natural cobble, weathered timber and lush reed planting sampled from Swimming Pool Complex v0.',
+  criticalConstraints: 'Preserve the visual and functional distinction between the clean geometric swimming basin and irregular planted pond. Keep one continuous dry deck and a clear entry. Do not add bathhouse buildings, furniture crowds or people.',
+  canopyDescription: 'Willows and wetland planting frame the outer pond but remain outside the lap basin, deck and swimming entry clearances.', plantingStructure: 'natural_swimming_pond_v0',
+  guides: [
+    { kind: 'ellipse', x: 0.48, y: 0.53, width: 0.78, height: 0.70, color: '#56786e', strokeColor: '#657556', strokeWidthM: 5.0, fitPolicy: 'clip' },
+    { kind: 'rectangle', x: 0.58, y: 0.54, width: 0.40, height: 0.28, widthM: 25, heightM: 12.5, color: '#65a0a3', strokeColor: '#d0c6af', strokeWidthM: 2.2, atomicGroup: 'swim-basin', orientationPolicy: 'flexible' },
+    { kind: 'line', x: 0.26, y: 0.55, width: 0, height: 0, widthM: 10, color: '#8a7157', strokeWidthM: 2.2, rotationDeg: 10, orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['organic DARK water is the regeneration pond', 'TURQUOISE rectangle is the human-scale lap basin', 'PALE edge is the dry deck and short BROWN element is the dock'], includeCentralPlaza: false,
+  renderSummary: 'natural swimming pond with geometric lap basin, pale sun deck, organic regeneration water, biological planting and timber dock', isPilot: true,
+};
+
+PROFILES.nature_preserve_v1 = {
+  id: 'nature-preserve-prairie-lego-v1', version: 1,
+  programDescription: 'A tallgrass prairie preserve structured by broad habitat blocks, one narrow mown trail loop, a modest timber observation deck and sparse Bur oak savanna at the perimeter.',
+  groundDescription: 'Complex rust, straw, olive and deep-green prairie tones, pale mown grass, weathered timber and dark earth sampled from Nature Preserve v1.',
+  criticalConstraints: 'Habitat remains dominant and contiguous. Trails are narrow and observation infrastructure modest. Add whole habitat drifts and trail loops to large sites; never carpet the preserve with lawn, plazas, furniture, people or buildings.',
+  canopyDescription: 'Sparse Bur oak groups mark the perimeter and horizon; the tallgrass interior stays open and sunlit.', plantingStructure: 'nature_preserve_prairie_v1',
+  guides: [
+    { kind: 'path_loop', x: 0.52, y: 0.52, width: 0.72, height: 0.62, color: '#b49f74', strokeWidthM: 2.0, fitPolicy: 'clip' },
+    { kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1, points: [[0.08,0.72],[0.24,0.58],[0.42,0.52],[0.62,0.40],[0.88,0.30]], color: '#b49f74', strokeWidthM: 1.7 },
+    { kind: 'rectangle', x: 0.72, y: 0.34, width: 0.10, height: 0.08, widthM: 8, heightM: 6, color: '#80684d', orientationPolicy: 'fixed' },
+  ],
+  guideLegend: ['TAN lines are narrow mown habitat trails', 'small BROWN pad is one observation deck', 'the unmarked majority remains layered tallgrass habitat'], includeCentralPlaza: false,
+  renderSummary: 'tallgrass prairie preserve with contiguous habitat, narrow mown trail network, timber observation deck and sparse Bur oak savanna', isPilot: true,
+};
+
+PROFILES.riverfront_park_beach_v1 = {
+  id: 'riverfront-lake-beach-lego-v1', version: 1,
+  programDescription: 'A lake swimming beach with a broad crescent of sand, grass picnic edge, T-shaped swimming dock, offshore swim float, compact kayak rack and a reserved bathhouse pad for a separately rendered building family.',
+  groundDescription: 'Variegated warm sand, clear turquoise shallows, dark green lawn, weathered cedar dock boards and brightly coloured kayak accents sampled from Riverfront Park v1.',
+  criticalConstraints: 'Keep a continuous public water edge and clear swimming zone. The dock, float and kayak rack retain human scale while sand length adapts to the shoreline. Reserve but do not generate the bathhouse. No swimmers, sunbathers or surrounding buildings.',
+  canopyDescription: 'Mature shade trees stay behind the sand on the picnic lawn; trunks do not enter the swimming sightline or dock approach.', plantingStructure: 'riverfront_lake_beach_v1',
+  guides: [
+    { kind: 'ellipse', x: 0.48, y: 0.58, width: 0.74, height: 0.50, color: '#d2bd8e', strokeColor: '#75a8a7', strokeWidthM: 7.0, fitPolicy: 'clip' },
+    { kind: 'polyline', x: 0.68, y: 0.47, width: 1, height: 1, points: [[0.66,0.68],[0.72,0.54],[0.76,0.38],[0.68,0.34],[0.84,0.34]], color: '#876b50', strokeWidthM: 2.6 },
+    { kind: 'rectangle', x: 0.24, y: 0.34, width: 0.14, height: 0.10, widthM: 12, heightM: 8, color: '#7a6552', strokeColor: '#5d5147', strokeWidthM: 0.2, orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.33, y: 0.72, width: 0.12, height: 0.05, widthM: 9, heightM: 3, color: '#b05d3e', orientationPolicy: 'orthogonal' },
+  ],
+  guideLegend: ['GOLD crescent is the beach and BLUE edge the swimming water', 'BROWN T route is the swimming dock', 'upper BROWN pad is bathhouse reservation only; lower coloured bar is the kayak rack'], includeCentralPlaza: false,
+  renderSummary: 'lake swimming beach with crescent sand, picnic lawn, T dock, swim float, kayak rack and reserved bathhouse pad', isPilot: true,
+};
+
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -1936,7 +2088,8 @@ export type ParkSpecialtyStructureKind =
   | 'amphitheater_lawn_assembly'
   | 'adventure_play_assembly'
   | 'batch5_archetype_assembly'
-  | 'batch6_archetype_assembly';
+  | 'batch6_archetype_assembly'
+  | 'batch7_archetype_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -1959,11 +2112,6 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
       : (props.green_space_archetype_id ?? props.plaza_archetype_id),
   ) || (plaza ? 'formal_civic_plaza' : 'neighborhood_park');
   const entry = findEntry(archetypeId);
-  const exact = PROFILES[archetypeId]
-    ?? (archetypeId === 'community_park' && legoContract?.supported
-      ? PROFILES.neighborhood_park
-      : undefined)
-    ?? Object.entries(PROFILES).find(([id]) => archetypeId.startsWith(`${id}_`))?.[1];
   const variantId = normalizeId(
     legoContract?.supported
       ? legoContract.variantId
@@ -1971,6 +2119,12 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
       ? (props.plaza_selected_variant_id ?? props.green_space_selected_variant_id)
       : (props.green_space_selected_variant_id ?? props.plaza_selected_variant_id),
   );
+  const exact = (legoContract?.supported ? PROFILES[variantId] : undefined)
+    ?? PROFILES[archetypeId]
+    ?? (archetypeId === 'community_park' && legoContract?.supported
+      ? PROFILES.neighborhood_park
+      : undefined)
+    ?? Object.entries(PROFILES).find(([id]) => archetypeId.startsWith(`${id}_`))?.[1];
   const variant = entry?.variants?.find((candidate) => (
     normalizeId(candidate.id) === variantId
     || normalizeId(candidate.id) === archetypeId
@@ -1993,11 +2147,14 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
   const variantSuffix = variant?.label && !variantOwnsProgram
     ? ` Selected variant style: ${variant.label}. Apply that variant only through compatible planting character, colour palette, paving and material finish; it does not authorize any new path, pond, fountain, field, bed, building or program element beyond this exact profile.`
     : '';
+  const exactReferenceSuffix = exact === PROFILES[variantId] && variant?.description
+    ? ` Exact catalogue reference: ${variant.description}`
+    : '';
   return {
     ...resolvedExact,
     archetypeId,
     title: `${entry?.title ?? archetypeId.replace(/_/g, ' ')}${variant?.label ? ` - ${variant.label}` : ''}`,
-    programDescription: `${resolvedExact.programDescription}${variantSuffix}`,
+    programDescription: `${resolvedExact.programDescription}${exactReferenceSuffix}${variantSuffix}`,
     groundDescription: `${resolvedExact.groundDescription}${variantSuffix}`,
     renderSummary: `${resolvedExact.renderSummary}${variant?.label && !variantOwnsProgram ? `; selected ${variant.label} planting and material character without changing the locked program` : ''}`,
     ...(legoContract?.supported
@@ -2107,6 +2264,22 @@ export function resolveParkSpecialtyStructureKind(
       'park_mtb_skills_dirt_v2',
     ].includes(legoContract.familyId)
   ) return 'batch6_archetype_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && [
+      'park_regional_english_landscape_v0',
+      'park_beer_garden_munich_v0',
+      'park_sunken_courtyard_v0',
+      'park_terraced_cascade_v3',
+      'park_market_festival_lawn_v1',
+      'park_boardwalk_maritime_v0',
+      'park_fountain_formal_pool_v1',
+      'park_natural_swimming_pond_v0',
+      'park_nature_preserve_prairie_v1',
+      'park_riverfront_lake_beach_v1',
+    ].includes(legoContract.familyId)
+  ) return 'batch7_archetype_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

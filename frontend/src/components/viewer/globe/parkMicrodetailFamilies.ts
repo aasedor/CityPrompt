@@ -451,6 +451,26 @@ function familyTargets(
       return [target('light', 8), target('bollard', 6), target('bin', 3), target('bike_rack', 6), target('drinking_fountain', 2)];
     case 'park_mtb_skills_dirt_v2':
       return [target('boulder', 12), target('riprap', 8), target('picnic_table', 3), target('bin', 2), target('bike_rack', 4), target('drinking_fountain', 1)];
+    case 'park_regional_english_landscape_v0':
+      return [target('shrub', 18), target('perennial', 10), target('boulder', 8), target('picnic_table', 5), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_beer_garden_munich_v0':
+      return [target('light', 10), target('bin', 4), target('bike_rack', 4), target('ornamental_grass', 8)];
+    case 'park_sunken_courtyard_v0':
+      return [target('shrub', 12), target('perennial', 8), target('light', 6), target('bin', 2)];
+    case 'park_terraced_cascade_v3':
+      return [target('shrub', 16), target('ornamental_grass', 18), target('light', 8), target('bin', 3)];
+    case 'park_market_festival_lawn_v1':
+      return [target('light', 8), target('bollard', 12), target('bin', 6), target('bike_rack', 5), target('drinking_fountain', 2)];
+    case 'park_boardwalk_maritime_v0':
+      return [target('ornamental_grass', 18), target('light', 10), target('bollard', 10), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_fountain_formal_pool_v1':
+      return [target('shrub', 16), target('perennial', 10), target('light', 8), target('bin', 2)];
+    case 'park_natural_swimming_pond_v0':
+      return [target('reed', 24), target('ornamental_grass', 16), target('riprap', 12), target('picnic_table', 4), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_nature_preserve_prairie_v1':
+      return [target('ornamental_grass', 30), target('perennial', 24), target('shrub', 8), target('boulder', 6)];
+    case 'park_riverfront_lake_beach_v1':
+      return [target('ornamental_grass', 14), target('picnic_table', 6), target('bike_rack', 4), target('bin', 4), target('drinking_fountain', 2)];
   }
 }
 

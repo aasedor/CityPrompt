@@ -100,8 +100,18 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_campus_meadow_quad_v0",
         "park_urban_beach_family_v2",
         "park_velodrome_open_air_v0",
-        "park_mtb_skills_dirt_v2",
-    }
+            "park_mtb_skills_dirt_v2",
+            "park_regional_english_landscape_v0",
+            "park_beer_garden_munich_v0",
+            "park_sunken_courtyard_v0",
+            "park_terraced_cascade_v3",
+            "park_market_festival_lawn_v1",
+            "park_boardwalk_maritime_v0",
+            "park_fountain_formal_pool_v1",
+            "park_natural_swimming_pond_v0",
+            "park_nature_preserve_prairie_v1",
+            "park_riverfront_lake_beach_v1",
+        }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
     assert local_only.variants_by_archetype["green_alley"] == ("green_alley_v0",)
@@ -849,3 +859,76 @@ def test_compact_roundabout_rejects_non_four_arm_topology():
             "supported": [4],
         }
     ]
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id"),
+    [
+        ("park_regional_english_landscape_v0", "regional_park", "regional_park_v0", "regional_park_v0_english_landscape_skin"),
+        ("park_beer_garden_munich_v0", "beer_garden", "beer_garden_v0", "beer_garden_v0_munich_chestnut_skin"),
+        ("park_sunken_courtyard_v0", "sunken_plaza", "sunken_plaza_v0", "sunken_plaza_v0_intimate_courtyard_skin"),
+        ("park_terraced_cascade_v3", "stepped_terraced_plaza", "stepped_terraced_plaza_v3", "stepped_terraced_plaza_v3_modernist_cascade_skin"),
+        ("park_market_festival_lawn_v1", "market_square", "market_square_v1", "market_square_v1_open_festival_lawn_skin"),
+        ("park_boardwalk_maritime_v0", "promenade_boardwalk", "promenade_boardwalk_v0", "promenade_boardwalk_v0_maritime_skin"),
+        ("park_fountain_formal_pool_v1", "fountain_water_feature", "fountain_water_feature_v1", "fountain_water_feature_v1_formal_pool_skin"),
+        ("park_natural_swimming_pond_v0", "swimming_pool_complex", "swimming_pool_complex_v0", "swimming_pool_complex_v0_natural_pond_skin"),
+        ("park_nature_preserve_prairie_v1", "nature_preserve", "nature_preserve_v1", "nature_preserve_v1_tallgrass_prairie_skin"),
+        ("park_riverfront_lake_beach_v1", "riverfront_park_beach", "riverfront_park_beach_v1", "riverfront_park_beach_v1_lake_swimming_skin"),
+    ],
+)
+def test_batch7_park_families_are_exact_executable_selections(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    capability = catalog.capabilities[0]
+    assert capability.kind == "park"
+    assert capability.generator == "park_kit"
+    assert len(capability.selections) == 1
+    selection = capability.selections[0]
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    assert selection.component_set_ids
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "width_m", "depth_m"),
+    [
+        ("park_regional_english_landscape_v0", "regional_park", "regional_park_v0", 220.0, 160.0),
+        ("park_beer_garden_munich_v0", "beer_garden", "beer_garden_v0", 30.0, 28.0),
+        ("park_sunken_courtyard_v0", "sunken_plaza", "sunken_plaza_v0", 30.0, 25.0),
+        ("park_terraced_cascade_v3", "stepped_terraced_plaza", "stepped_terraced_plaza_v3", 90.0, 100.0),
+        ("park_market_festival_lawn_v1", "market_square", "market_square_v1", 95.0, 75.0),
+        ("park_boardwalk_maritime_v0", "promenade_boardwalk", "promenade_boardwalk_v0", 120.0, 22.0),
+        ("park_fountain_formal_pool_v1", "fountain_water_feature", "fountain_water_feature_v1", 55.0, 35.0),
+        ("park_natural_swimming_pond_v0", "swimming_pool_complex", "swimming_pool_complex_v0", 90.0, 70.0),
+        ("park_nature_preserve_prairie_v1", "nature_preserve", "nature_preserve_v1", 180.0, 120.0),
+        ("park_riverfront_lake_beach_v1", "riverfront_park_beach", "riverfront_park_beach_v1", 130.0, 90.0),
+    ],
+)
+def test_batch7_nominal_sites_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": archetype_id,
+            "green_space_selected_variant_id": variant_id,
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"

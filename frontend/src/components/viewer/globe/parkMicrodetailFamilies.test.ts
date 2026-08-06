@@ -111,6 +111,16 @@ describe('park microdetail families', () => {
     ['park_urban_beach_family_v2', ['ornamental_grass', 'picnic_table', 'bin', 'bike_rack', 'drinking_fountain']],
     ['park_velodrome_open_air_v0', ['light', 'bollard', 'bin', 'bike_rack', 'drinking_fountain']],
     ['park_mtb_skills_dirt_v2', ['boulder', 'riprap', 'picnic_table', 'bin', 'bike_rack', 'drinking_fountain']],
+    ['park_regional_english_landscape_v0', ['shrub', 'perennial', 'boulder', 'picnic_table', 'bin', 'drinking_fountain']],
+    ['park_beer_garden_munich_v0', ['light', 'bin', 'bike_rack', 'ornamental_grass']],
+    ['park_sunken_courtyard_v0', ['shrub', 'perennial', 'light', 'bin']],
+    ['park_terraced_cascade_v3', ['shrub', 'ornamental_grass', 'light', 'bin']],
+    ['park_market_festival_lawn_v1', ['light', 'bollard', 'bin', 'bike_rack', 'drinking_fountain']],
+    ['park_boardwalk_maritime_v0', ['ornamental_grass', 'light', 'bollard', 'bin', 'drinking_fountain']],
+    ['park_fountain_formal_pool_v1', ['shrub', 'perennial', 'light', 'bin']],
+    ['park_natural_swimming_pond_v0', ['reed', 'ornamental_grass', 'riprap', 'picnic_table', 'bin', 'drinking_fountain']],
+    ['park_nature_preserve_prairie_v1', ['ornamental_grass', 'perennial', 'shrub', 'boulder']],
+    ['park_riverfront_lake_beach_v1', ['ornamental_grass', 'picnic_table', 'bike_rack', 'bin', 'drinking_fountain']],
   ] as const)('gives %s a recognizable, bounded signature', (familyId, expectedKinds) => {
     const placements = buildParkMicrodetailFamily(input(familyId));
     const actualKinds = kinds(placements);

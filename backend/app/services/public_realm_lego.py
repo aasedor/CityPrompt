@@ -412,6 +412,36 @@ _VELODROME_OPEN_AIR_ENVELOPE = _park_envelope(
 _MTB_SKILLS_DIRT_ENVELOPE = _park_envelope(
     nominal=(90.0, 60.0), width=(55.0, 190.0), depth=(42.0, 130.0), area=(2_310.0, 24_700.0),
 )
+_REGIONAL_ENGLISH_LANDSCAPE_ENVELOPE = _park_envelope(
+    nominal=(220.0, 160.0), width=(100.0, 500.0), depth=(80.0, 400.0), area=(8_000.0, 200_000.0),
+)
+_BEER_GARDEN_MUNICH_ENVELOPE = _park_envelope(
+    nominal=(30.0, 28.0), width=(25.0, 100.0), depth=(25.0, 90.0), area=(625.0, 9_000.0),
+)
+_SUNKEN_COURTYARD_ENVELOPE = _park_envelope(
+    nominal=(30.0, 25.0), width=(26.0, 80.0), depth=(22.0, 70.0), area=(572.0, 5_600.0),
+)
+_TERRACED_CASCADE_ENVELOPE = _park_envelope(
+    nominal=(90.0, 100.0), width=(55.0, 180.0), depth=(60.0, 220.0), area=(3_300.0, 39_600.0),
+)
+_MARKET_FESTIVAL_LAWN_ENVELOPE = _park_envelope(
+    nominal=(95.0, 75.0), width=(60.0, 250.0), depth=(50.0, 180.0), area=(3_000.0, 45_000.0),
+)
+_BOARDWALK_MARITIME_ENVELOPE = _park_envelope(
+    nominal=(120.0, 22.0), width=(60.0, 600.0), depth=(14.0, 55.0), area=(840.0, 33_000.0), min_aspect_ratio=2.5,
+)
+_FOUNTAIN_FORMAL_POOL_ENVELOPE = _park_envelope(
+    nominal=(55.0, 35.0), width=(40.0, 160.0), depth=(28.0, 100.0), area=(1_120.0, 16_000.0),
+)
+_NATURAL_SWIMMING_POND_ENVELOPE = _park_envelope(
+    nominal=(90.0, 70.0), width=(60.0, 200.0), depth=(50.0, 150.0), area=(3_000.0, 30_000.0),
+)
+_NATURE_PRESERVE_PRAIRIE_ENVELOPE = _park_envelope(
+    nominal=(180.0, 120.0), width=(80.0, 600.0), depth=(60.0, 450.0), area=(4_800.0, 270_000.0),
+)
+_RIVERFRONT_LAKE_BEACH_ENVELOPE = _park_envelope(
+    nominal=(130.0, 90.0), width=(80.0, 350.0), depth=(60.0, 220.0), area=(4_800.0, 77_000.0),
+)
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1196,6 +1226,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_mtb_skills_dirt_v2", kind="park", title="Mountain Bike / Skills and Dirt v2", generator="park_kit",
         selections=(_selection("mountain_bike_park", "mountain_bike_park_variant_2", profile_id="mtb-skills-dirt-lego-v1", appearance_kit_id="mountain_bike_park_v2_skills_dirt_skin", planting_structure="mtb_skills_dirt_v2", compatibility=_MTB_SKILLS_DIRT_ENVELOPE, components=("mtb_skills_ground_program_v1", "connected_pump_loop_v1", "dirt_jump_line_v1", "technical_feature_set_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_regional_english_landscape_v0", kind="park", title="Regional Park / English Landscape v0", generator="park_kit",
+        selections=(_selection("regional_park", "regional_park_v0", profile_id="regional-english-landscape-lego-v1", appearance_kit_id="regional_park_v0_english_landscape_skin", planting_structure="regional_english_landscape_v0", compatibility=_REGIONAL_ENGLISH_LANDSCAPE_ENVELOPE, components=("regional_landscape_ground_program_v1", "serpentine_walk_network_v1", "naturalistic_pond_v1", "romantic_bridge_v1", "specimen_tree_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_beer_garden_munich_v0", kind="park", title="Beer Garden / Munich Chestnut v0", generator="park_kit",
+        selections=(_selection("beer_garden", "beer_garden_v0", profile_id="beer-garden-munich-lego-v1", appearance_kit_id="beer_garden_v0_munich_chestnut_skin", planting_structure="beer_garden_munich_v0", compatibility=_BEER_GARDEN_MUNICH_ENVELOPE, components=("beer_garden_ground_program_v1", "communal_trestle_row_v1", "chestnut_canopy_grid_v1", "self_service_kiosk_v1", "pennant_string_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_sunken_courtyard_v0", kind="park", title="Sunken Plaza / Intimate Courtyard v0", generator="park_kit",
+        selections=(_selection("sunken_plaza", "sunken_plaza_v0", profile_id="sunken-courtyard-lego-v1", appearance_kit_id="sunken_plaza_v0_intimate_courtyard_skin", planting_structure="sunken_courtyard_v0", compatibility=_SUNKEN_COURTYARD_ENVELOPE, components=("sunken_court_ground_program_v1", "three_sided_step_bowl_v1", "bronze_fountain_v1", "rim_hedge_v1", "cafe_clearance_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_terraced_cascade_v3", kind="park", title="Stepped Plaza / Modernist Cascade v3", generator="park_kit",
+        selections=(_selection("stepped_terraced_plaza", "stepped_terraced_plaza_v3", profile_id="terraced-cascade-lego-v1", appearance_kit_id="stepped_terraced_plaza_v3_modernist_cascade_skin", planting_structure="terraced_cascade_v3", compatibility=_TERRACED_CASCADE_ENVELOPE, components=("terraced_plaza_ground_program_v1", "three_basin_water_axis_v1", "accessible_wrap_ramp_v1", "planter_terrace_v1", "seat_step_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_market_festival_lawn_v1", kind="park", title="Market Square / Open Festival Lawn v1", generator="park_kit",
+        selections=(_selection("market_square", "market_square_v1", profile_id="market-festival-lawn-lego-v1", appearance_kit_id="market_square_v1_open_festival_lawn_skin", planting_structure="market_festival_lawn_v1", compatibility=_MARKET_FESTIVAL_LAWN_ENVELOPE, components=("market_lawn_ground_program_v1", "event_utility_bollard_v1", "vendor_pad_matrix_v1", "shade_anchor_v1", "service_loop_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_boardwalk_maritime_v0", kind="park", title="Promenade / Maritime Boardwalk v0", generator="park_kit",
+        selections=(_selection("promenade_boardwalk", "promenade_boardwalk_v0", profile_id="boardwalk-maritime-lego-v1", appearance_kit_id="promenade_boardwalk_v0_maritime_skin", planting_structure="boardwalk_maritime_v0", compatibility=_BOARDWALK_MARITIME_ENVELOPE, components=("maritime_boardwalk_ground_program_v1", "rope_rail_v1", "nautical_light_v1", "view_bench_v1", "mooring_bollard_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_fountain_formal_pool_v1", kind="park", title="Fountain / Formal Reflecting Pool v1", generator="park_kit",
+        selections=(_selection("fountain_water_feature", "fountain_water_feature_v1", profile_id="fountain-formal-pool-lego-v1", appearance_kit_id="fountain_water_feature_v1_formal_pool_skin", planting_structure="fountain_formal_pool_v1", compatibility=_FOUNTAIN_FORMAL_POOL_ENVELOPE, components=("formal_pool_ground_program_v1", "symmetric_jet_array_v1", "granite_coping_v1", "clipped_hedge_frame_v1", "classical_urn_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_natural_swimming_pond_v0", kind="park", title="Swimming Complex / Natural Pond v0", generator="park_kit",
+        selections=(_selection("swimming_pool_complex", "swimming_pool_complex_v0", profile_id="natural-swimming-pond-lego-v1", appearance_kit_id="swimming_pool_complex_v0_natural_pond_skin", planting_structure="natural_swimming_pond_v0", compatibility=_NATURAL_SWIMMING_POND_ENVELOPE, components=("natural_swimming_ground_program_v1", "metric_lap_basin_v1", "regeneration_pond_v1", "timber_dock_v1", "sun_deck_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_nature_preserve_prairie_v1", kind="park", title="Nature Preserve / Tallgrass Prairie v1", generator="park_kit",
+        selections=(_selection("nature_preserve", "nature_preserve_v1", profile_id="nature-preserve-prairie-lego-v1", appearance_kit_id="nature_preserve_v1_tallgrass_prairie_skin", planting_structure="nature_preserve_prairie_v1", compatibility=_NATURE_PRESERVE_PRAIRIE_ENVELOPE, components=("prairie_preserve_ground_program_v1", "mown_trail_network_v1", "timber_observation_deck_v1", "bur_oak_savanna_v1", "interpretive_post_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_riverfront_lake_beach_v1", kind="park", title="Riverfront / Lake Swimming Beach v1", generator="park_kit",
+        selections=(_selection("riverfront_park_beach", "riverfront_park_beach_v1", profile_id="riverfront-lake-beach-lego-v1", appearance_kit_id="riverfront_park_beach_v1_lake_swimming_skin", planting_structure="riverfront_lake_beach_v1", compatibility=_RIVERFRONT_LAKE_BEACH_ENVELOPE, components=("lake_beach_ground_program_v1", "crescent_sand_beach_v1", "t_swimming_dock_v1", "kayak_rack_v1", "bathhouse_reservation_pad_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

@@ -283,6 +283,36 @@ describe('park ground pilot profiles', () => {
   });
 
   it.each([
+    ['park_regional_english_landscape_v0', 'regional_park', 'regional_park_v0', 'regional_park_v0_english_landscape_skin', 'regional_english_landscape_v0'],
+    ['park_beer_garden_munich_v0', 'beer_garden', 'beer_garden_v0', 'beer_garden_v0_munich_chestnut_skin', 'beer_garden_munich_v0'],
+    ['park_sunken_courtyard_v0', 'sunken_plaza', 'sunken_plaza_v0', 'sunken_plaza_v0_intimate_courtyard_skin', 'sunken_courtyard_v0'],
+    ['park_terraced_cascade_v3', 'stepped_terraced_plaza', 'stepped_terraced_plaza_v3', 'stepped_terraced_plaza_v3_modernist_cascade_skin', 'terraced_cascade_v3'],
+    ['park_market_festival_lawn_v1', 'market_square', 'market_square_v1', 'market_square_v1_open_festival_lawn_skin', 'market_festival_lawn_v1'],
+    ['park_boardwalk_maritime_v0', 'promenade_boardwalk', 'promenade_boardwalk_v0', 'promenade_boardwalk_v0_maritime_skin', 'boardwalk_maritime_v0'],
+    ['park_fountain_formal_pool_v1', 'fountain_water_feature', 'fountain_water_feature_v1', 'fountain_water_feature_v1_formal_pool_skin', 'fountain_formal_pool_v1'],
+    ['park_natural_swimming_pond_v0', 'swimming_pool_complex', 'swimming_pool_complex_v0', 'swimming_pool_complex_v0_natural_pond_skin', 'natural_swimming_pond_v0'],
+    ['park_nature_preserve_prairie_v1', 'nature_preserve', 'nature_preserve_v1', 'nature_preserve_v1_tallgrass_prairie_skin', 'nature_preserve_prairie_v1'],
+    ['park_riverfront_lake_beach_v1', 'riverfront_park_beach', 'riverfront_park_beach_v1', 'riverfront_park_beach_v1_lake_swimming_skin', 'riverfront_lake_beach_v1'],
+  ] as const)('resolves the batch-7 depth kit for %s/%s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch7_archetype_assembly');
+    expect(resolveParkGroundProfile(candidate).guides.length).toBeGreaterThan(1);
+  });
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 64, 38],
     ['kayak_launch_dock', 'kayak_launch_dock_v0', 80, 35],
     ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 150, 100],

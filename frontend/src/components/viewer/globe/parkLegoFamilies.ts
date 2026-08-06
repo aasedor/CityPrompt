@@ -5,6 +5,7 @@ import {
 import { batch4ParkSkinForSelection } from './parkBatch4Skins';
 import { batch5ParkSkinForSelection } from './parkBatch5Skins';
 import { batch6ParkSkinForSelection } from './parkBatch6Skins';
+import { batch7ParkSkinForSelection } from './parkBatch7Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -59,6 +60,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_urban_beach_family_v2',
   'park_velodrome_open_air_v0',
   'park_mtb_skills_dirt_v2',
+  'park_regional_english_landscape_v0',
+  'park_beer_garden_munich_v0',
+  'park_sunken_courtyard_v0',
+  'park_terraced_cascade_v3',
+  'park_market_festival_lawn_v1',
+  'park_boardwalk_maritime_v0',
+  'park_fountain_formal_pool_v1',
+  'park_natural_swimming_pond_v0',
+  'park_nature_preserve_prairie_v1',
+  'park_riverfront_lake_beach_v1',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -713,6 +724,36 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_mtb_skills_dirt_v2: Object.freeze({
     mountain_bike_park: Object.freeze([Object.freeze({ variantId: 'mountain_bike_park_variant_2', appearanceKitId: 'mountain_bike_park_v2_skills_dirt_skin', plantingStructure: 'mtb_skills_dirt_v2' })]),
   }),
+  park_regional_english_landscape_v0: Object.freeze({
+    regional_park: Object.freeze([Object.freeze({ variantId: 'regional_park_v0', appearanceKitId: 'regional_park_v0_english_landscape_skin', plantingStructure: 'regional_english_landscape_v0' })]),
+  }),
+  park_beer_garden_munich_v0: Object.freeze({
+    beer_garden: Object.freeze([Object.freeze({ variantId: 'beer_garden_v0', appearanceKitId: 'beer_garden_v0_munich_chestnut_skin', plantingStructure: 'beer_garden_munich_v0' })]),
+  }),
+  park_sunken_courtyard_v0: Object.freeze({
+    sunken_plaza: Object.freeze([Object.freeze({ variantId: 'sunken_plaza_v0', appearanceKitId: 'sunken_plaza_v0_intimate_courtyard_skin', plantingStructure: 'sunken_courtyard_v0' })]),
+  }),
+  park_terraced_cascade_v3: Object.freeze({
+    stepped_terraced_plaza: Object.freeze([Object.freeze({ variantId: 'stepped_terraced_plaza_v3', appearanceKitId: 'stepped_terraced_plaza_v3_modernist_cascade_skin', plantingStructure: 'terraced_cascade_v3' })]),
+  }),
+  park_market_festival_lawn_v1: Object.freeze({
+    market_square: Object.freeze([Object.freeze({ variantId: 'market_square_v1', appearanceKitId: 'market_square_v1_open_festival_lawn_skin', plantingStructure: 'market_festival_lawn_v1' })]),
+  }),
+  park_boardwalk_maritime_v0: Object.freeze({
+    promenade_boardwalk: Object.freeze([Object.freeze({ variantId: 'promenade_boardwalk_v0', appearanceKitId: 'promenade_boardwalk_v0_maritime_skin', plantingStructure: 'boardwalk_maritime_v0' })]),
+  }),
+  park_fountain_formal_pool_v1: Object.freeze({
+    fountain_water_feature: Object.freeze([Object.freeze({ variantId: 'fountain_water_feature_v1', appearanceKitId: 'fountain_water_feature_v1_formal_pool_skin', plantingStructure: 'fountain_formal_pool_v1' })]),
+  }),
+  park_natural_swimming_pond_v0: Object.freeze({
+    swimming_pool_complex: Object.freeze([Object.freeze({ variantId: 'swimming_pool_complex_v0', appearanceKitId: 'swimming_pool_complex_v0_natural_pond_skin', plantingStructure: 'natural_swimming_pond_v0' })]),
+  }),
+  park_nature_preserve_prairie_v1: Object.freeze({
+    nature_preserve: Object.freeze([Object.freeze({ variantId: 'nature_preserve_v1', appearanceKitId: 'nature_preserve_v1_tallgrass_prairie_skin', plantingStructure: 'nature_preserve_prairie_v1' })]),
+  }),
+  park_riverfront_lake_beach_v1: Object.freeze({
+    riverfront_park_beach: Object.freeze([Object.freeze({ variantId: 'riverfront_park_beach_v1', appearanceKitId: 'riverfront_park_beach_v1_lake_swimming_skin', plantingStructure: 'riverfront_lake_beach_v1' })]),
+  }),
 });
 
 function normalizeId(value: unknown): string {
@@ -792,6 +833,16 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'urban_beach') return 'park_urban_beach_family_v2';
   if (archetypeId === 'velodrome_cycling_track') return 'park_velodrome_open_air_v0';
   if (archetypeId === 'mountain_bike_park') return 'park_mtb_skills_dirt_v2';
+  if (archetypeId === 'regional_park') return 'park_regional_english_landscape_v0';
+  if (archetypeId === 'beer_garden') return 'park_beer_garden_munich_v0';
+  if (archetypeId === 'sunken_plaza') return 'park_sunken_courtyard_v0';
+  if (archetypeId === 'stepped_terraced_plaza') return 'park_terraced_cascade_v3';
+  if (archetypeId === 'market_square') return 'park_market_festival_lawn_v1';
+  if (archetypeId === 'promenade_boardwalk') return 'park_boardwalk_maritime_v0';
+  if (archetypeId === 'fountain_water_feature') return 'park_fountain_formal_pool_v1';
+  if (archetypeId === 'swimming_pool_complex') return 'park_natural_swimming_pond_v0';
+  if (archetypeId === 'nature_preserve') return 'park_nature_preserve_prairie_v1';
+  if (archetypeId === 'riverfront_park_beach') return 'park_riverfront_lake_beach_v1';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -845,6 +896,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_urban_beach_family_v2': return 'urban_beach';
     case 'park_velodrome_open_air_v0': return 'velodrome_cycling_track';
     case 'park_mtb_skills_dirt_v2': return 'mountain_bike_park';
+    case 'park_regional_english_landscape_v0': return 'regional_park';
+    case 'park_beer_garden_munich_v0': return 'beer_garden';
+    case 'park_sunken_courtyard_v0': return 'sunken_plaza';
+    case 'park_terraced_cascade_v3': return 'stepped_terraced_plaza';
+    case 'park_market_festival_lawn_v1': return 'market_square';
+    case 'park_boardwalk_maritime_v0': return 'promenade_boardwalk';
+    case 'park_fountain_formal_pool_v1': return 'fountain_water_feature';
+    case 'park_natural_swimming_pond_v0': return 'swimming_pool_complex';
+    case 'park_nature_preserve_prairie_v1': return 'nature_preserve';
+    case 'park_riverfront_lake_beach_v1': return 'riverfront_park_beach';
   }
 }
 
@@ -1020,6 +1081,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch4ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch5ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch6ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch7ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;
