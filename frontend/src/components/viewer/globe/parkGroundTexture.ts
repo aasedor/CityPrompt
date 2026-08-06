@@ -193,11 +193,15 @@ export type ParkGroundSurfaceSource = 'ai' | 'procedural' | 'none';
  * orthophoto always wins; compiled parks otherwise receive the deterministic
  * archetype surface produced locally in the browser. */
 export function resolveParkGroundSurfaceSource(zone: SiteZone): ParkGroundSurfaceSource {
+  // Archetype selection belongs to the flat planning phase. This compile gate
+  // is deliberately first: exact procedural families (basketball, skate, etc.)
+  // must not leak a 3D preview onto the globe before Generate to 3D.
+  if (!isCommunity3DCompiled(zone)) return 'none';
   // Exact archetype kits own their surface. A stale AI document from an older
   // workflow must never cover the metric bowls and reference-derived slab.
   if (usesArchetypeOwnedParkSurface(zone)) return 'procedural';
   if (getParkGroundMeta(zone)) return 'ai';
-  if (isParkGroundZone(zone) && isCommunity3DCompiled(zone)) return 'procedural';
+  if (isParkGroundZone(zone)) return 'procedural';
   return 'none';
 }
 
@@ -2157,6 +2161,7 @@ export function useParkGroundTexture(zone: SiteZone): {
 } {
   const persistedMeta = getParkGroundMeta(zone);
   const surfaceSource = resolveParkGroundSurfaceSource(zone);
+  const activePersistedMeta = surfaceSource === 'ai' ? persistedMeta : null;
   const proceduralSignature = surfaceSource === 'procedural'
     ? parkGroundSourceSignature(zone)
     : null;
@@ -2171,7 +2176,7 @@ export function useParkGroundTexture(zone: SiteZone): {
     [proceduralSurface],
   );
 
-  const url = persistedMeta?.url ?? null;
+  const url = activePersistedMeta?.url ?? null;
   const [remoteTexture, setRemoteTexture] = useState<THREE.Texture | null>(
     url ? textureCache.get(url) ?? null : null,
   );
@@ -2200,8 +2205,8 @@ export function useParkGroundTexture(zone: SiteZone): {
   }, [url]);
 
   return {
-    meta: persistedMeta ?? proceduralSurface?.meta ?? null,
-    texture: persistedMeta ? remoteTexture : proceduralSurface?.texture ?? null,
+    meta: activePersistedMeta ?? proceduralSurface?.meta ?? null,
+    texture: activePersistedMeta ? remoteTexture : proceduralSurface?.texture ?? null,
   };
 }
 

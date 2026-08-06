@@ -39,6 +39,7 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import {
   deriveCityPromptWorkflow,
   type CityPromptWorkflowStep,
@@ -534,15 +535,23 @@ export function ProjectViewPage() {
     selectZone(null);
     setIsPreparingGenerate3D(true);
     try {
+      if (visibleZones.some((zone) => !isPersistedZoneId(zone.id))) {
+        throw new Error('A plan zone is still saving. Wait a moment and run Generate to 3D again.');
+      }
       const authoritativeProjectZones = id ? await siteZonesApi.list(id) : visibleZones;
-      const authoritativeById = new Map(authoritativeProjectZones.map((zone) => [zone.id, zone]));
-      const frozenVisibleZones = visibleZones.map((zone) => {
-        const authoritative = authoritativeById.get(zone.id);
-        if (!authoritative) {
-          throw new Error('A plan zone is still saving. Wait a moment and run Generate to 3D again.');
-        }
-        return authoritative;
+      if (id) {
+        // The server snapshot owns generation. Replacing the query cache here
+        // also removes persisted-id ghost zones left by a backend restart or a
+        // concurrent delete instead of misreporting them as "still saving".
+        queryClient.setQueryData(['site-zones', id], authoritativeProjectZones);
+      }
+      const frozenVisibleZones = authoritativeProjectZones.filter((zone) => {
+        const source = zone.properties?._imported_from;
+        return !(typeof source === 'string' && hiddenLayers.has(source));
       });
+      if (frozenVisibleZones.length === 0) {
+        throw new Error('No saved building, park, or street is available to build. The plan was refreshed; draw the zone again.');
+      }
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       setGenerate3DZones(frozenVisibleZones);
@@ -552,7 +561,7 @@ export function ProjectViewPage() {
     } finally {
       setIsPreparingGenerate3D(false);
     }
-  }, [cityPromptWorkflow, id, selectZone, visiblePlanLayers, visibleZones]);
+  }, [cityPromptWorkflow, hiddenLayers, id, queryClient, selectZone, visiblePlanLayers, visibleZones]);
 
   const handleCloseGenerate3D = useCallback(() => {
     setShowLegoBuilder(false);

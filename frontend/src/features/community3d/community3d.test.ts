@@ -166,13 +166,13 @@ describe('community 3D plan contract', () => {
     }));
   });
 
-  it('preserves immediate previews for manual zones and older authored park drapes', () => {
-    expect(shouldRenderCommunityGround(zone('road'))).toBe(true);
-    expect(shouldRenderCommunityGround(zone('parking'))).toBe(true);
+  it('keeps manual parks and streets flat until Generate 3D', () => {
+    expect(shouldRenderCommunityGround(zone('road'))).toBe(false);
+    expect(shouldRenderCommunityGround(zone('parking'))).toBe(false);
     expect(shouldRenderCommunityGround(zone('green_space', {
       _plan_scenario: 'climate_first',
       park_ground_texture: { document_id: 'doc-1' },
-    }))).toBe(true);
+    }))).toBe(false);
   });
 
   it('keeps standing park props hidden until Generate 3D compiles the zone', () => {
@@ -180,7 +180,7 @@ describe('community 3D plan contract', () => {
       green_space_archetype_id: 'reservoir_watershed_park',
       park_ground_texture: { document_id: 'rendered-ground' },
     });
-    expect(shouldRenderCommunityGround(park)).toBe(true);
+    expect(shouldRenderCommunityGround(park)).toBe(false);
     expect(shouldRenderCommunityProps(park)).toBe(false);
 
     const compiled = {
@@ -205,6 +205,14 @@ describe('community 3D plan contract', () => {
       ...compiled,
       properties: { ...compiled.properties, community_3d_mask_existing_tiles: false },
     })).toBe(false);
+  });
+
+  it('keeps uncompiled park and street planning colours visible over source tiles', () => {
+    expect(shouldMaskCommunityGroundTiles(zone('green_space'))).toBe(true);
+    expect(shouldMaskCommunityGroundTiles(zone('road'))).toBe(true);
+    expect(shouldMaskCommunityGroundTiles(zone('green_space', {
+      community_3d_mask_existing_tiles: false,
+    }))).toBe(false);
   });
 
   it('keeps procedural public realm on the explicit replacement contract', () => {

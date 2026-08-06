@@ -323,19 +323,13 @@ export function selectCommunity3DCompileZones(
 }
 
 /**
- * Planner-created ground zones stay as coloured planning polygons until the
- * user explicitly builds the community. Manually drawn ground zones retain
- * their historical immediate-preview behaviour.
+ * Ground zones stay as coloured planning polygons until the user explicitly
+ * builds the community. Archetype/variant selection is planning metadata; it
+ * must not mount street sections or authored park ground before Generate 3D.
  */
 export function shouldRenderCommunityGround(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return false;
-  const props = propertiesOf(zone);
-  const isMasterPlanZone = typeof props._plan_scenario === 'string';
-  if (!isMasterPlanZone) return true;
-  // Existing AI park drapes are already authored 3D proposal content and must
-  // not disappear when this schema is introduced to an older project.
-  if (kind === 'park' && props.park_ground_texture) return true;
   return isCommunity3DCompiled(zone);
 }
 
@@ -364,11 +358,18 @@ export function shouldMaskCommunityGroundTiles(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return false;
   const props = propertiesOf(zone);
+  // The editable plan polygon is still a deliberate replacement for the
+  // source tile inside its footprint. Masking the tile is what keeps that
+  // plain colour wash visible on an oblique photogrammetry globe; it does not
+  // opt the zone into any generated ground, texture, or standing LEGO parts.
+  if (!isCommunity3DCompiled(zone)) {
+    return props.community_3d_mask_existing_tiles !== false;
+  }
   const hasAuthoredParkGround = kind === 'park' && Boolean(props.park_ground_texture);
   if (hasAuthoredParkGround) {
     return props.community_3d_mask_existing_tiles !== false;
   }
-  return props.community_3d_mask_existing_tiles === true && isCommunity3DCompiled(zone);
+  return props.community_3d_mask_existing_tiles === true;
 }
 
 export function generatorForKind(

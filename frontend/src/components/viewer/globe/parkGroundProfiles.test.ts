@@ -862,7 +862,7 @@ describe('park ground pilot profiles', () => {
     expect(resolveParkGroundSurfaceSource(upgraded)).toBe('ai');
   });
 
-  it('lets the exact Skate Park v0 surface override a stale AI drape', () => {
+  it('keeps exact Skate Park v0 flat until compile, then overrides a stale AI drape', () => {
     const skate = zone('skate_park');
     skate.properties = {
       ...skate.properties,
@@ -881,8 +881,42 @@ describe('park ground pilot profiles', () => {
         archetype_id: 'skate_park',
       },
     };
+    expect(resolveParkGroundSurfaceSource(skate)).toBe('none');
+    expect(hasCurrentParkGroundSurface(skate)).toBe(false);
+
+    skate.properties = {
+      ...skate.properties,
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'park',
+        generator: 'park_kit',
+        compiled_at: '2026-07-17T01:00:00Z',
+      },
+    };
     expect(resolveParkGroundSurfaceSource(skate)).toBe('procedural');
     expect(hasCurrentParkGroundSurface(skate)).toBe(true);
+  });
+
+  it('keeps Basketball Court variants out of the scene until Generate to 3D', () => {
+    const basketball = zone('basketball_court');
+    basketball.properties = {
+      ...basketball.properties,
+      green_space_selected_variant_id: 'basketball_court_v3',
+    };
+    expect(resolveParkGroundSurfaceSource(basketball)).toBe('none');
+
+    basketball.properties = {
+      ...basketball.properties,
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'park',
+        generator: 'park_kit',
+        compiled_at: '2026-07-17T01:00:00Z',
+      },
+    };
+    expect(resolveParkGroundSurfaceSource(basketball)).toBe('procedural');
   });
 
   it('gives all six recurring public-realm archetypes a zero-call compiled ground contract', () => {

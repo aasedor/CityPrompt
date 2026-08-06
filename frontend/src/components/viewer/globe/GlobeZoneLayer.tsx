@@ -442,9 +442,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     sitePrepared,
   );
   const communityKind = resolveCommunity3DKind(zone);
+  const isCompiledCommunity = isCommunity3DCompiled(zone);
   const isCompiledGround = (
     (communityKind === 'park' || communityKind === 'street')
-    && isCommunity3DCompiled(zone)
+    && isCompiledCommunity
   );
   const showThisPlanningOverlay = planningOverlaysVisible && !isCompiledGround;
   // Match the mid-grey value range of Google photogrammetry instead of using
@@ -474,7 +475,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || isCompiledGround
     || shouldFilterObjectTerrainHeight(zone.zone_type)
   );
-  const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
+  // Drawn buildings share the same planning contract as parks and streets:
+  // archetype selection changes only the flat polygon and label. Height is
+  // instantiated only after Generate to 3D stamps the compiled marker.
+  const extrudeHeight = isBuilding && isCompiledCommunity
+    ? Math.max(buildingHeight, 10)
+    : 0;
   const useTerrainGridFlat = isCompiledGround || communityKind === 'park' || isPreparedBoundary;
   // Densify imported flat zones too (not just green_space): a long corridor needs
   // vertices along its length so the draped surface follows the terrain instead of

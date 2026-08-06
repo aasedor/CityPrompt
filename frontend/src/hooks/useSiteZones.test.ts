@@ -6,6 +6,7 @@ import { useSiteZones } from './useSiteZones';
 import { siteZonesApi } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { useViewerStore } from '@/store';
+import toast from 'react-hot-toast';
 
 vi.mock('@/services/api', () => ({
   siteZonesApi: {
@@ -79,6 +80,31 @@ describe('useSiteZones', () => {
     await waitFor(() => {
       expect(siteZonesApi.update).toHaveBeenCalledWith(REAL_ZONE_ID, { coordinates: newCoords });
     });
+  });
+
+  it('reconciles a persisted ghost zone after an update returns 404', async () => {
+    queryClient.setQueryData(['site-zones', PROJECT_ID], [makeZone(REAL_ZONE_ID)]);
+    useViewerStore.setState({ selectedZoneId: REAL_ZONE_ID });
+    vi.mocked(siteZonesApi.list)
+      .mockImplementationOnce(() => new Promise(() => {}))
+      .mockResolvedValueOnce([]);
+    vi.mocked(siteZonesApi.update).mockRejectedValueOnce(Object.assign(
+      new Error('Request failed with status code 404'),
+      { response: { status: 404 } },
+    ));
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+
+    result.current.updateZone.mutate({
+      zoneId: REAL_ZONE_ID,
+      data: { name: 'Basketball Court' },
+    });
+
+    await waitFor(() => expect(result.current.updateZone.isError).toBe(true));
+    await waitFor(() => expect(useViewerStore.getState().selectedZoneId).toBeNull());
+    expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])).toEqual([]);
+    expect(toast.error).toHaveBeenCalledWith(
+      'This zone no longer exists on the server. The plan was refreshed; draw it again.',
+    );
   });
 
   it('deleteZone skips the API for temp ids', async () => {

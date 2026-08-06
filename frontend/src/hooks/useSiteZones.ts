@@ -14,6 +14,10 @@ import {
   createZoneCoordinatesAction,
 } from '@/store/undoActions';
 
+function apiStatus(error: unknown): number | undefined {
+  return (error as { response?: { status?: number } } | undefined)?.response?.status;
+}
+
 export function useSiteZones(projectId: string | undefined) {
   const queryClient = useQueryClient();
   const { selectZone } = useViewerStore();
@@ -122,8 +126,17 @@ export function useSiteZones(projectId: string | undefined) {
         );
       }
     },
-    onError: (err: Error) => {
-      toast.error(`Failed to update zone: ${err.message}`);
+    onError: async (err: unknown) => {
+      if (apiStatus(err) === 404) {
+        // A backend restart or another tab can invalidate a cached polygon.
+        // Reconcile immediately instead of leaving a selectable ghost zone
+        // that will block Generate to 3D forever.
+        await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
+        selectZone(null);
+        toast.error('This zone no longer exists on the server. The plan was refreshed; draw it again.');
+        return;
+      }
+      toast.error(`Failed to update zone: ${getApiErrorMessage(err)}`);
     },
   });
 
@@ -186,10 +199,16 @@ export function useSiteZones(projectId: string | undefined) {
           createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient),
         );
       }
-    }).catch((err: Error) => {
-      toast.error(`Failed to update zone geometry: ${err.message}`);
+    }).catch(async (err: unknown) => {
+      if (apiStatus(err) === 404) {
+        await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
+        selectZone(null);
+        toast.error('This zone no longer exists on the server. The plan was refreshed; draw it again.');
+        return;
+      }
+      toast.error(`Failed to update zone geometry: ${getApiErrorMessage(err)}`);
     });
-  }, [queryClient, projectId]);
+  }, [queryClient, projectId, selectZone]);
 
   return {
     siteZones,
