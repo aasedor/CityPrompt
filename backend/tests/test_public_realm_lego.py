@@ -131,6 +131,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_halifax_rose_bandstand_v0",
             "park_olmsted_multilandscape_v3",
             "park_hilltop_viewpoint_v3",
+            "park_amsterdam_hofje_garden_v0",
+            "park_amsterdam_plein_v0",
+            "park_amsterdam_vondelpark_pavilion_v3",
+            "park_barcelona_pati_green_v0",
+            "park_barcelona_xamfra_corner_v2",
+            "park_barcelona_superilla_green_v1",
+            "park_calgary_prairie_market_v1",
+            "park_calgary_princes_island_festival_v0",
+            "park_montreal_mount_royal_grove_v2",
+            "park_montreal_neighbourhood_square_v3",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1096,6 +1106,77 @@ def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
     variant_id: str,
 ):
     geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_amsterdam_hofje_garden_v0", "amsterdam_hofje_garden", "amsterdam_hofje_garden_v0", "amsterdam_hofje_garden_v0_skin", 25.0, 25.0),
+        ("park_amsterdam_plein_v0", "amsterdam_plein", "amsterdam_plein_v0", "amsterdam_plein_v0_brick_skin", 70.0, 55.0),
+        ("park_amsterdam_vondelpark_pavilion_v3", "amsterdam_vondelpark", "amsterdam_vondelpark_v3", "amsterdam_vondelpark_v3_pavilion_skin", 250.0, 160.0),
+        ("park_barcelona_pati_green_v0", "barcelona_pati_interior", "barcelona_pati_interior_v0", "barcelona_pati_interior_v0_green_skin", 50.0, 40.0),
+        ("park_barcelona_xamfra_corner_v2", "barcelona_placa_xamfra", "barcelona_placa_xamfra_v2", "barcelona_placa_xamfra_v2_corner_skin", 30.0, 28.0),
+        ("park_barcelona_superilla_green_v1", "barcelona_superilla", "barcelona_superilla_v1", "barcelona_superilla_v1_green_skin", 130.0, 130.0),
+        ("park_calgary_prairie_market_v1", "calgary_prairie_plaza", "calgary_prairie_plaza_v1", "calgary_prairie_plaza_v1_market_skin", 70.0, 55.0),
+        ("park_calgary_princes_island_festival_v0", "calgary_princes_island", "calgary_princes_island_v0", "calgary_princes_island_v0_festival_skin", 400.0, 200.0),
+        ("park_montreal_mount_royal_grove_v2", "montreal_mount_royal", "montreal_mount_royal_v2", "montreal_mount_royal_v2_grove_skin", 500.0, 400.0),
+        ("park_montreal_neighbourhood_square_v3", "montreal_square", "montreal_square_v3", "montreal_square_v3_neighbourhood_skin", 70.0, 55.0),
+    ],
+)
+def test_batch10_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selection = catalog.capabilities[0].selections[0]
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v0"),
+        ("amsterdam_plein", "amsterdam_plein_v0"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v3"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v0"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v2"),
+        ("barcelona_superilla", "barcelona_superilla_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v0"),
+        ("montreal_mount_royal", "montreal_mount_royal_v2"),
+        ("montreal_square", "montreal_square_v3"),
+    ],
+)
+def test_batch10_families_adapt_to_shared_compact_trial_polygon(archetype_id: str, variant_id: str):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_000 + 37))
     recipe = plan_public_realm_zone_recipe(
         "green_space",
         geometry,

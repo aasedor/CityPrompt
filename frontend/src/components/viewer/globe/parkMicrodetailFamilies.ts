@@ -511,6 +511,26 @@ function familyTargets(
       return [target('shrub', 26), target('perennial', 18), target('boulder', 10), target('picnic_table', 4), target('bin', 5), target('drinking_fountain', 2)];
     case 'park_hilltop_viewpoint_v3':
       return [target('shrub', 18), target('boulder', 14), target('riprap', 10), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_amsterdam_hofje_garden_v0':
+      return [target('shrub', 12), target('perennial', 18), target('light', 2), target('bin', 1)];
+    case 'park_amsterdam_plein_v0':
+      return [target('light', 8), target('bike_rack', 10), target('bin', 4), target('bollard', 8)];
+    case 'park_amsterdam_vondelpark_pavilion_v3':
+      return [target('shrub', 22), target('perennial', 16), target('boulder', 6), target('picnic_table', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_barcelona_pati_green_v0':
+      return [target('shrub', 14), target('perennial', 20), target('light', 4), target('bin', 2), target('drinking_fountain', 1)];
+    case 'park_barcelona_xamfra_corner_v2':
+      return [target('light', 5), target('bike_rack', 4), target('bin', 2), target('bollard', 6)];
+    case 'park_barcelona_superilla_green_v1':
+      return [target('shrub', 16), target('perennial', 18), target('light', 8), target('bike_rack', 8), target('bin', 5), target('bollard', 10)];
+    case 'park_calgary_prairie_market_v1':
+      return [target('ornamental_grass', 24), target('perennial', 16), target('light', 8), target('bin', 5), target('bike_rack', 4)];
+    case 'park_calgary_princes_island_festival_v0':
+      return [target('reed', 18), target('ornamental_grass', 20), target('picnic_table', 6), target('bin', 5), target('drinking_fountain', 2)];
+    case 'park_montreal_mount_royal_grove_v2':
+      return [target('shrub', 24), target('boulder', 16), target('riprap', 12), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_montreal_neighbourhood_square_v3':
+      return [target('shrub', 16), target('perennial', 18), target('light', 6), target('bin', 3), target('bike_rack', 3)];
   }
 }
 

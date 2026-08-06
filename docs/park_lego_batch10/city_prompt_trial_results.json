@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "20c08c19-8bf3-48ab-b9d1-62482b46a66e",
+  "parkZoneId": "f00b58c7-6277-4617-a5d5-0bc4ff21db0b",
+  "buildingZoneId": "74ccecf5-afa2-44b9-9fd0-60464579be86",
+  "site": {
+    "areaM2": 1792.65,
+    "widthM": 98.526,
+    "depthM": 36.664
+  },
+  "procedure": "one_park_at_a_time_with_separate_lego_building_and_fresh_server_snapshot",
+  "paidImageApiCalls": 0,
+  "meshyCalls": 0,
+  "expectedGenerateSummary": "1 buildings · 1 parks · 0 streets",
+  "expectedGroundState": "compiled",
+  "expectedMissingFamilyCount": 0,
+  "trials": [
+    {"order": 1, "archetypeId": "amsterdam_hofje_garden", "variantId": "amsterdam_hofje_garden_v0", "familyId": "park_amsterdam_hofje_garden_v0", "result": "pass"},
+    {"order": 2, "archetypeId": "amsterdam_plein", "variantId": "amsterdam_plein_v0", "familyId": "park_amsterdam_plein_v0", "result": "pass_after_authoritative_refresh"},
+    {"order": 3, "archetypeId": "amsterdam_vondelpark", "variantId": "amsterdam_vondelpark_v3", "familyId": "park_amsterdam_vondelpark_pavilion_v3", "result": "pass"},
+    {"order": 4, "archetypeId": "barcelona_pati_interior", "variantId": "barcelona_pati_interior_v0", "familyId": "park_barcelona_pati_green_v0", "result": "pass"},
+    {"order": 5, "archetypeId": "barcelona_placa_xamfra", "variantId": "barcelona_placa_xamfra_v2", "familyId": "park_barcelona_xamfra_corner_v2", "result": "pass"},
+    {"order": 6, "archetypeId": "barcelona_superilla", "variantId": "barcelona_superilla_v1", "familyId": "park_barcelona_superilla_green_v1", "result": "pass"},
+    {"order": 7, "archetypeId": "calgary_prairie_plaza", "variantId": "calgary_prairie_plaza_v1", "familyId": "park_calgary_prairie_market_v1", "result": "pass"},
+    {"order": 8, "archetypeId": "calgary_princes_island", "variantId": "calgary_princes_island_v0", "familyId": "park_calgary_princes_island_festival_v0", "result": "pass"},
+    {"order": 9, "archetypeId": "montreal_mount_royal", "variantId": "montreal_mount_royal_v2", "familyId": "park_montreal_mount_royal_grove_v2", "result": "pass"},
+    {"order": 10, "archetypeId": "montreal_square", "variantId": "montreal_square_v3", "familyId": "park_montreal_neighbourhood_square_v3", "result": "pass"}
+  ],
+  "finalPersistedRecipe": {
+    "familyId": "park_montreal_neighbourhood_square_v3",
+    "profileId": "montreal-neighbourhood-square-lego-v1",
+    "appearanceKitId": "montreal_square_v3_neighbourhood_skin",
+    "componentSetIds": [
+      "montreal_square_ground_program_v1",
+      "central_fountain_monument_v1",
+      "low_iron_perimeter_v1",
+      "whole_maple_bench_bays_v1"
+    ],
+    "state": "compiled"
+  }
+}

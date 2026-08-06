@@ -462,6 +462,16 @@ _LONDON_RAILED_SQUARE_ENVELOPE = _park_envelope(nominal=(100.0, 80.0), width=(35
 _HALIFAX_ROSE_BANDSTAND_ENVELOPE = _park_envelope(nominal=(200.0, 150.0), width=(40.0, 440.0), depth=(32.0, 330.0), area=(1_280.0, 145_200.0))
 _OLMSTED_MULTILANDSCAPE_ENVELOPE = _park_envelope(nominal=(400.0, 350.0), width=(50.0, 900.0), depth=(35.0, 720.0), area=(1_750.0, 648_000.0))
 _HILLTOP_VIEWPOINT_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(40.0, 420.0), depth=(35.0, 380.0), area=(1_400.0, 159_600.0))
+_AMSTERDAM_HOFJE_ENVELOPE = _park_envelope(nominal=(25.0, 25.0), width=(10.0, 110.0), depth=(10.0, 70.0), area=(100.0, 7_700.0))
+_AMSTERDAM_PLEIN_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_AMSTERDAM_VONDELPARK_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(35.0, 600.0), depth=(28.0, 360.0), area=(980.0, 216_000.0))
+_BARCELONA_PATI_ENVELOPE = _park_envelope(nominal=(50.0, 40.0), width=(18.0, 130.0), depth=(14.0, 90.0), area=(252.0, 11_700.0))
+_BARCELONA_XAMFRA_ENVELOPE = _park_envelope(nominal=(30.0, 28.0), width=(14.0, 120.0), depth=(12.0, 80.0), area=(168.0, 9_600.0))
+_BARCELONA_SUPERILLA_ENVELOPE = _park_envelope(nominal=(130.0, 130.0), width=(35.0, 280.0), depth=(30.0, 250.0), area=(1_050.0, 70_000.0))
+_CALGARY_PRAIRIE_MARKET_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_CALGARY_PRINCES_ISLAND_ENVELOPE = _park_envelope(nominal=(400.0, 200.0), width=(40.0, 800.0), depth=(30.0, 430.0), area=(1_200.0, 344_000.0))
+_MONTREAL_MOUNT_ROYAL_ENVELOPE = _park_envelope(nominal=(500.0, 400.0), width=(45.0, 950.0), depth=(30.0, 720.0), area=(1_350.0, 684_000.0))
+_MONTREAL_SQUARE_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1366,6 +1376,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_hilltop_viewpoint_v3", kind="park", title="Hilltop Park / Pacific Terraced Viewpoint v3", generator="park_kit",
         selections=(_selection("hilltop_topographic_park", "hilltop_topographic_park_v3", profile_id="hilltop-viewpoint-lego-v1", appearance_kit_id="hilltop_topographic_park_v3_viewpoint_skin", planting_structure="hilltop_viewpoint_v3", compatibility=_HILLTOP_VIEWPOINT_ENVELOPE, components=("hilltop_ground_program_v1", "continuous_switchback_trail_v1", "whole_viewpoint_decks_v1", "cedar_fir_slope_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_hofje_garden_v0", kind="park", title="Amsterdam Hofje Garden v0", generator="park_kit",
+        selections=(_selection("amsterdam_hofje_garden", "amsterdam_hofje_garden_v0", profile_id="amsterdam-hofje-lego-v1", appearance_kit_id="amsterdam_hofje_garden_v0_skin", planting_structure="amsterdam_hofje_v0", compatibility=_AMSTERDAM_HOFJE_ENVELOPE, components=("hofje_gravel_cross_v1", "whole_low_hedge_rooms_v1", "central_well_pump_v1", "single_garden_gate_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_plein_v0", kind="park", title="Amsterdam Brick Plein v0", generator="park_kit",
+        selections=(_selection("amsterdam_plein", "amsterdam_plein_v0", profile_id="amsterdam-plein-lego-v1", appearance_kit_id="amsterdam_plein_v0_brick_skin", planting_structure="amsterdam_plein_v0", compatibility=_AMSTERDAM_PLEIN_ENVELOPE, components=("brick_plein_ground_program_v1", "whole_market_stall_bays_v1", "plein_edge_tree_bays_v1", "bicycle_rack_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_vondelpark_pavilion_v3", kind="park", title="Amsterdam Vondelpark Pavilion v3", generator="park_kit",
+        selections=(_selection("amsterdam_vondelpark", "amsterdam_vondelpark_v3", profile_id="amsterdam-vondelpark-pavilion-lego-v1", appearance_kit_id="amsterdam_vondelpark_v3_pavilion_skin", planting_structure="amsterdam_vondelpark_v3", compatibility=_AMSTERDAM_VONDELPARK_ENVELOPE, components=("vondelpark_landscape_rooms_v1", "continuous_winding_path_v1", "irregular_pond_bridge_v1", "modest_park_pavilion_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_pati_green_v0", kind="park", title="Barcelona Eixample Pati v0", generator="park_kit",
+        selections=(_selection("barcelona_pati_interior", "barcelona_pati_interior_v0", profile_id="barcelona-pati-green-lego-v1", appearance_kit_id="barcelona_pati_interior_v0_green_skin", planting_structure="barcelona_pati_green_v0", compatibility=_BARCELONA_PATI_ENVELOPE, components=("pati_gravel_loop_v1", "mediterranean_planting_rooms_v1", "central_fountain_v1", "compact_play_bay_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_xamfra_corner_v2", kind="park", title="Barcelona Xamfra Corner Plaza v2", generator="park_kit",
+        selections=(_selection("barcelona_placa_xamfra", "barcelona_placa_xamfra_v2", profile_id="barcelona-xamfra-corner-lego-v1", appearance_kit_id="barcelona_placa_xamfra_v2_corner_skin", planting_structure="barcelona_xamfra_v2", compatibility=_BARCELONA_XAMFRA_ENVELOPE, components=("xamfra_octagonal_ground_v1", "diagonal_clear_route_v1", "single_plane_tree_v1", "whole_cafe_table_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_superilla_green_v1", kind="park", title="Barcelona Superilla Green v1", generator="park_kit",
+        selections=(_selection("barcelona_superilla", "barcelona_superilla_v1", profile_id="barcelona-superilla-green-lego-v1", appearance_kit_id="barcelona_superilla_v1_green_skin", planting_structure="barcelona_superilla_v1", compatibility=_BARCELONA_SUPERILLA_ENVELOPE, components=("superilla_connected_ground_v1", "whole_coloured_activity_rooms_v1", "raised_planter_tree_bays_v1", "social_play_furniture_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_calgary_prairie_market_v1", kind="park", title="Calgary Prairie Market Plaza v1", generator="park_kit",
+        selections=(_selection("calgary_prairie_plaza", "calgary_prairie_plaza_v1", profile_id="calgary-prairie-market-lego-v1", appearance_kit_id="calgary_prairie_plaza_v1_market_skin", planting_structure="calgary_prairie_market_v1", compatibility=_CALGARY_PRAIRIE_MARKET_ENVELOPE, components=("prairie_plaza_ground_program_v1", "linear_reflecting_pool_v1", "whole_market_stall_bays_v1", "native_grass_wind_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_calgary_princes_island_festival_v0", kind="park", title="Calgary Prince's Island Festival v0", generator="park_kit",
+        selections=(_selection("calgary_princes_island", "calgary_princes_island_v0", profile_id="calgary-princes-island-festival-lego-v1", appearance_kit_id="calgary_princes_island_v0_festival_skin", planting_structure="calgary_princes_island_v0", compatibility=_CALGARY_PRINCES_ISLAND_ENVELOPE, components=("princes_island_landscape_rooms_v1", "festival_lawn_v1", "wetland_boardwalk_v1", "modest_outdoor_stage_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_montreal_mount_royal_grove_v2", kind="park", title="Montreal Mount Royal Grove v2", generator="park_kit",
+        selections=(_selection("montreal_mount_royal", "montreal_mount_royal_v2", profile_id="montreal-mount-royal-grove-lego-v1", appearance_kit_id="montreal_mount_royal_v2_grove_skin", planting_structure="montreal_mount_royal_v2", compatibility=_MONTREAL_MOUNT_ROYAL_ENVELOPE, components=("mount_royal_ground_program_v1", "continuous_carriage_switchback_v1", "whole_maple_cohorts_v1", "terrain_seated_belvedere_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_montreal_neighbourhood_square_v3", kind="park", title="Montreal Neighbourhood Square v3", generator="park_kit",
+        selections=(_selection("montreal_square", "montreal_square_v3", profile_id="montreal-neighbourhood-square-lego-v1", appearance_kit_id="montreal_square_v3_neighbourhood_skin", planting_structure="montreal_square_v3", compatibility=_MONTREAL_SQUARE_ENVELOPE, components=("montreal_square_ground_program_v1", "central_fountain_monument_v1", "low_iron_perimeter_v1", "whole_maple_bench_bays_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

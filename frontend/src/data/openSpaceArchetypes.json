@@ -4710,7 +4710,7 @@
       "aspectRatio": "1.6:1",
       "shape": "irregular",
       "title": "Vondelpark Garden",
-      "aestheticCategory": "amsterdam_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "English landscape park with winding paths, ponds, mature tree canopy, and open lawns",
       "generationTags": [
@@ -4791,7 +4791,7 @@
       "aspectRatio": "1:1",
       "shape": "rectangular",
       "title": "Hofje Courtyard Garden",
-      "aestheticCategory": "amsterdam_courtyard",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Enclosed courtyard garden within a hofje complex, with gravel paths, low hedges, and central well",
       "generationTags": [
@@ -4872,7 +4872,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Amsterdam Plein",
-      "aestheticCategory": "amsterdam_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Irregular hard-paved Amsterdam civic square with market use, cafe terrasses, and church or weigh house focal building",
       "generationTags": [
@@ -4953,7 +4953,7 @@
       "aspectRatio": "1.25:1",
       "shape": "rectangular",
       "title": "Eixample Interior Courtyard",
-      "aestheticCategory": "barcelona_courtyard",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Green oasis hidden inside an Eixample block, with gravel paths, fountain, and Mediterranean planting",
       "generationTags": [
@@ -5034,7 +5034,7 @@
       "aspectRatio": "1.07:1",
       "shape": "octagonal",
       "title": "Chamfer Plaza",
-      "aestheticCategory": "barcelona_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Small diamond-shaped open space where four chamfered Eixample corners meet at an intersection",
       "generationTags": [
@@ -5115,7 +5115,7 @@
       "aspectRatio": "1:1",
       "shape": "square",
       "title": "Barcelona Superblock",
-      "aestheticCategory": "barcelona_urban",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "plaza",
       "description": "Modern pedestrianized superblock interior with colored pavement, planters, play equipment, and pop-up market",
       "generationTags": [
@@ -5520,7 +5520,7 @@
       "aspectRatio": "1.25:1",
       "shape": "irregular",
       "title": "Mount Royal Park",
-      "aestheticCategory": "montreal_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Olmsted-designed naturalistic park on Mount Royal with wooded hillside, Beaver Lake, and stone lookout with city views",
       "generationTags": [
@@ -5602,7 +5602,7 @@
       "aspectRatio": "1.27:1",
       "shape": "rectangular",
       "title": "Montreal Neighbourhood Square",
-      "aestheticCategory": "montreal_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "park",
       "description": "Small formal Montreal square with central fountain, iron fence, benches, and mature trees, surrounded by triplexes",
       "generationTags": [
@@ -6011,7 +6011,7 @@
       "aspectRatio": "2:1",
       "shape": "irregular",
       "title": "Prince's Island Park",
-      "aestheticCategory": "calgary_river",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "River island park in the Bow River with walking paths, cottonwood trees, public art, event lawns, and mountain views",
       "generationTags": [
@@ -6093,7 +6093,7 @@
       "aspectRatio": "1.27:1",
       "shape": "rectangular",
       "title": "Calgary Prairie Urban Plaza",
-      "aestheticCategory": "calgary_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Open civic plaza with big prairie sky, reflecting pool, wind-swept character, seasonal markets, and mountain views",
       "generationTags": [

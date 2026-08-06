@@ -377,6 +377,39 @@ describe('park ground pilot profiles', () => {
   });
 
   it.each([
+    ['park_amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden', 'amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden_v0_skin', 'amsterdam_hofje_v0'],
+    ['park_amsterdam_plein_v0', 'amsterdam_plein', 'amsterdam_plein_v0', 'amsterdam_plein_v0_brick_skin', 'amsterdam_plein_v0'],
+    ['park_amsterdam_vondelpark_pavilion_v3', 'amsterdam_vondelpark', 'amsterdam_vondelpark_v3', 'amsterdam_vondelpark_v3_pavilion_skin', 'amsterdam_vondelpark_v3'],
+    ['park_barcelona_pati_green_v0', 'barcelona_pati_interior', 'barcelona_pati_interior_v0', 'barcelona_pati_interior_v0_green_skin', 'barcelona_pati_green_v0'],
+    ['park_barcelona_xamfra_corner_v2', 'barcelona_placa_xamfra', 'barcelona_placa_xamfra_v2', 'barcelona_placa_xamfra_v2_corner_skin', 'barcelona_xamfra_v2'],
+    ['park_barcelona_superilla_green_v1', 'barcelona_superilla', 'barcelona_superilla_v1', 'barcelona_superilla_v1_green_skin', 'barcelona_superilla_v1'],
+    ['park_calgary_prairie_market_v1', 'calgary_prairie_plaza', 'calgary_prairie_plaza_v1', 'calgary_prairie_plaza_v1_market_skin', 'calgary_prairie_market_v1'],
+    ['park_calgary_princes_island_festival_v0', 'calgary_princes_island', 'calgary_princes_island_v0', 'calgary_princes_island_v0_festival_skin', 'calgary_princes_island_v0'],
+    ['park_montreal_mount_royal_grove_v2', 'montreal_mount_royal', 'montreal_mount_royal_v2', 'montreal_mount_royal_v2_grove_skin', 'montreal_mount_royal_v2'],
+    ['park_montreal_neighbourhood_square_v3', 'montreal_square', 'montreal_square_v3', 'montreal_square_v3_neighbourhood_skin', 'montreal_square_v3'],
+  ] as const)('resolves the batch-10 exact depth kit for %s/%s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch10_archetype_assembly');
+    const profile = resolveParkGroundProfile(candidate);
+    expect(profile.id).toContain('lego-v1');
+    expect(profile.guides.length).toBeGreaterThan(0);
+    expect(profile.criticalConstraints).toMatch(/do not|no |never |exclude/i);
+  });
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 64, 38],
     ['kayak_launch_dock', 'kayak_launch_dock_v0', 80, 35],
     ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 150, 100],

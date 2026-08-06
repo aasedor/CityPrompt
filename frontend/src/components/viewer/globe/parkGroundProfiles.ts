@@ -1984,6 +1984,156 @@ PROFILES.hilltop_topographic_park_v3 = {
   renderSummary: 'Pacific hilltop park with continuous switchback ascent, whole terraced viewpoint decks, cedar accents and fir-covered slopes', isPilot: true,
 };
 
+PROFILES.amsterdam_hofje_garden_v0 = {
+  id: 'amsterdam-hofje-lego-v1', version: 1,
+  programDescription: 'A secluded hofje garden with a simple gravel cross, four complete low-hedge planting rooms, one central pump or well, two small shade trees and a single legible gate.',
+  groundDescription: 'Warm gravel, clipped boxwood, rose and herb planting, aged stone and dark iron sampled from the exact Variant 1 reference.',
+  criticalConstraints: 'Preserve one enclosed garden room, one central feature and a clear gate-to-centre route. Add paired planting beds, never surrounding dwellings or people; keep every hedge and bench human-scaled.',
+  canopyDescription: 'One or two modest deciduous trees shade the garden without turning the small court into a grove.', plantingStructure: 'amsterdam_hofje_v0',
+  guides: [
+    { kind: 'axis', x: 0.5, y: 0.5, width: 0, height: 0.78, color: '#ae9c80', strokeWidthM: 1.8 },
+    { kind: 'axis', x: 0.5, y: 0.5, width: 0, height: 0.78, color: '#ae9c80', strokeWidthM: 1.8, rotationDeg: 90 },
+    { kind: 'rectangle', x: 0.28, y: 0.28, width: 0.28, height: 0.25, color: '#596d48', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.72, y: 0.28, width: 0.28, height: 0.25, color: '#596d48', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.28, y: 0.72, width: 0.28, height: 0.25, color: '#65764c', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.72, y: 0.72, width: 0.28, height: 0.25, color: '#65764c', orientationPolicy: 'orthogonal' },
+  ], guideLegend: ['TAN cross is the gravel walk', 'four GREEN rooms are whole hedge and flower beds', 'centre receives one well or pump'], includeCentralPlaza: false,
+  renderSummary: 'Amsterdam hofje garden with gravel cross, clipped planting rooms, central well, modest trees and one gate', isPilot: true,
+};
+
+PROFILES.amsterdam_plein_v0 = {
+  id: 'amsterdam-plein-lego-v1', version: 1,
+  programDescription: 'A flexible brick-paved plein with a broad clear centre, repeatable whole market-stall bays, edge tree line, benches and bicycle racks.',
+  groundDescription: 'Variegated Dutch brick and stone, warm stall timber, dark metal and restrained edge planting sampled from the exact Variant 1 reference.',
+  criticalConstraints: 'Keep the centre clear for markets and events. Add complete stall and edge-tree bays as length permits; do not generate focal buildings, storefronts, vehicles or people.',
+  canopyDescription: 'Mature trees stay on one or two edges so the civic centre remains open.', plantingStructure: 'amsterdam_plein_v0',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.5, y: 0.55, width: 0.76, height: 0.58, color: '#a58f74', orientationPolicy: 'flexible' },
+    { kind: 'rectangle', x: 0.5, y: 0.17, width: 0.78, height: 0.13, color: '#7f6046', orientationPolicy: 'orthogonal' },
+  ], guideLegend: ['BRICK centre stays flexible', 'BROWN edge contains whole market-stall bays and trees'], includeCentralPlaza: true,
+  renderSummary: 'Dutch brick plein with flexible civic centre, repeatable market stalls, bicycle racks and edge trees', isPilot: true,
+};
+
+PROFILES.amsterdam_vondelpark_v3 = {
+  id: 'amsterdam-vondelpark-pavilion-lego-v1', version: 1,
+  programDescription: 'A naturalistic Vondelpark room with winding paths, open lawn, irregular pond, a small footbridge, dense mature tree groups and one modest park pavilion terrace.',
+  groundDescription: 'Layered lawn and meadow greens, pale gravel, dark water, mature foliage and warm pavilion timber sampled from the exact Variant 4 reference.',
+  criticalConstraints: 'Preserve contrast between open lawn, wooded edge and pond. Scale with whole landscape rooms and tree groups; emit only a modest park shelter, never the reference buildings or people.',
+  canopyDescription: 'Dense plane, elm, beech and chestnut groups frame open lawns and water.', plantingStructure: 'amsterdam_vondelpark_v3',
+  guides: [
+    { kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.05,0.72],[0.24,0.58],[0.45,0.62],[0.66,0.42],[0.94,0.30]], color: '#a89a7f', strokeWidthM: 3.0 },
+    { kind: 'ellipse', x: 0.66, y: 0.63, width: 0.30, height: 0.25, color: '#5c8587', fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.30, y: 0.42, width: 0.34, height: 0.30, color: '#6d8a52', fitPolicy: 'clip' },
+    { kind: 'rectangle', x: 0.78, y: 0.22, width: 0.18, height: 0.13, color: '#826348', orientationPolicy: 'flexible' },
+  ], guideLegend: ['TAN line is a winding park route', 'BLUE is the pond', 'GREEN is open lawn', 'BROWN is one modest pavilion terrace'], includeCentralPlaza: false,
+  renderSummary: 'Vondelpark landscape room with winding path, lawn, pond, bridge, mature grove and modest pavilion terrace', isPilot: true,
+};
+
+PROFILES.barcelona_pati_interior_v0 = {
+  id: 'barcelona-pati-green-lego-v1', version: 1,
+  programDescription: 'A reclaimed Eixample courtyard with central fountain, shaded gravel paths, four complete Mediterranean planting rooms, benches and one compact play bay.',
+  groundDescription: 'Warm gravel and stone, citrus and palm greens, bougainvillea colour, pale fountain stone and timber seating sampled from Variant 1.',
+  criticalConstraints: 'Keep a clear passage-to-fountain route and complete planting rooms. Add whole tree or bench bays only; do not generate the enclosing buildings or people.',
+  canopyDescription: 'Palms, citrus and cypress create layered shade while leaving the centre visible.', plantingStructure: 'barcelona_pati_green_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.5, y: 0.5, width: 0.82, height: 0.72, color: '#aa9577', strokeWidthM: 2.0, fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.5, y: 0.5, width: 0.17, height: 0.17, color: '#638b90', strokeColor: '#b6a78f', strokeWidthM: 1.0 },
+    { kind: 'rectangle', x: 0.27, y: 0.30, width: 0.26, height: 0.22, color: '#5e7149', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.73, y: 0.30, width: 0.26, height: 0.22, color: '#5e7149', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.27, y: 0.70, width: 0.26, height: 0.22, color: '#6f7950', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.73, y: 0.70, width: 0.26, height: 0.22, color: '#6f7950', orientationPolicy: 'orthogonal' },
+  ], guideLegend: ['TAN loop is the shaded path', 'BLUE centre is the fountain', 'GREEN blocks are Mediterranean planting rooms'], includeCentralPlaza: false,
+  renderSummary: 'green Eixample interior courtyard with fountain, Mediterranean planting rooms, shaded paths and compact play bay', isPilot: true,
+};
+
+PROFILES.barcelona_placa_xamfra_v2 = {
+  id: 'barcelona-xamfra-corner-lego-v1', version: 1,
+  programDescription: 'A compact chamfer-corner plaza with an octagonal Gaudi-tile room, diagonal pedestrian flow, one mature shade tree and complete cafe-table clusters.',
+  groundDescription: 'Warm hexagonal stone, dark tree grate, timber tables and restrained planter green sampled from exact Variant 3.',
+  criticalConstraints: 'Keep diagonal movement clear and preserve the chamfer geometry. Repeat complete table clusters around one tree; do not generate corner buildings, storefronts or people.',
+  canopyDescription: 'One dominant plane tree anchors the intimate urban room.', plantingStructure: 'barcelona_xamfra_v2',
+  guides: [
+    { kind: 'rounded_rectangle', x: 0.5, y: 0.5, width: 0.74, height: 0.68, color: '#aaa098', orientationPolicy: 'flexible', rotationDeg: 45 },
+    { kind: 'axis', x: 0.5, y: 0.5, width: 0, height: 0.86, color: '#c0b5a5', strokeWidthM: 3.2, rotationDeg: 45 },
+    { kind: 'ellipse', x: 0.5, y: 0.5, width: 0.13, height: 0.13, color: '#4f6b48' },
+  ], guideLegend: ['PALE octagon is Gaudi-tile paving', 'diagonal route stays clear', 'GREEN centre is one mature tree'], includeCentralPlaza: true,
+  renderSummary: 'Barcelona chamfer plaza with octagonal tile room, diagonal pedestrian route, central plane tree and cafe clusters', isPilot: true,
+};
+
+PROFILES.barcelona_superilla_v1 = {
+  id: 'barcelona-superilla-green-lego-v1', version: 1,
+  programDescription: 'A traffic-calmed superblock interior made from complete coloured-pavement rooms, raised planters, social furniture, play tables and a continuous pedestrian/cycle route.',
+  groundDescription: 'Muted yellow, green, blue and terracotta pavement, planted beds, timber and dark metal sampled from exact Variant 2.',
+  criticalConstraints: 'Keep a continuous through-route and distribute growth through additional complete activity rooms. Never stretch one painted zone to fill the parcel; exclude surrounding buildings, cars and people.',
+  canopyDescription: 'Regular planter trees shade activity rooms without obscuring the through-route.', plantingStructure: 'barcelona_superilla_v1',
+  guides: [
+    { kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.04,0.66],[0.30,0.58],[0.50,0.50],[0.72,0.42],[0.96,0.34]], color: '#b5aa95', strokeWidthM: 5.0 },
+    { kind: 'rectangle', x: 0.25, y: 0.30, width: 0.28, height: 0.20, color: '#c1a34e', orientationPolicy: 'flexible', rotationDeg: -8 },
+    { kind: 'rectangle', x: 0.64, y: 0.28, width: 0.28, height: 0.20, color: '#71927a', orientationPolicy: 'flexible', rotationDeg: 7 },
+    { kind: 'rectangle', x: 0.34, y: 0.73, width: 0.30, height: 0.20, color: '#668b9c', orientationPolicy: 'flexible', rotationDeg: 5 },
+    { kind: 'rectangle', x: 0.76, y: 0.70, width: 0.26, height: 0.20, color: '#b36f57', orientationPolicy: 'flexible', rotationDeg: -6 },
+  ], guideLegend: ['PALE route is continuous', 'four COLOURED blocks are complete activity rooms with planters and furniture'], includeCentralPlaza: false,
+  renderSummary: 'Barcelona superilla with connected pedestrian route, coloured activity rooms, planters, play tables and social furniture', isPilot: true,
+};
+
+PROFILES.calgary_prairie_plaza_v1 = {
+  id: 'calgary-prairie-market-lego-v1', version: 1,
+  programDescription: 'An open prairie civic plaza with a shallow reflecting pool, complete timber market-stall bays, native grass planters, wind screens and generous event space.',
+  groundDescription: 'Warm sandstone and concrete, blue-grey water, prairie grasses, timber stalls and weathered metal sampled from Summer Market Square.',
+  criticalConstraints: 'Protect the open centre and pool axis. Add complete stalls and planters along edges; no office buildings, skybridges, vehicles or people.',
+  canopyDescription: 'Sparse edge trees and prairie planters preserve the defining open sky.', plantingStructure: 'calgary_prairie_market_v1',
+  guides: [
+    { kind: 'rectangle', x: 0.5, y: 0.56, width: 0.78, height: 0.52, color: '#aaa095', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.5, y: 0.55, width: 0.42, height: 0.10, color: '#668c91', orientationPolicy: 'orthogonal' },
+    { kind: 'rectangle', x: 0.5, y: 0.17, width: 0.78, height: 0.13, color: '#806047', orientationPolicy: 'orthogonal' },
+  ], guideLegend: ['PALE centre is open event paving', 'BLUE bar is reflecting water', 'BROWN edge is whole market-stall bays'], includeCentralPlaza: true,
+  renderSummary: 'Calgary prairie plaza with open event paving, reflecting pool, timber market stalls and native grass planters', isPilot: true,
+};
+
+PROFILES.calgary_princes_island_v0 = {
+  id: 'calgary-princes-island-festival-lego-v1', version: 1,
+  programDescription: 'A Bow River island park with one festival lawn, cottonwood trail network, wetland/lagoon room, raised boardwalk and a modest outdoor-stage shelter.',
+  groundDescription: 'Manicured and meadow greens, pale paths, wetland water, cottonwood foliage and weathered timber sampled from Summer Festival Ground.',
+  criticalConstraints: 'Keep festival lawn open and wetland connected. Add whole cottonwood groups and boardwalk bays; generate only a modest park stage, never skyline buildings or people.',
+  canopyDescription: 'Cottonwood rows define paths and wetland edges while the event lawn remains open.', plantingStructure: 'calgary_princes_island_v0',
+  guides: [
+    { kind: 'path_loop', x: 0.5, y: 0.5, width: 0.88, height: 0.78, color: '#a89a80', strokeWidthM: 3.0, fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.31, y: 0.48, width: 0.40, height: 0.36, color: '#6f8d53', fitPolicy: 'clip' },
+    { kind: 'ellipse', x: 0.72, y: 0.62, width: 0.28, height: 0.25, color: '#5a7f7c', fitPolicy: 'clip' },
+    { kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.58,0.72],[0.70,0.62],[0.84,0.54]], color: '#806447', strokeWidthM: 2.5 },
+    { kind: 'rectangle', x: 0.28, y: 0.28, width: 0.17, height: 0.12, color: '#806047', orientationPolicy: 'flexible' },
+  ], guideLegend: ['GREEN is festival lawn', 'BLUE is wetland/lagoon', 'BROWN line is boardwalk', 'BROWN block is a modest stage shelter'], includeCentralPlaza: false,
+  renderSummary: 'Prince’s Island park with festival lawn, cottonwood paths, wetland lagoon, boardwalk and modest stage shelter', isPilot: true,
+};
+
+PROFILES.montreal_mount_royal_v2 = {
+  id: 'montreal-mount-royal-grove-lego-v1', version: 1,
+  programDescription: 'A Mount Royal hillside park with continuous switchback carriage path, dense maple grove, granite retaining terraces and one whole stone belvedere platform.',
+  groundDescription: 'Pale gravel, granite and limestone, deep maple green with autumn accents, dark iron and weathered timber sampled from exact Variant 3.',
+  criticalConstraints: 'Maintain an ordered ascent and terrain contact. Add whole path turns and tree cohorts; never stretch or float the belvedere, and do not generate skyline buildings or people.',
+  canopyDescription: 'Dense sugar-maple cohorts open only at paths and the belvedere view corridor.', plantingStructure: 'montreal_mount_royal_v2',
+  guides: [
+    { kind: 'polyline', x: 0.5, y: 0.5, width: 1, height: 1, points: [[0.06,0.82],[0.38,0.72],[0.18,0.56],[0.62,0.46],[0.40,0.28],[0.90,0.17]], color: '#aa987b', strokeWidthM: 3.2 },
+    { kind: 'rectangle', x: 0.82, y: 0.18, width: 0.22, height: 0.14, color: '#92908a', orientationPolicy: 'flexible' },
+  ], guideLegend: ['TAN switchback is the carriage path', 'GREY block is one whole stone belvedere'], includeCentralPlaza: false,
+  renderSummary: 'Mount Royal maple grove with switchback carriage path, stone terraces and terrain-seated belvedere', isPilot: true,
+};
+
+PROFILES.montreal_square_v3 = {
+  id: 'montreal-neighbourhood-square-lego-v1', version: 1,
+  programDescription: 'An intimate Montréal neighbourhood square with geometric gravel walks, central fountain/monument, low iron perimeter, mature maples, seasonal beds and complete bench bays.',
+  groundDescription: 'Pale gravel, stone edging, varied lawn, maple green, dark iron and warm timber sampled from exact Variant 4.',
+  criticalConstraints: 'Keep the centre visible and all gates clear. Add whole tree-bench bays around one fountain; no surrounding triplex buildings or people.',
+  canopyDescription: 'A ring of mature maples shades paths while preserving the central room.', plantingStructure: 'montreal_square_v3',
+  guides: [
+    { kind: 'path_loop', x: 0.5, y: 0.5, width: 0.82, height: 0.72, color: '#aa9c82', strokeWidthM: 2.4, fitPolicy: 'clip' },
+    { kind: 'axis', x: 0.5, y: 0.5, width: 0, height: 0.78, color: '#b1a48e', strokeWidthM: 2.2 },
+    { kind: 'axis', x: 0.5, y: 0.5, width: 0, height: 0.78, color: '#b1a48e', strokeWidthM: 2.2, rotationDeg: 90 },
+    { kind: 'ellipse', x: 0.5, y: 0.5, width: 0.14, height: 0.14, color: '#8f8b82', strokeColor: '#b8aa92', strokeWidthM: 1.0 },
+  ], guideLegend: ['TAN loop and cross are gravel paths', 'GREY centre is one fountain or monument', 'low iron fence follows the outer edge'], includeCentralPlaza: false,
+  renderSummary: 'Montréal neighbourhood square with geometric gravel walks, central fountain, iron perimeter, mature maples and benches', isPilot: true,
+};
+
 function normalizeId(value: unknown): string {
   return String(value ?? '').toLowerCase().trim().replace(/-/g, '_');
 }
@@ -2355,7 +2505,8 @@ export type ParkSpecialtyStructureKind =
   | 'batch6_archetype_assembly'
   | 'batch7_archetype_assembly'
   | 'batch8_archetype_assembly'
-  | 'batch9_archetype_assembly';
+  | 'batch9_archetype_assembly'
+  | 'batch10_archetype_assembly';
 
 function isPlazaZone(zone: ParkProfileZone): boolean {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
@@ -2581,6 +2732,22 @@ export function resolveParkSpecialtyStructureKind(
       'park_hilltop_viewpoint_v3',
     ].includes(legoContract.familyId)
   ) return 'batch9_archetype_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && [
+      'park_amsterdam_hofje_garden_v0',
+      'park_amsterdam_plein_v0',
+      'park_amsterdam_vondelpark_pavilion_v3',
+      'park_barcelona_pati_green_v0',
+      'park_barcelona_xamfra_corner_v2',
+      'park_barcelona_superilla_green_v1',
+      'park_calgary_prairie_market_v1',
+      'park_calgary_princes_island_festival_v0',
+      'park_montreal_mount_royal_grove_v2',
+      'park_montreal_neighbourhood_square_v3',
+    ].includes(legoContract.familyId)
+  ) return 'batch10_archetype_assembly';
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported

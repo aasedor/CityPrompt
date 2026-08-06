@@ -8,6 +8,7 @@ import { batch6ParkSkinForSelection } from './parkBatch6Skins';
 import { batch7ParkSkinForSelection } from './parkBatch7Skins';
 import { batch8ParkSkinForSelection } from './parkBatch8Skins';
 import { batch9ParkSkinForSelection } from './parkBatch9Skins';
+import { batch10ParkSkinForSelection } from './parkBatch10Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -92,6 +93,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_halifax_rose_bandstand_v0',
   'park_olmsted_multilandscape_v3',
   'park_hilltop_viewpoint_v3',
+  'park_amsterdam_hofje_garden_v0',
+  'park_amsterdam_plein_v0',
+  'park_amsterdam_vondelpark_pavilion_v3',
+  'park_barcelona_pati_green_v0',
+  'park_barcelona_xamfra_corner_v2',
+  'park_barcelona_superilla_green_v1',
+  'park_calgary_prairie_market_v1',
+  'park_calgary_princes_island_festival_v0',
+  'park_montreal_mount_royal_grove_v2',
+  'park_montreal_neighbourhood_square_v3',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -836,6 +847,36 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_hilltop_viewpoint_v3: Object.freeze({
     hilltop_topographic_park: Object.freeze([Object.freeze({ variantId: 'hilltop_topographic_park_v3', appearanceKitId: 'hilltop_topographic_park_v3_viewpoint_skin', plantingStructure: 'hilltop_viewpoint_v3' })]),
   }),
+  park_amsterdam_hofje_garden_v0: Object.freeze({
+    amsterdam_hofje_garden: Object.freeze([Object.freeze({ variantId: 'amsterdam_hofje_garden_v0', appearanceKitId: 'amsterdam_hofje_garden_v0_skin', plantingStructure: 'amsterdam_hofje_v0' })]),
+  }),
+  park_amsterdam_plein_v0: Object.freeze({
+    amsterdam_plein: Object.freeze([Object.freeze({ variantId: 'amsterdam_plein_v0', appearanceKitId: 'amsterdam_plein_v0_brick_skin', plantingStructure: 'amsterdam_plein_v0' })]),
+  }),
+  park_amsterdam_vondelpark_pavilion_v3: Object.freeze({
+    amsterdam_vondelpark: Object.freeze([Object.freeze({ variantId: 'amsterdam_vondelpark_v3', appearanceKitId: 'amsterdam_vondelpark_v3_pavilion_skin', plantingStructure: 'amsterdam_vondelpark_v3' })]),
+  }),
+  park_barcelona_pati_green_v0: Object.freeze({
+    barcelona_pati_interior: Object.freeze([Object.freeze({ variantId: 'barcelona_pati_interior_v0', appearanceKitId: 'barcelona_pati_interior_v0_green_skin', plantingStructure: 'barcelona_pati_green_v0' })]),
+  }),
+  park_barcelona_xamfra_corner_v2: Object.freeze({
+    barcelona_placa_xamfra: Object.freeze([Object.freeze({ variantId: 'barcelona_placa_xamfra_v2', appearanceKitId: 'barcelona_placa_xamfra_v2_corner_skin', plantingStructure: 'barcelona_xamfra_v2' })]),
+  }),
+  park_barcelona_superilla_green_v1: Object.freeze({
+    barcelona_superilla: Object.freeze([Object.freeze({ variantId: 'barcelona_superilla_v1', appearanceKitId: 'barcelona_superilla_v1_green_skin', plantingStructure: 'barcelona_superilla_v1' })]),
+  }),
+  park_calgary_prairie_market_v1: Object.freeze({
+    calgary_prairie_plaza: Object.freeze([Object.freeze({ variantId: 'calgary_prairie_plaza_v1', appearanceKitId: 'calgary_prairie_plaza_v1_market_skin', plantingStructure: 'calgary_prairie_market_v1' })]),
+  }),
+  park_calgary_princes_island_festival_v0: Object.freeze({
+    calgary_princes_island: Object.freeze([Object.freeze({ variantId: 'calgary_princes_island_v0', appearanceKitId: 'calgary_princes_island_v0_festival_skin', plantingStructure: 'calgary_princes_island_v0' })]),
+  }),
+  park_montreal_mount_royal_grove_v2: Object.freeze({
+    montreal_mount_royal: Object.freeze([Object.freeze({ variantId: 'montreal_mount_royal_v2', appearanceKitId: 'montreal_mount_royal_v2_grove_skin', plantingStructure: 'montreal_mount_royal_v2' })]),
+  }),
+  park_montreal_neighbourhood_square_v3: Object.freeze({
+    montreal_square: Object.freeze([Object.freeze({ variantId: 'montreal_square_v3', appearanceKitId: 'montreal_square_v3_neighbourhood_skin', plantingStructure: 'montreal_square_v3' })]),
+  }),
 });
 
 function normalizeId(value: unknown): string {
@@ -1017,6 +1058,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_halifax_rose_bandstand_v0': return 'halifax_public_gardens';
     case 'park_olmsted_multilandscape_v3': return 'picturesque_olmsted_park';
     case 'park_hilltop_viewpoint_v3': return 'hilltop_topographic_park';
+    case 'park_amsterdam_hofje_garden_v0': return 'amsterdam_hofje_garden';
+    case 'park_amsterdam_plein_v0': return 'amsterdam_plein';
+    case 'park_amsterdam_vondelpark_pavilion_v3': return 'amsterdam_vondelpark';
+    case 'park_barcelona_pati_green_v0': return 'barcelona_pati_interior';
+    case 'park_barcelona_xamfra_corner_v2': return 'barcelona_placa_xamfra';
+    case 'park_barcelona_superilla_green_v1': return 'barcelona_superilla';
+    case 'park_calgary_prairie_market_v1': return 'calgary_prairie_plaza';
+    case 'park_calgary_princes_island_festival_v0': return 'calgary_princes_island';
+    case 'park_montreal_mount_royal_grove_v2': return 'montreal_mount_royal';
+    case 'park_montreal_neighbourhood_square_v3': return 'montreal_square';
   }
 }
 
@@ -1201,6 +1252,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch7ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch8ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch9ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch10ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;
