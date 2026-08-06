@@ -491,6 +491,26 @@ function familyTargets(
       return [target('shrub', 24), target('perennial', 18), target('ornamental_grass', 20), target('boulder', 8)];
     case 'park_stormwater_arid_channel_v3':
       return [target('ornamental_grass', 24), target('boulder', 18), target('riprap', 16), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_urban_pocket_rustic_v0':
+      return [target('perennial', 18), target('ornamental_grass', 12), target('boulder', 6), target('bin', 1)];
+    case 'park_neighborhood_contemporary_v3':
+      return [target('perennial', 18), target('ornamental_grass', 20), target('light', 6), target('bin', 3), target('bike_rack', 3)];
+    case 'park_cemetery_classical_v0':
+      return [target('shrub', 18), target('perennial', 10), target('light', 6), target('bin', 2)];
+    case 'park_courtyard_linear_water_v1':
+      return [target('ornamental_grass', 14), target('perennial', 12), target('light', 5), target('bollard', 6), target('bike_rack', 2)];
+    case 'park_parklet_sf_timber_v1':
+      return [target('shrub', 6), target('perennial', 8), target('bollard', 2), target('bin', 1)];
+    case 'park_french_parterre_axis_v1':
+      return [target('shrub', 24), target('perennial', 20), target('light', 8), target('bin', 3)];
+    case 'park_london_railed_square_v1':
+      return [target('shrub', 18), target('perennial', 14), target('light', 6), target('bin', 3)];
+    case 'park_halifax_rose_bandstand_v0':
+      return [target('shrub', 20), target('perennial', 28), target('light', 8), target('bin', 3), target('drinking_fountain', 1)];
+    case 'park_olmsted_multilandscape_v3':
+      return [target('shrub', 26), target('perennial', 18), target('boulder', 10), target('picnic_table', 4), target('bin', 5), target('drinking_fountain', 2)];
+    case 'park_hilltop_viewpoint_v3':
+      return [target('shrub', 18), target('boulder', 14), target('riprap', 10), target('bin', 3), target('drinking_fountain', 2)];
   }
 }
 

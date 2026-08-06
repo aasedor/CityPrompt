@@ -7,6 +7,7 @@ import { batch5ParkSkinForSelection } from './parkBatch5Skins';
 import { batch6ParkSkinForSelection } from './parkBatch6Skins';
 import { batch7ParkSkinForSelection } from './parkBatch7Skins';
 import { batch8ParkSkinForSelection } from './parkBatch8Skins';
+import { batch9ParkSkinForSelection } from './parkBatch9Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -81,6 +82,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_research_arboretum_v0',
   'park_rewilding_reforestation_v1',
   'park_stormwater_arid_channel_v3',
+  'park_urban_pocket_rustic_v0',
+  'park_neighborhood_contemporary_v3',
+  'park_cemetery_classical_v0',
+  'park_courtyard_linear_water_v1',
+  'park_parklet_sf_timber_v1',
+  'park_french_parterre_axis_v1',
+  'park_london_railed_square_v1',
+  'park_halifax_rose_bandstand_v0',
+  'park_olmsted_multilandscape_v3',
+  'park_hilltop_viewpoint_v3',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -795,6 +806,36 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_stormwater_arid_channel_v3: Object.freeze({
     stormwater_resilience_park: Object.freeze([Object.freeze({ variantId: 'stormwater_resilience_park_variant_3', appearanceKitId: 'stormwater_resilience_park_v3_arid_skin', plantingStructure: 'stormwater_arid_channel_v3' })]),
   }),
+  park_urban_pocket_rustic_v0: Object.freeze({
+    urban_pocket_park: Object.freeze([Object.freeze({ variantId: 'urban_pocket_park_v0', appearanceKitId: 'urban_pocket_park_v0_rustic_skin', plantingStructure: 'urban_pocket_rustic_v0' })]),
+  }),
+  park_neighborhood_contemporary_v3: Object.freeze({
+    neighborhood_park: Object.freeze([Object.freeze({ variantId: 'neighborhood_park_v3', appearanceKitId: 'neighborhood_park_v3_contemporary_skin', plantingStructure: 'neighborhood_contemporary_v3' })]),
+  }),
+  park_cemetery_classical_v0: Object.freeze({
+    cemetery_memorial_grounds: Object.freeze([Object.freeze({ variantId: 'cemetery_memorial_grounds_v0', appearanceKitId: 'cemetery_memorial_grounds_v0_classical_skin', plantingStructure: 'cemetery_classical_v0' })]),
+  }),
+  park_courtyard_linear_water_v1: Object.freeze({
+    courtyard_plaza: Object.freeze([Object.freeze({ variantId: 'courtyard_plaza_v1', appearanceKitId: 'courtyard_plaza_v1_linear_water_skin', plantingStructure: 'courtyard_linear_water_v1' })]),
+  }),
+  park_parklet_sf_timber_v1: Object.freeze({
+    street_plaza_parklet: Object.freeze([Object.freeze({ variantId: 'street_plaza_parklet_v1', appearanceKitId: 'street_plaza_parklet_v1_sf_timber_skin', plantingStructure: 'parklet_sf_timber_v1' })]),
+  }),
+  park_french_parterre_axis_v1: Object.freeze({
+    parisian_jardin: Object.freeze([Object.freeze({ variantId: 'parisian_jardin_v1', appearanceKitId: 'parisian_jardin_v1_water_axis_skin', plantingStructure: 'french_parterre_axis_v1' })]),
+  }),
+  park_london_railed_square_v1: Object.freeze({
+    london_garden_square: Object.freeze([Object.freeze({ variantId: 'london_garden_square_v1', appearanceKitId: 'london_garden_square_v1_railed_skin', plantingStructure: 'london_railed_square_v1' })]),
+  }),
+  park_halifax_rose_bandstand_v0: Object.freeze({
+    halifax_public_gardens: Object.freeze([Object.freeze({ variantId: 'halifax_public_gardens_v0', appearanceKitId: 'halifax_public_gardens_v0_rose_skin', plantingStructure: 'halifax_rose_bandstand_v0' })]),
+  }),
+  park_olmsted_multilandscape_v3: Object.freeze({
+    picturesque_olmsted_park: Object.freeze([Object.freeze({ variantId: 'picturesque_olmsted_park_v3', appearanceKitId: 'picturesque_olmsted_park_v3_multilandscape_skin', plantingStructure: 'olmsted_multilandscape_v3' })]),
+  }),
+  park_hilltop_viewpoint_v3: Object.freeze({
+    hilltop_topographic_park: Object.freeze([Object.freeze({ variantId: 'hilltop_topographic_park_v3', appearanceKitId: 'hilltop_topographic_park_v3_viewpoint_skin', plantingStructure: 'hilltop_viewpoint_v3' })]),
+  }),
 });
 
 function normalizeId(value: unknown): string {
@@ -966,6 +1007,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_research_arboretum_v0': return 'research_garden_teaching_arboretum';
     case 'park_rewilding_reforestation_v1': return 'rewilding_ecological_restoration_zone';
     case 'park_stormwater_arid_channel_v3': return 'stormwater_resilience_park';
+    case 'park_urban_pocket_rustic_v0': return 'urban_pocket_park';
+    case 'park_neighborhood_contemporary_v3': return 'neighborhood_park';
+    case 'park_cemetery_classical_v0': return 'cemetery_memorial_grounds';
+    case 'park_courtyard_linear_water_v1': return 'courtyard_plaza';
+    case 'park_parklet_sf_timber_v1': return 'street_plaza_parklet';
+    case 'park_french_parterre_axis_v1': return 'parisian_jardin';
+    case 'park_london_railed_square_v1': return 'london_garden_square';
+    case 'park_halifax_rose_bandstand_v0': return 'halifax_public_gardens';
+    case 'park_olmsted_multilandscape_v3': return 'picturesque_olmsted_park';
+    case 'park_hilltop_viewpoint_v3': return 'hilltop_topographic_park';
   }
 }
 
@@ -1149,6 +1200,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch6ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch7ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch8ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch9ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

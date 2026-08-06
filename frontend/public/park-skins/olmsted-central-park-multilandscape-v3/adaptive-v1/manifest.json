@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "archetype": "olmsted-central-park-multilandscape-v3",
+  "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png"
+  ],
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.54,
+        1.0,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        415,
+        1024,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.36,
+        1.0,
+        0.9
+      ],
+      "cropPixels": [
+        0,
+        276,
+        1024,
+        691
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.64,
+        1.0,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        492,
+        1024,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.24,
+        1.0,
+        0.88
+      ],
+      "cropPixels": [
+        0,
+        184,
+        1024,
+        676
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.08,
+        0.42,
+        0.94,
+        0.94
+      ],
+      "cropPixels": [
+        82,
+        323,
+        963,
+        722
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.46,
+        1.0,
+        0.94
+      ],
+      "cropPixels": [
+        0,
+        353,
+        1024,
+        722
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

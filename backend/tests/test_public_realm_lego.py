@@ -121,6 +121,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_research_arboretum_v0",
             "park_rewilding_reforestation_v1",
             "park_stormwater_arid_channel_v3",
+            "park_urban_pocket_rustic_v0",
+            "park_neighborhood_contemporary_v3",
+            "park_cemetery_classical_v0",
+            "park_courtyard_linear_water_v1",
+            "park_parklet_sf_timber_v1",
+            "park_french_parterre_axis_v1",
+            "park_london_railed_square_v1",
+            "park_halifax_rose_bandstand_v0",
+            "park_olmsted_multilandscape_v3",
+            "park_hilltop_viewpoint_v3",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1017,6 +1027,79 @@ def test_batch8_families_adapt_to_compact_urban_park_polygon(
             "green_space_archetype_id": archetype_id,
             "green_space_selected_variant_id": variant_id,
         },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_urban_pocket_rustic_v0", "urban_pocket_park", "urban_pocket_park_v0", "urban_pocket_park_v0_rustic_skin", 20.0, 20.0),
+        ("park_neighborhood_contemporary_v3", "neighborhood_park", "neighborhood_park_v3", "neighborhood_park_v3_contemporary_skin", 100.0, 80.0),
+        ("park_cemetery_classical_v0", "cemetery_memorial_grounds", "cemetery_memorial_grounds_v0", "cemetery_memorial_grounds_v0_classical_skin", 250.0, 200.0),
+        ("park_courtyard_linear_water_v1", "courtyard_plaza", "courtyard_plaza_v1", "courtyard_plaza_v1_linear_water_skin", 35.0, 35.0),
+        ("park_parklet_sf_timber_v1", "street_plaza_parklet", "street_plaza_parklet_v1", "street_plaza_parklet_v1_sf_timber_skin", 10.0, 6.0),
+        ("park_french_parterre_axis_v1", "parisian_jardin", "parisian_jardin_v1", "parisian_jardin_v1_water_axis_skin", 180.0, 140.0),
+        ("park_london_railed_square_v1", "london_garden_square", "london_garden_square_v1", "london_garden_square_v1_railed_skin", 100.0, 80.0),
+        ("park_halifax_rose_bandstand_v0", "halifax_public_gardens", "halifax_public_gardens_v0", "halifax_public_gardens_v0_rose_skin", 200.0, 150.0),
+        ("park_olmsted_multilandscape_v3", "picturesque_olmsted_park", "picturesque_olmsted_park_v3", "picturesque_olmsted_park_v3_multilandscape_skin", 400.0, 350.0),
+        ("park_hilltop_viewpoint_v3", "hilltop_topographic_park", "hilltop_topographic_park_v3", "hilltop_topographic_park_v3_viewpoint_skin", 180.0, 180.0),
+    ],
+)
+def test_batch9_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    selection = catalog.capabilities[0].selections[0]
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("neighborhood_park", "neighborhood_park_v3"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v0"),
+        ("courtyard_plaza", "courtyard_plaza_v1"),
+        ("parisian_jardin", "parisian_jardin_v1"),
+        ("london_garden_square", "london_garden_square_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v0"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v3"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v3"),
+    ],
+)
+def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
+    archetype_id: str,
+    variant_id: str,
+):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
         strict=True,
     )
     assert recipe is not None

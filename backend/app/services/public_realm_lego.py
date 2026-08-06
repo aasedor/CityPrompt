@@ -452,6 +452,16 @@ _BOTANICAL_ROSE_GARDEN_ENVELOPE = _park_envelope(nominal=(120.0, 90.0), width=(3
 _RESEARCH_ARBORETUM_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 700.0), depth=(30.0, 520.0), area=(1_200.0, 364_000.0))
 _REWILDING_REFORESTATION_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 800.0), depth=(30.0, 650.0), area=(1_200.0, 520_000.0))
 _STORMWATER_ARID_CHANNEL_ENVELOPE = _park_envelope(nominal=(200.0, 125.0), width=(35.0, 450.0), depth=(24.0, 300.0), area=(900.0, 135_000.0))
+_URBAN_POCKET_RUSTIC_ENVELOPE = _park_envelope(nominal=(20.0, 20.0), width=(10.0, 45.0), depth=(10.0, 45.0), area=(100.0, 2_025.0))
+_NEIGHBORHOOD_CONTEMPORARY_ENVELOPE = _park_envelope(nominal=(100.0, 80.0), width=(35.0, 240.0), depth=(28.0, 180.0), area=(980.0, 43_200.0))
+_CEMETERY_CLASSICAL_ENVELOPE = _park_envelope(nominal=(250.0, 200.0), width=(45.0, 600.0), depth=(35.0, 460.0), area=(1_575.0, 276_000.0))
+_COURTYARD_LINEAR_WATER_ENVELOPE = _park_envelope(nominal=(35.0, 35.0), width=(15.0, 120.0), depth=(15.0, 90.0), area=(225.0, 10_800.0))
+_PARKLET_SF_TIMBER_ENVELOPE = _park_envelope(nominal=(10.0, 6.0), width=(5.0, 40.0), depth=(3.0, 14.0), area=(15.0, 560.0), min_aspect_ratio=1.2)
+_FRENCH_PARTERRE_AXIS_ENVELOPE = _park_envelope(nominal=(180.0, 140.0), width=(40.0, 420.0), depth=(30.0, 320.0), area=(1_200.0, 134_400.0))
+_LONDON_RAILED_SQUARE_ENVELOPE = _park_envelope(nominal=(100.0, 80.0), width=(35.0, 260.0), depth=(28.0, 200.0), area=(980.0, 52_000.0))
+_HALIFAX_ROSE_BANDSTAND_ENVELOPE = _park_envelope(nominal=(200.0, 150.0), width=(40.0, 440.0), depth=(32.0, 330.0), area=(1_280.0, 145_200.0))
+_OLMSTED_MULTILANDSCAPE_ENVELOPE = _park_envelope(nominal=(400.0, 350.0), width=(50.0, 900.0), depth=(35.0, 720.0), area=(1_750.0, 648_000.0))
+_HILLTOP_VIEWPOINT_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(40.0, 420.0), depth=(35.0, 380.0), area=(1_400.0, 159_600.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1318,6 +1328,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
         selections=(_selection("stormwater_resilience_park", "stormwater_resilience_park_variant_3", profile_id="stormwater-arid-channel-lego-v1", appearance_kit_id="stormwater_resilience_park_v3_arid_skin", planting_structure="stormwater_arid_channel_v3", compatibility=_STORMWATER_ARID_CHANNEL_ENVELOPE, components=("arid_resilience_ground_program_v1", "continuous_ephemeral_channel_v1", "gravel_detention_pockets_v1", "xeric_planting_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
+        family_id="park_urban_pocket_rustic_v0", kind="park", title="Urban Pocket Park / Rustic Timber v0", generator="park_kit",
+        selections=(_selection("urban_pocket_park", "urban_pocket_park_v0", profile_id="urban-pocket-rustic-lego-v1", appearance_kit_id="urban_pocket_park_v0_rustic_skin", planting_structure="urban_pocket_rustic_v0", compatibility=_URBAN_POCKET_RUSTIC_ENVELOPE, components=("rustic_pocket_ground_program_v1", "whole_pergola_bay_v1", "split_rail_edge_v1", "boulder_seat_cluster_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_neighborhood_contemporary_v3", kind="park", title="Neighborhood Park / Urban Contemporary v3", generator="park_kit",
+        selections=(_selection("neighborhood_park", "neighborhood_park_v3", profile_id="neighborhood-contemporary-lego-v1", appearance_kit_id="neighborhood_park_v3_contemporary_skin", planting_structure="neighborhood_contemporary_v3", compatibility=_NEIGHBORHOOD_CONTEMPORARY_ENVELOPE, components=("contemporary_neighborhood_ground_program_v1", "whole_social_room_v1", "water_jet_pad_v1", "raised_planter_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cemetery_classical_v0", kind="park", title="Cemetery / Classical Formal v0", generator="park_kit",
+        selections=(_selection("cemetery_memorial_grounds", "cemetery_memorial_grounds_v0", profile_id="cemetery-classical-lego-v1", appearance_kit_id="cemetery_memorial_grounds_v0_classical_skin", planting_structure="cemetery_classical_v0", compatibility=_CEMETERY_CLASSICAL_ENVELOPE, components=("classical_memorial_ground_program_v1", "axial_allee_v1", "whole_memorial_rows_v1", "fountain_parterre_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_courtyard_linear_water_v1", kind="park", title="Courtyard / Contemporary Linear Water v1", generator="park_kit",
+        selections=(_selection("courtyard_plaza", "courtyard_plaza_v1", profile_id="courtyard-linear-water-lego-v1", appearance_kit_id="courtyard_plaza_v1_linear_water_skin", planting_structure="courtyard_linear_water_v1", compatibility=_COURTYARD_LINEAR_WATER_ENVELOPE, components=("linear_water_court_ground_program_v1", "continuous_rill_v1", "concrete_seat_walls_v1", "specimen_tree_grates_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_parklet_sf_timber_v1", kind="park", title="Street Parklet / SF Timber v1", generator="park_kit",
+        selections=(_selection("street_plaza_parklet", "street_plaza_parklet_v1", profile_id="parklet-sf-timber-lego-v1", appearance_kit_id="street_plaza_parklet_v1_sf_timber_skin", planting_structure="parklet_sf_timber_v1", compatibility=_PARKLET_SF_TIMBER_ENVELOPE, components=("timber_parklet_ground_program_v1", "slat_guard_edge_v1", "cafe_table_bay_v1", "terracotta_planter_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_french_parterre_axis_v1", kind="park", title="Jardin a la Francaise / Water Axis v1", generator="park_kit",
+        selections=(_selection("parisian_jardin", "parisian_jardin_v1", profile_id="french-parterre-axis-lego-v1", appearance_kit_id="parisian_jardin_v1_water_axis_skin", planting_structure="french_parterre_axis_v1", compatibility=_FRENCH_PARTERRE_AXIS_ENVELOPE, components=("french_garden_ground_program_v1", "continuous_water_axis_v1", "mirrored_parterre_rooms_v1", "clipped_topiary_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_london_railed_square_v1", kind="park", title="London Garden Square / Railed Garden v1", generator="park_kit",
+        selections=(_selection("london_garden_square", "london_garden_square_v1", profile_id="london-railed-square-lego-v1", appearance_kit_id="london_garden_square_v1_railed_skin", planting_structure="london_railed_square_v1", compatibility=_LONDON_RAILED_SQUARE_ENVELOPE, components=("london_square_ground_program_v1", "continuous_iron_rail_v1", "central_lawn_room_v1", "perimeter_tree_walk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_halifax_rose_bandstand_v0", kind="park", title="Halifax Public Gardens / Rose Garden v0", generator="park_kit",
+        selections=(_selection("halifax_public_gardens", "halifax_public_gardens_v0", profile_id="halifax-rose-bandstand-lego-v1", appearance_kit_id="halifax_public_gardens_v0_rose_skin", planting_structure="halifax_rose_bandstand_v0", compatibility=_HALIFAX_ROSE_BANDSTAND_ENVELOPE, components=("victorian_garden_ground_program_v1", "whole_rose_bed_rooms_v1", "ornate_bandstand_v1", "wrought_iron_gate_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_olmsted_multilandscape_v3", kind="park", title="Olmsted Park / Central Park Multi-Landscape v3", generator="park_kit",
+        selections=(_selection("picturesque_olmsted_park", "picturesque_olmsted_park_v3", profile_id="olmsted-multilandscape-lego-v1", appearance_kit_id="picturesque_olmsted_park_v3_multilandscape_skin", planting_structure="olmsted_multilandscape_v3", compatibility=_OLMSTED_MULTILANDSCAPE_ENVELOPE, components=("olmsted_ground_program_v1", "whole_landscape_rooms_v1", "rustic_bow_bridge_v1", "elm_mall_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_hilltop_viewpoint_v3", kind="park", title="Hilltop Park / Pacific Terraced Viewpoint v3", generator="park_kit",
+        selections=(_selection("hilltop_topographic_park", "hilltop_topographic_park_v3", profile_id="hilltop-viewpoint-lego-v1", appearance_kit_id="hilltop_topographic_park_v3_viewpoint_skin", planting_structure="hilltop_viewpoint_v3", compatibility=_HILLTOP_VIEWPOINT_ENVELOPE, components=("hilltop_ground_program_v1", "continuous_switchback_trail_v1", "whole_viewpoint_decks_v1", "cedar_fir_slope_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
         family_id="street_local_public_realm",
         kind="street",
         title="Local Public Realm",
@@ -1743,6 +1793,15 @@ def plan_public_realm_recipe(
         selection_candidates = defaults or selection_candidates
 
     normalized_target = _normalized_target(request.target)
+    # An explicitly selected variant should resolve to its reviewed one-family
+    # compiler when both that exact compiler and an older multi-variant
+    # fallback advertise the same catalog identity. Without an explicit
+    # variant, retain the established generic/default family behaviour.
+    def selection_rank(pair: tuple[PublicRealmFamilyCapability, PublicRealmSelectionCapability]) -> tuple[int, str, str]:
+        capability, selection = pair
+        exact_family_rank = 0 if request.variant_id is not None and len(capability.selections) == 1 else 1
+        return exact_family_rank, capability.family_id, selection.variant_id
+
     compatible = [
         (capability, selection)
         for capability, selection in selection_candidates
@@ -1754,7 +1813,7 @@ def plan_public_realm_recipe(
     if not compatible:
         capability, selection = min(
             selection_candidates,
-            key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+            key=selection_rank,
         )
         violations = _compatibility_violations(
             normalized_target,
@@ -1769,7 +1828,7 @@ def plan_public_realm_recipe(
         )
     capability, selection = min(
         compatible,
-        key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+        key=selection_rank,
     )
 
     payload = {

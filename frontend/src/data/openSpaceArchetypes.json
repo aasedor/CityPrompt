@@ -4629,7 +4629,7 @@
       "aspectRatio": "1.3:1",
       "shape": "irregular",
       "title": "Jardin a la Francaise",
-      "aestheticCategory": "parisian_formal_garden",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Formal French garden with axial symmetry, geometric parterres, bassin, and moveable green metal chairs",
       "generationTags": [
@@ -5196,7 +5196,7 @@
       "aspectRatio": "1.25:1",
       "shape": "rectangular",
       "title": "London Garden Square",
-      "aestheticCategory": "london_georgian",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Rectangular fenced garden enclosed by Georgian/Victorian terraces, with plane trees, gravel paths, and locked gate",
       "generationTags": [
@@ -6175,7 +6175,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Halifax Public Gardens",
-      "aestheticCategory": "halifax_victorian",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "One of the finest surviving Victorian gardens in North America with bandstand, carpet beds, serpentine paths, and wrough",
       "generationTags": [
