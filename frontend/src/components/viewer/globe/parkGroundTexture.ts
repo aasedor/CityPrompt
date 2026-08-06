@@ -23,6 +23,7 @@ import {
 import {
   describeParkGroundGuideFit,
   fitParkGroundGuides,
+  isParkGuideRenderedByLegoAssembly,
   parkGroundSourceSignature,
   resolveParkGuideDimensionsM,
   resolveParkGroundProfile,
@@ -1498,11 +1499,17 @@ export function buildParkDiagram(
       legoAppearance,
     );
   }
+  const executableGuides = mode === 'procedural'
+    ? styleExecutableParkGuides(guideFit.guides, legoAppearance)
+    : guideFit.guides;
   drawParkGuides(
     ctx,
     mode === 'procedural'
-      ? styleExecutableParkGuides(guideFit.guides, legoAppearance)
-      : guideFit.guides,
+      ? executableGuides.filter((guide) => !isParkGuideRenderedByLegoAssembly(
+          profile.legoFamilyId,
+          guide.kind,
+        ))
+      : executableGuides,
     ringPx,
     x0,
     y0,

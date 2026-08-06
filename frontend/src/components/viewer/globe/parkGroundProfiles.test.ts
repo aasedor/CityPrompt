@@ -7,6 +7,7 @@ import {
   buildParkRenderQualityInstruction,
   describeParkGroundGuideFit,
   fitParkGroundGuides,
+  isParkGuideRenderedByLegoAssembly,
   parkGroundSourceSignature,
   resolveParkGuideDimensionsM,
   resolveParkGroundProfile,
@@ -63,6 +64,33 @@ function trustedParkRecipe(selection: Record<string, unknown>): Record<string, u
 }
 
 describe('park ground pilot profiles', () => {
+  it('gives each regulation LEGO assembly sole ownership of its playable surface', () => {
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_basketball_court_v0',
+      'basketball_court',
+    )).toBe(true);
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_tennis_cluster_v0',
+      'tennis_court',
+    )).toBe(true);
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_caged_soccer_v0',
+      'soccer_field',
+    )).toBe(true);
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_athletics_fields_v0',
+      'soccer_field',
+    )).toBe(true);
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_basketball_court_v0',
+      'path_loop',
+    )).toBe(false);
+    expect(isParkGuideRenderedByLegoAssembly(
+      'park_neighborhood_community',
+      'basketball_court',
+    )).toBe(false);
+  });
+
   it.each([
     ['neighborhood_park', 'active_recreation'],
     ['urban_pocket_park', 'garden_courtyard'],

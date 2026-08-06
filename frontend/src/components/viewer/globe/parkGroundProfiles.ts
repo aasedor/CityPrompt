@@ -74,6 +74,25 @@ export interface ParkGroundGuideFitResult {
   fittedCounts: Partial<Record<ParkGuideKind, number>>;
 }
 
+/** Regulation LEGO families render their playable surface as a planar,
+ * textured 3D module. The terrain-following procedural ground must leave that
+ * same guide to the assembly, otherwise the sloped copy remains visible below
+ * it and reads as a second floating court or field. */
+const LEGO_ASSEMBLY_SURFACE_GUIDE_KIND: Partial<Record<ParkLegoFamilyId, ParkGuideKind>> = {
+  park_basketball_court_v0: 'basketball_court',
+  park_tennis_cluster_v0: 'tennis_court',
+  park_caged_soccer_v0: 'soccer_field',
+  park_athletics_fields_v0: 'soccer_field',
+};
+
+export function isParkGuideRenderedByLegoAssembly(
+  familyId: ParkLegoFamilyId | undefined,
+  guideKind: ParkGuideKind,
+): boolean {
+  return familyId !== undefined
+    && LEGO_ASSEMBLY_SURFACE_GUIDE_KIND[familyId] === guideKind;
+}
+
 const SEMANTIC_PLAY_SURFACE_KINDS = new Set<ParkGuideKind>([
   'soccer_field',
   'tennis_court',
