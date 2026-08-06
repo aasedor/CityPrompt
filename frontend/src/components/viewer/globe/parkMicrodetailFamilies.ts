@@ -561,6 +561,16 @@ function familyTargets(
     case 'park_lighthouse_pacific_headland_v2': return [target('shrub',22),target('boulder',20),target('riprap',12),target('bin',3)];
     case 'park_lake_edge_timber_deck_v2': return [target('ornamental_grass',20),target('light',10),target('bin',6),target('bike_rack',5),target('bollard',10)];
     case 'park_stormwater_natural_creek_v0': return [target('reed',28),target('shrub',22),target('boulder',14),target('riprap',16),target('bin',3)];
+    case 'park_surface_parking_standard_v0': return [target('light',8),target('bollard',6)];
+    case 'park_structured_parking_urban_v2': return [target('light',6),target('bollard',10),target('bike_rack',4)];
+    case 'park_underground_parking_green_v1': return [target('shrub',18),target('ornamental_grass',16),target('bollard',8),target('light',4)];
+    case 'park_green_parking_infrastructure_v1': return [target('ornamental_grass',24),target('reed',12),target('light',7),target('bollard',6)];
+    case 'park_airport_general_aviation_v2': return [target('light',8),target('bollard',8)];
+    case 'park_equestrian_working_stable_v1': return [target('shrub',14),target('ornamental_grass',12),target('bin',3)];
+    case 'park_golf_seaside_links_v0': return [target('ornamental_grass',30),target('boulder',12),target('bin',4)];
+    case 'park_driving_range_single_tier_v0': return [target('light',8),target('bin',5),target('bike_rack',4)];
+    case 'park_multi_sport_track_field_v3': return [target('light',12),target('bin',8),target('bike_rack',8),target('drinking_fountain',3)];
+    case 'park_retail_parking_landscaped_v1': return [target('ornamental_grass',20),target('light',10),target('bollard',10),target('bike_rack',4)];
   }
 }
 

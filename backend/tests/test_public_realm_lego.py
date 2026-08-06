@@ -171,6 +171,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
             "park_lighthouse_pacific_headland_v2",
             "park_lake_edge_timber_deck_v2",
             "park_stormwater_natural_creek_v0",
+            "park_surface_parking_standard_v0",
+            "park_structured_parking_urban_v2",
+            "park_underground_parking_green_v1",
+            "park_green_parking_infrastructure_v1",
+            "park_airport_general_aviation_v2",
+            "park_equestrian_working_stable_v1",
+            "park_golf_seaside_links_v0",
+            "park_driving_range_single_tier_v0",
+            "park_multi_sport_track_field_v3",
+            "park_retail_parking_landscaped_v1",
         }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -1190,6 +1200,16 @@ def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
         ("park_lighthouse_pacific_headland_v2", "lighthouse_point_park", "lighthouse_point_park_v2", "lighthouse_point_park_v2_pacific_skin", 180.0, 180.0),
         ("park_lake_edge_timber_deck_v2", "lake_edge_plaza", "lake_edge_plaza_v2", "lake_edge_plaza_v2_timber_skin", 200.0, 40.0),
         ("park_stormwater_natural_creek_v0", "stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", "stormwater_naturalized_drainage_corridor_v0_creek_skin", 375.0, 40.0),
+        ("park_surface_parking_standard_v0", "surface_parking_lot", "surface_parking_lot_v0", "surface_parking_lot_v0_standard_skin", 50.0, 40.0),
+        ("park_structured_parking_urban_v2", "structured_parking_garage", "structured_parking_garage_v2", "structured_parking_garage_v2_urban_skin", 50.0, 20.0),
+        ("park_underground_parking_green_v1", "underground_parking_entry", "underground_parking_entry_v1", "underground_parking_entry_v1_green_skin", 20.0, 20.0),
+        ("park_green_parking_infrastructure_v1", "green_parking_lot", "green_parking_lot_v1", "green_parking_lot_v1_infrastructure_skin", 40.0, 30.0),
+        ("park_airport_general_aviation_v2", "airport_airfield", "airport_airfield_variant_2", "airport_airfield_v2_general_aviation_skin", 2200.0, 1360.0),
+        ("park_equestrian_working_stable_v1", "equestrian_center", "equestrian_center_variant_1", "equestrian_center_v1_working_stable_skin", 250.0, 160.0),
+        ("park_golf_seaside_links_v0", "golf_course_18_hole", "golf_course_18_hole_variant_0", "golf_course_18_hole_v0_links_skin", 1000.0, 600.0),
+        ("park_driving_range_single_tier_v0", "golf_driving_range", "golf_driving_range_variant_0", "golf_driving_range_v0_single_tier_skin", 120.0, 290.0),
+        ("park_multi_sport_track_field_v3", "multi_sport_complex", "multi_sport_complex_variant_3", "multi_sport_complex_v3_track_field_skin", 250.0, 160.0),
+        ("park_retail_parking_landscaped_v1", "suburban_retail_parking_lot", "suburban_retail_parking_lot_v1", "suburban_retail_parking_lot_v1_landscaped_skin", 70.0, 50.0),
     ],
 )
 def test_batch10_exact_families_compile_without_image_calls(

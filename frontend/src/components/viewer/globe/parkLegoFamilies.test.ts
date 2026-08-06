@@ -174,6 +174,19 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_stormwater_natural_creek_v0','stormwater_naturalized_drainage_corridor','stormwater_naturalized_drainage_corridor_variant_0','stormwater_naturalized_drainage_corridor_v0_creek_skin','stormwater_natural_creek_v0'],
   ] as const)('executes the exact reviewed Batch 13 selection %s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});expect(isExecutableParkLegoFamily(candidate)).toBe(true);expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
 
+  it.each([
+    ['park_surface_parking_standard_v0','surface_parking_lot','surface_parking_lot_v0','surface_parking_lot_v0_standard_skin','surface_parking_standard_v0'],
+    ['park_structured_parking_urban_v2','structured_parking_garage','structured_parking_garage_v2','structured_parking_garage_v2_urban_skin','structured_parking_urban_v2'],
+    ['park_underground_parking_green_v1','underground_parking_entry','underground_parking_entry_v1','underground_parking_entry_v1_green_skin','underground_parking_green_v1'],
+    ['park_green_parking_infrastructure_v1','green_parking_lot','green_parking_lot_v1','green_parking_lot_v1_infrastructure_skin','green_parking_infrastructure_v1'],
+    ['park_airport_general_aviation_v2','airport_airfield','airport_airfield_variant_2','airport_airfield_v2_general_aviation_skin','airport_general_aviation_v2'],
+    ['park_equestrian_working_stable_v1','equestrian_center','equestrian_center_variant_1','equestrian_center_v1_working_stable_skin','equestrian_working_stable_v1'],
+    ['park_golf_seaside_links_v0','golf_course_18_hole','golf_course_18_hole_variant_0','golf_course_18_hole_v0_links_skin','golf_seaside_links_v0'],
+    ['park_driving_range_single_tier_v0','golf_driving_range','golf_driving_range_variant_0','golf_driving_range_v0_single_tier_skin','driving_range_single_tier_v0'],
+    ['park_multi_sport_track_field_v3','multi_sport_complex','multi_sport_complex_variant_3','multi_sport_complex_v3_track_field_skin','multi_sport_track_field_v3'],
+    ['park_retail_parking_landscaped_v1','suburban_retail_parking_lot','suburban_retail_parking_lot_v1','suburban_retail_parking_lot_v1_landscaped_skin','retail_parking_landscaped_v1'],
+  ] as const)('executes the exact reviewed Batch 14 selection %s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});expect(isExecutableParkLegoFamily(candidate)).toBe(true);expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
+
   it('preserves an explicitly registered non-numeric catalogue variant in the legacy path',()=>{const candidate=zone({green_space_archetype_id:'community_garden_enhanced',green_space_selected_variant_id:'garden_healing'});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId:'park_community_healing_garden_v2',variantId:'garden_healing',supported:true});expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
 
   it.each([

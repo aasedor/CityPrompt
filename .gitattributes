@@ -34,3 +34,4 @@ docs/park_lego_batch10/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch11/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch12/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch13/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/park_lego_batch14/*.jpg filter=lfs diff=lfs merge=lfs -text

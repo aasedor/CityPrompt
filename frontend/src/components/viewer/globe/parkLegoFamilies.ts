@@ -12,6 +12,7 @@ import { batch10ParkSkinForSelection } from './parkBatch10Skins';
 import { batch11ParkSkinForSelection } from './parkBatch11Skins';
 import { batch12ParkSkinForSelection } from './parkBatch12Skins';
 import { batch13ParkSkinForSelection } from './parkBatch13Skins';
+import { batch14ParkSkinForSelection } from './parkBatch14Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -136,6 +137,16 @@ export const PARK_LEGO_FAMILY_IDS = [
   'park_lighthouse_pacific_headland_v2',
   'park_lake_edge_timber_deck_v2',
   'park_stormwater_natural_creek_v0',
+  'park_surface_parking_standard_v0',
+  'park_structured_parking_urban_v2',
+  'park_underground_parking_green_v1',
+  'park_green_parking_infrastructure_v1',
+  'park_airport_general_aviation_v2',
+  'park_equestrian_working_stable_v1',
+  'park_golf_seaside_links_v0',
+  'park_driving_range_single_tier_v0',
+  'park_multi_sport_track_field_v3',
+  'park_retail_parking_landscaped_v1',
 ] as const;
 
 export type ParkLegoFamilyId = (typeof PARK_LEGO_FAMILY_IDS)[number];
@@ -960,6 +971,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_lighthouse_pacific_headland_v2: Object.freeze({ lighthouse_point_park: Object.freeze([Object.freeze({variantId:'lighthouse_point_park_v2',appearanceKitId:'lighthouse_point_park_v2_pacific_skin',plantingStructure:'lighthouse_pacific_headland_v2'})]) }),
   park_lake_edge_timber_deck_v2: Object.freeze({ lake_edge_plaza: Object.freeze([Object.freeze({variantId:'lake_edge_plaza_v2',appearanceKitId:'lake_edge_plaza_v2_timber_skin',plantingStructure:'lake_edge_timber_deck_v2'})]) }),
   park_stormwater_natural_creek_v0: Object.freeze({ stormwater_naturalized_drainage_corridor: Object.freeze([Object.freeze({variantId:'stormwater_naturalized_drainage_corridor_variant_0',appearanceKitId:'stormwater_naturalized_drainage_corridor_v0_creek_skin',plantingStructure:'stormwater_natural_creek_v0'})]) }),
+  park_surface_parking_standard_v0: Object.freeze({ surface_parking_lot: Object.freeze([Object.freeze({variantId:'surface_parking_lot_v0',appearanceKitId:'surface_parking_lot_v0_standard_skin',plantingStructure:'surface_parking_standard_v0'})]) }),
+  park_structured_parking_urban_v2: Object.freeze({ structured_parking_garage: Object.freeze([Object.freeze({variantId:'structured_parking_garage_v2',appearanceKitId:'structured_parking_garage_v2_urban_skin',plantingStructure:'structured_parking_urban_v2'})]) }),
+  park_underground_parking_green_v1: Object.freeze({ underground_parking_entry: Object.freeze([Object.freeze({variantId:'underground_parking_entry_v1',appearanceKitId:'underground_parking_entry_v1_green_skin',plantingStructure:'underground_parking_green_v1'})]) }),
+  park_green_parking_infrastructure_v1: Object.freeze({ green_parking_lot: Object.freeze([Object.freeze({variantId:'green_parking_lot_v1',appearanceKitId:'green_parking_lot_v1_infrastructure_skin',plantingStructure:'green_parking_infrastructure_v1'})]) }),
+  park_airport_general_aviation_v2: Object.freeze({ airport_airfield: Object.freeze([Object.freeze({variantId:'airport_airfield_variant_2',appearanceKitId:'airport_airfield_v2_general_aviation_skin',plantingStructure:'airport_general_aviation_v2'})]) }),
+  park_equestrian_working_stable_v1: Object.freeze({ equestrian_center: Object.freeze([Object.freeze({variantId:'equestrian_center_variant_1',appearanceKitId:'equestrian_center_v1_working_stable_skin',plantingStructure:'equestrian_working_stable_v1'})]) }),
+  park_golf_seaside_links_v0: Object.freeze({ golf_course_18_hole: Object.freeze([Object.freeze({variantId:'golf_course_18_hole_variant_0',appearanceKitId:'golf_course_18_hole_v0_links_skin',plantingStructure:'golf_seaside_links_v0'})]) }),
+  park_driving_range_single_tier_v0: Object.freeze({ golf_driving_range: Object.freeze([Object.freeze({variantId:'golf_driving_range_variant_0',appearanceKitId:'golf_driving_range_v0_single_tier_skin',plantingStructure:'driving_range_single_tier_v0'})]) }),
+  park_multi_sport_track_field_v3: Object.freeze({ multi_sport_complex: Object.freeze([Object.freeze({variantId:'multi_sport_complex_variant_3',appearanceKitId:'multi_sport_complex_v3_track_field_skin',plantingStructure:'multi_sport_track_field_v3'})]) }),
+  park_retail_parking_landscaped_v1: Object.freeze({ suburban_retail_parking_lot: Object.freeze([Object.freeze({variantId:'suburban_retail_parking_lot_v1',appearanceKitId:'suburban_retail_parking_lot_v1_landscaped_skin',plantingStructure:'retail_parking_landscaped_v1'})]) }),
 });
 
 function normalizeId(value: unknown): string {
@@ -1088,6 +1109,16 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'lighthouse_point_park') return 'park_lighthouse_pacific_headland_v2';
   if (archetypeId === 'lake_edge_plaza') return 'park_lake_edge_timber_deck_v2';
   if (archetypeId === 'stormwater_naturalized_drainage_corridor') return 'park_stormwater_natural_creek_v0';
+  if (archetypeId === 'surface_parking_lot') return 'park_surface_parking_standard_v0';
+  if (archetypeId === 'structured_parking_garage') return 'park_structured_parking_urban_v2';
+  if (archetypeId === 'underground_parking_entry') return 'park_underground_parking_green_v1';
+  if (archetypeId === 'green_parking_lot') return 'park_green_parking_infrastructure_v1';
+  if (archetypeId === 'airport_airfield') return 'park_airport_general_aviation_v2';
+  if (archetypeId === 'equestrian_center') return 'park_equestrian_working_stable_v1';
+  if (archetypeId === 'golf_course_18_hole') return 'park_golf_seaside_links_v0';
+  if (archetypeId === 'golf_driving_range') return 'park_driving_range_single_tier_v0';
+  if (archetypeId === 'multi_sport_complex') return 'park_multi_sport_track_field_v3';
+  if (archetypeId === 'suburban_retail_parking_lot') return 'park_retail_parking_landscaped_v1';
   if (!archetypeId && role === 'courtyard') return 'park_pocket_courtyard';
   return null;
 }
@@ -1211,6 +1242,16 @@ function defaultArchetype(familyId: ParkLegoFamilyId): string {
     case 'park_lighthouse_pacific_headland_v2': return 'lighthouse_point_park';
     case 'park_lake_edge_timber_deck_v2': return 'lake_edge_plaza';
     case 'park_stormwater_natural_creek_v0': return 'stormwater_naturalized_drainage_corridor';
+    case 'park_surface_parking_standard_v0': return 'surface_parking_lot';
+    case 'park_structured_parking_urban_v2': return 'structured_parking_garage';
+    case 'park_underground_parking_green_v1': return 'underground_parking_entry';
+    case 'park_green_parking_infrastructure_v1': return 'green_parking_lot';
+    case 'park_airport_general_aviation_v2': return 'airport_airfield';
+    case 'park_equestrian_working_stable_v1': return 'equestrian_center';
+    case 'park_golf_seaside_links_v0': return 'golf_course_18_hole';
+    case 'park_driving_range_single_tier_v0': return 'golf_driving_range';
+    case 'park_multi_sport_track_field_v3': return 'multi_sport_complex';
+    case 'park_retail_parking_landscaped_v1': return 'suburban_retail_parking_lot';
   }
 }
 
@@ -1405,6 +1446,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch11ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch12ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch13ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch14ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

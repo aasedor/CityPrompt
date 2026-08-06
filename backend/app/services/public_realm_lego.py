@@ -502,6 +502,16 @@ _FLOATING_MEADOW_LOOP_ENVELOPE = _park_envelope(nominal=(80.0, 70.0), width=(22.
 _LIGHTHOUSE_PACIFIC_HEADLAND_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(35.0, 360.0), depth=(28.0, 340.0), area=(980.0, 122_400.0))
 _LAKE_EDGE_TIMBER_DECK_ENVELOPE = _park_envelope(nominal=(200.0, 40.0), width=(45.0, 620.0), depth=(14.0, 100.0), area=(630.0, 62_000.0), min_aspect_ratio=1.8)
 _STORMWATER_NATURAL_CREEK_ENVELOPE = _park_envelope(nominal=(375.0, 40.0), width=(45.0, 700.0), depth=(16.0, 120.0), area=(720.0, 84_000.0), min_aspect_ratio=1.8)
+_SURFACE_PARKING_STANDARD_ENVELOPE = _park_envelope(nominal=(50.0, 40.0), width=(25.0, 100.0), depth=(20.0, 80.0), area=(500.0, 8_000.0))
+_STRUCTURED_PARKING_URBAN_ENVELOPE = _park_envelope(nominal=(50.0, 20.0), width=(30.0, 80.0), depth=(15.0, 30.0), area=(450.0, 2_400.0), min_aspect_ratio=1.35)
+_UNDERGROUND_PARKING_GREEN_ENVELOPE = _park_envelope(nominal=(20.0, 20.0), width=(10.0, 35.0), depth=(10.0, 35.0), area=(100.0, 1_225.0))
+_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE = _park_envelope(nominal=(40.0, 30.0), width=(20.0, 70.0), depth=(15.0, 50.0), area=(300.0, 3_500.0))
+_AIRPORT_GENERAL_AVIATION_ENVELOPE = _park_envelope(nominal=(2_200.0, 1_360.0), width=(550.0, 7_500.0), depth=(450.0, 6_700.0), area=(250_000.0, 50_000_000.0), min_aspect_ratio=1.1)
+_EQUESTRIAN_WORKING_STABLE_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(90.0, 500.0), depth=(90.0, 400.0), area=(8_000.0, 200_000.0))
+_GOLF_SEASIDE_LINKS_ENVELOPE = _park_envelope(nominal=(1_000.0, 600.0), width=(800.0, 1_150.0), depth=(500.0, 700.0), area=(400_000.0, 800_000.0), min_aspect_ratio=1.15)
+_DRIVING_RANGE_SINGLE_TIER_ENVELOPE = _park_envelope(nominal=(120.0, 290.0), width=(70.0, 170.0), depth=(115.0, 400.0), area=(8_000.0, 70_000.0), min_aspect_ratio=1.2)
+_MULTI_SPORT_TRACK_FIELD_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(130.0, 450.0), depth=(100.0, 320.0), area=(15_000.0, 120_000.0))
+_RETAIL_PARKING_LANDSCAPED_ENVELOPE = _park_envelope(nominal=(70.0, 50.0), width=(30.0, 140.0), depth=(25.0, 100.0), area=(800.0, 15_000.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1566,6 +1576,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_stormwater_natural_creek_v0", kind="park", title="Naturalized Stormwater Creek v0", generator="park_kit",
         selections=(_selection("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", profile_id="stormwater-natural-creek-lego-v1", appearance_kit_id="stormwater_naturalized_drainage_corridor_v0_creek_skin", planting_structure="stormwater_natural_creek_v0", compatibility=_STORMWATER_NATURAL_CREEK_ENVELOPE, components=("natural_creek_ground_program_v1", "continuous_low_flow_channel_v1", "whole_floodplain_cells_v1", "bridge_crossing_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_surface_parking_standard_v0", kind="park", title="Standard Surface Parking v0", generator="park_kit",
+        selections=(_selection("surface_parking_lot", "surface_parking_lot_v0", profile_id="surface-parking-standard-lego-v1", appearance_kit_id="surface_parking_lot_v0_standard_skin", planting_structure="surface_parking_standard_v0", compatibility=_SURFACE_PARKING_STANDARD_ENVELOPE, components=("regulation_surface_parking_ground_v1", "whole_double_loaded_rows_v1", "clear_drive_aisles_v1", "tree_island_light_kit_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_structured_parking_urban_v2", kind="park", title="Urban Structured Parking Site v2", generator="park_kit",
+        selections=(_selection("structured_parking_garage", "structured_parking_garage_v2", profile_id="structured-parking-urban-lego-v1", appearance_kit_id="structured_parking_garage_v2_urban_skin", planting_structure="structured_parking_urban_v2", compatibility=_STRUCTURED_PARKING_URBAN_ENVELOPE, components=("garage_building_reservation_v1", "vehicle_arrival_apron_v1", "pedestrian_threshold_v1", "landscape_buffer_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_underground_parking_green_v1", kind="park", title="Green Underground Parking Entry v1", generator="park_kit",
+        selections=(_selection("underground_parking_entry", "underground_parking_entry_v1", profile_id="underground-parking-green-lego-v1", appearance_kit_id="underground_parking_entry_v1_green_skin", planting_structure="underground_parking_green_v1", compatibility=_UNDERGROUND_PARKING_GREEN_ENVELOPE, components=("landscaped_surface_ground_v1", "complete_vehicle_ramp_v1", "retaining_guardrail_kit_v1", "flush_vent_grates_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_green_parking_infrastructure_v1", kind="park", title="Green Infrastructure Parking v1", generator="park_kit",
+        selections=(_selection("green_parking_lot", "green_parking_lot_v1", profile_id="green-parking-infrastructure-lego-v1", appearance_kit_id="green_parking_lot_v1_infrastructure_skin", planting_structure="green_parking_infrastructure_v1", compatibility=_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE, components=("permeable_parking_ground_v1", "whole_regulation_rows_v1", "continuous_bioswale_v1", "tree_island_kit_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_airport_general_aviation_v2", kind="park", title="General Aviation Airfield v2", generator="park_kit",
+        selections=(_selection("airport_airfield", "airport_airfield_variant_2", profile_id="airport-general-aviation-lego-v1", appearance_kit_id="airport_airfield_v2_general_aviation_skin", planting_structure="airport_general_aviation_v2", compatibility=_AIRPORT_GENERAL_AVIATION_ENVELOPE, components=("complete_runway_ground_v1", "taxiway_apron_network_v1", "small_aircraft_stands_v1", "hangar_terminal_reservations_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_equestrian_working_stable_v1", kind="park", title="Rustic Working Equestrian Centre v1", generator="park_kit",
+        selections=(_selection("equestrian_center", "equestrian_center_variant_1", profile_id="equestrian-working-stable-lego-v1", appearance_kit_id="equestrian_center_v1_working_stable_skin", planting_structure="equestrian_working_stable_v1", compatibility=_EQUESTRIAN_WORKING_STABLE_ENVELOPE, components=("complete_sand_arena_v1", "whole_fenced_paddocks_v1", "service_lane_v1", "stable_building_reservation_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_golf_seaside_links_v0", kind="park", title="Seaside Links Golf v0", generator="park_kit",
+        selections=(_selection("golf_course_18_hole", "golf_course_18_hole_variant_0", profile_id="golf-seaside-links-lego-v1", appearance_kit_id="golf_course_18_hole_v0_links_skin", planting_structure="golf_seaside_links_v0", compatibility=_GOLF_SEASIDE_LINKS_ENVELOPE, components=("whole_hole_modules_v1", "dune_rough_ground_v1", "pot_bunker_flag_kit_v1", "clubhouse_reservation_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_driving_range_single_tier_v0", kind="park", title="Single-Tier Golf Driving Range v0", generator="park_kit",
+        selections=(_selection("golf_driving_range", "golf_driving_range_variant_0", profile_id="driving-range-single-tier-lego-v1", appearance_kit_id="golf_driving_range_v0_single_tier_skin", planting_structure="driving_range_single_tier_v0", compatibility=_DRIVING_RANGE_SINGLE_TIER_ENVELOPE, components=("deep_landing_field_v1", "distance_target_flag_kit_v1", "continuous_side_netting_v1", "open_hitting_bay_canopy_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_multi_sport_track_field_v3", kind="park", title="Track and Field Precinct v3", generator="park_kit",
+        selections=(_selection("multi_sport_complex", "multi_sport_complex_variant_3", profile_id="multi-sport-track-field-lego-v1", appearance_kit_id="multi_sport_complex_v3_track_field_skin", planting_structure="multi_sport_track_field_v3", compatibility=_MULTI_SPORT_TRACK_FIELD_ENVELOPE, components=("complete_track_infield_module_v1", "floodlight_kit_v1", "spectator_edge_v1", "fieldhouse_building_reservation_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_retail_parking_landscaped_v1", kind="park", title="Landscaped Retail Parking v1", generator="park_kit",
+        selections=(_selection("suburban_retail_parking_lot", "suburban_retail_parking_lot_v1", profile_id="retail-parking-landscaped-lego-v1", appearance_kit_id="suburban_retail_parking_lot_v1_landscaped_skin", planting_structure="retail_parking_landscaped_v1", compatibility=_RETAIL_PARKING_LANDSCAPED_ENVELOPE, components=("regulation_retail_parking_ground_v1", "whole_stall_rows_v1", "crossing_cart_corral_kit_v1", "storefront_building_reservation_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

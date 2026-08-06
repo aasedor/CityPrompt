@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "surface-parking-standard-v0": {"source": "frontend/public/archetypes/openspaces/surface-parking-lot/variant_0.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "structured-parking-urban-v2": {"source": "frontend/public/archetypes/openspaces/structured-parking-garage/variant_2.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "underground-parking-green-v1": {"source": "frontend/public/archetypes/openspaces/underground-parking-entry-only/variant_1.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "green-parking-infrastructure-v1": {"source": "frontend/public/archetypes/openspaces/green-parking-permeable/variant_1.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "airport-general-aviation-v2": {"source": "frontend/public/archetypes/openspaces/airport-airfield/variant_2.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "equestrian-working-stable-v1": {"source": "frontend/public/archetypes/openspaces/equestrian-center/variant_1.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "golf-seaside-links-v0": {"source": "frontend/public/archetypes/openspaces/golf-course-18-hole/variant_0.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "paver", "timber": "timber"}},
+    "driving-range-single-tier-v0": {"source": "frontend/public/archetypes/openspaces/golf-driving-range/variant_0.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "multi-sport-track-field-v3": {"source": "frontend/public/archetypes/openspaces/multi-sport-complex/variant_3.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}},
+    "retail-parking-landscaped-v1": {"source": "frontend/public/archetypes/openspaces/suburban-retail-parking-lot/variant_1.png", "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"}}
+  },
+  "defaultCrops": {"paver": [0, 0.56, 1, 1], "lawn": [0, 0.30, 1, 0.88], "asphalt": [0, 0.58, 1, 1], "planting": [0, 0.18, 1, 0.86], "safety": [0.05, 0.44, 0.95, 0.94], "timber": [0, 0.36, 1, 0.92]},
+  "materialDefaults": {"paver": {"roughness": 0.88, "normalStrength": 2, "metresPerTile": 4}, "lawn": {"roughness": 0.95, "normalStrength": 2.2, "metresPerTile": 5}, "asphalt": {"roughness": 0.91, "normalStrength": 1.8, "metresPerTile": 4}, "planting": {"roughness": 0.98, "normalStrength": 3, "metresPerTile": 3}, "safety": {"roughness": 0.9, "normalStrength": 2.4, "metresPerTile": 3}, "timber": {"roughness": 0.84, "normalStrength": 2.2, "metresPerTile": 2.5}}
+}

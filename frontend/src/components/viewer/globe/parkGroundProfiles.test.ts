@@ -456,6 +456,19 @@ describe('park ground pilot profiles', () => {
   ] as const)('resolves the batch-13 exact depth kit for %s/%s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone(archetypeId);candidate.properties={...candidate.properties,public_realm_lego:trustedParkRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})};expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch13_archetype_assembly');const profile=resolveParkGroundProfile(candidate);expect(profile.id).toContain('lego-v1');expect(profile.guides.length).toBeGreaterThan(0);expect(profile.criticalConstraints).toMatch(/do not|no |never |exclude/i)});
 
   it.each([
+    ['park_surface_parking_standard_v0','surface_parking_lot','surface_parking_lot_v0','surface_parking_lot_v0_standard_skin','surface_parking_standard_v0'],
+    ['park_structured_parking_urban_v2','structured_parking_garage','structured_parking_garage_v2','structured_parking_garage_v2_urban_skin','structured_parking_urban_v2'],
+    ['park_underground_parking_green_v1','underground_parking_entry','underground_parking_entry_v1','underground_parking_entry_v1_green_skin','underground_parking_green_v1'],
+    ['park_green_parking_infrastructure_v1','green_parking_lot','green_parking_lot_v1','green_parking_lot_v1_infrastructure_skin','green_parking_infrastructure_v1'],
+    ['park_airport_general_aviation_v2','airport_airfield','airport_airfield_variant_2','airport_airfield_v2_general_aviation_skin','airport_general_aviation_v2'],
+    ['park_equestrian_working_stable_v1','equestrian_center','equestrian_center_variant_1','equestrian_center_v1_working_stable_skin','equestrian_working_stable_v1'],
+    ['park_golf_seaside_links_v0','golf_course_18_hole','golf_course_18_hole_variant_0','golf_course_18_hole_v0_links_skin','golf_seaside_links_v0'],
+    ['park_driving_range_single_tier_v0','golf_driving_range','golf_driving_range_variant_0','golf_driving_range_v0_single_tier_skin','driving_range_single_tier_v0'],
+    ['park_multi_sport_track_field_v3','multi_sport_complex','multi_sport_complex_variant_3','multi_sport_complex_v3_track_field_skin','multi_sport_track_field_v3'],
+    ['park_retail_parking_landscaped_v1','suburban_retail_parking_lot','suburban_retail_parking_lot_v1','suburban_retail_parking_lot_v1_landscaped_skin','retail_parking_landscaped_v1'],
+  ] as const)('resolves the batch-14 exact depth kit for %s/%s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone(archetypeId);candidate.properties={...candidate.properties,public_realm_lego:trustedParkRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})};expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch14_archetype_assembly');const profile=resolveParkGroundProfile(candidate);expect(profile.id).toContain('lego-v1');expect(profile.guides.length).toBeGreaterThan(0);expect(profile.criticalConstraints).toMatch(/do not|no |never |exclude/i)});
+
+  it.each([
     ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 64, 38],
     ['kayak_launch_dock', 'kayak_launch_dock_v0', 80, 35],
     ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 150, 100],
