@@ -33,10 +33,6 @@ import {
   getStreetNetworkGroundMeta,
   importStreetNetworkGroundTexture,
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
-import {
-  generatePublicRealmDrapes,
-  planPublicRealmDrapes,
-} from '@/components/viewer/globe/publicRealmDrapeGenerator';
 import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
@@ -81,17 +77,11 @@ export function LegoBuilderPanel({
   zones,
   onClose,
   autoGenerate = false,
-  sceneContextImageBase64 = null,
-  onZonesRefreshed,
 }: {
   zones: SiteZone[];
   onClose: () => void;
   /** Top-level workflow entry: plan, then compile the complete scene once. */
   autoGenerate?: boolean;
-  /** Frozen Google Tiles frame used only as local material/edge context. */
-  sceneContextImageBase64?: string | null;
-  /** Keep the owning workflow snapshot current after drape metadata writes. */
-  onZonesRefreshed?: (zones: SiteZone[]) => void;
 }) {
   const [items, setItems] = useState<ZoneBuildItem[]>(() => deriveItems(zones));
   const [groundItems, setGroundItems] = useState<GroundBuildItem[]>(() => deriveGroundItems(zones));
@@ -111,19 +101,8 @@ export function LegoBuilderPanel({
   } | null>(null);
   const [importingStreetAtlas, setImportingStreetAtlas] = useState(false);
   const projectId = zones[0]?.project_id;
-  const currentDrapeZones = useMemo(() => {
-    const currentById = new Map([
-      ...items.map((item) => [item.zone.id, item.zone] as const),
-      ...groundItems.map((item) => [item.zone.id, item.zone] as const),
-    ]);
-    return zones.map((zone) => currentById.get(zone.id) ?? zone);
-  }, [groundItems, items, zones]);
-  const streetZones = currentDrapeZones.filter((zone) => resolveCommunity3DKind(zone) === 'street');
+  const streetZones = zones.filter((zone) => resolveCommunity3DKind(zone) === 'street');
   const streetsWithAtlas = streetZones.filter((zone) => getStreetNetworkGroundMeta(zone)).length;
-  const publicRealmDrapePlan = useMemo(
-    () => planPublicRealmDrapes(currentDrapeZones),
-    [currentDrapeZones],
-  );
 
   // The globe reads buildings from the project query and links from the zone
   // query — both must refetch for the placed stack to appear.
@@ -161,14 +140,8 @@ export function LegoBuilderPanel({
     const massingOnly = items.filter((item) => (
       !item.plan && Boolean(item.offset) && (forceRebuild || item.massingState !== 'compiled')
     ));
-    const groundNeedingDrapeIds = new Set([
-      ...publicRealmDrapePlan.parksNeedingDrape.map((zone) => zone.id),
-      ...(publicRealmDrapePlan.streetNetworkNeedsDrape
-        ? publicRealmDrapePlan.streetZones.map((zone) => zone.id)
-        : []),
-    ]);
     const groundToCompile = groundItems.filter((item) => (
-      forceRebuild || item.state !== 'compiled' || groundNeedingDrapeIds.has(item.zone.id)
+      forceRebuild || item.state !== 'compiled'
     ));
     if (
       (placeable.length === 0 && massingOnly.length === 0 && groundToCompile.length === 0)
@@ -197,27 +170,8 @@ export function LegoBuilderPanel({
         ...groundItems.map((item) => [item.zone.id, item.zone] as const),
       ]);
       const sourceZones = zones.map((zone) => latestPanelZoneById.get(zone.id) ?? zone);
-      let compileZones = sourceZones;
-      if (groundToCompile.length > 0) {
-        const drapeResult = await generatePublicRealmDrapes(projectId!, sourceZones, {
-          sceneContextImageBase64,
-          onProgress: ({ completed, total, label }) => {
-            setGenerationStage(
-              total > 0 ? `${label} · ${completed}/${total} image calls` : label,
-            );
-          },
-        });
-        compileZones = drapeResult.zones;
-        onZonesRefreshed?.(compileZones);
-        if (drapeResult.remainingParks > 0) {
-          throw new Error(
-            `Generated ${drapeResult.generatedParks} park drapes in this protected batch. `
-            + `${drapeResult.remainingParks} parks remain; run Generate to 3D again to finish them without regenerating completed drapes.`,
-          );
-        }
-      }
       setGenerationStage('Placing 3D buildings and public-realm objects');
-      const authoritativeById = new Map(compileZones.map((zone) => [zone.id, zone]));
+      const authoritativeById = new Map(sourceZones.map((zone) => [zone.id, zone]));
       const authoritativeZone = (zoneId: string): SiteZone => {
         const zone = authoritativeById.get(zoneId);
         if (!zone) throw new Error('A plan zone changed while Generate to 3D was preparing. Refresh and retry.');
@@ -286,7 +240,7 @@ export function LegoBuilderPanel({
       setGenerationStage(null);
       setPlacingAll(false);
     }
-  }, [groundItems, items, onZonesRefreshed, placingAll, projectId, publicRealmDrapePlan, refetchPlacedData, sceneContextImageBase64, zones]);
+  }, [groundItems, items, placingAll, refetchPlacedData, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
     const base = deriveItems(zones);
@@ -401,7 +355,6 @@ export function LegoBuilderPanel({
     unplacedDetailedCount > 0
     || uncompiledMassingCount > 0
     || compiledGroundCount < groundItems.length
-    || publicRealmDrapePlan.totalImageCalls > 0
   );
   const saveResultIsError = Boolean(
     items.some((item) => item.placeState === 'failed' || item.massingState === 'failed')
@@ -512,11 +465,6 @@ export function LegoBuilderPanel({
               <p className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-sky-800">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 {generationStage}
-              </p>
-            )}
-            {!placingAll && publicRealmDrapePlan.totalImageCalls > 0 && (
-              <p className="mt-1 text-[10px] font-bold text-black/55">
-                {`${publicRealmDrapePlan.totalImageCalls} AI ground-drape image call${publicRealmDrapePlan.totalImageCalls === 1 ? '' : 's'} will run during Generate to 3D.`}
               </p>
             )}
           </div>
@@ -650,8 +598,10 @@ export function LegoBuilderPanel({
                         {item.kind === 'park'
                           ? usesArchetypeOwnedParkSurface(item.zone)
                             ? 'Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing'
-                            : 'AI-draped archetype ground, then programmed 3D trees, structures, planting and seating'
-                          : 'One connected AI road atlas, then 3D curbs, markings, trees, lights, furniture and vehicles'}
+                            : 'Archetype-driven procedural skin with programmed 3D trees, structures, planting and seating; no image API call'
+                          : getStreetNetworkGroundMeta(item.zone)
+                            ? 'Imported connected road atlas with 3D curbs, markings, trees, lights, furniture and vehicles'
+                            : 'Engineered procedural street surface with 3D curbs, markings, trees, lights, furniture and vehicles; no image API call'}
                       </p>
                     </div>
                   ))}

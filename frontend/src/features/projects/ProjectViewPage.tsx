@@ -49,7 +49,6 @@ import type {
   Direct3DCaptureBundle,
   Direct3DCaptureOptions,
 } from '@/components/viewer/globe/direct3dCapture';
-import { capturePublicRealmSceneReference } from '@/components/viewer/globe/parkGroundTexture';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 const PLAN_LAYER_PREFIX = 'Plan — ';
@@ -67,7 +66,6 @@ export function ProjectViewPage() {
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
   const [isPreparingGenerate3D, setIsPreparingGenerate3D] = useState(false);
   const [generate3DZones, setGenerate3DZones] = useState<SiteZone[] | null>(null);
-  const [generate3DSceneContext, setGenerate3DSceneContext] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [savedVideos, setSavedVideos] = useState<VideoAttempt[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
@@ -548,21 +546,17 @@ export function ProjectViewPage() {
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       setGenerate3DZones(frozenVisibleZones);
-      setGenerate3DSceneContext(
-        globeRefs?.canvas ? capturePublicRealmSceneReference(globeRefs.canvas) : null,
-      );
       setShowLegoBuilder(true);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Could not prepare Generate to 3D.');
     } finally {
       setIsPreparingGenerate3D(false);
     }
-  }, [cityPromptWorkflow, globeRefs, id, selectZone, visiblePlanLayers, visibleZones]);
+  }, [cityPromptWorkflow, id, selectZone, visiblePlanLayers, visibleZones]);
 
   const handleCloseGenerate3D = useCallback(() => {
     setShowLegoBuilder(false);
     setGenerate3DZones(null);
-    setGenerate3DSceneContext(null);
   }, []);
 
   const handleOpenGlobeRender = useCallback(() => {
@@ -1268,8 +1262,6 @@ export function ProjectViewPage() {
           <LegoBuilderPanel
             zones={generate3DZones ?? visibleZones}
             autoGenerate
-            sceneContextImageBase64={generate3DSceneContext}
-            onZonesRefreshed={setGenerate3DZones}
             onClose={handleCloseGenerate3D}
           />
         )}
@@ -1554,8 +1546,6 @@ export function ProjectViewPage() {
             <LegoBuilderPanel
               zones={generate3DZones ?? visibleZones}
               autoGenerate
-              sceneContextImageBase64={generate3DSceneContext}
-              onZonesRefreshed={setGenerate3DZones}
               onClose={handleCloseGenerate3D}
             />
           )}
