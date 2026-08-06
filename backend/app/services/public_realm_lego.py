@@ -382,6 +382,36 @@ _SCULPTURE_GARDEN_ENVELOPE = _park_envelope(
 _LABYRINTH_ENVELOPE = _park_envelope(
     nominal=(20.0, 20.0), width=(20.0, 65.0), depth=(20.0, 65.0), area=(400.0, 4_225.0),
 )
+_ICE_RINK_MULTIPURPOSE_ENVELOPE = _park_envelope(
+    nominal=(64.0, 38.0), width=(60.0, 120.0), depth=(30.0, 85.0), area=(1_800.0, 10_200.0),
+)
+_KAYAK_RIVER_LAUNCH_ENVELOPE = _park_envelope(
+    nominal=(80.0, 35.0), width=(45.0, 220.0), depth=(24.0, 80.0), area=(1_080.0, 17_600.0), min_aspect_ratio=1.6,
+)
+_TIDAL_MARSH_CORDGRASS_ENVELOPE = _park_envelope(
+    nominal=(150.0, 100.0), width=(80.0, 360.0), depth=(60.0, 260.0), area=(4_800.0, 93_600.0),
+)
+_CINEMA_LAWN_PROJECTION_ENVELOPE = _park_envelope(
+    nominal=(80.0, 50.0), width=(58.0, 160.0), depth=(40.0, 110.0), area=(2_320.0, 17_600.0),
+)
+_FOOD_TRUCK_PERMANENT_ENVELOPE = _park_envelope(
+    nominal=(50.0, 40.0), width=(38.0, 100.0), depth=(32.0, 80.0), area=(1_216.0, 8_000.0),
+)
+_GREAT_LAWN_ENVELOPE = _park_envelope(
+    nominal=(180.0, 120.0), width=(75.0, 420.0), depth=(55.0, 300.0), area=(4_125.0, 126_000.0),
+)
+_CAMPUS_MEADOW_QUAD_ENVELOPE = _park_envelope(
+    nominal=(100.0, 80.0), width=(55.0, 220.0), depth=(45.0, 170.0), area=(2_475.0, 37_400.0),
+)
+_URBAN_BEACH_FAMILY_ENVELOPE = _park_envelope(
+    nominal=(60.0, 45.0), width=(42.0, 130.0), depth=(34.0, 100.0), area=(1_428.0, 13_000.0),
+)
+_VELODROME_OPEN_AIR_ENVELOPE = _park_envelope(
+    nominal=(135.0, 82.0), width=(125.0, 220.0), depth=(72.0, 150.0), area=(9_000.0, 33_000.0),
+)
+_MTB_SKILLS_DIRT_ENVELOPE = _park_envelope(
+    nominal=(90.0, 60.0), width=(55.0, 190.0), depth=(42.0, 130.0), area=(2_310.0, 24_700.0),
+)
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -1126,6 +1156,46 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     PublicRealmFamilyCapability(
         family_id="park_labyrinth_classical_v0", kind="park", title="Labyrinth / Classical Stone v0", generator="park_kit",
         selections=(_selection("labyrinth_meditation", "labyrinth_meditation_v0", profile_id="labyrinth-classical-lego-v1", appearance_kit_id="labyrinth_meditation_v0_classical_stone_skin", planting_structure="labyrinth_classical_v0", compatibility=_LABYRINTH_ENVELOPE, components=("labyrinth_ground_program_v1", "chartres_ring_path_v1", "central_stone_bench_v1", "formal_hedge_frame_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_ice_rink_multipurpose_v3", kind="park", title="Outdoor Ice Rink / Multipurpose Pad v3", generator="park_kit",
+        selections=(_selection("outdoor_ice_rink", "outdoor_ice_rink_v3", profile_id="ice-rink-multipurpose-lego-v1", appearance_kit_id="outdoor_ice_rink_v3_multipurpose_pad_skin", planting_structure="ice_rink_multipurpose_v3", compatibility=_ICE_RINK_MULTIPURPOSE_ENVELOPE, components=("multipurpose_rink_ground_program_v1", "permanent_rink_boards_v1", "seasonal_surface_markings_v1", "rink_light_standard_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_kayak_river_launch_v0", kind="park", title="Kayak Launch / River Launch v0", generator="park_kit",
+        selections=(_selection("kayak_launch_dock", "kayak_launch_dock_v0", profile_id="kayak-river-launch-lego-v1", appearance_kit_id="kayak_launch_dock_v0_river_launch_skin", planting_structure="kayak_river_launch_v0", compatibility=_KAYAK_RIVER_LAUNCH_ENVELOPE, components=("kayak_launch_ground_program_v1", "floating_dock_v1", "accessible_launch_slide_v1", "kayak_rack_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_tidal_marsh_cordgrass_v0", kind="park", title="Tidal Marsh Boardwalk / Cordgrass v0", generator="park_kit",
+        selections=(_selection("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", profile_id="tidal-marsh-cordgrass-lego-v1", appearance_kit_id="tidal_marsh_boardwalk_v0_cordgrass_skin", planting_structure="tidal_marsh_cordgrass_v0", compatibility=_TIDAL_MARSH_CORDGRASS_ENVELOPE, components=("tidal_marsh_ground_program_v1", "elevated_boardwalk_v1", "hexagonal_overlook_v1", "interpretive_trailhead_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cinema_lawn_projection_v1", kind="park", title="Outdoor Cinema / Park Lawn v1", generator="park_kit",
+        selections=(_selection("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", profile_id="cinema-lawn-projection-lego-v1", appearance_kit_id="outdoor_cinema_lawn_v1_park_projection_skin", planting_structure="cinema_lawn_projection_v1", compatibility=_CINEMA_LAWN_PROJECTION_ENVELOPE, components=("cinema_lawn_ground_program_v1", "fixed_projection_screen_v1", "projection_booth_v1", "sightline_lawn_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_food_truck_permanent_v1", kind="park", title="Food-Truck Plaza / Permanent Park v1", generator="park_kit",
+        selections=(_selection("food_truck_plaza", "food_truck_plaza_v1", profile_id="food-truck-permanent-lego-v1", appearance_kit_id="food_truck_plaza_v1_permanent_park_skin", planting_structure="food_truck_permanent_v1", compatibility=_FOOD_TRUCK_PERMANENT_ENVELOPE, components=("food_truck_plaza_ground_program_v1", "utility_truck_bays_v1", "shared_truck_prop_v1", "communal_picnic_grid_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_great_lawn_v2", kind="park", title="Festival / Great Lawn v2", generator="park_kit",
+        selections=(_selection("festival_event_lawn", "festival_event_lawn_v2", profile_id="great-lawn-lego-v1", appearance_kit_id="festival_event_lawn_v2_great_lawn_skin", planting_structure="great_lawn_v2", compatibility=_GREAT_LAWN_ENVELOPE, components=("great_lawn_ground_program_v1", "perimeter_event_hookups_v1", "gentle_landform_v1", "clear_event_field_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_campus_meadow_quad_v0", kind="park", title="Campus Quad / Naturalized Meadow v0", generator="park_kit",
+        selections=(_selection("campus_central_quad", "campus_central_quad_variant_0", profile_id="campus-meadow-quad-lego-v1", appearance_kit_id="campus_central_quad_v0_naturalized_meadow_skin", planting_structure="campus_meadow_quad_v0", compatibility=_CAMPUS_MEADOW_QUAD_ENVELOPE, components=("campus_meadow_ground_program_v1", "desire_line_crossing_v1", "social_nodes_v1", "meadow_boulder_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_urban_beach_family_v2", kind="park", title="Urban Beach / Family Splash v2", generator="park_kit",
+        selections=(_selection("urban_beach", "urban_beach_v2", profile_id="urban-beach-family-lego-v1", appearance_kit_id="urban_beach_v2_family_splash_skin", planting_structure="urban_beach_family_v2", compatibility=_URBAN_BEACH_FAMILY_ENVELOPE, components=("urban_beach_ground_program_v1", "family_splash_pad_v1", "shade_sail_cluster_v1", "accessible_boardwalk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_velodrome_open_air_v0", kind="park", title="Velodrome / Open Air v0", generator="park_kit",
+        selections=(_selection("velodrome_cycling_track", "velodrome_cycling_track_variant_0", profile_id="velodrome-open-air-lego-v1", appearance_kit_id="velodrome_cycling_track_v0_open_air_skin", planting_structure="velodrome_open_air_v0", compatibility=_VELODROME_OPEN_AIR_ENVELOPE, components=("velodrome_ground_program_v1", "banked_250m_track_v1", "open_bleacher_v1", "timing_tower_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_mtb_skills_dirt_v2", kind="park", title="Mountain Bike / Skills and Dirt v2", generator="park_kit",
+        selections=(_selection("mountain_bike_park", "mountain_bike_park_variant_2", profile_id="mtb-skills-dirt-lego-v1", appearance_kit_id="mountain_bike_park_v2_skills_dirt_skin", planting_structure="mtb_skills_dirt_v2", compatibility=_MTB_SKILLS_DIRT_ENVELOPE, components=("mtb_skills_ground_program_v1", "connected_pump_loop_v1", "dirt_jump_line_v1", "technical_feature_set_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
         family_id="street_local_public_realm",

@@ -91,6 +91,16 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_bioswale_streetside_v0",
         "park_sculpture_museum_court_v0",
         "park_labyrinth_classical_v0",
+        "park_ice_rink_multipurpose_v3",
+        "park_kayak_river_launch_v0",
+        "park_tidal_marsh_cordgrass_v0",
+        "park_cinema_lawn_projection_v1",
+        "park_food_truck_permanent_v1",
+        "park_great_lawn_v2",
+        "park_campus_meadow_quad_v0",
+        "park_urban_beach_family_v2",
+        "park_velodrome_open_air_v0",
+        "park_mtb_skills_dirt_v2",
     }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
@@ -258,6 +268,55 @@ def test_batch5_unreviewed_variants_fail_closed(archetype_id):
             archetype_id=archetype_id,
             variant_id=f"{archetype_id}_v1",
             target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
+        ))
+    assert exc.value.code == "family_incompatible"
+
+
+@pytest.mark.parametrize(("archetype_id", "variant_id", "family_id", "appearance_id", "planting", "width", "depth"), (
+    ("outdoor_ice_rink", "outdoor_ice_rink_v3", "park_ice_rink_multipurpose_v3", "outdoor_ice_rink_v3_multipurpose_pad_skin", "ice_rink_multipurpose_v3", 64, 38),
+    ("kayak_launch_dock", "kayak_launch_dock_v0", "park_kayak_river_launch_v0", "kayak_launch_dock_v0_river_launch_skin", "kayak_river_launch_v0", 80, 35),
+    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", "park_tidal_marsh_cordgrass_v0", "tidal_marsh_boardwalk_v0_cordgrass_skin", "tidal_marsh_cordgrass_v0", 150, 100),
+    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", "park_cinema_lawn_projection_v1", "outdoor_cinema_lawn_v1_park_projection_skin", "cinema_lawn_projection_v1", 80, 50),
+    ("food_truck_plaza", "food_truck_plaza_v1", "park_food_truck_permanent_v1", "food_truck_plaza_v1_permanent_park_skin", "food_truck_permanent_v1", 50, 40),
+    ("festival_event_lawn", "festival_event_lawn_v2", "park_great_lawn_v2", "festival_event_lawn_v2_great_lawn_skin", "great_lawn_v2", 180, 120),
+    ("campus_central_quad", "campus_central_quad_variant_0", "park_campus_meadow_quad_v0", "campus_central_quad_v0_naturalized_meadow_skin", "campus_meadow_quad_v0", 100, 80),
+    ("urban_beach", "urban_beach_v2", "park_urban_beach_family_v2", "urban_beach_v2_family_splash_skin", "urban_beach_family_v2", 60, 45),
+    ("velodrome_cycling_track", "velodrome_cycling_track_variant_0", "park_velodrome_open_air_v0", "velodrome_cycling_track_v0_open_air_skin", "velodrome_open_air_v0", 135, 82),
+    ("mountain_bike_park", "mountain_bike_park_variant_2", "park_mtb_skills_dirt_v2", "mountain_bike_park_v2_skills_dirt_skin", "mtb_skills_dirt_v2", 90, 60),
+))
+def test_batch6_park_recipes_keep_exact_variant_identity(
+    archetype_id, variant_id, family_id, appearance_id, planting, width, depth,
+):
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        variant_id=variant_id,
+        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+    ))
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_id
+    assert recipe.planting_structure == planting
+
+
+@pytest.mark.parametrize(("archetype_id", "selected", "unreviewed"), (
+    ("outdoor_ice_rink", "outdoor_ice_rink_v3", "outdoor_ice_rink_v2"),
+    ("kayak_launch_dock", "kayak_launch_dock_v0", "kayak_launch_dock_v1"),
+    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", "tidal_marsh_boardwalk_v1"),
+    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", "outdoor_cinema_lawn_v0"),
+    ("food_truck_plaza", "food_truck_plaza_v1", "food_truck_plaza_v0"),
+    ("festival_event_lawn", "festival_event_lawn_v2", "festival_event_lawn_v1"),
+    ("campus_central_quad", "campus_central_quad_variant_0", "campus_central_quad_variant_1"),
+    ("urban_beach", "urban_beach_v2", "urban_beach_v1"),
+    ("velodrome_cycling_track", "velodrome_cycling_track_variant_0", "velodrome_cycling_track_variant_1"),
+    ("mountain_bike_park", "mountain_bike_park_variant_2", "mountain_bike_park_variant_1"),
+))
+def test_batch6_unreviewed_variants_fail_closed(archetype_id, selected, unreviewed):
+    assert selected != unreviewed
+    with pytest.raises(PublicRealmPlanningError) as exc:
+        plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=unreviewed,
+            target=ParkPolygonTarget(width_m=180, depth_m=120, area_m2=21_600),
         ))
     assert exc.value.code == "family_incompatible"
 

@@ -345,6 +345,45 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 'park_ice_rink_multipurpose_v3'],
+    ['kayak_launch_dock', 'kayak_launch_dock_v0', 'park_kayak_river_launch_v0'],
+    ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 'park_tidal_marsh_cordgrass_v0'],
+    ['outdoor_cinema_lawn', 'outdoor_cinema_lawn_v1', 'park_cinema_lawn_projection_v1'],
+    ['food_truck_plaza', 'food_truck_plaza_v1', 'park_food_truck_permanent_v1'],
+    ['festival_event_lawn', 'festival_event_lawn_v2', 'park_great_lawn_v2'],
+    ['campus_central_quad', 'campus_central_quad_variant_0', 'park_campus_meadow_quad_v0'],
+    ['urban_beach', 'urban_beach_v2', 'park_urban_beach_family_v2'],
+    ['velodrome_cycling_track', 'velodrome_cycling_track_variant_0', 'park_velodrome_open_air_v0'],
+    ['mountain_bike_park', 'mountain_bike_park_variant_2', 'park_mtb_skills_dirt_v2'],
+  ] as const)('compiles batch-6 %s/%s to exact zero-call family %s', (
+    archetypeId, variantId, familyId,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['outdoor_ice_rink', 'outdoor_ice_rink_v2'],
+    ['outdoor_cinema_lawn', 'outdoor_cinema_lawn_v0'],
+    ['campus_central_quad', 'campus_central_quad_variant_1'],
+    ['velodrome_cycling_track', 'velodrome_cycling_track_variant_1'],
+    ['mountain_bike_park', 'mountain_bike_park_variant_1'],
+  ] as const)('fails closed for unreviewed batch-6 selection %s/%s', (archetypeId, variantId) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)?.supported).toBe(false);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+  });
+
+  it.each([
     ['inclusive_playground', 'inclusive_playground_v0'],
     ['dog_park', 'dog_park_v0'],
     ['splash_pad_area', 'splash_pad_area_v0'],

@@ -431,6 +431,26 @@ function familyTargets(
       return [target('ornamental_grass', 14), target('perennial', 10), target('light', 7), target('bin', 2)];
     case 'park_labyrinth_classical_v0':
       return [target('shrub', 14), target('perennial', 8), target('light', 4), target('bin', 1)];
+    case 'park_ice_rink_multipurpose_v3':
+      return [target('light', 4), target('bollard', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_kayak_river_launch_v0':
+      return [target('shrub', 12), target('ornamental_grass', 14), target('riprap', 10), target('picnic_table', 2), target('bollard', 4)];
+    case 'park_tidal_marsh_cordgrass_v0':
+      return [target('reed', 32), target('ornamental_grass', 24), target('shrub', 5), target('riprap', 6)];
+    case 'park_cinema_lawn_projection_v1':
+      return [target('light', 4), target('bollard', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_food_truck_permanent_v1':
+      return [target('perennial', 10), target('ornamental_grass', 12), target('light', 8), target('bin', 4), target('bike_rack', 3)];
+    case 'park_great_lawn_v2':
+      return [target('shrub', 16), target('ornamental_grass', 12), target('picnic_table', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_campus_meadow_quad_v0':
+      return [target('perennial', 24), target('ornamental_grass', 24), target('boulder', 12), target('picnic_table', 3), target('bike_rack', 4)];
+    case 'park_urban_beach_family_v2':
+      return [target('ornamental_grass', 10), target('picnic_table', 5), target('bin', 3), target('bike_rack', 2), target('drinking_fountain', 2)];
+    case 'park_velodrome_open_air_v0':
+      return [target('light', 8), target('bollard', 6), target('bin', 3), target('bike_rack', 6), target('drinking_fountain', 2)];
+    case 'park_mtb_skills_dirt_v2':
+      return [target('boulder', 12), target('riprap', 8), target('picnic_table', 3), target('bin', 2), target('bike_rack', 4), target('drinking_fountain', 1)];
   }
 }
 
