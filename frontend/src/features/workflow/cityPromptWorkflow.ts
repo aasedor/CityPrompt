@@ -38,9 +38,9 @@ function hasCompiledResidualLandscape(boundary: SiteZone | null): boolean {
 
 /**
  * Derive the one user-facing City Prompt workflow from persisted scene state.
- * The result deliberately fails closed: stale Community 3D metadata and a
- * missing residual-landscape recipe send the project back to Generate to 3D
- * instead of allowing a render that looks complete but is not current.
+ * The result deliberately fails closed for every layer that exists. A saved
+ * boundary requires current residual landscaping; a boundaryless scene needs
+ * only current physical-zone representations.
  */
 export function deriveCityPromptWorkflow(
   zones: SiteZone[],
@@ -58,37 +58,34 @@ export function deriveCityPromptWorkflow(
   const residualLandscapeReady = hasCompiledResidualLandscape(activeBoundary);
   const allPhysicalZonesCompiled = physicalZones.length > 0
     && compiledZoneCount === physicalZones.length;
-  const sceneReady = Boolean(
-    activeBoundary && allPhysicalZonesCompiled && residualLandscapeReady,
-  );
+  const sceneReady = allPhysicalZonesCompiled
+    && (!activeBoundary || residualLandscapeReady);
 
-  const currentStep: CityPromptWorkflowStep = !activeBoundary
-    ? 1
-    : physicalZones.length === 0
-      ? 2
-      : !sceneReady
-        ? 3
-        : 4;
+  const currentStep: CityPromptWorkflowStep = physicalZones.length === 0
+    ? activeBoundary ? 2 : 1
+    : !sceneReady
+      ? 3
+      : 4;
 
-  const generationReason = !activeBoundary
-    ? 'Draw and save the site boundary first.'
-    : physicalZones.length === 0
-      ? 'Draw buildings, parks, or streets, or create a Master Planner scenario first.'
-      : sceneReady
-        ? 'The current scene is ready. Run Generate to 3D again whenever you want to rebuild it.'
-        : compiledZoneCount > 0
+  const generationReason = physicalZones.length === 0
+    ? 'Draw a building, park, or street first. A site boundary is optional.'
+    : sceneReady
+      ? 'The current scene is ready. Run Generate to 3D again whenever you want to rebuild it.'
+      : compiledZoneCount > 0
+        ? activeBoundary
           ? 'Complete or rebuild the current buildings, public realm, and residual landscaping.'
-          : 'Transform the authored plan into buildings, public realm, props, and residual landscaping.';
+          : 'Complete or rebuild the current buildings and public realm.'
+        : activeBoundary
+          ? 'Transform the authored plan into buildings, public realm, props, and residual landscaping.'
+          : 'Transform the authored zones into buildings, public realm, and props.';
 
-  const renderReason = !activeBoundary
-    ? 'Draw the site boundary first.'
-    : physicalZones.length === 0
-      ? 'Add a plan inside the site boundary first.'
-      : !allPhysicalZonesCompiled
-        ? 'Run Generate to 3D so every building, park, and street has a current 3D representation.'
-        : !residualLandscapeReady
-          ? 'Run Generate to 3D to build the residual landscaping layer.'
-          : 'The compiled scene is ready for image and video rendering.';
+  const renderReason = physicalZones.length === 0
+    ? 'Add a building, park, or street first. A site boundary is optional.'
+    : !allPhysicalZonesCompiled
+      ? 'Run Generate to 3D so every building, park, and street has a current 3D representation.'
+      : activeBoundary && !residualLandscapeReady
+        ? 'Run Generate to 3D to build the residual landscaping layer.'
+        : 'The compiled scene is ready for rendering.';
 
   return {
     activeBoundary,
@@ -99,7 +96,7 @@ export function deriveCityPromptWorkflow(
     hasOutput,
     currentStep,
     canPlan: Boolean(activeBoundary),
-    canGenerate3D: Boolean(activeBoundary && physicalZones.length > 0),
+    canGenerate3D: physicalZones.length > 0,
     canRender: sceneReady,
     generationReason,
     renderReason,

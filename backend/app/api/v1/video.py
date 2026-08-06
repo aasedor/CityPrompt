@@ -365,7 +365,7 @@ async def _validate_video_scene_revision(
     capture. The returned digest is persisted with the durable attempt.
     """
 
-    if not req.community_3d_claims or req.residual_landscape_claim is None:
+    if not req.community_3d_claims:
         raise _video_scene_conflict("Generate the current site in 3D again before Video Render.")
 
     zones_result = await db.execute(select(SiteZone).where(SiteZone.project_id == req.project_id))

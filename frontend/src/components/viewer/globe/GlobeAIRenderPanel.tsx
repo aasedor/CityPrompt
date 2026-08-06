@@ -1760,9 +1760,9 @@ export function GlobeAIRenderPanel({
               <p className="mt-1 text-amber-100/70">
                 Uses the same atomic compiler as LEGO Builder and no external model-generation credits.
                 Supported families use detailed modular GLBs; families still being authored use honest exact-footprint 3D massing.
-                Parks and engineered street sections compile in the same transaction. Every remaining location inside the site boundary
-                is classified as lawn, groundcover, boulevard or perimeter planting; compatible residual areas receive deterministic trees.
-                If an older project has no boundary, the compiler derives and saves an editable one from the authored plan.
+                Parks and engineered street sections compile in the same transaction. When a site boundary exists, every remaining location
+                inside it is classified as lawn, groundcover, boulevard or perimeter planting; compatible residual areas receive deterministic trees.
+                Without a boundary, the authored zones compile independently and no residual parcel layer is added.
                 AI park ground drapes remain an optional Gemini step below.
               </p>
               <div className="mt-2 flex gap-2">

@@ -19,8 +19,8 @@ interface TourStep {
 const STEPS: TourStep[] = [
   {
     target: '[data-tour="more-tools-btn"]',
-    title: 'Draw Your Site Boundary',
-    body: 'Open More Tools, choose Site Boundary, then click around the edges of your development area on the map. Double-click or press Enter to complete the boundary.',
+    title: 'Optional Site Boundary',
+    body: 'Use More Tools > Site Boundary when you want a parcel-wide planning and landscaping scope. You can also start directly with a park, building, or street.',
     animation: 'draw-boundary',
     placement: 'top',
   },
@@ -34,7 +34,7 @@ const STEPS: TourStep[] = [
   {
     target: '[data-tour="tool-buildings"]',
     title: 'Place Buildings',
-    body: 'Draw polygons inside your boundary to place building zones. Click to add corners, double-click or press Enter to finish.',
+    body: 'Draw polygons to place building zones. If you added a site boundary, keep them inside it. Click to add corners, double-click or press Enter to finish.',
     animation: 'place-building',
     placement: 'top',
   },

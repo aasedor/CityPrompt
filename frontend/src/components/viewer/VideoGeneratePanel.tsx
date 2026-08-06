@@ -89,12 +89,14 @@ function sceneClaimsSignature(
   claims: PreparedVideoRequest['community_3d_claims'] | null,
   residual: PreparedVideoRequest['residual_landscape_claim'] | null,
 ): string {
-  if (!claims || claims.length === 0 || !residual) return 'scene-not-current';
+  if (!claims || claims.length === 0) return 'scene-not-current';
   return [
     ...claims
       .map((claim) => `${claim.zone_id}:${claim.source_hash}:${claim.representation_hash}:${claim.building_id ?? ''}`)
       .sort(),
-    `${residual.boundary_id}:${residual.source_hash}`,
+    residual
+      ? `${residual.boundary_id}:${residual.source_hash}`
+      : 'no-site-boundary',
   ].join('|');
 }
 
@@ -230,7 +232,7 @@ interface PreparedVideoRequest {
     representation_hash: string;
     building_id?: string;
   }>;
-  residual_landscape_claim: {
+  residual_landscape_claim?: {
     boundary_id: string;
     source_hash: string;
   };
@@ -487,7 +489,7 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    if (!community3DClaims || community3DClaims.length === 0 || !residualLandscapeClaim) {
+    if (!community3DClaims || community3DClaims.length === 0) {
       throw new Error('The compiled scene changed. Close Video Render, run Generate to 3D, and capture it again.');
     }
     let activeControls = routeControls?.signature === routeCaptureSignature ? routeControls : null;
@@ -574,7 +576,9 @@ export function VideoGeneratePanel({
       duration_seconds: 8,
       scene_brief: sceneBrief,
       community_3d_claims: community3DClaims,
-      residual_landscape_claim: residualLandscapeClaim,
+      ...(residualLandscapeClaim ? {
+        residual_landscape_claim: residualLandscapeClaim,
+      } : {}),
     };
   }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
 

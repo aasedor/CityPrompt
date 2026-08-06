@@ -275,11 +275,6 @@ def _validate_direct_3d_project_zones(
             "boundaries and run Generate to 3D again before rendering."
         )
     if not boundaries:
-        if len(physical_zones) > 1:
-            raise _direct_state_conflict(
-                "This multi-zone project no longer has its compiled site boundary. "
-                "Run Generate to 3D again before rendering."
-            )
         if req.residual_landscape_claim is not None:
             raise _direct_state_conflict(
                 "The compiled site boundary changed after capture. Refresh and rebuild "
@@ -1186,13 +1181,9 @@ async def generate_direct_3d_render(
         list(zones_result.scalars().all()),
         {str(building.id): building for building in current_buildings},
     )
-    scene_revision_sha256 = (
-        compiled_scene_revision_sha256(
-            req.community_3d_claims,
-            req.residual_landscape_claim,
-        )
-        if req.residual_landscape_claim is not None
-        else None
+    scene_revision_sha256 = compiled_scene_revision_sha256(
+        req.community_3d_claims,
+        req.residual_landscape_claim,
     )
 
     if not settings.openai_api_key:

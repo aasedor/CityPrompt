@@ -70,6 +70,29 @@ describe('deriveCityPromptWorkflow', () => {
     expect(planned.canRender).toBe(false);
   });
 
+  it.each([
+    ['building', 'building'],
+    ['park', 'green_space'],
+    ['street', 'road'],
+  ] as const)(
+    'allows a standalone %s to generate without a site boundary',
+    (kind, zoneType) => {
+      const state = deriveCityPromptWorkflow([zone(kind, zoneType)]);
+      expect(state.activeBoundary).toBeNull();
+      expect(state.currentStep).toBe(3);
+      expect(state.canGenerate3D).toBe(true);
+      expect(state.generationReason).not.toMatch(/boundary first/i);
+    },
+  );
+
+  it('renders a compiled boundaryless scene without residual landscaping', () => {
+    const state = deriveCityPromptWorkflow([compiledBuilding()]);
+    expect(state.residualLandscapeReady).toBe(false);
+    expect(state.sceneReady).toBe(true);
+    expect(state.currentStep).toBe(4);
+    expect(state.canRender).toBe(true);
+  });
+
   it('requires both current zone compilation and residual landscaping before render', () => {
     const missingLandscape = deriveCityPromptWorkflow([
       activeBoundary(),

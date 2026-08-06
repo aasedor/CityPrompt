@@ -199,7 +199,7 @@ export interface Community3DCompileResponse {
   compiled_at: string;
   counts: { building: number; park: number; street: number };
   /**
-   * Additive compiler diagnostics for the generated site-boundary remainder.
+   * Additive compiler diagnostics for the optional site-boundary remainder.
    * Optional keeps older saved responses and test fixtures source-compatible.
    */
   residual_landscape?: {

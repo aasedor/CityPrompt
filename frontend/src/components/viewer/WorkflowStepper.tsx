@@ -16,7 +16,7 @@ const STEPS: ReadonlyArray<{
   label: string;
   description: string;
 }> = [
-  { num: 1, label: 'Site', description: 'Draw the active site boundary' },
+  { num: 1, label: 'Site', description: 'Optionally draw a site boundary' },
   { num: 2, label: 'Plan', description: 'Draw a plan or use the Master Planner' },
   { num: 3, label: '3D', description: 'Generate buildings, public realm, and landscaping' },
   { num: 4, label: 'Render', description: 'Create images and video from the compiled scene' },

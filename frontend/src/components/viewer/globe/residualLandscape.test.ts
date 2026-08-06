@@ -153,7 +153,7 @@ describe('residual landscape recipe', () => {
     expect(hasCurrentResidualLandscapeRecipe([
       ordinaryZone,
       { ...ordinaryZone, id: 'building-2' },
-    ])).toBe(false);
+    ])).toBe(true);
   });
 
   it('respects polygon holes and multipolygon islands', () => {

@@ -171,6 +171,21 @@ def _boundary_covers_polygon(boundary_geometry, candidate: Polygon) -> bool:
     return bool(boundary.buffer(1e-9).covers(candidate))
 
 
+def _assert_optional_boundary_covers(
+    active_boundary: SiteZone | None,
+    candidate: Polygon,
+    *,
+    detail: str,
+) -> None:
+    """Enforce parcel containment only when the project owns a boundary."""
+
+    if active_boundary is not None and not _boundary_covers_polygon(
+        active_boundary.geometry,
+        candidate,
+    ):
+        raise HTTPException(status_code=409, detail=detail)
+
+
 async def _assert_boundary_covers_existing_zones(
     db: AsyncSession,
     project_id: uuid.UUID,
@@ -900,16 +915,14 @@ async def create_zone(
             candidate_polygon,
         )
     else:
-        if active_boundary is None:
-            raise HTTPException(
-                status_code=409,
-                detail="Draw the site boundary before adding buildings, parks, streets, or other zones.",
-            )
-        if not _boundary_covers_polygon(active_boundary.geometry, candidate_polygon):
-            raise HTTPException(
-                status_code=409,
-                detail="The new zone must stay completely inside the active site boundary.",
-            )
+        # A boundary is an optional parcel/residual-landscape scope. Standalone
+        # buildings, parks, and streets are valid authored scenes on their own;
+        # when a boundary exists it remains authoritative for containment.
+        _assert_optional_boundary_covers(
+            active_boundary,
+            candidate_polygon,
+            detail="The new zone must stay completely inside the active site boundary.",
+        )
 
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
@@ -1103,16 +1116,11 @@ async def update_zone(
                     zone.project_id,
                     for_update=True,
                 )
-                if active_boundary is None:
-                    raise HTTPException(
-                        status_code=409,
-                        detail="Draw the site boundary before moving authored zones.",
-                    )
-                if not _boundary_covers_polygon(active_boundary.geometry, candidate_polygon):
-                    raise HTTPException(
-                        status_code=409,
-                        detail="The updated zone must stay completely inside the active site boundary.",
-                    )
+                _assert_optional_boundary_covers(
+                    active_boundary,
+                    candidate_polygon,
+                    detail="The updated zone must stay completely inside the active site boundary.",
+                )
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
 
