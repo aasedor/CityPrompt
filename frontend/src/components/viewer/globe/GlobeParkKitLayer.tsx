@@ -845,15 +845,18 @@ function ParkSpecialtyStructures({
   }
 
   const profileFamilyId = resolveParkGroundProfile(zone).legoFamilyId;
-  const regulationFamily: RegulationParkFamilyId | null = structureKind === 'tennis_cluster_v0_assembly'
-    ? 'park_tennis_cluster_v0'
+  const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
+    ? 'park_basketball_court_v0'
+    : structureKind === 'tennis_cluster_v0_assembly'
+      ? 'park_tennis_cluster_v0'
     : structureKind === 'caged_soccer_v0_assembly'
       ? 'park_caged_soccer_v0'
       : structureKind === 'sports_field_furniture' && profileFamilyId === 'park_athletics_fields_v0'
         ? 'park_athletics_fields_v0'
         : null;
   if (regulationFamily) {
-    const guideKind = regulationFamily === 'park_tennis_cluster_v0' ? 'tennis_court' : 'soccer_field';
+    const guideKind = regulationFamily === 'park_basketball_court_v0' ? 'basketball_court'
+      : regulationFamily === 'park_tennis_cluster_v0' ? 'tennis_court' : 'soccer_field';
     const modules = fittedProgramGuides
       .filter((guide) => guide.kind === guideKind)
       .map((guide) => {
@@ -872,7 +875,14 @@ function ParkSpecialtyStructures({
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeRegulationParkAssembly familyId={regulationFamily} modules={modules} terrainZ={terrainZ} />
+          <GlobeRegulationParkAssembly
+            familyId={regulationFamily}
+            modules={modules}
+            terrainZ={terrainZ}
+            variantId={resolveParkGroundProfile(zone).variantId ?? String(
+              (zone.properties as Record<string, unknown> | undefined)?.green_space_selected_variant_id ?? '',
+            )}
+          />
         </Suspense>
       </SilentKitBoundary>
     );
@@ -1828,13 +1838,13 @@ function ParkKitInstance({
     );
   }, [dressingFamilyId, localProgramFrame, programGuideFit]);
   const placements = useMemo(() => [
-    ...computeParkPlacements(
+    ...(specialtyStructureKind === 'basketball_court_assembly' ? [] : computeParkPlacements(
       { id: zone.id, coordinates: zone.coordinates },
       recipe,
       plantingStructure,
       programAnchors,
       fittedMicrodetailGuides,
-    ),
+    )),
     ...computeParkProgramAssetPlacements(zone),
   ].filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
     fittedMicrodetailGuides,
@@ -1842,10 +1852,14 @@ function ParkKitInstance({
     plantingStructure,
     programAnchors,
     recipe,
+    specialtyStructureKind,
     zone,
   ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
-    if (specialtyStructureKind === 'cricket_ground_assembly') return [];
+    if (
+      specialtyStructureKind === 'cricket_ground_assembly'
+      || specialtyStructureKind === 'basketball_court_assembly'
+    ) return [];
     const mPerLon = metersPerDegLon(centroid.lat);
     return buildParkMicrodetailFamily({
       zoneId: zone.id,

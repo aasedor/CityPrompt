@@ -349,6 +349,9 @@ _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
     ("basketball_court", "basketball_court_v0"): (32.0, 19.0, 0.5),
+    ("basketball_court", "basketball_court_v1"): (32.0, 19.0, 0.5),
+    ("basketball_court", "basketball_court_v2"): (19.0, 17.0, 0.5),
+    ("basketball_court", "basketball_court_v3"): (32.0, 19.0, 0.5),
     # Adaptive regulation families prove that at least one complete module can
     # fit. The renderer then keeps the maximum count of whole modules inside
     # the actual polygon; these values must never describe a stretched field.
@@ -382,7 +385,16 @@ _TENNIS_CLUSTER_V0_ENVELOPE = _park_envelope(
     nominal=(82.0, 46.0), width=(36.58, 120.0), depth=(18.29, 100.0), area=(669.0, 12_000.0),
 )
 _BASKETBALL_COURT_V0_ENVELOPE = _park_envelope(
-    nominal=(32.0, 19.0), width=(32.0, 80.0), depth=(19.0, 70.0), area=(608.0, 5_600.0),
+    nominal=(32.0, 19.0), width=(32.0, 100.0), depth=(19.0, 80.0), area=(608.0, 8_000.0),
+)
+_BASKETBALL_COURT_V1_ENVELOPE = _park_envelope(
+    nominal=(64.0, 22.0), width=(32.0, 100.0), depth=(19.0, 80.0), area=(608.0, 8_000.0),
+)
+_BASKETBALL_COURT_V2_ENVELOPE = _park_envelope(
+    nominal=(19.0, 17.0), width=(17.0, 100.0), depth=(17.0, 80.0), area=(323.0, 8_000.0),
+)
+_BASKETBALL_COURT_V3_ENVELOPE = _park_envelope(
+    nominal=(32.0, 19.0), width=(32.0, 100.0), depth=(19.0, 80.0), area=(608.0, 8_000.0),
 )
 _CAGED_SOCCER_V0_ENVELOPE = _park_envelope(
     nominal=(66.0, 24.0), width=(30.0, 100.0), depth=(18.0, 70.0), area=(540.0, 7_000.0),
@@ -632,13 +644,50 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
     ),
     PublicRealmFamilyCapability(
         family_id="park_basketball_court_v0", kind="park",
-        title="Basketball Court / Classic Asphalt v0", generator="park_kit",
-        selections=(_selection(
-            "basketball_court", "basketball_court_v0", profile_id="basketball-court-archetype-v1",
-            appearance_kit_id="basketball_court_v0_reference_skin", planting_structure="basketball_court_v0",
-            compatibility=_BASKETBALL_COURT_V0_ENVELOPE,
-            components=("basketball_court_v0_ground_program", "basketball_hoop_regulation_v1", "shared_park_equipment_v1"), default=True,
-        ),),
+        title="Basketball Court / Archetype Variants v1", generator="park_kit",
+        selections=(
+            _selection(
+                "basketball_court", "basketball_court_v0", profile_id="basketball-court-archetype-v2",
+                appearance_kit_id="basketball_court_v0_classic_asphalt_skin", planting_structure="basketball_classic_v0",
+                compatibility=_BASKETBALL_COURT_V0_ENVELOPE,
+                components=(
+                    "basketball_full_court_metric_program_v1", "classic_asphalt_surface_v1",
+                    "basketball_hoop_regulation_v1", "chain_link_court_enclosure_v1",
+                    "basketball_player_bench_v1", "court_floodlight_v1", "shared_park_equipment_v1",
+                ), default=True,
+            ),
+            _selection(
+                "basketball_court", "basketball_court_v1", profile_id="basketball-court-archetype-v2",
+                appearance_kit_id="basketball_court_v1_pro_acrylic_skin", planting_structure="basketball_pro_v1",
+                compatibility=_BASKETBALL_COURT_V1_ENVELOPE,
+                components=(
+                    "basketball_full_court_metric_program_v1", "pro_acrylic_surface_v1",
+                    "basketball_hoop_regulation_v1", "black_mesh_court_enclosure_v1",
+                    "basketball_scoreboard_v1", "spectator_bleacher_v1", "court_floodlight_v1",
+                    "shared_park_equipment_v1",
+                ),
+            ),
+            _selection(
+                "basketball_court", "basketball_court_v2", profile_id="basketball-court-archetype-v2",
+                appearance_kit_id="basketball_court_v2_half_court_mural_skin", planting_structure="basketball_half_court_v2",
+                compatibility=_BASKETBALL_COURT_V2_ENVELOPE,
+                components=(
+                    "basketball_half_court_metric_program_v1", "geometric_mural_surface_v1",
+                    "basketball_hoop_regulation_v1", "basketball_seating_wall_v1",
+                    "low_chain_link_enclosure_v1", "shared_park_equipment_v1",
+                ),
+            ),
+            _selection(
+                "basketball_court", "basketball_court_v3", profile_id="basketball-court-archetype-v2",
+                appearance_kit_id="basketball_court_v3_streetball_skin", planting_structure="basketball_streetball_v3",
+                compatibility=_BASKETBALL_COURT_V3_ENVELOPE,
+                components=(
+                    "basketball_full_court_metric_program_v1", "worn_street_art_surface_v1",
+                    "basketball_hoop_regulation_v1", "graffiti_fence_panel_v1",
+                    "concrete_step_seating_v1", "shared_park_equipment_v1",
+                ),
+            ),
+        ),
     ),
     PublicRealmFamilyCapability(
         family_id="park_tennis_cluster_v0", kind="park",

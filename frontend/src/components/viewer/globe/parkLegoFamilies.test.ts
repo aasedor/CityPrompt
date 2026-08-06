@@ -172,7 +172,10 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_dog_archetype_v0', 'dog_park', 'dog_park_v0', 'dog_park_v0_reference_skin', 'dog_park_v0'],
     ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v0', 'splash_pad_area_v0_reference_skin', 'splash_pad_area_v0'],
     ['park_community_garden_v0', 'community_garden', 'community_garden_v0', 'community_garden_v0_reference_skin', 'community_garden_v0'],
-    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v0', 'basketball_court_v0_reference_skin', 'basketball_court_v0'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v0', 'basketball_court_v0_classic_asphalt_skin', 'basketball_classic_v0'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v1', 'basketball_court_v1_pro_acrylic_skin', 'basketball_pro_v1'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v2', 'basketball_court_v2_half_court_mural_skin', 'basketball_half_court_v2'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v3', 'basketball_court_v3_streetball_skin', 'basketball_streetball_v3'],
     ['park_tennis_cluster_v0', 'tennis_court_cluster', 'tennis_court_cluster_v0', 'tennis_court_cluster_v0_reference_skin', 'tennis_court_cluster_v0'],
     ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v0', 'soccer_pitch_caged_v0_reference_skin', 'caged_soccer_v0'],
     ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_0', 'athletics_precinct_sports_fields_v0_reference_skin', 'athletics_fields_v0'],
@@ -230,7 +233,10 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
-    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v0', 'basketball_court_v0_reference_skin', 'basketball_court_v0'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v0', 'basketball_court_v0_classic_asphalt_skin', 'basketball_classic_v0'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v1', 'basketball_court_v1_pro_acrylic_skin', 'basketball_pro_v1'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v2', 'basketball_court_v2_half_court_mural_skin', 'basketball_half_court_v2'],
+    ['park_basketball_court_v0', 'basketball_court', 'basketball_court_v3', 'basketball_court_v3_streetball_skin', 'basketball_streetball_v3'],
     ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v0', 'soccer_pitch_caged_v0_reference_skin', 'caged_soccer_v0'],
     ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_0', 'athletics_precinct_sports_fields_v0_reference_skin', 'athletics_fields_v0'],
   ])('treats regulation family %s as an archetype-owned no-drape surface', (

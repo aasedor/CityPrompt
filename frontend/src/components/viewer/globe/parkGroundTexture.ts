@@ -517,7 +517,8 @@ function drawParkGuides(
     }
 
     if (guide.kind === 'basketball_court') {
-      const playingWidth = 28 * pxPerM;
+      const halfCourtSurface = variantId?.endsWith('_v2') === true;
+      const playingWidth = (halfCourtSurface ? 14 : 28) * pxPerM;
       const playingHeight = 15 * pxPerM;
       const halfW = playingWidth / 2;
       const halfH = playingHeight / 2;
@@ -543,20 +544,91 @@ function drawParkGuides(
       ctx.fillRect(x - width / 2, y - height / 2, width, height);
       ctx.fillStyle = courtColor;
       ctx.fillRect(x - halfW, y - halfH, playingWidth, playingHeight);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x - halfW, y - halfH, playingWidth, playingHeight);
+      ctx.clip();
+      if (muralSurface) {
+        const mural = [
+          [-0.46, -0.42, 0.62, 0.30, '#172b51', -0.20],
+          [-0.10, -0.34, 0.52, 0.24, '#d59a43', 0.26],
+          [0.26, -0.30, 0.48, 0.23, '#d56742', -0.34],
+          [-0.34, 0.04, 0.58, 0.26, '#2f7190', 0.42],
+          [0.08, 0.08, 0.62, 0.30, '#1b315a', -0.26],
+          [0.34, 0.30, 0.42, 0.24, '#e0ab4f', 0.22],
+          [-0.18, 0.38, 0.48, 0.22, '#ca563b', -0.18],
+        ] as const;
+        for (const [unitX, unitY, unitW, unitH, color, rotation] of mural) {
+          ctx.save();
+          ctx.translate(x + unitX * playingWidth, y + unitY * playingHeight);
+          ctx.rotate(rotation);
+          ctx.fillStyle = color;
+          ctx.fillRect(-unitW * playingWidth / 2, -unitH * playingHeight / 2, unitW * playingWidth, unitH * playingHeight);
+          ctx.restore();
+        }
+      } else if (streetArtSurface) {
+        const artColors = ['#a95446', '#39757a', '#d19a43', '#355b83', '#77546d'];
+        for (let index = 0; index < 12; index += 1) {
+          const unitX = ((index * 37) % 101) / 100;
+          const unitY = ((index * 61 + 17) % 97) / 96;
+          ctx.save();
+          ctx.globalAlpha = 0.42;
+          ctx.translate(x - halfW + unitX * playingWidth, y - halfH + unitY * playingHeight);
+          ctx.rotate((index % 5 - 2) * 0.27);
+          ctx.fillStyle = artColors[index % artColors.length];
+          ctx.fillRect(-1.8 * pxPerM, -0.55 * pxPerM, 3.6 * pxPerM, 1.1 * pxPerM);
+          ctx.restore();
+        }
+      }
+      // Fine stationary aggregate and restrained repairs keep every surface
+      // from reading as a monochrome planning fill at aerial distance.
+      for (let index = 0; index < (proSurface ? 90 : 150); index += 1) {
+        const unitX = ((index * 73 + 11) % 997) / 996;
+        const unitY = ((index * 191 + 37) % 991) / 990;
+        ctx.globalAlpha = proSurface ? 0.055 : 0.09;
+        ctx.fillStyle = index % 3 === 0 ? '#d9d5c8' : '#151817';
+        const radius = (0.018 + (index % 5) * 0.006) * pxPerM;
+        ctx.beginPath();
+        ctx.arc(x - halfW + unitX * playingWidth, y - halfH + unitY * playingHeight, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (!proSurface) {
+        ctx.globalAlpha = streetArtSurface ? 0.28 : 0.18;
+        ctx.strokeStyle = '#171918';
+        ctx.lineWidth = Math.max(0.5, 0.035 * pxPerM);
+        for (let crack = 0; crack < (streetArtSurface ? 8 : 4); crack += 1) {
+          const startX = x - halfW + ((crack * 211 + 97) % 887) / 886 * playingWidth;
+          const startY = y - halfH + ((crack * 149 + 31) % 881) / 880 * playingHeight;
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(startX + (crack % 2 ? -1 : 1) * 1.2 * pxPerM, startY + 0.45 * pxPerM);
+          ctx.lineTo(startX + (crack % 2 ? -1 : 1) * 2.1 * pxPerM, startY + 0.18 * pxPerM);
+          ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.restore();
       const laneDepth = 5.8 * pxPerM;
       const laneWidth = 4.9 * pxPerM;
       ctx.fillStyle = laneColor;
       ctx.fillRect(x - halfW, y - laneWidth / 2, laneDepth, laneWidth);
-      ctx.fillRect(x + halfW - laneDepth, y - laneWidth / 2, laneDepth, laneWidth);
+      if (!halfCourtSurface) {
+        ctx.fillRect(x + halfW - laneDepth, y - laneWidth / 2, laneDepth, laneWidth);
+      }
       ctx.strokeStyle = guide.strokeColor ?? '#f4f2df';
       ctx.lineWidth = lineWidth;
       ctx.strokeRect(x - halfW, y - halfH, playingWidth, playingHeight);
       ctx.beginPath();
-      ctx.moveTo(x, y - halfH);
-      ctx.lineTo(x, y + halfH);
-      ctx.moveTo(x + 1.8 * pxPerM, y);
-      ctx.arc(x, y, 1.8 * pxPerM, 0, Math.PI * 2);
-      for (const direction of [-1, 1]) {
+      if (!halfCourtSurface) {
+        ctx.moveTo(x, y - halfH);
+        ctx.lineTo(x, y + halfH);
+        ctx.moveTo(x + 1.8 * pxPerM, y);
+        ctx.arc(x, y, 1.8 * pxPerM, 0, Math.PI * 2);
+      } else {
+        ctx.moveTo(x + halfW, y - 1.8 * pxPerM);
+        ctx.arc(x + halfW, y, 1.8 * pxPerM, -Math.PI / 2, Math.PI / 2, true);
+      }
+      for (const direction of halfCourtSurface ? [-1] : [-1, 1]) {
         const baselineX = x + direction * halfW;
         const freeThrowX = baselineX - direction * laneDepth;
         ctx.rect(

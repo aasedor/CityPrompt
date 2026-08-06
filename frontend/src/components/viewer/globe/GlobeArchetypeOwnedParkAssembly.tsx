@@ -241,6 +241,123 @@ function CagedPitchEnclosure({ widthM, depthM }: { widthM: number; depthM: numbe
   </>;
 }
 
+function BasketballMarkings({ halfCourt = false, lineColor = '#f1f0e8' }: {
+  halfCourt?: boolean; lineColor?: string;
+}) {
+  const playingLength = halfCourt ? 14 : 28;
+  const playingWidth = 15;
+  const halfLength = playingLength / 2;
+  const halfWidth = playingWidth / 2;
+  const line = 0.10;
+  const directions = halfCourt ? [-1] : [-1, 1];
+  return <>
+    <GroundLine x={-halfLength} width={line} depth={playingWidth} color={lineColor} />
+    <GroundLine x={halfLength} width={line} depth={playingWidth} color={lineColor} />
+    <GroundLine y={-halfWidth} width={playingLength} depth={line} color={lineColor} />
+    <GroundLine y={halfWidth} width={playingLength} depth={line} color={lineColor} />
+    {!halfCourt && <>
+      <GroundLine width={line} depth={playingWidth} color={lineColor} />
+      <mesh position={[0, 0, 0.077]} renderOrder={RENDER_ORDER + 2}>
+        <ringGeometry args={[1.70, 1.80, 48]} />
+        <meshStandardMaterial color={lineColor} roughness={0.78} side={THREE.DoubleSide} />
+      </mesh>
+    </>}
+    {halfCourt && <mesh position={[halfLength, 0, 0.077]} renderOrder={RENDER_ORDER + 2}>
+      <ringGeometry args={[1.70, 1.80, 32, 1, Math.PI / 2, Math.PI]} />
+      <meshStandardMaterial color={lineColor} roughness={0.78} side={THREE.DoubleSide} />
+    </mesh>}
+    {directions.map((direction) => {
+      const baselineX = direction * halfLength;
+      const freeThrowX = baselineX - direction * 5.8;
+      const basketX = baselineX - direction * 1.575;
+      const arcStart = direction < 0 ? -1.18 : Math.PI - 1.18;
+      return <group key={direction}>
+        <GroundLine x={(baselineX + freeThrowX) / 2} y={-2.45} width={5.8} depth={line} color={lineColor} />
+        <GroundLine x={(baselineX + freeThrowX) / 2} y={2.45} width={5.8} depth={line} color={lineColor} />
+        <GroundLine x={freeThrowX} width={line} depth={4.9} color={lineColor} />
+        <mesh position={[freeThrowX, 0, 0.077]} renderOrder={RENDER_ORDER + 2}>
+          <ringGeometry args={[1.70, 1.80, 36]} />
+          <meshStandardMaterial color={lineColor} roughness={0.78} side={THREE.DoubleSide} />
+        </mesh>
+        <mesh position={[basketX, 0, 0.078]} renderOrder={RENDER_ORDER + 2}>
+          <ringGeometry args={[6.65, 6.75, 56, 1, arcStart, 2.36]} />
+          <meshStandardMaterial color={lineColor} roughness={0.78} side={THREE.DoubleSide} />
+        </mesh>
+      </group>;
+    })}
+  </>;
+}
+
+function BasketballSurfaceArt({ variantIndex, halfCourt }: {
+  variantIndex: number; halfCourt: boolean;
+}) {
+  if (variantIndex === 0) return null;
+  if (variantIndex === 1) {
+    const halfLength = halfCourt ? 7 : 14;
+    return <>{(halfCourt ? [-1] : [-1, 1]).map((side) => (
+      <mesh key={side} position={[side * (halfLength - 2.9), 0, 0.057]} renderOrder={RENDER_ORDER + 1}>
+        <planeGeometry args={[5.8, 4.9]} />
+        <meshStandardMaterial color="#a64f42" roughness={0.82} />
+      </mesh>
+    ))}</>;
+  }
+  const colors = variantIndex === 2
+    ? ['#182d53', '#d3983f', '#cc5c3e', '#2f7590', '#142847', '#e0ad50']
+    : ['#9e5145', '#39747a', '#d09840', '#385f84', '#75526b'];
+  const pieces = variantIndex === 2 ? [
+    [-4.6, -4.6, 5.4, 2.5, -0.28], [-0.6, -3.3, 5.8, 2.2, 0.22],
+    [3.6, -2.7, 4.0, 2.0, -0.36], [-3.4, 0.0, 5.8, 2.2, 0.35],
+    [0.5, 1.0, 6.4, 2.3, -0.22], [3.8, 4.2, 4.0, 1.9, 0.25],
+    [-1.8, 4.6, 4.8, 1.8, -0.16],
+  ] : [
+    [-8.7, -4.8, 4.2, 1.2, -0.32], [-3.8, 3.6, 3.8, 1.1, 0.28],
+    [1.2, -2.8, 4.6, 1.2, -0.18], [5.2, 3.0, 4.2, 1.1, 0.34],
+    [9.4, -4.0, 3.8, 1.0, -0.25], [0.0, 5.4, 4.0, 1.1, 0.10],
+  ];
+  return <>{pieces.map(([x, y, width, depth, yaw], index) => (
+    <mesh key={index} position={[x, y, 0.058]} rotation={[0, 0, yaw]} renderOrder={RENDER_ORDER + 1}>
+      <planeGeometry args={[width, depth]} />
+      <meshStandardMaterial color={colors[index % colors.length]} transparent opacity={variantIndex === 3 ? 0.54 : 0.88} roughness={0.9} depthWrite={false} />
+    </mesh>
+  ))}</>;
+}
+
+function BasketballFence({ widthM, depthM, variantIndex }: {
+  widthM: number; depthM: number; variantIndex: number;
+}) {
+  const wall = variantIndex === 2;
+  const street = variantIndex === 3;
+  const fenceHeight = wall ? 2.25 : variantIndex === 1 ? 3.6 : 3.05;
+  const meshColor = variantIndex === 1 ? '#172222' : '#58605d';
+  const longSides = street ? [1] : [-1, 1];
+  const endSides = street ? [-1] : [-1, 1];
+  const mesh = <meshStandardMaterial color={meshColor} wireframe transparent opacity={variantIndex === 1 ? 0.54 : 0.42} side={THREE.DoubleSide} depthWrite={false} roughness={0.78} />;
+  return <>
+    {wall && <>
+      {[-1, 1].map((side) => <mesh key={`wall-long-${side}`} position={[0, side * depthM / 2, 0.52]}><boxGeometry args={[widthM, 0.34, 1.04]} /><meshStandardMaterial color="#9c9a92" roughness={0.92} /></mesh>)}
+      <mesh position={[-widthM / 2, 0, 0.52]}><boxGeometry args={[0.34, depthM, 1.04]} /><meshStandardMaterial color="#9c9a92" roughness={0.92} /></mesh>
+    </>}
+    {longSides.map((side) => <mesh key={`long-${side}`} position={[0, side * depthM / 2, (wall ? 1.04 : 0) + fenceHeight / 2]}>
+      <planeGeometry args={[widthM, fenceHeight, Math.max(12, Math.ceil(widthM)), 8]} />{mesh}
+    </mesh>)}
+    {endSides.map((side) => <mesh key={`end-${side}`} position={[side * widthM / 2, 0, (wall ? 1.04 : 0) + fenceHeight / 2]} rotation={[0, Math.PI / 2, 0]}>
+      <planeGeometry args={[depthM, fenceHeight, Math.max(10, Math.ceil(depthM)), 8]} />{mesh}
+    </mesh>)}
+    {[-widthM / 2, 0, widthM / 2].flatMap((x) => [-depthM / 2, depthM / 2].map((y) => (
+      <mesh key={`${x}-${y}`} position={[x, y, (wall ? 1.04 : 0) + fenceHeight / 2]}>
+        <boxGeometry args={[0.10, 0.10, fenceHeight + (wall ? 1.04 : 0)]} />
+        <meshStandardMaterial color={meshColor} metalness={0.42} roughness={0.58} />
+      </mesh>
+    )))}
+    {street && Array.from({ length: 6 }, (_, index) => (
+      <mesh key={`graffiti-${index}`} position={[-widthM / 2 + 3.1 + index * 5.0, depthM / 2 - 0.04, 1.25]}>
+        <planeGeometry args={[4.4, 1.55]} />
+        <meshStandardMaterial color={['#8f4b43', '#d09a41', '#3e7778', '#6f526c'][index % 4]} roughness={0.9} side={THREE.DoubleSide} />
+      </mesh>
+    ))}
+  </>;
+}
+
 export interface RegulationParkModule {
   x: number;
   y: number;
@@ -250,6 +367,7 @@ export interface RegulationParkModule {
 }
 
 export type RegulationParkFamilyId =
+  | 'park_basketball_court_v0'
   | 'park_tennis_cluster_v0'
   | 'park_caged_soccer_v0'
   | 'park_athletics_fields_v0';
@@ -257,16 +375,33 @@ export type RegulationParkFamilyId =
 /** Regulation surfaces are archetype-skinned LEGO modules. Their dimensions
  * come from fitted metric guides, so larger polygons receive more complete
  * modules rather than one distorted court or field. */
-export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ }: {
+export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ, variantId }: {
   familyId: RegulationParkFamilyId;
   modules: readonly RegulationParkModule[];
   terrainZ: (x: number, y: number) => number;
+  variantId?: string;
 }) {
-  const slug = familyId === 'park_tennis_cluster_v0' ? 'tennis-court-professional'
+  const basketballVariantIndex = familyId === 'park_basketball_court_v0'
+    ? Number(variantId?.match(/_v([0-3])$/)?.[1] ?? 0)
+    : 0;
+  const basketballSlug = [
+    'basketball-classic-asphalt',
+    'basketball-pro-acrylic',
+    'basketball-community-mural',
+    'basketball-urban-streetball',
+  ][basketballVariantIndex] ?? 'basketball-classic-asphalt';
+  const slug = familyId === 'park_basketball_court_v0' ? basketballSlug
+    : familyId === 'park_tennis_cluster_v0' ? 'tennis-court-professional'
     : familyId === 'park_caged_soccer_v0' ? 'caged-soccer-european'
       : 'athletics-fields-regulation';
-  const surface = useSkinMaterial(slug, familyId === 'park_athletics_fields_v0' ? 'lawn' : 'safety', [8, 5]);
-  const edgeRole = familyId === 'park_caged_soccer_v0' ? 'asphalt'
+  const basketballSurfaceRole = basketballVariantIndex === 0 || basketballVariantIndex === 3
+    ? 'asphalt'
+    : basketballVariantIndex === 1 ? 'paver' : 'asphalt';
+  const surface = useSkinMaterial(slug, familyId === 'park_athletics_fields_v0' ? 'lawn'
+    : familyId === 'park_basketball_court_v0' ? basketballSurfaceRole : 'safety', [8, 5]);
+  const edgeRole = familyId === 'park_basketball_court_v0'
+    ? basketballVariantIndex === 1 ? 'safety' : 'paver'
+    : familyId === 'park_caged_soccer_v0' ? 'asphalt'
     : familyId === 'park_athletics_fields_v0' ? 'lawn'
       : 'planting';
   const edge = useSkinMaterial(slug, edgeRole, [6, 4]);
@@ -291,6 +426,52 @@ export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ }: {
       // module above the highest sampled terrain point so a sloping tile or
       // residual landscape cannot clip through half of the playing surface.
       const baseZ = Math.max(...terrainSamples) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
+      if (familyId === 'park_basketball_court_v0') {
+        const halfCourt = basketballVariantIndex === 2;
+        const playingLength = halfCourt ? 14 : 28;
+        // `color` multiplies the source-derived albedo. Keep the tint light
+        // enough for aggregate, repairs and court wear to remain legible in
+        // the Google-tile scene instead of collapsing into a flat near-black.
+        const surfaceTint = basketballVariantIndex === 1 ? '#86c8e4'
+          : basketballVariantIndex === 2 ? '#6f91bd'
+            : basketballVariantIndex === 3 ? '#b9b5ad'
+              : '#e0dfda';
+        const apronTint = basketballVariantIndex === 1 ? '#f1d2cb'
+          : basketballVariantIndex === 2 ? '#d4d0c7'
+            : basketballVariantIndex === 3 ? '#c6c0b7'
+              : '#d5d3cc';
+        return <group key={index} position={[module.x, module.y, baseZ]} rotation={[0, 0, module.rotationZ]}>
+          <TexturedRect width={module.widthM} depth={module.depthM} z={-0.01} maps={edge} color={apronTint} />
+          <TexturedRect width={playingLength} depth={15} z={0.02} maps={surface} color={surfaceTint} />
+          <BasketballSurfaceArt variantIndex={basketballVariantIndex} halfCourt={halfCourt} />
+          <BasketballMarkings halfCourt={halfCourt} lineColor={basketballVariantIndex === 3 ? '#ddd8ca' : '#f1f0e8'} />
+          <BasketballFence widthM={module.widthM + 0.5} depthM={module.depthM + 0.5} variantIndex={basketballVariantIndex} />
+          {basketballVariantIndex === 0 && <>
+            <SimpleBench x={0} y={module.depthM / 2 + 1.2} />
+            {[[-module.widthM / 2 + 2.2, -module.depthM / 2 - 0.7], [module.widthM / 2 - 2.2, module.depthM / 2 + 0.7]].map(([x, y]) => <Floodlight key={`${x}-${y}`} x={x} y={y} heightM={10} />)}
+          </>}
+          {basketballVariantIndex === 1 && <>
+            {[0, 1, 2].map((row) => <mesh key={row} position={[0, module.depthM / 2 + 1.15 + row * 0.72, 0.16 + row * 0.30]}>
+              <boxGeometry args={[8.4, 0.64, 0.26]} /><meshStandardMaterial color={row % 2 ? '#7f8787' : '#a0a6a5'} metalness={0.36} roughness={0.58} />
+            </mesh>)}
+            <group position={[0, module.depthM / 2 + 0.35, 3.1]}>
+              <mesh><boxGeometry args={[3.3, 0.20, 1.45]} /><meshStandardMaterial color="#202526" roughness={0.64} /></mesh>
+              <mesh position={[0, -0.12, 0]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[2.8, 1.0]} /><meshStandardMaterial color="#9b372d" emissive="#2a0805" emissiveIntensity={0.18} /></mesh>
+            </group>
+            {[[-module.widthM / 2 + 2.2, -module.depthM / 2 - 0.8], [-module.widthM / 2 + 2.2, module.depthM / 2 + 0.8], [module.widthM / 2 - 2.2, -module.depthM / 2 - 0.8], [module.widthM / 2 - 2.2, module.depthM / 2 + 0.8]].map(([x, y]) => <Floodlight key={`${x}-${y}`} x={x} y={y} heightM={11} />)}
+          </>}
+          {basketballVariantIndex === 2 && <>
+            <mesh position={[module.widthM / 2 + 0.55, 0, 0.52]}><boxGeometry args={[0.95, module.depthM - 1.4, 1.04]} /><meshStandardMaterial color="#99968e" roughness={0.92} /></mesh>
+            <mesh position={[module.widthM / 2 + 0.12, 0, 1.10]}><boxGeometry args={[0.42, module.depthM - 2.0, 0.13]} /><meshStandardMaterial color="#8b6645" roughness={0.86} /></mesh>
+          </>}
+          {basketballVariantIndex === 3 && <>
+            {[0, 1, 2].map((row) => <mesh key={row} position={[0, -module.depthM / 2 - 0.7 - row * 0.72, 0.15 + row * 0.28]}>
+              <boxGeometry args={[10.5, 0.68, 0.28]} /><meshStandardMaterial color={row % 2 ? '#85827b' : '#aaa69c'} roughness={0.94} />
+            </mesh>)}
+            {[[-module.widthM / 2 + 3, module.depthM / 2 + 0.7], [module.widthM / 2 - 3, module.depthM / 2 + 0.7]].map(([x, y]) => <Floodlight key={`${x}-${y}`} x={x} y={y} heightM={9} />)}
+          </>}
+        </group>;
+      }
       if (familyId === 'park_tennis_cluster_v0') return <group key={index} position={[module.x, module.y, baseZ]} rotation={[0, 0, module.rotationZ]}>
         <TexturedRect width={module.widthM + 2} depth={module.depthM + 2} z={-0.01} maps={edge} color="#315a32" />
         <TexturedRect width={module.widthM} depth={module.depthM} z={0.02} maps={surface} color="#315b85" />

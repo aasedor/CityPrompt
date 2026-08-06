@@ -100,22 +100,30 @@ export function computeParkProgramAssetPlacements(zone: ParkProgramZone): PropPl
   if (!profile.archetypeId.startsWith('basketball_court')) return [];
   const frame = buildProgramFrame(zone.coordinates);
   if (!frame) return [];
-  const court = fitParkGroundGuides(
+  const courts = fitParkGroundGuides(
     profile.guides,
     { width: frame.width, height: frame.height },
     frame.normalizedRing,
-  ).guides.find((guide) => guide.kind === 'basketball_court');
-  if (!court) return [];
-  const center = {
-    x: frame.minX + frame.width * court.x,
-    y: frame.maxY - frame.height * court.y,
-  };
-  const rotationZ = -((court.rotationDeg ?? 0) * Math.PI) / 180;
-  // The court guide is a 32 x 19 m play-and-runoff envelope around a centered
-  // 28 x 15 m playing rectangle. Pole bases sit 1.2 m beyond each baseline;
-  // the authored support arm points inward from its metric post-base origin.
-  return [
-    localPlacement(frame, 'basketball_hoop_regulation', center, rotationZ, -15.2, 0, 0),
-    localPlacement(frame, 'basketball_hoop_regulation', center, rotationZ, 15.2, 0, Math.PI),
-  ];
+  ).guides.filter((guide) => guide.kind === 'basketball_court');
+  const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const rawVariantId = profile.variantId
+    ?? (typeof props.green_space_selected_variant_id === 'string'
+      ? props.green_space_selected_variant_id
+      : '');
+  const halfCourt = rawVariantId.endsWith('_v2');
+  return courts.flatMap((court) => {
+    const center = {
+      x: frame.minX + frame.width * court.x,
+      y: frame.maxY - frame.height * court.y,
+    };
+    const rotationZ = -((court.rotationDeg ?? 0) * Math.PI) / 180;
+    // Full-court post bases sit 1.2 m beyond each 28 m baseline. The compact
+    // community variant has one post 1.2 m behind its 14 m half-court baseline.
+    return halfCourt
+      ? [localPlacement(frame, 'basketball_hoop_regulation', center, rotationZ, -8.2, 0, 0)]
+      : [
+          localPlacement(frame, 'basketball_hoop_regulation', center, rotationZ, -15.2, 0, 0),
+          localPlacement(frame, 'basketball_hoop_regulation', center, rotationZ, 15.2, 0, Math.PI),
+        ];
+  });
 }

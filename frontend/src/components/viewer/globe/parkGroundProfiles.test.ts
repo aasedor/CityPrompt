@@ -365,7 +365,11 @@ describe('park ground pilot profiles', () => {
         } satisfies SiteZone;
         const variantProfile = resolveParkGroundProfile(variantZone);
         expect(variantProfile.title, `${entry.id}/${variant.id}`).toContain(variant.label);
-        if (PILOT_PARK_ARCHETYPE_IDS.includes(entry.id)) {
+        if (entry.id === 'basketball_court') {
+          expect(variantProfile.isPilot).toBe(true);
+          expect(variantProfile.programDescription).not.toContain('without changing the locked program');
+          expect(variantProfile.plantingStructure).toContain(`v${variant.id.slice(-1)}`);
+        } else if (PILOT_PARK_ARCHETYPE_IDS.includes(entry.id)) {
           expect(variantProfile.programDescription, `${entry.id}/${variant.id}`)
             .toContain(`Selected variant style: ${variant.label}`);
           expect(variantProfile.renderSummary, `${entry.id}/${variant.id}`)
@@ -394,10 +398,32 @@ describe('park ground pilot profiles', () => {
       expect(resolveParkGuideDimensionsM(court, { width: 45, height: 30 }))
         .toEqual({ width: 18.29, height: 9.14 });
     }
-    const basketball = resolveParkGroundProfile(zone('basketball_court')).guides[0];
-    expect(basketball.kind).toBe('basketball_court');
-    expect(resolveParkGuideDimensionsM(basketball, { width: 40, height: 30 }))
-      .toEqual({ width: 32, height: 19 });
+    const basketballBase = zone('basketball_court');
+    for (const variantIndex of [0, 1, 3]) {
+      const basketball = resolveParkGroundProfile({
+        ...basketballBase,
+        properties: {
+          ...basketballBase.properties,
+          green_space_selected_variant_id: `basketball_court_v${variantIndex}`,
+        },
+      }).guides;
+      expect(basketball).toHaveLength(variantIndex === 3 ? 1 : 2);
+      for (const court of basketball) {
+        expect(court.kind).toBe('basketball_court');
+        expect(resolveParkGuideDimensionsM(court, { width: 80, height: 45 }))
+          .toEqual({ width: 32, height: 19 });
+      }
+    }
+    const halfCourt = resolveParkGroundProfile({
+      ...basketballBase,
+      properties: {
+        ...basketballBase.properties,
+        green_space_selected_variant_id: 'basketball_court_v2',
+      },
+    }).guides;
+    expect(halfCourt).toHaveLength(1);
+    expect(resolveParkGuideDimensionsM(halfCourt[0], { width: 25, height: 20 }))
+      .toEqual({ width: 19, height: 17 });
     const track = resolveParkGroundProfile(zone('running_track_oval')).guides[0];
     expect(resolveParkGuideDimensionsM(track, { width: 220, height: 130 }))
       .toEqual({ width: 176.91, height: 92.52 });

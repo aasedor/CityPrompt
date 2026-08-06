@@ -135,7 +135,10 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
     ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),
     ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
     ("community_garden", "community_garden_v0", "park_community_garden_v0", "community_garden_v0_reference_skin", 55, 55),
-    ("basketball_court", "basketball_court_v0", "park_basketball_court_v0", "basketball_court_v0_reference_skin", 50, 40),
+    ("basketball_court", "basketball_court_v0", "park_basketball_court_v0", "basketball_court_v0_classic_asphalt_skin", 50, 40),
+    ("basketball_court", "basketball_court_v1", "park_basketball_court_v0", "basketball_court_v1_pro_acrylic_skin", 70, 40),
+    ("basketball_court", "basketball_court_v2", "park_basketball_court_v0", "basketball_court_v2_half_court_mural_skin", 25, 20),
+    ("basketball_court", "basketball_court_v3", "park_basketball_court_v0", "basketball_court_v3_streetball_skin", 40, 30),
     ("tennis_court_cluster", "tennis_court_cluster_v0", "park_tennis_cluster_v0", "tennis_court_cluster_v0_reference_skin", 90, 50),
     ("soccer_pitch_caged", "soccer_pitch_caged_v0", "park_caged_soccer_v0", "soccer_pitch_caged_v0_reference_skin", 66, 24),
     ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_0", "park_athletics_fields_v0", "athletics_precinct_sports_fields_v0_reference_skin", 220, 80),
@@ -159,7 +162,13 @@ def test_archetype_owned_batch_recipes_keep_exact_identity(
     ))
     assert recipe.family_id == family_id
     assert recipe.appearance_kit_id == appearance_id
-    expected_planting = {
+    basketball_planting = {
+        "basketball_court_v0": "basketball_classic_v0",
+        "basketball_court_v1": "basketball_pro_v1",
+        "basketball_court_v2": "basketball_half_court_v2",
+        "basketball_court_v3": "basketball_streetball_v3",
+    }
+    expected_planting = basketball_planting.get(variant_id) if family_id == "park_basketball_court_v0" else {
         "park_caged_soccer_v0": "caged_soccer_v0",
         "park_athletics_fields_v0": "athletics_fields_v0",
         "park_pickleball_community_v1": "pickleball_community_v1",

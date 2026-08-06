@@ -511,9 +511,20 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     })]),
   }),
   park_basketball_court_v0: Object.freeze({
-    basketball_court: Object.freeze([Object.freeze({
-      variantId: 'basketball_court_v0', appearanceKitId: 'basketball_court_v0_reference_skin', plantingStructure: 'basketball_court_v0',
-    })]),
+    basketball_court: Object.freeze([
+      Object.freeze({
+        variantId: 'basketball_court_v0', appearanceKitId: 'basketball_court_v0_classic_asphalt_skin', plantingStructure: 'basketball_classic_v0',
+      }),
+      Object.freeze({
+        variantId: 'basketball_court_v1', appearanceKitId: 'basketball_court_v1_pro_acrylic_skin', plantingStructure: 'basketball_pro_v1',
+      }),
+      Object.freeze({
+        variantId: 'basketball_court_v2', appearanceKitId: 'basketball_court_v2_half_court_mural_skin', plantingStructure: 'basketball_half_court_v2',
+      }),
+      Object.freeze({
+        variantId: 'basketball_court_v3', appearanceKitId: 'basketball_court_v3_streetball_skin', plantingStructure: 'basketball_streetball_v3',
+      }),
+    ]),
   }),
   park_tennis_cluster_v0: Object.freeze({
     tennis_court_cluster: Object.freeze([Object.freeze({

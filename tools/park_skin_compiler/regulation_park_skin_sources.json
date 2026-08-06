@@ -4,6 +4,54 @@
   "apiCalls": 0,
   "sourcePixelsProjected": false,
   "archetypes": {
+    "basketball-classic-asphalt": {
+      "source": "frontend/public/archetypes/openspaces/basketball-court/variant_0.png",
+      "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "asphalt", "timber": "timber"},
+      "crops": {
+        "paver": [0.00, 0.76, 0.36, 1.00],
+        "lawn": [0.48, 0.28, 0.92, 0.60],
+        "asphalt": [0.08, 0.55, 0.94, 1.00],
+        "planting": [0.50, 0.24, 0.94, 0.57],
+        "safety": [0.08, 0.55, 0.94, 1.00],
+        "timber": [0.00, 0.48, 0.28, 0.82]
+      }
+    },
+    "basketball-pro-acrylic": {
+      "source": "frontend/public/archetypes/openspaces/basketball-court/variant_1.png",
+      "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"},
+      "crops": {
+        "paver": [0.00, 0.76, 0.34, 1.00],
+        "lawn": [0.63, 0.27, 0.95, 0.56],
+        "asphalt": [0.00, 0.70, 0.34, 1.00],
+        "planting": [0.58, 0.24, 0.96, 0.56],
+        "safety": [0.12, 0.57, 0.84, 0.96],
+        "timber": [0.78, 0.62, 1.00, 0.92]
+      }
+    },
+    "basketball-community-mural": {
+      "source": "frontend/public/archetypes/openspaces/basketball-court/variant_2.png",
+      "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "safety", "timber": "timber"},
+      "crops": {
+        "paver": [0.00, 0.78, 1.00, 1.00],
+        "lawn": [0.00, 0.22, 0.38, 0.52],
+        "asphalt": [0.08, 0.58, 0.90, 0.96],
+        "planting": [0.00, 0.18, 0.40, 0.52],
+        "safety": [0.08, 0.57, 0.92, 0.96],
+        "timber": [0.84, 0.62, 1.00, 0.90]
+      }
+    },
+    "basketball-urban-streetball": {
+      "source": "frontend/public/archetypes/openspaces/basketball-court/variant_3.png",
+      "patterns": {"paver": "paver", "lawn": "lawn", "asphalt": "asphalt", "planting": "planting", "safety": "asphalt", "timber": "timber"},
+      "crops": {
+        "paver": [0.00, 0.78, 1.00, 1.00],
+        "lawn": [0.00, 0.27, 0.42, 0.55],
+        "asphalt": [0.08, 0.55, 0.92, 0.95],
+        "planting": [0.00, 0.22, 0.44, 0.56],
+        "safety": [0.08, 0.55, 0.92, 0.95],
+        "timber": [0.76, 0.62, 1.00, 0.90]
+      }
+    },
     "caged-soccer-european": {
       "source": "frontend/public/archetypes/openspaces/caged-soccer-pitch/variant_0.png",
       "patterns": {"paver": "asphalt", "lawn": "safety", "asphalt": "asphalt", "planting": "planting", "safety": "lawn", "timber": "paver"},

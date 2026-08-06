@@ -819,6 +819,30 @@ const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>>
       'stormwater basin preserving the exact open-water pool, wet shelf, inlet/outlet function and dry maintenance access',
     isPilot: true,
   },
+  basketball_court: {
+    id: 'basketball-court-archetype-v2',
+    version: 2,
+    programDescription:
+      'A classic public-park basketball enclosure containing up to two complete 32 by 19 metre full-court envelopes. Use the maximum number of whole regulation modules that fit: an oversized parcel receives two courts instead of one stretched playing surface.',
+    groundDescription:
+      'Weathered charcoal asphalt with fine aggregate variation, restrained crack and patch character, accurate off-white regulation markings, a narrow concrete apron, galvanized chain-link fencing, steel backboards, simple player benches and tall floodlights.',
+    criticalConstraints:
+      'Every retained full court contains one exact 28 by 15 metre playing rectangle inside a 32 by 19 metre play-and-run-off envelope. Never stretch, crop, overlap or invent non-standard markings. Hoops remain 3.05 metres high and align to each baseline. Fences, benches, lights, bins, trees and circulation stay outside every complete court envelope. Do not render people or surrounding large buildings.',
+    canopyDescription:
+      'No canopy overhangs a court, hoop, fence or floodlight. Any trees remain sparse and outside the enclosure, with clear gates and spectator sightlines.',
+    plantingStructure: 'basketball_classic_v0',
+    guides: [
+      { kind: 'basketball_court', x: 0.27, y: 0.50, width: 0.40, height: 0.62, widthM: 32, heightM: 19, color: '#363938', strokeColor: '#eeeade', strokeWidthM: 0.10, orientationPolicy: 'orthogonal' },
+      { kind: 'basketball_court', x: 0.73, y: 0.50, width: 0.40, height: 0.62, widthM: 32, heightM: 19, color: '#363938', strokeColor: '#eeeade', strokeWidthM: 0.10, orientationPolicy: 'orthogonal' },
+    ],
+    guideLegend: [
+      'each retained CHARCOAL rectangle is one exact 32 by 19 metre full-court envelope containing a 28 by 15 metre regulation playing court; keep complete markings, two hoops, run-off and enclosure',
+    ],
+    includeCentralPlaza: false,
+    renderSummary:
+      'classic asphalt basketball park preserving the maximum parcel-compatible count of complete regulation full courts, exact markings, paired hoops, chain-link enclosure, benches and floodlights',
+    isPilot: true,
+  },
   tennis_court_cluster: {
     id: 'tennis-court-cluster-v2',
     version: 2,
@@ -1383,10 +1407,81 @@ export function buildParkRenderQualityInstruction(
 
 type ParkProfileZone = Pick<SiteZone, 'properties'> & Partial<Pick<SiteZone, 'zone_type'>>;
 
+function basketballVariantProfile(
+  variantId: string,
+): Partial<Omit<ParkGroundProfile, 'archetypeId' | 'title'>> {
+  const fullCourt = (
+    x: number,
+    y: number,
+    color: string,
+  ): ParkGroundGuide => ({
+    kind: 'basketball_court', x, y, width: 0.40, height: 0.62,
+    widthM: 32, heightM: 19, color, strokeColor: '#eeeade', strokeWidthM: 0.10,
+    orientationPolicy: 'orthogonal',
+  });
+  if (variantId.endsWith('_v1')) {
+    return {
+      programDescription:
+        'A professional acrylic basketball facility containing up to two complete regulation full-court modules. Use the maximum number of whole 32 by 19 metre court envelopes that fit; never enlarge a single court to consume an oversized parcel.',
+      groundDescription:
+        'Cushioned blue acrylic playing surfaces with red perimeter aprons and keys, crisp bright-white markings, transparent backboards with padded support bases, black mesh fencing, four-corner LED sports lights, one compact scoreboard and aluminum spectator bleachers outside the run-off.',
+      criticalConstraints:
+        'Each retained module is one exact 28 by 15 metre playing court inside a 32 by 19 metre envelope. Keep every line, paired hoop, run-off, fence and gate complete. Scoreboards, bleachers, lights and all other objects remain outside the play-and-run-off envelope. Do not render people or surrounding large buildings.',
+      plantingStructure: 'basketball_pro_v1',
+      guides: [fullCourt(0.27, 0.50, '#315d68'), fullCourt(0.73, 0.50, '#315d68')],
+      guideLegend: [
+        'each retained BLUE-RED module is one complete regulation full court with its own two hoops, acrylic zones, full run-off, black enclosure and spectator edge',
+      ],
+      renderSummary:
+        'professional blue-and-red acrylic basketball facility preserving the maximum fitting count of complete regulation full courts with padded hoops, black mesh, scoreboard, bleachers and LED lights',
+    };
+  }
+  if (variantId.endsWith('_v2')) {
+    return {
+      programDescription:
+        'One compact community half-court: a single regulation-width 15 by 14 metre playing room inside a complete 19 by 17 metre envelope, with one hoop, a colourful geometric ground mural, low chain-link enclosure and an integrated concrete seating wall.',
+      groundDescription:
+        'Deep blue cushioned acrylic overlaid with angular navy, amber, orange and pale-blue mural fields, accurate half-court boundary, key and three-point markings, a warm-grey cast-concrete apron and seating wall, timber seat caps and a restrained low fence behind the hoop.',
+      criticalConstraints:
+        'Build exactly one half-court and one 3.05 metre hoop. Do not mirror it into a full court, add a second hoop, shrink its regulation width, or let furniture enter the 19 by 17 metre play-and-run-off envelope. Keep the concrete seating wall outside the playable lines and preserve an open gate. Do not render people or surrounding large buildings.',
+      plantingStructure: 'basketball_half_court_v2',
+      guides: [{
+        kind: 'basketball_court', x: 0.50, y: 0.50, width: 0.68, height: 0.68,
+        widthM: 19, heightM: 17, color: '#253e61', strokeColor: '#f1eee5', strokeWidthM: 0.10,
+        orientationPolicy: 'orthogonal',
+      }],
+      guideLegend: [
+        'the single BLUE MURAL square is one complete 19 by 17 metre community half-court envelope with one hoop and an integrated seating-wall edge; never turn it into a full court',
+      ],
+      renderSummary:
+        'compact one-hoop community half-court with exact half-court markings, angular blue-and-amber mural, low fence and integrated concrete seating wall',
+    };
+  }
+  if (variantId.endsWith('_v3')) {
+    return {
+      programDescription:
+        'One complete urban streetball full court inside a 32 by 19 metre envelope, organized as a hard-edged neighborhood plaza with paired hoops, an art-painted worn asphalt surface, a graffiti-panel fence edge and concrete step seating.',
+      groundDescription:
+        'Patched charcoal asphalt with visible aggregate, restrained cracks and faded repairs; accurate off-white regulation lines; layered muted coral, teal, ochre and blue street-art graphics; dark chain-link fencing with individual graffiti panels; and raw concrete spectator steps on the open plaza side.',
+      criticalConstraints:
+        'Keep one exact 28 by 15 metre full playing court, two 3.05 metre hoops and a complete 32 by 19 metre envelope. Art is a surface layer and must not replace or distort regulation markings. Fence panels, steps, lights and furniture stay outside run-off. Do not render people or surrounding large buildings.',
+      plantingStructure: 'basketball_streetball_v3',
+      guides: [fullCourt(0.50, 0.50, '#3f4240')],
+      guideLegend: [
+        'the single WORN ART-PAINTED rectangle is one complete regulation streetball court with paired hoops, faded markings, graffiti fence edge and concrete spectator steps',
+      ],
+      renderSummary:
+        'urban streetball full court combining exact regulation geometry with patched asphalt, restrained surface art, graffiti panels and concrete step seating',
+    };
+  }
+  return {};
+}
+
 export type ParkSpecialtyStructureKind =
   | 'civic_fountain_assembly'
   | 'greenway_edge_assembly'
   | 'stormwater_control_assembly'
+  | 'basketball_court_assembly'
   | 'japanese_garden_bridge'
   | 'cricket_ground_assembly'
   | 'skate_park_v0_assembly'
@@ -1454,16 +1549,20 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
         }
       : fallback;
   }
-  const variantSuffix = variant?.label
+  const variantOwnsProgram = archetypeId === 'basketball_court';
+  const resolvedExact = variantOwnsProgram
+    ? { ...exact, ...basketballVariantProfile(variantId) }
+    : exact;
+  const variantSuffix = variant?.label && !variantOwnsProgram
     ? ` Selected variant style: ${variant.label}. Apply that variant only through compatible planting character, colour palette, paving and material finish; it does not authorize any new path, pond, fountain, field, bed, building or program element beyond this exact profile.`
     : '';
   return {
-    ...exact,
+    ...resolvedExact,
     archetypeId,
     title: `${entry?.title ?? archetypeId.replace(/_/g, ' ')}${variant?.label ? ` - ${variant.label}` : ''}`,
-    programDescription: `${exact.programDescription}${variantSuffix}`,
-    groundDescription: `${exact.groundDescription}${variantSuffix}`,
-    renderSummary: `${exact.renderSummary}${variant?.label ? `; selected ${variant.label} planting and material character without changing the locked program` : ''}`,
+    programDescription: `${resolvedExact.programDescription}${variantSuffix}`,
+    groundDescription: `${resolvedExact.groundDescription}${variantSuffix}`,
+    renderSummary: `${resolvedExact.renderSummary}${variant?.label && !variantOwnsProgram ? `; selected ${variant.label} planting and material character without changing the locked program` : ''}`,
     ...(legoContract?.supported
       ? {
           legoFamilyId: legoContract.familyId,
@@ -1526,6 +1625,11 @@ export function resolveParkSpecialtyStructureKind(
   if (
     legoContract?.source === 'public_realm_lego'
     && legoContract.supported
+    && legoContract.familyId === 'park_basketball_court_v0'
+  ) return 'basketball_court_assembly';
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
     && legoContract.familyId === 'park_caged_soccer_v0'
   ) return 'caged_soccer_v0_assembly';
   if (
@@ -1538,6 +1642,7 @@ export function resolveParkSpecialtyStructureKind(
   if (archetypeId.startsWith('cricket_pitch_oval')) return 'cricket_ground_assembly';
   if (archetypeId.startsWith('sports_field_complex')) return 'sports_field_furniture';
   if (archetypeId.startsWith('athletics_precinct_sports_fields')) return 'sports_field_furniture';
+  if (archetypeId.startsWith('basketball_court')) return 'basketball_court_assembly';
   if (archetypeId.startsWith('soccer_pitch_caged')) return 'caged_soccer_v0_assembly';
   if (archetypeId.startsWith('tennis_court_cluster')) return 'tennis_court_furniture';
   if (archetypeId.startsWith('wetland_rain_garden')) return 'wetland_boardwalk';
