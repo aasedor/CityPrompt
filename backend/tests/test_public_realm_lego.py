@@ -1332,6 +1332,37 @@ def test_batch16_dog_park_uses_a_whole_compact_program_on_smaller_parcels():
     assert recipe.appearance_kit_id == "dog_park_v3_urban_contemporary_skin"
 
 
+def test_batch17_closes_thirty_variants_across_ten_activity_families():
+    expected = {
+        "park_pickleball_community_v1": "pickleball_courts",
+        "park_caged_soccer_v0": "soccer_pitch_caged",
+        "park_track_oval_school_v2": "running_track_oval",
+        "park_outdoor_fitness_v0": "outdoor_fitness_circuit",
+        "park_baseball_club_hub_v1": "baseball_softball_diamond",
+        "park_cricket_village_green_v0": "cricket_pitch_oval",
+        "park_nature_play_v0": "nature_play_area",
+        "park_inclusive_playground_v0": "inclusive_playground",
+        "park_pump_track_v0": "pump_track",
+        "park_splash_pad_v0": "splash_pad_area",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
 @pytest.mark.parametrize(
     ("archetype_id", "variant_id"),
     [

@@ -1909,6 +1909,96 @@ def _apply_batch16_variant_closures(
 _CAPABILITIES = tuple(_apply_batch16_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+# Batch 17 closes ten activity-led families. The shared geometry is limited to
+# regulation or whole-program modules already proven by the anchor selection;
+# variants retain those dimensions/count rules while receiving their own
+# reference-derived surface, planting language, and explicit program marker.
+_BATCH17_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_pickleball_community_v1": (
+        ("pickleball_courts", "pickleball_courts_v0", "pickleball_courts_v0_competition_grade_skin", "pickleball_competition_v0", "pickleball_tournament_program_v1"),
+        ("pickleball_courts", "pickleball_courts_v2", "pickleball_courts_v2_park_integrated_skin", "pickleball_park_integrated_v2", "pickleball_landscape_program_v1"),
+        ("pickleball_courts", "pickleball_courts_v3", "pickleball_courts_v3_indoor_outdoor_skin", "pickleball_hybrid_v3", "pickleball_canopy_program_v1"),
+    ),
+    "park_caged_soccer_v0": (
+        ("soccer_pitch_caged", "soccer_pitch_caged_v1", "soccer_pitch_caged_v1_community_skin", "caged_soccer_community_v1", "community_caged_pitch_program_v1"),
+        ("soccer_pitch_caged", "soccer_pitch_caged_v2", "soccer_pitch_caged_v2_youth_training_skin", "caged_soccer_youth_v2", "youth_training_pitch_program_v1"),
+        ("soccer_pitch_caged", "soccer_pitch_caged_v3", "soccer_pitch_caged_v3_rooftop_skin", "caged_soccer_rooftop_v3", "rooftop_pitch_program_v1"),
+    ),
+    "park_track_oval_school_v2": (
+        ("running_track_oval", "running_track_oval_v0", "running_track_oval_v0_competition_skin", "track_competition_v0", "competition_track_program_v1"),
+        ("running_track_oval", "running_track_oval_v1", "running_track_oval_v1_community_skin", "track_community_v1", "community_track_program_v1"),
+        ("running_track_oval", "running_track_oval_v3", "running_track_oval_v3_park_loop_skin", "track_park_loop_v3", "park_loop_track_program_v1"),
+    ),
+    "park_outdoor_fitness_v0": (
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v1", "outdoor_fitness_circuit_v1_parkour_skin", "fitness_parkour_v1", "parkour_movement_program_v1"),
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v2", "outdoor_fitness_circuit_v2_nature_trail_skin", "fitness_nature_trail_v2", "nature_fitness_circuit_program_v1"),
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v3", "outdoor_fitness_circuit_v3_senior_wellness_skin", "fitness_senior_v3", "senior_wellness_program_v1"),
+    ),
+    "park_baseball_club_hub_v1": (
+        ("baseball_softball_diamond", "baseball_softball_diamond_v0", "baseball_softball_diamond_v0_classic_skin", "baseball_classic_v0", "classic_single_diamond_program_v1"),
+        ("baseball_softball_diamond", "baseball_softball_diamond_v2", "baseball_softball_diamond_v2_softball_skin", "baseball_softball_v2", "softball_field_program_v1"),
+        ("baseball_softball_diamond", "baseball_softball_diamond_v3", "baseball_softball_diamond_v3_sandlot_skin", "baseball_sandlot_v3", "sandlot_field_program_v1"),
+    ),
+    "park_cricket_village_green_v0": (
+        ("cricket_pitch_oval", "cricket_pitch_oval_v1", "cricket_pitch_oval_v1_municipal_skin", "cricket_municipal_v1", "municipal_cricket_program_v1"),
+        ("cricket_pitch_oval", "cricket_pitch_oval_v2", "cricket_pitch_oval_v2_south_asian_skin", "cricket_south_asian_v2", "south_asian_cricket_program_v1"),
+        ("cricket_pitch_oval", "cricket_pitch_oval_v3", "cricket_pitch_oval_v3_caribbean_skin", "cricket_caribbean_v3", "caribbean_beach_cricket_program_v1"),
+    ),
+    "park_nature_play_v0": (
+        ("nature_play_area", "nature_play_area_v1", "nature_play_area_v1_sensory_garden_skin", "nature_play_sensory_v1", "sensory_nature_play_program_v1"),
+        ("nature_play_area", "nature_play_area_v2", "nature_play_area_v2_mud_water_skin", "nature_play_mud_water_v2", "mud_water_play_program_v1"),
+        ("nature_play_area", "nature_play_area_v3", "nature_play_area_v3_toddler_garden_skin", "nature_play_toddler_v3", "toddler_nature_play_program_v1"),
+    ),
+    "park_inclusive_playground_v0": (
+        ("inclusive_playground", "inclusive_playground_v1", "inclusive_playground_v1_sensory_skin", "inclusive_sensory_v1", "sensory_explorer_program_v1"),
+        ("inclusive_playground", "inclusive_playground_v2", "inclusive_playground_v2_mega_skin", "inclusive_mega_v2", "mega_all_abilities_program_v1"),
+        ("inclusive_playground", "inclusive_playground_v3", "inclusive_playground_v3_nature_skin", "inclusive_nature_v3", "nature_inclusive_program_v1"),
+    ),
+    "park_pump_track_v0": (
+        ("pump_track", "pump_track_v1", "pump_track_v1_dirt_bmx_skin", "pump_track_dirt_v1", "dirt_bmx_program_v1"),
+        ("pump_track", "pump_track_v2", "pump_track_v2_family_skin", "pump_track_family_v2", "family_all_wheels_program_v1"),
+        ("pump_track", "pump_track_v3", "pump_track_v3_modular_skin", "pump_track_modular_v3", "modular_pump_track_program_v1"),
+    ),
+    "park_splash_pad_v0": (
+        ("splash_pad_area", "splash_pad_area_v1", "splash_pad_area_v1_modern_skin", "splash_pad_modern_v1", "modern_water_play_program_v1"),
+        ("splash_pad_area", "splash_pad_area_v2", "splash_pad_area_v2_meadow_skin", "splash_pad_meadow_v2", "meadow_water_play_program_v1"),
+        ("splash_pad_area", "splash_pad_area_v3", "splash_pad_area_v3_urban_skin", "splash_pad_urban_v3", "urban_water_play_program_v1"),
+    ),
+}
+
+
+def _apply_batch17_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH17_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch17_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

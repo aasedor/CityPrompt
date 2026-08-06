@@ -8,12 +8,12 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 23,
-    "partialParents": 107,
+    "completeMappedParents": 33,
+    "partialParents": 97,
     "uncoveredParents": 0,
-    "exactVariants": 105,
-    "sharedMappedVariants": 94,
-    "unmappedVariants": 321,
+    "exactVariants": 95,
+    "sharedMappedVariants": 134,
+    "unmappedVariants": 291,
     "parkCapabilities": 127
   },
   "categorySummary": {
@@ -23,14 +23,14 @@
     "ecological_resilience:partial": 11,
     "landscape_parks:complete_mapped": 2,
     "landscape_parks:partial": 12,
-    "neighborhood_public_realm:complete_mapped": 3,
-    "neighborhood_public_realm:partial": 9,
+    "neighborhood_public_realm:complete_mapped": 6,
+    "neighborhood_public_realm:partial": 6,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:partial": 10,
     "specialty_gardens:complete_mapped": 3,
     "specialty_gardens:partial": 11,
-    "sports_recreation:complete_mapped": 8,
-    "sports_recreation:partial": 16,
+    "sports_recreation:complete_mapped": 15,
+    "sports_recreation:partial": 9,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:partial": 5,
     "waterfront_spaces:partial": 13
@@ -1379,16 +1379,16 @@
       "title": "Splash Pad / Water Play",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "splash_pad_area_v0",
           "label": "Rustic Timber & Gravel",
           "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_splash_pad_v0",
@@ -1401,7 +1401,7 @@
                 "ground_jet_v1",
                 "split_rail_fence_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -1409,22 +1409,67 @@
           "id": "splash_pad_area_v1",
           "label": "Modern Steel & Turf",
           "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_splash_pad_v0",
+              "profileId": "splash-pad-archetype-v1",
+              "appearanceKitId": "splash_pad_area_v1_modern_skin",
+              "componentSetIds": [
+                "splash_pad_v0_ground_program",
+                "timber_water_tower_v1",
+                "spray_arch_v1",
+                "ground_jet_v1",
+                "split_rail_fence_v1",
+                "modern_water_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "splash_pad_area_v2",
           "label": "Natural Meadow",
           "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_splash_pad_v0",
+              "profileId": "splash-pad-archetype-v1",
+              "appearanceKitId": "splash_pad_area_v2_meadow_skin",
+              "componentSetIds": [
+                "splash_pad_v0_ground_program",
+                "timber_water_tower_v1",
+                "spray_arch_v1",
+                "ground_jet_v1",
+                "split_rail_fence_v1",
+                "meadow_water_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "splash_pad_area_v3",
           "label": "Urban Contemporary",
           "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_splash_pad_v0",
+              "profileId": "splash-pad-archetype-v1",
+              "appearanceKitId": "splash_pad_area_v3_urban_skin",
+              "componentSetIds": [
+                "splash_pad_v0_ground_program",
+                "timber_water_tower_v1",
+                "spray_arch_v1",
+                "ground_jet_v1",
+                "split_rail_fence_v1",
+                "urban_water_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4560,23 +4605,37 @@
       "title": "Pickleball Courts",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "pickleball_courts_v0",
           "label": "Competition Grade",
           "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pickleball_community_v1",
+              "profileId": "pickleball-community-five-court-v1",
+              "appearanceKitId": "pickleball_courts_v0_competition_grade_skin",
+              "componentSetIds": [
+                "pickleball_community_v1_full_assembly",
+                "pickleball_court_v1",
+                "playground_social_edge_v1",
+                "shade_seating_v1",
+                "pickleball_tournament_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pickleball_courts_v1",
           "label": "Community Recreation",
           "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_pickleball_community_v1",
@@ -4588,7 +4647,7 @@
                 "playground_social_edge_v1",
                 "shade_seating_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4596,15 +4655,43 @@
           "id": "pickleball_courts_v2",
           "label": "Park-Integrated",
           "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pickleball_community_v1",
+              "profileId": "pickleball-community-five-court-v1",
+              "appearanceKitId": "pickleball_courts_v2_park_integrated_skin",
+              "componentSetIds": [
+                "pickleball_community_v1_full_assembly",
+                "pickleball_court_v1",
+                "playground_social_edge_v1",
+                "shade_seating_v1",
+                "pickleball_landscape_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pickleball_courts_v3",
           "label": "Indoor-Outdoor Hybrid",
           "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pickleball_community_v1",
+              "profileId": "pickleball-community-five-court-v1",
+              "appearanceKitId": "pickleball_courts_v3_indoor_outdoor_skin",
+              "componentSetIds": [
+                "pickleball_community_v1_full_assembly",
+                "pickleball_court_v1",
+                "playground_social_edge_v1",
+                "shade_seating_v1",
+                "pickleball_canopy_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4613,16 +4700,16 @@
       "title": "Caged Soccer Pitch",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "soccer_pitch_caged_v0",
           "label": "European Street Cage",
           "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_caged_soccer_v0",
@@ -4636,7 +4723,7 @@
                 "soccer_floodlight_v1",
                 "player_bench_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4644,22 +4731,70 @@
           "id": "soccer_pitch_caged_v1",
           "label": "Community Recreation",
           "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_caged_soccer_v0",
+              "profileId": "caged-soccer-pitch-v1",
+              "appearanceKitId": "soccer_pitch_caged_v1_community_skin",
+              "componentSetIds": [
+                "caged_soccer_v0_ground_program",
+                "five_a_side_goal_v1",
+                "soccer_rebound_board_v1",
+                "soccer_cage_mesh_v1",
+                "soccer_floodlight_v1",
+                "player_bench_v1",
+                "community_caged_pitch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "soccer_pitch_caged_v2",
           "label": "Youth Training Complex",
           "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_caged_soccer_v0",
+              "profileId": "caged-soccer-pitch-v1",
+              "appearanceKitId": "soccer_pitch_caged_v2_youth_training_skin",
+              "componentSetIds": [
+                "caged_soccer_v0_ground_program",
+                "five_a_side_goal_v1",
+                "soccer_rebound_board_v1",
+                "soccer_cage_mesh_v1",
+                "soccer_floodlight_v1",
+                "player_bench_v1",
+                "youth_training_pitch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "soccer_pitch_caged_v3",
           "label": "Rooftop Urban Pitch",
           "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_caged_soccer_v0",
+              "profileId": "caged-soccer-pitch-v1",
+              "appearanceKitId": "soccer_pitch_caged_v3_rooftop_skin",
+              "componentSetIds": [
+                "caged_soccer_v0_ground_program",
+                "five_a_side_goal_v1",
+                "soccer_rebound_board_v1",
+                "soccer_cage_mesh_v1",
+                "soccer_floodlight_v1",
+                "player_bench_v1",
+                "rooftop_pitch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4668,30 +4803,60 @@
       "title": "Running Track & Athletic Oval",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "running_track_oval_v0",
           "label": "Competition Standard",
           "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_track_oval_school_v2",
+              "profileId": "track-oval-school-athletic-v2",
+              "appearanceKitId": "running_track_oval_v0_competition_skin",
+              "componentSetIds": [
+                "track_oval_school_v2_full_assembly",
+                "regulation_track_v1",
+                "soccer_infield_v1",
+                "field_events_v1",
+                "spectator_bleacher_v1",
+                "competition_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "running_track_oval_v1",
           "label": "Community Fitness",
           "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_track_oval_school_v2",
+              "profileId": "track-oval-school-athletic-v2",
+              "appearanceKitId": "running_track_oval_v1_community_skin",
+              "componentSetIds": [
+                "track_oval_school_v2_full_assembly",
+                "regulation_track_v1",
+                "soccer_infield_v1",
+                "field_events_v1",
+                "spectator_bleacher_v1",
+                "community_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "running_track_oval_v2",
           "label": "School Athletic",
           "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_track_oval_school_v2",
@@ -4704,7 +4869,7 @@
                 "field_events_v1",
                 "spectator_bleacher_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4712,8 +4877,23 @@
           "id": "running_track_oval_v3",
           "label": "Park Loop Trail",
           "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_track_oval_school_v2",
+              "profileId": "track-oval-school-athletic-v2",
+              "appearanceKitId": "running_track_oval_v3_park_loop_skin",
+              "componentSetIds": [
+                "track_oval_school_v2_full_assembly",
+                "regulation_track_v1",
+                "soccer_infield_v1",
+                "field_events_v1",
+                "spectator_bleacher_v1",
+                "park_loop_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4722,16 +4902,16 @@
       "title": "Outdoor Fitness Circuit",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "outdoor_fitness_circuit_v0",
           "label": "Urban Calisthenics Park",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_outdoor_fitness_v0",
@@ -4744,7 +4924,7 @@
                 "situp_bench_v1",
                 "rings_frame_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4752,22 +4932,67 @@
           "id": "outdoor_fitness_circuit_v1",
           "label": "Parkour & Movement",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_outdoor_fitness_v0",
+              "profileId": "outdoor-fitness-archetype-v1",
+              "appearanceKitId": "outdoor_fitness_circuit_v1_parkour_skin",
+              "componentSetIds": [
+                "outdoor_fitness_v0_ground_program",
+                "calisthenics_rig_v1",
+                "parallel_bars_v1",
+                "situp_bench_v1",
+                "rings_frame_v1",
+                "parkour_movement_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_fitness_circuit_v2",
           "label": "Nature Trail Circuit",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_outdoor_fitness_v0",
+              "profileId": "outdoor-fitness-archetype-v1",
+              "appearanceKitId": "outdoor_fitness_circuit_v2_nature_trail_skin",
+              "componentSetIds": [
+                "outdoor_fitness_v0_ground_program",
+                "calisthenics_rig_v1",
+                "parallel_bars_v1",
+                "situp_bench_v1",
+                "rings_frame_v1",
+                "nature_fitness_circuit_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_fitness_circuit_v3",
           "label": "Senior-Friendly Wellness",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_outdoor_fitness_v0",
+              "profileId": "outdoor-fitness-archetype-v1",
+              "appearanceKitId": "outdoor_fitness_circuit_v3_senior_wellness_skin",
+              "componentSetIds": [
+                "outdoor_fitness_v0_ground_program",
+                "calisthenics_rig_v1",
+                "parallel_bars_v1",
+                "situp_bench_v1",
+                "rings_frame_v1",
+                "senior_wellness_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4776,23 +5001,38 @@
       "title": "Baseball / Softball Diamond",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "baseball_softball_diamond_v0",
           "label": "Classic Park Diamond",
           "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_baseball_club_hub_v1",
+              "profileId": "baseball-three-field-club-hub-v1",
+              "appearanceKitId": "baseball_softball_diamond_v0_classic_skin",
+              "componentSetIds": [
+                "baseball_club_hub_v1_full_assembly",
+                "three_regulation_diamonds_v1",
+                "dugout_backstop_bleacher_v1",
+                "batting_cages_v1",
+                "reserved_clubhouse_pad_v1",
+                "classic_single_diamond_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "baseball_softball_diamond_v1",
           "label": "Youth League Complex",
           "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_baseball_club_hub_v1",
@@ -4805,7 +5045,7 @@
                 "batting_cages_v1",
                 "reserved_clubhouse_pad_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4813,15 +5053,45 @@
           "id": "baseball_softball_diamond_v2",
           "label": "Softball Field",
           "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_baseball_club_hub_v1",
+              "profileId": "baseball-three-field-club-hub-v1",
+              "appearanceKitId": "baseball_softball_diamond_v2_softball_skin",
+              "componentSetIds": [
+                "baseball_club_hub_v1_full_assembly",
+                "three_regulation_diamonds_v1",
+                "dugout_backstop_bleacher_v1",
+                "batting_cages_v1",
+                "reserved_clubhouse_pad_v1",
+                "softball_field_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "baseball_softball_diamond_v3",
           "label": "Vintage Sandlot",
           "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_baseball_club_hub_v1",
+              "profileId": "baseball-three-field-club-hub-v1",
+              "appearanceKitId": "baseball_softball_diamond_v3_sandlot_skin",
+              "componentSetIds": [
+                "baseball_club_hub_v1_full_assembly",
+                "three_regulation_diamonds_v1",
+                "dugout_backstop_bleacher_v1",
+                "batting_cages_v1",
+                "reserved_clubhouse_pad_v1",
+                "sandlot_field_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4830,16 +5100,16 @@
       "title": "Cricket Ground",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "cricket_pitch_oval_v0",
           "label": "Village Green",
           "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_cricket_village_green_v0",
@@ -4852,7 +5122,7 @@
                 "practice_nets_v1",
                 "white_perimeter_fence_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4860,22 +5130,67 @@
           "id": "cricket_pitch_oval_v1",
           "label": "Municipal Oval",
           "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cricket_village_green_v0",
+              "profileId": "cricket-village-green-v1",
+              "appearanceKitId": "cricket_pitch_oval_v1_municipal_skin",
+              "componentSetIds": [
+                "cricket_village_green_v0_full_assembly",
+                "regulation_wicket_v1",
+                "oval_boundary_v1",
+                "practice_nets_v1",
+                "white_perimeter_fence_v1",
+                "municipal_cricket_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "cricket_pitch_oval_v2",
           "label": "South Asian Ground",
           "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cricket_village_green_v0",
+              "profileId": "cricket-village-green-v1",
+              "appearanceKitId": "cricket_pitch_oval_v2_south_asian_skin",
+              "componentSetIds": [
+                "cricket_village_green_v0_full_assembly",
+                "regulation_wicket_v1",
+                "oval_boundary_v1",
+                "practice_nets_v1",
+                "white_perimeter_fence_v1",
+                "south_asian_cricket_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "cricket_pitch_oval_v3",
           "label": "Caribbean Beach Pitch",
           "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cricket_village_green_v0",
+              "profileId": "cricket-village-green-v1",
+              "appearanceKitId": "cricket_pitch_oval_v3_caribbean_skin",
+              "componentSetIds": [
+                "cricket_village_green_v0_full_assembly",
+                "regulation_wicket_v1",
+                "oval_boundary_v1",
+                "practice_nets_v1",
+                "white_perimeter_fence_v1",
+                "caribbean_beach_cricket_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5043,16 +5358,16 @@
       "title": "Nature Play Area",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "nature_play_area_v0",
           "label": "Forest Adventure",
           "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_nature_play_v0",
@@ -5067,7 +5382,7 @@
                 "stepping_stump_v1",
                 "play_boulders_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5075,22 +5390,73 @@
           "id": "nature_play_area_v1",
           "label": "Sensory Garden Play",
           "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_play_v0",
+              "profileId": "nature-play-archetype-v1",
+              "appearanceKitId": "nature_play_area_v1_sensory_garden_skin",
+              "componentSetIds": [
+                "nature_play_v0_ground_program",
+                "water_rill_v1",
+                "balance_log_v1",
+                "log_fort_v1",
+                "willow_tunnel_v1",
+                "stepping_stump_v1",
+                "play_boulders_v1",
+                "sensory_nature_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "nature_play_area_v2",
           "label": "Mud & Water Play",
           "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_play_v0",
+              "profileId": "nature-play-archetype-v1",
+              "appearanceKitId": "nature_play_area_v2_mud_water_skin",
+              "componentSetIds": [
+                "nature_play_v0_ground_program",
+                "water_rill_v1",
+                "balance_log_v1",
+                "log_fort_v1",
+                "willow_tunnel_v1",
+                "stepping_stump_v1",
+                "play_boulders_v1",
+                "mud_water_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "nature_play_area_v3",
           "label": "Toddler Nature Garden",
           "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_play_v0",
+              "profileId": "nature-play-archetype-v1",
+              "appearanceKitId": "nature_play_area_v3_toddler_garden_skin",
+              "componentSetIds": [
+                "nature_play_v0_ground_program",
+                "water_rill_v1",
+                "balance_log_v1",
+                "log_fort_v1",
+                "willow_tunnel_v1",
+                "stepping_stump_v1",
+                "play_boulders_v1",
+                "toddler_nature_play_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5099,16 +5465,16 @@
       "title": "Inclusive Accessible Playground",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "inclusive_playground_v0",
           "label": "Universal Design",
           "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_inclusive_playground_v0",
@@ -5122,7 +5488,7 @@
                 "sensory_panel_v1",
                 "shade_canopy_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5130,22 +5496,70 @@
           "id": "inclusive_playground_v1",
           "label": "Sensory Explorer",
           "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_inclusive_playground_v0",
+              "profileId": "inclusive-playground-archetype-v1",
+              "appearanceKitId": "inclusive_playground_v1_sensory_skin",
+              "componentSetIds": [
+                "inclusive_playground_v0_ground_program",
+                "accessible_play_structure_v1",
+                "accessible_swing_bay_v1",
+                "inclusive_spinner_v1",
+                "sensory_panel_v1",
+                "shade_canopy_v1",
+                "sensory_explorer_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "inclusive_playground_v2",
           "label": "Mega All-Abilities",
           "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_inclusive_playground_v0",
+              "profileId": "inclusive-playground-archetype-v1",
+              "appearanceKitId": "inclusive_playground_v2_mega_skin",
+              "componentSetIds": [
+                "inclusive_playground_v0_ground_program",
+                "accessible_play_structure_v1",
+                "accessible_swing_bay_v1",
+                "inclusive_spinner_v1",
+                "sensory_panel_v1",
+                "shade_canopy_v1",
+                "mega_all_abilities_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "inclusive_playground_v3",
           "label": "Nature-Inclusive",
           "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_inclusive_playground_v0",
+              "profileId": "inclusive-playground-archetype-v1",
+              "appearanceKitId": "inclusive_playground_v3_nature_skin",
+              "componentSetIds": [
+                "inclusive_playground_v0_ground_program",
+                "accessible_play_structure_v1",
+                "accessible_swing_bay_v1",
+                "inclusive_spinner_v1",
+                "sensory_panel_v1",
+                "shade_canopy_v1",
+                "nature_inclusive_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5578,16 +5992,16 @@
       "title": "Pump Track",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "pump_track_v0",
           "label": "Asphalt Competition",
           "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_pump_track_v0",
@@ -5599,7 +6013,7 @@
                 "pump_track_start_mound_v1",
                 "spectator_bench_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5607,22 +6021,64 @@
           "id": "pump_track_v1",
           "label": "Dirt BMX Track",
           "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pump_track_v0",
+              "profileId": "pump-track-archetype-v1",
+              "appearanceKitId": "pump_track_v1_dirt_bmx_skin",
+              "componentSetIds": [
+                "pump_track_v0_ground_program",
+                "pump_track_loop_v1",
+                "pump_track_start_mound_v1",
+                "spectator_bench_v1",
+                "dirt_bmx_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pump_track_v2",
           "label": "Family All-Wheels",
           "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pump_track_v0",
+              "profileId": "pump-track-archetype-v1",
+              "appearanceKitId": "pump_track_v2_family_skin",
+              "componentSetIds": [
+                "pump_track_v0_ground_program",
+                "pump_track_loop_v1",
+                "pump_track_start_mound_v1",
+                "spectator_bench_v1",
+                "family_all_wheels_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "pump_track_v3",
           "label": "Modular Pop-Up",
           "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_pump_track_v0",
+              "profileId": "pump-track-archetype-v1",
+              "appearanceKitId": "pump_track_v3_modular_skin",
+              "componentSetIds": [
+                "pump_track_v0_ground_program",
+                "pump_track_loop_v1",
+                "pump_track_start_mound_v1",
+                "spectator_bench_v1",
+                "modular_pump_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },

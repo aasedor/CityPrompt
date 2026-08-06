@@ -207,7 +207,7 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_cricket_village_green_v0',
       variantId: `cricket_pitch_oval_v${index}`,
-      supported: index === 0,
+      supported: true,
     });
     expect(resolveParkLegoAppearance(candidate)).toBeNull();
     expect(resolveParkDressingAppearance(candidate)).toMatchObject({
@@ -400,6 +400,37 @@ describe('Public Realm LEGO V1 park families', () => {
         planting_structure: plantingStructure,
       }),
     });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_pickleball_community_v1', 'pickleball_courts', 'pickleball_courts_v3', 'pickleball_courts_v3_indoor_outdoor_skin', 'pickleball_hybrid_v3'],
+    ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v2', 'soccer_pitch_caged_v2_youth_training_skin', 'caged_soccer_youth_v2'],
+    ['park_track_oval_school_v2', 'running_track_oval', 'running_track_oval_v3', 'running_track_oval_v3_park_loop_skin', 'track_park_loop_v3'],
+    ['park_outdoor_fitness_v0', 'outdoor_fitness_circuit', 'outdoor_fitness_circuit_v3', 'outdoor_fitness_circuit_v3_senior_wellness_skin', 'fitness_senior_v3'],
+    ['park_baseball_club_hub_v1', 'baseball_softball_diamond', 'baseball_softball_diamond_v0', 'baseball_softball_diamond_v0_classic_skin', 'baseball_classic_v0'],
+    ['park_cricket_village_green_v0', 'cricket_pitch_oval', 'cricket_pitch_oval_v2', 'cricket_pitch_oval_v2_south_asian_skin', 'cricket_south_asian_v2'],
+    ['park_nature_play_v0', 'nature_play_area', 'nature_play_area_v2', 'nature_play_area_v2_mud_water_skin', 'nature_play_mud_water_v2'],
+    ['park_inclusive_playground_v0', 'inclusive_playground', 'inclusive_playground_v1', 'inclusive_playground_v1_sensory_skin', 'inclusive_sensory_v1'],
+    ['park_pump_track_v0', 'pump_track', 'pump_track_v3', 'pump_track_v3_modular_skin', 'pump_track_modular_v3'],
+    ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v2', 'splash_pad_area_v2_meadow_skin', 'splash_pad_meadow_v2'],
+  ] as const)('executes the explicit Batch 17 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
