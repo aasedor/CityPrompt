@@ -83,6 +83,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "identity_mode_is_explicit",
         "preflight_precedes_paid_generation",
         "human_approval_controls_release",
+        "variant_atlas_matches_selected_reference",
     } <= principle_ids
 
 

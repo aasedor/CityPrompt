@@ -1,0 +1,50 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Three-Archetype Methodology Expansion v67",
+  "description": "Three new catalogue pilots testing a fixed classical portico, a Jacobethan quadrangle and a Scottish Baronial railway-hotel roofscape under the v66 fidelity workflow.",
+  "generation_profile": {
+    "facade_model": "cached-reference-locked-v8",
+    "facade_sheet_schema": "facade-sheet@3",
+    "facade_sheet_root": "artifacts/pilot-v67/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "civic-ionic-portico-pilot",
+      "archetype_id": "civic_classical_building",
+      "variant_id": "civic_classical_limestone_ionic",
+      "family_id": "civic-classical-building",
+      "floors": 2,
+      "width_m": 42,
+      "depth_m": 26,
+      "group": "Low monumental Ionic portico"
+    },
+    {
+      "entry_id": "jacobethan-quadrangle-pilot",
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_jacobethan",
+      "family_id": "collegiate-gothic-education",
+      "floors": 3,
+      "width_m": 60,
+      "depth_m": 45,
+      "group": "Shaped-gable brick quadrangle"
+    },
+    {
+      "entry_id": "scottish-baronial-hotel-pilot",
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "variant_id": "scottish_baronial_granite_tower",
+      "family_id": "chateauesque-grand-railway-hotel",
+      "floors": 5,
+      "width_m": 55,
+      "depth_m": 36,
+      "group": "Asymmetric turreted railway hotel"
+    }
+  ]
+}

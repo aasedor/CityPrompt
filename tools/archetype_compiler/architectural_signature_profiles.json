@@ -287,6 +287,12 @@
     },
     "civic_classical_building": {
       "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["four-column Ionic portico and pediment", "broad ceremonial stair and bronze entrance", "symmetrical monumental side wings", "wrapping entablature and shallow metal roof"],
+        "repeatable_capacity": ["neutral side-wing window bays beyond the fixed portico"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "monolithic pale limestone; shadowed entrance portal; bronze doors; lead-grey roof",
       "glass_profile": "residential_low_e",
       "material_overrides": {"roof": {"base_color": "#718177", "roughness": 0.52, "metallic": 0.46}, "accent": {"base_color": "#3d352c", "roughness": 0.42, "metallic": 0.58}},
@@ -326,6 +332,16 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "civic_classical_limestone_ionic": {
+      "extends": "civic_classical_building",
+      "identity": "Warm limestone civic hall with a fixed four-column Ionic temple front, sculpted pediment, monumental stair, bronze doors and low greened-copper roof.",
+      "material_zones": "warm ashlar limestone; pale carved Ionic order and entablature; bronze entrance; subdued greened-copper roof",
+      "material_overrides": {
+        "primary": {"base_color": "#d4c5a0", "roughness": 0.79, "metallic": 0.0},
+        "secondary": {"base_color": "#c9bb99", "roughness": 0.81, "metallic": 0.0},
+        "roof": {"base_color": "#687c6d", "roughness": 0.52, "metallic": 0.48}
+      }
+    },
     "monumental_courthouse_axis": {
       "identity": "Axial courthouse with a projecting temple front, tall fluted colonnade, deep entablature, judicial stair and severe symmetrical wings.",
       "material_zones": "light granite and limestone; bronze entrance doors; dark recessed glazing",
@@ -333,6 +349,12 @@
     },
     "collegiate_gothic_jacobethan": {
       "identity": "Symmetrical Jacobethan collegiate manor with red Flemish-bond brick, pale stone quoins and strapwork, five fixed shaped gables, a projecting centre bay, classical entrance porch, steep slate quadrangle roofs and dense grouped chimney stacks.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["five shaped Dutch gables and finials", "projecting centre pavilion and classical porch", "fixed terminal pavilions and pale stone strapwork", "quadrangle roof and grouped chimney clusters"],
+        "repeatable_capacity": ["ordinary red-brick bays between the fixed gabled pavilions"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "warm handmade red brick; pale carved Portland stone; dark leaded occupied glazing; blue-black Welsh slate; dark oak entrance doors",
       "glass_profile": "residential_low_e",
       "dimension_overrides": {"width_m": 60.0, "depth_m": 45.0, "default_floors": 3, "crown_height_m": 1.1},
@@ -1138,6 +1160,12 @@
     },
     "chateauesque_grand_railway_hotel": {
       "identity": "Grand railway hotel with a powerful central pavilion, corner turrets, steep copper-and-slate roofscape, dense dormers, chimneys and porte-cochere arrival.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["square entrance tower and supported porte-cochere", "conical corner turrets and finials", "projecting gabled pavilions", "steep multi-part roof and crenellated skyline"],
+        "repeatable_capacity": ["ordinary guest-room bays within the subordinate hotel wings"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "warm sandstone; greened copper and slate; dark iron; glowing grand windows",
       "material_overrides": {"roof": {"base_color": "#6f9a8b", "roughness": 0.56, "metallic": 0.56, "texture_key": "verdigris_copper"}, "accent": {"base_color": "#52716c", "roughness": 0.46, "metallic": 0.42}},
       "signature_material_overrides": {"signature_stone": {"base_color": "#d8cbb1", "roughness": 0.78, "texture_key": "sandstone"}},
@@ -1205,6 +1233,82 @@
           {"id": "hotel_entry_steps", "kind": "steps", "centre": [0.0, -19.55, 0.0], "width_m": 13.5, "depth_m": 1.0, "count": 4, "rise_m": 0.14, "material": "signature_stone"}
         ],
         "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
+    "scottish_baronial_granite_tower": {
+      "extends": "chateauesque_grand_railway_hotel",
+      "identity": "Pink-grey granite Scottish Baronial railway hotel with a fixed crenellated gate tower, crow-stepped gables, dark conical turrets, arched arrival portal and deep urban perimeter mass.",
+      "material_zones": "pink-grey rusticated granite; smoother granite dressings; charcoal natural slate; black iron; warm occupied sash windows",
+      "material_overrides": {
+        "primary": {"base_color": "#a98f80", "roughness": 0.84, "metallic": 0.0},
+        "secondary": {"base_color": "#b9a393", "roughness": 0.82, "metallic": 0.0},
+        "accent": {"base_color": "#292d31", "roughness": 0.42, "metallic": 0.48},
+        "roof": {"base_color": "#353b43", "roughness": 0.62, "metallic": 0.04}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#ad9587", "roughness": 0.84, "metallic": 0.0},
+        "signature_metal": {"base_color": "#25292d", "roughness": 0.40, "metallic": 0.52}
+      },
+      "massing_graph": {
+        "profile": "scottish_baronial_granite_v67",
+        "description": "Variant-locked, broad five-storey Scottish Baronial hotel with a crenellated gate tower, granite turrets, crow-stepped pavilion faces and dark-slate roof authority.",
+        "height_m": 31.7,
+        "reference_dimensions": {"width_m": 55.0, "depth_m": 36.0, "floors": 5, "floor_height_m": 4.0},
+        "remove_node_ids": ["hotel_port_cochere", "hotel_port_cochere_soffit"],
+        "remove_assembly_ids": ["hotel_port_cochere_columns"],
+        "node_overrides": {
+          "hotel_shadow_core": {"size": [53.5, 34.5, 20.8], "location": [0.0, 0.0, 10.4]},
+          "hotel_main_roof": {"size": [55.2, 35.4, 5.6], "location": [0.0, 0.0, 20.8]},
+          "hotel_centre_pavilion": {"size": [13.0, 5.0, 24.8], "location": [0.0, -17.2, 12.4]},
+          "hotel_centre_gable": {"size": [13.6, 6.0, 5.8], "location": [0.0, -17.2, 24.8]},
+          "hotel_left_square_tower": {"size": [9.2, 9.2, 27.0], "location": [-18.0, -14.5, 13.5]},
+          "hotel_right_turret": {"radius_m": 3.7, "height_m": 24.0, "location": [18.5, -15.0, 12.0], "material": "primary"},
+          "hotel_right_turret_roof": {"radius_m": 4.1, "height_m": 6.8, "location": [18.5, -15.0, 27.4]},
+          "hotel_rear_turret": {"radius_m": 3.0, "height_m": 21.5, "location": [22.0, 14.8, 10.75], "material": "primary"},
+          "hotel_rear_turret_roof": {"radius_m": 3.4, "height_m": 6.0, "location": [22.0, 14.8, 24.5]},
+          "hotel_left_pavilion": {"size": [9.0, 4.8, 21.5], "location": [-11.5, -17.0, 10.75]},
+          "hotel_left_pavilion_gable": {"size": [9.6, 5.8, 4.8], "location": [-11.5, -17.0, 21.5]},
+          "hotel_right_pavilion": {"size": [9.0, 4.8, 21.5], "location": [11.5, -17.0, 10.75]},
+          "hotel_right_pavilion_gable": {"size": [9.6, 5.8, 4.8], "location": [11.5, -17.0, 21.5]},
+          "hotel_cornice_front": {"location": [0.0, -17.55, 20.9]},
+          "hotel_cornice_rear": {"location": [0.0, 17.55, 20.9]},
+          "hotel_turret_finial": {"location": [18.5, -15.0, 31.25]}
+        },
+        "assembly_overrides": {
+          "hotel_front_elevation": {"centre": [0.0, -17.275, 10.4], "height_m": 20.6},
+          "hotel_left_elevation": {"centre": [-26.775, 0.0, 10.4], "height_m": 20.6},
+          "hotel_rear_elevation": {"centre": [0.0, 17.275, 10.4], "height_m": 20.6},
+          "hotel_right_elevation": {"centre": [26.775, 0.0, 10.4], "height_m": 20.6},
+          "hotel_centre_elevation": {"centre": [0.0, -19.725, 12.35], "height_m": 24.4},
+          "hotel_left_tower_elevation": {"centre": [-18.0, -19.125, 13.45], "height_m": 26.5},
+          "hotel_left_pavilion_elevation": {"centre": [-11.5, -19.425, 10.7], "height_m": 21.0},
+          "hotel_right_pavilion_elevation": {"centre": [11.5, -19.425, 10.7], "height_m": 21.0},
+          "hotel_centre_left_return": {"centre": [-6.525, -17.2, 12.35], "height_m": 24.4},
+          "hotel_centre_right_return": {"centre": [6.525, -17.2, 12.35], "height_m": 24.4},
+          "hotel_left_pavilion_outer_return": {"centre": [-16.025, -17.0, 10.7], "height_m": 21.0},
+          "hotel_left_pavilion_inner_return": {"centre": [-6.975, -17.0, 10.7], "height_m": 21.0},
+          "hotel_right_pavilion_inner_return": {"centre": [6.975, -17.0, 10.7], "height_m": 21.0},
+          "hotel_right_pavilion_outer_return": {"centre": [16.025, -17.0, 10.7], "height_m": 21.0},
+          "hotel_left_tower_outer_return": {"centre": [-22.625, -14.5, 13.45], "height_m": 26.5},
+          "hotel_left_tower_inner_return": {"centre": [-13.375, -14.5, 13.45], "height_m": 26.5},
+          "hotel_front_glazing": {"centre": [0.0, -17.275, 10.4], "height_m": 20.6, "rows": 5},
+          "hotel_left_glazing": {"centre": [-26.775, 0.0, 10.4], "height_m": 20.6, "rows": 5},
+          "hotel_rear_glazing": {"centre": [0.0, 17.275, 10.4], "height_m": 20.6, "rows": 5},
+          "hotel_right_glazing": {"centre": [26.775, 0.0, 10.4], "height_m": 20.6, "rows": 5},
+          "hotel_centre_glazing": {"centre": [0.0, -19.725, 12.35], "height_m": 24.4, "rows": 6},
+          "hotel_left_tower_glazing": {"centre": [-18.0, -19.125, 13.45], "height_m": 26.5, "rows": 6},
+          "hotel_left_pavilion_glazing": {"centre": [-11.5, -19.425, 10.7], "height_m": 21.0, "rows": 5},
+          "hotel_right_pavilion_glazing": {"centre": [11.5, -19.425, 10.7], "height_m": 21.0, "rows": 5},
+          "hotel_left_tower_battlements": {"base_centre": [-18.0, -19.25, 26.7]},
+          "hotel_left_tower_side_battlements": {"base_centre": [-22.75, -14.5, 26.7]},
+          "hotel_entry_steps": {"centre": [-18.0, -19.55, 0.0], "width_m": 8.0}
+        },
+        "presentation_camera": {"hero_side": "right"},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png", "cues": ["pink-grey granite", "crenellated gate tower", "crow-stepped gables", "conical corner turrets"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg", "cues": ["deep perimeter mass", "asymmetric tower hierarchy", "steep slate roof"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg", "cues": ["multi-wing roof", "tower and turret distribution", "chimney skyline"]}
+        ]
       }
     },
     "eixample_apartment_block": {

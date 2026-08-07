@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-07-fidelity-refinement-v66",
+  "memory_version": "2026-08-07-variant-atlas-lock-v67",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -70,6 +70,10 @@
     {
       "id": "variants_are_independent_targets",
       "rule": "A materially or geometrically distinct catalogue variant owns its signature profile, reference provenance, physical atlas span and fixed massing assemblies; never inherit the parent family blindly."
+    },
+    {
+      "id": "variant_atlas_matches_selected_reference",
+      "rule": "A selected variant may inherit reusable geometry but never a parent or sibling photographic facade sheet. Resolve and audit the exact variant reference before facade generation, and keep roof, tower and gable imagery out of repeatable rectangular wall crops."
     },
     {
       "id": "variant_identity_survives_export",
@@ -592,6 +596,11 @@
       "symptom": "A correctly stepped Art Deco tower still reads as a generic curtain-wall office",
       "cause": "Ziggurat massing was correct, but a universal glass grid replaced the reference's punched terra-cotta window rhythm and vertical masonry piers.",
       "correction": "Repeat the audited terra-cotta floor band vertically within each fixed shaft tier, align physical piers to the atlas cadence, and keep the podium, setback caps, faceted crown and finial as fixed assemblies."
+    },
+    {
+      "symptom": "A variant has plausible geometry but visibly belongs to another sibling archetype",
+      "cause": "The renderer reused a family-level facade atlas generated from the parent hero image, so a variant-specific material and storey contract was overwritten by an older photographic skin.",
+      "correction": "Create or resolve an orthographic elevation from the exact selected variant, record audited X/Y band schedules, and bind the facade sheet by variant provenance. Use wall-only crops on repeatable skins; build towers, turrets, roofs and shaped gables as fixed geometry with their own materials."
     }
   ]
 }

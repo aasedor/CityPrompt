@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-07-fidelity-refinement-v66`.
+Current executable memory: `2026-08-07-variant-atlas-lock-v67`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -461,6 +461,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
   subordinate. Use the same warm stone PBR family, shallow projections and
   narrow profiles; validate in Google Tiles because bright runtime exposure can
   turn a restrained offline course into detached white trim.
+
+### V67 exact-variant facade lock lessons
+
+The three-archetype expansion caught a failure that structural validation did
+not: a Scottish Baronial graph rendered with the older Chateauesque family
+atlas. The object was technically complete but visibly belonged to a different
+building. Treat facade imagery as variant identity, not family styling.
+
+- Resolve the exact selected variant before making or reusing a facade sheet.
+  A sibling may inherit graph structure, but never a parent or sibling photo
+  atlas unless the references are demonstrably the same building target.
+- Generate a clean orthographic elevation from the selected archetype and keep
+  its prompt/reference provenance. Audit normalized storey and side-bay crops
+  before they become modular bands.
+- Repeatable wall skins contain ordinary wall and opening cadence only. Remove
+  sky, isolation background, roofs, shaped gables, towers and turrets from the
+  rectangular identity crop; those silhouette cues remain fixed geometry.
+- A passing GLB/extent report does not promote the pilot. In this run the civic
+  portico was strong, the Jacobethan quadrangle required centre-bay revision,
+  and the Scottish hotel remained a visual failure because its turret/return
+  construction and tower hierarchy diverged in oblique view.
 
 ## Updating this memory
 

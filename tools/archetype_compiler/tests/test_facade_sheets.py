@@ -362,6 +362,47 @@ def test_v66_refinement_adds_curve_native_and_crown_identity():
     assert registry["generation_profile"]["presentation_view_set"] == "all"
 
 
+def test_v67_variant_profiles_inherit_fixed_massing_without_losing_variant_materials():
+    from signature_profiles import inject_signature
+
+    def injected(archetype_id: str, variant_id: str) -> dict:
+        grammar = {
+            "source": {"archetype_id": archetype_id, "variant_id": variant_id},
+            "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+            "dimensions": {},
+        }
+        return inject_signature(grammar, archetype_id, variant_id=variant_id)
+
+    civic = injected("civic_classical_building", "civic_classical_limestone_ionic")
+    assert civic["massing_graph"]["profile"] == "classical_civic_portico_hero"
+    assert civic["materials"]["roof"]["base_color"] == "#687c6d"
+    assert civic["architectural_signature"]["production_contract"]["identity_mode"] == "massing_graph"
+
+    hotel = injected("chateauesque_grand_railway_hotel", "scottish_baronial_granite_tower")
+    assert hotel["massing_graph"]["profile"] == "scottish_baronial_granite_v67"
+    assert len(hotel["massing_graph"]["nodes"]) >= 12
+    assert len(hotel["massing_graph"]["reference_views"]) == 3
+    assert hotel["massing_graph"]["reference_dimensions"]["floors"] == 5
+    assert not any(
+        node["id"] == "hotel_port_cochere"
+        for node in hotel["massing_graph"]["nodes"]
+    )
+    assert next(
+        node for node in hotel["massing_graph"]["nodes"]
+        if node["id"] == "hotel_right_turret"
+    )["material"] == "primary"
+    assert hotel["materials"]["roof"]["base_color"] == "#353b43"
+
+    registry = json.loads(
+        (Path(__file__).parents[1] / "worldclass_three_pilots_v67.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert len(registry["entries"]) == 3
+    assert all(entry.get("variant_id") for entry in registry["entries"])
+    assert registry["generation_profile"]["strict_production_preflight"] is True
+
+
 def test_facade_prompts_pin_texture_map_and_forbid_scene_completion():
     pytest.importorskip("PIL")
     pytest.importorskip("numpy")
