@@ -1346,6 +1346,7 @@ def add_pointed_arch_frame(
     profile: float,
     mat,
     back_mat=None,
+    back_plane_y: float | None = None,
 ) -> None:
     """Build a projected lancet surround from real jambs and converging arch stones.
 
@@ -1384,10 +1385,33 @@ def add_pointed_arch_frame(
         (centre_x, front_y, base_z + profile * 0.36), mat, bevel,
     ))
     if back_mat is not None:
-        parts.append(add_box(
-            f"{prefix}_Recess", (inner_width * 0.94, 0.045, apex_z - base_z - profile * 0.45),
-            (centre_x, front_y + depth * 0.58, base_z + (apex_z - base_z) / 2), back_mat,
-        ))
+        recess_half = inner_width * 0.47
+        recess_base = base_z + profile * 0.20
+        recess_spring = spring_z - profile * 0.10
+        recess_apex = apex_z - profile * 0.20
+        recess_y = front_y + depth * 0.58 if back_plane_y is None else back_plane_y
+        thickness = 0.045
+        profile_xz = [
+            (centre_x - recess_half, recess_base),
+            (centre_x - recess_half, recess_spring),
+            (centre_x, recess_apex),
+            (centre_x + recess_half, recess_spring),
+            (centre_x + recess_half, recess_base),
+        ]
+        count = len(profile_xz)
+        verts = [
+            (x, recess_y - thickness / 2, z) for x, z in profile_xz
+        ] + [
+            (x, recess_y + thickness / 2, z) for x, z in profile_xz
+        ]
+        faces: list[tuple[int, ...]] = [
+            tuple(reversed(range(count))),
+            tuple(range(count, count * 2)),
+        ]
+        for index in range(count):
+            nxt = (index + 1) % count
+            faces.append((index, nxt, count + nxt, count + index))
+        parts.append(add_prism(f"{prefix}_Recess", verts, faces, back_mat))
 
 
 def add_frame_bars(
@@ -6490,6 +6514,20 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             (-0.075, 0.86), (0.00, 1.00), (0.075, 0.86),
             (0.455, 0.10), (0.50, 0.10), (0.50, 0.00),
         ]
+    elif profile_style == "crow_step":
+        # Scottish Baronial and northern European parapet gables need an
+        # unmistakably constructed stair-step silhouette.  Each horizontal
+        # tread and vertical riser is explicit geometry so the profile remains
+        # legible in the archetype-match camera and after LEGO-scale export.
+        outline = [
+            (-0.50, 0.00), (-0.50, 0.16), (-0.40, 0.16),
+            (-0.40, 0.32), (-0.30, 0.32), (-0.30, 0.48),
+            (-0.20, 0.48), (-0.20, 0.64), (-0.10, 0.64),
+            (-0.10, 0.82), (0.00, 1.00), (0.10, 0.82),
+            (0.10, 0.64), (0.20, 0.64), (0.20, 0.48),
+            (0.30, 0.48), (0.30, 0.32), (0.40, 0.32),
+            (0.40, 0.16), (0.50, 0.16), (0.50, 0.00),
+        ]
     else:
         # A sampled ogee/scroll outline reads as curved after the construction
         # bevel is applied, while remaining deterministic and inexpensive in GLB.
@@ -6543,20 +6581,22 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             f"{tag}_StoneScroll", x, width, height, depth,
             base_z, facade_y, stone, float(spec.get("bevel_m", 0.075)),
         ))
-        parts.append(extruded_profile(
-            f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
-            base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
-        ))
-        finial_radius = float(spec.get("finial_radius_m", 0.19))
-        finial_z = base_z + height + finial_radius * 1.15
-        parts.append(add_cylinder(
-            f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
-            (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
-        ))
-        parts.append(add_ellipsoid(
-            f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
-            (finial_radius, finial_radius, finial_radius), stone,
-        ))
+        if bool(spec.get("infill_enabled", True)):
+            parts.append(extruded_profile(
+                f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
+                base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
+            ))
+        if bool(spec.get("finial_enabled", True)):
+            finial_radius = float(spec.get("finial_radius_m", 0.19))
+            finial_z = base_z + height + finial_radius * 1.15
+            parts.append(add_cylinder(
+                f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
+                (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
+            ))
+            parts.append(add_ellipsoid(
+                f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
+                (finial_radius, finial_radius, finial_radius), stone,
+            ))
 
 
 def _graph_chimney_cluster_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7183,6 +7223,7 @@ def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
     add_pointed_arch_frame(
         parts, str(spec.get("id", "GraphPointedPortal")), cx, cy, base_z,
         spring_z, apex_z, width, depth, profile, stone, back,
+        float(spec["recess_plane_y"]) if spec.get("recess_plane_y") is not None else None,
     )
 
 

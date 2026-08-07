@@ -1,1 +1,2 @@
 docs/reviews/building-pilots-v67/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/scottish-baronial-v68/*.png filter=lfs diff=lfs merge=lfs -text

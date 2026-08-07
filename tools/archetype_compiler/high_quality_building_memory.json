@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-07-variant-atlas-lock-v67",
+  "memory_version": "2026-08-07-reference-fidelity-gate-v68",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -90,6 +90,14 @@
     {
       "id": "human_approval_controls_release",
       "rule": "Structural validation never implies archetype likeness. A generated family remains review-only until a named reviewer approves block, building, facade and orbit/context comparisons against the authoritative reference set."
+    },
+    {
+      "id": "silhouette_gate_is_regression_not_approval",
+      "rule": "Use a camera-locked OpenCV silhouette, roofline and aspect-ratio contract to catch gross drift, but never treat its pass as likeness approval. Pair it with explicit landmark hierarchy and roof-plan checks because an incorrect solid box can share the correct outer boundary."
+    },
+    {
+      "id": "reference_plan_voids_are_geometry",
+      "rule": "Courtyards, quadrangles, light wells and gate passages visible in an authoritative roof or aerial reference are fixed plan geometry. They may not survive only as metadata inside an otherwise solid massing core."
     },
     {
       "id": "angled_facades_keep_floor_bands",
@@ -332,6 +340,11 @@
     "fail": "Do not import; retain logs and inputs for a resumable retry."
   },
   "known_failure_patterns": [
+    {
+      "symptom": "A model passes silhouette comparison but still has the wrong tower hierarchy or a missing courtyard",
+      "cause": "The image metric measures the normalized exterior boundary and roofline but cannot see internal plan voids or distinguish which landmark produced each skyline peak.",
+      "correction": "Keep the silhouette test as a regression gate, then audit named landmark positions, relative heights and the roof-plan occupancy mask against every compatible reference view before visual approval."
+    },
     {
       "symptom": "Boxy or cartoonish building",
       "cause": "Generic rectangular massing with identity delegated to a flat image.",

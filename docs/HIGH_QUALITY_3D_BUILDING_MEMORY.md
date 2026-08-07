@@ -483,6 +483,32 @@ building. Treat facade imagery as variant identity, not family styling.
   and the Scottish hotel remained a visual failure because its turret/return
   construction and tower hierarchy diverged in oblique view.
 
+### V68 camera-locked fidelity and plan reconstruction lessons
+
+The Scottish Baronial rebuild added a no-install OpenCV measurement stage and
+used the existing Blender compiler to replace the inherited solid hotel core
+with a reference-derived perimeter quadrangle.
+
+- Measure the exact presentation camera, not an arbitrary crop. Normalize the
+  audited reference outline and extracted render silhouette, then record
+  silhouette intersection-over-union, roofline error and aspect-ratio error in
+  a versioned contract. This is a cheap regression gate before human review.
+- A high silhouette score is not proof of archetype likeness. The failed v67
+  model scored 0.901 because its outer boundary resembled the reference even
+  though its gate tower hierarchy and plan were wrong. The reconstructed v68
+  model scored 0.891 while materially improving the quadrangle, centered gate
+  tower, stepped gables and turret distribution.
+- Treat aerial and roof-plan references as construction evidence. The open
+  quadrangle must be separate front, side and rear wings in the graph; a void
+  entry beside a solid core is documentation, not geometry.
+- Do not add physical window kits merely because a fixed turret or tower can
+  accept them. If the tangent, recess and material registration are not
+  visually proven, the result can be pale floating panels over a good atlas.
+  Remove the duplicate assembly or author an audited local opening schedule.
+- Keep the result review-only when the primary massing improves but secondary
+  ornament remains simplified. V68 establishes the right reconstruction
+  method; it does not promote the Scottish pilot into the four-family gold set.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

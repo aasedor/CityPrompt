@@ -379,7 +379,7 @@ def test_v67_variant_profiles_inherit_fixed_massing_without_losing_variant_mater
     assert civic["architectural_signature"]["production_contract"]["identity_mode"] == "massing_graph"
 
     hotel = injected("chateauesque_grand_railway_hotel", "scottish_baronial_granite_tower")
-    assert hotel["massing_graph"]["profile"] == "scottish_baronial_granite_v67"
+    assert hotel["massing_graph"]["profile"] == "scottish_baronial_quadrangle_v68"
     assert len(hotel["massing_graph"]["nodes"]) >= 12
     assert len(hotel["massing_graph"]["reference_views"]) == 3
     assert hotel["massing_graph"]["reference_dimensions"]["floors"] == 5
@@ -387,10 +387,18 @@ def test_v67_variant_profiles_inherit_fixed_massing_without_losing_variant_mater
         node["id"] == "hotel_port_cochere"
         for node in hotel["massing_graph"]["nodes"]
     )
-    assert next(
-        node for node in hotel["massing_graph"]["nodes"]
-        if node["id"] == "hotel_right_turret"
-    )["material"] == "primary"
+    assert any(
+        void["id"] == "baronial_open_quadrangle"
+        for void in hotel["massing_graph"]["voids"]
+    )
+    assemblies = hotel["massing_graph"]["assemblies"]
+    assert any(item["kind"] == "striped_turret_array" for item in assemblies)
+    assert any(
+        item["kind"] == "shaped_gable_array"
+        and item.get("profile_style") == "crow_step"
+        for item in assemblies
+    )
+    assert any(item["kind"] == "pointed_portal" for item in assemblies)
     assert hotel["materials"]["roof"]["base_color"] == "#353b43"
 
     registry = json.loads(

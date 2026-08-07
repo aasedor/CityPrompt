@@ -84,6 +84,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "preflight_precedes_paid_generation",
         "human_approval_controls_release",
         "variant_atlas_matches_selected_reference",
+        "silhouette_gate_is_regression_not_approval",
+        "reference_plan_voids_are_geometry",
     } <= principle_ids
 
 
