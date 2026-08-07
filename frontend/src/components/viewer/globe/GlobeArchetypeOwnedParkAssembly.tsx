@@ -11,6 +11,7 @@ import {
   archetypeOwnedParkKitForFamily,
   type ArchetypeOwnedParkKitDefinition,
 } from './parkArchetypeOwnedKits';
+import { PARK_MESHY_ARCHETYPE_ASSETS } from './parkMeshyArchetypeAssets';
 
 const RENDER_ORDER = 148;
 
@@ -572,7 +573,11 @@ function FormalEvergreen({ x, y }: { x: number; y: number }) {
   </group>;
 }
 
-function ExactSurface({ kit, materialSlug = kit.slug }: { kit: ArchetypeOwnedParkKitDefinition; materialSlug?: string }) {
+function ExactSurface({ kit, materialSlug = kit.slug, variantId }: {
+  kit: ArchetypeOwnedParkKitDefinition;
+  materialSlug?: string;
+  variantId?: string;
+}) {
   const paver = useSkinMaterial(materialSlug, 'paver', [kit.widthM / 4, kit.depthM / 4]);
   const lawn = useSkinMaterial(materialSlug, 'lawn', [kit.widthM / 5, kit.depthM / 5]);
   const asphalt = useSkinMaterial(materialSlug, 'asphalt', [kit.widthM / 4, kit.depthM / 4]);
@@ -681,6 +686,16 @@ function ExactSurface({ kit, materialSlug = kit.slug }: { kit: ArchetypeOwnedPar
       <MetricGlb key={`${x}-${y}`} url={asset('steppingStump')} position={[x, y, 0.12]} />
     ))}
     <MetricGlb url={asset('boulders')} position={[12, -6, 0.12]} />
+    {variantId === 'nature_play_area_v0' && <MetricGlb
+      url={PARK_MESHY_ARCHETYPE_ASSETS.naturePlayGraniteBoulder.url}
+      position={[9.2, -7.4, 0.12]}
+      yaw={-0.36}
+    />}
+    {(variantId === 'nature_play_area_v1' || variantId === 'nature_play_area_v3') && <MetricGlb
+      url={PARK_MESHY_ARCHETYPE_ASSETS.naturePlaySandstoneBoulder.url}
+      position={[10.4, -6.2, 0.12]}
+      yaw={0.28}
+    />}
     {[[-16, -11], [-7, -13], [7, -13], [16, -11], [-16, 11], [-7, 13], [7, 13], [16, 11]].map(([x, y], index) => (
       <ExactTree key={`${x}-${y}`} x={x} y={y} scale={0.72 + (index % 3) * 0.08} />
     ))}
@@ -717,6 +732,10 @@ function ExactSurface({ kit, materialSlug = kit.slug }: { kit: ArchetypeOwnedPar
     {[[-20, -13], [-20, 13], [20, -13], [20, 13]].map(([x, y]) => (
       <MetricGlb key={`${x}-${y}`} url={asset('urn')} position={[x, y, 0.12]} />
     ))}
+    {variantId === 'memorial_garden_v1' && <>
+      <MetricGlb url={PARK_MESHY_ARCHETYPE_ASSETS.memorialWoodlandBench.url} position={[-11, -17, 0.12]} yaw={0.12} />
+      <MetricGlb url={PARK_MESHY_ARCHETYPE_ASSETS.memorialWoodlandBench.url} position={[11, 17, 0.12]} yaw={Math.PI + 0.12} />
+    </>}
     {[-22, 22].flatMap((x) => [-15, -5, 5, 15].map((y) => <FormalEvergreen key={`${x}-${y}`} x={x} y={y} />))}
   </>;
 
@@ -788,7 +807,7 @@ export function GlobeArchetypeOwnedParkAssembly({ familyId, boundary, terrainZ, 
   return <group renderOrder={RENDER_ORDER}>
     <mesh geometry={grassGeometry} position={[0, 0, baseZ - 0.015]} receiveShadow><meshStandardMaterial {...lawn} roughness={0.96} /></mesh>
     <group position={[fit.center.x, fit.center.y, baseZ]} rotation={[0, 0, fit.rotationRad]}>
-      <ExactSurface kit={adaptiveKit} materialSlug={materialSlug} />
+      <ExactSurface kit={adaptiveKit} materialSlug={materialSlug} variantId={variantId} />
     </group>
   </group>;
 }

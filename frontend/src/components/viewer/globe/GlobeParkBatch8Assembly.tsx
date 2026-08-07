@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react';
-import { useTexture } from '@react-three/drei';
+import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 import { batch27ParkSkinForSelection } from './parkBatch27Skins';
+import { PARK_MESHY_ARCHETYPE_ASSETS } from './parkMeshyArchetypeAssets';
 
 export interface Batch8ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -30,6 +31,21 @@ const SKIN_SLUG: Record<Batch8FamilyId, string> = {
 };
 
 interface MaterialMaps { map: THREE.Texture; normalMap: THREE.Texture; roughnessMap: THREE.Texture; aoMap: THREE.Texture }
+function ParkKitGlb({ url, position, yaw = 0 }: {
+  url: string; position: [number, number, number]; yaw?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const clone = useMemo(() => {
+    const next = scene.clone(true);
+    next.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true; mesh.receiveShadow = true; mesh.renderOrder = 149;
+    });
+    return next;
+  }, [scene]);
+  return <group position={position} rotation={[0, 0, yaw]}><group rotation={[Math.PI / 2, 0, 0]}><primitive object={clone} /></group></group>;
+}
 function useRoleMaps(slug: string, role: string, repeat = 3): MaterialMaps {
   const root = `/park-skins/${slug}/adaptive-v1/${role}`;
   const source = useTexture({ map: `${root}/albedo.jpg`, normalMap: `${root}/normal.png`, roughnessMap: `${root}/roughness.jpg`, aoMap: `${root}/ao.jpg` });
@@ -230,14 +246,23 @@ export function GlobeParkBatch8Assembly({ familyId, archetypeId, variantId, guid
   if (familyId === 'park_rewilding_reforestation_v1') {
     const count=Math.min(72,Math.max(20,Math.floor(frame.width*frame.height/700)));
     const prairie=variantId==='rewilding_ecological_restoration_zone_variant_0', interpretive=variantId==='rewilding_ecological_restoration_zone_variant_2', riparian=variantId==='rewilding_ecological_restoration_zone_variant_3';
-    if(prairie||interpretive||riparian){const treeCount=prairie?Math.min(12,Math.max(4,Math.floor(frame.width/22))):interpretive?Math.ceil(count*.34):Math.ceil(count*.48);return <group>
+    if(prairie||interpretive||riparian){const treeCount=prairie?Math.min(12,Math.max(4,Math.floor(frame.width/22))):interpretive?Math.ceil(count*.34):Math.ceil(count*.48);const habitat=(fx:number,fy:number)=>({x:frame.minX+frame.width*fx,y:frame.minY+frame.height*fy});const a=habitat(.24,.25),b=habitat(.74,.68);return <group>
       {Array.from({length:treeCount},(_,i)=>{const x=frame.minX+frame.width*(.08+((i*.337)%.84)),y=frame.minY+frame.height*(.08+((i*.581)%.84));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={prairie?.48:.58+(i%3)*.1} leaf={riparian?'#4f7056':'#637851'} young/>})}
       {prairie&&<><Segment from={{x:frame.minX+frame.width*.08,y:frame.minY+frame.height*.64}} to={{x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.28}} width={2.2} height={.24} z={terrainZ(frame.minX+frame.width*.5,frame.minY+frame.height*.50)+lift+.34} maps={timberMaps} color="#ffffff"/><mesh position={[frame.maxX-frame.width*.16,frame.maxY-frame.height*.24,terrainZ(frame.maxX-frame.width*.16,frame.maxY-frame.height*.24)+lift+.38]}><boxGeometry args={[Math.min(8,frame.width*.16),Math.min(5,frame.height*.12),.28]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh></>}
       {interpretive&&Array.from({length:5},(_,i)=>{const x=frame.minX+frame.width*(.16+i*.68/4),y=frame.minY+frame.height*(i%2?.30:.67),z=terrainZ(x,y)+lift;return <group key={i}><Boulder x={x} y={y} z={z} scale={1+(i%2)*.25}/><mesh position={[x+1.3,y,z+1.0]} rotation={[0,.12,0]}><boxGeometry args={[1.1,.1,1.35]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh></group>})}
       {riparian&&<><Segment from={{x:frame.minX+frame.width*.06,y:frame.minY+frame.height*.42}} to={{x:frame.maxX-frame.width*.06,y:frame.maxY-frame.height*.35}} width={Math.max(4,frame.width*.07)} height={.18} z={terrainZ(frame.minX+frame.width*.5,frame.minY+frame.height*.53)+lift+.05} maps={safetyMaps} color="#6c8790"/>{Array.from({length:12},(_,i)=>{const x=frame.minX+frame.width*(.1+i*.8/11),y=frame.minY+frame.height*(.42+i*.18/11)+(i%2?2:-2),z=terrainZ(x,y)+lift;return <group key={i}><Boulder x={x} y={y} z={z} scale={.65+(i%3)*.12}/>{i%4===0&&<mesh position={[x,y+2,z+.32]} rotation={[0,Math.PI/2,.12]}><cylinderGeometry args={[.16,.23,3.4,8]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh>}</group>})}</>}
+      {prairie&&<><ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingStandingSnag.url} position={[b.x,b.y,terrainZ(b.x,b.y)+lift]} yaw={.32}/><ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingBrushPile.url} position={[a.x,a.y,terrainZ(a.x,a.y)+lift]} yaw={-.24}/></>}
+      {interpretive && <ParkKitGlb
+        url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingHollowSnag.url}
+        position={[b.x, b.y, terrainZ(b.x, b.y) + lift]}
+        yaw={-0.2}
+      />}
+      {riparian&&<><ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingRootWad.url} position={[a.x,a.y,terrainZ(a.x,a.y)+lift]} yaw={.15}/><ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingBrushPile.url} position={[b.x,b.y,terrainZ(b.x,b.y)+lift]} yaw={-.42}/></>}
     </group>}
-    return <group>{Array.from({length:count},(_,i)=>{const x=frame.minX+frame.width*(0.06+((i*.283)%0.88)); const y=frame.minY+frame.height*(0.06+((i*.491)%0.88)); return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={0.62+(i%4)*0.12} leaf={i%2?'#64805a':'#55704a'} young />;})}
+    const snag={x:frame.minX+frame.width*.72,y:frame.minY+frame.height*.68};const brush={x:frame.minX+frame.width*.28,y:frame.minY+frame.height*.24};return <group>{Array.from({length:count},(_,i)=>{const x=frame.minX+frame.width*(0.06+((i*.283)%0.88)); const y=frame.minY+frame.height*(0.06+((i*.491)%0.88)); return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={0.62+(i%4)*0.12} leaf={i%2?'#64805a':'#55704a'} young />;})}
       {Array.from({length:Math.min(10,Math.max(3,Math.floor(frame.width/24)))},(_,i)=>{const x=frame.minX+frame.width*(0.12+((i*.37)%0.76)); const y=frame.minY+frame.height*(0.18+((i*.53)%0.64)); const z=terrainZ(x,y)+lift; return <group key={i}>{[-1,0,1].map((n)=><mesh key={n} position={[x+n*0.8,y,z+0.35]} rotation={[0,Math.PI/2,n*.18]}><cylinderGeometry args={[0.18,0.28,3.4,8]} /><meshStandardMaterial {...timberMaps} color="#69523c" roughness={0.98} /></mesh>)}</group>;})}
+      <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingHollowSnag.url} position={[snag.x,snag.y,terrainZ(snag.x,snag.y)+lift]} yaw={.18}/>
+      <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.rewildingBrushPile.url} position={[brush.x,brush.y,terrainZ(brush.x,brush.y)+lift]} yaw={-.31}/>
     </group>;
   }
 

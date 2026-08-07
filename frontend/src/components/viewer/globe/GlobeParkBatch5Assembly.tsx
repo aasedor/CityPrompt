@@ -8,6 +8,7 @@ import {
 } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch18ParkSkinForSelection } from './parkBatch18Skins';
+import { PARK_MESHY_ARCHETYPE_ASSETS } from './parkMeshyArchetypeAssets';
 
 export interface Batch5ProgramFrame {
   minX: number;
@@ -192,6 +193,7 @@ export function GlobeParkBatch5Assembly({
       {index===1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-windmill.glb" position={[0,0,0.04]} />}
       {index===3&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-bridge.glb" position={[0,0,0.04]} yaw={Math.PI / 2} />}
       {index===4&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-loop.glb" position={[0,0,0.04]} />}
+      {variantId==='mini_golf_course_v3'&&index===2&&<ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.miniGolfRockObstacle.url} position={[0,0,0.04]} yaw={Math.PI/2} />}
       {index===lanes.length-1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-cup-flag.glb" position={[s.width*.32,0,0.04]} />}
     </group>;})}</group>;
   }
@@ -206,12 +208,18 @@ export function GlobeParkBatch5Assembly({
 
   if (familyId === 'park_pollinator_prairie_v0') {
     const nodes = [{x:frame.minX+frame.width*0.16,y:frame.minY+frame.height*0.20},{x:frame.minX+frame.width*0.82,y:frame.minY+frame.height*0.72}];
-    return <group>{nodes.map((p,index)=>{const z=terrainZ(p.x,p.y)+lift;return <group key={index} position={[p.x,p.y,z]}><mesh position={[0,0,0.55]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.05,0.07,1.1,8]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#7a6248'} roughness={0.88}/></mesh><mesh position={[0,0,1.05]} rotation={[0.65,0,0]}><boxGeometry args={[1.15,0.08,0.7]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#a79673'} roughness={0.82}/></mesh></group>;})}</group>;
+    const hotel = { x: frame.minX + frame.width * 0.77, y: frame.minY + frame.height * 0.22 };
+    return <group>{nodes.map((p,index)=>{const z=terrainZ(p.x,p.y)+lift;return <group key={index} position={[p.x,p.y,z]}><mesh position={[0,0,0.55]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.05,0.07,1.1,8]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#7a6248'} roughness={0.88}/></mesh><mesh position={[0,0,1.05]} rotation={[0.65,0,0]}><boxGeometry args={[1.15,0.08,0.7]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#a79673'} roughness={0.82}/></mesh></group>;})}
+      <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.pollinatorInsectHotel.url} position={[hotel.x, hotel.y, terrainZ(hotel.x, hotel.y) + lift]} yaw={-0.25} />
+    </group>;
   }
 
   if (familyId === 'park_orchard_heritage_v0') {
     const rows=guides.filter((guide)=>guide.kind==='line').slice(1,6);
-    return <group>{rows.flatMap((row,rowIndex)=>{const r=route(row,frame);if(r.length<2)return[];const length=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y);const count=Math.max(4,Math.min(14,Math.floor(length/7)));return Array.from({length:count},(_,index)=>{const t=(index+0.5)/count;const x=r[0].x+(r[1].x-r[0].x)*t;const y=r[0].y+(r[1].y-r[0].y)*t;const z=terrainZ(x,y)+lift;return <group key={`${rowIndex}-${index}`} position={[x,y,z]}><mesh position={[0,0,1.25]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.13,0.18,2.5,9]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#7b5a3e'} roughness={0.95}/></mesh><mesh position={[0,0,2.7]} scale={[1.3,1.1,0.9]}><sphereGeometry args={[1.25,12,8]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : rowIndex%2?'#6a8054':'#74875b'} roughness={0.98}/></mesh>{[-0.6,0.2,0.65].map((offset,fruit)=><mesh key={fruit} position={[offset,fruit*0.25,2.8+fruit*0.15]}><sphereGeometry args={[0.09,8,6]}/><meshStandardMaterial color="#a34532" roughness={0.75}/></mesh>)}</group>;});})}</group>;
+    const potting = { x: frame.maxX - frame.width * 0.13, y: frame.minY + frame.height * 0.16 };
+    return <group>{rows.flatMap((row,rowIndex)=>{const r=route(row,frame);if(r.length<2)return[];const length=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y);const count=Math.max(4,Math.min(14,Math.floor(length/7)));return Array.from({length:count},(_,index)=>{const t=(index+0.5)/count;const x=r[0].x+(r[1].x-r[0].x)*t;const y=r[0].y+(r[1].y-r[0].y)*t;const z=terrainZ(x,y)+lift;return <group key={`${rowIndex}-${index}`} position={[x,y,z]}><mesh position={[0,0,1.25]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.13,0.18,2.5,9]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#7b5a3e'} roughness={0.95}/></mesh><mesh position={[0,0,2.7]} scale={[1.3,1.1,0.9]}><sphereGeometry args={[1.25,12,8]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : rowIndex%2?'#6a8054':'#74875b'} roughness={0.98}/></mesh>{[-0.6,0.2,0.65].map((offset,fruit)=><mesh key={fruit} position={[offset,fruit*0.25,2.8+fruit*0.15]}><sphereGeometry args={[0.09,8,6]}/><meshStandardMaterial color="#a34532" roughness={0.75}/></mesh>)}</group>;});})}
+      <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.productiveGardenPottingBench.url} position={[potting.x, potting.y, terrainZ(potting.x, potting.y) + lift]} yaw={Math.PI} />
+    </group>;
   }
 
   if (familyId === 'park_bioswale_streetside_v0') {
@@ -221,7 +229,9 @@ export function GlobeParkBatch5Assembly({
 
   if (familyId === 'park_sculpture_museum_court_v0') {
     const plinths=guides.filter((guide)=>guide.kind==='rectangle');
-    return <group>{plinths.map((guide,index)=>{const c=center(guide,frame);const s=resolveParkGuideDimensionsM(guide,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]}><mesh position={[0,0,0.25]}><boxGeometry args={[s.width,s.height,0.5]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#aaa295'} roughness={0.86}/></mesh>{index%3===0?<><mesh position={[-0.45,0,2.0]} rotation={[0.1,0.2,0.25]}><boxGeometry args={[0.38,0.55,3.4]}/><meshStandardMaterial color="#714332" metalness={0.38} roughness={0.72}/></mesh><mesh position={[0.45,0,1.8]} rotation={[-0.2,0.4,-0.25]}><boxGeometry args={[0.34,0.5,3.0]}/><meshStandardMaterial color="#714332" metalness={0.38} roughness={0.72}/></mesh></>:index%3===1?<mesh position={[0,0,1.7]} rotation={[0.2,0.3,0]}><torusKnotGeometry args={[0.72,0.22,64,10]}/><meshStandardMaterial color="#5b554c" metalness={0.45} roughness={0.5}/></mesh>:<mesh position={[0,0,1.55]}><dodecahedronGeometry args={[1.25,0]}/><meshStandardMaterial color="#9d9484" roughness={0.75}/></mesh>}</group>;})}</group>;
+    return <group>{plinths.map((guide,index)=>{const c=center(guide,frame);const s=resolveParkGuideDimensionsM(guide,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]}><mesh position={[0,0,0.25]}><boxGeometry args={[s.width,s.height,0.5]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#aaa295'} roughness={0.86}/></mesh>{index%2===0
+      ? <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.sculptureCortenLoop.url} position={[0,0,0.5]} yaw={index * 0.31} />
+      : <ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.sculptureStonePortal.url} position={[0,0,0.5]} yaw={index * -0.27} />}</group>;})}</group>;
   }
 
   if (familyId === 'park_labyrinth_classical_v0') {
