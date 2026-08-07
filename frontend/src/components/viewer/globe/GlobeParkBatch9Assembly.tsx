@@ -5,6 +5,7 @@ import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
+import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 
 export interface Batch9ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -71,7 +72,8 @@ function WaterJet({ x, y, z, height }: { x: number; y: number; z: number; height
 
 export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; archetypeId?: string; variantId?: string; guides: ParkGroundGuide[]; frame: Batch9ProgramFrame; terrainZ: (x: number, y: number) => number }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
-  const selectedSkin = batch22ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
+  const selectedSkin = batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
+    ?? batch22ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
   const slug = selectedSkin?.slug ?? SKIN_SLUG[familyId as Batch9FamilyId];
   const variantSkin = selectedSkin !== null;
   const paverMaps = useRoleMaps(slug, 'paver'); const plantingMaps = useRoleMaps(slug, 'planting', 5); const safetyMaps = useRoleMaps(slug, 'safety'); const timberMaps = useRoleMaps(slug, 'timber');
@@ -106,7 +108,15 @@ export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guid
 
   if (familyId === 'park_french_parterre_axis_v1') {
     const axis=guides.find((g)=>g.kind==='axis');const points=axis?route(axis,frame):[];
-    return <group>{points.length===2&&<Segment from={points[0]} to={points[1]} width={4} height={.12} z={Math.max(terrainZ(points[0].x,points[0].y),terrainZ(points[1].x,points[1].y))+lift+.12} color="#668d94" />}{guides.filter((g)=>g.kind==='rectangle').map((guide,i)=>{const c=center(guide,frame);const s=resolveParkGuideDimensionsM(guide,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={i}><mesh position={[c.x,c.y,z+.24]}><boxGeometry args={[s.width,s.height,.48]} /><meshStandardMaterial {...plantingMaps} color={i%2?'#4f6543':'#566c46'} roughness={.97} /></mesh>{Array.from({length:4},(_,j)=>{const x=c.x+(j%2-.5)*s.width*.55;const y=c.y+(Math.floor(j/2)-.5)*s.height*.55;return <mesh key={j} position={[x,y,z+1]}><sphereGeometry args={[.8,10,7]} /><meshStandardMaterial color="#46603d" roughness={.98} /></mesh>})}</group>})}</group>;
+    const paved=variantId==='parisian_jardin_v3',rill=variantId==='parisian_jardin_v2',clipped=variantId==='parisian_jardin_v0';
+    const axisZ=points.length===2?Math.max(terrainZ(points[0].x,points[0].y),terrainZ(points[1].x,points[1].y))+lift+.12:lift;
+    return <group>
+      {paved&&<mesh position={[frame.minX+frame.width/2,frame.minY+frame.height/2,terrainZ(frame.minX+frame.width/2,frame.minY+frame.height/2)+lift+.10]}><boxGeometry args={[frame.width*.92,frame.height*.88,.20]}/><meshStandardMaterial {...paverMaps} color="#ffffff" roughness={.94}/></mesh>}
+      {points.length===2&&!paved&&<Segment from={points[0]} to={points[1]} width={clipped?2.4:rill?1.25:4} height={.12} z={axisZ} maps={clipped?paverMaps:undefined} color={variantSkin?'#ffffff':'#668d94'} />}
+      {points.length===2&&rill&&[-1,1].map((side)=><Segment key={side} from={{x:points[0].x+side*3,y:points[0].y}} to={{x:points[1].x+side*3,y:points[1].y}} width={.8} height={.10} z={axisZ+.02} color="#668d94"/>)}
+      {!paved&&guides.filter((g)=>g.kind==='rectangle').map((guide,i)=>{const c=center(guide,frame);const s=resolveParkGuideDimensionsM(guide,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={i}><mesh position={[c.x,c.y,z+.24]}><boxGeometry args={[s.width,s.height,.48]} /><meshStandardMaterial {...plantingMaps} color={variantSkin?'#ffffff':i%2?'#4f6543':'#566c46'} roughness={.97} /></mesh>{Array.from({length:clipped?6:4},(_,j)=>{const columns=clipped?3:2,x=c.x+(j%columns-(columns-1)/2)*s.width*.25;const y=c.y+(Math.floor(j/columns)-.5)*s.height*.55;return <mesh key={j} position={[x,y,z+1]}><sphereGeometry args={[clipped?.62:.8,10,7]} /><meshStandardMaterial color="#46603d" roughness={.98} /></mesh>})}</group>})}
+      {paved&&Array.from({length:6},(_,i)=>{const a=i*Math.PI*2/6,x=frame.minX+frame.width/2+Math.cos(a)*frame.width*.31,y=frame.minY+frame.height/2+Math.sin(a)*frame.height*.28;return <Planter key={i} x={x} y={y} z={terrainZ(x,y)+lift+.2} maps={paverMaps} radius={.52}/>})}
+    </group>;
   }
 
   if (familyId === 'park_london_railed_square_v1') {

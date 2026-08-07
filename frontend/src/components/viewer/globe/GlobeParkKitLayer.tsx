@@ -929,6 +929,8 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch10Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}
@@ -936,7 +938,7 @@ function ParkSpecialtyStructures({
     );
   }
   if (structureKind === 'batch11_archetype_assembly' && profileFamilyId) {
-    return <GlobeParkBatch11Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+    return <GlobeParkBatch11Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch12_archetype_assembly' && profileFamilyId) {
     return <GlobeParkBatch12Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;

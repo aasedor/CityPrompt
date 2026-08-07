@@ -5,6 +5,7 @@ import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import type { Batch10ProgramFrame as ProgramFrame } from './GlobeParkBatch10Assembly';
+import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 
 type Batch11FamilyId = Extract<ParkLegoFamilyId,
   | 'park_paris_place_royale_v2' | 'park_paris_square_tree_grid_v3' | 'park_london_circus_planted_v1'
@@ -24,10 +25,30 @@ const pt=(g:ParkGroundGuide,f:ProgramFrame)=>({x:f.minX+f.width*g.x,y:f.maxY-f.h
 function Segment({a,b,width,z,maps,color}:{a:{x:number;y:number};b:{x:number;y:number};width:number;z:number;maps?:Maps;color:string}) { const len=Math.hypot(b.x-a.x,b.y-a.y); return <mesh position={[(a.x+b.x)/2,(a.y+b.y)/2,z+.09]} rotation={[0,0,Math.atan2(b.y-a.y,b.x-a.x)]}><boxGeometry args={[len,width,.18]}/><meshStandardMaterial {...maps} color={color} roughness={.92}/></mesh>; }
 function Tree({x,y,z,coastal=false}:{x:number;y:number;z:number;coastal?:boolean}) { return <group position={[x,y,z]}><mesh position={[0,0,1.7]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.13,.21,3.4,8]}/><meshStandardMaterial color="#58483b" roughness={.98}/></mesh><mesh position={[0,0,coastal?4.0:4.1]} scale={coastal?[.75,.75,1.45]:[1.2,1.1,1]}><dodecahedronGeometry args={[1.35,1]}/><meshStandardMaterial color={coastal?'#425f48':'#55734c'} roughness={.99}/></mesh></group>; }
 function Shelter({x,y,z,maps,greenhouse=false}:{x:number;y:number;z:number;maps:Maps;greenhouse?:boolean}) { return <group position={[x,y,z]}>{[-1,1].flatMap(sx=>[-1,1].map(sy=><mesh key={`${sx}-${sy}`} position={[sx*2.2,sy*1.5,1.5]}><boxGeometry args={[.16,.16,3]}/><meshStandardMaterial {...maps} color="#775c43" roughness={.9}/></mesh>))}<mesh position={[0,0,3.1]}><boxGeometry args={[4.8,3.4,.22]}/>{greenhouse?<meshPhysicalMaterial color="#b8cfca" transparent opacity={.55} roughness={.18}/>:<meshStandardMaterial {...maps} color="#856547" roughness={.88}/>}</mesh></group>; }
+function CafeTable({x,y,z,maps}:{x:number;y:number;z:number;maps:Maps}) { return <group><mesh position={[x,y,z+.72]}><cylinderGeometry args={[.5,.5,.10,18]}/><meshStandardMaterial {...maps} color="#ffffff" roughness={.9}/></mesh><mesh position={[x,y,z+.36]}><cylinderGeometry args={[.06,.08,.68,8]}/><meshStandardMaterial color="#343936" metalness={.55} roughness={.5}/></mesh></group>; }
 
-export function GlobeParkBatch11Assembly({familyId,guides,frame,terrainZ}:{familyId:ParkLegoFamilyId;guides:ParkGroundGuide[];frame:ProgramFrame;terrainZ:(x:number,y:number)=>number}) {
-  const id=familyId as Batch11FamilyId, slug=SLUG[id], lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const paver=useMaps(slug,'paver'); const planting=useMaps(slug,'planting',5); const timber=useMaps(slug,'timber'); const safety=useMaps(slug,'safety');
+export function GlobeParkBatch11Assembly({familyId,archetypeId,variantId,guides,frame,terrainZ}:{familyId:ParkLegoFamilyId;archetypeId?:string;variantId?:string;guides:ParkGroundGuide[];frame:ProgramFrame;terrainZ:(x:number,y:number)=>number}) {
+  const id=familyId as Batch11FamilyId, variantSkin=batch23ParkSkinForSelection(archetypeId??'',variantId??''), slug=variantSkin?.slug??SLUG[id], lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const paver=useMaps(slug,'paver'); const planting=useMaps(slug,'planting',5); const timber=useMaps(slug,'timber'); const safety=useMaps(slug,'safety');
   const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift;
+  if (id==='park_paris_place_royale_v2'&&variantId&&variantId!=='parisian_place_v2') {
+    const statue=variantId==='parisian_place_v1',cafe=variantId==='parisian_place_v3';
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.94,frame.height*.90,.22]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      {statue&&<group position={[cx,cy,base+.22]}><mesh position={[0,0,.45]}><cylinderGeometry args={[1.45,1.65,.9,20]}/><meshStandardMaterial {...paver} color="#ffffff"/></mesh><mesh position={[0,0,1.65]}><boxGeometry args={[.7,.7,1.5]}/><meshStandardMaterial color="#4d5a54" metalness={.35} roughness={.62}/></mesh></group>}
+      {statue&&<Segment a={{x:cx,y:frame.minY+frame.height*.08}} b={{x:cx,y:frame.maxY-frame.height*.08}} width={3} z={base+.22} maps={paver} color="#ffffff"/>}
+      {Array.from({length:cafe?9:4},(_,i)=>{if(cafe){const cols=3,x=cx+(i%cols-1)*frame.width*.18,y=cy+(Math.floor(i/cols)-1)*frame.height*.18;return <CafeTable key={i} x={x} y={y} z={terrainZ(x,y)+lift+.22} maps={timber}/>;}const a=i*Math.PI/2,x=cx+Math.cos(a)*frame.width*.34,y=cy+Math.sin(a)*frame.height*.31;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift}/>;})}
+    </group>;
+  }
+  if (id==='park_paris_square_tree_grid_v3'&&variantId&&variantId!=='parisian_square_v3') {
+    const cafe=variantId==='parisian_square_v1',compact=variantId==='parisian_square_v2';
+    const treeCount=compact?4:cafe?5:Math.min(9,Math.max(4,Math.floor(frame.width/8)));
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.92,frame.height*.88,.22]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      {Array.from({length:treeCount},(_,i)=>{const x=variantId==='parisian_square_v0'?frame.minX+frame.width*(.12+i*.76/Math.max(1,treeCount-1)):cx+(i%2?1:-1)*frame.width*.27,y=variantId==='parisian_square_v0'?frame.minY+frame.height*.18:cy+(Math.floor(i/2)-.5)*frame.height*.26;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift}/>;})}
+      {cafe&&Array.from({length:6},(_,i)=>{const x=frame.maxX-frame.width*(.12+(i%2)*.10),y=frame.maxY-frame.height*(.14+Math.floor(i/2)*.12);return <CafeTable key={i} x={x} y={y} z={terrainZ(x,y)+lift+.22} maps={timber}/>})}
+      {compact&&<mesh position={[cx,cy,base+.42]}><cylinderGeometry args={[1.8,2.1,.62,20]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.98}/></mesh>}
+    </group>;
+  }
   const paths:ReactNode[]=[]; guides.forEach((g,gi)=>{if(g.kind==='polyline'&&g.points){const ps=g.points.map(([x,y])=>({x:frame.minX+frame.width*x,y:frame.maxY-frame.height*y}));ps.slice(0,-1).forEach((p,i)=>paths.push(<Segment key={`p-${gi}-${i}`} a={p} b={ps[i+1]} width={g.strokeWidthM??3} z={Math.max(terrainZ(p.x,p.y),terrainZ(ps[i+1].x,ps[i+1].y))+lift} maps={g.color==='#587f82'?undefined:paver} color={g.color}/>));}else if(g.kind==='axis'){const c=pt(g,frame),len=Math.max(g.widthM??0,g.heightM??0,g.width*frame.width,g.height*frame.height),a=(g.rotationDeg??90)*Math.PI/180;const p1={x:c.x-Math.cos(a)*len/2,y:c.y-Math.sin(a)*len/2},p2={x:c.x+Math.cos(a)*len/2,y:c.y+Math.sin(a)*len/2};paths.push(<Segment key={`a-${gi}`} a={p1} b={p2} width={g.strokeWidthM??3} z={Math.max(terrainZ(p1.x,p1.y),terrainZ(p2.x,p2.y))+lift} maps={paver} color={g.color}/>);}});
   const pads=guides.filter(g=>['rectangle','rounded_rectangle','ellipse'].includes(g.kind)).map((g,i)=>{const c=pt(g,frame),s=resolveParkGuideDimensionsM(g,frame),z=terrainZ(c.x,c.y)+lift,green=/^#(?:5|6|7|8|9)[0-9a-f]{5}$/i.test(g.color)&&g.color!=='#a8a49b';return <mesh key={i} position={[c.x,c.y,z+.12]} rotation={[0,0,(g.rotationDeg??0)*Math.PI/180]} scale={g.kind==='ellipse'?[s.width/2,s.height/2,1]:[1,1,1]}>{g.kind==='ellipse'?<cylinderGeometry args={[1,1,.24,32]}/>:<boxGeometry args={[s.width,s.height,.24]}/>}<meshStandardMaterial {...(green?planting:paver)} color={g.color} roughness={.93}/></mesh>});
   const coastal=id==='park_halifax_coastal_fog_path_v2'; const treeCount=id.includes('place_royale')?4:id.includes('seawall')?5:Math.min(20,Math.max(6,Math.floor(frame.width*frame.height/900)));

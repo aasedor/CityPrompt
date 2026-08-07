@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
+import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 
 export type Batch21ParkBaseRole = 'paver' | 'lawn' | 'planting';
 
@@ -24,7 +25,8 @@ export function resolveBatch21ParkBaseMaterial(
   archetypeId: string,
   variantId: string,
 ): Batch21ParkBaseMaterialSpec | null {
-  const skin = batch22ParkSkinForSelection(archetypeId, variantId)
+  const skin = batch23ParkSkinForSelection(archetypeId, variantId)
+    ?? batch22ParkSkinForSelection(archetypeId, variantId)
     ?? batch21ParkSkinForSelection(archetypeId, variantId);
   if (!skin) return null;
   if (archetypeId === 'athletics_precinct_sports_fields') {
@@ -32,6 +34,15 @@ export function resolveBatch21ParkBaseMaterial(
   }
   if (archetypeId === 'linear_park_greenway' || archetypeId === 'nature_preserve') {
     return { slug: skin.slug, role: 'planting', metersPerTile: 5.0 };
+  }
+  if (archetypeId === 'amsterdam_vondelpark'
+    || archetypeId === 'amsterdam_hofje_garden'
+    || archetypeId === 'barcelona_pati_interior'
+    || archetypeId === 'barcelona_superilla') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 4.0 };
+  }
+  if (archetypeId === 'parisian_jardin' && variantId !== 'parisian_jardin_v3') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 4.0 };
   }
   if (archetypeId === 'pond_lake' || archetypeId === 'stormwater_retention_pond' || archetypeId === 'riverfront_park_beach') {
     return { slug: skin.slug, role: 'lawn', metersPerTile: 5.0 };

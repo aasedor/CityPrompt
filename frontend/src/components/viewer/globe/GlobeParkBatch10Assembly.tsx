@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 
 export interface Batch10ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -71,10 +72,77 @@ function Canopy({ x, y, z, timberMaps, width = 5, depth = 3.4 }: { x: number; y:
   return <group position={[x,y,z]}>{[-1,1].flatMap((sx)=>[-1,1].map((sy)=><mesh key={`${sx}-${sy}`} position={[sx*width*.42,sy*depth*.40,1.6]}><boxGeometry args={[.16,.16,3.2]} /><meshStandardMaterial {...timberMaps} color="#76573e" roughness={.92} /></mesh>))}<mesh position={[0,0,3.22]}><boxGeometry args={[width,depth,.22]} /><meshStandardMaterial {...timberMaps} color="#8a6849" roughness={.90} /></mesh></group>;
 }
 
-export function GlobeParkBatch10Assembly({ familyId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; guides: ParkGroundGuide[]; frame: Batch10ProgramFrame; terrainZ: (x: number, y: number) => number }) {
-  const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const slug = SKIN_SLUG[familyId as Batch10FamilyId];
+export function GlobeParkBatch10Assembly({ familyId, archetypeId, variantId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; archetypeId?: string; variantId?: string; guides: ParkGroundGuide[]; frame: Batch10ProgramFrame; terrainZ: (x: number, y: number) => number }) {
+  const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const variantSkin = batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? ''); const slug = variantSkin?.slug ?? SKIN_SLUG[familyId as Batch10FamilyId];
   const paver = useRoleMaps(slug, 'paver'); const lawn = useRoleMaps(slug, 'lawn', 5); const planting = useRoleMaps(slug, 'planting', 5); const safety = useRoleMaps(slug, 'safety'); const timber = useRoleMaps(slug, 'timber');
   const cx=frame.minX+frame.width/2, cy=frame.minY+frame.height/2, base=terrainZ(cx,cy)+lift;
+
+  if (familyId === 'park_amsterdam_hofje_garden_v0' && variantId && variantId !== 'amsterdam_hofje_garden_v0') {
+    const historic = variantId === 'amsterdam_hofje_garden_v3';
+    const lush = variantId === 'amsterdam_hofje_garden_v1';
+    const bedCount = lush ? 8 : historic ? 4 : 5;
+    return <group>
+      <mesh position={[cx,cy,base+.1]}><boxGeometry args={[frame.width*.88,frame.height*.84,.2]}/><meshStandardMaterial {...(historic?lawn:paver)} color="#ffffff" roughness={.94}/></mesh>
+      <Segment from={{x:frame.minX+frame.width*.10,y:cy}} to={{x:frame.maxX-frame.width*.10,y:cy}} width={2.2} height={.16} z={base+.20} maps={paver} color="#ffffff"/>
+      <Segment from={{x:cx,y:frame.minY+frame.height*.10}} to={{x:cx,y:frame.maxY-frame.height*.10}} width={2.2} height={.16} z={base+.20} maps={paver} color="#ffffff"/>
+      {Array.from({length:bedCount},(_,i)=>{const a=i*Math.PI*2/bedCount,x=cx+Math.cos(a)*frame.width*(historic?.27:.30),y=cy+Math.sin(a)*frame.height*(historic?.25:.29),z=terrainZ(x,y)+lift;return <group key={i}><mesh position={[x,y,z+.28]} scale={[lush?1.25:1,1,1]}><boxGeometry args={[Math.min(5,frame.width*.15),Math.min(3,frame.height*.12),.56]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.98}/></mesh>{(lush||i%2===0)&&<Tree x={x} y={y} z={z+.56} scale={lush?.62:.52}/>}</group>})}
+      {historic&&[-1,1].map((s)=><Bench key={s} x={cx+s*frame.width*.18} y={cy+frame.height*.18} z={base+.3} rotation={0} maps={timber}/>) }
+    </group>;
+  }
+  if (familyId === 'park_amsterdam_plein_v0' && variantId && variantId !== 'amsterdam_plein_v0') {
+    const glass = variantId === 'amsterdam_plein_v1';
+    const cafe = variantId === 'amsterdam_plein_v2';
+    const tableCount = cafe ? Math.min(10,Math.max(4,Math.floor(frame.width/6))) : glass ? 4 : 2;
+    return <group>
+      <mesh position={[cx,cy,base+.12]}><boxGeometry args={[frame.width*.94,frame.height*.90,.24]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      {glass&&<group position={[cx,cy+frame.height*.12,base]}>{[-1,1].flatMap(sx=>[-1,1].map(sy=><mesh key={`${sx}-${sy}`} position={[sx*frame.width*.20,sy*frame.height*.13,1.6]}><boxGeometry args={[.15,.15,3.2]}/><meshStandardMaterial color="#454b49" metalness={.55} roughness={.45}/></mesh>))}<mesh position={[0,0,3.25]}><boxGeometry args={[frame.width*.44,frame.height*.30,.16]}/><meshPhysicalMaterial color="#b7cfcc" transparent opacity={.48} roughness={.16}/></mesh></group>}
+      {Array.from({length:tableCount},(_,i)=>{const cols=Math.ceil(tableCount/2),x=frame.minX+frame.width*(.18+(i%cols)*.64/Math.max(1,cols-1)),y=cy+(Math.floor(i/cols)-.5)*frame.height*.28,z=terrainZ(x,y)+lift;return <group key={i}><mesh position={[x,y,z+.75]}><cylinderGeometry args={[.55,.55,.10,18]}/><meshStandardMaterial {...timber} color="#ffffff"/></mesh><mesh position={[x,y,z+.38]}><cylinderGeometry args={[.06,.08,.72,8]}/><meshStandardMaterial color="#363b39" metalness={.5}/></mesh></group>})}
+      {Array.from({length:glass?4:6},(_,i)=>{const x=frame.minX+frame.width*(.12+i*.76/Math.max(1,(glass?3:5))),y=frame.minY+frame.height*.12;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.58}/>})}
+    </group>;
+  }
+  if (familyId === 'park_amsterdam_vondelpark_pavilion_v3' && variantId && variantId !== 'amsterdam_vondelpark_v3') {
+    const cafe = variantId === 'amsterdam_vondelpark_v1';
+    const planted = variantId === 'amsterdam_vondelpark_v2';
+    const treeCount = planted ? 16 : 10;
+    return <group>
+      <mesh position={[cx,cy,base+.10]} scale={[frame.width*.40,frame.height*.38,1]}><cylinderGeometry args={[1,1,.20,36]}/><meshStandardMaterial {...lawn} color="#ffffff" roughness={.98}/></mesh>
+      <Segment from={{x:frame.minX+frame.width*.08,y:frame.minY+frame.height*.28}} to={{x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.30}} width={3} height={.18} z={base+.20} maps={paver} color="#ffffff"/>
+      {cafe&&<Canopy x={frame.maxX-frame.width*.24} y={frame.maxY-frame.height*.23} z={terrainZ(frame.maxX-frame.width*.24,frame.maxY-frame.height*.23)+lift} timberMaps={timber} width={6} depth={4}/>}
+      {planted&&Array.from({length:5},(_,i)=>{const a=i*Math.PI*2/5,x=frame.minX+frame.width*.72+Math.cos(a)*frame.width*.12,y=frame.minY+frame.height*.30+Math.sin(a)*frame.height*.12;return <Planter key={i} x={x} y={y} z={terrainZ(x,y)+lift} maps={paver} width={3.2} depth={1.3}/>})}
+      {Array.from({length:treeCount},(_,i)=>{const x=frame.minX+frame.width*(.06+((i*.337)%.88)),y=frame.minY+frame.height*(.06+((i*.611)%.88));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.64+(i%3)*.07}/>})}
+    </group>;
+  }
+  if (familyId === 'park_barcelona_pati_green_v0' && variantId && variantId !== 'barcelona_pati_interior_v0') {
+    const lawnCourt = variantId === 'barcelona_pati_interior_v1';
+    const shadeCourt = variantId === 'barcelona_pati_interior_v3';
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.90,frame.height*.86,.22]}/><meshStandardMaterial {...(lawnCourt?lawn:paver)} color="#ffffff" roughness={.95}/></mesh>
+      {lawnCourt&&<Segment from={{x:frame.minX+frame.width*.12,y:cy}} to={{x:frame.maxX-frame.width*.12,y:cy}} width={2.4} height={.16} z={base+.22} maps={paver} color="#ffffff"/>}
+      {Array.from({length:shadeCourt?6:4},(_,i)=>{const a=i*Math.PI*2/(shadeCourt?6:4),x=cx+Math.cos(a)*frame.width*.32,y=cy+Math.sin(a)*frame.height*.29,z=terrainZ(x,y)+lift;return <group key={i}><Tree x={x} y={y} z={z} scale={shadeCourt?.70:.62}/>{!lawnCourt&&<Bench x={x-Math.sin(a)*1.5} y={y+Math.cos(a)*1.5} z={z} rotation={a+Math.PI/2} maps={timber}/>}</group>})}
+      {!shadeCourt&&Array.from({length:4},(_,i)=>{const x=cx+(i%2-.5)*frame.width*.42,y=cy+(Math.floor(i/2)-.5)*frame.height*.40;return <Planter key={i} x={x} y={y} z={terrainZ(x,y)+lift+.22} maps={paver} width={Math.min(4,frame.width*.16)} depth={1.4}/>})}
+    </group>;
+  }
+  if (familyId === 'park_barcelona_xamfra_corner_v2' && variantId && variantId !== 'barcelona_placa_xamfra_v2') {
+    const cafe = variantId === 'barcelona_placa_xamfra_v0';
+    const active = variantId === 'barcelona_placa_xamfra_v3';
+    const radius=Math.min(frame.width,frame.height)*.28;
+    return <group>
+      <mesh position={[cx,cy,base+.14]} rotation={[0,0,Math.PI/8]}><cylinderGeometry args={[radius,radius,.28,8]}/><meshStandardMaterial {...(active?safety:paver)} color="#ffffff" roughness={.92}/></mesh>
+      <Segment from={{x:cx-radius*.8,y:cy-radius*.8}} to={{x:cx+radius*.8,y:cy+radius*.8}} width={2.8} height={.14} z={base+.28} maps={paver} color="#ffffff"/>
+      {Array.from({length:cafe?7:active?4:2},(_,i)=>{const a=(i+.5)*Math.PI*2/(cafe?7:active?4:2),x=cx+Math.cos(a)*radius*.62,y=cy+Math.sin(a)*radius*.62,z=terrainZ(x,y)+lift;return cafe?<group key={i}><mesh position={[x,y,z+.72]}><cylinderGeometry args={[.52,.52,.10,18]}/><meshStandardMaterial {...timber} color="#ffffff"/></mesh><mesh position={[x,y,z+.36]}><cylinderGeometry args={[.06,.08,.68,8]}/><meshStandardMaterial color="#343936"/></mesh></group>:<Tree key={i} x={x} y={y} z={z} scale={.68}/>})}
+      {active&&<Planter x={cx} y={cy-radius*.25} z={base+.28} maps={paver} width={Math.min(5,radius*.75)} depth={1.5}/>}
+    </group>;
+  }
+  if (familyId === 'park_barcelona_superilla_green_v1' && variantId && variantId !== 'barcelona_superilla_v1') {
+    const corridor = variantId === 'barcelona_superilla_v2';
+    const social = variantId === 'barcelona_superilla_v3';
+    return <group>
+      <mesh position={[cx,cy,base+.10]}><boxGeometry args={[frame.width*.94,frame.height*.90,.20]}/><meshStandardMaterial {...(corridor?planting:paver)} color="#ffffff" roughness={.95}/></mesh>
+      {corridor&&<Segment from={{x:frame.minX+frame.width*.08,y:cy}} to={{x:frame.maxX-frame.width*.08,y:cy}} width={Math.min(6,frame.height*.20)} height={.18} z={base+.20} maps={paver} color="#ffffff"/>}
+      {Array.from({length:social?8:6},(_,i)=>{const x=frame.minX+frame.width*(.10+((i*.31)%.80)),y=social?frame.minY+frame.height*(.18+((i*.53)%.64)):cy+(i%2?1:-1)*frame.height*.25,z=terrainZ(x,y)+lift;return <group key={i}><Planter x={x} y={y} z={z+.20} maps={paver} width={social?3.4:2.8} depth={1.3}/>{(corridor||social)&&<Tree x={x} y={y} z={z+1.1} scale={.54}/>}</group>})}
+      {social&&<Canopy x={cx} y={frame.maxY-frame.height*.22} z={terrainZ(cx,frame.maxY-frame.height*.22)+lift} timberMaps={timber} width={Math.min(7,frame.width*.24)} depth={Math.min(4,frame.height*.16)}/>}
+    </group>;
+  }
 
   if (familyId === 'park_amsterdam_hofje_garden_v0') {
     return <group><mesh position={[cx,cy,base+.14]}><boxGeometry args={[frame.width*.86,frame.height*.82,.28]} /><meshStandardMaterial {...paver} color="#a8997e" roughness={.94} /></mesh>{guides.filter((g)=>g.kind==='rectangle').map((g,i)=>{const c=center(g,frame);const s=resolveParkGuideDimensionsM(g,frame);return <mesh key={i} position={[c.x,c.y,terrainZ(c.x,c.y)+lift+.27]}><boxGeometry args={[s.width,s.height,.54]} /><meshStandardMaterial {...planting} color="#566a45" roughness={.98} /></mesh>})}<group position={[cx,cy,base]}><mesh position={[0,0,.58]}><cylinderGeometry args={[1.0,1.2,1.16,18]} /><meshStandardMaterial {...paver} color="#8f8372" roughness={.96} /></mesh><mesh position={[0,0,1.28]}><cylinderGeometry args={[.12,.16,1.4,10]} /><meshStandardMaterial color="#4a514e" metalness={.55} roughness={.54} /></mesh></group>{[-.30,.30].map((o)=><Tree key={o} x={cx+frame.width*o} y={cy-frame.height*.25} z={terrainZ(cx+frame.width*o,cy-frame.height*.25)+lift} scale={.65}/>)}</group>;

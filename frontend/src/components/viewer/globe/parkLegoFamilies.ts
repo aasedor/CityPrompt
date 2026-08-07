@@ -21,6 +21,7 @@ import { batch19ParkSkinForSelection } from './parkBatch19Skins';
 import { batch20ParkSkinForSelection } from './parkBatch20Skins';
 import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
+import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -1051,7 +1052,9 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       ['parklet_nyc_v0', 'parklet_sf_timber_v1', 'parklet_tactical_v2', 'parklet_european_v3']),
   }),
   park_french_parterre_axis_v1: Object.freeze({
-    parisian_jardin: Object.freeze([Object.freeze({ variantId: 'parisian_jardin_v1', appearanceKitId: 'parisian_jardin_v1_water_axis_skin', plantingStructure: 'french_parterre_axis_v1' })]),
+    parisian_jardin: fourVariantMappings('parisian_jardin',
+      ['parisian_jardin_v0_clipped_parterre_skin', 'parisian_jardin_v1_water_axis_skin', 'parisian_jardin_v2_rill_garden_skin', 'parisian_jardin_v3_paved_forecourt_skin'],
+      ['paris_jardin_clipped_parterre_v0', 'french_parterre_axis_v1', 'paris_jardin_rill_garden_v2', 'paris_jardin_paved_forecourt_v3']),
   }),
   park_london_railed_square_v1: Object.freeze({
     london_garden_square: Object.freeze([Object.freeze({ variantId: 'london_garden_square_v1', appearanceKitId: 'london_garden_square_v1_railed_skin', plantingStructure: 'london_railed_square_v1' })]),
@@ -1066,22 +1069,34 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     hilltop_topographic_park: Object.freeze([Object.freeze({ variantId: 'hilltop_topographic_park_v3', appearanceKitId: 'hilltop_topographic_park_v3_viewpoint_skin', plantingStructure: 'hilltop_viewpoint_v3' })]),
   }),
   park_amsterdam_hofje_garden_v0: Object.freeze({
-    amsterdam_hofje_garden: Object.freeze([Object.freeze({ variantId: 'amsterdam_hofje_garden_v0', appearanceKitId: 'amsterdam_hofje_garden_v0_skin', plantingStructure: 'amsterdam_hofje_v0' })]),
+    amsterdam_hofje_garden: fourVariantMappings('amsterdam_hofje_garden',
+      ['amsterdam_hofje_garden_v0_skin', 'amsterdam_hofje_garden_v1_lush_skin', 'amsterdam_hofje_garden_v2_pocket_skin', 'amsterdam_hofje_garden_v3_historic_lawn_skin'],
+      ['amsterdam_hofje_v0', 'amsterdam_hofje_lush_v1', 'amsterdam_hofje_pocket_v2', 'amsterdam_hofje_historic_lawn_v3']),
   }),
   park_amsterdam_plein_v0: Object.freeze({
-    amsterdam_plein: Object.freeze([Object.freeze({ variantId: 'amsterdam_plein_v0', appearanceKitId: 'amsterdam_plein_v0_brick_skin', plantingStructure: 'amsterdam_plein_v0' })]),
+    amsterdam_plein: fourVariantMappings('amsterdam_plein',
+      ['amsterdam_plein_v0_brick_skin', 'amsterdam_plein_v1_glass_canopy_skin', 'amsterdam_plein_v2_cafe_threshold_skin', 'amsterdam_plein_v3_open_brick_skin'],
+      ['amsterdam_plein_v0', 'amsterdam_plein_glass_canopy_v1', 'amsterdam_plein_cafe_v2', 'amsterdam_plein_open_v3']),
   }),
   park_amsterdam_vondelpark_pavilion_v3: Object.freeze({
-    amsterdam_vondelpark: Object.freeze([Object.freeze({ variantId: 'amsterdam_vondelpark_v3', appearanceKitId: 'amsterdam_vondelpark_v3_pavilion_skin', plantingStructure: 'amsterdam_vondelpark_v3' })]),
+    amsterdam_vondelpark: fourVariantMappings('amsterdam_vondelpark',
+      ['amsterdam_vondelpark_v0_neighbourhood_skin', 'amsterdam_vondelpark_v1_cafe_skin', 'amsterdam_vondelpark_v2_planted_corner_skin', 'amsterdam_vondelpark_v3_pavilion_skin'],
+      ['amsterdam_vondelpark_neighbourhood_v0', 'amsterdam_vondelpark_cafe_v1', 'amsterdam_vondelpark_planted_v2', 'amsterdam_vondelpark_v3']),
   }),
   park_barcelona_pati_green_v0: Object.freeze({
-    barcelona_pati_interior: Object.freeze([Object.freeze({ variantId: 'barcelona_pati_interior_v0', appearanceKitId: 'barcelona_pati_interior_v0_green_skin', plantingStructure: 'barcelona_pati_green_v0' })]),
+    barcelona_pati_interior: fourVariantMappings('barcelona_pati_interior',
+      ['barcelona_pati_interior_v0_green_skin', 'barcelona_pati_interior_v1_lawn_skin', 'barcelona_pati_interior_v2_social_paved_skin', 'barcelona_pati_interior_v3_shade_paved_skin'],
+      ['barcelona_pati_green_v0', 'barcelona_pati_lawn_v1', 'barcelona_pati_social_v2', 'barcelona_pati_shade_v3']),
   }),
   park_barcelona_xamfra_corner_v2: Object.freeze({
-    barcelona_placa_xamfra: Object.freeze([Object.freeze({ variantId: 'barcelona_placa_xamfra_v2', appearanceKitId: 'barcelona_placa_xamfra_v2_corner_skin', plantingStructure: 'barcelona_xamfra_v2' })]),
+    barcelona_placa_xamfra: fourVariantMappings('barcelona_placa_xamfra',
+      ['barcelona_placa_xamfra_v0_cafe_skin', 'barcelona_placa_xamfra_v1_clear_skin', 'barcelona_placa_xamfra_v2_corner_skin', 'barcelona_placa_xamfra_v3_active_skin'],
+      ['barcelona_xamfra_cafe_v0', 'barcelona_xamfra_clear_v1', 'barcelona_xamfra_v2', 'barcelona_xamfra_active_v3']),
   }),
   park_barcelona_superilla_green_v1: Object.freeze({
-    barcelona_superilla: Object.freeze([Object.freeze({ variantId: 'barcelona_superilla_v1', appearanceKitId: 'barcelona_superilla_v1_green_skin', plantingStructure: 'barcelona_superilla_v1' })]),
+    barcelona_superilla: fourVariantMappings('barcelona_superilla',
+      ['barcelona_superilla_v0_plaza_planter_skin', 'barcelona_superilla_v1_green_skin', 'barcelona_superilla_v2_green_corridor_skin', 'barcelona_superilla_v3_social_garden_skin'],
+      ['barcelona_superilla_plaza_v0', 'barcelona_superilla_v1', 'barcelona_superilla_corridor_v2', 'barcelona_superilla_social_v3']),
   }),
   park_calgary_prairie_market_v1: Object.freeze({
     calgary_prairie_plaza: Object.freeze([Object.freeze({ variantId: 'calgary_prairie_plaza_v1', appearanceKitId: 'calgary_prairie_plaza_v1_market_skin', plantingStructure: 'calgary_prairie_market_v1' })]),
@@ -1096,10 +1111,14 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     montreal_square: Object.freeze([Object.freeze({ variantId: 'montreal_square_v3', appearanceKitId: 'montreal_square_v3_neighbourhood_skin', plantingStructure: 'montreal_square_v3' })]),
   }),
   park_paris_place_royale_v2: Object.freeze({
-    parisian_place: Object.freeze([Object.freeze({ variantId: 'parisian_place_v2', appearanceKitId: 'parisian_place_v2_royale_skin', plantingStructure: 'paris_place_royale_v2' })]),
+    parisian_place: fourVariantMappings('parisian_place',
+      ['parisian_place_v0_quiet_cobble_skin', 'parisian_place_v1_statue_axis_skin', 'parisian_place_v2_royale_skin', 'parisian_place_v3_cafe_paved_skin'],
+      ['paris_place_quiet_v0', 'paris_place_statue_v1', 'paris_place_royale_v2', 'paris_place_cafe_v3']),
   }),
   park_paris_square_tree_grid_v3: Object.freeze({
-    parisian_square: Object.freeze([Object.freeze({ variantId: 'parisian_square_v3', appearanceKitId: 'parisian_square_v3_tree_grid_skin', plantingStructure: 'paris_square_tree_grid_v3' })]),
+    parisian_square: fourVariantMappings('parisian_square',
+      ['parisian_square_v0_linear_edge_skin', 'parisian_square_v1_corner_cafe_skin', 'parisian_square_v2_compact_cobble_skin', 'parisian_square_v3_tree_grid_skin'],
+      ['paris_square_linear_v0', 'paris_square_corner_cafe_v1', 'paris_square_compact_v2', 'paris_square_tree_grid_v3']),
   }),
   park_london_circus_planted_v1: Object.freeze({
     london_circus: Object.freeze([Object.freeze({ variantId: 'london_circus_v1', appearanceKitId: 'london_circus_v1_planted_skin', plantingStructure: 'london_circus_planted_v1' })]),
@@ -1154,7 +1173,12 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_canal_ecological_wetland_v3: Object.freeze({ canal_waterway: fourVariantMappings('canal_waterway', ['canal_waterway_v0_naturalistic_skin','canal_waterway_v1_formal_reflecting_skin','canal_waterway_v2_interactive_skin','canal_waterway_v3_ecological_skin'], ['canal_naturalistic_v0','canal_formal_v1','canal_interactive_v2','canal_ecological_wetland_v3']) }),
   park_custom_biophilic_urban_v1: Object.freeze({ custom_parks_plazas: fourVariantMappings('custom_parks_plazas', ['custom_parks_plazas_v0_eclectic_skin','custom_parks_plazas_v1_biophilic_skin','custom_parks_plazas_v2_tech_smart_skin','custom_parks_plazas_v3_heritage_skin'], ['custom_eclectic_v0','custom_biophilic_urban_v1','custom_tech_smart_v2','custom_heritage_v3']) }),
   park_rooftop_intensive_garden_v0: Object.freeze({ rooftop_garden: fourVariantMappings('rooftop_garden', ['rooftop_garden_v0_intensive_skin', 'rooftop_garden_v1_sedum_skin', 'rooftop_garden_v2_urban_farm_skin', 'rooftop_garden_v3_social_terrace_skin'], ['rooftop_intensive_garden_v0', 'rooftop_sedum_v1', 'rooftop_farm_v2', 'rooftop_social_v3']) }),
-  park_community_healing_garden_v2: Object.freeze({ community_garden_enhanced: Object.freeze([Object.freeze({variantId:'garden_healing',appearanceKitId:'community_garden_enhanced_healing_skin',plantingStructure:'community_healing_garden_v2'})]) }),
+  park_community_healing_garden_v2: Object.freeze({ community_garden_enhanced: Object.freeze([
+    Object.freeze({variantId:'garden_classic_allotment',appearanceKitId:'community_garden_enhanced_allotment_skin',plantingStructure:'community_allotment_v0'}),
+    Object.freeze({variantId:'garden_permaculture_farm',appearanceKitId:'community_garden_enhanced_permaculture_skin',plantingStructure:'community_permaculture_v1'}),
+    Object.freeze({variantId:'garden_healing',appearanceKitId:'community_garden_enhanced_healing_skin',plantingStructure:'community_healing_garden_v2'}),
+    Object.freeze({variantId:'garden_intercultural',appearanceKitId:'community_garden_enhanced_intercultural_skin',plantingStructure:'community_intercultural_v3'}),
+  ]) }),
   park_greenbelt_rail_trail_v1: Object.freeze({ greenbelt_buffer_park: Object.freeze([Object.freeze({variantId:'greenbelt_buffer_park_v1',appearanceKitId:'greenbelt_buffer_park_v1_rail_trail_skin',plantingStructure:'greenbelt_rail_trail_v1'})]) }),
   park_foothill_heathland_trail_v2: Object.freeze({ foothill_trail_park: Object.freeze([Object.freeze({variantId:'foothill_trail_park_v2',appearanceKitId:'foothill_trail_park_v2_heathland_skin',plantingStructure:'foothill_heathland_trail_v2'})]) }),
   park_marina_pacific_dock_v2: Object.freeze({ marina_yacht_harbor: Object.freeze([Object.freeze({variantId:'marina_yacht_harbor_v2',appearanceKitId:'marina_yacht_harbor_v2_pacific_skin',plantingStructure:'marina_pacific_dock_v2'})]) }),
@@ -1273,6 +1297,13 @@ function familyForArchetype(archetypeId: string, role: string): ParkLegoFamilyId
   if (archetypeId === 'stormwater_resilience_park') return 'park_stormwater_arid_channel_v3';
   if (archetypeId === 'parisian_place') return 'park_paris_place_royale_v2';
   if (archetypeId === 'parisian_square') return 'park_paris_square_tree_grid_v3';
+  if (archetypeId === 'parisian_jardin') return 'park_french_parterre_axis_v1';
+  if (archetypeId === 'amsterdam_hofje_garden') return 'park_amsterdam_hofje_garden_v0';
+  if (archetypeId === 'amsterdam_plein') return 'park_amsterdam_plein_v0';
+  if (archetypeId === 'amsterdam_vondelpark') return 'park_amsterdam_vondelpark_pavilion_v3';
+  if (archetypeId === 'barcelona_pati_interior') return 'park_barcelona_pati_green_v0';
+  if (archetypeId === 'barcelona_placa_xamfra') return 'park_barcelona_xamfra_corner_v2';
+  if (archetypeId === 'barcelona_superilla') return 'park_barcelona_superilla_green_v1';
   if (archetypeId === 'london_circus') return 'park_london_circus_planted_v1';
   if (archetypeId === 'newyork_pocket_park') return 'park_newyork_pocket_water_v0';
   if (archetypeId === 'newyork_community_garden') return 'park_newyork_community_greenhouse_v3';
@@ -1647,6 +1678,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch20ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch21ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch22ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch23ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

@@ -187,6 +187,29 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_retail_parking_landscaped_v1','suburban_retail_parking_lot','suburban_retail_parking_lot_v1','suburban_retail_parking_lot_v1_landscaped_skin','retail_parking_landscaped_v1'],
   ] as const)('executes the exact reviewed Batch 14 selection %s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});expect(isExecutableParkLegoFamily(candidate)).toBe(true);expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
 
+  it('executes all forty selections in the ten Batch 23 city-garden families', () => {
+    const groups = [
+      ['park_community_healing_garden_v2', 'community_garden_enhanced', ['garden_classic_allotment', 'garden_permaculture_farm', 'garden_healing', 'garden_intercultural']],
+      ['park_paris_place_royale_v2', 'parisian_place', ['parisian_place_v0', 'parisian_place_v1', 'parisian_place_v2', 'parisian_place_v3']],
+      ['park_paris_square_tree_grid_v3', 'parisian_square', ['parisian_square_v0', 'parisian_square_v1', 'parisian_square_v2', 'parisian_square_v3']],
+      ['park_french_parterre_axis_v1', 'parisian_jardin', ['parisian_jardin_v0', 'parisian_jardin_v1', 'parisian_jardin_v2', 'parisian_jardin_v3']],
+      ['park_amsterdam_vondelpark_pavilion_v3', 'amsterdam_vondelpark', ['amsterdam_vondelpark_v0', 'amsterdam_vondelpark_v1', 'amsterdam_vondelpark_v2', 'amsterdam_vondelpark_v3']],
+      ['park_amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden', ['amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden_v1', 'amsterdam_hofje_garden_v2', 'amsterdam_hofje_garden_v3']],
+      ['park_amsterdam_plein_v0', 'amsterdam_plein', ['amsterdam_plein_v0', 'amsterdam_plein_v1', 'amsterdam_plein_v2', 'amsterdam_plein_v3']],
+      ['park_barcelona_pati_green_v0', 'barcelona_pati_interior', ['barcelona_pati_interior_v0', 'barcelona_pati_interior_v1', 'barcelona_pati_interior_v2', 'barcelona_pati_interior_v3']],
+      ['park_barcelona_xamfra_corner_v2', 'barcelona_placa_xamfra', ['barcelona_placa_xamfra_v0', 'barcelona_placa_xamfra_v1', 'barcelona_placa_xamfra_v2', 'barcelona_placa_xamfra_v3']],
+      ['park_barcelona_superilla_green_v1', 'barcelona_superilla', ['barcelona_superilla_v0', 'barcelona_superilla_v1', 'barcelona_superilla_v2', 'barcelona_superilla_v3']],
+    ] as const;
+    for (const [familyId, archetypeId, variantIds] of groups) {
+      for (const variantId of variantIds) {
+        const candidate = zone({green_space_archetype_id: archetypeId, green_space_selected_variant_id: variantId});
+        expect(resolveParkLegoContract(candidate)).toMatchObject({familyId, archetypeId, variantId, supported: true});
+        expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+        expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+      }
+    }
+  });
+
   it('preserves an explicitly registered non-numeric catalogue variant in the legacy path',()=>{const candidate=zone({green_space_archetype_id:'community_garden_enhanced',green_space_selected_variant_id:'garden_healing'});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId:'park_community_healing_garden_v2',variantId:'garden_healing',supported:true});expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
 
   it.each([

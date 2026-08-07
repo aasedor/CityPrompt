@@ -8,35 +8,34 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 73,
-    "partialParents": 57,
+    "completeMappedParents": 93,
+    "partialParents": 37,
     "uncoveredParents": 0,
-    "exactVariants": 58,
-    "sharedMappedVariants": 291,
-    "unmappedVariants": 171,
+    "exactVariants": 39,
+    "sharedMappedVariants": 370,
+    "unmappedVariants": 111,
     "parkCapabilities": 127
   },
   "categorySummary": {
-    "civic_plazas:complete_mapped": 7,
-    "civic_plazas:partial": 12,
-    "custom:partial": 1,
-    "ecological_resilience:complete_mapped": 7,
-    "ecological_resilience:partial": 5,
-    "landscape_parks:complete_mapped": 2,
-    "landscape_parks:partial": 12,
-    "neighborhood_public_realm:complete_mapped": 9,
-    "neighborhood_public_realm:partial": 3,
+    "civic_plazas:complete_mapped": 13,
+    "civic_plazas:partial": 6,
+    "custom:complete_mapped": 1,
+    "ecological_resilience:complete_mapped": 8,
+    "ecological_resilience:partial": 4,
+    "landscape_parks:complete_mapped": 3,
+    "landscape_parks:partial": 11,
+    "neighborhood_public_realm:complete_mapped": 11,
+    "neighborhood_public_realm:partial": 1,
     "parking_areas:complete_mapped": 5,
-    "social_event_spaces:complete_mapped": 6,
-    "social_event_spaces:partial": 4,
-    "specialty_gardens:complete_mapped": 5,
-    "specialty_gardens:partial": 9,
+    "social_event_spaces:complete_mapped": 7,
+    "social_event_spaces:partial": 3,
+    "specialty_gardens:complete_mapped": 10,
+    "specialty_gardens:partial": 4,
     "sports_recreation:complete_mapped": 24,
     "transport_infrastructure:complete_mapped": 1,
-    "water_features:complete_mapped": 3,
-    "water_features:partial": 2,
-    "waterfront_spaces:complete_mapped": 4,
-    "waterfront_spaces:partial": 9
+    "water_features:complete_mapped": 5,
+    "waterfront_spaces:complete_mapped": 5,
+    "waterfront_spaces:partial": 8
   },
   "parents": [
     {
@@ -2393,16 +2392,16 @@
       "title": "Cemetery / Memorial Grounds",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "cemetery_memorial_grounds_v0",
           "label": "Classical Formal",
           "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_cemetery_classical_v0",
@@ -2414,7 +2413,7 @@
                 "whole_memorial_rows_v1",
                 "fountain_parterre_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -2422,22 +2421,64 @@
           "id": "cemetery_memorial_grounds_v1",
           "label": "Woodland Naturalistic",
           "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cemetery_classical_v0",
+              "profileId": "cemetery-classical-lego-v1",
+              "appearanceKitId": "cemetery_memorial_grounds_v1_woodland_skin",
+              "componentSetIds": [
+                "classical_memorial_ground_program_v1",
+                "axial_allee_v1",
+                "whole_memorial_rows_v1",
+                "fountain_parterre_v1",
+                "woodland_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "cemetery_memorial_grounds_v2",
           "label": "Contemporary Sculptural",
           "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cemetery_classical_v0",
+              "profileId": "cemetery-classical-lego-v1",
+              "appearanceKitId": "cemetery_memorial_grounds_v2_sculptural_skin",
+              "componentSetIds": [
+                "classical_memorial_ground_program_v1",
+                "axial_allee_v1",
+                "whole_memorial_rows_v1",
+                "fountain_parterre_v1",
+                "sculptural_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "cemetery_memorial_grounds_v3",
           "label": "Cottage Romantic",
           "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cemetery_classical_v0",
+              "profileId": "cemetery-classical-lego-v1",
+              "appearanceKitId": "cemetery_memorial_grounds_v3_cottage_skin",
+              "componentSetIds": [
+                "classical_memorial_ground_program_v1",
+                "axial_allee_v1",
+                "whole_memorial_rows_v1",
+                "fountain_parterre_v1",
+                "cottage_memorial_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -2636,23 +2677,37 @@
       "title": "Courtyard",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "courtyard_plaza_v0",
           "label": "Neoclassical Stone",
           "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_courtyard_linear_water_v1",
+              "profileId": "courtyard-linear-water-lego-v1",
+              "appearanceKitId": "courtyard_plaza_v0_neoclassical_skin",
+              "componentSetIds": [
+                "linear_water_court_ground_program_v1",
+                "continuous_rill_v1",
+                "concrete_seat_walls_v1",
+                "specimen_tree_grates_v1",
+                "neoclassical_courtyard_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "courtyard_plaza_v1",
           "label": "Contemporary Urban",
           "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_courtyard_linear_water_v1",
@@ -2664,7 +2719,7 @@
                 "concrete_seat_walls_v1",
                 "specimen_tree_grates_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -2672,15 +2727,43 @@
           "id": "courtyard_plaza_v2",
           "label": "Green Civic",
           "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_courtyard_linear_water_v1",
+              "profileId": "courtyard-linear-water-lego-v1",
+              "appearanceKitId": "courtyard_plaza_v2_green_civic_skin",
+              "componentSetIds": [
+                "linear_water_court_ground_program_v1",
+                "continuous_rill_v1",
+                "concrete_seat_walls_v1",
+                "specimen_tree_grates_v1",
+                "green_civic_courtyard_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "courtyard_plaza_v3",
           "label": "Festival & Market",
           "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_courtyard_linear_water_v1",
+              "profileId": "courtyard-linear-water-lego-v1",
+              "appearanceKitId": "courtyard_plaza_v3_festival_market_skin",
+              "componentSetIds": [
+                "linear_water_court_ground_program_v1",
+                "continuous_rill_v1",
+                "concrete_seat_walls_v1",
+                "specimen_tree_grates_v1",
+                "festival_courtyard_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -2788,30 +2871,58 @@
       "title": "Transit Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "transit_plaza_v0",
           "label": "Neoclassical Stone",
           "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_transit_green_civic_v2",
+              "profileId": "transit-green-civic-lego-v1",
+              "appearanceKitId": "transit_plaza_v0_neoclassical_skin",
+              "componentSetIds": [
+                "transit_plaza_ground_v1",
+                "clear_access_spine_v1",
+                "rain_planter_bays_v1",
+                "modest_transit_shelters_v1",
+                "neoclassical_transit_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "transit_plaza_v1",
           "label": "Contemporary Urban",
           "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_transit_green_civic_v2",
+              "profileId": "transit-green-civic-lego-v1",
+              "appearanceKitId": "transit_plaza_v1_contemporary_skin",
+              "componentSetIds": [
+                "transit_plaza_ground_v1",
+                "clear_access_spine_v1",
+                "rain_planter_bays_v1",
+                "modest_transit_shelters_v1",
+                "contemporary_transit_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "transit_plaza_v2",
           "label": "Green Civic",
           "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_transit_green_civic_v2",
@@ -2823,7 +2934,7 @@
                 "rain_planter_bays_v1",
                 "modest_transit_shelters_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -2831,8 +2942,22 @@
           "id": "transit_plaza_v3",
           "label": "Festival & Market",
           "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_transit_green_civic_v2",
+              "profileId": "transit-green-civic-lego-v1",
+              "appearanceKitId": "transit_plaza_v3_festival_market_skin",
+              "componentSetIds": [
+                "transit_plaza_ground_v1",
+                "clear_access_spine_v1",
+                "rain_planter_bays_v1",
+                "modest_transit_shelters_v1",
+                "festival_transit_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -2841,16 +2966,16 @@
       "title": "Outdoor Amphitheater / Performance Space",
       "spaceType": "plaza",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "amphitheater_performance_space_v0",
           "label": "Terraced Performance",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_amphitheater_terraced_v0",
@@ -2862,7 +2987,7 @@
                 "modest_stage_platform_v1",
                 "accessible_rim_route_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -2870,22 +2995,64 @@
           "id": "amphitheater_performance_space_v1",
           "label": "Open Festival Ground",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amphitheater_terraced_v0",
+              "profileId": "amphitheater-terraced-lego-v1",
+              "appearanceKitId": "amphitheater_performance_space_v1_open_festival_skin",
+              "componentSetIds": [
+                "performance_bowl_ground_v1",
+                "concentric_seating_tiers_v1",
+                "modest_stage_platform_v1",
+                "accessible_rim_route_v1",
+                "open_festival_amphitheater_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amphitheater_performance_space_v2",
           "label": "Intimate Garden Venue",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amphitheater_terraced_v0",
+              "profileId": "amphitheater-terraced-lego-v1",
+              "appearanceKitId": "amphitheater_performance_space_v2_intimate_garden_skin",
+              "componentSetIds": [
+                "performance_bowl_ground_v1",
+                "concentric_seating_tiers_v1",
+                "modest_stage_platform_v1",
+                "accessible_rim_route_v1",
+                "garden_amphitheater_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amphitheater_performance_space_v3",
           "label": "Industrial Adaptive",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amphitheater_terraced_v0",
+              "profileId": "amphitheater-terraced-lego-v1",
+              "appearanceKitId": "amphitheater_performance_space_v3_industrial_skin",
+              "componentSetIds": [
+                "performance_bowl_ground_v1",
+                "concentric_seating_tiers_v1",
+                "modest_stage_platform_v1",
+                "accessible_rim_route_v1",
+                "industrial_amphitheater_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -3454,9 +3621,9 @@
       "title": "Stormwater Retention Pond",
       "spaceType": "park",
       "aestheticCategory": "water_features",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
+      "mappedVariantCount": 4,
       "exactVariantCount": 0,
       "variants": [
         {
@@ -3482,22 +3649,61 @@
           "id": "stormwater_retention_pond_v1",
           "label": "Formal Reflecting",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "stormwater-retention-pond-v1",
+              "appearanceKitId": "stormwater_retention_pond_v1_formal_reflecting_skin",
+              "componentSetIds": [
+                "stormwater_ground_program_v1",
+                "water_control_assemblies_v1",
+                "landscape_instances_v1",
+                "formal_stormwater_basin_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_retention_pond_v2",
           "label": "Contemporary Interactive",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "stormwater-retention-pond-v1",
+              "appearanceKitId": "stormwater_retention_pond_v2_contemporary_interactive_skin",
+              "componentSetIds": [
+                "stormwater_ground_program_v1",
+                "water_control_assemblies_v1",
+                "landscape_instances_v1",
+                "interactive_stormwater_basin_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_retention_pond_v3",
           "label": "Ecological Wetland",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "stormwater-retention-pond-v1",
+              "appearanceKitId": "stormwater_retention_pond_v3_ecological_wetland_skin",
+              "componentSetIds": [
+                "stormwater_ground_program_v1",
+                "water_control_assemblies_v1",
+                "landscape_instances_v1",
+                "ecological_stormwater_basin_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -3605,37 +3811,79 @@
       "title": "Canal / Waterway",
       "spaceType": "park",
       "aestheticCategory": "water_features",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "canal_waterway_v0",
           "label": "Naturalistic Pond",
           "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_canal_ecological_wetland_v3",
+              "profileId": "canal-ecological-wetland-lego-v1",
+              "appearanceKitId": "canal_waterway_v0_naturalistic_skin",
+              "componentSetIds": [
+                "wetland_canal_ground_v1",
+                "continuous_water_channel_v1",
+                "whole_marsh_cells_v1",
+                "boardwalk_crossings_v1",
+                "naturalistic_canal_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "canal_waterway_v1",
           "label": "Formal Reflecting",
           "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_canal_ecological_wetland_v3",
+              "profileId": "canal-ecological-wetland-lego-v1",
+              "appearanceKitId": "canal_waterway_v1_formal_reflecting_skin",
+              "componentSetIds": [
+                "wetland_canal_ground_v1",
+                "continuous_water_channel_v1",
+                "whole_marsh_cells_v1",
+                "boardwalk_crossings_v1",
+                "formal_canal_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "canal_waterway_v2",
           "label": "Contemporary Interactive",
           "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_canal_ecological_wetland_v3",
+              "profileId": "canal-ecological-wetland-lego-v1",
+              "appearanceKitId": "canal_waterway_v2_interactive_skin",
+              "componentSetIds": [
+                "wetland_canal_ground_v1",
+                "continuous_water_channel_v1",
+                "whole_marsh_cells_v1",
+                "boardwalk_crossings_v1",
+                "interactive_canal_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "canal_waterway_v3",
           "label": "Ecological Wetland",
           "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_canal_ecological_wetland_v3",
@@ -3647,7 +3895,7 @@
                 "whole_marsh_cells_v1",
                 "boardwalk_crossings_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -3658,23 +3906,37 @@
       "title": "Custom Parks / Plazas",
       "spaceType": "park",
       "aestheticCategory": "custom",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "custom_parks_plazas_v0",
           "label": "Eclectic Mixed-Use",
           "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_custom_biophilic_urban_v1",
+              "profileId": "custom-biophilic-urban-lego-v1",
+              "appearanceKitId": "custom_parks_plazas_v0_eclectic_skin",
+              "componentSetIds": [
+                "biophilic_ground_program_v1",
+                "layered_garden_rooms_v1",
+                "meandering_accessible_paths_v1",
+                "whole_seat_planter_bays_v1",
+                "eclectic_custom_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "custom_parks_plazas_v1",
           "label": "Biophilic Urban",
           "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_custom_biophilic_urban_v1",
@@ -3686,7 +3948,7 @@
                 "meandering_accessible_paths_v1",
                 "whole_seat_planter_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -3694,15 +3956,43 @@
           "id": "custom_parks_plazas_v2",
           "label": "Tech-Enabled Smart",
           "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_custom_biophilic_urban_v1",
+              "profileId": "custom-biophilic-urban-lego-v1",
+              "appearanceKitId": "custom_parks_plazas_v2_tech_smart_skin",
+              "componentSetIds": [
+                "biophilic_ground_program_v1",
+                "layered_garden_rooms_v1",
+                "meandering_accessible_paths_v1",
+                "whole_seat_planter_bays_v1",
+                "smart_custom_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "custom_parks_plazas_v3",
           "label": "Heritage Adaptive",
           "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_custom_biophilic_urban_v1",
+              "profileId": "custom-biophilic-urban-lego-v1",
+              "appearanceKitId": "custom_parks_plazas_v3_heritage_skin",
+              "componentSetIds": [
+                "biophilic_ground_program_v1",
+                "layered_garden_rooms_v1",
+                "meandering_accessible_paths_v1",
+                "whole_seat_planter_bays_v1",
+                "heritage_custom_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -3802,23 +4092,38 @@
       "title": "Nature Preserve",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "nature_preserve_v0",
           "label": "Wetland Boardwalk",
           "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_preserve_prairie_v1",
+              "profileId": "nature-preserve-prairie-lego-v1",
+              "appearanceKitId": "nature_preserve_v0_wetland_boardwalk_skin",
+              "componentSetIds": [
+                "prairie_preserve_ground_program_v1",
+                "mown_trail_network_v1",
+                "timber_observation_deck_v1",
+                "bur_oak_savanna_v1",
+                "interpretive_post_v1",
+                "wetland_preserve_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "nature_preserve_v1",
           "label": "Tallgrass Prairie",
           "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_nature_preserve_prairie_v1",
@@ -3831,7 +4136,7 @@
                 "bur_oak_savanna_v1",
                 "interpretive_post_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -3839,15 +4144,45 @@
           "id": "nature_preserve_v2",
           "label": "Coastal Dune",
           "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_preserve_prairie_v1",
+              "profileId": "nature-preserve-prairie-lego-v1",
+              "appearanceKitId": "nature_preserve_v2_coastal_dune_skin",
+              "componentSetIds": [
+                "prairie_preserve_ground_program_v1",
+                "mown_trail_network_v1",
+                "timber_observation_deck_v1",
+                "bur_oak_savanna_v1",
+                "interpretive_post_v1",
+                "coastal_dune_preserve_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "nature_preserve_v3",
           "label": "Old-Growth Forest",
           "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_nature_preserve_prairie_v1",
+              "profileId": "nature-preserve-prairie-lego-v1",
+              "appearanceKitId": "nature_preserve_v3_old_growth_skin",
+              "componentSetIds": [
+                "prairie_preserve_ground_program_v1",
+                "mown_trail_network_v1",
+                "timber_observation_deck_v1",
+                "bur_oak_savanna_v1",
+                "interpretive_post_v1",
+                "old_growth_preserve_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -3951,23 +4286,38 @@
       "title": "Riverfront Park / Beach",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "riverfront_park_beach_v0",
           "label": "Urban River Beach",
           "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_riverfront_lake_beach_v1",
+              "profileId": "riverfront-lake-beach-lego-v1",
+              "appearanceKitId": "riverfront_park_beach_v0_urban_river_skin",
+              "componentSetIds": [
+                "lake_beach_ground_program_v1",
+                "crescent_sand_beach_v1",
+                "t_swimming_dock_v1",
+                "kayak_rack_v1",
+                "bathhouse_reservation_pad_v1",
+                "urban_river_beach_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "riverfront_park_beach_v1",
           "label": "Lake Swimming Beach",
           "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_riverfront_lake_beach_v1",
@@ -3980,7 +4330,7 @@
                 "kayak_rack_v1",
                 "bathhouse_reservation_pad_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -3988,15 +4338,45 @@
           "id": "riverfront_park_beach_v2",
           "label": "Adventure Pier",
           "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_riverfront_lake_beach_v1",
+              "profileId": "riverfront-lake-beach-lego-v1",
+              "appearanceKitId": "riverfront_park_beach_v2_adventure_pier_skin",
+              "componentSetIds": [
+                "lake_beach_ground_program_v1",
+                "crescent_sand_beach_v1",
+                "t_swimming_dock_v1",
+                "kayak_rack_v1",
+                "bathhouse_reservation_pad_v1",
+                "adventure_pier_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "riverfront_park_beach_v3",
           "label": "Naturalized Riverfront",
           "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_riverfront_lake_beach_v1",
+              "profileId": "riverfront-lake-beach-lego-v1",
+              "appearanceKitId": "riverfront_park_beach_v3_naturalized_skin",
+              "componentSetIds": [
+                "lake_beach_ground_program_v1",
+                "crescent_sand_beach_v1",
+                "t_swimming_dock_v1",
+                "kayak_rack_v1",
+                "bathhouse_reservation_pad_v1",
+                "naturalized_riverfront_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4005,23 +4385,37 @@
       "title": "Street Plaza / Parklet",
       "spaceType": "park",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "street_plaza_parklet_v0",
           "label": "NYC Street Plaza",
           "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parklet_sf_timber_v1",
+              "profileId": "parklet-sf-timber-lego-v1",
+              "appearanceKitId": "street_plaza_parklet_v0_nyc_skin",
+              "componentSetIds": [
+                "timber_parklet_ground_program_v1",
+                "slat_guard_edge_v1",
+                "cafe_table_bay_v1",
+                "terracotta_planter_v1",
+                "nyc_street_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "street_plaza_parklet_v1",
           "label": "SF Parklet",
           "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_parklet_sf_timber_v1",
@@ -4033,7 +4427,7 @@
                 "cafe_table_bay_v1",
                 "terracotta_planter_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4041,15 +4435,43 @@
           "id": "street_plaza_parklet_v2",
           "label": "Tactical Urbanism",
           "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parklet_sf_timber_v1",
+              "profileId": "parklet-sf-timber-lego-v1",
+              "appearanceKitId": "street_plaza_parklet_v2_tactical_skin",
+              "componentSetIds": [
+                "timber_parklet_ground_program_v1",
+                "slat_guard_edge_v1",
+                "cafe_table_bay_v1",
+                "terracotta_planter_v1",
+                "tactical_parklet_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "street_plaza_parklet_v3",
           "label": "European Pocket Plaza",
           "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parklet_sf_timber_v1",
+              "profileId": "parklet-sf-timber-lego-v1",
+              "appearanceKitId": "street_plaza_parklet_v3_european_skin",
+              "componentSetIds": [
+                "timber_parklet_ground_program_v1",
+                "slat_guard_edge_v1",
+                "cafe_table_bay_v1",
+                "terracotta_planter_v1",
+                "european_pocket_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4058,30 +4480,58 @@
       "title": "Community Garden (Design Variants)",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "garden_classic_allotment",
           "label": "Classic Allotment",
           "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_community_healing_garden_v2",
+              "profileId": "community-healing-garden-lego-v1",
+              "appearanceKitId": "community_garden_enhanced_allotment_skin",
+              "componentSetIds": [
+                "healing_garden_ground_program_v1",
+                "accessible_loop_v1",
+                "whole_therapeutic_beds_v1",
+                "modest_open_pergola_v1",
+                "classic_allotment_grid_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "garden_permaculture_farm",
           "label": "Urban Permaculture Farm",
           "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_community_healing_garden_v2",
+              "profileId": "community-healing-garden-lego-v1",
+              "appearanceKitId": "community_garden_enhanced_permaculture_skin",
+              "componentSetIds": [
+                "healing_garden_ground_program_v1",
+                "accessible_loop_v1",
+                "whole_therapeutic_beds_v1",
+                "modest_open_pergola_v1",
+                "permaculture_guild_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "garden_healing",
           "label": "Healing Garden",
           "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_community_healing_garden_v2",
@@ -4093,7 +4543,7 @@
                 "whole_therapeutic_beds_v1",
                 "modest_open_pergola_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4101,8 +4551,22 @@
           "id": "garden_intercultural",
           "label": "Intercultural Social Garden",
           "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_community_healing_garden_v2",
+              "profileId": "community-healing-garden-lego-v1",
+              "appearanceKitId": "community_garden_enhanced_intercultural_skin",
+              "componentSetIds": [
+                "healing_garden_ground_program_v1",
+                "accessible_loop_v1",
+                "whole_therapeutic_beds_v1",
+                "modest_open_pergola_v1",
+                "intercultural_social_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4111,30 +4575,58 @@
       "title": "Place Royale",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "parisian_place_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_place_royale_v2",
+              "profileId": "paris-place-royale-lego-v1",
+              "appearanceKitId": "parisian_place_v0_quiet_cobble_skin",
+              "componentSetIds": [
+                "place_royale_ground_program_v1",
+                "clear_ceremonial_centre_v1",
+                "corner_tree_bays_v1",
+                "removable_cafe_clusters_v1",
+                "quiet_cobble_place_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_place_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_place_royale_v2",
+              "profileId": "paris-place-royale-lego-v1",
+              "appearanceKitId": "parisian_place_v1_statue_axis_skin",
+              "componentSetIds": [
+                "place_royale_ground_program_v1",
+                "clear_ceremonial_centre_v1",
+                "corner_tree_bays_v1",
+                "removable_cafe_clusters_v1",
+                "statue_axis_place_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_place_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_paris_place_royale_v2",
@@ -4146,7 +4638,7 @@
                 "corner_tree_bays_v1",
                 "removable_cafe_clusters_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4154,8 +4646,22 @@
           "id": "parisian_place_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_place_royale_v2",
+              "profileId": "paris-place-royale-lego-v1",
+              "appearanceKitId": "parisian_place_v3_cafe_paved_skin",
+              "componentSetIds": [
+                "place_royale_ground_program_v1",
+                "clear_ceremonial_centre_v1",
+                "corner_tree_bays_v1",
+                "removable_cafe_clusters_v1",
+                "cafe_edge_place_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4164,37 +4670,79 @@
       "title": "Square Parisien",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "parisian_square_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_square_tree_grid_v3",
+              "profileId": "paris-square-tree-grid-lego-v1",
+              "appearanceKitId": "parisian_square_v0_linear_edge_skin",
+              "componentSetIds": [
+                "paris_square_ground_program_v1",
+                "ordered_tree_grid_v1",
+                "gravel_social_room_v1",
+                "whole_bench_bays_v1",
+                "linear_edge_square_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_square_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_square_tree_grid_v3",
+              "profileId": "paris-square-tree-grid-lego-v1",
+              "appearanceKitId": "parisian_square_v1_corner_cafe_skin",
+              "componentSetIds": [
+                "paris_square_ground_program_v1",
+                "ordered_tree_grid_v1",
+                "gravel_social_room_v1",
+                "whole_bench_bays_v1",
+                "corner_cafe_square_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_square_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_paris_square_tree_grid_v3",
+              "profileId": "paris-square-tree-grid-lego-v1",
+              "appearanceKitId": "parisian_square_v2_compact_cobble_skin",
+              "componentSetIds": [
+                "paris_square_ground_program_v1",
+                "ordered_tree_grid_v1",
+                "gravel_social_room_v1",
+                "whole_bench_bays_v1",
+                "compact_cobble_square_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_square_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_paris_square_tree_grid_v3",
@@ -4206,7 +4754,7 @@
                 "gravel_social_room_v1",
                 "whole_bench_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -4217,23 +4765,37 @@
       "title": "Jardin a la Francaise",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "parisian_jardin_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_french_parterre_axis_v1",
+              "profileId": "french-parterre-axis-lego-v1",
+              "appearanceKitId": "parisian_jardin_v0_clipped_parterre_skin",
+              "componentSetIds": [
+                "french_garden_ground_program_v1",
+                "continuous_water_axis_v1",
+                "mirrored_parterre_rooms_v1",
+                "clipped_topiary_bays_v1",
+                "clipped_parterre_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_jardin_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_french_parterre_axis_v1",
@@ -4245,7 +4807,7 @@
                 "mirrored_parterre_rooms_v1",
                 "clipped_topiary_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4253,15 +4815,43 @@
           "id": "parisian_jardin_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_french_parterre_axis_v1",
+              "profileId": "french-parterre-axis-lego-v1",
+              "appearanceKitId": "parisian_jardin_v2_rill_garden_skin",
+              "componentSetIds": [
+                "french_garden_ground_program_v1",
+                "continuous_water_axis_v1",
+                "mirrored_parterre_rooms_v1",
+                "clipped_topiary_bays_v1",
+                "parallel_rill_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parisian_jardin_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_french_parterre_axis_v1",
+              "profileId": "french-parterre-axis-lego-v1",
+              "appearanceKitId": "parisian_jardin_v3_paved_forecourt_skin",
+              "componentSetIds": [
+                "french_garden_ground_program_v1",
+                "continuous_water_axis_v1",
+                "mirrored_parterre_rooms_v1",
+                "clipped_topiary_bays_v1",
+                "paved_garden_forecourt_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4270,37 +4860,79 @@
       "title": "Vondelpark Garden",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "amsterdam_vondelpark_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_vondelpark_pavilion_v3",
+              "profileId": "amsterdam-vondelpark-pavilion-lego-v1",
+              "appearanceKitId": "amsterdam_vondelpark_v0_neighbourhood_skin",
+              "componentSetIds": [
+                "vondelpark_landscape_rooms_v1",
+                "continuous_winding_path_v1",
+                "irregular_pond_bridge_v1",
+                "modest_park_pavilion_v1",
+                "neighbourhood_park_edge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_vondelpark_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_vondelpark_pavilion_v3",
+              "profileId": "amsterdam-vondelpark-pavilion-lego-v1",
+              "appearanceKitId": "amsterdam_vondelpark_v1_cafe_skin",
+              "componentSetIds": [
+                "vondelpark_landscape_rooms_v1",
+                "continuous_winding_path_v1",
+                "irregular_pond_bridge_v1",
+                "modest_park_pavilion_v1",
+                "vondelpark_cafe_edge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_vondelpark_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_vondelpark_pavilion_v3",
+              "profileId": "amsterdam-vondelpark-pavilion-lego-v1",
+              "appearanceKitId": "amsterdam_vondelpark_v2_planted_corner_skin",
+              "componentSetIds": [
+                "vondelpark_landscape_rooms_v1",
+                "continuous_winding_path_v1",
+                "irregular_pond_bridge_v1",
+                "modest_park_pavilion_v1",
+                "vondelpark_planted_corner_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_vondelpark_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_amsterdam_vondelpark_pavilion_v3",
@@ -4312,7 +4944,7 @@
                 "irregular_pond_bridge_v1",
                 "modest_park_pavilion_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -4323,16 +4955,16 @@
       "title": "Hofje Courtyard Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "amsterdam_hofje_garden_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_amsterdam_hofje_garden_v0",
@@ -4344,7 +4976,7 @@
                 "central_well_pump_v1",
                 "single_garden_gate_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4352,22 +4984,64 @@
           "id": "amsterdam_hofje_garden_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_hofje_garden_v0",
+              "profileId": "amsterdam-hofje-lego-v1",
+              "appearanceKitId": "amsterdam_hofje_garden_v1_lush_skin",
+              "componentSetIds": [
+                "hofje_gravel_cross_v1",
+                "whole_low_hedge_rooms_v1",
+                "central_well_pump_v1",
+                "single_garden_gate_v1",
+                "lush_communal_hofje_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_hofje_garden_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_hofje_garden_v0",
+              "profileId": "amsterdam-hofje-lego-v1",
+              "appearanceKitId": "amsterdam_hofje_garden_v2_pocket_skin",
+              "componentSetIds": [
+                "hofje_gravel_cross_v1",
+                "whole_low_hedge_rooms_v1",
+                "central_well_pump_v1",
+                "single_garden_gate_v1",
+                "pocket_hofje_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_hofje_garden_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_hofje_garden_v0",
+              "profileId": "amsterdam-hofje-lego-v1",
+              "appearanceKitId": "amsterdam_hofje_garden_v3_historic_lawn_skin",
+              "componentSetIds": [
+                "hofje_gravel_cross_v1",
+                "whole_low_hedge_rooms_v1",
+                "central_well_pump_v1",
+                "single_garden_gate_v1",
+                "historic_lawn_hofje_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4376,16 +5050,16 @@
       "title": "Amsterdam Plein",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "amsterdam_plein_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_amsterdam_plein_v0",
@@ -4397,7 +5071,7 @@
                 "plein_edge_tree_bays_v1",
                 "bicycle_rack_clusters_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4405,22 +5079,64 @@
           "id": "amsterdam_plein_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_plein_v0",
+              "profileId": "amsterdam-plein-lego-v1",
+              "appearanceKitId": "amsterdam_plein_v1_glass_canopy_skin",
+              "componentSetIds": [
+                "brick_plein_ground_program_v1",
+                "whole_market_stall_bays_v1",
+                "plein_edge_tree_bays_v1",
+                "bicycle_rack_clusters_v1",
+                "glass_canopy_plein_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_plein_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_plein_v0",
+              "profileId": "amsterdam-plein-lego-v1",
+              "appearanceKitId": "amsterdam_plein_v2_cafe_threshold_skin",
+              "componentSetIds": [
+                "brick_plein_ground_program_v1",
+                "whole_market_stall_bays_v1",
+                "plein_edge_tree_bays_v1",
+                "bicycle_rack_clusters_v1",
+                "cafe_threshold_plein_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "amsterdam_plein_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_amsterdam_plein_v0",
+              "profileId": "amsterdam-plein-lego-v1",
+              "appearanceKitId": "amsterdam_plein_v3_open_brick_skin",
+              "componentSetIds": [
+                "brick_plein_ground_program_v1",
+                "whole_market_stall_bays_v1",
+                "plein_edge_tree_bays_v1",
+                "bicycle_rack_clusters_v1",
+                "open_brick_plein_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4429,16 +5145,16 @@
       "title": "Eixample Interior Courtyard",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "barcelona_pati_interior_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_barcelona_pati_green_v0",
@@ -4450,7 +5166,7 @@
                 "central_fountain_v1",
                 "compact_play_bay_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4458,22 +5174,64 @@
           "id": "barcelona_pati_interior_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_pati_green_v0",
+              "profileId": "barcelona-pati-green-lego-v1",
+              "appearanceKitId": "barcelona_pati_interior_v1_lawn_skin",
+              "componentSetIds": [
+                "pati_gravel_loop_v1",
+                "mediterranean_planting_rooms_v1",
+                "central_fountain_v1",
+                "compact_play_bay_v1",
+                "pati_lawn_room_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_pati_interior_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_pati_green_v0",
+              "profileId": "barcelona-pati-green-lego-v1",
+              "appearanceKitId": "barcelona_pati_interior_v2_social_paved_skin",
+              "componentSetIds": [
+                "pati_gravel_loop_v1",
+                "mediterranean_planting_rooms_v1",
+                "central_fountain_v1",
+                "compact_play_bay_v1",
+                "pati_social_paving_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_pati_interior_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_pati_green_v0",
+              "profileId": "barcelona-pati-green-lego-v1",
+              "appearanceKitId": "barcelona_pati_interior_v3_shade_paved_skin",
+              "componentSetIds": [
+                "pati_gravel_loop_v1",
+                "mediterranean_planting_rooms_v1",
+                "central_fountain_v1",
+                "compact_play_bay_v1",
+                "pati_shade_court_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4482,30 +5240,58 @@
       "title": "Chamfer Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "barcelona_placa_xamfra_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_xamfra_corner_v2",
+              "profileId": "barcelona-xamfra-corner-lego-v1",
+              "appearanceKitId": "barcelona_placa_xamfra_v0_cafe_skin",
+              "componentSetIds": [
+                "xamfra_octagonal_ground_v1",
+                "diagonal_clear_route_v1",
+                "single_plane_tree_v1",
+                "whole_cafe_table_clusters_v1",
+                "xamfra_cafe_corner_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_placa_xamfra_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_xamfra_corner_v2",
+              "profileId": "barcelona-xamfra-corner-lego-v1",
+              "appearanceKitId": "barcelona_placa_xamfra_v1_clear_skin",
+              "componentSetIds": [
+                "xamfra_octagonal_ground_v1",
+                "diagonal_clear_route_v1",
+                "single_plane_tree_v1",
+                "whole_cafe_table_clusters_v1",
+                "xamfra_clear_route_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_placa_xamfra_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_barcelona_xamfra_corner_v2",
@@ -4517,7 +5303,7 @@
                 "single_plane_tree_v1",
                 "whole_cafe_table_clusters_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4525,8 +5311,22 @@
           "id": "barcelona_placa_xamfra_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_xamfra_corner_v2",
+              "profileId": "barcelona-xamfra-corner-lego-v1",
+              "appearanceKitId": "barcelona_placa_xamfra_v3_active_skin",
+              "componentSetIds": [
+                "xamfra_octagonal_ground_v1",
+                "diagonal_clear_route_v1",
+                "single_plane_tree_v1",
+                "whole_cafe_table_clusters_v1",
+                "xamfra_active_corner_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -4535,23 +5335,37 @@
       "title": "Barcelona Superblock",
       "spaceType": "plaza",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "barcelona_superilla_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_superilla_green_v1",
+              "profileId": "barcelona-superilla-green-lego-v1",
+              "appearanceKitId": "barcelona_superilla_v0_plaza_planter_skin",
+              "componentSetIds": [
+                "superilla_connected_ground_v1",
+                "whole_coloured_activity_rooms_v1",
+                "raised_planter_tree_bays_v1",
+                "social_play_furniture_v1",
+                "superilla_plaza_planter_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_superilla_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_barcelona_superilla_green_v1",
@@ -4563,7 +5377,7 @@
                 "raised_planter_tree_bays_v1",
                 "social_play_furniture_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -4571,15 +5385,43 @@
           "id": "barcelona_superilla_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_superilla_green_v1",
+              "profileId": "barcelona-superilla-green-lego-v1",
+              "appearanceKitId": "barcelona_superilla_v2_green_corridor_skin",
+              "componentSetIds": [
+                "superilla_connected_ground_v1",
+                "whole_coloured_activity_rooms_v1",
+                "raised_planter_tree_bays_v1",
+                "social_play_furniture_v1",
+                "superilla_green_corridor_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "barcelona_superilla_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_barcelona_superilla_green_v1",
+              "profileId": "barcelona-superilla-green-lego-v1",
+              "appearanceKitId": "barcelona_superilla_v3_social_garden_skin",
+              "componentSetIds": [
+                "superilla_connected_ground_v1",
+                "whole_coloured_activity_rooms_v1",
+                "raised_planter_tree_bays_v1",
+                "social_play_furniture_v1",
+                "superilla_social_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },

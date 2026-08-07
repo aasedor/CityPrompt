@@ -2447,6 +2447,87 @@ def _apply_batch22_variant_closures(
 _CAPABILITIES = tuple(_apply_batch22_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH23_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_community_healing_garden_v2": (
+        ("community_garden_enhanced", "garden_classic_allotment", "community_garden_enhanced_allotment_skin", "community_allotment_v0", "classic_allotment_grid_program_v1"),
+        ("community_garden_enhanced", "garden_permaculture_farm", "community_garden_enhanced_permaculture_skin", "community_permaculture_v1", "permaculture_guild_program_v1"),
+        ("community_garden_enhanced", "garden_intercultural", "community_garden_enhanced_intercultural_skin", "community_intercultural_v3", "intercultural_social_garden_program_v1"),
+    ),
+    "park_paris_place_royale_v2": (
+        ("parisian_place", "parisian_place_v0", "parisian_place_v0_quiet_cobble_skin", "paris_place_quiet_v0", "quiet_cobble_place_program_v1"),
+        ("parisian_place", "parisian_place_v1", "parisian_place_v1_statue_axis_skin", "paris_place_statue_v1", "statue_axis_place_program_v1"),
+        ("parisian_place", "parisian_place_v3", "parisian_place_v3_cafe_paved_skin", "paris_place_cafe_v3", "cafe_edge_place_program_v1"),
+    ),
+    "park_paris_square_tree_grid_v3": (
+        ("parisian_square", "parisian_square_v0", "parisian_square_v0_linear_edge_skin", "paris_square_linear_v0", "linear_edge_square_program_v1"),
+        ("parisian_square", "parisian_square_v1", "parisian_square_v1_corner_cafe_skin", "paris_square_corner_cafe_v1", "corner_cafe_square_program_v1"),
+        ("parisian_square", "parisian_square_v2", "parisian_square_v2_compact_cobble_skin", "paris_square_compact_v2", "compact_cobble_square_program_v1"),
+    ),
+    "park_french_parterre_axis_v1": (
+        ("parisian_jardin", "parisian_jardin_v0", "parisian_jardin_v0_clipped_parterre_skin", "paris_jardin_clipped_parterre_v0", "clipped_parterre_program_v1"),
+        ("parisian_jardin", "parisian_jardin_v2", "parisian_jardin_v2_rill_garden_skin", "paris_jardin_rill_garden_v2", "parallel_rill_garden_program_v1"),
+        ("parisian_jardin", "parisian_jardin_v3", "parisian_jardin_v3_paved_forecourt_skin", "paris_jardin_paved_forecourt_v3", "paved_garden_forecourt_program_v1"),
+    ),
+    "park_amsterdam_vondelpark_pavilion_v3": (
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v0", "amsterdam_vondelpark_v0_neighbourhood_skin", "amsterdam_vondelpark_neighbourhood_v0", "neighbourhood_park_edge_program_v1"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v1", "amsterdam_vondelpark_v1_cafe_skin", "amsterdam_vondelpark_cafe_v1", "vondelpark_cafe_edge_program_v1"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v2", "amsterdam_vondelpark_v2_planted_corner_skin", "amsterdam_vondelpark_planted_v2", "vondelpark_planted_corner_program_v1"),
+    ),
+    "park_amsterdam_hofje_garden_v0": (
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v1", "amsterdam_hofje_garden_v1_lush_skin", "amsterdam_hofje_lush_v1", "lush_communal_hofje_program_v1"),
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v2", "amsterdam_hofje_garden_v2_pocket_skin", "amsterdam_hofje_pocket_v2", "pocket_hofje_program_v1"),
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v3", "amsterdam_hofje_garden_v3_historic_lawn_skin", "amsterdam_hofje_historic_lawn_v3", "historic_lawn_hofje_program_v1"),
+    ),
+    "park_amsterdam_plein_v0": (
+        ("amsterdam_plein", "amsterdam_plein_v1", "amsterdam_plein_v1_glass_canopy_skin", "amsterdam_plein_glass_canopy_v1", "glass_canopy_plein_program_v1"),
+        ("amsterdam_plein", "amsterdam_plein_v2", "amsterdam_plein_v2_cafe_threshold_skin", "amsterdam_plein_cafe_v2", "cafe_threshold_plein_program_v1"),
+        ("amsterdam_plein", "amsterdam_plein_v3", "amsterdam_plein_v3_open_brick_skin", "amsterdam_plein_open_v3", "open_brick_plein_program_v1"),
+    ),
+    "park_barcelona_pati_green_v0": (
+        ("barcelona_pati_interior", "barcelona_pati_interior_v1", "barcelona_pati_interior_v1_lawn_skin", "barcelona_pati_lawn_v1", "pati_lawn_room_program_v1"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v2", "barcelona_pati_interior_v2_social_paved_skin", "barcelona_pati_social_v2", "pati_social_paving_program_v1"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v3", "barcelona_pati_interior_v3_shade_paved_skin", "barcelona_pati_shade_v3", "pati_shade_court_program_v1"),
+    ),
+    "park_barcelona_xamfra_corner_v2": (
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v0", "barcelona_placa_xamfra_v0_cafe_skin", "barcelona_xamfra_cafe_v0", "xamfra_cafe_corner_program_v1"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v1", "barcelona_placa_xamfra_v1_clear_skin", "barcelona_xamfra_clear_v1", "xamfra_clear_route_program_v1"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v3", "barcelona_placa_xamfra_v3_active_skin", "barcelona_xamfra_active_v3", "xamfra_active_corner_program_v1"),
+    ),
+    "park_barcelona_superilla_green_v1": (
+        ("barcelona_superilla", "barcelona_superilla_v0", "barcelona_superilla_v0_plaza_planter_skin", "barcelona_superilla_plaza_v0", "superilla_plaza_planter_program_v1"),
+        ("barcelona_superilla", "barcelona_superilla_v2", "barcelona_superilla_v2_green_corridor_skin", "barcelona_superilla_corridor_v2", "superilla_green_corridor_program_v1"),
+        ("barcelona_superilla", "barcelona_superilla_v3", "barcelona_superilla_v3_social_garden_skin", "barcelona_superilla_social_v3", "superilla_social_garden_program_v1"),
+    ),
+}
+
+
+def _apply_batch23_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH23_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch23_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:
