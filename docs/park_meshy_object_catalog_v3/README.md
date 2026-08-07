@@ -26,6 +26,8 @@ This preserves the archetype's elements and atmosphere while allowing the LEGO a
 
 ## Visual QA
 
+`meshy-park-object-catalog-v3-complete-sheet.png` is the single-sheet overview of all 128 archetype-variant briefs. It groups each park family into a four-variant row and marks promoted objects in green and rejected or incomplete objects in red.
+
 The 16 mobile-friendly comparison sheets in this directory show, for every brief:
 
 - the exact archetype reference image;
